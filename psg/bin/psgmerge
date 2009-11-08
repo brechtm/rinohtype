@@ -1,0 +1,323 @@
+#!/usr/bin/env python
+
+##  This file is part of psg, PostScript Generator.
+##
+##  Copyright 2006 by Diedrich Vorberg <diedrich@tux4web.de>
+##
+##  All Rights Reserved
+##
+##  For more Information on orm see the README file.
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+##
+##  I have added a copy of the GPL in the file gpl.txt.
+
+
+# Changelog
+# ---------
+#
+# $Log: psgmerge,v $
+# Revision 1.5  2006/11/04 18:18:46  diedrich
+# Removed debug 'print'
+#
+# Revision 1.4  2006/08/29 20:03:14  t4w00-diedrich
+# Made it work again after changing dsc.py substantially.
+#
+# Revision 1.3  2006/08/25 13:33:15  t4w00-diedrich
+# - Some definitions have changed. The classes from document.py are more
+#   usefull now, providing higher level classes for dsc.py
+# - These changes are reflected all over the place, escpecially in psgmerge.
+#
+# Revision 1.2  2006/08/23 12:39:28  t4w00-diedrich
+# Merge actually works pretty well now.
+#
+# Revision 1.1  2006/08/21 18:56:53  t4w00-diedrich
+# Initial commit
+#
+#
+#
+
+"""\
+NAME
+
+     psgmerge - filter to merge several PostScript files info one
+
+SYNOPSIS
+
+     psgmerge [-ooutput.ps] [-v] [file0.ps file1.ps ...]
+
+DESCRIPTION
+
+     Psmerge merges several PostScript files info one, regardless of
+     whether they were created with the same of with different
+     applications or not. Document supplied resources (fonts,
+     procsets, patterns, etc) will be organized appropriately.
+
+     If the -o option is used, output will be sent to the file
+     specified, otherwise to stdio.
+
+     The -v option will turn on verbose mode.
+
+LIMITATIONS
+
+  - half a ton o' bugs\
+  - The PostScript files should be device independent. Files using
+    emulation (non-PostScript printer data) or other hardware specific
+    features are very likely to fail.
+  - This uses PostScriptLevel >= 2 as output format.
+
+  - When read from an existing PostScript file, Setup lines may be
+    missing from a resource object although they are mandetory for the
+    resource to actually work. Unfortunately it is impossible to
+    identify which line belong to which resource by reading a DSC
+    compilent PostScript file. It is also impossible to resolve
+    interdependencies between resources (which ones have to be there and
+    have to be initialized before the others). As a result the Prolog
+    and Setup section of a Postscript file can only be 'transplanted' as
+    a whole, carefully maintaining the order of resources and lines. The
+    interplay between Resource and Setup sections can never be
+    reconstructed comletly, can never be 100% reliable.
+
+    
+"""
+
+import sys, os, optparse
+from datetime import datetime
+
+from psg.document.dsc import *
+from psg.util import bounding_box
+
+def main(argv, doc):
+    op = optparse.OptionParser(usage=doc)
+    op.add_option("-o", None, dest="output_file", default="-",
+                  help="Output file")
+    op.add_option("-v", None, dest="verbose",
+                  action="store_true", default="False",
+                  help="Verbose operations")
+
+    ( options, arguments, ) = op.parse_args()
+
+    if len(arguments) < 1 :
+        op.error("Please spefify at least two .ps files on the cmd line!")
+    
+    if options.output_file == "-":
+        output_file = sys.stdout
+    else:
+        output_file = open(options.output_file, "w")
+
+    # Title - input filenames
+    title = join(arguments, " ")
+    output_document = dsc_document(title=title)
+
+    # INPUT ##################################################
+    # Open the input documents.
+    input_documents = []
+    for a in arguments:
+        if options.verbose: print >> sys.stderr, "Reading", a
+        
+        input_file = open(a, "rb")
+        input_documents.append(dsc_document.from_file(input_file))
+
+    first_document = input_documents[0]
+    
+    # OUTPUT #################################################
+    od = output_document # shorthand...
+
+    # Set output document meta data.
+
+    # BoundingBox -- The new document's BoundingBox is the largest box
+    # on a sheet of paper that surrounds all the other document's
+    # bounding boxes.
+    bb = None
+    for document in input_documents:
+        if document.header.hires_bounding_box is not None:
+            bb_string = document.header.hires_bounding_box
+        else:
+            bb_string = document.header.bounding_box
+
+        print repr(bb_string)
+
+        if bb_string is not None:
+            document_bb = bounding_box.from_tuple(bb_string)
+            
+            if bb is None:
+                bb = document_bb
+            else:
+                bb = bb.surrounding(document_bb)
+
+    if bb is not None:
+        od.header.bounding_box = bb.as_tuple()
+    # output_document.hires_bounding_box = bb
+    
+    od.header.creator = os.environ.get("USER", "")
+    od.header.creation_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+    od.header.document_data = "Binary" # safe for all input documents
+    od.header.for_ = os.environ.get("USER", "")
+    # Extensions may be ignored, because we assume PostScript Level 2 or
+    # higher.
+
+    # Language Level
+    language_level = 2
+    for document in input_documents:
+        if document.header.language_level > 2:
+            language_level = 3
+            break
+
+    od.header.language_level = 3
+
+    # Orientation
+    # We set Landscape mode here, to overwrite for specific pages if needed
+    od.header.orientation = "Portrait"
+    
+    # Pages
+    pages = 0
+    for document in input_documents:
+        if document.pages is None:
+            pages += 1
+        else:
+            pages += document.header.pages
+
+    od.header.pages = pages
+
+    # PageOrder
+    # The page order is the same as in the (physical) page order
+    # of the input files.
+    od.header.page_order = "Ascend" 
+
+    # There is no defaults section (actually an empty one). The appropriate
+    # headers will be set for each individual page.
+
+    # DocumentNeededResources
+    needed_resources = dsc_resource_set()
+    for document in input_documents:
+        dr = document.header.document_needed_resources
+        if dr is not None and len(dr) > 0:
+            for r in rd:
+                needed_resources.add(r)
+
+        for font_name in document.header.document_needed_fonts:
+            needed_resources.append(resource_identifyer("font", font_name))
+    # I'm not doing this for procsets, because my files here don't use
+    # DocumentNeededProcset at all and I would have to parse version info.
+        
+    od.header.document_needed_resources = needed_resources
+
+    # SuppliedResources (these are calculated, actually)
+    # The resources are copied at a later point in time, after the Header has
+    # been written.
+    supplied_resources = dsc_resource_set()
+    for document in input_documents:
+        for resource in document.resources():
+            supplied_resources.add(resource)
+
+        for font_name in document.header.document_supplied_fonts:
+            supplied_resources.append(resource_identifyer("font", font_name))
+
+
+    od.header.document_supplied_resources = supplied_resources
+
+    # Copy the resources
+    for resource in supplied_resources:
+        print >> od.prolog, "\n%" + "*" * 50
+        od.prolog.append(resource.section)
+        print >> od.prolog, "\n%" + "*" * 50
+
+    # Create a setup section.
+    # The setup sections are copied as they are. This may implied that
+    # resources contained in the setup sections are duplicated.
+    for document in input_documents:
+        if document.has_subsection("setup"):
+            setup_section = document.setup
+            fp = setup_section.subfile
+            fp.seek(0)
+            lines = line_iterator(fp)
+            lines.next() # skip first line: %% BeginSetup
+            for line in lines:
+                if not line.startswith("%%EndSetup"):
+                    od.setup.write(line)
+            
+            print >> od.setup
+            
+    # Copy the pages
+    page_ordinal = 1
+    for document in input_documents:
+        print "="*50
+        
+        defaults = {}
+        if document.has_subsection("defaults"):
+            for cmt in document.defaults.comments():
+                defaults[cmt.name] = cmt
+
+        for input_page in document.pages:
+            print "PAGE", page_ordinal
+            info = "(%i) %i" % ( page_ordinal, page_ordinal, )
+            op = page_section(info=info)
+            od.pages.append(op)
+            page_ordinal += 1        
+
+            print "-" * 50
+            # A page starts with page comments, which we have to modify.
+            # op = page_section("Page")
+
+            page_defaults = {}
+            
+            for cmt in input_page.comments():
+                page_defaults[cmt.name] = cmt
+
+            op.append(pageheader_section())
+            for comment_name, cmt in defaults.items():
+                if page_defaults.has_key(comment_name):
+                    cmt = page_defaults[comment_name]
+
+                op.pageheader.append(cmt)
+            
+            # Copy the remainder of the page section to the output page
+            input_page.subfile.seek(0)
+            lines = line_iterator(input_page.subfile)
+            for line in lines:
+                if line.startswith("%%EndPageComments"):
+                    break
+
+            if input_page.subfile.tell() == input_page.subfile.length:
+                # This means there is no %%EndPageComments line.
+                # OpenOffice does this.
+                input_page.subfile.seek(0)
+                lines = line_iterator(input_page.subfile)
+                lines.next() # Skip %%Page line.
+            
+            
+            copy_linewise(input_page.subfile, op)
+            print >> op
+
+
+    od.write_to(output_file)
+    
+    print
+    print "-" * 60
+    for a in output_document.comments():        
+        print repr(str(a))
+    
+
+    
+
+
+main(sys.argv, __doc__)
+
+
+# Local variables:
+# mode: python
+# ispell-local-dictionary: "english"
+# End:
+

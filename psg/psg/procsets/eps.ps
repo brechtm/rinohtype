@@ -1,0 +1,32 @@
+% $Revision: 1.3 $
+
+% EPS embedding for psg. This is straight from Adobe's Encapsulated
+% PostScript File Format Specification (page 27ff).
+
+/psg_begin_epsf { %def            % Prepare for EPS file
+  /b4_Inc_state save def          % Save state for cleanup
+  /dict_count countdictstack def
+  /op_count count 1 sub def       % Count objects on op stack
+  
+  userdict begin                  % Make userdict current dict
+    /showpage { } def             % Redefine showpage to be null
+    
+    0 setgray
+    0 setlinecap
+    1 setlinewidth
+    0 setlinejoin
+    10 setmiterlimit
+    [ ] 0 setdash
+    newpath
+    false setstrokeadjust
+    false setoverprint
+} bind def
+
+/psg_end_epsf { %def
+  count op_count sub {pop} repeat % Clean up dict stack
+  countdictstack dict_count sub {end} repeat
+  b4_Inc_state restore
+} bind def
+
+
+
