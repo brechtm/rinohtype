@@ -10,7 +10,7 @@ class NumberingStyle:
     Roman = 4
 
 class HeadingStyle(ParagraphStyle):
-    def __init__(self, indentLeft=None, indentRight=None, indentFirst=None,
+    def __init__(self, name="", indentLeft=None, indentRight=None, indentFirst=None,
                  spaceAbove=None, spaceBelow=None,
                  lineSpacing=None,
                  justify=None,
@@ -18,7 +18,7 @@ class HeadingStyle(ParagraphStyle):
                  hyphenate=None, hyphenChars=None, hyphenLang=None,
                  numberingStyle=None, numberingSeparator=None,
                  base=None):
-        ParagraphStyle.__init__(self, indentLeft, indentRight, indentFirst,
+        ParagraphStyle.__init__(self, name, indentLeft, indentRight, indentFirst,
                                 spaceAbove, spaceBelow,
                                 lineSpacing,
                                 justify,
@@ -48,7 +48,8 @@ class Heading(Paragraph):
             self._number = 1
             Heading.nextNumber[level] = 2
         self.level = level
-        self.title = title
+        self << Text(self._formatNumber() + ". ", self.style)
+        self << title
 
     def _formatNumber(self):
         style = self.style.numberingStyle
@@ -73,12 +74,6 @@ class Heading(Paragraph):
             (k,n) = divmod(n, num)
             roman.append(ltr*k)
         return "".join(roman)
-
-    def __getattribute__(self, name):
-        if name == 'text':
-            return self._formatNumber() + ". " + Paragraph.__getattribute__(self, name)
-        else:
-            return Paragraph.__getattribute__(self, name)
 
 
 class ListStyle:

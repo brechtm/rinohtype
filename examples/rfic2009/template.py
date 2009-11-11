@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.insert(0, 'C:\Documents and Settings\Veerle\My Documents\code\pyte\trunk')
+sys.path.insert(0, 'C:\Documents and Settings\Veerle\My Documents\code\pyte\trunk\psg')
+print(sys.path)
 
 from rfic2009style import *
 
 tmpl = RFIC2009Paper("template.ps")
 
 tmpl.title = "Submission Format for RFIC2009 (Title in 18-point Times font)"
-# TODO: pslib unicode?
 tmpl.author = "J. Clerk Maxwell, Michael Faraday, and André M. Ampère (List authors on this line using 12 point Times font -- use a second line if necessary)"
-#tmpl.author = "J. Clerk Maxwell, Michael Faraday, and Andre M. Ampere (List authors on this line using 12 point Times font -- use a second line if necessary)"
 tmpl.affiliation = "Microwave Research, City, State/Region, Mail/Zip Code, Country (authors' affiliation(s) listed here in 12 point Times font -- use a second line if necessary)"
 
 tmpl.abstract = "Use 9 point Times New Roman Bold font for the abstract. Set your line spacing to be 10 points rather than single space. Indent the first line by 0.125 inches and type the word ``Abstract'' in 9 point Times New Roman Bold Italic. This should be followed by two spaces, a long dash (option / shift / minus), two spaces, and then the first word of your abstract (as shown above). Please try to keep the length of your abstract to 100 words or less. Times font is an acceptable substitute for Times New Roman font. After the abstract, you should list a few key words from the IEEE approved ``Index Terms'' LIST that describe your paper. The index terms are used by automated IEEE search engines to quickly locate your paper. Typically, you should list about 5 to 7 key words, in alphabetical order, using 9 point Times New Roman Bold font. An example is shown next."
-#indexterms = "Ceramics, coaxial resonators, delay filters, delay-lines, power amplifiers."
 tmpl.indexTerms = ["delay filters", "ceramics", "power amplifiers", "delay-lines", "coaxial resonators"]
 
 
@@ -22,7 +23,7 @@ tmpl << Heading(1, "Introduction")
 # tmpl << newParagraph()
 # tmpl << "Paragraph 2 text goes here"
 
-tmpl << (Paragraph() << "Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:")
+tmpl << Paragraph() << "Please read " << Bold("through") << " this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:"
 
 ##lst = List(ListStyle.Numbered)
 ##

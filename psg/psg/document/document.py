@@ -264,11 +264,11 @@ class font_wrapper:
             for char in chars:
                 if not self.font.has_char(char):
                     if ignore_missing:
-                        if unicode_to_glyph_name.has_key(char):
+                        if char in unicode_to_glyph_name:
                             tpl = ( self.font.ps_name,
                                     unicode_to_glyph_name[char], )
                         else:
-                            tpl = ( self.font.ps_name, "#%i" % char, )
+                            tpl = ( self.font.ps_name, "#%i" % ord(char), )
 
                         msg = "%s does not contain needed glyph %s" % tpl
                         warnings.warn(msg)

@@ -26,9 +26,9 @@ termesBold = Font("TeXGyreTermes-Bold", "qtmb")
 termesItalic = Font("TeXGyreTermes-Italic", "qtmri")
 termesBoldItalic = Font("TeXGyreTermes-BoldItalic", "qtmbi")
 
-termes = TypeFace("TeXGyreTermes", roman=termesRoman,
-                  bold=termesBold,
-                  italic=termesItalic, bolditalic=termesBoldItalic)
+termes = TypeFace("TeXGyreTermes",
+                    roman=termesRoman, bold=termesBold,
+                    italic=termesItalic, bolditalic=termesBoldItalic)
 
 ieeeFamily = TypeFamily(serif=termes)
 
@@ -50,22 +50,18 @@ columnwidth = (body.width() - columnspacing) / 2.0
 columnheight = body.height() - titleBox.height()
 
 columns = Chain()
-column1 = Container(body, 0*pt, titleBox.bottom(), width=columnwidth, height=columnheight, chain=columns)
-column2 = Container(body, columnwidth + columnspacing, titleBox.bottom(), width=columnwidth, height=columnheight, chain=columns)
+column1 = Container(body, 0*pt, titleBox.bottom(),
+    width=columnwidth, height=columnheight, chain=columns)
+column2 = Container(body, columnwidth + columnspacing, titleBox.bottom(),
+    width=columnwidth, height=columnheight, chain=columns)
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
 class Abstract(Paragraph):
     def __init__(self, text, style):
         Paragraph.__init__(self, style)
-        self.__text = [Text(text, self.style)]
-
-    def __getattribute__(self, name):
-        if name == 'text':
-            return ("Abstract") + " --- " + Paragraph.__getattribute__(self, name)
-        else:
-            return Paragraph.__getattribute__(self, name)
-
+        self << Text("Abstract --- ", boldItalicStyle)
+        self << Text(text, self.style)
 
 class IndexTerms(Paragraph):
     def __init__(self, terms, style):
@@ -74,30 +70,29 @@ class IndexTerms(Paragraph):
         terms[0] = terms[0][0].upper() + terms[0][1:]
         text = ", ".join(terms) + "."
         Paragraph.__init__(self, style)
-        self.__text = [Text(text, self.style)]
-
-    def __getattribute__(self, name):
-        if name == 'text':
-            return ("Index Terms") + " --- " + Paragraph.__getattribute__(self, name)
-        else:
-            return Paragraph.__getattribute__(self, name)
+        self << Text("Index Terms --- ", boldItalicStyle)
+        self << Text(text, self.style)
 
 # paragraph styles
 # ----------------------------------------------------------------------------
 
-titleStyle = ParagraphStyle(typeface=ieeeFamily.serif,
+titleStyle = ParagraphStyle("title",
+                            typeface=ieeeFamily.serif,
                             fontStyle=FontStyle.Roman,
                             fontSize=18*pt,
                             lineSpacing=1.2*18*pt,
                             spaceAbove=6*pt,
                             spaceBelow=6*pt,
                             justify=Justify.Center)
-authorStyle = ParagraphStyle(base=titleStyle,
+authorStyle = ParagraphStyle("author",
+                             base=titleStyle,
                              fontSize=12*pt,
                              lineSpacing=1.2*12*pt)
-affiliationStyle = ParagraphStyle(base=authorStyle,
+affiliationStyle = ParagraphStyle("affiliation",
+                                  base=authorStyle,
                                   spaceBelow=6*pt + 12*pt)
-abstractStyle = ParagraphStyle(typeface=ieeeFamily.serif,
+abstractStyle = ParagraphStyle("abstract",
+                               typeface=ieeeFamily.serif,
                                fontStyle=FontStyle.Bold,
                                fontSize=9*pt,
                                lineSpacing=10*pt,
@@ -105,7 +100,8 @@ abstractStyle = ParagraphStyle(typeface=ieeeFamily.serif,
                                spaceAbove=6*pt,
                                spaceBelow=6*pt,
                                justify=Justify.Both)
-bodyStyle = ParagraphStyle(typeface=ieeeFamily.serif,
+bodyStyle = ParagraphStyle("body",
+                           typeface=ieeeFamily.serif,
                            fontStyle=FontStyle.Roman,
                            fontSize=10*pt,
                            lineSpacing=12*pt,
@@ -114,7 +110,8 @@ bodyStyle = ParagraphStyle(typeface=ieeeFamily.serif,
                            spaceBelow=0*pt,
                            justify=Justify.Both)
 
-hdStyle = HeadingStyle(typeface=ieeeFamily.serif,
+hdStyle = HeadingStyle("heading",
+                       typeface=ieeeFamily.serif,
                        fontStyle=FontStyle.Roman,
                        fontSize=10*pt,
                        smallCaps=True,
@@ -129,7 +126,8 @@ hdStyle = HeadingStyle(typeface=ieeeFamily.serif,
 
 HeadingStyle.default = hdStyle
 ParagraphStyle.default = bodyStyle
-TextStyle.default = TextStyle(typeface=ieeeFamily.serif,
+TextStyle.default = TextStyle("RFIC2009 default",
+                           typeface=ieeeFamily.serif,
 						   fontStyle=FontStyle.Roman,
 						   fontSize=10*pt)
 
@@ -160,10 +158,10 @@ class RFIC2009Paper(Document):
         parIndexTerms = IndexTerms(self.indexTerms, abstractStyle)
 
         titleBox.addParagraph(parTitle)
-##        titleBox.addParagraph(parAuthor)
-##        titleBox.addParagraph(parAffiliation)
+        titleBox.addParagraph(parAuthor)
+        titleBox.addParagraph(parAffiliation)
 
-        #columns._TextTarget__paragraphs.insert(0, parAbstract)
-        #columns._TextTarget__paragraphs.insert(1, parIndexTerms)
+        columns._TextTarget__paragraphs.insert(0, parAbstract)
+        columns._TextTarget__paragraphs.insert(1, parIndexTerms)
 
         Document.render(self)

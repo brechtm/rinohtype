@@ -83,5 +83,5 @@ class Document(object):
     def __lshift__(self, item):
         assert isinstance(item, Paragraph)
         self.content.addParagraph(item)
-        return self
+        return item
 

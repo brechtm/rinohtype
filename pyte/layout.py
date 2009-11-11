@@ -2,6 +2,7 @@
 #from pslib import PS_get_value, PS_set_value, PS_rect, PS_fill_stroke, PS_stroke, PS_setcolor
 
 import psg.drawing.box
+from psg.exceptions import EndOfBox
 
 from pyte.dimension import Dimension
 from pyte.unit import pt
@@ -127,30 +128,36 @@ class Container(TextTarget):
             height = bottom
             bottom = 0
 
-        thisCanvas = psg.drawing.box.canvas(parentCanvas, left, bottom, width, height)
-        parentCanvas.append(thisCanvas)
-
-##        print("gsave", file=thisCanvas)
-##        thisCanvas.print_bounding_path()
-##        print("[5 5] 0 setdash", file=thisCanvas)
-##        print("stroke", file=thisCanvas)
-##        print("grestore", file=thisCanvas)
+        pageCanvas = parentCanvas.page.canvas()
+        thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
+        pageCanvas.append(thisCanvas)
 
         for child in self.__children:
             child.render(thisCanvas)
-#        PS_setcolor(psdoc, "stroke", "cmyk", 0.75, 0.94, 0.0, 0.0)
-#        PS_rect(psdoc, left, bottom, width, height)
-#        PS_stroke(psdoc)
-#        PS_setcolor(psdoc, "stroke", "gray", 0.0, 0.0, 0.0, 0.0)
 
         totalHeight = 0
 
         if self.paragraphs():
-            textHeight, rest = self.typeset(thisCanvas)
+            textHeight = self.typeset(thisCanvas)
             if dynamic:
                 self.height().add(textHeight*pt)
         elif self.chain:
             self.chain.typeset(thisCanvas)
+
+##        print("gsave", file=pageCanvas)
+##
+##        height = float(self.height())
+##        bottom = float(self.page().height() - self.absBottom())
+##        print("newpath", file=pageCanvas)
+##        print("%f %f moveto" % ( left, bottom, ), file=pageCanvas)
+##        print("%f %f lineto" % ( left, bottom + height, ), file=pageCanvas)
+##        print("%f %f lineto" % ( left + width, bottom + height, ), file=pageCanvas)
+##        print("%f %f lineto" % ( left + width, bottom, ), file=pageCanvas)
+##        print("closepath", file=pageCanvas)
+##
+##        print("[5 5] 0 setdash", file=pageCanvas)
+##        print("stroke", file=pageCanvas)
+##        print("grestore", file=pageCanvas)
 
 
     def typeset(self, psgCanvas):
@@ -165,23 +172,23 @@ class Container(TextTarget):
             height = bottom
             bottom = 0
 
+        totalHeight = 0
+        prevParHeight = 0
         for paragraph in self.paragraphs():
+            # TODO: cater for multiple paragraphs
             spaceAbove = float(paragraph.style.spaceAbove)
             spaceBelow = float(paragraph.style.spaceBelow)
-            height -= spaceAbove
-            #rest = paragraph.typeset(pscanvas, left, bottom, width, height)
-            #if rest > 0:
-            #    print "rest =", rest
-            #    raise NotImplementedError
-            #boxheight = PS_get_value(psdoc, "boxheight", 0)
-            boxheight, rest = paragraph.typeset(psgCanvas)
-            height -= boxheight + spaceBelow
+            boxheight = paragraph.typeset(psgCanvas, totalHeight)
+            print("boxheight = {}".format(boxheight))
+            prevParHeight = spaceAbove + boxheight + spaceBelow
+            print("prevParHeight=", prevParHeight)
+            totalHeight += prevParHeight
 ##            if dynamic:
 ##                enlarge = (spaceAbove + boxheight + spaceBelow) * pt
 ##                self.height().add(enlarge)
 ##                #print "bh", boxheight, self.height(), self.height()._Dimension__factor
 
-        return boxheight, rest
+        return totalHeight
 
 
 class Chain(TextTarget):
@@ -194,39 +201,37 @@ class Chain(TextTarget):
         if self.__typeset:
             return
         self.__typeset = True
-        contNumber = -1
-        boxheight = 0
+        contIter = iter(self.__containers)
+        container = next(contIter)
+        totalHeight = 0
+        prevParHeight = 0
         for paragraph in self.paragraphs():
-            spaceAbove = float(paragraph.style.spaceAbove)
-            spaceBelow = float(paragraph.style.spaceBelow)
-            #PS_set_value(psdoc, "parindentskip",  0)
-            # TODO: use "for container in self.__containers" (not possible?)
-            rest = None
-            while rest != 0:
+            # TODO: use (EndOfBox) exception to skip to next container
+            # also use exception for signaling a full page
+            try:
+                spaceAbove = float(paragraph.style.spaceAbove)
+                spaceBelow = float(paragraph.style.spaceBelow)
                 # TODO: probably bad behaviour with spaceAbove/Below
                 #       when skipping to next container
-                contNumber += 1
-                if contNumber >= len(self.__containers):
-                    print( "chain is full")
-                    return
-                print('cN', contNumber)#, paragraph.text[:11]
-                container = self.__containers[contNumber]
                 left   = float(container.absLeft())
                 bottom = float(container.page().height() - container.absBottom())
                 width  = float(container.width())
-                height = float(container.height()) - boxheight
-#                PS_rect(psdoc, left, bottom, width, height)
-#                PS_stroke(psdoc)
-                #PS_fill_stroke(psdoc)
+                height = float(container.height())
                 height = height - spaceAbove
-                textheight, rest = paragraph.typeset(pscanvas)
-                if rest != 0:
-                    #PS_set_value(psdoc, "parindentskip",  1)
-                    boxheight = 0
-                    spaceAbove = 0
-            boxheight += spaceAbove + textheight + spaceBelow
-            contNumber -= 1
-            rest = None
+                boxheight = paragraph.typeset(pscanvas, totalHeight)
+                prevParHeight = spaceAbove + boxheight + spaceBelow
+                totalHeight += prevParHeight
+            except EndOfBox:
+                print("NEXT container")
+                try:
+                    container = next(contIter)
+                except StopIteration:
+                    print("StopIteration")
+                totalHeight = 0
+                prevParHeight = 0
+                totalHeight = 0
+
+        return totalHeight
 
     def addContainer(self, container):
         assert isinstance(container, Container)
