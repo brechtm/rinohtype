@@ -8,7 +8,7 @@ from psg.exceptions import *
 
 from pyte.unit import pt
 from pyte.font import FontStyle
-from pyte.text import Text, Word, Character, Space, TextStyle
+from pyte.text import Text, Word, Character, Space, TextStyle, ParentStyle, StyledText
 
 class Justify:
     Left    = "left"
@@ -20,7 +20,7 @@ class Justify:
 class ParagraphStyle(TextStyle):
     default = None
 
-    # look at OpenOffice writer for more options
+    # look at OpenOffice Writer for more options
     def __init__(self, name="", indentLeft=None, indentRight=None, indentFirst=None,
                  spaceAbove=None, spaceBelow=None,
                  lineSpacing=None,
@@ -100,27 +100,39 @@ class DefaultStyle:
     pass
 
 class Paragraph(object):
-    def __init__(self, style=DefaultStyle):
-        self.__text = []
+    def __init__(self, text, style=DefaultStyle):
+        if not isinstance(text, tuple):
+            text = (text, )
+        self.__text = StyledText(text)
+
         if style == DefaultStyle:
             self.style = ParagraphStyle.default
         else:
             self.style = style
 
+        # TODO: move to ParagraphStyle
         self.kerning = True # self.style.kerning
         self.char_spacing = 0.0
         self.alignment = self.style.justify
 
-    def __lshift__(self, item):
-        if type(item) == str:
-            item = Text(item, style=self.style)
-        self.__text.append(item)
-        return self
+##    def __lshift__(self, item):
+##        if type(item) == str:
+##            item = Text(item, style=self.style)
+##        else:
+##            if item.style.base == ParentStyle:
+##                item.style.base = self.style
+##        self.__text.append(item)
+##        return self
 
     def __splitWords(self):
         self.__words = []
         word = Word()
         for text in self.__text:
+            if type(text) == str:
+                text = Text(text, style=self.style)
+            elif text.style.base == ParentStyle:
+                text.style.base = self.style
+
             for character in text.text:
                 if character not in (" ", "\t"):
                     word.append(Character(character, style=text.style))

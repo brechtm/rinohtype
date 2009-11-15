@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import sys
-sys.path.insert(0, 'C:\Documents and Settings\Veerle\My Documents\code\pyte\trunk')
-sys.path.insert(0, 'C:\Documents and Settings\Veerle\My Documents\code\pyte\trunk\psg')
-print(sys.path)
-
 from rfic2009style import *
 
 tmpl = RFIC2009Paper("template.ps")
 
+##tmpl.title = "ภ สำเภา	من فضلك Submission Format for RFIC2009 (Title in 18-point Times font)"
 tmpl.title = "Submission Format for RFIC2009 (Title in 18-point Times font)"
 tmpl.author = "J. Clerk Maxwell, Michael Faraday, and André M. Ampère (List authors on this line using 12 point Times font -- use a second line if necessary)"
 tmpl.affiliation = "Microwave Research, City, State/Region, Mail/Zip Code, Country (authors' affiliation(s) listed here in 12 point Times font -- use a second line if necessary)"
@@ -23,14 +19,16 @@ tmpl << Heading(1, "Introduction")
 # tmpl << newParagraph()
 # tmpl << "Paragraph 2 text goes here"
 
-tmpl << Paragraph() << "Please read " << Bold("through") << " this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:"
+##tmpl << Paragraph() << "Please read " << Bold("through") << " this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that: 久有归天愿 终过鬼门关 千里来寻归宿 春华变苍颜 到处群魔乱舞 更有妖雾盘绕 暗道入阴间 过了阎王殿 险处不须看"
+tmpl << Paragraph("Please read " + Bold("through") + " this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:")
 
-##lst = List(ListStyle.Numbered)
-##
-##lst << ListItem("Deadlines are " + Em("absolute") + ", don't even ask!")
-##
-##tmpl << lst
-##
+lst = List()
+
+lst.append("Deadlines are " + Em("absolute") + ", don't even ask!")
+lst.append("Summaries may not exceed " + Bold("four") + " pages, including all figures, tables, references, etc. Additionally, there is a size limit on the electronic version of all Summaries. In Adobe Portable Document Format (PDF), submissions may not exceed 1 Megabyte.")
+
+tmpl << lst
+
 #tmpl << List(ListStyle.Numbered)
 #
 #tmpl << ListItem("Deadlines are " + Em("absolute") + ", don't even ask!")
@@ -53,7 +51,15 @@ tmpl << Paragraph() << "Please read " << Bold("through") << " this entire templa
 #fig1 = Figure("bla.eps", "caption")
 #tmpl << Paragraph("reference to " + Ref(fig1) + ".")
 
-tmpl << Heading(1, "Detailed Text Formatting")
+tmpl << Heading(2, "Detailed Text Formatting " + Bold("hoh"))
+tmpl << Heading(2, "Subheading 1b")
+
+tmpl << Heading(1, "Heading 2")
+tmpl << Heading(2, "Subheading 2a")
+
+
+
+
 
 #tmpl << Paragraph("Using 8.5 @Multiply 11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85 inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.")
 #

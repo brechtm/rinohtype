@@ -50,6 +50,11 @@ class Document(object):
         self.created = time.asctime()
         self.content = None
 
+    def __lshift__(self, item):
+        assert isinstance(item, Paragraph)
+        self.content.addParagraph(item)
+        return item
+
     def addMasterPage(self, masterPage):
         assert isinstance(masterpage, Page)
         self.masterPages.append(masterPage)
@@ -59,29 +64,13 @@ class Document(object):
         self.pages.append(page)
 
     def render(self):
-        psdoc = dsc_document(self.title)
+        psgDoc = dsc_document(self.title)
 
+        # TODO: generate pages as required (based on master pages
+        # http://docs.python.org/tutorial/classes.html#generators
         for page in self.pages:
-            page.render(psdoc)
+            page.render(psgDoc)
 
         fp = open(self.filename, "w", encoding="latin-1")
-        psdoc.write_to(fp)
+        psgDoc.write_to(fp)
         fp.close()
-
-
-        #psdoc = PS_new()
-        #PS_open_file(psdoc, self.filename)
-        #PS_set_info(psdoc, "Creator", self.creator)
-        #PS_set_info(psdoc, "Author", self.author)
-        #PS_set_info(psdoc, "Title", self.title)
-        #PS_set_info(psdoc, "Keywords", ", ".join(self.keywords))
-        #for page in self.pages:
-        #    page.render(psdoc)
-        #PS_close(psdoc)
-        #PS_delete(psdoc)
-
-    def __lshift__(self, item):
-        assert isinstance(item, Paragraph)
-        self.content.addParagraph(item)
-        return item
-

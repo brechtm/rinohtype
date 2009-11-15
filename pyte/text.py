@@ -20,7 +20,7 @@ class TextStyle(object):
         if hyphenChars is not None: self.hyphenChars = hyphenChars
         if hyphenLang is not None: self.hyphenLang = hyphenLang
         if base:
-            assert isinstance(base, TextStyle)
+            assert base == ParentStyle or isinstance(base, TextStyle)
             self.base = base
         else:
             self.base = TextStyle.default
@@ -50,7 +50,13 @@ class TextStyle(object):
 class DefaultStyle:
     pass
 
-class Text(object):
+
+class ParentStyle:
+    pass
+
+
+class Text(object): # TODO: subclass of StyledText? (eases things a lot)
+                    # create 'empty' superclass?
     def __init__(self, text, style=DefaultStyle):
         self.text = text
         if style == DefaultStyle:
@@ -60,6 +66,14 @@ class Text(object):
 
     def __repr__(self):
         return self.text
+
+    def __add__(self, other):
+        assert isinstance(other, Text) or isinstance(other, str)
+        return StyledText((self, other))
+
+    def __radd__(self, other):
+        assert isinstance(other, str)
+        return StyledText((other, self))
 
     def characters(self):
         characters = []
@@ -96,6 +110,34 @@ class Spacer(Space):
 
     def width(self):
         return float(dimension)
+
+
+# generic container for styled text (base class for Paragraph)
+# TODO: can this be done in a cleaner way?
+class StyledText(tuple):
+    def __new__(cls, iterable=()):
+        if not isinstance(iterable, StyledText):
+            for item in iterable:
+                assert isinstance(item, Text) or isinstance(item, str)
+        return tuple.__new__(cls, iterable)
+
+    def __add__(self, other):
+        assert isinstance(other, Text) \
+            or isinstance(other, StyledText) \
+            or isinstance(other, str)
+        if isinstance(other, StyledText):
+            return StyledText(tuple.__add__(self, other))
+        else:
+            return StyledText(tuple.__add__(self, (other,)))
+
+    def __radd__(self, other):
+        assert isinstance(other, Text) \
+            or isinstance(other, StyledText) \
+            or isinstance(other, str)
+        if isinstance(other, StyledText):
+            return other + self
+        else:
+            return StyledText(tuple.__add__((other,), self))
 
 
 class Word(list):
@@ -139,11 +181,11 @@ class Word(list):
 
         return kerning
 
-
-emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic)
-boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold)
-italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic)
-boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic)
+# TODO: style=ParagraphStyle
+emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic, base=ParentStyle)
+boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold, base=ParentStyle)
+italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic, base=ParentStyle)
+boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic, base=ParentStyle)
 
 class Bold(Text):
     def __init__(self, text):

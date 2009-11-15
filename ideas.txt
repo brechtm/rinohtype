@@ -2,6 +2,10 @@ to do:
 * master pages
 * headings
 * lists (numbered, unnumbered, labels, ...)
+* cross-references
+* equations
+** http://matplotlib.sourceforge.net/users/mathtext.html
+** http://matplotlib.sourceforge.net/api/mathtext_api.html
 * floats
 * figures (external)
 * tables
@@ -11,11 +15,12 @@ to do:
 later:
 * make "debugging" of styles easier
 ** errors only show up on rendering, which makes it hard to find them
+* ligatures
 * hyphenation (http://code.google.com/p/python-hyphenator/)
 * unicode
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
-* text flow around non-rectangular object
+* (text flow around non-rectangular object)
 
 resources:
 * http://en.wikibooks.org/wiki/PostScript_FAQ
@@ -30,19 +35,19 @@ resources:
 
 problems with tex:
 * fonts and encoding (see PyPSG below)
-* simple layouting is not possible easily
+* custom page layouts are difficult
 * TeX code is difficult to write/read
 
 ideas:
 * OO design
 * keep it simple, also at the lowest level, if possible
-* actual typesetting in C or C++ (pslib now)
+* actual typesetting in C or C++ (pslib now) - maybe later
 * provide constructions for:
     * emphasis, bold, ...
     * floats
     * tables
     * figures
-    * equations (using TeX via PyX initially)
+    * equations (using matplotlib's equation rendering)
 * Container can contain text:
     * associate:
         * paragraph style

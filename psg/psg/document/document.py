@@ -268,7 +268,7 @@ class font_wrapper:
                             tpl = ( self.font.ps_name,
                                     unicode_to_glyph_name[char], )
                         else:
-                            tpl = ( self.font.ps_name, "#%i" % ord(char), )
+                            tpl = ( self.font.ps_name, "#%i" % char )
 
                         msg = "%s does not contain needed glyph %s" % tpl
                         warnings.warn(msg)

@@ -59,19 +59,16 @@ column2 = Container(body, columnwidth + columnspacing, titleBox.bottom(),
 # ----------------------------------------------------------------------------
 class Abstract(Paragraph):
     def __init__(self, text, style):
-        Paragraph.__init__(self, style)
-        self << Text("Abstract --- ", boldItalicStyle)
-        self << Text(text, self.style)
+        text = Text("Abstract --- ", boldItalicStyle) + text
+        Paragraph.__init__(self, text, style)
 
 class IndexTerms(Paragraph):
     def __init__(self, terms, style):
         terms = copy(terms)
         terms.sort()
         terms[0] = terms[0][0].upper() + terms[0][1:]
-        text = ", ".join(terms) + "."
-        Paragraph.__init__(self, style)
-        self << Text("Index Terms --- ", boldItalicStyle)
-        self << Text(text, self.style)
+        text = Text("Index Terms --- ", boldItalicStyle) + ", ".join(terms) + "."
+        Paragraph.__init__(self, text, style)
 
 # paragraph styles
 # ----------------------------------------------------------------------------
@@ -109,8 +106,15 @@ bodyStyle = ParagraphStyle("body",
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
                            justify=Justify.Both)
+listStyle = ListStyle("list",
+                      base=bodyStyle,
+                      spaceAbove=5*pt,
+                      spaceBelow=5*pt,
+                      ordered=False,
+                      itemSpacing=2*pt)
 
-hdStyle = HeadingStyle("heading",
+
+hd1Style = HeadingStyle("heading",
                        typeface=ieeeFamily.serif,
                        fontStyle=FontStyle.Roman,
                        fontSize=10*pt,
@@ -121,15 +125,31 @@ hdStyle = HeadingStyle("heading",
                        spaceAbove=18*pt,
                        spaceBelow=6*pt,
                        numberingStyle=NumberingStyle.Roman)
+
+hd2Style = HeadingStyle("subheading",
+                       typeface=ieeeFamily.serif,
+                       fontStyle=FontStyle.Italic,
+                       fontSize=10*pt,
+                       smallCaps=False,
+                       justify=Justify.Left,
+                       lineSpacing=12*pt,
+                       indentFirst=nil,
+                       spaceAbove=6*pt,
+                       spaceBelow=6*pt,
+                       numberingStyle=NumberingStyle.Character)
 #TODO: should only specify style once for each level!
 
 
-HeadingStyle.default = hdStyle
+HeadingStyle.default = []
+HeadingStyle.default.append(hd1Style)
+HeadingStyle.default.append(hd2Style)
+
 ParagraphStyle.default = bodyStyle
 TextStyle.default = TextStyle("RFIC2009 default",
                            typeface=ieeeFamily.serif,
 						   fontStyle=FontStyle.Roman,
-						   fontSize=10*pt)
+						   fontSize=6*pt)
+ListStyle.default = listStyle
 
 
 class RFIC2009Paper(Document):
@@ -148,12 +168,9 @@ class RFIC2009Paper(Document):
         self.keywords = self.indexTerms
         # paragraphs - TODO: clean up
         # ----------------------------------------------------------------------
-        parTitle = Paragraph(titleStyle)
-        parTitle << self.title
-        parAuthor = Paragraph(authorStyle)
-        parAuthor << self.author
-        parAffiliation = Paragraph(affiliationStyle)
-        parAffiliation << self.affiliation
+        parTitle = Paragraph(self.title, titleStyle)
+        parAuthor = Paragraph(self.author, authorStyle)
+        parAffiliation = Paragraph(self.affiliation, affiliationStyle)
         parAbstract = Abstract(self.abstract, abstractStyle)
         parIndexTerms = IndexTerms(self.indexTerms, abstractStyle)
 
