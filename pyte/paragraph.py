@@ -2,6 +2,9 @@
 #from pslib import PS_set_value, PS_set_parameter, PS_setfont, PS_show_boxed
 #from pslib import *
 
+import re
+from html.entities import name2codepoint
+
 from psg.drawing.box import textbox
 from psg.util.measure import bounding_box
 from psg.exceptions import *
@@ -124,6 +127,11 @@ class Paragraph(object):
 ##        self.__text.append(item)
 ##        return self
 
+    # from http://wiki.python.org/moin/EscapingHtml
+    def __htmlentitydecode(self, s):
+        return re.sub('&(%s);' % '|'.join(name2codepoint),
+            lambda m: chr(name2codepoint[m.group(1)]), s)
+
     def __splitWords(self):
         self.__words = []
         word = Word()
@@ -132,6 +140,9 @@ class Paragraph(object):
                 text = Text(text, style=self.style)
             elif text.style.base == ParentStyle:
                 text.style.base = self.style
+
+            # TODO: preprocess text for ', ", --, ---, and other markup shortcuts?
+            text.text = self.__htmlentitydecode(text.text)
 
             for character in text.text:
                 if character not in (" ", "\t"):
@@ -147,7 +158,6 @@ class Paragraph(object):
     # based on the typeset functions of psg.box.textbox
     def typeset(self, pscanvas, offset=0):
 
-        # TODO: preprocess text for ', ", --, ---, and other markup shortcuts
         self.__splitWords()
 
 ##        thisCanvas = pscanvas

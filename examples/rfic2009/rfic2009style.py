@@ -59,7 +59,7 @@ column2 = Container(body, columnwidth + columnspacing, titleBox.bottom(),
 # ----------------------------------------------------------------------------
 class Abstract(Paragraph):
     def __init__(self, text, style):
-        text = Text("Abstract --- ", boldItalicStyle) + text
+        text = Text("Abstract &mdash; ", boldItalicStyle) + text
         Paragraph.__init__(self, text, style)
 
 class IndexTerms(Paragraph):
@@ -67,7 +67,7 @@ class IndexTerms(Paragraph):
         terms = copy(terms)
         terms.sort()
         terms[0] = terms[0][0].upper() + terms[0][1:]
-        text = Text("Index Terms --- ", boldItalicStyle) + ", ".join(terms) + "."
+        text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
         Paragraph.__init__(self, text, style)
 
 # paragraph styles
