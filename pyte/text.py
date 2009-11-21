@@ -23,7 +23,7 @@ class TextStyle(object):
             assert base == ParentStyle or isinstance(base, TextStyle)
             self.base = base
         else:
-            self.base = TextStyle.default
+            self.base = None
 
     def __getattribute__(self, name):
         if name == 'base':

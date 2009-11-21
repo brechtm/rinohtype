@@ -46,7 +46,7 @@ class ParagraphStyle(TextStyle):
             assert isinstance(base, ParagraphStyle)
             self.base = base
         else:
-            self.base = ParagraphStyle.default
+            self.base = None
 
 ##        if self.base is None:
 ##            assert(indentLeft is not None)
@@ -65,6 +65,11 @@ class ParagraphStyle(TextStyle):
 ##            assert(hyphenLang is not None)
 
     def __getattribute__(self, name):
+        if name == 'base':
+            if object.__getattribute__(self, name) is None:
+                return ParagraphStyle.default
+            else:
+                return object.__getattribute__(self, name)
         try:
             return object.__getattribute__(self, name)
         except AttributeError:
@@ -171,6 +176,11 @@ class Paragraph(object):
         lineWidth = 0
         lineHeight = 0
 
+        firstLine = True
+        leftIndent = float(self.style.indentLeft) + \
+                        float(self.style.indentFirst)
+        availableWidth = pscanvas.w() - leftIndent - float(self.style.indentRight)
+
 ##        pscanvas.print_bounding_path()
         self._line_cursor = pscanvas.h() - offset
 
@@ -178,11 +188,16 @@ class Paragraph(object):
             wordWidth = word.width()
 
             if isinstance(word, Word):
-                if lineWidth + wordWidth > pscanvas.w():
-                    lineHeight = self.typesetLine(pscanvas, pscanvas.w(), line)
-                    #self.newline(lineHeight)
+                if lineWidth + wordWidth > availableWidth:
+                    lineHeight = self.typesetLine(pscanvas, availableWidth, line, leftIndent)
+                    # line spacing
+                    self.newline(float(self.style.lineSpacing - lineHeight*pt))
                     line = Line()
                     lineWidth = 0
+                    if firstLine:
+                        leftIndent = float(self.style.indentLeft)
+                        availableWidth += float(self.style.indentFirst)
+                        firstLine = False
 
                 line.append(word)
 
@@ -190,10 +205,8 @@ class Paragraph(object):
 
         if len(line) != 0:
             a = len(line[0])
-            lineHeight = self.typesetLine(pscanvas, pscanvas.w(), line, True)
-##            self.newline(lineHeight)
-
-##        self.advance(float(self.style.lineSpacing - lineHeight*pt))
+            lineHeight = self.typesetLine(pscanvas, availableWidth, line, leftIndent, True)
+##            self.newline(float(self.style.lineSpacing - lineHeight*pt))
 
         return pscanvas.h() - self._line_cursor - offset
 
@@ -209,10 +222,9 @@ class Paragraph(object):
         #    raise BoxTooSmall("The box is smaller than the line height.")
 
 
-    def typesetLine(self, pscanvas, width, words, lastLine=False):
+    def typesetLine(self, pscanvas, width, words, indent=0, lastLine=False):
         """
-        Typeset words on the current coordinates. Words is a list of pairs
-        as ( 'word', width, ).
+        Typeset words on the current coordinates.
         """
         chars = []
         char_widths = []
@@ -253,7 +265,7 @@ class Paragraph(object):
 
         n = []
         if self.alignment == "justify" and not lastLine:
-            space_width = (width - line_width) / float(word_count-1)
+            space_width = (width - line_width) / (word_count - 1)
             for i, w in enumerate(char_widths):
                 if w is None:
                     n.append(space_width)
@@ -281,6 +293,10 @@ class Paragraph(object):
 
         # Position PostScript's cursor
         print("{0} {1} moveto".format(x, self._line_cursor), file=pscanvas)
+
+        # indenting
+        if indent != 0:
+            print("{} 0 rmoveto".format(indent), file=pscanvas)
 
         currentStyle = chars[0].style
         span_chars = []
@@ -310,7 +326,6 @@ class Paragraph(object):
         tpl = ( fontWrapper.postscript_representation(span_chars),
                     " ".join(span_char_widths), )
         print("({0}) [ {1} ] xshow".format(tpl[0], tpl[1]), file=pscanvas)
-
 
         return maxFontSize
 
