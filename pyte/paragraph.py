@@ -206,7 +206,7 @@ class Paragraph(object):
         if len(line) != 0:
             a = len(line[0])
             lineHeight = self.typesetLine(pscanvas, availableWidth, line, leftIndent, True)
-##            self.newline(float(self.style.lineSpacing - lineHeight*pt))
+            self.newline(float(self.style.lineSpacing - lineHeight*pt))
 
         return pscanvas.h() - self._line_cursor - offset
 

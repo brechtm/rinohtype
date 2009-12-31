@@ -35,28 +35,39 @@ lst.append("Although not required, you are encouraged to employ this format. Thi
 doc << lst
 
 
-##doc << Heading(1, "Overview of the Digest Format")
+doc << Heading(1, "Overview of the Digest Format")
+
+doc << Paragraph("We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left " + Em("and the right") + " edges.")
+
+doc << Paragraph("For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format&rarr;Paragraph&rarr;Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.")
+
+doc << Heading(1, "Detailed Text Formatting")
+
+doc << Paragraph("Using 8.5&times;11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85&nbsp;inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.")
+
+doc << Paragraph("Each major section begins with a Heading in 10 point Times font centered within the column and numbered using Roman numerals (except for @S Acknowledgement and @S References), followed by a period, a single space, and the title using an initial capital letter for each word. The remaining letters are in @S { small capitals }. The paragraph description of the section heading line should be set for 18 points before, 6 points after, and the line spacing should be set to exactly 12 points.")
+
+doc << Paragraph("For the body of your paper, use 10-point Times font and set your line spacing at \"exactly 12 points\" with 0 points before and after. Indent each paragraph by 0.125 inches.")
+
+doc << Paragraph("Further details are provided in the remainder of this paper for specific situations.")
+
+
+
+doc << Heading(2, "Major Subsections")
+
+doc << Paragraph('As shown, denote subsections with left justified 10-point Times Italic. Order them with capitalized alphabetic characters (A, B,...). Follow the letter designation with a period, a single space, and then the subsection title capitalizing the first letter of each word. The paragraph description of the subsection heading is set to "exactly 12-point" line spacing with 6 points before and after.')
+
+
+doc << Heading(2, "Equations")
+
+doc << Paragraph('Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be')
+
+##doc << Heading(2, "Subheading 1b")
 ##
-##doc << Paragraph("We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left " + Em("and the right") + " edges.")
-##
-##doc << Paragraph("For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format&rarr;Paragraph&rarr;Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.")
-##
-##doc << Heading(1, "Detailed Text Formatting")
-##
-##doc << Paragraph("Using 8.5&times;11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85 inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.")
-##
-##doc << Paragraph("Each major section begins with a Heading in 10 point Times font centered within the column and numbered using Roman numerals (except for @S Acknowledgement and @S References), followed by a period, a single space, and the title using an initial capital letter for each word. The remaining letters are in @S { small capitals }. The paragraph description of the section heading line should be set for 18 points before, 6 points after, and the line spacing should be set to exactly 12 points.")
-##
-##doc << Paragraph("For the body of your paper, use 10-point Times font and set your line spacing at \"exactly 12 points\" with 0 points before and after. Indent each paragraph by 0.125 inches.")
-##
-##doc << Paragraph("Further details are provided in the remainder of this paper for specific situations.")
-##
-####doc << Heading(2, "Subheading 1b")
-####
-####doc << Heading(1, "Heading 2")
-####doc << Heading(2, "Subheading 2a")
-##
-###fig1 = Figure("bla.eps", "caption")
-###doc << Paragraph("reference to " + Ref(fig1) + ".")
+##doc << Heading(1, "Heading 2")
+##doc << Heading(2, "Subheading 2a")
+
+#fig1 = Figure("bla.eps", "caption")
+#doc << Paragraph("reference to " + Ref(fig1) + ".")
 
 doc.render()

@@ -117,7 +117,7 @@ listStyle = ListStyle("list",
                       spaceAbove=5*pt,
                       spaceBelow=5*pt,
                       ordered=False,
-                      itemSpacing=2*pt)
+                      itemSpacing=bodyStyle.lineSpacing)
 
 
 hd1Style = HeadingStyle("heading",

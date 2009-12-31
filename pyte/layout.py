@@ -142,22 +142,22 @@ class Container(TextTarget):
             if dynamic:
                 self.height().add(textHeight*pt)
         elif self.chain:
-            self.chain.typeset(thisCanvas)
+            self.chain.typeset(parentCanvas)
 
-##        print("gsave", file=pageCanvas)
-##
-##        height = float(self.height())
-##        bottom = float(self.page().height() - self.absBottom())
-##        print("newpath", file=pageCanvas)
-##        print("%f %f moveto" % ( left, bottom, ), file=pageCanvas)
-##        print("%f %f lineto" % ( left, bottom + height, ), file=pageCanvas)
-##        print("%f %f lineto" % ( left + width, bottom + height, ), file=pageCanvas)
-##        print("%f %f lineto" % ( left + width, bottom, ), file=pageCanvas)
-##        print("closepath", file=pageCanvas)
-##
-##        print("[5 5] 0 setdash", file=pageCanvas)
-##        print("stroke", file=pageCanvas)
-##        print("grestore", file=pageCanvas)
+        print("gsave", file=pageCanvas)
+
+        height = float(self.height())
+        bottom = float(self.page().height() - self.absBottom())
+        print("newpath", file=pageCanvas)
+        print("%f %f moveto" % ( left, bottom, ), file=pageCanvas)
+        print("%f %f lineto" % ( left, bottom + height, ), file=pageCanvas)
+        print("%f %f lineto" % ( left + width, bottom + height, ), file=pageCanvas)
+        print("%f %f lineto" % ( left + width, bottom, ), file=pageCanvas)
+        print("closepath", file=pageCanvas)
+
+        print("[5 5] 0 setdash", file=pageCanvas)
+        print("stroke", file=pageCanvas)
+        print("grestore", file=pageCanvas)
 
 
     def typeset(self, psgCanvas):
@@ -197,7 +197,7 @@ class Chain(TextTarget):
         self.__containers = []
         self.__typeset = False
 
-    def typeset(self, pscanvas):
+    def typeset(self, parentCanvas):
         if self.__typeset:
             return
         self.__typeset = True
@@ -218,7 +218,13 @@ class Chain(TextTarget):
                 width  = float(container.width())
                 height = float(container.height())
                 height = height - spaceAbove
-                boxheight = paragraph.typeset(pscanvas, totalHeight)
+
+                pageCanvas = parentCanvas.page.canvas()
+                thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
+                pageCanvas.append(thisCanvas)
+
+
+                boxheight = paragraph.typeset(thisCanvas, totalHeight)
                 prevParHeight = spaceAbove + boxheight + spaceBelow
                 totalHeight += prevParHeight
             except EndOfBox:

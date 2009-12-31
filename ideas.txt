@@ -1,7 +1,7 @@
 to do:
 * master pages
 * headings
-* lists (numbered, unnumbered, labels, ...)
+* lists (numbered, unnumbered, definition, ...)
 * cross-references
 * equations
 ** http://matplotlib.sourceforge.net/users/mathtext.html
@@ -16,7 +16,10 @@ later:
 * make "debugging" of styles easier
 ** errors only show up on rendering, which makes it hard to find them
 * ligatures
-* hyphenation (http://code.google.com/p/python-hyphenator/)
+* hyphenation \u002D
+** http://code.google.com/p/python-hyphenator/)
+** by inserting soft-hyphens in all words?
+* CSS for style specification?
 * unicode
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
