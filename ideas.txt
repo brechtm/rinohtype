@@ -1,8 +1,12 @@
 to do:
 * master pages
+* small caps
 * headings
 * lists (numbered, unnumbered, definition, ...)
 * cross-references
+* hyphenation \u002D
+** http://code.google.com/p/python-hyphenator/)
+** by inserting soft-hyphens in all words?
 * equations
 ** http://matplotlib.sourceforge.net/users/mathtext.html
 ** http://matplotlib.sourceforge.net/api/mathtext_api.html
@@ -16,9 +20,7 @@ later:
 * make "debugging" of styles easier
 ** errors only show up on rendering, which makes it hard to find them
 * ligatures
-* hyphenation \u002D
-** http://code.google.com/p/python-hyphenator/)
-** by inserting soft-hyphens in all words?
+* PDF specials
 * CSS for style specification?
 * unicode
 * right-to-left
@@ -29,6 +31,8 @@ resources:
 * http://en.wikibooks.org/wiki/PostScript_FAQ
 * http://www.adobe.com/type/topics/
 * http://en.wikipedia.org/wiki/PostScript
+* http://www.adobe.com/print/features/psvspdf/
+* http://www.fileformat.info/info/unicode/
 
 * http://pybrary.net/pyPdf/
 * http://www.python.org/dev/peps/pep-0008/ - style guide for python code
