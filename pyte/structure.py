@@ -111,7 +111,7 @@ class List(Paragraph, list):
 
     def append(self, listItem):
 ##        assert isinstance(listItem, ListItem)
-        list.append(self, "{}. ".format(self.currentNumber) + listItem)
+        list.append(self, "{}.&nbsp;".format(self.currentNumber) + listItem)
 ##        listItem.number = self.currentNumber
         self.currentNumber += 1
 
