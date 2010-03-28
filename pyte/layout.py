@@ -8,6 +8,12 @@ from pyte.dimension import Dimension
 from pyte.unit import pt
 from pyte.paragraph import Paragraph
 
+
+class EndOfPage(Exception):
+    def __init__(self):
+        pass
+
+
 class TextTarget(object):
     def __init__(self):
         self.__paragraphs = []
@@ -233,6 +239,7 @@ class Chain(TextTarget):
                     container = next(contIter)
                 except StopIteration:
                     print("StopIteration")
+                    raise EndOfPage
                 totalHeight = 0
                 prevParHeight = 0
                 totalHeight = 0

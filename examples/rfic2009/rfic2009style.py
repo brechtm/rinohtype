@@ -32,28 +32,43 @@ termes = TypeFace("TeXGyreTermes",
 
 ieeeFamily = TypeFamily(serif=termes)
 
-# page
+# pages & layout
 # ----------------------------------------------------------------------------
-page = Page(Letter)
 
-# layout
-# ----------------------------------------------------------------------------
-body = Container(page,
-                 leftmargin,
-                 topmargin,
-                 page.width() - (leftmargin + rightmargin),
-                 page.height() - (topmargin + bottommargin))
+def Pages():
+    firstPage = None
 
-titleBox = Container(body, 0*pt, 0*pt)
+    try:
+        while True:
+            page = Page(Letter)
 
-columnwidth = (body.width() - columnspacing) / 2.0
-columnheight = body.height() - titleBox.height()
+            body = Container(page,
+                             leftmargin,
+                             topmargin,
+                             page.width() - (leftmargin + rightmargin),
+                             page.height() - (topmargin + bottommargin))
 
-columns = Chain()
-column1 = Container(body, 0*pt, titleBox.bottom(),
-    width=columnwidth, height=columnheight, chain=columns)
-column2 = Container(body, columnwidth + columnspacing, titleBox.bottom(),
-    width=columnwidth, height=columnheight, chain=columns)
+            if not firstPage:
+                page.titleBox = Container(body, 0*pt, 0*pt)
+                columnheight = body.height() - page.titleBox.height()
+                columntop = page.titleBox.bottom()
+                firstPage = page
+                firstPage.content = Chain()
+            else:
+                columnheight = body.height()
+                columntop = 0*pt
+
+            columnwidth = (body.width() - columnspacing) / 2.0
+
+            column1 = Container(body, 0*pt, columntop,
+                width=columnwidth, height=columnheight, chain=firstPage.content)
+            column2 = Container(body, columnwidth + columnspacing, columntop,
+                width=columnwidth, height=columnheight, chain=firstPage.content)
+
+            yield page
+    finally:
+        print("Pages() generator cleanup")
+
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -167,8 +182,11 @@ class RFIC2009Paper(Document):
         self.abstract = "<abstract>"
         self.indexTerms = ["index", "terms"]
         #self.addMasterPage(page) # TODO: implement "master pages"
-        self.content = columns
-        self.addPage(page)
+        self.page_gen = Pages()
+        self.fist_page = next(self.page_gen)
+        self.addPage(self.fist_page)
+        self.content = self.fist_page.content
+
 
     def render(self):
         self.keywords = self.indexTerms
@@ -180,11 +198,11 @@ class RFIC2009Paper(Document):
         parAbstract = Abstract(self.abstract, abstractStyle)
         parIndexTerms = IndexTerms(self.indexTerms, abstractStyle)
 
-        titleBox.addParagraph(parTitle)
-        titleBox.addParagraph(parAuthor)
-        titleBox.addParagraph(parAffiliation)
+        self.fist_page.titleBox.addParagraph(parTitle)
+        self.fist_page.titleBox.addParagraph(parAuthor)
+        self.fist_page.titleBox.addParagraph(parAffiliation)
 
-        columns._TextTarget__paragraphs.insert(0, parAbstract)
-        columns._TextTarget__paragraphs.insert(1, parIndexTerms)
+        self.content._TextTarget__paragraphs.insert(0, parAbstract)
+        self.content._TextTarget__paragraphs.insert(1, parIndexTerms)
 
         Document.render(self)

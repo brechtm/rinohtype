@@ -29,13 +29,10 @@ class Page(Container):
         Container.__init__(self, None, 0*pt, 0*pt, width, height)
 
     def render(self, psgDoc):
-        #PS_begin_page(psdoc, self.width(), self.height())
         page = psgDoc.page((float(self.width()), float(self.height())))
         thisCanvas = page.canvas()
         thisCanvas._border = True
         Container.render(self, thisCanvas)
-        #PS_end_page(psdoc)
-
 
 
 class Document(object):
@@ -69,6 +66,7 @@ class Document(object):
         # TODO: generate pages as required (based on master pages
         # http://docs.python.org/tutorial/classes.html#generators
         for page in self.pages:
+            print(page)
             page.render(psgDoc)
 
         fp = open(self.filename, "w", encoding="latin-1")
