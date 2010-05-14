@@ -17,6 +17,7 @@ to do:
 * headers and footers
 
 later:
+* support for DocBook?
 * make "debugging" of styles easier
 ** errors only show up on rendering, which makes it hard to find them
 * ligatures

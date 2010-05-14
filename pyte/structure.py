@@ -57,7 +57,14 @@ class Heading(Paragraph):
         if style == NumberingStyle.number:
             return str(self._number)
         elif style == NumberingStyle.character:
-            return chr(ord('a') - 1 + self._number) # TODO: fix number > 26
+            string = ''
+            while number > 26:
+                number, remainder = divmod(number, 26)
+                if remainder == 0:
+                    remainder = 26
+                    number -= 1
+                string = chr(ord('a') - 1 + remainder) + string
+            return chr(ord('a') - 1 + int(number)) + string
         elif style == NumberingStyle.Character:
             return chr(ord('A') - 1 + self._number)
         elif style == NumberingStyle.roman:
@@ -72,8 +79,8 @@ class Heading(Paragraph):
                         ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
         roman = []
         for ltr, num in numerals:
-            (k,n) = divmod(n, num)
-            roman.append(ltr*k)
+            (k, n) = divmod(n, num)
+            roman.append(ltr * k)
         return "".join(roman)
 
 

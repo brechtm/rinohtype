@@ -45,7 +45,7 @@ class Document(object):
         self.title = title
         self.keywords = []
         self.created = time.asctime()
-        self.content = None
+        self.content = []
 
     def __lshift__(self, item):
         assert isinstance(item, Paragraph)
@@ -62,6 +62,13 @@ class Document(object):
 
     def render(self):
         psgDoc = dsc_document(self.title)
+
+        currentpage = next(self.pagegen)
+        for item in self.content:
+            try:
+                currentpage.content.render(item)
+            except EndOfPage:
+                currentpage = next(self.pagegen)
 
         # TODO: generate pages as required (based on master pages
         # http://docs.python.org/tutorial/classes.html#generators
