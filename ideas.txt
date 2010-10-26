@@ -24,6 +24,7 @@ later:
 * PDF specials
 * CSS for style specification?
 * unicode
+* absolute placement of floats (papers!)
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
 * (text flow around non-rectangular object)
@@ -63,6 +64,8 @@ ideas:
             * indenting
             * justification
 * user should be able to set variables (input is python file?)
+    * conflict with XML input file?
+        * use XSLT to generate XML
 
 * http://freshmeat.net/projects/fonttools/
 * use PSlib:
