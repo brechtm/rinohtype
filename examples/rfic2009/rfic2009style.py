@@ -1,11 +1,13 @@
 
 from copy import copy
 
+from lxml import etree, objectify
+
 from pyte import *
 from pyte.unit import *
 from pyte.font import *
-from pyte.paper import  *
-from pyte.document import *
+from pyte.paper import Paper, Letter
+from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import *
 from pyte.paragraph import *
 from pyte.text import *
@@ -13,11 +15,9 @@ from pyte.structure import *
 
 # margins
 # ----------------------------------------------------------------------------
-topmargin     = 1.125*inch
-bottommargin  = topmargin
-leftmargin    = 0.85*inch
-rightmargin   = leftmargin
-columnspacing = 0.25*inch
+topmargin = bottommargin = 1.125*inch
+leftmargin = rightmargin = 0.85*inch
+column_spacing = 0.25*inch
 
 # fonts
 # ----------------------------------------------------------------------------
@@ -32,42 +32,45 @@ termes = TypeFace("TeXGyreTermes",
 
 ieeeFamily = TypeFamily(serif=termes)
 
-# pages & layout
+# pages and their layout
 # ----------------------------------------------------------------------------
 
-def Pages():
-    firstPage = None
+class FirstPage(Page):
+    def __init__(self, document):
+        super().__init__(document.psg_doc, Letter, PORTRAIT)
+        body = Container(self, leftmargin, topmargin,
+                         self.width() - (leftmargin + rightmargin),
+                         self.height() - (topmargin + bottommargin))
 
-    try:
-        while True:
-            page = Page(Letter)
+        self.title_box = Container(body, 0*pt, 0*pt)
+        column_height = body.height() - self.title_box.height()
+        column_top = self.title_box.bottom()
+        column_width = (body.width() - column_spacing) / 2.0
 
-            body = Container(page,
-                             leftmargin,
-                             topmargin,
-                             page.width() - (leftmargin + rightmargin),
-                             page.height() - (topmargin + bottommargin))
+        self.content = document.content
 
-            if not firstPage:
-                page.titleBox = Container(body, 0*pt, 0*pt)
-                columnheight = body.height() - page.titleBox.height()
-                columntop = page.titleBox.bottom()
-                firstPage = page
-                firstPage.content = Chain()
-            else:
-                columnheight = body.height()
-                columntop = 0*pt
+        column1 = Container(body, 0*pt, column_top,
+            width=column_width, height=column_height, chain=document.content)
+        column2 = Container(body, column_width + column_spacing, column_top,
+            width=column_width, height=column_height, chain=document.content)
 
-            columnwidth = (body.width() - columnspacing) / 2.0
+class OtherPage(Page):
+    def __init__(self, document):
+        super().__init__(document.psg_doc, Letter, PORTRAIT)
+        body = Container(self, leftmargin, topmargin,
+                         self.width() - (leftmargin + rightmargin),
+                         self.height() - (topmargin + bottommargin))
 
-            column1 = Container(body, 0*pt, columntop,
-                width=columnwidth, height=columnheight, chain=firstPage.content)
-            column2 = Container(body, columnwidth + columnspacing, columntop,
-                width=columnwidth, height=columnheight, chain=firstPage.content)
+        column_height = body.height()
+        column_top = 0*pt
+        column_width = (body.width() - column_spacing) / 2.0
 
-            yield page
-    finally:
-        print("Pages() generator cleanup")
+        self.content = document.content
+
+        column1 = Container(body, 0*pt, column_top,
+            width=column_width, height=column_height, chain=document.content)
+        column2 = Container(body, column_width + column_spacing, column_top,
+            width=column_width, height=column_height, chain=document.content)
 
 
 # custom paragraphs
@@ -99,13 +102,16 @@ titleStyle = ParagraphStyle("title",
                             spaceAbove=6*pt,
                             spaceBelow=6*pt,
                             justify=Justify.Center)
+
 authorStyle = ParagraphStyle("author",
                              base=titleStyle,
                              fontSize=12*pt,
                              lineSpacing=1.2*12*pt)
+
 affiliationStyle = ParagraphStyle("affiliation",
                                   base=authorStyle,
                                   spaceBelow=6*pt + 12*pt)
+
 abstractStyle = ParagraphStyle("abstract",
                                typeface=ieeeFamily.serif,
                                fontStyle=FontStyle.Bold,
@@ -127,6 +133,7 @@ bodyStyle = ParagraphStyle("body",
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
                            justify=Justify.Both)
+
 listStyle = ListStyle("list",
                       base=bodyStyle,
                       spaceAbove=5*pt,
@@ -136,28 +143,28 @@ listStyle = ListStyle("list",
 
 
 hd1Style = HeadingStyle("heading",
-                       typeface=ieeeFamily.serif,
-                       fontStyle=FontStyle.Roman,
-                       fontSize=10*pt,
-                       smallCaps=True,
-                       justify=Justify.Center,
-                       lineSpacing=12*pt,
-                       indentFirst=nil,
-                       spaceAbove=18*pt,
-                       spaceBelow=6*pt,
-                       numberingStyle=NumberingStyle.Roman)
+                        typeface=ieeeFamily.serif,
+                        fontStyle=FontStyle.Roman,
+                        fontSize=10*pt,
+                        smallCaps=True,
+                        justify=Justify.Center,
+                        lineSpacing=12*pt,
+                        indentFirst=nil,
+                        spaceAbove=18*pt,
+                        spaceBelow=6*pt,
+                        numberingStyle=NumberingStyle.Roman)
 
 hd2Style = HeadingStyle("subheading",
-                       typeface=ieeeFamily.serif,
-                       fontStyle=FontStyle.Italic,
-                       fontSize=10*pt,
-                       smallCaps=False,
-                       justify=Justify.Left,
-                       lineSpacing=12*pt,
-                       indentFirst=nil,
-                       spaceAbove=6*pt,
-                       spaceBelow=6*pt,
-                       numberingStyle=NumberingStyle.Character)
+                        typeface=ieeeFamily.serif,
+                        fontStyle=FontStyle.Italic,
+                        fontSize=10*pt,
+                        smallCaps=False,
+                        justify=Justify.Left,
+                        lineSpacing=12*pt,
+                        indentFirst=nil,
+                        spaceAbove=6*pt,
+                        spaceBelow=6*pt,
+                        numberingStyle=NumberingStyle.Character)
 #TODO: should only specify style once for each level!
 
 
@@ -173,36 +180,93 @@ TextStyle.default = TextStyle("RFIC2009 default",
 ListStyle.default = listStyle
 
 
+
+
+# render methods
+# ----------------------------------------------------------------------------
+
+# ElementBase restrictions!!
+# http://codespeak.net/lxml/element_classes.html
+
+# it might not be a good idea to inherit from ObjectifiedElement?
+class CustomElement(objectify.ObjectifiedElement):
+#class CustomElement(etree.ElementBase):
+    def render(self, target):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+
+class Section(CustomElement):
+    def render(self, target):
+        print('Section.render() %s' % self.attrib['title'])
+        heading = Heading(1, self.attrib['title'])
+        target.addParagraph(heading)
+        for element in self.getchildren():
+            element.render(target)
+
+
+class P(CustomElement):
+   def render(self, target):
+        print('P.render()')
+        paragraph = Paragraph(self.text)
+        target.addParagraph(paragraph)
+
+
+class OL(CustomElement):
+    def render(self, target):
+        print('OL.render()')
+        items = self.getchildren()
+        list = List()
+        for item in items:
+            list.append(item.text)
+        target.addParagraph(list)
+
+
+# main document
+# ----------------------------------------------------------------------------
+
 class RFIC2009Paper(Document):
     def __init__(self, filename):
-        Document.__init__(self, filename)
-        self.title = "<title>"
-        self.author = "<author>"
-        self.affiliation = "<affiliation>"
-        self.abstract = "<abstract>"
-        self.indexTerms = ["index", "terms"]
-        #self.addMasterPage(page) # TODO: implement "master pages"
-        self.page_gen = Pages()
-        self.fist_page = next(self.page_gen)
-        self.addPage(self.fist_page)
-        self.content = self.fist_page.content
+        rngschema = 'rfic.rng'
 
+        lookup = etree.ElementNamespaceClassLookup()
+        namespace = lookup.get_namespace('http://www.mos6581.org/ns/rficpaper')
+        namespace[None] = CustomElement
+        namespace.update(dict([(cls.__name__.lower(), cls)
+                               for cls in CustomElement.__subclasses__()]))
+
+        Document.__init__(self, filename, 'template.xml', rngschema, lookup)
+
+
+        authors = [author.text for author in self.root.head.authors.author]
+        if len(authors) > 1:
+            self.author = ', '.join(authors[:-1]) + ', and ' + authors[-1]
+        else:
+            self.author = authors[0]
+        self.title = self.root.head.title.text
+        self.keywords = [term.text for term in self.root.head.indexterms.term]
+
+        self.content = Chain()
 
     def render(self):
-        self.keywords = self.indexTerms
-        # paragraphs - TODO: clean up
-        # ----------------------------------------------------------------------
-        parTitle = Paragraph(self.title, titleStyle)
-        parAuthor = Paragraph(self.author, authorStyle)
-        parAffiliation = Paragraph(self.affiliation, affiliationStyle)
-        parAbstract = Abstract(self.abstract, abstractStyle)
-        parIndexTerms = IndexTerms(self.indexTerms, abstractStyle)
+        page = FirstPage(self)
+        self.addPage(page)
+        second_page = OtherPage(self)
+        self.addPage(second_page)
 
-        self.fist_page.titleBox.addParagraph(parTitle)
-        self.fist_page.titleBox.addParagraph(parAuthor)
-        self.fist_page.titleBox.addParagraph(parAffiliation)
+        title = Paragraph(self.title, titleStyle)
+        author = Paragraph(self.author, authorStyle)
+        affiliation = Paragraph(self.root.head.affiliation.text, affiliationStyle)
+        abstract = Abstract(self.root.head.abstract.text, abstractStyle)
+        index_terms = IndexTerms(self.keywords, abstractStyle)
 
-        self.content._TextTarget__paragraphs.insert(0, parAbstract)
-        self.content._TextTarget__paragraphs.insert(1, parIndexTerms)
+        page.title_box.addParagraph(title)
+        page.title_box.addParagraph(author)
+        page.title_box.addParagraph(affiliation)
+
+        page.content.addParagraph(abstract)
+        page.content.addParagraph(index_terms)
+
+        for section in self.root.body.section:
+            section.render(self.content)
 
         Document.render(self)

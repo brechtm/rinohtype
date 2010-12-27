@@ -13,6 +13,6 @@ class Paper(object):
 
 # define some common paper sizes
 Letter = Paper(8.5*inch, 11*inch)
-A4     = Paper(210*mm, 297*mm)
+A4 = Paper(210*mm, 297*mm)
 
 

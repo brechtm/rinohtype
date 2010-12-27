@@ -26,8 +26,8 @@ class TextTarget(object):
         return self.__paragraphs
 
     def typeset(self):
-        raise NotImplementedError("virtual method not implemented in class %s" \
-                                                       % self.__class__.__name__)
+        raise NotImplementedError("virtual method not implemented in class %s" %
+                                  self.__class__.__name__)
 
 
 class Container(TextTarget):
@@ -212,6 +212,7 @@ class Chain(TextTarget):
         totalHeight = 0
         prevParHeight = 0
         for paragraph in self.paragraphs():
+            parentCanvas = container.page().canvas
             # TODO: use (EndOfBox) exception to skip to next container
             # also use exception for signaling a full page
             try:
@@ -229,7 +230,6 @@ class Chain(TextTarget):
                 thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
                 pageCanvas.append(thisCanvas)
 
-
                 boxheight = paragraph.typeset(thisCanvas, totalHeight)
                 prevParHeight = spaceAbove + boxheight + spaceBelow
                 totalHeight += prevParHeight
@@ -238,7 +238,7 @@ class Chain(TextTarget):
                 try:
                     container = next(contIter)
                 except StopIteration:
-                    print("StopIteration")
+                    print("StopIteration - End of page")
                     raise EndOfPage
                 totalHeight = 0
                 prevParHeight = 0

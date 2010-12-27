@@ -1,0 +1,39 @@
+default namespace = "http://www.mos6581.org/ns/rficpaper"
+grammar {
+  start =
+    element rficpaper {
+      element head {
+        element title { text },
+        element authors { authorContent },
+        element affiliation { text },
+        element abstract { text },
+        element indexterms { indextermsContent }
+      },
+      element body { bodyContent }
+    }
+  authorContent =
+    element author { text }+
+  indextermsContent =
+    element term { text }+
+  bodyContent =
+    Section+
+  sectionContent =
+    (Section
+     | element p { inline }
+     | element ol { listContent }
+     | element ul { listContent }
+     )*
+  inline =
+    (text
+     | element b { inline }
+     | element em { inline }
+     | element sc { inline }
+    )*
+  listContent =
+    element li { inline }+
+  Section =
+    element section {
+      attribute title { text },
+      sectionContent
+    }
+}

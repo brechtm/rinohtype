@@ -1,10 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE rficpaper SYSTEM "rfic.dtd">
+<!-- <!DOCTYPE rficpaper SYSTEM "rfic.dtd"> -->
 
-<rficpaper>
+<!DOCTYPE rficpaper [
+<!ENTITY % w3centities PUBLIC
+  "-//W3C//ENTITIES Combined Set//EN//XML"
+  "w3centities-f.ent"
+  >
+%w3centities;
+]>
+
+<rficpaper xmlns="http://www.mos6581.org/ns/rficpaper">
 <head>
 <title>Submission Format for RFIC2009 (Title in 18-point Times font)</title>
-<authors>J. Clerk Maxwell, Michael Faraday, and André M. Ampère (List authors on this line using 12 point Times font &ndash; use a second line if necessary)</authors>
+<authors>
+<author>J. Clerk Maxwell</author>
+<author>Michael Faraday</author>
+<author>André M. Ampère (List authors on this line using 12 point Times font &ndash; use a second line if necessary)</author>
+</authors>
 
 <affiliation>Microwave Research, City, State/Region, Mail/Zip Code, Country (authors' affiliation(s) listed here in 12 point Times font &ndash; use a second line if necessary)</affiliation>
 
