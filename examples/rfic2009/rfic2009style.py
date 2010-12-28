@@ -11,6 +11,7 @@ from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import *
 from pyte.paragraph import *
 from pyte.text import *
+from pyte.text import Em as Emphasis
 from pyte.structure import *
 
 # margins
@@ -188,7 +189,7 @@ ListStyle.default = listStyle
 # ElementBase restrictions!!
 # http://codespeak.net/lxml/element_classes.html
 
-# it might not be a good idea to inherit from ObjectifiedElement?
+# is it a good idea to inherit from ObjectifiedElement (not documented)?
 class CustomElement(objectify.ObjectifiedElement):
 #class CustomElement(etree.ElementBase):
     def render(self, target):
@@ -207,8 +208,31 @@ class Section(CustomElement):
 class P(CustomElement):
    def render(self, target):
         print('P.render()')
-        paragraph = Paragraph(self.text)
+        content = self.text
+        for child in self.getchildren():
+            content += child.render(target)
+            if child.tail is not None:
+                content += child.tail
+        paragraph = Paragraph(content)
         target.addParagraph(paragraph)
+
+
+class B(CustomElement):
+    def render(self, target):
+        print('B.render()')
+        return Bold(self.text)
+
+
+class Em(CustomElement):
+    def render(self, target):
+        print('Em.render()')
+        return Emphasis(self.text)
+
+
+class SC(CustomElement):
+    def render(self, target):
+        print('SC.render()')
+        return self.text.upper()
 
 
 class OL(CustomElement):
@@ -217,8 +241,19 @@ class OL(CustomElement):
         items = self.getchildren()
         list = List()
         for item in items:
-            list.append(item.text)
+            list.append(item.render(target))
         target.addParagraph(list)
+
+
+class LI(CustomElement):
+    def render(self, target):
+        print('LI.render()')
+        content = self.text
+        for child in self.getchildren():
+            content += child.render(target)
+            if child.tail is not None:
+                content += child.tail
+        return content
 
 
 # main document
