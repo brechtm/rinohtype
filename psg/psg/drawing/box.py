@@ -149,13 +149,13 @@ class box:
         if border:
             self.print_bounding_path()
             # Set color to black, line type to solid and width to 'hairline'
-            print >> self.head, "0 setgray [] 0 setdash 0 setlinewidth"
+            print("0 setgray [] 0 setdash 0 setlinewidth", file=self.head)
             # Draw the line
-            print >> self.head, "stroke"
+            print("stroke", file=self.head)
 
         if clip:
             self.print_bounding_path()
-            print >> self.head, "clip"
+            print("clip", file=self.head)
 
 
     def from_bounding_box(cls, parent, bb, border=False, clip=False):
@@ -307,9 +307,9 @@ class textbox(canvas):
                                 "psg.fonts.font or "
                                 "psg.document.font_mapper instance.")
 
-            print >> self, "/%s findfont" % self.font_wrapper.ps_name()
-            print >> self, "%f scalefont" % self.font_size
-            print >> self, "setfont"
+            print("/%s findfont" % self.font_wrapper.ps_name(), file=self)
+            print("%f scalefont" % self.font_size, file=self)
+            print("setfont", file=self)
 
             # Cursor
             try:
@@ -329,7 +329,7 @@ class textbox(canvas):
         any text that did not fit the box as a (normalized) Unicode
         string. No hyphanation will be performed.
         """
-        if type(text) != UnicodeType:
+        if type(text) != str:
             raise TypeError("typeset() only works on unicode strings!")
 
         if self.font_wrapper is None:
@@ -337,8 +337,8 @@ class textbox(canvas):
                                       "typesetting any text.")
 
         paragraphs = text.split("\n")
-        paragraphs = filter(lambda a: strip(a) != "", paragraphs)
-        paragraphs = map(splitfields, paragraphs)
+        paragraphs = filter(lambda a: a.strip() != "", paragraphs)
+        paragraphs = [par.split() for par in paragraphs]
         # Paragraphs is now a list of lists containing words (Unicode strings).
 
         space_width = self.font_wrapper.font.metrics.stringwidth(
@@ -376,9 +376,9 @@ class textbox(canvas):
 
         except EndOfBox:
             paragraphs.insert(0, paragraph)
-            paragraphs = map(lambda l: join(l, " "), paragraphs)
+            paragraphs = map(lambda l: " ".join(l), paragraphs)
             paragraphs = filter(lambda a: a != "", paragraphs)
-            paragraphs = join(paragraphs, "\n")
+            paragraphs = "\n".join(paragraphs)
             return paragraphs
 
         return ""
@@ -389,14 +389,14 @@ class textbox(canvas):
         as ( 'word', width, ).
         """
         if debug.debug.verbose:
-            print >> self, "gsave"
-            print >> self, "newpath"
-            print >> self, "0 %f moveto" % self._line_cursor
-            print >> self, "%f %f lineto" % ( self.w(), self._line_cursor, )
-            print >> self, "0.33 setgray"
-            print >> self, "[5 5] 0 setdash"
-            print >> self, "stroke"
-            print >> self, "grestore"
+            print("gsave", file=self)
+            print("newpath", file=self)
+            print("0 %f moveto" % self._line_cursor, file=self)
+            print("%f %f lineto" % ( self.w(), self._line_cursor, ), file=self)
+            print("0.33 setgray", file=self)
+            print("[5 5] 0 setdash", file=self)
+            print("stroke", file=self)
+            print("grestore", file=self)
 
         chars = []
         char_widths = []
@@ -428,7 +428,7 @@ class textbox(canvas):
                     spacing = self.char_spacing
 
                 char_width = self.font_wrapper.font.metrics.stringwidth(
-                    unichr(char), self.font_size) + kerning + spacing
+                    chr(char), self.font_size) + kerning + spacing
 
                 chars.append(char)
                 char_widths.append(char_width)
@@ -467,12 +467,12 @@ class textbox(canvas):
             x = self.w() - line_width
 
         # Position PostScript's cursor
-        print >> self, "%f %f moveto" % ( x, self._line_cursor, )
+        print("%f %f moveto" % ( x, self._line_cursor, ), file=self)
 
         char_widths = map(lambda f: "%.2f" % f, char_widths)
         tpl = ( self.font_wrapper.postscript_representation(chars),
-                    join(char_widths, " "), )
-        print >> self, "(%s) [ %s ] xshow" % tpl
+                    " ".join(char_widths), )
+        print("(%s) [ %s ] xshow" % tpl, file=self)
 
     def newline(self):
         """
@@ -528,43 +528,43 @@ class _eps_image(box):
             # Thomas D. Greer at http://www.tgreer.com/eps_vdp2.html .
             identifyer = "psg_eps_file*%i" % self.document.embed_counter()
             file_resource = self.document.file_resource(str(uuid())+".eps")
-            print >> file_resource, "/%sImageData currentfile" % identifyer
-            print >> file_resource, "<< /Filter /SubFileDecode"
-            print >> file_resource, "   /DecodeParms << /EODCount"
-            print >> file_resource, "       0 /EODString (***EOD***) >>"
-            print >> file_resource, ">> /ReusableStreamDecode filter"
+            print("/%sImageData currentfile" % identifyer, file=file_resource)
+            print("<< /Filter /SubFileDecode", file=file_resource)
+            print("   /DecodeParms << /EODCount", file=file_resource)
+            print("       0 /EODString (***EOD***) >>", file=file_resource)
+            print(">> /ReusableStreamDecode filter", file=file_resource)
             file_resource.append(subfile)
-            print >> file_resource, "***EOD***"
-            print >> file_resource, "def"
+            print("***EOD***", file=file_resource)
+            print("def", file=file_resource)
 
-            print >> file_resource, "/%s " % identifyer
-            print >> file_resource, "<< /FormType 1"
-            print >> file_resource, "   /BBox [%f %f %f %f]" % bb.as_tuple()
-            print >> file_resource, "   /Matrix [ 1 0 0 1 0 0]"
-            print >> file_resource, "   /PaintProc"
-            print >> file_resource, "   { pop"
-            print >> file_resource, "       /ostate save def"
-            print >> file_resource, "         /showpage {} def"
-            print >> file_resource, "         /setpagedevice /pop load def"
-            print >> file_resource, "         %sImageData 0 setfileposition"%\
-                                                                     identifyer
-            print >> file_resource, "            %sImageData cvx exec"%\
-                                                                     identifyer
-            print >> file_resource, "       ostate restore"
-            print >> file_resource, "   } bind"
-            print >> file_resource, ">> def"
+            print("/%s " % identifyer, file=file_resource)
+            print("<< /FormType 1", file=file_resource)
+            print("   /BBox [%f %f %f %f]" % bb.as_tuple(), file=file_resource)
+            print("   /Matrix [ 1 0 0 1 0 0]", file=file_resource)
+            print("   /PaintProc", file=file_resource)
+            print("   { pop", file=file_resource)
+            print("       /ostate save def", file=file_resource)
+            print("         /showpage {} def", file=file_resource)
+            print("         /setpagedevice /pop load def", file=file_resource)
+            print("         %sImageData 0 setfileposition"%\
+                                                                     identifyer, file=file_resource)
+            print("            %sImageData cvx exec"%\
+                                                                     identifyer, file=file_resource)
+            print("       ostate restore", file=file_resource)
+            print("   } bind", file=file_resource)
+            print(">> def", file=file_resource)
 
             # Store the ps code to use the eps file in self
-            print >> self, "%s execform" % identifyer
+            print("%s execform" % identifyer, file=self)
         else:
             from psg import procsets
             self.add_resource(procsets.dsc_eps)
-            print >> self, "psg_begin_epsf"
-            print >> self, "%%BeginDocument"
+            print("psg_begin_epsf", file=self)
+            print("%%BeginDocument", file=self)
             self.append(subfile)
-            print >> self
-            print >> self, "%%EndDocument"
-            print >> self, "psg_end_epsf"
+            print(file=self)
+            print("%%EndDocument", file=self)
+            print("psg_end_epsf", file=self)
 
 
 class eps_image(_eps_image):
@@ -610,9 +610,9 @@ class eps_image(_eps_image):
         if hrbb is not None: bb = hrbb
 
         if bb is None:
-            raise Excetion("Not a valid EPS file (no bounding box!)")
+            raise Exception("Not a valid EPS file (no bounding box!)")
 
-        parts = split(bb, ":")
+        parts = bb.split(":")
         numbers = parts[1]
         bb = bounding_box.from_string(numbers)
 

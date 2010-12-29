@@ -180,7 +180,7 @@ def parse_literals(line, schema="l"):
     """
     if line is None:
         return None
-    if strip(line) == "(atend)":
+    if line.strip() == "(atend)":
         return AtEnd
     elif schema == "l":
         return line
@@ -192,12 +192,10 @@ def parse_literals(line, schema="l"):
         #                                                            schema, )
         #    raise DSCSyntaxError(msg)
 
-
         if len(result) > len(schema):
             result = result[:len(schema)]
         elif len(schema) > len(result):
-            schama = schema[:len(result)]
-
+            schema = schema[:len(result)]
 
         ret = []
         for char, tpl in zip( schema, result ):
@@ -1195,10 +1193,10 @@ class dsc_page(page, page_section):
         self.append(pagesetup_section())
         self.trailer = pagetrailer_section()
 
-
     def write_to(self, fp):
         print("%%Page:", self.info, file=fp)
-        print("%%PageBoundingBox: 0 0 {0} {1}".format(int(self.w()), int(self.h())), file=fp)
+        print("%%PageBoundingBox: 0 0 {0} {1}".format(int(self.w()),
+                                                      int(self.h())), file=fp)
         file_like_buffer.write_to(self, fp)
         print("showpage", file=fp)
         self.trailer.write_to(fp)

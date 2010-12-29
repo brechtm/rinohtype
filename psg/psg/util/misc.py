@@ -77,6 +77,7 @@ from .measure import *
 
 from .file_like_buffer import file_like_buffer
 from .subfile import subfile
+from ..exceptions import PFBError
 
 # Lost In Single Paranthesis
 def car(l): return l[0]
@@ -106,7 +107,7 @@ class line_iterator:
         self.again = False
         self.last_line = ""
 
-    def next(self):
+    def __next__(self):
 
         if self.again:
             self.again = False
@@ -147,7 +148,7 @@ class line_iterator:
 
             return ret
 
-    readline = next
+    readline = __next__
 
     def rewind(self):
         """
@@ -348,7 +349,7 @@ def web_color_to_ps_command(color):
                    "green": "00ff00",
                    "blue": "0000ff" }
 
-    if std_colors.has_key(color):
+    if color in std_colors:
         color = std_colors[color]
 
     if color[0] == "#": color = color[1:]
