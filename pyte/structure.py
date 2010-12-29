@@ -1,6 +1,7 @@
 
 from pyte.paragraph import ParagraphStyle, Paragraph, DefaultStyle
 from pyte.unit import nil
+from psg.exceptions import EndOfBox
 
 
 class NumberingStyle:
@@ -113,33 +114,37 @@ class List(Paragraph, list):
         list.__init__(self)
         self.currentNumber = 1
 
+        self.itemStyle = ParagraphStyle("normal list item",
+                                        spaceAbove=nil,
+                                        spaceBelow=self.style.itemSpacing,
+                                        base=self.style)
+        self.itempointer = 0
+
     def __lshift__(self, listItem):
         self.append(listItem)
 
     def append(self, listItem):
 ##        assert isinstance(listItem, ListItem)
-        list.append(self, "{}.&nbsp;".format(self.currentNumber) + listItem)
+        item_par = Paragraph("{}.&nbsp;".format(self.currentNumber) + listItem,
+                             self.itemStyle)
+        list.append(self, item_par)
 ##        listItem.number = self.currentNumber
         self.currentNumber += 1
 
     def typeset(self, pscanvas, offset=0):
-        normalItemStyle = ParagraphStyle("normal list item",
-             spaceAbove=nil,
-             spaceBelow=self.style.itemSpacing,
-             base=self.style)
-        lastItemStyle = ParagraphStyle("last list item",
-             spaceAbove=nil,
-             spaceBelow=self.style.spaceBelow,
-             base=self.style)
+        self[-1].style = ParagraphStyle("last list item",
+                                        spaceAbove=nil,
+                                        spaceBelow=self.style.spaceBelow,
+                                        base=self.style)
 
-        for i, item in enumerate(self):
-            if i == len(self) - 1:
-                itemStyle = lastItemStyle
-            else:
-                itemStyle = normalItemStyle
-
-            itemParagraph = Paragraph(item, itemStyle)
-            offset += itemParagraph.typeset(pscanvas, offset)
+        #for i, item in enumerate(self):
+        for i in range(self.itempointer, len(self)):
+            try:
+                item = self[i]
+                offset += item.typeset(pscanvas, offset)
+            except EndOfBox:
+                self.itempointer = i
+                raise
 
         return offset
 

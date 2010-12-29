@@ -197,12 +197,15 @@ class CustomElement(objectify.ObjectifiedElement):
 
 
 class Section(CustomElement):
-    def render(self, target):
+    def render(self, target, level=1):
         print('Section.render() %s' % self.attrib['title'])
-        heading = Heading(1, self.attrib['title'])
+        heading = Heading(level, self.attrib['title'])
         target.addParagraph(heading)
         for element in self.getchildren():
-            element.render(target)
+            if type(element) == Section:
+                element.render(target, level=level+1)
+            else:
+                element.render(target)
 
 
 class P(CustomElement):
@@ -232,7 +235,7 @@ class Em(CustomElement):
 class SC(CustomElement):
     def render(self, target):
         print('SC.render()')
-        return self.text.upper()
+        return SmallCaps(self.text)
 
 
 class OL(CustomElement):

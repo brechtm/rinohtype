@@ -186,6 +186,8 @@ emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic, base=ParentSt
 boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold, base=ParentStyle)
 italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic, base=ParentStyle)
 boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic, base=ParentStyle)
+parentStyle = TextStyle(name="parent", base=ParentStyle)
+
 
 class Bold(Text):
     def __init__(self, text):
@@ -198,3 +200,7 @@ class Italic(Text):
 class Em(Text):
     def __init__(self, text):
         Text.__init__(self, text, style=italicStyle)
+
+class SmallCaps(Text):
+    def __init__(self, text):
+        Text.__init__(self, text, style=parentStyle)

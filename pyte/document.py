@@ -36,7 +36,7 @@ class Page(Container):
 
         psg_page = psg_doc.page((float(self.width()), float(self.height())))
         self.canvas = psg_page.canvas()
-        self.canvas._border = True
+        #self.canvas._border = True
 
         #---
 ##        dimensions = (float(self.width()), float(self.height()))
@@ -112,7 +112,7 @@ class Document(object):
             try:
                 page.render()
             except EndOfPage:
-                self.addPage(next(self.pagegen))
+                #self.addPage(next(self.pagegen))
                 print("EndOfPage")
                 continue
 ##            except EndOfContent:

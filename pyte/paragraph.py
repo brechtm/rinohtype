@@ -5,7 +5,7 @@
 import re
 from html.entities import name2codepoint
 
-from psg.drawing.box import textbox
+from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
 from psg.exceptions import *
 
@@ -93,11 +93,11 @@ class ParagraphStyle(TextStyle):
 
 class Line(list):
     def __init__(self):
-        list.__init__(self)
+        super().__init__()
 
     def append(self, item):
         assert isinstance(item, Word) or isinstance(item, Space)
-        list.append(self, item)
+        super().append(item)
 
     def typeset(self, pscanvas, justification):
         # TOOD: implement Line.typeset()
@@ -122,6 +122,16 @@ class Paragraph(object):
         self.kerning = True # self.style.kerning
         self.char_spacing = 0.0
         self.alignment = self.style.justify
+
+        self.__splitWords()
+        self.wordpointer = 0
+        self.firstLine = True
+
+##        if self.__words:
+##            info = str(self.__words[0])
+##        else:
+##            info = ''
+##        print('Paragraph.__init__() %s' % info)
 
 ##    def __lshift__(self, item):
 ##        if type(item) == str:
@@ -162,9 +172,6 @@ class Paragraph(object):
 
     # based on the typeset functions of psg.box.textbox
     def typeset(self, pscanvas, offset=0):
-
-        self.__splitWords()
-
 ##        thisCanvas = pscanvas
 ##        print("gsave", file=thisCanvas)
 ##        thisCanvas.print_bounding_path()
@@ -176,39 +183,79 @@ class Paragraph(object):
         lineWidth = 0
         lineHeight = 0
 
-        firstLine = True
-        leftIndent = float(self.style.indentLeft) + \
-                        float(self.style.indentFirst)
-        availableWidth = pscanvas.w() - leftIndent - float(self.style.indentRight)
+        leftIndent = float(self.style.indentLeft)
+        rightIndent = float(self.style.indentRight)
+        firstIndent = float(self.style.indentFirst)
+        availableWidth = pscanvas.w() - leftIndent - rightIndent
 
 ##        pscanvas.print_bounding_path()
         self._line_cursor = pscanvas.h() - offset
 
-        for word in self.__words:
+        wordcount = 0
+
+        #for word in self.__words:
+        numwords = len(self.__words)
+        for i in range(self.wordpointer, numwords):
+            word = self.__words[i]
             wordWidth = word.width()
+
+            if self.firstLine:
+                indent = leftIndent + firstIndent
+                width = availableWidth - firstIndent
+            else:
+                indent = leftIndent
+                width = availableWidth
 
             if isinstance(word, Word):
                 if lineWidth + wordWidth > availableWidth:
-                    lineHeight = self.typesetLine(pscanvas, availableWidth, line, leftIndent)
+                    buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
+                    lineHeight = self.typesetLine(buffer, width, line, indent)
                     # line spacing
-                    self.newline(float(self.style.lineSpacing - lineHeight*pt))
+                    try:
+                        self.newline(float(self.style.lineSpacing - lineHeight*pt))
+                        buffer.write_to(pscanvas)
+                        wordcount = 0
+                    except EndOfBox:
+                        self._mark_line_cursor(pscanvas)
+                        self.wordpointer = i - wordcount
+                        raise
+                    finally:
+                        del buffer
+                    if self.firstLine:
+                        self.firstLine = False
                     line = Line()
                     lineWidth = 0
-                    if firstLine:
-                        leftIndent = float(self.style.indentLeft)
-                        availableWidth += float(self.style.indentFirst)
-                        firstLine = False
 
                 line.append(word)
 
             lineWidth += wordWidth
+            wordcount += 1
 
         if len(line) != 0:
             a = len(line[0])
-            lineHeight = self.typesetLine(pscanvas, availableWidth, line, leftIndent, True)
-            self.newline(float(self.style.lineSpacing - lineHeight*pt))
+            buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
+            lineHeight = self.typesetLine(buffer, width, line, indent, True)
+            try:
+                self.newline(float(self.style.lineSpacing - lineHeight*pt))
+                buffer.write_to(pscanvas)
+                wordcount = 0
+            except EndOfBox:
+                self._mark_line_cursor(pscanvas)
+                self.wordpointer = i - wordcount
+                raise
+            finally:
+                del buffer
 
         return pscanvas.h() - self._line_cursor - offset
+
+    def _mark_line_cursor(self, pageCanvas):
+        print("gsave", file=pageCanvas)
+        print("newpath", file=pageCanvas)
+        print("%f %f moveto" % (0, self._line_cursor), file=pageCanvas)
+        print("%f %f lineto" % (10, self._line_cursor), file=pageCanvas)
+        print("[5 5] 0 setdash", file=pageCanvas)
+        print("stroke", file=pageCanvas)
+        print("grestore", file=pageCanvas)
 
     def setFont(self, pscanvas, fontWrapper, fontSize):
         print("/{0} findfont".format(fontWrapper.ps_name()), file=pscanvas)
@@ -233,7 +280,6 @@ class Paragraph(object):
         word_count = len(words)
 
         for i, word in enumerate(words):
-
             for j in range(len(word)):
                 character = word[j]
                 currentFontSize = float(character.style.fontSize)

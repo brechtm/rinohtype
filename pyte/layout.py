@@ -124,9 +124,9 @@ class Container(TextTarget):
         return self.__next
 
     def render(self, parentCanvas):
-        left   = float(self.absLeft())
+        left = float(self.absLeft())
         bottom = float(self.page().height() - self.absBottom())
-        width  = float(self.width())
+        width = float(self.width())
         height = float(self.height())
         dynamic = False
         if height == 0:
@@ -150,18 +150,22 @@ class Container(TextTarget):
         elif self.chain:
             self.chain.typeset(parentCanvas)
 
+        self._draw_box(pageCanvas)
+
+    def _draw_box(self, pageCanvas):
         print("gsave", file=pageCanvas)
 
-        height = float(self.height())
+        left = float(self.absLeft())
         bottom = float(self.page().height() - self.absBottom())
+        width = float(self.width())
+        height = float(self.height())
         print("newpath", file=pageCanvas)
         print("%f %f moveto" % ( left, bottom, ), file=pageCanvas)
         print("%f %f lineto" % ( left, bottom + height, ), file=pageCanvas)
         print("%f %f lineto" % ( left + width, bottom + height, ), file=pageCanvas)
         print("%f %f lineto" % ( left + width, bottom, ), file=pageCanvas)
         print("closepath", file=pageCanvas)
-
-        print("[5 5] 0 setdash", file=pageCanvas)
+        print("[2 2] 0 setdash", file=pageCanvas)
         print("stroke", file=pageCanvas)
         print("grestore", file=pageCanvas)
 
@@ -243,6 +247,22 @@ class Chain(TextTarget):
                 totalHeight = 0
                 prevParHeight = 0
                 totalHeight = 0
+
+                spaceAbove = 0
+                parentCanvas = container.page().canvas
+                left   = float(container.absLeft())
+                bottom = float(container.page().height() - container.absBottom())
+                width  = float(container.width())
+                height = float(container.height())
+                height = height - spaceAbove
+
+                pageCanvas = parentCanvas.page.canvas()
+                thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
+                pageCanvas.append(thisCanvas)
+
+                boxheight = paragraph.typeset(thisCanvas, totalHeight)
+                prevParHeight = spaceAbove + boxheight + spaceBelow
+                totalHeight += prevParHeight
 
         return totalHeight
 

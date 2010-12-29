@@ -9,17 +9,12 @@ class FontStyle:
     Slanted = 4
     BoldSlanted = 5
 
+
 class Font(object):
-    # TODO: encoding conversion as in pypsg (change pslib?)
     def __init__(self, name, filename):
         self.name = name
         self.filename = filename
         self.psFont = type1(filename + ".pfb", filename  + ".afm")
-
-    #def loadFont(self, psdoc):
-    #    if psdoc not in self.PSFont:
-    #        self.PSFont[psdoc] = PS_findfont(psdoc, self.filename, "", 1)
-    #    return self.PSFont[psdoc]
 
 
 class TypeFace(object):
@@ -45,14 +40,14 @@ class TypeFace(object):
         self.fontStyles[FontStyle.Slanted] = slanted
         self.boldslanted = boldslanted
         self.fontStyles[FontStyle.BoldSlanted] = boldslanted
-        
+
     def font(self, style):
         return self.fontStyles[style]
 
 
 class TypeFamily(object):
     default = None
-    
+
     def __init__(self, serif=None, sans=None, mono=None, math=None):
         #assert isinstance(serif, TypeFace)
         #assert isinstance(sans, TypeFace)
