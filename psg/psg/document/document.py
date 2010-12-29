@@ -248,8 +248,8 @@ class font_wrapper:
         self.font = font
 
         self.mapping = {}
-        for a in range(32,127):
-            self.mapping[a] = a
+        for a in range(32, 127):
+            self.mapping[unicode_to_glyph_name[a]] = a
         self.next = 127
 
     def register_chars(self, us, ignore_missing=True):
@@ -265,39 +265,42 @@ class font_wrapper:
                 if not self.font.has_char(char):
                     if ignore_missing:
                         if char in unicode_to_glyph_name:
-                            tpl = ( self.font.ps_name,
-                                    unicode_to_glyph_name[char], )
+                            tpl = (self.font.ps_name,
+                                   unicode_to_glyph_name[char])
                         else:
-                            tpl = ( self.font.ps_name, "#%i" % char )
+                            tpl = (self.font.ps_name, "#%i" % char)
 
                         msg = "%s does not contain needed glyph %s" % tpl
                         warnings.warn(msg)
                         char = 32 # space
                     else:
-                        tpl = ( char, repr(chr(char)), )
+                        tpl = (char, repr(chr(char)))
                         msg = "No glyph for unicode char %i (%s)" % tpl
                         raise KeyError(msg)
 
-                if char not in self.mapping:
+                glyph_name = unicode_to_glyph_name[char]
+                if glyph_name not in self.mapping:
                     self.next += 1
 
                     if self.next > 254:
                         # Use the first 31 chars (except \000) last.
                         self.next = -1
                         for b in range(1, 32):
-                            if not self.mapping.has_key(b):
+                            if b not in self.mapping.values():
                                 self.next = b
 
                         if next == -1:
                             # If these are exhausted as well, replace
                             # the char by the space character
                             next = 32
+                            msg = "character mapping spots are full!"
+                            warnings.warn(msg)
                         else:
                             next = self.next
                     else:
                         next = self.next
 
-                    self.mapping[char] = next
+                    self.mapping[glyph_name] = next
 
     def postscript_representation(self, us):
         """
@@ -318,7 +321,11 @@ class font_wrapper:
                 chars = map(ord, us)
 
             for char in chars:
-                byte = self.mapping.get(char, None)
+                if type(char) == int:
+                    glyph_name = unicode_to_glyph_name[char]
+                else:
+                    glyph_name = char
+                byte = self.mapping.get(glyph_name, None)
                 if byte is None:
                     byte = " "
                 else:
@@ -350,8 +357,7 @@ class font_wrapper:
                 elif nodefs > 1:
                     encoding_vector.append("%i{/.nodef}repeat" % nodefs)
                     nodefs = 0
-
-                encoding_vector.append("/%s"%unicode_to_glyph_name[mapping[a]])
+                encoding_vector.append("/%s" % mapping[a])
             else:
                 nodefs += 1
 

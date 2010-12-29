@@ -80,7 +80,6 @@ class type1(font):
     def has_char(self, unicode_char_code):
         return unicode_char_code in self.metrics
 
-
     def main_font_file(self):
         return self._main_font_file
 

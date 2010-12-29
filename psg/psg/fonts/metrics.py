@@ -51,7 +51,7 @@ This module defines a generic class for font metrics.
 from types import *
 
 class glyph_metric:
-    def __init__(self, font_character_code, 
+    def __init__(self, font_character_code,
                  width, ps_name, bounding_box):
         """
         @param font_character_code: 8Bit character code of the glyph in the
@@ -78,7 +78,7 @@ class metrics(dict):
     def __init__(self):
         self.kerning_pairs = {}
         self.kerning_pairs.setdefault(0.0)
-    
+
     def __getattr__(self, name):
         """
         The getattr will check, if there's a method called _name(). If
@@ -86,7 +86,7 @@ class metrics(dict):
         called name for later usage. This may copy the entire metrics
         from the parsed representation into this object's namespace.
         """
-        
+
         if hasattr(self, "_" + name):
             method = getattr(self, "_" + name)
             ret = method()
@@ -95,15 +95,15 @@ class metrics(dict):
 
         #if self.__class__.__dict__.has_key(name):
         #    prop = self.__class__.__dict__[name]
-        #    
+        #
         #    if isinstance(prop, property):
         #        return prop.__get__(self)
-            
+
         raise AttributeError(name)
 
     def unicode_character_codes(self):
         """
-        Return a list of available character codes in unicode encoding.        
+        Return a list of available character codes in unicode encoding.
         """
         return self.keys()
 
@@ -115,12 +115,14 @@ class metrics(dict):
         will be taken into account, if available. The char_spacing
         parameter is in regular PostScript units, too.
         """
+        if type(s) == str:
+            s = list(map(ord, s))
         if len(s) == 1:
-            return self.get(ord(s), self[32]).width * font_size / 1000.0
+            return self.get(s[0], self[32]).width * font_size / 1000.0
         else:
-            width = sum(map(lambda char: self.get(ord(char), self[32]).width,
+            width = sum(map(lambda char: self.get(char, self[32]).width,
                             s)) * font_size
-            
+
             if kerning:
                 for a in range(len(s)-1):
                     char = s[a]
@@ -134,7 +136,7 @@ class metrics(dict):
                 width += (len(s) - 1) * char_spacing * 1000.0
 
             return width / 1000.0
-        
+
 
 # Local variables:
 # mode: python

@@ -112,7 +112,7 @@ class afm_metrics(metrics):
                 try:
                     unicode_char_code = glyph_name_to_unicode[glyph_name]
                 except KeyError:
-                    continue
+                    unicode_char_code = glyph_name
 
             bb = bounding_box.from_tuple(info["B"])
             self[unicode_char_code] = glyph_metric(char_code,
@@ -169,7 +169,6 @@ class afm_metrics(metrics):
         """
         cm = self.FontMetrics["Direction"][0]["CharMetrics"]
         return cm.keys()
-
 
     def font_bounding_box(self):
         """
