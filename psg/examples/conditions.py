@@ -38,11 +38,11 @@
 #
 
 import sys
-from string import *        
+from string import *
 from types import *
 from copy import copy
-from sets import Set
-from mx.DateTime import now
+from datetime import datetime
+now = datetime.now
 from os.path import dirname, join as pjoin
 
 from psg.debug import debug
@@ -140,62 +140,62 @@ class style(dict):
     taken into account in calculating the padding and margin values, so
     you have to supply large enough values to avoid overlap.
     """
-    
+
     defaults = { "font": None,             # psg.font.font instance
                  "font-size": 12,          # in pt
                  "char-spacing": 0,        # in pt
                  "line-height": 1,         # A factor applied to font-size
                  "text-align": "left",     # left, right, justified
-                 
+
                  "color": "0 setgray",     # PostScript code to set a color
                  "background-color": None, # PostScript code to set a color
 
                  "border-color": None,     # PostScript code to set a color
                  "border-width": None,     # In pt
-                 
+
                  "padding-left": 0,        # In pt
                  "padding-top": 0,         # In pt
                  "padding-right": 0,       # In pt
                  "padding-bottom": 0,      # In pt
-                 
+
                  "margin-left": 0,         # In pt
                  "margin-top": 0,          # In pt
                  "margin-right": 0,        # In pt
                  "margin-bottom": 0 }      # In pt
-                 
+
     def __init__(self, **attributes):
         dict.update(self, self.defaults)
-        self._set = Set(attributes.keys())
+        self._set = set(attributes.keys())
         self.update(attributes)
 
-        for key, value in self.iteritems():
-            if type(value) == IntType:
+        for key, value in self.items():
+            if type(value) == int:
                 self[key] = float(self[key])
-                
+
         assert self.text_align in ( "left", "right", "justify", )
 
     def __getattr__(self, name):
-        name = replace(name, "_", "-")
+        name = name.replace("_", "-")
 
-        if self.__dict__.has_key("_" + name):
-            method = object.__getattr__(self, "_" + name)
+        if "_" + name in self.__dict__:
+            method = super().__getattr__(self, "_" + name)
             return method()
-        elif self.has_key(name):
+        elif name in self:
             return self[name]
         else:
             raise AttributeError(name)
 
     def __setitem__(self, key, value):
-        key = replace(key, "_", "-")
+        key = key.replace("_", "-")
         dict.__setitem__(self, key, value)
         self._set.add(key)
 
     def __getitem__(self, key):
-        key = replace(key, "_", "-")
+        key = key.replace("_", "-")
         return dict.__getitem__(self, key)
 
     def update(self, other):
-        for key, value in other.iteritems():
+        for key, value in other.items():
             self[key] = value
 
     def h_margin(self):
@@ -220,7 +220,7 @@ class style(dict):
         ret = style()
         for a in self._set:
             ret[a] = self[a]
-            
+
         for a in other._set:
             ret[a] = other[a]
 
@@ -231,11 +231,11 @@ class div:
     A rectengular subset of a column.
     """
     splitable = True
-    
+
     def __init__(self, content, style):
-        if type(content) != UnicodeType:
+        if type(content) != str:
             raise TypeError("typeset() only works on unicode strings!")
-        
+
         self.content = content[:]
         self.style = style
 
@@ -247,17 +247,17 @@ class div:
         """
         inner_width = width - self.style.h_padding() + self.style.h_margin()
         height = self.text_height(inner_width)
-        
+
         return height + self.style.v_padding() + self.style.v_margin()
-    
-    
+
+
     def text_height(self, inner_width, words=None):
         """
         Return the height of the text typeset with this div's font in
         a box that's 'innder_width' PostScript units wide. This method
         does not take margin and padding into account.
         """
-        
+
         if words is None: words = self.words()
         width = inner_width
         line_width = 0.0
@@ -267,7 +267,7 @@ class div:
 
         space_width = self.style.font.metrics.stringwidth(
             " ", self.style.font_size)
-        
+
         while(words):
             word = car(words)
 
@@ -288,7 +288,7 @@ class div:
         """
         Return a list of the words the div contains.
         """
-        return splitfields(self.content)
+        return self.content.split()
 
 
     def render(self, layout_box):
@@ -299,7 +299,7 @@ class div:
                          self.style.font_size * self.style.line_height
         else:
             min_height = self.height(layout_box.w())
-            
+
         if layout_box.y_cursor() < min_height:
             return self
 
@@ -319,7 +319,7 @@ class div:
             debug.verbose)
 
         layout_box.append(margin_box)
-        
+
         self.border_and_background(margin_box)
 
 
@@ -347,7 +347,7 @@ class div:
             rest = None
 
         layout_box.y_advance(min(height, layout_box.y_cursor()))
-        
+
         return rest
 
     def border_and_background(self, margin_box):
@@ -357,29 +357,29 @@ class div:
            self.style.background_color is not None:
 
             # The box in PostScript commands...
-            print >> margin_box, "gsave"
-            print >> margin_box, "newpath"
-            print >> margin_box, "%f %f moveto" % ( 0, 0, )
-            print >> margin_box, "%f %f lineto" % ( 0, margin_box.h(), )
-            print >> margin_box, "%f %f lineto" % ( margin_box.w(),
-                                                    margin_box.h(), )
-            print >> margin_box, "%f %f lineto" % ( margin_box.w(), 0, )
-            print >> margin_box, "closepath"
+            print("gsave", file=margin_box)
+            print("newpath", file=margin_box)
+            print("%f %f moveto" % ( 0, 0, ), file=margin_box)
+            print("%f %f lineto" % ( 0, margin_box.h(), ), file=margin_box)
+            print("%f %f lineto" % ( margin_box.w(),
+                                     margin_box.h(), ), file=margin_box)
+            print("%f %f lineto" % ( margin_box.w(), 0, ), file=margin_box)
+            print("closepath", file=margin_box)
 
             # Fill if we've got a background color
             if self.style.background_color is not None:
-                print >> margin_box, self.style.background_color
-                print >> margin_box, "fill"
-        
+                print(self.style.background_color, file=margin_box)
+                print("fill", file=margin_box)
+
             # If border_color and border_width are available,
             # draw a border.
             if self.style.border_color is not None and \
                    self.style.border_width is not None:
-                print >> margin_box, self.style.color
-                print >> margin_box, "[5 5] %f setdash"%self.style.border_width
-                print >> margin_box, "stroke"
+                print(margin_box, self.style.color, file=margin_box)
+                print("[5 5] %f setdash"%self.style.border_width, file=margin_box)
+                print("stroke", file=margin_box)
 
-            print >> margin_box, "grestore"      
+            print("grestore", file=margin_box)
 
 
     def typeset(self, parent_box, x, y, w, h):
@@ -388,7 +388,7 @@ class div:
 
         tb = textbox(parent_box, x, y, w, h, border=debug.verbose)
         parent_box.append(tb)
-        
+
         tb.set_font(font = self.style.font,
                     font_size = self.style.font_size,
                     kerning = True,
@@ -397,14 +397,14 @@ class div:
                     line_spacing = line_spacing)
 
         if self.style.color is not None:
-            print >> tb, self.style.color
+            print (self.style.color, file=tb)
 
-        return tb.typeset(join(self.words(), u" "))        
+        return tb.typeset(" ".join(self.words()))
 
 
 class lr_div(div):
     splitable = False
-    
+
     def __init__(self, left, right, style, padding=3):
         self.left = left
         self.right = right
@@ -424,23 +424,23 @@ class lr_div(div):
 
     def text_height(self, width, words=None):
         left_width, right_width = self.widths(width)
-        
-        left_height = div.text_height(self, left_width, splitfields(self.left))
+
+        left_height = div.text_height(self, left_width, self.left.split())
         right_height = div.text_height(self, right_width,
-                                       splitfields(self.right))
+                                       self.right.split())
 
         return max(left_height, right_height)
 
     def typeset(self, parent_box, x, y, w, h):
         left_width, right_width = self.widths(w)
-        
+
         line_spacing = ( self.style.line_height * self.style.font_size ) - \
                        self.style.font_size
 
 
         tb = textbox(parent_box, x, y, left_width, h, border=debug.verbose)
         parent_box.append(tb)
-        
+
         tb.set_font(font = self.style.font,
                     font_size = self.style.font_size,
                     kerning = True,
@@ -450,15 +450,15 @@ class lr_div(div):
 
 
         if self.style.color is not None:
-            print >> tb, self.style.color
-            
+            print(self.style.color, file=tb)
+
         tb.typeset(self.left)
-        
+
         tb = textbox(parent_box,
                      left_width, y, right_width, h,
                      border=debug.verbose)
         parent_box.append(tb)
-        
+
         tb.set_font(font = self.style.font,
                     font_size = self.style.font_size,
                     kerning = True,
@@ -468,8 +468,8 @@ class lr_div(div):
 
 
         if self.style.color is not None:
-            print >> tb, self.style.color
-            
+            print(self.style.color, file=tb)
+
         tb.typeset(self.right)
 
         return ""
@@ -480,7 +480,7 @@ class div_div(div):
     request.
     """
     splitable = False
-    
+
     def __init__(self, divs):
         self.divs = divs
 
@@ -502,7 +502,7 @@ class layout_box(canvas):
         canvas.__init__(self, parent, x, y, w, h, border, clip)
 
         self._y_cursor = h
-        
+
     def y_cursor(self):
         return self._y_cursor
 
@@ -511,12 +511,12 @@ class layout_box(canvas):
             raise EndOfBox()
         else:
             self._y_cursor -= amount
-    
+
 
 
 
 def layout(divs, layout_box_factory):
-    """    
+    """
     I'd much rather go to the layout chocolate factory. Anyway, for the sake
     of Martin and Skinner this thing needs a box factory to work. A box
     factory is simply a generator returning boxes through its next() method.
@@ -548,25 +548,25 @@ def layout(divs, layout_box_factory):
 
         while divs:
             div = divs.pop()
-            
+
             if current_box is not None and \
                    not isinstance(div, lr_div) and \
                    current_box.y_cursor() < mm(25):
                 current_box = None
-                
+
             if current_box is None:
-                current_box = layout_box_factory.next()
-                
+                current_box = next(layout_box_factory)
+
             rest = div.render(current_box)
 
             if rest is not None:
                 divs.append(rest)
                 current_box = None
 
-            
+
     except StopIteration:
         raise EndOfDocument()
-    
+
 
 ############################################################################
 
@@ -587,11 +587,11 @@ def new_page(document, background, italic):
         stand = textbox(page, mm(40), mm(19), mm(100), 7)
         stand.set_font(italic, 7)
         page.append(stand)
-        stand.typeset(u"Stand: " + unicode(now().strftime("%d.%m.%Y")))
+        stand.typeset("Stand: " + str(now().strftime("%d.%m.%Y")))
 
         page.append(left)
         yield left
-        
+
         page.append(right)
         yield right
 
@@ -602,31 +602,31 @@ def my_document(ds):
 
     if dir == "": dir = "."
 
-    print >> debug, "Loading background"
-    background = eps_image(document, open(dir + "/conditions_background.eps"))
+    print("Loading background", file=debug)
+    background = eps_image(document, open(dir + "/conditions_background.eps", 'rb'))
 
 
-    print >> debug, "Loading fonts"
-    italic  = type1(open(pjoin(dir, "italic.pfb")),
-                    open(pjoin(dir, "italic.afm")))
+    print("Loading fonts", file=debug)
+    italic  = type1(open(pjoin(dir, "italic.pfb"), 'rb'),
+                    open(pjoin(dir, "italic.afm"), 'rb'))
 
-    bold    = type1(open(pjoin(dir, "bold.pfb")),
-                    open(pjoin(dir, "bold.afm")))
+    bold    = type1(open(pjoin(dir, "bold.pfb"), 'rb'),
+                    open(pjoin(dir, "bold.afm"), 'rb'))
 
-    bolditalic = type1(open(pjoin(dir, "bolditalic.pfb")),
-                       open(pjoin(dir, "bolditalic.afm")))
-    
+    bolditalic = type1(open(pjoin(dir, "bolditalic.pfb"), 'rb'),
+                       open(pjoin(dir, "bolditalic.afm"), 'rb'))
+
     # Define the relevant styles.
     h1 = style(font=bolditalic, font_size=9.2,
                color="0.98 0 0.48 0.63 setcmykcolor",
                margin_top=mm(2))
-    
+
     h2 = style(font=bolditalic, font_size=8, color="0 setgray",
                margin_top=mm(2))
 
     description = style(font=italic, font_size=7, color="0 setgray",
                padding_top=2, padding_bottom=1, text_align="justify")
-    
+
     tabelle_dunkel = style(font=italic, font_size=7, color="0 setgray",
                            background_color="1 0.24 sub setgray",
                            padding_top=2, padding_bottom=1,
@@ -638,7 +638,7 @@ def my_document(ds):
 
     # Create the divs
 
-    print >> debug, "Making db requests"
+    print("Making db requests", file=debug)
     divs = []
     pages = ds.select(schema.page, sql.order_by("rank"))
     tabcounter = 0
@@ -646,19 +646,19 @@ def my_document(ds):
     for page in pages:
         ds = []
         ds.append(div(page.name, h1))
-        
+
         entries = page.entries.select(sql.order_by("rank"))
 
         for entry in entries:
             if entry.type == "caption":
-                if entry.value1 is not None and strip(entry.value1) != "":
+                if entry.value1 is not None and entry.value1.strip() != "":
                     ds.append(div(entry.value1, h2))
 
-                if entry.value2 is not None and strip(entry.value2) != "":
+                if entry.value2 is not None and entry.value2.strip() != "":
                     ds.append(div(entry.value2, description))
 
             elif entry.type == "info":
-                if entry.value2 is None or strip(entry.value2) == "":
+                if entry.value2 is None or entry.value2.strip() == "":
                     ds.append(div(entry.value1, description))
                 else:
                     cls = ( tabelle_dunkel, tabelle_hell, )[tabcounter%2]
@@ -668,7 +668,7 @@ def my_document(ds):
         divs.append(div_div(ds))
 
     # layout
-    print >> debug, "Starting layout process"
+    print("Starting layout process", file=debug)
     layout(divs, new_page(document, background, italic))
 
     return document
@@ -677,4 +677,6 @@ def my_document(ds):
 if __name__ == '__main__':
 
     document = my_document(schema.ds())
-    document.write_to(sys.stdout)
+    out = open('conditions.ps', 'w', encoding="latin-1")
+    document.write_to(out)
+    out.close()

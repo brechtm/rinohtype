@@ -51,17 +51,17 @@ def _words():
 
     while True:
         if len(l) == 0:
-            l = splitfields(ipsum)
+            l = ipsum.split()
             l.reverse()
 
         ret = l.pop()
-        ret = lower(ret)
+        ret = ret.lower()
 
         if ret[-1] == "." or ret[-1] == ",":
             ret = ret[:-1]
-        
+
         yield ret
-        
+
 words = _words()
 
 def lorem_ipsum(min, max=None, sentences=False, cap=True):
@@ -78,23 +78,23 @@ def lorem_ipsum(min, max=None, sentences=False, cap=True):
         num = min
     else:
         num = min + int(random() * float(max))
-        
+
     ret = []
-    
+
     if sentences:
         for a in range(num):
             sentence = lorem_ipsum(3, 9, cap=True)
             sentence += "."
             ret.append(sentence)
-            
+
     else:
         for a in range(num):
-            ret.append(words.next())
+            ret.append(next(words))
 
-        if cap: ret[0] = capitalize(ret[0])
-            
+        if cap: ret[0] = ret[0].upper()
 
-    return unicode(join(ret, " "))
+
+    return " ".join(ret)
 
 
 class lorem_ipsum_property(property):
@@ -113,9 +113,9 @@ class lorem_ipsum_property(property):
 
     def __set__(self, instance, value):
         raise Exception("You can't set a lorem_ipsum_property.")
-    
-         
-    
+
+
+
 
 ipsum = """\
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque dapibus vehicula nunc. Duis sagittis. Donec metus tellus, gravida eu, ullamcorper sed, sagittis quis, nisi. Praesent lacinia magna ut arcu. Praesent mattis ipsum at nisl. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque facilisis lectus vitae mi. Phasellus mattis volutpat massa. Nam mollis purus id est. Fusce in tellus sed arcu sagittis tincidunt. Mauris purus. Quisque commodo imperdiet elit. In lacinia placerat dui. Donec sed urna. Integer arcu ante, feugiat ut, volutpat at, volutpat eget, felis. In volutpat.
@@ -160,11 +160,11 @@ Curabitur gravida, nunc dignissim suscipit ornare, est leo consectetuer erat, a 
 
 
 if __name__ == '__main__':
-    print lorem_ipsum(5)
-    print
-    print lorem_ipsum(5, 15)
-    print
-    print lorem_ipsum(1, sentences=True)
-    print
-    print lorem_ipsum(5, sentences=True)
-    print
+    print(lorem_ipsum(5))
+    print()
+    print(lorem_ipsum(5, 15))
+    print()
+    print(lorem_ipsum(1, sentences=True))
+    print()
+    print(lorem_ipsum(5, sentences=True))
+    print()

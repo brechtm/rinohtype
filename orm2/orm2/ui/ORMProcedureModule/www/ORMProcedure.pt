@@ -1,0 +1,175 @@
+  <tal:block tal:replace="nothing">    
+     This file is part of orm, The Object Relational Membrane Version 2.
+    
+     Copyright 2002-2006 by Diedrich Vorberg (diedrich@tux4web.de)
+    
+     All Rights Reserved
+    
+     For more Information on orm see the README file.
+    
+     This program is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 2 of the License, or
+     (at your option) any later version.
+    
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+    
+     You should have received a copy of the GNU General Public License
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    
+     I have added a copy of the GPL in the file gpl.txt.
+  
+  
+     $Log: ORMProcedure.pt,v $
+     Revision 1.1  2006/10/07 22:08:47  diedrich
+     Initial commit.
+
+
+</tal:block>
+
+<tal:block tal:define="edit python: here.meta_type == 'ORM Procedure';
+                       model_name here/model_name | nothing;
+                       procedures_name here/procedures_name | nothing;
+                       class_name here/class_name | nothing;
+                       db_connection_name here/db_connection_name | nothing;
+                       session_on here/session_on | nothing;">
+
+  <h1 tal:replace="structure here/manage_page_header">Header</h1>
+
+
+  <h1 tal:condition="edit"
+      tal:replace="structure here/manage_tabs">Tabs</h1>
+  
+  <h2 tal:condition="not: edit"
+    tal:define="form_title string:Add ORM Procedure" 
+    tal:replace="structure here/manage_form_title">
+    Form Title</h2>
+  
+  <p tal:condition="not: edit" class="form-help">
+  </p>
+
+  <form action="manage_edit" method="post"
+    tal:attributes="action python: test(edit, 'manage_edit', 'manage_addORMProcedure')">
+    <table cellspacing="0" cellpadding="2" border="0">
+      <tr tal:condition="not: edit">
+        <td align="left" valign="top">
+          <div class="form-label">
+            Id
+          </div>
+        </td>
+        <td align="left" valign="top">
+          <input type="text" name="id" size="40" />
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">
+          <div class="form-label">
+            Model Module Name
+          </div>
+        </td>
+        <td align="left" valign="top">
+          <input type="text" name="model_name" size="40"
+            tal:attributes="value model_name" />
+        </td>
+      </tr>
+      <tr tal:condition="here/model_error|nothing">
+        <td></td>
+        <td style="color: red">
+          <div tal:repeat="msg here/model_error">
+            <pre tal:content="msg" />
+          </div>
+        </td>
+      </tr>      
+      <tr>
+        <td align="left" valign="top">
+          <div class="form-label">
+            Procedures Module Name
+          </div>
+        </td>
+        <td align="left" valign="top">
+          <input type="text" name="procedures_name" size="40"
+            tal:attributes="value procedures_name" />
+        </td>
+      </tr>
+      <tr tal:condition="here/procedures_error|nothing">
+        <td></td>
+        <td style="color: red" tal:content="here/procedures_error|nothing" />
+      </tr>
+      <tr>
+        <td align="left" valign="top">
+          <div class="form-label">
+            Procedure Class Name
+          </div>
+        </td>
+        <td align="left" valign="top">
+          <input type="text" name="class_name" size="40"
+            tal:attributes="value class_name" />
+        </td>
+      </tr>
+      <tr tal:condition="here/class_error|nothing">
+        <td></td>
+        <td style="color: red">
+          <div tal:repeat="msg here/class_error">
+            <pre tal:content="msg" />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">
+          <div class="form-label">
+            Database Connection
+          </div>
+        </td>
+        <td align="left" valign="top">
+          <input type="text" name="db_connection_name" size="40" 
+            tal:attributes="value db_connection_name" />
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+
+        <td align="left" valign="top">
+          <input type="checkbox" name="session_on" value="on"
+            tal:attributes="checked python:test(session_on, 'checked', None)"/>
+          Provide mode functions with a (Zope-) session object
+        </td>
+      </tr>
+
+      <tr>
+        <td align="left" valign="top">
+        </td>
+        <td align="left" valign="top">
+          <div class="form-element">
+            <input class="form-element" type="submit" name="submit" 
+              value=" Save " /> 
+          </div>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <h1 tal:replace="structure here/manage_page_footer">
+    Footer</h1>
+
+</tal:block>
+  <!-- Keep this comment at the end of the file
+  Local variables:
+  mode: xml
+  sgml-omittag:nil
+  sgml-shorttag:nil
+  sgml-namecase-general:nil
+  sgml-general-insert-case:lower
+  sgml-minimize-attributes:nil
+  sgml-always-quote-attributes:t
+  sgml-indent-step:2
+  sgml-indent-data:t
+  sgml-parent-document:nil
+  sgml-exposed-tags:nil
+  sgml-local-catalogs:nil
+  sgml-local-ecat-files:("/usr/local/share/sgml/docbook/ECATALOG" "/usr/local/share/sgml/w3c/ECATALOG")
+  End:
+  -->

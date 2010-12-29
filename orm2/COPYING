@@ -1,0 +1,11 @@
+All source files that are part of orm are licensed under the GNU
+GENERAL PUBLIC LICENSE Version 2, June 1991. See gpl.txt
+
+All of the documentation is licensed under the GNU Free Documentation License
+Version 1.2, November 2002. See fdl.txt
+
+The file fixedpoint.py is Copyright (C) Python Software Foundation,
+Released to the public domain 28-Mar-2001, by Tim Peters
+(tim.one@home.com).  The SourceForge webseite
+(http://fixedpoint.sf.net) states "Python Software Foundation
+License".

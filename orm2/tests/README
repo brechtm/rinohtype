@@ -1,0 +1,27 @@
+Running the tests
+=================
+
+Most of the files in this directory contain four tests, one for each
+database adapter. All but the Gadfly adapter depend on an environment
+variable to be set pointing to a RDBMS to be used for the test.
+
+Exmples
+=======
+
+ORMTEST_PGSQL_CONN="adapter=pgsql host=localhost"
+
+ORMTEST_MYSQL_CONN="adapter=mysql host=localhost dbname=test"
+
+ORMTEST_FIREBIRD_CONN="adapter=firebird dsn=localhost:/tmp/test user=sysdba password=masterkey"
+
+The test scripts will connect to any of the databases an environment
+variable is set for and run the tests. It may leave tables and other
+declarations behind!
+
+
+..
+.. $Log: README,v $
+.. Revision 1.1  2006/05/11 15:42:56  diedrich
+.. Initial commit
+..
+..

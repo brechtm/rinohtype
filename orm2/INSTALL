@@ -1,0 +1,44 @@
+                     Building and Installing ORM
+                     ---------------------------
+
+* Installing
+
+ORM comes with batteries included... er... a distutils style setup.py.
+
+To use it just go to the orm2/orm2 directory and type
+
+  python2.3 setup.py build
+
+and then
+
+  python2.3 setup.py install
+
+for the last step you'll probably need root privileges. If you don't
+have root privileges use the --prefix parameter to pass a suitable directory
+in your PYTHONPATH to setup.py
+
+That's it! You should be ready to go! 
+
+* Dependencies
+
+** Python
+ORM required Python 2.3 or later. 
+
+** PostgreSQL adapter:
+Website:  http://initd.org/software/initd/psycopg
+
+** MySQL adapter:
+Website:  http://sourceforge.net/projects/mysql-python
+
+** Firebird adapter: 
+Website:  http://kinterbasdb.sourceforge.net/
+
+** mx.DataTime
+Since Python's database API revision 2.0 requires dates to be returned
+as instances of mx.DateTime.DateTime you will also need egenix' base
+package from
+
+Website:  http://www.egenix.com
+
+Local variables:
+mode: outline

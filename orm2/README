@@ -1,0 +1,196 @@
+                      Object Relational Membrane
+                      --------------------------
+
+* What is it?
+
+This is the Object Relational Membrane. This is a Python Package that
+provides similar functionality as an Object Relational Layer like EJB
+and other Persistence Storage Systems. It is an attempt to create an
+interface between Object Oriented thinking and Relational Database
+Systems, that is small enough to understand it with relative ease but
+powerful enough to fully handle standard situations. It is a membrane
+in the sense, that it is a very thin layer. It does not really attempt
+to be transparent, it is meant to be opaque. Some basic knowledge of
+both the Object Oriented and the Relational concept is required to use
+it. That means you will have to know what a class is and understand
+the basics of SQL.
+
+At this point in time there are database adapters for PostgreSQL,
+MySQL and Firebird.
+
+* What problem does ORM address?
+
+The problem is, that you think Object Orientated when you write a
+Python program, but when it comes to storing your data in an efficient
+manner (i.e. in an RDBMS) you have to switch over to another mode of
+data representation: the one of the Relational Database. There are
+several options to prevent this: for one thing, you can change to
+another storage technology. Most people seem to prefer RDBMSs, though,
+because they provide great performance and reliability and several
+very high quality products are freely available (free as in free
+speech and as in free beer). There are several great tools available
+for Python that allow you to store Python objects in an RDBMS.
+However, the ones I found do not reflect the data structures of my
+Python program as SQL data structures (i.e. tables). This is why I
+wrote ORM.
+
+* How does it work?
+
+An Object Relational Layer or Persistence Storage does in essence one
+thing: it intercepts changes to Python objects and creates SQL
+statements to modify the database according to these changes. Also it
+provides functions to store objects, retrieve objects and delete
+them. This is just what ORM does. But using it, you will have to
+create a regular SQL table structure. This may be a disadvantage
+because
+
+  o you need to know your basic SQL
+  o since ORM is opaque rather than transparent you sometimes have to
+    keep in mind that you're actually using SQL
+
+but also has major benefits
+
+  o your program will be able to share the database with other
+    programs that use SQL but are not written in Python and do not
+    use ORM (why ever that happened)
+  o you can use PostgreSQL's advanced features like constraints,
+    indexes etc.
+
+ORM wants to be a bridge between Object Oriented and Relational
+concepts. It does this, by providing the means to
+
+  o describe a Relational design using Object Oriented constructs and
+  o let you use the data structure you described like any other Python
+    class and its objects.
+
+* An example tells more than 1000 words
+
+You want to write a program to store some data on your friends in a
+database including a picture. The SQL tables look like this:
+
+   CREATE TABLE image (
+           id SERIAL NOT NULL UNIQUE PRIMARY KEY,
+           width INTEGER,
+           height INTEGER,
+           data BYTEA
+   );
+
+   -- This will create an implicit sequence for the SERIAL id
+
+   CREATE TABLE person (
+           name VARCHAR(100) NOT NULL UNIQUE PRIMARY KEY,
+           birthday TIMESTAMP,
+           image_id INTEGER,
+           FOREIGN KEY (image_id) REFERENCES image (id)
+   );
+
+   -- This will create an implicit index on name
+
+Two tables: one for the folks one for the images. The person table's
+image_id column contains a reference to a row in the image table. This
+is sometimes referred to as a 'one to one relationship'. The
+corresponding Python code looks like this:
+
+   from orm2.dbobject import dbobject
+   from orm2.datatypes import *
+   from orm2.adatpers.pgsql.datatypes import serial, bytea
+   from orm2.relationships import one2one
+   from orm2.columns import *
+
+   # we have to define the image class first, because we refer to it 
+   # in the person class' definition
+
+   class image(dbclass):
+           widw = serial()
+           width = integer()
+           height = integer()
+           data = bytea()
+
+   class person(dbclass):
+           __primary_key__ = "name"
+           name = varchar()
+           birthday = timestamp()
+           image = one2one(image)
+
+For each of our tables we create a class, of which each instance
+represents one of the table's rows. Since Python is loosely typed
+there is no language construct to define the attributes of a class
+(which refer to the table's columns). To describe the data structure
+of the RDBMS' tables we use instances of Python classes. There is a
+class orm.columns.datatype with one descendant for each data type
+PostgreSQL supports. Also there is orm.relationships.relationship,
+which is the parent of a number of classes that describe table
+relationships as one2one, one2many and many2many.
+
+We can now create objects of our classes like they were normal Python
+classes:
+
+   swen = person(name="Swen", birthday="1977-06-13")
+
+We have to use named parameters here, so dbclass' constructor knows
+what to make of each of them. To create a database record we insert
+the variable swen into the database:
+
+   from orm.datasource import datasource
+
+   # connect to the database
+   ds = datasource(connection_string) 
+
+   # store swen in the db
+   ds.insert(swen)
+
+This will yield the following SQL command to be executed on the test
+database:
+
+   INSERT INTO person (name, birthday) VALUES ('swen', '1977-06-13');
+
+Note that ORM will always state which columns to insert and will never
+use SELECT * FROM ... so you can safely omit columns in your Python
+code that you have defined in your SQL schema.
+
+   # get PIL stuff, load image from filesystem...
+   swen_pic = image(width=img_width, height=img_width, data=img_data)
+
+   # store the image in the database
+   ds.insert(swen_pic)
+
+   # assign the image to swen
+   swen.image = swen_pic
+
+This last line might create an SQL statement like:
+
+   UPDATE person SET image_id=1 WHERE oid=23213;
+
+and assign the image to swen on SQL level. It is important to commit
+changes to the database if you want them to take effect:
+
+   ds.comit()
+
+Ok. how do I get stuff back?
+
+   from orm2 import sql
+
+   result = ds.select(person, sql.where("name='Swen'"))
+
+   swen = result.fetchone()
+
+For more examples please refer to the examples/ directory. I will
+write more documentation. And the more interest there is in that, the
+more documentation will be written. I promise.
+
+* Who did this to me?
+
+The Object Relational Membrane was written by Diedrich Vorberg,
+diedrich@tux4web.de, in Witten, Germany. Feel free to contact me in
+case you have any questions or suggestions. Any kind of input is
+welcome!
+
+The Firebird adapter was written by Werner F. Bruin. A lot of valuable
+input came from the guys on orm-devel: Eric Walstad,
+Ross J. Reedstrom, Michael Watkins and others. Thanks a lot!
+
+
+Local Variables:
+mode: outline
+ispell-local-dictionary: english
+End:

@@ -55,13 +55,13 @@ class ds:
     """
     def select(self, dbclass, *args, **kw):
         ret = []
-        
+
         if dbclass == page:
             num = 8 + int(random() * 4)
 
             for a in range(num):
                 ret.append(page())
-        else:            
+        else:
             num = 9 + int(random() * 6)
 
             for a in range(num):
@@ -80,27 +80,27 @@ class page:
     name = lip(3, cap=True)
 
     entries = _entries()
-    
+
 class info_entry:
     type = "info"
-    
+
     value1 = lip(2, 3, cap=True)
 
     def get_value(self):
         if random() > 0.5:
-            return u"%0.2f%%" % random()
+            return "%0.2f%%" % random()
         else:
-            return u"%0.2f€" % random()
-        
+            return "%0.2f€" % random()
+
     value2 = property(get_value)
 
-    
+
 class caption_entry:
     type = "caption"
-    
+
     value1 = lip(3, 5, cap=True)
     value2 = lip(2, 4, sentences=True)
 
 
 
-        
+
