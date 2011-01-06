@@ -74,32 +74,28 @@ class OtherPage(Page):
             width=column_width, height=column_height, chain=document.content)
 
 
-# custom paragraphs
-# ----------------------------------------------------------------------------
-class Abstract(Paragraph):
-    def __init__(self, text, style):
-        text = Text("Abstract &mdash; ", boldItalicStyle) + text
-        Paragraph.__init__(self, text, style)
-
-class IndexTerms(Paragraph):
-    def __init__(self, terms, style):
-        terms = copy(terms)
-        terms.sort()
-        terms[0] = terms[0][0].upper() + terms[0][1:]
-        text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
-        Paragraph.__init__(self, text, style)
-
 # paragraph styles
 # ----------------------------------------------------------------------------
+
+# FIXME: default should go first! existing styles based on the default will not
+# get updated
+bodyStyle = ParagraphStyle('body',
+                           typeface=ieeeFamily.serif,
+                           fontStyle=FontStyle.Roman,
+                           fontSize=10*pt,
+                           lineSpacing=12*pt,
+                           indentFirst=0.125*inch,
+                           spaceAbove=0*pt,
+                           spaceBelow=0*pt,
+                           justify=Justify.Both)
+
+ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
                             fontStyle=FontStyle.Roman,
                             fontSize=18*pt,
                             lineSpacing=1.2*18*pt,
-                            indentLeft=nil,
-                            indentRight=nil,
-                            indentFirst=nil,
                             spaceAbove=6*pt,
                             spaceBelow=6*pt,
                             justify=Justify.Center)
@@ -123,20 +119,7 @@ abstractStyle = ParagraphStyle("abstract",
                                spaceBelow=0*pt,
                                justify=Justify.Both)
 
-bodyStyle = ParagraphStyle("body",
-                           typeface=ieeeFamily.serif,
-                           fontStyle=FontStyle.Roman,
-                           fontSize=10*pt,
-                           lineSpacing=12*pt,
-                           indentLeft=0*pt,
-                           indentRight=0*pt,
-                           indentFirst=0.125*inch,
-                           spaceAbove=0*pt,
-                           spaceBelow=0*pt,
-                           justify=Justify.Both)
-
-listStyle = ListStyle("list",
-                      base=bodyStyle,
+listStyle = ListStyle("list", base=bodyStyle,
                       spaceAbove=5*pt,
                       spaceBelow=5*pt,
                       ordered=False,
@@ -150,37 +133,50 @@ hd1Style = HeadingStyle("heading",
                         smallCaps=True,
                         justify=Justify.Center,
                         lineSpacing=12*pt,
-                        indentFirst=nil,
                         spaceAbove=18*pt,
                         spaceBelow=6*pt,
                         numberingStyle=NumberingStyle.Roman)
 
-hd2Style = HeadingStyle("subheading",
-                        typeface=ieeeFamily.serif,
+hd2Style = HeadingStyle("subheading", base=hd1Style,
                         fontStyle=FontStyle.Italic,
                         fontSize=10*pt,
-                        smallCaps=False,
                         justify=Justify.Left,
                         lineSpacing=12*pt,
-                        indentFirst=nil,
                         spaceAbove=6*pt,
                         spaceBelow=6*pt,
                         numberingStyle=NumberingStyle.Character)
 #TODO: should only specify style once for each level!
 
 
-HeadingStyle.default = []
-HeadingStyle.default.append(hd1Style)
-HeadingStyle.default.append(hd2Style)
+heading_styles = [hd1Style, hd2Style]
 
-ParagraphStyle.default = bodyStyle
-TextStyle.default = TextStyle("RFIC2009 default",
-                           typeface=ieeeFamily.serif,
-						   fontStyle=FontStyle.Roman,
-						   fontSize=6*pt)
-ListStyle.default = listStyle
+# custom paragraphs
+# ----------------------------------------------------------------------------
+# FIXME: tricky to get right
+##class Abstract(Paragraph):
+##    def __new__(cls, text):
+##        text = Text("Abstract &mdash; ", boldItalicStyle) + text
+##        return super().__new__(cls, text, abstractStyle)
 
 
+##class IndexTerms(Paragraph):
+##    def __new__(cls, terms):
+##        terms = copy(terms)
+##        terms.sort()
+##        terms[0] = terms[0][0].upper() + terms[0][1:]
+##        text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
+##        return Paragraph.__new__(cls, text, abstractStyle)
+
+def Abstract(text):
+    text = Text("Abstract &mdash; ", boldItalicStyle) + text
+    return Paragraph(text, style=abstractStyle)
+
+
+def IndexTerms(terms):
+    terms = sorted(terms)
+    terms[0] = terms[0][0].upper() + terms[0][1:]
+    text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
+    return Paragraph(text, style=abstractStyle)
 
 
 # render methods
@@ -198,59 +194,60 @@ class CustomElement(objectify.ObjectifiedElement):
 
 class Section(CustomElement):
     def render(self, target, level=1):
-        print('Section.render() %s' % self.attrib['title'])
-        heading = Heading(level, self.attrib['title'])
+        #print('Section.render() %s' % self.attrib['title'])
+        heading = Heading(self.attrib['title'], style=heading_styles[level - 1],
+                          level=level)
         target.addParagraph(heading)
         for element in self.getchildren():
             if type(element) == Section:
-                element.render(target, level=level+1)
+                element.render(target, level=level + 1)
             else:
                 element.render(target)
 
 
 class P(CustomElement):
    def render(self, target):
-        print('P.render()')
+        #print('P.render()')
         content = self.text
         for child in self.getchildren():
             content += child.render(target)
             if child.tail is not None:
                 content += child.tail
-        paragraph = Paragraph(content)
+        paragraph = Paragraph(content, style=bodyStyle)
         target.addParagraph(paragraph)
 
 
 class B(CustomElement):
     def render(self, target):
-        print('B.render()')
+        #print('B.render()')
         return Bold(self.text)
 
 
 class Em(CustomElement):
     def render(self, target):
-        print('Em.render()')
+        #print('Em.render()')
         return Emphasis(self.text)
 
 
 class SC(CustomElement):
     def render(self, target):
-        print('SC.render()')
+        #print('SC.render()')
         return SmallCaps(self.text)
 
 
 class OL(CustomElement):
     def render(self, target):
-        print('OL.render()')
-        items = self.getchildren()
-        list = List()
-        for item in items:
-            list.append(item.render(target))
-        target.addParagraph(list)
+        #print('OL.render()')
+        items = []
+        for item in self.getchildren():
+            items.append(item.render(target))
+        lst = List(items, style=listStyle)
+        target.addParagraph(lst)
 
 
 class LI(CustomElement):
     def render(self, target):
-        print('LI.render()')
+        #print('LI.render()')
         content = self.text
         for child in self.getchildren():
             content += child.render(target)
@@ -294,8 +291,8 @@ class RFIC2009Paper(Document):
         title = Paragraph(self.title, titleStyle)
         author = Paragraph(self.author, authorStyle)
         affiliation = Paragraph(self.root.head.affiliation.text, affiliationStyle)
-        abstract = Abstract(self.root.head.abstract.text, abstractStyle)
-        index_terms = IndexTerms(self.keywords, abstractStyle)
+        abstract = Abstract(self.root.head.abstract.text)
+        index_terms = IndexTerms(self.keywords)
 
         page.title_box.addParagraph(title)
         page.title_box.addParagraph(author)

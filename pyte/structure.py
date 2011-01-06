@@ -1,5 +1,5 @@
 
-from pyte.paragraph import ParagraphStyle, Paragraph, DefaultStyle
+from pyte.paragraph import ParagraphStyle, Paragraph, MixedStyledText
 from pyte.unit import nil
 from psg.exceptions import EndOfBox
 
@@ -11,52 +11,57 @@ class NumberingStyle:
     roman = 3
     Roman = 4
 
+
 class HeadingStyle(ParagraphStyle):
-    def __init__(self, name="", indentLeft=None, indentRight=None, indentFirst=None,
-                 spaceAbove=None, spaceBelow=None,
-                 lineSpacing=None,
-                 justify=None,
-                 typeface=None, fontStyle=None, fontSize=None, smallCaps=None,
-                 hyphenate=None, hyphenChars=None, hyphenLang=None,
-                 numberingStyle=None, numberingSeparator=None,
-                 base=None):
-        ParagraphStyle.__init__(self, name, indentLeft, indentRight, indentFirst,
-                                spaceAbove, spaceBelow,
-                                lineSpacing,
-                                justify,
-                                typeface, fontStyle, fontSize, smallCaps,
-                                hyphenate, hyphenChars, hyphenLang,
-                                base)
-        if numberingStyle is not None: self.numberingStyle = numberingStyle
-        if numberingSeparator is not None: self.numberingSeparator = numberingSeparator
+##    attributes = {'numberingStyle',
+##                  'numberingSeparator'}.union(ParagraphStyle.attributes)
+    attributes = {'numberingStyle': NumberingStyle.number,
+                  'numberingSeparator': '.'}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
 
 
-HeadingStyle.default = []
-HeadingStyle.default.append(HeadingStyle(base=ParagraphStyle.default,
-                                    numberingStyle=NumberingStyle.number,
-                                    numberingSeparator='.'))
+##class DefaultHeadingStyle(HeadingStyle, DefaultStyle):
+##    defaults = {'numberingStyle': NumberingStyle.number,
+##                'numberingSeparator': '.'}
+##
+##    def __init__(self, name, **attributes):
+##        HeadingStyle.__init__(self, name, base=ParagraphStyle.default,
+##                              **attributes)
+##        DefaultStyle.__init__(self, **attributes)
 
+
+##HeadingStyle.default = []
+##HeadingStyle.default.append(DefaultHeadingStyle('default',
+##                                                numberingStyle=NumberingStyle.number,
+##                                                numberingSeparator='.'))
+
+# TODO: share subclass with List (numbering)
 class Heading(Paragraph):
-    nextNumber = {}
+    style_class = HeadingStyle
 
-    def __init__(self, level, title, style=None):
-        if style is None:
-            style = HeadingStyle.default
-        if level in Heading.nextNumber:
-            self._number = Heading.nextNumber[level]
-            Heading.nextNumber[level] += 1
-            Heading.nextNumber[level+1] = 1
+    next_number = {1: 1}
+
+    def __new__(cls, title, style=None, level=1):
+        number = cls._format_number(cls.next_number[level], style)
+        if level in cls.next_number:
+            cls.next_number[level] += 1
+            cls.next_number[level + 1] = 1
         else:
-            self._number = 1
-            Heading.nextNumber[level] = 2
-        self.level = level
-        Paragraph.__init__(self, self._formatNumber(style[level - 1]) + ". " + title, style[level - 1])
+            cls.next_number[level] = 2
+        obj = super().__new__(cls, number + ". " + title, style)
+        obj.level = level
+        return obj
 
-    def _formatNumber(self, style):
-##        style = self.style.numberingStyle
+    def __init__(self, title, style=None, level=1):
+        super().__init__(title, style)
+
+    @classmethod
+    def _format_number(cls, number, style):
         style = style.numberingStyle
         if style == NumberingStyle.number:
-            return str(self._number)
+            return str(number)
         elif style == NumberingStyle.character:
             string = ''
             while number > 26:
@@ -67,17 +72,18 @@ class Heading(Paragraph):
                 string = chr(ord('a') - 1 + remainder) + string
             return chr(ord('a') - 1 + int(number)) + string
         elif style == NumberingStyle.Character:
-            return chr(ord('A') - 1 + self._number)
+            return chr(ord('A') - 1 + number)
         elif style == NumberingStyle.roman:
-            return self._romanize(self._number).lower()
+            return cls._romanize(number).lower()
         elif style == NumberingStyle.Roman:
-            return self._romanize(self._number)
+            return cls._romanize(number)
 
-    def _romanize(self, n):
+    @classmethod
+    def _romanize(cls, n):
         # by Kay Schluehr - from http://billmill.org/python_roman.html
         numerals = (("M", 1000), ("CM", 900), ("D", 500), ("CD", 400),
-                        ("C", 100),("XC", 90),("L", 50),("XL", 40), ("X", 10),
-                        ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
+                    ("C", 100),("XC", 90),("L", 50),("XL", 40), ("X", 10),
+                    ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
         roman = []
         for ltr, num in numerals:
             (k, n) = divmod(n, num)
@@ -86,57 +92,60 @@ class Heading(Paragraph):
 
 
 class ListStyle(ParagraphStyle):
-    def __init__(self, name="", indentLeft=None, indentRight=None, indentFirst=None,
-                 spaceAbove=None, spaceBelow=None,
-                 lineSpacing=None,
-                 justify=None,
-                 typeface=None, fontStyle=None, fontSize=None, smallCaps=None,
-                 hyphenate=None, hyphenChars=None, hyphenLang=None,
-                 ordered=False, itemSpacing=None,
-                 base=None):
-        ParagraphStyle.__init__(self, name, indentLeft, indentRight, indentFirst,
-                                 spaceAbove, spaceBelow,
-                                 lineSpacing,
-                                 justify,
-                                 typeface, fontStyle, fontSize, smallCaps,
-                                 hyphenate, hyphenChars, hyphenLang,
-                                 base)
-        if ordered is not None: self.ordered = ordered
-        if itemSpacing is not None: self.itemSpacing = itemSpacing
+##    attributes = {'ordered',
+##                  'itemSpacing'}.union(ParagraphStyle.attributes)
+    attributes = {'ordered': False,
+                  'itemSpacing': ParagraphStyle.attributes['lineSpacing']}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
 
 
-class List(Paragraph, list):
-    def __init__(self, style=None):
-        if style is None:
-            style = ListStyle.default
+##class DefaultListStyle(ListStyle, DefaultStyle):
+##    def __init__(self, name, **attributes):
+##        DefaultStyle.__init__(self, **attributes)
+##        ListStyle.__init__(self, name, base=None, **attributes)
 
-        Paragraph.__init__(self, "", style)
-        list.__init__(self)
-        self.currentNumber = 1
 
-        self.itemStyle = ParagraphStyle("normal list item",
-                                        spaceAbove=nil,
-                                        spaceBelow=self.style.itemSpacing,
-                                        base=self.style)
+##ListStyle.default = DefaultListStyle('default',
+##                                     ordered=False,
+##                                     itemSpacing=parstyledefaults['lineSpacing'],
+##                                     **parstyledefaults)
+
+class List(Paragraph):
+    style_class = ListStyle
+
+    def __new__(cls, items, style=None):
+        items2 = []
+        item_style = ParagraphStyle("list item",
+                                    spaceAbove=nil,
+                                    spaceBelow=style.itemSpacing,
+                                    base=style)
+        last_item_style = ParagraphStyle("last list item",
+                                         spaceAbove=nil,
+                                         spaceBelow=style.spaceBelow,
+                                         base=style)
+        for i, item in enumerate(items[:-1]):
+            item = Paragraph("{}.&nbsp;".format(i + 1) + item, style=item_style)
+            items2.append(item)
+        items.append(Paragraph("{}.&nbsp;".format(len(items)) + items[-1],
+                               style=last_item_style))
+        obj = super().__new__(cls, items2, style)
+        return obj
+
+    def __init__(self, items, style=None):
+        super().__init__(items, style)
         self.itempointer = 0
 
-    def __lshift__(self, listItem):
-        self.append(listItem)
-
-    def append(self, listItem):
-##        assert isinstance(listItem, ListItem)
-        item_par = Paragraph("{}.&nbsp;".format(self.currentNumber) + listItem,
-                             self.itemStyle)
-        list.append(self, item_par)
-##        listItem.number = self.currentNumber
-        self.currentNumber += 1
+##    def append(self, listItem):
+####        assert isinstance(listItem, ListItem)
+##        item_par = Paragraph("{}.&nbsp;".format(self.currentNumber) + listItem,
+##                             self.itemStyle)
+##        list.append(self, item_par)
+####        listItem.number = self.currentNumber
+##        self.currentNumber += 1
 
     def typeset(self, pscanvas, offset=0):
-        self[-1].style = ParagraphStyle("last list item",
-                                        spaceAbove=nil,
-                                        spaceBelow=self.style.spaceBelow,
-                                        base=self.style)
-
         #for i, item in enumerate(self):
         for i in range(self.itempointer, len(self)):
             try:

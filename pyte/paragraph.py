@@ -1,94 +1,51 @@
 
-#from pslib import PS_set_value, PS_set_parameter, PS_setfont, PS_show_boxed
-#from pslib import *
-
-import re
-from html.entities import name2codepoint
-
 from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
 from psg.exceptions import *
 
 from pyte.unit import pt
 from pyte.font import FontStyle
-from pyte.text import Text, Word, Character, Space, TextStyle, ParentStyle, StyledText
+from pyte.text import Text, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText
+
 
 class Justify:
-    Left    = "left"
-    Right   = "right"
-    Center  = "center"
-    Both    = "justify"
+    Left = "left"
+    Right = "right"
+    Center = "center"
+    Both = "justify"
 
 
+# TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(TextStyle):
-    default = None
+##    attributes = {'indentLeft', 'indentRight', 'indentFirst',
+##                  'spaceAbove', 'spaceBelow',
+##                  'lineSpacing', 'justify', }.union(TextStyle.attributes)
+    attributes = {'indentLeft': 0*pt,
+                  'indentRight': 0*pt,
+                  'indentFirst': 0*pt,
+                  'spaceAbove': 0*pt,
+                  'spaceBelow': 0*pt,
+                  'lineSpacing': 10*pt, # TODO: change default
+                  'justify': Justify.Both}
 
-    # look at OpenOffice Writer for more options
-    def __init__(self, name="", indentLeft=None, indentRight=None, indentFirst=None,
-                 spaceAbove=None, spaceBelow=None,
-                 lineSpacing=None,
-                 justify=None,
-                 typeface=None, fontStyle=None, fontSize=None, smallCaps=None,
-                 hyphenate=None, hyphenChars=None, hyphenLang=None,
-                 base=None):
-        TextStyle.__init__(self, name, typeface, fontStyle, fontSize,
-                smallCaps,
-                hyphenate, hyphenChars, hyphenLang)
-        if indentLeft is not None: self.indentLeft = indentLeft
-        if indentRight is not None: self.indentRight = indentRight
-        if indentFirst is not None: self.indentFirst = indentFirst
-        if spaceAbove is not None: self.spaceAbove = spaceAbove
-        if spaceBelow is not None: self.spaceBelow = spaceBelow
-        # TODO: http://lists.planix.com/pipermail/lout-users/2006q2/004181.html
-        if lineSpacing is not None: self.lineSpacing = lineSpacing
-        if justify is not None: self.justify = justify
-        if base:
-            assert isinstance(base, ParagraphStyle)
-            self.base = base
-        else:
-            self.base = None
+    def __init__(self, name, base=None, **attributes):
+##        if base == DefaultStyle:
+##            base = ParagraphStyle.default
+        super().__init__(name, base=base, **attributes)
 
-##        if self.base is None:
-##            assert(indentLeft is not None)
-##            assert(indentRight is not None)
-##            assert(indentFirst is not None)
-##            assert(spaceAbove is not None)
-##            assert(spaceBelow is not None)
-##            assert(lineSpacing is not None)
-##            assert(justify is not None)
-##            assert(typeface is not None)
-##            assert(fontStyle is not None)
-##            assert(fontSize is not None)
-##            assert(smallCaps is not None)
-##            assert(hyphenate is not None)
-##            assert(hyphenChars is not None)
-##            assert(hyphenLang is not None)
-
-    def __getattribute__(self, name):
-        if name == 'base':
-            if object.__getattribute__(self, name) is None:
-                return ParagraphStyle.default
-            else:
-                return object.__getattribute__(self, name)
-        try:
-            return object.__getattribute__(self, name)
-        except AttributeError:
-            return self.base.__getattribute__(name)
-
-##ParagraphStyle.default = ParagraphStyle(indentLeft = 0*pt,
-##                                        indentRight = 0*pt,
-##                                        indentFirst = 0*pt,
-##                                        spaceAbove = 0*pt,
-##                                        spaceBelow = 0*pt,
-##                                        lineSpacing = 10*pt,    # TODO: change default
-##                                        justify = Justify.Both,
-##                                        typeface = None,
-##                                        fontStyle = FontStyle.Roman,
-##                                        fontSize = 10*pt, # TODO: change default
-##                                        smallCaps = False,
-##                                        hyphenate = True,
-##                                        hyphenChars = 2,
-##                                        hyphenLang = "en")
+### TODO: provide base defaults (so that user doesn't need to specify evertyhing
+##class DefaultParagraphStyle(ParagraphStyle, DefaultStyle):
+##    defaults = {'indentLeft': 0*pt,
+##                'indentRight': 0*pt,
+##                'indentFirst': 0*pt,
+##                'spaceAbove': 0*pt,
+##                'spaceBelow': 0*pt,
+##                'lineSpacing': 10*pt, # TODO: change default
+##                'justify': Justify.Both}
+##
+##    def __init__(self, name, **attributes):
+##        ParagraphStyle.__init__(self, name, base=TextStyle.default, **attributes)
+##        DefaultStyle.__init__(self, **attributes)
 
 
 class Line(list):
@@ -100,32 +57,32 @@ class Line(list):
         super().append(item)
 
     def typeset(self, pscanvas, justification):
-        # TOOD: implement Line.typeset()
+        # TODO: implement Line.typeset()
         pass
 
 
-class DefaultStyle:
-    pass
-
-class Paragraph(object):
-    def __init__(self, text, style=DefaultStyle):
-        if not isinstance(text, tuple):
-            text = (text, )
-        self.__text = StyledText(text)
-
-        if style == DefaultStyle:
-            self.style = ParagraphStyle.default
-        else:
-            self.style = style
-
-        # TODO: move to ParagraphStyle
-        self.kerning = True # self.style.kerning
-        self.char_spacing = 0.0
-        self.alignment = self.style.justify
-
-        self.__splitWords()
-        self.wordpointer = 0
-        self.firstLine = True
+##class Paragraph(object):
+##    def __init__(self, text, style=DefaultStyle):
+##        if not isinstance(text, tuple):
+##            text = (text, )
+##        self.__text = MixedStyledText(text)
+##
+##        if style == DefaultStyle:
+##            self.style = ParagraphStyle.default
+##        else:
+##            self.style = style
+##
+##        if self.__text.style == ParentStyle:
+##            self.__text.style = TextStyle('parent', base=self.style)
+##
+##        # TODO: move to ParagraphStyle
+##        self.kerning = True # self.style.kerning
+##        self.char_spacing = 0.0
+##        self.alignment = self.style.justify
+##
+##        self.__splitWords()
+##        self.wordpointer = 0
+##        self.firstLine = True
 
 ##        if self.__words:
 ##            info = str(self.__words[0])
@@ -142,30 +99,38 @@ class Paragraph(object):
 ##        self.__text.append(item)
 ##        return self
 
-    # from http://wiki.python.org/moin/EscapingHtml
-    def __htmlentitydecode(self, s):
-        return re.sub('&(%s);' % '|'.join(name2codepoint),
-            lambda m: chr(name2codepoint[m.group(1)]), s)
 
-    def __splitWords(self):
+class Paragraph(MixedStyledText):
+    style_class = ParagraphStyle
+
+    def __new__(cls, items, style=None):
+##        if style == DefaultStyle:
+##            style = cls.default_style
+        obj = super().__new__(cls, items, style=style)
+        return obj
+
+    def __init__(self, items, style=None):
+##        if style == DefaultStyle:
+##            style = self.default_style
+        super().__init__(items, style=style)
+        # TODO: move to ParagraphStyle
+        self.kerning = True
+        #self.char_spacing = 0.0
+
+        self._split_words()
+        self.wordpointer = 0
+        self.firstLine = True
+
+    def _split_words(self):
         self.__words = []
         word = Word()
-        for text in self.__text:
-            if type(text) == str:
-                text = Text(text, style=self.style)
-            elif text.style.base == ParentStyle:
-                text.style.base = self.style
-
-            # TODO: preprocess text for ', ", --, ---, and other markup shortcuts?
-            text.text = self.__htmlentitydecode(text.text)
-
-            for character in text.text:
-                if character not in (" ", "\t"):
-                    word.append(Character(character, style=text.style))
-                else:
-                    self.__words.append(word)
-                    self.__words.append(Space(style=text.style))
-                    word = Word()
+        for char in self.characters():
+            if isinstance(char, Space):
+                self.__words.append(word)
+                self.__words.append(char)
+                word = Word()
+            else:
+                word.append(char)
 
         if len(word) > 0:
             self.__words.append(word)
@@ -183,10 +148,12 @@ class Paragraph(object):
         lineWidth = 0
         lineHeight = 0
 
-        leftIndent = float(self.style.indentLeft)
-        rightIndent = float(self.style.indentRight)
-        firstIndent = float(self.style.indentFirst)
-        availableWidth = pscanvas.w() - leftIndent - rightIndent
+        #print(self)
+
+        indent_left = float(self.get_style('indentLeft'))
+        indent_right = float(self.get_style('indentRight'))
+        indent_first = float(self.get_style('indentFirst'))
+        available_width = pscanvas.w() - indent_left - indent_right
 
 ##        pscanvas.print_bounding_path()
         self._line_cursor = pscanvas.h() - offset
@@ -200,34 +167,33 @@ class Paragraph(object):
             wordWidth = word.width()
 
             if self.firstLine:
-                indent = leftIndent + firstIndent
-                width = availableWidth - firstIndent
+                indent = indent_left + indent_first
+                width = available_width - indent_first
             else:
-                indent = leftIndent
-                width = availableWidth
+                indent = indent_left
+                width = available_width
 
-            if isinstance(word, Word):
-                if lineWidth + wordWidth > availableWidth:
-                    buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
-                    lineHeight = self.typesetLine(buffer, width, line, indent)
-                    # line spacing
-                    try:
-                        self.newline(float(self.style.lineSpacing - lineHeight*pt))
-                        buffer.write_to(pscanvas)
-                        wordcount = 0
-                    except EndOfBox:
-                        self._mark_line_cursor(pscanvas)
-                        self.wordpointer = i - wordcount
-                        raise
-                    finally:
-                        del buffer
-                    if self.firstLine:
-                        self.firstLine = False
-                    line = Line()
-                    lineWidth = 0
+            if (isinstance(word, Word) and
+                    lineWidth + wordWidth > available_width):
+                buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
+                lineHeight = self.typesetLine(buffer, width, line, indent)
+                # line spacing
+                try:
+                    self.newline(float(self.get_style('lineSpacing') - lineHeight*pt))
+                    buffer.write_to(pscanvas)
+                    wordcount = 0
+                except EndOfBox:
+                    self._mark_line_cursor(pscanvas)
+                    self.wordpointer = i - wordcount
+                    raise
+                finally:
+                    del buffer
+                if self.firstLine:
+                    self.firstLine = False
+                line = Line()
+                lineWidth = 0
 
-                line.append(word)
-
+            line.append(word)
             lineWidth += wordWidth
             wordcount += 1
 
@@ -236,7 +202,7 @@ class Paragraph(object):
             buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
             lineHeight = self.typesetLine(buffer, width, line, indent, True)
             try:
-                self.newline(float(self.style.lineSpacing - lineHeight*pt))
+                self.newline(float(self.get_style('lineSpacing') - lineHeight*pt))
                 buffer.write_to(pscanvas)
                 wordcount = 0
             except EndOfBox:
@@ -277,63 +243,55 @@ class Paragraph(object):
         char_widths = []
         maxFontSize = 0
 
-        word_count = len(words)
+        for word in words:
+            if isinstance(word, Space):
+                if word is not words[-1]:
+                    # TODO: handle Spacer
+                    chars.append(word)
+                    char_widths.append(0.0)
+                    #char_widths.append(word.width())
+            else:
+                for j in range(len(word)):
+                    character = word[j]
+                    currentFontSize = float(character.get_style('fontSize'))
+                    #print('%s (%g)' % (character.text, currentFontSize))
+                    if currentFontSize > maxFontSize:
+                        maxFontSize = currentFontSize
+                    char_or_glyph = character.ord()
 
-        for i, word in enumerate(words):
-            for j in range(len(word)):
-                character = word[j]
-                currentFontSize = float(character.style.fontSize)
-                if currentFontSize > maxFontSize:
-                    maxFontSize = currentFontSize
-                char = character.ord()
+                    if self.kerning and j < len(word) - 1:
+                        kerning = word.kerning(j)
+                    else:
+                        kerning = 0.0
 
-                if self.kerning and j < len(word) - 1:
-                    kerning = word.kerning(j)
-                else:
-                    kerning = 0.0
+                    chars.append(character)
+                    char_widths.append(character.width() + kerning) #+ spacing
 
-##                if idx == len(word) - 1:
-##                    spacing = 0.0
-##                else:
-##                    spacing = self.char_spacing
+        line_width = sum(char_widths)
 
-                char_width = character.width() + kerning #+ spacing
-
-                chars.append(character)
-                char_widths.append(char_width)
-
-            # The space between...
-            if i < len(words) - 1: # if it's not the last one...
-                chars.append(Space(style=word[-1].style)) # space
-                char_widths.append(None)
-
-        line_width = sum(filter(lambda a: a is not None, char_widths))
-
-        n = []
-        if self.alignment == "justify" and not lastLine:
-            space_width = (width - line_width) / (word_count - 1)
-            for i, w in enumerate(char_widths):
-                if w is None:
-                    n.append(space_width)
-                else:
-                    n.append(w)
+        if self.get_style('justify') == "justify" and not lastLine:
+            try:
+                number_of_words = list(map(type, words)).count(Word)
+                space_width = (width - line_width) / (number_of_words - 1)
+            except ZeroDivisionError:
+                space_width = 0.0
+            for i, char in enumerate(chars):
+                if isinstance(char, Space):
+                    char_widths[i] = space_width
         else:
-            for i, w in enumerate(char_widths):
-                if w is None:
-                    n.append(chars[i].width())
-                else:
-                    n.append(w)
-        char_widths = n
+            for i, char in enumerate(chars):
+                if isinstance(char, Space):
+                    char_widths[i] = char.width()
+                    line_width += char.width()
+            extra_space = width - line_width
 
         # Horizontal displacement
-        if self.alignment in ("left", "justify",):
+        if self.get_style('justify') in ("left", "justify",):
             x = 0.0
-        elif self.alignment == "center":
-            line_width = sum(char_widths)
-            x = (width - line_width) / 2.0
-        elif self.alignment == "right":
-            line_width = sum(char_widths)
-            x = width - line_width
+        elif self.get_style('justify') == "center":
+            x = extra_space / 2.0
+        elif self.get_style('justify') == "right":
+            x = extra_space
 
         self._line_cursor -= maxFontSize
 
@@ -344,37 +302,41 @@ class Paragraph(object):
         if indent != 0:
             print("{} 0 rmoveto".format(indent), file=pscanvas)
 
-        currentStyle = chars[0].style
+        current_style = {'typeface': chars[0].get_style('typeface'),
+                         'fontStyle': chars[0].get_style('fontStyle'),
+                         'fontSize': chars[0].get_style('fontSize')}
         span_chars = []
         span_char_widths = []
         for i, char in enumerate(chars):
-            if char.style != currentStyle:
-                typeface = char.style.typeface
-                font = typeface.font(currentStyle.fontStyle)
+            char_style = {'typeface': char.get_style('typeface'),
+                          'fontStyle': char.get_style('fontStyle'),
+                          'fontSize': char.get_style('fontSize')}
+            if char_style != current_style:
+                typeface = char.get_style('typeface')
+                font = typeface.font(current_style['fontStyle'])
                 fontWrapper = pscanvas.page.register_font(font.psFont, True)
-                self.setFont(pscanvas, fontWrapper, currentStyle.fontSize)
+                self.setFont(pscanvas, fontWrapper, current_style['fontSize'])
                 span_char_widths = map(lambda f: "%.2f" % f, span_char_widths)
-                tpl = ( fontWrapper.postscript_representation(span_chars),
-                            " ".join(span_char_widths), )
+                tpl = (fontWrapper.postscript_representation(span_chars),
+                       " ".join(span_char_widths))
                 print("({0}) [ {1} ] xshow".format(tpl[0], tpl[1]), file=pscanvas)
                 span_chars = []
                 span_char_widths = []
-                currentStyle = char.style
+                current_style = char_style
 
             span_chars.append(char.ord())
             span_char_widths.append(char_widths[i])
 
-        typeface = char.style.typeface
-        font = typeface.font(currentStyle.fontStyle)
+        typeface = current_style['typeface']
+        font = typeface.font(current_style['fontStyle'])
         fontWrapper = pscanvas.page.register_font(font.psFont, True)
-        self.setFont(pscanvas, fontWrapper, currentStyle.fontSize)
+        self.setFont(pscanvas, fontWrapper, current_style['fontSize'])
         span_char_widths = map(lambda f: "%.2f" % f, span_char_widths)
-        tpl = ( fontWrapper.postscript_representation(span_chars),
-                    " ".join(span_char_widths), )
+        tpl = (fontWrapper.postscript_representation(span_chars),
+               " ".join(span_char_widths))
         print("({0}) [ {1} ] xshow".format(tpl[0], tpl[1]), file=pscanvas)
 
         return maxFontSize
-
 
     def newline(self, lineHeight):
         """

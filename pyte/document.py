@@ -45,7 +45,6 @@ class Page(Container):
 ##        self.canvas._border = True
 
     def render(self):
-        print(self.paragraphs())
         super().render(self.canvas)
 
 
@@ -108,7 +107,7 @@ class Document(object):
         # TODO: generate pages as required (based on master pages
         # http://docs.python.org/tutorial/classes.html#generators
         for page in self.pages:
-            print(page)
+            #print(page)
             try:
                 page.render()
             except EndOfPage:
