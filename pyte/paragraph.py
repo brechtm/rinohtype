@@ -5,7 +5,7 @@ from psg.exceptions import *
 
 from pyte.unit import pt
 from pyte.font import FontStyle
-from pyte.text import StyledText, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText
+from pyte.text import StyledText, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText, Glyph
 
 
 class Justify:
@@ -68,6 +68,13 @@ class Paragraph(MixedStyledText):
                 self.__words.append(char)
                 word = Word()
             else:
+                if char.get_style('smallCaps'):
+                    parent = char.parent
+                    typeface = char.get_style('typeface')
+                    font = typeface.font(char.get_style('fontStyle'))
+                    if font.psFont.has_char(char.text + '.sc'):
+                        char = Glyph(char.text + '.sc')
+                        char.parent = parent
                 word.append(char)
 
         if len(word) > 0:

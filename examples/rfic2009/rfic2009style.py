@@ -140,6 +140,7 @@ hd1Style = HeadingStyle("heading",
 hd2Style = HeadingStyle("subheading", base=hd1Style,
                         fontStyle=FontStyle.Italic,
                         fontSize=10*pt,
+                        smallCaps=False,
                         justify=Justify.Left,
                         lineSpacing=12*pt,
                         spaceAbove=6*pt,
@@ -168,14 +169,14 @@ heading_styles = [hd1Style, hd2Style]
 ##        return Paragraph.__new__(cls, text, abstractStyle)
 
 def Abstract(text):
-    text = Text("Abstract &mdash; ", boldItalicStyle) + text
+    text = StyledText("Abstract &mdash; ", boldItalicStyle) + text
     return Paragraph(text, style=abstractStyle)
 
 
 def IndexTerms(terms):
     terms = sorted(terms)
     terms[0] = terms[0][0].upper() + terms[0][1:]
-    text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
+    text = StyledText("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
     return Paragraph(text, style=abstractStyle)
 
 

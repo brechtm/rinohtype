@@ -69,13 +69,6 @@ class TextStyle(object):
         return self.get_default(name)
 
 
-emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic)
-boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold)
-italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic)
-boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic)
-parentStyle = TextStyle(name="parent")
-
-
 # TODO: link to xml line number
 class Styled(object):
     style_class = None
@@ -268,6 +261,15 @@ class Word(list):
         return kerning
 
 
+# predefined styles
+
+emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic)
+boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold)
+italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic)
+boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic)
+smallCapsStyle = TextStyle(name="small capitals", smallCaps=True)
+
+
 class Bold(StyledText):
     def __init__(self, text):
         StyledText.__init__(self, text, style=boldStyle)
@@ -283,14 +285,6 @@ class Em(StyledText):
         StyledText.__init__(self, text, style=italicStyle)
 
 
-def SmallCaps(text):
-    return text
-    upped = []
-    for char in text:
-        # FIXME: use parent style instead of default style
-        typeface = TextStyle.default.typeface
-        font = typeface.font(TextStyle.default.fontStyle)
-        if font.psFont.has_char(char + '.sc'):
-            char = Glyph(char + '.sc', style=parentStyle)
-        upped.append(char)
-    return StyledText(upped)
+class SmallCaps(StyledText):
+    def __init__(self, text):
+        StyledText.__init__(self, text, style=smallCapsStyle)
