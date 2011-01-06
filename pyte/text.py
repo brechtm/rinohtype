@@ -23,8 +23,6 @@ class ParentStyle(object, metaclass=ParentStyleType):
 
 
 class TextStyle(object):
-##    attributes = {'typeface', 'fontStyle', 'fontSize', 'smallCaps',
-##                  'hyphenate', 'hyphenChars', 'hyphenLang'}
     attributes = {'typeface': None, # no default fonts yet
                   'fontStyle': FontStyle.Roman,
                   'fontSize': 10*pt, # TODO: change default
@@ -32,13 +30,6 @@ class TextStyle(object):
                   'hyphenate': True,
                   'hyphenChars': 2,
                   'hyphenLang': 'en'}
-##    # defaults
-##    fontStyle = FontStyle.Roman
-##    fontSize = 10*pt # TODO: change default
-##    smallCaps = False
-##    hyphenate = True
-##    hyphenChars = 2
-##    hyphenLang ='en'
 
     def _get_default(self, name):
         for cls in self.__class__.__mro__:
@@ -71,15 +62,6 @@ class TextStyle(object):
         else:
             return getattr(self.base, name)
 
-##    @classmethod
-##    def _get_default(cls, name):
-##        print('_get_default', name)
-##        try:
-##            return cls.defaults[name]
-##        except KeyError:
-##            print(cls.__mro__)
-##            return cls.__mro__[1].get_default(name)
-
     def __repr__(self):
         return '{0}({1}) > {2}'.format(self.__class__.__name__ , self.name,
                                        self.base)
@@ -87,30 +69,12 @@ class TextStyle(object):
         return self.get_default(name)
 
 
-##class DefaultStyle(object):
-##    defaults = {}
-##
-##    def __init__(self, **arguments):
-##        for attribute in self.attributes:
-##            try:
-##                getattr(self, attribute)
-##            except AttributeError:
-##                raise TypeError('{0} is missing the following attributes: '
-##                                '{1}'.format(self.__class__.__name__,
-##                                             ', '.join(missing)))
-##
-##class DefaultTextStyle(TextStyle, DefaultStyle):
-##    def __init__(self, name, **attributes):
-##        TextStyle.__init__(self, name, base=None, **attributes)
-##        DefaultStyle.__init__(self, **attributes)
-
-
-# TODO: style=ParagraphStyle
 emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic)
 boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold)
 italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic)
 boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic)
 parentStyle = TextStyle(name="parent")
+
 
 # TODO: link to xml line number
 class Styled(object):
@@ -166,47 +130,6 @@ class Text(Styled):
             character.parent = self
             yield character
 
-
-##class StyledText(tuple):
-##    def __new__(cls, iterable=(), style=DefaultStyle):
-##        if style == DefaultStyle:
-##            style = TextStyle.default
-##
-##        iterable2 = []
-##        if not isinstance(iterable, StyledText):
-##            for item in iterable:
-##                assert isinstance(item, Text) or isinstance(item, str)
-##                if isinstance(item, str):
-##                    item = Text(item)
-##                if item.style.base == ParentStyle:
-##                    item.style.base == style
-##                iterable2.append(item)
-##        new = tuple.__new__(cls, iterable2)
-##        new.style = style
-##        return new
-##
-##    def __add__(self, other):
-##        assert isinstance(other, Text) \
-##            or isinstance(other, StyledText) \
-##            or isinstance(other, str)
-##        if isinstance(other, StyledText):
-##            return StyledText(tuple.__add__(self, other))
-##        else:
-##            return StyledText(tuple.__add__(self, (other,)))
-##
-##    def __radd__(self, other):
-##        assert isinstance(other, Text) \
-##            or isinstance(other, StyledText) \
-##            or isinstance(other, str)
-##        if isinstance(other, StyledText):
-##            return other + self
-##        else:
-##            return StyledText(tuple.__add__((other,), self))
-##
-##    def characters(self):
-##        for item in self:
-##            for char in item.characters():
-##                yield char
 
 class MixedStyledText(tuple, Styled):
     def __new__(cls, items, style=ParentStyle):
@@ -304,10 +227,6 @@ class Spacer(Space):
         return float(dimension)
 
 
-# generic container for styled text (base class for Paragraph)
-# TODO: can this be done in a cleaner way?
-
-
 class Word(list):
     def __init__(self, characters=None):
         if characters == None:
@@ -353,13 +272,16 @@ class Bold(Text):
     def __init__(self, text):
         Text.__init__(self, text, style=boldStyle)
 
+
 class Italic(Text):
     def __init__(self, text):
         Text.__init__(self, text, style=italicStyle)
 
+
 class Em(Text):
     def __init__(self, text):
         Text.__init__(self, text, style=italicStyle)
+
 
 def SmallCaps(text):
     return text

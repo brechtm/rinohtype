@@ -13,29 +13,12 @@ class NumberingStyle:
 
 
 class HeadingStyle(ParagraphStyle):
-##    attributes = {'numberingStyle',
-##                  'numberingSeparator'}.union(ParagraphStyle.attributes)
     attributes = {'numberingStyle': NumberingStyle.number,
                   'numberingSeparator': '.'}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
 
-
-##class DefaultHeadingStyle(HeadingStyle, DefaultStyle):
-##    defaults = {'numberingStyle': NumberingStyle.number,
-##                'numberingSeparator': '.'}
-##
-##    def __init__(self, name, **attributes):
-##        HeadingStyle.__init__(self, name, base=ParagraphStyle.default,
-##                              **attributes)
-##        DefaultStyle.__init__(self, **attributes)
-
-
-##HeadingStyle.default = []
-##HeadingStyle.default.append(DefaultHeadingStyle('default',
-##                                                numberingStyle=NumberingStyle.number,
-##                                                numberingSeparator='.'))
 
 # TODO: share subclass with List (numbering)
 class Heading(Paragraph):
@@ -92,25 +75,12 @@ class Heading(Paragraph):
 
 
 class ListStyle(ParagraphStyle):
-##    attributes = {'ordered',
-##                  'itemSpacing'}.union(ParagraphStyle.attributes)
     attributes = {'ordered': False,
                   'itemSpacing': ParagraphStyle.attributes['lineSpacing']}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
 
-
-##class DefaultListStyle(ListStyle, DefaultStyle):
-##    def __init__(self, name, **attributes):
-##        DefaultStyle.__init__(self, **attributes)
-##        ListStyle.__init__(self, name, base=None, **attributes)
-
-
-##ListStyle.default = DefaultListStyle('default',
-##                                     ordered=False,
-##                                     itemSpacing=parstyledefaults['lineSpacing'],
-##                                     **parstyledefaults)
 
 class List(Paragraph):
     style_class = ListStyle
