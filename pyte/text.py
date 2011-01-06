@@ -100,7 +100,7 @@ class Styled(object):
         raise NotImplementedError
 
 
-class Text(Styled):
+class StyledText(Styled):
     style_class = TextStyle
 
     def __init__(self, text, style=ParentStyle):
@@ -117,7 +117,7 @@ class Text(Styled):
                                               self.text, self.style)
 
     def __add__(self, other):
-        assert isinstance(other, Text) or isinstance(other, str)
+        assert isinstance(other, StyledText) or isinstance(other, str)
         return MixedStyledText((self, other))
 
     def __radd__(self, other):
@@ -138,7 +138,7 @@ class MixedStyledText(tuple, Styled):
         texts = []
         for item in items:
             if type(item) == str:
-                item = Text(item, style=ParentStyle)
+                item = StyledText(item, style=ParentStyle)
             texts.append(item)
 
         obj = tuple.__new__(cls, texts)
@@ -162,7 +162,7 @@ class MixedStyledText(tuple, Styled):
         return self.__class__(result)
 
     def __radd__(self, other):
-##        assert isinstance(other, Text) \
+##        assert isinstance(other, StyledText) \
 ##            or isinstance(other, MixedStyledText) \
 ##            or isinstance(other, str)
         result = self.__class__(other) + self
@@ -175,7 +175,7 @@ class MixedStyledText(tuple, Styled):
 
 
 # TODO: make following classes immutable (override setattr) and store widths
-class Character(Text):
+class Character(StyledText):
     def __init__(self, text, style=ParentStyle):
         assert len(text) == 1
         super().__init__(text, style)
@@ -268,19 +268,19 @@ class Word(list):
         return kerning
 
 
-class Bold(Text):
+class Bold(StyledText):
     def __init__(self, text):
-        Text.__init__(self, text, style=boldStyle)
+        StyledText.__init__(self, text, style=boldStyle)
 
 
-class Italic(Text):
+class Italic(StyledText):
     def __init__(self, text):
-        Text.__init__(self, text, style=italicStyle)
+        StyledText.__init__(self, text, style=italicStyle)
 
 
-class Em(Text):
+class Em(StyledText):
     def __init__(self, text):
-        Text.__init__(self, text, style=italicStyle)
+        StyledText.__init__(self, text, style=italicStyle)
 
 
 def SmallCaps(text):

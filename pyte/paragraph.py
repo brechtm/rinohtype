@@ -5,7 +5,7 @@ from psg.exceptions import *
 
 from pyte.unit import pt
 from pyte.font import FontStyle
-from pyte.text import Text, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText
+from pyte.text import StyledText, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText
 
 
 class Justify:
