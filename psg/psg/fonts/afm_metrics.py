@@ -120,25 +120,25 @@ class afm_metrics(metrics):
                                                    bb)
 
         # Create kerning pair index
-        try:
-            kern_pairs = self.FontMetrics["KernData"]["KernPairs"]
+        kern_pairs = self.FontMetrics["KernData"]["KernPairs"]
 
-            for pair, info in kern_pairs.iteritems():
-                a, b = pair
-                key, info0, info1 = info
+        for pair, info in kern_pairs.iteritems():
+            a, b = pair
+            key, info0, info1 = info
 
+            try:
                 if key == "KPH":
                     a = encoding_table[a]
                     b = encoding_table[b]
                 else:
                     a = glyph_name_to_unicode[a]
                     b = glyph_name_to_unicode[b]
+            except KeyError:
+                continue
 
-                kerning = info0
+            kerning = info0
 
-                self.kerning_pairs[ ( a, b, ) ] = kerning
-        except KeyError:
-            pass
+            self.kerning_pairs[ ( a, b, ) ] = kerning
 
     ps_name = global_info("FontName")
     full_name = global_info("FullName")

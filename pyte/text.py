@@ -1,6 +1,11 @@
 
 import re
+from copy import copy
 from html.entities import name2codepoint
+
+from pyte.hyphenator import Hyphenator
+
+from psg.fonts.encoding_tables import unicode_to_glyph_name, glyph_name_to_unicode
 
 from pyte.unit import pt
 from pyte.font import TypeFace, FontStyle
@@ -89,6 +94,9 @@ class Styled(object):
         except ParentStyleException:
             return self.parent.get_style(attribute)
 
+    def get_font(self):
+        return self.get_style('typeface').font(self.get_style('fontStyle'))
+
     def characters(self):
         raise NotImplementedError
 
@@ -121,7 +129,10 @@ class StyledText(Styled):
         for char in self.text:
             character = Character(char, style=ParentStyle)
             character.parent = self
-            yield character
+            if self.get_style('smallCaps'):
+                yield character.small_capital()
+            else:
+                yield character
 
 
 class MixedStyledText(tuple, Styled):
@@ -176,16 +187,29 @@ class Character(StyledText):
             self.__class__= Space
 
     def width(self):
-        typeface = self.get_style('typeface')
+        font = self.get_font()
         font_size = float(self.get_style('fontSize'))
-        font = typeface.font(self.get_style('fontStyle'))
         return font.psFont.metrics.stringwidth(self.text, font_size)
 
     def ord(self):
+        # TODO: look up in unicode_to_glyph_name (find proper solution!)
         return ord(self.text)
 
-    def characters(self):
-        yield self
+    sc_suffixes = ('.smcp', '.sc', 'small')
+
+    def small_capital(self):
+        font = self.get_font()
+        char = self.text
+        for suffix in self.sc_suffixes:
+            if font.psFont.has_char(char + suffix):
+                glyph = Glyph(char + '.sc')
+            elif char.islower() and font.psFont.has_char(char.upper() + suffix):
+                glyph = Glyph(char.upper() + '.sc')
+        try:
+            glyph.parent = self.parent
+            return glyph
+        except NameError:
+            return self
 
 
 class Glyph(Character):
@@ -225,41 +249,101 @@ class Word(list):
         if characters == None:
             characters = []
         super().__init__()
+        self.hyphen_enable = True
+        self.hyphen_chars = 0
+        self.hyphen_lang = None
         for char in characters:
-            self.append(self, char)
+            self.append(char)
 
     def __repr__(self):
         return ''.join([char.text for char in self])
 
-    def append(self, character):
-        assert isinstance(character, Character)
-        assert character.text not in (" ", "\t")
-        super().append(character)
+    def __getitem__(self, index):
+        result = super().__getitem__(index)
+        if type(index) == slice:
+            result = __class__(result)
+        return result
 
-    def width(self):
+    def append(self, char):
+        assert isinstance(char, Character)
+        assert char.text not in (" ", "\t")
+        if self.hyphen_enable:
+            self.hyphen_enable = char.get_style('hyphenate')
+            self.hyphen_chars = max(self.hyphen_chars,
+                                    char.get_style('hyphenChars'))
+            if self.hyphen_lang is None:
+                self.hyphen_lang = char.get_style('hyphenLang')
+            elif char.get_style('hyphenLang') != self.hyphen_lang:
+                self.hyphen_enable = False
+        super().append(char)
+
+    def substitute_ligatures(self):
+        ligatured = __class__()
+        previous = self[0]
+        for character in self[1:]:
+            font_metrics = character.get_font().psFont.metrics
+            char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"]
+            try:
+                # TODO: verfiy whether styles are identical
+                try:
+                    ligatures = char_metrics[previous.ord()]['L']
+                except KeyError:
+                    glyph_name = unicode_to_glyph_name[previous.ord()]
+                    ligatures = char_metrics[glyph_name]['L']
+                # TODO: check for other standard ligatures (ij)
+
+                ligature_glyph_name = ligatures[character.text]
+                try:
+                    previous = Character(chr(glyph_name_to_unicode[ligature_glyph_name]))
+                except KeyError:
+                    previous = Glyph(ligature_glyph_name)
+                previous.parent = character.parent
+            except KeyError:
+                ligatured.append(previous)
+                previous = character
+
+        ligatured.append(previous)
+        return ligatured
+
+    def width(self, kerning=True):
         width = 0.0
-        for i in range(len(self)):
-            thisChar = self[i]
-            #print(thisChar, thisChar.parent)
-            width += thisChar.width()
-            width += self.kerning(i)
-
+        for i, character in enumerate(self):
+            width += character.width()
+            if kerning:
+                width += self.kerning(i)
         return width
 
     def kerning(self, index):
-        kerning = 0.0
-        if index != len(self) - 1:
-            thisChar = self[index]
-            nextChar = self[index+1]
-            if thisChar.style == nextChar.style:
-                typeface = thisChar.get_style('typeface')
-                font = typeface.font(thisChar.get_style('fontStyle'))
+        if index == len(self) - 1:
+            kerning = 0.0
+        else:
+            this = self[index]
+            next = self[index+1]
+            # FIXME: different styles can have the same font/size/weight
+            if this.style == next.style:
+                font = this.get_font()
+                kp = font.psFont.metrics.kerning_pairs
                 kern = font.psFont.metrics.kerning_pairs.get(
-                    (thisChar.text, nextChar.text), 0.0)
-                kerning = kern * float(thisChar.get_style('fontSize'))/ 1000.0
+                    (this.ord(), next.ord()), 0.0)
+                kerning = kern * float(this.get_style('fontSize'))/ 1000.0
 
         return kerning
 
+    def hyphenate(self):
+        if not self.hyphen_enable:
+            return
+        word = str(self)
+        h = Hyphenator('hyph_{}.dic'.format(self.hyphen_lang),
+                       left=self.hyphen_chars, right=self.hyphen_chars)
+        for position in reversed(h.positions(word)):
+            parts = h.wrap(word, position + 1)
+            if "".join((parts[0][:-1], parts[1])) != word:
+                raise NotImplementedError
+            first, second = self[:position], self[position:]
+            hyphen = Character('-', style=first[-1].style)
+            hyphen.parent = first[-1].parent
+            first.append(hyphen)
+            yield first, second
 
 # predefined styles
 

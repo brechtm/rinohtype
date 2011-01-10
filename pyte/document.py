@@ -55,14 +55,11 @@ class Document(object):
         self.filename = filename
         self.pages = []
 
-        self.parser = objectify.makeparser()
-        #self.parser = etree.XMLParser()
+        self.parser = objectify.makeparser(remove_comments=True)
         self.parser.set_element_class_lookup(lookup)
 
         self.schema = etree.RelaxNG(etree.parse(rngschema))
         self.xml = objectify.parse(xmlfile, self.parser)
-        #self.xml = objectify.parse(xmlfile)
-        #self.xml = etree.parse(xmlfile, self.parser)
 
         if not self.schema.validate(self.xml):
             err = self.schema.error_log

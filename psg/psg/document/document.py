@@ -268,7 +268,10 @@ class font_wrapper:
                             tpl = (self.font.ps_name,
                                    unicode_to_glyph_name[char])
                         else:
-                            tpl = (self.font.ps_name, "#%i" % char)
+                            try:
+                                tpl = (self.font.ps_name, "#%i" % char)
+                            except TypeError:
+                                tpl = (self.font.ps_name, "'%s'" % char)
 
                         msg = "%s does not contain needed glyph %s" % tpl
                         warnings.warn(msg)
@@ -278,7 +281,10 @@ class font_wrapper:
                         msg = "No glyph for unicode char %i (%s)" % tpl
                         raise KeyError(msg)
 
-                glyph_name = unicode_to_glyph_name[char]
+                try:
+                    glyph_name = unicode_to_glyph_name[char]
+                except KeyError:
+                    glyph_name = char
                 if glyph_name not in self.mapping:
                     self.next += 1
 

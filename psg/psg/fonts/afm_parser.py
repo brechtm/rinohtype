@@ -544,9 +544,7 @@ class IsFixedPitch(boolean): pass
 class CharMetrics(data_section):
 
     def parse_line(self, line):
-        """
-        Parse a CharMetrics line info a dict as { 'KEY': info }
-        """
+        """Parse a CharMetrics line info a dict as { 'KEY': info }"""
         line = line.strip() # get rid of eol characters
         parts = line.split(";") # split by the ;s
         parts = filter(lambda s: s != "", parts) # remove whitespace
@@ -615,16 +613,20 @@ class CharMetrics(data_section):
                 if len(elements) != 2:
                     raise ParseError(
                         "CharMetrics key L must be L successor ligature")
-                info["L"] = tuple(elements)
-
+                if "L" not in info:
+                    info["L"] = {}
+                info["L"][elements[0]] = elements[1]
             else:
                 raise ParseError("Unknown CharMetric line: %s" % repr(line))
 
         if "C" not in info:
-            raise ParseError("Illegal CharMetrics line: Either C or CH key" +\
-                             "Must be present! (%s)" % repr(line))
+            raise ParseError("Illegal CharMetrics line: Either C or CH key" +
+                             "must be present! (%s)" % repr(line))
+        elif info["C"] == -1:
+            self.set(info["N"], info)
         else:
             self.set(info["C"], info)
+
 
 class TrackKern(data_section):
     """

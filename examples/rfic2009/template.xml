@@ -51,12 +51,12 @@
 <section title="Overview of the Digest Format">
 <p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges.</p>
 
-<p>For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format&rarr;Paragraph&rarr;Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.</p>
+<p>For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format &rarr; Paragraph &rarr; Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.</p>
 </section>
 
 <section title="Detailed Text Formatting">
 
-<p>Using 8.5&times;11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85&nbsp;inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.</p>
+<p>Using 8.5 &times; 11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85&nbsp;inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.</p>
 
 <p>Each major section begins with a Heading in 10 point Times font centered within the column and numbered using Roman numerals (except for <sc>Acknowledgement</sc> and <sc>References</sc>, followed by a period, a single space, and the title using an initial capital letter for each word. The remaining letters are in <sc>small capitals</sc>. The paragraph description of the section heading line should be set for 18 points before, 6 points after, and the line spacing should be set to exactly 12 points.</p>
 
@@ -69,15 +69,49 @@
 
 <p>As shown, denote subsections with left justified 10-point Times Italic. Order them with capitalized alphabetic characters (<em>A</em>, <em>B</em>, ...). Follow the letter designation with a period, a single space, and then the subsection title capitalizing the first letter of each word. The paragraph description of the subsection heading is set to "exactly 12-point" line spacing with 6 points before and after.</p>
 
-</section>
+</section><!-- Major Subsections -->
 
 <section title="Equations">
 
 <p>Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be</p>
 
-</section>
+<p>FIRST EQUATION</p>
 
-</section>
+<p>or</p>
+
+<p>SECOND EQUATION</p>
+
+<p>Note that a period is used to properly punctuate the previous sentence. It is placed at the end of the second equation. <em>Make sure that any subscripts in your equations are legible and are not too small to read!</em> When referring to an equation, use the number within parenthesis. For example, you would usually refer to the second equation as (2) rather than equation (2). If possible, use the Symbol font for all special characters, or better yet, use Equation Editor&trade; or MathType™. The paragraph description of the line containing the equation should be set for 6 points before and 6 points after. The paragraph spacing will need to be set to "single" rather than "exactly 12 point" so that the height will autoscale to fit the equation.</p>
+
+</section><!-- Equations -->
+
+</section><!-- Detailed Text Formatting -->
+
+<section title="Figures">
+
+<p>Figures should utilize as much of the column width as possible in order to maximize legibility. Use a sans serif font, such as Helvetica or Arial. Helvetica and Arial are larger and much easier to read than Times. Using 6- to 9-point Helvetica usually results in a legible figure. <em>Do not use any font smaller than 6-point!</em> It must be legible. When referring to a figure, use the abbreviation Fig. followed by its number. Place figure captions directly below each figure. Use 9-point Times with the paragraph spacing set at "exactly 10 points". Set a tab at 0.5 inch. Type "Fig. #." (# is the numeral) then tab over to the 0.5 inch mark before beginning the text of the figure caption. Note that figure captions are always (left and right) justified, rather than centered, even if they are less than a single full line in length. See the captions for Fig. 1 and Fig. 2.</p>
+
+<p>Within Microsoft Word there are several options for placing figures within your paper. Often the easiest is to insert them between existing paragraphs allowing the figures to remain in that relative position. The paragraph description where the figure is inserted must be set to "single" spacing rather than "exactly 12 points" in order to allow the line to autoscale in height to display the entire figure. Some disadvantages of this approach are that you don't have total flexibility in placing figures, and that the figures will move as text is inserted or deleted in any part of the document before the figure. If you elect to use this approach, it is recommended that you nearly complete the editing of your text before inserting any figures. Remember to allow room for them, however. Then begin inserting figures starting from the beginning of your document. Do not lump all figures at the end of the paper!</p>
+
+<p>If you have difficulties with the titles on your figures, you can always elect to add in the titles as separate text boxes, rather than importing the titles with the graph. This is sometimes helpful in getting a lengthy vertically-oriented title to display correctly.</p>
+
+<p>FIRST FIGURE</p>
+
+<p>Notice that prior to the graph, a single 12-point line is used to separate the preceding text from the graph. The equivalent of a blank line should exist between the bottom of the graph (the x-axis caption) and the figure caption. (In this particular case, there was no need to add a blank line between the x-axis label and the figure caption, because there was already adequate spacing provided by the image border.) After the figure caption, there should be a single 12-point blank line before the text resumes.</p>
+
+<p>More flexibility is obtained in inserting figures if you can place them exactly where you would like them to be on a page. This can be accomplished by inserting the figure, selecting the figure, and then choosing "Format Picture...". Various settings allow you to place the figure at an absolute position on a page; specify if the text is supposed to flow around the figure or if the figure should move with the text, etc. If you elect to let the text flow around the figure, then remember that you will have to insert a separate text box for the caption, otherwise the figure caption is likely to become separated from the figure.</p>
+
+<p>When importing a graph from Excel into Word, it is often helpful to special-paste it in as a “Picture (Enhanced Meta-file)”. This saves file memory for Word documents. Be aware that the usual Copy &rarr; Paste procedure will copy the <em>entire</em> Excel spreadsheet into your Word file. The Copy &rarr; Paste Special &rarr; Picture (Enhanced Metafile) command copies only the graph as a static picture.</p>
+
+<p>If you decide to use color traces in your graphical data, <em>be absolutely certain</em> that there is no ambiguity about your graphical information when printed on a B&amp;W printer.</p>
+
+<p>Here is a common example of what can go wrong with the numbering and sizing of axis titles on a graph. In this case, the graph was initially pasted at a much larger size than the column width, and then reduced to fit:</p>
+
+<p>SECOND FIGURE</p>
+
+<p>Table I on the second page was inserted using "Insert", "TextBox", creating the text contained in Table I, and then formatting the text box using all the settings available under "Format","TextBox...". Table I also serves as an illustration of one of the rare instances when the double column format requirement can be violated. Certain figures and tables will require the full page width to display. It is usually best to place these figures and tables at the top or bottom, rather than in the middle of a page. Tables should be entered within a single column if this can be done cleanly, without the entry becoming too crowded.</p>
+
+</section><!-- Figures -->
 
 </body>
 

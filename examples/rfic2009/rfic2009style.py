@@ -55,6 +55,7 @@ class FirstPage(Page):
         column2 = Container(body, column_width + column_spacing, column_top,
             width=column_width, height=column_height, chain=document.content)
 
+
 class OtherPage(Page):
     def __init__(self, document):
         super().__init__(document.psg_doc, Letter, PORTRAIT)
@@ -74,11 +75,23 @@ class OtherPage(Page):
             width=column_width, height=column_height, chain=document.content)
 
 
+class DocumentLayout(object):
+    def __init__(self):
+        pass
+
+
+class RFICDocumentLayout(DocumentLayout):
+    def __init__(self):
+        pass
+
+    def next_page(self):
+        return page
+
+
 # paragraph styles
 # ----------------------------------------------------------------------------
 
-# FIXME: default should go first! existing styles based on the default will not
-# get updated
+
 bodyStyle = ParagraphStyle('body',
                            typeface=ieeeFamily.serif,
                            fontStyle=FontStyle.Roman,
@@ -90,6 +103,8 @@ bodyStyle = ParagraphStyle('body',
                            justify=Justify.Both)
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
+ParagraphStyle.attributes['hyphenLang'] = 'en_US'
+ParagraphStyle.attributes['hyphenChars'] = 4
 
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
