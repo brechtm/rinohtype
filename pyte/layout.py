@@ -150,7 +150,7 @@ class Container(TextTarget):
         elif self.chain:
             self.chain.typeset(parentCanvas)
 
-        self._draw_box(pageCanvas)
+        #self._draw_box(pageCanvas)
 
     def _draw_box(self, pageCanvas):
         print("gsave", file=pageCanvas)

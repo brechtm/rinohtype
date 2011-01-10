@@ -192,7 +192,6 @@ class Character(StyledText):
         return font.psFont.metrics.stringwidth(self.text, font_size)
 
     def ord(self):
-        # TODO: look up in unicode_to_glyph_name (find proper solution!)
         return ord(self.text)
 
     sc_suffixes = ('.smcp', '.sc', 'small')
@@ -220,14 +219,20 @@ class Glyph(Character):
     def __repr__(self):
         return "<glyph '{0}'> (style={1})".format(self.name, self.style)
 
+    def _ps_repr(self):
+        try:
+            ps_repr = glyph_name_to_unicode[self.name]
+        except KeyError:
+            ps_repr = self.name
+        return ps_repr
+
     def width(self):
-        typeface = self.get_style('typeface')
+        font = self.get_font()
         font_size = float(self.get_style('fontSize'))
-        font = typeface.font(self.get_style('fontStyle'))
-        return font.psFont.metrics.stringwidth([self.name], font_size)
+        return font.psFont.metrics.stringwidth([self._ps_repr()], font_size)
 
     def ord(self):
-        return self.name
+        return self._ps_repr()
 
 
 class Space(Character):
@@ -285,18 +290,11 @@ class Word(list):
             char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"]
             try:
                 # TODO: verfiy whether styles are identical
-                try:
-                    ligatures = char_metrics[previous.ord()]['L']
-                except KeyError:
-                    glyph_name = unicode_to_glyph_name[previous.ord()]
-                    ligatures = char_metrics[glyph_name]['L']
+                ligatures = char_metrics[previous.ord()]['L']
                 # TODO: check for other standard ligatures (ij)
 
                 ligature_glyph_name = ligatures[character.text]
-                try:
-                    previous = Character(chr(glyph_name_to_unicode[ligature_glyph_name]))
-                except KeyError:
-                    previous = Glyph(ligature_glyph_name)
+                previous = Glyph(ligature_glyph_name)
                 previous.parent = character.parent
             except KeyError:
                 ligatured.append(previous)

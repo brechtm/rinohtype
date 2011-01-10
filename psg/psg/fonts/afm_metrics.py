@@ -126,18 +126,20 @@ class afm_metrics(metrics):
             a, b = pair
             key, info0, info1 = info
 
-            try:
-                if key == "KPH":
-                    a = encoding_table[a]
-                    b = encoding_table[b]
-                else:
+            if key == "KPH":
+                a = encoding_table[a]
+                b = encoding_table[b]
+            else:
+                try:
                     a = glyph_name_to_unicode[a]
+                except KeyError:
+                    pass
+                try:
                     b = glyph_name_to_unicode[b]
-            except KeyError:
-                continue
+                except KeyError:
+                    pass
 
             kerning = info0
-
             self.kerning_pairs[ ( a, b, ) ] = kerning
 
     ps_name = global_info("FontName")

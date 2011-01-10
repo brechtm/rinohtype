@@ -113,6 +113,7 @@ import sys, re
 from warnings import warn
 from types import *
 
+from psg.fonts.encoding_tables import glyph_name_to_unicode
 from psg.exceptions import AFMParseError as ParseError
 from psg.util import *
 
@@ -623,7 +624,11 @@ class CharMetrics(data_section):
             raise ParseError("Illegal CharMetrics line: Either C or CH key" +
                              "must be present! (%s)" % repr(line))
         elif info["C"] == -1:
-            self.set(info["N"], info)
+            try:
+                key = glyph_name_to_unicode[info["N"]]
+            except KeyError:
+                key = info["N"]
+            self.set(key, info)
         else:
             self.set(info["C"], info)
 
