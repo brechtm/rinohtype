@@ -14,11 +14,6 @@ from pyte.text import *
 from pyte.text import Em as Emphasis
 from pyte.structure import *
 
-# margins
-# ----------------------------------------------------------------------------
-topmargin = bottommargin = 1.125*inch
-leftmargin = rightmargin = 0.85*inch
-column_spacing = 0.25*inch
 
 # fonts
 # ----------------------------------------------------------------------------
@@ -35,44 +30,34 @@ ieeeFamily = TypeFamily(serif=termes)
 
 # pages and their layout
 # ----------------------------------------------------------------------------
+class RFICPage(Page):
+    topmargin = bottommargin = 1.125*inch
+    leftmargin = rightmargin = 0.85*inch
+    column_spacing = 0.25*inch
 
-class FirstPage(Page):
-    def __init__(self, document):
+    def __init__(self, document, first=False):
         super().__init__(document.psg_doc, Letter, PORTRAIT)
-        body = Container(self, leftmargin, topmargin,
-                         self.width() - (leftmargin + rightmargin),
-                         self.height() - (topmargin + bottommargin))
-
-        self.title_box = Container(body, 0*pt, 0*pt)
-        column_height = body.height() - self.title_box.height()
-        column_top = self.title_box.bottom()
-        column_width = (body.width() - column_spacing) / 2.0
-
-        self.content = document.content
-
-        column1 = Container(body, 0*pt, column_top,
-            width=column_width, height=column_height, chain=document.content)
-        column2 = Container(body, column_width + column_spacing, column_top,
-            width=column_width, height=column_height, chain=document.content)
-
-
-class OtherPage(Page):
-    def __init__(self, document):
-        super().__init__(document.psg_doc, Letter, PORTRAIT)
-        body = Container(self, leftmargin, topmargin,
-                         self.width() - (leftmargin + rightmargin),
-                         self.height() - (topmargin + bottommargin))
+        body = Container(self, self.leftmargin, self.topmargin,
+                         self.width() - (self.leftmargin + self.rightmargin),
+                         self.height() - (self.topmargin + self.bottommargin))
 
         column_height = body.height()
+        column_width = (body.width() - self.column_spacing) / 2.0
         column_top = 0*pt
-        column_width = (body.width() - column_spacing) / 2.0
+
+        if first:
+            self.title_box = Container(body, 0*pt, 0*pt)
+            column_height -= self.title_box.height()
+            column_top = self.title_box.bottom()
 
         self.content = document.content
 
         column1 = Container(body, 0*pt, column_top,
-            width=column_width, height=column_height, chain=document.content)
-        column2 = Container(body, column_width + column_spacing, column_top,
-            width=column_width, height=column_height, chain=document.content)
+                            width=column_width, height=column_height,
+                            chain=document.content)
+        column2 = Container(body, column_width + self.column_spacing, column_top,
+                            width=column_width, height=column_height,
+                            chain=document.content)
 
 
 class DocumentLayout(object):
@@ -90,8 +75,6 @@ class RFICDocumentLayout(DocumentLayout):
 
 # paragraph styles
 # ----------------------------------------------------------------------------
-
-
 bodyStyle = ParagraphStyle('body',
                            typeface=ieeeFamily.serif,
                            fontStyle=FontStyle.Roman,
@@ -162,7 +145,6 @@ hd2Style = HeadingStyle("subheading", base=hd1Style,
                         spaceBelow=6*pt,
                         numberingStyle=NumberingStyle.Character)
 #TODO: should only specify style once for each level!
-
 
 heading_styles = [hd1Style, hd2Style]
 
@@ -276,17 +258,17 @@ class LI(CustomElement):
 # ----------------------------------------------------------------------------
 
 class RFIC2009Paper(Document):
-    def __init__(self, filename):
-        rngschema = 'rfic.rng'
+    rngschema = 'rfic.rng'
 
+    def __init__(self, filename):
         lookup = etree.ElementNamespaceClassLookup()
         namespace = lookup.get_namespace('http://www.mos6581.org/ns/rficpaper')
         namespace[None] = CustomElement
         namespace.update(dict([(cls.__name__.lower(), cls)
                                for cls in CustomElement.__subclasses__()]))
 
-        Document.__init__(self, filename, 'template.xml', rngschema, lookup)
-
+        Document.__init__(self, filename, 'template.xml', self.rngschema,
+                          lookup)
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -299,14 +281,16 @@ class RFIC2009Paper(Document):
         self.content = Chain()
 
     def render(self):
-        page = FirstPage(self)
+        page = RFICPage(self, first=True)
         self.addPage(page)
-        second_page = OtherPage(self)
+
+        second_page = RFICPage(self)
         self.addPage(second_page)
 
         title = Paragraph(self.title, titleStyle)
         author = Paragraph(self.author, authorStyle)
-        affiliation = Paragraph(self.root.head.affiliation.text, affiliationStyle)
+        affiliation = Paragraph(self.root.head.affiliation.text,
+                                affiliationStyle)
         abstract = Abstract(self.root.head.abstract.text)
         index_terms = IndexTerms(self.keywords)
 
