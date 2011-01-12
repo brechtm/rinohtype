@@ -28,50 +28,6 @@ termes = TypeFace("TeXGyreTermes",
 
 ieeeFamily = TypeFamily(serif=termes)
 
-# pages and their layout
-# ----------------------------------------------------------------------------
-class RFICPage(Page):
-    topmargin = bottommargin = 1.125*inch
-    leftmargin = rightmargin = 0.85*inch
-    column_spacing = 0.25*inch
-
-    def __init__(self, document, first=False):
-        super().__init__(document.psg_doc, Letter, PORTRAIT)
-        body = Container(self, self.leftmargin, self.topmargin,
-                         self.width() - (self.leftmargin + self.rightmargin),
-                         self.height() - (self.topmargin + self.bottommargin))
-
-        column_height = body.height()
-        column_width = (body.width() - self.column_spacing) / 2.0
-        column_top = 0*pt
-
-        if first:
-            self.title_box = Container(body, 0*pt, 0*pt)
-            column_height -= self.title_box.height()
-            column_top = self.title_box.bottom()
-
-        self.content = document.content
-
-        column1 = Container(body, 0*pt, column_top,
-                            width=column_width, height=column_height,
-                            chain=document.content)
-        column2 = Container(body, column_width + self.column_spacing, column_top,
-                            width=column_width, height=column_height,
-                            chain=document.content)
-
-
-class DocumentLayout(object):
-    def __init__(self):
-        pass
-
-
-class RFICDocumentLayout(DocumentLayout):
-    def __init__(self):
-        pass
-
-    def next_page(self):
-        return page
-
 
 # paragraph styles
 # ----------------------------------------------------------------------------
@@ -120,9 +76,12 @@ abstractStyle = ParagraphStyle("abstract",
 listStyle = ListStyle("list", base=bodyStyle,
                       spaceAbove=5*pt,
                       spaceBelow=5*pt,
-                      ordered=False,
-                      itemSpacing=bodyStyle.lineSpacing)
-
+                      indentLeft=0*inch,
+                      indentFirst=0*inch,
+                      ordered=True,
+                      itemSpacing=bodyStyle.lineSpacing,
+                      numberingStyle=NumberingStyle.Roman, # not yet implemented
+                      numberingSeparator=')')
 
 hd1Style = HeadingStyle("heading",
                         typeface=ieeeFamily.serif,
@@ -254,6 +213,38 @@ class LI(CustomElement):
         return content
 
 
+# pages and their layout
+# ----------------------------------------------------------------------------
+class RFICPage(Page):
+    topmargin = bottommargin = 1.125*inch
+    leftmargin = rightmargin = 0.85*inch
+    column_spacing = 0.25*inch
+
+    def __init__(self, document, first=False):
+        super().__init__(document, Letter, PORTRAIT)
+        body = Container(self, self.leftmargin, self.topmargin,
+                         self.width() - (self.leftmargin + self.rightmargin),
+                         self.height() - (self.topmargin + self.bottommargin))
+
+        column_height = body.height()
+        column_width = (body.width() - self.column_spacing) / 2.0
+        column_top = 0*pt
+
+        if first:
+            self.title_box = Container(body, 0*pt, 0*pt)
+            column_height -= self.title_box.height()
+            column_top = self.title_box.bottom()
+
+        self.content = document.content
+
+        self.column1 = Container(body, 0*pt, column_top,
+                                 width=column_width, height=column_height,
+                                 chain=document.content)
+        self.column2 = Container(body, column_width + self.column_spacing, column_top,
+                                 width=column_width, height=column_height,
+                                 chain=document.content)
+
+
 # main document
 # ----------------------------------------------------------------------------
 
@@ -278,14 +269,11 @@ class RFIC2009Paper(Document):
         self.title = self.root.head.title.text
         self.keywords = [term.text for term in self.root.head.indexterms.term]
 
-        self.content = Chain()
+        self.content = Chain(self)
 
     def render(self):
         page = RFICPage(self, first=True)
         self.addPage(page)
-
-        second_page = RFICPage(self)
-        self.addPage(second_page)
 
         title = Paragraph(self.title, titleStyle)
         author = Paragraph(self.author, authorStyle)
@@ -305,3 +293,8 @@ class RFIC2009Paper(Document):
             section.render(self.content)
 
         Document.render(self)
+
+    def add_to_chain(self, chain):
+        page = RFICPage(self)
+        self.addPage(page)
+        return page.column1

@@ -22,8 +22,11 @@ PORTRAIT = Orientation.Portrait
 LANDSCAPE = Orientation.Landscape
 
 class Page(Container):
-    def __init__(self, psg_doc, paper, orientation=Orientation.Portrait):
+    def __init__(self, document, paper, orientation=Orientation.Portrait):
+        assert isinstance(document, Document)
         assert isinstance(paper, Paper)
+        self.document = document
+        psg_doc = document.psg_doc
         self.paper = paper
         self.orientation = orientation
         if self.orientation is Orientation.Portrait:
@@ -103,16 +106,18 @@ class Document(object):
 ##
         # TODO: generate pages as required (based on master pages
         # http://docs.python.org/tutorial/classes.html#generators
-        for page in self.pages:
-            #print(page)
-            try:
-                page.render()
-            except EndOfPage:
-                #self.addPage(next(self.pagegen))
-                print("EndOfPage")
-                continue
-##            except EndOfContent:
-##                break
+##        for page in self.pages:
+##            #print(page)
+##            try:
+##                page.render()
+##            except EndOfPage:
+##                #self.addPage(next(self.pagegen))
+##                print("EndOfPage")
+##                continue
+####            except EndOfContent:
+####                break
+
+        self.pages[0].render()
 
         fp = open(self.filename, "w", encoding="latin-1")
         self.psg_doc.write_to(fp)

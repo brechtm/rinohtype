@@ -76,7 +76,9 @@ class Heading(Paragraph):
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
-                  'itemSpacing': ParagraphStyle.attributes['lineSpacing']}
+                  'itemSpacing': ParagraphStyle.attributes['lineSpacing'],
+                  'numberingStyle': NumberingStyle.number,
+                  'numberingSeparator': ')'}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -95,11 +97,14 @@ class List(Paragraph):
                                          spaceAbove=nil,
                                          spaceBelow=style.spaceBelow,
                                          base=style)
+        separator = style.numberingSeparator
         for i, item in enumerate(items[:-1]):
-            item = Paragraph("{}.&nbsp;".format(i + 1) + item, style=item_style)
+            item = Paragraph("{}{}&nbsp;".format(i + 1, separator) + item,
+                             style=item_style)
             items2.append(item)
-        items2.append(Paragraph("{}.&nbsp;".format(len(items)) + items[-1],
-                               style=last_item_style))
+        items2.append(Paragraph("{}{}&nbsp;".format(len(items), separator) +
+                                items[-1],
+                                style=last_item_style))
         obj = super().__new__(cls, items2, style)
         return obj
 

@@ -202,17 +202,18 @@ class Container(TextTarget):
 
 
 class Chain(TextTarget):
-    def __init__(self):
+    def __init__(self, document):
         TextTarget.__init__(self)
-        self.__containers = []
-        self.__typeset = False
+        self.document = document
+        self._containers = []
+        self._typeset = False
+        self._container_index = 0
 
     def typeset(self, parentCanvas):
-        if self.__typeset:
+        if self._typeset:
             return
-        self.__typeset = True
-        contIter = iter(self.__containers)
-        container = next(contIter)
+        self._typeset = True
+        container = self.next_container()
         totalHeight = 0
         prevParHeight = 0
         for paragraph in self.paragraphs():
@@ -240,7 +241,7 @@ class Chain(TextTarget):
             except EndOfBox:
                 print("NEXT container")
                 try:
-                    container = next(contIter)
+                    container = self.next_container()
                 except StopIteration:
                     print("StopIteration - End of page")
                     raise EndOfPage
@@ -266,7 +267,16 @@ class Chain(TextTarget):
 
         return totalHeight
 
+    def next_container(self):
+        try:
+            container = self._containers[self._container_index]
+            self._container_index += 1
+        except IndexError:
+            container = self.document.add_to_chain(self)
+            self._container_index += 1
+        return container
+
     def addContainer(self, container):
         assert isinstance(container, Container)
-        self.__containers.append(container)
+        self._containers.append(container)
 

@@ -3,12 +3,11 @@ import re
 from copy import copy
 from html.entities import name2codepoint
 
-from pyte.hyphenator import Hyphenator
-
-from psg.fonts.encoding_tables import unicode_to_glyph_name, glyph_name_to_unicode
+from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from pyte.unit import pt
 from pyte.font import TypeFace, FontStyle
+from pyte.hyphenator import Hyphenator
 
 
 class ParentStyleException(Exception):
@@ -289,7 +288,7 @@ class Word(list):
             font_metrics = character.get_font().psFont.metrics
             char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"]
             try:
-                # TODO: verfiy whether styles are identical
+                # TODO: verify whether styles are identical
                 ligatures = char_metrics[previous.ord()]['L']
                 # TODO: check for other standard ligatures (ij)
 
@@ -342,6 +341,7 @@ class Word(list):
             hyphen.parent = first[-1].parent
             first.append(hyphen)
             yield first, second
+
 
 # predefined styles
 
