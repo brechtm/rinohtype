@@ -11,10 +11,10 @@ class FontStyle:
 
 
 class Font(object):
-    def __init__(self, name, filename):
-        self.name = name
+    def __init__(self, filename):
         self.filename = filename
         self.psFont = type1(filename + ".pfb", filename  + ".afm")
+        self.name = self.psFont.full_name
 
 
 class TypeFace(object):

@@ -122,3 +122,6 @@ class Document(object):
         fp = open(self.filename, "w", encoding="latin-1")
         self.psg_doc.write_to(fp)
         fp.close()
+
+    def add_to_chain(self, chain):
+        raise NotImplementedError

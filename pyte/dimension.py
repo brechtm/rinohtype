@@ -41,7 +41,6 @@ class Dimension(object): # internally always pt
     __rmul__ = __mul__
 
     def __truediv__(self, factor):
-        print(type(factor))
         return self * (1.0/factor)
 
     def __lt__(self, other):

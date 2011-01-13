@@ -27,13 +27,16 @@ class Heading(Paragraph):
     next_number = {1: 1}
 
     def __new__(cls, title, style=None, level=1):
-        number = cls._format_number(cls.next_number[level], style)
+        if style.numberingStyle:
+            number = cls._format_number(cls.next_number[level], style) + ". "
+        else:
+            number = ""
         if level in cls.next_number:
             cls.next_number[level] += 1
             cls.next_number[level + 1] = 1
         else:
             cls.next_number[level] = 2
-        obj = super().__new__(cls, number + ". " + title, style)
+        obj = super().__new__(cls, number + title, style)
         obj.level = level
         return obj
 
@@ -126,10 +129,12 @@ class List(Paragraph):
             try:
                 item = self[i]
                 offset += item.typeset(pscanvas, offset)
+                print('List.typeset(offset={})'.format(offset))
             except EndOfBox:
                 self.itempointer = i
                 raise
 
+        print('List.typeset-return(offset={})'.format(offset))
         return offset
 
 

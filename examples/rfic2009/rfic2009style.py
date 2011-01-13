@@ -17,14 +17,14 @@ from pyte.structure import *
 
 # fonts
 # ----------------------------------------------------------------------------
-termesRoman = Font("TeXGyreTermes-Regular", "qtmr")
-termesBold = Font("TeXGyreTermes-Bold", "qtmb")
-termesItalic = Font("TeXGyreTermes-Italic", "qtmri")
-termesBoldItalic = Font("TeXGyreTermes-BoldItalic", "qtmbi")
+termes_roman = Font("qtmr")
+termes_bold = Font("qtmb")
+termes_italic = Font("qtmri")
+termes_bold_italic = Font("qtmbi")
 
 termes = TypeFace("TeXGyreTermes",
-                    roman=termesRoman, bold=termesBold,
-                    italic=termesItalic, bolditalic=termesBoldItalic)
+                  roman=termes_roman, bold=termes_bold,
+                  italic=termes_italic, bolditalic=termes_bold_italic)
 
 ieeeFamily = TypeFamily(serif=termes)
 
@@ -93,6 +93,9 @@ hd1Style = HeadingStyle("heading",
                         spaceAbove=18*pt,
                         spaceBelow=6*pt,
                         numberingStyle=NumberingStyle.Roman)
+
+acknowledgement_heading_style = HeadingStyle("acknowledgement", base=hd1Style,
+                                             numberingStyle=None)
 
 hd2Style = HeadingStyle("subheading", base=hd1Style,
                         fontStyle=FontStyle.Italic,
@@ -212,6 +215,15 @@ class LI(CustomElement):
                 content += child.tail
         return content
 
+class Acknowledgement(CustomElement):
+    def render(self, target):
+        #print('Acknowledgement.render()')
+        heading = Heading('Acknowledgement',
+                          style=acknowledgement_heading_style, level=1)
+        target.addParagraph(heading)
+        for element in self.getchildren():
+            element.render(target)
+
 
 # pages and their layout
 # ----------------------------------------------------------------------------
@@ -291,6 +303,11 @@ class RFIC2009Paper(Document):
 
         for section in self.root.body.section:
             section.render(self.content)
+
+        try:
+            self.root.body.acknowledgement.render(self.content)
+        except AttributeError:
+            pass
 
         Document.render(self)
 

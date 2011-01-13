@@ -6,7 +6,7 @@ grammar {
         element title { text },
         element authors { authorContent },
         element affiliation { text },
-        element abstract { text },
+        element abstract { inline },
         element indexterms { indextermsContent }
       },
       element body { bodyContent }
@@ -16,24 +16,27 @@ grammar {
   indextermsContent =
     element term { text }+
   bodyContent =
-    Section+
-  sectionContent =
-    (Section
-     | element p { inline }
-     | element ol { listContent }
-     | element ul { listContent }
-     )*
+    Section+,
+    Acknowledgement?
   inline =
     (text
      | element b { inline }
      | element em { inline }
      | element sc { inline }
     )*
-  listContent =
-    element li { inline }+
   Section =
     element section {
       attribute title { text },
       sectionContent
     }
+  Acknowledgement =
+    element acknowledgement { sectionContent }
+  sectionContent =
+    (Section
+     | element p { inline }
+     | element ol { listContent }
+     | element ul { listContent }
+     )*
+  listContent =
+    element li { inline }+
 }

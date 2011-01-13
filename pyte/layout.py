@@ -189,9 +189,9 @@ class Container(TextTarget):
             spaceAbove = float(paragraph.style.spaceAbove)
             spaceBelow = float(paragraph.style.spaceBelow)
             boxheight = paragraph.typeset(psgCanvas, totalHeight)
-            print("boxheight = {}".format(boxheight))
+            #print("boxheight = {}".format(boxheight))
             prevParHeight = spaceAbove + boxheight + spaceBelow
-            print("prevParHeight=", prevParHeight)
+            #print("prevParHeight=", prevParHeight)
             totalHeight += prevParHeight
 ##            if dynamic:
 ##                enlarge = (spaceAbove + boxheight + spaceBelow) * pt
@@ -239,6 +239,7 @@ class Chain(TextTarget):
                 prevParHeight = spaceAbove + boxheight + spaceBelow
                 totalHeight += prevParHeight
             except EndOfBox:
+                # TODO: handle successive EndOfBoxes
                 print("NEXT container")
                 try:
                     container = self.next_container()
@@ -247,7 +248,6 @@ class Chain(TextTarget):
                     raise EndOfPage
                 totalHeight = 0
                 prevParHeight = 0
-                totalHeight = 0
 
                 spaceAbove = 0
                 parentCanvas = container.page().canvas
