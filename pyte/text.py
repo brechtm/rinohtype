@@ -118,11 +118,11 @@ class StyledText(Styled):
 
     def __add__(self, other):
         assert isinstance(other, StyledText) or isinstance(other, str)
-        return MixedStyledText((self, other))
+        return MixedStyledText([self, other])
 
     def __radd__(self, other):
         assert isinstance(other, str)
-        return MixedStyledText((other, self))
+        return MixedStyledText([other, self])
 
     def characters(self):
         for char in self.text:
@@ -134,23 +134,16 @@ class StyledText(Styled):
                 yield character
 
 
-class MixedStyledText(tuple, Styled):
-    def __new__(cls, items, style=ParentStyle):
+class MixedStyledText(list, Styled):
+    def __init__(self, items, style=ParentStyle):
+        Styled.__init__(self, style)
         if type(items) == str:
-            items = (items, )
-        texts = []
+            items = [items]
         for item in items:
             if type(item) == str:
                 item = StyledText(item, style=ParentStyle)
-            texts.append(item)
-
-        obj = tuple.__new__(cls, texts)
-        for item in obj:
-            item.parent = obj
-        return obj
-
-    def __init__(self, items, style=ParentStyle):
-        Styled.__init__(self, style)
+            item.parent = self
+            self.append(item)
 
     def __repr__(self):
         return '{0} (style={1})'.format(super().__repr__(), self.style)
@@ -161,15 +154,17 @@ class MixedStyledText(tuple, Styled):
         try:
             result = super().__add__(other)
         except TypeError:
-            result = super().__add__((other, ))
-        return self.__class__(result)
+            result = super().__add__([other])
+        return __class__(result)
+
+    def __iadd__(self, other):
+        return self + other
 
     def __radd__(self, other):
 ##        assert isinstance(other, StyledText) \
 ##            or isinstance(other, MixedStyledText) \
 ##            or isinstance(other, str)
-        result = self.__class__(other) + self
-        return self.__class__(result)
+        return __class__(other) + self
 
     def characters(self):
         for item in self:

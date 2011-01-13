@@ -26,22 +26,19 @@ class Heading(Paragraph):
 
     next_number = {1: 1}
 
-    def __new__(cls, title, style=None, level=1):
+    def __init__(self, title, style=None, level=1):
         if style.numberingStyle:
-            number = cls._format_number(cls.next_number[level], style) + ". "
+            number = self._format_number(self.next_number[level], style) + ". "
         else:
             number = ""
-        if level in cls.next_number:
-            cls.next_number[level] += 1
-            cls.next_number[level + 1] = 1
+        if level in self.next_number:
+            self.next_number[level] += 1
+            self.next_number[level + 1] = 1
         else:
-            cls.next_number[level] = 2
-        obj = super().__new__(cls, number + title, style)
-        obj.level = level
-        return obj
+            self.next_number[level] = 2
+        self.level = level
+        super().__init__(number + title, style)
 
-    def __init__(self, title, style=None, level=1):
-        super().__init__(title, style)
 
     @classmethod
     def _format_number(cls, number, style):
@@ -90,8 +87,8 @@ class ListStyle(ParagraphStyle):
 class List(Paragraph):
     style_class = ListStyle
 
-    def __new__(cls, items, style=None):
-        items2 = []
+    def __init__(self, items, style=None):
+        super().__init__([], style)
         item_style = ParagraphStyle("list item",
                                     spaceAbove=nil,
                                     spaceBelow=style.itemSpacing,
@@ -104,15 +101,9 @@ class List(Paragraph):
         for i, item in enumerate(items[:-1]):
             item = Paragraph("{}{}&nbsp;".format(i + 1, separator) + item,
                              style=item_style)
-            items2.append(item)
-        items2.append(Paragraph("{}{}&nbsp;".format(len(items), separator) +
-                                items[-1],
-                                style=last_item_style))
-        obj = super().__new__(cls, items2, style)
-        return obj
-
-    def __init__(self, items, style=None):
-        super().__init__(items, style)
+            self.append(item)
+        self.append(Paragraph("{}{}&nbsp;".format(len(items), separator) +
+                              items[-1], style=last_item_style))
         self.itempointer = 0
 
 ##    def append(self, listItem):
@@ -124,6 +115,7 @@ class List(Paragraph):
 ##        self.currentNumber += 1
 
     def typeset(self, pscanvas, offset=0):
+        offset_begin = offset
         #for i, item in enumerate(self):
         for i in range(self.itempointer, len(self)):
             try:
@@ -135,7 +127,7 @@ class List(Paragraph):
                 raise
 
         print('List.typeset-return(offset={})'.format(offset))
-        return offset
+        return offset - offset_begin
 
 
 ### TODO: create common superclass for Heading and ListItem

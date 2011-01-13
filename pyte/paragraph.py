@@ -161,10 +161,6 @@ class Line(list):
 class Paragraph(MixedStyledText):
     style_class = ParagraphStyle
 
-    def __new__(cls, items, style=None):
-        obj = super().__new__(cls, items, style=style)
-        return obj
-
     def __init__(self, items, style=None):
         super().__init__(items, style=style)
         # TODO: move to ParagraphStyle
