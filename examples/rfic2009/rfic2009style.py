@@ -112,31 +112,19 @@ heading_styles = [hd1Style, hd2Style]
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
-# FIXME: tricky to get right
-##class Abstract(Paragraph):
-##    def __new__(cls, text):
-##        text = Text("Abstract &mdash; ", boldItalicStyle) + text
-##        return super().__new__(cls, text, abstractStyle)
+
+class Abstract(Paragraph):
+    def __init__(self, text):
+        label = StyledText("Abstract &mdash; ", boldItalicStyle)
+        return super().__init__([label, text], abstractStyle)
 
 
-##class IndexTerms(Paragraph):
-##    def __new__(cls, terms):
-##        terms = copy(terms)
-##        terms.sort()
-##        terms[0] = terms[0][0].upper() + terms[0][1:]
-##        text = Text("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
-##        return Paragraph.__new__(cls, text, abstractStyle)
-
-def Abstract(text):
-    text = StyledText("Abstract &mdash; ", boldItalicStyle) + text
-    return Paragraph(text, style=abstractStyle)
-
-
-def IndexTerms(terms):
-    terms = sorted(terms)
-    terms[0] = terms[0][0].upper() + terms[0][1:]
-    text = StyledText("Index Terms &mdash; ", boldItalicStyle) + ", ".join(terms) + "."
-    return Paragraph(text, style=abstractStyle)
+class IndexTerms(Paragraph):
+    def __init__(self, terms):
+        label = StyledText("Index Terms &mdash; ", boldItalicStyle)
+        text = ", ".join(sorted(terms)) + "."
+        text = text[0].upper() + text[1:]
+        return super().__init__([label, text], abstractStyle)
 
 
 # render methods
@@ -215,6 +203,7 @@ class LI(CustomElement):
                 content += child.tail
         return content
 
+
 class Acknowledgement(CustomElement):
     def render(self, target):
         #print('Acknowledgement.render()')
@@ -227,6 +216,7 @@ class Acknowledgement(CustomElement):
 
 # pages and their layout
 # ----------------------------------------------------------------------------
+
 class RFICPage(Page):
     topmargin = bottommargin = 1.125*inch
     leftmargin = rightmargin = 0.85*inch
