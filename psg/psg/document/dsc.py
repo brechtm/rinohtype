@@ -105,6 +105,7 @@ U{http://partners.adobe.com/public/developer/ps/index_specs.html}.
 import sys, re, warnings
 from string import *
 from types import *
+import time
 
 from io import StringIO as StringIO # need both of them for isinsance()
 
@@ -309,7 +310,7 @@ class parsed_property(property):
         if self.argument_schema == "l":
             section.append(comment(self.comment_keyword, value))
         else:
-            if len(self.argument_schema) == 1 and type(value) != TupleType:
+            if len(self.argument_schema) == 1 and type(value) != tuple:
                 value = ( value, )
 
             ret = []
@@ -317,7 +318,7 @@ class parsed_property(property):
                 format = "%%%s" % char
                 ret.append(format % val)
 
-            section.append(comment(self.comment_keyword, join(ret, " ")))
+            section.append(comment(self.comment_keyword, " ".join(ret)))
 
     def process_comment(self, comment):
         tpl = parse_literals(comment.info, self.argument_schema)
@@ -1074,7 +1075,7 @@ class object_section(section):
 
 class dsc_document(document_section, document):
     """
-    Models a regular Adobe Document Structurnig Convention 3.0 compliant
+    Models a regular Adobe Document Structuring Convention 3.0 compliant
     PostScript document.
     """
     begin = None
@@ -1165,6 +1166,11 @@ class dsc_document(document_section, document):
     name = classmethod(name)
 
     def write_to(self, fp):
+        self.header.creator = 'Python PostScript Generator (PSG)'
+        self.header.creation_date = time.asctime()
+        #self.header.language_level = 2
+        #self.header.orientation =
+        self.header.pages = len(self.pages)
         self.header.document_needed_resources = self.document_needed_resources
         self.header.document_supplied_resources = self.resources()
 
