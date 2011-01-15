@@ -3,16 +3,17 @@ from copy import copy
 
 from lxml import etree, objectify
 
-from pyte import *
-from pyte.unit import *
-from pyte.font import *
+from pyte.unit import inch, pt
+from pyte.font import Font, TypeFace, TypeFamily, FontStyle
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, PORTRAIT
-from pyte.layout import *
-from pyte.paragraph import *
-from pyte.text import *
-from pyte.text import Em as Emphasis
-from pyte.structure import *
+from pyte.layout import Container, Chain
+from pyte.paragraph import ParagraphStyle, Paragraph, Justify
+from pyte.text import StyledText
+from pyte.text import Bold, Emphasized, SmallCaps
+from pyte.text import boldItalicStyle
+from pyte.structure import Heading, List
+from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
 
 
 # fonts
@@ -154,7 +155,7 @@ class Section(CustomElement):
 
 
 class P(CustomElement):
-   def render(self, target):
+    def render(self, target):
         #print('P.render()')
         content = self.text
         for child in self.getchildren():
@@ -174,7 +175,7 @@ class B(CustomElement):
 class Em(CustomElement):
     def render(self, target):
         #print('Em.render()')
-        return Emphasis(self.text)
+        return Emphasized(self.text)
 
 
 class SC(CustomElement):

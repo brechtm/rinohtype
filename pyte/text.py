@@ -357,7 +357,7 @@ class Italic(StyledText):
         StyledText.__init__(self, text, style=italicStyle)
 
 
-class Em(StyledText):
+class Emphasized(StyledText):
     def __init__(self, text):
         StyledText.__init__(self, text, style=italicStyle)
 
