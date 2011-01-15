@@ -1,10 +1,11 @@
-to do:
-* master pages
-* small caps
-* headings
+checklist (what is already implemented, is maked by a +)
+---------
++ master pages
++ small caps
++ headings
 * lists (numbered, unnumbered, definition, ...)
 * cross-references
-* hyphenation \u002D
++ hyphenation \u002D
 ** http://code.google.com/p/python-hyphenator/)
 ** by inserting soft-hyphens in all words?
 * equations
@@ -13,17 +14,18 @@ to do:
 * floats
 * figures (external)
 * tables
-* in-line text formatting
++ in-line text formatting
 * headers and footers
-
-later:
+* support for multiple backends
+** so that we can render to screen to manually place figures
+* generate XML from rST
 * support for DocBook?
 * make "debugging" of styles easier
 ** errors only show up on rendering, which makes it hard to find them
-* ligatures
++ ligatures
 * PDF specials
 * CSS for style specification?
-* unicode
++ unicode
 * absolute placement of floats (papers!)
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
@@ -72,7 +74,6 @@ ideas:
 * user should be able to set variables (input is python file?)
     * conflict with XML input file?
         * use XSLT to generate XML
-* generate XML from rST
 
 * http://freshmeat.net/projects/fonttools/
 * use PSlib:
