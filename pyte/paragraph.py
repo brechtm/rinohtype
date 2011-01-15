@@ -200,7 +200,6 @@ class Paragraph(MixedStyledText):
         indent_first = float(self.get_style('indentFirst'))
         line_width = pscanvas.w() - indent_left - indent_right
 
-        print('1. pscanvas.h() - offset = {}'.format(pscanvas.h() - offset))
         self._line_cursor = pscanvas.h() - offset
 
         wordcount = 0
@@ -241,7 +240,6 @@ class Paragraph(MixedStyledText):
                 self.wordpointer = i - wordcount
                 raise
 
-        print('2. pscanvas.h() - offset - self._line_cursor = {}'.format(pscanvas.h() - offset - self._line_cursor))
         return pscanvas.h() - offset - self._line_cursor
 
     def typeset_line(self, pscanvas, line, last_line=False):

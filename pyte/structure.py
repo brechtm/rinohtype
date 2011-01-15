@@ -121,12 +121,10 @@ class List(Paragraph):
             try:
                 item = self[i]
                 offset += item.typeset(pscanvas, offset)
-                print('List.typeset(offset={})'.format(offset))
             except EndOfBox:
                 self.itempointer = i
                 raise
 
-        print('List.typeset-return(offset={})'.format(offset))
         return offset - offset_begin
 
 
