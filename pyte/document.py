@@ -4,29 +4,24 @@ import time
 from lxml import etree, objectify
 
 from psg.document.dsc import dsc_document
-#from psg.util import *
 
-from pyte.dimension import Dimension
 from pyte.unit import pt
 from pyte.paper import Paper
 from pyte.layout import Container
 from pyte.paragraph import Paragraph
-from pyte.structure import Heading
 from pyte.layout import EndOfPage
+
 
 class Orientation:
     Portrait = 0
     Landscape = 1
 
-PORTRAIT = Orientation.Portrait
-LANDSCAPE = Orientation.Landscape
 
 class Page(Container):
     def __init__(self, document, paper, orientation=Orientation.Portrait):
         assert isinstance(document, Document)
         assert isinstance(paper, Paper)
         self.document = document
-        psg_doc = document.psg_doc
         self.paper = paper
         self.orientation = orientation
         if self.orientation is Orientation.Portrait:
@@ -37,25 +32,16 @@ class Page(Container):
             height = self.paper.width
         super().__init__(None, 0*pt, 0*pt, width, height)
 
+        psg_doc = self.document.psg_doc
         psg_page = psg_doc.page((float(self.width()), float(self.height())))
         self.canvas = psg_page.canvas()
-        #self.canvas._border = True
-
-        #---
-##        dimensions = (float(self.width()), float(self.height()))
-##        psg_page = self.document.psg_doc.page(dimensions)
-##        self.canvas = psg_page.canvas()
-##        self.canvas._border = True
 
     def render(self):
         super().render(self.canvas)
 
 
 class Document(object):
-    default = None
-
-    def __init__(self, filename, xmlfile, rngschema, lookup):
-        self.filename = filename
+    def __init__(self, xmlfile, rngschema, lookup):
         self.pages = []
 
         self.parser = objectify.makeparser(remove_comments=True)
@@ -80,8 +66,6 @@ class Document(object):
 
         self.psg_doc = dsc_document(self.title)
 
-        Document.default = self
-
     def __lshift__(self, item):
         assert isinstance(item, Paragraph)
         self.content.addParagraph(item)
@@ -96,30 +80,10 @@ class Document(object):
         self.pages.append(page)
         page.document = self
 
-    def render(self):
-##        currentpage = next(self.pagegen)
-##        for item in self.content:
-##            try:
-##                currentpage.content.render(item)
-##            except EndOfPage:
-##                currentpage = next(self.pagegen)
-##
-        # TODO: generate pages as required (based on master pages
-        # http://docs.python.org/tutorial/classes.html#generators
-##        for page in self.pages:
-##            #print(page)
-##            try:
-##                page.render()
-##            except EndOfPage:
-##                #self.addPage(next(self.pagegen))
-##                print("EndOfPage")
-##                continue
-####            except EndOfContent:
-####                break
-
+    def render(self, filename):
         self.pages[0].render()
 
-        fp = open(self.filename, "w", encoding="latin-1")
+        fp = open(filename, "w", encoding="latin-1")
         self.psg_doc.write_to(fp)
         fp.close()
 

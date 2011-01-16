@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<references>
+<ref id="Gould2002">
+  <author>
+    <name>
+      <family>Gould</family>
+      <given>P.</given>
+    </name>
+    <name>
+      <family>Lin</family>
+      <given>J.</given>
+    </name>
+    <name>
+      <family>Boric-Lubecke</family>
+      <given>O.</given>
+    </name>
+    <name>
+      <family>Zelley</family>
+      <given>C.</given>
+    </name>
+    <name>
+      <family>Chen</family>
+      <given>Y.-J.</given>
+    </name>
+    <name>
+      <family>Yan</family>
+      <given>R.-H.</given>
+    </name>
+  </author>
+  <title>3V GSM base station RF receivers using 0.25µm BiCMOS</title>
+  <container-title>IEEE Trans. Microwave Theory &amp; Techiques</container-title>
+  <volume>50</volume>
+  <number>1</number>
+  <page>369-376</page>
+  <issued>
+    <month>January</month>
+    <year>2002</year>
+  </issued>
+  <type>article-journal</type>
+</ref>
+
+
+<ref id="Yang2005">
+  <author>
+    <name>
+      <family>Yang</family>
+      <given>X.</given>
+    </name>
+    <name>
+      <family>Cao</family>
+      <given>C.</given>
+    </name>
+    <name>
+      <family>Lin</family>
+      <given>J.</given>
+    </name>
+    <name>
+      <family>O</family>
+      <given>K. K.</given>
+    </name>
+    <name>
+      <family>Brewer</family>
+      <given>J.</given>
+    </name>
+  </author>
+  <title>A 2.5GHz constant envelope phase shift modulator for low-power wireless applications</title>
+  <container-title>IEEE RFIC Symposium Digest</container-title>
+  <page>667-670</page>
+  <issued>
+    <month>June</month>
+    <year>2005</year>
+  </issued>
+  <type>paper-conference</type>
+</ref>
+</references>

@@ -23,10 +23,13 @@ grammar {
      | element b { inline }
      | element em { inline }
      | element sc { inline }
+     | element cite {
+         attribute id { text }
+       }
     )*
   Section =
     element section {
-      attribute title { text },
+      element title { text },
       sectionContent
     }
   Acknowledgement =

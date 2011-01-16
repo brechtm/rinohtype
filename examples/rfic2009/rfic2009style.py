@@ -6,7 +6,7 @@ from lxml import etree, objectify
 from pyte.unit import inch, pt
 from pyte.font import Font, TypeFace, TypeFamily, FontStyle
 from pyte.paper import Paper, Letter
-from pyte.document import Document, Page, PORTRAIT
+from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, Justify
 from pyte.text import StyledText
@@ -14,6 +14,7 @@ from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
 from pyte.structure import Heading, List
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
+from pyte.bibliography import Bibliography, BibliographyFormatter
 
 
 # fonts
@@ -124,7 +125,7 @@ class IndexTerms(Paragraph):
     def __init__(self, terms):
         label = StyledText("Index Terms &mdash; ", boldItalicStyle)
         text = ", ".join(sorted(terms)) + "."
-        text = text[0].upper() + text[1:]
+        text = text.capitalize()
         return super().__init__([label, text], abstractStyle)
 
 
@@ -144,14 +145,21 @@ class CustomElement(objectify.ObjectifiedElement):
 class Section(CustomElement):
     def render(self, target, level=1):
         #print('Section.render() %s' % self.attrib['title'])
-        heading = Heading(self.attrib['title'], style=heading_styles[level - 1],
-                          level=level)
-        target.addParagraph(heading)
         for element in self.getchildren():
-            if type(element) == Section:
+            if type(element) == Title:
+                element.render(target, level=level)
+            elif type(element) == Section:
                 element.render(target, level=level + 1)
             else:
                 element.render(target)
+
+
+class Title(CustomElement):
+    def render(self, target, level=1):
+        #print('Title.render()')
+        heading = Heading(self.text, style=heading_styles[level - 1],
+                          level=level)
+        target.addParagraph(heading)
 
 
 class P(CustomElement):
@@ -205,6 +213,12 @@ class LI(CustomElement):
         return content
 
 
+class Cite(CustomElement):
+    def render(self, target):
+        #print('Cite.render()')
+        return StyledText("cite")
+
+
 class Acknowledgement(CustomElement):
     def render(self, target):
         #print('Acknowledgement.render()')
@@ -213,6 +227,16 @@ class Acknowledgement(CustomElement):
         target.addParagraph(heading)
         for element in self.getchildren():
             element.render(target)
+# bibliography style
+# ----------------------------------------------------------------------------
+
+class IEEEBibliographyFormatter(BibliographyFormatter):
+    def format_citation(self, reference):
+        return StyledText('[{}]'.format)
+
+##    def format_bibliography(self, reference):
+##        pass
+
 
 
 # pages and their layout
@@ -224,7 +248,7 @@ class RFICPage(Page):
     column_spacing = 0.25*inch
 
     def __init__(self, document, first=False):
-        super().__init__(document, Letter, PORTRAIT)
+        super().__init__(document, Letter, Orientation.Portrait)
         body = Container(self, self.leftmargin, self.topmargin,
                          self.width() - (self.leftmargin + self.rightmargin),
                          self.height() - (self.topmargin + self.bottommargin))
@@ -254,15 +278,17 @@ class RFICPage(Page):
 class RFIC2009Paper(Document):
     rngschema = 'rfic.rng'
 
-    def __init__(self, filename):
+    def __init__(self, filename, bibliography_source):
         lookup = etree.ElementNamespaceClassLookup()
         namespace = lookup.get_namespace('http://www.mos6581.org/ns/rficpaper')
         namespace[None] = CustomElement
         namespace.update(dict([(cls.__name__.lower(), cls)
                                for cls in CustomElement.__subclasses__()]))
 
-        Document.__init__(self, filename, 'template.xml', self.rngschema,
-                          lookup)
+        Document.__init__(self, filename, self.rngschema, lookup)
+
+        self.bibliography = Bibliography(bibliography_source,
+                                         IEEEBibliographyFormatter)
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -274,7 +300,7 @@ class RFIC2009Paper(Document):
 
         self.content = Chain(self)
 
-    def render(self):
+    def render(self, filename):
         page = RFICPage(self, first=True)
         self.addPage(page)
 
@@ -300,7 +326,7 @@ class RFIC2009Paper(Document):
         except AttributeError:
             pass
 
-        Document.render(self)
+        Document.render(self, filename)
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
