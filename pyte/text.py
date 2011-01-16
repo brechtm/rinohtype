@@ -278,7 +278,10 @@ class Word(list):
 
     def substitute_ligatures(self):
         ligatured = __class__()
-        previous = self[0]
+        try:
+            previous = self[0]
+        except IndexError:
+            return self
         for character in self[1:]:
             font_metrics = character.get_font().psFont.metrics
             char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"]
