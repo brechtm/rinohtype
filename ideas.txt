@@ -14,10 +14,14 @@ checklist (what is already implemented, is maked by a +)
 * floats
 * figures (external)
 * tables
+** table editor!
 + in-line text formatting
 * headers and footers
 * support for multiple backends
 ** so that we can render to screen to manually place figures
+** real-time preview (BaKoMa-TeX)
+** equation editor
+** http://stackoverflow.com/questions/311118/real-time-latex
 * generate XML from rST
 * support for DocBook?
 * make "debugging" of styles easier

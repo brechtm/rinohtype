@@ -47,6 +47,9 @@ ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
 ParagraphStyle.attributes['hyphenChars'] = 4
 
+bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
+                                   fontSize=9*pt)
+
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
                             fontStyle=FontStyle.Roman,
@@ -216,7 +219,8 @@ class LI(CustomElement):
 class Cite(CustomElement):
     def render(self, target):
         #print('Cite.render()')
-        return StyledText("cite")
+        # TODO: general document getter in TextTarget/Chain/Container
+        return target.document.bibliography.cite(self.get('id'))
 
 
 class Acknowledgement(CustomElement):
@@ -227,17 +231,33 @@ class Acknowledgement(CustomElement):
         target.addParagraph(heading)
         for element in self.getchildren():
             element.render(target)
+
+
 # bibliography style
 # ----------------------------------------------------------------------------
 
 class IEEEBibliographyFormatter(BibliographyFormatter):
     def format_citation(self, reference):
-        return StyledText('[{}]'.format)
+        try:
+            index = self.bibliography.index(reference)
+            return StyledText('[{}]'.format(index + 1))
+        except:
+            return StyledText('[ERROR]')
 
-##    def format_bibliography(self, reference):
-##        pass
-
-
+    def format_bibliography(self, target):
+        items = []
+        heading = Heading('References', style=acknowledgement_heading_style)
+        target.addParagraph(heading)
+        for i, ref in enumerate(self.bibliography):
+            authors = ['{} {}'.format(name.given_initials(), name.family)
+                       for name in ref.author]
+            authors = ', '.join(authors)
+            item = '[{}]&nbsp;{}, "{}", '.format(i + 1, authors, ref.title)
+            item += Emphasized(ref['container_title'])
+            item += ' {}'.format(ref.issued.year)
+            items.append(item)
+            paragraph = Paragraph(item, style=bibliographyStyle)
+            target.addParagraph(paragraph)
 
 # pages and their layout
 # ----------------------------------------------------------------------------
@@ -288,7 +308,7 @@ class RFIC2009Paper(Document):
         Document.__init__(self, filename, self.rngschema, lookup)
 
         self.bibliography = Bibliography(bibliography_source,
-                                         IEEEBibliographyFormatter)
+                                         IEEEBibliographyFormatter())
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -325,6 +345,8 @@ class RFIC2009Paper(Document):
             self.root.body.acknowledgement.render(self.content)
         except AttributeError:
             pass
+
+        self.bibliography.bibliography(self.content)
 
         Document.render(self, filename)
 

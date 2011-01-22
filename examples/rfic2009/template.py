@@ -17,4 +17,4 @@ run_time = time.clock()
 
 print('Total execution time: {} seconds'.format(run_time))
 
-#os.system("ps2pdf.cmd")
+os.system("ps2pdf.cmd")

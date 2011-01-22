@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE rficpaper [
+<!ENTITY % w3centities PUBLIC
+  "-//W3C//ENTITIES Combined Set//EN//XML"
+  "w3centities-f.ent"
+  >
+%w3centities;
+]>
 <references>
 <ref id="Gould2002">
   <author>
@@ -27,7 +34,7 @@
       <given>R.-H.</given>
     </name>
   </author>
-  <title>3V GSM base station RF receivers using 0.25µm BiCMOS</title>
+  <title>3V GSM base station RF receivers using 0.25&mu;m BiCMOS</title>
   <container-title>IEEE Trans. Microwave Theory &amp; Techiques</container-title>
   <volume>50</volume>
   <number>1</number>
