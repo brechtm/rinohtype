@@ -103,7 +103,7 @@ class Line(list):
             for i, char in enumerate(chars):
                 if isinstance(char, Space):
                     char_widths[i] = char.width()
-                    line_width += char.width()
+                    line_width += char_widths[i]
             extra_space = self.width - line_width
 
         # horizontal displacement
@@ -163,7 +163,7 @@ class Paragraph(MixedStyledText):
 
     def __init__(self, items, style=None):
         super().__init__(items, style=style)
-        # TODO: move to ParagraphStyle
+        # TODO: move to TextStyle
         self.kerning = True
         self.ligatures = True
         #self.char_spacing = 0.0
