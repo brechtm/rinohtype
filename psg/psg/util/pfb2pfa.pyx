@@ -1,4 +1,5 @@
-import cython
+# cython: profile=True
+cimport cython
 from psg.exceptions import PFBError
 
 cdef extern from "stdlib.h":
@@ -9,6 +10,7 @@ cdef extern from "stdlib.h":
     size_t strlen(char *s)
     char *strcpy(char *dest, char *src)
 
+
 def pfb2pfa(pfb, pfa):
     """
     Convert a PostScript Type1 font in binary representation (pfb) to
@@ -16,7 +18,7 @@ def pfb2pfa(pfb, pfa):
     pfb2pfa program written in C by Piet Tutelaers. I freely admit
     that I understand only rudimentarily what I'm doing here.
     """
-    
+
     cdef int r, t, c, l, l1, l2, l3, l4, ptr
     cdef int length, i
     cdef int* pfb_content
