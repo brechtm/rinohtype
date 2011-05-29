@@ -1,5 +1,6 @@
 
-from pyte.paragraph import ParagraphStyle, Paragraph, MixedStyledText
+from pyte.text import StyledText
+from pyte.paragraph import ParagraphStyle, Paragraph
 from pyte.unit import nil
 from psg.exceptions import EndOfBox
 
@@ -20,16 +21,27 @@ class HeadingStyle(ParagraphStyle):
         super().__init__(name, base=base, **attributes)
 
 
-# TODO: share subclass with List (numbering)
+class Referenceable(object):
+    def __init__(self, id):
+        self.id = id
+
+    def reference(self):
+        return self.ref
+
+
+# TODO: share superclass with List (numbering)
 class Heading(Paragraph):
     style_class = HeadingStyle
 
     next_number = {1: 1}
 
     def __init__(self, title, style=None, level=1):
-        if style.numberingStyle:
-            number = self._format_number(self.next_number[level], style) + ". "
+        if style.numberingStyle is not None:
+            self.ref = self._format_number(self.next_number[level],
+                                           style.numberingStyle)
+            number = self.ref + style.numberingSeparator + '&nbsp;'
         else:
+            self.ref = None
             number = ""
         if level in self.next_number:
             self.next_number[level] += 1
@@ -39,10 +51,8 @@ class Heading(Paragraph):
         self.level = level
         super().__init__(number + title, style)
 
-
     @classmethod
     def _format_number(cls, number, style):
-        style = style.numberingStyle
         if style == NumberingStyle.number:
             return str(number)
         elif style == NumberingStyle.character:
@@ -53,13 +63,15 @@ class Heading(Paragraph):
                     remainder = 26
                     number -= 1
                 string = chr(ord('a') - 1 + remainder) + string
-            return chr(ord('a') - 1 + int(number)) + string
+            return chr(ord('a') - 1 + number) + string
         elif style == NumberingStyle.Character:
-            return chr(ord('A') - 1 + number)
+            return cls._format_number(number, NumberingStyle.character).upper()
         elif style == NumberingStyle.roman:
             return cls._romanize(number).lower()
         elif style == NumberingStyle.Roman:
             return cls._romanize(number)
+        else:
+            return ''
 
     @classmethod
     def _romanize(cls, n):
@@ -72,6 +84,9 @@ class Heading(Paragraph):
             (k, n) = divmod(n, num)
             roman.append(ltr * k)
         return "".join(roman)
+
+    def reference(self):
+        return self.ref
 
 
 class ListStyle(ParagraphStyle):
@@ -132,3 +147,19 @@ class List(Paragraph):
 ##class ListItem(Paragraph):
 ##    def __init__(self, text):
 ##        Paragraph.__init__(self, text)
+
+
+class Reference(StyledText):
+    def __init__(self, id, target):
+        print('Reference.__init__')
+        super().__init__('')
+        self.id = id
+        self.document = target.document
+
+    def characters(self):
+        self.text = self.document.elements[self.id].reference()
+        if self.text is None:
+            print('Warning: trying to reference unreferenceable object')
+        self.text= '[not referenceable]'
+        for character in super().characters():
+            yield character

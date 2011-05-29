@@ -12,7 +12,7 @@ from pyte.paragraph import ParagraphStyle, Paragraph, Justify
 from pyte.text import StyledText
 from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
-from pyte.structure import Heading, List
+from pyte.structure import Heading, List, Reference
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 
@@ -149,8 +149,8 @@ class Section(CustomElement):
     def render(self, target, level=1):
         #print('Section.render() %s' % self.attrib['title'])
         for element in self.getchildren():
-            if type(element) == Title:
-                element.render(target, level=level)
+            if isinstance(element, Title):
+                element.render(target, level=level, id=self.get('id', None))
             elif type(element) == Section:
                 element.render(target, level=level + 1)
             else:
@@ -158,10 +158,12 @@ class Section(CustomElement):
 
 
 class Title(CustomElement):
-    def render(self, target, level=1):
+    def render(self, target, level=1, id=None):
         #print('Title.render()')
         heading = Heading(self.text, style=heading_styles[level - 1],
                           level=level)
+        if id:
+            target.document.elements[id] = heading
         target.addParagraph(heading)
 
 
@@ -223,6 +225,12 @@ class Cite(CustomElement):
         return target.document.bibliography.cite(self.get('id'))
 
 
+class Ref(CustomElement):
+    def render(self, target):
+        #print('Ref.render()')
+        return Reference(self.get('id'), target)
+
+
 class Acknowledgement(CustomElement):
     def render(self, target):
         #print('Acknowledgement.render()')
@@ -254,7 +262,7 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
             authors = ', '.join(authors)
             item = '[{}]&nbsp;{}, "{}", '.format(i + 1, authors, ref.title)
             item += Emphasized(ref['container_title'])
-            item += ' {}'.format(ref.issued.year)
+            item += ', {}'.format(ref.issued.year)
             items.append(item)
             paragraph = Paragraph(item, style=bibliographyStyle)
             target.addParagraph(paragraph)
@@ -294,7 +302,6 @@ class RFICPage(Page):
 
 # main document
 # ----------------------------------------------------------------------------
-
 class RFIC2009Paper(Document):
     rngschema = 'rfic.rng'
 

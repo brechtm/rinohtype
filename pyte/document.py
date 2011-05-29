@@ -61,8 +61,7 @@ class Document(object):
         self.keywords = []
         self.created = time.asctime()
 
-        self.headingLevel = 1
-        self.listLevel = 1
+        self.elements = {}
 
         self.psg_doc = dsc_document(self.title)
 

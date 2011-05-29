@@ -168,12 +168,11 @@ class Paragraph(MixedStyledText):
         self.ligatures = True
         #self.char_spacing = 0.0
 
-        self._split_words()
+        self._words = []
         self.wordpointer = 0
         self.first_line = True
 
     def _split_words(self):
-        self._words = []
         word = Word()
         for char in self.characters():
             if isinstance(char, Space):
@@ -188,6 +187,9 @@ class Paragraph(MixedStyledText):
 
     # based on the typeset functions of psg.box.textbox
     def typeset(self, pscanvas, offset=0):
+        if not self._words:
+            self._split_words()
+
 ##        thisCanvas = pscanvas
 ##        print("gsave", file=thisCanvas)
 ##        thisCanvas.print_bounding_path()

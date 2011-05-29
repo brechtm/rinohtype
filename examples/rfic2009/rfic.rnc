@@ -26,9 +26,13 @@ grammar {
      | element cite {
          attribute id { text }
        }
+     | element ref {
+         attribute id { text }
+       }
     )*
   Section =
     element section {
+      attribute id { text }?,
       element title { text },
       sectionContent
     }
