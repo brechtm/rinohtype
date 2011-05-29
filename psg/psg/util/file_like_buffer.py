@@ -68,8 +68,7 @@ import sys, os
 from types import *
 from io import StringIO
 
-from psg.exceptions import *
-##from .misc import *
+from ..exceptions import *
 
 # Utilities for creating files
 
@@ -164,6 +163,7 @@ class file_as_buffer:
         self.fp = fp
 
     def write_to(self, fp):
+        from .misc import copy_linewise
         copy_linewise(self.fp, fp)
 
 
