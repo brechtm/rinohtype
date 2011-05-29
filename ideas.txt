@@ -4,6 +4,7 @@ checklist (what is already implemented, is maked by a +)
 + small caps
 + headings
 * lists (numbered, unnumbered, definition, ...)
+* tabs (helps lists)
 * cross-references
 + hyphenation \u002D
 ** http://code.google.com/p/python-hyphenator/)
@@ -44,6 +45,10 @@ resources:
 * http://en.wikipedia.org/wiki/PostScript
 * http://www.adobe.com/print/features/psvspdf/
 * http://www.fileformat.info/info/unicode/
+
+unicode <-> glyph names
+* http://www.jdawiseman.com/papers/trivia/character-entities.html
+* http://cpansearch.perl.org/src/SSIMMS/PDF-API2-2.019/lib/PDF/API2/Resource/uniglyph.txt
 
 * http://pybrary.net/pyPdf/
 * http://www.python.org/dev/peps/pep-0008/ - style guide for python code
