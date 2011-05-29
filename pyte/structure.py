@@ -160,6 +160,6 @@ class Reference(StyledText):
         self.text = self.document.elements[self.id].reference()
         if self.text is None:
             print('Warning: trying to reference unreferenceable object')
-        self.text= '[not referenceable]'
+            self.text= '[not referenceable]'
         for character in super().characters():
             yield character
