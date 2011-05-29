@@ -86,12 +86,18 @@ class Styled(object):
                                     self.style_class.__name__))
         self.style = style
         self.parent = None
+        self.cached_style = {}
 
     def get_style(self, attribute):
         try:
-            return getattr(self.style, attribute)
-        except ParentStyleException:
-            return self.parent.get_style(attribute)
+            return self.cached_style[attribute]
+        except KeyError:
+            try:
+                value = getattr(self.style, attribute)
+            except ParentStyleException:
+                value = self.parent.get_style(attribute)
+            self.cached_style[attribute] = value
+            return value
 
     def get_font(self):
         return self.get_style('typeface').font(self.get_style('fontStyle'))
