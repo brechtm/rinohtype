@@ -239,7 +239,7 @@ class Paragraph(MixedStyledText):
             try:
                 self.typeset_line(pscanvas, line, True)
             except EndOfBox:
-                self.wordpointer = i - wordcount
+                self.wordpointer = i - wordcount + 1
                 raise
 
         return pscanvas.h() - offset - self._line_cursor
