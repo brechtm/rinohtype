@@ -1,4 +1,6 @@
 
+import os
+
 from psg.fonts.type1 import type1
 
 class FontStyle:
@@ -13,7 +15,10 @@ class FontStyle:
 class Font(object):
     def __init__(self, filename):
         self.filename = filename
-        self.psFont = type1(filename + ".pfb", filename  + ".afm")
+        if os.path.exists(filename + ".pfa"):
+            self.psFont = type1(filename + ".pfa", filename  + ".afm")
+        else:
+            self.psFont = type1(filename + ".pfb", filename  + ".afm")
         self.name = self.psFont.full_name
 
 
