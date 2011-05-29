@@ -125,13 +125,16 @@ class StyledText(Styled):
         return MixedStyledText([other, self])
 
     def characters(self):
-        for char in self.text:
-            character = Character(char, style=ParentStyle)
+        for i, char in enumerate(self.text):
+            character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
             if self.get_style('smallCaps'):
                 yield character.small_capital()
             else:
                 yield character
+
+    def spans(self):
+        return self
 
 
 class MixedStyledText(list, Styled):
@@ -171,14 +174,22 @@ class MixedStyledText(list, Styled):
             for char in item.characters():
                 yield char
 
+    def spans(self):
+        for item in self:
+            yield item
+
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
-    def __init__(self, text, style=ParentStyle):
+    def __init__(self, text, style=ParentStyle, new_span=False):
         assert len(text) == 1
         super().__init__(text, style)
         if text in (' ', '\t'):
             self.__class__= Space
+        self.new_span = new_span
+
+    def __repr__(self):
+        return self.text
 
     def width(self):
         font = self.get_font()
@@ -254,6 +265,9 @@ class Word(list):
         for char in characters:
             self.append(char)
 
+    stringwidth = None
+    font_size = None
+
     def __repr__(self):
         return ''.join([char.text for char in self])
 
@@ -303,7 +317,12 @@ class Word(list):
     def width(self, kerning=True):
         width = 0.0
         for i, character in enumerate(self):
-            width += character.width()
+            if self.stringwidth is None or character.new_span:
+                self.font_metrics = character.get_font().psFont.metrics
+                self.stringwidth = self.font_metrics.stringwidth
+                self.font_size = float(character.get_style('fontSize'))
+
+            width += self.stringwidth(character.text, self.font_size)
             if kerning:
                 width += self.kerning(i)
         return width
@@ -316,11 +335,11 @@ class Word(list):
             next = self[index+1]
             # FIXME: different styles can have the same font/size/weight
             if this.style == next.style:
-                font = this.get_font()
-                kp = font.psFont.metrics.kerning_pairs
-                kern = font.psFont.metrics.kerning_pairs.get(
-                    (this.ord(), next.ord()), 0.0)
-                kerning = kern * float(this.get_style('fontSize'))/ 1000.0
+                kern = self.font_metrics.kerning_pairs.get((this.ord(),
+                                                            next.ord()), 0.0)
+                kerning = kern * float(self.font_size)/ 1000.0
+            else:
+                kerning = 0.0
 
         return kerning
 
