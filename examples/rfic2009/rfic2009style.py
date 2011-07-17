@@ -12,6 +12,8 @@ from pyte.paragraph import ParagraphStyle, Paragraph, Justify
 from pyte.text import StyledText
 from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
+from pyte.math import Equation
+from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
@@ -46,6 +48,12 @@ bodyStyle = ParagraphStyle('body',
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
 ParagraphStyle.attributes['hyphenChars'] = 4
+
+equationStyle = ParagraphStyle('equation', base=bodyStyle,
+                               indentFirst=0*pt,
+                               spaceAbove=6*pt,
+                               spaceBelow=6*pt,
+                               justify=Justify.Center)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
                                    fontSize=9*pt)
@@ -170,7 +178,10 @@ class Title(CustomElement):
 class P(CustomElement):
     def render(self, target):
         #print('P.render()')
-        content = self.text
+        if self.text is not None:
+            content = self.text
+        else:
+            content = ''
         for child in self.getchildren():
             content += child.render(target)
             if child.tail is not None:
@@ -216,6 +227,20 @@ class LI(CustomElement):
             if child.tail is not None:
                 content += child.tail
         return content
+
+
+class Math(CustomElement):
+    def render(self, target):
+        return PyteMath(self.text)
+
+
+class Eq(CustomElement):
+    def render(self, target, id=None):
+        equation = Equation(self.text)
+        id = self.get('id', None)
+        if id:
+            target.document.elements[id] = equation
+        return equation
 
 
 class Cite(CustomElement):
@@ -266,6 +291,7 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
             items.append(item)
             paragraph = Paragraph(item, style=bibliographyStyle)
             target.addParagraph(paragraph)
+
 
 # pages and their layout
 # ----------------------------------------------------------------------------

@@ -12,6 +12,7 @@ checklist (what is already implemented, is maked by a +)
 * equations
 ** http://matplotlib.sourceforge.net/users/mathtext.html
 ** http://matplotlib.sourceforge.net/api/mathtext_api.html
+** http://code.google.com/p/mathtex/
 * floats
 * figures (external)
 * tables

@@ -17,49 +17,91 @@ metrics for those fonts.
 If you find TeX expressions that don't parse or render properly,
 please email mdroe@stsci.edu, but please check KNOWN ISSUES below first.
 """
-from __future__ import division, print_function
+
 import os, sys
-if sys.version_info[0] >= 3:
-    from io import StringIO
-else:
-    from cStringIO import StringIO
+from io import StringIO
 from math import ceil
-try:
-    set
-except NameError:
-    from sets import Set as set
-import unicodedata
 from warnings import warn
 
-from numpy import inf, isinf
 import numpy as np
-if sys.version_info[0] >= 3:
-    from matplotlib.pyparsing_py3 import Combine, Group, Optional, Forward, \
-         Literal, OneOrMore, ZeroOrMore, ParseException, Empty, \
-         ParseResults, Suppress, oneOf, StringEnd, ParseFatalException, \
-         FollowedBy, Regex, ParserElement
-else:
-    from matplotlib.pyparsing_py2 import Combine, Group, Optional, Forward, \
-         Literal, OneOrMore, ZeroOrMore, ParseException, Empty, \
-         ParseResults, Suppress, oneOf, StringEnd, ParseFatalException, \
-         FollowedBy, Regex, ParserElement
+from .pyparsing_py3 import Combine, Group, Optional, Forward, \
+     Literal, OneOrMore, ZeroOrMore, ParseException, Empty, \
+     ParseResults, Suppress, oneOf, StringEnd, ParseFatalException, \
+     FollowedBy, Regex, ParserElement
 
 # Enable packrat parsing
 ParserElement.enablePackrat()
 
-from matplotlib.afm import AFM
-from matplotlib.cbook import Bunch, get_realpath_and_stat, \
-    is_string_like, maxdict
-from matplotlib.ft2font import FT2Font, FT2Image, KERNING_DEFAULT, LOAD_FORCE_AUTOHINT, LOAD_NO_HINTING
-from matplotlib.font_manager import findfont, FontProperties
-from matplotlib._mathtext_data import latex_to_bakoma, \
-        latex_to_standard, tex2uni, latex_to_cmex, stix_virtual_fonts
-from matplotlib import get_data_path, rcParams
+from ._mathtext_data import tex2uni, latex_to_standard
 
-import matplotlib.colors as mcolors
-import matplotlib._png as _png
 ####################
 
+# from numpy
+inf = float('inf')
+
+def isinf(number):
+    return number == inf
+
+# from matplotlib
+rcParams = {'mathtext.default': 'it'}
+
+# from matplotlib.ft2font
+LOAD_NO_HINTING = 2
+
+# from matplotlib.cbook
+class Bunch:
+    """
+    Often we want to just collect a bunch of stuff together, naming each
+    item of the bunch; a dictionary's OK for that, but a small do- nothing
+    class is even handier, and prettier to use.  Whenever you want to
+    group a few variables:
+
+      >>> point = Bunch(datum=2, squared=4, coord=12)
+      >>> point.datum
+
+      By: Alex Martelli
+      From: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52308
+    """
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
+
+
+    def __repr__(self):
+        keys = self.__dict__.iterkeys()
+        return 'Bunch(%s)'%', '.join(['%s=%s'%(k,self.__dict__[k]) for k in keys])
+
+
+class GetRealpathAndStat:
+    def __init__(self):
+        self._cache = {}
+
+    def __call__(self, path):
+        result = self._cache.get(path)
+        if result is None:
+            realpath = os.path.realpath(path)
+            if sys.platform == 'win32':
+                stat_key = realpath
+            else:
+                stat = os.stat(realpath)
+                stat_key = (stat.st_ino, stat.st_dev)
+            result = realpath, stat_key
+            self._cache[path] = result
+        return result
+get_realpath_and_stat = GetRealpathAndStat()
+
+
+def is_string_like(obj):
+    'Return True if *obj* looks like a string'
+    if isinstance(obj, str): return True
+    # numpy strings are subclass of str, ma strings are not
+    if ma.isMaskedArray(obj):
+        if obj.ndim == 0 and obj.dtype.kind in 'SU':
+            return True
+        else:
+            return False
+    try: obj + ''
+    except: return False
+    return True
 
 
 ##############################################################################
@@ -153,86 +195,6 @@ class MathtextBackend(object):
         """
         return LOAD_NO_HINTING
 
-class MathtextBackendAgg(MathtextBackend):
-    """
-    Render glyphs and rectangles to an FTImage buffer, which is later
-    transferred to the Agg image by the Agg backend.
-    """
-    def __init__(self):
-        self.ox = 0
-        self.oy = 0
-        self.image = None
-        self.mode = 'bbox'
-        self.bbox = [0, 0, 0, 0]
-        MathtextBackend.__init__(self)
-
-    def _update_bbox(self, x1, y1, x2, y2):
-        self.bbox = [min(self.bbox[0], x1),
-                     min(self.bbox[1], y1),
-                     max(self.bbox[2], x2),
-                     max(self.bbox[3], y2)]
-
-    def set_canvas_size(self, w, h, d):
-        MathtextBackend.set_canvas_size(self, w, h, d)
-        if self.mode != 'bbox':
-            self.image = FT2Image(ceil(w), ceil(h + d))
-
-    def render_glyph(self, ox, oy, info):
-        if self.mode == 'bbox':
-            self._update_bbox(ox + info.metrics.xmin,
-                              oy - info.metrics.ymax,
-                              ox + info.metrics.xmax,
-                              oy - info.metrics.ymin)
-        else:
-            info.font.draw_glyph_to_bitmap(
-                self.image, ox, oy - info.metrics.iceberg, info.glyph)
-
-    def render_rect_filled(self, x1, y1, x2, y2):
-        if self.mode == 'bbox':
-            self._update_bbox(x1, y1, x2, y2)
-        else:
-            height = max(int(y2 - y1) - 1, 0)
-            if height == 0:
-                center = (y2 + y1) / 2.0
-                y = int(center - (height + 1) / 2.0)
-            else:
-                y = int(y1)
-            self.image.draw_rect_filled(int(x1), y, ceil(x2), y + height)
-
-    def get_results(self, box, used_characters):
-        self.mode = 'bbox'
-        orig_height = box.height
-        orig_depth  = box.depth
-        ship(0, 0, box)
-        bbox = self.bbox
-        bbox = [bbox[0] - 1, bbox[1] - 1, bbox[2] + 1, bbox[3] + 1]
-        self.mode = 'render'
-        self.set_canvas_size(
-            bbox[2] - bbox[0],
-            (bbox[3] - bbox[1]) - orig_depth,
-            (bbox[3] - bbox[1]) - orig_height)
-        ship(-bbox[0], -bbox[1], box)
-        result = (self.ox,
-                  self.oy,
-                  self.width,
-                  self.height + self.depth,
-                  self.depth,
-                  self.image,
-                  used_characters)
-        self.image = None
-        return result
-
-    def get_hinting_type(self):
-        if rcParams['text.hinting']:
-            return LOAD_FORCE_AUTOHINT
-        else:
-            return LOAD_NO_HINTING
-
-class MathtextBackendBitmap(MathtextBackendAgg):
-    def get_results(self, box, used_characters):
-        ox, oy, width, height, depth, image, characters = \
-            MathtextBackendAgg.get_results(self, box, used_characters)
-        return image, depth
 
 class MathtextBackendPs(MathtextBackend):
     """
@@ -274,118 +236,6 @@ setfont
                 self.pswriter,
                 used_characters)
 
-class MathtextBackendPdf(MathtextBackend):
-    """
-    Store information to write a mathtext rendering to the PDF
-    backend.
-    """
-    def __init__(self):
-        self.glyphs = []
-        self.rects = []
-
-    def render_glyph(self, ox, oy, info):
-        filename = info.font.fname
-        oy = self.height - oy + info.offset
-        self.glyphs.append(
-            (ox, oy, filename, info.fontsize,
-             info.num, info.symbol_name))
-
-    def render_rect_filled(self, x1, y1, x2, y2):
-        self.rects.append((x1, self.height - y2, x2 - x1, y2 - y1))
-
-    def get_results(self, box, used_characters):
-        ship(0, -self.depth, box)
-        return (self.width,
-                self.height + self.depth,
-                self.depth,
-                self.glyphs,
-                self.rects,
-                used_characters)
-
-class MathtextBackendSvg(MathtextBackend):
-    """
-    Store information to write a mathtext rendering to the SVG
-    backend.
-    """
-    def __init__(self):
-        self.svg_glyphs = []
-        self.svg_rects = []
-
-    def render_glyph(self, ox, oy, info):
-        oy = self.height - oy + info.offset
-
-        self.svg_glyphs.append(
-            (info.font, info.fontsize, info.num, ox, oy, info.metrics))
-
-    def render_rect_filled(self, x1, y1, x2, y2):
-        self.svg_rects.append(
-            (x1, self.height - y1 + 1, x2 - x1, y2 - y1))
-
-    def get_results(self, box, used_characters):
-        ship(0, -self.depth, box)
-        svg_elements = Bunch(svg_glyphs = self.svg_glyphs,
-                             svg_rects = self.svg_rects)
-        return (self.width,
-                self.height + self.depth,
-                self.depth,
-                svg_elements,
-                used_characters)
-
-class MathtextBackendPath(MathtextBackend):
-    """
-    Store information to write a mathtext rendering to the Cairo
-    backend.
-    """
-
-    def __init__(self):
-        self.glyphs = []
-        self.rects = []
-
-    def render_glyph(self, ox, oy, info):
-        oy = self.height - oy + info.offset
-        thetext = unichr_safe(info.num)
-        self.glyphs.append(
-            (info.font, info.fontsize, thetext, ox, oy))
-
-    def render_rect_filled(self, x1, y1, x2, y2):
-        self.rects.append(
-            (x1, self.height-y2 , x2 - x1, y2 - y1))
-
-    def get_results(self, box, used_characters):
-        ship(0, -self.depth, box)
-        return (self.width,
-                self.height + self.depth,
-                self.depth,
-                self.glyphs,
-                self.rects)
-
-class MathtextBackendCairo(MathtextBackend):
-    """
-    Store information to write a mathtext rendering to the Cairo
-    backend.
-    """
-
-    def __init__(self):
-        self.glyphs = []
-        self.rects = []
-
-    def render_glyph(self, ox, oy, info):
-        oy = oy - info.offset - self.height
-        thetext = unichr_safe(info.num)
-        self.glyphs.append(
-            (info.font, info.fontsize, thetext, ox, oy))
-
-    def render_rect_filled(self, x1, y1, x2, y2):
-        self.rects.append(
-            (x1, y1 - self.height, x2 - x1, y2 - y1))
-
-    def get_results(self, box, used_characters):
-        ship(0, -self.depth, box)
-        return (self.width,
-                self.height + self.depth,
-                self.depth,
-                self.glyphs,
-                self.rects)
 
 class Fonts(object):
     """
@@ -543,615 +393,6 @@ class Fonts(object):
         """
         return [(fontname, sym)]
 
-class TruetypeFonts(Fonts):
-    """
-    A generic base class for all font setups that use Truetype fonts
-    (through FT2Font).
-    """
-    class CachedFont:
-        def __init__(self, font):
-            self.font     = font
-            self.charmap  = font.get_charmap()
-            self.glyphmap = dict(
-                [(glyphind, ccode) for ccode, glyphind in self.charmap.iteritems()])
-
-        def __repr__(self):
-            return repr(self.font)
-
-    def __init__(self, default_font_prop, mathtext_backend):
-        Fonts.__init__(self, default_font_prop, mathtext_backend)
-        self.glyphd = {}
-        self._fonts = {}
-
-        filename = findfont(default_font_prop)
-        default_font = self.CachedFont(FT2Font(str(filename)))
-        self._fonts['default'] = default_font
-        self._fonts['regular'] = default_font
-
-    def destroy(self):
-        self.glyphd = None
-        Fonts.destroy(self)
-
-    def _get_font(self, font):
-        if font in self.fontmap:
-            basename = self.fontmap[font]
-        else:
-            basename = font
-
-        cached_font = self._fonts.get(basename)
-        if cached_font is None:
-            font = FT2Font(str(basename))
-            cached_font = self.CachedFont(font)
-            self._fonts[basename] = cached_font
-            self._fonts[font.postscript_name] = cached_font
-            self._fonts[font.postscript_name.lower()] = cached_font
-        return cached_font
-
-    def _get_offset(self, cached_font, glyph, fontsize, dpi):
-        if cached_font.font.postscript_name == 'Cmex10':
-            return glyph.height/64.0/2.0 + 256.0/64.0 * dpi/72.0
-        return 0.
-
-    def _get_info(self, fontname, font_class, sym, fontsize, dpi):
-        key = fontname, font_class, sym, fontsize, dpi
-        bunch = self.glyphd.get(key)
-        if bunch is not None:
-            return bunch
-
-        cached_font, num, symbol_name, fontsize, slanted = \
-            self._get_glyph(fontname, font_class, sym, fontsize)
-
-        font = cached_font.font
-        font.set_size(fontsize, dpi)
-        glyph = font.load_char(
-            num,
-            flags=self.mathtext_backend.get_hinting_type())
-
-        xmin, ymin, xmax, ymax = [val/64.0 for val in glyph.bbox]
-        offset = self._get_offset(cached_font, glyph, fontsize, dpi)
-        metrics = Bunch(
-            advance = glyph.linearHoriAdvance/65536.0,
-            height  = glyph.height/64.0,
-            width   = glyph.width/64.0,
-            xmin    = xmin,
-            xmax    = xmax,
-            ymin    = ymin+offset,
-            ymax    = ymax+offset,
-            # iceberg is the equivalent of TeX's "height"
-            iceberg = glyph.horiBearingY/64.0 + offset,
-            slanted = slanted
-            )
-
-        result = self.glyphd[key] = Bunch(
-            font            = font,
-            fontsize        = fontsize,
-            postscript_name = font.postscript_name,
-            metrics         = metrics,
-            symbol_name     = symbol_name,
-            num             = num,
-            glyph           = glyph,
-            offset          = offset
-            )
-        return result
-
-    def get_xheight(self, font, fontsize, dpi):
-        cached_font = self._get_font(font)
-        cached_font.font.set_size(fontsize, dpi)
-        pclt = cached_font.font.get_sfnt_table('pclt')
-        if pclt is None:
-            # Some fonts don't store the xHeight, so we do a poor man's xHeight
-            metrics = self.get_metrics(font, rcParams['mathtext.default'], 'x', fontsize, dpi)
-            return metrics.iceberg
-        xHeight = (pclt['xHeight'] / 64.0) * (fontsize / 12.0) * (dpi / 100.0)
-        return xHeight
-
-    def get_underline_thickness(self, font, fontsize, dpi):
-        # This function used to grab underline thickness from the font
-        # metrics, but that information is just too un-reliable, so it
-        # is now hardcoded.
-        return ((0.75 / 12.0) * fontsize * dpi) / 72.0
-
-    def get_kern(self, font1, fontclass1, sym1, fontsize1,
-                 font2, fontclass2, sym2, fontsize2, dpi):
-        if font1 == font2 and fontsize1 == fontsize2:
-            info1 = self._get_info(font1, fontclass1, sym1, fontsize1, dpi)
-            info2 = self._get_info(font2, fontclass2, sym2, fontsize2, dpi)
-            font = info1.font
-            return font.get_kerning(info1.num, info2.num, KERNING_DEFAULT) / 64.0
-        return Fonts.get_kern(self, font1, fontclass1, sym1, fontsize1,
-                              font2, fontclass2, sym2, fontsize2, dpi)
-
-class BakomaFonts(TruetypeFonts):
-    """
-    Use the Bakoma TrueType fonts for rendering.
-
-    Symbols are strewn about a number of font files, each of which has
-    its own proprietary 8-bit encoding.
-    """
-    _fontmap = { 'cal' : 'cmsy10',
-                 'rm'  : 'cmr10',
-                 'tt'  : 'cmtt10',
-                 'it'  : 'cmmi10',
-                 'bf'  : 'cmb10',
-                 'sf'  : 'cmss10',
-                 'ex'  : 'cmex10'
-                 }
-
-    def __init__(self, *args, **kwargs):
-        self._stix_fallback = StixFonts(*args, **kwargs)
-
-        TruetypeFonts.__init__(self, *args, **kwargs)
-        self.fontmap = {}
-        for key, val in self._fontmap.iteritems():
-            fullpath = findfont(val)
-            self.fontmap[key] = fullpath
-            self.fontmap[val] = fullpath
-
-
-    _slanted_symbols = set(r"\int \oint".split())
-
-    def _get_glyph(self, fontname, font_class, sym, fontsize):
-        symbol_name = None
-        if fontname in self.fontmap and sym in latex_to_bakoma:
-            basename, num = latex_to_bakoma[sym]
-            slanted = (basename == "cmmi10") or sym in self._slanted_symbols
-            try:
-                cached_font = self._get_font(basename)
-            except RuntimeError:
-                pass
-            else:
-                symbol_name = cached_font.font.get_glyph_name(num)
-                num = cached_font.glyphmap[num]
-        elif len(sym) == 1:
-            slanted = (fontname == "it")
-            try:
-                cached_font = self._get_font(fontname)
-            except RuntimeError:
-                pass
-            else:
-                num = ord(sym)
-                gid = cached_font.charmap.get(num)
-                if gid is not None:
-                    symbol_name = cached_font.font.get_glyph_name(
-                        cached_font.charmap[num])
-
-        if symbol_name is None:
-            return self._stix_fallback._get_glyph(
-                fontname, font_class, sym, fontsize)
-
-        return cached_font, num, symbol_name, fontsize, slanted
-
-    # The Bakoma fonts contain many pre-sized alternatives for the
-    # delimiters.  The AutoSizedChar class will use these alternatives
-    # and select the best (closest sized) glyph.
-    _size_alternatives = {
-        '('          : [('rm', '('), ('ex', '\xa1'), ('ex', '\xb3'),
-                        ('ex', '\xb5'), ('ex', '\xc3')],
-        ')'          : [('rm', ')'), ('ex', '\xa2'), ('ex', '\xb4'),
-                        ('ex', '\xb6'), ('ex', '\x21')],
-        '{'          : [('cal', '{'), ('ex', '\xa9'), ('ex', '\x6e'),
-                        ('ex', '\xbd'), ('ex', '\x28')],
-        '}'          : [('cal', '}'), ('ex', '\xaa'), ('ex', '\x6f'),
-                        ('ex', '\xbe'), ('ex', '\x29')],
-        # The fourth size of '[' is mysteriously missing from the BaKoMa
-        # font, so I've ommitted it for both '[' and ']'
-        '['          : [('rm', '['), ('ex', '\xa3'), ('ex', '\x68'),
-                        ('ex', '\x22')],
-        ']'          : [('rm', ']'), ('ex', '\xa4'), ('ex', '\x69'),
-                        ('ex', '\x23')],
-        r'\lfloor'   : [('ex', '\xa5'), ('ex', '\x6a'),
-                        ('ex', '\xb9'), ('ex', '\x24')],
-        r'\rfloor'   : [('ex', '\xa6'), ('ex', '\x6b'),
-                        ('ex', '\xba'), ('ex', '\x25')],
-        r'\lceil'    : [('ex', '\xa7'), ('ex', '\x6c'),
-                        ('ex', '\xbb'), ('ex', '\x26')],
-        r'\rceil'    : [('ex', '\xa8'), ('ex', '\x6d'),
-                        ('ex', '\xbc'), ('ex', '\x27')],
-        r'\langle'   : [('ex', '\xad'), ('ex', '\x44'),
-                        ('ex', '\xbf'), ('ex', '\x2a')],
-        r'\rangle'   : [('ex', '\xae'), ('ex', '\x45'),
-                        ('ex', '\xc0'), ('ex', '\x2b')],
-        r'\__sqrt__' : [('ex', '\x70'), ('ex', '\x71'),
-                        ('ex', '\x72'), ('ex', '\x73')],
-        r'\backslash': [('ex', '\xb2'), ('ex', '\x2f'),
-                        ('ex', '\xc2'), ('ex', '\x2d')],
-        r'/'         : [('rm', '/'), ('ex', '\xb1'), ('ex', '\x2e'),
-                        ('ex', '\xcb'), ('ex', '\x2c')],
-        r'\widehat'  : [('rm', '\x5e'), ('ex', '\x62'), ('ex', '\x63'),
-                        ('ex', '\x64')],
-        r'\widetilde': [('rm', '\x7e'), ('ex', '\x65'), ('ex', '\x66'),
-                        ('ex', '\x67')],
-        r'<'         : [('cal', 'h'), ('ex', 'D')],
-        r'>'         : [('cal', 'i'), ('ex', 'E')]
-        }
-
-    for alias, target in [('\leftparen', '('),
-                          ('\rightparent', ')'),
-                          ('\leftbrace', '{'),
-                          ('\rightbrace', '}'),
-                          ('\leftbracket', '['),
-                          ('\rightbracket', ']')]:
-        _size_alternatives[alias] = _size_alternatives[target]
-
-    def get_sized_alternatives_for_symbol(self, fontname, sym):
-        return self._size_alternatives.get(sym, [(fontname, sym)])
-
-class UnicodeFonts(TruetypeFonts):
-    """
-    An abstract base class for handling Unicode fonts.
-
-    While some reasonably complete Unicode fonts (such as DejaVu) may
-    work in some situations, the only Unicode font I'm aware of with a
-    complete set of math symbols is STIX.
-
-    This class will "fallback" on the Bakoma fonts when a required
-    symbol can not be found in the font.
-    """
-    use_cmex = True
-
-    def __init__(self, *args, **kwargs):
-        # This must come first so the backend's owner is set correctly
-        if rcParams['mathtext.fallback_to_cm']:
-            self.cm_fallback = BakomaFonts(*args, **kwargs)
-        else:
-            self.cm_fallback = None
-        TruetypeFonts.__init__(self, *args, **kwargs)
-        self.fontmap = {}
-        for texfont in "cal rm tt it bf sf".split():
-            prop = rcParams['mathtext.' + texfont]
-            font = findfont(prop)
-            self.fontmap[texfont] = font
-        prop = FontProperties('cmex10')
-        font = findfont(prop)
-        self.fontmap['ex'] = font
-
-    _slanted_symbols = set(r"\int \oint".split())
-
-    def _map_virtual_font(self, fontname, font_class, uniindex):
-        return fontname, uniindex
-
-    def _get_glyph(self, fontname, font_class, sym, fontsize):
-        found_symbol = False
-
-        if self.use_cmex:
-            uniindex = latex_to_cmex.get(sym)
-            if uniindex is not None:
-                fontname = 'ex'
-                found_symbol = True
-
-        if not found_symbol:
-            try:
-                uniindex = get_unicode_index(sym)
-                found_symbol = True
-            except ValueError:
-                uniindex = ord('?')
-                warn("No TeX to unicode mapping for '%s'" %
-                     sym.encode('ascii', 'backslashreplace'),
-                     MathTextWarning)
-
-        fontname, uniindex = self._map_virtual_font(
-            fontname, font_class, uniindex)
-
-        new_fontname = fontname
-
-        # Only characters in the "Letter" class should be italicized in 'it'
-        # mode.  Greek capital letters should be Roman.
-        if found_symbol:
-            if fontname == 'it':
-                if uniindex < 0x10000:
-                    unistring = unichr(uniindex)
-                    if (not unicodedata.category(unistring)[0] == "L"
-                        or unicodedata.name(unistring).startswith("GREEK CAPITAL")):
-                        new_fontname = 'rm'
-
-            slanted = (new_fontname == 'it') or sym in self._slanted_symbols
-            found_symbol = False
-            try:
-                cached_font = self._get_font(new_fontname)
-            except RuntimeError:
-                pass
-            else:
-                try:
-                    glyphindex = cached_font.charmap[uniindex]
-                    found_symbol = True
-                except KeyError:
-                    pass
-
-        if not found_symbol:
-            if self.cm_fallback:
-                warn("Substituting with a symbol from Computer Modern.",
-                     MathTextWarning)
-                return self.cm_fallback._get_glyph(
-                    fontname, 'it', sym, fontsize)
-            else:
-                if fontname in ('it', 'regular') and isinstance(self, StixFonts):
-                    return self._get_glyph('rm', font_class, sym, fontsize)
-                warn("Font '%s' does not have a glyph for '%s' [U%x]" %
-                     (new_fontname, sym.encode('ascii', 'backslashreplace'), uniindex),
-                     MathTextWarning)
-                warn("Substituting with a dummy symbol.", MathTextWarning)
-                fontname = 'rm'
-                new_fontname = fontname
-                cached_font = self._get_font(fontname)
-                uniindex = 0xA4 # currency character, for lack of anything better
-                glyphindex = cached_font.charmap[uniindex]
-                slanted = False
-
-        symbol_name = cached_font.font.get_glyph_name(glyphindex)
-        return cached_font, uniindex, symbol_name, fontsize, slanted
-
-    def get_sized_alternatives_for_symbol(self, fontname, sym):
-        if self.cm_fallback:
-            return self.cm_fallback.get_sized_alternatives_for_symbol(
-                fontname, sym)
-        return [(fontname, sym)]
-
-class StixFonts(UnicodeFonts):
-    """
-    A font handling class for the STIX fonts.
-
-    In addition to what UnicodeFonts provides, this class:
-
-    - supports "virtual fonts" which are complete alpha numeric
-      character sets with different font styles at special Unicode
-      code points, such as "Blackboard".
-
-    - handles sized alternative characters for the STIXSizeX fonts.
-    """
-    _fontmap = { 'rm'  : 'STIXGeneral',
-                 'it'  : 'STIXGeneral:italic',
-                 'bf'  : 'STIXGeneral:weight=bold',
-                 'nonunirm' : 'STIXNonUnicode',
-                 'nonuniit' : 'STIXNonUnicode:italic',
-                 'nonunibf' : 'STIXNonUnicode:weight=bold',
-
-                 0 : 'STIXGeneral',
-                 1 : 'STIXSizeOneSym',
-                 2 : 'STIXSizeTwoSym',
-                 3 : 'STIXSizeThreeSym',
-                 4 : 'STIXSizeFourSym',
-                 5 : 'STIXSizeFiveSym'
-                 }
-    use_cmex = False
-    cm_fallback = False
-    _sans = False
-
-    def __init__(self, *args, **kwargs):
-        TruetypeFonts.__init__(self, *args, **kwargs)
-        self.fontmap = {}
-        for key, name in self._fontmap.iteritems():
-            fullpath = findfont(name)
-            self.fontmap[key] = fullpath
-            self.fontmap[name] = fullpath
-
-    def _map_virtual_font(self, fontname, font_class, uniindex):
-        # Handle these "fonts" that are actually embedded in
-        # other fonts.
-        mapping = stix_virtual_fonts.get(fontname)
-        if (self._sans and mapping is None and
-            fontname not in ('regular', 'default')):
-            mapping = stix_virtual_fonts['sf']
-            doing_sans_conversion = True
-        else:
-            doing_sans_conversion = False
-
-        if mapping is not None:
-            if isinstance(mapping, dict):
-                mapping = mapping.get(font_class, 'rm')
-
-            # Binary search for the source glyph
-            lo = 0
-            hi = len(mapping)
-            while lo < hi:
-                mid = (lo+hi)//2
-                range = mapping[mid]
-                if uniindex < range[0]:
-                    hi = mid
-                elif uniindex <= range[1]:
-                    break
-                else:
-                    lo = mid + 1
-
-            if uniindex >= range[0] and uniindex <= range[1]:
-                uniindex = uniindex - range[0] + range[3]
-                fontname = range[2]
-            elif not doing_sans_conversion:
-                # This will generate a dummy character
-                uniindex = 0x1
-                fontname = rcParams['mathtext.default']
-
-        # Handle private use area glyphs
-        if (fontname in ('it', 'rm', 'bf') and
-            uniindex >= 0xe000 and uniindex <= 0xf8ff):
-            fontname = 'nonuni' + fontname
-
-        return fontname, uniindex
-
-    _size_alternatives = {}
-    def get_sized_alternatives_for_symbol(self, fontname, sym):
-        alternatives = self._size_alternatives.get(sym)
-        if alternatives:
-            return alternatives
-
-        alternatives = []
-        try:
-            uniindex = get_unicode_index(sym)
-        except ValueError:
-            return [(fontname, sym)]
-
-        fix_ups = {
-            ord('<'): 0x27e8,
-            ord('>'): 0x27e9 }
-
-        uniindex = fix_ups.get(uniindex, uniindex)
-
-        for i in range(6):
-            cached_font = self._get_font(i)
-            glyphindex = cached_font.charmap.get(uniindex)
-            if glyphindex is not None:
-                alternatives.append((i, unichr_safe(uniindex)))
-
-        # The largest size of the radical symbol in STIX has incorrect
-        # metrics that cause it to be disconnected from the stem.
-        if sym == r'\__sqrt__':
-            alternatives = alternatives[:-1]
-
-        self._size_alternatives[sym] = alternatives
-        return alternatives
-
-class StixSansFonts(StixFonts):
-    """
-    A font handling class for the STIX fonts (that uses sans-serif
-    characters by default).
-    """
-    _sans = True
-
-class StandardPsFonts(Fonts):
-    """
-    Use the standard postscript fonts for rendering to backend_ps
-
-    Unlike the other font classes, BakomaFont and UnicodeFont, this
-    one requires the Ps backend.
-    """
-    basepath = os.path.join( get_data_path(), 'fonts', 'afm' )
-
-    fontmap = { 'cal' : 'pzcmi8a',  # Zapf Chancery
-                'rm'  : 'pncr8a',   # New Century Schoolbook
-                'tt'  : 'pcrr8a',   # Courier
-                'it'  : 'pncri8a',  # New Century Schoolbook Italic
-                'sf'  : 'phvr8a',   # Helvetica
-                'bf'  : 'pncb8a',   # New Century Schoolbook Bold
-                None  : 'psyr'      # Symbol
-                }
-
-    def __init__(self, default_font_prop):
-        Fonts.__init__(self, default_font_prop, MathtextBackendPs())
-        self.glyphd = {}
-        self.fonts = {}
-
-        filename = findfont(default_font_prop, fontext='afm',
-                            directory=self.basepath)
-        if filename is None:
-            filename = findfont('Helvetica', fontext='afm',
-                                directory=self.basepath)
-        default_font = AFM(open(filename, 'r'))
-        default_font.fname = filename
-
-        self.fonts['default'] = default_font
-        self.fonts['regular'] = default_font
-        self.pswriter = StringIO()
-
-    def _get_font(self, font):
-        if font in self.fontmap:
-            basename = self.fontmap[font]
-        else:
-            basename = font
-
-        cached_font = self.fonts.get(basename)
-        if cached_font is None:
-            fname = os.path.join(self.basepath, basename + ".afm")
-            cached_font = AFM(open(fname, 'r'))
-            cached_font.fname = fname
-            self.fonts[basename] = cached_font
-            self.fonts[cached_font.get_fontname()] = cached_font
-        return cached_font
-
-    def _get_info (self, fontname, font_class, sym, fontsize, dpi):
-        'load the cmfont, metrics and glyph with caching'
-        key = fontname, sym, fontsize, dpi
-        tup = self.glyphd.get(key)
-
-        if tup is not None:
-            return tup
-
-        # Only characters in the "Letter" class should really be italicized.
-        # This class includes greek letters, so we're ok
-        if (fontname == 'it' and
-            (len(sym) > 1 or
-             not unicodedata.category(unicode(sym)).startswith("L"))):
-            fontname = 'rm'
-
-        found_symbol = False
-
-        if sym in latex_to_standard:
-            fontname, num = latex_to_standard[sym]
-            glyph = chr(num)
-            found_symbol = True
-        elif len(sym) == 1:
-            glyph = sym
-            num = ord(glyph)
-            found_symbol = True
-        else:
-            warn("No TeX to built-in Postscript mapping for '%s'" % sym,
-                 MathTextWarning)
-
-        slanted = (fontname == 'it')
-        font = self._get_font(fontname)
-
-        if found_symbol:
-            try:
-                symbol_name = font.get_name_char(glyph)
-            except KeyError:
-                warn("No glyph in standard Postscript font '%s' for '%s'" %
-                     (font.postscript_name, sym),
-                     MathTextWarning)
-                found_symbol = False
-
-        if not found_symbol:
-            glyph = sym = '?'
-            num = ord(glyph)
-            symbol_name = font.get_name_char(glyph)
-
-        offset = 0
-
-        scale = 0.001 * fontsize
-
-        xmin, ymin, xmax, ymax = [val * scale
-                                  for val in font.get_bbox_char(glyph)]
-        metrics = Bunch(
-            advance  = font.get_width_char(glyph) * scale,
-            width    = font.get_width_char(glyph) * scale,
-            height   = font.get_height_char(glyph) * scale,
-            xmin = xmin,
-            xmax = xmax,
-            ymin = ymin+offset,
-            ymax = ymax+offset,
-            # iceberg is the equivalent of TeX's "height"
-            iceberg = ymax + offset,
-            slanted = slanted
-            )
-
-        self.glyphd[key] = Bunch(
-            font            = font,
-            fontsize        = fontsize,
-            postscript_name = font.get_fontname(),
-            metrics         = metrics,
-            symbol_name     = symbol_name,
-            num             = num,
-            glyph           = glyph,
-            offset          = offset
-            )
-
-        return self.glyphd[key]
-
-    def get_kern(self, font1, fontclass1, sym1, fontsize1,
-                 font2, fontclass2, sym2, fontsize2, dpi):
-        if font1 == font2 and fontsize1 == fontsize2:
-            info1 = self._get_info(font1, fontclass1, sym1, fontsize1, dpi)
-            info2 = self._get_info(font2, fontclass2, sym2, fontsize2, dpi)
-            font = info1.font
-            return (font.get_kern_dist(info1.glyph, info2.glyph)
-                    * 0.001 * fontsize1)
-        return Fonts.get_kern(self, font1, fontclass1, sym1, fontsize1,
-                              font2, fontclass2, sym2, fontsize2, dpi)
-
-    def get_xheight(self, font, fontsize, dpi):
-        cached_font = self._get_font(font)
-        return cached_font.get_xheight() * 0.001 * fontsize
-
-    def get_underline_thickness(self, font, fontsize, dpi):
-        cached_font = self._get_font(font)
-        return cached_font.get_underline_thickness() * 0.001 * fontsize
 
 ##############################################################################
 # TeX-LIKE BOX MODEL
@@ -1286,7 +527,7 @@ class Char(Node):
         Node.__init__(self)
         self.c = c
         self.font_output = state.font_output
-        assert isinstance(state.font, (str, unicode, int))
+        assert isinstance(state.font, (str, int))
         self.font = state.font
         self.font_class = state.font_class
         self.fontsize = state.fontsize
@@ -2136,7 +1377,7 @@ class Parser(object):
 
         bslash       = Literal('\\')
 
-        accent       = oneOf(self._accent_map.keys() +
+        accent       = oneOf(list(self._accent_map.keys()) +
                              list(self._wide_accents))
 
         function     = oneOf(list(self._function_names))
@@ -2161,16 +1402,16 @@ class Parser(object):
                        ) | Error(r"Expected \hspace{n}"))
                      ).setParseAction(self.customspace).setName('customspace')
 
-        unicode_range = u"\U00000080-\U0001ffff"
-        symbol       =(Regex(UR"([a-zA-Z0-9 +\-*/<>=:,.;!'@()\[\]|%s])|(\\[%%${}\[\]_|])" % unicode_range)
+        unicode_range = "\U00000080-\U0001ffff"
+        symbol       =(Regex(R"([a-zA-Z0-9 +\-*/<>=:,.;!'@()\[\]|%s])|(\\[%%${}\[\]_|])" % unicode_range)
                      | (Combine(
                          bslash
-                       + oneOf(tex2uni.keys())
+                       + oneOf(list(tex2uni.keys()))
                        ) + FollowedBy(Regex("[^a-zA-Z]")))
                      ).setParseAction(self.symbol).leaveWhitespace()
 
         c_over_c     =(Suppress(bslash)
-                     + oneOf(self._char_over_chars.keys())
+                     + oneOf(list(self._char_over_chars.keys()))
                      ).setParseAction(self.char_over_chars)
 
         accent       = Group(
@@ -2878,230 +2119,3 @@ class Parser(object):
         return self._auto_sized_delimiter(front, middle.asList(), back)
 
 ###
-
-##############################################################################
-# MAIN
-
-class MathTextParser(object):
-    _parser = None
-
-    _backend_mapping = {
-        'bitmap': MathtextBackendBitmap,
-        'agg'   : MathtextBackendAgg,
-        'ps'    : MathtextBackendPs,
-        'pdf'   : MathtextBackendPdf,
-        'svg'   : MathtextBackendSvg,
-        'path'   : MathtextBackendPath,
-        'cairo' : MathtextBackendCairo,
-        'macosx': MathtextBackendAgg,
-        }
-
-    _font_type_mapping = {
-        'cm'       : BakomaFonts,
-        'stix'     : StixFonts,
-        'stixsans' : StixSansFonts,
-        'custom'   : UnicodeFonts
-        }
-
-    def __init__(self, output):
-        """
-        Create a MathTextParser for the given backend *output*.
-        """
-        self._output = output.lower()
-        self._cache = maxdict(50)
-
-    def parse(self, s, dpi = 72, prop = None):
-        """
-        Parse the given math expression *s* at the given *dpi*.  If
-        *prop* is provided, it is a
-        :class:`~matplotlib.font_manager.FontProperties` object
-        specifying the "default" font to use in the math expression,
-        used for all non-math text.
-
-        The results are cached, so multiple calls to :meth:`parse`
-        with the same expression should be fast.
-        """
-        # There is a bug in Python 3.x where it leaks frame references,
-        # and therefore can't handle this caching
-        if prop is None:
-            prop = FontProperties()
-
-        cacheKey = (s, dpi, hash(prop))
-        result = self._cache.get(cacheKey)
-        if result is not None:
-            return result
-
-        if self._output == 'ps' and rcParams['ps.useafm']:
-            font_output = StandardPsFonts(prop)
-        else:
-            backend = self._backend_mapping[self._output]()
-            fontset = rcParams['mathtext.fontset']
-            fontset_class = self._font_type_mapping.get(fontset.lower())
-            if fontset_class is not None:
-                font_output = fontset_class(prop, backend)
-            else:
-                raise ValueError(
-                    "mathtext.fontset must be either 'cm', 'stix', "
-                    "'stixsans', or 'custom'")
-
-        fontsize = prop.get_size_in_points()
-
-        # This is a class variable so we don't rebuild the parser
-        # with each request.
-        if self._parser is None:
-            self.__class__._parser = Parser()
-
-        box = self._parser.parse(s, font_output, fontsize, dpi)
-        font_output.set_canvas_size(box.width, box.height, box.depth)
-        result = font_output.get_results(box)
-        self._cache[cacheKey] = result
-        return result
-
-    def to_mask(self, texstr, dpi=120, fontsize=14):
-        """
-        *texstr*
-            A valid mathtext string, eg r'IQ: $\sigma_i=15$'
-
-        *dpi*
-            The dots-per-inch to render the text
-
-        *fontsize*
-            The font size in points
-
-        Returns a tuple (*array*, *depth*)
-
-          - *array* is an NxM uint8 alpha ubyte mask array of
-            rasterized tex.
-
-          - depth is the offset of the baseline from the bottom of the
-            image in pixels.
-        """
-        assert(self._output=="bitmap")
-        prop = FontProperties(size=fontsize)
-        ftimage, depth = self.parse(texstr, dpi=dpi, prop=prop)
-
-        x = ftimage.as_array()
-        return x, depth
-
-    def to_rgba(self, texstr, color='black', dpi=120, fontsize=14):
-        """
-        *texstr*
-            A valid mathtext string, eg r'IQ: $\sigma_i=15$'
-
-        *color*
-            Any matplotlib color argument
-
-        *dpi*
-            The dots-per-inch to render the text
-
-        *fontsize*
-            The font size in points
-
-        Returns a tuple (*array*, *depth*)
-
-          - *array* is an NxM uint8 alpha ubyte mask array of
-            rasterized tex.
-
-          - depth is the offset of the baseline from the bottom of the
-            image in pixels.
-        """
-        x, depth = self.to_mask(texstr, dpi=dpi, fontsize=fontsize)
-
-        r, g, b = mcolors.colorConverter.to_rgb(color)
-        RGBA = np.zeros((x.shape[0], x.shape[1], 4), dtype=np.uint8)
-        RGBA[:,:,0] = int(255*r)
-        RGBA[:,:,1] = int(255*g)
-        RGBA[:,:,2] = int(255*b)
-        RGBA[:,:,3] = x
-        return RGBA, depth
-
-    def to_png(self, filename, texstr, color='black', dpi=120, fontsize=14):
-        """
-        Writes a tex expression to a PNG file.
-
-        Returns the offset of the baseline from the bottom of the
-        image in pixels.
-
-        *filename*
-            A writable filename or fileobject
-
-        *texstr*
-            A valid mathtext string, eg r'IQ: $\sigma_i=15$'
-
-        *color*
-            A valid matplotlib color argument
-
-        *dpi*
-            The dots-per-inch to render the text
-
-        *fontsize*
-            The font size in points
-
-        Returns the offset of the baseline from the bottom of the
-        image in pixels.
-        """
-        rgba, depth = self.to_rgba(texstr, color=color, dpi=dpi, fontsize=fontsize)
-        numrows, numcols, tmp = rgba.shape
-        _png.write_png(rgba.tostring(), numcols, numrows, filename)
-        return depth
-
-    def get_depth(self, texstr, dpi=120, fontsize=14):
-        """
-        Returns the offset of the baseline from the bottom of the
-        image in pixels.
-
-        *texstr*
-            A valid mathtext string, eg r'IQ: $\sigma_i=15$'
-
-        *dpi*
-            The dots-per-inch to render the text
-
-        *fontsize*
-            The font size in points
-        """
-        assert(self._output=="bitmap")
-        prop = FontProperties(size=fontsize)
-        ftimage, depth = self.parse(texstr, dpi=dpi, prop=prop)
-        return depth
-
-def math_to_image(s, filename_or_obj, prop=None, dpi=None, format=None):
-    """
-    Given a math expression, renders it in a closely-clipped bounding
-    box to an image file.
-
-    *s*
-       A math expression.  The math portion should be enclosed in
-       dollar signs.
-
-    *filename_or_obj*
-       A filepath or writable file-like object to write the image data
-       to.
-
-    *prop*
-       If provided, a FontProperties() object describing the size and
-       style of the text.
-
-    *dpi*
-       Override the output dpi, otherwise use the default associated
-       with the output format.
-
-    *format*
-       The output format, eg. 'svg', 'pdf', 'ps' or 'png'.  If not
-       provided, will be deduced from the filename.
-    """
-    from matplotlib import figure
-    # backend_agg supports all of the core output formats
-    from matplotlib.backends import backend_agg
-
-    if prop is None:
-        prop = FontProperties()
-
-    parser = MathTextParser('path')
-    width, height, depth, _, _ = parser.parse(s, dpi=72, prop=prop)
-
-    fig = figure.Figure(figsize=(width / 72.0, height / 72.0))
-    fig.text(0, depth/height, s, fontproperties=prop)
-    backend_agg.FigureCanvasAgg(fig)
-    fig.savefig(filename_or_obj, dpi=dpi, format=format)
-
-    return depth

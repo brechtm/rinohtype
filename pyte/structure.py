@@ -151,7 +151,6 @@ class List(Paragraph):
 
 class Reference(StyledText):
     def __init__(self, id, target):
-        print('Reference.__init__')
         super().__init__('')
         self.id = id
         self.document = target.document

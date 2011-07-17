@@ -5,7 +5,8 @@ from psg.exceptions import *
 
 from pyte.unit import pt
 from pyte.font import FontStyle
-from pyte.text import StyledText, Word, Character, Space, TextStyle, ParentStyle, MixedStyledText, Glyph
+from pyte.text import StyledText, Word, Character, Space, Box, NewLine
+from pyte.text import TextStyle, ParentStyle, MixedStyledText, Glyph
 
 
 class Justify:
@@ -44,16 +45,16 @@ class Line(list):
 
     def append(self, item):
         if isinstance(item, Word):
-            args = (self.paragraph.kerning, )
             if self.paragraph.ligatures:
                 item = item.substitute_ligatures()
+            width = item.width(self.paragraph.kerning)
+        elif isinstance(item, Space):
+            width = item.width
         else:
-            args = ()
-        assert isinstance(item, Word) or isinstance(item, Space)
-        width = item.width(*args)
+            raise ValueError('expecting Word or Space')
         if isinstance(item, Word) and self.text_width + width > self.width:
             for first, second in item.hyphenate():
-                first_width = first.width(*args)
+                first_width = first.width(self.paragraph.kerning)
                 if self.text_width + first_width < self.width:
                     self.text_width += first_width
                     super().append(first)
@@ -66,6 +67,7 @@ class Line(list):
         """Typeset words on the current coordinates"""
         chars = []
         char_widths = []
+        x_offset = 0
         max_font_size = 0
         justification = self.paragraph.get_style('justify')
         kerning = self.paragraph.kerning
@@ -80,12 +82,12 @@ class Line(list):
                     #char_widths.append(word.width())
             else:
                 for j, character in enumerate(word):
-                    current_font_size = float(character.get_style('fontSize'))
+                    current_font_size = float(character.height)
                     max_font_size = max(current_font_size, max_font_size)
                     kerning = word.kerning(j) if kerning else 0.0
 
                     chars.append(character)
-                    char_widths.append(character.width() + kerning) #+ spacing
+                    char_widths.append(character.width + kerning) #+ spacing
 
         line_width = sum(char_widths)
 
@@ -102,7 +104,7 @@ class Line(list):
         else:
             for i, char in enumerate(chars):
                 if isinstance(char, Space):
-                    char_widths[i] = char.width()
+                    char_widths[i] = char.width
                     line_width += char_widths[i]
             extra_space = self.width - line_width
 
@@ -118,26 +120,46 @@ class Line(list):
         print("{0} {1} moveto".format(x, self.paragraph._line_cursor),
               file=pscanvas)
 
-        current_style = {'typeface': chars[0].get_style('typeface'),
-                         'fontStyle': chars[0].get_style('fontStyle'),
-                         'fontSize': chars[0].get_style('fontSize')}
+        if isinstance(chars[0], Character):
+            current_style = {'typeface': chars[0].get_style('typeface'),
+                             'fontStyle': chars[0].get_style('fontStyle'),
+                             'fontSize': chars[0].get_style('fontSize')}
+        else:
+            current_style = 'box'
+
         span_chars = []
         span_char_widths = []
         for i, char in enumerate(chars):
-            char_style = {'typeface': char.get_style('typeface'),
-                          'fontStyle': char.get_style('fontStyle'),
-                          'fontSize': char.get_style('fontSize')}
-            if char_style != current_style:
-                self.typeset_span(pscanvas, current_style, span_chars,
-                                  span_char_widths)
-                span_chars = []
-                span_char_widths = []
-                current_style = char_style
+            if isinstance(char, Box):
+                if span_chars:
+                    x_offset += self.typeset_span(pscanvas, current_style,
+                                                  span_chars, span_char_widths)
+                    span_chars = []
+                    span_char_widths = []
+                    current_style = 'box'
+                x_offset += self.typeset_box(pscanvas, x + x_offset,
+                                             self.paragraph._line_cursor, char)
+            elif isinstance(char, NewLine):
+                pass
+            else:
+                char_style = {'typeface': char.get_style('typeface'),
+                              'fontStyle': char.get_style('fontStyle'),
+                              'fontSize': char.get_style('fontSize')}
+                if current_style == 'box':
+                    current_style = char_style
+                elif char_style != current_style:
+                    x_offset += self.typeset_span(pscanvas, current_style,
+                                                  span_chars, span_char_widths)
+                    span_chars = []
+                    span_char_widths = []
+                    current_style = char_style
 
-            span_chars.append(char.ord())
-            span_char_widths.append(char_widths[i])
+                span_chars.append(char.ord())
+                span_char_widths.append(char_widths[i])
 
-        self.typeset_span(pscanvas, current_style, span_chars, span_char_widths)
+        if span_chars:
+            self.typeset_span(pscanvas, current_style, span_chars,
+                              span_char_widths)
 
         return max_font_size
 
@@ -146,10 +168,20 @@ class Line(list):
         font = style['typeface'].font(style['fontStyle'])
         font_wrapper = canvas.page.register_font(font.psFont, True)
         self.set_font(canvas, font_wrapper, style['fontSize'])
-        span_char_widths = map(lambda f: "%.2f" % f, span_char_widths)
+        span_char_widths_text = map(lambda f: "%.2f" % f, span_char_widths)
         ps_repr = font_wrapper.postscript_representation(span_chars)
-        widths = " ".join(span_char_widths)
+        widths = " ".join(span_char_widths_text)
         print("({0}) [ {1} ] xshow".format(ps_repr, widths), file=canvas)
+        return sum(span_char_widths)
+
+    def typeset_box(self, pscanvas, x, y, box):
+        box_canvas = canvas(pscanvas, x, y - box.depth, box.width,
+                            box.height + box.depth)
+        pscanvas.append(box_canvas)
+        print(box.ps, file=box_canvas)
+        # TODO: the following is probably not be the best way to do this
+        print("( ) [ {} ] xshow".format(box.width), file=pscanvas)
+        return box.width
 
     def set_font(self, pscanvas, wrapper, size):
         """Configure the output for a given font"""
@@ -175,6 +207,7 @@ class Paragraph(MixedStyledText):
     def _split_words(self):
         word = Word()
         for char in self.characters():
+            # TODO: handle punctuation
             if isinstance(char, Space):
                 self._words.append(word)
                 self._words.append(char)

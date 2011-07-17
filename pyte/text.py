@@ -88,6 +88,14 @@ class Styled(object):
         self.parent = None
         self.cached_style = {}
 
+    def __add__(self, other):
+        assert isinstance(other, Styled) or isinstance(other, str)
+        return MixedStyledText([self, other])
+
+    def __radd__(self, other):
+        assert isinstance(other, str)
+        return MixedStyledText([other, self])
+
     def get_style(self, attribute):
         try:
             return self.cached_style[attribute]
@@ -103,6 +111,25 @@ class Styled(object):
         return self.get_style('typeface').font(self.get_style('fontStyle'))
 
     def characters(self):
+        raise NotImplementedError
+
+
+class CharacterLike(Styled):
+    def __init__(self, style=ParentStyle):
+        super().__init__(style)
+
+    def __repr__(self):
+        return "{0}('{1}', style={2})".format(self.__class__.__name__,
+                                              self.style)
+    @property
+    def width(self):
+        raise NotImplementedError
+
+    @property
+    def height(self):
+        raise NotImplementedError
+
+    def render(self):
         raise NotImplementedError
 
 
@@ -122,14 +149,6 @@ class StyledText(Styled):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
-    def __add__(self, other):
-        assert isinstance(other, StyledText) or isinstance(other, str)
-        return MixedStyledText([self, other])
-
-    def __radd__(self, other):
-        assert isinstance(other, str)
-        return MixedStyledText([other, self])
-
     def characters(self):
         for i, char in enumerate(self.text):
             character = Character(char, style=ParentStyle, new_span=(i==0))
@@ -138,9 +157,6 @@ class StyledText(Styled):
                 yield character.small_capital()
             else:
                 yield character
-
-    def spans(self):
-        return self
 
 
 class MixedStyledText(list, Styled):
@@ -180,10 +196,6 @@ class MixedStyledText(list, Styled):
             for char in item.characters():
                 yield char
 
-    def spans(self):
-        for item in self:
-            yield item
-
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
@@ -197,10 +209,15 @@ class Character(StyledText):
     def __repr__(self):
         return self.text
 
+    @property
     def width(self):
         font = self.get_font()
-        font_size = float(self.get_style('fontSize'))
+        font_size = float(self.height)
         return font.psFont.metrics.stringwidth(self.text, font_size)
+
+    @property
+    def height(self):
+        return self.get_style('fontSize')
 
     def ord(self):
         return ord(self.text)
@@ -237,6 +254,7 @@ class Glyph(Character):
             ps_repr = self.name
         return ps_repr
 
+    @property
     def width(self):
         font = self.get_font()
         font_size = float(self.get_style('fontSize'))
@@ -258,6 +276,34 @@ class Spacer(Space):
 
     def width(self):
         return float(dimension)
+
+
+# TODO: shared superclass SpecialChar (or ControlChar) for Newline, Box, Tab
+class Box(Character):
+    def __init__(self, width, height, depth, ps):
+        super().__init__('?', new_span=True)
+        self._width = width
+        self._height = height
+        self.depth = depth
+        self.ps = ps
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
+
+
+class NewLine(Character):
+    def __init__(self, style=ParentStyle):
+        super().__init__('\n', style)
+
+
+class Tab(Character):
+    def __init__(self, style=ParentStyle):
+        super().__init__('\t', style)
 
 
 class Word(list):
@@ -284,38 +330,59 @@ class Word(list):
         return result
 
     def append(self, char):
-        assert isinstance(char, Character)
-        assert char.text not in (" ", "\t")
-        if self.hyphen_enable:
-            self.hyphen_enable = char.get_style('hyphenate')
-            self.hyphen_chars = max(self.hyphen_chars,
-                                    char.get_style('hyphenChars'))
-            if self.hyphen_lang is None:
-                self.hyphen_lang = char.get_style('hyphenLang')
-            elif char.get_style('hyphenLang') != self.hyphen_lang:
-                self.hyphen_enable = False
+        if isinstance(char, Character):
+            assert char.text not in (" ", "\t")
+            if self.hyphen_enable:
+                self.hyphen_enable = char.get_style('hyphenate')
+                self.hyphen_chars = max(self.hyphen_chars,
+                                        char.get_style('hyphenChars'))
+                if self.hyphen_lang is None:
+                    self.hyphen_lang = char.get_style('hyphenLang')
+                elif char.get_style('hyphenLang') != self.hyphen_lang:
+                    self.hyphen_enable = False
+        elif isinstance(char, Box):
+            # TODO: should a Box even be a part of a Word?
+            pass
+        else:
+            raise ValueError('expecting Character or Box')
         super().append(char)
+
 
     def substitute_ligatures(self):
         ligatured = __class__()
-        try:
-            previous = self[0]
-        except IndexError:
-            return self
-        for character in self[1:]:
-            font_metrics = character.get_font().psFont.metrics
-            char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"]
-            try:
-                # TODO: verify whether styles are identical
-                ligatures = char_metrics[previous.ord()]['L']
-                # TODO: check for other standard ligatures (ij)
+        all_boxes = True
+        for i in range(len(self)):
+            previous = self[i]
+            # TODO: encapsulate (somehow) in Character?
+            if isinstance(previous, (Box, NewLine)):
+                ligatured.append(previous)
+            else:
+                all_boxes = False
+                break
 
-                ligature_glyph_name = ligatures[character.text]
-                previous = Glyph(ligature_glyph_name)
-                previous.parent = character.parent
-            except KeyError:
+        # TODO: clean up
+        if all_boxes:
+            return ligatured
+
+        for character in self[i + 1:]:
+            # TODO: encapsulate in Character
+            if isinstance(character, (Box, NewLine)):
                 ligatured.append(previous)
                 previous = character
+            else:
+                font_metrics = character.get_font().psFont.metrics.FontMetrics
+                char_metrics = font_metrics["Direction"][0]["CharMetrics"]
+                try:
+                    # TODO: verify whether styles are identical
+                    ligatures = char_metrics[previous.ord()]['L']
+                    # TODO: check for other standard ligatures (ij)
+
+                    ligature_glyph_name = ligatures[character.text]
+                    previous = Glyph(ligature_glyph_name)
+                    previous.parent = character.parent
+                except KeyError:
+                    ligatured.append(previous)
+                    previous = character
 
         ligatured.append(previous)
         return ligatured
@@ -323,14 +390,17 @@ class Word(list):
     def width(self, kerning=True):
         width = 0.0
         for i, character in enumerate(self):
-            if self.stringwidth is None or character.new_span:
-                self.font_metrics = character.get_font().psFont.metrics
-                self.stringwidth = self.font_metrics.stringwidth
-                self.font_size = float(character.get_style('fontSize'))
+            if isinstance(character, Box):
+                width += character.width
+            else:
+                if self.stringwidth is None or character.new_span:
+                    self.font_metrics = character.get_font().psFont.metrics
+                    self.stringwidth = self.font_metrics.stringwidth
+                    self.font_size = float(character.get_style('fontSize'))
 
-            width += self.stringwidth(character.text, self.font_size)
-            if kerning:
-                width += self.kerning(i)
+                width += self.stringwidth(character.text, self.font_size)
+                if kerning:
+                    width += self.kerning(i)
         return width
 
     def kerning(self, index):
@@ -340,7 +410,9 @@ class Word(list):
             this = self[index]
             next = self[index+1]
             # FIXME: different styles can have the same font/size/weight
-            if this.style == next.style:
+            if (not isinstance(this, (NewLine, Box)) and
+                not isinstance(next, (NewLine, Box)) and
+                this.style == next.style):
                 kern = self.font_metrics.kerning_pairs.get((this.ord(),
                                                             next.ord()), 0.0)
                 kerning = kern * float(self.font_size)/ 1000.0

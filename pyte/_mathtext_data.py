@@ -3,7 +3,6 @@ font data tables for truetype and afm computer modern fonts
 """
 # this dict maps symbol names to fontnames, glyphindex.  To get the
 # glyph index from the character code, you have to use get_charmap
-from __future__ import print_function
 
 """
 from matplotlib.ft2font import FT2Font
@@ -1759,7 +1758,7 @@ type12uni = {
     'uni044B'        : 1099
 }
 
-uni2type1 = dict(((v,k) for k,v in type12uni.iteritems()))
+uni2type1 = dict(((v,k) for k,v in type12uni.items()))
 
 tex2uni = {
     'widehat'                  : 0x0302,

@@ -734,13 +734,14 @@ class Composites(data_section):
     def parse_line(self, line):
         line = line.strip() # get rid of eol characters
         parts = line.split(";") # split by the ;s
+        parts = filter(lambda s: s != "", parts) # remove whitespace
 
         name = None
         char_parts_num = None
         char_parts = []
         for part in parts:
-            elements = splitf(part, ";")
-            elements = filter(lambda s: s != "", elements) # remove whitespace
+            elements = part.split()
+            elements = list(filter(lambda s: s != "", elements)) # remove whitespace
 
             try:
                 key = elements[0]
@@ -753,14 +754,14 @@ class Composites(data_section):
 
                 if key == "CC":
                     name = elements[0]
-                    char_part_num = float(elements[1])
+                    char_parts_num = float(elements[1])
 
                 elif key == "PCC":
                     name = elements[0]
                     delta_x = int(elements[1])
                     delta_y = int(elements[2])
 
-                    char_parts.append( ( name, delta_x, deltay, ) )
+                    char_parts.append( ( name, delta_x, delta_y, ) )
                 else:
                     raise ParseError("Unknown element in composit: %s" % \
                                                                    repr(line))
