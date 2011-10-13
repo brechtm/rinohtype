@@ -21,10 +21,10 @@ from pyte.bibliography import Bibliography, BibliographyFormatter
 
 # fonts
 # ----------------------------------------------------------------------------
-termes_roman = Font("qtmr")
-termes_bold = Font("qtmb")
-termes_italic = Font("qtmri")
-termes_bold_italic = Font("qtmbi")
+termes_roman = Font("fonts/qtmr")
+termes_bold = Font("fonts/qtmb")
+termes_italic = Font("fonts/qtmri")
+termes_bold_italic = Font("fonts/qtmbi")
 
 termes = TypeFace("TeXGyreTermes",
                   roman=termes_roman, bold=termes_bold,
