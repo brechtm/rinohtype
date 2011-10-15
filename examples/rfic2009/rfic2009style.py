@@ -12,7 +12,7 @@ from pyte.paragraph import ParagraphStyle, Paragraph, Justify
 from pyte.text import StyledText
 from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
-from pyte.math import Equation
+from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
@@ -32,6 +32,18 @@ termes = TypeFace("TeXGyreTermes",
 
 ieeeFamily = TypeFamily(serif=termes)
 
+schola_roman = Font("fonts/qcsr")
+schola_italic = Font("fonts/qcsri")
+schola_bold = Font("fonts/qcsb")
+heros_roman = Font("fonts/qhvr")
+cursor_regular = Font("fonts/qcrr")
+chorus = Font("fonts/qzcmi")
+standard_symbols = Font("fonts/usyr")
+cmex9 = Font("fonts/cmex9")
+
+std_math = MathFonts(schola_roman, schola_italic, schola_bold,
+                     heros_roman, cursor_regular, chorus, standard_symbols,
+                     cmex9)
 
 # paragraph styles
 # ----------------------------------------------------------------------------
@@ -49,11 +61,14 @@ ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
 ParagraphStyle.attributes['hyphenChars'] = 4
 
-equationStyle = ParagraphStyle('equation', base=bodyStyle,
-                               indentFirst=0*pt,
-                               spaceAbove=6*pt,
-                               spaceBelow=6*pt,
-                               justify=Justify.Center)
+mathstyle = MathStyle('math', fonts=std_math)
+
+equationstyle = EquationStyle('equation', base=bodyStyle,
+                              math_style=mathstyle,
+                              indentFirst=0*pt,
+                              spaceAbove=6*pt,
+                              spaceBelow=6*pt,
+                              justify=Justify.Center)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
                                    fontSize=9*pt)
@@ -173,6 +188,7 @@ class Title(CustomElement):
         if id:
             target.document.elements[id] = heading
         target.addParagraph(heading)
+        # TODO: refactor addParagraph to add_block?
 
 
 class P(CustomElement):
@@ -231,12 +247,15 @@ class LI(CustomElement):
 
 class Math(CustomElement):
     def render(self, target):
-        return PyteMath(self.text)
+        math = PyteMath(self.text, style=mathstyle)
+        math.document = target.document
+        return math
 
 
 class Eq(CustomElement):
     def render(self, target, id=None):
-        equation = Equation(self.text)
+        equation = Equation(self.text, style=equationstyle)
+        equation.document = target.document # TODO: do this properly
         id = self.get('id', None)
         if id:
             target.document.elements[id] = equation
@@ -352,6 +371,10 @@ class RFIC2009Paper(Document):
         self.keywords = [term.text for term in self.root.head.indexterms.term]
 
         self.content = Chain(self)
+
+        for font in (schola_roman, schola_italic, schola_bold, heros_roman,
+                     cursor_regular, chorus, standard_symbols):
+            self.psg_doc.add_font(font.psFont)
 
     def render(self, filename):
         page = RFICPage(self, first=True)

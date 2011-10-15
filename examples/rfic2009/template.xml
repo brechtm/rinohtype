@@ -82,7 +82,14 @@
 
 <p>Substituting <math>\alpha\zeta\beta</math> and <math>\alpha\zeta\beta</math>.</p>
 
-<p>Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be <eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int B \cdot d\mathbf{S}</eq> or <eq id="eq2">\nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t}.</eq></p>
+<p>Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be
+
+<eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int mathbf{B} \cdot d\mathbf{S}</eq>
+
+or
+
+<eq id="eq2">\nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t}.</eq>
+</p>
 
 <p>Note that a period is used to properly punctuate the previous sentence. It is placed at the end of the second equation. <em>Make sure that any subscripts in your equations are legible and are not too small to read!</em> When referring to an equation, use the number within parenthesis. For example, you would usually refer to the second equation as (<ref id="eq2" />) rather than equation (<ref id="eq2" />). If possible, use the Symbol font for all special characters, or better yet, use Equation Editor&trade; or MathType™. The paragraph description of the line containing the equation should be set for 6 points before and 6 points after. The paragraph spacing will need to be set to "single" rather than "exactly 12 point" so that the height will autoscale to fit the equation.</p>
 

@@ -3,15 +3,43 @@ import os
 import unicodedata
 from warnings import warn
 
+from pyte.font import FontStyle
 from psg.fonts.afm_metrics import afm_metrics
 
-from .text import CharacterLike, Box, MixedStyledText, NewLine, Tab, ParentStyle
+from .unit import pt
+from .font import TypeFamily
+from .text import ParentStyle, Style, CharacterLike, Box, NewLine, Tab
+from .text import MixedStyledText
+from .paragraph import ParagraphStyle
 from .mathtext import Fonts, MathtextBackendPs, MathTextWarning, Parser, Bunch
-from ._mathtext_data import latex_to_standard
+from .mathtext import get_unicode_index
+from ._mathtext_data import tex2uni
+
+
+class MathFonts(object):
+    default = None
+
+    def __init__(self, roman, italic, bold, sans, mono, cal, symbol, fallback):
+        self.roman = symbol
+        self.italic = italic
+        self.bold = bold
+        self.sans = sans
+        self.mono = mono
+        self.cal = cal
+        self.symbol = symbol
+        self.fallback = fallback
+
+
+class MathStyle(Style):
+    attributes = {'fonts': None, # no default fonts yet
+                  'fontSize': 10*pt}
+
+    def __init__(self, name, base=ParentStyle, **attributes):
+        super().__init__(name, base=base, **attributes)
 
 
 class Math(CharacterLike):
-    #style_class = MathStyle
+    style_class = MathStyle
     _parser = None
 
     def __init__(self, equation, style=ParentStyle):
@@ -19,7 +47,7 @@ class Math(CharacterLike):
         self.equation = equation
 
     def characters(self):
-        font_output = PsgFonts()
+        font_output = PsgFonts(self)
         fontsize = float(self.get_style('fontSize'))
         dpi = 72
 
@@ -39,15 +67,27 @@ class Math(CharacterLike):
         return [box]
 
 
+ # TODO: is subclass of ParagraphStyle, but doesn't need all of its attributes!
+class EquationStyle(ParagraphStyle):
+    attributes = {'math_style': None}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
+
+
 class Equation(MixedStyledText):
+    style_class = EquationStyle
     next_number = 1
 
-    def __init__(self, equation, style=ParentStyle):
+    def __init__(self, equation, style=None):
         self.ref = str(self.next_number)
         number = '({})'.format(self.next_number)
         self.__class__.next_number += 1
+        math = Math(equation, style=style.math_style)
+        math.parent = self # TODO: encapsulate
+        #math.document = self.document
         #text = [NewLine(), Math(equation), Tab(), number, NewLine()]
-        text = [Math(equation), Tab(), number]
+        text = [math, Tab(), number]
         super().__init__(text, style)
 
     def reference(self):
@@ -62,45 +102,34 @@ class PsgFonts(Fonts):
     Unlike the other font classes, BakomaFont and UnicodeFont, this
     one requires the Ps backend.
     """
-
-    basepath = r'W:\code\matplotlib-py3\lib\matplotlib\mpl-data\fonts\afm'
-
-    fontmap = { 'cal' : 'pzcmi8a',  # Zapf Chancery
-                'rm'  : 'pncr8a',   # New Century Schoolbook
-                'tt'  : 'pcrr8a',   # Courier
-                'it'  : 'pncri8a',  # New Century Schoolbook Italic
-                'sf'  : 'phvr8a',   # Helvetica
-                'bf'  : 'pncb8a',   # New Century Schoolbook Bold
-                None  : 'psyr'      # Symbol
-                }
-
-    def __init__(self):
+    def __init__(self, styled):
         Fonts.__init__(self, None, MathtextBackendPs())
+        self.styled = styled
         self.glyphd = {}
         self.fonts = {}
 
-        filename = os.path.join(self.basepath, 'phvr8a.afm')
-        # TODO: change to use type1 instead of afm_metrics
-        default_font = afm_metrics(open(filename, 'rb'))
-        default_font.fname = filename
+        #filename = os.path.join(self.basepath, 'phvr8a.afm')
+        #default_font = afm_metrics(open(filename, 'rb'))
+        #default_font.fname = filename
 
-        self.fonts['default'] = default_font
-        self.fonts['regular'] = default_font
+        type_family = self.styled.get_style('fonts')
+        self.fontmap = {'cal' : type_family.cal,
+                        'rm'  : type_family.roman,
+                        'tt'  : type_family.mono,
+                        'it'  : type_family.italic,
+                        'sf'  : type_family.sans,
+                        'bf'  : type_family.bold,
+                        None  : type_family.symbol
+                        }
+
+        for font in self.fontmap.values():
+            font.psFont.metrics.fname = 'dummy_filename'
+
+        #self.fonts['default'] = self.fontmap['rm']
+        #self.fonts['regular'] = self.fontmap['rm']
 
     def _get_font(self, font):
-        if font in self.fontmap:
-            basename = self.fontmap[font]
-        else:
-            basename = font
-
-        cached_font = self.fonts.get(basename)
-        if cached_font is None:
-            fname = os.path.join(self.basepath, basename + ".afm")
-            cached_font = afm_metrics(open(fname, 'rb'))
-            cached_font.fname = fname
-            self.fonts[basename] = cached_font
-            self.fonts[cached_font.FontMetrics['FontName']] = cached_font
-        return cached_font
+        return self.fontmap[font].psFont.metrics
 
     def _get_info(self, fontname, font_class, sym, fontsize, dpi):
         'load the cmfont, metrics and glyph with caching'
@@ -119,28 +148,26 @@ class PsgFonts(Fonts):
 
         found_symbol = False
 
-        if sym in latex_to_standard:
-            fontname, num = latex_to_standard[sym]
-            glyph = chr(num)
+        glyph = 'glyph__dummy'
+        try:
+            num = get_unicode_index(sym)
             found_symbol = True
-        elif len(sym) == 1:
-            glyph = sym
-            num = ord(glyph)
-            found_symbol = True
-        else:
-            warn("No TeX to built-in Postscript mapping for '{}'".format(sym),
+        except ValueError:
+            warn("No TeX to unicode mapping for '{}'".format(sym),
                  MathTextWarning)
 
         slanted = (fontname == 'it')
         font = self._get_font(fontname)
+        #self.document.dsc_doc.add_font(font)
+        #font_wrapper = canvas.page.register_font(font.psFont, True)
 
         if found_symbol:
             try:
                 char_metrics = font.FontMetrics["Direction"][0]["CharMetrics"][num]
                 symbol_name = char_metrics["N"]
             except KeyError:
-                warn("No glyph in standard Postscript font '{}' for '{}'"
-                     .format(font.FontMetrics["FontName"], sym), MathTextWarning)
+                warn("No glyph in Postscript font '{}' for '{}'"
+                     .format(font.FontMetrics['FontName'], sym), MathTextWarning)
                 found_symbol = False
 
         if not found_symbol:

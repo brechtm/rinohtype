@@ -6,7 +6,7 @@ from html.entities import name2codepoint
 from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from pyte.unit import pt
-from pyte.font import TypeFace, FontStyle
+from pyte.font import FontStyle
 from pyte.hyphenator import Hyphenator
 
 
@@ -26,14 +26,8 @@ class ParentStyle(object, metaclass=ParentStyleType):
     pass
 
 
-class TextStyle(object):
-    attributes = {'typeface': None, # no default fonts yet
-                  'fontStyle': FontStyle.Roman,
-                  'fontSize': 10*pt, # TODO: change default
-                  'smallCaps': False,
-                  'hyphenate': True,
-                  'hyphenChars': 2,
-                  'hyphenLang': 'en'}
+class Style(object):
+    attributes = {}
 
     def __init__(self, name, base=ParentStyle, **attributes):
         self.name = name
@@ -71,6 +65,19 @@ class TextStyle(object):
             except AttributeError:
                 pass
         return attributes
+
+
+class TextStyle(Style):
+    attributes = {'typeface': None, # no default fonts yet
+                  'fontStyle': FontStyle.Roman,
+                  'fontSize': 10*pt, # TODO: change default
+                  'smallCaps': False,
+                  'hyphenate': True,
+                  'hyphenChars': 2,
+                  'hyphenLang': 'en'}
+
+    def __init__(self, name, base=ParentStyle, **attributes):
+        super().__init__(name, base=base, **attributes)
 
 
 # TODO: link to xml line number
@@ -160,6 +167,8 @@ class StyledText(Styled):
 
 
 class MixedStyledText(list, Styled):
+    style_class = TextStyle
+
     def __init__(self, items, style=ParentStyle):
         Styled.__init__(self, style)
         if type(items) == str:
@@ -296,6 +305,7 @@ class Box(Character):
         return self._height
 
 
+# TODO: refactor to LineBreak
 class NewLine(Character):
     def __init__(self, style=ParentStyle):
         super().__init__('\n', style)
