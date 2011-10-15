@@ -623,14 +623,17 @@ class CharMetrics(data_section):
         if "C" not in info:
             raise ParseError("Illegal CharMetrics line: Either C or CH key" +
                              "must be present! (%s)" % repr(line))
-        elif info["C"] == -1:
-            try:
-                key = glyph_name_to_unicode[info["N"]]
-            except KeyError:
-                key = info["N"]
-            self.set(key, info)
-        else:
-            self.set(info["C"], info)
+
+        # TODO: or should we record the CharMetrics as is (glyph name as key
+        #       instead of unicode ord)?
+        #       for example: what about small caps ligatures?
+        try:
+            key = glyph_name_to_unicode[info["N"]]
+        except KeyError:
+            key = info["N"]
+        self.set(key, info)
+
+        #self.set(info["C"], info)
 
 
 class TrackKern(data_section):

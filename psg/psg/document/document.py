@@ -249,7 +249,8 @@ class font_wrapper:
 
         self.mapping = {}
         for a in range(32, 127):
-            self.mapping[unicode_to_glyph_name[a]] = a
+            glyph_name = self.font.metrics[a].ps_name
+            self.mapping[glyph_name] = a
         self.next = 127
 
     def register_chars(self, us, ignore_missing=True):
@@ -266,7 +267,8 @@ class font_wrapper:
                     if ignore_missing:
                         if char in unicode_to_glyph_name:
                             tpl = (self.font.ps_name,
-                                   unicode_to_glyph_name[char])
+                                   "%s (%s)" % (unicode_to_glyph_name[char][-1],
+                                                chr(char)))
                         else:
                             try:
                                 tpl = (self.font.ps_name, "#%i" % char)
@@ -282,9 +284,10 @@ class font_wrapper:
                         raise KeyError(msg)
 
                 try:
-                    glyph_name = unicode_to_glyph_name[char]
+                    glyph_name = self.font.metrics[char].ps_name
                 except KeyError:
                     glyph_name = char
+
                 if glyph_name not in self.mapping:
                     self.next += 1
 
@@ -328,7 +331,10 @@ class font_wrapper:
 
             for char in chars:
                 if type(char) == int:
-                    glyph_name = unicode_to_glyph_name[char]
+                    try:
+                        glyph_name = self.font.metrics[char].ps_name
+                    except KeyError:
+                        glyph_name = unicode_to_glyph_name[char][-1]
                 else:
                     glyph_name = char
                 byte = self.mapping.get(glyph_name, None)

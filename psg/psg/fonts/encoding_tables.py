@@ -5043,8 +5043,15 @@ glyph_name_to_unicode = {
     'zuhiragana': 0x305a,
     'zukatakana': 0x30ba}
 
-unicode_to_glyph_name = dict(map(lambda tpl: (tpl[1], tpl[0],),
-                                 glyph_name_to_unicode.items()))
+
+unicode_to_glyph_name = {}
+for glyph_name, code in glyph_name_to_unicode.items():
+    try:
+        lst = unicode_to_glyph_name[code]
+    except KeyError:
+        lst = unicode_to_glyph_name[code] = []
+    lst.append(glyph_name)
+
 
 encoding_tables = { "AppleStandard": apple_roman_to_unicode,
                     "AdobeStandardEncoding": adobe_standard_to_unicode,
