@@ -23,7 +23,6 @@ from io import StringIO
 from math import ceil
 from warnings import warn
 
-import numpy as np
 from .pyparsing_py3 import Combine, Group, Optional, Forward, \
      Literal, OneOrMore, ZeroOrMore, ParseException, Empty, \
      ParseResults, Suppress, oneOf, StringEnd, ParseFatalException, \
