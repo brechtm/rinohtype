@@ -4,7 +4,7 @@ import os
 from psg.fonts.type1 import type1
 
 class FontStyle:
-    Roman = 0
+    Roman = 0   # TODO: rename to 'Regular'?
     Bold = 1
     Italic = 2
     BoldItalic = 3
@@ -23,14 +23,8 @@ class Font(object):
 
 
 class TypeFace(object):
-    def __init__(self, name, roman=None, bold=None, italic=None, bolditalic=None, slanted=None, boldslanted=None):
-        #assert isinstance(roman, Font)
-        #assert isinstance(bold, Font)
-        #assert isinstance(italic, Font)
-        #assert isinstance(bolditalic, Font)
-        #assert isinstance(slanted, Font)
-        #assert isinstance(boldslanted, Font)
-        #assert isinstance(smallcaps, Font)
+    def __init__(self, name, roman=None, bold=None, italic=None,
+                 bolditalic=None, slanted=None, boldslanted=None):
         self.fontStyles = {}
         self.name = name
         self.roman = roman
@@ -53,17 +47,7 @@ class TypeFace(object):
 class TypeFamily(object):
     default = None
 
-    def __init__(self, serif=None, sans=None, mono=None, math=None):
-        #assert isinstance(serif, TypeFace)
-        #assert isinstance(sans, TypeFace)
-        #assert isinstance(mono, TypeFace)
-        #assert isinstance(math, TypeFace)
+    def __init__(self, serif=None, sans=None, mono=None):
         self.serif = serif
-        self.sans  = sans
-        self.mono  = mono
-        self.math  = math
-
-    def setDefault(cls, typefamily):
-        TypeFamily.default = typefamily
-    setDefault = classmethod(setDefault)
-
+        self.sans = sans
+        self.mono = mono

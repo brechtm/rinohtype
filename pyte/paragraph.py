@@ -4,9 +4,8 @@ from psg.util.measure import bounding_box
 from psg.exceptions import *
 
 from pyte.unit import pt
-from pyte.font import FontStyle
-from pyte.text import StyledText, Word, Character, Space, Box, NewLine
-from pyte.text import TextStyle, ParentStyle, MixedStyledText, Glyph
+from pyte.text import Word, Character, Space, Box, NewLine
+from pyte.text import TextStyle, MixedStyledText
 
 
 class Justify:
