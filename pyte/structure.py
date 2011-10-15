@@ -156,9 +156,13 @@ class Reference(StyledText):
         self.document = target.document
 
     def characters(self):
-        self.text = self.document.elements[self.id].reference()
+        try:
+            self.text = self.document.elements[self.id].reference()
+        except KeyError:
+            print("Warning: unknown label '{}'".format(self.id))
+            self.text = "unkown reference '{}'".format(self.id)
         if self.text is None:
             print('Warning: trying to reference unreferenceable object')
-            self.text= '[not referenceable]'
+            self.text = '[not referenceable]'
         for character in super().characters():
             yield character
