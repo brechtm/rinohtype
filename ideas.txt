@@ -1,5 +1,11 @@
 checklist (what is already implemented, is maked by a +)
 ---------
+* make it easy to try out!
+  * examples
+  * documentation
+  * easy installation (dependencies!)
+  * Google App Engine (PDF?)
+
 + master pages
 + small caps
 + headings
@@ -23,6 +29,7 @@ checklist (what is already implemented, is maked by a +)
 ** so that we can render to screen to manually place figures
 ** real-time preview (BaKoMa-TeX)
 ** equation editor
+** http://pypi.python.org/pypi/FontTools-TTX/
 ** http://stackoverflow.com/questions/311118/real-time-latex
 * generate XML from rST
 * support for DocBook?
@@ -64,6 +71,7 @@ problems with tex:
 * fonts and encoding (see PyPSG below)
 * custom page layouts are difficult
 * TeX code is difficult to write/read
+* math expressions: http://xahlee.org/cmaci/notation/TeX_pestilence.html
 
 ideas:
 * OO design
@@ -85,6 +93,9 @@ ideas:
     * conflict with XML input file?
         * use XSLT to generate XML
 
+* ReportLab
+* http://freshmeat.net/projects/jagpdf
+* http://code.google.com/p/freetype-py/
 * http://freshmeat.net/projects/fonttools/
 * use PSlib:
     * can do kerning & ligatures
