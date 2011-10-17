@@ -1419,7 +1419,7 @@ glyph_name_to_unicode = {
     'Tcedilla': 0x162,
     'Tcircle': 0x24c9,
     'Tcircumflexbelow': 0x1e70,
-    'Tcommaaccent': 0x162,
+    'Tcommaaccent': 0x1a,
     'Tdotaccent': 0x1e6a,
     'Tdotbelow': 0x1e6c,
     'Tecyrillic': 0x422,
@@ -4431,7 +4431,7 @@ glyph_name_to_unicode = {
     'tchehmedialarabic': 0xfb7d,
     'tcircle': 0x24e3,
     'tcircumflexbelow': 0x1e71,
-    'tcommaaccent': 0x163,
+    'tcommaaccent': 0x21b,
     'tdieresis': 0x1e97,
     'tdotaccent': 0x1e6b,
     'tdotbelow': 0x1e6d,
@@ -5046,10 +5046,7 @@ glyph_name_to_unicode = {
 
 unicode_to_glyph_name = {}
 for glyph_name, code in glyph_name_to_unicode.items():
-    try:
-        lst = unicode_to_glyph_name[code]
-    except KeyError:
-        lst = unicode_to_glyph_name[code] = []
+    lst = unicode_to_glyph_name.get(code, [])
     lst.append(glyph_name)
 
 
