@@ -84,7 +84,7 @@
 
 <p>Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be
 
-<eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int mathbf{B} \cdot d\mathbf{S}</eq>
+<eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int \mathbf{B} \cdot d\mathbf{S}</eq>
 
 or
 
