@@ -84,11 +84,10 @@ This module defines a base class for documents and a number of utility
 classes.
 """
 
-import sys, os, warnings
+import warnings
 
-from psg.exceptions import *
-from psg.util import *
-from psg.fonts.encoding_tables import *
+from psg.util import ordered_set, join80
+from psg.fonts.encoding_tables import unicode_to_glyph_name
 
 
 class resource:
@@ -253,102 +252,84 @@ class font_wrapper:
             self.mapping[glyph_name] = a
         self.next = 127
 
-    def register_chars(self, us, ignore_missing=True):
-        if type(us) not in (str, list):
-            raise TypeError("Please use unicode strings!")
-        else:
-            if type(us) == str:
-                chars = map(ord, us)
-            else:
-                chars = us
-
-            for char in chars:
+    def _register_chars(self, chars, ignore_missing=True):
+        mapped = []
+        for char in chars:
+            missing = False
+            if type(char) == int:
                 if not self.font.has_char(char):
-                    if ignore_missing:
-                        if char in unicode_to_glyph_name:
-                            tpl = (self.font.ps_name,
-                                   "%s (%s)" % (unicode_to_glyph_name[char][-1],
-                                                chr(char)))
-                        else:
-                            try:
-                                tpl = (self.font.ps_name, "#%i" % char)
-                            except TypeError:
-                                tpl = (self.font.ps_name, "'%s'" % char)
-
-                        msg = "%s does not contain needed glyph %s" % tpl
-                        warnings.warn(msg)
-                        char = 32 # space
-                    else:
-                        tpl = (char, repr(chr(char)))
-                        msg = "No glyph for unicode char %i (%s)" % tpl
-                        raise KeyError(msg)
-
-                try:
+                    msg = ("{0} does not contain glyph for unicode character "
+                           "0x{1:04x}".format(self.font.ps_name, char))
+                    try:
+                        glyph_options = unicode_to_glyph_name[char]
+                        msg += " ({})".format(", ".join(glyph_options))
+                    except KeyError:
+                        pass
+                    missing = True
+                else:
                     glyph_name = self.font.metrics[char].ps_name
-                except KeyError:
-                    glyph_name = char
+            else: # glyph name
+                glyph_name = char
+                if not self.font.has_glyph(glyph_name):
+                    msg = ("{0} does not contain glyph '{1}'"
+                           .format(self.font.ps_name, glyph_name))
+                    missing = True
+            if missing:
+                if ignore_missing:
+                    warnings.warn(msg)
+                    glyph_name = 'space'
+                else:
+                    raise KeyError(msg)
 
-                if glyph_name not in self.mapping:
-                    self.next += 1
+            try:
+                mapped.append(self.mapping[glyph_name])
+            except KeyError:
+                self.next += 1
 
-                    if self.next > 254:
-                        # Use the first 31 chars (except \000) last.
-                        self.next = -1
-                        for b in range(1, 32):
-                            if b not in self.mapping.values():
-                                self.next = b
+                if self.next > 254:
+                    # Use the first 31 chars (except \000) last.
+                    self.next = -1
+                    for b in range(1, 32):
+                        if b not in self.mapping.values():
+                            self.next = b
 
-                        if next == -1:
-                            # If these are exhausted as well, replace
-                            # the char by the space character
-                            next = 32
-                            msg = "character mapping spots are full!"
-                            warnings.warn(msg)
-                        else:
-                            next = self.next
+                    if next == -1:
+                        # If these are exhausted as well, replace
+                        # the char by the space character
+                        next = 32
+                        msg = "character mapping spots are full!"
+                        warnings.warn(msg)
                     else:
                         next = self.next
+                else:
+                    next = self.next
 
-                    self.mapping[glyph_name] = next
+                self.mapping[glyph_name] = next
+                mapped.append(next)
 
-    def postscript_representation(self, us):
+        return mapped
+
+    def postscript_representation(self, chars):
         """
         Return a regular 8bit string in this particular encoding
         representing unicode string 'us'. 'us' may also be a list of
         integer unicode char numbers. This function will register all
         characters in us with this page.
         """
-        if type(us) not in (str, list):
-            raise TypeError("Please use unicode strings!")
-        else:
-            self.register_chars(us)
-            ret = []
+        if type(chars) == str:
+            chars = map(ord, chars)
+        mapped = self._register_chars(chars)
+        ret = []
 
-            if type(us) == list:
-                chars = us
+        for byte in mapped:
+            if byte < 32 or byte > 240 or byte in (40, 41, 92):
+                byte = "\%03o" % byte
             else:
-                chars = map(ord, us)
+                byte = chr(byte)
 
-            for char in chars:
-                if type(char) == int:
-                    try:
-                        glyph_name = self.font.metrics[char].ps_name
-                    except KeyError:
-                        glyph_name = unicode_to_glyph_name[char][-1]
-                else:
-                    glyph_name = char
-                byte = self.mapping.get(glyph_name, None)
-                if byte is None:
-                    byte = " "
-                else:
-                    if byte < 32 or byte > 240 or byte in (40,41,92,):
-                        byte = "\%03o" % byte
-                    else:
-                        byte = chr(byte)
+            ret.append(byte)
 
-                ret.append(byte)
-
-            return "".join(ret)
+        return "".join(ret)
 
     def setup_lines(self):
         """

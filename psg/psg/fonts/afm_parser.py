@@ -543,6 +543,9 @@ class IsFixedPitch(boolean): pass
 # Actual Sections
 
 class CharMetrics(data_section):
+    def __init__(self, line_iterator, info, parent, implicit_keyword):
+        self.by_glyph_name = {}
+        super().__init__(line_iterator, info, parent, implicit_keyword)
 
     def parse_line(self, line):
         """Parse a CharMetrics line info a dict as { 'KEY': info }"""
@@ -624,16 +627,16 @@ class CharMetrics(data_section):
             raise ParseError("Illegal CharMetrics line: Either C or CH key" +
                              "must be present! (%s)" % repr(line))
 
-        # TODO: or should we record the CharMetrics as is (glyph name as key
-        #       instead of unicode ord)?
-        #       for example: what about small caps ligatures?
-        try:
-            key = glyph_name_to_unicode[info["N"]]
-        except KeyError:
-            key = info["N"]
-        self.set(key, info)
+        if info["C"] != -1:
+            self[info["C"]] = info
 
-        #self.set(info["C"], info)
+        try:
+            glyph_name = info["N"]
+            if glyph_name != '.notdef':
+                self.by_glyph_name[glyph_name] = info
+        except KeyError:
+            raise ParseError("No glyph name specified for character code {}"
+                             .format(info["C"]))
 
 
 class TrackKern(data_section):

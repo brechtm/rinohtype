@@ -119,14 +119,15 @@ class PsgFonts(Fonts):
                         'it'  : type_family.italic,
                         'sf'  : type_family.sans,
                         'bf'  : type_family.bold,
-                        None  : type_family.symbol
+                        None  : type_family.symbol,
+                        'fb'  : type_family.fallback
                         }
 
         for font in self.fontmap.values():
-            font.psFont.metrics.fname = 'dummy_filename'
+            font.psFont.metrics.fname = font.filename
 
-        #self.fonts['default'] = self.fontmap['rm']
-        #self.fonts['regular'] = self.fontmap['rm']
+        self.fonts['default'] = self.fontmap['rm']
+        self.fonts['regular'] = self.fontmap['rm']
 
     def _get_font(self, font):
         return self.fontmap[font].psFont.metrics
@@ -168,7 +169,14 @@ class PsgFonts(Fonts):
             except KeyError:
                 warn("No glyph in Postscript font '{}' for '{}'"
                      .format(font.FontMetrics['FontName'], sym), MathTextWarning)
-                found_symbol = False
+                try:
+                    font = self._get_font('fb')
+                    char_metrics = font.FontMetrics["Direction"][0]["CharMetrics"][num]
+                    symbol_name = char_metrics["N"]
+                except KeyError:
+                    warn("No glyph in Postscript font '{}' for '{}'"
+                         .format(font.FontMetrics['FontName'], sym), MathTextWarning)
+                    found_symbol = False
 
         if not found_symbol:
             glyph = sym = '?'
@@ -212,8 +220,7 @@ class PsgFonts(Fonts):
         if font1 == font2 and fontsize1 == fontsize2:
             info1 = self._get_info(font1, fontclass1, sym1, fontsize1, dpi)
             info2 = self._get_info(font2, fontclass2, sym2, fontsize2, dpi)
-            kerning_pairs = info1.font.kerning_pairs
-            kerning = kerning_pairs.get((info1.num, info2.num), 0.0)
+            kerning = info1.font.get_kerning(info1.num, info2.num)
             return kerning * 0.001 * fontsize1
         else:
             return 0.0

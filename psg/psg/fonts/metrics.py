@@ -115,19 +115,25 @@ class metrics(dict):
         will be taken into account, if available. The char_spacing
         parameter is in regular PostScript units, too.
         """
+        # TODO: fix for len(s) > 1 (with glyph names)
         if type(s) == str:
             s = list(map(ord, s))
         if len(s) == 1:
-            return self.get(s[0], self[32]).width * font_size / 1000.0
+            if type(s[0]) == int:
+                return self.get(s[0], self[32]).width * font_size / 1000.0
+            else:
+                char_metrics = self.FontMetrics["Direction"][0]["CharMetrics"]
+                return (char_metrics.by_glyph_name.get(s[0], 'space')['W0X'] *
+                        font_size / 1000.0)
         else:
             width = sum(map(lambda char: self.get(char, self[32]).width,
                             s)) * font_size
 
             if kerning:
-                for a in range(len(s)-1):
+                for a in range(len(s) - 1):
                     char = s[a]
                     next = s[a+1]
-                    kerning = self.kerning_pairs.get( (char, next,), 0.0 )
+                    kerning = self.get_kerning(char, next)
                     width += kerning * font_size
             else:
                 kerning = 0.0

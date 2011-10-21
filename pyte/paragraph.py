@@ -45,7 +45,7 @@ class Line(list):
     def append(self, item):
         if isinstance(item, Word):
             if self.paragraph.ligatures:
-                item = item.substitute_ligatures()
+                item.substitute_ligatures()
             width = item.width(self.paragraph.kerning)
         elif isinstance(item, Space):
             width = item.width
@@ -153,7 +153,7 @@ class Line(list):
                     span_char_widths = []
                     current_style = char_style
 
-                span_chars.append(char.ord())
+                span_chars.append(char.glyph_name)
                 span_char_widths.append(char_widths[i])
 
         if span_chars:

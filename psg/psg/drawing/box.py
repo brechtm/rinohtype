@@ -401,6 +401,7 @@ class textbox(canvas):
         chars = []
         char_widths = []
 
+        font_metrics = self.font_wrapper.font.metrics
         word_count = len(words)
 
         while(words):
@@ -416,8 +417,7 @@ class textbox(canvas):
                     except IndexError:
                         next = 0
 
-                    kerning = self.font_wrapper.font.metrics.kerning_pairs.get(
-                        ( char, next, ), 0.0)
+                    kerning = font_metrics.get_kerning(char, next)
                     kerning = kerning * self.font_size / 1000.0
                 else:
                     kerning = 0.0
@@ -427,8 +427,9 @@ class textbox(canvas):
                 else:
                     spacing = self.char_spacing
 
-                char_width = self.font_wrapper.font.metrics.stringwidth(
-                    chr(char), self.font_size) + kerning + spacing
+                char_width = (font_metrics.stringwidth(chr(char),
+                                                       self.font_size)
+                              + kerning + spacing)
 
                 chars.append(char)
                 char_widths.append(char_width)

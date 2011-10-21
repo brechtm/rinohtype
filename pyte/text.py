@@ -145,7 +145,12 @@ class StyledText(Styled):
 
     def __init__(self, text, style=ParentStyle):
         super().__init__(style)
+        text = self._clean_text(text)
         self.text = self._decode_html_entities(text)
+
+    def _clean_text(self, text):
+        text = re.sub('[\t\r\n]', ' ', text)
+        return re.sub(' +', ' ', text)
 
     # from http://wiki.python.org/moin/EscapingHtml
     def _decode_html_entities(self, text):
@@ -209,7 +214,7 @@ class MixedStyledText(list, Styled):
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
     def __init__(self, text, style=ParentStyle, new_span=False):
-        assert len(text) == 1
+        #assert len(text) == 1
         super().__init__(text, style)
         if text in (' ', '\t'):
             self.__class__= Space
@@ -228,18 +233,22 @@ class Character(StyledText):
     def height(self):
         return self.get_style('fontSize')
 
+    @property
+    def glyph_name(self):
+        return self.get_font().psFont.metrics[self.ord()].ps_name
+
     def ord(self):
         return ord(self.text)
 
     sc_suffixes = ('.smcp', '.sc', 'small')
 
     def small_capital(self):
-        font = self.get_font()
+        ps_font = self.get_font().psFont
         char = self.text
         for suffix in self.sc_suffixes:
-            if font.psFont.has_char(char + suffix):
+            if ps_font.has_glyph(char + suffix):
                 glyph = Glyph(char + '.sc')
-            elif char.islower() and font.psFont.has_char(char.upper() + suffix):
+            elif char.islower() and ps_font.has_glyph(char.upper() + suffix):
                 glyph = Glyph(char.upper() + '.sc')
         try:
             glyph.parent = self.parent
@@ -247,35 +256,59 @@ class Character(StyledText):
         except NameError:
             return self
 
+    def kerning(self, next_character):
+        if self.style != next_character.style:
+            #TODO: fine-grained style compare?
+            raise TypeError
+
+        font_metrics = self.get_font().psFont.metrics
+        return font_metrics.get_kerning(self.glyph_name,
+                                        next_character.glyph_name)
+
+    def ligature(self, next_character):
+        if self.style != next_character.style:
+            #TODO: fine-grained style compare?
+            raise TypeError
+
+        font_metrics = self.get_font().psFont.metrics.FontMetrics
+        char_metrics = font_metrics["Direction"][0]["CharMetrics"]
+        try:
+            ligatures = char_metrics.by_glyph_name[self.glyph_name]['L']
+            lig_glyph_name = ligatures[next_character.glyph_name]
+            lig_text = self.text + next_character.text
+            ligature = Glyph(lig_glyph_name, lig_text, style=self.style)
+            ligature.parent = self.parent
+            return ligature
+        except KeyError:
+            raise TypeError
+
 
 class Glyph(Character):
-    def __init__(self, name, style=ParentStyle):
-        super().__init__('?', style)
+    def __init__(self, name, text='?', style=ParentStyle):
+        super().__init__(text, style)
         self.name = name
 
     def __repr__(self):
         return "<glyph '{0}'> (style={1})".format(self.name, self.style)
 
-    def _ps_repr(self):
-        try:
-            ps_repr = glyph_name_to_unicode[self.name]
-        except KeyError:
-            ps_repr = self.name
-        return ps_repr
-
     @property
     def width(self):
         font = self.get_font()
         font_size = float(self.get_style('fontSize'))
-        return font.psFont.metrics.stringwidth([self._ps_repr()], font_size)
+        return font.psFont.metrics.stringwidth([self.name], font_size)
+
+    @property
+    def glyph_name(self):
+        return self.name
 
     def ord(self):
-        return self._ps_repr()
+        raise TypeError
 
 
 class Space(Character):
     def __init__(self, style=ParentStyle):
         super().__init__(' ', style)
+        self.text = ' '
 
 
 class Spacer(Space):
@@ -304,11 +337,23 @@ class Box(Character):
     def height(self):
         return self._height
 
+    def kerning(self, next_character):
+        raise TypeError
+
+    def ligature(self, next_character):
+        raise TypeError
+
 
 # TODO: refactor to LineBreak
 class NewLine(Character):
     def __init__(self, style=ParentStyle):
         super().__init__('\n', style)
+
+    def kerning(self, next_character):
+        raise TypeError
+
+    def ligature(self, next_character):
+        raise TypeError
 
 
 class Tab(Character):
@@ -357,45 +402,16 @@ class Word(list):
             raise ValueError('expecting Character or Box')
         super().append(char)
 
-
     def substitute_ligatures(self):
-        ligatured = __class__()
-        all_boxes = True
-        for i in range(len(self)):
-            previous = self[i]
-            # TODO: encapsulate (somehow) in Character?
-            if isinstance(previous, (Box, NewLine)):
-                ligatured.append(previous)
-            else:
-                all_boxes = False
-                break
-
-        # TODO: clean up
-        if all_boxes:
-            return ligatured
-
-        for character in self[i + 1:]:
-            # TODO: encapsulate in Character
-            if isinstance(character, (Box, NewLine)):
-                ligatured.append(previous)
-                previous = character
-            else:
-                font_metrics = character.get_font().psFont.metrics.FontMetrics
-                char_metrics = font_metrics["Direction"][0]["CharMetrics"]
-                try:
-                    # TODO: verify whether styles are identical
-                    ligatures = char_metrics[previous.ord()]['L']
-                    # TODO: check for other standard ligatures (ij)
-
-                    ligature_glyph_name = ligatures[character.text]
-                    previous = Glyph(ligature_glyph_name)
-                    previous.parent = character.parent
-                except KeyError:
-                    ligatured.append(previous)
-                    previous = character
-
-        ligatured.append(previous)
-        return ligatured
+        i = 0
+        while i + 1 < len(self):
+            character = self[i]
+            next_character = self[i + 1]
+            try:
+                self[i] = character.ligature(next_character)
+                del self[i + 1]
+            except TypeError:
+                i += 1
 
     def width(self, kerning=True):
         width = 0.0
@@ -417,16 +433,12 @@ class Word(list):
         if index == len(self) - 1:
             kerning = 0.0
         else:
-            this = self[index]
-            next = self[index+1]
-            # FIXME: different styles can have the same font/size/weight
-            if (not isinstance(this, (NewLine, Box)) and
-                not isinstance(next, (NewLine, Box)) and
-                this.style == next.style):
-                kern = self.font_metrics.kerning_pairs.get((this.ord(),
-                                                            next.ord()), 0.0)
+            this_char = self[index]
+            next_char = self[index + 1]
+            try:
+                kern = this_char.kerning(next_char)
                 kerning = kern * float(self.font_size)/ 1000.0
-            else:
+            except TypeError:
                 kerning = 0.0
 
         return kerning

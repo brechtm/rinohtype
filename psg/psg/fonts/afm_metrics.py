@@ -56,14 +56,14 @@ interface as a higher level interface to the AFM file parser from
 afm_parser.py.
 """
 
-import sys, re
-from string import *
-from types import *
+import re
+from warnings import warn
 
-from psg.util import *
+from psg.util import bounding_box
 from .afm_parser import parse_afm
 from .metrics import metrics, glyph_metric
-from .encoding_tables import *
+from .encoding_tables import encoding_tables, glyph_name_to_unicode
+
 
 class global_info(property):
     """
@@ -76,48 +76,56 @@ class global_info(property):
     def __get__(self, metrics, owner="dummy"):
         return metrics.FontMetrics.get(self.keyword, None)
 
+
 class afm_metrics(metrics):
     gs_uni_re = re.compile("uni[A-Z0-9]{4}")
 
     def __init__(self, fp):
         """
         @param fp: File pointer of the AFM file opened for reading.
-        @raises KeyError: if the font's encoding is not known.
         """
         metrics.__init__(self)
 
         self.FontMetrics = parse_afm(fp)
 
-        try:
-            encoding_table = encoding_tables.get(self.encoding_scheme, {})
-        except KeyError:
-            raise KeyError("Unknown font encoding: %s" % \
-                                                repr(self.encoding_scheme))
-
         # Create a glyph_metric object for every glyph and put it into self
         # indexed by its unicode code.
         char_metrics = self.FontMetrics["Direction"][0]["CharMetrics"]
-        need_quote = map(ord, r"\()")
-        for char_code, info in char_metrics.iteritems():
-            glyph_name = info.get("N", None)
-            if glyph_name is None:
-                unicode_char_code = encoding_table[char_code]
-            elif glyph_name == ".notdef":
-                continue
-            elif self.gs_uni_re.match(glyph_name) is not None:
+
+        # glyph name to unicode mapping
+        for glyph_name, info in char_metrics.by_glyph_name.items():
+            if self.gs_uni_re.match(glyph_name):
                 # This may be a Ghostscript specific convention. No word
                 # about this in the standard document.
                 unicode_char_code = int(glyph_name[3:], 16)
-            else:
+            elif glyph_name != '.notdef':
                 try:
-                    unicode_char_code = glyph_name_to_unicode[glyph_name]
+                    unicode = glyph_name_to_unicode[glyph_name]
+##                    if unicode in self:
+##                        warn("'{0}': glyph '{1}' is already stored for unicode "
+##                             "{2:04x}".format(glyph_name, self[unicode].ps_name,
+##                                              unicode))
+##                        continue
+                    bb = bounding_box.from_tuple(info["B"])
+                    self[unicode] = glyph_metric(info["C"], info["W0X"],
+                                                 glyph_name, bb)
                 except KeyError:
-                    unicode_char_code = glyph_name
+                    pass
 
-            bb = bounding_box.from_tuple(info["B"])
-            self[unicode_char_code] = glyph_metric(char_code,
-                                                   info["W0X"], glyph_name,
-                                                   bb)
+        # FontEncoding to unicode mapping
+        try:
+            encoding_table = encoding_tables[self.encoding_scheme]
+            try:
+                for char_code, info in char_metrics.items():
+                    unicode_char_code = encoding_table[char_code]
+                    self[unicode_char_code] = glyph_metric(char_code,
+                                                           info["W0X"],
+                                                           info.get("N", None),
+                                                           bb)
+            except KeyError:
+                raise KeyError("Character code not in encoding table")
+        except KeyError:
+            pass
 
         # Create kerning pair index
         try:
@@ -127,23 +135,26 @@ class afm_metrics(metrics):
                 key, info0, info1 = info
 
                 if key == "KPH":
-                    a = encoding_table[a]
-                    b = encoding_table[b]
-                else:
-                    try:
-                        a = glyph_name_to_unicode[a]
-                    except KeyError:
-                        pass
-                    try:
-                        b = glyph_name_to_unicode[b]
-                    except KeyError:
-                        pass
+                    a = char_metrics[a]['N']
+                    b = char_metrics[b]['N']
 
                 kerning = info0
                 self.kerning_pairs[ ( a, b, ) ] = kerning
         except KeyError:
             pass
 
+    def get_kerning(self, a, b, default=0.0):
+        # a and b are unicode character codes or glyph names
+        try:
+            # TODO: remove temporary try/except when equations are fixed
+            if type(a) == int:
+                a = self[a].ps_name
+            if type(b) == int:
+                b = self[b].ps_name
+        except KeyError:
+            pass
+
+        return self.kerning_pairs.get((a, b), default)
 
     ps_name = global_info("FontName")
     full_name = global_info("FullName")
