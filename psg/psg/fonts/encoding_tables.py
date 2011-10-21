@@ -5041,13 +5041,20 @@ glyph_name_to_unicode = {
     'zretroflexhook': 0x290,
     'zstroke': 0x1b6,
     'zuhiragana': 0x305a,
-    'zukatakana': 0x30ba}
+    'zukatakana': 0x30ba,
+
+    'anglearc': 0x2222,
+    'diameter': 0x2300,
+
+    # cmex
+    'contintegraltext': 0x222e,
+    'contintegraldisplay': 0x222e,
+    }
 
 
 unicode_to_glyph_name = {}
 for glyph_name, code in glyph_name_to_unicode.items():
-    lst = unicode_to_glyph_name.get(code, [])
-    lst.append(glyph_name)
+    unicode_to_glyph_name.setdefault(code, []).append(glyph_name)
 
 
 encoding_tables = { "AppleStandard": apple_roman_to_unicode,
