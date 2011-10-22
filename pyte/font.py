@@ -13,12 +13,16 @@ class FontStyle:
 
 
 class Font(object):
-    def __init__(self, filename):
+    def __init__(self, filename, core=False):
         self.filename = filename
-        if os.path.exists(filename + ".pfa"):
-            self.psFont = type1(filename + ".pfa", filename  + ".afm")
+        if core:
+            pf_filename = None
+        elif os.path.exists(filename + ".pfa"):
+            pf_filename = filename + ".pfa"
         else:
-            self.psFont = type1(filename + ".pfb", filename  + ".afm")
+            pf_filename = filename + ".pfb"
+
+        self.psFont = type1(pf_filename, filename  + ".afm")
         self.name = self.psFont.full_name
 
 

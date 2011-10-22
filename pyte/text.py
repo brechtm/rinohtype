@@ -4,6 +4,7 @@ import os
 
 from copy import copy
 from html.entities import name2codepoint
+from warnings import warn
 
 from psg.fonts.encoding_tables import glyph_name_to_unicode
 
@@ -220,6 +221,9 @@ class Character(StyledText):
         super().__init__(text, style)
         if text in (' ', '\t'):
             self.__class__= Space
+        elif text == chr(0x00a0): # no-break space
+            self.__class__= NoBreakSpace
+            self.text = ' '
         self.new_span = new_span
 
     def __repr__(self):
@@ -237,7 +241,13 @@ class Character(StyledText):
 
     @property
     def glyph_name(self):
-        return self.get_font().psFont.metrics[self.ord()].ps_name
+        ps_font = self.get_font().psFont
+        try:
+            return ps_font.metrics[self.ord()].ps_name
+        except KeyError:
+            warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
+                 .format(ps_font.ps_name, self.ord(), self.text))
+            return ps_font.metrics[ord('?')].ps_name
 
     def ord(self):
         return ord(self.text)
@@ -320,6 +330,10 @@ class Spacer(Space):
 
     def width(self):
         return float(dimension)
+
+
+class NoBreakSpace(Space):
+    pass
 
 
 # TODO: shared superclass SpecialChar (or ControlChar) for Newline, Box, Tab

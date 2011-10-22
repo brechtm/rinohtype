@@ -19,18 +19,24 @@ from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 
 
+# use Gyre Termes instead of (PDF Core) Times
+use_termes = False
+
 # fonts
 # ----------------------------------------------------------------------------
-termes_roman = Font("fonts/qtmr")
-termes_bold = Font("fonts/qtmb")
-termes_italic = Font("fonts/qtmri")
-termes_bold_italic = Font("fonts/qtmbi")
+if use_termes:
+    termes_roman = Font("fonts/qtmr")
+    termes_bold = Font("fonts/qtmb")
+    termes_italic = Font("fonts/qtmri")
+    termes_bold_italic = Font("fonts/qtmbi")
 
-termes = TypeFace("TeXGyreTermes",
-                  roman=termes_roman, bold=termes_bold,
-                  italic=termes_italic, bolditalic=termes_bold_italic)
+    termes = TypeFace("TeXGyreTermes",
+                      roman=termes_roman, bold=termes_bold,
+                      italic=termes_italic, bolditalic=termes_bold_italic)
 
-ieeeFamily = TypeFamily(serif=termes)
+    ieeeFamily = TypeFamily(serif=termes)
+else:
+    from pyte.fonts.adobe14 import family as ieeeFamily
 
 schola_roman = Font("fonts/qcsr")
 schola_italic = Font("fonts/qcsri")
