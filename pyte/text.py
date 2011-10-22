@@ -1,5 +1,7 @@
 
 import re
+import os
+
 from copy import copy
 from html.entities import name2codepoint
 
@@ -443,12 +445,22 @@ class Word(list):
 
         return kerning
 
+    dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
+
     def hyphenate(self):
         if not self.hyphen_enable:
             return
+
+        dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(self.dic_dir, dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+
         word = str(self)
-        h = Hyphenator('hyph_{}.dic'.format(self.hyphen_lang),
-                       left=self.hyphen_chars, right=self.hyphen_chars)
+        h = Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
         for position in reversed(h.positions(word)):
             parts = h.wrap(word, position + 1)
             if "".join((parts[0][:-1], parts[1])) != word:
