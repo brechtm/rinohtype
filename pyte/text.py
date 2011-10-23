@@ -266,6 +266,8 @@ class Character(StyledText):
             glyph.parent = self.parent
             return glyph
         except NameError:
+            warn('{} does not contain small capitals for one or more '
+                 'characters'.format(self.get_font().psFont.ps_name))
             return self
 
     def kerning(self, next_character):
