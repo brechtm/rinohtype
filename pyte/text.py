@@ -402,7 +402,6 @@ class Word(list):
 
     def append(self, char):
         if isinstance(char, Character):
-            assert char.text not in (" ", "\t")
             if self.hyphen_enable:
                 self.hyphen_enable = char.get_style('hyphenate')
                 self.hyphen_chars = max(self.hyphen_chars,

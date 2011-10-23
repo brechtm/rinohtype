@@ -1,3 +1,4 @@
+import itertools
 
 from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
@@ -51,6 +52,7 @@ class Line(list):
             width = item.width
         else:
             raise ValueError('expecting Word or Space')
+
         if isinstance(item, Word) and self.text_width + width > self.width:
             for first, second in item.hyphenate():
                 first_width = first.width(self.paragraph.kerning)
@@ -204,18 +206,13 @@ class Paragraph(MixedStyledText):
         self.first_line = True
 
     def _split_words(self):
-        word = Word()
-        for char in self.characters():
-            # TODO: handle punctuation
-            if isinstance(char, Space):
-                self._words.append(word)
-                self._words.append(char)
-                word = Word()
+        for is_space, item in itertools.groupby(self.characters(),
+                                                lambda x: type(x) == Space):
+            if is_space:
+                for space in item:
+                    self._words.append(space)
             else:
-                word.append(char)
-
-        if len(word) > 0:
-            self._words.append(word)
+                self._words.append(Word(item))
 
     # based on the typeset functions of psg.box.textbox
     def typeset(self, pscanvas, offset=0):
