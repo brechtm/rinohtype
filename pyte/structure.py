@@ -1,8 +1,12 @@
 
+from warnings import warn
+
+from psg.exceptions import EndOfBox
+
 from pyte.text import StyledText
 from pyte.paragraph import ParagraphStyle, Paragraph
 from pyte.unit import nil
-from psg.exceptions import EndOfBox
+from .warnings import PyteWarning
 
 
 class NumberingStyle:
@@ -159,10 +163,10 @@ class Reference(StyledText):
         try:
             self.text = self.document.elements[self.id].reference()
         except KeyError:
-            print("Warning: unknown label '{}'".format(self.id))
+            warn("Unknown label '{}'".format(self.id), PyteWarning)
             self.text = "unkown reference '{}'".format(self.id)
         if self.text is None:
-            print('Warning: trying to reference unreferenceable object')
+            warn('Trying to reference unreferenceable object', PyteWarning)
             self.text = '[not referenceable]'
         for character in super().characters():
             yield character

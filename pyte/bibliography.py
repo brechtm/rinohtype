@@ -7,6 +7,9 @@
 
 import re
 from lxml import objectify
+from warnings import warn
+
+from .warnings import PyteWarning
 
 
 class CustomDict(dict):
@@ -51,8 +54,8 @@ class Bibliography(list):
         try:
             reference = self.source[id]
         except KeyError:
-            warning = "unknown reference id '{}'".format(id)
-            print("WARNING: {}".format(warning))
+            warning = "Unknown reference id '{}'".format(id)
+            warn(warning, PyteWarning)
             return "[{}]".format(warning)
         self.append(reference)
         return self.formatter.format_citation(reference)

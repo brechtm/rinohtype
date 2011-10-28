@@ -11,6 +11,7 @@ from psg.fonts.encoding_tables import glyph_name_to_unicode
 from pyte.unit import pt
 from pyte.font import FontStyle
 from pyte.hyphenator import Hyphenator
+from .warnings import PyteWarning
 
 
 class ParentStyleException(Exception):
@@ -246,7 +247,7 @@ class Character(StyledText):
             return ps_font.metrics[self.ord()].ps_name
         except KeyError:
             warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
-                 .format(ps_font.ps_name, self.ord(), self.text))
+                 .format(ps_font.ps_name, self.ord(), self.text), PyteWarning)
             return ps_font.metrics[ord('?')].ps_name
 
     def ord(self):
@@ -267,7 +268,8 @@ class Character(StyledText):
             return glyph
         except NameError:
             warn('{} does not contain small capitals for one or more '
-                 'characters'.format(self.get_font().psFont.ps_name))
+                 'characters'.format(self.get_font().psFont.ps_name),
+                 PyteWarning)
             return self
 
     def kerning(self, next_character):
@@ -454,7 +456,7 @@ class Word(list):
             next_char = self[index + 1]
             try:
                 kern = this_char.kerning(next_char)
-                kerning = kern * float(self.font_size)/ 1000.0
+                kerning = kern * float(self.font_size) / 1000.0
             except TypeError:
                 kerning = 0.0
 
