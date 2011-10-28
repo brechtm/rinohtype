@@ -9,7 +9,7 @@ from warnings import warn
 from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from pyte.unit import pt
-from pyte.font import FontStyle
+from pyte.font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from pyte.hyphenator import Hyphenator
 from .warnings import PyteWarning
 
@@ -59,7 +59,7 @@ class Style(object):
                 return cls.attributes[name]
             except (KeyError, AttributeError):
                 pass
-        raise AttributeError
+        raise AttributeError("No attribute '{}' in {}".format(name, self))
 
     def _supported_attributes(self):
         attributes = {}
@@ -73,7 +73,9 @@ class Style(object):
 
 class TextStyle(Style):
     attributes = {'typeface': None, # no default fonts yet
-                  'fontStyle': FontStyle.Roman,
+                  'fontWeight': MEDIUM,
+                  'fontSlant': UPRIGHT,
+                  'fontWidth': NORMAL,
                   'fontSize': 10*pt, # TODO: change default
                   'smallCaps': False,
                   'hyphenate': True,
@@ -82,6 +84,13 @@ class TextStyle(Style):
 
     def __init__(self, name, base=ParentStyle, **attributes):
         super().__init__(name, base=base, **attributes)
+
+    def get_font(self):
+        typeface = self.get('typeface')
+        weight = self.get('fontWeight')
+        slant = self.get('fontSlant')
+        width = self.get('fontWidth')
+        return typeface.get(weight=weight, slant=slant, width=width)
 
 
 # TODO: link to xml line number
@@ -119,7 +128,11 @@ class Styled(object):
             return value
 
     def get_font(self):
-        return self.get_style('typeface').font(self.get_style('fontStyle'))
+        typeface = self.get_style('typeface')
+        weight = self.get_style('fontWeight')
+        slant = self.get_style('fontSlant')
+        width = self.get_style('fontWidth')
+        return typeface.get(weight=weight, slant=slant, width=width)
 
     def characters(self):
         raise NotImplementedError
@@ -491,10 +504,11 @@ class Word(list):
 
 # predefined styles
 
-emStyle = TextStyle(name="emphasized", fontStyle=FontStyle.Italic)
-boldStyle = TextStyle(name="bold", fontStyle=FontStyle.Bold)
-italicStyle = TextStyle(name="italic", fontStyle=FontStyle.Italic)
-boldItalicStyle = TextStyle(name="bold italic", fontStyle=FontStyle.BoldItalic)
+emStyle = TextStyle(name="emphasized", fontSlant=ITALIC)
+boldStyle = TextStyle(name="bold", fontWeight=BOLD)
+italicStyle = TextStyle(name="italic", fontSlant=ITALIC)
+boldItalicStyle = TextStyle(name="bold italic", fontWeight=BOLD,
+                            fontSlant=ITALIC)
 smallCapsStyle = TextStyle(name="small capitals", smallCaps=True)
 
 

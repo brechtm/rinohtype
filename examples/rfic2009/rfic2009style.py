@@ -4,7 +4,8 @@ from copy import copy
 from lxml import etree, objectify
 
 from pyte.unit import inch, pt
-from pyte.font import Font, TypeFace, TypeFamily, FontStyle
+from pyte.font import Font, TypeFace, TypeFamily
+from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
@@ -37,6 +38,10 @@ if use_termes:
     ieeeFamily = TypeFamily(serif=termes)
 else:
     from pyte.fonts.adobe14 import family as ieeeFamily
+    #from pyte.fonts.adobe35 import avantgarde, palatino, zapfchancery
+    #from pyte.fonts.adobe35 import newcenturyschlbk, bookman
+    #ieeeFamily = TypeFamily(serif=palatino)
+
 
 schola_roman = Font("fonts/qcsr")
 schola_italic = Font("fonts/qcsri")
@@ -55,7 +60,7 @@ std_math = MathFonts(schola_roman, schola_italic, schola_bold,
 # ----------------------------------------------------------------------------
 bodyStyle = ParagraphStyle('body',
                            typeface=ieeeFamily.serif,
-                           fontStyle=FontStyle.Roman,
+                           fontWeight=REGULAR,
                            fontSize=10*pt,
                            lineSpacing=12*pt,
                            indentFirst=0.125*inch,
@@ -81,7 +86,7 @@ bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
 
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
-                            fontStyle=FontStyle.Roman,
+                            fontWeight=REGULAR,
                             fontSize=18*pt,
                             lineSpacing=1.2*18*pt,
                             spaceAbove=6*pt,
@@ -99,7 +104,7 @@ affiliationStyle = ParagraphStyle("affiliation",
 
 abstractStyle = ParagraphStyle("abstract",
                                typeface=ieeeFamily.serif,
-                               fontStyle=FontStyle.Bold,
+                               fontWeight=BOLD,
                                fontSize=9*pt,
                                lineSpacing=10*pt,
                                indentFirst=0.125*inch,
@@ -119,7 +124,7 @@ listStyle = ListStyle("list", base=bodyStyle,
 
 hd1Style = HeadingStyle("heading",
                         typeface=ieeeFamily.serif,
-                        fontStyle=FontStyle.Roman,
+                        fontWeight=REGULAR,
                         fontSize=10*pt,
                         smallCaps=True,
                         justify=Justify.Center,
@@ -132,7 +137,7 @@ acknowledgement_heading_style = HeadingStyle("acknowledgement", base=hd1Style,
                                              numberingStyle=None)
 
 hd2Style = HeadingStyle("subheading", base=hd1Style,
-                        fontStyle=FontStyle.Italic,
+                        fontSlant=ITALIC,
                         fontSize=10*pt,
                         smallCaps=False,
                         justify=Justify.Left,

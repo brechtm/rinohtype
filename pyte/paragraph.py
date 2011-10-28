@@ -123,7 +123,9 @@ class Line(list):
 
         if isinstance(chars[0], Character):
             current_style = {'typeface': chars[0].get_style('typeface'),
-                             'fontStyle': chars[0].get_style('fontStyle'),
+                             'fontWeight': chars[0].get_style('fontWeight'),
+                             'fontSlant': chars[0].get_style('fontSlant'),
+                             'fontWidth': chars[0].get_style('fontWidth'),
                              'fontSize': chars[0].get_style('fontSize')}
         else:
             current_style = 'box'
@@ -144,7 +146,9 @@ class Line(list):
                 pass
             else:
                 char_style = {'typeface': char.get_style('typeface'),
-                              'fontStyle': char.get_style('fontStyle'),
+                              'fontWeight': char.get_style('fontWeight'),
+                              'fontSlant': char.get_style('fontSlant'),
+                              'fontWidth': char.get_style('fontWidth'),
                               'fontSize': char.get_style('fontSize')}
                 if current_style == 'box':
                     current_style = char_style
@@ -166,7 +170,9 @@ class Line(list):
 
     def typeset_span(self, canvas, style, span_chars, span_char_widths):
         """Typeset a series of characters with the same style"""
-        font = style['typeface'].font(style['fontStyle'])
+        font = style['typeface'].get(weight=style['fontWeight'],
+                                     slant=style['fontSlant'],
+                                     width=style['fontWidth'])
         font_wrapper = canvas.page.register_font(font.psFont, True)
         self.set_font(canvas, font_wrapper, style['fontSize'])
         span_char_widths_text = map(lambda f: "%.2f" % f, span_char_widths)

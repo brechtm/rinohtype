@@ -3,7 +3,6 @@ import os
 import unicodedata
 from warnings import warn
 
-from pyte.font import FontStyle
 from psg.fonts.afm_metrics import afm_metrics
 
 from .unit import pt

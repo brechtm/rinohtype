@@ -4,38 +4,40 @@ import os
 
 from . import fonts_path
 from ..font import Font, TypeFace, TypeFamily
+from ..font.style import REGULAR, MEDIUM, BOLD, OBLIQUE, ITALIC, CONDENSED
 
 
-directory = os.path.join(fonts_path, 'adobe14')
+
+def path(name):
+    return os.path.join(fonts_path, 'adobe14', name)
 
 
-courier_r = Font(os.path.join(directory, 'Courier'), True)
-courier_b = Font(os.path.join(directory, 'Courier-Bold'), True)
-courier_bo = Font(os.path.join(directory, 'Courier-BoldOblique'), True)
-courier_o = Font(os.path.join(directory, 'Courier-Oblique'), True)
+courier = TypeFace('Courier',
+                   Font(path('Courier'), core=True),
+                   Font(path('Courier-Oblique'), slant=OBLIQUE, core=True),
+                   Font(path('Courier-Bold'), weight=BOLD, core=True),
+                   Font(path('Courier-BoldOblique'), weight=BOLD, slant=OBLIQUE,
+                        core=True))
 
-helvetica_r = Font(os.path.join(directory, 'Helvetica'), True)
-helvetica_b = Font(os.path.join(directory, 'Helvetica-Bold'), True)
-helvetica_bo = Font(os.path.join(directory, 'Helvetica-BoldOblique'), True)
-helvetica_o = Font(os.path.join(directory, 'Helvetica-Oblique'), True)
+helvetica = TypeFace('Helvetica',
+                     Font(path('Helvetica'), core=True),
+                     Font(path('Helvetica-Oblique'), slant=OBLIQUE, core=True),
+                     Font(path('Helvetica-Bold'), weight=BOLD, core=True),
+                     Font(path('Helvetica-BoldOblique'), weight=BOLD,
+                          slant=OBLIQUE, core=True))
 
-symbol_r = Font(os.path.join(directory, 'Symbol'), True)
+symbol = TypeFace('Symbol', Font(path('Symbol'), core=True))
 
-times_r = Font(os.path.join(directory, 'Times-Roman'), True)
-times_b = Font(os.path.join(directory, 'Times-Bold'), True)
-times_bi = Font(os.path.join(directory, 'Times-BoldItalic'), True)
-times_i = Font(os.path.join(directory, 'Times-Italic'), True)
+times = TypeFace('Times',
+                 Font(path('Times-Roman'), weight=REGULAR, core=True),
+                 Font(path('Times-Italic'), slant=ITALIC, core=True),
+                 Font(path('Times-Bold'), weight=BOLD, core=True),
+                 Font(path('Times-BoldItalic'), weight=BOLD, slant=ITALIC,
+                      core=True))
 
-zapfdingbats_r = Font(os.path.join(directory, 'ZapfDingbats'), True)
-
-
-courier = TypeFace('Courier', courier_r, courier_b, courier_o, courier_bo)
-helvetica = TypeFace('Helvetica', helvetica_r, helvetica_b, helvetica_o,
-                     helvetica_bo)
-symbol = TypeFace('Symbol', symbol_r)
-times = TypeFace('Times', times_r, times_b, times_i, times_bi)
-zapfdingbats = TypeFace('ZapfDingbats', zapfdingbats_r)
-
+zapfdingbats = TypeFace('ITC ZapfDingbats', Font(path('ZapfDingbats'),
+                        core=True))
 
 # 'Adobe PDF Core Font Set'
-family = TypeFamily(times, helvetica, courier)
+family = TypeFamily(serif=times, sans=helvetica, mono=courier,
+                    symbol=symbol, dingbats=zapfdingbats)
