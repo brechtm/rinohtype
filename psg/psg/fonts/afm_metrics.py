@@ -87,6 +87,7 @@ class afm_metrics(metrics):
         metrics.__init__(self)
 
         self.FontMetrics = parse_afm(fp)
+        fp.close()
 
         # Create a glyph_metric object for every glyph and put it into self
         # indexed by its unicode code.
