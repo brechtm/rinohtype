@@ -19,7 +19,7 @@ class MathFonts(object):
     default = None
 
     def __init__(self, roman, italic, bold, sans, mono, cal, symbol, fallback):
-        self.roman = symbol
+        self.roman = roman
         self.italic = italic
         self.bold = bold
         self.sans = sans
@@ -46,7 +46,7 @@ class Math(CharacterLike):
         self.equation = equation
 
     def characters(self):
-        font_output = PsgFonts(self)
+        font_output = PyteFonts(self)
         fontsize = float(self.get_style('fontSize'))
         dpi = 72
 
@@ -84,7 +84,6 @@ class Equation(MixedStyledText):
         self.__class__.next_number += 1
         math = Math(equation, style=style.math_style)
         math.parent = self # TODO: encapsulate
-        #math.document = self.document
         #text = [NewLine(), Math(equation), Tab(), number, NewLine()]
         text = [math, Tab(), number]
         super().__init__(text, style)
@@ -94,30 +93,20 @@ class Equation(MixedStyledText):
 
 
 # adapted from matplotlib.mathtext.StandardPsFonts
-class PsgFonts(Fonts):
-    """
-    Use the standard postscript fonts for rendering to backend_ps
-
-    Unlike the other font classes, BakomaFont and UnicodeFont, this
-    one requires the Ps backend.
-    """
+class PyteFonts(Fonts):
     def __init__(self, styled):
         Fonts.__init__(self, None, MathtextBackendPs())
         self.styled = styled
         self.glyphd = {}
         self.fonts = {}
 
-        #filename = os.path.join(self.basepath, 'phvr8a.afm')
-        #default_font = afm_metrics(open(filename, 'rb'))
-        #default_font.fname = filename
-
         type_family = self.styled.get_style('fonts')
-        self.fontmap = {'cal' : type_family.cal,
-                        'rm'  : type_family.roman,
-                        'tt'  : type_family.mono,
+        self.fontmap = {'rm'  : type_family.roman,
                         'it'  : type_family.italic,
-                        'sf'  : type_family.sans,
                         'bf'  : type_family.bold,
+                        'sf'  : type_family.sans,
+                        'tt'  : type_family.mono,
+                        'cal' : type_family.cal,
                         None  : type_family.symbol,
                         'fb'  : type_family.fallback
                         }
@@ -125,11 +114,12 @@ class PsgFonts(Fonts):
         for font in self.fontmap.values():
             font.psFont.metrics.fname = font.filename
 
-        self.fonts['default'] = self.fontmap['rm']
-        self.fonts['regular'] = self.fontmap['rm']
+##        self.fonts['default'] = self.fontmap['rm']
+##        self.fonts['regular'] = self.fontmap['rm']
 
     def _get_font(self, font):
-        return self.fontmap[font].psFont.metrics
+        self.styled.document.psg_doc.add_font(self.fontmap[font].psFont)
+        return self.fontmap[font].psFont
 
     def _get_info(self, fontname, font_class, sym, fontsize, dpi):
         'load the cmfont, metrics and glyph with caching'
@@ -158,39 +148,40 @@ class PsgFonts(Fonts):
 
         slanted = (fontname == 'it')
         font = self._get_font(fontname)
-        #self.document.dsc_doc.add_font(font)
-        #font_wrapper = canvas.page.register_font(font.psFont, True)
+        font_metrics =font.metrics
 
         if found_symbol:
             try:
-                char_metrics = font.FontMetrics["Direction"][0]["CharMetrics"][num]
-                symbol_name = char_metrics["N"]
+                char_metrics = font_metrics[num]
+                symbol_name = char_metrics.ps_name
             except KeyError:
-                warn("No glyph in Postscript font '{}' for '{}'"
-                     .format(font.FontMetrics['FontName'], sym), MathTextWarning)
+                warn("No glyph in font '{}' for '{}'"
+                     .format(font.ps_name, sym), MathTextWarning)
                 try:
                     font = self._get_font('fb')
-                    char_metrics = font.FontMetrics["Direction"][0]["CharMetrics"][num]
-                    symbol_name = char_metrics["N"]
+                    font_metrics =font.metrics
+                    char_metrics = font_metrics[num]
+                    symbol_name = char_metrics.ps_name
                 except KeyError:
-                    warn("No glyph in Postscript font '{}' for '{}'"
-                         .format(font.FontMetrics['FontName'], sym), MathTextWarning)
+                    warn("No glyph in font '{}' for '{}'"
+                         .format(font.ps_name, sym), MathTextWarning)
                     found_symbol = False
 
         if not found_symbol:
             glyph = sym = '?'
             num = ord(glyph)
-            char_metrics = font.FontMetrics["Direction"][0]["CharMetrics"][num]
-            symbol_name = char_metrics["N"]
+            char_metrics = font_metrics[num]
+            symbol_name = char_metrics.ps_name
 
         offset = 0
 
         scale = 0.001 * fontsize
 
-        xmin, ymin, xmax, ymax = [val * scale for val in char_metrics["B"]]
+        char_bounding_box = char_metrics.bounding_box.as_tuple()
+        xmin, ymin, xmax, ymax = [val * scale for val in char_bounding_box]
         metrics = Bunch(
-            advance  = char_metrics["WX"] * scale,
-            width    = char_metrics["WX"] * scale,
+            advance  = char_metrics.width * scale,
+            width    = char_metrics.width * scale,
             height   = ymax * scale,
             xmin = xmin,
             xmax = xmax,
@@ -202,9 +193,9 @@ class PsgFonts(Fonts):
             )
 
         self.glyphd[key] = Bunch(
-            font            = font,
+            font            = font_metrics,
             fontsize        = fontsize,
-            postscript_name = font.FontMetrics['FontName'],
+            postscript_name = font.ps_name,
             metrics         = metrics,
             symbol_name     = symbol_name,
             num             = num,
@@ -228,9 +219,10 @@ class PsgFonts(Fonts):
 
     def get_xheight(self, font, fontsize, dpi):
         cached_font = self._get_font(font)
-        return cached_font.FontMetrics['XHeight'] * 0.001 * fontsize
+        return cached_font.metrics.FontMetrics['XHeight'] * 0.001 * fontsize
 
     def get_underline_thickness(self, font, fontsize, dpi):
-        cached_font = self._get_font(font)
-        ul_th = cached_font.FontMetrics['Direction'][0]['UnderlineThickness']
+        cached_font_metrics = self._get_font(font).metrics
+        ul_th = (cached_font_metrics.FontMetrics['Direction'][0]
+                 ['UnderlineThickness'])
         return ul_th * 0.001 * fontsize

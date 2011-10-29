@@ -21,11 +21,11 @@ from pyte.bibliography import Bibliography, BibliographyFormatter
 
 
 # use Gyre Termes instead of (PDF Core) Times
-use_termes = False
+use_gyre = False
 
 # fonts
 # ----------------------------------------------------------------------------
-if use_termes:
+if use_gyre:
     termes_roman = Font("fonts/qtmr")
     termes_bold = Font("fonts/qtmb")
     termes_italic = Font("fonts/qtmri")
@@ -36,25 +36,26 @@ if use_termes:
                       italic=termes_italic, bolditalic=termes_bold_italic)
 
     ieeeFamily = TypeFamily(serif=termes)
+
+    schola_roman = Font("fonts/qcsr")
+    schola_italic = Font("fonts/qcsri")
+    schola_bold = Font("fonts/qcsb")
+    heros_roman = Font("fonts/qhvr")
+    cursor_regular = Font("fonts/qcrr")
+    chorus = Font("fonts/qzcmi")
+    standard_symbols = Font("fonts/usyr")
+    cmex9 = Font("fonts/cmex9")
+
+    mathfonts = MathFonts(schola_roman, schola_italic, schola_bold,
+                         heros_roman, cursor_regular, chorus, standard_symbols,
+                         cmex9)
 else:
-    from pyte.fonts.adobe14 import family as ieeeFamily
+    from pyte.fonts.adobe14 import pdf_family as ieeeFamily
     #from pyte.fonts.adobe35 import avantgarde, palatino, zapfchancery
     #from pyte.fonts.adobe35 import newcenturyschlbk, bookman
     #ieeeFamily = TypeFamily(serif=palatino)
+    from pyte.fonts.adobe35 import postscript_mathfonts as mathfonts
 
-
-schola_roman = Font("fonts/qcsr")
-schola_italic = Font("fonts/qcsri")
-schola_bold = Font("fonts/qcsb")
-heros_roman = Font("fonts/qhvr")
-cursor_regular = Font("fonts/qcrr")
-chorus = Font("fonts/qzcmi")
-standard_symbols = Font("fonts/usyr")
-cmex9 = Font("fonts/cmex9")
-
-std_math = MathFonts(schola_roman, schola_italic, schola_bold,
-                     heros_roman, cursor_regular, chorus, standard_symbols,
-                     cmex9)
 
 # paragraph styles
 # ----------------------------------------------------------------------------
@@ -72,7 +73,7 @@ ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
 ParagraphStyle.attributes['hyphenChars'] = 4
 
-mathstyle = MathStyle('math', fonts=std_math)
+mathstyle = MathStyle('math', fonts=mathfonts)
 
 equationstyle = EquationStyle('equation', base=bodyStyle,
                               math_style=mathstyle,
@@ -267,6 +268,8 @@ class Eq(CustomElement):
     def render(self, target, id=None):
         equation = Equation(self.text, style=equationstyle)
         equation.document = target.document # TODO: do this properly
+        for item in equation:
+            item.document = target.document
         id = self.get('id', None)
         if id:
             target.document.elements[id] = equation
@@ -382,10 +385,6 @@ class RFIC2009Paper(Document):
         self.keywords = [term.text for term in self.root.head.indexterms.term]
 
         self.content = Chain(self)
-
-        for font in (schola_roman, schola_italic, schola_bold, heros_roman,
-                     cursor_regular, chorus, standard_symbols):
-            self.psg_doc.add_font(font.psFont)
 
     def render(self, filename):
         page = RFICPage(self, first=True)

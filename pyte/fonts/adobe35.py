@@ -6,6 +6,7 @@ from . import fonts_path
 from ..font import Font, TypeFace, TypeFamily
 from ..font.style import LIGHT, BOOK, REGULAR, MEDIUM, DEMI_BOLD, BOLD
 from ..font.style import OBLIQUE, ITALIC, CONDENSED
+from ..math import MathFonts
 
 
 __all__ = ['avantgarde', 'bookman', 'courier', 'helvetica', 'newcenturyschlbk',
@@ -85,3 +86,13 @@ zapfchancery = TypeFace('ITC Zapf Chancery',
 
 zapfdingbats = TypeFace('ITC ZapfDingbats',
                         Font(path('ZapfDingbats'), core=True))
+
+
+postscript_mathfonts = MathFonts(newcenturyschlbk.get(),
+                                 newcenturyschlbk.get(slant=ITALIC),
+                                 newcenturyschlbk.get(weight=BOLD),
+                                 helvetica.get(),
+                                 courier.get(),
+                                 zapfchancery.get(slant=ITALIC),
+                                 symbol.get(),
+                                 symbol.get())

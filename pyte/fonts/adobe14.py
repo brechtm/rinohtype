@@ -39,5 +39,5 @@ zapfdingbats = TypeFace('ITC ZapfDingbats', Font(path('ZapfDingbats'),
                         core=True))
 
 # 'Adobe PDF Core Font Set'
-family = TypeFamily(serif=times, sans=helvetica, mono=courier,
-                    symbol=symbol, dingbats=zapfdingbats)
+pdf_family = TypeFamily(serif=times, sans=helvetica, mono=courier,
+                        symbol=symbol, dingbats=zapfdingbats)
