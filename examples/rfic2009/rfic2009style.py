@@ -388,7 +388,7 @@ class RFIC2009Paper(Document):
 
     def render(self, filename):
         page = RFICPage(self, first=True)
-        self.addPage(page)
+        self.add_page(page)
 
         title = Paragraph(self.title, titleStyle)
         author = Paragraph(self.author, authorStyle)
@@ -418,5 +418,5 @@ class RFIC2009Paper(Document):
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
-        self.addPage(page)
+        self.add_page(page)
         return page.column1

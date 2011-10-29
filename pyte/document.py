@@ -65,19 +65,11 @@ class Document(object):
 
         self.psg_doc = dsc_document(self.title)
 
-    def __lshift__(self, item):
-        assert isinstance(item, Paragraph)
-        self.content.addParagraph(item)
-        return item
-
-    def addMasterPage(self, masterPage):
-        assert isinstance(masterpage, Page)
-        self.masterPages.append(masterPage)
-
-    def addPage(self, page):
+    def add_page(self, page):
         assert isinstance(page, Page)
         self.pages.append(page)
         page.document = self
+
 
     def render(self, filename):
         self.pages[0].render()
