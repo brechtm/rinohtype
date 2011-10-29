@@ -54,7 +54,7 @@ class Bibliography(list):
         try:
             reference = self.source[id]
         except KeyError:
-            warning = "Unknown reference id '{}'".format(id)
+            warning = "Unknown reference ID '{}'".format(id)
             warn(warning, PyteWarning)
             return "[{}]".format(warning)
         self.append(reference)

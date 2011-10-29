@@ -65,14 +65,15 @@ class Document(object):
 
         self.psg_doc = dsc_document(self.title)
 
-    def add_page(self, page):
+    def add_page(self, page, number):
         assert isinstance(page, Page)
         self.pages.append(page)
         page.document = self
-
+        page.number = number
 
     def render(self, filename):
-        self.pages[0].render()
+        for page in self.pages:
+            page.render()
 
         fp = open(filename, "w", encoding="latin-1")
         self.psg_doc.write_to(fp)

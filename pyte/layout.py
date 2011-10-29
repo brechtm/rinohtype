@@ -10,8 +10,7 @@ from pyte.paragraph import Paragraph
 
 
 class EndOfPage(Exception):
-    def __init__(self):
-        pass
+    pass
 
 
 class TextTarget(object):
@@ -62,7 +61,7 @@ class Container(TextTarget):
         if chain:
             assert isinstance(chain, Chain)
             self.chain = chain
-            chain.addContainer(self)
+            chain.add_container(self)
         else:
             self.chain = None
 
@@ -206,77 +205,49 @@ class Chain(TextTarget):
         TextTarget.__init__(self)
         self.document = document
         self._containers = []
-        self._typeset = False
         self._container_index = 0
+        self._paragraph_index = 0
 
     def typeset(self, parentCanvas):
-        if self._typeset:
-            return
-        self._typeset = True
-        container = self.next_container()
-        totalHeight = 0
-        prevParHeight = 0
-        for paragraph in self.paragraphs():
-            parentCanvas = container.page().canvas
+        total_height = 0
+        first_container_index = self._container_index
+        last_container_index = len(self._containers)
+        for index in range(first_container_index, last_container_index):
+            container = self._containers[index]
+            page_canvas = container.page().canvas
             # TODO: use (EndOfBox) exception to skip to next container
             # also use exception for signaling a full page
+            # TODO: probably bad behaviour with spaceAbove/Below
+            #       when skipping to next container
+            left   = float(container.absLeft())
+            bottom = float(container.page().height() - container.absBottom())
+            width  = float(container.width())
+            height = float(container.height())
+
+            total_height = 0
+            prev_height = 0
             try:
-                spaceAbove = float(paragraph.style.spaceAbove)
-                spaceBelow = float(paragraph.style.spaceBelow)
-                # TODO: probably bad behaviour with spaceAbove/Below
-                #       when skipping to next container
-                left   = float(container.absLeft())
-                bottom = float(container.page().height() - container.absBottom())
-                width  = float(container.width())
-                height = float(container.height())
-                height = height - spaceAbove
+                for paragraph in self.paragraphs()[self._paragraph_index:]:
+                    space_above = float(paragraph.style.spaceAbove)
+                    space_below = float(paragraph.style.spaceBelow)
 
-                pageCanvas = parentCanvas.page.canvas()
-                thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
-                pageCanvas.append(thisCanvas)
+                    this_canvas = psg.drawing.box.canvas(page_canvas, left,
+                                                         bottom, width,
+                                                         height - space_above)
+                    page_canvas.append(this_canvas)
 
-                boxheight = paragraph.typeset(thisCanvas, totalHeight)
-                prevParHeight = spaceAbove + boxheight + spaceBelow
-                totalHeight += prevParHeight
+                    box_height = paragraph.typeset(this_canvas, total_height)
+                    prev_height = space_above + box_height + space_below
+                    total_height += prev_height
+                    self._paragraph_index += 1
             except EndOfBox:
-                # TODO: handle successive EndOfBoxes
-                print("NEXT container")
-                try:
-                    container = self.next_container()
-                except StopIteration:
-                    print("StopIteration - End of page")
-                    raise EndOfPage
-                totalHeight = 0
-                prevParHeight = 0
+                self._container_index += 1
+                if self._container_index >= len(self._containers) - 1:
+                    container = self.document.add_to_chain(self)
+                    break
 
-                spaceAbove = 0
-                parentCanvas = container.page().canvas
-                left   = float(container.absLeft())
-                bottom = float(container.page().height() - container.absBottom())
-                width  = float(container.width())
-                height = float(container.height())
-                height = height - spaceAbove
+        return total_height
 
-                pageCanvas = parentCanvas.page.canvas()
-                thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
-                pageCanvas.append(thisCanvas)
-
-                boxheight = paragraph.typeset(thisCanvas, totalHeight)
-                prevParHeight = spaceAbove + boxheight + spaceBelow
-                totalHeight += prevParHeight
-
-        return totalHeight
-
-    def next_container(self):
-        try:
-            container = self._containers[self._container_index]
-            self._container_index += 1
-        except IndexError:
-            container = self.document.add_to_chain(self)
-            self._container_index += 1
-        return container
-
-    def addContainer(self, container):
+    def add_container(self, container):
         assert isinstance(container, Container)
         self._containers.append(container)
-

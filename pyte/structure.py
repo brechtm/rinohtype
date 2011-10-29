@@ -153,6 +153,49 @@ class List(Paragraph):
 ##        Paragraph.__init__(self, text)
 
 
+class HeaderStyle(ParagraphStyle):
+    attributes = {}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
+
+
+class Header(Paragraph):
+    style_class = HeaderStyle
+
+    def __init__(self, page, style=None):
+        super().__init__([], style)
+        self.page = page
+
+    def typeset(self, pscanvas, offset=0):
+        text = StyledText('page number = {}'.format(self.page.number))
+        text.parent = self
+        self.append(text)
+        return super().typeset(pscanvas, offset)
+
+
+class FooterStyle(ParagraphStyle):
+    attributes = {}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
+
+
+class Footer(Paragraph):
+    style_class = FooterStyle
+
+    def __init__(self, page, style=None):
+        super().__init__([], style)
+        self.page = page
+
+    def typeset(self, pscanvas, offset=0):
+        text = StyledText('{}'.format(self.page.number))
+        text.parent = self
+        self.append(text)
+        return super().typeset(pscanvas, offset)
+
+
+
 class Reference(StyledText):
     def __init__(self, id, target):
         super().__init__('')

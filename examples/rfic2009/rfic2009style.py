@@ -17,6 +17,7 @@ from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
+from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 
 
@@ -149,6 +150,12 @@ hd2Style = HeadingStyle("subheading", base=hd1Style,
 #TODO: should only specify style once for each level!
 
 heading_styles = [hd1Style, hd2Style]
+
+header_style = HeaderStyle('header', base=bodyStyle,
+                           fontSize=9 * pt)
+
+footer_style = FooterStyle('footer', base=header_style,
+                           justify=Justify.Center)
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -330,15 +337,17 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
 # ----------------------------------------------------------------------------
 
 class RFICPage(Page):
-    topmargin = bottommargin = 1.125*inch
-    leftmargin = rightmargin = 0.85*inch
-    column_spacing = 0.25*inch
+    topmargin = bottommargin = 1.125 * inch
+    leftmargin = rightmargin = 0.85 * inch
+    column_spacing = 0.25 * inch
 
     def __init__(self, document, first=False):
         super().__init__(document, Letter, Orientation.Portrait)
+
+        body_width = self.width() - (self.leftmargin + self.rightmargin)
+        body_height = self.height() - (self.topmargin + self.bottommargin)
         body = Container(self, self.leftmargin, self.topmargin,
-                         self.width() - (self.leftmargin + self.rightmargin),
-                         self.height() - (self.topmargin + self.bottommargin))
+                         body_width, body_height)
 
         column_height = body.height()
         column_width = (body.width() - self.column_spacing) / 2.0
@@ -357,6 +366,16 @@ class RFICPage(Page):
         self.column2 = Container(body, column_width + self.column_spacing, column_top,
                                  width=column_width, height=column_height,
                                  chain=document.content)
+
+        self.header = Container(self, self.leftmargin, self.topmargin / 2,
+                                body_width, 12*pt)
+        footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
+        self.footer = Container(self, self.leftmargin, footer_vert_pos,
+                                body_width, 12*pt)
+        header_text = Header(self, header_style)
+        self.header.addParagraph(header_text)
+        footer_text = Footer(self, footer_style)
+        self.footer.addParagraph(footer_text)
 
 
 # main document
@@ -385,10 +404,11 @@ class RFIC2009Paper(Document):
         self.keywords = [term.text for term in self.root.head.indexterms.term]
 
         self.content = Chain(self)
+        self.page_count = 1
 
     def render(self, filename):
         page = RFICPage(self, first=True)
-        self.add_page(page)
+        self.add_page(page, self.page_count)
 
         title = Paragraph(self.title, titleStyle)
         author = Paragraph(self.author, authorStyle)
@@ -418,5 +438,6 @@ class RFIC2009Paper(Document):
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
-        self.add_page(page)
+        self.page_count += 1
+        self.add_page(page, self.page_count)
         return page.column1
