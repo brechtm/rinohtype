@@ -19,6 +19,10 @@ checklist (what is already implemented, is maked by a +)
 ** http://matplotlib.sourceforge.net/users/mathtext.html
 ** http://matplotlib.sourceforge.net/api/mathtext_api.html
 ** http://code.google.com/p/mathtex/
+* math fonts
+** AMS Euler: http://www.ams.org/publications/type1-fonts
+** pxfonts, mathpazo (type 1)
+** http://www.ctan.org/tex-archive/fonts/Asana-Math/ (OpenTypee)
 * floats
 * figures (external)
 * tables
@@ -39,7 +43,11 @@ checklist (what is already implemented, is maked by a +)
 * PDF specials
 * CSS for style specification?
 + unicode
+* fallback font: http://en.wikipedia.org/wiki/Fallback_font
 * absolute placement of floats (papers!)
+* TeX paragraph line-breaking algorithm (easy to customize - OO design)
+** http://oedipus.sourceforge.net/texlib/
+* TrueType & OpenType font support
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
 * (text flow around non-rectangular object)
