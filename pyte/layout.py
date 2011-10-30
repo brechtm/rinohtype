@@ -1,42 +1,40 @@
 
-#from pslib import PS_get_value, PS_set_value, PS_rect, PS_fill_stroke, PS_stroke, PS_setcolor
-
 import psg.drawing.box
 from psg.exceptions import EndOfBox
 
-from pyte.dimension import Dimension
-from pyte.unit import pt
-from pyte.paragraph import Paragraph
+from .dimension import Dimension
+from .unit import pt
+from .flowable import Flowable
 
 
 class EndOfPage(Exception):
     pass
 
 
-class TextTarget(object):
+class RenderTarget(object):
     def __init__(self):
-        self.__paragraphs = []
+        self.__flowables = []
 
-    def addParagraph(self, paragraph):
-        assert isinstance(paragraph, Paragraph)
-        self.__paragraphs.append(paragraph)
+    def add_flowable(self, flowable):
+        assert isinstance(flowable, Flowable)
+        self.__flowables.append(flowable)
 
-    def paragraphs(self):
-        return self.__paragraphs
+    def flowables(self):
+        return self.__flowables
 
-    def typeset(self):
+    def render(self):
         raise NotImplementedError("virtual method not implemented in class %s" %
                                   self.__class__.__name__)
 
 
-class Container(TextTarget):
+class Container(RenderTarget):
     def __init__(self, parent, left=0*pt, top=0*pt,
                  width=None, height=Dimension(0), right=None, bottom=None,
                  chain=None):
         # height = None  AND  bottom = None   ->    height depends on contents
         # width  = None  AND  right  = None   ->    use all available space
         # TODO: assert ....
-        TextTarget.__init__(self)
+        super().__init__()
         assert parent != self
         if parent:
             assert isinstance(parent, Container)
@@ -57,7 +55,7 @@ class Container(TextTarget):
         else:
             self.__width = self.__parent.width() - self.left()
         self.__children = []
-        self.__paragraphs = []
+        self.__flowables = []
         if chain:
             assert isinstance(chain, Chain)
             self.chain = chain
@@ -122,35 +120,6 @@ class Container(TextTarget):
     def next(self):
         return self.__next
 
-    def render(self, parentCanvas):
-        left = float(self.absLeft())
-        bottom = float(self.page().height() - self.absBottom())
-        width = float(self.width())
-        height = float(self.height())
-        dynamic = False
-        if height == 0:
-            dynamic = True
-            height = bottom
-            bottom = 0
-
-        pageCanvas = parentCanvas.page.canvas()
-        thisCanvas = psg.drawing.box.canvas(pageCanvas, left, bottom, width, height)
-        pageCanvas.append(thisCanvas)
-
-        for child in self.__children:
-            child.render(thisCanvas)
-
-        totalHeight = 0
-
-        if self.paragraphs():
-            textHeight = self.typeset(thisCanvas)
-            if dynamic:
-                self.height().add(textHeight*pt)
-        elif self.chain:
-            self.chain.typeset(parentCanvas)
-
-        #self._draw_box(pageCanvas)
-
     def _draw_box(self, pageCanvas):
         print("gsave", file=pageCanvas)
 
@@ -168,12 +137,10 @@ class Container(TextTarget):
         print("stroke", file=pageCanvas)
         print("grestore", file=pageCanvas)
 
-
-    def typeset(self, psgCanvas):
-        dynamic = False
-        left   = float(self.absLeft())
+    def render(self, canvas):
+        left = float(self.absLeft())
         bottom = float(self.page().height() - self.absBottom())
-        width  = float(self.width())
+        width = float(self.width())
         height = float(self.height())
         dynamic = False
         if height == 0:
@@ -181,34 +148,39 @@ class Container(TextTarget):
             height = bottom
             bottom = 0
 
-        totalHeight = 0
-        prevParHeight = 0
-        for paragraph in self.paragraphs():
-            # TODO: cater for multiple paragraphs
-            spaceAbove = float(paragraph.style.spaceAbove)
-            spaceBelow = float(paragraph.style.spaceBelow)
-            boxheight = paragraph.typeset(psgCanvas, totalHeight)
-            #print("boxheight = {}".format(boxheight))
-            prevParHeight = spaceAbove + boxheight + spaceBelow
-            #print("prevParHeight=", prevParHeight)
-            totalHeight += prevParHeight
-##            if dynamic:
-##                enlarge = (spaceAbove + boxheight + spaceBelow) * pt
-##                self.height().add(enlarge)
-##                #print "bh", boxheight, self.height(), self.height()._Dimension__factor
+        page_canvas = canvas.page.canvas()
+        this_canvas = psg.drawing.box.canvas(page_canvas, left, bottom,
+                                             width, height)
+        page_canvas.append(this_canvas)
 
-        return totalHeight
+        for child in self.__children:
+            child.render(this_canvas)
+
+        if self.flowables():
+            total_height = 0
+            previous_height = 0
+            for flowable in self.flowables():
+                space_above = float(flowable.style.spaceAbove)
+                space_below = float(flowable.style.spaceBelow)
+                box_height = flowable.typeset(this_canvas, total_height)
+                previous_height = space_above + box_height + space_below
+                total_height += previous_height
+            if dynamic:
+                self.height().add(total_height * pt)
+        elif self.chain:
+            self.chain.render()
+        #self._draw_box(page_canvas)
 
 
-class Chain(TextTarget):
+class Chain(RenderTarget):
     def __init__(self, document):
-        TextTarget.__init__(self)
+        super().__init__()
         self.document = document
         self._containers = []
         self._container_index = 0
-        self._paragraph_index = 0
+        self._flowable_index = 0
 
-    def typeset(self, parentCanvas):
+    def render(self):
         total_height = 0
         first_container_index = self._container_index
         last_container_index = len(self._containers)
@@ -227,19 +199,19 @@ class Chain(TextTarget):
             total_height = 0
             prev_height = 0
             try:
-                for paragraph in self.paragraphs()[self._paragraph_index:]:
-                    space_above = float(paragraph.style.spaceAbove)
-                    space_below = float(paragraph.style.spaceBelow)
+                for flowable in self.flowables()[self._flowable_index:]:
+                    space_above = float(flowable.style.spaceAbove)
+                    space_below = float(flowable.style.spaceBelow)
 
                     this_canvas = psg.drawing.box.canvas(page_canvas, left,
                                                          bottom, width,
                                                          height - space_above)
                     page_canvas.append(this_canvas)
 
-                    box_height = paragraph.typeset(this_canvas, total_height)
+                    box_height = flowable.typeset(this_canvas, total_height)
                     prev_height = space_above + box_height + space_below
                     total_height += prev_height
-                    self._paragraph_index += 1
+                    self._flowable_index += 1
             except EndOfBox:
                 self._container_index += 1
                 if self._container_index >= len(self._containers) - 1:

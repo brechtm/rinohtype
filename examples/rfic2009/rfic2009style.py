@@ -206,8 +206,7 @@ class Title(CustomElement):
                           level=level)
         if id:
             target.document.elements[id] = heading
-        target.addParagraph(heading)
-        # TODO: refactor addParagraph to add_block?
+        target.add_flowable(heading)
 
 
 class P(CustomElement):
@@ -222,7 +221,7 @@ class P(CustomElement):
             if child.tail is not None:
                 content += child.tail
         paragraph = Paragraph(content, style=bodyStyle)
-        target.addParagraph(paragraph)
+        target.add_flowable(paragraph)
 
 
 class B(CustomElement):
@@ -250,7 +249,7 @@ class OL(CustomElement):
         for item in self.getchildren():
             items.append(item.render(target))
         lst = List(items, style=listStyle)
-        target.addParagraph(lst)
+        target.add_flowable(lst)
 
 
 class LI(CustomElement):
@@ -301,7 +300,7 @@ class Acknowledgement(CustomElement):
         #print('Acknowledgement.render()')
         heading = Heading('Acknowledgement',
                           style=acknowledgement_heading_style, level=1)
-        target.addParagraph(heading)
+        target.add_flowable(heading)
         for element in self.getchildren():
             element.render(target)
 
@@ -320,7 +319,7 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
     def format_bibliography(self, target):
         items = []
         heading = Heading('References', style=acknowledgement_heading_style)
-        target.addParagraph(heading)
+        target.add_flowable(heading)
         for i, ref in enumerate(self.bibliography):
             authors = ['{} {}'.format(name.given_initials(), name.family)
                        for name in ref.author]
@@ -330,7 +329,7 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
             item += ', {}'.format(ref.issued.year)
             items.append(item)
             paragraph = Paragraph(item, style=bibliographyStyle)
-            target.addParagraph(paragraph)
+            target.add_flowable(paragraph)
 
 
 # pages and their layout
@@ -373,9 +372,9 @@ class RFICPage(Page):
         self.footer = Container(self, self.leftmargin, footer_vert_pos,
                                 body_width, 12*pt)
         header_text = Header(self, header_style)
-        self.header.addParagraph(header_text)
+        self.header.add_flowable(header_text)
         footer_text = Footer(self, footer_style)
-        self.footer.addParagraph(footer_text)
+        self.footer.add_flowable(footer_text)
 
 
 # main document
@@ -417,12 +416,12 @@ class RFIC2009Paper(Document):
         abstract = Abstract(self.root.head.abstract.text)
         index_terms = IndexTerms(self.keywords)
 
-        page.title_box.addParagraph(title)
-        page.title_box.addParagraph(author)
-        page.title_box.addParagraph(affiliation)
+        page.title_box.add_flowable(title)
+        page.title_box.add_flowable(author)
+        page.title_box.add_flowable(affiliation)
 
-        page.content.addParagraph(abstract)
-        page.content.addParagraph(index_terms)
+        page.content.add_flowable(abstract)
+        page.content.add_flowable(index_terms)
 
         for section in self.root.body.section:
             section.render(self.content)

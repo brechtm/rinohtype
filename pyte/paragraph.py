@@ -4,9 +4,10 @@ from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
 from psg.exceptions import *
 
-from pyte.unit import pt
-from pyte.text import Word, Character, Space, Box, NewLine
-from pyte.text import TextStyle, MixedStyledText
+from .unit import pt
+from .text import Word, Character, Space, Box, NewLine
+from .text import TextStyle, MixedStyledText
+from .flowable import Flowable, FlowableStyle
 
 
 class Justify:
@@ -17,12 +18,10 @@ class Justify:
 
 
 # TODO: look at Word/OpenOffice for more options
-class ParagraphStyle(TextStyle):
+class ParagraphStyle(TextStyle, FlowableStyle):
     attributes = {'indentLeft': 0*pt,
                   'indentRight': 0*pt,
                   'indentFirst': 0*pt,
-                  'spaceAbove': 0*pt,
-                  'spaceBelow': 0*pt,
                   'lineSpacing': 10*pt, # TODO: change default
                   'justify': Justify.Both}
 
@@ -197,7 +196,7 @@ class Line(list):
         print("setfont", file=pscanvas)
 
 
-class Paragraph(MixedStyledText):
+class Paragraph(MixedStyledText, Flowable):
     style_class = ParagraphStyle
 
     def __init__(self, items, style=None):
@@ -219,6 +218,9 @@ class Paragraph(MixedStyledText):
                     self._words.append(space)
             else:
                 self._words.append(Word(item))
+
+    def render(self, canvas, offset=0):
+        return self.typeset(canvas, offset)
 
     # based on the typeset functions of psg.box.textbox
     def typeset(self, pscanvas, offset=0):
