@@ -168,10 +168,15 @@ class PyteFonts(Fonts):
                     found_symbol = False
 
         if not found_symbol:
-            glyph = sym = '?'
-            num = ord(glyph)
-            char_metrics = font_metrics[num]
-            symbol_name = char_metrics.ps_name
+            try:
+                glyph = sym = '?'
+                num = ord(glyph)
+                char_metrics = font_metrics[num]
+                symbol_name = char_metrics.ps_name
+            except KeyError:
+                num, char_metrics = list(font_metrics.items())[0]
+                glyph = sym = chr(num)
+                symbol_name = char_metrics.ps_name
 
         offset = 0
 

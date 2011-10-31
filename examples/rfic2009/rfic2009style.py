@@ -27,29 +27,30 @@ use_gyre = False
 # fonts
 # ----------------------------------------------------------------------------
 if use_gyre:
-    termes_roman = Font("fonts/qtmr")
-    termes_bold = Font("fonts/qtmb")
-    termes_italic = Font("fonts/qtmri")
-    termes_bold_italic = Font("fonts/qtmbi")
+    from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
 
-    termes = TypeFace("TeXGyreTermes",
-                      roman=termes_roman, bold=termes_bold,
-                      italic=termes_italic, bolditalic=termes_bold_italic)
+    termes_roman = Font("fonts/qtmr", weight=REGULAR)
+    termes_italic = Font("fonts/qtmri", weight=REGULAR, slant=ITALIC)
+    termes_bold = Font("fonts/qtmb", weight=BOLD)
+    termes_bold_italic = Font("fonts/qtmbi", weight=BOLD, slant=ITALIC)
+
+    termes = TypeFace("TeXGyreTermes", termes_roman, termes_bold,
+                      termes_italic, termes_bold_italic)
 
     ieeeFamily = TypeFamily(serif=termes)
 
-    schola_roman = Font("fonts/qcsr")
-    schola_italic = Font("fonts/qcsri")
-    schola_bold = Font("fonts/qcsb")
-    heros_roman = Font("fonts/qhvr")
-    cursor_regular = Font("fonts/qcrr")
-    chorus = Font("fonts/qzcmi")
-    standard_symbols = Font("fonts/usyr")
-    cmex9 = Font("fonts/cmex9")
+    schola_roman = Font("fonts/qcsr", weight=REGULAR)
+    schola_italic = Font("fonts/qcsri", weight=REGULAR, slant=ITALIC)
+    schola_bold = Font("fonts/qcsb", weight=BOLD)
+    heros_roman = Font("fonts/qhvr", weight=REGULAR)
+    cursor_regular = Font("fonts/qcrr", weight=REGULAR)
+    chorus = Font("fonts/qzcmi", weight=MEDIUM)
+    standard_symbols = Font("fonts/usyr", weight=REGULAR)
+    cmex9 = Font("fonts/cmex9", weight=REGULAR)
 
     mathfonts = MathFonts(schola_roman, schola_italic, schola_bold,
-                         heros_roman, cursor_regular, chorus, standard_symbols,
-                         cmex9)
+                          heros_roman, cursor_regular, chorus, standard_symbols,
+                          cmex9)
 else:
     from pyte.fonts.adobe14 import pdf_family as ieeeFamily
     #from pyte.fonts.adobe35 import avantgarde, palatino, zapfchancery
