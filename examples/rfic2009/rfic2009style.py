@@ -19,6 +19,7 @@ from pyte.structure import Heading, List, Reference
 from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
+from pyte.float import Figure as PyteFigure
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -304,6 +305,14 @@ class Acknowledgement(CustomElement):
         target.add_flowable(heading)
         for element in self.getchildren():
             element.render(target)
+
+
+class Figure(CustomElement):
+    def render(self, target):
+        #print('Figure.render()')
+        print(self.get('scale'))
+        fig = PyteFigure(self.get('path'), scale=float(self.get('scale')))
+        target.add_flowable(fig)
 
 
 # bibliography style

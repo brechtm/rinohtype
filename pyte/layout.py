@@ -208,7 +208,7 @@ class Chain(RenderTarget):
                                                          height - space_above)
                     page_canvas.append(this_canvas)
 
-                    box_height = flowable.typeset(this_canvas, total_height)
+                    box_height = flowable.render(this_canvas, total_height)
                     prev_height = space_above + box_height + space_below
                     total_height += prev_height
                     self._flowable_index += 1

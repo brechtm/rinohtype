@@ -55,3 +55,43 @@ class Style(object):
             except AttributeError:
                 pass
         return attributes
+
+
+# TODO: link to xml line number
+class Styled(object):
+    style_class = None
+
+    def __init__(self, style=None):
+        if style is None:
+            style = self.style_class('empty')
+        if style != ParentStyle and not isinstance(style, self.style_class):
+            raise TypeError('the style passed to {0} should be of type {1}'
+                            .format(self.__class__.__name__,
+                                    self.style_class.__name__))
+        self.style = style
+        self.parent = None
+        self.cached_style = {}
+
+    # TODO: doesn't belong here;
+    # intoduce class between Styled & MixedStyledText (and CharacterLike)
+    def __add__(self, other):
+        assert isinstance(other, Styled) or isinstance(other, str)
+        return MixedStyledText([self, other])
+
+    def __radd__(self, other):
+        assert isinstance(other, str)
+        return MixedStyledText([other, self])
+
+    def get_style(self, attribute):
+        try:
+            return self.cached_style[attribute]
+        except KeyError:
+            try:
+                value = getattr(self.style, attribute)
+            except ParentStyleException:
+                value = self.parent.get_style(attribute)
+            self.cached_style[attribute] = value
+            return value
+
+
+from .text import MixedStyledText

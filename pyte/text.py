@@ -12,7 +12,7 @@ from .unit import pt
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .hyphenator import Hyphenator
 from .warnings import PyteWarning
-from .style import Style, ParentStyle, ParentStyleException
+from .style import Style, Styled, ParentStyle, ParentStyleException
 
 
 class TextStyle(Style):
@@ -35,51 +35,6 @@ class TextStyle(Style):
         slant = self.get('fontSlant')
         width = self.get('fontWidth')
         return typeface.get(weight=weight, slant=slant, width=width)
-
-
-# TODO: link to xml line number
-class Styled(object):
-    style_class = None
-
-    def __init__(self, style=None):
-        if style is None:
-            style = self.style_class('empty')
-        if style != ParentStyle and not isinstance(style, self.style_class):
-            raise TypeError('the style passed to {0} should be of type {1}'
-                            .format(self.__class__.__name__,
-                                    self.style_class.__name__))
-        self.style = style
-        self.parent = None
-        self.cached_style = {}
-
-    def __add__(self, other):
-        assert isinstance(other, Styled) or isinstance(other, str)
-        return MixedStyledText([self, other])
-
-    def __radd__(self, other):
-        assert isinstance(other, str)
-        return MixedStyledText([other, self])
-
-    def get_style(self, attribute):
-        try:
-            return self.cached_style[attribute]
-        except KeyError:
-            try:
-                value = getattr(self.style, attribute)
-            except ParentStyleException:
-                value = self.parent.get_style(attribute)
-            self.cached_style[attribute] = value
-            return value
-
-    def get_font(self):
-        typeface = self.get_style('typeface')
-        weight = self.get_style('fontWeight')
-        slant = self.get_style('fontSlant')
-        width = self.get_style('fontWidth')
-        return typeface.get(weight=weight, slant=slant, width=width)
-
-    def characters(self):
-        raise NotImplementedError
 
 
 class CharacterLike(Styled):
@@ -121,6 +76,16 @@ class StyledText(Styled):
     def __repr__(self):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
+
+    def get_font(self):
+        typeface = self.get_style('typeface')
+        weight = self.get_style('fontWeight')
+        slant = self.get_style('fontSlant')
+        width = self.get_style('fontWidth')
+        return typeface.get(weight=weight, slant=slant, width=width)
+
+    def characters(self):
+        raise NotImplementedError
 
     def characters(self):
         for i, char in enumerate(self.text):

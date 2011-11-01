@@ -48,7 +48,13 @@ grammar {
      | element p { inline }
      | element ol { listContent }
      | element ul { listContent }
+     | element figure {figureContent}
      )*
   listContent =
     element li { inline }+
+  figureContent =
+    attribute id { text },
+    attribute path { text },
+    attribute scale { text },
+    element caption {text}
 }
