@@ -21,7 +21,7 @@ from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import FlowableStyle
-from pyte.float import Figure as PyteFigure
+from pyte.float import Figure as PyteFigure, CaptionStyle
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -164,6 +164,16 @@ footer_style = FooterStyle('footer', base=header_style,
 figure_style = FlowableStyle('figure',
                              spaceAbove=10 * pt,
                              spaceBelow=12 * pt)
+
+fig_caption_style = CaptionStyle('figure caption',
+                                 typeface=ieeeFamily.serif,
+                                 fontWeight=REGULAR,
+                                 fontSize=9*pt,
+                                 lineSpacing=10*pt,
+                                 indentFirst=0*pt,
+                                 spaceAbove=20*pt,
+                                 spaceBelow=0*pt,
+                                 justify=Justify.Both)
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -318,7 +328,8 @@ class Figure(CustomElement):
         #print('Figure.render()')
         caption_text = self.getchildren()[0].text
         fig = PyteFigure(self.get('path'), caption_text,
-                         scale=float(self.get('scale')), style=figure_style)
+                         scale=float(self.get('scale')), style=figure_style,
+                         caption_style=fig_caption_style)
         target.add_flowable(fig)
 
 

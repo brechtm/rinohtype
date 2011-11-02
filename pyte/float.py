@@ -58,16 +58,17 @@ class Caption(Paragraph):
             number = ''
         styled_text = StyledText(category + ' ' + number + text)
         styled_text.parent = self
+        self.next_number[category] += 1
         self.append(styled_text)
 
 
 class Figure(Flowable):
     def __init__(self, filename, caption, scale=1.0, style=None,
-                 captionstyle=None):
+                 caption_style=None):
         super().__init__(style)
         self.filename = filename
         self.scale = scale
-        self.caption = Caption('Figure', caption, captionstyle)
+        self.caption = Caption('Figure', caption, style=caption_style)
 
     def render(self, pscanvas, offset=0):
         image = Image(self.filename, scale=self.scale)
