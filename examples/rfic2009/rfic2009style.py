@@ -20,6 +20,7 @@ from pyte.structure import Heading, List, Reference
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
+from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure
 
 
@@ -159,6 +160,10 @@ header_style = HeaderStyle('header', base=bodyStyle,
 
 footer_style = FooterStyle('footer', base=header_style,
                            justify=Justify.Center)
+
+figure_style = FlowableStyle('figure',
+                             spaceAbove=10 * pt,
+                             spaceBelow=12 * pt)
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -311,8 +316,9 @@ class Acknowledgement(CustomElement):
 class Figure(CustomElement):
     def render(self, target):
         #print('Figure.render()')
-        print(self.get('scale'))
-        fig = PyteFigure(self.get('path'), scale=float(self.get('scale')))
+        caption_text = self.getchildren()[0].text
+        fig = PyteFigure(self.get('path'), caption_text,
+                         scale=float(self.get('scale')), style=figure_style)
         target.add_flowable(fig)
 
 
