@@ -3,22 +3,16 @@ from warnings import warn
 
 from psg.exceptions import EndOfBox
 
-from pyte.text import StyledText
-from pyte.paragraph import ParagraphStyle, Paragraph
-from pyte.unit import nil
+from .text import StyledText
+from .paragraph import ParagraphStyle, Paragraph
+from .unit import nil
+from .number import format_number
+from .number.style import NUMBER
 from .warnings import PyteWarning
 
 
-class NumberingStyle:
-    number = 0
-    character = 1
-    Character = 2
-    roman = 3
-    Roman = 4
-
-
 class HeadingStyle(ParagraphStyle):
-    attributes = {'numberingStyle': NumberingStyle.number,
+    attributes = {'numberingStyle': NUMBER,
                   'numberingSeparator': '.'}
 
     def __init__(self, name, base=None, **attributes):
@@ -41,8 +35,8 @@ class Heading(Paragraph):
 
     def __init__(self, title, style=None, level=1):
         if style.numberingStyle is not None:
-            self.ref = self._format_number(self.next_number[level],
-                                           style.numberingStyle)
+            self.ref = format_number(self.next_number[level],
+                                     style.numberingStyle)
             number = self.ref + style.numberingSeparator + '&nbsp;'
         else:
             self.ref = None
@@ -55,40 +49,6 @@ class Heading(Paragraph):
         self.level = level
         super().__init__(number + title, style)
 
-    @classmethod
-    def _format_number(cls, number, style):
-        if style == NumberingStyle.number:
-            return str(number)
-        elif style == NumberingStyle.character:
-            string = ''
-            while number > 26:
-                number, remainder = divmod(number, 26)
-                if remainder == 0:
-                    remainder = 26
-                    number -= 1
-                string = chr(ord('a') - 1 + remainder) + string
-            return chr(ord('a') - 1 + number) + string
-        elif style == NumberingStyle.Character:
-            return cls._format_number(number, NumberingStyle.character).upper()
-        elif style == NumberingStyle.roman:
-            return cls._romanize(number).lower()
-        elif style == NumberingStyle.Roman:
-            return cls._romanize(number)
-        else:
-            return ''
-
-    @classmethod
-    def _romanize(cls, n):
-        # by Kay Schluehr - from http://billmill.org/python_roman.html
-        numerals = (("M", 1000), ("CM", 900), ("D", 500), ("CD", 400),
-                    ("C", 100),("XC", 90),("L", 50),("XL", 40), ("X", 10),
-                    ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
-        roman = []
-        for ltr, num in numerals:
-            (k, n) = divmod(n, num)
-            roman.append(ltr * k)
-        return "".join(roman)
-
     def reference(self):
         return self.ref
 
@@ -96,7 +56,7 @@ class Heading(Paragraph):
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
                   'itemSpacing': ParagraphStyle.attributes['lineSpacing'],
-                  'numberingStyle': NumberingStyle.number,
+                  'numberingStyle': NUMBER,
                   'numberingSeparator': ')'}
 
     def __init__(self, name, base=None, **attributes):

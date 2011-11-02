@@ -10,13 +10,14 @@ from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, Justify
+from pyte.number import CHARACTER_UC, ROMAN_UC
 from pyte.text import StyledText
 from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference
-from pyte.structure import NumberingStyle, HeadingStyle, ListStyle
+from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.float import Figure as PyteFigure
@@ -123,7 +124,7 @@ listStyle = ListStyle("list", base=bodyStyle,
                       indentFirst=0*inch,
                       ordered=True,
                       itemSpacing=bodyStyle.lineSpacing,
-                      numberingStyle=NumberingStyle.Roman, # not yet implemented
+                      numberingStyle=ROMAN_UC, # not yet implemented
                       numberingSeparator=')')
 
 hd1Style = HeadingStyle("heading",
@@ -135,7 +136,7 @@ hd1Style = HeadingStyle("heading",
                         lineSpacing=12*pt,
                         spaceAbove=18*pt,
                         spaceBelow=6*pt,
-                        numberingStyle=NumberingStyle.Roman)
+                        numberingStyle=ROMAN_UC)
 
 acknowledgement_heading_style = HeadingStyle("acknowledgement", base=hd1Style,
                                              numberingStyle=None)
@@ -148,7 +149,7 @@ hd2Style = HeadingStyle("subheading", base=hd1Style,
                         lineSpacing=12*pt,
                         spaceAbove=6*pt,
                         spaceBelow=6*pt,
-                        numberingStyle=NumberingStyle.Character)
+                        numberingStyle=CHARACTER_UC)
 #TODO: should only specify style once for each level!
 
 heading_styles = [hd1Style, hd2Style]
