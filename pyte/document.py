@@ -21,7 +21,7 @@ class Page(Container):
     def __init__(self, document, paper, orientation=Orientation.Portrait):
         assert isinstance(document, Document)
         assert isinstance(paper, Paper)
-        self.document = document
+        self._document = document
         self.paper = paper
         self.orientation = orientation
         if self.orientation is Orientation.Portrait:
@@ -35,6 +35,10 @@ class Page(Container):
         psg_doc = self.document.psg_doc
         psg_page = psg_doc.page((float(self.width()), float(self.height())))
         self.canvas = psg_page.canvas()
+
+    @property
+    def document(self):
+        return self._document
 
     def render(self):
         super().render(self.canvas)
@@ -62,13 +66,14 @@ class Document(object):
         self.created = time.asctime()
 
         self.elements = {}
+        self.counters = {}
 
         self.psg_doc = dsc_document(self.title)
 
     def add_page(self, page, number):
         assert isinstance(page, Page)
         self.pages.append(page)
-        page.document = self
+        page._document = self
         page.number = number
 
     def render(self, filename):

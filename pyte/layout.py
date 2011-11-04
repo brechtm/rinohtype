@@ -15,6 +15,10 @@ class RenderTarget(object):
     def __init__(self):
         self.__flowables = []
 
+    @property
+    def document(self):
+        raise NotImplementedError
+
     def add_flowable(self, flowable):
         assert isinstance(flowable, Flowable)
         self.__flowables.append(flowable)
@@ -111,20 +115,22 @@ class Container(RenderTarget):
 #        self.__children.append(child)
 #        child.__parent = self
 
+    @property
     def page(self):
         if self.__parent:
-            return self.__parent.page()
+            return self.__parent.page
         else:
             return self
 
-    def next(self):
-        return self.__next
+    @property
+    def document(self):
+        return self.page._document
 
     def _draw_box(self, pageCanvas):
         print("gsave", file=pageCanvas)
 
         left = float(self.absLeft())
-        bottom = float(self.page().height() - self.absBottom())
+        bottom = float(self.page.height() - self.absBottom())
         width = float(self.width())
         height = float(self.height())
         print("newpath", file=pageCanvas)
@@ -139,7 +145,7 @@ class Container(RenderTarget):
 
     def render(self, canvas):
         left = float(self.absLeft())
-        bottom = float(self.page().height() - self.absBottom())
+        bottom = float(self.page.height() - self.absBottom())
         width = float(self.width())
         height = float(self.height())
         dynamic = False
@@ -175,10 +181,14 @@ class Container(RenderTarget):
 class Chain(RenderTarget):
     def __init__(self, document):
         super().__init__()
-        self.document = document
+        self._document = document
         self._containers = []
         self._container_index = 0
         self._flowable_index = 0
+
+    @property
+    def document(self):
+        return self._document
 
     def render(self):
         total_height = 0
@@ -186,13 +196,11 @@ class Chain(RenderTarget):
         last_container_index = len(self._containers)
         for index in range(first_container_index, last_container_index):
             container = self._containers[index]
-            page_canvas = container.page().canvas
-            # TODO: use (EndOfBox) exception to skip to next container
-            # also use exception for signaling a full page
-            # TODO: probably bad behaviour with spaceAbove/Below
+            page_canvas = container.page.canvas
+            # TODO: bad behaviour with spaceAbove/Below
             #       when skipping to next container
             left   = float(container.absLeft())
-            bottom = float(container.page().height() - container.absBottom())
+            bottom = float(container.page.height() - container.absBottom())
             width  = float(container.width())
             height = float(container.height())
 
