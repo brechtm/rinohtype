@@ -32,9 +32,10 @@ class Page(Container):
             height = self.paper.width
         super().__init__(None, 0*pt, 0*pt, width, height)
 
-        psg_doc = self.document.backend_document.psg_doc
-        psg_page = psg_doc.page((float(self.width()), float(self.height())))
-        self.canvas = psg_page.canvas()
+        self.backend = self.document.backend
+        backend_document = self.document.backend_document
+        self.backend_page = backend_document.new_page(width, height)
+        self.canvas = self.backend_page.canvas
 
     @property
     def document(self):

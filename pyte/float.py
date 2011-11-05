@@ -1,5 +1,6 @@
 
-from psg.drawing.box import canvas, eps_image
+from psg.drawing.box import eps_image, canvas as psg_Canvas
+from psg.drawing.box import eps_image
 
 from .flowable import Flowable
 from .number import format_number
@@ -15,12 +16,14 @@ class Image(Flowable):
         self.filename = filename
         self.scale = scale
 
-    def render(self, pscanvas, offset=0):
-        buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
+    def render(self, canvas, offset=0):
+        pscanvas = canvas.psg_canvas
+
+        buffer = psg_Canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
         eps = eps_image(buffer, open(self.filename, 'rb'), document_level=True)
         image_height = eps.h() * self.scale
         image_width = eps.w() * self.scale
-        image_canvas = canvas(pscanvas, (pscanvas.w() - image_width) / 2,
+        image_canvas = psg_Canvas(pscanvas, (pscanvas.w() - image_width) / 2,
                               pscanvas.h() - offset - image_height,
                               pscanvas.w(), pscanvas.h())
         buffer.write_to(image_canvas)
@@ -70,8 +73,10 @@ class Figure(Flowable):
         self.scale = scale
         self.caption = Caption('Figure', caption, style=caption_style)
 
-    def render(self, pscanvas, offset=0):
+    def render(self, canvas, offset=0):
+        pscanvas = canvas.psg_canvas
+
         image = Image(self.filename, scale=self.scale)
-        height = image.render(pscanvas, offset)
-        height += self.caption.render(pscanvas, offset + height)
+        height = image.render(canvas, offset)
+        height += self.caption.render(canvas, offset + height)
         return height

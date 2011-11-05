@@ -1,10 +1,11 @@
 
-import psg.drawing.box
-from psg.exceptions import EndOfBox
-
 from .dimension import Dimension
-from .unit import pt
 from .flowable import Flowable
+from .unit import pt
+
+
+class EndOfContainer(Exception):
+    pass
 
 
 class EndOfPage(Exception):
@@ -154,10 +155,7 @@ class Container(RenderTarget):
             height = bottom
             bottom = 0
 
-        page_canvas = canvas.page.canvas()
-        this_canvas = psg.drawing.box.canvas(page_canvas, left, bottom,
-                                             width, height)
-        page_canvas.append(this_canvas)
+        this_canvas = self.page.canvas.append_new(left, bottom, width, height)
 
         for child in self.__children:
             child.render(this_canvas)
@@ -211,16 +209,14 @@ class Chain(RenderTarget):
                     space_above = float(flowable.style.spaceAbove)
                     space_below = float(flowable.style.spaceBelow)
 
-                    this_canvas = psg.drawing.box.canvas(page_canvas, left,
-                                                         bottom, width,
-                                                         height - space_above)
-                    page_canvas.append(this_canvas)
+                    this_canvas = container.page.canvas.append_new(
+                                    left, bottom, width, height - space_above)
 
                     box_height = flowable.render(this_canvas, total_height)
                     prev_height = space_above + box_height + space_below
                     total_height += prev_height
                     self._flowable_index += 1
-            except EndOfBox:
+            except EndOfContainer:
                 self._container_index += 1
                 if self._container_index >= len(self._containers) - 1:
                     container = self.document.add_to_chain(self)

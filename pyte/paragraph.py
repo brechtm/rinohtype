@@ -2,15 +2,15 @@
 import itertools
 import os
 
-from psg.drawing.box import canvas
+from psg.drawing.box import canvas as psg_Canvas
 from psg.util.measure import bounding_box
-from psg.exceptions import EndOfBox
 
 from .hyphenator import Hyphenator
-from .unit import pt
+from .flowable import Flowable, FlowableStyle
+from .layout import EndOfContainer
 from .text import Character, Space, Box, NewLine
 from .text import TextStyle, MixedStyledText
-from .flowable import Flowable, FlowableStyle
+from .unit import pt
 
 
 class Justify:
@@ -297,7 +297,7 @@ class Line(list):
         return sum(span_char_widths)
 
     def typeset_box(self, pscanvas, x, y, box):
-        box_canvas = canvas(pscanvas, x, y - box.depth, box.width,
+        box_canvas = psg_Canvas(pscanvas, x, y - box.depth, box.width,
                             box.height + box.depth)
         pscanvas.append(box_canvas)
         print(box.ps, file=box_canvas)
@@ -339,7 +339,9 @@ class Paragraph(MixedStyledText, Flowable):
         return self.typeset(canvas, offset)
 
     # based on the typeset functions of psg.box.textbox
-    def typeset(self, pscanvas, offset=0):
+    def typeset(self, canvas, offset=0):
+        pscanvas = canvas.psg_canvas
+
         if not self._words:
             self._split_words()
 
@@ -371,9 +373,9 @@ class Paragraph(MixedStyledText, Flowable):
                 line.append(word)
             except EndOfLine as eol:
                 try:
-                    self.typeset_line(pscanvas, line)
+                    self.typeset_line(canvas, line)
                     wordcount = 0
-                except EndOfBox:
+                except EndOfContainer:
                     self.wordpointer = i - wordcount
                     raise
 
@@ -390,20 +392,22 @@ class Paragraph(MixedStyledText, Flowable):
         # the last line
         if len(line) != 0:
             try:
-                self.typeset_line(pscanvas, line, True)
-            except EndOfBox:
+                self.typeset_line(canvas, line, True)
+            except EndOfContainer:
                 self.wordpointer = i - wordcount + 1
                 raise
 
         return pscanvas.h() - offset - self._line_cursor
 
-    def typeset_line(self, pscanvas, line, last_line=False):
-        buffer = canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
+    def typeset_line(self, canvas, line, last_line=False):
+        pscanvas = canvas.psg_canvas
+
+        buffer = psg_Canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
         line_height = line.typeset(buffer, last_line)
         try:
             self.newline(float(self.get_style('lineSpacing')) - line_height)
             buffer.write_to(pscanvas)
-        except EndOfBox:
+        except EndOfContainer:
             #self._mark_line_cursor(pscanvas)
             raise
         finally:
@@ -430,4 +434,4 @@ class Paragraph(MixedStyledText, Flowable):
         self._line_cursor -= space
 
         if self._line_cursor < 0:
-            raise EndOfBox()
+            raise EndOfContainer

@@ -1,13 +1,12 @@
 
 from warnings import warn
 
-from psg.exceptions import EndOfBox
-
-from .text import StyledText
-from .paragraph import ParagraphStyle, Paragraph
-from .unit import nil
+from .layout import EndOfContainer
 from .number import format_number
 from .number.style import NUMBER
+from .paragraph import ParagraphStyle, Paragraph
+from .text import StyledText
+from .unit import nil
 from .warnings import PyteWarning
 
 
@@ -100,7 +99,7 @@ class List(Paragraph):
             try:
                 item = self[i]
                 offset += item.typeset(pscanvas, offset)
-            except EndOfBox:
+            except EndOfContainer:
                 self.itempointer = i
                 raise
 
