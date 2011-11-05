@@ -168,7 +168,7 @@ class Container(RenderTarget):
             for flowable in self.flowables():
                 space_above = float(flowable.style.spaceAbove)
                 space_below = float(flowable.style.spaceBelow)
-                box_height = flowable.typeset(this_canvas, total_height)
+                box_height = flowable.render(this_canvas, total_height)
                 previous_height = space_above + box_height + space_below
                 total_height += previous_height
             if dynamic:
