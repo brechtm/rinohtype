@@ -3,14 +3,13 @@ import time
 
 from lxml import etree, objectify
 
-from psg.document.dsc import dsc_document
-
 from pyte.unit import pt
 from pyte.paper import Paper
 from pyte.layout import Container
 from pyte.paragraph import Paragraph
 from pyte.layout import EndOfPage
 from .util import set_xml_catalog
+from .backend import psg
 
 
 class Orientation:
@@ -33,7 +32,7 @@ class Page(Container):
             height = self.paper.width
         super().__init__(None, 0*pt, 0*pt, width, height)
 
-        psg_doc = self.document.psg_doc
+        psg_doc = self.document.backend_document.psg_doc
         psg_page = psg_doc.page((float(self.width()), float(self.height())))
         self.canvas = psg_page.canvas()
 
@@ -46,7 +45,7 @@ class Page(Container):
 
 
 class Document(object):
-    def __init__(self, xmlfile, rngschema, lookup):
+    def __init__(self, xmlfile, rngschema, lookup, backend=psg):
         self.pages = []
         set_xml_catalog()
         self.parser = objectify.makeparser(remove_comments=True,
@@ -62,16 +61,17 @@ class Document(object):
             # TODO: proper error reporting
         self.root = self.xml.getroot()
 
+        self.elements = {}
+        self.counters = {}
+
         self.creator = "pyTe"
         self.author = None
         self.title = None
         self.keywords = []
         self.created = time.asctime()
 
-        self.elements = {}
-        self.counters = {}
-
-        self.psg_doc = dsc_document(self.title)
+        self.backend = backend
+        self.backend_document = backend.Document(self.title)
 
     def add_page(self, page, number):
         assert isinstance(page, Page)
@@ -83,9 +83,7 @@ class Document(object):
         for page in self.pages:
             page.render()
 
-        fp = open(filename, "w", encoding="latin-1")
-        self.psg_doc.write_to(fp)
-        fp.close()
+        self.backend_document.write(filename)
 
     def add_to_chain(self, chain):
         raise NotImplementedError

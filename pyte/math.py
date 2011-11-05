@@ -118,7 +118,8 @@ class PyteFonts(Fonts):
 ##        self.fonts['regular'] = self.fontmap['rm']
 
     def _get_font(self, font):
-        self.styled.document.psg_doc.add_font(self.fontmap[font].psFont)
+        psg_doc = self.styled.document.backend_document.psg_doc
+        psg_doc.add_font(self.fontmap[font].psFont)
         return self.fontmap[font].psFont
 
     def _get_info(self, fontname, font_class, sym, fontsize, dpi):

@@ -4,7 +4,7 @@ import os
 
 from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
-from psg.exceptions import *
+from psg.exceptions import EndOfBox
 
 from .hyphenator import Hyphenator
 from .unit import pt
