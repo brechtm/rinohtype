@@ -30,11 +30,23 @@ class Canvas(object):
         self.psg_canvas = psg_Canvas(parent.psg_canvas,
                                      left, bottom, width, height, clip=clip)
 
+    @property
+    def width(self):
+        return self.psg_canvas.w()
+
+    @property
+    def height(self):
+        return self.psg_canvas.h()
+
+    def new(self, left, bottom, width, height, clip=False):
+        new_canvas = Canvas(self, left, bottom, width, height, clip)
+        return new_canvas
+
     def append(self, canvas):
         self.psg_canvas.append(canvas.psg_canvas)
 
     def append_new(self, left, bottom, width, height, clip=False):
-        new_canvas = Canvas(self, left, bottom, width, height, clip)
+        new_canvas = self.new(left, bottom, width, height, clip)
         self.append(new_canvas)
         return new_canvas
 

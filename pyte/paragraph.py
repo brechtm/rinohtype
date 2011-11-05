@@ -400,13 +400,11 @@ class Paragraph(MixedStyledText, Flowable):
         return pscanvas.h() - offset - self._line_cursor
 
     def typeset_line(self, canvas, line, last_line=False):
-        pscanvas = canvas.psg_canvas
-
-        buffer = psg_Canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
-        line_height = line.typeset(buffer, last_line)
+        buffer = canvas.new(0, 0, canvas.width, canvas.height)
+        line_height = line.typeset(buffer.psg_canvas, last_line)
         try:
             self.newline(float(self.get_style('lineSpacing')) - line_height)
-            buffer.write_to(pscanvas)
+            canvas.append(buffer)
         except EndOfContainer:
             #self._mark_line_cursor(pscanvas)
             raise
