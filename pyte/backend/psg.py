@@ -23,7 +23,6 @@ class Page(object):
         self.canvas = PageCanvas(psg_page.canvas(), self)
 
 
-
 class Canvas(object):
     def __init__(self, parent, left, bottom, width, height, clip=False):
         self.parent = parent
@@ -49,6 +48,25 @@ class Canvas(object):
         new_canvas = self.new(left, bottom, width, height, clip)
         self.append(new_canvas)
         return new_canvas
+
+    def translate(self, x, y):
+        print('{0} {1} moveto'.format(x, y), file=self.psg_canvas)
+
+    def select_font(self, font, size):
+        self.font_wrapper = self.psg_canvas.page.register_font(font.psFont,
+                                                               True)
+        print('/{0} findfont'.format(self.font_wrapper.ps_name()),
+                                     file=self.psg_canvas)
+        print('{0} scalefont'.format(size), file=self.psg_canvas)
+        print('setfont', file=self.psg_canvas)
+
+    def show_glyphs(self, characters, x_displacements):
+        try:
+            ps_repr = self.font_wrapper.postscript_representation(characters)
+        except AttributeError:
+            raise RuntimeError('No font selected for canvas.')
+        widths = ' '.join(map(lambda f: '%.2f' % f, x_displacements))
+        print('({0}) [{1}] xshow'.format(ps_repr, widths), file=self.psg_canvas)
 
 
 class PageCanvas(Canvas):

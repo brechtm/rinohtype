@@ -2,9 +2,6 @@
 import itertools
 import os
 
-from psg.drawing.box import canvas as psg_Canvas
-from psg.util.measure import bounding_box
-
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
@@ -180,7 +177,7 @@ class Line(list):
             self.text_width += width
             super().append(item)
 
-    def typeset(self, pscanvas, last_line=False):
+    def typeset(self, canvas, last_line=False):
         """Typeset words on the current coordinates"""
         chars = []
         char_widths = []
@@ -231,10 +228,9 @@ class Line(list):
         elif justification == "right":
             x += extra_space
 
-        # position PostScript's cursor
+        # position cursor
         self.paragraph._line_cursor -= max_font_size
-        print("{0} {1} moveto".format(x, self.paragraph._line_cursor),
-              file=pscanvas)
+        canvas.translate(x, self.paragraph._line_cursor)
 
         if isinstance(chars[0], Character):
             current_style = {'typeface': chars[0].get_style('typeface'),
@@ -250,12 +246,12 @@ class Line(list):
         for i, char in enumerate(chars):
             if isinstance(char, Box):
                 if span_chars:
-                    x_offset += self.typeset_span(pscanvas, current_style,
+                    x_offset += self.typeset_span(canvas, current_style,
                                                   span_chars, span_char_widths)
                     span_chars = []
                     span_char_widths = []
                     current_style = 'box'
-                x_offset += self.typeset_box(pscanvas, x + x_offset,
+                x_offset += self.typeset_box(canvas, x + x_offset,
                                              self.paragraph._line_cursor, char)
             elif isinstance(char, NewLine):
                 pass
@@ -268,7 +264,7 @@ class Line(list):
                 if current_style == 'box':
                     current_style = char_style
                 elif char_style != current_style:
-                    x_offset += self.typeset_span(pscanvas, current_style,
+                    x_offset += self.typeset_span(canvas, current_style,
                                                   span_chars, span_char_widths)
                     span_chars = []
                     span_char_widths = []
@@ -278,7 +274,7 @@ class Line(list):
                 span_char_widths.append(char_widths[i])
 
         if span_chars:
-            self.typeset_span(pscanvas, current_style, span_chars,
+            self.typeset_span(canvas, current_style, span_chars,
                               span_char_widths)
 
         return max_font_size
@@ -288,28 +284,17 @@ class Line(list):
         font = style['typeface'].get(weight=style['fontWeight'],
                                      slant=style['fontSlant'],
                                      width=style['fontWidth'])
-        font_wrapper = canvas.page.register_font(font.psFont, True)
-        self.set_font(canvas, font_wrapper, style['fontSize'])
-        span_char_widths_text = map(lambda f: "%.2f" % f, span_char_widths)
-        ps_repr = font_wrapper.postscript_representation(span_chars)
-        widths = " ".join(span_char_widths_text)
-        print("({0}) [ {1} ] xshow".format(ps_repr, widths), file=canvas)
+        canvas.select_font(font, float(style['fontSize']))
+        canvas.show_glyphs(span_chars, span_char_widths)
         return sum(span_char_widths)
 
-    def typeset_box(self, pscanvas, x, y, box):
-        box_canvas = psg_Canvas(pscanvas, x, y - box.depth, box.width,
-                            box.height + box.depth)
-        pscanvas.append(box_canvas)
-        print(box.ps, file=box_canvas)
+    def typeset_box(self, canvas, x, y, box):
+        box_canvas = canvas.append_new(x, y - box.depth, box.width,
+                                       box.height + box.depth)
+        print(box.ps, file=box_canvas.psg_canvas)
         # TODO: the following is probably not be the best way to do this
-        print("( ) [ {} ] xshow".format(box.width), file=pscanvas)
+        print("( ) [ {} ] xshow".format(box.width), file=canvas.psg_canvas)
         return box.width
-
-    def set_font(self, pscanvas, wrapper, size):
-        """Configure the output for a given font"""
-        print("/{0} findfont".format(wrapper.ps_name()), file=pscanvas)
-        print("{0} scalefont".format(float(size)), file=pscanvas)
-        print("setfont", file=pscanvas)
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -340,24 +325,15 @@ class Paragraph(MixedStyledText, Flowable):
 
     # based on the typeset functions of psg.box.textbox
     def typeset(self, canvas, offset=0):
-        pscanvas = canvas.psg_canvas
-
         if not self._words:
             self._split_words()
-
-##        thisCanvas = pscanvas
-##        print("gsave", file=thisCanvas)
-##        thisCanvas.print_bounding_path()
-##        print("[5 5] 0 setdash", file=thisCanvas)
-##        print("stroke", file=thisCanvas)
-##        print("grestore", file=thisCanvas)
 
         indent_left = float(self.get_style('indentLeft'))
         indent_right = float(self.get_style('indentRight'))
         indent_first = float(self.get_style('indentFirst'))
-        line_width = pscanvas.w() - indent_left - indent_right
+        line_width = canvas.width - indent_left - indent_right
 
-        self._line_cursor = pscanvas.h() - offset
+        self._line_cursor = canvas.height - offset
 
         wordcount = 0
         indent = indent_left
@@ -397,38 +373,23 @@ class Paragraph(MixedStyledText, Flowable):
                 self.wordpointer = i - wordcount + 1
                 raise
 
-        return pscanvas.h() - offset - self._line_cursor
+        return canvas.height - offset - self._line_cursor
 
     def typeset_line(self, canvas, line, last_line=False):
         buffer = canvas.new(0, 0, canvas.width, canvas.height)
-        line_height = line.typeset(buffer.psg_canvas, last_line)
+        line_height = line.typeset(buffer, last_line)
         try:
             self.newline(float(self.get_style('lineSpacing')) - line_height)
             canvas.append(buffer)
-        except EndOfContainer:
-            #self._mark_line_cursor(pscanvas)
-            raise
         finally:
             del buffer
-
-    def _mark_line_cursor(self, pageCanvas):
-        print("gsave", file=pageCanvas)
-        print("newpath", file=pageCanvas)
-        print("%f %f moveto" % (0, self._line_cursor), file=pageCanvas)
-        print("%f %f lineto" % (10, self._line_cursor), file=pageCanvas)
-        print("[5 5] 0 setdash", file=pageCanvas)
-        print("stroke", file=pageCanvas)
-        print("grestore", file=pageCanvas)
 
     def newline(self, line_height):
         """Move the cursor downwards by `line_height`"""
         self.advance(line_height)
 
     def advance(self, space):
-        """Advance the line cursor downward by `space`. (No PostScript is
-        generated by this function, it only updates an internal value!)
-
-        """
+        """Advance the line cursor downward by `space`"""
         self._line_cursor -= space
 
         if self._line_cursor < 0:
