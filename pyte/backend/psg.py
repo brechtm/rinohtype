@@ -49,7 +49,21 @@ class Canvas(object):
         self.append(new_canvas)
         return new_canvas
 
+    def save_state(self):
+        print('gsave', file=self.psg_canvas)
+
+    def restore_state(self):
+        print('grestore', file=self.psg_canvas)
+
     def translate(self, x, y):
+        print('{0} {1} translate'.format(x, y), file=self.psg_canvas)
+
+    def scale(self, x, y=None):
+        if y is None:
+            y = x
+        print('{0} {1} scale'.format(x, y), file=self.psg_canvas)
+
+    def move_to(self, x, y):
         print('{0} {1} moveto'.format(x, y), file=self.psg_canvas)
 
     def select_font(self, font, size):

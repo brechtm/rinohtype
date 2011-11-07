@@ -230,7 +230,7 @@ class Line(list):
 
         # position cursor
         self.paragraph._line_cursor -= max_font_size
-        canvas.translate(x, self.paragraph._line_cursor)
+        canvas.move_to(x, self.paragraph._line_cursor)
 
         if isinstance(chars[0], Character):
             current_style = {'typeface': chars[0].get_style('typeface'),
