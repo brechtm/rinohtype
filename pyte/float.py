@@ -1,5 +1,4 @@
 
-from psg.drawing.box import eps_image, canvas as psg_Canvas
 from psg.drawing.box import eps_image
 
 from .flowable import Flowable
@@ -17,20 +16,16 @@ class Image(Flowable):
         self.scale = scale
 
     def render(self, canvas, offset=0):
-        pscanvas = canvas.psg_canvas
-
-        buffer = psg_Canvas(pscanvas, 0, 0, pscanvas.w(), pscanvas.h())
-        eps = eps_image(buffer, open(self.filename, 'rb'), document_level=True)
+        eps = eps_image(canvas.psg_canvas, open(self.filename, 'rb'),
+                        document_level=True)
         image_height = eps.h() * self.scale
         image_width = eps.w() * self.scale
-        image_canvas = psg_Canvas(pscanvas, (pscanvas.w() - image_width) / 2,
-                              pscanvas.h() - offset - image_height,
-                              pscanvas.w(), pscanvas.h())
-        buffer.write_to(image_canvas)
-        image_canvas.append(eps)
-        image_canvas.push('{0} {0} scale'.format(self.scale))
-        image_canvas.write_to(pscanvas)
-
+        canvas.save_state()
+        canvas.translate((canvas.width - image_width) / 2,
+                         canvas.height - offset - image_height)
+        canvas.scale(self.scale)
+        canvas.psg_canvas.append(eps)
+        canvas.restore_state()
         return image_height
 
 
@@ -74,8 +69,6 @@ class Figure(Flowable):
         self.caption = Caption('Figure', caption, style=caption_style)
 
     def render(self, canvas, offset=0):
-        pscanvas = canvas.psg_canvas
-
         image = Image(self.filename, scale=self.scale)
         height = image.render(canvas, offset)
         height += self.caption.render(canvas, offset + height)
