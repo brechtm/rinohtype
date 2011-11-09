@@ -33,10 +33,10 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class Word(list):
-    def __init__(self, characters=None):
-        if characters == None:
-            characters = []
+    def __init__(self, characters, kerning, ligatures):
         super().__init__()
+        self.kerning = kerning
+        self.ligatures = ligatures
         self.hyphen_enable = True
         self.hyphen_chars = 0
         self.hyphen_lang = None
@@ -52,7 +52,7 @@ class Word(list):
     def __getitem__(self, index):
         result = super().__getitem__(index)
         if type(index) == slice:
-            result = __class__(result)
+            result = __class__(result, self.kerning, self.ligatures)
         return result
 
     def append(self, char):
@@ -67,23 +67,25 @@ class Word(list):
                     self.hyphen_enable = False
         elif isinstance(char, Box):
             # TODO: should a Box even be a part of a Word?
+            import pdb; pdb.set_trace()
             pass
         else:
             raise ValueError('expecting Character or Box')
         super().append(char)
 
     def substitute_ligatures(self):
-        i = 0
-        while i + 1 < len(self):
-            character = self[i]
-            next_character = self[i + 1]
-            try:
-                self[i] = character.ligature(next_character)
-                del self[i + 1]
-            except TypeError:
-                i += 1
+        if self.ligatures:
+            i = 0
+            while i + 1 < len(self):
+                character = self[i]
+                next_character = self[i + 1]
+                try:
+                    self[i] = character.ligature(next_character)
+                    del self[i + 1]
+                except TypeError:
+                    i += 1
 
-    def width(self, kerning=True):
+    def width(self):
         width = 0.0
         for i, character in enumerate(self):
             if isinstance(character, Box):
@@ -95,12 +97,12 @@ class Word(list):
                     self.font_size = float(character.get_style('fontSize'))
 
                 width += self.stringwidth(character.text, self.font_size)
-                if kerning:
-                    width += self.kerning(i)
+                if self.kerning:
+                    width += self.kern(i)
         return width
 
-    def kerning(self, index):
-        if index == len(self) - 1:
+    def kern(self, index):
+        if not self.kerning or index == len(self) - 1:
             kerning = 0.0
         else:
             this_char = self[index]
@@ -155,9 +157,9 @@ class Line(list):
 
     def append(self, item):
         if isinstance(item, Word):
-            if self.paragraph.ligatures:
-                item.substitute_ligatures()
-            width = item.width(self.paragraph.kerning)
+            # TODO: keep non-ligatured version in case word doesn't fit on line
+            item.substitute_ligatures()
+            width = item.width()
         elif isinstance(item, Space):
             width = item.width
         else:
@@ -165,7 +167,7 @@ class Line(list):
 
         if isinstance(item, Word) and self.text_width + width > self.width:
             for first, second in item.hyphenate():
-                first_width = first.width(self.paragraph.kerning)
+                first_width = first.width()
                 if self.text_width + first_width < self.width:
                     self.text_width += first_width
                     super().append(first)
@@ -181,7 +183,6 @@ class Line(list):
         x_offset = 0
         max_font_size = 0
         justification = self.paragraph.get_style('justify')
-        kerning = self.paragraph.kerning
 
         # calculate total width of all characters (excluding spaces)
         for word in self:
@@ -195,7 +196,7 @@ class Line(list):
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
                     max_font_size = max(current_font_size, max_font_size)
-                    kerning = word.kerning(j) if kerning else 0.0
+                    kerning = word.kern(j)
 
                     chars.append(character)
                     char_widths.append(character.width + kerning) #+ spacing
@@ -328,7 +329,7 @@ class Paragraph(MixedStyledText, Flowable):
                 for space in item:
                     self._words.append(space)
             else:
-                self._words.append(Word(item))
+                self._words.append(Word(item, self.kerning, self.ligatures))
 
     def render(self, canvas, offset=0):
         return self.typeset(canvas, offset)
