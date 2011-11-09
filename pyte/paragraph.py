@@ -1,11 +1,14 @@
+
 import itertools
+import os
 
 from psg.drawing.box import canvas
 from psg.util.measure import bounding_box
 from psg.exceptions import *
 
+from .hyphenator import Hyphenator
 from .unit import pt
-from .text import Word, Character, Space, Box, NewLine
+from .text import Character, Space, Box, NewLine
 from .text import TextStyle, MixedStyledText
 from .flowable import Flowable, FlowableStyle
 
@@ -27,6 +30,114 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
+
+
+class Word(list):
+    def __init__(self, characters=None):
+        if characters == None:
+            characters = []
+        super().__init__()
+        self.hyphen_enable = True
+        self.hyphen_chars = 0
+        self.hyphen_lang = None
+        for char in characters:
+            self.append(char)
+
+    stringwidth = None
+    font_size = None
+
+    def __repr__(self):
+        return ''.join([char.text for char in self])
+
+    def __getitem__(self, index):
+        result = super().__getitem__(index)
+        if type(index) == slice:
+            result = __class__(result)
+        return result
+
+    def append(self, char):
+        if isinstance(char, Character):
+            if self.hyphen_enable:
+                self.hyphen_enable = char.get_style('hyphenate')
+                self.hyphen_chars = max(self.hyphen_chars,
+                                        char.get_style('hyphenChars'))
+                if self.hyphen_lang is None:
+                    self.hyphen_lang = char.get_style('hyphenLang')
+                elif char.get_style('hyphenLang') != self.hyphen_lang:
+                    self.hyphen_enable = False
+        elif isinstance(char, Box):
+            # TODO: should a Box even be a part of a Word?
+            pass
+        else:
+            raise ValueError('expecting Character or Box')
+        super().append(char)
+
+    def substitute_ligatures(self):
+        i = 0
+        while i + 1 < len(self):
+            character = self[i]
+            next_character = self[i + 1]
+            try:
+                self[i] = character.ligature(next_character)
+                del self[i + 1]
+            except TypeError:
+                i += 1
+
+    def width(self, kerning=True):
+        width = 0.0
+        for i, character in enumerate(self):
+            if isinstance(character, Box):
+                width += character.width
+            else:
+                if self.stringwidth is None or character.new_span:
+                    self.font_metrics = character.get_font().psFont.metrics
+                    self.stringwidth = self.font_metrics.stringwidth
+                    self.font_size = float(character.get_style('fontSize'))
+
+                width += self.stringwidth(character.text, self.font_size)
+                if kerning:
+                    width += self.kerning(i)
+        return width
+
+    def kerning(self, index):
+        if index == len(self) - 1:
+            kerning = 0.0
+        else:
+            this_char = self[index]
+            next_char = self[index + 1]
+            try:
+                kern = this_char.kerning(next_char)
+                kerning = kern * float(self.font_size) / 1000.0
+            except TypeError:
+                kerning = 0.0
+
+        return kerning
+
+    dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
+
+    def hyphenate(self):
+        if not self.hyphen_enable:
+            return
+
+        dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(self.dic_dir, dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+
+        word = str(self)
+        h = Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
+        for position in reversed(h.positions(word)):
+            parts = h.wrap(word, position + 1)
+            if "".join((parts[0][:-1], parts[1])) != word:
+                raise NotImplementedError
+            first, second = self[:position], self[position:]
+            hyphen = Character('-', style=first[-1].style)
+            hyphen.parent = first[-1].parent
+            first.append(hyphen)
+            yield first, second
 
 
 class EndOfLine(Exception):
