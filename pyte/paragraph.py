@@ -85,6 +85,7 @@ class Word(list):
                 except TypeError:
                     i += 1
 
+    @property
     def width(self):
         width = 0.0
         for i, character in enumerate(self):
@@ -156,25 +157,27 @@ class Line(list):
         self.text_width = indent
 
     def append(self, item):
-        if isinstance(item, Word):
+        try:
             # TODO: keep non-ligatured version in case word doesn't fit on line
             item.substitute_ligatures()
-            width = item.width()
-        elif isinstance(item, Space):
-            width = item.width
-        else:
-            raise ValueError('expecting Word or Space')
+        except AttributeError:
+            pass
+        width = item.width
 
-        if isinstance(item, Word) and self.text_width + width > self.width:
-            for first, second in item.hyphenate():
-                first_width = first.width()
-                if self.text_width + first_width < self.width:
-                    self.text_width += first_width
-                    super().append(first)
-                    raise EndOfLine(second)
+        if self.text_width + width > self.width:
+            try:
+                for first, second in item.hyphenate():
+                    first_width = first.width
+                    if self.text_width + first_width < self.width:
+                        self.text_width += first_width
+                        super().append(first)
+                        raise EndOfLine(second)
+            except AttributeError:
+                pass
             raise EndOfLine
-        self.text_width += width
-        super().append(item)
+        else:
+            self.text_width += width
+            super().append(item)
 
     def typeset(self, pscanvas, last_line=False):
         """Typeset words on the current coordinates"""
@@ -191,7 +194,7 @@ class Line(list):
                     chars.append(word)
                     char_widths.append(0.0)
                     # TODO: handle Spacer
-                    #char_widths.append(word.width())
+                    #char_widths.append(word.width)
             else:
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
