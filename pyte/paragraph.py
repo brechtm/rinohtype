@@ -164,7 +164,8 @@ class Line(list):
             pass
         width = item.width
 
-        if self.text_width + width > self.width:
+        if (not isinstance(item, Space) and len(self) > 0 and
+            self.text_width + width > self.width):
             try:
                 for first, second in item.hyphenate():
                     first_width = first.width
