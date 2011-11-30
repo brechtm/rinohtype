@@ -2,7 +2,7 @@
 
 import os
 
-from . import fonts_path
+from . import FONTS_PATH
 from ..font import Font, TypeFace, TypeFamily
 from ..font.style import LIGHT, BOOK, REGULAR, MEDIUM, DEMI_BOLD, BOLD
 from ..font.style import OBLIQUE, ITALIC, CONDENSED
@@ -14,7 +14,7 @@ __all__ = ['avantgarde', 'bookman', 'courier', 'helvetica', 'newcenturyschlbk',
 
 
 def path(name):
-    return os.path.join(fonts_path, 'adobe35', name)
+    return os.path.join(FONTS_PATH, 'adobe35', name)
 
 
 avantgarde = TypeFace('ITC Avant Garde Gothic',

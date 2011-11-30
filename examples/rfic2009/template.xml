@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- <!DOCTYPE rficpaper SYSTEM "rfic.dtd"> -->
-
 <!DOCTYPE rficpaper [
 <!ENTITY % w3centities PUBLIC
   "-//W3C//ENTITIES Combined Set//EN//XML"
-  "w3centities-f.ent"
-  >
+  "http://www.w3.org/2003/entities/2007/w3centities.ent"
+>
 %w3centities;
 ]>
 

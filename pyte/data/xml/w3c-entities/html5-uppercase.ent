@@ -1,0 +1,54 @@
+
+<!--
+     File html5-uppercase.ent produced by the XSL script entities.xsl
+     from input data in unicode.xml.
+
+     Copyright 1998 - 2011 W3C.
+
+     Use and distribution of this code are permitted under the terms of
+     either of the following two licences:
+
+     1) W3C Software Notice and License.
+        http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231.html
+
+
+     2) The license used for the WHATWG HTML specification,
+        which states, in full:
+            You are granted a license to use, reproduce and create derivative
+            works of this document.
+
+ 
+     Please report any errors to David Carlisle
+     via the public W3C list www-math@w3.org.
+
+     The numeric character values assigned to each entity
+     (should) match the Unicode assignments in Unicode 5.x.
+
+-->
+
+
+<!-- 
+
+       Public identifier: -//W3C//ENTITIES uppercase aliases for HTML//EN//XML
+       System identifier: http://www.w3.org/2003/entities/2007/html5-uppercase.ent
+
+     The public identifier should always be used verbatim.
+     The system identifier may be changed to suit local requirements.
+
+     Typical invocation:
+
+       <!ENTITY % html5-uppercase PUBLIC
+         "-//W3C//ENTITIES uppercase aliases for HTML//EN//XML"
+         "http://www.w3.org/2003/entities/2007/html5-uppercase.ent"
+       >
+       %html5-uppercase;
+
+-->
+
+<!ENTITY AMP              "&#38;#38;" ><!--AMPERSAND -->
+<!ENTITY COPY             "&#x000A9;" ><!--COPYRIGHT SIGN -->
+<!ENTITY GT               "&#x0003E;" ><!--GREATER-THAN SIGN -->
+<!ENTITY LT               "&#38;#60;" ><!--LESS-THAN SIGN -->
+<!ENTITY QUOT             "&#x00022;" ><!--QUOTATION MARK -->
+<!ENTITY REG              "&#x000AE;" ><!--REGISTERED SIGN -->
+<!ENTITY TRADE            "&#x02122;" ><!--TRADE MARK SIGN -->

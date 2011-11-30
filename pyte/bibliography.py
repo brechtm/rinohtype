@@ -9,6 +9,7 @@ import re
 from lxml import objectify
 from warnings import warn
 
+from .util import set_xml_catalog
 from .warnings import PyteWarning
 
 
@@ -82,7 +83,10 @@ class BibliographySource(dict):
 
 class PseudoCSLDataXML(BibliographySource):
     def __init__(self, filename):
-        self.xml = objectify.parse(filename)
+        set_xml_catalog()
+        self.parser = objectify.makeparser(remove_comments=True,
+                                           no_network=True)
+        self.xml = objectify.parse(filename, self.parser)
         self.root = self.xml.getroot()
         for ref in self.root.ref:
             self.add(self.parse_reference(ref))

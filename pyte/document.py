@@ -10,6 +10,7 @@ from pyte.paper import Paper
 from pyte.layout import Container
 from pyte.paragraph import Paragraph
 from pyte.layout import EndOfPage
+from .util import set_xml_catalog
 
 
 class Orientation:
@@ -47,16 +48,18 @@ class Page(Container):
 class Document(object):
     def __init__(self, xmlfile, rngschema, lookup):
         self.pages = []
-
-        self.parser = objectify.makeparser(remove_comments=True)
+        set_xml_catalog()
+        self.parser = objectify.makeparser(remove_comments=True,
+                                           no_network=True)
         self.parser.set_element_class_lookup(lookup)
 
         self.schema = etree.RelaxNG(etree.parse(rngschema))
-        self.xml = objectify.parse(xmlfile, self.parser)
+        self.xml = objectify.parse(xmlfile, self.parser)#, base_url=".")
 
         if not self.schema.validate(self.xml):
             err = self.schema.error_log
             raise Exception("XML file didn't pass schema validation:\n%s" % err)
+            # TODO: proper error reporting
         self.root = self.xml.getroot()
 
         self.creator = "pyTe"

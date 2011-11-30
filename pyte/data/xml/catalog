@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  An XML Catalog that rewrites any reference to the files at URI
+  starting with
+
+   http://www.w3.org/2003/entities/2007/
+
+  to
+  
+  w3c-entities/
+
+  This reduces the load on the W3C servers and inmproves parse times
+  by removing the need to fetch the entity definitions over the network.
+
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <rewriteSystem
+    id = "w3centities"
+    systemIdStartString = "http://www.w3.org/2003/entities/2007/"
+    rewritePrefix = "w3c-entities/" />
+</catalog>

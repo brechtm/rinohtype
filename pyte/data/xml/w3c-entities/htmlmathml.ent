@@ -1,0 +1,92 @@
+
+<!-- 
+     Copyright 1998 - 2011 W3C.
+
+     Use and distribution of this code are permitted under the terms of
+     either of the following two licences:
+
+     1) W3C Software Notice and License.
+        http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231.html
+
+
+     2) The license used for the WHATWG HTML specification,
+        which states, in full:
+            You are granted a license to use, reproduce and create derivative
+            works of this document.
+
+
+     Please report any errors to David Carlisle
+     via the public W3C list www-math@w3.org.
+
+ 
+       Public identifier: -//W3C//ENTITIES HTML MathML Set//EN//XML
+       System identifier: http://www.w3.org/2003/entities/2007/htmlmathml.ent
+
+     The public identifier should always be used verbatim.
+     The system identifier may be changed to suit local requirements.
+
+     Typical invocation:
+
+       <!ENTITY % htmlmathml PUBLIC
+         "-//W3C//ENTITIES HTML MathML Set//EN//XML"
+         "http://www.w3.org/2003/entities/2007/htmlmathml.ent"
+       >
+       %htmlmathml;
+
+
+
+-->
+
+
+<!ENTITY % xhtml1-lat1 PUBLIC "-//W3C//ENTITIES Latin for HTML//EN/" "xhtml1-lat1.ent">
+%xhtml1-lat1;
+<!ENTITY % xhtml1-special PUBLIC "-//W3C//ENTITIES Special for HTML//EN/" "xhtml1-special.ent">
+%xhtml1-special;
+<!ENTITY % xhtml1-symbol PUBLIC "-//W3C//ENTITIES Symbol for HTML//EN/" "xhtml1-symbol.ent">
+%xhtml1-symbol;
+<!ENTITY % html5-uppercase PUBLIC "-//W3C//ENTITIES uppercase aliases for HTML//EN/" "html5-uppercase.ent">
+%html5-uppercase;
+<!ENTITY % predefined PUBLIC "-//W3C//ENTITIES Predefined XML//EN/" "predefined.ent">
+%predefined;
+<!ENTITY % isobox PUBLIC "-//W3C//ENTITIES Box and Line Drawing//EN" "isobox.ent">
+%isobox;
+<!ENTITY % isocyr1 PUBLIC "-//W3C//ENTITIES Russian Cyrillic//EN" "isocyr1.ent">
+%isocyr1;
+<!ENTITY % isocyr2 PUBLIC "-//W3C//ENTITIES Non-Russian Cyrillic//EN" "isocyr2.ent">
+%isocyr2;
+<!ENTITY % isodia PUBLIC "-//W3C//ENTITIES Diacritical Marks//EN" "isodia.ent">
+%isodia;
+<!ENTITY % isolat1 PUBLIC "-//W3C//ENTITIES Added Latin 1//EN" "isolat1.ent">
+%isolat1;
+<!ENTITY % isolat2 PUBLIC "-//W3C//ENTITIES Added Latin 2//EN" "isolat2.ent">
+%isolat2;
+<!ENTITY % isonum PUBLIC "-//W3C//ENTITIES Numeric and Special Graphic//EN" "isonum.ent">
+%isonum;
+<!ENTITY % isopub PUBLIC "-//W3C//ENTITIES Publishing//EN" "isopub.ent">
+%isopub;
+<!ENTITY % isoamsa PUBLIC "-//W3C//ENTITIES Added Math Symbols: Arrow Relations//EN" "isoamsa.ent">
+%isoamsa;
+<!ENTITY % isoamsb PUBLIC "-//W3C//ENTITIES Added Math Symbols: Binary Operators//EN" "isoamsb.ent">
+%isoamsb;
+<!ENTITY % isoamsc PUBLIC "-//W3C//ENTITIES Added Math Symbols: Delimiters//EN" "isoamsc.ent">
+%isoamsc;
+<!ENTITY % isoamsn PUBLIC "-//W3C//ENTITIES Added Math Symbols: Negated Relations//EN" "isoamsn.ent">
+%isoamsn;
+<!ENTITY % isoamso PUBLIC "-//W3C//ENTITIES Added Math Symbols: Ordinary//EN" "isoamso.ent">
+%isoamso;
+<!ENTITY % isoamsr PUBLIC "-//W3C//ENTITIES Added Math Symbols: Relations//EN" "isoamsr.ent">
+%isoamsr;
+<!ENTITY % isogrk3 PUBLIC "-//W3C//ENTITIES Greek Symbols//EN" "isogrk3.ent">
+%isogrk3;
+<!ENTITY % isomfrk PUBLIC "-//W3C//ENTITIES Math Alphabets: Fraktur//EN" "isomfrk.ent">
+%isomfrk;
+<!ENTITY % isomopf PUBLIC "-//W3C//ENTITIES Math Alphabets: Open Face//EN" "isomopf.ent">
+%isomopf;
+<!ENTITY % isomscr PUBLIC "-//W3C//ENTITIES Math Alphabets: Script//EN" "isomscr.ent">
+%isomscr;
+<!ENTITY % isotech PUBLIC "-//W3C//ENTITIES General Technical//EN" "isotech.ent">
+%isotech;
+<!ENTITY % mmlextra PUBLIC "-//W3C//ENTITIES Additional MathML Symbols//EN" "mmlextra.ent">
+%mmlextra;
+<!ENTITY % mmlalias PUBLIC "-//W3C//ENTITIES MathML Aliases//EN" "mmlalias.ent">
+%mmlalias;
