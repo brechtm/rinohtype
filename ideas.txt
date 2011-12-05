@@ -80,6 +80,18 @@ problems with tex:
 * custom page layouts are difficult
 * TeX code is difficult to write/read
 * math expressions: http://xahlee.org/cmaci/notation/TeX_pestilence.html
+** Content MathML (http://www.w3.org/TR/MathML3/chapter4.html) / OpenMath
+*** describes meaning
+*** paste from Maple/Mathematica/...
+*** Python MathDOM
+*** but syntax is awkward
+**** ASCIIMathML syntax = subset of presentation MathML
+**** http://kwarc.info/projects/swim/pubs/semwiki08-notation-semantics.pdf
+** Python SVGMath (http://grigoriev.ru/svgmath/)
+** renderer: http://pymathml.sourceforge.net/
+** lots of software (http://www.w3.org/Math/Software/mathml_software.html)
+*** WYSIWYG editor: http://code.google.com/p/formulator-mathml/
+*** http://www.adrian.zentner.name/content/projects/xml/mathml/onlineEditor/index.html
 
 ideas:
 * OO design
