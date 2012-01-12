@@ -9,12 +9,13 @@ from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from .unit import pt
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
+from .fonts import adobe14
 from .warnings import PyteWarning
 from .style import Style, Styled, ParentStyle, ParentStyleException
 
 
 class TextStyle(Style):
-    attributes = {'typeface': None, # no default fonts yet
+    attributes = {'typeface': adobe14.times,
                   'fontWeight': MEDIUM,
                   'fontSlant': UPRIGHT,
                   'fontWidth': NORMAL,
