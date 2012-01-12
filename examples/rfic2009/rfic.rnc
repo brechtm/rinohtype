@@ -49,6 +49,7 @@ grammar {
      | element ol { listContent }
      | element ul { listContent }
      | element figure {figureContent}
+     | element tabular {tabularContent}
      )*
   listContent =
     element li { inline }+
@@ -57,4 +58,6 @@ grammar {
     attribute path { text },
     attribute scale { text },
     element caption {text}
+  tabularContent =
+    attribute path { text }
 }

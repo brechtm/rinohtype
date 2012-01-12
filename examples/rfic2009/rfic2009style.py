@@ -22,6 +22,7 @@ from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
+from pyte.table import Tabular as PyteTabular, CSVTabularData, TabularStyle
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -174,6 +175,9 @@ fig_caption_style = CaptionStyle('figure caption',
                                  spaceAbove=20*pt,
                                  spaceBelow=0*pt,
                                  justify=Justify.Both)
+
+tabular_style = TabularStyle('tabular', base=bodyStyle,
+                             justify=Justify.Center)
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -331,6 +335,14 @@ class Figure(CustomElement):
                          scale=float(self.get('scale')), style=figure_style,
                          caption_style=fig_caption_style)
         target.add_flowable(fig)
+
+
+class Tabular(CustomElement):
+    def render(self, target):
+        #print('Tabular.render()')
+        data = CSVTabularData(self.get('path'))
+        tab = PyteTabular(data, style=tabular_style)
+        target.add_flowable(tab)
 
 
 # bibliography style
