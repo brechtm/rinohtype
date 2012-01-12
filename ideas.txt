@@ -54,6 +54,7 @@ checklist (what is already implemented, is maked by a +)
 
 Alternative for TeX?
 http://science.slashdot.org/article.pl?sid=08/07/29/0039201
+http://tex.stackexchange.com/questions/13370/why-are-there-no-alternatives-to-tex-or-why-is-tex-still-used
 
 resources:
 * http://en.wikibooks.org/wiki/PostScript_FAQ
@@ -79,6 +80,7 @@ problems with tex:
 * fonts and encoding (see PyPSG below)
 * custom page layouts are difficult
 * TeX code is difficult to write/read
+* http://typophile.com/node/43702
 * math expressions: http://xahlee.org/cmaci/notation/TeX_pestilence.html
 ** Content MathML (http://www.w3.org/TR/MathML3/chapter4.html) / OpenMath
 *** describes meaning
