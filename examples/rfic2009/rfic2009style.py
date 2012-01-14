@@ -24,6 +24,7 @@ from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular
 from pyte.table import CSVTabularData, TabularStyle, CellStyle
+from pyte.draw import LineStyle
 
 
 
@@ -178,11 +179,20 @@ fig_caption_style = CaptionStyle('figure caption',
                                  spaceBelow=0*pt,
                                  justify=Justify.Both)
 
-tabular_style = TabularStyle('tabular', base=bodyStyle,
+tabular_style = TabularStyle('tabular',
+                             typeface=ieeeFamily.serif,
+                             fontWeight=REGULAR,
+                             fontSize=10*pt,
+                             lineSpacing=12*pt,
                              indentFirst=0*pt,
+                             spaceAbove=0*pt,
+                             spaceBelow=0*pt,
                              justify=Justify.Center)
-first_row_style = CellStyle('first row', fontWeight=BOLD)
-first_column_style = CellStyle('first column', fontSlant=ITALIC)
+tabular_line_style = LineStyle('tabular line')
+first_row_style = CellStyle('first row', fontWeight=BOLD,
+                            bottom_border=tabular_line_style)
+first_column_style = CellStyle('first column', fontSlant=ITALIC,
+                               right_border=tabular_line_style)
 numbers_style = CellStyle('numbers', typeface=ieeeFamily.mono)
 tabular_style.set_cell_style(first_row_style, rows=0)
 tabular_style.set_cell_style(first_column_style, cols=0)

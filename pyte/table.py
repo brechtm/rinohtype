@@ -74,7 +74,22 @@ class Tabular(Flowable):
 
     def render_cell(self, cell, canvas, style):
         cell_par = Paragraph(cell.content, style=style)
-        return cell_par.render(canvas)
+        cell_height = cell_par.render(canvas)
+        left, bottom, right, top = (0, canvas.height - cell_height,
+                                    canvas.width, canvas.height)
+        if style.top_border:
+            line = Line((left, top), (right, top), style.top_border)
+            line.render(canvas)
+        if style.right_border:
+            line = Line((right, top), (right, bottom), style.right_border)
+            line.render(canvas)
+        if style.bottom_border:
+            line = Line((left, bottom), (right, bottom), style.bottom_border)
+            line.render(canvas)
+        if style.left_border:
+            line = Line((left, bottom), (left, top), style.left_border)
+            line.render(canvas)
+        return cell_height
 
 
 class Array(list):
