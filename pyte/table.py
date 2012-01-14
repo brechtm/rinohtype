@@ -59,23 +59,31 @@ class Tabular(Flowable):
         table_width = canvas.width
         column_width = table_width / self.data.columns
         y_cursor = offset
-        for r, rows in enumerate(self.data):
+        for r, row in enumerate(self.data):
+            rendered_row = []
             x_cursor = 0
             row_height = 0
-            for c, cell in enumerate(rows):
-                buffer = canvas.append_new(x_cursor, 0, column_width,
-                                           canvas.height - y_cursor)
+            for c, cell in enumerate(row):
+                buffer = canvas.new(x_cursor, 0, column_width,
+                                    canvas.height - y_cursor)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
                 x_cursor += column_width
                 row_height = max(row_height, cell_height)
+                rendered_row.append((buffer, cell_height))
+            for c, (buffer, height) in enumerate(rendered_row):
+                cell_style = self.cell_styles[r][c]
+                self.draw_cell_border(buffer, row_height, cell_style)
+                canvas.append(buffer)
             y_cursor += row_height
         return y_cursor - offset
 
     def render_cell(self, cell, canvas, style):
         cell_par = Paragraph(cell.content, style=style)
-        cell_height = cell_par.render(canvas)
-        left, bottom, right, top = (0, canvas.height - cell_height,
+        return cell_par.render(canvas)
+
+    def draw_cell_border(self, canvas, height, style):
+        left, bottom, right, top = (0, canvas.height - height,
                                     canvas.width, canvas.height)
         if style.top_border:
             line = Line((left, top), (right, top), style.top_border)
@@ -89,7 +97,6 @@ class Tabular(Flowable):
         if style.left_border:
             line = Line((left, bottom), (left, top), style.left_border)
             line.render(canvas)
-        return cell_height
 
 
 class Array(list):
