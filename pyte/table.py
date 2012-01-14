@@ -10,11 +10,17 @@ from .style import Style
 from .unit import pt
 
 
+TOP = 'top'
+MIDDLE = 'middle'
+BOTTOM = 'bottom'
+
+
 class CellStyle(ParagraphStyle):
     attributes = {'top_border': None,
                   'right_border': None,
                   'bottom_border': None,
-                  'left_border': None}
+                  'left_border': None,
+                  'vertical_align': MIDDLE}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -71,10 +77,27 @@ class Tabular(Flowable):
                 x_cursor += column_width
                 row_height = max(row_height, cell_height)
                 rendered_row.append((buffer, cell_height))
+            x_cursor = 0
             for c, (buffer, height) in enumerate(rendered_row):
+                border_buffer = canvas.append_new(x_cursor,
+                                                  canvas.height - y_cursor - row_height,
+                                                  column_width, row_height)
                 cell_style = self.cell_styles[r][c]
-                self.draw_cell_border(buffer, row_height, cell_style)
-                canvas.append(buffer)
+                self.draw_cell_border(border_buffer, row_height, cell_style)
+                if cell_style.vertical_align == MIDDLE:
+                    vertical_offset = (row_height - height) / 2
+                elif cell_style.vertical_align == BOTTOM:
+                    vertical_offset = (row_height - height)
+                else:
+                    vertical_offset = 0
+                if vertical_offset:
+                    canvas.save_state()
+                    canvas.translate(0, - vertical_offset)
+                    canvas.append(buffer)
+                    canvas.restore_state()
+                else:
+                    canvas.append(buffer)
+                x_cursor += column_width
             y_cursor += row_height
         return y_cursor - offset
 
@@ -83,8 +106,7 @@ class Tabular(Flowable):
         return cell_par.render(canvas)
 
     def draw_cell_border(self, canvas, height, style):
-        left, bottom, right, top = (0, canvas.height - height,
-                                    canvas.width, canvas.height)
+        left, bottom, right, top = 0, 0, canvas.width, canvas.height
         if style.top_border:
             line = Line((left, top), (right, top), style.top_border)
             line.render(canvas)

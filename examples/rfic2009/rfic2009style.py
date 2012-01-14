@@ -24,7 +24,7 @@ from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular
 from pyte.table import CSVTabularData, TabularStyle, CellStyle
-from pyte.draw import LineStyle
+from pyte.draw import LineStyle, RED
 
 
 
@@ -179,6 +179,8 @@ fig_caption_style = CaptionStyle('figure caption',
                                  spaceBelow=0*pt,
                                  justify=Justify.Both)
 
+red_line_style = LineStyle('tabular line', width=0.2*pt, color=RED)
+thick_line_style = LineStyle('tabular line')
 tabular_style = TabularStyle('tabular',
                              typeface=ieeeFamily.serif,
                              fontWeight=REGULAR,
@@ -187,12 +189,17 @@ tabular_style = TabularStyle('tabular',
                              indentFirst=0*pt,
                              spaceAbove=0*pt,
                              spaceBelow=0*pt,
-                             justify=Justify.Center)
-tabular_line_style = LineStyle('tabular line')
+                             justify=Justify.Center,
+                             vertical_align='bottom',
+                             left_border=red_line_style,
+                             right_border=red_line_style,
+                             bottom_border=red_line_style,
+                             top_border=red_line_style,
+                             )
 first_row_style = CellStyle('first row', fontWeight=BOLD,
-                            bottom_border=tabular_line_style)
+                            bottom_border=thick_line_style)
 first_column_style = CellStyle('first column', fontSlant=ITALIC,
-                               right_border=tabular_line_style)
+                               right_border=thick_line_style)
 numbers_style = CellStyle('numbers', typeface=ieeeFamily.mono)
 tabular_style.set_cell_style(first_row_style, rows=0)
 tabular_style.set_cell_style(first_column_style, cols=0)
