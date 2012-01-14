@@ -66,6 +66,42 @@ class Canvas(object):
     def move_to(self, x, y):
         print('{0} {1} moveto'.format(x, y), file=self.psg_canvas)
 
+    def line_to(self, x, y):
+        print('{0} {1} lineto'.format(x, y), file=self.psg_canvas)
+
+    def new_path(self):
+        print('newpath', file=self.psg_canvas)
+
+    def close_path(self):
+        print('closepath', file=self.psg_canvas)
+
+    def line_path(self, points):
+        self.new_path()
+        self.move_to(*points[0])
+        for point in points[1:]:
+            self.line_to(*point)
+        self.close_path()
+
+    def line_width(self, width):
+        print('{0} setlinewidth'.format(width), file=self.psg_canvas)
+
+    def color(self, color):
+        r, g, b, a = color.rgba
+        print('{0} {1} {2} setrgbcolor'.format(r, g, b), file=self.psg_canvas)
+
+    def stroke(self, linewidth, color):
+        self.save_state()
+        self.color(color)
+        self.line_width(float(linewidth))
+        print('stroke', file=self.psg_canvas)
+        self.restore_state()
+
+    def fill(self):
+        self.save_state()
+        self.color(color)
+        print('fill', file=self.psg_canvas)
+        self.restore_state()
+
     def select_font(self, font, size):
         self.font_wrapper = self.psg_canvas.page.register_font(font.psFont,
                                                                True)
