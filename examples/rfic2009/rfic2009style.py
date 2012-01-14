@@ -377,6 +377,8 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
             return StyledText('[ERROR]')
 
     def format_bibliography(self, target):
+        if len(self.bibliography) == 0:
+            return
         items = []
         heading = Heading('References', style=acknowledgement_heading_style)
         target.add_flowable(heading)
