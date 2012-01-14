@@ -33,6 +33,10 @@ class Style(object):
 
         return self.get_default(name)
 
+    def __copy__(self):
+        attributes = {k: v for k, v in self.__dict__.items() if k != 'name'}
+        return self.__class__(self.name + ' (copy)', **attributes)
+
     def __getattr__(self, name):
         if self.base == None:
             return self._get_default(name)

@@ -22,7 +22,9 @@ from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
-from pyte.table import Tabular as PyteTabular, CSVTabularData, TabularStyle
+from pyte.table import Tabular as PyteTabular
+from pyte.table import CSVTabularData, TabularStyle, CellStyle
+
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -177,7 +179,15 @@ fig_caption_style = CaptionStyle('figure caption',
                                  justify=Justify.Both)
 
 tabular_style = TabularStyle('tabular', base=bodyStyle,
+                             indentFirst=0*pt,
                              justify=Justify.Center)
+first_row_style = CellStyle('first row', fontWeight=BOLD)
+first_column_style = CellStyle('first column', fontSlant=ITALIC)
+numbers_style = CellStyle('numbers', typeface=ieeeFamily.mono)
+tabular_style.set_cell_style(first_row_style, rows=0)
+tabular_style.set_cell_style(first_column_style, cols=0)
+tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
+                             cols=slice(1,None))
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
