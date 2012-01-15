@@ -62,8 +62,8 @@
     <th>Column 3</th>
   </tr><tr>
     <td>Row 1</td>
-    <td>11</td>
-    <td>12</td>
+    <td colspan="2">1112</td>
+    <!--td>12</td-->
     <td>13</td>
   </tr><tr>
     <td>Row 2</td>

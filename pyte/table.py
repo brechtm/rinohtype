@@ -102,7 +102,7 @@ class Tabular(Flowable):
         return y_cursor - offset
 
     def render_cell(self, cell, canvas, style):
-        if cell.content:
+        if cell is not None and cell.content:
             cell_par = Paragraph(cell.content, style=style)
             return cell_par.render(canvas)
         else:
@@ -143,6 +143,12 @@ class TabularCell(object):
         self.rowspan = rowspan
         self.colspan = colspan
 
+    def __repr__(self):
+        if self.content is not None:
+            return self.content
+        else:
+            return '<empty>'
+
 
 class TabularRow(list):
     def __init__(self, items):
@@ -156,11 +162,25 @@ class TabularData(Array):
 class HTMLTabularData(TabularData):
     def __init__(self, element):
         rows = []
-        for tr in element.tr:
+        spanned_cells = []
+        for r, tr in enumerate(element.tr):
             row_cells = []
-            for cell in tr.getchildren():
-                row_cells.append(TabularCell(cell.text))
-                print(cell.text)
+            cells = tr.getchildren()
+            index = c = 0
+            while index < len(cells):
+                if (r, c) in spanned_cells:
+                    cell = None
+                else:
+                    rowspan = int(cells[index].get('rowspan', 1))
+                    colspan = int(cells[index].get('colspan', 1))
+                    cell = TabularCell(cells[index].text, rowspan, colspan)
+                    if rowspan > 1 or colspan > 1:
+                        for j in range(c, c + colspan):
+                            for i in range(r, r + rowspan):
+                                spanned_cells.append((i, j))
+                    index += 1
+                row_cells.append(cell)
+                c += 1
             rows.append(TabularRow(row_cells))
         super().__init__(rows)
 
