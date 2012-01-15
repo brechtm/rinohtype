@@ -102,8 +102,11 @@ class Tabular(Flowable):
         return y_cursor - offset
 
     def render_cell(self, cell, canvas, style):
-        cell_par = Paragraph(cell.content, style=style)
-        return cell_par.render(canvas)
+        if cell.content:
+            cell_par = Paragraph(cell.content, style=style)
+            return cell_par.render(canvas)
+        else:
+            return 0
 
     def draw_cell_border(self, canvas, height, style):
         left, bottom, right, top = 0, 0, canvas.width, canvas.height
@@ -148,6 +151,19 @@ class TabularRow(list):
 
 class TabularData(Array):
     pass
+
+
+class HTMLTabularData(TabularData):
+    def __init__(self, element):
+        rows = []
+        for tr in element.tr:
+            row_cells = []
+            for cell in tr.getchildren():
+                row_cells.append(TabularCell(cell.text))
+                print(cell.text)
+            rows.append(TabularRow(row_cells))
+        super().__init__(rows)
+
 
 class CSVTabularData(TabularData):
     def __init__(self, filename):

@@ -23,7 +23,7 @@ from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular
-from pyte.table import CSVTabularData, TabularStyle, CellStyle
+from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 
 
@@ -365,6 +365,14 @@ class Figure(CustomElement):
 
 
 class Tabular(CustomElement):
+    def render(self, target):
+        #print('Tabular.render()')
+        data = HTMLTabularData(self)
+        tab = PyteTabular(data, style=tabular_style)
+        target.add_flowable(tab)
+
+
+class CSVTabular(CustomElement):
     def render(self, target):
         #print('Tabular.render()')
         data = CSVTabularData(self.get('path'))

@@ -50,6 +50,7 @@ grammar {
      | element ul { listContent }
      | element figure {figureContent}
      | element tabular {tabularContent}
+     | element csvtabular {csvTabularContent}
      )*
   listContent =
     element li { inline }+
@@ -57,7 +58,17 @@ grammar {
     attribute id { text },
     attribute path { text },
     attribute scale { text },
-    element caption {text}
+    element caption { text }
   tabularContent =
+    element tr { tabularRow }*
+  tabularRow =
+    (element th { tabularCell }
+     | element td { tabularCell }
+     )*
+  tabularCell =
+    attribute colspan { text }?,
+    attribute rowspan { text }?,
+    text
+  csvTabularContent =
     attribute path { text }
 }

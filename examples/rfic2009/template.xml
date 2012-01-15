@@ -50,9 +50,33 @@
 <section id="overview">
 <title>Overview of the Digest Format</title>
 
+<csvtabular path="tabular.csv"/>
+
 <p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction" />.</p>
 
-<tabular path="tabular.csv"/>
+<tabular>
+  <tr>
+    <th></th>
+    <th>Column 1</th>
+    <th>Column 2</th>
+    <th>Column 3</th>
+  </tr><tr>
+    <td>Row 1</td>
+    <td>11</td>
+    <td>12</td>
+    <td>13</td>
+  </tr><tr>
+    <td>Row 2</td>
+    <td>21</td>
+    <td>22</td>
+    <td>23</td>
+  </tr><tr>
+    <td>Row 3</td>
+    <td>31</td>
+    <td>32</td>
+    <td>33</td>
+  </tr>
+</tabular>
 
 <p>For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format &rarr; Paragraph &rarr; Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.
 </p>
