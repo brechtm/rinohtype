@@ -37,7 +37,8 @@ class TabularStyle(CellStyle):
 
 
 class RenderedCell(object):
-    def __init__(self, canvas, x_position, height):
+    def __init__(self, cell, canvas, x_position, height):
+        self.cell = cell
         self.canvas = canvas
         self.x_position = x_position
         self.height = height
@@ -45,6 +46,10 @@ class RenderedCell(object):
     @property
     def width(self):
         return self.canvas.width
+
+    @property
+    def rowspan(self):
+        return self.cell.rowspan
 
 
 class Tabular(Flowable):
@@ -98,7 +103,8 @@ class Tabular(Flowable):
                 cell_height = self.render_cell(cell, buffer, cell_style)
                 if cell.rowspan == 1:
                     row_height = max(row_height, cell_height)
-                rendered_cell = RenderedCell(buffer, x_cursor, cell_height)
+                rendered_cell = RenderedCell(cell, buffer, x_cursor,
+                                             cell_height)
                 rendered_row.append(rendered_cell)
                 x_cursor += cell_width
                 for i in range(r + 1, r + cell.rowspan):
@@ -112,11 +118,14 @@ class Tabular(Flowable):
 ##            for c, rendered_cell in enumerate(rendered_row):
 
         for r, row in enumerate(self.data):
-            row_height = row_heights[r]
             rendered_row = rendered_rows[r]
             y_cursor = y_cursors[r]
             # place cell content and render cell border
             for c, rendered_cell in enumerate(rendered_row):
+                if rendered_cell.rowspan > 1:
+                    row_height = sum(row_heights[r:r + rendered_cell.rowspan])
+                else:
+                    row_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
                 cell_height = canvas.height - y_cursor - row_height
                 cell_width = rendered_cell.width
@@ -125,7 +134,7 @@ class Tabular(Flowable):
                 cell_style = self.cell_styles[r][c]
                 self.draw_cell_border(border_buffer, row_height, cell_style)
                 if cell_style.vertical_align == MIDDLE:
-                    vertical_offset = (row_height - height) / 2
+                    vertical_offset = (row_height - rendered_cell.height) / 2
                 elif cell_style.vertical_align == BOTTOM:
                     vertical_offset = (row_height - rendered_cell.height)
                 else:
