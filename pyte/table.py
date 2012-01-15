@@ -69,19 +69,24 @@ class Tabular(Flowable):
             rendered_row = []
             x_cursor = 0
             row_height = 0
+            # render cell content
             for c, cell in enumerate(row):
-                buffer = canvas.new(x_cursor, 0, column_width,
+                if cell is None:
+                    continue
+                cell_width = column_width * cell.colspan
+                buffer = canvas.new(x_cursor, 0, cell_width,
                                     canvas.height - y_cursor)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
-                x_cursor += column_width
                 row_height = max(row_height, cell_height)
                 rendered_row.append((buffer, cell_height))
+                x_cursor += cell_width
+            # render cell border
             x_cursor = 0
             for c, (buffer, height) in enumerate(rendered_row):
-                border_buffer = canvas.append_new(x_cursor,
-                                                  canvas.height - y_cursor - row_height,
-                                                  column_width, row_height)
+                cell_height = canvas.height - y_cursor - row_height
+                border_buffer = canvas.append_new(x_cursor, cell_height,
+                                                  buffer.width, row_height)
                 cell_style = self.cell_styles[r][c]
                 self.draw_cell_border(border_buffer, row_height, cell_style)
                 if cell_style.vertical_align == MIDDLE:
@@ -97,7 +102,7 @@ class Tabular(Flowable):
                     canvas.restore_state()
                 else:
                     canvas.append(buffer)
-                x_cursor += column_width
+                x_cursor += buffer.width
             y_cursor += row_height
         return y_cursor - offset
 
