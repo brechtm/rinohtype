@@ -36,6 +36,17 @@ class TabularStyle(CellStyle):
         style.base = self
 
 
+class RenderedCell(object):
+    def __init__(self, canvas, x_position, height):
+        self.canvas = canvas
+        self.x_position = x_position
+        self.height = height
+
+    @property
+    def width(self):
+        return self.canvas.width
+
+
 class Tabular(Flowable):
     style_class = TabularStyle
 
@@ -65,6 +76,9 @@ class Tabular(Flowable):
         table_width = canvas.width
         column_width = table_width / self.data.columns
         y_cursor = offset
+        row_heights = []
+        rendered_rows = []
+        y_cursors = []
         row_spanned_cells = {}
         for r, row in enumerate(self.data):
             rendered_row = []
@@ -73,7 +87,7 @@ class Tabular(Flowable):
             # render cell content
             for c, cell in enumerate(row):
                 if (r, c) in row_spanned_cells:
-                    x_cursor += row_spanned_cells[r, c]
+                    x_cursor += row_spanned_cells[r, c].width
                     continue
                 elif cell is None:
                     continue
@@ -82,17 +96,30 @@ class Tabular(Flowable):
                                     canvas.height - y_cursor)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
-                row_height = max(row_height, cell_height)
-                rendered_row.append((buffer, x_cursor, cell_height))
+                if cell.rowspan == 1:
+                    row_height = max(row_height, cell_height)
+                rendered_cell = RenderedCell(buffer, x_cursor, cell_height)
+                rendered_row.append(rendered_cell)
                 x_cursor += cell_width
                 for i in range(r + 1, r + cell.rowspan):
-                    row_spanned_cells[i, c] = cell_width
+                    row_spanned_cells[i, c] = rendered_cell
+            row_heights.append(row_height)
+            rendered_rows.append(rendered_row)
+            y_cursors.append(y_cursor)
+            y_cursor += row_height
+
+##        # handle sizing of vertically spanned cells
+##            for c, rendered_cell in enumerate(rendered_row):
+
+        for r, row in enumerate(self.data):
+            row_height = row_heights[r]
+            rendered_row = rendered_rows[r]
+            y_cursor = y_cursors[r]
             # place cell content and render cell border
-            for c, (buffer, x_cursor, height)in enumerate(rendered_row):
-##                if (r, c) in row_spanned_cells:
-##                    cell_width = row_spanned_cells[r, c]
+            for c, rendered_cell in enumerate(rendered_row):
+                x_cursor = rendered_cell.x_position
                 cell_height = canvas.height - y_cursor - row_height
-                cell_width = buffer.width
+                cell_width = rendered_cell.width
                 border_buffer = canvas.append_new(x_cursor, cell_height,
                                                   cell_width, row_height)
                 cell_style = self.cell_styles[r][c]
@@ -100,18 +127,17 @@ class Tabular(Flowable):
                 if cell_style.vertical_align == MIDDLE:
                     vertical_offset = (row_height - height) / 2
                 elif cell_style.vertical_align == BOTTOM:
-                    vertical_offset = (row_height - height)
+                    vertical_offset = (row_height - rendered_cell.height)
                 else:
                     vertical_offset = 0
                 if vertical_offset:
                     canvas.save_state()
                     canvas.translate(0, - vertical_offset)
-                    canvas.append(buffer)
+                    canvas.append(rendered_cell.canvas)
                     canvas.restore_state()
                 else:
-                    canvas.append(buffer)
-            y_cursor += row_height
-        return y_cursor - offset
+                    canvas.append(rendered_cell.canvas)
+        return y_cursor + row_height - offset
 
     def render_cell(self, cell, canvas, style):
         if cell is not None and cell.content:
