@@ -27,6 +27,8 @@ class CellStyle(ParagraphStyle):
 
 
 class TabularStyle(CellStyle):
+    # TODO: attributes (colgroup line style, header line style, header text style
+
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
         self.cell_style = []
@@ -78,13 +80,21 @@ class Tabular(Flowable):
                     self.cell_styles[ri][ci].base = old_style
 
     def render(self, canvas, offset=0):
+        # TODO: allow data to override style (align)
         table_width = canvas.width
         row_heights = []
         rendered_rows = []
 
+        # calculate column widths (static)
+        column_widths = []
+        total_width = sum(map(lambda x: int(x['width'][:-1]),
+                              self.data.column_options))
+        for c, options in enumerate(self.data.column_options):
+            fraction = int(options['width'][:-1])
+            column_widths.append(table_width * fraction / total_width)
+
         # render cell content
         row_spanned_cells = {}
-        column_width = table_width / self.data.columns
         for r, row in enumerate(self.data):
             rendered_row = []
             x_cursor = 0
@@ -95,7 +105,7 @@ class Tabular(Flowable):
                     continue
                 elif cell is None:
                     continue
-                cell_width = column_width * cell.colspan
+                cell_width = column_widths[c] * cell.colspan
                 buffer = canvas.new(x_cursor, 0, cell_width, canvas.height)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
@@ -203,12 +213,81 @@ class TabularRow(list):
         super().__init__(items)
 
 
-class TabularData(Array):
-    pass
+class TabularData(object):
+    def __init__(self, body, head=None, foot=None,
+                 column_options=None, column_groups=None):
+        self.body = body
+        self.head = head
+        self.foot = foot
+        if column_options is None:
+            column_groups = [body.columns]
+            column_options = [{'width': '1*'} for c in range(body.columns)]
+        self.column_options = column_options
+        self.column_groups = column_groups
+
+    @property
+    def rows(self):
+        total = self.body.rows
+        if self.head:
+            total += self.head.rows
+        if self.foot:
+            total += self.foot.rows
+        return total
+
+    @property
+    def columns(self):
+        return self.body.columns
+
+    def __iter__(self):
+        if self.head:
+            for row in self.head:
+                yield row
+        for row in self.body:
+            yield row
+        if self.foot:
+            for row in self.foot:
+                yield row
 
 
 class HTMLTabularData(TabularData):
     def __init__(self, element):
+        try:
+            body = self.parse_row_group(element.tbody)
+            try:
+                head = self.parse_row_group(element.thead)
+            except AtrributeError:
+                thead = None
+            try:
+                foot = self.parse_row_group(element.tfoot)
+            except AtrributeError:
+                foot = None
+        except AttributeError:
+            body = self.parse_row_group(element)
+            head = foot = None
+        column_groups, column_options = self.parse_column_options(element)
+        super().__init__(body, head, foot, column_options, column_groups)
+
+    def parse_column_options(self, element):
+        try:
+            column_groups = []
+            column_options = []
+            for colgroup in element.colgroup:
+                span = int(colgroup.get('span', 1))
+                width = colgroup.get('width')
+                column_groups.append(span)
+                options = [{'width': width} for c in range(span)]
+                try:
+                    for c, col in enumerate(colgroup.col):
+                        if 'width' in col.attrib:
+                            options[c]['width'] = col.get('width')
+                except AttributeError:
+                    pass
+                column_options += options
+            return column_groups, column_options
+        except AttributeError:
+            return None, None
+
+    def parse_row_group(self, element):
         rows = []
         spanned_cells = []
         for r, tr in enumerate(element.tr):
@@ -230,7 +309,7 @@ class HTMLTabularData(TabularData):
                 row_cells.append(cell)
                 c += 1
             rows.append(TabularRow(row_cells))
-        super().__init__(rows)
+        return Array(rows)
 
 
 class CSVTabularData(TabularData):
@@ -241,4 +320,5 @@ class CSVTabularData(TabularData):
             for row in reader:
                 row_cells = [TabularCell(cell) for cell in row]
                 rows.append(TabularRow(row_cells))
-        super().__init__(rows)
+        body = Array(rows)
+        super().__init__(body)

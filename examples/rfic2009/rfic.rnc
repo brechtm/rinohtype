@@ -60,7 +60,15 @@ grammar {
     attribute scale { text },
     element caption { text }
   tabularContent =
+    element colgroup { colGroup }*,
     element tr { tabularRow }*
+  colGroup =
+    attribute align { text }?,
+    attribute width { text }?,
+    attribute span { text }?,
+    element col {
+      attribute width { text }?
+    }*
   tabularRow =
     (element th { tabularCell }
      | element td { tabularCell }

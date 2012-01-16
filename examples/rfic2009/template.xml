@@ -55,6 +55,8 @@
 <p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction" />.</p>
 
 <tabular>
+  <colgroup width="2*" />
+  <colgroup span="3" width="3*" />
   <tr>
     <th></th>
     <th>Column 1</th>
@@ -67,12 +69,12 @@
     <td>13</td>
   </tr><tr>
     <td>Row 2</td>
-    <td>21</td>
-    <td rowspan="2">2232 A very very very very veryvery loooong sentence</td>
+    <td colspan="2" rowspan="2">21223132 A very very very very veryvery loooong sentence</td>
+    <!--td>22</td-->
     <td>23</td>
   </tr><tr>
     <td>Row 3</td>
-    <td>31</td>
+    <!--td>31</td-->
     <!--td>32</td-->
     <td>33</td>
   </tr><tr>
