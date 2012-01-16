@@ -22,7 +22,7 @@ from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
-from pyte.table import Tabular as PyteTabular
+from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 
@@ -190,7 +190,7 @@ tabular_style = TabularStyle('tabular',
                              spaceAbove=0*pt,
                              spaceBelow=0*pt,
                              justify=Justify.Center,
-                             vertical_align='middle',
+                             vertical_align=MIDDLE,
                              left_border=red_line_style,
                              right_border=red_line_style,
                              bottom_border=red_line_style,

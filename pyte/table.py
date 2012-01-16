@@ -79,17 +79,16 @@ class Tabular(Flowable):
 
     def render(self, canvas, offset=0):
         table_width = canvas.width
-        column_width = table_width / self.data.columns
-        y_cursor = offset
         row_heights = []
         rendered_rows = []
-        y_cursors = []
+
+        # render cell content
         row_spanned_cells = {}
+        column_width = table_width / self.data.columns
         for r, row in enumerate(self.data):
             rendered_row = []
             x_cursor = 0
             row_height = 0
-            # render cell content
             for c, cell in enumerate(row):
                 if (r, c) in row_spanned_cells:
                     x_cursor += row_spanned_cells[r, c].width
@@ -97,8 +96,7 @@ class Tabular(Flowable):
                 elif cell is None:
                     continue
                 cell_width = column_width * cell.colspan
-                buffer = canvas.new(x_cursor, 0, cell_width,
-                                    canvas.height - y_cursor)
+                buffer = canvas.new(x_cursor, 0, cell_width, canvas.height)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
                 if cell.rowspan == 1:
@@ -111,16 +109,21 @@ class Tabular(Flowable):
                     row_spanned_cells[i, c] = rendered_cell
             row_heights.append(row_height)
             rendered_rows.append(rendered_row)
-            y_cursors.append(y_cursor)
-            y_cursor += row_height
 
-##        # handle sizing of vertically spanned cells
-##            for c, rendered_cell in enumerate(rendered_row):
+        # handle oversized vertically spanned cells
+        for r, rendered_row in enumerate(rendered_rows):
+            for c, rendered_cell in enumerate(rendered_row):
+                if rendered_cell.rowspan > 1:
+                    row_height = sum(row_heights[r:r + rendered_cell.rowspan])
+                    shortage = rendered_cell.height - row_height
+                    if shortage > 0:
+                        padding = shortage / rendered_cell.rowspan
+                        for i in range(r, r + rendered_cell.rowspan):
+                            row_heights[i] += padding
 
-        for r, row in enumerate(self.data):
-            rendered_row = rendered_rows[r]
-            y_cursor = y_cursors[r]
-            # place cell content and render cell border
+        # place cell content and render cell border
+        y_cursor = offset
+        for r, rendered_row in enumerate(rendered_rows):
             for c, rendered_cell in enumerate(rendered_row):
                 if rendered_cell.rowspan > 1:
                     row_height = sum(row_heights[r:r + rendered_cell.rowspan])
@@ -139,14 +142,12 @@ class Tabular(Flowable):
                     vertical_offset = (row_height - rendered_cell.height)
                 else:
                     vertical_offset = 0
-                if vertical_offset:
-                    canvas.save_state()
-                    canvas.translate(0, - vertical_offset)
-                    canvas.append(rendered_cell.canvas)
-                    canvas.restore_state()
-                else:
-                    canvas.append(rendered_cell.canvas)
-        return y_cursor + row_height - offset
+                canvas.save_state()
+                canvas.translate(0, - (y_cursor + vertical_offset))
+                canvas.append(rendered_cell.canvas)
+                canvas.restore_state()
+            y_cursor += row_height
+        return y_cursor - offset
 
     def render_cell(self, cell, canvas, style):
         if cell is not None and cell.content:
