@@ -251,10 +251,8 @@ class Section(CustomElement):
 class Title(CustomElement):
     def render(self, target, level=1, id=None):
         #print('Title.render()')
-        heading = Heading(self.text, style=heading_styles[level - 1],
-                          level=level)
-        if id:
-            target.document.elements[id] = heading
+        heading = Heading(target.document, self.text,
+                          style=heading_styles[level - 1], level=level, id=id)
         target.add_flowable(heading)
 
 
@@ -347,7 +345,7 @@ class Ref(CustomElement):
 class Acknowledgement(CustomElement):
     def render(self, target):
         #print('Acknowledgement.render()')
-        heading = Heading('Acknowledgement',
+        heading = Heading(target.document, 'Acknowledgement',
                           style=acknowledgement_heading_style, level=1)
         target.add_flowable(heading)
         for element in self.getchildren():
@@ -395,7 +393,8 @@ class IEEEBibliographyFormatter(BibliographyFormatter):
         if len(self.bibliography) == 0:
             return
         items = []
-        heading = Heading('References', style=acknowledgement_heading_style)
+        heading = Heading(target.document, 'References',
+                          style=acknowledgement_heading_style)
         target.add_flowable(heading)
         for i, ref in enumerate(self.bibliography):
             authors = ['{} {}'.format(name.given_initials(), name.family)

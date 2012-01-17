@@ -19,37 +19,42 @@ class HeadingStyle(ParagraphStyle):
 
 
 class Referenceable(object):
-    def __init__(self, id):
+    def __init__(self, document, id):
+        self.document = document
+        if id:
+            document.elements[id] = self
         self.id = id
 
     def reference(self):
-        return self.ref
+        raise NotImplementedError
+
+    def page(self):
+        raise NotImplementedError
 
 
 # TODO: share superclass with List (numbering)
-class Heading(Paragraph):
+class Heading(Paragraph, Referenceable):
     style_class = HeadingStyle
 
-    next_number = {1: 1}
-
-    def __init__(self, title, style=None, level=1):
+    def __init__(self, document, title, style=None, level=1, id=None):
+        next_number = document.counters.setdefault(self.__class__, {1: 1})
         if style.numberingStyle is not None:
-            self.ref = format_number(self.next_number[level],
-                                     style.numberingStyle)
-            number = self.ref + style.numberingSeparator + '&nbsp;'
+            self.number = format_number(next_number[level], style.numberingStyle)
+            number = self.number + style.numberingSeparator + '&nbsp;'
         else:
-            self.ref = None
+            self.number = None
             number = ""
-        if level in self.next_number:
-            self.next_number[level] += 1
-            self.next_number[level + 1] = 1
+        if level in next_number:
+            next_number[level] += 1
+            next_number[level + 1] = 1
         else:
-            self.next_number[level] = 2
+            next_number[level] = 2
         self.level = level
-        super().__init__(number + title, style)
+        Paragraph.__init__(self, number + title, style)
+        Referenceable.__init__(self, document, id)
 
     def reference(self):
-        return self.ref
+        return self.number
 
 
 class ListStyle(ParagraphStyle):
