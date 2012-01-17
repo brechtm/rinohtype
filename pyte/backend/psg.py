@@ -4,12 +4,9 @@ from psg.drawing.box import canvas as psg_Canvas
 
 
 class Document(object):
-    def __init__(self, title):
+    def __init__(self, pyte_document, title):
+        self.pyte_document = pyte_document
         self.psg_doc = dsc_document(title)
-
-    def new_page(self, width, height):
-        psg_page = self.psg_doc.page((float(width), float(height)))
-        return Page(psg_page)
 
     def write(self, filename):
         fp = open(filename, "w", encoding="latin-1")
@@ -18,9 +15,15 @@ class Document(object):
 
 
 class Page(object):
-    def __init__(self, psg_page):
-        self.psg_page = psg_page
-        self.canvas = PageCanvas(psg_page.canvas(), self)
+    def __init__(self, pyte_page, psg_document, width, height):
+        self.pyte_page = pyte_page
+        self.psg_doc = psg_document
+        self.psg_page = psg_document.psg_doc.page((float(width), float(height)))
+        self.canvas = PageCanvas(self, self.psg_page.canvas())
+
+    @property
+    def document(self):
+        return self.pyte_page.document
 
 
 class Canvas(object):
@@ -28,6 +31,14 @@ class Canvas(object):
         self.parent = parent
         self.psg_canvas = psg_Canvas(parent.psg_canvas,
                                      left, bottom, width, height, clip=clip)
+
+    @property
+    def page(self):
+        return self.parent.page
+
+    @property
+    def document(self):
+        return self.page.document
 
     @property
     def width(self):
@@ -120,6 +131,10 @@ class Canvas(object):
 
 
 class PageCanvas(Canvas):
-    def __init__(self, psg_canvas, page):
+    def __init__(self, page, psg_canvas):
+        self.parent = page
         self.psg_canvas = psg_canvas
-        self.page = page
+
+    @property
+    def page(self):
+        return self.parent.pyte_page

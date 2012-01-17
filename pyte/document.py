@@ -34,7 +34,8 @@ class Page(Container):
 
         self.backend = self.document.backend
         backend_document = self.document.backend_document
-        self.backend_page = backend_document.new_page(width, height)
+        self.backend_page = self.backend.Page(self, backend_document,
+                                              width, height)
         self.canvas = self.backend_page.canvas
 
     @property
@@ -72,7 +73,7 @@ class Document(object):
         self.created = time.asctime()
 
         self.backend = backend
-        self.backend_document = backend.Document(self.title)
+        self.backend_document = backend.Document(self, self.title)
 
     def add_page(self, page, number):
         assert isinstance(page, Page)
