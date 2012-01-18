@@ -14,7 +14,7 @@ class EndOfPage(Exception):
 
 class RenderTarget(object):
     def __init__(self):
-        self.__flowables = []
+        self.flowables = []
 
     @property
     def document(self):
@@ -22,10 +22,7 @@ class RenderTarget(object):
 
     def add_flowable(self, flowable):
         assert isinstance(flowable, Flowable)
-        self.__flowables.append(flowable)
-
-    def flowables(self):
-        return self.__flowables
+        self.flowables.append(flowable)
 
     def render(self):
         raise NotImplementedError("virtual method not implemented in class %s" %
@@ -160,10 +157,10 @@ class Container(RenderTarget):
         for child in self.__children:
             child.render(this_canvas)
 
-        if self.flowables():
+        if self.flowables:
             total_height = 0
             previous_height = 0
-            for flowable in self.flowables():
+            for flowable in self.flowables:
                 space_above = float(flowable.style.spaceAbove)
                 space_below = float(flowable.style.spaceBelow)
                 box_height = flowable.render(this_canvas, total_height)
@@ -194,7 +191,6 @@ class Chain(RenderTarget):
         last_container_index = len(self._containers)
         for index in range(first_container_index, last_container_index):
             container = self._containers[index]
-            page_canvas = container.page.canvas
             # TODO: bad behaviour with spaceAbove/Below
             #       when skipping to next container
             left   = float(container.absLeft())
@@ -205,7 +201,7 @@ class Chain(RenderTarget):
             total_height = 0
             prev_height = 0
             try:
-                for flowable in self.flowables()[self._flowable_index:]:
+                for flowable in self.flowables[self._flowable_index:]:
                     space_above = float(flowable.style.spaceAbove)
                     space_below = float(flowable.style.spaceBelow)
 
