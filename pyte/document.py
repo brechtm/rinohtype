@@ -83,7 +83,10 @@ class Document(object):
 
     def render(self, filename):
         for page in self.pages:
-            page.render()
+            try:
+                page.render()
+            except EndOfPage as e:
+                self.add_to_chain(e.args[0])
 
         self.backend_document.write(filename)
 

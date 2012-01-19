@@ -214,9 +214,8 @@ class Chain(RenderTarget):
                     self._flowable_index += 1
             except EndOfContainer:
                 self._container_index += 1
-                if self._container_index >= len(self._containers) - 1:
-                    container = self.document.add_to_chain(self)
-                    break
+                if self._container_index > len(self._containers) - 1:
+                    raise EndOfPage(self)
 
         return total_height
 
