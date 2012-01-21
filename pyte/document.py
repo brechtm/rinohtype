@@ -31,18 +31,17 @@ class Page(Container):
             width = self.paper.height
             height = self.paper.width
         super().__init__(None, 0*pt, 0*pt, width, height)
-
         self.backend = self.document.backend
-        backend_document = self.document.backend_document
-        self.backend_page = self.backend.Page(self, backend_document,
-                                              width, height)
-        self.canvas = self.backend_page.canvas
 
     @property
     def document(self):
         return self._document
 
     def render(self):
+        backend_document = self.document.backend_document
+        self.backend_page = self.backend.Page(self, backend_document,
+                                              self.width(), self.height())
+        self.canvas = self.backend_page.canvas
         super().render(self.canvas)
 
 
@@ -69,12 +68,11 @@ class Document(object):
         self.created = time.asctime()
 
         self.backend = backend
-        self.backend_document = backend.Document(self, self.title)
+        self.backend_document = self.backend.Document(self, self.title)
 
     def add_page(self, page, number):
         assert isinstance(page, Page)
         self.pages.append(page)
-        page._document = self
         page.number = number
 
     def render(self, filename):

@@ -35,7 +35,7 @@
 <section id="introduction">
 <title>Introduction</title>
 
-<p>Reference to section <ref id="overview" />. Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:</p>
+<p>Reference to section <ref id="file_formats" type="page"/>. Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:</p>
 
 <ol>
 <li>Deadlines are <em>absolute</em>, don't even ask!</li>
@@ -52,7 +52,7 @@
 
 <csvtabular path="tabular.csv"/>
 
-<p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction" />.</p>
+<p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction" type="page"/>.</p>
 
 <tabular>
   <colgroup width="2*" />
@@ -168,7 +168,7 @@ or
 
 </section><!-- Citing Previous Work -->
 
-<section>
+<section id="file_formats">
 <title>File Submission Formats</title>
 
 <p>Beginning in 2004, the IEEE has mandated that all published papers comply with certain IEEE conference standards for electronic searchability. Please note that a detailed checklist is available on the submission site to help guide authors through the task of converting their Word documents into PDFs. Going forward, this will ensure compatibility with the new search requirements for the IEEE Xplore database.</p>

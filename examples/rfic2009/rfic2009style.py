@@ -16,7 +16,7 @@ from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
-from pyte.structure import Heading, List, Reference
+from pyte.structure import Heading, List, Reference, REFERENCE
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
@@ -341,7 +341,7 @@ class Cite(CustomElement):
 class Ref(CustomElement):
     def parse(self, document):
         #print('Ref.render()')
-        return Reference(document, self.get('id'))
+        return Reference(document, self.get('id'), self.get('type', REFERENCE))
 
 
 class Acknowledgement(CustomElement):

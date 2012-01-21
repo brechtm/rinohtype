@@ -18,6 +18,10 @@ class HeadingStyle(ParagraphStyle):
         super().__init__(name, base=base, **attributes)
 
 
+class ReferenceNotConverged(Exception):
+    pass
+
+
 class Referenceable(object):
     def __init__(self, document, id):
         self.document = document
@@ -29,7 +33,13 @@ class Referenceable(object):
         raise NotImplementedError
 
     def page(self):
-        raise NotImplementedError
+        try:
+            page = self._page
+            if self._previous_page is not None and self._previous_page != page:
+                raise ReferenceNotConverged
+            return str(page)
+        except AttributeError:
+            raise ReferenceNotConverged
 
 
 # TODO: share superclass with List (numbering)
@@ -159,19 +169,37 @@ class Footer(Paragraph):
         return super().typeset(pscanvas, offset)
 
 
+REFERENCE = 'reference'
+PAGE = 'page'
+CHAPTER = 'chapter'
+SECTION = 'section'
+POSITION = 'position'
+
 
 class Reference(StyledText):
-    def __init__(self, document, id):
+    def __init__(self, document, id, type=REFERENCE):
         super().__init__('')
-        self.id = id
         self.document = document
+        self.id = id
+        self.type = type
 
     def characters(self):
         try:
-            self.text = self.document.elements[self.id].reference()
+            referenced_item = self.document.elements[self.id]
+            if self.type == REFERENCE:
+                self.text = referenced_item.reference()
+            elif self.type == PAGE:
+                try:
+                    self.text = referenced_item.page()
+                except ReferenceNotConverged:
+                    self.document.converged = False
+                    self.text = '[not converged]'
+            else:
+                raise NotImplementedError
         except KeyError:
             warn("Unknown label '{}'".format(self.id), PyteWarning)
             self.text = "unkown reference '{}'".format(self.id)
+
         if self.text is None:
             warn('Trying to reference unreferenceable object', PyteWarning)
             self.text = '[not referenceable]'
