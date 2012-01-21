@@ -19,6 +19,7 @@ checklist (what is already implemented, is maked by a +)
 ** http://matplotlib.sourceforge.net/users/mathtext.html
 ** http://matplotlib.sourceforge.net/api/mathtext_api.html
 ** http://code.google.com/p/mathtex/
+** http://tex.stackexchange.com/questions/4223/what-parsers-for-latex-mathematics-exist-outside-of-the-tex-engines
 * math fonts
 ** AMS Euler: http://www.ams.org/publications/type1-fonts
 ** pxfonts, mathpazo (type 1)
