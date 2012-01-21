@@ -161,10 +161,10 @@ class Footer(Paragraph):
 
 
 class Reference(StyledText):
-    def __init__(self, id, target):
+    def __init__(self, document, id):
         super().__init__('')
         self.id = id
-        self.document = target.document
+        self.document = document
 
     def characters(self):
         try:

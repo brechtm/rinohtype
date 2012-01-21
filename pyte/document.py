@@ -48,7 +48,6 @@ class Page(Container):
 
 class Document(object):
     def __init__(self, xmlfile, rngschema, lookup, backend=psg):
-        self.pages = []
         set_xml_catalog()
         self.parser = objectify.makeparser(remove_comments=True,
                                            no_network=True)
@@ -62,9 +61,6 @@ class Document(object):
             raise Exception("XML file didn't pass schema validation:\n%s" % err)
             # TODO: proper error reporting
         self.root = self.xml.getroot()
-
-        self.elements = {}
-        self.counters = {}
 
         self.creator = "pyTe"
         self.author = None
@@ -82,13 +78,24 @@ class Document(object):
         page.number = number
 
     def render(self, filename):
+        self.elements = {}
+        self.converged = True
+        self.render_loop()
+        self.backend_document.write(filename)
+
+    def render_loop(self):
+        self.counters = {}
+        self.pages = []
+        self.converged = True
+        self.setup()
         for page in self.pages:
             try:
                 page.render()
             except EndOfPage as e:
                 self.add_to_chain(e.args[0])
 
-        self.backend_document.write(filename)
+    def setup(self):
+        raise NotImplementedError
 
     def add_to_chain(self, chain):
         raise NotImplementedError

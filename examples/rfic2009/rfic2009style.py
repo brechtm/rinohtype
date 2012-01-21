@@ -20,7 +20,7 @@ from pyte.structure import Heading, List, Reference
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
-from pyte.flowable import FlowableStyle
+from pyte.flowable import Flowable, FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
@@ -232,150 +232,148 @@ class IndexTerms(Paragraph):
 # is it a good idea to inherit from ObjectifiedElement (not documented)?
 class CustomElement(objectify.ObjectifiedElement):
 #class CustomElement(etree.ElementBase):
-    def render(self, target):
+    def parse(self, document):
         raise NotImplementedError('tag: %s' % self.tag)
 
 
 class Section(CustomElement):
-    def render(self, target, level=1):
+    def parse(self, document, level=1):
         #print('Section.render() %s' % self.attrib['title'])
         for element in self.getchildren():
             if isinstance(element, Title):
-                element.render(target, level=level, id=self.get('id', None))
+                elem = element.parse(document, level=level, id=self.get('id', None))
             elif type(element) == Section:
-                element.render(target, level=level + 1)
+                elem = element.parse(document, level=level + 1)
             else:
-                element.render(target)
+                elem = element.parse(document)
+            if isinstance(elem, Flowable):
+                yield elem
+            else:
+                for flw in elem:
+                    yield flw
 
 
 class Title(CustomElement):
-    def render(self, target, level=1, id=None):
+    def parse(self, document, level=1, id=None):
         #print('Title.render()')
-        heading = Heading(target.document, self.text,
-                          style=heading_styles[level - 1], level=level, id=id)
-        target.add_flowable(heading)
+        return Heading(document, self.text, style=heading_styles[level - 1],
+                          level=level, id=id)
 
 
 class P(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('P.render()')
         if self.text is not None:
             content = self.text
         else:
             content = ''
         for child in self.getchildren():
-            content += child.render(target)
+            content += child.parse(document)
             if child.tail is not None:
                 content += child.tail
-        paragraph = Paragraph(content, style=bodyStyle)
-        target.add_flowable(paragraph)
+        return Paragraph(content, style=bodyStyle)
 
 
 class B(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('B.render()')
         return Bold(self.text)
 
 
 class Em(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Em.render()')
         return Emphasized(self.text)
 
 
 class SC(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('SC.render()')
         return SmallCaps(self.text)
 
 
 class OL(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('OL.render()')
         items = []
         for item in self.getchildren():
-            items.append(item.render(target))
-        lst = List(items, style=listStyle)
-        target.add_flowable(lst)
+            items.append(item.parse(document))
+        return List(items, style=listStyle)
 
 
 class LI(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('LI.render()')
         content = self.text
         for child in self.getchildren():
-            content += child.render(target)
+            content += child.parse(document)
             if child.tail is not None:
                 content += child.tail
         return content
 
 
 class Math(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         math = PyteMath(self.text, style=mathstyle)
-        math.document = target.document
+        math.document = document
         return math
 
 
 class Eq(CustomElement):
-    def render(self, target, id=None):
+    def parse(self, document, id=None):
         equation = Equation(self.text, style=equationstyle)
-        equation.document = target.document # TODO: do this properly
+        equation.document = document # TODO: do this properly
         for item in equation:
-            item.document = target.document
+            item.document = document
         id = self.get('id', None)
         if id:
-            target.document.elements[id] = equation
+            document.elements[id] = equation
         return equation
 
 
 class Cite(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Cite.render()')
-        # TODO: general document getter in TextTarget/Chain/Container
-        return target.document.bibliography.cite(self.get('id'))
+        # TODO: general document getter in Textdocument/Chain/Container
+        return document.bibliography.cite(self.get('id'))
 
 
 class Ref(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Ref.render()')
-        return Reference(self.get('id'), target)
+        return Reference(document, self.get('id'))
 
 
 class Acknowledgement(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Acknowledgement.render()')
-        heading = Heading(target.document, 'Acknowledgement',
-                          style=acknowledgement_heading_style, level=1)
-        target.add_flowable(heading)
+        yield Heading(document, 'Acknowledgement',
+                      style=acknowledgement_heading_style, level=1)
         for element in self.getchildren():
-            element.render(target)
+            yield element.parse(document)
 
 
 class Figure(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Figure.render()')
         caption_text = self.getchildren()[0].text
-        fig = PyteFigure(self.get('path'), caption_text,
-                         scale=float(self.get('scale')), style=figure_style,
-                         caption_style=fig_caption_style)
-        target.add_flowable(fig)
+        scale = float(self.get('scale'))
+        return PyteFigure(self.get('path'), caption_text, scale=scale,
+                         style=figure_style, caption_style=fig_caption_style)
 
 
 class Tabular(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Tabular.render()')
         data = HTMLTabularData(self)
-        tab = PyteTabular(data, style=tabular_style)
-        target.add_flowable(tab)
+        return PyteTabular(data, style=tabular_style)
 
 
 class CSVTabular(CustomElement):
-    def render(self, target):
+    def parse(self, document):
         #print('Tabular.render()')
         data = CSVTabularData(self.get('path'))
-        tab = PyteTabular(data, style=tabular_style)
-        target.add_flowable(tab)
+        return PyteTabular(data, style=tabular_style)
 
 
 # bibliography style
@@ -478,10 +476,21 @@ class RFIC2009Paper(Document):
         self.title = self.root.head.title.text
         self.keywords = [term.text for term in self.root.head.indexterms.term]
 
-        self.content = Chain(self)
-        self.page_count = 1
+        self.parse_input()
 
-    def render(self, filename):
+    def parse_input(self):
+        self.sections = []
+        for section in self.root.body.section:
+            self.sections.append(section.parse(self))
+
+        try:
+            self.acknowledgement = self.root.body.acknowledgement.parse(self)
+        except AttributeError:
+            self.acknowledgement = None
+
+    def setup(self):
+        self.page_count = 1
+        self.content = Chain(self)
         page = RFICPage(self, first=True)
         self.add_page(page, self.page_count)
 
@@ -499,17 +508,15 @@ class RFIC2009Paper(Document):
         page.content.add_flowable(abstract)
         page.content.add_flowable(index_terms)
 
-        for section in self.root.body.section:
-            section.render(self.content)
+        for section in self.sections:
+            for flowable in section:
+                self.content.add_flowable(flowable)
 
-        try:
-            self.root.body.acknowledgement.render(self.content)
-        except AttributeError:
-            pass
+        if self.acknowledgement:
+            for flowable in section:
+                self.content.add_flowable(flowable)
 
-        self.bibliography.bibliography(self.content)
-
-        Document.render(self, filename)
+        #self.bibliography.bibliography(self.content)
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
