@@ -4,7 +4,7 @@ from warnings import warn
 from .layout import EndOfContainer
 from .number import format_number
 from .number.style import NUMBER
-from .paragraph import ParagraphStyle, Paragraph
+from .paragraph import ParagraphStyle, Paragraph, Field
 from .text import StyledText
 from .unit import nil
 from .warnings import PyteWarning
@@ -118,6 +118,7 @@ class List(Paragraph):
                 self.itempointer = i
                 raise
 
+        self.itempointer = 0
         return offset - offset_begin
 
 
@@ -184,6 +185,9 @@ class Reference(StyledText):
         self.type = type
 
     def characters(self):
+        yield Field(self)
+
+    def field_characters(self):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:

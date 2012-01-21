@@ -140,6 +140,15 @@ class Word(list):
             yield first, second
 
 
+class Field(object):
+    def __init__(self, source):
+        self.source = source
+
+    def characters(self):
+        for character in self.source.field_characters():
+            yield character
+
+
 class EndOfLine(Exception):
     def __init__(self, hyphenation_remainder=None):
         self.hyphenation_remainder = hyphenation_remainder
@@ -312,15 +321,20 @@ class Paragraph(MixedStyledText, Flowable):
         self.first_line = True
 
     def _split_words(self):
-        for is_space, item in itertools.groupby(self.characters(),
-                                                lambda x: type(x) == Space):
-            if is_space:
-                for space in item:
-                    self._words.append(space)
+        def group_function(item):
+            return type(item) == Space or isinstance(item, Field)
+        for is_special, item in itertools.groupby(self.characters(),
+                                                group_function):
+            if is_special:
+                self._words += item
             else:
                 self._words.append(Word(item, self.kerning, self.ligatures))
 
     def render(self, canvas, offset=0):
+        try:
+            self._previous_page = self._page
+        except AttributeError:
+            self._page = canvas.page.number
         return self.typeset(canvas, offset)
 
     # based on the typeset functions of psg.box.textbox
@@ -345,6 +359,8 @@ class Paragraph(MixedStyledText, Flowable):
 
         for i in range(self.wordpointer, len(self._words)):
             word = self._words[i]
+            if isinstance(word, Field):
+                word = Word(word.characters(), self.kerning, self.ligatures)
             try:
                 line.append(word)
             except EndOfLine as eol:
@@ -373,6 +389,7 @@ class Paragraph(MixedStyledText, Flowable):
                 self.wordpointer = i - wordcount + 1
                 raise
 
+        self.wordpointer = 0
         return canvas.height - offset - self._line_cursor
 
     def typeset_line(self, canvas, line, last_line=False):

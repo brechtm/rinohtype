@@ -69,6 +69,8 @@ class Document(object):
 
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.title)
+        self.counters = {}
+        self.elements = {}
 
     def add_page(self, page, number):
         assert isinstance(page, Page)
@@ -76,13 +78,11 @@ class Document(object):
         page.number = number
 
     def render(self, filename):
-        self.elements = {}
         self.converged = True
         self.render_loop()
         self.backend_document.write(filename)
 
     def render_loop(self):
-        self.counters = {}
         self.pages = []
         self.converged = True
         self.setup()
@@ -91,6 +91,12 @@ class Document(object):
                 page.render()
             except EndOfPage as e:
                 self.add_to_chain(e.args[0])
+
+        if not self.converged:
+            print('Not yet converged, rendering again...')
+            del self.backend_document
+            self.backend_document = self.backend.Document(self, self.title)
+            self.render_loop()
 
     def setup(self):
         raise NotImplementedError
