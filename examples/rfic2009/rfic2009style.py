@@ -479,14 +479,15 @@ class RFIC2009Paper(Document):
         self.parse_input()
 
     def parse_input(self):
-        self.sections = []
+        self.content_flowables = []
         for section in self.root.body.section:
-            self.sections.append(section.parse(self))
-
+            for flowable in section.parse(self):
+                self.content_flowables.append(flowable)
         try:
-            self.acknowledgement = self.root.body.acknowledgement.parse(self)
+            for flowable in self.root.body.acknowledgement.parse(self):
+                self.content_flowables.append(flowable)
         except AttributeError:
-            self.acknowledgement = None
+            pass
 
     def setup(self):
         self.page_count = 1
@@ -508,13 +509,8 @@ class RFIC2009Paper(Document):
         page.content.add_flowable(abstract)
         page.content.add_flowable(index_terms)
 
-        for section in self.sections:
-            for flowable in section:
-                self.content.add_flowable(flowable)
-
-        if self.acknowledgement:
-            for flowable in section:
-                self.content.add_flowable(flowable)
+        for flowable in self.content_flowables:
+            self.content.add_flowable(flowable)
 
         #self.bibliography.bibliography(self.content)
 
