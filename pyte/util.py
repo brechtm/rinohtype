@@ -1,5 +1,6 @@
 
 import os
+import time
 from . import __file__ as pyte_file
 from urllib.request import pathname2url
 from urllib.parse import urljoin
@@ -21,3 +22,14 @@ def set_xml_catalog():
     set_xml_catalog.done = True
 
 set_xml_catalog.done = False
+
+
+def timed(f):
+    """Decorator that times the function call."""
+    def decorator(self, *args, **kwargs):
+        name = self.__class__.__name__ + '.' + f.__name__
+        start = time.clock()
+        result = f(self, *args, **kwargs)
+        print('{}: {:.4f} seconds'.format(name, time.clock() - start))
+        return result
+    return decorator
