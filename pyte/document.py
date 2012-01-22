@@ -80,6 +80,11 @@ class Document(object):
     def render(self, filename):
         self.converged = True
         self.render_loop()
+        while not self.converged:
+            print('Not yet converged, rendering again...')
+            del self.backend_document
+            self.backend_document = self.backend.Document(self, self.title)
+            self.render_loop()
         self.backend_document.write(filename)
 
     def render_loop(self):
@@ -91,12 +96,6 @@ class Document(object):
                 page.render()
             except EndOfPage as e:
                 self.add_to_chain(e.args[0])
-
-        if not self.converged:
-            print('Not yet converged, rendering again...')
-            del self.backend_document
-            self.backend_document = self.backend.Document(self, self.title)
-            self.render_loop()
 
     def setup(self):
         raise NotImplementedError
