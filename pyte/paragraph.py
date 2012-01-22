@@ -317,18 +317,23 @@ class Paragraph(MixedStyledText, Flowable):
         #self.char_spacing = 0.0
 
         self._words = []
-        self.wordpointer = 0
+        self._init_state()
+
+    def _init_state(self):
+        self.word_pointer = 0
+        self.field_pointer = None
         self.first_line = True
 
-    def _split_words(self):
+    def _split_words(self, characters):
         def group_function(item):
             return type(item) == Space or isinstance(item, Field)
-        for is_special, item in itertools.groupby(self.characters(),
-                                                group_function):
+        words = []
+        for is_special, item in itertools.groupby(characters, group_function):
             if is_special:
-                self._words += item
+                words += item
             else:
-                self._words.append(Word(item, self.kerning, self.ligatures))
+                words.append(Word(item, self.kerning, self.ligatures))
+        return words
 
     def render(self, canvas, offset=0):
         try:
@@ -340,7 +345,7 @@ class Paragraph(MixedStyledText, Flowable):
     # based on the typeset functions of psg.box.textbox
     def typeset(self, canvas, offset=0):
         if not self._words:
-            self._split_words()
+            self._words = self._split_words(self.characters())
 
         indent_left = float(self.get_style('indentLeft'))
         indent_right = float(self.get_style('indentRight'))
@@ -357,39 +362,36 @@ class Paragraph(MixedStyledText, Flowable):
             width -= indent_first
         line = Line(self, width, indent)
 
-        for i in range(self.wordpointer, len(self._words)):
-            word = self._words[i]
+        while self.word_pointer < len(self._words):
+            word = self._words[self.word_pointer]
             if isinstance(word, Field):
-                word = Word(word.characters(), self.kerning, self.ligatures)
+                if self.field_pointer is None:
+                    self._field_words = self._split_words(word.characters())
+                    self.field_pointer = 0
+                else:
+                    self.field_pointer += 1
+                word = self._field_words[self.field_pointer]
+                if self.field_pointer == len(self._field_words) - 1:
+                    self.field_pointer = None
+                    self.word_pointer += 1
+            else:
+                self.word_pointer += 1
             try:
                 line.append(word)
             except EndOfLine as eol:
-                try:
-                    self.typeset_line(canvas, line)
-                    wordcount = 0
-                except EndOfContainer:
-                    self.wordpointer = i - wordcount
-                    raise
-
+                self.typeset_line(canvas, line)
                 self.first_line = False
-
                 line = Line(self, line_width, indent_left)
                 if eol.hyphenation_remainder:
                     line.append(eol.hyphenation_remainder)
                 else:
                     line.append(word)
 
-            wordcount += 1
-
         # the last line
         if len(line) != 0:
-            try:
-                self.typeset_line(canvas, line, True)
-            except EndOfContainer:
-                self.wordpointer = i - wordcount + 1
-                raise
+            self.typeset_line(canvas, line, True)
 
-        self.wordpointer = 0
+        self._init_state()
         return canvas.height - offset - self._line_cursor
 
     def typeset_line(self, canvas, line, last_line=False):
