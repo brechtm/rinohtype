@@ -281,21 +281,25 @@ class Box(Character):
         raise TypeError
 
 
-# TODO: refactor to LineBreak
-class NewLine(Character):
-    def __init__(self, style=ParentStyle):
-        super().__init__('\n', style)
+class ControlCharacter(object):
+    def __init__(self, text):
+        self.text = text
 
-    def kerning(self, next_character):
-        raise TypeError
+    def __repr__(self):
+        return self.__class__.__name__
 
-    def ligature(self, next_character):
-        raise TypeError
+    def characters(self):
+        yield self
 
 
-class Tab(Character):
-    def __init__(self, style=ParentStyle):
-        super().__init__('\t', style)
+class NewLine(ControlCharacter):
+    def __init__(self):
+        super().__init__('\n')
+
+
+class Tab(ControlCharacter):
+    def __init__(self):
+        super().__init__('\t')
 
 
 # predefined styles

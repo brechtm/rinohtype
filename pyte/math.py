@@ -84,8 +84,8 @@ class Equation(MixedStyledText):
         self.__class__.next_number += 1
         math = Math(equation, style=style.math_style)
         math.parent = self # TODO: encapsulate
-        #text = [NewLine(), Math(equation), Tab(), number, NewLine()]
-        text = [math, Tab(), number]
+        #text = [NewLine(), math, Tab(), number, NewLine()]
+        text = [NewLine(), math, ' ', number, NewLine()]
         super().__init__(text, style)
 
     def reference(self):

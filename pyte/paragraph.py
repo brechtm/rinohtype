@@ -182,7 +182,7 @@ class Line(list):
             except AttributeError:
                 pass
             raise EndOfLine
-        else:
+        elif not (isinstance(item, Space) and len(self) == 0):
             self.text_width += width
             super().append(item)
 
@@ -262,8 +262,6 @@ class Line(list):
                     current_style = 'box'
                 x_offset += self.typeset_box(canvas, x + x_offset,
                                              self.paragraph._line_cursor, char)
-            elif isinstance(char, NewLine):
-                pass
             else:
                 char_style = {'typeface': char.get_style('typeface'),
                               'fontWeight': char.get_style('fontWeight'),
@@ -325,8 +323,7 @@ class Paragraph(MixedStyledText, Flowable):
         self.first_line = True
 
     def _split_words(self, characters):
-        def group_function(item):
-            return type(item) == Space or isinstance(item, Field)
+        group_function = lambda item: isinstance(item, (Field, Space, NewLine))
         words = []
         for is_special, item in itertools.groupby(characters, group_function):
             if is_special:
@@ -376,16 +373,22 @@ class Paragraph(MixedStyledText, Flowable):
                     self.word_pointer += 1
             else:
                 self.word_pointer += 1
-            try:
-                line.append(word)
-            except EndOfLine as eol:
-                self.typeset_line(canvas, line)
+            if isinstance(word, NewLine):
+                #import ipdb; ipdb.set_trace()
+                self.typeset_line(canvas, line, True)
                 self.first_line = False
                 line = Line(self, line_width, indent_left)
-                if eol.hyphenation_remainder:
-                    line.append(eol.hyphenation_remainder)
-                else:
+            else:
+                try:
                     line.append(word)
+                except EndOfLine as eol:
+                    self.typeset_line(canvas, line)
+                    self.first_line = False
+                    line = Line(self, line_width, indent_left)
+                    if eol.hyphenation_remainder:
+                        line.append(eol.hyphenation_remainder)
+                    else:
+                        line.append(word)
 
         # the last line
         if len(line) != 0:
