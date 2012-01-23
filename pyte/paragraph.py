@@ -198,10 +198,12 @@ class Line(list):
         for word in self:
             if isinstance(word, Space):
                 if word is not self[-1]:
-                    chars.append(word)
-                    char_widths.append(0.0)
-                    # TODO: handle Spacer
-                    #char_widths.append(word.width)
+                    if word.fixed_width:
+                        chars.append(word)
+                        char_widths.append(word.width)
+                    else:
+                        chars.append(word)
+                        char_widths.append(0.0)
             else:
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
@@ -221,7 +223,7 @@ class Line(list):
             except ZeroDivisionError:
                 space_width = 0.0
             for i, char in enumerate(chars):
-                if isinstance(char, Space):
+                if isinstance(char, Space) and not char.fixed_width:
                     char_widths[i] = space_width
         else:
             for i, char in enumerate(chars):
@@ -374,7 +376,6 @@ class Paragraph(MixedStyledText, Flowable):
             else:
                 self.word_pointer += 1
             if isinstance(word, NewLine):
-                #import ipdb; ipdb.set_trace()
                 self.typeset_line(canvas, line, True)
                 self.first_line = False
                 line = Line(self, line_width, indent_left)

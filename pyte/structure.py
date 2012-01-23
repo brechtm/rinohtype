@@ -5,7 +5,7 @@ from .layout import EndOfContainer
 from .number import format_number
 from .number.style import NUMBER
 from .paragraph import ParagraphStyle, Paragraph, Field
-from .text import StyledText
+from .text import StyledText, FixedWidthSpace
 from .unit import nil
 from .warnings import PyteWarning
 
@@ -50,7 +50,7 @@ class Heading(Paragraph, Referenceable):
         next_number = document.counters.setdefault(self.__class__, {1: 1})
         if style.numberingStyle is not None:
             self.number = format_number(next_number[level], style.numberingStyle)
-            number = self.number + style.numberingSeparator + '&nbsp;'
+            number = self.number + style.numberingSeparator + FixedWidthSpace()
         else:
             self.number = None
             number = ""
@@ -92,11 +92,13 @@ class List(Paragraph):
                                          base=style)
         separator = style.numberingSeparator
         for i, item in enumerate(items[:-1]):
-            item = Paragraph("{}{}&nbsp;".format(i + 1, separator) + item,
+            item = Paragraph("{}{}".format(i + 1, separator) +
+                             FixedWidthSpace() + item,
                              style=item_style)
             self.append(item)
-        self.append(Paragraph("{}{}&nbsp;".format(len(items), separator) +
-                              items[-1], style=last_item_style))
+        self.append(Paragraph("{}{}".format(len(items), separator) +
+                              FixedWidthSpace() + items[-1],
+                              style=last_item_style))
         self.itempointer = 0
 
 ##    def append(self, listItem):

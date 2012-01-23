@@ -55,6 +55,7 @@ class CharacterLike(Styled):
         raise NotImplementedError
 
 
+# TODO: subclass str?
 class StyledText(Styled):
     style_class = TextStyle
 
@@ -85,7 +86,10 @@ class StyledText(Styled):
 
     def characters(self):
         for i, char in enumerate(self.text):
-            character = Character(char, style=ParentStyle, new_span=(i==0))
+            try:
+                character = special_chars[char]()
+            except KeyError:
+                character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
             if self.get_style('smallCaps'):
                 yield character.small_capital()
@@ -136,12 +140,6 @@ class MixedStyledText(list, Styled):
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
     def __init__(self, text, style=ParentStyle, new_span=False):
-        #assert len(text) == 1
-        if text == ' ':
-            self.__class__= Space
-        elif text == chr(0xa0):
-            self.__class__= NoBreakSpace
-            text = ' '
         super().__init__(text, style)
         self.new_span = new_span
 
@@ -240,21 +238,36 @@ class Glyph(Character):
 
 
 class Space(Character):
+    def __init__(self, fixed_width=False, style=ParentStyle):
+        super().__init__(' ', style)
+        self.fixed_width = fixed_width
+
+    def characters(self):
+        yield self
+
+
+class FixedWidthSpace(Space):
+    def __init__(self, style=ParentStyle):
+        super().__init__(True, style)
+
+
+class NoBreakSpace(Character):
     def __init__(self, style=ParentStyle):
         super().__init__(' ', style)
 
 
-class Spacer(Space):
+class Spacer(FixedWidthSpace):
     def __init__(self, dimension):
         super().__init__(style=None)
         self.dimension = dimension
 
+    @property
     def width(self):
-        return float(dimension)
+        return float(self.dimension)
 
 
-class NoBreakSpace(Space):
-    pass
+special_chars = {' ': Space,
+                 chr(0xa0): NoBreakSpace}
 
 
 # TODO: shared superclass SpecialChar (or ControlChar) for Newline, Box, Tab
