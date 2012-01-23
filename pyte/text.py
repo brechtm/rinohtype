@@ -84,9 +84,6 @@ class StyledText(Styled):
         return typeface.get(weight=weight, slant=slant, width=width)
 
     def characters(self):
-        raise NotImplementedError
-
-    def characters(self):
         for i, char in enumerate(self.text):
             character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
@@ -140,12 +137,12 @@ class MixedStyledText(list, Styled):
 class Character(StyledText):
     def __init__(self, text, style=ParentStyle, new_span=False):
         #assert len(text) == 1
-        super().__init__(text, style)
-        if text in (' ', '\t'):
+        if text == ' ':
             self.__class__= Space
-        elif text == chr(0x00a0): # no-break space
+        elif text == chr(0xa0):
             self.__class__= NoBreakSpace
-            self.text = ' '
+            text = ' '
+        super().__init__(text, style)
         self.new_span = new_span
 
     def __repr__(self):
@@ -245,7 +242,6 @@ class Glyph(Character):
 class Space(Character):
     def __init__(self, style=ParentStyle):
         super().__init__(' ', style)
-        self.text = ' '
 
 
 class Spacer(Space):
