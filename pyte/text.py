@@ -41,8 +41,8 @@ class CharacterLike(Styled):
         super().__init__(style)
 
     def __repr__(self):
-        return "{0}('{1}', style={2})".format(self.__class__.__name__,
-                                              self.style)
+        return "{0}(style={1})".format(self.__class__.__name__, self.style)
+
     @property
     def width(self):
         raise NotImplementedError
