@@ -2,6 +2,8 @@
 import itertools
 import os
 
+from warnings import warn
+
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
@@ -170,21 +172,26 @@ class Line(list):
             pass
         width = item.width
 
-        if (not isinstance(item, Space) and len(self) > 0 and
-            self.text_width + width > self.width):
-            try:
-                for first, second in item.hyphenate():
-                    first_width = first.width
-                    if self.text_width + first_width < self.width:
-                        self.text_width += first_width
-                        super().append(first)
-                        raise EndOfLine(second)
-            except AttributeError:
-                pass
-            raise EndOfLine
-        elif not (isinstance(item, Space) and len(self) == 0):
-            self.text_width += width
-            super().append(item)
+        if isinstance(item, Space):
+            if len(self) == 0:
+                return
+        elif self.text_width + width > self.width:
+            if len(self) == 0:
+                warn('item too long to fit on line')
+            else:
+                try:
+                    for first, second in item.hyphenate():
+                        first_width = first.width
+                        if self.text_width + first_width < self.width:
+                            self.text_width += first_width
+                            super().append(first)
+                            raise EndOfLine(second)
+                except AttributeError:
+                    pass
+                raise EndOfLine
+
+        self.text_width += width
+        super().append(item)
 
     def typeset(self, canvas, last_line=False):
         """Typeset words on the current coordinates"""
