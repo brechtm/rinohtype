@@ -200,17 +200,18 @@ class Line(list):
         x_offset = 0
         max_font_size = 0
         justification = self.paragraph.get_style('justify')
+        while isinstance(self[-1], Space):
+            self.pop()
 
         # calculate total width of all characters (excluding spaces)
         for word in self:
             if isinstance(word, Space):
-                if word is not self[-1]:
-                    if word.fixed_width:
-                        chars.append(word)
-                        char_widths.append(word.width)
-                    else:
-                        chars.append(word)
-                        char_widths.append(0.0)
+                if word.fixed_width:
+                    chars.append(word)
+                    char_widths.append(word.width)
+                else:
+                    chars.append(word)
+                    char_widths.append(0.0)
             else:
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
@@ -225,8 +226,10 @@ class Line(list):
         # calculate space width
         if justification == "justify" and not last_line:
             try:
-                number_of_words = list(map(type, self)).count(Word)
-                space_width = (self.width - line_width) / (number_of_words - 1)
+                def is_scalable_space(item):
+                    return isinstance(item, Space) and not item.fixed_width
+                number_of_spaces = list(map(is_scalable_space, self)).count(True)
+                space_width = (self.width - line_width) / (number_of_spaces)
             except ZeroDivisionError:
                 space_width = 0.0
             for i, char in enumerate(chars):
