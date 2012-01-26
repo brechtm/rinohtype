@@ -371,6 +371,9 @@ class Paragraph(MixedStyledText, Flowable):
             width -= indent_first
         line = Line(self, width, indent)
 
+        line_word_pointer = self.word_pointer
+        line_field_pointer = self.field_pointer
+
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
             if isinstance(word, Field):
@@ -393,7 +396,17 @@ class Paragraph(MixedStyledText, Flowable):
                 try:
                     line.append(word)
                 except EndOfLine as eol:
-                    self.typeset_line(canvas, line)
+                    try:
+                        self.typeset_line(canvas, line)
+                        line_word_pointer = self.word_pointer - 1
+                        try:
+                            line_field_pointer = self.field_pointer - 1
+                        except TypeError:
+                            line_field_pointer = self.field_pointer
+                    except EndOfContainer:
+                        self.word_pointer = line_word_pointer
+                        self.field_pointer = line_field_pointer
+                        raise
                     self.first_line = False
                     line = Line(self, line_width, indent_left)
                     if eol.hyphenation_remainder:
