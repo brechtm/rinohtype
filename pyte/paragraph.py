@@ -160,9 +160,9 @@ class Line(list):
     def __init__(self, paragraph, width, indent=0.0):
         super().__init__()
         self.paragraph = paragraph
-        self.width = width
+        self.width = width - indent
         self.indent = indent
-        self.text_width = indent
+        self.text_width = 0
 
     def append(self, item):
         try:
@@ -368,7 +368,6 @@ class Paragraph(MixedStyledText, Flowable):
         width = line_width
         if self.first_line:
             indent += indent_first
-            width -= indent_first
         line = Line(self, width, indent)
 
         line_word_pointer = self.word_pointer
