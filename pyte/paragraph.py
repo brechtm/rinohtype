@@ -359,7 +359,7 @@ class Paragraph(MixedStyledText, Flowable):
         indent_left = float(self.get_style('indentLeft'))
         indent_right = float(self.get_style('indentRight'))
         indent_first = float(self.get_style('indentFirst'))
-        line_width = canvas.width - indent_left - indent_right
+        line_width = canvas.width - indent_right
 
         self._line_cursor = canvas.height - offset
 
