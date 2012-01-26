@@ -351,7 +351,6 @@ class Paragraph(MixedStyledText, Flowable):
             self._page = canvas.page.number
         return self.typeset(canvas, offset)
 
-    # based on the typeset functions of psg.box.textbox
     def typeset(self, canvas, offset=0):
         if not self._words:
             self._words = self._split_words(self.characters())
@@ -362,16 +361,11 @@ class Paragraph(MixedStyledText, Flowable):
         line_width = canvas.width - indent_right
 
         self._line_cursor = canvas.height - offset
-
-        wordcount = 0
-        indent = indent_left
-        width = line_width
+        line_pointers = self.word_pointer, self.field_pointer
         if self.first_line:
-            indent += indent_first
-        line = Line(self, width, indent)
-
-        line_word_pointer = self.word_pointer
-        line_field_pointer = self.field_pointer
+            line = Line(self, line_width, indent_left + indent_first)
+        else:
+            line = Line(self, line_width, indent_left)
 
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
@@ -387,26 +381,16 @@ class Paragraph(MixedStyledText, Flowable):
                     self.word_pointer += 1
             else:
                 self.word_pointer += 1
+
             if isinstance(word, NewLine):
-                self.typeset_line(canvas, line, True)
-                self.first_line = False
+                line_pointers = self.typeset_line(canvas, line, line_pointers)
                 line = Line(self, line_width, indent_left)
             else:
                 try:
                     line.append(word)
                 except EndOfLine as eol:
-                    try:
-                        self.typeset_line(canvas, line)
-                        line_word_pointer = self.word_pointer - 1
-                        try:
-                            line_field_pointer = self.field_pointer - 1
-                        except TypeError:
-                            line_field_pointer = self.field_pointer
-                    except EndOfContainer:
-                        self.word_pointer = line_word_pointer
-                        self.field_pointer = line_field_pointer
-                        raise
-                    self.first_line = False
+                    line_pointers = self.typeset_line(canvas, line,
+                                                      line_pointers)
                     line = Line(self, line_width, indent_left)
                     if eol.hyphenation_remainder:
                         line.append(eol.hyphenation_remainder)
@@ -415,19 +399,28 @@ class Paragraph(MixedStyledText, Flowable):
 
         # the last line
         if len(line) != 0:
-            self.typeset_line(canvas, line, True)
+            self.typeset_line(canvas, line, line_pointers, last_line=True)
 
         self._init_state()
         return canvas.height - offset - self._line_cursor
 
-    def typeset_line(self, canvas, line, last_line=False):
+    def typeset_line(self, canvas, line, line_pointers, last_line=False):
         buffer = canvas.new(0, 0, canvas.width, canvas.height)
         line_height = line.typeset(buffer, last_line)
         try:
             self.newline(float(self.get_style('lineSpacing')) - line_height)
             canvas.append(buffer)
+            try:
+                line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
+            except TypeError:
+                line_pointers = (self.word_pointer - 1, self.field_pointer)
+        except EndOfContainer:
+            self.word_pointer, self.field_pointer = line_pointers
+            raise
         finally:
             del buffer
+        self.first_line = False
+        return line_pointers
 
     def newline(self, line_height):
         """Move the cursor downwards by `line_height`"""
