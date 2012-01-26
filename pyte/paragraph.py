@@ -383,7 +383,8 @@ class Paragraph(MixedStyledText, Flowable):
                 self.word_pointer += 1
 
             if isinstance(word, NewLine):
-                line_pointers = self.typeset_line(canvas, line, line_pointers)
+                line_pointers = self.typeset_line(canvas, line, line_pointers,
+                                                  last_line=True)
                 line = Line(self, line_width, indent_left)
             else:
                 try:
