@@ -33,7 +33,7 @@ grammar {
        }
      | element ref {
          attribute id { text },
-         attribute type { "reference"|"page"|"chapter"|"section"|"position" }?
+         attribute type { "reference"|"page"|"title"|"position" }?
        }
     )*
   Section =

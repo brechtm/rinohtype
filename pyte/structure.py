@@ -32,6 +32,9 @@ class Referenceable(object):
     def reference(self):
         raise NotImplementedError
 
+    def title(self):
+        raise NotImplementedError
+
     def page(self):
         try:
             page = self._page
@@ -47,6 +50,7 @@ class Heading(Paragraph, Referenceable):
     style_class = HeadingStyle
 
     def __init__(self, document, title, style=None, level=1, id=None):
+        self._title = title
         next_number = document.counters.setdefault(self.__class__, {1: 1})
         if style.numberingStyle is not None:
             self.number = format_number(next_number[level], style.numberingStyle)
@@ -65,6 +69,9 @@ class Heading(Paragraph, Referenceable):
 
     def reference(self):
         return self.number
+
+    def title(self):
+        return self._title
 
 
 class ListStyle(ParagraphStyle):
@@ -174,8 +181,7 @@ class Footer(Paragraph):
 
 REFERENCE = 'reference'
 PAGE = 'page'
-CHAPTER = 'chapter'
-SECTION = 'section'
+TITLE = 'title'
 POSITION = 'position'
 
 
@@ -199,7 +205,9 @@ class Reference(StyledText):
                     self.text = referenced_item.page()
                 except ReferenceNotConverged:
                     self.document.converged = False
-                    self.text = '[not converged]'
+                    self.text = '??'
+            elif self.type == TITLE:
+                self.text = referenced_item.title()
             else:
                 raise NotImplementedError
         except KeyError:
