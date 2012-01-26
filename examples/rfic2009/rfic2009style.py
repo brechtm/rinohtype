@@ -9,7 +9,7 @@ from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
-from pyte.paragraph import ParagraphStyle, Paragraph, Justify
+from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, CENTER, BOTH
 from pyte.number import CHARACTER_UC, ROMAN_UC
 from pyte.text import StyledText
 from pyte.text import Bold, Emphasized, SmallCaps
@@ -76,7 +76,7 @@ bodyStyle = ParagraphStyle('body',
                            indentFirst=0.125*inch,
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
-                           justify=Justify.Both)
+                           justify=BOTH)
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
@@ -89,7 +89,7 @@ equationstyle = EquationStyle('equation', base=bodyStyle,
                               indentFirst=0*pt,
                               spaceAbove=6*pt,
                               spaceBelow=6*pt,
-                              justify=Justify.Center)
+                              justify=CENTER)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
                                    fontSize=9*pt)
@@ -101,7 +101,7 @@ titleStyle = ParagraphStyle("title",
                             lineSpacing=1.2*18*pt,
                             spaceAbove=6*pt,
                             spaceBelow=6*pt,
-                            justify=Justify.Center)
+                            justify=CENTER)
 
 authorStyle = ParagraphStyle("author",
                              base=titleStyle,
@@ -120,7 +120,7 @@ abstractStyle = ParagraphStyle("abstract",
                                indentFirst=0.125*inch,
                                spaceAbove=0*pt,
                                spaceBelow=0*pt,
-                               justify=Justify.Both)
+                               justify=BOTH)
 
 listStyle = ListStyle("list", base=bodyStyle,
                       spaceAbove=5*pt,
@@ -137,7 +137,7 @@ hd1Style = HeadingStyle("heading",
                         fontWeight=REGULAR,
                         fontSize=10*pt,
                         smallCaps=True,
-                        justify=Justify.Center,
+                        justify=CENTER,
                         lineSpacing=12*pt,
                         spaceAbove=18*pt,
                         spaceBelow=6*pt,
@@ -150,7 +150,7 @@ hd2Style = HeadingStyle("subheading", base=hd1Style,
                         fontSlant=ITALIC,
                         fontSize=10*pt,
                         smallCaps=False,
-                        justify=Justify.Left,
+                        justify=LEFT,
                         lineSpacing=12*pt,
                         spaceAbove=6*pt,
                         spaceBelow=6*pt,
@@ -163,7 +163,7 @@ header_style = HeaderStyle('header', base=bodyStyle,
                            fontSize=9 * pt)
 
 footer_style = FooterStyle('footer', base=header_style,
-                           justify=Justify.Center)
+                           justify=CENTER)
 
 figure_style = FlowableStyle('figure',
                              spaceAbove=10 * pt,
@@ -177,7 +177,7 @@ fig_caption_style = CaptionStyle('figure caption',
                                  indentFirst=0*pt,
                                  spaceAbove=20*pt,
                                  spaceBelow=0*pt,
-                                 justify=Justify.Both)
+                                 justify=BOTH)
 
 red_line_style = LineStyle('tabular line', width=0.2*pt, color=RED)
 thick_line_style = LineStyle('tabular line')
@@ -189,7 +189,7 @@ tabular_style = TabularStyle('tabular',
                              indentFirst=0*pt,
                              spaceAbove=0*pt,
                              spaceBelow=0*pt,
-                             justify=Justify.Center,
+                             justify=CENTER,
                              vertical_align=MIDDLE,
                              left_border=red_line_style,
                              right_border=red_line_style,

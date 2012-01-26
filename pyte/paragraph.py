@@ -12,11 +12,11 @@ from .text import TextStyle, MixedStyledText
 from .unit import pt
 
 
-class Justify:
-    Left = "left"
-    Right = "right"
-    Center = "center"
-    Both = "justify"
+# Text justification
+LEFT = 'left'
+RIGHT = 'right'
+CENTER = 'center'
+BOTH = 'justify'
 
 
 # TODO: look at Word/OpenOffice for more options
@@ -25,7 +25,7 @@ class ParagraphStyle(TextStyle, FlowableStyle):
                   'indentRight': 0*pt,
                   'indentFirst': 0*pt,
                   'lineSpacing': 10*pt, # TODO: change default
-                  'justify': Justify.Both}
+                  'justify': BOTH}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
