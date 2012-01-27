@@ -43,14 +43,15 @@ if use_gyre:
 
     termes = TypeFace("TeXGyreTermes", termes_roman, termes_bold,
                       termes_italic, termes_bold_italic)
+    cursor_regular = Font("fonts/qcrr", weight=REGULAR)
+    cursor = TypeFace("TeXGyreCursor", cursor_regular)
 
-    ieeeFamily = TypeFamily(serif=termes)
+    ieeeFamily = TypeFamily(serif=termes, mono=cursor)
 
     schola_roman = Font("fonts/qcsr", weight=REGULAR)
     schola_italic = Font("fonts/qcsri", weight=REGULAR, slant=ITALIC)
     schola_bold = Font("fonts/qcsb", weight=BOLD)
     heros_roman = Font("fonts/qhvr", weight=REGULAR)
-    cursor_regular = Font("fonts/qcrr", weight=REGULAR)
     chorus = Font("fonts/qzcmi", weight=MEDIUM)
     standard_symbols = Font("fonts/usyr", weight=REGULAR)
     cmex9 = Font("fonts/cmex9", weight=REGULAR)
