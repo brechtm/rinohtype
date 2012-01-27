@@ -98,7 +98,7 @@ titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
                             fontWeight=REGULAR,
                             fontSize=18*pt,
-                            lineSpacing=1.2*18*pt,
+                            lineSpacing=1.2,
                             spaceAbove=6*pt,
                             spaceBelow=6*pt,
                             justify=CENTER)
@@ -106,7 +106,7 @@ titleStyle = ParagraphStyle("title",
 authorStyle = ParagraphStyle("author",
                              base=titleStyle,
                              fontSize=12*pt,
-                             lineSpacing=1.2*12*pt)
+                             lineSpacing=1.2)
 
 affiliationStyle = ParagraphStyle("affiliation",
                                   base=authorStyle,

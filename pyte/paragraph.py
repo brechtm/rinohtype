@@ -4,6 +4,7 @@ import os
 
 from warnings import warn
 
+from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
@@ -19,12 +20,23 @@ CENTER = 'center'
 BOTH = 'justify'
 
 
+# Line spacing
+STANDARD = 1.2
+SINGLE = 1.0
+DOUBLE = 2.0
+
+# TODO: LineSpacing class (leading, proportional, exact, at-least, ...)?
+##class LineSpacing(object):
+##    def __self__(self, leading, proportional, ...):
+
+
+
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(TextStyle, FlowableStyle):
     attributes = {'indentLeft': 0*pt,
                   'indentRight': 0*pt,
                   'indentFirst': 0*pt,
-                  'lineSpacing': 10*pt, # TODO: change default
+                  'lineSpacing': STANDARD,
                   'justify': BOTH}
 
     def __init__(self, name, base=None, **attributes):
@@ -405,11 +417,18 @@ class Paragraph(MixedStyledText, Flowable):
         self._init_state()
         return canvas.height - offset - self._line_cursor
 
+    def _line_spacing(self, line_height):
+        line_spacing = self.get_style('lineSpacing')
+        if isinstance(line_spacing, Dimension):
+            return float(line_spacing)
+        else:
+            return line_spacing * line_height
+
     def typeset_line(self, canvas, line, line_pointers, last_line=False):
         buffer = canvas.new(0, 0, canvas.width, canvas.height)
         line_height = line.typeset(buffer, last_line)
         try:
-            self.newline(float(self.get_style('lineSpacing')) - line_height)
+            self.newline(self._line_spacing(line_height) - line_height)
             canvas.append(buffer)
             try:
                 line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
