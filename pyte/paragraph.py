@@ -46,9 +46,15 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 class TabStop(object):
     def __init__(self, position, align=LEFT, fill=None):
-        self.position = position
+        self._position = position
         self.align = align
         self.fill = fill
+
+    def get_position(self, width):
+        if isinstance(self._position, Dimension):
+            return float(self._position)
+        else:
+            return width * self._position
 
 
 class Word(list):
@@ -187,8 +193,11 @@ class Line(list):
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
-            if cursor < tab_stop.position:
-                return tab_stop
+            tab_position = tab_stop.get_position(self.indent + self.width)
+            if cursor < tab_position:
+                return tab_stop, tab_position
+        else:
+            return None, None
 
     def append(self, item):
         try:
@@ -198,23 +207,29 @@ class Line(list):
             pass
         width = item.width
 
-        if isinstance(item, Space) and len(self) == 0:
+        if len(self) == 0 and isinstance(item, Space):
             return
         elif isinstance(item, Tab):
             cursor = self.indent + self.text_width
-            tab_stop = self._find_tab_stop(cursor)
+            tab_stop, tab_position = self._find_tab_stop(cursor)
             if tab_stop:
-                item.tab_width = float(tab_stop.position) - cursor
-                self.text_width = float(tab_stop.position) - self.indent
+                width = item.tab_width = tab_position - cursor
                 if tab_stop.align == RIGHT:
                     self._in_tab = item
                 else:
                     self._in_tab = None
         elif self._in_tab:
-            if self._in_tab.tab_width < width:
-                self._in_tab.tab_width = 0
-                self.text_width -= self._in_tab.tab_width - width
-                self._in_tab = None
+            if self._in_tab.tab_width <= width:
+                try:
+                    for first, second in item.hyphenate():
+                        first_width = first.width
+                        if self._in_tab.tab_width >= first_width:
+                            self._in_tab.tab_width -= first_width
+                            super().append(first)
+                            raise EndOfLine(second)
+                except AttributeError:
+                    pass
+                raise EndOfLine
             else:
                 self._in_tab.tab_width -= width
                 self.text_width -= width
@@ -224,9 +239,7 @@ class Line(list):
             else:
                 try:
                     for first, second in item.hyphenate():
-                        first_width = first.width
-                        if self.text_width + first_width < self.width:
-                            self.text_width += first_width
+                        if self.text_width + first.width < self.width:
                             super().append(first)
                             raise EndOfLine(second)
                 except AttributeError:
