@@ -5,7 +5,7 @@ from .layout import EndOfContainer
 from .number import format_number
 from .number.style import NUMBER
 from .paragraph import ParagraphStyle, Paragraph, Field
-from .text import StyledText, FixedWidthSpace
+from .text import StyledText, FixedWidthSpace, Tab
 from .unit import nil
 from .warnings import PyteWarning
 
@@ -64,6 +64,9 @@ class Heading(Paragraph, Referenceable):
         else:
             next_number[level] = 2
         self.level = level
+        if id is None:
+            # an ID is necessary for building the TOC
+            id = __builtins__['id'](self)
         Paragraph.__init__(self, number + title, style)
         Referenceable.__init__(self, document, id)
 
@@ -177,6 +180,48 @@ class Footer(Paragraph):
         text.parent = self
         self.append(text)
         return super().typeset(pscanvas, offset)
+
+
+class TableOfContentsStyle(ParagraphStyle):
+    attributes = {'depth': 3}
+
+    def __init__(self, name, base=None, **attributes):
+        super().__init__(name, base=base, **attributes)
+
+
+class TableOfContents(Paragraph):
+    style_class = TableOfContentsStyle
+
+    def __init__(self, style=None, styles=[]):
+        super().__init__([], style)
+        self.styles = styles
+        self.item_pointer = 0
+
+    def register(self, document, flowable):
+        if (isinstance(flowable, Heading) and
+            flowable.level <= self.get_style('depth')):
+            text = [Reference(document, flowable.id, type=REFERENCE), Tab(),
+                    Reference(document, flowable.id, type=TITLE), Tab(),
+                    Reference(document, flowable.id, type=PAGE)]
+            try:
+                style_index = flowable.level - 1
+                flowable = Paragraph(text, style=self.styles[style_index])
+            except AttributeError:
+                flowable = Paragraph(text, style=self.styles[-1])
+            self.append(flowable)
+
+    def typeset(self, canvas, offset=0):
+        offset_begin = offset
+        while self.item_pointer < len(self):
+            self.item_pointer += 1
+            try:
+                item = self[self.item_pointer - 1]
+                offset += item.typeset(canvas, offset)
+            except EndOfContainer:
+                raise
+
+        self.item_pointer = 0
+        return offset - offset_begin
 
 
 REFERENCE = 'reference'

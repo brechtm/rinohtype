@@ -21,6 +21,7 @@ from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference, REFERENCE
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
+from pyte.structure import TableOfContents, TableOfContentsStyle
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
@@ -94,6 +95,17 @@ equationstyle = EquationStyle('equation', base=bodyStyle,
                               spaceAbove=6*pt,
                               spaceBelow=6*pt,
                               justify=CENTER)
+
+toc_base_style = ParagraphStyle('toc level 1', base=bodyStyle,
+                                tab_stops=[TabStop(0.6*cm),
+                                           TabStop(1.0, RIGHT, '.')])
+toc_levels = [ParagraphStyle('toc level 1', fontWeight=BOLD,
+                             base=toc_base_style),
+              ParagraphStyle('toc level 2', indentLeft=0.5*cm,
+                             base=toc_base_style),
+              ParagraphStyle('toc level 3', indentLeft=1.0*cm,
+                             base=toc_base_style)]
+toc_style = TableOfContentsStyle('toc')#, base=bodyStyle)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
                                    fontSize=9*pt)
@@ -511,6 +523,8 @@ class RFIC2009Paper(Document):
         abstract = Abstract(self.root.head.abstract.text)
         index_terms = IndexTerms(self.keywords)
 
+        toc = TableOfContents(style=toc_style, styles=toc_levels)
+
         page.title_box.add_flowable(title)
         page.title_box.add_flowable(author)
         page.title_box.add_flowable(affiliation)
@@ -518,7 +532,10 @@ class RFIC2009Paper(Document):
         page.content.add_flowable(abstract)
         page.content.add_flowable(index_terms)
 
+        page.content.add_flowable(toc)
+
         for flowable in self.content_flowables:
+            toc.register(self, flowable)
             self.content.add_flowable(flowable)
 
         #self.bibliography.bibliography(self.content)
