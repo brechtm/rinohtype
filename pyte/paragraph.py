@@ -193,7 +193,7 @@ class Line(list):
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
-            tab_position = tab_stop.get_position(self.indent + self.width)
+            tab_position = tab_stop.get_position(self.width)
             if cursor < tab_position:
                 return tab_stop, tab_position
         else:
@@ -210,7 +210,7 @@ class Line(list):
         if len(self) == 0 and isinstance(item, Space):
             return
         elif isinstance(item, Tab):
-            cursor = self.indent + self.text_width
+            cursor = self.text_width
             tab_stop, tab_position = self._find_tab_stop(cursor)
             if tab_stop:
                 item.tab_stop = tab_stop
