@@ -80,7 +80,7 @@ bodyStyle = ParagraphStyle('body',
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
                            justify=BOTH,
-                           tab_stops=[TabStop(2*cm), TabStop(1.0, RIGHT)])
+                           tab_stops=[TabStop(2*cm), TabStop(1.0, RIGHT, '.')])
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'

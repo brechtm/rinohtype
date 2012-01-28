@@ -213,6 +213,7 @@ class Line(list):
             cursor = self.indent + self.text_width
             tab_stop, tab_position = self._find_tab_stop(cursor)
             if tab_stop:
+                item.tab_stop = tab_stop
                 width = item.tab_width = tab_position - cursor
                 if tab_stop.align == RIGHT:
                     self._in_tab = item
@@ -273,8 +274,18 @@ class Line(list):
                     chars.append(word)
                     char_widths.append(0.0)
             elif isinstance(word, Tab):
-                chars.append(word)
-                char_widths.append(word.tab_width)
+                try:
+                    fill_char = Character(word.tab_stop.fill)
+                    fill_char.parent = word.parent
+                    number, rest = divmod(word.tab_width, fill_char.width)
+                    chars.append(word)
+                    char_widths.append(rest)
+                    for i in range(int(number)):
+                        chars.append(fill_char)
+                        char_widths.append(fill_char.width)
+                except (AttributeError, TypeError):
+                    chars.append(word)
+                    char_widths.append(word.tab_width)
             else:
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
