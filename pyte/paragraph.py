@@ -183,6 +183,7 @@ class Line(list):
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
+        self._in_tab = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -197,15 +198,26 @@ class Line(list):
             pass
         width = item.width
 
-        if isinstance(item, Space):
-            if len(self) == 0:
-                return
+        if isinstance(item, Space) and len(self) == 0:
+            return
         elif isinstance(item, Tab):
             cursor = self.indent + self.text_width
             tab_stop = self._find_tab_stop(cursor)
             if tab_stop:
                 item.tab_width = float(tab_stop.position) - cursor
                 self.text_width = float(tab_stop.position) - self.indent
+                if tab_stop.align == RIGHT:
+                    self._in_tab = item
+                else:
+                    self._in_tab = None
+        elif self._in_tab:
+            if self._in_tab.tab_width < width:
+                self._in_tab.tab_width = 0
+                self.text_width -= self._in_tab.tab_width - width
+                self._in_tab = None
+            else:
+                self._in_tab.tab_width -= width
+                self.text_width -= width
         elif self.text_width + width > self.width:
             if len(self) == 0:
                 warn('item too long to fit on line')

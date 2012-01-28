@@ -9,7 +9,7 @@ from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
-from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, CENTER, BOTH
+from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC
 from pyte.text import StyledText, MixedStyledText
@@ -80,7 +80,7 @@ bodyStyle = ParagraphStyle('body',
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
                            justify=BOTH,
-                           tab_stops=[TabStop(2*cm), TabStop(6*cm)])
+                           tab_stops=[TabStop(2*cm), TabStop(6*cm, RIGHT)])
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
