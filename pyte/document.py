@@ -85,6 +85,7 @@ class Document(object):
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
             self.render_loop()
+        print('Writing output: {}'.format(filename))
         self.backend_document.write(filename)
 
     def render_loop(self):
