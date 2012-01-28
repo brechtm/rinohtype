@@ -8,7 +8,7 @@ from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
-from .text import Character, Space, Box, NewLine
+from .text import Character, Space, Box, ControlCharacter, NewLine, Tab
 from .text import TextStyle, MixedStyledText
 from .unit import pt
 
@@ -37,10 +37,18 @@ class ParagraphStyle(TextStyle, FlowableStyle):
                   'indentRight': 0*pt,
                   'indentFirst': 0*pt,
                   'lineSpacing': STANDARD,
-                  'justify': BOTH}
+                  'justify': BOTH,
+                  'tab_stops': []}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
+
+
+class TabStop(object):
+    def __init__(self, position, align=LEFT, fill=None):
+        self.position = position
+        self.align = align
+        self.fill = fill
 
 
 class Word(list):
@@ -176,6 +184,11 @@ class Line(list):
         self.indent = indent
         self.text_width = 0
 
+    def _find_tab_stop(self, cursor):
+        for tab_stop in self.paragraph.get_style('tab_stops'):
+            if cursor < tab_stop.position:
+                return tab_stop
+
     def append(self, item):
         try:
             # TODO: keep non-ligatured version in case word doesn't fit on line
@@ -187,6 +200,12 @@ class Line(list):
         if isinstance(item, Space):
             if len(self) == 0:
                 return
+        elif isinstance(item, Tab):
+            cursor = self.indent + self.text_width
+            tab_stop = self._find_tab_stop(cursor)
+            if tab_stop:
+                item.tab_width = float(tab_stop.position) - cursor
+                self.text_width = float(tab_stop.position) - self.indent
         elif self.text_width + width > self.width:
             if len(self) == 0:
                 warn('item too long to fit on line')
@@ -211,32 +230,38 @@ class Line(list):
         char_widths = []
         x_offset = 0
         max_font_size = 0
-        justification = self.paragraph.get_style('justify')
+        justify = self.paragraph.get_style('justify')
+        if Tab in map(type, self) or justify == BOTH and last_line:
+            justification = LEFT
+        else:
+            justification = justify
         while isinstance(self[-1], Space):
             self.pop()
 
         # calculate total width of all characters (excluding spaces)
         for word in self:
             if isinstance(word, Space):
-                if word.fixed_width:
+                if justification != BOTH or word.fixed_width:
                     chars.append(word)
                     char_widths.append(word.width)
                 else:
                     chars.append(word)
                     char_widths.append(0.0)
+            elif isinstance(word, Tab):
+                chars.append(word)
+                char_widths.append(word.tab_width)
             else:
                 for j, character in enumerate(word):
                     current_font_size = float(character.height)
                     max_font_size = max(current_font_size, max_font_size)
                     kerning = word.kern(j)
-
                     chars.append(character)
                     char_widths.append(character.width + kerning) #+ spacing
 
         line_width = sum(char_widths)
 
         # calculate space width
-        if justification == "justify" and not last_line:
+        if justification == BOTH:
             try:
                 def is_scalable_space(item):
                     return isinstance(item, Space) and not item.fixed_width
@@ -248,17 +273,13 @@ class Line(list):
                 if isinstance(char, Space) and not char.fixed_width:
                     char_widths[i] = space_width
         else:
-            for i, char in enumerate(chars):
-                if isinstance(char, Space):
-                    char_widths[i] = char.width
-                    line_width += char_widths[i]
             extra_space = self.width - line_width
 
         # horizontal displacement
         x = self.indent
-        if justification == "center":
+        if justification == CENTER:
             x += extra_space / 2.0
-        elif justification == "right":
+        elif justification == RIGHT:
             x += extra_space
 
         # position cursor
@@ -347,7 +368,8 @@ class Paragraph(MixedStyledText, Flowable):
         self.first_line = True
 
     def _split_words(self, characters):
-        group_function = lambda item: isinstance(item, (Field, Space, NewLine))
+        group_function = lambda item: isinstance(item, (Space, Field,
+                                                        ControlCharacter))
         words = []
         for is_special, item in itertools.groupby(characters, group_function):
             if is_special:

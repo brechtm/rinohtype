@@ -3,17 +3,19 @@ from copy import copy
 
 from lxml import etree, objectify
 
-from pyte.unit import inch, pt
+from pyte.unit import inch, pt, cm
 from pyte.font import Font, TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, CENTER, BOTH
+from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC
-from pyte.text import StyledText
+from pyte.text import StyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps
 from pyte.text import boldItalicStyle
+from pyte.text import Tab as PyteTab
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List, Reference, REFERENCE
@@ -77,7 +79,8 @@ bodyStyle = ParagraphStyle('body',
                            indentFirst=0.125*inch,
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
-                           justify=BOTH)
+                           justify=BOTH,
+                           tab_stops=[TabStop(2*cm), TabStop(6*cm)])
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
@@ -291,6 +294,11 @@ class SC(CustomElement):
     def parse(self, document):
         #print('SC.render()')
         return SmallCaps(self.text)
+
+
+class Tab(CustomElement):
+    def parse(self, document):
+        return MixedStyledText([PyteTab()])
 
 
 class OL(CustomElement):

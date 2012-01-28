@@ -23,6 +23,7 @@ grammar {
      | element b { inline }
      | element em { inline }
      | element sc { inline }
+     | element tab { empty }
      | element math { text }
      | element eq {
          attribute id { text }?,

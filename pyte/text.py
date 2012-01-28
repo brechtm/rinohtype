@@ -310,9 +310,11 @@ class NewLine(ControlCharacter):
         super().__init__('\n')
 
 
-class Tab(ControlCharacter):
+class Tab(ControlCharacter, Character):
     def __init__(self):
-        super().__init__('\t')
+        Character.__init__(self, ' ')
+        super().__init__(' ')
+        self.tab_width = 0
 
 
 # predefined styles
