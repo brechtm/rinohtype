@@ -154,8 +154,12 @@ class Container(RenderTarget):
 
         this_canvas = self.page.canvas.append_new(left, bottom, width, height)
 
+        end_of_page = None
         for child in self.__children:
-            child.render(this_canvas)
+            try:
+                child.render(this_canvas)
+            except EndOfPage as e:
+                end_of_page = e
 
         if self.flowables:
             total_height = 0
@@ -170,7 +174,9 @@ class Container(RenderTarget):
                 self.height().add(total_height * pt)
         elif self.chain:
             self.chain.render()
-        #self._draw_box(page_canvas)
+
+        if end_of_page is not None:
+            raise end_of_page
 
 
 class Chain(RenderTarget):
