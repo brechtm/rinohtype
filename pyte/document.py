@@ -92,7 +92,10 @@ class Document(object):
         self.pages = []
         self.converged = True
         self.setup()
-        for page in self.pages:
+        index = 0
+        while index < len(self.pages):
+            page = self.pages[index]
+            index += 1
             try:
                 page.render()
             except EndOfPage as e:
