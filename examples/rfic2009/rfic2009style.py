@@ -160,8 +160,8 @@ hd1Style = HeadingStyle("heading",
                         spaceBelow=6*pt,
                         numberingStyle=ROMAN_UC)
 
-acknowledgement_heading_style = HeadingStyle("acknowledgement", base=hd1Style,
-                                             numberingStyle=None)
+unnumbered_heading_style = HeadingStyle("unnumbered", base=hd1Style,
+                                        numberingStyle=None)
 
 hd2Style = HeadingStyle("subheading", base=hd1Style,
                         fontSlant=ITALIC,
@@ -371,7 +371,7 @@ class Acknowledgement(CustomElement):
     def parse(self, document):
         #print('Acknowledgement.render()')
         yield Heading(document, 'Acknowledgement',
-                      style=acknowledgement_heading_style, level=1)
+                      style=unnumbered_heading_style, level=1)
         for element in self.getchildren():
             yield element.parse(document)
 
@@ -525,6 +525,8 @@ class RFIC2009Paper(Document):
         abstract = Abstract(self.root.head.abstract.text)
         index_terms = IndexTerms(self.keywords)
 
+        toc_title = Heading(self, 'Table of Contents',
+                            style=unnumbered_heading_style, level=1)
         toc = TableOfContents(style=toc_style, styles=toc_levels)
 
         page.title_box.add_flowable(title)
@@ -534,6 +536,7 @@ class RFIC2009Paper(Document):
         page.content.add_flowable(abstract)
         page.content.add_flowable(index_terms)
 
+        page.content.add_flowable(toc_title)
         page.content.add_flowable(toc)
 
         for flowable in self.content_flowables:
