@@ -88,7 +88,8 @@ class StyledText(Styled):
     def characters(self):
         for i, char in enumerate(self.text):
             try:
-                character = special_chars[char]()
+                character = special_chars[char](style=ParentStyle,
+                                                new_span=(i==0))
             except KeyError:
                 character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
@@ -242,8 +243,8 @@ class Glyph(Character):
 
 
 class Space(Character):
-    def __init__(self, fixed_width=False, style=ParentStyle):
-        super().__init__(' ', style)
+    def __init__(self, fixed_width=False, style=ParentStyle, new_span=False):
+        super().__init__(' ', style, new_span)
         self.fixed_width = fixed_width
 
     def characters(self):
@@ -256,8 +257,8 @@ class FixedWidthSpace(Space):
 
 
 class NoBreakSpace(Character):
-    def __init__(self, style=ParentStyle):
-        super().__init__(' ', style)
+    def __init__(self, style=ParentStyle, new_span=False):
+        super().__init__(' ', style, new_span)
 
 
 class Spacer(FixedWidthSpace):
