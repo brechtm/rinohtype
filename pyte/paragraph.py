@@ -136,10 +136,8 @@ class Word(list):
 
     dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
 
-    def hyphenate(self):
-        if not self.hyphen_enable:
-            return
-
+    @property
+    def _hyphenator(self):
         dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
         if not os.path.exists(dic_path):
             dic_path = os.path.join(self.dic_dir, dic_file)
@@ -147,18 +145,21 @@ class Word(list):
                 raise IOError("Hyphenation dictionary '{}' neither found in "
                               "current directory, nor in the data directory"
                               .format(dic_file))
+        return Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
 
-        word = str(self)
-        h = Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
-        for position in reversed(h.positions(word)):
-            parts = h.wrap(word, position + 1)
-            if "".join((parts[0][:-1], parts[1])) != word:
-                raise NotImplementedError
-            first, second = self[:position], self[position:]
-            hyphen = Character('-', style=first[-1].style)
-            hyphen.parent = first[-1].parent
-            first.append(hyphen)
-            yield first, second
+    def hyphenate(self):
+        if self.hyphen_enable:
+            word = str(self)
+            h = self._hyphenator
+            for position in reversed(h.positions(word)):
+                parts = h.wrap(word, position + 1)
+                if ''.join((parts[0][:-1], parts[1])) != word:
+                    raise NotImplementedError
+                first, second = self[:position], self[position:]
+                hyphen = Character('-', style=first[-1].style)
+                hyphen.parent = first[-1].parent
+                first.append(hyphen)
+                yield first, second
 
 
 class Field(object):
