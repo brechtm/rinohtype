@@ -33,3 +33,18 @@ def timed(f):
         print('{}: {:.4f} seconds'.format(name, time.clock() - start))
         return result
     return decorator
+
+
+class cached_property(property):
+    def __init__(self, function, *args, **kwargs):
+        super().__init__(function, *args, **kwargs)
+        self._function_name = function.__name__
+
+    def __get__(self, obj, *args):
+        cache_variable = '_cached_' + self._function_name
+        try:
+            return getattr(obj, cache_variable)
+        except AttributeError:
+            cache_value = super(cached_property, self).__get__(obj, *args)
+            setattr(obj, cache_variable, cache_value)
+            return cache_value

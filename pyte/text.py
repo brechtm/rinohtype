@@ -12,6 +12,7 @@ from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .fonts import adobe14
 from .warnings import PyteWarning
 from .style import Style, Styled, ParentStyle, ParentStyleException
+from .util import cached_property
 
 
 class TextStyle(Style):
@@ -149,23 +150,26 @@ class Character(StyledText):
 
     @property
     def width(self):
-        font = self.get_font()
         font_size = float(self.height)
-        return font.psFont.metrics.stringwidth(self.text, font_size)
+        return self.ps_font.metrics.stringwidth(self.text, font_size)
 
     @property
     def height(self):
         return self.get_style('fontSize')
 
-    @property
+    @cached_property
+    def ps_font(self):
+        return self.get_font().psFont
+
+    @cached_property
     def glyph_name(self):
-        ps_font = self.get_font().psFont
         try:
-            return ps_font.metrics[self.ord()].ps_name
+            return self.ps_font.metrics[self.ord()].ps_name
         except KeyError:
             warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
-                 .format(ps_font.ps_name, self.ord(), self.text), PyteWarning)
-            return ps_font.metrics[ord('?')].ps_name
+                 .format(self.ps_font.ps_name, self.ord(), self.text),
+                         PyteWarning)
+            return self.ps_font.metrics[ord('?')].ps_name
 
     def ord(self):
         return ord(self.text)
@@ -173,7 +177,7 @@ class Character(StyledText):
     sc_suffixes = ('.smcp', '.sc', 'small')
 
     def small_capital(self):
-        ps_font = self.get_font().psFont
+        ps_font = self.ps_font
         char = self.text
         for suffix in self.sc_suffixes:
             if ps_font.has_glyph(char + suffix):
@@ -185,7 +189,7 @@ class Character(StyledText):
             return glyph
         except NameError:
             warn('{} does not contain small capitals for one or more '
-                 'characters'.format(self.get_font().psFont.ps_name),
+                 'characters'.format(self.ps_font.ps_name),
                  PyteWarning)
             return self
 
@@ -194,7 +198,7 @@ class Character(StyledText):
             #TODO: fine-grained style compare?
             raise TypeError
 
-        font_metrics = self.get_font().psFont.metrics
+        font_metrics = self.ps_font.metrics
         return font_metrics.get_kerning(self.glyph_name,
                                         next_character.glyph_name)
 
@@ -203,7 +207,7 @@ class Character(StyledText):
             #TODO: fine-grained style compare?
             raise TypeError
 
-        font_metrics = self.get_font().psFont.metrics.FontMetrics
+        font_metrics = self.ps_font.metrics.FontMetrics
         char_metrics = font_metrics["Direction"][0]["CharMetrics"]
         try:
             ligatures = char_metrics.by_glyph_name[self.glyph_name]['L']
@@ -226,9 +230,8 @@ class Glyph(Character):
 
     @property
     def width(self):
-        font = self.get_font()
         font_size = float(self.get_style('fontSize'))
-        return font.psFont.metrics.stringwidth([self.name], font_size)
+        return self.ps_font.metrics.stringwidth([self.name], font_size)
 
     @property
     def glyph_name(self):
