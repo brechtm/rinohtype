@@ -81,21 +81,14 @@ class Word(list):
         return result
 
     def append(self, char):
-        if isinstance(char, Character):
-            if self.hyphen_enable:
-                self.hyphen_enable = char.get_style('hyphenate')
-                self.hyphen_chars = max(self.hyphen_chars,
-                                        char.get_style('hyphenChars'))
-                if self.hyphen_lang is None:
-                    self.hyphen_lang = char.get_style('hyphenLang')
-                elif char.get_style('hyphenLang') != self.hyphen_lang:
-                    self.hyphen_enable = False
-        elif isinstance(char, Box):
-            # TODO: should a Box even be a part of a Word?
-            import pdb; pdb.set_trace()
-            pass
-        else:
-            raise ValueError('expecting Character or Box')
+        if self.hyphen_enable and (char.new_span or not self):
+            self.hyphen_enable = char.get_style('hyphenate')
+            self.hyphen_chars = max(self.hyphen_chars,
+                                    char.get_style('hyphenChars'))
+            if self.hyphen_lang is None:
+                self.hyphen_lang = char.get_style('hyphenLang')
+            elif char.get_style('hyphenLang') != self.hyphen_lang:
+                self.hyphen_enable = False
         super().append(char)
 
     def substitute_ligatures(self):
