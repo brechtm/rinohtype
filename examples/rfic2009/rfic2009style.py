@@ -14,7 +14,7 @@ from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC
 from pyte.text import StyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps
-from pyte.text import boldItalicStyle
+from pyte.text import TextStyle, boldItalicStyle
 from pyte.text import Tab as PyteTab
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
@@ -81,6 +81,9 @@ bodyStyle = ParagraphStyle('body',
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
                            justify=BOTH)
+
+#TextStyle.attributes['kerning'] = False
+#TextStyle.attributes['ligatures'] = False
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
