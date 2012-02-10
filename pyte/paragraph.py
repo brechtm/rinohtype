@@ -8,6 +8,7 @@ from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
+from .reference import Field
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab
 from .text import TextStyle, MixedStyledText
 from .unit import pt
@@ -166,15 +167,6 @@ class Word(list):
                 hyphen.parent = first[-1].parent
                 first.append(hyphen)
                 yield first, second
-
-
-class Field(object):
-    def __init__(self, source):
-        self.source = source
-
-    def characters(self):
-        for character in self.source.field_characters():
-            yield character
 
 
 class EndOfLine(Exception):

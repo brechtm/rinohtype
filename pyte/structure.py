@@ -4,7 +4,8 @@ from warnings import warn
 from .layout import EndOfContainer
 from .number import format_number
 from .number.style import NUMBER
-from .paragraph import ParagraphStyle, Paragraph, Field
+from .paragraph import ParagraphStyle, Paragraph
+from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .text import StyledText, FixedWidthSpace, Tab
 from .unit import nil
 from .warnings import PyteWarning
@@ -16,33 +17,6 @@ class HeadingStyle(ParagraphStyle):
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
-
-
-class ReferenceNotConverged(Exception):
-    pass
-
-
-class Referenceable(object):
-    def __init__(self, document, id):
-        self.document = document
-        if id:
-            document.elements[id] = self
-        self.id = id
-
-    def reference(self):
-        raise NotImplementedError
-
-    def title(self):
-        raise NotImplementedError
-
-    def page(self):
-        try:
-            page = self._page
-            if self._previous_page is not None and self._previous_page != page:
-                raise ReferenceNotConverged
-            return str(page)
-        except AttributeError:
-            raise ReferenceNotConverged
 
 
 # TODO: share superclass with List (numbering)
@@ -222,45 +196,3 @@ class TableOfContents(Paragraph):
 
         self.item_pointer = 0
         return offset - offset_begin
-
-
-REFERENCE = 'reference'
-PAGE = 'page'
-TITLE = 'title'
-POSITION = 'position'
-
-
-class Reference(StyledText):
-    def __init__(self, document, id, type=REFERENCE):
-        super().__init__('')
-        self.document = document
-        self.id = id
-        self.type = type
-
-    def characters(self):
-        yield Field(self)
-
-    def field_characters(self):
-        try:
-            referenced_item = self.document.elements[self.id]
-            if self.type == REFERENCE:
-                self.text = referenced_item.reference()
-            elif self.type == PAGE:
-                try:
-                    self.text = referenced_item.page()
-                except ReferenceNotConverged:
-                    self.document.converged = False
-                    self.text = '??'
-            elif self.type == TITLE:
-                self.text = referenced_item.title()
-            else:
-                raise NotImplementedError
-        except KeyError:
-            warn("Unknown label '{}'".format(self.id), PyteWarning)
-            self.text = "unkown reference '{}'".format(self.id)
-
-        if self.text is None:
-            warn('Trying to reference unreferenceable object', PyteWarning)
-            self.text = '[not referenceable]'
-        for character in super().characters():
-            yield character

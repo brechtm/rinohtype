@@ -18,10 +18,11 @@ from pyte.text import TextStyle, boldItalicStyle
 from pyte.text import Tab as PyteTab
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
-from pyte.structure import Heading, List, Reference, REFERENCE
+from pyte.structure import Heading, List
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.structure import TableOfContents, TableOfContentsStyle
+from pyte.reference import Reference, REFERENCE
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
