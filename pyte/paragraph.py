@@ -58,10 +58,10 @@ class TabStop(object):
 
 
 class Word(list):
-    def __init__(self, characters, kerning, ligatures):
+    def __init__(self, characters):
         super().__init__()
-        self.kerning = kerning
-        self.ligatures = ligatures
+        self.kerning = True
+        self.ligatures = True
         self.hyphen_enable = True
         self.hyphen_chars = 0
         self.hyphen_lang = None
@@ -77,10 +77,16 @@ class Word(list):
     def __getitem__(self, index):
         result = super().__getitem__(index)
         if type(index) == slice:
-            result = __class__(result, self.kerning, self.ligatures)
+            result = __class__(result)
         return result
 
     def append(self, char):
+        if self.kerning and (char.new_span or not self):
+            self.kerning = char.get_style('kerning')
+
+        if self.ligatures and (char.new_span or not self):
+            self.ligatures = char.get_style('ligatures')
+
         if self.hyphen_enable and (char.new_span or not self):
             self.hyphen_enable = char.get_style('hyphenate')
             self.hyphen_chars = max(self.hyphen_chars,
@@ -400,8 +406,6 @@ class Paragraph(MixedStyledText, Flowable):
     def __init__(self, items, style=None):
         super().__init__(items, style=style)
         # TODO: move to TextStyle
-        self.kerning = True
-        self.ligatures = True
         #self.char_spacing = 0.0
 
         self._words = []
@@ -421,7 +425,7 @@ class Paragraph(MixedStyledText, Flowable):
             if is_special:
                 words += item
             else:
-                words.append(Word(item, self.kerning, self.ligatures))
+                words.append(Word(item))
         return words
 
     def render(self, canvas, offset=0):

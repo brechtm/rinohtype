@@ -22,6 +22,8 @@ class TextStyle(Style):
                   'fontWidth': NORMAL,
                   'fontSize': 10*pt, # TODO: change default
                   'smallCaps': False,
+                  'kerning': True,
+                  'ligatures': True,
                   'hyphenate': True,
                   'hyphenChars': 2,
                   'hyphenLang': 'en'}
