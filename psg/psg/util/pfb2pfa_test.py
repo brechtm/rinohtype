@@ -1,18 +1,35 @@
-#from pfb2pfa_orig import pfb2pfa
-from pfb2pfa import pfb2pfa
+from pfb2pfa_orig import pfb2pfa as pfb2pfa_orig
+from pfb2pfa import pfb2pfa as pfb2pfa_cython
+from io import StringIO
 import timeit
 
-pfb = open('../../../examples/rfic2009/qtmr.pfb', 'rb')
-pfa = open('qtmr.pfa', 'w')
+iterations = 10
 
-def b2a():
-    pfb2pfa(pfb, pfa)
+pfb = open('../../../examples/rfic2009/fonts/qtmr.pfb', 'rb')
 
-time = timeit.timeit(b2a, number=1)
 
-print('{} seconds'.format(time))
 
-pfa.close()
+def b2a_orig():
+    pfb.seek(0)
+    pfa = StringIO() # open('qtmr.pfa', 'w')
+    pfb2pfa_orig(pfb, pfa)
+    pfa.close()
+
+
+def b2a_cython():
+    pfb.seek(0)
+    pfa = StringIO() # open('qtmr.pfa', 'w')
+    pfb2pfa_cython(pfb, pfa)
+    pfa.close()
+
+
+time = timeit.timeit(b2a_orig, number=iterations)
+print('orig: {} seconds'.format(time))
+
+time = timeit.timeit(b2a_cython, number=iterations)
+print('cython: {} seconds'.format(time))
+
+
 pfb.close()
 
 
