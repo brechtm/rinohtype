@@ -8,7 +8,7 @@ from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
-from .reference import Field
+from .reference import LateEval
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab
 from .text import TextStyle, MixedStyledText
 from .unit import pt
@@ -409,7 +409,7 @@ class Paragraph(MixedStyledText, Flowable):
         self.first_line = True
 
     def _split_words(self, characters):
-        group_function = lambda item: isinstance(item, (Space, Field,
+        group_function = lambda item: isinstance(item, (Space, LateEval,
                                                         ControlCharacter,
                                                         Flowable))
         words = []
@@ -441,7 +441,7 @@ class Paragraph(MixedStyledText, Flowable):
 
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
-            if isinstance(word, Field):
+            if isinstance(word, LateEval):
                 if self.field_pointer is None:
                     self._field_words = self._split_words(word.characters())
                     self.field_pointer = 0

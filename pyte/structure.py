@@ -6,6 +6,7 @@ from .number import format_number
 from .number.style import NUMBER
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
+from .reference import Variable, PAGE_NUMBER
 from .text import StyledText, FixedWidthSpace, Tab
 from .unit import nil
 from .warnings import PyteWarning
@@ -128,7 +129,7 @@ class Header(Paragraph):
         super().__init__([], style)
 
     def typeset(self, pscanvas, offset=0):
-        text = StyledText('page number = {}'.format(self.page.number))
+        text = StyledText('page number = ') + Variable(PAGE_NUMBER)
         text.parent = self
         self.append(text)
         return super().typeset(pscanvas, offset)
@@ -148,7 +149,7 @@ class Footer(Paragraph):
         super().__init__([], style)
 
     def typeset(self, pscanvas, offset=0):
-        text = StyledText('{}'.format(self.page.number))
+        text = Variable(PAGE_NUMBER)
         text.parent = self
         self.append(text)
         return super().typeset(pscanvas, offset)

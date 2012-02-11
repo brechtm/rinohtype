@@ -6,18 +6,41 @@ from .text import StyledText, TextStyle
 from .warnings import PyteWarning
 
 
-class Field(StyledText):
-    def __init__(self, style=ParentStyle):
-        super().__init__('', style)
-
-
-class ReferenceField(Field):
-    def __init__(self, source):
-        self.source = source
+class LateEval(object):
+    def __init__(self, field):
+        self.field = field
 
     def characters(self):
-        for character in self.source.field_characters():
-            yield character
+        return self.field.field_characters()
+
+
+class Field(StyledText):
+    def __init__(self):
+        super().__init__('')
+
+    def characters(self):
+        yield LateEval(self)
+
+    def field_characters(self):
+        return super().characters()
+
+
+PAGE_NUMBER = 'page number'
+NUMBER_OF_PAGES = 'number of pages'
+
+
+class Variable(Field):
+    def __init__(self, type):
+        super().__init__()
+        self.type = type
+
+    def field_characters(self):
+        if self.type == PAGE_NUMBER:
+            self.text = str(self.page.number)
+        elif self.type == NUMBER_OF_PAGES:
+            self.text = str(len(self.document.pages))
+
+        return super().field_characters()
 
 
 class ReferenceNotConverged(Exception):
@@ -43,15 +66,12 @@ TITLE = 'title'
 POSITION = 'position'
 
 
-class Reference(StyledText):
+class Reference(Field):
     def __init__(self, id, type=REFERENCE):
-        super().__init__('')
+        super().__init__()
         self.id = id
         self.type = type
         self._previous = None
-
-    def characters(self):
-        yield ReferenceField(self)
 
     def field_characters(self):
         try:
@@ -79,5 +99,5 @@ class Reference(StyledText):
         if self.text is None:
             warn('Trying to reference unreferenceable object', PyteWarning)
             self.text = ' ' #'[not referenceable]'
-        for character in super().characters():
-            yield character
+
+        return super().field_characters()
