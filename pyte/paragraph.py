@@ -447,10 +447,13 @@ class Paragraph(MixedStyledText, Flowable):
                     self.field_pointer = 0
                 else:
                     self.field_pointer += 1
-                word = self._field_words[self.field_pointer]
-                if self.field_pointer == len(self._field_words) - 1:
+                if self._field_words:
+                    word = self._field_words[self.field_pointer]
+                if self.field_pointer >= len(self._field_words) - 1:
                     self.field_pointer = None
                     self.word_pointer += 1
+                if not self._field_words:
+                    continue
             else:
                 self.word_pointer += 1
 
