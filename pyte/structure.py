@@ -124,9 +124,8 @@ class HeaderStyle(ParagraphStyle):
 class Header(Paragraph):
     style_class = HeaderStyle
 
-    def __init__(self, page, style=None):
+    def __init__(self, style=None):
         super().__init__([], style)
-        self.page = page
 
     def typeset(self, pscanvas, offset=0):
         text = StyledText('page number = {}'.format(self.page.number))
@@ -145,9 +144,8 @@ class FooterStyle(ParagraphStyle):
 class Footer(Paragraph):
     style_class = FooterStyle
 
-    def __init__(self, page, style=None):
+    def __init__(self, style=None):
         super().__init__([], style)
-        self.page = page
 
     def typeset(self, pscanvas, offset=0):
         text = StyledText('{}'.format(self.page.number))
@@ -171,17 +169,18 @@ class TableOfContents(Paragraph):
         self.styles = styles
         self.item_pointer = 0
 
-    def register(self, document, flowable):
+    def register(self, flowable):
         if (isinstance(flowable, Heading) and
             flowable.level <= self.get_style('depth')):
-            text = [Reference(document, flowable.id, type=REFERENCE), Tab(),
-                    Reference(document, flowable.id, type=TITLE), Tab(),
-                    Reference(document, flowable.id, type=PAGE)]
+            text = [Reference(flowable.id, type=REFERENCE), Tab(),
+                    Reference(flowable.id, type=TITLE), Tab(),
+                    Reference(flowable.id, type=PAGE)]
             try:
                 style_index = flowable.level - 1
                 flowable = Paragraph(text, style=self.styles[style_index])
             except AttributeError:
                 flowable = Paragraph(text, style=self.styles[-1])
+            flowable.parent = self
             self.append(flowable)
 
     def typeset(self, canvas, offset=0):

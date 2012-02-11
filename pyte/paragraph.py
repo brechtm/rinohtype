@@ -421,10 +421,6 @@ class Paragraph(MixedStyledText, Flowable):
         return words
 
     def render(self, canvas, offset=0):
-        try:
-            self._previous_page = self._page
-        except AttributeError:
-            self._page = canvas.page.number
         return self.typeset(canvas, offset)
 
     def typeset(self, canvas, offset=0):

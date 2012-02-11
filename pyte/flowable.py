@@ -17,6 +17,17 @@ class Flowable(Styled):
     def __init__(self, style=None):
         super().__init__(style)
 
+    @property
+    def document(self):
+        try:
+            return self._document
+        except AttributeError:
+            return self.parent.document
+
+    @document.setter
+    def document(self, document):
+        self._document = document
+
     def render(self, canvas, offset=0):
         raise NotImplementedError("virtual method not implemented in class %s" %
                                   self.__class__.__name__)

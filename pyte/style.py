@@ -87,6 +87,14 @@ class Styled(object):
         assert isinstance(other, str)
         return MixedStyledText([other, self])
 
+    @property
+    def page(self):
+        return self.parent.page
+
+    @property
+    def document(self):
+        return self.parent.document
+
     def get_style(self, attribute):
         try:
             return self.cached_style[attribute]

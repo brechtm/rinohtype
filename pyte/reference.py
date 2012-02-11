@@ -1,11 +1,17 @@
 
 from warnings import warn
 
-from .text import StyledText
+from .style import ParentStyle
+from .text import StyledText, TextStyle
 from .warnings import PyteWarning
 
 
-class Field(object):
+class Field(StyledText):
+    def __init__(self, style=ParentStyle):
+        super().__init__('', style)
+
+
+class ReferenceField(Field):
     def __init__(self, source):
         self.source = source
 
@@ -20,7 +26,6 @@ class ReferenceNotConverged(Exception):
 
 class Referenceable(object):
     def __init__(self, document, id):
-        self.document = document
         if id:
             document.elements[id] = self
         self.id = id
@@ -31,15 +36,6 @@ class Referenceable(object):
     def title(self):
         raise NotImplementedError
 
-    def page(self):
-        try:
-            page = self._page
-            if self._previous_page is not None and self._previous_page != page:
-                raise ReferenceNotConverged
-            return str(page)
-        except AttributeError:
-            raise ReferenceNotConverged
-
 
 REFERENCE = 'reference'
 PAGE = 'page'
@@ -48,14 +44,14 @@ POSITION = 'position'
 
 
 class Reference(StyledText):
-    def __init__(self, document, id, type=REFERENCE):
+    def __init__(self, id, type=REFERENCE):
         super().__init__('')
-        self.document = document
         self.id = id
         self.type = type
+        self._previous = None
 
     def characters(self):
-        yield Field(self)
+        yield ReferenceField(self)
 
     def field_characters(self):
         try:
@@ -64,8 +60,12 @@ class Reference(StyledText):
                 self.text = referenced_item.reference()
             elif self.type == PAGE:
                 try:
-                    self.text = referenced_item.page()
-                except ReferenceNotConverged:
+                    page_number = referenced_item.page.number
+                    if self._previous != page_number:
+                        self._previous = page_number
+                        raise AttributeError
+                    self.text = str(page_number)
+                except AttributeError:
                     self.document.converged = False
                     self.text = '??'
             elif self.type == TITLE:

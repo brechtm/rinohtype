@@ -22,6 +22,7 @@ class RenderTarget(object):
 
     def add_flowable(self, flowable):
         assert isinstance(flowable, Flowable)
+        flowable.document = self.document
         self.flowables.append(flowable)
 
     def render(self):
@@ -115,10 +116,7 @@ class Container(RenderTarget):
 
     @property
     def page(self):
-        if self.__parent:
-            return self.__parent.page
-        else:
-            return self
+        return self.__parent.page
 
     @property
     def document(self):
@@ -165,6 +163,7 @@ class Container(RenderTarget):
             total_height = 0
             previous_height = 0
             for flowable in self.flowables:
+                flowable.parent = self
                 space_above = float(flowable.get_style('spaceAbove'))
                 space_below = float(flowable.get_style('spaceBelow'))
                 box_height = flowable.render(this_canvas, total_height)
@@ -208,6 +207,7 @@ class Chain(RenderTarget):
             prev_height = 0
             try:
                 for flowable in self.flowables[self._flowable_index:]:
+                    flowable.parent = container
                     space_above = float(flowable.get_style('spaceAbove'))
                     space_below = float(flowable.get_style('spaceBelow'))
 

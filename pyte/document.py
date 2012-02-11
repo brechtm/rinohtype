@@ -34,6 +34,10 @@ class Page(Container):
         self.backend = self.document.backend
 
     @property
+    def page(self):
+        return self
+
+    @property
     def document(self):
         return self._document
 

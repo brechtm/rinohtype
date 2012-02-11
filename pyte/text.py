@@ -329,6 +329,7 @@ class FlowableEmbedder(object):
         self.flowable = flowable
 
     def characters(self):
+        self.flowable.parent = self.parent
         yield self.flowable
 
 

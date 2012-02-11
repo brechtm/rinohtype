@@ -341,16 +341,12 @@ class LI(CustomElement):
 class Math(CustomElement):
     def parse(self, document):
         math = PyteMath(self.text, style=mathstyle)
-        math.document = document
         return math
 
 
 class Eq(CustomElement):
     def parse(self, document, id=None):
         equation = Equation(self.text, style=equationstyle)
-        equation.document = document # TODO: do this properly
-        for item in equation:
-            item.document = document
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
@@ -368,7 +364,7 @@ class Cite(CustomElement):
 class Ref(CustomElement):
     def parse(self, document):
         #print('Ref.render()')
-        return Reference(document, self.get('id'), self.get('type', REFERENCE))
+        return Reference(self.get('id'), self.get('type', REFERENCE))
 
 
 class Acknowledgement(CustomElement):
@@ -472,9 +468,9 @@ class RFICPage(Page):
         footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
         self.footer = Container(self, self.leftmargin, footer_vert_pos,
                                 body_width, 12*pt)
-        header_text = Header(self, header_style)
+        header_text = Header(header_style)
         self.header.add_flowable(header_text)
-        footer_text = Footer(self, footer_style)
+        footer_text = Footer(footer_style)
         self.footer.add_flowable(footer_text)
 
 
@@ -506,12 +502,26 @@ class RFIC2009Paper(Document):
         self.parse_input()
 
     def parse_input(self):
-        self.content_flowables = []
+        self.title_par = Paragraph(self.title, titleStyle)
+        self.author_par = Paragraph(self.author, authorStyle)
+        self.affiliation_par = Paragraph(self.root.head.affiliation.text,
+                                         affiliationStyle)
+        toc = TableOfContents(style=toc_style, styles=toc_levels)
+
+        self.content_flowables = [Abstract(self.root.head.abstract.text),
+                                  IndexTerms(self.keywords),
+                                  Heading(self, 'Table of Contents',
+                                          style=unnumbered_heading_style,
+                                          level=1),
+                                  toc]
+
         for section in self.root.body.section:
             for flowable in section.parse(self):
+                toc.register(flowable)
                 self.content_flowables.append(flowable)
         try:
             for flowable in self.root.body.acknowledgement.parse(self):
+                toc.register(flowable)
                 self.content_flowables.append(flowable)
         except AttributeError:
             pass
@@ -522,29 +532,11 @@ class RFIC2009Paper(Document):
         page = RFICPage(self, first=True)
         self.add_page(page, self.page_count)
 
-        title = Paragraph(self.title, titleStyle)
-        author = Paragraph(self.author, authorStyle)
-        affiliation = Paragraph(self.root.head.affiliation.text,
-                                affiliationStyle)
-        abstract = Abstract(self.root.head.abstract.text)
-        index_terms = IndexTerms(self.keywords)
-
-        toc_title = Heading(self, 'Table of Contents',
-                            style=unnumbered_heading_style, level=1)
-        toc = TableOfContents(style=toc_style, styles=toc_levels)
-
-        page.title_box.add_flowable(title)
-        page.title_box.add_flowable(author)
-        page.title_box.add_flowable(affiliation)
-
-        page.content.add_flowable(abstract)
-        page.content.add_flowable(index_terms)
-
-        page.content.add_flowable(toc_title)
-        page.content.add_flowable(toc)
+        page.title_box.add_flowable(self.title_par)
+        page.title_box.add_flowable(self.author_par)
+        page.title_box.add_flowable(self.affiliation_par)
 
         for flowable in self.content_flowables:
-            toc.register(self, flowable)
             self.content.add_flowable(flowable)
 
         #self.bibliography.bibliography(self.content)
