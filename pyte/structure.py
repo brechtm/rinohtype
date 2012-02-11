@@ -29,14 +29,14 @@ class Heading(Paragraph, Referenceable):
         if style.numberingStyle is not None:
             self.number = format_number(next_number[level], style.numberingStyle)
             number = self.number + style.numberingSeparator + FixedWidthSpace()
+            if level in next_number:
+                next_number[level] += 1
+                next_number[level + 1] = 1
+            else:
+                next_number[level] = 2
         else:
             self.number = None
             number = ""
-        if level in next_number:
-            next_number[level] += 1
-            next_number[level + 1] = 1
-        else:
-            next_number[level] = 2
         self.level = level
         if id is None:
             # an ID is necessary for building the TOC
