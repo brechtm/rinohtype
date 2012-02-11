@@ -181,9 +181,11 @@ hd2Style = HeadingStyle("subheading", base=hd1Style,
 heading_styles = [hd1Style, hd2Style]
 
 header_style = HeaderStyle('header', base=bodyStyle,
+                           indentFirst=0 * pt,
                            fontSize=9 * pt)
 
 footer_style = FooterStyle('footer', base=header_style,
+                           indentFirst=0 * pt,
                            justify=CENTER)
 
 figure_style = FlowableStyle('figure',
