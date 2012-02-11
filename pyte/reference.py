@@ -38,8 +38,8 @@ class Variable(Field):
         if self.type == PAGE_NUMBER:
             self.text = str(self.page.number)
         elif self.type == NUMBER_OF_PAGES:
-            self.text = str(len(self.document.pages))
-
+            number = self.document.number_of_pages
+            self.text = str(number)
         return super().field_characters()
 
 

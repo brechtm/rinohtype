@@ -6,7 +6,7 @@ from .number import format_number
 from .number.style import NUMBER
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
-from .reference import Variable, PAGE_NUMBER
+from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .text import StyledText, FixedWidthSpace, Tab
 from .unit import nil
 from .warnings import PyteWarning
@@ -149,7 +149,7 @@ class Footer(Paragraph):
         super().__init__([], style)
 
     def typeset(self, pscanvas, offset=0):
-        text = Variable(PAGE_NUMBER)
+        text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         text.parent = self
         self.append(text)
         return super().typeset(pscanvas, offset)

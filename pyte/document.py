@@ -83,12 +83,17 @@ class Document(object):
 
     def render(self, filename):
         self.converged = True
+        self.number_of_pages = 0
+        self._previous_number_of_pages = -1
         self.render_loop()
         while not self.converged:
             print('Not yet converged, rendering again...')
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
-            self.render_loop()
+            self.number_of_pages = self.render_loop()
+            if self.number_of_pages != self._previous_number_of_pages:
+                converged = False
+                self._previous_number_of_pages = self.number_of_pages
         print('Writing output: {}'.format(filename))
         self.backend_document.write(filename)
 
@@ -104,6 +109,7 @@ class Document(object):
                 page.render()
             except EndOfPage as e:
                 self.add_to_chain(e.args[0])
+        return len(self.pages)
 
     def setup(self):
         raise NotImplementedError
