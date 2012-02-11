@@ -32,6 +32,7 @@ class Page(Container):
             height = self.paper.width
         super().__init__(None, 0*pt, 0*pt, width, height)
         self.backend = self.document.backend
+        self.section = None
 
     @property
     def page(self):

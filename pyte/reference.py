@@ -27,6 +27,8 @@ class Field(StyledText):
 
 PAGE_NUMBER = 'page number'
 NUMBER_OF_PAGES = 'number of pages'
+SECTION_NUMBER = 'section number'
+SECTION_TITLE = 'section title'
 
 
 class Variable(Field):
@@ -40,6 +42,12 @@ class Variable(Field):
         elif self.type == NUMBER_OF_PAGES:
             number = self.document.number_of_pages
             self.text = str(number)
+        elif self.type == SECTION_NUMBER:
+            if self.page.section and self.page.section.number:
+                self.text = self.page.section.number
+        elif self.type == SECTION_TITLE:
+            if self.page.section:
+                self.text = self.page.section.title()
         return super().field_characters()
 
 

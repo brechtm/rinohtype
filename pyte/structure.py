@@ -7,6 +7,7 @@ from .number.style import NUMBER
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
+from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import StyledText, FixedWidthSpace, Tab
 from .unit import nil
 from .warnings import PyteWarning
@@ -51,6 +52,10 @@ class Heading(Paragraph, Referenceable):
     def title(self):
         return self._title
 
+    def render(self, canvas, offset=0):
+        if self.level == 1:
+            self.page.section = self
+        return super().render(canvas, offset)
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
@@ -129,7 +134,7 @@ class Header(Paragraph):
         super().__init__([], style)
 
     def typeset(self, pscanvas, offset=0):
-        text = StyledText('page number = ') + Variable(PAGE_NUMBER)
+        text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         text.parent = self
         self.append(text)
         return super().typeset(pscanvas, offset)
