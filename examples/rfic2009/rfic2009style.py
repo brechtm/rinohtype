@@ -13,7 +13,7 @@ from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC
 from pyte.text import StyledText, MixedStyledText
-from pyte.text import Bold, Emphasized, SmallCaps
+from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
 from pyte.text import TextStyle, boldItalicStyle
 from pyte.text import Tab as PyteTab
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
@@ -313,6 +313,16 @@ class SC(CustomElement):
     def parse(self, document):
         #print('SC.render()')
         return SmallCaps(self.text)
+
+
+class Sup(CustomElement):
+    def parse(self, document):
+        return Superscript(self.text)
+
+
+class Sub(CustomElement):
+    def parse(self, document):
+        return Subscript(self.text)
 
 
 class Tab(CustomElement):

@@ -9,6 +9,7 @@ from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from .unit import pt
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
+from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14
 from .warnings import PyteWarning
 from .style import Style, Styled, ParentStyle, ParentStyleException
@@ -22,6 +23,7 @@ class TextStyle(Style):
                   'fontWidth': NORMAL,
                   'fontSize': 10*pt, # TODO: change default
                   'smallCaps': False,
+                  'position': NORMAL,
                   'kerning': True,
                   'ligatures': True,
                   'hyphenate': True,
@@ -96,9 +98,12 @@ class StyledText(Styled):
                 character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
             if self.get_style('smallCaps'):
-                yield character.small_capital()
-            else:
-                yield character
+                character = character.small_capital()
+            if self.get_style('position') == SUPERSCRIPT:
+                character = character.superscript()
+            elif self.get_style('position') == SUBSCRIPT:
+                character = character.subscript()
+            yield character
 
 
 class MixedStyledText(list, Styled):
@@ -144,9 +149,11 @@ class MixedStyledText(list, Styled):
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
-    def __init__(self, text, style=ParentStyle, new_span=False):
+    def __init__(self, text, style=ParentStyle, new_span=False,
+                 vertical_offset=0):
         super().__init__(text, style)
         self.new_span = new_span
+        self.vertical_offset = vertical_offset
 
     def __repr__(self):
         return self.text
@@ -195,6 +202,26 @@ class Character(StyledText):
                  'characters'.format(self.ps_font.ps_name),
                  PyteWarning)
             return self
+
+    superscript_position = 1 / 3
+    subscript_position = - 1 / 6
+    position_size = 583 / 1000
+
+    def superscript(self):
+        size = self.get_style('fontSize') * self.position_size
+        offset = float(self.get_style('fontSize') * self.superscript_position)
+        style = TextStyle('superscript', fontSize=size)
+        superscript = Character(self.text, style, self.new_span, offset)
+        superscript.parent = self.parent
+        return superscript
+
+    def subscript(self):
+        size = self.get_style('fontSize') * self.position_size
+        offset = float(size * self.subscript_position)
+        style = TextStyle('subscript', fontSize=size)
+        subscript = Character(self.text, style, self.new_span, offset)
+        subscript.parent = self.parent
+        return subscript
 
     def kerning(self, next_character):
         if self.style != next_character.style:
@@ -341,6 +368,8 @@ italicStyle = TextStyle(name="italic", fontSlant=ITALIC)
 boldItalicStyle = TextStyle(name="bold italic", fontWeight=BOLD,
                             fontSlant=ITALIC)
 smallCapsStyle = TextStyle(name="small capitals", smallCaps=True)
+superscriptStyle = TextStyle(name="superscript", position=SUPERSCRIPT)
+subscriptStyle = TextStyle(name="subscript", position=SUBSCRIPT)
 
 
 class Bold(StyledText):
@@ -361,3 +390,13 @@ class Emphasized(StyledText):
 class SmallCaps(StyledText):
     def __init__(self, text):
         StyledText.__init__(self, text, style=smallCapsStyle)
+
+
+class Superscript(StyledText):
+    def __init__(self, text):
+        StyledText.__init__(self, text, style=superscriptStyle)
+
+
+class Subscript(StyledText):
+    def __init__(self, text):
+        StyledText.__init__(self, text, style=subscriptStyle)

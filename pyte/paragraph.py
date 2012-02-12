@@ -334,7 +334,8 @@ class Line(list):
                              'fontWeight': chars[0].get_style('fontWeight'),
                              'fontSlant': chars[0].get_style('fontSlant'),
                              'fontWidth': chars[0].get_style('fontWidth'),
-                             'fontSize': chars[0].get_style('fontSize')}
+                             'fontSize': chars[0].get_style('fontSize'),
+                             'vertical_offset': chars[0].vertical_offset}
         else:
             current_style = 'box'
 
@@ -343,6 +344,9 @@ class Line(list):
         for i, char in enumerate(chars):
             if isinstance(char, Box):
                 if span_chars:
+                    y = (self.paragraph._line_cursor +
+                         current_style['vertical_offset'])
+                    canvas.move_to(x + x_offset, y)
                     x_offset += self.typeset_span(canvas, current_style,
                                                   span_chars, span_char_widths)
                     span_chars = []
@@ -355,10 +359,14 @@ class Line(list):
                               'fontWeight': char.get_style('fontWeight'),
                               'fontSlant': char.get_style('fontSlant'),
                               'fontWidth': char.get_style('fontWidth'),
-                              'fontSize': char.get_style('fontSize')}
+                              'fontSize': char.get_style('fontSize'),
+                              'vertical_offset': char.vertical_offset}
                 if current_style == 'box':
                     current_style = char_style
                 elif char_style != current_style:
+                    y = (self.paragraph._line_cursor +
+                         current_style['vertical_offset'])
+                    canvas.move_to(x + x_offset, y)
                     x_offset += self.typeset_span(canvas, current_style,
                                                   span_chars, span_char_widths)
                     span_chars = []
@@ -369,6 +377,8 @@ class Line(list):
                 span_char_widths.append(char_widths[i])
 
         if span_chars:
+            y = self.paragraph._line_cursor + current_style['vertical_offset']
+            canvas.move_to(x + x_offset, y)
             self.typeset_span(canvas, current_style, span_chars,
                               span_char_widths)
 
@@ -376,6 +386,7 @@ class Line(list):
 
     def typeset_span(self, canvas, style, span_chars, span_char_widths):
         """Typeset a series of characters with the same style"""
+        # TODO: create Span class
         font = style['typeface'].get(weight=style['fontWeight'],
                                      slant=style['fontSlant'],
                                      width=style['fontWidth'])
