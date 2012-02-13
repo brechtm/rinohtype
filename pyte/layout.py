@@ -34,7 +34,7 @@ class Container(RenderTarget):
     def __init__(self, parent, left=NIL, top=NIL,
                  width=None, height=NIL, right=None, bottom=None,
                  chain=None):
-        # height = None  AND  bottom = None   ->    height depends on contents
+        # height = NIL   AND  bottom = None   ->    height depends on contents
         # width  = None  AND  right  = None   ->    use all available space
         super().__init__()
         if parent:
@@ -43,6 +43,7 @@ class Container(RenderTarget):
         self.left = left
         self.top = top
         self.height = bottom - self.top if bottom else height
+        self.dynamic = self.height == 0
         if width:
             self.width = width
         elif right:
@@ -93,38 +94,43 @@ class Container(RenderTarget):
     def document(self):
         return self.page._document
 
+    @property
+    def canvas(self):
+        try:
+            return self._canvas
+        except AttributeError:
+            left = float(self.abs_left)
+            width = float(self.width)
+            if self.dynamic:
+                bottom = 0
+                height = float(self.page.height - self.abs_bottom)
+            else:
+                bottom = float(self.page.height - self.abs_bottom)
+                height = float(self.height)
+            self._canvas = self.page.canvas.append_new(left, bottom, width, height)
+            return self._canvas
+
+    def render_flowable(self, flowable, offset):
+        flowable.parent = self
+        space_above = float(flowable.get_style('spaceAbove'))
+        space_below = float(flowable.get_style('spaceBelow'))
+        flowable_height = flowable.render(self.canvas, offset + space_above)
+        return space_above + flowable_height + space_below
+
     def render(self, canvas):
-        left = float(self.abs_left)
-        bottom = float(self.page.height - self.abs_bottom)
-        width = float(self.width)
-        height = float(self.height)
-        dynamic = False
-        if height == 0:
-            dynamic = True
-            height = bottom
-            bottom = 0
-
-        this_canvas = self.page.canvas.append_new(left, bottom, width, height)
-
         end_of_page = None
         for child in self.children:
             try:
-                child.render(this_canvas)
+                child.render(self.canvas)
             except EndOfPage as e:
                 end_of_page = e
 
         if self.flowables:
-            total_height = 0
-            previous_height = 0
+            offset = 0
             for flowable in self.flowables:
-                flowable.parent = self
-                space_above = float(flowable.get_style('spaceAbove'))
-                space_below = float(flowable.get_style('spaceBelow'))
-                box_height = flowable.render(this_canvas, total_height)
-                previous_height = space_above + box_height + space_below
-                total_height += previous_height
-            if dynamic:
-                self.height.add(total_height * pt)
+                offset += self.render_flowable(flowable, offset)
+            if self.dynamic:
+                self.height.add(offset * pt)
         elif self.chain:
             self.chain.render()
 
@@ -145,39 +151,21 @@ class Chain(RenderTarget):
         return self._document
 
     def render(self):
-        total_height = 0
+        offset = 0
         first_container_index = self._container_index
         last_container_index = len(self._containers)
         for index in range(first_container_index, last_container_index):
             container = self._containers[index]
-            # TODO: bad behaviour with spaceAbove/Below
-            #       when skipping to next container
-            left   = float(container.abs_left)
-            bottom = float(container.page.height - container.abs_bottom)
-            width  = float(container.width)
-            height = float(container.height)
-
-            total_height = 0
-            prev_height = 0
+            offset = 0
             try:
                 for flowable in self.flowables[self._flowable_index:]:
-                    flowable.parent = container
-                    space_above = float(flowable.get_style('spaceAbove'))
-                    space_below = float(flowable.get_style('spaceBelow'))
-
-                    this_canvas = container.page.canvas.append_new(
-                                    left, bottom, width, height - space_above)
-
-                    box_height = flowable.render(this_canvas, total_height)
-                    prev_height = space_above + box_height + space_below
-                    total_height += prev_height
+                    offset += container.render_flowable(flowable, offset)
                     self._flowable_index += 1
             except EndOfContainer:
                 self._container_index += 1
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
-
-        return total_height
+        return offset
 
     def add_container(self, container):
         assert isinstance(container, Container)
