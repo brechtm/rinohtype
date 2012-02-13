@@ -18,6 +18,10 @@ class Flowable(Styled):
         super().__init__(style)
 
     @property
+    def page(self):
+        return self._container.page
+
+    @property
     def document(self):
         try:
             return self._document
@@ -29,7 +33,7 @@ class Flowable(Styled):
         self._document = document
 
     def flow(self, container, offset=0, continued=False):
-        self.parent = container
+        self._container = container
         if not continued:
             space_above = float(self.get_style('spaceAbove'))
         else:
@@ -41,5 +45,3 @@ class Flowable(Styled):
     def render(self, canvas, offset=0):
         raise NotImplementedError("virtual method not implemented in class %s" %
                                   self.__class__.__name__)
-
-
