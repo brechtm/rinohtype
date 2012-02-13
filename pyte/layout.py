@@ -107,18 +107,9 @@ class Container(RenderTarget):
             else:
                 bottom = float(self.page.height - self.abs_bottom)
                 height = float(self.height)
-            self._canvas = self.page.canvas.append_new(left, bottom, width, height)
+            self._canvas = self.page.canvas.append_new(left, bottom,
+                                                       width, height)
             return self._canvas
-
-    def render_flowable(self, flowable, offset, continued=False):
-        flowable.parent = self
-        if not continued:
-            space_above = float(flowable.get_style('spaceAbove'))
-        else:
-            space_above = 0
-        space_below = float(flowable.get_style('spaceBelow'))
-        flowable_height = flowable.render(self.canvas, offset + space_above)
-        return space_above + flowable_height + space_below
 
     def render(self, canvas):
         end_of_page = None
@@ -131,7 +122,7 @@ class Container(RenderTarget):
         if self.flowables:
             offset = 0
             for flowable in self.flowables:
-                offset += self.render_flowable(flowable, offset)
+                offset += flowable.flow(self, offset)
             if self.dynamic:
                 self.height.add(offset * pt)
         elif self.chain:
@@ -163,8 +154,7 @@ class Chain(RenderTarget):
             offset = 0
             try:
                 for flowable in self.flowables[self._flowable_index:]:
-                    offset += container.render_flowable(flowable, offset,
-                                                        continued)
+                    offset += flowable.flow(container, offset, continued)
                     self._flowable_index += 1
                     continued = False
             except EndOfContainer:
