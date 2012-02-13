@@ -1,5 +1,5 @@
 
-from .dimension import Dimension
+from .dimension import Dimension, NIL
 from .flowable import Flowable
 from .unit import pt
 
@@ -31,119 +31,73 @@ class RenderTarget(object):
 
 
 class Container(RenderTarget):
-    def __init__(self, parent, left=0*pt, top=0*pt,
-                 width=None, height=Dimension(0), right=None, bottom=None,
+    def __init__(self, parent, left=NIL, top=NIL,
+                 width=None, height=NIL, right=None, bottom=None,
                  chain=None):
         # height = None  AND  bottom = None   ->    height depends on contents
         # width  = None  AND  right  = None   ->    use all available space
-        # TODO: assert ....
         super().__init__()
-        assert parent != self
         if parent:
-            assert isinstance(parent, Container)
-            parent.__children.append(self)
-        self.__parent = parent
-        assert isinstance(left, Dimension)
-        assert isinstance(top, Dimension)
-        self.__left = left
-        self.__top = top
-        if bottom:
-            self.__height = bottom - self.top()
+            parent.children.append(self)
+        self.parent = parent
+        self.left = left
+        self.top = top
+        self.height = bottom - self.top if bottom else height
+        if width:
+            self.width = width
+        elif right:
+            self.width = right - self.left
         else:
-            self.__height = height
-        if right:
-            self.__width = right - self.left()
-        elif width:
-            self.__width = width
-        else:
-            self.__width = self.__parent.width() - self.left()
-        self.__children = []
-        self.__flowables = []
-        if chain:
-            assert isinstance(chain, Chain)
-            self.chain = chain
+            self.width = self.parent.width - self.left
+        self.children = []
+        self.flowables = []
+        self.chain = chain
+        if self.chain:
             chain.add_container(self)
-        else:
-            self.chain = None
 
-    # TODO: remove getter functions, make variables public
-    def top(self):
-        return self.__top
-
-    def absTop(self):
-        if self.__parent:
-            return self.__parent.absTop() + self.top()
-        else:
-            return self.top()
-
-    def bottom(self):
-        return self.top() + self.height()
-
-    def absBottom(self):
-        return self.absTop() + self.height()
-
-    def left(self):
-        return self.__left
-
-    def absLeft(self):
-        if self.__parent:
-            return self.__parent.absLeft() + self.left()
-        else:
-            return self.left()
-
+    @property
     def right(self):
-        return self.left() + self.width()
+        return self.left + self.width
 
-    def absRight(self):
-        return self.absLeft() + self.width()
+    @property
+    def bottom(self):
+        return self.top + self.height
 
-    def height(self):
-        return self.__height
-        if self.__height:
-            return self.__height
-        else:
-            # TODO: NotImplementedError
-            return Dimension(0)
+    @property
+    def abs_left(self):
+        try:
+            return self.parent.abs_left + self.left
+        except AttributeError:
+            return self.left
 
-    def width(self):
-        if self.__width:
-            return self.__width
+    @property
+    def abs_top(self):
+        try:
+            return self.parent.abs_top + self.top
+        except AttributeError:
+            return self.top
 
-#    def addChild(self, child):
-#        assert isinstance(child, Container)
-#        self.__children.append(child)
-#        child.__parent = self
+    @property
+    def abs_right(self):
+        return self.abs_left + self.width
+
+    @property
+    def abs_bottom(self):
+        return self.abs_top + self.height
 
     @property
     def page(self):
-        return self.__parent.page
+        return self.parent.page
 
     @property
     def document(self):
         return self.page._document
 
-    def _draw_box(self, pageCanvas):
-        print("gsave", file=pageCanvas)
-
-        left = float(self.absLeft())
-        bottom = float(self.page.height() - self.absBottom())
-        width = float(self.width())
-        height = float(self.height())
-        print("newpath", file=pageCanvas)
-        print("%f %f moveto" % ( left, bottom, ), file=pageCanvas)
-        print("%f %f lineto" % ( left, bottom + height, ), file=pageCanvas)
-        print("%f %f lineto" % ( left + width, bottom + height, ), file=pageCanvas)
-        print("%f %f lineto" % ( left + width, bottom, ), file=pageCanvas)
-        print("closepath", file=pageCanvas)
-        print("[2 2] 0 setdash", file=pageCanvas)
-        print("stroke", file=pageCanvas)
-        print("grestore", file=pageCanvas)
-
     def render(self, canvas):
-        left = float(self.absLeft())
-        bottom = float(self.page.height() - self.absBottom())
-        width = float(self.width())
-        height = float(self.height())
+        left = float(self.abs_left)
+        bottom = float(self.page.height - self.abs_bottom)
+        width = float(self.width)
+        height = float(self.height)
         dynamic = False
         if height == 0:
             dynamic = True
@@ -153,7 +107,7 @@ class Container(RenderTarget):
         this_canvas = self.page.canvas.append_new(left, bottom, width, height)
 
         end_of_page = None
-        for child in self.__children:
+        for child in self.children:
             try:
                 child.render(this_canvas)
             except EndOfPage as e:
@@ -170,7 +124,7 @@ class Container(RenderTarget):
                 previous_height = space_above + box_height + space_below
                 total_height += previous_height
             if dynamic:
-                self.height().add(total_height * pt)
+                self.height.add(total_height * pt)
         elif self.chain:
             self.chain.render()
 
@@ -198,10 +152,10 @@ class Chain(RenderTarget):
             container = self._containers[index]
             # TODO: bad behaviour with spaceAbove/Below
             #       when skipping to next container
-            left   = float(container.absLeft())
-            bottom = float(container.page.height() - container.absBottom())
-            width  = float(container.width())
-            height = float(container.height())
+            left   = float(container.abs_left)
+            bottom = float(container.page.height - container.abs_bottom)
+            width  = float(container.width)
+            height = float(container.height)
 
             total_height = 0
             prev_height = 0

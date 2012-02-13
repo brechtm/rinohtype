@@ -452,19 +452,19 @@ class RFICPage(Page):
     def __init__(self, document, first=False):
         super().__init__(document, Letter, Orientation.Portrait)
 
-        body_width = self.width() - (self.leftmargin + self.rightmargin)
-        body_height = self.height() - (self.topmargin + self.bottommargin)
+        body_width = self.width - (self.leftmargin + self.rightmargin)
+        body_height = self.height - (self.topmargin + self.bottommargin)
         body = Container(self, self.leftmargin, self.topmargin,
                          body_width, body_height)
 
-        column_height = body.height()
-        column_width = (body.width() - self.column_spacing) / 2.0
+        column_height = body.height
+        column_width = (body.width - self.column_spacing) / 2.0
         column_top = 0*pt
 
         if first:
             self.title_box = Container(body, 0*pt, 0*pt)
-            column_height -= self.title_box.height()
-            column_top = self.title_box.bottom()
+            column_height -= self.title_box.height
+            column_top = self.title_box.bottom
 
         self.content = document.content
 

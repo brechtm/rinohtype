@@ -45,7 +45,7 @@ class Page(Container):
     def render(self):
         backend_document = self.document.backend_document
         self.backend_page = self.backend.Page(self, backend_document,
-                                              self.width(), self.height())
+                                              self.width, self.height)
         self.canvas = self.backend_page.canvas
         super().render(self.canvas)
 

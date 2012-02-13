@@ -88,3 +88,6 @@ class Dimension(object): # internally always pt
         # TODO: icky!
         assert isinstance(container, Container)
         return self + container.bottom()
+
+
+NIL = Dimension(0)
