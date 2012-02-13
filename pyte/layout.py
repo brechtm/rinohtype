@@ -147,19 +147,18 @@ class Chain(RenderTarget):
     def render(self):
         continued = False
         offset = 0
-        first_container_index = self._container_index
-        last_container_index = len(self._containers)
-        for index in range(first_container_index, last_container_index):
-            container = self._containers[index]
+        while self._container_index < len(self._containers):
+            container = self._containers[self._container_index]
+            self._container_index += 1
             offset = 0
             try:
-                for flowable in self.flowables[self._flowable_index:]:
+                while self._flowable_index < len(self.flowables):
+                    flowable = self.flowables[self._flowable_index]
                     offset += flowable.flow(container, offset, continued)
                     self._flowable_index += 1
                     continued = False
             except EndOfContainer:
                 continued = True
-                self._container_index += 1
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
         return offset
