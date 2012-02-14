@@ -79,6 +79,12 @@ class Document(object):
         self.backend_document = self.backend.Document(self, self.title)
         self.counters = {}
         self.elements = {}
+        self._unique_id = 0
+
+    @property
+    def unique_id(self):
+        self._unique_id += 1
+        return self._unique_id
 
     def load_cache(self, filename):
         try:

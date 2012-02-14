@@ -41,9 +41,7 @@ class Heading(Paragraph, Referenceable):
             number = ""
         self.level = level
         if id is None:
-            # an ID is necessary for building the TOC
-            # TODO: generate unique ID (requires knowledge of context)
-            id = '{} (level {})'.format(title, level)
+            id = document.unique_id
         Paragraph.__init__(self, number + title, style)
         Referenceable.__init__(self, document, id)
 
