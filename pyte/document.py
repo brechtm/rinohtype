@@ -83,17 +83,18 @@ class Document(object):
         page.number = number
 
     def render(self, filename):
-        self.converged = True
+        self.converged = False
         self.number_of_pages = 0
         self._previous_number_of_pages = -1
         self.render_loop()
         while not self.converged:
             print('Not yet converged, rendering again...')
+            self.converged = True
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
             self.number_of_pages = self.render_loop()
             if self.number_of_pages != self._previous_number_of_pages:
-                converged = False
+                self.converged = False
                 self._previous_number_of_pages = self.number_of_pages
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
@@ -101,7 +102,6 @@ class Document(object):
 
     def render_loop(self):
         self.pages = []
-        self.converged = True
         self.setup()
         index = 0
         while index < len(self.pages):
