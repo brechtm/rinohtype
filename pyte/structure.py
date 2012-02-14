@@ -42,7 +42,8 @@ class Heading(Paragraph, Referenceable):
         self.level = level
         if id is None:
             # an ID is necessary for building the TOC
-            id = __builtins__['id'](self)
+            # TODO: generate unique ID (requires knowledge of context)
+            id = '{} (level {})'.format(title, level)
         Paragraph.__init__(self, number + title, style)
         Referenceable.__init__(self, document, id)
 
@@ -55,7 +56,9 @@ class Heading(Paragraph, Referenceable):
     def render(self, canvas, offset=0):
         if self.level == 1:
             self.page.section = self
+        self.update_page_reference()
         return super().render(canvas, offset)
+
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,

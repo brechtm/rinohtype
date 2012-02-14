@@ -1,5 +1,6 @@
 
 import time
+import pickle
 
 from lxml import etree, objectify
 
@@ -51,6 +52,8 @@ class Page(Container):
 
 
 class Document(object):
+    cache_extension = '.ptc'
+
     def __init__(self, xmlfile, rngschema, lookup, backend=psg):
         set_xml_catalog()
         self.parser = objectify.makeparser(remove_comments=True,
@@ -77,25 +80,45 @@ class Document(object):
         self.counters = {}
         self.elements = {}
 
+    def load_cache(self, filename):
+        try:
+            file = open(filename + self.cache_extension, 'rb')
+            self.number_of_pages, self.page_references = pickle.load(file)
+            self._previous_number_of_pages = self.number_of_pages
+            self._previous_page_references = self.page_references.copy()
+            file.close()
+        except IOError:
+            self.number_of_pages = 0
+            self._previous_number_of_pages = -1
+            self.page_references = {}
+            self._previous_page_references = {}
+
+    def save_cache(self, filename):
+        file = open(filename + self.cache_extension, 'wb')
+        data = (self.number_of_pages, self.page_references)
+        pickle.dump(data, file)
+        file.close()
+
     def add_page(self, page, number):
         assert isinstance(page, Page)
         self.pages.append(page)
         page.number = number
 
+    def has_converged(self):
+        return (self.number_of_pages == self._previous_number_of_pages and
+                self.page_references == self._previous_page_references)
+
     def render(self, filename):
-        self.converged = False
-        self.number_of_pages = 0
-        self._previous_number_of_pages = -1
-        self.render_loop()
-        while not self.converged:
+        self.load_cache(filename)
+        self.number_of_pages = self.render_loop()
+        while not self.has_converged():
+            self._previous_number_of_pages = self.number_of_pages
+            self._previous_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
-            self.converged = True
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
             self.number_of_pages = self.render_loop()
-            if self.number_of_pages != self._previous_number_of_pages:
-                self.converged = False
-                self._previous_number_of_pages = self.number_of_pages
+        self.save_cache(filename)
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
         self.backend_document.write(filename)

@@ -51,10 +51,6 @@ class Variable(Field):
         return super().field_characters()
 
 
-class ReferenceNotConverged(Exception):
-    pass
-
-
 class Referenceable(object):
     def __init__(self, document, id):
         if id:
@@ -66,6 +62,9 @@ class Referenceable(object):
 
     def title(self):
         raise NotImplementedError
+
+    def update_page_reference(self):
+        self.document.page_references[self.id] = self.page.number
 
 
 REFERENCE = 'reference'
@@ -79,7 +78,6 @@ class Reference(Field):
         super().__init__()
         self.id = id
         self.type = type
-        self._previous = None
 
     def field_characters(self):
         try:
@@ -88,13 +86,8 @@ class Reference(Field):
                 self.text = referenced_item.reference()
             elif self.type == PAGE:
                 try:
-                    page_number = referenced_item.page.number
-                    if self._previous != page_number:
-                        self._previous = page_number
-                        raise AttributeError
-                    self.text = str(page_number)
-                except AttributeError:
-                    self.document.converged = False
+                    self.text = str(self.document.page_references[self.id])
+                except KeyError:
                     self.text = '??'
             elif self.type == TITLE:
                 self.text = referenced_item.title()
