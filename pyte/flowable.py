@@ -19,7 +19,7 @@ class Flowable(Styled):
 
     @property
     def page(self):
-        return self._container.page
+        return self.container.page
 
     @property
     def document(self):
@@ -33,7 +33,7 @@ class Flowable(Styled):
         self._document = document
 
     def flow(self, container, offset=0, continued=False):
-        self._container = container
+        self.container = container
         if not continued:
             space_above = float(self.get_style('spaceAbove'))
         else:

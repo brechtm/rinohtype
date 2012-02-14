@@ -472,11 +472,10 @@ class Paragraph(MixedStyledText, Flowable):
                 line_pointers = self.typeset_line(canvas, line, line_pointers,
                                                   last_line=True)
                 if isinstance(word, Flowable):
-                    space_above = float(word.get_style('spaceAbove'))
-                    space_below = float(word.get_style('spaceBelow'))
-                    flowable_offset = canvas.height - self._line_cursor + space_above
-                    flowable_height = word.render(canvas, flowable_offset)
-                    self.newline(space_above + flowable_height + space_below)
+                    # TODO: handle continued flowables
+                    flowable_offset = canvas.height - self._line_cursor
+                    flowable_height = word.flow(self.container, flowable_offset)
+                    self.newline(flowable_height)
                 line = Line(self, line_width, indent_left)
             else:
                 try:
