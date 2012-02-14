@@ -94,6 +94,7 @@ class StyledText(Styled):
             try:
                 character = special_chars[char](style=ParentStyle,
                                                 new_span=(i==0))
+                # TODO: span can be set to the number of characters in the span
             except KeyError:
                 character = Character(char, style=ParentStyle, new_span=(i==0))
             character.parent = self
@@ -346,7 +347,7 @@ class NewLine(ControlCharacter):
 
 class Tab(ControlCharacter, Character):
     def __init__(self):
-        Character.__init__(self, ' ')
+        Character.__init__(self, ' ', new_span=True)
         super().__init__(' ')
         self.tab_width = 0
 

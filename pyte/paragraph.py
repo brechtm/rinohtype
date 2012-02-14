@@ -174,6 +174,37 @@ class EndOfLine(Exception):
         self.hyphenation_remainder = hyphenation_remainder
 
 
+class Span(list):
+    def __init__(self):
+        self.widths = []
+
+    def append(self, item, width):
+        super().append(item)
+        self.widths.append(width)
+
+    def render(self, canvas, x, y):
+        if isinstance(self[0], Box):
+            width = self.typeset_box(canvas, x, y, self[0])
+        else:
+            canvas.move_to(x, y + self[0].vertical_offset)
+            width = self.typeset_span(canvas)
+        return width
+
+    def typeset_span(self, canvas):
+        font = self[0].get_font()
+        font_size = float(self[0].get_style('fontSize'))
+        span_chars = [char.glyph_name for char in self]
+        canvas.select_font(font, font_size)
+        canvas.show_glyphs(span_chars, self.widths)
+        return sum(self.widths)
+
+    def typeset_box(self, canvas, x, y, box):
+        box_canvas = canvas.append_new(x, y - box.depth, box.width,
+                                       box.height + box.depth)
+        print(box.ps, file=box_canvas.psg_canvas)
+        return box.width
+
+
 class Line(list):
     def __init__(self, paragraph, width, indent=0.0):
         super().__init__()
@@ -261,7 +292,6 @@ class Line(list):
         """Typeset words on the current coordinates"""
         chars = []
         char_widths = []
-        x_offset = 0
         max_font_size = 0
         justify = self.paragraph.get_style('justify')
         if Tab in map(type, self) or justify == BOTH and last_line:
@@ -327,80 +357,16 @@ class Line(list):
 
         # position cursor
         self.paragraph._line_cursor -= max_font_size
-        canvas.move_to(x, self.paragraph._line_cursor)
 
-        if isinstance(chars[0], Character):
-            current_style = {'typeface': chars[0].get_style('typeface'),
-                             'fontWeight': chars[0].get_style('fontWeight'),
-                             'fontSlant': chars[0].get_style('fontSlant'),
-                             'fontWidth': chars[0].get_style('fontWidth'),
-                             'fontSize': chars[0].get_style('fontSize'),
-                             'vertical_offset': chars[0].vertical_offset}
-        else:
-            current_style = 'box'
-
-        span_chars = []
-        span_char_widths = []
+        span = Span()
         for i, char in enumerate(chars):
-            if isinstance(char, Box):
-                if span_chars:
-                    y = (self.paragraph._line_cursor +
-                         current_style['vertical_offset'])
-                    canvas.move_to(x + x_offset, y)
-                    x_offset += self.typeset_span(canvas, current_style,
-                                                  span_chars, span_char_widths)
-                    span_chars = []
-                    span_char_widths = []
-                    current_style = 'box'
-                x_offset += self.typeset_box(canvas, x + x_offset,
-                                             self.paragraph._line_cursor, char)
-            else:
-                char_style = {'typeface': char.get_style('typeface'),
-                              'fontWeight': char.get_style('fontWeight'),
-                              'fontSlant': char.get_style('fontSlant'),
-                              'fontWidth': char.get_style('fontWidth'),
-                              'fontSize': char.get_style('fontSize'),
-                              'vertical_offset': char.vertical_offset}
-                if current_style == 'box':
-                    current_style = char_style
-                elif char_style != current_style:
-                    y = (self.paragraph._line_cursor +
-                         current_style['vertical_offset'])
-                    canvas.move_to(x + x_offset, y)
-                    x_offset += self.typeset_span(canvas, current_style,
-                                                  span_chars, span_char_widths)
-                    span_chars = []
-                    span_char_widths = []
-                    current_style = char_style
-
-                span_chars.append(char.glyph_name)
-                span_char_widths.append(char_widths[i])
-
-        if span_chars:
-            y = self.paragraph._line_cursor + current_style['vertical_offset']
-            canvas.move_to(x + x_offset, y)
-            self.typeset_span(canvas, current_style, span_chars,
-                              span_char_widths)
+            if char.new_span and i > 0:
+                x += span.render(canvas, x, self.paragraph._line_cursor)
+                span = Span()
+            span.append(char, char_widths[i])
+        x += span.render(canvas, x, self.paragraph._line_cursor)
 
         return max_font_size
-
-    def typeset_span(self, canvas, style, span_chars, span_char_widths):
-        """Typeset a series of characters with the same style"""
-        # TODO: create Span class
-        font = style['typeface'].get(weight=style['fontWeight'],
-                                     slant=style['fontSlant'],
-                                     width=style['fontWidth'])
-        canvas.select_font(font, float(style['fontSize']))
-        canvas.show_glyphs(span_chars, span_char_widths)
-        return sum(span_char_widths)
-
-    def typeset_box(self, canvas, x, y, box):
-        box_canvas = canvas.append_new(x, y - box.depth, box.width,
-                                       box.height + box.depth)
-        print(box.ps, file=box_canvas.psg_canvas)
-        # TODO: the following is probably not be the best way to do this
-        print("( ) [ {} ] xshow".format(box.width), file=canvas.psg_canvas)
-        return box.width
 
 
 class Paragraph(MixedStyledText, Flowable):
