@@ -328,6 +328,12 @@ class Box(Character):
     def ligature(self, next_character):
         raise TypeError
 
+    def render(self, canvas, x, y):
+        box_canvas = canvas.append_new(x, y - self.depth, self.width,
+                                       self.height + self.depth)
+        print(self.ps, file=box_canvas.psg_canvas)
+        return self.width
+
 
 class ControlCharacter(object):
     def __init__(self, text):

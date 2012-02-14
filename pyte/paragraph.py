@@ -183,26 +183,13 @@ class Span(list):
         self.widths.append(width)
 
     def render(self, canvas, x, y):
-        if isinstance(self[0], Box):
-            width = self.typeset_box(canvas, x, y, self[0])
-        else:
-            canvas.move_to(x, y + self[0].vertical_offset)
-            width = self.typeset_span(canvas)
-        return width
-
-    def typeset_span(self, canvas):
         font = self[0].get_font()
         font_size = float(self[0].get_style('fontSize'))
+        canvas.move_to(x, y + self[0].vertical_offset)
         span_chars = [char.glyph_name for char in self]
         canvas.select_font(font, font_size)
         canvas.show_glyphs(span_chars, self.widths)
         return sum(self.widths)
-
-    def typeset_box(self, canvas, x, y, box):
-        box_canvas = canvas.append_new(x, y - box.depth, box.width,
-                                       box.height + box.depth)
-        print(box.ps, file=box_canvas.psg_canvas)
-        return box.width
 
 
 class Line(list):
@@ -360,11 +347,18 @@ class Line(list):
 
         span = Span()
         for i, char in enumerate(chars):
-            if char.new_span and i > 0:
-                x += span.render(canvas, x, self.paragraph._line_cursor)
-                span = Span()
+            if char.new_span:
+                if span:
+                    x += span.render(canvas, x, self.paragraph._line_cursor)
+                    span = Span()
+                try:
+                    x += char.render(canvas, x, self.paragraph._line_cursor)
+                    continue
+                except AttributeError:
+                    pass
             span.append(char, char_widths[i])
-        x += span.render(canvas, x, self.paragraph._line_cursor)
+        if span:
+            x += span.render(canvas, x, self.paragraph._line_cursor)
 
         return max_font_size
 
