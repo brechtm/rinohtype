@@ -369,7 +369,6 @@ class Eq(CustomElement):
 class Cite(CustomElement):
     def parse(self, document):
         #print('Cite.render()')
-        # TODO: general document getter in Textdocument/Chain/Container
         return document.bibliography.cite(self.get('id'))
 
 
