@@ -95,7 +95,8 @@ class Document(object):
             if self.number_of_pages != self._previous_number_of_pages:
                 converged = False
                 self._previous_number_of_pages = self.number_of_pages
-        print('Writing output: {}'.format(filename))
+        print('Writing output: {}'.format(filename +
+                                          self.backend_document.extension))
         self.backend_document.write(filename)
 
     def render_loop(self):

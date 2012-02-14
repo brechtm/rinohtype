@@ -11,7 +11,7 @@ from pyte.bibliography import PseudoCSLDataXML
 bib_source = PseudoCSLDataXML('references.xml')
 
 doc = RFIC2009Paper('template.xml', bib_source)
-doc.render('template.ps')
+doc.render('template')
 
 run_time = time.clock()
 

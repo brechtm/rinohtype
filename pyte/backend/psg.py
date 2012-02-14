@@ -4,12 +4,14 @@ from psg.drawing.box import canvas as psg_Canvas
 
 
 class Document(object):
+    extension = '.ps'
+
     def __init__(self, pyte_document, title):
         self.pyte_document = pyte_document
         self.psg_doc = dsc_document(title)
 
     def write(self, filename):
-        fp = open(filename, "w", encoding="latin-1")
+        fp = open(filename + self.extension, 'w', encoding='latin-1')
         self.psg_doc.write_to(fp)
         fp.close()
 
