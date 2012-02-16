@@ -114,17 +114,7 @@ class Word(list):
     def width(self):
         width = 0.0
         for i, character in enumerate(self):
-            if isinstance(character, Box):
-                width += character.width
-            else:
-                if self.stringwidth is None or character.new_span:
-                    self.font_metrics = character.get_font().psFont.metrics
-                    self.stringwidth = self.font_metrics.stringwidth
-                    self.font_size = float(character.get_style('fontSize'))
-
-                width += self.stringwidth(character.text, self.font_size)
-                if self.kerning:
-                    width += self.kern(i)
+            width += character.width + self.kern(i)
         return width
 
     def kern(self, index):
