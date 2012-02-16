@@ -229,9 +229,9 @@ class Character(StyledText):
             #TODO: fine-grained style compare?
             raise TypeError
 
-        font_metrics = self.ps_font.metrics
-        return font_metrics.get_kerning(self.glyph_name,
-                                        next_character.glyph_name)
+        kern = self.ps_font.metrics.get_kerning(self.glyph_name,
+                                                next_character.glyph_name)
+        return kern * float(self.height) / 1000.0
 
     def ligature(self, next_character):
         if self.style != next_character.style:

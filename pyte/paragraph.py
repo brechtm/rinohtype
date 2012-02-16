@@ -128,17 +128,13 @@ class Word(list):
         return width
 
     def kern(self, index):
-        if not self.kerning or index == len(self) - 1:
+        if not self.kerning:
             kerning = 0.0
         else:
-            this_char = self[index]
-            next_char = self[index + 1]
             try:
-                kern = this_char.kerning(next_char)
-                kerning = kern * float(self.font_size) / 1000.0
-            except TypeError:
+                kerning = self[index].kerning(self[index + 1])
+            except (TypeError, IndexError):
                 kerning = 0.0
-
         return kerning
 
     dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
