@@ -61,8 +61,6 @@ class TabStop(object):
 class Word(list):
     def __init__(self, characters):
         super().__init__()
-        self.kerning = True
-        self.ligatures = True
         self.hyphen_enable = True
         self.hyphen_chars = 0
         self.hyphen_lang = None
@@ -82,12 +80,6 @@ class Word(list):
         return result
 
     def append(self, char):
-        if self.kerning and (char.new_span or not self):
-            self.kerning = char.get_style('kerning')
-
-        if self.ligatures and (char.new_span or not self):
-            self.ligatures = char.get_style('ligatures')
-
         if self.hyphen_enable and (char.new_span or not self):
             self.hyphen_enable = char.get_style('hyphenate')
             self.hyphen_chars = max(self.hyphen_chars,
@@ -99,16 +91,15 @@ class Word(list):
         super().append(char)
 
     def substitute_ligatures(self):
-        if self.ligatures:
-            i = 0
-            while i + 1 < len(self):
-                character = self[i]
-                next_character = self[i + 1]
-                try:
-                    self[i] = character.ligature(next_character)
-                    del self[i + 1]
-                except TypeError:
-                    i += 1
+        i = 0
+        while i + 1 < len(self):
+            character = self[i]
+            next_character = self[i + 1]
+            try:
+                self[i] = character.ligature(next_character)
+                del self[i + 1]
+            except TypeError:
+                i += 1
 
     @property
     def width(self):
@@ -118,13 +109,10 @@ class Word(list):
         return width
 
     def kern(self, index):
-        if not self.kerning:
+        try:
+            kerning = self[index].kerning(self[index + 1])
+        except (TypeError, IndexError):
             kerning = 0.0
-        else:
-            try:
-                kerning = self[index].kerning(self[index + 1])
-            except (TypeError, IndexError):
-                kerning = 0.0
         return kerning
 
     dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')

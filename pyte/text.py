@@ -225,6 +225,8 @@ class Character(StyledText):
         return subscript
 
     def kerning(self, next_character):
+        if not self.get_style('kerning'):
+            return 0.0
         if self.style != next_character.style:
             #TODO: fine-grained style compare?
             raise TypeError
@@ -234,6 +236,8 @@ class Character(StyledText):
         return kern * float(self.height) / 1000.0
 
     def ligature(self, next_character):
+        if not self.get_style('ligatures'):
+            return 0.0
         if self.style != next_character.style:
             #TODO: fine-grained style compare?
             raise TypeError
