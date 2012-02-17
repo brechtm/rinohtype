@@ -279,13 +279,10 @@ class Line(list):
                     chars.append(item)
                     char_widths.append(item.tab_width)
             else:
-                for j, character in enumerate(item.characters()):
-                    current_font_size = float(character.height)
-                    max_font_size = max(current_font_size, max_font_size)
-                    #kerning = item.kern(j)
-                    kerning = 0.0
-                    chars.append(character)
-                    char_widths.append(character.width + kerning) #+ spacing
+                chars += list(item.characters())
+                char_widths += item.widths
+                current_font_size = float(item.height)
+                max_font_size = max(current_font_size, max_font_size)
 
         line_width = sum(char_widths)
 
