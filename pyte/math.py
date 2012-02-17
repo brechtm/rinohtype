@@ -65,6 +65,8 @@ class Math(CharacterLike):
         box.parent = self
         return [box]
 
+    spans = characters
+
 
  # TODO: is subclass of ParagraphStyle, but doesn't need all of its attributes!
 class EquationStyle(ParagraphStyle):

@@ -32,6 +32,9 @@ class Flowable(Styled):
     def document(self, document):
         self._document = document
 
+    def split(self):
+        yield self
+
     def flow(self, container, offset=0, continued=False):
         self.container = container
         if not continued:

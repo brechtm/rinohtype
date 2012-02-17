@@ -10,6 +10,9 @@ class LateEval(object):
     def __init__(self, field):
         self.field = field
 
+    def split(self):
+        yield self
+
     def characters(self):
         return self.field.field_characters()
 
@@ -19,6 +22,9 @@ class Field(StyledText):
         super().__init__('')
 
     def characters(self):
+        yield LateEval(self)
+
+    def spans(self):
         yield LateEval(self)
 
     def field_characters(self):

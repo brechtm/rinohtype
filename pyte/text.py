@@ -82,12 +82,37 @@ class StyledText(Styled):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
+    def split(self):
+        re_special = re.compile('[{}]'.format(''.join(special_chars.keys())))
+        last = 0
+        for match in re_special.finditer(self.text):
+            index = match.start()
+            item = self.__class__(self.text[last:index])
+            item.parent = self
+            yield item
+            item = special_chars[self.text[index]]()
+            item.parent = self
+            yield item
+            last = index + 1
+        item = self.__class__(self.text[last:])
+        item.parent = self
+        yield item
+
     def get_font(self):
         typeface = self.get_style('typeface')
         weight = self.get_style('fontWeight')
         slant = self.get_style('fontSlant')
         width = self.get_style('fontWidth')
         return typeface.get(weight=weight, slant=slant, width=width)
+
+    @property
+    def height(self):
+        return self.get_style('fontSize')
+
+    @property
+    def width(self):
+        font_size = float(self.height)
+        return self.get_font().psFont.metrics.stringwidth(self.text, font_size)
 
     def characters(self):
         for i, char in enumerate(self.text):
@@ -105,6 +130,10 @@ class StyledText(Styled):
             elif self.get_style('position') == SUBSCRIPT:
                 character = character.subscript()
             yield character
+
+    def spans(self):
+        # TODO: handle small caps, superscipt and subscript
+        yield self
 
 
 class MixedStyledText(list, Styled):
@@ -147,6 +176,11 @@ class MixedStyledText(list, Styled):
             for char in item.characters():
                 yield char
 
+    def spans(self):
+        for item in self:
+            for span in item.spans():
+                yield span
+
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
@@ -158,6 +192,9 @@ class Character(StyledText):
 
     def __repr__(self):
         return self.text
+
+    def split(self):
+        yield self
 
     @property
     def width(self):
@@ -369,6 +406,8 @@ class FlowableEmbedder(object):
     def characters(self):
         self.flowable.parent = self.parent
         yield self.flowable
+
+    spans = characters
 
 
 # predefined styles

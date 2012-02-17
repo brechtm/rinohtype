@@ -58,89 +58,83 @@ class TabStop(object):
             return width * self._position
 
 
-class Word(list):
-    def __init__(self, characters):
-        super().__init__()
+class Word(MixedStyledText):
+    def __init__(self, items, paragraph):
+        super().__init__(items, None)
+        self.parent = paragraph
         self.hyphen_enable = True
         self.hyphen_chars = 0
         self.hyphen_lang = None
-        for char in characters:
-            self.append(char)
 
-    stringwidth = None
-    font_size = None
+##    def __repr__(self):
+##        return ''.join([char.text for char in self])
 
-    def __repr__(self):
-        return ''.join([char.text for char in self])
+##    def __getitem__(self, index):
+##        result = super().__getitem__(index)
+##        if type(index) == slice:
+##            result = __class__(result)
+##        return result
 
-    def __getitem__(self, index):
-        result = super().__getitem__(index)
-        if type(index) == slice:
-            result = __class__(result)
-        return result
+##    def append(self, char):
+##        if self.hyphen_enable and (char.new_span or not self):
+##            self.hyphen_enable = char.get_style('hyphenate')
+##            self.hyphen_chars = max(self.hyphen_chars,
+##                                    char.get_style('hyphenChars'))
+##            if self.hyphen_lang is None:
+##                self.hyphen_lang = char.get_style('hyphenLang')
+##            elif char.get_style('hyphenLang') != self.hyphen_lang:
+##                self.hyphen_enable = False
+##        super().append(char)
 
-    def append(self, char):
-        if self.hyphen_enable and (char.new_span or not self):
-            self.hyphen_enable = char.get_style('hyphenate')
-            self.hyphen_chars = max(self.hyphen_chars,
-                                    char.get_style('hyphenChars'))
-            if self.hyphen_lang is None:
-                self.hyphen_lang = char.get_style('hyphenLang')
-            elif char.get_style('hyphenLang') != self.hyphen_lang:
-                self.hyphen_enable = False
-        super().append(char)
-
-    def substitute_ligatures(self):
-        i = 0
-        while i + 1 < len(self):
-            character = self[i]
-            next_character = self[i + 1]
-            try:
-                self[i] = character.ligature(next_character)
-                del self[i + 1]
-            except TypeError:
-                i += 1
+##    def substitute_ligatures(self):
+##        i = 0
+##        while i + 1 < len(self):
+##            character = self[i]
+##            next_character = self[i + 1]
+##            try:
+##                self[i] = character.ligature(next_character)
+##                del self[i + 1]
+##            except TypeError:
+##                i += 1
 
     @property
     def width(self):
         width = 0.0
-        for i, character in enumerate(self):
-            width += character.width + self.kern(i)
-        return width
+        return sum([item.width for item in self])
 
-    def kern(self, index):
-        try:
-            kerning = self[index].kerning(self[index + 1])
-        except (TypeError, IndexError):
-            kerning = 0.0
-        return kerning
+##    def kern(self, index):
+##        try:
+##            kerning = self[index].kerning(self[index + 1])
+##        except (TypeError, IndexError):
+##            kerning = 0.0
+##        return kerning
 
     dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
 
-    @property
-    def _hyphenator(self):
-        dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
-        if not os.path.exists(dic_path):
-            dic_path = os.path.join(self.dic_dir, dic_file)
-            if not os.path.exists(dic_path):
-                raise IOError("Hyphenation dictionary '{}' neither found in "
-                              "current directory, nor in the data directory"
-                              .format(dic_file))
-        return Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
-
-    def hyphenate(self):
-        if self.hyphen_enable:
-            word = str(self)
-            h = self._hyphenator
-            for position in reversed(h.positions(word)):
-                parts = h.wrap(word, position + 1)
-                if ''.join((parts[0][:-1], parts[1])) != word:
-                    raise NotImplementedError
-                first, second = self[:position], self[position:]
-                hyphen = Character('-', style=first[-1].style)
-                hyphen.parent = first[-1].parent
-                first.append(hyphen)
-                yield first, second
+##    @property
+##    def _hyphenator(self):
+##        dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
+##        if not os.path.exists(dic_path):
+##            dic_path = os.path.join(self.dic_dir, dic_file)
+##            if not os.path.exists(dic_path):
+##                raise IOError("Hyphenation dictionary '{}' neither found in "
+##                              "current directory, nor in the data directory"
+##                              .format(dic_file))
+##        return Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
+##
+##    def hyphenate(self):
+##        if self.hyphen_enable:
+##            word = str(self)
+##            h = self._hyphenator
+##            for position in reversed(h.positions(word)):
+##                parts = h.wrap(word, position + 1)
+##                if ''.join((parts[0][:-1], parts[1])) != word:
+##                    raise NotImplementedError
+##                first, second = self[:position], self[position:]
+##                hyphen = Character('-', style=first[-1].style)
+##                hyphen.parent = first[-1].parent
+##                first.append(hyphen)
+##                yield first, second
 
 
 class EndOfLine(Exception):
@@ -263,32 +257,33 @@ class Line(list):
             self.pop()
 
         # calculate total width of all characters (excluding spaces)
-        for word in self:
-            if isinstance(word, Space):
-                if justification != BOTH or word.fixed_width:
-                    chars.append(word)
-                    char_widths.append(word.width)
+        for item in self:
+            # TODO: contextual_width() method in Space, Tab, ...
+            if isinstance(item, Space):
+                chars.append(item)
+                if justification != BOTH or item.fixed_width:
+                    char_widths.append(item.width)
                 else:
-                    chars.append(word)
                     char_widths.append(0.0)
-            elif isinstance(word, Tab):
+            elif isinstance(item, Tab):
                 try:
-                    fill_char = Character(word.tab_stop.fill)
-                    fill_char.parent = word.parent
-                    number, rest = divmod(word.tab_width, fill_char.width)
-                    chars.append(word)
+                    fill_char = Character(item.tab_stop.fill)
+                    fill_char.parent = item.parent
+                    number, rest = divmod(item.tab_width, fill_char.width)
+                    chars.append(item)
                     char_widths.append(rest)
                     for i in range(int(number)):
                         chars.append(fill_char)
                         char_widths.append(fill_char.width)
                 except (AttributeError, TypeError):
-                    chars.append(word)
-                    char_widths.append(word.tab_width)
+                    chars.append(item)
+                    char_widths.append(item.tab_width)
             else:
-                for j, character in enumerate(word):
+                for j, character in enumerate(item.characters()):
                     current_font_size = float(character.height)
                     max_font_size = max(current_font_size, max_font_size)
-                    kerning = word.kern(j)
+                    #kerning = item.kern(j)
+                    kerning = 0.0
                     chars.append(character)
                     char_widths.append(character.width + kerning) #+ spacing
 
@@ -353,16 +348,23 @@ class Paragraph(MixedStyledText, Flowable):
         self.field_pointer = None
         self.first_line = True
 
-    def _split_words(self, characters):
-        group_function = lambda item: isinstance(item, (Space, LateEval,
-                                                        ControlCharacter,
-                                                        Flowable))
+##    def _split_words(self, characters):
+##        group_function = lambda item: isinstance(item, (Space, LateEval,
+##                                                        ControlCharacter,
+##                                                        Flowable))
+##        words = []
+##        for is_special, item in itertools.groupby(characters, group_function):
+##            if is_special:
+##                words += item
+##            else:
+##                words.append(Word(item))
+##        return words
+
+    def _split_words(self, spans):
+        join = False
         words = []
-        for is_special, item in itertools.groupby(characters, group_function):
-            if is_special:
-                words += item
-            else:
-                words.append(Word(item))
+        for span in spans:
+            words += span.split()
         return words
 
     def render(self, canvas, offset=0):
@@ -370,7 +372,7 @@ class Paragraph(MixedStyledText, Flowable):
 
     def typeset(self, canvas, offset=0):
         if not self._words:
-            self._words = self._split_words(self.characters())
+            self._words = self._split_words(self.spans())
 
         indent_left = float(self.get_style('indentLeft'))
         indent_right = float(self.get_style('indentRight'))
