@@ -9,6 +9,7 @@ from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
 from .reference import LateEval
+from .style import ParentStyle
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab
 from .text import TextStyle, MixedStyledText
 from .unit import pt
@@ -200,7 +201,9 @@ class Line(list):
             return None, None
 
     def append(self, item):
-        if item.style != self.current_style:
+        if ((item.style != self.current_style) or
+            (item.style == ParentStyle and self.current_style == ParentStyle and
+             self and self[-1] and item.parent != self[-1][0].parent)):
             if self and not self[-1]:
                 self.pop()
             self.current_span = Span()
