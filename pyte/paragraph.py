@@ -143,6 +143,10 @@ class EndOfLine(Exception):
         self.hyphenation_remainder = hyphenation_remainder
 
 
+def _is_scalable_space(item):
+    return isinstance(item, Space) and not item.fixed_width
+
+
 class Span(list):
     def __init__(self):
         self.widths = []
@@ -159,12 +163,9 @@ class Span(list):
         return sum([item.width for item in self])
 
     def spaces(self):
-        number = 0
-        for item in self:
-            number += item.text.count(' ')
-        return number
+        return list(map(_is_scalable_space, self)).count(True)
 
-    def render(self, canvas, x, y, add_to_spaces=None):
+    def render(self, canvas, x, y, add_to_spaces=0.0):
         font = self[0].get_font()
         font_size = float(self[0].get_style('fontSize'))
         canvas.move_to(x, y)# + self[0].get('vertical_offset'))
@@ -172,11 +173,10 @@ class Span(list):
         span_widths = []
         for item in self:
             span_chars += item.glyphs()
-            span_widths += item.widths
-        if add_to_spaces:
-            for i, char in enumerate(span_chars):
-                if char == 'space':
-                    span_widths[i] = span_widths[i] + add_to_spaces
+            if _is_scalable_space(item):
+                span_widths += [item.widths[0] + add_to_spaces]
+            else:
+                span_widths += item.widths
         canvas.select_font(font, font_size)
         canvas.show_glyphs(span_chars, span_widths)
         return sum(span_widths)
@@ -324,29 +324,14 @@ class Line(list):
 ##                current_font_size = float(item.height)
 ##                max_font_size = max(current_font_size, max_font_size)
 
-        #line_width = sum(char_widths)
         line_width = sum(span.width for span in self)
         max_font_size = max(float(span.height) for span in self)
 
-        # calculate space width
-##        if justification == BOTH:
-##            try:
-##                def is_scalable_space(item):
-##                    return isinstance(item, Space) and not item.fixed_width
-##                number_of_spaces = list(map(is_scalable_space, self)).count(True)
-##                space_width = (self.width - line_width) / (number_of_spaces)
-##            except ZeroDivisionError:
-##                space_width = 0.0
-##            for i, char in enumerate(chars):
-##                if isinstance(char, Space) and not char.fixed_width:
-##                    char_widths[i] = space_width
-##        else:
-##            extra_space = self.width - line_width
         extra_space = self.width - line_width
 
         # horizontal displacement
         x = self.indent
-        add_to_spaces = None
+        add_to_spaces = 0.0
         if justification == CENTER:
             x += extra_space / 2.0
         elif justification == RIGHT:
@@ -465,7 +450,7 @@ class Paragraph(MixedStyledText, Flowable):
         buffer = canvas.new(0, 0, canvas.width, canvas.height)
         try:
             line_height = line.typeset(buffer, last_line)
-            self.newline(self._line_spacing(line_height) - line_height)
+            self.advance(self._line_spacing(line_height) - line_height)
             canvas.append(buffer)
             try:
                 line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
