@@ -146,18 +146,25 @@ class Span(list):
     def __init__(self):
         self.widths = []
 
-    def append(self, item, width):
+    def append(self, item):
         super().append(item)
-        self.widths.append(width)
+
+    @property
+    def width(self):
+        return sum([item.width for item in self])
 
     def render(self, canvas, x, y):
         font = self[0].get_font()
         font_size = float(self[0].get_style('fontSize'))
-        canvas.move_to(x, y + self[0].vertical_offset)
-        span_chars = [char.glyph_name for char in self]
+        canvas.move_to(x, y)# + self[0].get('vertical_offset'))
+        span_chars = []
+        span_widths = []
+        for item in self:
+            span_chars += item.glyphs()
+            span_widths += item.widths
         canvas.select_font(font, font_size)
-        canvas.show_glyphs(span_chars, self.widths)
-        return sum(self.widths)
+        canvas.show_glyphs(span_chars, span_widths)
+        return sum(span_widths)
 
 
 class Line(list):
@@ -168,6 +175,7 @@ class Line(list):
         self.indent = indent
         self.text_width = 0
         self._in_tab = None
+        self.current_style = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -178,6 +186,11 @@ class Line(list):
             return None, None
 
     def append(self, item):
+        if item.style != self.current_style:
+            self.current_span = Span()
+            self.current_style = item.style
+            super().append(self.current_span)
+
         try:
             # TODO: keep non-ligatured version in case word doesn't fit on line
             item.substitute_ligatures()
@@ -241,7 +254,7 @@ class Line(list):
                 raise EndOfLine
 
         self.text_width += width
-        super().append(item)
+        self.current_span.append(item)
 
     def typeset(self, canvas, last_line=False):
         """Typeset words on the current coordinates"""
@@ -249,57 +262,64 @@ class Line(list):
         char_widths = []
         max_font_size = 0
         justify = self.paragraph.get_style('justify')
-        if Tab in map(type, self) or justify == BOTH and last_line:
-            justification = LEFT
-        else:
-            justification = justify
-        while isinstance(self[-1], Space):
-            self.pop()
+        justification = LEFT
+        if not self[-1]:
+            del self[-1]
+
+##        if Tab in map(type, self) or justify == BOTH and last_line:
+##            justification = LEFT
+##        else:
+##            justification = justify
+##        while isinstance(self[-1], Space):
+##            self.pop()
+
 
         # calculate total width of all characters (excluding spaces)
-        for item in self:
-            # TODO: contextual_width() method in Space, Tab, ...
-            if isinstance(item, Space):
-                chars.append(item)
-                if justification != BOTH or item.fixed_width:
-                    char_widths.append(item.width)
-                else:
-                    char_widths.append(0.0)
-            elif isinstance(item, Tab):
-                try:
-                    fill_char = Character(item.tab_stop.fill)
-                    fill_char.parent = item.parent
-                    number, rest = divmod(item.tab_width, fill_char.width)
-                    chars.append(item)
-                    char_widths.append(rest)
-                    for i in range(int(number)):
-                        chars.append(fill_char)
-                        char_widths.append(fill_char.width)
-                except (AttributeError, TypeError):
-                    chars.append(item)
-                    char_widths.append(item.tab_width)
-            else:
-                chars += list(item.characters())
-                char_widths += item.widths
-                current_font_size = float(item.height)
-                max_font_size = max(current_font_size, max_font_size)
+##        for item in self:
+##            # TODO: contextual_width() method in Space, Tab, ...
+##            if isinstance(item, Space):
+##                chars.append(item)
+##                if justification != BOTH or item.fixed_width:
+##                    char_widths.append(item.width)
+##                else:
+##                    char_widths.append(0.0)
+##            elif isinstance(item, Tab):
+##                try:
+##                    fill_char = Character(item.tab_stop.fill)
+##                    fill_char.parent = item.parent
+##                    number, rest = divmod(item.tab_width, fill_char.width)
+##                    chars.append(item)
+##                    char_widths.append(rest)
+##                    for i in range(int(number)):
+##                        chars.append(fill_char)
+##                        char_widths.append(fill_char.width)
+##                except (AttributeError, TypeError):
+##                    chars.append(item)
+##                    char_widths.append(item.tab_width)
+##            else:
+##                chars += list(item.characters())
+##                char_widths += item.widths
+##                current_font_size = float(item.height)
+##                max_font_size = max(current_font_size, max_font_size)
 
-        line_width = sum(char_widths)
+        #line_width = sum(char_widths)
+        line_width = sum([span.width for span in self])
 
         # calculate space width
-        if justification == BOTH:
-            try:
-                def is_scalable_space(item):
-                    return isinstance(item, Space) and not item.fixed_width
-                number_of_spaces = list(map(is_scalable_space, self)).count(True)
-                space_width = (self.width - line_width) / (number_of_spaces)
-            except ZeroDivisionError:
-                space_width = 0.0
-            for i, char in enumerate(chars):
-                if isinstance(char, Space) and not char.fixed_width:
-                    char_widths[i] = space_width
-        else:
-            extra_space = self.width - line_width
+##        if justification == BOTH:
+##            try:
+##                def is_scalable_space(item):
+##                    return isinstance(item, Space) and not item.fixed_width
+##                number_of_spaces = list(map(is_scalable_space, self)).count(True)
+##                space_width = (self.width - line_width) / (number_of_spaces)
+##            except ZeroDivisionError:
+##                space_width = 0.0
+##            for i, char in enumerate(chars):
+##                if isinstance(char, Space) and not char.fixed_width:
+##                    char_widths[i] = space_width
+##        else:
+##            extra_space = self.width - line_width
+        extra_space = self.width - line_width
 
         # horizontal displacement
         x = self.indent
@@ -311,20 +331,23 @@ class Line(list):
         # position cursor
         self.paragraph._line_cursor -= max_font_size
 
-        span = Span()
-        for i, char in enumerate(chars):
-            if char.new_span:
-                if span:
-                    x += span.render(canvas, x, self.paragraph._line_cursor)
-                    span = Span()
-                try:
-                    x += char.render(canvas, x, self.paragraph._line_cursor)
-                    continue
-                except AttributeError:
-                    pass
-            span.append(char, char_widths[i])
-        if span:
+        for span in self:
             x += span.render(canvas, x, self.paragraph._line_cursor)
+
+##        span = Span()
+##        for i, char in enumerate(chars):
+##            if char.new_span:
+##                if span:
+##                    x += span.render(canvas, x, self.paragraph._line_cursor)
+##                    span = Span()
+##                try:
+##                    x += char.render(canvas, x, self.paragraph._line_cursor)
+##                    continue
+##                except AttributeError:
+##                    pass
+##            span.append(char, char_widths[i])
+##        if span:
+##            x += span.render(canvas, x, self.paragraph._line_cursor)
 
         return max_font_size
 

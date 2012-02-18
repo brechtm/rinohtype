@@ -87,16 +87,18 @@ class StyledText(Styled):
         last = 0
         for match in re_special.finditer(self.text):
             index = match.start()
-            item = self.__class__(self.text[last:index])
-            item.parent = self
-            yield item
+            if index > last:
+                item = self.__class__(self.text[last:index])
+                item.parent = self
+                yield item
             item = special_chars[self.text[index]]()
             item.parent = self
             yield item
             last = index + 1
-        item = self.__class__(self.text[last:])
-        item.parent = self
-        yield item
+        if last < len(self.text):
+            item = self.__class__(self.text[last:])
+            item.parent = self
+            yield item
 
     def get_font(self):
         typeface = self.get_style('typeface')
@@ -134,6 +136,19 @@ class StyledText(Styled):
                 width += kern * font_size / 1000.0
             widths.append(width)
         return widths
+
+    def glyphs(self):
+        ps_font = self.get_font().psFont
+        metrics = ps_font.metrics
+        for character in self.text:
+            try:
+                yield metrics[ord(character)].ps_name
+            except KeyError:
+                warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
+                     .format(ps_font.ps_name, ord(character), character),
+                             PyteWarning)
+                yield metrics[ord('?')].ps_name
+
 
     def characters(self):
         for i, char in enumerate(self.text):
@@ -221,6 +236,10 @@ class Character(StyledText):
     def width(self):
         font_size = float(self.height)
         return self.ps_font.metrics.stringwidth(self.text, font_size)
+
+    @cached_property
+    def widths(self):
+        return [self.width]
 
     @property
     def height(self):
