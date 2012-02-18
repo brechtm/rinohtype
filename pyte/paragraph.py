@@ -150,10 +150,20 @@ class Span(list):
         super().append(item)
 
     @property
+    def height(self):
+        return self[0].height
+
+    @property
     def width(self):
         return sum([item.width for item in self])
 
-    def render(self, canvas, x, y):
+    def spaces(self):
+        number = 0
+        for item in self:
+            number += item.text.count(' ')
+        return number
+
+    def render(self, canvas, x, y, add_to_spaces=None):
         font = self[0].get_font()
         font_size = float(self[0].get_style('fontSize'))
         canvas.move_to(x, y)# + self[0].get('vertical_offset'))
@@ -162,6 +172,10 @@ class Span(list):
         for item in self:
             span_chars += item.glyphs()
             span_widths += item.widths
+        if add_to_spaces:
+            for i, char in enumerate(span_chars):
+                if char == 'space':
+                    span_widths[i] = span_widths[i] + add_to_spaces
         canvas.select_font(font, font_size)
         canvas.show_glyphs(span_chars, span_widths)
         return sum(span_widths)
@@ -187,6 +201,8 @@ class Line(list):
 
     def append(self, item):
         if item.style != self.current_style:
+            if self and not self[-1]:
+                self.pop()
             self.current_span = Span()
             self.current_style = item.style
             super().append(self.current_span)
@@ -198,7 +214,7 @@ class Line(list):
             pass
         width = item.width
 
-        if len(self) == 0 and isinstance(item, Space):
+        if not self[0] and isinstance(item, Space):
             return
         elif isinstance(item, Tab):
             cursor = self.text_width
@@ -262,17 +278,20 @@ class Line(list):
         char_widths = []
         max_font_size = 0
         justify = self.paragraph.get_style('justify')
-        justification = LEFT
-        if not self[-1]:
-            del self[-1]
-
-##        if Tab in map(type, self) or justify == BOTH and last_line:
-##            justification = LEFT
-##        else:
-##            justification = justify
-##        while isinstance(self[-1], Space):
-##            self.pop()
-
+        if Tab in map(type, self) or justify == BOTH and last_line:
+            justification = LEFT
+        else:
+            justification = justify
+        while not self[-1]:
+            self.pop()
+            if not self:
+                return 0
+        while isinstance(self[-1][-1], Space):
+            self[-1].pop()
+            if not self[-1]:
+                self.pop()
+            if not self:
+                return 0
 
         # calculate total width of all characters (excluding spaces)
 ##        for item in self:
@@ -303,7 +322,8 @@ class Line(list):
 ##                max_font_size = max(current_font_size, max_font_size)
 
         #line_width = sum(char_widths)
-        line_width = sum([span.width for span in self])
+        line_width = sum(span.width for span in self)
+        max_font_size = max(float(span.height) for span in self)
 
         # calculate space width
 ##        if justification == BOTH:
@@ -323,31 +343,22 @@ class Line(list):
 
         # horizontal displacement
         x = self.indent
+        add_to_spaces = None
         if justification == CENTER:
             x += extra_space / 2.0
         elif justification == RIGHT:
             x += extra_space
+        elif justification == BOTH:
+            number_of_spaces = sum(span.spaces() for span in self)
+            if number_of_spaces:
+                add_to_spaces = extra_space / number_of_spaces
 
         # position cursor
-        self.paragraph._line_cursor -= max_font_size
+        self.paragraph.newline(max_font_size)
 
         for span in self:
-            x += span.render(canvas, x, self.paragraph._line_cursor)
-
-##        span = Span()
-##        for i, char in enumerate(chars):
-##            if char.new_span:
-##                if span:
-##                    x += span.render(canvas, x, self.paragraph._line_cursor)
-##                    span = Span()
-##                try:
-##                    x += char.render(canvas, x, self.paragraph._line_cursor)
-##                    continue
-##                except AttributeError:
-##                    pass
-##            span.append(char, char_widths[i])
-##        if span:
-##            x += span.render(canvas, x, self.paragraph._line_cursor)
+            x += span.render(canvas, x, self.paragraph._line_cursor,
+                             add_to_spaces)
 
         return max_font_size
 
@@ -367,18 +378,6 @@ class Paragraph(MixedStyledText, Flowable):
         self.word_pointer = 0
         self.field_pointer = None
         self.first_line = True
-
-##    def _split_words(self, characters):
-##        group_function = lambda item: isinstance(item, (Space, LateEval,
-##                                                        ControlCharacter,
-##                                                        Flowable))
-##        words = []
-##        for is_special, item in itertools.groupby(characters, group_function):
-##            if is_special:
-##                words += item
-##            else:
-##                words.append(Word(item))
-##        return words
 
     def _split_words(self, spans):
         join = False
