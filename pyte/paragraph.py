@@ -463,8 +463,8 @@ class Paragraph(MixedStyledText, Flowable):
 
     def typeset_line(self, canvas, line, line_pointers, last_line=False):
         buffer = canvas.new(0, 0, canvas.width, canvas.height)
-        line_height = line.typeset(buffer, last_line)
         try:
+            line_height = line.typeset(buffer, last_line)
             self.newline(self._line_spacing(line_height) - line_height)
             canvas.append(buffer)
             try:
