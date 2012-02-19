@@ -308,7 +308,7 @@ class Paragraph(MixedStyledText, Flowable):
             word = self._words[self.word_pointer]
             if isinstance(word, LateEval):
                 if self.field_pointer is None:
-                    self._field_words = self._split_words(word.characters())
+                    self._field_words = self._split_words(word.spans())
                     self.field_pointer = 0
                 else:
                     self.field_pointer += 1

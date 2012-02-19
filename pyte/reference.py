@@ -13,13 +13,13 @@ class LateEval(object):
     def split(self):
         yield self
 
-    def characters(self):
-        return self.field.field_characters()
+    def spans(self):
+        return self.field.field_spans()
 
 
 class Field(StyledText):
-    def __init__(self):
-        super().__init__('')
+    def __init__(self, y_offset=0):
+        super().__init__('', y_offset=y_offset)
 
     def characters(self):
         yield LateEval(self)
@@ -27,8 +27,8 @@ class Field(StyledText):
     def spans(self):
         yield LateEval(self)
 
-    def field_characters(self):
-        return super().characters()
+    def field_spans(self):
+        return super().spans()
 
 
 PAGE_NUMBER = 'page number'
@@ -38,23 +38,27 @@ SECTION_TITLE = 'section title'
 
 
 class Variable(Field):
-    def __init__(self, type):
-        super().__init__()
+    def __init__(self, type, y_offset=0):
+        super().__init__(y_offset=y_offset)
         self.type = type
 
-    def field_characters(self):
+    def field_spans(self):
+        text = '?'
         if self.type == PAGE_NUMBER:
-            self.text = str(self.page.number)
+            text = str(self.page.number)
         elif self.type == NUMBER_OF_PAGES:
             number = self.document.number_of_pages
-            self.text = str(number)
+            text = str(number)
         elif self.type == SECTION_NUMBER:
             if self.page.section and self.page.section.number:
-                self.text = self.page.section.number
+                text = self.page.section.number
         elif self.type == SECTION_TITLE:
             if self.page.section:
-                self.text = self.page.section.title()
-        return super().field_characters()
+                text = self.page.section.title()
+
+        field_text = StyledText(text)
+        field_text.parent = self.parent
+        return field_text.spans()
 
 
 class Referenceable(object):
@@ -80,31 +84,33 @@ POSITION = 'position'
 
 
 class Reference(Field):
-    def __init__(self, id, type=REFERENCE):
-        super().__init__()
+    def __init__(self, id, type=REFERENCE, y_offset=0):
+        super().__init__(y_offset=y_offset)
         self.id = id
         self.type = type
 
-    def field_characters(self):
+    def field_spans(self):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
-                self.text = referenced_item.reference()
+                text = referenced_item.reference()
             elif self.type == PAGE:
                 try:
-                    self.text = str(self.document.page_references[self.id])
+                    text = str(self.document.page_references[self.id])
                 except KeyError:
-                    self.text = '??'
+                    text = '??'
             elif self.type == TITLE:
-                self.text = referenced_item.title()
+                text = referenced_item.title()
             else:
                 raise NotImplementedError
         except KeyError:
             warn("Unknown label '{}'".format(self.id), PyteWarning)
-            self.text = "unkown reference '{}'".format(self.id)
+            text = "unkown reference '{}'".format(self.id)
 
-        if self.text is None:
+        if text is None:
             warn('Trying to reference unreferenceable object', PyteWarning)
-            self.text = ' ' #'[not referenceable]'
+            text = ' ' #'[not referenceable]'
 
-        return super().field_characters()
+        field_text = StyledText(text)
+        field_text.parent = self.parent
+        return field_text.spans()
