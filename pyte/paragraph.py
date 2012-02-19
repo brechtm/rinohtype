@@ -182,7 +182,6 @@ class Line(list):
 
         line_width = sum(item.width for item in self)
         max_font_size = max(float(item.height) for item in self)
-
         extra_space = self.width - line_width
 
         def _is_scalable_space(item):
@@ -203,24 +202,40 @@ class Line(list):
         # position cursor
         self.paragraph.newline(max_font_size)
 
-        def typeset_span(item, glyphs, widths):
-            font = item.get_font()
-            font_size = float(item.height)
+        def render_span(item, font_style, glyphs, widths):
             canvas.move_to(x, self.paragraph._line_cursor + item.y_offset)
-            canvas.select_font(font, font_size)
+            canvas.select_font(*font_style)
             canvas.show_glyphs(glyphs, widths)
-            return sum(widths)
+            total_width = sum(widths)
+            del glyphs[:]
+            del widths[:]
+            return total_width
 
+        prev_item = None
+        glyphs = []
+        widths = []
+        prev_font_style = None
         for item in self:
+            font_style = item.get_font(), float(item.height)
             if isinstance(item, Box):
+                if prev_item:
+                    x += render_span(prev_item, prev_font_style, glyphs, widths)
+                    prev_item = None
+                    prev_font_style = None
                 x += item.render(canvas, x, self.paragraph._line_cursor)
                 continue
             if _is_scalable_space(item):
-                widths = [item.widths[0] + add_to_spaces]
+                item_widths = [item.widths[0] + add_to_spaces]
             else:
-                widths = item.widths
-            glyphs = item.glyphs()
-            x += typeset_span(item, glyphs, widths)
+                item_widths = item.widths
+            if prev_item and font_style != prev_font_style:
+                x += render_span(prev_item, prev_font_style, glyphs, widths)
+            widths += item_widths
+            glyphs += item.glyphs()
+            prev_item = item
+            prev_font_style = font_style
+        if prev_item:
+            x += render_span(prev_item, prev_font_style, glyphs, widths)
 
         return max_font_size
 
