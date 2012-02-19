@@ -118,23 +118,22 @@ class StyledText(Styled):
     @cached_property
     def widths(self):
         font_size = float(self.height)
-        ps_font = self.get_font().psFont
-        font_metrics = ps_font.metrics
+        font_metrics = self.get_font().psFont.metrics
         char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"].by_glyph_name
+        kerning = self.get_style('kerning')
+        glyphs = self.glyphs()
         widths = []
-        for i, char in enumerate(self.text):
-            try:
-                glyph = font_metrics[ord(char)].ps_name
-            except KeyError:
-                warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
-                     .format(ps_font.ps_name, ord(char), char), PyteWarning)
-                glyph = font_metrics[ord('?')].ps_name
-            width = char_metrics[glyph]['W0X'] * font_size / 1000.0
-            if self.get_style('kerning') and i < len(self.text) - 1:
-                next_glyph = font_metrics[ord(self.text[i + 1])].ps_name
-                kern = font_metrics.get_kerning(glyph, next_glyph)
-                width += kern * font_size / 1000.0
-            widths.append(width)
+
+        prev_glyph = next(glyphs)
+        prev_width = char_metrics[prev_glyph]['W0X'] * font_size / 1000.0
+        for glyph in glyphs:
+            if kerning:
+                kern = font_metrics.get_kerning(prev_glyph, glyph)
+                prev_width += kern * font_size / 1000.0
+            widths.append(prev_width)
+            prev_width = char_metrics[glyph]['W0X'] * font_size / 1000.0
+            prev_glyph = glyph
+        widths.append(prev_width)
         return widths
 
     def glyphs(self):
