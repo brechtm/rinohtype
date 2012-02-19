@@ -10,7 +10,7 @@ from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
 from .reference import LateEval
 from .style import ParentStyle
-from .text import Character, Space, Box, ControlCharacter, NewLine, Tab
+from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
 from .text import TextStyle, MixedStyledText
 from .unit import pt
 
@@ -147,6 +147,7 @@ def _is_scalable_space(item):
     return isinstance(item, Space) and not item.fixed_width
 
 
+# TODO: Styled can replace Span (or subclass)
 class Span(list):
     def __init__(self):
         self.widths = []
@@ -296,33 +297,24 @@ class Line(list):
             if not self:
                 return 0
 
-        # calculate total width of all characters (excluding spaces)
-##        for item in self:
-##            # TODO: contextual_width() method in Space, Tab, ...
-##            if isinstance(item, Space):
-##                chars.append(item)
-##                if justification != BOTH or item.fixed_width:
-##                    char_widths.append(item.width)
-##                else:
-##                    char_widths.append(0.0)
-##            elif isinstance(item, Tab):
-##                try:
-##                    fill_char = Character(item.tab_stop.fill)
-##                    fill_char.parent = item.parent
-##                    number, rest = divmod(item.tab_width, fill_char.width)
-##                    chars.append(item)
-##                    char_widths.append(rest)
-##                    for i in range(int(number)):
-##                        chars.append(fill_char)
-##                        char_widths.append(fill_char.width)
-##                except (AttributeError, TypeError):
-##                    chars.append(item)
-##                    char_widths.append(item.tab_width)
-##            else:
-##                chars += list(item.characters())
-##                char_widths += item.widths
-##                current_font_size = float(item.height)
-##                max_font_size = max(current_font_size, max_font_size)
+        # replace tabs with spacers
+        for span in self:
+            if isinstance(span[0], Tab):
+                tab = span[0]
+                del span[0]
+                try:
+                    fill_char = Character(tab.tab_stop.fill)
+                    fill_char.parent = tab.parent
+                    number, rest = divmod(tab.tab_width, fill_char.width)
+                    spacer = Spacer(rest)
+                    spacer.parent = tab.parent
+                    span.append(spacer)
+                    for i in range(int(number)):
+                        span.append(fill_char)
+                except (AttributeError, TypeError):
+                    spacer = Spacer(tab.tab_width)
+                    spacer.parent = tab.parent
+                    span.append(spacer)
 
         line_width = sum(span.width for span in self)
         max_font_size = max(float(span.height) for span in self)
