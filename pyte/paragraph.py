@@ -59,85 +59,6 @@ class TabStop(object):
             return width * self._position
 
 
-class Word(MixedStyledText):
-    def __init__(self, items, paragraph):
-        super().__init__(items, None)
-        self.parent = paragraph
-        self.hyphen_enable = True
-        self.hyphen_chars = 0
-        self.hyphen_lang = None
-
-##    def __repr__(self):
-##        return ''.join([char.text for char in self])
-
-##    def __getitem__(self, index):
-##        result = super().__getitem__(index)
-##        if type(index) == slice:
-##            result = __class__(result)
-##        return result
-
-##    def append(self, char):
-##        if self.hyphen_enable and (char.new_span or not self):
-##            self.hyphen_enable = char.get_style('hyphenate')
-##            self.hyphen_chars = max(self.hyphen_chars,
-##                                    char.get_style('hyphenChars'))
-##            if self.hyphen_lang is None:
-##                self.hyphen_lang = char.get_style('hyphenLang')
-##            elif char.get_style('hyphenLang') != self.hyphen_lang:
-##                self.hyphen_enable = False
-##        super().append(char)
-
-##    def substitute_ligatures(self):
-##        i = 0
-##        while i + 1 < len(self):
-##            character = self[i]
-##            next_character = self[i + 1]
-##            try:
-##                self[i] = character.ligature(next_character)
-##                del self[i + 1]
-##            except TypeError:
-##                i += 1
-
-    @property
-    def width(self):
-        width = 0.0
-        return sum([item.width for item in self])
-
-##    def kern(self, index):
-##        try:
-##            kerning = self[index].kerning(self[index + 1])
-##        except (TypeError, IndexError):
-##            kerning = 0.0
-##        return kerning
-
-    dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
-
-##    @property
-##    def _hyphenator(self):
-##        dic_path = dic_file = 'hyph_{}.dic'.format(self.hyphen_lang)
-##        if not os.path.exists(dic_path):
-##            dic_path = os.path.join(self.dic_dir, dic_file)
-##            if not os.path.exists(dic_path):
-##                raise IOError("Hyphenation dictionary '{}' neither found in "
-##                              "current directory, nor in the data directory"
-##                              .format(dic_file))
-##        return Hyphenator(dic_path, self.hyphen_chars, self.hyphen_chars)
-##
-##    def hyphenate(self):
-##        if self.hyphen_enable:
-##            word = str(self)
-##            h = self._hyphenator
-##            for position in reversed(h.positions(word)):
-##                parts = h.wrap(word, position + 1)
-##                if ''.join((parts[0][:-1], parts[1])) != word:
-##                    raise NotImplementedError
-##                first, second = self[:position], self[position:]
-##                hyphen = Character('-', style=first[-1].style)
-##                hyphen.parent = first[-1].parent
-##                first.append(hyphen)
-##                yield first, second
-
-
 class EndOfLine(Exception):
     def __init__(self, hyphenation_remainder=None):
         self.hyphenation_remainder = hyphenation_remainder
@@ -262,7 +183,7 @@ class Line(list):
                 try:
                     for first, second in item.hyphenate():
                         if self.text_width + first.width < self.width:
-                            super().append(first)
+                            self.current_span.append(first)
                             raise EndOfLine(second)
                 except AttributeError:
                     pass
@@ -281,6 +202,9 @@ class Line(list):
             justification = LEFT
         else:
             justification = justify
+
+        # handle spaces and empty spans
+        # TODO: clean up (Tab.expand method?)
         while not self[-1]:
             self.pop()
             if not self:

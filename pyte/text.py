@@ -1,5 +1,6 @@
 
 import re
+import os
 
 from copy import copy
 from html.entities import name2codepoint
@@ -7,6 +8,7 @@ from warnings import warn
 
 from psg.fonts.encoding_tables import glyph_name_to_unicode
 
+from .hyphenator import Hyphenator
 from .unit import pt
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
@@ -81,6 +83,11 @@ class StyledText(Styled):
     def __repr__(self):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
+
+    def __getitem__(self, index):
+        result = self.__class__(self.text[index])
+        result.parent = self.parent
+        return result
 
     def split(self):
         re_special = re.compile('[{}]'.format(''.join(special_chars.keys())))
@@ -161,6 +168,33 @@ class StyledText(Styled):
                 yield prev_glyph
                 prev_glyph = glyph
         yield prev_glyph
+
+    dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
+
+    @property
+    def _hyphenator(self):
+        hyphen_lang = self.get_style('hyphenLang')
+        hyphen_chars = self.get_style('hyphenChars')
+        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(self.dic_dir, dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+
+    def hyphenate(self):
+        if self.get_style('hyphenate'):
+            word = self.text
+            h = self._hyphenator
+            for position in reversed(h.positions(word)):
+                parts = h.wrap(word, position + 1)
+                if ''.join((parts[0][:-1], parts[1])) != word:
+                    raise NotImplementedError
+                first, second = self[:position], self[position:]
+                first.text += '-'
+                yield first, second
 
     def characters(self):
         for i, char in enumerate(self.text):
