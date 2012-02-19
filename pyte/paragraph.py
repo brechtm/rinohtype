@@ -11,7 +11,7 @@ from .layout import EndOfContainer
 from .reference import LateEval
 from .style import ParentStyle
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
-from .text import TextStyle, MixedStyledText
+from .text import TextStyle, StyledText, MixedStyledText
 from .unit import pt
 
 
@@ -222,14 +222,15 @@ class Line(list):
                 tab = span[0]
                 del span[0]
                 try:
-                    fill_char = Character(tab.tab_stop.fill)
+                    fill_char = StyledText(tab.tab_stop.fill)
                     fill_char.parent = tab.parent
                     number, rest = divmod(tab.tab_width, fill_char.width)
                     spacer = Spacer(rest)
                     spacer.parent = tab.parent
                     span.append(spacer)
-                    for i in range(int(number)):
-                        span.append(fill_char)
+                    fill_text = StyledText(tab.tab_stop.fill * int(number))
+                    fill_text.parent = tab.parent
+                    span.append(fill_text)
                 except (AttributeError, TypeError):
                     spacer = Spacer(tab.tab_width)
                     spacer.parent = tab.parent

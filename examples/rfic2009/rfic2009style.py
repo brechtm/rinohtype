@@ -103,7 +103,7 @@ equationstyle = EquationStyle('equation', base=bodyStyle,
 
 toc_base_style = ParagraphStyle('toc level 1', base=bodyStyle,
                                 tab_stops=[TabStop(0.6*cm),
-                                           TabStop(1.0, RIGHT, '.')])
+                                           TabStop(1.0, RIGHT, '. ')])
 toc_levels = [ParagraphStyle('toc level 1', fontWeight=BOLD,
                              base=toc_base_style),
               ParagraphStyle('toc level 2', indentLeft=0.5*cm,
