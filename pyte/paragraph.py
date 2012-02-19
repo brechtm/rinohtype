@@ -64,48 +64,6 @@ class EndOfLine(Exception):
         self.hyphenation_remainder = hyphenation_remainder
 
 
-def _is_scalable_space(item):
-    return isinstance(item, Space) and not item.fixed_width
-
-
-# TODO: Styled can replace Span (or subclass)
-class Span(list):
-    def __init__(self):
-        self.widths = []
-
-    def append(self, item):
-        super().append(item)
-
-    @property
-    def height(self):
-        return self[0].height
-
-    @property
-    def width(self):
-        return sum([item.width for item in self])
-
-    def spaces(self):
-        return list(map(_is_scalable_space, self)).count(True)
-
-    def render(self, canvas, x, y, add_to_spaces=0.0):
-        if isinstance(self[0], Box):
-            return self[0].render(canvas, x, y)
-        font = self[0].get_font()
-        font_size = float(self[0].height)
-        canvas.move_to(x, y + self[0].y_offset)
-        span_chars = []
-        span_widths = []
-        for item in self:
-            span_chars += item.glyphs()
-            if _is_scalable_space(item):
-                span_widths += [item.widths[0] + add_to_spaces]
-            else:
-                span_widths += item.widths
-        canvas.select_font(font, font_size)
-        canvas.show_glyphs(span_chars, span_widths)
-        return sum(span_widths)
-
-
 class Line(list):
     def __init__(self, paragraph, width, indent=0.0):
         super().__init__()
@@ -125,18 +83,8 @@ class Line(list):
             return None, None
 
     def append(self, item):
-        if ((item.style != self.current_style) or
-            (item.style == ParentStyle and self.current_style == ParentStyle and
-             self and self[-1] and item.parent != self[-1][0].parent)):
-            if self and not self[-1]:
-                self.pop()
-            self.current_span = Span()
-            self.current_style = item.style
-            super().append(self.current_span)
-
         width = item.width
-
-        if not self[0] and isinstance(item, Space):
+        if not self and isinstance(item, Space):
             return
         elif isinstance(item, Tab):
             cursor = self.text_width
@@ -185,14 +133,14 @@ class Line(list):
                 try:
                     for first, second in item.hyphenate():
                         if self.text_width + first.width < self.width:
-                            self.current_span.append(first)
+                            self.append(first)
                             raise EndOfLine(second)
                 except AttributeError:
                     pass
                 raise EndOfLine
 
         self.text_width += width
-        self.current_span.append(item)
+        super().append(item)
 
     def typeset(self, canvas, last_line=False):
         """Typeset words on the current coordinates"""
@@ -205,43 +153,40 @@ class Line(list):
         else:
             justification = justify
 
-        # handle spaces and empty spans
-        # TODO: clean up (Tab.expand method?)
-        while not self[-1]:
+        # drop spaces at the end of the line
+        while isinstance(self[-1], Space):
             self.pop()
-            if not self:
-                return 0
-        while isinstance(self[-1][-1], Space):
-            self[-1].pop()
-            if not self[-1]:
-                self.pop()
-            if not self:
-                return 0
 
-        # replace tabs with spacers
-        for span in self:
-            if isinstance(span[0], Tab):
-                tab = span[0]
-                del span[0]
+        # replace tabs with spacers or fillers
+        # TODO: encapsulate (Tab.expand method)
+        i = 0
+        while i < len(self):
+            if isinstance(self[i], Tab):
+                tab = self.pop(i)
                 try:
                     fill_char = StyledText(tab.tab_stop.fill)
                     fill_char.parent = tab.parent
                     number, rest = divmod(tab.tab_width, fill_char.width)
                     spacer = Spacer(rest)
                     spacer.parent = tab.parent
-                    span.append(spacer)
+                    self.insert(i, spacer)
                     fill_text = StyledText(tab.tab_stop.fill * int(number))
                     fill_text.parent = tab.parent
-                    span.append(fill_text)
+                    self.insert(i + 1, fill_text)
+                    i += 1
                 except (AttributeError, TypeError):
                     spacer = Spacer(tab.tab_width)
                     spacer.parent = tab.parent
-                    span.append(spacer)
+                    self.insert(i, spacer)
+            i += 1
 
-        line_width = sum(span.width for span in self)
-        max_font_size = max(float(span.height) for span in self)
+        line_width = sum(item.width for item in self)
+        max_font_size = max(float(item.height) for item in self)
 
         extra_space = self.width - line_width
+
+        def _is_scalable_space(item):
+            return isinstance(item, Space) and not item.fixed_width
 
         # horizontal displacement
         x = self.indent
@@ -251,16 +196,31 @@ class Line(list):
         elif justification == RIGHT:
             x += extra_space
         elif justification == BOTH:
-            number_of_spaces = sum(span.spaces() for span in self)
+            number_of_spaces = list(map(_is_scalable_space, self)).count(True)
             if number_of_spaces:
                 add_to_spaces = extra_space / number_of_spaces
 
         # position cursor
         self.paragraph.newline(max_font_size)
 
-        for span in self:
-            x += span.render(canvas, x, self.paragraph._line_cursor,
-                             add_to_spaces)
+        def typeset_span(item, glyphs, widths):
+            font = item.get_font()
+            font_size = float(item.height)
+            canvas.move_to(x, self.paragraph._line_cursor + item.y_offset)
+            canvas.select_font(font, font_size)
+            canvas.show_glyphs(glyphs, widths)
+            return sum(widths)
+
+        for item in self:
+            if isinstance(item, Box):
+                x += item.render(canvas, x, self.paragraph._line_cursor)
+                continue
+            if _is_scalable_space(item):
+                widths = [item.widths[0] + add_to_spaces]
+            else:
+                widths = item.widths
+            glyphs = item.glyphs()
+            x += typeset_span(item, glyphs, widths)
 
         return max_font_size
 

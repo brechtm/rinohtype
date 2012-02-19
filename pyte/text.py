@@ -300,6 +300,7 @@ class MixedStyledText(list, Styled):
         return __class__(other) + self
 
     def spans(self):
+        # TODO: support for mixed-style words
         for item in self:
             for span in item.spans():
                 yield span
