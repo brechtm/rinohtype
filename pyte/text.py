@@ -66,10 +66,11 @@ class CharacterLike(Styled):
 class StyledText(Styled):
     style_class = TextStyle
 
-    def __init__(self, text, style=ParentStyle):
+    def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(style)
         text = self._clean_text(text)
         self.text = self._decode_html_entities(text)
+        self.y_offset = y_offset
 
     def _clean_text(self, text):
         text = re.sub('[\t\r\n]', ' ', text)
@@ -95,15 +96,16 @@ class StyledText(Styled):
         for match in re_special.finditer(self.text):
             index = match.start()
             if index > last:
-                item = self.__class__(self.text[last:index])
+                item = self.__class__(self.text[last:index],
+                                      y_offset=self.y_offset)
                 item.parent = self
                 yield item
-            item = special_chars[self.text[index]]()
+            item = special_chars[self.text[index]](y_offset=self.y_offset)
             item.parent = self
             yield item
             last = index + 1
         if last < len(self.text):
-            item = self.__class__(self.text[last:])
+            item = self.__class__(self.text[last:], y_offset=self.y_offset)
             item.parent = self
             yield item
 
@@ -218,22 +220,36 @@ class StyledText(Styled):
                 character = character.subscript()
             yield character
 
+    superscript_position = 1 / 3
+    subscript_position = - 1 / 6
+    position_size = 583 / 1000
+
     def spans(self):
+        span = self
+        if self.get_style('position') == SUPERSCRIPT:
+            offset = float(self.height) * self.superscript_position
+            size = float(self.height) * self.position_size
+            style = TextStyle(name='super', position=NORMAL, fontSize=size)
+            span = StyledText(self.text, style, y_offset=offset)
+            span.parent = self.parent
+        elif self.get_style('position') == SUBSCRIPT:
+            offset = float(self.height) * self.subscript_position
+            size = float(self.height) * self.position_size
+            style = TextStyle(name='sub', position=NORMAL, fontSize=size)
+            span = StyledText(self.text, style, y_offset=offset)
+            span.parent = self.parent
         if self.get_style('smallCaps'):
-            span = SmallCapitals(self.text, self.style)
+            span = SmallCapitalsText(span.text, span.style,
+                                     y_offset=self.y_offset)
             span.parent = self.parent
             yield span
-##        if self.get_style('position') == SUPERSCRIPT:
-##            character = character.superscript()
-##        elif self.get_style('position') == SUBSCRIPT:
-##            character = character.subscript()
         else:
-            yield self
+            yield span
 
 
-class SmallCapitals(StyledText):
-    def __init__(self, text, style=ParentStyle):
-        super().__init__(text, style)
+class SmallCapitalsText(StyledText):
+    def __init__(self, text, style=ParentStyle, y_offset=0):
+        super().__init__(text, style, y_offset=y_offset)
 
     suffixes = ('.smcp', '.sc', 'small')
 
@@ -313,11 +329,9 @@ class MixedStyledText(list, Styled):
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
-    def __init__(self, text, style=ParentStyle, new_span=False,
-                 vertical_offset=0):
-        super().__init__(text, style)
+    def __init__(self, text, style=ParentStyle, new_span=False, y_offset=0):
+        super().__init__(text, style, y_offset=y_offset)
         self.new_span = new_span
-        self.vertical_offset = vertical_offset
 
     def __repr__(self):
         return self.text
@@ -439,8 +453,9 @@ class Glyph(Character):
 
 
 class Space(Character):
-    def __init__(self, fixed_width=False, style=ParentStyle, new_span=False):
-        super().__init__(' ', style, new_span)
+    def __init__(self, fixed_width=False, style=ParentStyle, new_span=False,
+                 y_offset=0):
+        super().__init__(' ', style, new_span, y_offset=y_offset)
         self.fixed_width = fixed_width
 
     def characters(self):
@@ -453,8 +468,8 @@ class FixedWidthSpace(Space):
 
 
 class NoBreakSpace(Character):
-    def __init__(self, style=ParentStyle, new_span=False):
-        super().__init__(' ', style, new_span)
+    def __init__(self, style=ParentStyle, new_span=False, y_offset=0):
+        super().__init__(' ', style, new_span, y_offset=y_offset)
 
 
 class Spacer(FixedWidthSpace):
@@ -548,30 +563,30 @@ subscriptStyle = TextStyle(name="subscript", position=SUBSCRIPT)
 
 
 class Bold(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=boldStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=boldStyle, y_offset=y_offset)
 
 
 class Italic(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=italicStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=italicStyle, y_offset=y_offset)
 
 
 class Emphasized(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=italicStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=italicStyle, y_offset=y_offset)
 
 
 class SmallCaps(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=smallCapsStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=smallCapsStyle, y_offset=y_offset)
 
 
 class Superscript(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=superscriptStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=superscriptStyle, y_offset=y_offset)
 
 
 class Subscript(StyledText):
-    def __init__(self, text):
-        StyledText.__init__(self, text, style=subscriptStyle)
+    def __init__(self, text, y_offset=0):
+        StyledText.__init__(self, text, style=subscriptStyle, y_offset=y_offset)

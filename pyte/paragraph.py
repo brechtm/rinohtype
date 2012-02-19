@@ -89,8 +89,8 @@ class Span(list):
 
     def render(self, canvas, x, y, add_to_spaces=0.0):
         font = self[0].get_font()
-        font_size = float(self[0].get_style('fontSize'))
-        canvas.move_to(x, y)# + self[0].get('vertical_offset'))
+        font_size = float(self[0].height)
+        canvas.move_to(x, y + self[0].y_offset)
         span_chars = []
         span_widths = []
         for item in self:
