@@ -114,6 +114,10 @@ class StyledText(Styled):
         width = self.get_style('fontWidth')
         return typeface.get(weight=weight, slant=slant, width=width)
 
+    @cached_property
+    def ps_font(self):
+        return self.get_font().psFont
+
     @property
     def height(self):
         return self.get_style('fontSize')
@@ -143,24 +147,25 @@ class StyledText(Styled):
         widths.append(prev_width)
         return widths
 
+    def char_to_glyph(self, character):
+        font_metrics = self.ps_font.metrics
+        try:
+            return font_metrics[ord(character)].ps_name
+        except KeyError:
+            warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
+                 .format(self.ps_font.ps_name, ord(character), character),
+                 PyteWarning)
+            return font_metrics[ord('?')].ps_name
+
     def glyphs(self):
-        ps_font = self.get_font().psFont
-        font_metrics = ps_font.metrics
+        font_metrics = self.ps_font.metrics
         char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"].by_glyph_name
         characters = iter(self.text)
-        def char_to_glyph(character):
-            try:
-                return font_metrics[ord(character)].ps_name
-            except KeyError:
-                warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
-                     .format(ps_font.ps_name, ord(character), character),
-                     PyteWarning)
-                return font_metrics[ord('?')].ps_name
 
         prev_char = self.text[0]
-        prev_glyph = char_to_glyph(next(characters))
+        prev_glyph = self.char_to_glyph(next(characters))
         for char in characters:
-            glyph = char_to_glyph(char)
+            glyph = self.char_to_glyph(char)
             try:
                 prev_glyph = char_metrics[prev_glyph]['L'][glyph]
                 prev_char = prev_char + char
@@ -214,8 +219,50 @@ class StyledText(Styled):
             yield character
 
     def spans(self):
-        # TODO: handle small caps, superscipt and subscript
-        yield self
+        if self.get_style('smallCaps'):
+            span = SmallCapitals(self.text, self.style)
+            span.parent = self.parent
+            yield span
+##        if self.get_style('position') == SUPERSCRIPT:
+##            character = character.superscript()
+##        elif self.get_style('position') == SUBSCRIPT:
+##            character = character.subscript()
+        else:
+            yield self
+
+
+class SmallCapitals(StyledText):
+    def __init__(self, text, style=ParentStyle):
+        super().__init__(text, style)
+
+    suffixes = ('.smcp', '.sc', 'small')
+
+    def _find_suffix(self, glyph, upper=False):
+        has_glyph = self.ps_font.has_glyph
+        for suffix in self.suffixes:
+            if has_glyph(glyph + suffix):
+                self.get_font().sc_sufix = suffix
+                return True
+        if not upper:
+            return self._find_suffix(glyph.upper(), True)
+        return False
+
+    def char_to_glyph(self, char):
+        glyph = super().char_to_glyph(char)
+        font = self.get_font()
+        has_glyph = font.psFont.has_glyph
+        try:
+            if has_glyph(glyph + font.sc_sufix):
+                sc_glyph = glyph + font.sc_sufix
+        except AttributeError:
+            if self._find_suffix(glyph):
+                sc_glyph = glyph + font.sc_sufix
+        try:
+            return sc_glyph
+        except NameError:
+            warn('{} does not contain small capitals for one or more characters'
+                 .format(font.psFont.ps_name), PyteWarning)
+            return glyph
 
 
 class MixedStyledText(list, Styled):
@@ -286,14 +333,6 @@ class Character(StyledText):
     @cached_property
     def widths(self):
         return [self.width]
-
-    @property
-    def height(self):
-        return self.get_style('fontSize')
-
-    @cached_property
-    def ps_font(self):
-        return self.get_font().psFont
 
     @cached_property
     def glyph_name(self):
