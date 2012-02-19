@@ -138,16 +138,29 @@ class StyledText(Styled):
 
     def glyphs(self):
         ps_font = self.get_font().psFont
-        metrics = ps_font.metrics
-        for character in self.text:
+        font_metrics = ps_font.metrics
+        char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"].by_glyph_name
+        characters = iter(self.text)
+        def char_to_glyph(character):
             try:
-                yield metrics[ord(character)].ps_name
+                return font_metrics[ord(character)].ps_name
             except KeyError:
-                warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
+                warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
                      .format(ps_font.ps_name, ord(character), character),
-                             PyteWarning)
-                yield metrics[ord('?')].ps_name
+                     PyteWarning)
+                return font_metrics[ord('?')].ps_name
 
+        prev_char = self.text[0]
+        prev_glyph = char_to_glyph(next(characters))
+        for char in characters:
+            glyph = char_to_glyph(char)
+            try:
+                prev_glyph = char_metrics[prev_glyph]['L'][glyph]
+                prev_char = prev_char + char
+            except KeyError:
+                yield prev_glyph
+                prev_glyph = glyph
+        yield prev_glyph
 
     def characters(self):
         for i, char in enumerate(self.text):

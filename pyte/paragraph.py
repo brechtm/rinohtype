@@ -211,11 +211,6 @@ class Line(list):
             self.current_style = item.style
             super().append(self.current_span)
 
-        try:
-            # TODO: keep non-ligatured version in case word doesn't fit on line
-            item.substitute_ligatures()
-        except AttributeError:
-            pass
         width = item.width
 
         if not self[0] and isinstance(item, Space):
