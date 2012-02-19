@@ -203,23 +203,6 @@ class StyledText(Styled):
                 first.text += '-'
                 yield first, second
 
-    def characters(self):
-        for i, char in enumerate(self.text):
-            try:
-                character = special_chars[char](style=ParentStyle,
-                                                new_span=(i==0))
-                # TODO: span can be set to the number of characters in the span
-            except KeyError:
-                character = Character(char, style=ParentStyle, new_span=(i==0))
-            character.parent = self
-            if self.get_style('smallCaps'):
-                character = character.small_capital()
-            if self.get_style('position') == SUPERSCRIPT:
-                character = character.superscript()
-            elif self.get_style('position') == SUBSCRIPT:
-                character = character.subscript()
-            yield character
-
     superscript_position = 1 / 3
     subscript_position = - 1 / 6
     position_size = 583 / 1000
@@ -316,11 +299,6 @@ class MixedStyledText(list, Styled):
 ##            or isinstance(other, str)
         return __class__(other) + self
 
-    def characters(self):
-        for item in self:
-            for char in item.characters():
-                yield char
-
     def spans(self):
         for item in self:
             for span in item.spans():
@@ -329,9 +307,8 @@ class MixedStyledText(list, Styled):
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(StyledText):
-    def __init__(self, text, style=ParentStyle, new_span=False, y_offset=0):
+    def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
-        self.new_span = new_span
 
     def __repr__(self):
         return self.text
@@ -361,75 +338,6 @@ class Character(StyledText):
     def ord(self):
         return ord(self.text)
 
-    sc_suffixes = ('.smcp', '.sc', 'small')
-
-    def small_capital(self):
-        ps_font = self.ps_font
-        char = self.text
-        for suffix in self.sc_suffixes:
-            if ps_font.has_glyph(char + suffix):
-                glyph = Glyph(char + '.sc')
-            elif char.islower() and ps_font.has_glyph(char.upper() + suffix):
-                glyph = Glyph(char.upper() + '.sc')
-        try:
-            glyph.parent = self.parent
-            return glyph
-        except NameError:
-            warn('{} does not contain small capitals for one or more '
-                 'characters'.format(self.ps_font.ps_name),
-                 PyteWarning)
-            return self
-
-    superscript_position = 1 / 3
-    subscript_position = - 1 / 6
-    position_size = 583 / 1000
-
-    def superscript(self):
-        size = self.get_style('fontSize') * self.position_size
-        offset = float(self.get_style('fontSize') * self.superscript_position)
-        style = TextStyle('superscript', fontSize=size)
-        superscript = Character(self.text, style, self.new_span, offset)
-        superscript.parent = self.parent
-        return superscript
-
-    def subscript(self):
-        size = self.get_style('fontSize') * self.position_size
-        offset = float(size * self.subscript_position)
-        style = TextStyle('subscript', fontSize=size)
-        subscript = Character(self.text, style, self.new_span, offset)
-        subscript.parent = self.parent
-        return subscript
-
-    def kerning(self, next_character):
-        if not self.get_style('kerning'):
-            return 0.0
-        if self.style != next_character.style:
-            #TODO: fine-grained style compare?
-            raise TypeError
-
-        kern = self.ps_font.metrics.get_kerning(self.glyph_name,
-                                                next_character.glyph_name)
-        return kern * float(self.height) / 1000.0
-
-    def ligature(self, next_character):
-        if not self.get_style('ligatures'):
-            return 0.0
-        if self.style != next_character.style:
-            #TODO: fine-grained style compare?
-            raise TypeError
-
-        font_metrics = self.ps_font.metrics.FontMetrics
-        char_metrics = font_metrics["Direction"][0]["CharMetrics"]
-        try:
-            ligatures = char_metrics.by_glyph_name[self.glyph_name]['L']
-            lig_glyph_name = ligatures[next_character.glyph_name]
-            lig_text = self.text + next_character.text
-            ligature = Glyph(lig_glyph_name, lig_text, style=self.style)
-            ligature.parent = self.parent
-            return ligature
-        except KeyError:
-            raise TypeError
-
 
 class Glyph(Character):
     def __init__(self, name, text='?', style=ParentStyle):
@@ -453,13 +361,9 @@ class Glyph(Character):
 
 
 class Space(Character):
-    def __init__(self, fixed_width=False, style=ParentStyle, new_span=False,
-                 y_offset=0):
-        super().__init__(' ', style, new_span, y_offset=y_offset)
+    def __init__(self, fixed_width=False, style=ParentStyle, y_offset=0):
+        super().__init__(' ', style, y_offset=y_offset)
         self.fixed_width = fixed_width
-
-    def characters(self):
-        yield self
 
 
 class FixedWidthSpace(Space):
@@ -468,8 +372,8 @@ class FixedWidthSpace(Space):
 
 
 class NoBreakSpace(Character):
-    def __init__(self, style=ParentStyle, new_span=False, y_offset=0):
-        super().__init__(' ', style, new_span, y_offset=y_offset)
+    def __init__(self, style=ParentStyle, y_offset=0):
+        super().__init__(' ', style, y_offset=y_offset)
 
 
 class Spacer(FixedWidthSpace):
@@ -489,7 +393,7 @@ special_chars = {' ': Space,
 # TODO: shared superclass SpecialChar (or ControlChar) for Newline, Box, Tab
 class Box(Character):
     def __init__(self, width, height, depth, ps):
-        super().__init__('?', new_span=True)
+        super().__init__('?')
         self._width = width
         self._height = height
         self.depth = depth
@@ -502,12 +406,6 @@ class Box(Character):
     @property
     def height(self):
         return self._height
-
-    def kerning(self, next_character):
-        raise TypeError
-
-    def ligature(self, next_character):
-        raise TypeError
 
     def render(self, canvas, x, y):
         box_canvas = canvas.append_new(x, y - self.depth, self.width,
@@ -523,9 +421,6 @@ class ControlCharacter(object):
     def __repr__(self):
         return self.__class__.__name__
 
-    def characters(self):
-        yield self
-
 
 class NewLine(ControlCharacter):
     def __init__(self):
@@ -534,7 +429,7 @@ class NewLine(ControlCharacter):
 
 class Tab(ControlCharacter, Character):
     def __init__(self):
-        Character.__init__(self, ' ', new_span=True)
+        Character.__init__(self, ' ')
         super().__init__(' ')
         self.tab_width = 0
 
@@ -543,11 +438,9 @@ class FlowableEmbedder(object):
     def __init__(self, flowable):
         self.flowable = flowable
 
-    def characters(self):
+    def spans(self):
         self.flowable.parent = self.parent
         yield self.flowable
-
-    spans = characters
 
 
 # predefined styles

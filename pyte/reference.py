@@ -21,9 +21,6 @@ class Field(StyledText):
     def __init__(self, y_offset=0):
         super().__init__('', y_offset=y_offset)
 
-    def characters(self):
-        yield LateEval(self)
-
     def spans(self):
         yield LateEval(self)
 

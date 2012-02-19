@@ -45,7 +45,7 @@ class Math(CharacterLike):
         super().__init__(style)
         self.equation = equation
 
-    def characters(self):
+    def spans(self):
         font_output = PyteFonts(self)
         fontsize = float(self.get_style('fontSize'))
         dpi = 72
@@ -63,9 +63,7 @@ class Math(CharacterLike):
 
         box = Box(width, height_depth - depth, depth, pswriter.getvalue())
         box.parent = self
-        return [box]
-
-    spans = characters
+        yield box
 
 
  # TODO: is subclass of ParagraphStyle, but doesn't need all of its attributes!
