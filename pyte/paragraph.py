@@ -88,6 +88,8 @@ class Span(list):
         return list(map(_is_scalable_space, self)).count(True)
 
     def render(self, canvas, x, y, add_to_spaces=0.0):
+        if isinstance(self[0], Box):
+            return self[0].render(canvas, x, y)
         font = self[0].get_font()
         font_size = float(self[0].height)
         canvas.move_to(x, y + self[0].y_offset)
