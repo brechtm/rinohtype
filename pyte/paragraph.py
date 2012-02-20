@@ -204,7 +204,9 @@ class Line(list):
 
         def render_span(item, font_style, glyphs, widths):
             canvas.move_to(x, self.paragraph._line_cursor + item.y_offset)
-            canvas.select_font(*font_style)
+            if font_style != self.paragraph._last_font_style:
+                canvas.select_font(*font_style)
+                self.paragraph._last_font_style = font_style
             canvas.show_glyphs(glyphs, widths)
             total_width = sum(widths)
             del glyphs[:]
@@ -275,6 +277,7 @@ class Paragraph(MixedStyledText, Flowable):
         indent_first = float(self.get_style('indentFirst'))
         line_width = canvas.width - indent_right
 
+        self._last_font_style = None
         self._line_cursor = canvas.height - offset
         line_pointers = self.word_pointer, self.field_pointer
         if self.first_line:
@@ -336,11 +339,9 @@ class Paragraph(MixedStyledText, Flowable):
             return line_spacing * line_height
 
     def typeset_line(self, canvas, line, line_pointers, last_line=False):
-        buffer = canvas.new(0, 0, canvas.width, canvas.height)
         try:
-            line_height = line.typeset(buffer, last_line)
+            line_height = line.typeset(canvas, last_line)
             self.advance(self._line_spacing(line_height) - line_height)
-            canvas.append(buffer)
             try:
                 line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
             except TypeError:
@@ -348,8 +349,6 @@ class Paragraph(MixedStyledText, Flowable):
         except EndOfContainer:
             self.word_pointer, self.field_pointer = line_pointers
             raise
-        finally:
-            del buffer
         self.first_line = False
         return line_pointers
 
