@@ -65,9 +65,9 @@ if use_gyre:
                           cmex9)
 else:
     from pyte.fonts.adobe14 import pdf_family as ieeeFamily
-    #from pyte.fonts.adobe35 import avantgarde, palatino, zapfchancery
+    #from pyte.fonts.adobe35 import palatino, helvetica, courier
     #from pyte.fonts.adobe35 import newcenturyschlbk, bookman
-    #ieeeFamily = TypeFamily(serif=palatino)
+    #ieeeFamily = TypeFamily(serif=palatino, sans=helvetica, mono=courier)
     from pyte.fonts.adobe35 import postscript_mathfonts as mathfonts
 
 

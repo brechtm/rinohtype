@@ -5,6 +5,7 @@ from warnings import warn
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
+from ..util import cached_property
 from ..warnings import PyteWarning
 
 from psg.fonts.type1 import type1
@@ -26,17 +27,23 @@ class Font(object):
                   .format(', '.join(WIDTHS)))
         self.filename = filename
         if core:
-            pf_filename = None
+            self.pf_filename = None
         elif os.path.exists(filename + ".pfa"):
-            pf_filename = filename + ".pfa"
+            self.pf_filename = filename + ".pfa"
         else:
-            pf_filename = filename + ".pfb"
+            self.pf_filename = filename + ".pfb"
 
-        self.psFont = type1(pf_filename, filename  + ".afm")
-        self.name = self.psFont.full_name
         self.weight = weight
         self.slant = slant
         self.width = width
+
+    @cached_property
+    def psFont(self):
+        return type1(self.pf_filename, self.filename + ".afm")
+
+    @property
+    def name(self):
+        return self.psFont.full_name
 
 
 class TypeFace(dict):
