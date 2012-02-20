@@ -1,4 +1,5 @@
 
+import itertools
 import re
 import os
 
@@ -91,23 +92,19 @@ class StyledText(Styled):
         return result
 
     def split(self):
-        re_special = re.compile('[{}]'.format(''.join(special_chars.keys())))
-        last = 0
-        for match in re_special.finditer(self.text):
-            index = match.start()
-            if index > last:
-                item = self.__class__(self.text[last:index],
-                                      y_offset=self.y_offset)
+        def is_special(char):
+            return char in special_chars.keys()
+
+        for special, lst in itertools.groupby(self.text, is_special):
+            if special:
+                for char in lst:
+                    item = special_chars[char](y_offset=self.y_offset)
+                    item.parent = self
+                    yield item
+            else:
+                item = self.__class__(''.join(lst), y_offset=self.y_offset)
                 item.parent = self
                 yield item
-            item = special_chars[self.text[index]](y_offset=self.y_offset)
-            item.parent = self
-            yield item
-            last = index + 1
-        if last < len(self.text):
-            item = self.__class__(self.text[last:], y_offset=self.y_offset)
-            item.parent = self
-            yield item
 
     def get_font(self):
         typeface = self.get_style('typeface')
