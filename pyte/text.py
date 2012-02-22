@@ -297,6 +297,7 @@ class MixedStyledText(list, Styled):
 
     def spans(self):
         # TODO: support for mixed-style words
+        # TODO: kerning between Glyphs
         for item in self:
             for span in item.spans():
                 yield span
@@ -313,28 +314,6 @@ class Character(StyledText):
     def split(self):
         yield self
 
-    @property
-    def width(self):
-        font_size = float(self.height)
-        return self.ps_font.metrics.stringwidth(self.text, font_size)
-
-    @cached_property
-    def widths(self):
-        return [self.width]
-
-    @cached_property
-    def glyph_name(self):
-        try:
-            return self.ps_font.metrics[self.ord()].ps_name
-        except KeyError:
-            warn("{0} does not contain glyph for unicode index 0x{1:04x} ({2})"
-                 .format(self.ps_font.ps_name, self.ord(), self.text),
-                         PyteWarning)
-            return self.ps_font.metrics[ord('?')].ps_name
-
-    def ord(self):
-        return ord(self.text)
-
 
 class Glyph(Character):
     def __init__(self, name, text='?', style=ParentStyle):
@@ -344,17 +323,8 @@ class Glyph(Character):
     def __repr__(self):
         return "<glyph '{0}'> (style={1})".format(self.name, self.style)
 
-    @property
-    def width(self):
-        font_size = float(self.get_style('fontSize'))
-        return self.ps_font.metrics.stringwidth([self.name], font_size)
-
-    @property
-    def glyph_name(self):
-        return self.name
-
-    def ord(self):
-        raise TypeError
+    def glyphs(self):
+        yield self.name
 
 
 class Space(Character):
@@ -379,8 +349,8 @@ class Spacer(FixedWidthSpace):
         self.dimension = dimension
 
     @property
-    def width(self):
-        return float(self.dimension)
+    def widths(self):
+        yield float(self.dimension)
 
 
 special_chars = {' ': Space,
