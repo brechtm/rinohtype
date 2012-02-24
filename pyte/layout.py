@@ -105,7 +105,7 @@ class Container(RenderTarget):
         else:
             bottom = float(self.page.height - self.abs_bottom)
             height = float(self.height)
-        return self.page.canvas.append_new(left, bottom, width, height)
+        return self.page.canvas.new(left, bottom, width, height)
 
     def render(self, canvas):
         end_of_page = None
@@ -121,11 +121,15 @@ class Container(RenderTarget):
                 offset += flowable.flow(self, offset)
             if self.dynamic:
                 self.height.add(offset * pt)
+            self.place()
         elif self.chain:
             self.chain.render()
 
         if end_of_page is not None:
             raise end_of_page
+
+    def place(self):
+        self.page.canvas.append(self.canvas)
 
 
 class Chain(RenderTarget):
@@ -157,6 +161,8 @@ class Chain(RenderTarget):
                 continued = True
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
+            finally:
+                container.place()
         return offset
 
     def add_container(self, container):

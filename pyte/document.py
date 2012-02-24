@@ -53,6 +53,9 @@ class Page(Container):
                                               self.width, self.height)
         super().render(self.canvas)
 
+    def place(self):
+        pass
+
 
 class Document(object):
     cache_extension = '.ptc'
