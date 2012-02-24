@@ -31,10 +31,11 @@ class RenderTarget(object):
                                   self.__class__.__name__)
 
 
+# TODO: DownwardExpandingContainer & UpwardExpandingContainer?
 class Container(RenderTarget):
     def __init__(self, parent, left=NIL, top=NIL,
                  width=None, height=NIL, right=None, bottom=None,
-                 chain=None):
+                 chain=None, upward=False):
         # height = NIL   AND  bottom = None   ->    height depends on contents
         # width  = None  AND  right  = None   ->    use all available space
         super().__init__()
@@ -45,6 +46,7 @@ class Container(RenderTarget):
         self.top = top
         self.height = bottom - self.top if bottom else height
         self.dynamic = self.height == 0
+        self.upward = upward
         if width:
             self.width = width
         elif right:
@@ -121,6 +123,8 @@ class Container(RenderTarget):
                 offset += flowable.flow(self, offset)
             if self.dynamic:
                 self.height.add(offset * pt)
+                if self.upward:
+                    self.top.add(- offset * pt)
             self.place()
         elif self.chain:
             self.chain.render()
@@ -129,7 +133,12 @@ class Container(RenderTarget):
             raise end_of_page
 
     def place(self):
+        if self.dynamic and self.upward:
+            self.page.canvas.save_state()
+            self.page.canvas.translate(0, float(self.height))
         self.page.canvas.append(self.canvas)
+        if self.dynamic and self.upward:
+            self.page.canvas.restore_state()
 
 
 class Chain(RenderTarget):
