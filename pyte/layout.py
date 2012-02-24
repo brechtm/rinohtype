@@ -2,6 +2,7 @@
 from .dimension import Dimension, NIL
 from .flowable import Flowable
 from .unit import pt
+from .util import cached_property
 
 
 class EndOfContainer(Exception):
@@ -94,22 +95,17 @@ class Container(RenderTarget):
     def document(self):
         return self.page._document
 
-    @property
+    @cached_property
     def canvas(self):
-        try:
-            return self._canvas
-        except AttributeError:
-            left = float(self.abs_left)
-            width = float(self.width)
-            if self.dynamic:
-                bottom = 0
-                height = float(self.page.height - self.abs_bottom)
-            else:
-                bottom = float(self.page.height - self.abs_bottom)
-                height = float(self.height)
-            self._canvas = self.page.canvas.append_new(left, bottom,
-                                                       width, height)
-            return self._canvas
+        left = float(self.abs_left)
+        width = float(self.width)
+        if self.dynamic:
+            bottom = 0
+            height = float(self.page.height - self.abs_bottom)
+        else:
+            bottom = float(self.page.height - self.abs_bottom)
+            height = float(self.height)
+        return self.page.canvas.append_new(left, bottom, width, height)
 
     def render(self, canvas):
         end_of_page = None
