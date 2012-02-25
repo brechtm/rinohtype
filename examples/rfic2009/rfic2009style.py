@@ -8,7 +8,7 @@ from pyte.font import Font, TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
-from pyte.layout import Container, Chain
+from pyte.layout import Container, DownExpandingContainer, Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC
@@ -456,22 +456,20 @@ class RFICPage(Page):
         body = Container(self, self.leftmargin, self.topmargin,
                          body_width, body_height)
 
-        column_height = body.height
         column_width = (body.width - self.column_spacing) / 2.0
         column_top = 0*pt
 
         if first:
-            self.title_box = Container(body, 0*pt, 0*pt)
-            column_height -= self.title_box.height
+            self.title_box = DownExpandingContainer(body)
             column_top = self.title_box.bottom
 
         self.content = document.content
 
         self.column1 = Container(body, 0*pt, column_top,
-                                 width=column_width, height=column_height,
+                                 width=column_width, bottom=body.height,
                                  chain=document.content)
         self.column2 = Container(body, column_width + self.column_spacing, column_top,
-                                 width=column_width, height=column_height,
+                                 width=column_width, bottom=body.height,
                                  chain=document.content)
 
         self.header = Container(self, self.leftmargin, self.topmargin / 2,

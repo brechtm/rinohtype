@@ -1,5 +1,5 @@
 
-from .dimension import Dimension, NIL
+from .dimension import Dimension
 from .flowable import Flowable
 from .unit import pt
 from .util import cached_property
@@ -31,14 +31,12 @@ class RenderTarget(object):
                                   self.__class__.__name__)
 
 
-# TODO: DownwardExpandingContainer & UpwardExpandingContainer?
 class Container(RenderTarget):
-    def __init__(self, parent, left=NIL, top=NIL,
-                 width=None, height=NIL, right=None, bottom=None,
-                 chain=None, upward=False):
-        # height = NIL   AND  bottom = None   ->    height depends on contents
-        # width  = None  AND  right  = None   ->    use all available space
+    def __init__(self, parent, left=0*pt, top=0*pt,
+                 width=None, height=None, right=None, bottom=None,
+                 chain=None):
         super().__init__()
+        self.upward = False
         if parent:
             parent.children.append(self)
         self.parent = parent
@@ -46,7 +44,6 @@ class Container(RenderTarget):
         self.top = top
         self.height = bottom - self.top if bottom else height
         self.dynamic = self.height == 0
-        self.upward = upward
         if width:
             self.width = width
         elif right:
@@ -101,12 +98,8 @@ class Container(RenderTarget):
     def canvas(self):
         left = float(self.abs_left)
         width = float(self.width)
-        if self.dynamic:
-            bottom = 0
-            height = float(self.page.height - self.abs_bottom)
-        else:
-            bottom = float(self.page.height - self.abs_bottom)
-            height = float(self.height)
+        bottom = float(self.page.height - self.abs_bottom)
+        height = float(self.height)
         return self.page.canvas.new(left, bottom, width, height)
 
     def render(self, canvas):
@@ -133,12 +126,21 @@ class Container(RenderTarget):
             raise end_of_page
 
     def place(self):
-        if self.dynamic and self.upward:
-            self.page.canvas.save_state()
-            self.page.canvas.translate(0, float(self.height))
         self.page.canvas.append(self.canvas)
-        if self.dynamic and self.upward:
-            self.page.canvas.restore_state()
+
+
+class DownExpandingContainer(Container):
+    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
+        super().__init__(parent, left, top, width=width, right=right,
+                         height=0*pt)
+
+    @cached_property
+    def canvas(self):
+        left = float(self.abs_left)
+        width = float(self.width)
+        bottom = 0
+        height = float(self.page.height - self.abs_bottom)
+        return self.page.canvas.new(left, bottom, width, height)
 
 
 class Chain(RenderTarget):
