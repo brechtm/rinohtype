@@ -114,14 +114,13 @@ class Container(RenderTarget):
             offset = 0
             for flowable in self.flowables:
                 offset += flowable.flow(self, offset)
-            if self.dynamic:
-                self.height.add(offset * pt)
-                if self.upward:
-                    self.top.add(- offset * pt)
-            self.place()
         elif self.chain:
-            self.chain.render()
+            try:
+                self.chain.render()
+            except EndOfPage as e:
+                end_of_page = e
 
+        self.place()
         if end_of_page is not None:
             raise end_of_page
 
@@ -133,6 +132,9 @@ class DownExpandingContainer(Container):
     def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
         super().__init__(parent, left, top, width=width, right=right,
                          height=0*pt)
+
+    def expand(self, height):
+        self.height.add(height * pt)
 
     @cached_property
     def canvas(self):
@@ -172,8 +174,6 @@ class Chain(RenderTarget):
                 continued = True
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
-            finally:
-                container.place()
         return offset
 
     def add_container(self, container):
