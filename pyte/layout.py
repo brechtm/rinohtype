@@ -41,8 +41,9 @@ class Container(RenderTarget):
             parent.children.append(self)
         self.parent = parent
         self.left = left
-        self.top = top
-        self.height = bottom - self.top if bottom else height
+        if top:
+            self.top = top
+        self.height = height if height else bottom - self.top
         self.dynamic = self.height == 0
         if width:
             self.width = width
@@ -143,6 +144,42 @@ class DownExpandingContainer(Container):
         bottom = 0
         height = float(self.page.height - self.abs_bottom)
         return self.page.canvas.new(left, bottom, width, height)
+
+
+class UpExpandingContainer(Container):
+    def __init__(self, parent, left=0*pt, bottom=0*pt, width=None, right=None):
+        self._bottom = bottom
+        super().__init__(parent, left, top=None, bottom=bottom, width=width,
+                         right=right, height=0*pt)
+        self.upward = True
+
+    @property
+    def top(self):
+        return self._bottom - self.height
+
+    @property
+    def bottom(self):
+        return self._bottom
+
+    @cached_property
+    def canvas(self):
+        left = float(self.abs_left)
+        width = float(self.width)
+        bottom = 0
+        height = float(self.page.height - self.abs_bottom)
+        return self.page.canvas.new(left, bottom, width, height)
+
+    def expand(self, height):
+        self.height.add(height * pt)
+        self.top.add(- height * pt)
+
+    def place(self):
+        if self.dynamic and self.upward:
+            self.page.canvas.save_state()
+            self.page.canvas.translate(0, float(self.height))
+        self.page.canvas.append(self.canvas)
+        if self.dynamic and self.upward:
+            self.page.canvas.restore_state()
 
 
 class Chain(RenderTarget):
