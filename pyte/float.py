@@ -71,5 +71,6 @@ class Figure(Flowable):
     def render(self, canvas, offset=0):
         image = Image(self.filename, scale=self.scale)
         height = image.render(canvas, offset)
+        self.caption.container = self.container
         height += self.caption.render(canvas, offset + height)
         return height

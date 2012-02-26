@@ -106,7 +106,7 @@ class List(Paragraph):
         for i in range(self.itempointer, len(self)):
             try:
                 item = self[i]
-                offset += item.typeset(pscanvas, offset)
+                self.container.flow(item)
             except EndOfContainer:
                 self.itempointer = i
                 raise
@@ -196,7 +196,7 @@ class TableOfContents(Paragraph):
             self.item_pointer += 1
             try:
                 item = self[self.item_pointer - 1]
-                offset += item.typeset(canvas, offset)
+                self.container.flow(item)
             except EndOfContainer:
                 raise
 

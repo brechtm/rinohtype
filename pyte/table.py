@@ -162,6 +162,7 @@ class Tabular(Flowable):
     def render_cell(self, cell, canvas, style):
         if cell is not None and cell.content:
             cell_par = Paragraph(cell.content, style=style)
+            cell_par.container = self.container
             return cell_par.render(canvas)
         else:
             return 0

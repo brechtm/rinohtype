@@ -35,19 +35,6 @@ class Flowable(Styled):
     def split(self):
         yield self
 
-    def flow(self, container, offset=0, continued=False):
-        self.container = container
-        if not continued:
-            space_above = float(self.get_style('spaceAbove'))
-        else:
-            space_above = 0
-        space_below = float(self.get_style('spaceBelow'))
-        flowable_height = self.render(container.canvas, offset + space_above)
-        total_height = space_above + flowable_height + space_below
-        if container.dynamic:
-            container.expand(total_height)
-        return total_height
-
     def render(self, canvas, offset=0):
         raise NotImplementedError("virtual method not implemented in class %s" %
                                   self.__class__.__name__)

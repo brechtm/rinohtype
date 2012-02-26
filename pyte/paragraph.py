@@ -203,7 +203,7 @@ class Line(list):
         self.paragraph.newline(max_font_size)
 
         def render_span(item, font_style, glyphs, widths):
-            canvas.move_to(x, self.paragraph._line_cursor + item.y_offset)
+            canvas.move_to(x, self.paragraph.container.cursor + item.y_offset)
             if font_style != self.paragraph._last_font_style:
                 canvas.select_font(*font_style)
                 self.paragraph._last_font_style = font_style
@@ -224,7 +224,7 @@ class Line(list):
                     x += render_span(prev_item, prev_font_style, glyphs, widths)
                     prev_item = None
                     prev_font_style = None
-                x += item.render(canvas, x, self.paragraph._line_cursor)
+                x += item.render(canvas, x, self.paragraph.container.cursor)
                 continue
             if _is_scalable_space(item):
                 item_widths = [item.widths[0] + add_to_spaces]
@@ -278,7 +278,6 @@ class Paragraph(MixedStyledText, Flowable):
         line_width = canvas.width - indent_right
 
         self._last_font_style = None
-        self._line_cursor = canvas.height - offset
         line_pointers = self.word_pointer, self.field_pointer
         if self.first_line:
             line = Line(self, line_width, indent_left + indent_first)
@@ -308,9 +307,7 @@ class Paragraph(MixedStyledText, Flowable):
                                                   last_line=True)
                 if isinstance(word, Flowable):
                     # TODO: handle continued flowables
-                    flowable_offset = canvas.height - self._line_cursor
-                    flowable_height = word.flow(self.container, flowable_offset)
-                    self.newline(flowable_height)
+                    flowable_height = self.container.flow(word)
                 line = Line(self, line_width, indent_left)
             else:
                 try:
@@ -329,7 +326,7 @@ class Paragraph(MixedStyledText, Flowable):
             self.typeset_line(canvas, line, line_pointers, last_line=True)
 
         self._init_state()
-        return canvas.height - offset - self._line_cursor
+        return 0
 
     def _line_spacing(self, line_height):
         line_spacing = self.get_style('lineSpacing')
@@ -358,7 +355,4 @@ class Paragraph(MixedStyledText, Flowable):
 
     def advance(self, space):
         """Advance the line cursor downward by `space`"""
-        self._line_cursor -= space
-
-        if self._line_cursor < 0:
-            raise EndOfContainer
+        self.container.advance(space)

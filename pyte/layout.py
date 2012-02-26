@@ -56,6 +56,18 @@ class Container(RenderTarget):
         self.chain = chain
         if self.chain:
             chain.add_container(self)
+        self._flowable_offset = 0
+
+    def advance(self, height):
+        self._flowable_offset += height
+        if self.dynamic:
+            self.expand(height)
+        if not self.dynamic and self._flowable_offset > self.height:
+            raise EndOfContainer
+
+    @property
+    def cursor(self):
+        return float(self.canvas.height) - self._flowable_offset
 
     @property
     def right(self):
@@ -103,6 +115,13 @@ class Container(RenderTarget):
         height = float(self.height)
         return self.page.canvas.new(left, bottom, width, height)
 
+    def flow(self, flowable, continued=False):
+        flowable.container = self
+        if not continued:
+            self.advance(float(flowable.get_style('spaceAbove')))
+        flowable.render(self.canvas)
+        self.advance(float(flowable.get_style('spaceBelow')))
+
     def render(self, canvas):
         end_of_page = None
         for child in self.children:
@@ -112,9 +131,8 @@ class Container(RenderTarget):
                 end_of_page = e
 
         if self.flowables:
-            offset = 0
             for flowable in self.flowables:
-                offset += flowable.flow(self, offset)
+                self.flow(flowable)
         elif self.chain:
             try:
                 self.chain.render()
@@ -165,8 +183,8 @@ class UpExpandingContainer(Container):
     def canvas(self):
         left = float(self.abs_left)
         width = float(self.width)
-        bottom = 0
-        height = float(self.page.height - self.abs_bottom)
+        bottom = float(self.page.height - self.abs_bottom)
+        height = float(self.abs_bottom)
         return self.page.canvas.new(left, bottom, width, height)
 
     def expand(self, height):
@@ -174,12 +192,11 @@ class UpExpandingContainer(Container):
         self.top.add(- height * pt)
 
     def place(self):
-        if self.dynamic and self.upward:
-            self.page.canvas.save_state()
-            self.page.canvas.translate(0, float(self.height))
+        self.page.canvas.save_state()
+        y_offset = - float(self.abs_bottom) + float(self.height)
+        self.page.canvas.translate(0, y_offset)
         self.page.canvas.append(self.canvas)
-        if self.dynamic and self.upward:
-            self.page.canvas.restore_state()
+        self.page.canvas.restore_state()
 
 
 class Chain(RenderTarget):
@@ -196,22 +213,19 @@ class Chain(RenderTarget):
 
     def render(self):
         continued = False
-        offset = 0
         while self._container_index < len(self._containers):
             container = self._containers[self._container_index]
             self._container_index += 1
-            offset = 0
             try:
                 while self._flowable_index < len(self.flowables):
                     flowable = self.flowables[self._flowable_index]
-                    offset += flowable.flow(container, offset, continued)
+                    container.flow(flowable, continued)
                     self._flowable_index += 1
                     continued = False
             except EndOfContainer:
                 continued = True
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
-        return offset
 
     def add_container(self, container):
         assert isinstance(container, Container)
