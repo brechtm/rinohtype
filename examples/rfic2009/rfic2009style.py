@@ -11,7 +11,7 @@ from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, DownExpandingContainer, Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
-from pyte.number import CHARACTER_UC, ROMAN_UC
+from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from pyte.text import StyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
 from pyte.text import TextStyle, boldItalicStyle
@@ -150,7 +150,7 @@ listStyle = ListStyle("list", base=bodyStyle,
                       indentFirst=0*inch,
                       ordered=True,
                       itemSpacing=0*pt,
-                      numberingStyle=ROMAN_UC, # not yet implemented
+                      numberingStyle=NUMBER,
                       numberingSeparator=')')
 
 hd1Style = HeadingStyle("heading",

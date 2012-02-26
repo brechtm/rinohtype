@@ -82,12 +82,14 @@ class List(Paragraph):
                                          spaceBelow=0*pt,
                                          base=style)
         separator = style.numberingSeparator
+        numbers = [format_number(i + 1, self.get_style('numberingStyle'))
+                   for i in range(len(items))]
         for i, item in enumerate(items[:-1]):
-            item = Paragraph("{}{}".format(i + 1, separator) +
+            item = Paragraph("{}{}".format(numbers[i], separator) +
                              FixedWidthSpace() + item,
                              style=item_style)
             self.append(item)
-        self.append(Paragraph("{}{}".format(len(items), separator) +
+        self.append(Paragraph("{}{}".format(numbers[-1], separator) +
                               FixedWidthSpace() + items[-1],
                               style=last_item_style))
         self.item_pointer = 0
