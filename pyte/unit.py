@@ -9,7 +9,6 @@ _pt = {
        'm'   :   72/0.0254,
       }
 
-nil  = Dimension(0)
 pt   = Dimension(1)
 inch = Dimension(_pt['inch'])
 cm   = Dimension(_pt['cm'])

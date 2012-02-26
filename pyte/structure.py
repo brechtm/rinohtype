@@ -9,7 +9,7 @@ from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import StyledText, FixedWidthSpace, Tab
-from .unit import nil
+from .unit import pt
 from .warnings import PyteWarning
 
 
@@ -74,12 +74,12 @@ class List(Paragraph):
     def __init__(self, items, style=None):
         super().__init__([], style)
         item_style = ParagraphStyle("list item",
-                                    spaceAbove=nil,
+                                    spaceAbove=0*pt,
                                     spaceBelow=style.itemSpacing,
                                     base=style)
         last_item_style = ParagraphStyle("last list item",
-                                         spaceAbove=nil,
-                                         spaceBelow=style.spaceBelow,
+                                         spaceAbove=0*pt,
+                                         spaceBelow=0*pt,
                                          base=style)
         separator = style.numberingSeparator
         for i, item in enumerate(items[:-1]):
@@ -90,7 +90,7 @@ class List(Paragraph):
         self.append(Paragraph("{}{}".format(len(items), separator) +
                               FixedWidthSpace() + items[-1],
                               style=last_item_style))
-        self.itempointer = 0
+        self.item_pointer = 0
 
 ##    def append(self, listItem):
 ####        assert isinstance(listItem, ListItem)
@@ -100,19 +100,12 @@ class List(Paragraph):
 ####        listItem.number = self.currentNumber
 ##        self.currentNumber += 1
 
-    def typeset(self, pscanvas, offset=0):
-        offset_begin = offset
-        #for i, item in enumerate(self):
-        for i in range(self.itempointer, len(self)):
-            try:
-                item = self[i]
-                self.container.flow(item)
-            except EndOfContainer:
-                self.itempointer = i
-                raise
-
-        self.itempointer = 0
-        return offset - offset_begin
+    def typeset(self, canvas, offset=0):
+        while self.item_pointer < len(self):
+            item = self[self.item_pointer]
+            self.container.flow(item)
+            self.item_pointer += 1
+        self.item_pointer = 0
 
 
 ### TODO: create common superclass for Heading and ListItem

@@ -149,7 +149,7 @@ listStyle = ListStyle("list", base=bodyStyle,
                       indentLeft=0*inch,
                       indentFirst=0*inch,
                       ordered=True,
-                      itemSpacing=bodyStyle.lineSpacing,
+                      itemSpacing=0*pt,
                       numberingStyle=ROMAN_UC, # not yet implemented
                       numberingSeparator=')')
 
