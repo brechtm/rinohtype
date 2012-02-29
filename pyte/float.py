@@ -16,11 +16,13 @@ class Image(Flowable):
         self.scale = scale
 
     def render(self, canvas, offset=0):
+        offset = self.container._flowable_offset
         eps = eps_image(canvas.psg_canvas, open(self.filename, 'rb'),
                         document_level=True)
         image_height = eps.h() * self.scale
         image_width = eps.w() * self.scale
         canvas.save_state()
+        self.container.advance(image_height)
         canvas.translate((canvas.width - image_width) / 2,
                          canvas.height - offset - image_height)
         canvas.scale(self.scale)
@@ -70,7 +72,6 @@ class Figure(Flowable):
 
     def render(self, canvas, offset=0):
         image = Image(self.filename, scale=self.scale)
-        height = image.render(canvas, offset)
-        self.caption.container = self.container
-        height += self.caption.render(canvas, offset + height)
-        return height
+        image_height = self.container.flow(image)
+        caption_height = self.container.flow(self.caption)
+        return image_height + caption_height
