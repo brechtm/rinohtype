@@ -5,6 +5,7 @@ from copy import copy
 
 from .draw import Line
 from .flowable import Flowable, FlowableStyle
+from .layout import VirtualContainer
 from .paragraph import Paragraph, ParagraphStyle
 from .style import Style
 from .unit import pt
@@ -106,12 +107,12 @@ class Tabular(Flowable):
                 elif cell is None:
                     continue
                 cell_width = column_widths[c] * cell.colspan
-                buffer = canvas.new(x_cursor, 0, cell_width, canvas.height)
+                buffer = VirtualContainer(self.container, cell_width * pt)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
                 if cell.rowspan == 1:
                     row_height = max(row_height, cell_height)
-                rendered_cell = RenderedCell(cell, buffer, x_cursor,
+                rendered_cell = RenderedCell(cell, buffer.canvas, x_cursor,
                                              cell_height)
                 rendered_row.append(rendered_cell)
                 x_cursor += cell_width
@@ -131,8 +132,11 @@ class Tabular(Flowable):
                         for i in range(r, r + rendered_cell.rowspan):
                             row_heights[i] += padding
 
+        y_cursor = self.container._flowable_offset
+        table_height = sum(row_heights)
+        self.container.advance(table_height)
+
         # place cell content and render cell border
-        y_cursor = offset
         for r, rendered_row in enumerate(rendered_rows):
             for c, rendered_cell in enumerate(rendered_row):
                 if rendered_cell.rowspan > 1:
@@ -140,9 +144,9 @@ class Tabular(Flowable):
                 else:
                     row_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
-                cell_height = canvas.height - y_cursor - row_height
+                y_pos = canvas.height - y_cursor - row_height
                 cell_width = rendered_cell.width
-                border_buffer = canvas.append_new(x_cursor, cell_height,
+                border_buffer = canvas.append_new(x_cursor, y_pos,
                                                   cell_width, row_height)
                 cell_style = self.cell_styles[r][c]
                 self.draw_cell_border(border_buffer, row_height, cell_style)
@@ -153,17 +157,16 @@ class Tabular(Flowable):
                 else:
                     vertical_offset = 0
                 canvas.save_state()
-                canvas.translate(0, - (y_cursor + vertical_offset))
+                canvas.translate(x_cursor, canvas.height - (y_cursor + vertical_offset))
                 canvas.append(rendered_cell.canvas)
                 canvas.restore_state()
             y_cursor += row_height
-        return y_cursor - offset
+        return table_height
 
-    def render_cell(self, cell, canvas, style):
+    def render_cell(self, cell, container, style):
         if cell is not None and cell.content:
             cell_par = Paragraph(cell.content, style=style)
-            cell_par.container = self.container
-            return cell_par.render(canvas)
+            return container.flow(cell_par)
         else:
             return 0
 

@@ -116,11 +116,13 @@ class Container(RenderTarget):
         return self.page.canvas.new(left, bottom, width, height)
 
     def flow(self, flowable, continued=False):
+        start_offset = self._flowable_offset
         flowable.container = self
         if not continued:
             self.advance(float(flowable.get_style('spaceAbove')))
         flowable.render(self.canvas)
         self.advance(float(flowable.get_style('spaceBelow')))
+        return self._flowable_offset - start_offset
 
     def render(self, canvas):
         end_of_page = None
@@ -197,6 +199,19 @@ class UpExpandingContainer(Container):
         self.page.canvas.translate(0, y_offset)
         self.page.canvas.append(self.canvas)
         self.page.canvas.restore_state()
+
+
+class VirtualContainer(DownExpandingContainer):
+    def __init__(self, parent, width):
+        super().__init__(parent.page, 0*pt, 0*pt, width=width)
+
+    @cached_property
+    def canvas(self):
+        width = float(self.width)
+        return self.page.canvas.new(0, 0, width, 0)
+
+    def place(self):
+        pass
 
 
 class Chain(RenderTarget):

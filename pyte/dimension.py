@@ -11,6 +11,7 @@ class Dimension(object): # internally always pt
         self.__factor = 1
 
     def add(self, other):
+        # TODO: allow adding ints and floats (pt)
         assert isinstance(other, Dimension)
         this = copy(self)
         self.__init__(0)

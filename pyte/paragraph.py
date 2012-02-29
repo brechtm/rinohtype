@@ -272,6 +272,8 @@ class Paragraph(MixedStyledText, Flowable):
         if not self._words:
             self._words = self._split_words(self.spans())
 
+        start_offset = self.container._flowable_offset
+
         indent_left = float(self.get_style('indentLeft'))
         indent_right = float(self.get_style('indentRight'))
         indent_first = float(self.get_style('indentFirst'))
@@ -326,7 +328,7 @@ class Paragraph(MixedStyledText, Flowable):
             self.typeset_line(canvas, line, line_pointers, last_line=True)
 
         self._init_state()
-        return 0
+        return self.container._flowable_offset - start_offset
 
     def _line_spacing(self, line_height):
         line_spacing = self.get_style('lineSpacing')
