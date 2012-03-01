@@ -161,8 +161,8 @@ class Container(RenderTarget):
             total_height = 0
             previous_height = 0
             for flowable in self.flowables:
-                space_above = float(flowable.style.spaceAbove)
-                space_below = float(flowable.style.spaceBelow)
+                space_above = float(flowable.get_style('spaceAbove'))
+                space_below = float(flowable.get_style('spaceBelow'))
                 box_height = flowable.render(this_canvas, total_height)
                 previous_height = space_above + box_height + space_below
                 total_height += previous_height
@@ -202,8 +202,8 @@ class Chain(RenderTarget):
             prev_height = 0
             try:
                 for flowable in self.flowables[self._flowable_index:]:
-                    space_above = float(flowable.style.spaceAbove)
-                    space_below = float(flowable.style.spaceBelow)
+                    space_above = float(flowable.get_style('spaceAbove'))
+                    space_below = float(flowable.get_style('spaceBelow'))
 
                     this_canvas = container.page.canvas.append_new(
                                     left, bottom, width, height - space_above)
