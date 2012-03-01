@@ -9,7 +9,7 @@ from .unit import pt
 from .font import TypeFamily
 from .text import ParentStyle, Style, CharacterLike, Box, NewLine, Tab
 from .text import MixedStyledText
-from .paragraph import ParagraphStyle
+from .paragraph import Paragraph, ParagraphStyle, TabStop, RIGHT
 from .mathtext import Fonts, MathtextBackendPs, MathTextWarning, Parser, Bunch
 from .mathtext import get_unicode_index
 from ._mathtext_data import tex2uni
@@ -68,13 +68,14 @@ class Math(CharacterLike):
 
  # TODO: is subclass of ParagraphStyle, but doesn't need all of its attributes!
 class EquationStyle(ParagraphStyle):
-    attributes = {'math_style': None}
+    attributes = {'math_style': None,
+                  'tab_stops': [TabStop(0.5), TabStop(1.0, RIGHT)]}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
 
 
-class Equation(MixedStyledText):
+class Equation(Paragraph):
     style_class = EquationStyle
     next_number = 1
 
@@ -84,8 +85,7 @@ class Equation(MixedStyledText):
         self.__class__.next_number += 1
         math = Math(equation, style=style.math_style)
         math.parent = self # TODO: encapsulate
-        #text = [NewLine(), math, Tab(), number, NewLine()]
-        text = [NewLine(), math, ' ', number, NewLine()]
+        text = [Tab(), math, Tab(), number]
         super().__init__(text, style)
 
     def reference(self):

@@ -317,6 +317,14 @@ class Tab(ControlCharacter, Character):
         self.tab_width = 0
 
 
+class FlowableEmbedder(object):
+    def __init__(self, flowable):
+        self.flowable = flowable
+
+    def characters(self):
+        yield self.flowable
+
+
 # predefined styles
 
 emStyle = TextStyle(name="emphasized", fontSlant=ITALIC)

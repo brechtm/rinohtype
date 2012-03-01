@@ -80,8 +80,7 @@ bodyStyle = ParagraphStyle('body',
                            indentFirst=0.125*inch,
                            spaceAbove=0*pt,
                            spaceBelow=0*pt,
-                           justify=BOTH,
-                           tab_stops=[TabStop(2*cm), TabStop(1.0, RIGHT, '.')])
+                           justify=BOTH)
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
 ParagraphStyle.attributes['hyphenLang'] = 'en_US'
@@ -349,7 +348,8 @@ class Eq(CustomElement):
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
-        return equation
+        from pyte.text import FlowableEmbedder
+        return MixedStyledText([FlowableEmbedder(equation)])
 
 
 class Cite(CustomElement):

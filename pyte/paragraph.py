@@ -405,7 +405,8 @@ class Paragraph(MixedStyledText, Flowable):
 
     def _split_words(self, characters):
         group_function = lambda item: isinstance(item, (Space, Field,
-                                                        ControlCharacter))
+                                                        ControlCharacter,
+                                                        Flowable))
         words = []
         for is_special, item in itertools.groupby(characters, group_function):
             if is_special:
@@ -452,9 +453,15 @@ class Paragraph(MixedStyledText, Flowable):
             else:
                 self.word_pointer += 1
 
-            if isinstance(word, NewLine):
+            if isinstance(word, (NewLine, Flowable)):
                 line_pointers = self.typeset_line(canvas, line, line_pointers,
                                                   last_line=True)
+                if isinstance(word, Flowable):
+                    space_above = float(word.get_style('spaceAbove'))
+                    space_below = float(word.get_style('spaceBelow'))
+                    flowable_offset = canvas.height - self._line_cursor + space_above
+                    flowable_height = word.render(canvas, flowable_offset)
+                    self.newline(space_above + flowable_height + space_below)
                 line = Line(self, line_width, indent_left)
             else:
                 try:
