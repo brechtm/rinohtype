@@ -38,10 +38,10 @@ class Style(object):
         return self.__class__(self.name + ' (copy)', **attributes)
 
     def __getattr__(self, name):
-        if self.base == None:
-            return self._get_default(name)
-        else:
+        try:
             return getattr(self.base, name)
+        except AttributeError:
+            return self._get_default(name)
 
     def _get_default(self, name):
         for cls in self.__class__.__mro__:

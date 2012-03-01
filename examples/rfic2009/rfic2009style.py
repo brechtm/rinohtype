@@ -105,7 +105,7 @@ toc_levels = [ParagraphStyle('toc level 1', fontWeight=BOLD,
                              base=toc_base_style),
               ParagraphStyle('toc level 3', indentLeft=1.0*cm,
                              base=toc_base_style)]
-toc_style = TableOfContentsStyle('toc')#, base=bodyStyle)
+toc_style = TableOfContentsStyle('toc', base=bodyStyle)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
                                    fontSize=9*pt)
