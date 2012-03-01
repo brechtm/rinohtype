@@ -41,6 +41,7 @@ class Style(object):
         try:
             return getattr(self.base, name)
         except AttributeError:
+            # FIXME: default from lowest base now has priority (due to recursion)
             return self._get_default(name)
 
     def _get_default(self, name):
