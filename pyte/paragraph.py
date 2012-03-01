@@ -215,11 +215,11 @@ class Line(list):
             if tab_stop:
                 item.tab_stop = tab_stop
                 width = item.tab_width = tab_position - cursor
-                if tab_stop.align == RIGHT:
+                if tab_stop.align in (RIGHT, CENTER):
                     self._in_tab = item
                 else:
                     self._in_tab = None
-        elif self._in_tab:
+        elif self._in_tab and self._in_tab.tab_stop.align == RIGHT:
             if self._in_tab.tab_width <= width:
                 try:
                     for first, second in item.hyphenate():
@@ -234,6 +234,21 @@ class Line(list):
             else:
                 self._in_tab.tab_width -= width
                 self.text_width -= width
+        elif self._in_tab and self._in_tab.tab_stop.align == CENTER:
+            if self._in_tab.tab_width <= width:
+                try:
+                    for first, second in item.hyphenate():
+                        first_width = first.width
+                        if self._in_tab.tab_width >= first_width / 2:
+                            self._in_tab.tab_width -= first_width / 2
+                            super().append(first)
+                            raise EndOfLine(second)
+                except AttributeError:
+                    pass
+                raise EndOfLine
+            else:
+                self._in_tab.tab_width -= width / 2
+                self.text_width -= width / 2
         elif self.text_width + width > self.width:
             if len(self) == 0:
                 warn('item too long to fit on line')

@@ -93,7 +93,9 @@ equationstyle = EquationStyle('equation', base=bodyStyle,
                               indentFirst=0*pt,
                               spaceAbove=6*pt,
                               spaceBelow=6*pt,
-                              justify=CENTER)
+                              justify=CENTER,
+                              tab_stops=[TabStop(0.5, CENTER),
+                                         TabStop(1.0, RIGHT)])
 
 toc_base_style = ParagraphStyle('toc level 1', base=bodyStyle,
                                 tab_stops=[TabStop(0.6*cm),
