@@ -111,7 +111,8 @@ class MixedStyledText(list, Styled):
             self.append(item)
 
     def __repr__(self):
-        return '{0} (style={1})'.format(super().__repr__(), self.style)
+        return '{}{} (style={})'.format(self.__class__.__name__,
+                                        super().__repr__(), self.style)
 
     def __add__(self, other):
 ##        assert (isinstance(other, MixedStyledText)
