@@ -36,7 +36,6 @@ class Container(RenderTarget):
                  width=None, height=None, right=None, bottom=None,
                  chain=None):
         super().__init__()
-        self.upward = False
         if parent:
             parent.children.append(self)
         self.parent = parent
@@ -60,9 +59,7 @@ class Container(RenderTarget):
 
     def advance(self, height):
         self._flowable_offset += height
-        if self.dynamic:
-            self.expand(height)
-        if not self.dynamic and self._flowable_offset > self.height:
+        if self._flowable_offset > self.height:
             raise EndOfContainer
 
     @property
@@ -149,29 +146,28 @@ class Container(RenderTarget):
         self.page.canvas.append(self.canvas)
 
 
-class DownExpandingContainer(Container):
+class ExpandingContainer(Container):
     def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
         super().__init__(parent, left, top, width=width, right=right,
                          height=0*pt)
 
+    def advance(self, height):
+        self._flowable_offset += height
+        self.expand(height)
+
     def expand(self, height):
         self.height.add(height * pt)
 
-    @cached_property
-    def canvas(self):
-        left = float(self.abs_left)
-        width = float(self.width)
-        bottom = 0
-        height = float(self.page.height - self.abs_bottom)
-        return self.page.canvas.new(left, bottom, width, height)
+
+class DownExpandingContainer(ExpandingContainer):
+    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
+        super().__init__(parent, left, top, width=width, right=right)
 
 
-class UpExpandingContainer(Container):
+class UpExpandingContainer(ExpandingContainer):
     def __init__(self, parent, left=0*pt, bottom=0*pt, width=None, right=None):
         self._bottom = bottom
-        super().__init__(parent, left, top=None, bottom=bottom, width=width,
-                         right=right, height=0*pt)
-        self.upward = True
+        super().__init__(parent, left, top=None, width=width, right=right)
 
     @property
     def top(self):
@@ -181,23 +177,15 @@ class UpExpandingContainer(Container):
     def bottom(self):
         return self._bottom
 
-    @cached_property
-    def canvas(self):
-        left = float(self.abs_left)
-        width = float(self.width)
-        bottom = float(self.page.height - self.abs_bottom)
-        height = float(self.abs_bottom)
-        return self.page.canvas.new(left, bottom, width, height)
-
     def expand(self, height):
-        self.height.add(height * pt)
+        super().expand(height)
         self.top.add(- height * pt)
 
     def place(self):
+        y_offset = float(self.height)
         self.page.canvas.save_state()
-        y_offset = - float(self.abs_bottom) + float(self.height)
         self.page.canvas.translate(0, y_offset)
-        self.page.canvas.append(self.canvas)
+        super().place()
         self.page.canvas.restore_state()
 
 
