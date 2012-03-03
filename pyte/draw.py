@@ -44,3 +44,30 @@ class Line(Styled):
         canvas.stroke(self.get_style('width'), self.get_style('color'))
 
 
+class Shape(Styled):
+    style_class = LineStyle
+
+    def __init__(self, style=None):
+        super().__init__(style)
+
+    def render(self, canvas, offset=0):
+        raise NotImplementedError
+
+
+class Polygon(Shape):
+    def __init__(self, points, style=None):
+        super().__init__(style)
+        self.points = points
+
+    def render(self, canvas, offset=0):
+        canvas.line_path(self.points)
+        canvas.stroke(self.get_style('width'), self.get_style('color'))
+
+
+class Rectangle(Polygon):
+    def __init__(self, bottom_left, width, height, style=None):
+        bottom_right = (bottom_left[0] + width, bottom_left[1])
+        top_right = (bottom_left[0] + width, bottom_left[1] + height)
+        top_left = (bottom_left[0], bottom_left[1] + height)
+        points = bottom_left, bottom_right, top_right, top_left
+        super().__init__(points, style)
