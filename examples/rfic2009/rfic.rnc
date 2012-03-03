@@ -38,6 +38,7 @@ grammar {
          attribute id { text },
          attribute type { "reference"|"page"|"title"|"position" }?
        }
+     | element footnote { inline }
     )*
   Section =
     element section {

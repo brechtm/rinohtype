@@ -111,3 +111,15 @@ class Reference(Field):
         field_text = StyledText(text)
         field_text.parent = self.parent
         return field_text.spans()
+
+
+class Footnote(Field):
+    def __init__(self, note):
+        super().__init__()
+        self.note = note
+
+    def field_spans(self):
+        from .paragraph import Paragraph
+        field_text = Paragraph(str(self.number))
+        field_text.parent = self.parent
+        return field_text.spans()

@@ -8,7 +8,8 @@ from pyte.font import Font, TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
-from pyte.layout import Container, DownExpandingContainer, Chain
+from pyte.layout import Container, DownExpandingContainer, UpExpandingContainer
+from pyte.layout import Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
@@ -23,6 +24,7 @@ from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.structure import TableOfContents, TableOfContentsStyle
 from pyte.reference import Reference, REFERENCE
+from pyte.reference import Footnote as PyteFootnote
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
 from pyte.float import Figure as PyteFigure, CaptionStyle
@@ -202,6 +204,10 @@ fig_caption_style = CaptionStyle('figure caption',
                                  spaceBelow=0*pt,
                                  justify=BOTH)
 
+footnote_style = ParagraphStyle('footnote', base=bodyStyle,
+                                fontSize=9*pt,
+                                lineSpacing=10*pt)
+
 red_line_style = LineStyle('tabular line', width=0.2*pt, color=RED)
 thick_line_style = LineStyle('tabular line')
 tabular_style = TabularStyle('tabular',
@@ -378,6 +384,20 @@ class Ref(CustomElement):
         return Reference(self.get('id'), self.get('type', REFERENCE))
 
 
+class Footnote(CustomElement):
+    def parse(self, document):
+        if self.text is not None:
+            content = self.text
+        else:
+            content = ''
+        for child in self.getchildren():
+            content += child.parse(document)
+            if child.tail is not None:
+                content += child.tail
+        content = Paragraph(content, style=footnote_style)
+        return PyteFootnote(content)
+
+
 class Acknowledgement(CustomElement):
     def parse(self, document):
         #print('Acknowledgement.render()')
@@ -465,12 +485,16 @@ class RFICPage(Page):
 
         self.content = document.content
 
+        self.footnotes = UpExpandingContainer(body, 0*pt, body_height)
+
         self.column1 = Container(body, 0*pt, column_top,
-                                 width=column_width, bottom=body.height,
+                                 width=column_width, bottom=self.footnotes.top,
                                  chain=document.content)
+        self.column1._footnote_space = self.footnotes
         self.column2 = Container(body, column_width + self.column_spacing, column_top,
-                                 width=column_width, bottom=body.height,
+                                 width=column_width, bottom=self.footnotes.top,
                                  chain=document.content)
+        self.column2._footnote_space = self.footnotes
 
         self.header = Container(self, self.leftmargin, self.topmargin / 2,
                                 body_width, 12*pt)

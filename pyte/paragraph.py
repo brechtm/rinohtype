@@ -8,7 +8,7 @@ from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import EndOfContainer
-from .reference import LateEval
+from .reference import LateEval, Footnote
 from .style import ParentStyle
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
 from .text import TextStyle, StyledText, MixedStyledText
@@ -72,7 +72,6 @@ class Line(list):
         self.indent = indent
         self.text_width = 0
         self._in_tab = None
-        self.current_style = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -213,6 +212,7 @@ class Line(list):
             del widths[:]
             return total_width
 
+        # typeset spans
         prev_item = None
         glyphs = []
         widths = []
@@ -289,6 +289,9 @@ class Paragraph(MixedStyledText, Flowable):
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
             if isinstance(word, LateEval):
+                if isinstance(word.field, Footnote):
+                    word.field.number = 1
+                    footnote_height = self._add_footnote(word.field.note)
                 if self.field_pointer is None:
                     self._field_words = self._split_words(word.spans())
                     self.field_pointer = 0
@@ -329,6 +332,10 @@ class Paragraph(MixedStyledText, Flowable):
 
         self._init_state()
         return self.container._flowable_offset - start_offset
+
+    def _add_footnote(self, note):
+        footnote_space = self.container._footnote_space
+        footnote_space.flow(note)
 
     def _line_spacing(self, line_height):
         line_spacing = self.get_style('lineSpacing')

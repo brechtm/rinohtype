@@ -35,7 +35,7 @@
 <section id="introduction">
 <title>Introduction</title>
 
-<p>A detailed reference to section <ref id="file_formats"/> "<ref id="file_formats" type="title"/>" on page <ref id="file_formats" type="page"/>. This is super<sup>script</sup> and sub<sub>script</sub>. Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:</p>
+<p>A detailed reference to section <ref id="file_formats"/> "<ref id="file_formats" type="title"/>" on page <ref id="file_formats" type="page"/>. This is super<sup>script</sup> and sub<sub>script</sub>. A footnote here<footnote>first footnote</footnote> and there<footnote>second footnote</footnote>. Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:</p>
 
 <ol>
 <li>Deadlines are <em>absolute</em>, don't even ask!</li>
@@ -44,15 +44,6 @@
 <li>Many submitters with previous experience realize that, if their submission is accepted, they will be required to submit a version of their Final Paper to be published in the Symposium Digest. As the Digest paper will be similar in length to the Summary, many contributors opt to prepare their Summary in the format required for the Digest. This template contains the instructions for the proper preparation of such a document.</li>
 <li>Although not required, you are encouraged to employ this format. This document is being made available as a template for your convenience. If you elect not to use this template, please remember that you must still adhere to the general guidelines embodied in this document concerning, but not limited to, font size, margin size, page limits, file size, etc. (Note: Starting in 2004, Index Terms are required.)</li>
 </ol>
-</section><!-- Introduction -->
-
-
-<section id="overview">
-<title>Overview of the Digest Format</title>
-
-<csvtabular path="tabular.csv"/>
-
-<p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction"/> "<ref id="introduction" type="title"/>" on page <ref id="introduction" type="page"/>.</p>
 
 <tabular>
   <colgroup width="2*" />
@@ -85,6 +76,14 @@
   </tr>
 </tabular>
 
+</section><!-- Introduction -->
+
+
+<section id="overview">
+<title>Overview of the Digest Format</title>
+
+<p>We are requesting that you follow these guidelines as closely as possible so that the Digest has a professional look and resembles the MTT Transactions. All paragraphs of text, including the abstract, figure captions, and references, should be justified at the left <em>and the right</em> edges. Reference to section <ref id="introduction"/> "<ref id="introduction" type="title"/>" on page <ref id="introduction" type="page"/>.</p>
+
 <p>For the Title use 18-point Times (Roman) font. Its paragraph description should be set so that the line spacing is single with 6-point spacing before and 6-point spacing after (Format &rarr; Paragraph &rarr; Indents and Spacing). The font description for the Author List and Authors' Affiliation(s) should be 12-point Times. The paragraph descriptions should be set so that the line spacing is single with 6-point spacings before and after. Use an additional line spacing of 12 points before the beginning of the double column section, as shown above.
 </p>
 </section>
@@ -93,6 +92,8 @@
 <title>Detailed Text Formatting</title>
 
 <p>Using 8.5 &times; 11-inch paper, the top and bottom margins are 1.125 inches, and the left and right margins are 0.85&nbsp;inches. Except for Title, Authors and Affiliations, use a double column format. The column width is 3.275 inches and the column spacing is 0.25 inch.</p>
+
+<csvtabular path="tabular.csv"/>
 
 <p>Each major section begins with a Heading in 10 point Times font centered within the column and numbered using Roman numerals (except for <sc>Acknowledgement</sc> and <sc>References</sc>, followed by a period, a single space, and the title using an initial capital letter for each word. The remaining letters are in <sc>small capitals</sc>. The paragraph description of the section heading line should be set for 18 points before, 6 points after, and the line spacing should be set to exactly 12 points.</p>
 
