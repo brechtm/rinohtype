@@ -138,11 +138,13 @@ class Container(RenderTarget):
             except EndOfPage as e:
                 end_of_page = e
 
-        self.place()
         if end_of_page is not None:
             raise end_of_page
 
     def place(self):
+        for child in self.children:
+            child.place()
+
         self.page.canvas.append(self.canvas)
 
 

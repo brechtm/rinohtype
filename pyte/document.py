@@ -51,7 +51,17 @@ class Page(Container):
         backend_document = self.document.backend_document
         self.backend_page = self.backend.Page(self, backend_document,
                                               self.width, self.height)
-        super().render(self.canvas)
+        end_of_page = None
+        try:
+            super().render(self.canvas)
+        except EndOfPage as e:
+            end_of_page = e
+
+        for child in self.children:
+            child.place()
+
+        if end_of_page is not None:
+            raise end_of_page
 
     def place(self):
         pass
