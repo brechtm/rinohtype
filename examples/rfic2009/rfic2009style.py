@@ -8,7 +8,7 @@ from pyte.font import Font, TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
-from pyte.layout import Container, DownExpandingContainer, UpExpandingContainer
+from pyte.layout import Container, DownExpandingContainer, FootnoteContainer
 from pyte.layout import Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
@@ -490,17 +490,20 @@ class RFICPage(Page):
 
         self.content = document.content
 
-        self.footnotes = UpExpandingContainer(body, 0*pt, body_height)
+        self.footnote_space = FootnoteContainer(body, 0*pt, body_height)
+        self._footnote_number = 0
 
         self.column1 = Container(body, 0*pt, column_top,
-                                 width=column_width, bottom=self.footnotes.top,
+                                 width=column_width,
+                                 bottom=self.footnote_space.top,
                                  chain=document.content)
         self.column2 = Container(body, column_width + self.column_spacing, column_top,
-                                 width=column_width, bottom=self.footnotes.top,
+                                 width=column_width,
+                                 bottom=self.footnote_space.top,
                                  chain=document.content)
 
-        self.column1._footnote_space = self.footnotes
-        self.column2._footnote_space = self.footnotes
+        self.column1._footnote_space = self.footnote_space
+        self.column2._footnote_space = self.footnote_space
         self.column1._float_space = self.float_space
         self.column2._float_space = self.float_space
 

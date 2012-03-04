@@ -290,8 +290,7 @@ class Paragraph(MixedStyledText, Flowable):
             word = self._words[self.word_pointer]
             if isinstance(word, LateEval):
                 if isinstance(word.field, Footnote):
-                    word.field.number = 1
-                    footnote_height = self._add_footnote(word.field.note)
+                    footnote_height = self._add_footnote(word.field)
                 if self.field_pointer is None:
                     self._field_words = self._split_words(word.spans())
                     self.field_pointer = 0
@@ -334,8 +333,9 @@ class Paragraph(MixedStyledText, Flowable):
         return self.container._flowable_offset - start_offset
 
     def _add_footnote(self, note):
+        note.set_number(self.container._footnote_space.next_number)
         footnote_space = self.container._footnote_space
-        footnote_space.flow(note)
+        footnote_space.flow(note.note)
 
     def _line_spacing(self, line_height):
         line_spacing = self.get_style('lineSpacing')

@@ -201,6 +201,17 @@ class UpExpandingContainer(ExpandingContainer):
         self.top.add(- height * pt)
 
 
+class FootnoteContainer(UpExpandingContainer):
+    def __init__(self, parent, left=0*pt, bottom=0*pt, width=None, right=None):
+        super().__init__(parent, left, bottom, width=width, right=right)
+        self._footnote_number = 0
+
+    @property
+    def next_number(self):
+        self._footnote_number += 1
+        return self._footnote_number
+
+
 class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width):
         super().__init__(parent.page, 0*pt, 0*pt, width=width)

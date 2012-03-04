@@ -2,7 +2,7 @@
 from warnings import warn
 
 from .style import ParentStyle
-from .text import StyledText, TextStyle
+from .text import StyledText, TextStyle, Superscript
 from .warnings import PyteWarning
 
 
@@ -118,8 +118,14 @@ class Footnote(Field):
         super().__init__()
         self.note = note
 
+    def set_number(self, number):
+        self.number = number
+        nr = Superscript(str(number) + '  ')
+        nr.parent = self.note
+        self.note.insert(0, nr)
+
     def field_spans(self):
         from .paragraph import Paragraph
-        field_text = Paragraph(str(self.number))
+        field_text = Paragraph(Superscript(str(self.number)))
         field_text.parent = self.parent
         return field_text.spans()
