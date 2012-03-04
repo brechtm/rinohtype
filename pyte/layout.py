@@ -108,9 +108,7 @@ class Container(RenderTarget):
     def canvas(self):
         left = float(self.abs_left)
         width = float(self.width)
-        bottom = float(self.page.height - self.abs_bottom)
-        height = float(self.height)
-        return self.page.canvas.new(left, bottom, width, height)
+        return self.page.canvas.new(left, 0, width, 0)
 
     def flow(self, flowable, continued=False):
         start_offset = self._flowable_offset
@@ -145,16 +143,24 @@ class Container(RenderTarget):
         for child in self.children:
             child.place()
 
+        y_offset = float(self.page.height) - float(self.abs_top)
+        self.page.canvas.save_state()
+        self.page.canvas.translate(0, y_offset)
         self.page.canvas.append(self.canvas)
+        self.page.canvas.restore_state()
 
 
 class ExpandingContainer(Container):
-    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
+    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None,
+                 max_height=None):
         super().__init__(parent, left, top, width=width, right=right,
                          height=0*pt)
+        self.max_height = max_height
 
     def advance(self, height):
         self._flowable_offset += height
+        if self.max_height and self._flowable_offset > self.max_height:
+            raise EndOfContainer
         self.expand(height)
 
     def expand(self, height):
@@ -164,6 +170,12 @@ class ExpandingContainer(Container):
 class DownExpandingContainer(ExpandingContainer):
     def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
         super().__init__(parent, left, top, width=width, right=right)
+##
+##    def place(self):
+##        from .draw import Rectangle
+##        box = Rectangle((0, 0), float(self.width), - float(self.height))
+##        box.render(self.canvas)
+##        super().place()
 
 
 class UpExpandingContainer(ExpandingContainer):
@@ -183,22 +195,10 @@ class UpExpandingContainer(ExpandingContainer):
         super().expand(height)
         self.top.add(- height * pt)
 
-    def place(self):
-        y_offset = float(self.height)
-        self.page.canvas.save_state()
-        self.page.canvas.translate(0, y_offset)
-        super().place()
-        self.page.canvas.restore_state()
-
 
 class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width):
         super().__init__(parent.page, 0*pt, 0*pt, width=width)
-
-    @cached_property
-    def canvas(self):
-        width = float(self.width)
-        return self.page.canvas.new(0, 0, width, 0)
 
     def place(self):
         pass
