@@ -27,7 +27,7 @@ from pyte.reference import Reference, REFERENCE
 from pyte.reference import Footnote as PyteFootnote
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
-from pyte.float import Figure as PyteFigure, CaptionStyle
+from pyte.float import Figure as PyteFigure, CaptionStyle, Float
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
@@ -277,6 +277,8 @@ class Section(CustomElement):
                 elem = element.parse(document)
             if isinstance(elem, Flowable):
                 yield elem
+            elif isinstance(elem, Float):
+                yield elem
             else:
                 for flw in elem:
                     yield flw
@@ -412,8 +414,9 @@ class Figure(CustomElement):
         #print('Figure.render()')
         caption_text = self.getchildren()[0].text
         scale = float(self.get('scale'))
-        return PyteFigure(self.get('path'), caption_text, scale=scale,
+        figure = PyteFigure(self.get('path'), caption_text, scale=scale,
                          style=figure_style, caption_style=fig_caption_style)
+        return Float(figure)
 
 
 class Tabular(CustomElement):
@@ -477,11 +480,13 @@ class RFICPage(Page):
                          body_width, body_height)
 
         column_width = (body.width - self.column_spacing) / 2.0
-        column_top = 0*pt
-
+        column_top = 0 * pt
         if first:
             self.title_box = DownExpandingContainer(body)
             column_top = self.title_box.bottom
+
+        self.float_space = DownExpandingContainer(body, top=column_top)
+        column_top = self.float_space.bottom
 
         self.content = document.content
 
@@ -490,11 +495,14 @@ class RFICPage(Page):
         self.column1 = Container(body, 0*pt, column_top,
                                  width=column_width, bottom=self.footnotes.top,
                                  chain=document.content)
-        self.column1._footnote_space = self.footnotes
         self.column2 = Container(body, column_width + self.column_spacing, column_top,
                                  width=column_width, bottom=self.footnotes.top,
                                  chain=document.content)
+
+        self.column1._footnote_space = self.footnotes
         self.column2._footnote_space = self.footnotes
+        self.column1._float_space = self.float_space
+        self.column2._float_space = self.float_space
 
         self.header = Container(self, self.leftmargin, self.topmargin / 2,
                                 body_width, 12*pt)

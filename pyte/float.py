@@ -75,3 +75,8 @@ class Figure(Flowable):
         image_height = self.container.flow(image)
         caption_height = self.container.flow(self.caption)
         return image_height + caption_height
+
+
+class Float(object):
+    def __init__(self, flowable):
+        self.flowable = flowable

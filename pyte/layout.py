@@ -22,7 +22,7 @@ class RenderTarget(object):
         raise NotImplementedError
 
     def add_flowable(self, flowable):
-        assert isinstance(flowable, Flowable)
+        #assert isinstance(flowable, Flowable)
         flowable.document = self.document
         self.flowables.append(flowable)
 
@@ -111,13 +111,18 @@ class Container(RenderTarget):
         return self.page.canvas.new(left, 0, width, 0)
 
     def flow(self, flowable, continued=False):
-        start_offset = self._flowable_offset
-        flowable.container = self
-        if not continued:
-            self.advance(float(flowable.get_style('spaceAbove')))
-        flowable.render(self.canvas)
-        self.advance(float(flowable.get_style('spaceBelow')))
-        return self._flowable_offset - start_offset
+        from .float import Float
+        if isinstance(flowable, Float):
+            self._float_space.flow(flowable.flowable)
+            return 0
+        else:
+            start_offset = self._flowable_offset
+            flowable.container = self
+            if not continued:
+                self.advance(float(flowable.get_style('spaceAbove')))
+            flowable.render(self.canvas)
+            self.advance(float(flowable.get_style('spaceBelow')))
+            return self._flowable_offset - start_offset
 
     def render(self, canvas):
         end_of_page = None
