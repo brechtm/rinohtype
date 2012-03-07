@@ -43,7 +43,7 @@ class Math(CharacterLike):
 
     def __init__(self, equation, style=ParentStyle):
         super().__init__(style)
-        self.equation = equation
+        self.equation = equation.strip()
 
     def spans(self):
         font_output = PyteFonts(self)
