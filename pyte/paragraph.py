@@ -153,8 +153,11 @@ class Line(list):
             justification = justify
 
         # drop spaces at the end of the line
-        while isinstance(self[-1], Space):
-            self.pop()
+        try:
+            while isinstance(self[-1], Space):
+                self.pop()
+        except IndexError:
+            return 0
 
         # replace tabs with spacers or fillers
         # TODO: encapsulate (Tab.expand method)
