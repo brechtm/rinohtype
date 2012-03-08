@@ -66,7 +66,7 @@ class Bunch:
 
 
     def __repr__(self):
-        keys = self.__dict__.iterkeys()
+        keys = self.__dict__.keys()
         return 'Bunch(%s)'%', '.join(['%s=%s'%(k,self.__dict__[k]) for k in keys])
 
 

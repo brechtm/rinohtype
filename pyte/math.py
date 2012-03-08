@@ -114,9 +114,6 @@ class PyteFonts(Fonts):
         for font in self.fontmap.values():
             font.psFont.metrics.fname = font.filename
 
-##        self.fonts['default'] = self.fontmap['rm']
-##        self.fonts['regular'] = self.fontmap['rm']
-
     def _get_font(self, font):
         psg_doc = self.styled.document.backend_document.psg_doc
         psg_doc.add_font(self.fontmap[font].psFont)
@@ -188,7 +185,7 @@ class PyteFonts(Fonts):
         metrics = Bunch(
             advance  = char_metrics.width * scale,
             width    = char_metrics.width * scale,
-            height   = ymax * scale,
+            height   = ymax,
             xmin = xmin,
             xmax = xmax,
             ymin = ymin + offset,
