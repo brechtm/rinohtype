@@ -12,7 +12,7 @@ from .text import MixedStyledText
 from .paragraph import Paragraph, ParagraphStyle, TabStop, RIGHT, CENTER
 from .mathtext import Fonts, MathtextBackendPs, MathTextWarning, Parser, Bunch
 from .mathtext import get_unicode_index
-from ._mathtext_data import tex2uni
+from ._mathtext_data import tex2uni, latex_to_standard
 
 
 class MathFonts(object):
@@ -137,6 +137,16 @@ class PyteFonts(Fonts):
         found_symbol = False
 
         glyph = 'glyph__dummy'
+
+        if sym in latex_to_standard:
+            fontname, num = latex_to_standard[sym]
+            if fontname == 'psyr':
+                fontname = None
+            elif fontname == 'pncri8a':
+                fontname ='it'
+            elif fontname == 'pncr8a':
+                fontname ='rm'
+
         try:
             num = get_unicode_index(sym)
             found_symbol = True
