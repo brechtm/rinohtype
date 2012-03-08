@@ -29,13 +29,13 @@ class Heading(Paragraph, Referenceable):
         self._title = title
         next_number = document.counters.setdefault(self.__class__, {1: 1})
         if style.numberingStyle is not None:
-            self.number = format_number(next_number[level], style.numberingStyle)
-            number = self.number + style.numberingSeparator + FixedWidthSpace()
             if level in next_number:
                 next_number[level] += 1
                 next_number[level + 1] = 1
             else:
                 next_number[level] = 2
+            self.number = format_number(next_number[level], style.numberingStyle)
+            number = self.number + style.numberingSeparator + FixedWidthSpace()
         else:
             self.number = None
             number = ""
