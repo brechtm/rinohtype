@@ -16,14 +16,14 @@ from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from pyte.text import StyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
 from pyte.text import TextStyle, boldItalicStyle
-from pyte.text import Tab as PyteTab
+from pyte.text import Tab as PyteTab, FlowableEmbedder
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List
 from pyte.structure import HeadingStyle, ListStyle
 from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.structure import TableOfContents, TableOfContentsStyle
-from pyte.reference import Reference, REFERENCE
+from pyte.reference import Field, Reference, REFERENCE
 from pyte.reference import Footnote as PyteFootnote
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
@@ -31,6 +31,10 @@ from pyte.float import Figure as PyteFigure, CaptionStyle, Float
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
+from pyte.style import ParentStyle
+
+from citeproc import CitationStylesStyle, CitationStylesBibliography
+from citeproc import Citation, CitationItem, Locator
 
 
 
@@ -115,7 +119,11 @@ toc_levels = [ParagraphStyle('toc level 1', fontWeight=BOLD,
 toc_style = TableOfContentsStyle('toc', base=bodyStyle)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
-                                   fontSize=9*pt)
+                                   fontSize=9*pt,
+                                   indentFirst=0*pt,
+                                   spaceAbove=0*pt,
+                                   spaceBelow=0*pt,
+                                   tab_stops=[TabStop(0.25*inch, LEFT)])
 
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
@@ -370,14 +378,17 @@ class Eq(CustomElement):
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
-        from pyte.text import FlowableEmbedder
         return MixedStyledText([FlowableEmbedder(equation)])
 
 
 class Cite(CustomElement):
     def parse(self, document):
         #print('Cite.render()')
-        return document.bibliography.cite(self.get('id'))
+        keys = map(lambda x: x.strip(), self.get('id').split(','))
+        items = [CitationItem(key) for key in keys]
+        citation = Citation(items)
+        document.bibliography.register(citation)
+        return CitationField(citation)
 
 
 class Ref(CustomElement):
@@ -433,34 +444,35 @@ class CSVTabular(CustomElement):
         return PyteTabular(data, style=tabular_style)
 
 
-# bibliography style
+# bibliography
 # ----------------------------------------------------------------------------
 
-class IEEEBibliographyFormatter(BibliographyFormatter):
-    def format_citation(self, reference):
-        try:
-            index = self.bibliography.index(reference)
-            return StyledText('[{}]'.format(index + 1))
-        except:
-            return StyledText('[ERROR]')
+from pyte import csl_formatter
 
-    def format_bibliography(self, target):
-        if len(self.bibliography) == 0:
-            return
-        items = []
-        heading = Heading(target.document, 'References',
-                          style=acknowledgement_heading_style)
-        target.add_flowable(heading)
-        for i, ref in enumerate(self.bibliography):
-            authors = ['{} {}'.format(name.given_initials(), name.family)
-                       for name in ref.author]
-            authors = ', '.join(authors)
-            item = '[{}]&nbsp;{}, "{}", '.format(i + 1, authors, ref.title)
-            item += Emphasized(ref['container_title'])
-            item += ', {}'.format(ref.issued.year)
-            items.append(item)
-            paragraph = Paragraph(item, style=bibliographyStyle)
-            target.add_flowable(paragraph)
+class IEEEBibliography(Paragraph):
+    def __init__(self, items):
+        items = [FlowableEmbedder(Paragraph(item, style=ParentStyle))
+                 for item in items]
+        for item in items:
+            item.parent = self
+        return super().__init__(items, style=bibliographyStyle)
+
+csl_formatter.Bibliography = IEEEBibliography
+
+
+class CitationField(Field):
+    def __init__(self, citation):
+        super().__init__()
+        self.citation = citation
+
+    def field_spans(self):
+        try:
+            text = self.citation.bibliography.cite(self.citation)
+        except AttributeError:
+            text = '[?]'
+        field_text = StyledText(text)
+        field_text.parent = self.parent
+        return field_text.spans()
 
 
 # pages and their layout
@@ -532,8 +544,10 @@ class RFIC2009Paper(Document):
 
         Document.__init__(self, filename, self.rngschema, lookup)
 
-        self.bibliography = Bibliography(bibliography_source,
-                                         IEEEBibliographyFormatter())
+        bibliography_style = CitationStylesStyle('ieee.csl')
+        self.bibliography = CitationStylesBibliography(bibliography_style,
+                                                       bibliography_source,
+                                                       csl_formatter)
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -542,8 +556,8 @@ class RFIC2009Paper(Document):
             self.author = authors[0]
         self.title = self.root.head.title.text
         self.keywords = [term.text for term in self.root.head.indexterms.term]
-
         self.parse_input()
+        self.bibliography.sort()
 
     def parse_input(self):
         self.title_par = Paragraph(self.title, titleStyle)
@@ -569,6 +583,9 @@ class RFIC2009Paper(Document):
                 self.content_flowables.append(flowable)
         except AttributeError:
             pass
+        bib_heading = Heading(self, 'References',
+                              style=unnumbered_heading_style, level=1)
+        self.content_flowables.append(bib_heading)
 
     def setup(self):
         self.page_count = 1
@@ -583,7 +600,7 @@ class RFIC2009Paper(Document):
         for flowable in self.content_flowables:
             self.content.add_flowable(flowable)
 
-        #self.bibliography.bibliography(self.content)
+        self.content.add_flowable(self.bibliography.bibliography())
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
