@@ -388,6 +388,12 @@ class ControlCharacter(object):
     def __repr__(self):
         return self.__class__.__name__
 
+    def split(self):
+        yield self
+
+    def spans(self):
+        yield self
+
 
 class NewLine(ControlCharacter):
     def __init__(self):
