@@ -3,18 +3,25 @@ from .paragraph import Paragraph
 from . import text
 
 
-Italic = text.Italic
-Oblique = text.Italic
+def factory(cls):
+    def __init__(self, string, y_offset=0):
+        return super(self.__class__, self).__init__(str(string), y_offset)
+    space = {'__init__': __init__}
+    return type(cls.__name__, (cls, ), space)
 
-Bold = text.Bold
-Light = text.Bold
 
-Underline = text.Bold
+Italic = factory(text.Italic)
+Oblique = factory(text.Italic)
 
-Superscript = text.Superscript
-Subscript = text.Subscript
+Bold = factory(text.Bold)
+Light = factory(text.Bold)
 
-SmallCaps = text.SmallCaps
+Underline = factory(text.Bold)
+
+Superscript = factory(text.Superscript)
+Subscript = factory(text.Subscript)
+
+SmallCaps = factory(text.SmallCaps)
 
 
 ##class Bibliography(Paragraph):

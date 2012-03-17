@@ -600,7 +600,8 @@ class RFIC2009Paper(Document):
         for flowable in self.content_flowables:
             self.content.add_flowable(flowable)
 
-        self.content.add_flowable(self.bibliography.bibliography())
+        bib = self.bibliography.bibliography()
+        self.content.add_flowable(bib)
 
     def add_to_chain(self, chain):
         page = RFICPage(self)

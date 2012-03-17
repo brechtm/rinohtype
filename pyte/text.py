@@ -268,7 +268,7 @@ class MixedStyledText(list, Styled):
         if type(items) == str:
             items = [items]
         for item in items:
-            if type(item) == str:
+            if isinstance(item, str):
                 item = StyledText(item, style=ParentStyle)
             item.parent = self
             self.append(item)
