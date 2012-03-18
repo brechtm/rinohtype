@@ -3,6 +3,10 @@ from .paragraph import Paragraph
 from . import text
 
 
+def preformat(text):
+    return text
+
+
 def factory(cls):
     def __init__(self, string, y_offset=0):
         return super(self.__class__, self).__init__(str(string), y_offset)
