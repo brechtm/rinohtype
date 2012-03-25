@@ -337,6 +337,7 @@ class Paragraph(MixedStyledText, Flowable):
 
     def _add_footnote(self, note):
         note.set_number(self.container._footnote_space.next_number)
+        note.note._document = self.document
         footnote_space = self.container._footnote_space
         footnote_space.flow(note.note)
 
