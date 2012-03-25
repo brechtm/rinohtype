@@ -126,6 +126,6 @@ class Footnote(Field):
 
     def field_spans(self):
         from .paragraph import Paragraph
-        field_text = Paragraph(Superscript(str(self.number)))
+        field_text = Superscript(str(self.number))
         field_text.parent = self.parent
         return field_text.spans()
