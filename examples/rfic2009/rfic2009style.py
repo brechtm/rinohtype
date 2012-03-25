@@ -425,8 +425,9 @@ class Figure(CustomElement):
         #print('Figure.render()')
         caption_text = self.getchildren()[0].text
         scale = float(self.get('scale'))
-        figure = PyteFigure(self.get('path'), caption_text, scale=scale,
-                         style=figure_style, caption_style=fig_caption_style)
+        figure = PyteFigure(document, self.get('path'), caption_text,
+                            scale=scale, style=figure_style,
+                            caption_style=fig_caption_style)
         return Float(figure)
 
 

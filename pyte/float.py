@@ -5,6 +5,7 @@ from .flowable import Flowable
 from .number import format_number
 from .number.style import NUMBER
 from .paragraph import Paragraph, ParagraphStyle
+from .reference import Referenceable
 from .text import StyledText
 from .unit import mm
 
@@ -44,31 +45,38 @@ class Caption(Paragraph):
 
     next_number = {}
 
-    def __init__(self, category, text, style=None):
+    def __init__(self, category, number, text, style=None):
         super().__init__('', style)
-        next_number = self.next_number.setdefault(category, 1)
         numbering_style = self.get_style('numberingStyle')
         numbering_sep = self.get_style('numberingSeparator')
         if numbering_style is not None:
-            self.ref = format_number(self.next_number[category],
-                                     numbering_style)
+            self.ref = format_number(number, numbering_style)
             number = self.ref + numbering_sep + '&nbsp;'
         else:
             self.ref = None
             number = ''
         styled_text = StyledText(category + ' ' + number + text)
         styled_text.parent = self
-        self.next_number[category] += 1
         self.append(styled_text)
 
 
-class Figure(Flowable):
-    def __init__(self, filename, caption, scale=1.0, style=None,
-                 caption_style=None):
-        super().__init__(style)
+class Figure(Flowable, Referenceable):
+    def __init__(self, document, filename, caption, scale=1.0, style=None,
+                 caption_style=None, id=None):
+        self.number = document.counters.setdefault(self.__class__, 1)
+        document.counters[self.__class__] += 1
+        Flowable.__init__(self, style)
+        Referenceable.__init__(self, document, id)
         self.filename = filename
         self.scale = scale
-        self.caption = Caption('Figure', caption, style=caption_style)
+        self.caption = Caption('Figure', self.number, caption,
+                               style=caption_style)
+
+    def reference(self):
+        return str(self.number)
+
+    def title(self):
+        return self.caption.text
 
     def render(self, canvas, offset=0):
         image = Image(self.filename, scale=self.scale)
