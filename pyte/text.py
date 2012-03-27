@@ -263,8 +263,9 @@ class SmallCapitalsText(StyledText):
 class MixedStyledText(list, Styled):
     style_class = TextStyle
 
-    def __init__(self, items, style=ParentStyle):
+    def __init__(self, items, style=ParentStyle, y_offset=0):
         Styled.__init__(self, style)
+        # TODO: handle y_offset
         if type(items) == str:
             items = [items]
         for item in items:
@@ -428,31 +429,31 @@ superscriptStyle = TextStyle(name="superscript", position=SUPERSCRIPT)
 subscriptStyle = TextStyle(name="subscript", position=SUBSCRIPT)
 
 
-class Bold(StyledText):
+class Bold(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=boldStyle, y_offset=y_offset)
+        super().__init__(text, style=boldStyle, y_offset=y_offset)
 
 
-class Italic(StyledText):
+class Italic(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=italicStyle, y_offset=y_offset)
+        super().__init__(text, style=italicStyle, y_offset=y_offset)
 
 
-class Emphasized(StyledText):
+class Emphasized(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=italicStyle, y_offset=y_offset)
+        super().__init__(text, style=italicStyle, y_offset=y_offset)
 
 
-class SmallCaps(StyledText):
+class SmallCaps(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=smallCapsStyle, y_offset=y_offset)
+        super().__init__(text, style=smallCapsStyle, y_offset=y_offset)
 
 
-class Superscript(StyledText):
+class Superscript(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=superscriptStyle, y_offset=y_offset)
+        super().__init__(text, style=superscriptStyle, y_offset=y_offset)
 
 
-class Subscript(StyledText):
+class Subscript(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        StyledText.__init__(self, text, style=subscriptStyle, y_offset=y_offset)
+        MixedStyledText.__init__(self, text, style=subscriptStyle, y_offset=y_offset)

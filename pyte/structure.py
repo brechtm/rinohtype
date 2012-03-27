@@ -60,6 +60,7 @@ class Heading(Paragraph, Referenceable):
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
+                  'bullet': StyledText('&bull;'),
                   'itemSpacing': ParagraphStyle.attributes['lineSpacing'],
                   'numberingStyle': NUMBER,
                   'numberingSeparator': ')'}
@@ -81,17 +82,22 @@ class List(Paragraph):
                                          spaceAbove=0*pt,
                                          spaceBelow=0*pt,
                                          base=style)
-        separator = style.numberingSeparator
-        numbers = [format_number(i + 1, self.get_style('numberingStyle'))
-                   for i in range(len(items))]
+        if style.ordered:
+            separator = style.numberingSeparator
+            numbers = [format_number(i + 1, self.get_style('numberingStyle'))
+                       for i in range(len(items))]
+        else:
+            separator = ''
+            numbers = [style.bullet] * len(items)
         for i, item in enumerate(items[:-1]):
-            item = Paragraph("{}{}".format(numbers[i], separator) +
-                             FixedWidthSpace() + item,
+            item = Paragraph(numbers[i] + separator + FixedWidthSpace() + item,
                              style=item_style)
+            item.parent = self
             self.append(item)
-        self.append(Paragraph("{}{}".format(numbers[-1], separator) +
-                              FixedWidthSpace() + items[-1],
-                              style=last_item_style))
+        last = Paragraph(numbers[i] + separator + FixedWidthSpace() + items[-1],
+                         style=last_item_style)
+        last.parent = self
+        self.append(last)
         self.item_pointer = 0
 
 ##    def append(self, listItem):
