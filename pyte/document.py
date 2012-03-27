@@ -78,6 +78,7 @@ class Document(object):
 
         self.schema = etree.RelaxNG(etree.parse(rngschema))
         self.xml = objectify.parse(xmlfile, self.parser)#, base_url=".")
+        self.xml.xinclude()
 
         if not self.schema.validate(self.xml):
             err = self.schema.error_log
