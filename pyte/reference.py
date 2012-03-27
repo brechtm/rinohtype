@@ -102,7 +102,7 @@ class Reference(Field):
                 raise NotImplementedError
         except KeyError:
             warn("Unknown label '{}'".format(self.id), PyteWarning)
-            text = "unkown reference '{}'".format(self.id)
+            text = "??".format(self.id)
 
         if text is None:
             warn('Trying to reference unreferenceable object', PyteWarning)
