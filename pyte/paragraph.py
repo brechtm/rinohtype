@@ -313,8 +313,9 @@ class Paragraph(MixedStyledText, Flowable):
                 line_pointers = self.typeset_line(canvas, line, line_pointers,
                                                   last_line=True)
                 if isinstance(word, Flowable):
-                    # TODO: handle continued flowables
+                    self.word_pointer -= 1
                     flowable_height = self.container.flow(word)
+                    self.word_pointer += 1
                 line = Line(self, line_width, indent_left)
             else:
                 try:
