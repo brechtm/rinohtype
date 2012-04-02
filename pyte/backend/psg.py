@@ -57,11 +57,6 @@ class Canvas(object):
     def append(self, canvas):
         self.psg_canvas.append(canvas.psg_canvas)
 
-    def append_new(self, left, bottom, width, height, clip=False):
-        new_canvas = self.new(left, bottom, width, height, clip)
-        self.append(new_canvas)
-        return new_canvas
-
     def save_state(self):
         print('gsave', file=self.psg_canvas)
 
@@ -115,7 +110,7 @@ class Canvas(object):
         print('fill', file=self.psg_canvas)
         self.restore_state()
 
-    def select_font(self, font, size):
+    def _select_font(self, font, size):
         self.font_wrapper = self.psg_canvas.page.register_font(font.psFont,
                                                                True)
         print('/{0} findfont'.format(self.font_wrapper.ps_name()),
@@ -123,9 +118,11 @@ class Canvas(object):
         print('{0} scalefont'.format(size), file=self.psg_canvas)
         print('setfont', file=self.psg_canvas)
 
-    def show_glyphs(self, characters, x_displacements):
+    def show_glyphs(self, x, y, font, size, glyphs, x_displacements):
+        self.move_to(x, y)
+        self._select_font(font, size)
         try:
-            ps_repr = self.font_wrapper.postscript_representation(characters)
+            ps_repr = self.font_wrapper.postscript_representation(glyphs)
         except AttributeError:
             raise RuntimeError('No font selected for canvas.')
         widths = ' '.join(map(lambda f: '%.2f' % f, x_displacements))

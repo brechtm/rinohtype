@@ -112,15 +112,15 @@
 <section id="equations">
 <title>Equations</title>
 
-<p>Substituting <math>\alpha\zeta\beta</math> and <math>\alpha\zeta\beta</math>.</p>
+<p>Substituting <!--math>\alpha\zeta\beta</math> and <math>\alpha\zeta\beta</math-->.</p>
 
 <p>Equations should be centered in the column and numbered sequentially. Place the equation number to the right of the equation within a parenthesis, with right justification within its column. An example would be
 
-<eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int \mathbf{B} \cdot d\mathbf{S}</eq>
+<!--eq id="eq1">\oint_{C} \mathbf{E} \cdot d\mathbf{L} = - \frac{\partial}{\partial t} \int\int \mathbf{B} \cdot d\mathbf{S}</eq-->
 
 or
 
-<eq id="eq2">\nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t}.</eq>
+<!--eq id="eq2">\nabla \times \mathbf{H} = \mathbf{J} + \frac{\partial \mathbf{D}}{\partial t}.</eq-->
 </p>
 
 <p>Note that a period is used to properly punctuate the previous sentence. It is placed at the end of the second equation. <em>Make sure that any subscripts in your equations are legible and are not too small to read!</em> When referring to an equation, use the number within parenthesis. For example, you would usually refer to the second equation as (<ref id="eq2" />) rather than equation (<ref id="eq2" />). If possible, use the Symbol font for all special characters, or better yet, use Equation Editor&trade; or MathType™. The paragraph description of the line containing the equation should be set for 6 points before and 6 points after. The paragraph spacing will need to be set to "single" rather than "exactly 12 point" so that the height will autoscale to fit the equation.</p>
@@ -138,9 +138,9 @@ or
 
 <p>If you have difficulties with the titles on your figures, you can always elect to add in the titles as separate text boxes, rather than importing the titles with the graph. This is sometimes helpful in getting a lengthy vertically-oriented title to display correctly.</p>
 
-<figure id="fig1" path="fig1.eps" scale="1.0">
+<!--figure id="fig1" path="fig1.eps" scale="1.0">
   <caption>Estimated relationship between the time an author spends reading these instructions and the quality of the author's digest article.</caption>
-</figure>
+</figure-->
 
 <p>Notice that prior to the graph, a single 12-point line is used to separate the preceding text from the graph. The equivalent of a blank line should exist between the bottom of the graph (the x-axis caption) and the figure caption. (In this particular case, there was no need to add a blank line between the x-axis label and the figure caption, because there was already adequate spacing provided by the image border.) After the figure caption, there should be a single 12-point blank line before the text resumes.</p>
 
@@ -152,9 +152,9 @@ or
 
 <p>Here is a common example of what can go wrong with the numbering and sizing of axis titles on a graph. In this case, the graph was initially pasted at a much larger size than the column width, and then reduced to fit:</p>
 
-<figure id="fig2" path="fig2.eps" scale="1.0">
+<!--figure id="fig2" path="fig2.eps" scale="1.0">
   <caption>Example of an improperly titled figure. The numerics and the labels on the axes are illegible. This will cause a submission to be rejected. Don’t let this happen to you!</caption>
-</figure>
+</figure-->
 
 <p>Table I on the second page was inserted using "Insert", "TextBox", creating the text contained in Table I, and then formatting the text box using all the settings available under "Format","TextBox...". Table I also serves as an illustration of one of the rare instances when the double column format requirement can be violated. Certain figures and tables will require the full page width to display. It is usually best to place these figures and tables at the top or bottom, rather than in the middle of a page. Tables should be entered within a single column if this can be done cleanly, without the entry becoming too crowded.</p>
 

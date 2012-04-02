@@ -52,6 +52,9 @@ checklist (what is already implemented, is maked by a +)
 * right-to-left
 ** use LASi for supporting many languages (or just Pango?)
 * (text flow around non-rectangular object)
+* modernize
+** OpenType font support (http://www.microsoft.com/typography/otspec/default.htm)
+** PDF backend: http://www.adobe.com/devnet/pdf/pdf_reference.html
 
 Alternative for TeX?
 http://science.slashdot.org/article.pl?sid=08/07/29/0039201

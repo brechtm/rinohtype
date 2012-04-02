@@ -376,9 +376,10 @@ class Box(Character):
         return self._height
 
     def render(self, canvas, x, y):
-        box_canvas = canvas.append_new(x, y - self.depth, self.width,
-                                       self.height + self.depth)
+        box_canvas = canvas.new(x, y - self.depth, self.width,
+                                self.height + self.depth)
         print(self.ps, file=box_canvas.psg_canvas)
+        canvas.append(box_canvas)
         return self.width
 
 

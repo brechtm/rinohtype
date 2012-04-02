@@ -146,10 +146,11 @@ class Tabular(Flowable):
                 x_cursor = rendered_cell.x_position
                 y_pos = canvas.height - y_cursor - row_height
                 cell_width = rendered_cell.width
-                border_buffer = canvas.append_new(x_cursor, y_pos,
-                                                  cell_width, row_height)
+                border_buffer = canvas.new(x_cursor, y_pos,
+                                           cell_width, row_height)
                 cell_style = self.cell_styles[r][c]
                 self.draw_cell_border(border_buffer, row_height, cell_style)
+                canvas.append(border_buffer)
                 if cell_style.vertical_align == MIDDLE:
                     vertical_offset = (row_height - rendered_cell.height) / 2
                 elif cell_style.vertical_align == BOTTOM:

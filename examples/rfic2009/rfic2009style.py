@@ -32,6 +32,7 @@ from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 from pyte.style import ParentStyle
+from pyte.backend import pdf
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem, Locator
@@ -543,7 +544,7 @@ class RFIC2009Paper(Document):
         namespace.update(dict([(cls.__name__.lower(), cls)
                                for cls in CustomElement.__subclasses__()]))
 
-        Document.__init__(self, filename, self.rngschema, lookup)
+        Document.__init__(self, filename, self.rngschema, lookup, backend=pdf)
 
         bibliography_style = CitationStylesStyle('ieee.csl')
         self.bibliography = CitationStylesBibliography(bibliography_style,

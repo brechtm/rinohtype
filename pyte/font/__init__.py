@@ -45,6 +45,9 @@ class Font(object):
     def name(self):
         return self.psFont.full_name
 
+    def is_core(self):
+        return self.pf_filename is None
+
 
 class TypeFace(dict):
     def __init__(self, name, *fonts, weight_order=WEIGHTS):

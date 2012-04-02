@@ -205,11 +205,9 @@ class Line(list):
         self.paragraph.newline(max_font_size)
 
         def render_span(item, font_style, glyphs, widths):
-            canvas.move_to(x, self.paragraph.container.cursor + item.y_offset)
-            if font_style != self.paragraph._last_font_style:
-                canvas.select_font(*font_style)
-                self.paragraph._last_font_style = font_style
-            canvas.show_glyphs(glyphs, widths)
+            y = self.paragraph.container.cursor + item.y_offset
+            font, size = font_style
+            canvas.show_glyphs(x, y, font, size, glyphs, widths)
             total_width = sum(widths)
             del glyphs[:]
             del widths[:]
