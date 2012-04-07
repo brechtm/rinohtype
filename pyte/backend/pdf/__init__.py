@@ -26,7 +26,7 @@ class Document(object):
     def write(self, filename):
         for page in self.pages:
             contents = cos.Stream(self.pdf_document)
-            contents.write(page.canvas.getvalue())
+            contents.write(page.canvas.getvalue().encode('utf_8'))
             page.pdf_page['Contents'] = contents.reference
         file = open(filename + self.extension, 'wb')
         self.pdf_document.write(file)
