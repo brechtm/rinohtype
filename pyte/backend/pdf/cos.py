@@ -1,4 +1,5 @@
 
+from binascii import hexlify, unhexlify
 from collections import OrderedDict
 from datetime import datetime
 from io import BytesIO, SEEK_END
@@ -101,32 +102,36 @@ class Real(Object, float):
 
 
 class String(Object):
-    def __init__(self, string, document=None, hex=False):
+    def __init__(self, string, document=None):
         super().__init__(document)
         self.string = string
-        self.hex = hex
 
     def __repr__(self):
-        out = self.__class__.__name__
-        if self.hex:
-            out += '(<' + self.string + '>)'
-        else:
-            out += "('" + self.string + "')"
-        return out
+        return "{}('{}')".format(self.__class__.__name__, self.string)
 
     def _bytes(self):
-        if self.hex:
-            out = '<{}>'.format(self.string)
-        else:
-            escaped = self.string.replace('\n', r'\n')
-            escaped = escaped.replace('\r', r'\r')
-            escaped = escaped.replace('\t', r'\t')
-            escaped = escaped.replace('\b', r'\b')
-            escaped = escaped.replace('\f', r'\f')
-            for char in '\\()':
-                escaped = escaped.replace(char, '\\{}'.format(char))
-            out = '({})'.format(escaped)
+        escaped = self.string.replace('\n', r'\n')
+        escaped = escaped.replace('\r', r'\r')
+        escaped = escaped.replace('\t', r'\t')
+        escaped = escaped.replace('\b', r'\b')
+        escaped = escaped.replace('\f', r'\f')
+        for char in '\\()':
+            escaped = escaped.replace(char, '\\{}'.format(char))
+        out = '({})'.format(escaped)
         return out.encode('utf_8')
+
+
+class HexString(Object):
+    def __init__(self, byte_string, document=None):
+        super().__init__(document)
+        self.byte_string = byte_string
+
+    def __repr__(self):
+        return "{}('{}')".format(self.__class__.__name__,
+                                 hexlify(self.byte_string).decode())
+
+    def _bytes(self):
+        return b'<' + hexlify(self.byte_string) + b'>'
 
 
 class Date(String):

@@ -1,4 +1,5 @@
 
+from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
 import re, struct
@@ -222,16 +223,16 @@ class PDFReader(cos.Document):
         return cos.String(string.decode('utf_8'))
 
     def read_hex_string(self):
-        string = b''
+        hex_string = b''
         while True:
             self.eat_whitespace()
             char = self.file.read(1)
             if char == self.HEXSTRING_END:
                 break
-            string += char
-        if len(string) % 2 > 0:
-            string += b'0'
-        return cos.String(string.decode('ascii'), hex=True)
+            hex_string += char
+        if len(hex_string) % 2 > 0:
+            hex_string += b'0'
+        return cos.HexString(unhexlify(hex_string))
 
     def read_number(self):
         self.eat_whitespace()
