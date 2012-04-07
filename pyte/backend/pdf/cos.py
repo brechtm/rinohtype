@@ -72,26 +72,20 @@ class Boolean(Object):
 
 
 class Integer(Object, int):
-    def __new__(cls, value, base=10, document=None, hex=False):
+    def __new__(cls, value, base=10, document=None):
         try:
             return int.__new__(cls, value, base)
         except TypeError:
             return int.__new__(cls, value)
 
-
-    def __init__(self, value, base=10, document=None, hex=False):
+    def __init__(self, value, base=10, document=None):
         Object.__init__(self, document)
-        self.hex = hex
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, int.__repr__(self))
 
     def _bytes(self):
-        if self.hex:
-            out = '<{:x}>'.format(self).encode('utf_8')
-        else:
-            out = int.__str__(self).encode('utf_8')
-        return out
+        return int.__str__(self).encode('utf_8')
 
 
 class Real(Object, float):
@@ -106,22 +100,32 @@ class Real(Object, float):
 
 
 class String(Object):
-    def __init__(self, string, document=None):
+    def __init__(self, string, document=None, hex=False):
         super().__init__(document)
-        self.value = string
+        self.string = string
+        self.hex = hex
 
     def __repr__(self):
-        return "{}('{}')".format(self.__class__.__name__, self.value)
+        out = self.__class__.__name__
+        if self.hex:
+            out += '(<' + self.string + '>)'
+        else:
+            out += "('" + self.string + "')"
+        return out
 
     def _bytes(self):
-        escaped = self.value.replace('\n', r'\n')
-        escaped = escaped.replace('\r', r'\r')
-        escaped = escaped.replace('\t', r'\t')
-        escaped = escaped.replace('\b', r'\b')
-        escaped = escaped.replace('\f', r'\f')
-        for char in '\\()':
-            escaped = escaped.replace(char, '\\{}'.format(char))
-        return '({})'.format(escaped).encode('utf_8')
+        if self.hex:
+            out = '<{}>'.format(self.string)
+        else:
+            escaped = self.string.replace('\n', r'\n')
+            escaped = escaped.replace('\r', r'\r')
+            escaped = escaped.replace('\t', r'\t')
+            escaped = escaped.replace('\b', r'\b')
+            escaped = escaped.replace('\f', r'\f')
+            for char in '\\()':
+                escaped = escaped.replace(char, '\\{}'.format(char))
+            out = '({})'.format(escaped)
+        return out.encode('utf_8')
 
 
 class Name(Object):

@@ -155,18 +155,6 @@ class PDFReader(cos.Document):
             array.append(item)
         return array
 
-    def read_hex_string(self):
-        string = b''
-        while True:
-            self.eat_whitespace()
-            char = self.file.read(1)
-            if char == self.HEXSTRING_END:
-                break
-            string += char
-        if len(string) % 2 > 0:
-            string += b'0'
-        return cos.Integer(string, 16, hex=True)
-
     re_name_escape = re.compile(r'#\d\d')
 
     def read_name(self):
@@ -216,7 +204,7 @@ class PDFReader(cos.Document):
                         else:
                             self.file.seek(-1, SEEK_CUR)
                             break
-                    sttring += struct.pack('B', int(char, 8))
+                    string += struct.pack('B', int(char, 8))
                 else:
                     string += b'\\' + char
                 escape = False
@@ -227,6 +215,18 @@ class PDFReader(cos.Document):
             else:
                 string += char
         return cos.String(string.decode('utf_8'))
+
+    def read_hex_string(self):
+        string = b''
+        while True:
+            self.eat_whitespace()
+            char = self.file.read(1)
+            if char == self.HEXSTRING_END:
+                break
+            string += char
+        if len(string) % 2 > 0:
+            string += b'0'
+        return cos.String(string.decode('ascii'), hex=True)
 
     def read_number(self):
         self.eat_whitespace()
