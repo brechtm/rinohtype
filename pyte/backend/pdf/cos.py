@@ -13,32 +13,18 @@ PDF_VERSION = '1.4'
 
 class Object(object):
     def __init__(self, document=None):
-        self.generation = 0
         self.document = document
-        if document:
-            self.identifier = document.next_identifier
-            document.append(self)
-            self.reference = Reference(document, self.identifier,
-                                       self.generation)
-        else:
-            self.identifier = None
+        self.reference = document.append(self) if document else None
 
     @property
     def is_direct(self):
-        return self.identifier is None
+        return self.reference is None
 
     def bytes(self):
         if self.is_direct:
             out = self._bytes()
         else:
             out = self.reference.bytes()
-        return out
-
-    def indirect_bytes(self):
-        out = '{} {} obj\n'.format(self.identifier,
-                                   self.generation).encode('utf_8')
-        out += self._bytes()
-        out += b'\nendobj'
         return out
 
 
@@ -204,19 +190,37 @@ class Null(Object):
 class Document(object):
     def __init__(self):
         self._identifier = 0
-        self.objects = []
-        self.xref_table = XRefTable()
+        self.objects = {}
         self.pages = Pages(self)
         self.catalog = Catalog(self)
         self.catalog['Pages'] = self.pages.reference
 
     def append(self, obj):
-        self.objects.append(obj)
+        identifier, generation = self.next_identifier, 0
+        self.objects[identifier] = (obj, generation)
+        return Reference(self, identifier, generation)
 
     @property
     def next_identifier(self):
         self._identifier += 1
         return self._identifier
+
+    def _write_xref_table(self, file, addresses):
+        def out(string):
+            file.write(string + b'\n')
+
+        out(b'xref')
+        out('0 {}'.format(max(self.objects.keys()) + 1).encode('utf_8'))
+        out(b'0000000000 65535 f ')
+        last_free = 0
+        for identifier in range(1, self._identifier + 1):
+            try:
+                obj, generation = self.objects[identifier]
+                address = addresses[identifier]
+            except KeyError:
+                address = last_free = identifier
+                generation = 0
+            out('{:010d} {:05d} n '.format(address, generation).encode('utf_8'))
 
     def write(self, file):
         def out(string):
@@ -224,14 +228,18 @@ class Document(object):
 
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
         file.write(b'%\xDC\xE1\xD8\xB7\n')
-        for obj in self.objects:
-            self.xref_table.append(obj, file.tell())
-            out(obj.indirect_bytes())
+        addresses = {}
+        for identifier, (obj, generation) in self.objects.items():
+            obj, generation = self.objects[identifier]
+            addresses[identifier] = file.tell()
+            out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
+            out(obj._bytes())
+            out(b'endobj')
         xref_table_address = file.tell()
-        out(self.xref_table.bytes())
+        self._write_xref_table(file, addresses)
         out(b'trailer')
         trailer_dict = Dictionary()
-        trailer_dict['Size'] = Integer(len(self.xref_table))
+        trailer_dict['Size'] = Integer(max(self.objects.keys()) + 1)
         trailer_dict['Root'] = self.catalog.reference
         #trailer_dict['Info'] = # TODO: ref to info dict
         #trailer_dict['ID'] = # TODO: hash of all data
@@ -239,30 +247,6 @@ class Document(object):
         out(b'startxref')
         out(str(xref_table_address).encode('utf_8'))
         out(b'%%EOF')
-
-
-class XRefTable(object):
-    def __init__(self):
-        self.objects = []
-        self.addresses = []
-
-    def append(self, obj, address):
-        self.objects.append(obj)
-        self.addresses.append(address)
-
-    def __len__(self):
-        return len(self.objects) + 1
-
-    def __str__(self):
-        out = 'xref'
-        out += '\n0 {}'.format(len(self.objects) + 1)
-        out += '\n0000000000 65535 f '
-        for obj, address in zip(self.objects, self.addresses):
-            out += '\n{:010d} {:05d} n '.format(address, obj.generation)
-        return out
-
-    def bytes(self):
-        return str(self).encode('utf_8')
 
 
 class Catalog(Dictionary):
