@@ -40,7 +40,7 @@ class Reference(object):
         return self.document[self.identifier][0]
 
     def __repr__(self):
-        return '{}<{} {}>'.format(self.__class__.__name__,
+        return '{}<{} {}>'.format(self.target.__class__.__name__,
                                   self.identifier, self.generation)
 
     def __getitem__(self, name):
@@ -63,14 +63,26 @@ class Boolean(Object):
 
 
 class Integer(Object, int):
-    def __init__(self, value, base=10, document=None):
+    def __new__(cls, value, base=10, document=None, hex=False):
+        try:
+            return int.__new__(cls, value, base)
+        except TypeError:
+            return int.__new__(cls, value)
+
+
+    def __init__(self, value, base=10, document=None, hex=False):
         Object.__init__(self, document)
+        self.hex = hex
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, int.__repr__(self))
 
     def _bytes(self):
-        return int.__str__(self).encode('utf_8')
+        if self.hex:
+            out = '<{:x}>'.format(self).encode('utf_8')
+        else:
+            out = int.__str__(self).encode('utf_8')
+        return out
 
 
 class Real(Object, float):
@@ -184,6 +196,8 @@ class Null(Object):
 class Document(dict):
     def __init__(self):
         self.catalog = Catalog(self)
+        self.info = None
+        self.id = None
 
     def append(self, obj):
         identifier, generation = self.max_identifier + 1, 0
@@ -215,27 +229,38 @@ class Document(dict):
                 generation = 0
             out('{:010d} {:05d} n '.format(address, generation).encode('utf_8'))
 
-    def write(self, file):
+    def write(self, file_or_filename):
         def out(string):
             file.write(string + b'\n')
 
+        try:
+            file = open(file_or_filename, 'wb')
+        except TypeError:
+            file = file_or_filename
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
         file.write(b'%\xDC\xE1\xD8\xB7\n')
         addresses = {}
-        for identifier, (obj, generation) in self.items():
+        for identifier in range(1, self.max_identifier + 1):
             obj, generation = self[identifier]
-            addresses[identifier] = file.tell()
-            out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
-            out(obj._bytes())
-            out(b'endobj')
+            try:
+                obj, generation = self[identifier]
+                addresses[identifier] = file.tell()
+                out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
+                out(obj._bytes())
+                out(b'endobj')
+            except KeyError:
+                pass
         xref_table_address = file.tell()
         self._write_xref_table(file, addresses)
         out(b'trailer')
         trailer_dict = Dictionary()
         trailer_dict['Size'] = Integer(self.max_identifier + 1)
-        trailer_dict['Root'] = self.catalog
-        #trailer_dict['Info'] = # TODO: ref to info dict
-        #trailer_dict['ID'] = # TODO: hash of all data
+        trailer_dict['Root'] = self.catalog.reference
+        if self.info:
+            trailer_dict['Info'] = self.info.reference
+        if self.id:
+            # TODO: hash of all data
+            trailer_dict['ID'] = self.id
         out(trailer_dict.bytes())
         out(b'startxref')
         out(str(xref_table_address).encode('utf_8'))

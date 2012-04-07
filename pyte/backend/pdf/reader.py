@@ -21,12 +21,19 @@ class PDFReader(cos.Document):
     def __init__(self, file_or_filename):
         try:
             self.file = open(file_or_filename, 'rb')
-        except NotImplementedError:
+        except TypeError:
             self.file = file_or_filename
         xref_offset = self.find_xref_offset()
         self._xref = self.parse_xref_tables(xref_offset)
-        self.trailer = self.parse_trailer()
-        self.catalog = self.trailer['Root'].target
+        trailer = self.parse_trailer()
+        self.info = trailer['Info'].target if 'Info' in trailer else None
+        self.id = trailer['ID'] if 'ID' in trailer else None
+        self._max_identifier_in_file = int(trailer['Size']) - 1
+        self.catalog = trailer['Root'].target
+
+    @property
+    def max_identifier(self):
+        return max(super().max_identifier, self._max_identifier_in_file)
 
     def __getitem__(self, identifier):
         try:
@@ -149,7 +156,7 @@ class PDFReader(cos.Document):
             string += char
         if len(string) % 2 > 0:
             string += b'0'
-        return cos.Integer(string, 16)
+        return cos.Integer(string, 16, hex=True)
 
     re_name_escape = re.compile(r'#\d\d')
 
@@ -249,15 +256,17 @@ class PDFReader(cos.Document):
         # save file state
         restore_pos = self.file.tell()
         self.file.seek(address)
-        self.read_number()  # identifier
+        identifier = int(self.read_number())
         self.eat_whitespace()
-        generation = self.read_number()  # generation
+        generation = int(self.read_number())
         self.eat_whitespace()
         self.next_token()   # 'obj'
         self.eat_whitespace()
         obj = self.next_item()
+        obj.document = self
+        obj.reference = cos.Reference(self, identifier, generation)
         self.file.seek(restore_pos)
-        return obj, int(generation)
+        return obj, generation
 
     def parse_xref_tables(self, offset):
         xref = {}
