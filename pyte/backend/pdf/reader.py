@@ -44,6 +44,10 @@ class PDFReader(cos.Document):
             self[identifier] = obj_gen
         return obj_gen
 
+    def __delitem__(self, identifier):
+        del self._xref[identifier]
+        super().__delitem__(identifier)
+
     def jump_to_next_line(self):
         while True:
             char = self.file.read(1)

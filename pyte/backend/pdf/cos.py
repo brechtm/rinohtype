@@ -23,6 +23,12 @@ class Object(object):
             out = self._bytes()
         return out
 
+    def delete(self):
+        try:
+            self.reference.delete()
+        except AttributeError:
+            pass
+
 
 # TODO: forward method calls to referred object (metaclass?)
 class Reference(object):
@@ -38,6 +44,9 @@ class Reference(object):
     @property
     def target(self):
         return self.document[self.identifier][0]
+
+    def delete(self):
+        del self.document[self.identifier]
 
     def __repr__(self):
         return '{}<{} {}>'.format(self.target.__class__.__name__,
@@ -161,6 +170,8 @@ class Stream(Dictionary):
         self.data = BytesIO()
 
     def _bytes(self):
+        if 'Length' in self:
+            self['Length'].delete()
         self['Length'] = Integer(self.size)
         out = super()._bytes()
         out += b'\nstream\n'
@@ -230,12 +241,12 @@ class Document(dict):
         last_free = 0
         for identifier in range(1, self.max_identifier + 1):
             try:
-                obj, generation = self[identifier]
+                obj, gen = self[identifier]
                 address = addresses[identifier]
+                out('{:010d} {:05d} n '.format(address, gen).encode('utf_8'))
             except KeyError:
-                address = last_free = identifier
-                generation = 0
-            out('{:010d} {:05d} n '.format(address, generation).encode('utf_8'))
+                out(b'0000000000 65535 f ')
+                last_free = identifier
 
     def write(self, file_or_filename):
         def out(string):
@@ -249,7 +260,6 @@ class Document(dict):
         file.write(b'%\xDC\xE1\xD8\xB7\n')
         addresses = {}
         for identifier in range(1, self.max_identifier + 1):
-            obj, generation = self[identifier]
             try:
                 obj, generation = self[identifier]
                 addresses[identifier] = file.tell()
