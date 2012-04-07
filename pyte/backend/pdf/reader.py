@@ -102,7 +102,12 @@ class PDFReader(cos.Document):
             self.eat_whitespace()
             dict_pos = self.file.tell()
             if self.next_token() == b'stream':
-                item = self.read_stream(int(item['Length']))
+                self.eat_whitespace()
+                length = int(item['Length'])
+                stream = cos.Stream(None)
+                stream.update(item)
+                stream.write(self.file.read(length))
+                item = stream
             else:
                 self.file.seek(dict_pos)
         elif token == b'true':
@@ -183,12 +188,6 @@ class PDFReader(cos.Document):
             key, value = self.read_name(), self.next_item()
             dictionary[key.name] = value
         return dictionary
-
-    def read_stream(self, length):
-        stream = cos.Stream(None)
-        self.eat_whitespace()
-        stream.write(self.file.read(length))
-        return stream
 
     newline_chars = b'\n\r'
     escape_chars = b'nrtbf()\\'

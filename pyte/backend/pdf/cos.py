@@ -153,24 +153,32 @@ class Dictionary(Object, OrderedDict):
                                    for key, value in self.items()]) + b' >>'
 
 
-class Stream(Object, BytesIO):
+class Stream(Dictionary):
     def __init__(self, document):
         # the document argument is required
         # (Streams are always indirectly referenced)
-        Object.__init__(self, document)
-        BytesIO.__init__(self)
-
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.size)
+        super().__init__(document)
+        self.data = BytesIO()
 
     def _bytes(self):
-        dictionary = Dictionary()
-        dictionary['Length'] = Integer(self.size)
-        out = dictionary.bytes()
+        self['Length'] = Integer(self.size)
+        out = super()._bytes()
         out += b'\nstream\n'
-        out += self.getvalue()
+        out += self.data.getvalue()
         out += b'\nendstream'
         return out
+
+    def read(self, *args, **kwargs):
+        return self.data.read(*args, **kwargs)
+
+    def write(self, *args, **kwargs):
+        return self.data.write(*args, **kwargs)
+
+    def tell(self, *args, **kwargs):
+        return self.data.tell(*args, **kwargs)
+
+    def seek(self, *args, **kwargs):
+        return self.data.seek(*args, **kwargs)
 
     @property
     def size(self):
