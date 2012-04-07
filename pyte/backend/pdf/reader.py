@@ -187,6 +187,7 @@ class PDFReader(cos.Document):
     def read_string(self):
         string = b''
         escape = False
+        parenthesis_level = 0
         while True:
             char = self.file.read(1)
             if escape:
@@ -210,6 +211,10 @@ class PDFReader(cos.Document):
                 escape = False
             elif char == b'\\':
                 escape = True
+            elif char == b'(':
+                parenthesis_level += 1
+            elif char == b')' and parenthesis_level > 0:
+                parenthesis_level -= 1
             elif char == self.STRING_END:
                 break
             else:
