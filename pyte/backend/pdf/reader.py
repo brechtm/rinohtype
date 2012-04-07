@@ -1,8 +1,9 @@
 
+import re, struct, time
+
 from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
-import re, struct
 
 from . import cos
 
@@ -24,10 +25,14 @@ class PDFReader(cos.Document):
             self.file = open(file_or_filename, 'rb')
         except TypeError:
             self.file = file_or_filename
+        self.timestamp = time.time()
         xref_offset = self.find_xref_offset()
         self._xref = self.parse_xref_tables(xref_offset)
         trailer = self.parse_trailer()
-        self.info = trailer['Info'].target if 'Info' in trailer else None
+        if 'Info' in trailer:
+            self.info = trailer['Info'].target
+        else:
+            self.info = Dictionary(self)
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root'].target

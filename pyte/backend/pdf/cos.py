@@ -1,4 +1,6 @@
 
+import hashlib, time
+
 from binascii import hexlify, unhexlify
 from collections import OrderedDict
 from datetime import datetime
@@ -235,7 +237,9 @@ class Null(Object):
 class Document(dict):
     def __init__(self):
         self.catalog = Catalog(self)
-        self.info = None
+        self.info = Dictionary(self)
+        self.timestamp = time.time()
+        self.info['CreationDate'] = Date(self.timestamp)
         self.id = None
 
     def append(self, obj):
@@ -276,6 +280,14 @@ class Document(dict):
             file = open(file_or_filename, 'wb')
         except TypeError:
             file = file_or_filename
+
+        if 'Producer' in self.info:
+            self.info['Producer'].delete()
+        if 'ModDate' in self.info:
+            self.info['ModDate'].delete()
+        self.info['Producer'] = String('pyte PDF backend')
+        self.info['ModDate'] = Date(self.timestamp)
+
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
         file.write(b'%\xDC\xE1\xD8\xB7\n')
         addresses = {}
@@ -291,15 +303,22 @@ class Document(dict):
         xref_table_address = file.tell()
         self._write_xref_table(file, addresses)
         out(b'trailer')
-        trailer_dict = Dictionary()
-        trailer_dict['Size'] = Integer(self.max_identifier + 1)
-        trailer_dict['Root'] = self.catalog.reference
-        if self.info:
-            trailer_dict['Info'] = self.info.reference
+        trailer = Dictionary()
+        trailer['Size'] = Integer(self.max_identifier + 1)
+        trailer['Root'] = self.catalog.reference
+        trailer['Info'] = self.info.reference
+        md5sum = hashlib.md5()
+        md5sum.update(str(self.timestamp).encode())
+        md5sum.update(str(file.tell()).encode())
+        for value in self.info.values():
+            md5sum.update(value._bytes())
+        new_id = HexString(md5sum.digest())
         if self.id:
-            # TODO: hash of all data
-            trailer_dict['ID'] = self.id
-        out(trailer_dict.bytes())
+            self.id[1] = new_id
+        else:
+            self.id = Array([new_id, new_id])
+        trailer['ID'] = self.id
+        out(trailer.bytes())
         out(b'startxref')
         out(str(xref_table_address).encode('utf_8'))
         out(b'%%EOF')
