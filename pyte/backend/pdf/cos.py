@@ -1,5 +1,6 @@
 
 from collections import OrderedDict
+from datetime import datetime
 from io import BytesIO, SEEK_END
 
 
@@ -126,6 +127,16 @@ class String(Object):
                 escaped = escaped.replace(char, '\\{}'.format(char))
             out = '({})'.format(escaped)
         return out.encode('utf_8')
+
+
+class Date(String):
+    def __init__(self, timestamp, document=None):
+        local_time = datetime.fromtimestamp(timestamp)
+        utc_time = datetime.utcfromtimestamp(timestamp)
+        utc_offset = local_time - utc_time
+        string = local_time.strftime('D:%Y%m%d%H%M%S')
+        string += "{:+03d}'{:02d}'".format(*divmod(utc_offset.seconds, 3600))
+        super().__init__(string, document)
 
 
 class Name(Object):
