@@ -23,12 +23,19 @@ class PDFReader(cos.Document):
             self.file = open(file_or_filename, 'rb')
         except NotImplementedError:
             self.file = file_or_filename
-
-        self.indirect_objects = {}
         xref_offset = self.find_xref_offset()
-        self.xref = self.parse_xref_tables(xref_offset)
+        self._xref = self.parse_xref_tables(xref_offset)
         self.trailer = self.parse_trailer()
-        self.root = self.trailer['Root']
+        self.catalog = self.trailer['Root'].target
+
+    def __getitem__(self, identifier):
+        try:
+            obj_gen = super().__getitem__(identifier)
+        except KeyError:
+            address = self._xref[identifier]
+            obj_gen = self.parse_indirect_object(address)
+            self[identifier] = obj_gen
+        return obj_gen
 
     def jump_to_next_line(self):
         while True:
@@ -88,7 +95,7 @@ class PDFReader(cos.Document):
             self.eat_whitespace()
             dict_pos = self.file.tell()
             if self.next_token() == b'stream':
-                item = self.read_stream()
+                item = self.read_stream(int(item['Length']))
             else:
                 self.file.seek(dict_pos)
         elif token == b'true':
@@ -108,7 +115,7 @@ class PDFReader(cos.Document):
                     self.eat_whitespace()
                     r = self.next_token()
                     if isinstance(generation, cos.Integer) and r == b'R':
-                        item = cos.Reference(self, item, generation)
+                        item = cos.Reference(self, int(item), int(generation))
                     else:
                         raise ValueError
                 except ValueError:
@@ -170,8 +177,11 @@ class PDFReader(cos.Document):
             dictionary[key.name] = value
         return dictionary
 
-    def read_stream(self):
-        stream = cos.Stream(self)
+    def read_stream(self, length):
+        stream = cos.Stream(None)
+        self.eat_whitespace()
+        stream.write(self.file.read(length))
+        return stream
 
     newline_chars = b'\n\r'
     escape_chars = b'nrtbf()\\'
@@ -235,29 +245,19 @@ class PDFReader(cos.Document):
 ##Note: Any object in a cross-reference section whose number is greater than this value is
 ##ignored and considered missing.
 
-    def get_indirect_object(self, identifier, generation):
-        id_gen = (identifier, generation)
-        try:
-            item = self.indirect_objects[id_gen]
-        except KeyError:
-            address = self.xref[id_gen]
-            item = self.parse_indirect_object(address)
-            self.indirect_objects[id_gen] = item
-        return item
-
     def parse_indirect_object(self, address):
         # save file state
         restore_pos = self.file.tell()
         self.file.seek(address)
         self.read_number()  # identifier
         self.eat_whitespace()
-        self.read_number()  # generation
+        generation = self.read_number()  # generation
         self.eat_whitespace()
         self.next_token()   # 'obj'
         self.eat_whitespace()
-        item = self.next_item()
+        obj = self.next_item()
         self.file.seek(restore_pos)
-        return item
+        return obj, int(generation)
 
     def parse_xref_tables(self, offset):
         xref = {}
@@ -266,16 +266,16 @@ class PDFReader(cos.Document):
         self.jump_to_next_line()
         while True:
             try:
-                obj_id, entries = self.read_number(), self.read_number()
+                identifier, entries = self.read_number(), self.read_number()
+                self.jump_to_next_line()
+                for i in range(entries):
+                    line = self.file.read(20)
+                    if line[17] == ord(b'n'):
+                        address, generation = int(line[:10]), int(line[11:16])
+                        xref[identifier] = address
+                    identifier += 1
             except ValueError:
                 break
-            self.jump_to_next_line()
-            for i in range(entries):
-                line = self.file.read(20)
-                if line[17] == ord(b'n'):
-                    address, generation = int(line[:10]), int(line[11:16])
-                    xref[obj_id, generation] = address
-                obj_id += 1
         return xref
 
     def find_xref_offset(self):
@@ -292,4 +292,4 @@ class PDFReader(cos.Document):
                     raise ValueError('Invalid PDF file: missing %%EOF')
                 break
             offset -= 1
-        return xref_offset
+        return int(xref_offset)

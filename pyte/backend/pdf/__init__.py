@@ -36,8 +36,8 @@ class Document(object):
 class Page(object):
     def __init__(self, pyte_page, document, width, height):
         self.pyte_page = pyte_page
-        self.pdf_page = document.pdf_document.pages.new_page(float(width),
-                                                             float(height))
+        pdf_pages = document.pdf_document.catalog['Pages']
+        self.pdf_page = pdf_pages.new_page(float(width), float(height))
         self.width = width
         self.height = height
         self.canvas = PageCanvas(self)

@@ -7,24 +7,20 @@ from io import BytesIO, SEEK_END
 PDF_VERSION = '1.4'
 
 
-# TODO: encoding
 # TODO: max line length (not streams)
 
 
 class Object(object):
     def __init__(self, document=None):
-        self.document = document
-        self.reference = document.append(self) if document else None
-
-    @property
-    def is_direct(self):
-        return self.reference is None
+        if document is not None:
+            self.document = document
+            self.reference = document.append(self)
 
     def bytes(self):
-        if self.is_direct:
-            out = self._bytes()
-        else:
+        try:
             out = self.reference.bytes()
+        except AttributeError:
+            out = self._bytes()
         return out
 
 
@@ -41,14 +37,10 @@ class Reference(object):
 
     @property
     def target(self):
-        try:
-            return self.document.get_indirect_object(self.identifier,
-                                                     self.generation)
-        except Exception as e:
-            pass
+        return self.document[self.identifier][0]
 
     def __repr__(self):
-        return '{}<{} {}>'.format(self.target.__class__.__name__,
+        return '{}<{} {}>'.format(self.__class__.__name__,
                                   self.identifier, self.generation)
 
     def __getitem__(self, name):
@@ -98,7 +90,7 @@ class String(Object):
         self.value = string
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.value)
+        return "{}('{}')".format(self.__class__.__name__, self.value)
 
     def _bytes(self):
         escaped = self.value.replace('\n', r'\n')
@@ -112,7 +104,6 @@ class String(Object):
 
 
 class Name(Object):
-    # TODO: names should be unique, check
     def __init__(self, name, document=None):
         super().__init__(document)
         self.name = name
@@ -152,6 +143,8 @@ class Dictionary(Object, OrderedDict):
 
 class Stream(Object, BytesIO):
     def __init__(self, document):
+        # the document argument is required
+        # (Streams are always indirectly referenced)
         Object.__init__(self, document)
         BytesIO.__init__(self)
 
@@ -177,8 +170,8 @@ class Stream(Object, BytesIO):
 
 
 class Null(Object):
-    def __init__(self):
-        pass
+    def __init__(self, document=None):
+        super().__init__(document)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -187,35 +180,35 @@ class Null(Object):
         return b'null'
 
 
-class Document(object):
+
+class Document(dict):
     def __init__(self):
-        self._identifier = 0
-        self.objects = {}
-        self.pages = Pages(self)
         self.catalog = Catalog(self)
-        self.catalog['Pages'] = self.pages.reference
 
     def append(self, obj):
-        identifier, generation = self.next_identifier, 0
-        self.objects[identifier] = (obj, generation)
+        identifier, generation = self.max_identifier + 1, 0
+        self[identifier] = (obj, generation)
         return Reference(self, identifier, generation)
 
     @property
-    def next_identifier(self):
-        self._identifier += 1
-        return self._identifier
+    def max_identifier(self):
+        try:
+            identifier = max(self.keys())
+        except ValueError:
+            identifier = 0
+        return identifier
 
     def _write_xref_table(self, file, addresses):
         def out(string):
             file.write(string + b'\n')
 
         out(b'xref')
-        out('0 {}'.format(max(self.objects.keys()) + 1).encode('utf_8'))
+        out('0 {}'.format(self.max_identifier + 1).encode('utf_8'))
         out(b'0000000000 65535 f ')
         last_free = 0
-        for identifier in range(1, self._identifier + 1):
+        for identifier in range(1, self.max_identifier + 1):
             try:
-                obj, generation = self.objects[identifier]
+                obj, generation = self[identifier]
                 address = addresses[identifier]
             except KeyError:
                 address = last_free = identifier
@@ -229,8 +222,8 @@ class Document(object):
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
         file.write(b'%\xDC\xE1\xD8\xB7\n')
         addresses = {}
-        for identifier, (obj, generation) in self.objects.items():
-            obj, generation = self.objects[identifier]
+        for identifier, (obj, generation) in self.items():
+            obj, generation = self[identifier]
             addresses[identifier] = file.tell()
             out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
             out(obj._bytes())
@@ -239,8 +232,8 @@ class Document(object):
         self._write_xref_table(file, addresses)
         out(b'trailer')
         trailer_dict = Dictionary()
-        trailer_dict['Size'] = Integer(max(self.objects.keys()) + 1)
-        trailer_dict['Root'] = self.catalog.reference
+        trailer_dict['Size'] = Integer(self.max_identifier + 1)
+        trailer_dict['Root'] = self.catalog
         #trailer_dict['Info'] = # TODO: ref to info dict
         #trailer_dict['ID'] = # TODO: hash of all data
         out(trailer_dict.bytes())
@@ -253,6 +246,7 @@ class Catalog(Dictionary):
     def __init__(self, document):
         super().__init__(document)
         self['Type'] = Name('Catalog')
+        self['Pages'] = Pages(self.document)
 
 
 class Pages(Dictionary):
@@ -264,7 +258,7 @@ class Pages(Dictionary):
 
     def new_page(self, width, height):
         page = Page(self, width, height)
-        self['Kids'].append(page.reference)
+        self['Kids'].append(page)
         self['Count'] = Integer(self['Count'] + 1)
         return page
 
@@ -273,7 +267,7 @@ class Page(Dictionary):
     def __init__(self, parent, width, height):
         super().__init__(parent.document)
         self['Type'] = Name('Page')
-        self['Parent'] = parent.reference
+        self['Parent'] = parent
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
@@ -283,10 +277,3 @@ class Font(Dictionary):
     def __init__(self, document):
         super().__init__(document)
         self['Type'] = Name('Font')
-
-
-##class Canvas(StringIO):
-##    def __init__(self):
-##        super().__init__(self)
-
-
