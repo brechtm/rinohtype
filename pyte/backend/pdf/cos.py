@@ -173,6 +173,7 @@ class Date(String):
 
 
 class Name(Object):
+    # TODO: names should be unique (per document), so check
     def __init__(self, name, indirect=False):
         super().__init__(indirect)
         self.name = name
@@ -186,6 +187,8 @@ class Name(Object):
 
 
 class Array(Object, list):
+    # TODO: not all methods of list are overridden, so funny
+    # behavior is to be expected
     def __init__(self, items=[], indirect=False):
         Object.__init__(self, indirect)
         list.__init__(self, items)
@@ -194,8 +197,7 @@ class Array(Object, list):
         return '{}{}'.format(self.__class__.__name__, list.__repr__(self))
 
     def _bytes(self, document):
-        return b'[' + (b' '.join([elem.bytes(document)
-                                  for elem in self])) + b']'
+        return b'[' + b' '.join([elem.bytes(document) for elem in self]) + b']'
 
     def register_indirect(self, document):
         register_children = True
