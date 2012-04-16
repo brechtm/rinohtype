@@ -26,9 +26,13 @@ class Object(object):
             out = self._bytes(document)
         return out
 
+    @property
+    def r(self):
+        return repr(self)
+
     def delete(self, document):
         try:
-            reference = document._by_object[self]
+            reference = document._by_object_id[self]
             reference.delete()
         except KeyError:
             pass
@@ -52,18 +56,32 @@ class Reference(object):
     def target(self):
         return self.document[self.identifier][0]
 
-    def delete(self):
-        del self.document[self.identifier]
+    def delete(self, document=None):
+        if document == self.document:
+            del self.document[self.identifier]
 
     def __repr__(self):
         return '{}<{} {}>'.format(self.target.__class__.__name__,
                                   self.identifier, self.generation)
 
+    @property
+    def r(self):
+        return repr(self.target)
+
     def __getitem__(self, name):
         return self.target[name]
 
+    def __setitem__(self, key, value):
+        self.target[key] = value
+
     def __getattr__(self, name):
         return getattr(self.target, name)
+
+    def __contains__(self, item):
+        return item in self.target
+
+    def register_indirect(self, document):
+        self.target.register_indirect(document)
 
 
 class Boolean(Object):
@@ -96,6 +114,9 @@ class Integer(Object, int):
 
 
 class Real(Object, float):
+    def __new__(cls, value, indirect=False):
+        return float.__new__(cls, value)
+
     def __init__(self, value, indirect=False):
         Object.__init__(self, indirect)
 
@@ -217,7 +238,7 @@ class Stream(Dictionary):
 
     def _bytes(self, document):
         if 'Length' in self:
-            self['Length'].delete()
+            self['Length'].delete(document)
         self['Length'] = Integer(self.size)
         out = super()._bytes(document)
         out += b'\nstream\n'
@@ -311,9 +332,9 @@ class Document(dict):
         self.catalog.register_indirect(self)
         self.info.register_indirect(self)
         if 'Producer' in self.info:
-            self.info['Producer'].delete()
+            self.info['Producer'].delete(self)
         if 'ModDate' in self.info:
-            self.info['ModDate'].delete()
+            self.info['ModDate'].delete(self)
         self.info['Producer'] = String('pyte PDF backend')
         self.info['ModDate'] = Date(self.timestamp)
 
