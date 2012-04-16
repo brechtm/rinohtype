@@ -12,9 +12,9 @@ from pyte.backend.pdf.cos import Document, Boolean, Catalog, String
 
 d = Document()
 
-b = Boolean(True, document=d)
+b = Boolean(True, indirect=True)
 
-d.pages.new_page(100, 150)
+d.catalog['Pages'].new_page(100, 150)
 
 #file = BytesIO()
 file = open('backend_pdf.pdf', 'wb')

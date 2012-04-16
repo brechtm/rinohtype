@@ -15,33 +15,36 @@ PDF_VERSION = '1.4'
 
 
 class Object(object):
-    def __init__(self, document=None):
-        if document is not None:
-            self.document = document
-            self.reference = document.append(self)
+    def __init__(self, indirect=False):
+        self.indirect = indirect
 
-    def bytes(self):
-        try:
-            out = self.reference.bytes()
-        except AttributeError:
-            out = self._bytes()
+    def bytes(self, document):
+        if self.indirect:
+            reference = document._by_object_id[id(self)]
+            out = reference.bytes(document)
+        else:
+            out = self._bytes(document)
         return out
 
-    def delete(self):
+    def delete(self, document):
         try:
-            self.reference.delete()
-        except AttributeError:
+            reference = document._by_object[self]
+            reference.delete()
+        except KeyError:
             pass
 
+    def register_indirect(self, document):
+        if self.indirect:
+            document.register(self)
 
-# TODO: forward method calls to referred object (metaclass?)
+
 class Reference(object):
     def __init__(self, document, identifier, generation):
         self.document = document
         self.identifier = identifier
         self.generation = generation
 
-    def bytes(self):
+    def bytes(self, document):
         return '{} {} R'.format(self.identifier,
                                 self.generation).encode('utf_8')
 
@@ -64,54 +67,54 @@ class Reference(object):
 
 
 class Boolean(Object):
-    def __init__(self, value, document=None):
-        super().__init__(document)
+    def __init__(self, value, indirect=False):
+        super().__init__(indirect)
         self.value = value
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self.value)
 
-    def _bytes(self):
+    def _bytes(self, document):
         return b'true' if self.value else b'false'
 
 
 class Integer(Object, int):
-    def __new__(cls, value, base=10, document=None):
+    def __new__(cls, value, base=10, indirect=False):
         try:
             return int.__new__(cls, value, base)
         except TypeError:
             return int.__new__(cls, value)
 
-    def __init__(self, value, base=10, document=None):
-        Object.__init__(self, document)
+    def __init__(self, value, base=10, indirect=False):
+        Object.__init__(self, indirect)
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, int.__repr__(self))
 
-    def _bytes(self):
+    def _bytes(self, document):
         return int.__str__(self).encode('utf_8')
 
 
 class Real(Object, float):
-    def __init__(self, value, document=None):
-        Object.__init__(self, document)
+    def __init__(self, value, indirect=False):
+        Object.__init__(self, indirect)
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, float.__repr__(self))
 
-    def _bytes(self):
+    def _bytes(self, document):
         return float.__str__(self).encode('utf_8')
 
 
 class String(Object):
-    def __init__(self, string, document=None):
-        super().__init__(document)
+    def __init__(self, string, indirect=False):
+        super().__init__(indirect)
         self.string = string
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.string)
 
-    def _bytes(self):
+    def _bytes(self, document):
         escaped = self.string.replace('\n', r'\n')
         escaped = escaped.replace('\r', r'\r')
         escaped = escaped.replace('\t', r'\t')
@@ -124,78 +127,99 @@ class String(Object):
 
 
 class HexString(Object):
-    def __init__(self, byte_string, document=None):
-        super().__init__(document)
+    def __init__(self, byte_string, indirect=False):
+        super().__init__(indirect)
         self.byte_string = byte_string
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__,
                                  hexlify(self.byte_string).decode())
 
-    def _bytes(self):
+    def _bytes(self, document):
         return b'<' + hexlify(self.byte_string) + b'>'
 
 
 class Date(String):
-    def __init__(self, timestamp, document=None):
+    def __init__(self, timestamp, indirect=False):
         local_time = datetime.fromtimestamp(timestamp)
         utc_time = datetime.utcfromtimestamp(timestamp)
         utc_offset = local_time - utc_time
+        utc_offset_minutes, utc_offset_seconds = divmod(utc_offset.seconds, 60)
+        utc_offset_hours, utc_offset_minutes = divmod(utc_offset_minutes, 60)
         string = local_time.strftime('D:%Y%m%d%H%M%S')
-        string += "{:+03d}'{:02d}'".format(*divmod(utc_offset.seconds, 3600))
-        super().__init__(string, document)
+        string += "{:+03d}'{:02d}'".format(utc_offset_hours, utc_offset_minutes)
+        super().__init__(string, indirect)
 
 
 class Name(Object):
-    def __init__(self, name, document=None):
-        super().__init__(document)
+    def __init__(self, name, indirect=False):
+        super().__init__(indirect)
         self.name = name
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self.name)
 
-    def _bytes(self):
+    def _bytes(self, document):
         # TODO: # escaping
         return '/{}'.format(self.name).encode('utf_8')
 
 
 class Array(Object, list):
-    def __init__(self, items=[], document=None):
-        Object.__init__(self, document)
+    def __init__(self, items=[], indirect=False):
+        Object.__init__(self, indirect)
         list.__init__(self, items)
 
     def __repr__(self):
         return '{}{}'.format(self.__class__.__name__, list.__repr__(self))
 
-    def _bytes(self):
-        return b'[' + (b' '.join([elem.bytes() for elem in self])) + b']'
+    def _bytes(self, document):
+        return b'[' + (b' '.join([elem.bytes(document)
+                                  for elem in self])) + b']'
+
+    def register_indirect(self, document):
+        register_children = True
+        if self.indirect:
+            register_children = id(self) not in document._by_object_id
+            document.register(self)
+        if register_children:
+            for item in self:
+                item.register_indirect(document)
 
 
 class Dictionary(Object, OrderedDict):
-    def __init__(self, document=None):
-        Object.__init__(self, document)
+    def __init__(self, indirect=False):
+        Object.__init__(self, indirect)
         OrderedDict.__init__(self)
 
     def __repr__(self):
         return '{}{}'.format(self.__class__.__name__, dict.__repr__(self))
 
-    def _bytes(self):
-        return b'<< ' + b' '.join([Name(key).bytes() + b' ' + value.bytes()
+    def _bytes(self, document):
+        return b'<< ' + b' '.join([Name(key).bytes(document) + b' ' +
+                                   value.bytes(document)
                                    for key, value in self.items()]) + b' >>'
+
+    def register_indirect(self, document):
+        register_children = True
+        if self.indirect:
+            register_children = id(self) not in document._by_object_id
+            document.register(self)
+        if register_children:
+            for item in self.values():
+                item.register_indirect(document)
 
 
 class Stream(Dictionary):
-    def __init__(self, document):
-        # the document argument is required
+    def __init__(self):
         # (Streams are always indirectly referenced)
-        super().__init__(document)
+        super().__init__(indirect=True)
         self.data = BytesIO()
 
-    def _bytes(self):
+    def _bytes(self, document):
         if 'Length' in self:
             self['Length'].delete()
         self['Length'] = Integer(self.size)
-        out = super()._bytes()
+        out = super()._bytes(document)
         out += b'\nstream\n'
         out += self.data.getvalue()
         out += b'\nendstream'
@@ -223,29 +247,32 @@ class Stream(Dictionary):
 
 
 class Null(Object):
-    def __init__(self, document=None):
-        super().__init__(document)
+    def __init__(self, indirect=False):
+        super().__init__(indirect)
 
     def __repr__(self):
         return self.__class__.__name__
 
-    def _bytes(self):
+    def _bytes(self, document):
         return b'null'
 
 
 
 class Document(dict):
     def __init__(self):
-        self.catalog = Catalog(self)
-        self.info = Dictionary(self)
+        self.catalog = Catalog()
+        self.info = Dictionary(indirect=True)
         self.timestamp = time.time()
         self.info['CreationDate'] = Date(self.timestamp)
         self.id = None
+        self._by_object_id = {}
 
-    def append(self, obj):
-        identifier, generation = self.max_identifier + 1, 0
-        self[identifier] = (obj, generation)
-        return Reference(self, identifier, generation)
+    def register(self, obj):
+        if id(obj) not in self._by_object_id:
+            identifier, generation = self.max_identifier + 1, 0
+            reference = Reference(self, identifier, generation)
+            self._by_object_id[id(obj)] = reference
+            self[identifier] = (obj, generation)
 
     @property
     def max_identifier(self):
@@ -281,6 +308,8 @@ class Document(dict):
         except TypeError:
             file = file_or_filename
 
+        self.catalog.register_indirect(self)
+        self.info.register_indirect(self)
         if 'Producer' in self.info:
             self.info['Producer'].delete()
         if 'ModDate' in self.info:
@@ -296,7 +325,7 @@ class Document(dict):
                 obj, generation = self[identifier]
                 addresses[identifier] = file.tell()
                 out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
-                out(obj._bytes())
+                out(obj._bytes(self))
                 out(b'endobj')
             except KeyError:
                 pass
@@ -305,35 +334,35 @@ class Document(dict):
         out(b'trailer')
         trailer = Dictionary()
         trailer['Size'] = Integer(self.max_identifier + 1)
-        trailer['Root'] = self.catalog.reference
-        trailer['Info'] = self.info.reference
+        trailer['Root'] = self.catalog
+        trailer['Info'] = self.info
         md5sum = hashlib.md5()
         md5sum.update(str(self.timestamp).encode())
         md5sum.update(str(file.tell()).encode())
         for value in self.info.values():
-            md5sum.update(value._bytes())
+            md5sum.update(value._bytes(self))
         new_id = HexString(md5sum.digest())
         if self.id:
             self.id[1] = new_id
         else:
             self.id = Array([new_id, new_id])
         trailer['ID'] = self.id
-        out(trailer.bytes())
+        out(trailer.bytes(self))
         out(b'startxref')
         out(str(xref_table_address).encode('utf_8'))
         out(b'%%EOF')
 
 
 class Catalog(Dictionary):
-    def __init__(self, document):
-        super().__init__(document)
+    def __init__(self):
+        super().__init__(indirect=True)
         self['Type'] = Name('Catalog')
-        self['Pages'] = Pages(self.document)
+        self['Pages'] = Pages()
 
 
 class Pages(Dictionary):
-    def __init__(self, document):
-        super().__init__(document)
+    def __init__(self):
+        super().__init__(indirect=True)
         self['Type'] = Name('Pages')
         self['Count'] = Integer(0)
         self['Kids'] = Array()
@@ -347,7 +376,7 @@ class Pages(Dictionary):
 
 class Page(Dictionary):
     def __init__(self, parent, width, height):
-        super().__init__(parent.document)
+        super().__init__(indirect=True)
         self['Type'] = Name('Page')
         self['Parent'] = parent
         self['Resources'] = Dictionary()
@@ -356,6 +385,6 @@ class Page(Dictionary):
 
 
 class Font(Dictionary):
-    def __init__(self, document):
-        super().__init__(document)
+    def __init__(self, indirect):
+        super().__init__(indirect)
         self['Type'] = Name('Font')

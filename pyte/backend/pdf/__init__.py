@@ -25,9 +25,9 @@ class Document(object):
 
     def write(self, filename):
         for page in self.pages:
-            contents = cos.Stream(self.pdf_document)
+            contents = cos.Stream()
             contents.write(page.canvas.getvalue().encode('utf_8'))
-            page.pdf_page['Contents'] = contents.reference
+            page.pdf_page['Contents'] = contents
         file = open(filename + self.extension, 'wb')
         self.pdf_document.write(file)
         file.close()
@@ -58,7 +58,7 @@ class Page(object):
             self.font_number += 1
             page_rsc = self.pdf_page['Resources']
             fonts_dict = page_rsc.setdefault('Font', cos.Dictionary())
-            fonts_dict[name] = font_rsc.reference
+            fonts_dict[name] = font_rsc
             self.font_names[font] = name
         return name
 
