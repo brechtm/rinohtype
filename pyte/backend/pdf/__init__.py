@@ -1,6 +1,7 @@
 
 from io import StringIO
 from . import cos
+
 from .reader import PDFReader
 from .filter import FlateDecode
 
