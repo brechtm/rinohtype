@@ -28,6 +28,7 @@ class PDFReader(cos.Document):
         self.timestamp = time.time()
         xref_offset = self.find_xref_offset()
         self._xref = self.parse_xref_tables(xref_offset)
+        self._by_object_id = {}
         trailer = self.parse_trailer()
         if 'Info' in trailer:
             self.info = trailer['Info']
@@ -36,7 +37,6 @@ class PDFReader(cos.Document):
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
-        self._by_object_id = {}
 
     @property
     def max_identifier(self):
@@ -44,12 +44,12 @@ class PDFReader(cos.Document):
 
     def __getitem__(self, identifier):
         try:
-            obj_gen = super().__getitem__(identifier)
+            obj = super().__getitem__(identifier)
         except KeyError:
             address = self._xref[identifier]
-            obj_gen = self.parse_indirect_object(address)
-            self[identifier] = obj_gen
-        return obj_gen
+            obj = self.parse_indirect_object(address)
+            self[identifier] = obj
+        return obj
 
     def __delitem__(self, identifier):
         del self._xref[identifier]
@@ -96,43 +96,31 @@ class PDFReader(cos.Document):
                 token += char
         return token
 
-    def next_item(self, indirect=False):
+    def next_item(self, identifier=None):
+        indirect = identifier is not None
         self.eat_whitespace()
         restore_pos = self.file.tell()
         token = self.next_token()
         if token == self.STRING_BEGIN:
-            item = self.read_string(indirect)
+            item = self.read_string(identifier)
         elif token == self.HEXSTRING_BEGIN:
-            item = self.read_hex_string(indirect)
+            item = self.read_hex_string(identifier)
         elif token == self.ARRAY_BEGIN:
-            item = self.read_array(indirect)
+            item = self.read_array(identifier)
         elif token == self.NAME_BEGIN:
-            item = self.read_name(indirect)
+            item = self.read_name(identifier)
         elif token == self.DICT_BEGIN:
-            item = self.read_dictionary(indirect)
-            self.eat_whitespace()
-            dict_pos = self.file.tell()
-            if self.next_token() == b'stream':
-                self.eat_whitespace()
-                length = int(item['Length'])
-                stream = cos.Stream()
-                stream.update(item)
-                stream.write(self.file.read(length))
-                self.eat_whitespace()
-                assert self.next_token() == b'endstream'
-                item = stream
-            else:
-                self.file.seek(dict_pos)
+            item = self.read_dictionary_or_stream(identifier)
         elif token == b'true':
-            item = cos.Boolean(True, indirect)
+            item = cos.Boolean(True, indirect=indirect)
         elif token == b'false':
-            item = cos.Boolean(False, indirect)
+            item = cos.Boolean(False, indirect=indirect)
         elif token == b'null':
-            item = cos.Null(indirect)
+            item = cos.Null(indirect=indirect)
         else:
             # number or indirect reference
             self.file.seek(restore_pos)
-            item = self.read_number(indirect)
+            item = self.read_number(identifier)
             restore_pos = self.file.tell()
             if isinstance(item, cos.Integer):
                 try:
@@ -140,20 +128,22 @@ class PDFReader(cos.Document):
                     self.eat_whitespace()
                     r = self.next_token()
                     if isinstance(generation, cos.Integer) and r == b'R':
-                        item = cos.Reference(self, int(item), int(generation))
+                        item = self[int(item)]
                     else:
                         raise ValueError
                 except ValueError:
                     self.file.seek(restore_pos)
         return item
 
-    def peek(self):
+    def peek(self, length=50):
         restore_pos = self.file.tell()
-        print(self.file.read(20))
+        print(self.file.read(length))
         self.file.seek(restore_pos)
 
-    def read_array(self, indirect=False):
-        array = cos.Array(indirect=indirect)
+    def read_array(self, identifier=None):
+        array = cos.Array(indirect=identifier is not None)
+        if identifier:
+            self[identifier] = array
         while True:
             self.eat_whitespace()
             token = self.file.read(1)
@@ -166,7 +156,8 @@ class PDFReader(cos.Document):
 
     re_name_escape = re.compile(r'#\d\d')
 
-    def read_name(self, indirect=False):
+    def read_name(self, identifier=None):
+        indirect = identifier is not None
         name = ''
         while True:
             char = self.file.read(1)
@@ -179,21 +170,52 @@ class PDFReader(cos.Document):
             name.replace(group, chr(number))
         return cos.Name(name, indirect)
 
-    def read_dictionary(self, indirect=False):
-        dictionary = cos.Dictionary(indirect)
+    def read_dictionary_or_stream(self, identifier=None):
+        dictionary = cos.Dictionary(indirect=identifier is not None)
+        if identifier:
+            self[identifier] = dictionary
         while True:
             self.eat_whitespace()
             token = self.next_token()
             if token == self.DICT_END:
                 break
             key, value = self.read_name(), self.next_item()
-            dictionary[key.name] = value
+            dictionary[key] = value
+        self.eat_whitespace()
+        dict_pos = self.file.tell()
+        if self.next_token() == b'stream':
+            self.eat_whitespace()
+            length = int(dictionary['Length'])
+            stream = cos.Stream()
+            stream.update(dictionary)
+            stream.write(self.file.read(length))
+            self.eat_whitespace()
+            assert self.next_token() == b'endstream'
+            dictionary = stream
+        else:
+            self.file.seek(dict_pos)
+        # try to map to specific Dictionary sub-class
+        def recursive_subclasses(cls):
+            for subcls in cls.__subclasses__():
+                yield subcls
+                for subsubcls in recursive_subclasses(subcls):
+                    yield subsubcls
+
+        subclasses = {subcls.__name__: subcls
+                      for subcls in recursive_subclasses(cos.Dictionary)}
+        if 'Type' in dictionary:
+            cls_name = dictionary['Type']
+            if 'Subtype' in dictionary:
+                cls_name += dictionary['Subtype']
+            if cls_name in subclasses:
+                dictionary.__class__ = subclasses[cls_name]
         return dictionary
 
     newline_chars = b'\n\r'
     escape_chars = b'nrtbf()\\'
 
-    def read_string(self, indirect=False):
+    def read_string(self, identifier=None):
+        indirect = identifier is not None
         string = b''
         escape = False
         parenthesis_level = 0
@@ -230,7 +252,8 @@ class PDFReader(cos.Document):
                 string += char
         return cos.String(string.decode('utf_8'), indirect)
 
-    def read_hex_string(self, indirect=False):
+    def read_hex_string(self, identifier=None):
+        indirect = identifier is not None
         hex_string = b''
         while True:
             self.eat_whitespace()
@@ -242,19 +265,20 @@ class PDFReader(cos.Document):
             hex_string += b'0'
         return cos.HexString(unhexlify(hex_string), indirect)
 
-    def read_number(self, indirect=False):
+    def read_number(self, identifier=None):
+        indirect = identifier is not None
         self.eat_whitespace()
-        number = b''
+        number_string = b''
         while True:
             char = self.file.read(1)
             if char not in b'+-.0123456789':
                 self.file.seek(-1, SEEK_CUR)
                 break
-            number += char
+            number_string += char
         try:
-            number = cos.Integer(number, indirect)
+            number = cos.Integer(number_string, indirect=indirect)
         except ValueError:
-            number = cos.Real(number, indirect)
+            number = cos.Real(number_string, indirect=indirect)
         return number
 
     def parse_trailer(self):
@@ -274,18 +298,17 @@ class PDFReader(cos.Document):
         restore_pos = self.file.tell()
         self.file.seek(address)
         identifier = int(self.read_number())
-        self.eat_whitespace()
         generation = int(self.read_number())
         self.eat_whitespace()
         assert self.next_token() == b'obj'
         self.eat_whitespace()
-        obj = self.next_item(indirect=True)
+        obj = self.next_item(identifier=identifier)
         reference = cos.Reference(self, identifier, generation)
         self._by_object_id[id(obj)] = reference
         self.eat_whitespace()
         assert self.next_token() == b'endobj'
         self.file.seek(restore_pos)
-        return obj, generation
+        return obj
 
     def parse_xref_tables(self, offset):
         xref = {}

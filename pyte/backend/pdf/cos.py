@@ -26,16 +26,15 @@ class Object(object):
             out = self._bytes(document)
         return out
 
-    @property
-    def r(self):
-        return repr(self)
-
     def delete(self, document):
         try:
             reference = document._by_object_id[self]
             reference.delete()
         except KeyError:
             pass
+
+    def short_repr(self):
+        return repr(self)
 
     def register_indirect(self, document):
         if self.indirect:
@@ -64,25 +63,6 @@ class Reference(object):
         return '{}<{} {}>'.format(self.target.__class__.__name__,
                                   self.identifier, self.generation)
 
-    @property
-    def r(self):
-        return repr(self.target)
-
-    def __getitem__(self, name):
-        return self.target[name]
-
-    def __setitem__(self, key, value):
-        self.target[key] = value
-
-    def __getattr__(self, name):
-        return getattr(self.target, name)
-
-    def __contains__(self, item):
-        return item in self.target
-
-    def register_indirect(self, document):
-        self.target.register_indirect(document)
-
 
 class Boolean(Object):
     def __init__(self, value, indirect=False):
@@ -99,9 +79,10 @@ class Boolean(Object):
 class Integer(Object, int):
     def __new__(cls, value, base=10, indirect=False):
         try:
-            return int.__new__(cls, value, base)
+            obj = int.__new__(cls, value, base)
         except TypeError:
-            return int.__new__(cls, value)
+            obj = int.__new__(cls, value)
+        return obj
 
     def __init__(self, value, base=10, indirect=False):
         Object.__init__(self, indirect)
@@ -124,7 +105,7 @@ class Real(Object, float):
         return '{}({})'.format(self.__class__.__name__, float.__repr__(self))
 
     def _bytes(self, document):
-        return float.__str__(self).encode('utf_8')
+        return float.__repr__(self).encode('utf_8')
 
 
 class String(Object):
@@ -172,18 +153,20 @@ class Date(String):
         super().__init__(string, indirect)
 
 
-class Name(Object):
+class Name(Object, str):
     # TODO: names should be unique (per document), so check
+    def __new__(cls, value, indirect=False):
+        return str.__new__(cls, value)
+
     def __init__(self, name, indirect=False):
-        super().__init__(indirect)
-        self.name = name
+        Object.__init__(self, indirect)
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.name)
+        return '{}({})'.format(self.__class__.__name__, str.__repr__(self))
 
     def _bytes(self, document):
         # TODO: # escaping
-        return '/{}'.format(self.name).encode('utf_8')
+        return '/{}'.format(self).encode('utf_8')
 
 
 class Array(Object, list):
@@ -194,10 +177,14 @@ class Array(Object, list):
         list.__init__(self, items)
 
     def __repr__(self):
-        return '{}{}'.format(self.__class__.__name__, list.__repr__(self))
+        contents = ', '.join([item.short_repr() for item in self])
+        return '{}({})'.format(self.__class__.__name__, contents)
 
     def _bytes(self, document):
         return b'[' + b' '.join([elem.bytes(document) for elem in self]) + b']'
+
+    def short_repr(self):
+        return '<{} {}>'.format(self.__class__.__name__, id(self))
 
     def register_indirect(self, document):
         register_children = True
@@ -215,12 +202,17 @@ class Dictionary(Object, OrderedDict):
         OrderedDict.__init__(self)
 
     def __repr__(self):
-        return '{}{}'.format(self.__class__.__name__, dict.__repr__(self))
+        contents = ', '.join(['{}: {}'.format(key, value.short_repr())
+                              for key, value in self.items()])
+        return '{}({})'.format(self.__class__.__name__, contents)
 
     def _bytes(self, document):
         return b'<< ' + b' '.join([Name(key).bytes(document) + b' ' +
                                    value.bytes(document)
                                    for key, value in self.items()]) + b' >>'
+
+    def short_repr(self):
+        return '<{} {}>'.format(self.__class__.__name__, id(self))
 
     def register_indirect(self, document):
         register_children = True
@@ -260,6 +252,9 @@ class Stream(Dictionary):
     def seek(self, *args, **kwargs):
         return self.data.seek(*args, **kwargs)
 
+    def getvalue(self):
+        return self.data.getvalue()
+
     @property
     def size(self):
         restore_pos = self.tell()
@@ -267,6 +262,14 @@ class Stream(Dictionary):
         size = self.tell()
         self.seek(restore_pos)
         return size
+
+
+class XObjectForm(Stream):
+    def __init__(self, bounding_box):
+        super().__init__()
+        self['Type'] = Name('XObject')
+        self['Subtype'] = Name('Form')
+        self['BBox'] = bounding_box
 
 
 class Null(Object):
@@ -295,7 +298,7 @@ class Document(dict):
             identifier, generation = self.max_identifier + 1, 0
             reference = Reference(self, identifier, generation)
             self._by_object_id[id(obj)] = reference
-            self[identifier] = (obj, generation)
+            self[identifier] = obj
 
     @property
     def max_identifier(self):
@@ -315,9 +318,8 @@ class Document(dict):
         last_free = 0
         for identifier in range(1, self.max_identifier + 1):
             try:
-                obj, gen = self[identifier]
                 address = addresses[identifier]
-                out('{:010d} {:05d} n '.format(address, gen).encode('utf_8'))
+                out('{:010d} {:05d} n '.format(address, 0).encode('utf_8'))
             except KeyError:
                 out(b'0000000000 65535 f ')
                 last_free = identifier
@@ -345,9 +347,9 @@ class Document(dict):
         addresses = {}
         for identifier in range(1, self.max_identifier + 1):
             try:
-                obj, generation = self[identifier]
+                obj = self[identifier]
                 addresses[identifier] = file.tell()
-                out('{} 0 obj'.format(identifier, generation).encode('utf_8'))
+                out('{} 0 obj'.format(identifier).encode('utf_8'))
                 out(obj._bytes(self))
                 out(b'endobj')
             except KeyError:
@@ -405,6 +407,16 @@ class Page(Dictionary):
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
+
+    def to_xobject_form(self):
+        content_stream = self['Contents']
+        xobject = XObjectForm(self['MediaBox'])
+        if 'Filter' in content_stream:
+            xobject['Filter'] = content_stream['Filter']
+        if 'Resources' in self:
+            xobject['Resources'] = self['Resources']
+        xobject.write(content_stream.getvalue())
+        return xobject
 
 
 class Font(Dictionary):
