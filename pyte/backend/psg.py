@@ -1,6 +1,7 @@
 
 from psg.document.dsc import dsc_document
-from psg.drawing.box import canvas as psg_Canvas
+from psg.drawing.box import eps_image, canvas as psg_Canvas
+
 
 
 class Document(object):
@@ -127,6 +128,17 @@ class Canvas(object):
             raise RuntimeError('No font selected for canvas.')
         widths = ' '.join(map(lambda f: '%.2f' % f, x_displacements))
         print('({0}) [{1}] xshow'.format(ps_repr, widths), file=self.psg_canvas)
+
+    def place_image(self, image):
+        canvas.psg_canvas.append(image.eps)
+
+
+class Image(object):
+    def __init__(self, filename):
+        self.eps = eps_image(canvas.psg_canvas, open(filename + '.eps', 'rb'),
+                             document_level=True)
+        self.height = eps.h() * self.scale
+        self.width = eps.w() * self.scale
 
 
 class PageCanvas(Canvas):

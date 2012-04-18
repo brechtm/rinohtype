@@ -1,6 +1,4 @@
 
-from psg.drawing.box import eps_image
-
 from .flowable import Flowable
 from .number import format_number
 from .number.style import NUMBER
@@ -18,18 +16,15 @@ class Image(Flowable):
 
     def render(self, canvas, offset=0):
         offset = self.container._flowable_offset
-        eps = eps_image(canvas.psg_canvas, open(self.filename, 'rb'),
-                        document_level=True)
-        image_height = eps.h() * self.scale
-        image_width = eps.w() * self.scale
         canvas.save_state()
-        self.container.advance(image_height)
-        canvas.translate((canvas.width - image_width) / 2,
-                         canvas.height - offset - image_height)
+        image = canvas.document.backend.Image(self.filename)
+        self.container.advance(image.height)
+        canvas.translate((canvas.width - image.width) / 2,
+                         canvas.height - offset - image.height)
         canvas.scale(self.scale)
-        canvas.psg_canvas.append(eps)
+        canvas.place_image(image)
         canvas.restore_state()
-        return image_height
+        return image.height
 
 
 class CaptionStyle(ParagraphStyle):

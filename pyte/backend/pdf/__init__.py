@@ -1,6 +1,7 @@
 
 from io import StringIO
 from . import cos
+from .reader import PDFReader
 
 
 class Document(object):
@@ -72,7 +73,6 @@ class Canvas(StringIO):
         self.width = width
         self.height = height
         self.translate(left, bottom)
-        self.text_mode = False
 
     @property
     def page(self):
@@ -173,6 +173,27 @@ class Canvas(StringIO):
         print('{} {} Td'.format(x, y), file=self)
         print('[ {}] TJ'.format(string), file=self)
         print('ET', file=self)
+
+    def place_image(self, image):
+        resources = self.pdf_page.pdf_page['Resources']
+        xobjects = resources.setdefault('XObject', cos.Dictionary())
+        try:
+            image_number = self.pdf_page.pdf_page.image_number
+        except AttributeError:
+            image_number = 0
+        self.pdf_page.pdf_page.image_number = image_number + 1
+        xobjects['Im{:03d}'.format(image_number)] = image.xobject
+        print('/Im{:03d} Do'.format(image_number), file=self)
+
+
+class Image(object):
+    extensions = ('.pdf', )
+
+    def __init__(self, filename):
+        image = PDFReader(filename + self.extensions[0])
+        image_page = image.catalog['Pages']['Kids'][0]
+        self.width, self.height = image_page['MediaBox'][2:]
+        self.xobject = image_page.to_xobject_form()
 
 
 class PageCanvas(Canvas):

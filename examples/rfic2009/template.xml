@@ -138,9 +138,9 @@ or
 
 <p>If you have difficulties with the titles on your figures, you can always elect to add in the titles as separate text boxes, rather than importing the titles with the graph. This is sometimes helpful in getting a lengthy vertically-oriented title to display correctly.</p>
 
-<!--figure id="fig1" path="fig1.eps" scale="1.0">
+<figure id="fig1" path="fig1" scale="1.0">
   <caption>Estimated relationship between the time an author spends reading these instructions and the quality of the author's digest article.</caption>
-</figure-->
+</figure>
 
 <p>Notice that prior to the graph, a single 12-point line is used to separate the preceding text from the graph. The equivalent of a blank line should exist between the bottom of the graph (the x-axis caption) and the figure caption. (In this particular case, there was no need to add a blank line between the x-axis label and the figure caption, because there was already adequate spacing provided by the image border.) After the figure caption, there should be a single 12-point blank line before the text resumes.</p>
 
@@ -152,9 +152,9 @@ or
 
 <p>Here is a common example of what can go wrong with the numbering and sizing of axis titles on a graph. In this case, the graph was initially pasted at a much larger size than the column width, and then reduced to fit:</p>
 
-<!--figure id="fig2" path="fig2.eps" scale="1.0">
+<figure id="fig2" path="fig2" scale="1.0">
   <caption>Example of an improperly titled figure. The numerics and the labels on the axes are illegible. This will cause a submission to be rejected. Don’t let this happen to you!</caption>
-</figure-->
+</figure>
 
 <p>Table I on the second page was inserted using "Insert", "TextBox", creating the text contained in Table I, and then formatting the text box using all the settings available under "Format","TextBox...". Table I also serves as an illustration of one of the rare instances when the double column format requirement can be violated. Certain figures and tables will require the full page width to display. It is usually best to place these figures and tables at the top or bottom, rather than in the middle of a page. Tables should be entered within a single column if this can be done cleanly, without the entry becoming too crowded.</p>
 
