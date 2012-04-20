@@ -330,8 +330,10 @@ class Document(dict):
 
         try:
             file = open(file_or_filename, 'wb')
+            close_file = True
         except TypeError:
             file = file_or_filename
+            close_file = False
 
         self.catalog.register_indirect(self)
         self.info.register_indirect(self)
@@ -376,6 +378,8 @@ class Document(dict):
         out(b'startxref')
         out(str(xref_table_address).encode('utf_8'))
         out(b'%%EOF')
+        if close_file:
+            file.close()
 
 
 class Catalog(Dictionary):

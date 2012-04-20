@@ -37,6 +37,7 @@ class PDFReader(cos.Document):
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
+        self.file.close()
 
     @property
     def max_identifier(self):
