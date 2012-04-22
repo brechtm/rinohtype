@@ -5,17 +5,13 @@ from warnings import warn
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
-from ..util import cached_property
 from ..warnings import PyteWarning
-
-from psg.fonts.type1 import type1
 
 
 # TODO: provide predefined Font objects for known font filenames?
 
 class Font(object):
-    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
-                 core=False):
+    def __init__(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         if weight not in WEIGHTS:
             raise ValueError('Unknown font weight. Must be one of {}'
                   .format(', '.join(WEIGHTS)))
@@ -25,28 +21,9 @@ class Font(object):
         if width not in WIDTHS:
             raise ValueError('Unknown font width. Must be one of {}'
                   .format(', '.join(WIDTHS)))
-        self.filename = filename
-        if core:
-            self.pf_filename = None
-        elif os.path.exists(filename + ".pfa"):
-            self.pf_filename = filename + ".pfa"
-        else:
-            self.pf_filename = filename + ".pfb"
-
         self.weight = weight
         self.slant = slant
         self.width = width
-
-    @cached_property
-    def psFont(self):
-        return type1(self.pf_filename, self.filename + ".afm")
-
-    @property
-    def name(self):
-        return self.psFont.full_name
-
-    def is_core(self):
-        return self.pf_filename is None
 
 
 class TypeFace(dict):

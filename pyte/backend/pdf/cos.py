@@ -427,3 +427,42 @@ class Font(Dictionary):
     def __init__(self, indirect):
         super().__init__(indirect)
         self['Type'] = Name('Font')
+
+
+class FontEncoding(Dictionary):
+    def __init__(self, indirect=True):
+        super().__init__(indirect)
+        self['Type'] = Name('Encoding')
+
+
+class EncodingDifferences(Object):
+    def __init__(self, taken):
+        super().__init__(False)
+        self.taken = taken
+        self.previous_free = 1
+        self.by_glyph = {}
+        self.by_code = {}
+
+    def register(self, glyph_name):
+        try:
+            code = self.by_glyph[glyph_name]
+        except KeyError:
+            while self.previous_free in self.taken:
+                self.previous_free += 1
+                if self.previous_free > 255:
+                    raise NotImplementedError('Encoding vector is full')
+            code = self.previous_free
+            self.taken.append(code)
+            self.by_glyph[glyph_name] = code
+            self.by_code[code] = glyph_name
+        return code
+
+    def _bytes(self, document):
+        output = b'['
+        previous = 256
+        for code in sorted(self.by_code.keys()):
+            if code != previous + 1:
+                output += b' ' + Integer(code)._bytes(document)
+            output += b' ' + Name(self.by_code[code])._bytes(document)
+        output += b' ]'
+        return output

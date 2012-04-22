@@ -106,16 +106,13 @@ class StyledText(Styled):
                 item.parent = self
                 yield item
 
-    def get_font(self):
+    @cached_property
+    def font(self):
         typeface = self.get_style('typeface')
         weight = self.get_style('fontWeight')
         slant = self.get_style('fontSlant')
         width = self.get_style('fontWidth')
         return typeface.get(weight=weight, slant=slant, width=width)
-
-    @cached_property
-    def ps_font(self):
-        return self.get_font().psFont
 
     @property
     def height(self):
@@ -128,36 +125,35 @@ class StyledText(Styled):
     @cached_property
     def widths(self):
         font_size = float(self.height) / 1000.0
-        font_metrics = self.get_font().psFont.metrics
-        char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"].by_glyph_name
+        font_metrics = self.font.metrics
+        char_metrics = font_metrics.glyphs
         kerning = self.get_style('kerning')
         glyphs = self.glyphs()
         widths = []
 
         prev_glyph = next(glyphs)
-        prev_width = char_metrics[prev_glyph]['W0X']
+        prev_width = char_metrics[prev_glyph].width
         for glyph in glyphs:
             if kerning:
                 prev_width += font_metrics.get_kerning(prev_glyph, glyph)
             widths.append(prev_width * font_size)
-            prev_width = char_metrics[glyph]['W0X']
+            prev_width = char_metrics[glyph].width
             prev_glyph = glyph
         widths.append(prev_width * font_size)
         return widths
 
     def char_to_glyph(self, character):
-        font_metrics = self.ps_font.metrics
+        font_metrics = self.font.metrics
         try:
-            return font_metrics[ord(character)].ps_name
+            return font_metrics.from_unicode(ord(character)).name
         except KeyError:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
-                 .format(self.ps_font.ps_name, ord(character), character),
+                 .format(self.font.name, ord(character), character),
                  PyteWarning)
-            return font_metrics[ord('?')].ps_name
+            return font_metrics.glyphs['question'].name
 
     def glyphs(self):
-        font_metrics = self.ps_font.metrics
-        char_metrics = font_metrics.FontMetrics["Direction"][0]["CharMetrics"].by_glyph_name
+        ligatures = self.font.metrics.ligatures
         characters = iter(self.text)
 
         prev_char = self.text[0]
@@ -165,7 +161,7 @@ class StyledText(Styled):
         for char in characters:
             glyph = self.char_to_glyph(char)
             try:
-                prev_glyph = char_metrics[prev_glyph]['L'][glyph]
+                prev_glyph = ligatures[prev_glyph][glyph]
                 prev_char = prev_char + char
             except KeyError:
                 yield prev_glyph
@@ -233,10 +229,10 @@ class SmallCapitalsText(StyledText):
     suffixes = ('.smcp', '.sc', 'small')
 
     def _find_suffix(self, glyph, upper=False):
-        has_glyph = self.ps_font.has_glyph
+        has_glyph = self.font.has_glyph
         for suffix in self.suffixes:
             if has_glyph(glyph + suffix):
-                self.get_font().sc_sufix = suffix
+                self.font.sc_sufix = suffix
                 return True
         if not upper:
             return self._find_suffix(glyph.upper(), True)
@@ -244,8 +240,8 @@ class SmallCapitalsText(StyledText):
 
     def char_to_glyph(self, char):
         glyph = super().char_to_glyph(char)
-        font = self.get_font()
-        has_glyph = font.psFont.has_glyph
+        font = self.font
+        has_glyph = font.has_glyph
         try:
             if has_glyph(glyph + font.sc_sufix):
                 sc_glyph = glyph + font.sc_sufix
@@ -256,7 +252,7 @@ class SmallCapitalsText(StyledText):
             return sc_glyph
         except NameError:
             warn('{} does not contain small capitals for one or more characters'
-                 .format(font.psFont.ps_name), PyteWarning)
+                 .format(font.name), PyteWarning)
             return glyph
 
 

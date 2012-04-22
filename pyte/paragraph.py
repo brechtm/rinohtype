@@ -219,7 +219,7 @@ class Line(list):
         widths = []
         prev_font_style = None
         for item in self:
-            font_style = item.get_font(), float(item.height)
+            font_style = item.font, float(item.height)
             if isinstance(item, Box):
                 if prev_item:
                     x += render_span(prev_item, prev_font_style, glyphs, widths)

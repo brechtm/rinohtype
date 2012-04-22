@@ -20,7 +20,8 @@ class Document(object):
             assert font.is_core()
             font_rsc = cos.Font(self.pdf_document)
             font_rsc['Subtype'] = cos.Name('Type1')
-            font_rsc['BaseFont'] = cos.Name(font.psFont.ps_name)
+            font_rsc['BaseFont'] = cos.Name(font.name)
+            font_rsc['Encoding'] = cos.FontEncoding()
             self.fonts[font] = font_rsc
         return font_rsc
 
@@ -52,7 +53,7 @@ class Page(object):
 
     def register_font(self, font):
         try:
-            name = self.font_names[font]
+            font_rsc, name = self.font_names[font]
         except KeyError:
             font_rsc = self.document.backend_document.register_font(font)
             name = 'F{}'.format(self.font_number)
@@ -60,8 +61,8 @@ class Page(object):
             page_rsc = self.pdf_page['Resources']
             fonts_dict = page_rsc.setdefault('Font', cos.Dictionary())
             fonts_dict[name] = font_rsc
-            self.font_names[font] = name
-        return name
+            self.font_names[font] = font_rsc, name
+        return font_rsc, name
 
 
 class Canvas(StringIO):
@@ -151,27 +152,44 @@ class Canvas(StringIO):
         self.restore_state()
 
     def show_glyphs(self, x, y, font, size, glyphs, x_displacements):
+        font_rsc, font_name = self.pdf_page.register_font(font)
         string = ''
-        char_metrics = font.psFont.metrics.FontMetrics["Direction"][0]["CharMetrics"]
+        current_string = ''
+        char_metrics = font.metrics.glyphs
         for glyph, displ in zip(glyphs, x_displacements):
             displ = (1000 * displ) / size
-            code = char_metrics.by_glyph_name[glyph]['C']
-            width = char_metrics.by_glyph_name[glyph]['W0X']
+            try:
+                code = font.encoding[glyph]
+            except KeyError:
+                code = -1
+            width = char_metrics[glyph].width
             if code < 0:
-                char = '?'
-            elif code > 127:
-                char = '\{:03d}'.format(code)
+                try:
+                    differences = font_rsc['Encoding']['Differences']
+                except KeyError:
+                    occupied_codes = list(font.encoding.values())
+                    differences = cos.EncodingDifferences(occupied_codes)
+                    font_rsc['Encoding']['Differences'] = differences
+                code = differences.register(glyph)
+            if code < 32 or code > 127:
+                char = '\{:03o}'.format(code)
             else:
                 char = chr(code)
                 if char in ('\\', '(', ')'):
                     char = '\\' + char
-            string += '({}) {} '.format(char, int(width - displ))
+            adjust = int(width - displ)
+            if adjust:
+                string += '({}{}) {} '.format(current_string, char, adjust)
+                current_string = ''
+            else:
+                current_string += char
+        if current_string:
+            string += '({})'.format(current_string)
 
-        font_name = self.pdf_page.register_font(font)
         print('BT', file=self)
         print('/{} {} Tf'.format(font_name, size), file=self)
         print('{} {} Td'.format(x, y), file=self)
-        print('[ {}] TJ'.format(string), file=self)
+        print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
 
     def place_image(self, image):
