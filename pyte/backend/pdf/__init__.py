@@ -4,6 +4,38 @@ from . import cos
 from .reader import PDFReader
 
 
+class Font(cos.Font):
+    def __init__(self, font):
+        super().__init__(True)
+        self.font = font
+
+    def _bytes(self, document):
+        by_code = {metrics.code: glyph
+                   for glyph, metrics in self.font.metrics.glyphs.items()
+                   if metrics.code >= 0}
+        try:
+            enc_differences = self['Encoding']['Differences']
+            first, last = min(enc_differences.taken), max(enc_differences.taken)
+        except KeyError:
+            first, last = min(by_code.keys()), max(by_code.keys())
+        self['FirstChar'] = cos.Integer(first)
+        self['LastChar'] = cos.Integer(last)
+        widths = []
+        for code in range(first, last + 1):
+            try:
+                glyph_name = by_code[code]
+                width = self.font.metrics.glyphs[glyph_name].width
+            except KeyError:
+                try:
+                    glyph_name = enc_differences.by_code[code]
+                    width = self.font.metrics.glyphs[glyph_name].width
+                except (KeyError, NameError):
+                    width = 0
+            widths.append(width)
+        self['Widths'] = cos.Array(map(cos.Real, widths))
+        return super()._bytes(document)
+
+
 class Document(object):
     extension = '.pdf'
 
@@ -17,11 +49,27 @@ class Document(object):
         try:
             font_rsc = self.fonts[font]
         except KeyError:
-            assert font.is_core()
-            font_rsc = cos.Font(self.pdf_document)
+            font_rsc = Font(font)
             font_rsc['Subtype'] = cos.Name('Type1')
             font_rsc['BaseFont'] = cos.Name(font.name)
             font_rsc['Encoding'] = cos.FontEncoding()
+            font_desc = font_rsc['FontDescriptor'] = cos.FontDescriptor()
+            font_desc['FontName'] = cos.Name(font.metrics['FontMetrics']['FontName'])
+            # TODO: properly determine flags
+            font_desc['Flags'] = cos.Integer(4)
+            font_desc['FontBBox'] = cos.Array([cos.Integer(item) for item in
+                                               font.metrics['FontMetrics']['FontBBox']])
+            font_desc['ItalicAngle'] = cos.Integer(font.metrics['FontMetrics']['ItalicAngle'])
+            font_desc['Ascent'] = cos.Integer(font.metrics['FontMetrics']['Ascender'])
+            font_desc['Descent'] = cos.Integer(font.metrics['FontMetrics']['Descender'])
+            font_desc['CapHeight'] = cos.Integer(font.metrics['FontMetrics']['CapHeight'])
+            font_desc['XHeight'] = cos.Integer(font.metrics['FontMetrics']['XHeight'])
+            try:
+                font_desc['StemV'] = cos.Integer(font.metrics['FontMetrics']['StdVW'])
+            except KeyError:
+                # TODO: make a proper guess
+                font_desc['StemV'] = cos.Integer(50)
+            font_desc['FontFile'] = cos.Type1FontFile(font.header, font.body)
             self.fonts[font] = font_rsc
         return font_rsc
 

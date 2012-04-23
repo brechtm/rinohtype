@@ -4,7 +4,8 @@ from copy import copy
 from lxml import etree, objectify
 
 from pyte.unit import inch, pt, cm
-from pyte.font import Font, TypeFace, TypeFamily
+from pyte.font import TypeFace, TypeFamily
+from pyte.font.type1 import Type1Font
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
@@ -32,7 +33,7 @@ from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 from pyte.style import ParentStyle
-from pyte.backend import pdf
+from pyte.backend import pdf, psg
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem, Locator
@@ -40,32 +41,32 @@ from citeproc import Citation, CitationItem, Locator
 
 
 # use Gyre Termes instead of (PDF Core) Times
-use_gyre = False
+use_gyre = True
 
 # fonts
 # ----------------------------------------------------------------------------
 if use_gyre:
     from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
 
-    termes_roman = Font("fonts/qtmr", weight=REGULAR)
-    termes_italic = Font("fonts/qtmri", weight=REGULAR, slant=ITALIC)
-    termes_bold = Font("fonts/qtmb", weight=BOLD)
-    termes_bold_italic = Font("fonts/qtmbi", weight=BOLD, slant=ITALIC)
+    termes_roman = Type1Font("fonts/qtmr", weight=REGULAR)
+    termes_italic = Type1Font("fonts/qtmri", weight=REGULAR, slant=ITALIC)
+    termes_bold = Type1Font("fonts/qtmb", weight=BOLD)
+    termes_bold_italic = Type1Font("fonts/qtmbi", weight=BOLD, slant=ITALIC)
 
     termes = TypeFace("TeXGyreTermes", termes_roman, termes_bold,
                       termes_italic, termes_bold_italic)
-    cursor_regular = Font("fonts/qcrr", weight=REGULAR)
+    cursor_regular = Type1Font("fonts/qcrr", weight=REGULAR)
     cursor = TypeFace("TeXGyreCursor", cursor_regular)
 
     ieeeFamily = TypeFamily(serif=termes, mono=cursor)
 
-    schola_roman = Font("fonts/qcsr", weight=REGULAR)
-    schola_italic = Font("fonts/qcsri", weight=REGULAR, slant=ITALIC)
-    schola_bold = Font("fonts/qcsb", weight=BOLD)
-    heros_roman = Font("fonts/qhvr", weight=REGULAR)
-    chorus = Font("fonts/qzcmi", weight=MEDIUM)
-    standard_symbols = Font("fonts/usyr", weight=REGULAR)
-    cmex9 = Font("fonts/cmex9", weight=REGULAR)
+    schola_roman = Type1Font("fonts/qcsr", weight=REGULAR)
+    schola_italic = Type1Font("fonts/qcsri", weight=REGULAR, slant=ITALIC)
+    schola_bold = Type1Font("fonts/qcsb", weight=BOLD)
+    heros_roman = Type1Font("fonts/qhvr", weight=REGULAR)
+    chorus = Type1Font("fonts/qzcmi", weight=MEDIUM)
+    standard_symbols = Type1Font("fonts/usyr", weight=REGULAR)
+    cmex9 = Type1Font("fonts/cmex9", weight=REGULAR)
 
     mathfonts = MathFonts(schola_roman, schola_italic, schola_bold,
                           heros_roman, cursor_regular, chorus, standard_symbols,

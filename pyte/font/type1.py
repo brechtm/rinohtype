@@ -1,4 +1,6 @@
 
+import struct, os
+
 from . import Font
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
@@ -132,11 +134,11 @@ class AdobeFontMetrics(FontMetrics):
             elif tokens[0] == 'C':
                 code = int(tokens[1], base=16)
             elif tokens[0] in ('WX', 'W0X'):
-                width = int(tokens[1])
+                width = number(tokens[1])
             elif tokens[0] in ('WY', 'W0Y'):
-                height = int(tokens[1])
+                height = number(tokens[1])
             elif tokens[0] in ('W', 'W0'):
-                width, height = int(tokens[1]), int(tokens[2])
+                width, height = number(tokens[1]), number(tokens[2])
             elif tokens[0] == 'N':
                 name = tokens[1]
             elif tokens[0] == 'B':
@@ -163,12 +165,12 @@ class Type1Font(Font):
             self.encoding = encodings[encoding_name]
         super().__init__(weight, slant, width)
         self.filename = filename
-        if core:
-            self.pf_filename = None
-        elif os.path.exists(filename + '.pfa'):
-            self.pf_filename = filename + '.pfa'
-        else:
-            self.pf_filename = filename + '.pfb'
+        self.core = core
+        if not core:
+            if os.path.exists(filename + '.pfa'):
+                self.parse_pfa(filename + '.pfa')
+            else:
+                self.parse_pfb(filename + '.pfb')
 
     @property
     def name(self):
@@ -177,5 +179,23 @@ class Type1Font(Font):
     def has_glyph(self, name):
         return name in self.metrics.glyphs
 
-    def is_core(self):
-        return self.pf_filename is None
+    def parse_pfa(self, file):
+        raise NotImplementedError
+
+    def parse_pfb(self, filename):
+        file = open(filename, 'rb')
+        header_type, header_length, self.header = self.read_pfb_segment(file)
+        body_type, body_length, self.body = self.read_pfb_segment(file)
+        trailer_type, trailer_length, self.trailer = self.read_pfb_segment(file)
+        check, eof_type = struct.unpack('<BB', file.read(2))
+        file.close()
+        if check != 128 or eof_type != 3:
+            raise TypeError('Not a PFB file')
+
+    def read_pfb_segment(self, file):
+        header_fmt = '<BBI'
+        header_data = file.read(struct.calcsize(header_fmt))
+        check, segment_type, length = struct.unpack(header_fmt, header_data)
+        if check != 128:
+            raise TypeError('Not a PFB file')
+        return segment_type, length, file.read(length)

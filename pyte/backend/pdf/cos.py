@@ -348,14 +348,12 @@ class Document(dict):
         file.write(b'%\xDC\xE1\xD8\xB7\n')
         addresses = {}
         for identifier in range(1, self.max_identifier + 1):
-            try:
+            if identifier in self:
                 obj = self[identifier]
                 addresses[identifier] = file.tell()
                 out('{} 0 obj'.format(identifier).encode('utf_8'))
                 out(obj._bytes(self))
                 out(b'endobj')
-            except KeyError:
-                pass
         xref_table_address = file.tell()
         self._write_xref_table(file, addresses)
         out(b'trailer')
@@ -427,6 +425,22 @@ class Font(Dictionary):
     def __init__(self, indirect):
         super().__init__(indirect)
         self['Type'] = Name('Font')
+
+
+class FontDescriptor(Dictionary):
+    def __init__(self, indirect=True):
+        super().__init__(indirect)
+        self['Type'] = Name('FontDescriptor')
+
+
+class Type1FontFile(Stream):
+    def __init__(self, header, body):
+        super().__init__()
+        self['Length1'] = Integer(len(header))
+        self['Length2'] = Integer(len(body))
+        self['Length3'] = Integer(0)
+        self.write(header)
+        self.write(body)
 
 
 class FontEncoding(Dictionary):
