@@ -2,6 +2,7 @@
 from io import StringIO
 from . import cos
 from .reader import PDFReader
+from .filter import FlateDecode
 
 
 class Font(cos.Font):
@@ -69,13 +70,14 @@ class Document(object):
             except KeyError:
                 # TODO: make a proper guess
                 font_desc['StemV'] = cos.Integer(50)
-            font_desc['FontFile'] = cos.Type1FontFile(font.header, font.body)
+            font_desc['FontFile'] = cos.Type1FontFile(font.header, font.body,
+                                                      filter=FlateDecode())
             self.fonts[font] = font_rsc
         return font_rsc
 
     def write(self, filename):
         for page in self.pages:
-            contents = cos.Stream()
+            contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue().encode('utf_8'))
             page.pdf_page['Contents'] = contents
         file = open(filename + self.extension, 'wb')

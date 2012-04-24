@@ -225,12 +225,17 @@ class Dictionary(Object, OrderedDict):
 
 
 class Stream(Dictionary):
-    def __init__(self):
+    def __init__(self, filter=None):
         # (Streams are always indirectly referenced)
         super().__init__(indirect=True)
+        self.filter = filter
         self.data = BytesIO()
 
     def _bytes(self, document):
+        if self.filter:
+            encoded = self.filter.encode(self.data.getvalue())
+            self.data = BytesIO(encoded)
+            self['Filter'] = Name(self.filter.name)
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self.size)
@@ -434,8 +439,8 @@ class FontDescriptor(Dictionary):
 
 
 class Type1FontFile(Stream):
-    def __init__(self, header, body):
-        super().__init__()
+    def __init__(self, header, body, filter=None):
+        super().__init__(filter)
         self['Length1'] = Integer(len(header))
         self['Length2'] = Integer(len(body))
         self['Length3'] = Integer(0)
