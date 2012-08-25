@@ -13,6 +13,7 @@ from .hyphenator import Hyphenator
 from .unit import pt
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
+from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
 from .warnings import PyteWarning
 from .style import Style, Styled, ParentStyle, ParentStyleException
@@ -126,44 +127,31 @@ class StyledText(Styled):
     def widths(self):
         font_size = float(self.height) / 1000.0
         font_metrics = self.font.metrics
-        char_metrics = font_metrics.glyphs
         kerning = self.get_style('kerning')
         glyphs = self.glyphs()
         widths = []
 
         prev_glyph = next(glyphs)
-        prev_width = char_metrics[prev_glyph].width
+        prev_width = prev_glyph.width
         for glyph in glyphs:
             if kerning:
                 prev_width += font_metrics.get_kerning(prev_glyph, glyph)
             widths.append(prev_width * font_size)
-            prev_width = char_metrics[glyph].width
+            prev_width = glyph.width
             prev_glyph = glyph
         widths.append(prev_width * font_size)
         return widths
 
-    def char_to_glyph(self, character):
-        font_metrics = self.font.metrics
-        try:
-            return font_metrics.from_unicode(ord(character)).name
-        except KeyError:
-            warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
-                 .format(self.font.name, ord(character), character),
-                 PyteWarning)
-            return font_metrics.glyphs['question'].name
-
-    def glyphs(self):
-        ligatures = self.font.metrics.ligatures
+    def glyphs(self, variant=None):
         characters = iter(self.text)
-
-        prev_char = self.text[0]
-        prev_glyph = self.char_to_glyph(next(characters))
+        get_glyph = lambda char: self.font.metrics.get_glyph(char, variant)
+        prev_glyph = get_glyph(next(characters))
         for char in characters:
-            glyph = self.char_to_glyph(char)
-            try:
-                prev_glyph = ligatures[prev_glyph][glyph]
-                prev_char = prev_char + char
-            except KeyError:
+            glyph = get_glyph(char)
+            ligature = self.font.metrics.get_ligature(prev_glyph, glyph)
+            if ligature:
+                prev_glyph = ligature
+            else:
                 yield prev_glyph
                 prev_glyph = glyph
         yield prev_glyph
@@ -226,34 +214,8 @@ class SmallCapitalsText(StyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
-    suffixes = ('.smcp', '.sc', 'small')
-
-    def _find_suffix(self, glyph, upper=False):
-        has_glyph = self.font.has_glyph
-        for suffix in self.suffixes:
-            if has_glyph(glyph + suffix):
-                self.font.sc_sufix = suffix
-                return True
-        if not upper:
-            return self._find_suffix(glyph.upper(), True)
-        return False
-
-    def char_to_glyph(self, char):
-        glyph = super().char_to_glyph(char)
-        font = self.font
-        has_glyph = font.has_glyph
-        try:
-            if has_glyph(glyph + font.sc_sufix):
-                sc_glyph = glyph + font.sc_sufix
-        except AttributeError:
-            if self._find_suffix(glyph):
-                sc_glyph = glyph + font.sc_sufix
-        try:
-            return sc_glyph
-        except NameError:
-            warn('{} does not contain small capitals for one or more characters'
-                 .format(font.name), PyteWarning)
-            return glyph
+    def glyphs(self):
+        return super().glyphs(SMALL_CAPITAL)
 
 
 class MixedStyledText(list, Styled):

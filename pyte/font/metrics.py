@@ -9,10 +9,11 @@ class GlyphMetrics(object):
 
 
 class FontMetrics(dict):
-    def __init__(self):
-        self.glyphs = {}
-        self.ligatures = {}
-        self.kerning_pairs = {}
+    def get_glyph(self, char, variant=None):
+        raise NotImplementedError
+
+    def get_ligature(self, glyph, successor_glyph):
+        raise NotImplementedError
 
     def get_kerning(self, a, b):
-        return self.kerning_pairs.get((a, b), 0.0)
+        raise NotImplementedError

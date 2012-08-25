@@ -462,9 +462,9 @@ class EncodingDifferences(Object):
         self.by_glyph = {}
         self.by_code = {}
 
-    def register(self, glyph_name):
+    def register(self, glyph):
         try:
-            code = self.by_glyph[glyph_name]
+            code = self.by_glyph[glyph]
         except KeyError:
             while self.previous_free in self.taken:
                 self.previous_free += 1
@@ -472,8 +472,8 @@ class EncodingDifferences(Object):
                     raise NotImplementedError('Encoding vector is full')
             code = self.previous_free
             self.taken.append(code)
-            self.by_glyph[glyph_name] = code
-            self.by_code[code] = glyph_name
+            self.by_glyph[glyph] = code
+            self.by_code[code] = glyph
         return code
 
     def _bytes(self, document):
@@ -482,6 +482,6 @@ class EncodingDifferences(Object):
         for code in sorted(self.by_code.keys()):
             if code != previous + 1:
                 output += b' ' + Integer(code)._bytes(document)
-            output += b' ' + Name(self.by_code[code])._bytes(document)
+            output += b' ' + Name(self.by_code[code].name)._bytes(document)
         output += b' ]'
         return output

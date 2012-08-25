@@ -1,12 +1,16 @@
 
 import struct, os
 
+from warnings import warn
+
 from . import Font
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
+from .style import SMALL_CAPITAL, OLD_STYLE
 from .metrics import FontMetrics, GlyphMetrics
 from .mapping import glyph_names, encodings
+from ..warnings import PyteWarning
 
 
 def string(string):
@@ -59,6 +63,10 @@ class AdobeFontMetrics(FontMetrics):
 
     def __init__(self, file_or_filename):
         super().__init__()
+        self._glyphs = {}
+        self._suffixes = {}
+        self._ligatures = {}
+        self._kerning_pairs = {}
         try:
             file = open(file_or_filename, 'rt', encoding='ascii')
             close_file = True
@@ -69,17 +77,71 @@ class AdobeFontMetrics(FontMetrics):
         if close_file:
             file.close()
 
-    def from_unicode(self, code):
-        names = glyph_names[code]
-        if type(names) == tuple:
-            for name in names:
-                if name in self.glyphs:
-                    return self.glyphs[name]
+    @property
+    def name(self):
+        return self['FontMetrics']['FontName']
+
+    _possible_suffixes = {SMALL_CAPITAL: ('.smcp', '.sc', 'small')}
+
+    def _find_suffix(self, char, variant, upper=False):
+        try:
+            return self._suffixes[variant]
+        except KeyError:
+            names = list(self.char_to_name(char))
+            for suffix in self._possible_suffixes[variant]:
+                for name in names:
+                    if name + suffix in self._glyphs:
+                        self._suffixes[variant] = suffix
+                        return suffix
             else:
-                raise KeyError
-        else:
-            return self.glyphs[names]
+                warn('{} does not contain the {} variant for one or more '
+                     'characters'.format(self.name, variant), PyteWarning)
+                return ''
+##            if not upper:
+##                return self._find_suffix(self.char_to_name(char.upper()),
+##                                         possible_suffixes, True)
+
+    def char_to_name(self, char, variant=None):
+        # TODO: first search character using the font's encoding
+        name_or_names = glyph_names[ord(char)]
+        suffix = self._find_suffix(char, variant) if variant else ''
+        try:
+            yield name_or_names + suffix
+        except TypeError:
+            for name in name_or_names:
+                try:
+                    yield name + suffix
+                except KeyError:
+                    pass
+            else:
+                warn('Don\'t know how to convert unicode index 0x{:04x} ({}) '
+                     'to a postscript glyph name.'.format(self.font.name,
+                                                          ord(char), char),
+                     PyteWarning)
+                yield 'question'
         # TODO: map to uniXXXX or uXXXX names
+
+    def get_glyph(self, char, variant=None):
+        names = self.char_to_name(char, variant)
+        for name in names:
+            if name in self._glyphs:
+                return self._glyphs[name]
+        if variant:
+            return self.get_glyph(char)
+        else:
+            warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
+                 .format(self.name, ord(char), char), PyteWarning)
+            return self._glyphs['question']
+
+    def get_ligature(self, glyph, successor_glyph):
+        try:
+            ligature_name = self._ligatures[glyph.name][successor_glyph.name]
+            return self._glyphs[ligature_name]
+        except KeyError:
+            return None
+
+    def get_kerning(self, a, b):
+        return self._kerning_pairs.get((a.name, b.name), 0.0)
 
     def parse(self, file):
         sections = [self]
@@ -106,12 +168,12 @@ class AdobeFontMetrics(FontMetrics):
                 section = sections[-1]
             elif section_names[-1] == 'CharMetrics':
                 glyph_metrics = self.parse_character_metrics(line)
-                self.glyphs[glyph_metrics.name] = glyph_metrics
+                self._glyphs[glyph_metrics.name] = glyph_metrics
             elif section_names[-1] == 'KernPairs':
                 tokens = line.split()
                 if tokens[0] == 'KPX':
                     pair, kerning = (tokens[1], tokens[2]), tokens[-1]
-                    self.kerning_pairs[pair] = number(kerning)
+                    self._kerning_pairs[pair] = number(kerning)
                 else:
                     raise NotImplementedError
             else:
@@ -148,7 +210,7 @@ class AdobeFontMetrics(FontMetrics):
             else:
                 raise NotImplementedError
         if ligatures:
-            self.ligatures[name] = ligatures
+            self._ligatures[name] = ligatures
         return GlyphMetrics(name, width, bbox, code)
 
 
@@ -159,7 +221,7 @@ class Type1Font(Font):
         encoding_name = self.metrics['FontMetrics']['EncodingScheme']
         if encoding_name == 'FontSpecific':
             self.encoding = {glyph.name: glyph.code
-                             for glyph in self.metrics.glyphs.values()
+                             for glyph in self.metrics._glyphs.values()
                              if glyph.code > -1}
         else:
             self.encoding = encodings[encoding_name]
@@ -174,10 +236,7 @@ class Type1Font(Font):
 
     @property
     def name(self):
-        return self.metrics['FontMetrics']['FontName']
-
-    def has_glyph(self, name):
-        return name in self.metrics.glyphs
+        return self.metrics.name
 
     def parse_pfa(self, file):
         raise NotImplementedError

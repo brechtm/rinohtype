@@ -12,9 +12,9 @@ class Font(cos.Font):
         self.font = font
 
     def _bytes(self, document):
-        by_code = {metrics.code: glyph
-                   for glyph, metrics in self.font.metrics.glyphs.items()
-                   if metrics.code >= 0}
+        by_code = {glyph.code: glyph
+                   for glyph in self.font.metrics._glyphs.values()
+                   if glyph.code >= 0}
         try:
             enc_differences = self['Encoding']['Differences']
             first, last = min(enc_differences.taken), max(enc_differences.taken)
@@ -25,12 +25,12 @@ class Font(cos.Font):
         widths = []
         for code in range(first, last + 1):
             try:
-                glyph_name = by_code[code]
-                width = self.font.metrics.glyphs[glyph_name].width
+                glyph = by_code[code]
+                width = glyph.width
             except KeyError:
                 try:
-                    glyph_name = enc_differences.by_code[code]
-                    width = self.font.metrics.glyphs[glyph_name].width
+                    glyph = enc_differences.by_code[code]
+                    width = glyph.width
                 except (KeyError, NameError):
                     width = 0
             widths.append(width)
@@ -206,14 +206,12 @@ class Canvas(StringIO):
         font_rsc, font_name = self.pdf_page.register_font(font)
         string = ''
         current_string = ''
-        char_metrics = font.metrics.glyphs
         for glyph, displ in zip(glyphs, x_displacements):
             displ = (1000 * displ) / size
             try:
-                code = font.encoding[glyph]
+                code = glyph.code
             except KeyError:
                 code = -1
-            width = char_metrics[glyph].width
             if code < 0:
                 try:
                     differences = font_rsc['Encoding']['Differences']
@@ -228,7 +226,7 @@ class Canvas(StringIO):
                 char = chr(code)
                 if char in ('\\', '(', ')'):
                     char = '\\' + char
-            adjust = int(width - displ)
+            adjust = int(glyph.width - displ)
             if adjust:
                 string += '({}{}) {} '.format(current_string, char, adjust)
                 current_string = ''
