@@ -94,6 +94,7 @@ encodings[PLATFORM_WINDOWS] = {1: 'utf_16_be',
                                10: 'utf_32_be'}
 
 
+from .cff import CompactFontFormat
 from .tables import parse_table, HmtxTable
 
 
@@ -111,12 +112,13 @@ class OpenTypeParser(dict):
                 cs = self._calculate_checksum(file, offset, length, tag=='head')
                 assert cs == checksum
 
-            for tag in ('head', 'hhea', 'maxp', 'name', 'post', 'OS/2'):
+            for tag in ('head', 'hhea', 'cmap', 'maxp', 'name', 'post', 'OS/2'):
                 self[tag] = parse_table(tag, file, tables[tag][0])
 
             self['hmtx'] = HmtxTable(file, tables['hmtx'][0],
                                      self['hhea']['numberOfHMetrics'],
                                      self['maxp']['numGlyphs'])
+            #self['CFF '] = CompactFontFormat(file, tables['CFF '][0])
 
     def _calculate_checksum(self, file, offset, length, head=False):
         tmp = 0

@@ -73,14 +73,16 @@ class HmtxTable(OpenTypeTable):
     def __init__(self, file, offset, number_of_h_metrics, num_glyphs):
         file.seek(offset)
         h_metrics = []
+        left_side_bearing = []
         for i in range(number_of_h_metrics):
             advance_width, lsb = grab(file, 'Hh')
-            h_metrics.append((advance_width, lsb))
-        left_side_bearing = []
+            h_metrics.append(advance_width)
+            left_side_bearing.append(lsb)
         for i in range(num_glyphs - number_of_h_metrics):
             lsb, = grab(file, 'h')
-            left_side_bearing.append((advance_width, lsb))
-        self['hMetrcis'] = h_metrics
+            h_metrics.append(advance_width)
+            left_side_bearing.append(lsb)
+        self['hMetrics'] = h_metrics
         self['leftSideBearing'] = left_side_bearing
 
 
@@ -207,7 +209,6 @@ class NameTable(OpenTypeTable):
 
 
 class CmapRecord(OpenTypeTable):
-    tag = 'cmap'
     entries = [('platformID', ushort),
                ('encodingID', ushort),
                ('offset', ulong)]
@@ -221,6 +222,7 @@ class Cmap4Record(OpenTypeTable):
 
 
 class CmapTable(OpenTypeTable):
+    tag = 'cmap'
     entries = [('version', ushort),
                ('numTables', ushort)]
 
@@ -245,7 +247,7 @@ class CmapTable(OpenTypeTable):
             elif table_format == 2: # high-byte mapping through table
                 raise NotImplementedError
             elif table_format == 4: # segment mapping to delta values
-                meta = Cmap4Record(fle, file.tell())
+                meta = Cmap4Record(file, file.tell())
                 seg_count = meta['segCountX2'] >> 1
                 end_count = array(ushort, seg_count)(file)
                 reserved_pad = ushort(file)
@@ -277,8 +279,8 @@ class CmapTable(OpenTypeTable):
                            array(ushort, entry_count)(file))}
             else:
                 raise NotImplementedError('table format {}', table_format)
-            record['map'] = out
-        self['records'] = records
+            key = (record['platformID'], record['encodingID'])
+            self[key] = out
 
 
 LANG_TAG_RECORD = [('length', ushort),

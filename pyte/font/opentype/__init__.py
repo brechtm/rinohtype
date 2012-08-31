@@ -10,49 +10,40 @@ from .parse import OpenTypeParser, NAME_PS_NAME
 
 class OpenTypeFont(Font, dict):
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
-        self.metrics = None
         self.encoding = None
         super().__init__(weight, slant, width)
         self.tables = OpenTypeParser(filename)
-        # TODO: extract data from tables
-##        self.metrics = FontMetrics()
-##        for glyph in ...:
-##            glyph_metrics = GlyphMetrics(None?, width, bounding_box, code)
-##            self.metrics.glyphs[glyph_metrics.code] = glyph_metrics
-        # TODO: self.metrics.kerning_pairs
-        # TODO: self.metrics.ligatures
+        self.metrics = OpenTypeMetrics(self.tables)
 
     @property
     def name(self):
-        return self.tables.name[NAME_PS_NAME]
+        return self.metrics.name
+
+    def get_glyph(self, char, variant=None):
+        return self.metrics._glyphs[char]
+
+    def get_ligature(self, glyph, successor_glyph):
+        return None
+
+    def get_kerning(self, a, b):
+        return 0.0
 
 
 class OpenTypeMetrics(FontMetrics):
-    def __init__(self, opentype_font):
+    def __init__(self, tables):
         super().__init__()
-        self._font = opentype_font
+        self._tables = tables
         self._glyphs = {}
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
+        # TODO: differentiate between TT/CFF
+        # TODO: extract bboxes: http://www.tug.org/TUGboat/tb24-3/bella.pdf
+        for ordinal, glyph_index in tables['cmap'][(3, 1)].items():
+            width = tables['hmtx']['hMetrics'][glyph_index]
+            self._glyphs[chr(ordinal)] = GlyphMetrics(None, width,
+                                                      None, glyph_index)
 
     @property
     def name(self):
-        return self._font.name
-
-
-
-##class CMapTable(object):
-##    def __init__(self):
-##        pass
-##
-##    def __getitem__(self, index):
-##        raise NotImplementedError
-##
-##
-##class CMapTable4(CMapTable):
-##    def __init__(self):
-##        pass
-##
-##    def __getitem__(self, index):
-##        raise NotImplementedError
+        return self._tables.name[NAME_PS_NAME]
