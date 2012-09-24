@@ -6,7 +6,8 @@ from lxml import etree, objectify
 from pyte.unit import inch, pt, cm
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.type1 import Type1Font
-from pyte.font.style import REGULAR, BOLD, ITALIC
+from pyte.font.opentype import OpenTypeFont
+from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
 from pyte.paper import Paper, Letter
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, DownExpandingContainer, FootnoteContainer
@@ -46,9 +47,9 @@ use_gyre = True
 # fonts
 # ----------------------------------------------------------------------------
 if use_gyre:
-    from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
-
-    termes_roman = Type1Font("fonts/qtmr", weight=REGULAR)
+    #termes_roman = Type1Font("fonts/qtmr", weight=REGULAR)
+    termes_roman = OpenTypeFont("fonts/texgyretermes-regular.otf",
+                                weight=REGULAR)
     termes_italic = Type1Font("fonts/qtmri", weight=REGULAR, slant=ITALIC)
     termes_bold = Type1Font("fonts/qtmb", weight=BOLD)
     termes_bold_italic = Type1Font("fonts/qtmbi", weight=BOLD, slant=ITALIC)

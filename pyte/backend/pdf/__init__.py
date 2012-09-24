@@ -4,38 +4,8 @@ from . import cos
 
 from .reader import PDFReader
 from .filter import FlateDecode
-
-
-class Font(cos.Font):
-    def __init__(self, font):
-        super().__init__(True)
-        self.font = font
-
-    def _bytes(self, document):
-        by_code = {glyph.code: glyph
-                   for glyph in self.font.metrics._glyphs.values()
-                   if glyph.code >= 0}
-        try:
-            enc_differences = self['Encoding']['Differences']
-            first, last = min(enc_differences.taken), max(enc_differences.taken)
-        except KeyError:
-            first, last = min(by_code.keys()), max(by_code.keys())
-        self['FirstChar'] = cos.Integer(first)
-        self['LastChar'] = cos.Integer(last)
-        widths = []
-        for code in range(first, last + 1):
-            try:
-                glyph = by_code[code]
-                width = glyph.width
-            except KeyError:
-                try:
-                    glyph = enc_differences.by_code[code]
-                    width = glyph.width
-                except (KeyError, NameError):
-                    width = 0
-            widths.append(width)
-        self['Widths'] = cos.Array(map(cos.Real, widths))
-        return super()._bytes(document)
+from ...font.type1 import Type1Font
+from ...font.opentype import OpenTypeFont
 
 
 class Document(object):
@@ -51,28 +21,37 @@ class Document(object):
         try:
             font_rsc = self.fonts[font]
         except KeyError:
-            font_rsc = Font(font)
-            font_rsc['Subtype'] = cos.Name('Type1')
-            font_rsc['BaseFont'] = cos.Name(font.name)
-            font_rsc['Encoding'] = cos.FontEncoding()
-            font_desc = font_rsc['FontDescriptor'] = cos.FontDescriptor()
-            font_desc['FontName'] = cos.Name(font.metrics['FontMetrics']['FontName'])
-            # TODO: properly determine flags
-            font_desc['Flags'] = cos.Integer(4)
-            font_desc['FontBBox'] = cos.Array([cos.Integer(item) for item in
-                                               font.metrics['FontMetrics']['FontBBox']])
-            font_desc['ItalicAngle'] = cos.Integer(font.metrics['FontMetrics']['ItalicAngle'])
-            font_desc['Ascent'] = cos.Integer(font.metrics['FontMetrics']['Ascender'])
-            font_desc['Descent'] = cos.Integer(font.metrics['FontMetrics']['Descender'])
-            font_desc['CapHeight'] = cos.Integer(font.metrics['FontMetrics']['CapHeight'])
-            font_desc['XHeight'] = cos.Integer(font.metrics['FontMetrics']['XHeight'])
+            if isinstance(font, Type1Font):
+                font_file = cos.Type1FontFile(font.header, font.body,
+                                              filter=FlateDecode())
+            elif isinstance(font, OpenTypeFont):
+                with open(font.filename, 'rb') as font_data:
+                    font_file = cos.OpenTypeFontFile(font_data.read(),
+                                                     filter=FlateDecode())
             try:
-                font_desc['StemV'] = cos.Integer(font.metrics['FontMetrics']['StdVW'])
+                stem_v = font.metrics.stem_v
             except KeyError:
-                # TODO: make a proper guess
-                font_desc['StemV'] = cos.Integer(50)
-            font_desc['FontFile'] = cos.Type1FontFile(font.header, font.body,
-                                                      filter=FlateDecode())
+                stem_v = 50 # TODO: make a proper guess
+            font_desc = cos.FontDescriptor(font.metrics.name,
+                                           4, # TODO: properly determine flags
+                                           font.metrics.bbox,
+                                           font.metrics.italic_angle,
+                                           font.metrics.ascent,
+                                           font.metrics.descent,
+                                           font.metrics.cap_height,
+                                           stem_v,
+                                           font_file,
+                                           font.metrics.x_height)
+            if isinstance(font, Type1Font):
+                font_rsc = cos.Type1Font(font, cos.FontEncoding(), font_desc)
+            elif isinstance(font, OpenTypeFont):
+                cid_system_info = cos.CIDSystemInfo('Identity', 'Adobe', 0)
+                widths = font.tables['hmtx']['advanceWidth']
+                w = cos.Array([cos.Integer(0),
+                               cos.Array(map(cos.Integer, widths))])
+                cid_font = cos.CIDFontType0(font.name, cid_system_info,
+                                            font_desc, w=w)
+                font_rsc = cos.CompositeFont(cid_font, 'Identity-H')
             self.fonts[font] = font_rsc
         return font_rsc
 
@@ -202,30 +181,38 @@ class Canvas(StringIO):
         print('f', file=self)
         self.restore_state()
 
+    def _code_to_char(self, code):
+        if code < 32 or code > 127:
+            char = '\{:03o}'.format(code)
+        else:
+            char = chr(code)
+            if char in ('\\', '(', ')'):
+                char = '\\' + char
+        return char
+
     def show_glyphs(self, x, y, font, size, glyphs, x_displacements):
         font_rsc, font_name = self.pdf_page.register_font(font)
         string = ''
         current_string = ''
         for glyph, displ in zip(glyphs, x_displacements):
             displ = (1000 * displ) / size
-            try:
-                code = glyph.code
-            except KeyError:
-                code = -1
-            if code < 0:
+            if isinstance(font, Type1Font):
                 try:
-                    differences = font_rsc['Encoding']['Differences']
+                    code = glyph.code
                 except KeyError:
-                    occupied_codes = list(font.encoding.values())
-                    differences = cos.EncodingDifferences(occupied_codes)
-                    font_rsc['Encoding']['Differences'] = differences
-                code = differences.register(glyph)
-            if code < 32 or code > 127:
-                char = '\{:03o}'.format(code)
-            else:
-                char = chr(code)
-                if char in ('\\', '(', ')'):
-                    char = '\\' + char
+                    code = -1
+                if code < 0:
+                    try:
+                        differences = font_rsc['Encoding']['Differences']
+                    except KeyError:
+                        occupied_codes = list(font.encoding.values())
+                        differences = cos.EncodingDifferences(occupied_codes)
+                        font_rsc['Encoding']['Differences'] = differences
+                    code = differences.register(glyph)
+                char = self._code_to_char(code)
+            elif isinstance(font, OpenTypeFont):
+                high, low = glyph.code >> 8, glyph.code & 0xFF
+                char = self._code_to_char(high) + self._code_to_char(low)
             adjust = int(glyph.width - displ)
             if adjust:
                 string += '({}{}) {} '.format(current_string, char, adjust)

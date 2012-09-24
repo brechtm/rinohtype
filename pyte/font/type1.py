@@ -77,6 +77,17 @@ class AdobeFontMetrics(FontMetrics):
         if close_file:
             file.close()
 
+        self.bbox = self['FontMetrics']['FontBBox']
+        self.italic_angle = self['FontMetrics']['ItalicAngle']
+        try:
+            self.ascent = self['FontMetrics']['Ascender']
+            self.descent = self['FontMetrics']['Descender']
+            self.cap_height = self['FontMetrics']['CapHeight']
+            self.x_height = self['FontMetrics']['XHeight']
+        except KeyError:
+            pass
+        self.stem_v = self['FontMetrics'].get('StdVW', 50)
+
     @property
     def name(self):
         return self['FontMetrics']['FontName']

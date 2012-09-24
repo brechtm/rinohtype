@@ -72,18 +72,18 @@ class HmtxTable(OpenTypeTable):
 
     def __init__(self, file, offset, number_of_h_metrics, num_glyphs):
         file.seek(offset)
-        h_metrics = []
-        left_side_bearing = []
+        advance_widths = []
+        left_side_bearings = []
         for i in range(number_of_h_metrics):
             advance_width, lsb = grab(file, 'Hh')
-            h_metrics.append(advance_width)
-            left_side_bearing.append(lsb)
+            advance_widths.append(advance_width)
+            left_side_bearings.append(lsb)
         for i in range(num_glyphs - number_of_h_metrics):
             lsb, = grab(file, 'h')
-            h_metrics.append(advance_width)
-            left_side_bearing.append(lsb)
-        self['hMetrics'] = h_metrics
-        self['leftSideBearing'] = left_side_bearing
+            advance_widths.append(advance_width)
+            left_side_bearings.append(lsb)
+        self['advanceWidth'] = advance_widths
+        self['leftSideBearing'] = left_side_bearings
 
 
 class MaxpTable(OpenTypeTable):
@@ -243,7 +243,8 @@ class CmapTable(OpenTypeTable):
                 language = ushort(file),
             # TODO: detect already-parsed table
             if table_format == 0: # byte encoding table
-                out = {zip(range(256), array(byte, 256))(file)}
+                indices = array(byte, 256)(file)
+                out = {i: index for i, index in enumerate(indices)}
             elif table_format == 2: # high-byte mapping through table
                 raise NotImplementedError
             elif table_format == 4: # segment mapping to delta values

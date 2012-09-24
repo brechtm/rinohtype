@@ -8,7 +8,7 @@ from io import BytesIO, SEEK_END
 
 
 
-PDF_VERSION = '1.4'
+PDF_VERSION = '1.6'
 
 
 # TODO: max line length (not streams)
@@ -432,13 +432,134 @@ class Font(Dictionary):
         self['Type'] = Name('Font')
 
 
+class SimpleFont(Font):
+    def __init__(self):
+        raise NotImplementedError()
+
+
+class Type1Font(Font):
+    def __init__(self, font, encoding, font_descriptor):
+        super().__init__(True)
+        self.font = font
+        self['Subtype'] = Name('Type1')
+        self['BaseFont'] = Name(font.name)
+        self['Encoding'] = encoding
+        self['FontDescriptor'] = font_descriptor
+
+    def _bytes(self, document):
+        widths = []
+        by_code = {glyph.code: glyph
+                   for glyph in self.font.metrics._glyphs.values()
+                   if glyph.code >= 0}
+        try:
+            enc_differences = self['Encoding']['Differences']
+            first, last = min(enc_differences.taken), max(enc_differences.taken)
+        except KeyError:
+            first, last = min(by_code.keys()), max(by_code.keys())
+        self['FirstChar'] = Integer(first)
+        self['LastChar'] = Integer(last)
+        for code in range(first, last + 1):
+            try:
+                glyph = by_code[code]
+                width = glyph.width
+            except KeyError:
+                try:
+                    glyph = enc_differences.by_code[code]
+                    width = glyph.width
+                except (KeyError, NameError):
+                    width = 0
+            widths.append(width)
+        self['Widths'] = Array(map(Real, widths))
+        return super()._bytes(document)
+
+
+class CompositeFont(Font):
+    def __init__(self, descendant_font, encoding, to_unicode=None):
+        super().__init__(True)
+        self['Subtype'] = Name('Type0')
+        self['BaseFont'] = descendant_font.composite_font_name(encoding)
+        self['DescendantFonts'] = Array([descendant_font], False)
+        try:
+            self['Encoding'] = Name(encoding)
+        except NotImplementedError:
+            self['Encoding'] = encoding
+        if to_unicode:
+            self['ToUnicode'] = to_unicode
+
+
+class CIDSystemInfo(Dictionary):
+    def __init__(self, ordering, registry, supplement):
+        super().__init__(False)
+        self['Ordering'] = String(ordering)
+        self['Registry'] = String(registry)
+        self['Supplement'] = Integer(supplement)
+
+
+class CIDFont(Font):
+    def __init__(self, base_font, cid_system_info, font_descriptor,
+                 dw=1000, w=None):
+        super().__init__(True)
+        self['BaseFont'] = Name(base_font)
+        self['FontDescriptor'] = font_descriptor
+        self['CIDSystemInfo'] = cid_system_info
+        self['DW'] = Integer(dw)
+        if w:
+            self['W'] = w
+
+    def composite_font_name(self, encoding):
+        raise NotImplementedError()
+
+
+class CIDFontType0(CIDFont):
+    def __init__(self, base_font, cid_system_info, font_descriptor,
+                 dw=1000, w=None):
+        super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
+        self['Subtype'] = Name('CIDFontType0')
+
+    def composite_font_name(self, encoding):
+        try:
+            suffix = encoding['CMapName']
+        except TypeError:
+            suffix = encoding
+        return Name('{}-{}'.format(self['BaseFont'], suffix))
+
+
+class CIDFontType2(CIDFont):
+    def __init__(self, cid_to_gid_map=None):
+        super().__init__()
+        self['Subtype'] = Name('CIDFontType2')
+        if cid_to_gid_map:
+            self['CIDToGIDMap'] = cid_to_gid_map
+
+    def composite_font_name(self, encoding):
+        return self['BaseFont']
+
+
 class FontDescriptor(Dictionary):
-    def __init__(self, indirect=True):
-        super().__init__(indirect)
+    def __init__(self, font_name, flags, font_bbox, italic_angle, ascent,
+                 descent, cap_height, stem_v, font_file, x_height=0):
+        super().__init__(True)
         self['Type'] = Name('FontDescriptor')
+        self['FontName'] = Name(font_name)
+        self['Flags'] = Integer(flags)
+        self['FontBBox'] = Array([Integer(item) for item in font_bbox])
+        self['ItalicAngle'] = Integer(italic_angle)
+        self['Ascent'] = Integer(ascent)
+        self['Descent'] = Integer(descent)
+        self['CapHeight'] = Integer(cap_height)
+        self['XHeight'] = Integer(x_height)
+        self['StemV'] = Integer(stem_v)
+        self[font_file.key] = font_file
+
+
+class Type3FontDescriptor(FontDescriptor):
+    def __init__(self):
+        raise NotImplementedError()
 
 
 class Type1FontFile(Stream):
+    key = 'FontFile'
+
     def __init__(self, header, body, filter=None):
         super().__init__(filter)
         self['Length1'] = Integer(len(header))
@@ -446,6 +567,15 @@ class Type1FontFile(Stream):
         self['Length3'] = Integer(0)
         self.write(header)
         self.write(body)
+
+
+class OpenTypeFontFile(Stream):
+    key = 'FontFile3'
+
+    def __init__(self, font_data, filter=None):
+        super().__init__(filter)
+        self['Subtype'] = Name('OpenType')
+        self.write(font_data)
 
 
 class FontEncoding(Dictionary):
