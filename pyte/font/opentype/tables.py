@@ -287,3 +287,41 @@ class CmapTable(OpenTypeTable):
 LANG_TAG_RECORD = [('length', ushort),
                    ('offset', ushort)]
 
+
+class KernSubTable(OpenTypeTable):
+    """Kerning subtable"""
+    entries = [('version', ushort),
+               ('length', ushort),
+               ('coverage', ushort)]
+
+    def __init__(self, file, offset):
+        super().__init__(file, offset)
+        self.pairs = {}
+        self['horizontal'] = (self['coverage'] & 0b0001) == 1
+        self['minimum'] = (self['coverage'] & 0b0010) == 1
+        self['cross-stream'] = (self['coverage'] & 0b0100) == 1
+        self['override'] = (self['coverage'] & 0b1000) == 1
+        self['format'] = self['coverage'] & 0xF0
+        if self['format'] == 0:
+            self.pairs = {}
+            (n_pairs, search_range,
+             entry_selector, range_shift) = array(ushort, 4)(file)
+            for i in range(n_pairs):
+                left, right, value = ushort(file), ushort(file), fword(file)
+                left_dict = self.pairs.setdefault(left, {})
+                left_dict[right] = value
+        else:
+            raise NotImplementedError
+
+
+class KernTable(OpenTypeTable):
+    """Kerning table (only for TrueType outlines)"""
+    tag = 'kern'
+    entries = [('version', ushort),
+               ('nTables', ushort)]
+
+    def __init__(self, file, offset):
+        super().__init__(file, offset)
+        for i in range(self['nTables']):
+            subtable = KernSubTable(file, file.tell())
+            self[subtable['format']] = subtable

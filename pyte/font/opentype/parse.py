@@ -119,6 +119,9 @@ class OpenTypeParser(dict):
                                      self['hhea']['numberOfHMetrics'],
                                      self['maxp']['numGlyphs'])
             self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
+            for tag in ('kern', ):
+                if tag in tables:
+                    self[tag] = parse_table(tag, file, tables[tag][0])
 
     def _calculate_checksum(self, file, offset, length, head=False):
         tmp = 0
