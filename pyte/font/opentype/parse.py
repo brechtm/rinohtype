@@ -1,6 +1,7 @@
 
 import hashlib, math, struct
 from datetime import datetime, timedelta
+from collections import OrderedDict
 
 
 def grab(file, data_format):
@@ -22,14 +23,38 @@ short = lambda file: grab(file, 'h')[0]
 ulong = lambda file: grab(file, 'L')[0]
 long = lambda file: grab(file, 'l')[0]
 fixed = lambda file: grab(file, 'L')[0] / 2**16
-fword = short
-ufword = ushort
+int16 = fword = short
+uint16 = ufword = ushort
 longdatetime = lambda file: grab_datetime(file)
 string = lambda file: grab(file, '4s')[0].decode('ascii')
+tag = string
+glyph_id = uint16
+offset = uint16
 
 
 def array(reader, length):
     return lambda file: [reader(file) for i in range(length)]
+
+
+def indirect(reader):
+    def read_and_restore_file_position(not_used, file, file_offset):
+        indirect_offset = offset(file)
+        restore_position = file.tell()
+        result = reader(file, file_offset + indirect_offset)
+        file.seek(restore_position)
+        return result
+    return read_and_restore_file_position
+
+
+class Packed(OrderedDict):
+    reader = None
+    fields = []
+
+    def __init__(self, file):
+        super().__init__(self)
+        self.value = self.__class__.reader(file)
+        for name, mask, processor in self.fields:
+            self[name] = processor(self.value & mask)
 
 
 PLATFORM_UNICODE = 0
@@ -107,7 +132,6 @@ class OpenTypeParser(dict):
             for i in range(num_tables):
                 tag, checksum, offset, length = grab(file, '4sLLL')
                 tables[tag.decode('ascii')] = offset, length, checksum
-                print(tag.decode('ascii'))
             for tag, (offset, length, checksum) in tables.items():
                 cs = self._calculate_checksum(file, offset, length, tag=='head')
                 assert cs == checksum
@@ -119,7 +143,7 @@ class OpenTypeParser(dict):
                                      self['hhea']['numberOfHMetrics'],
                                      self['maxp']['numGlyphs'])
             self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
-            for tag in ('kern', ):
+            for tag in ('kern', 'GPOS'):
                 if tag in tables:
                     self[tag] = parse_table(tag, file, tables[tag][0])
 

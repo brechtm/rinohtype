@@ -6,6 +6,7 @@ from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
 
 from . import cos
+from ...util import recursive_subclasses
 
 
 class PDFReader(cos.Document):
@@ -196,12 +197,6 @@ class PDFReader(cos.Document):
         else:
             self.file.seek(dict_pos)
         # try to map to specific Dictionary sub-class
-        def recursive_subclasses(cls):
-            for subcls in cls.__subclasses__():
-                yield subcls
-                for subsubcls in recursive_subclasses(subcls):
-                    yield subsubcls
-
         subclasses = {subcls.__name__: subcls
                       for subcls in recursive_subclasses(cos.Dictionary)}
         if 'Type' in dictionary:

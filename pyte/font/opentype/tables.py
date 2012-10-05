@@ -1,25 +1,59 @@
 
+from collections import OrderedDict
+
+from ...util import recursive_subclasses
 from .parse import grab
 from .parse import byte, char, ushort, short, ulong, long, fixed
-from .parse import fword, ufword, longdatetime, string, array
+from .parse import fword, ufword, longdatetime, string, array, offset, Packed
 from .parse import PLATFORM_WINDOWS, decode
 
 
-def parse_table(tag, file, offset):
-    for cls in OpenTypeTable.__subclasses__():
+def parse_table(tag, file, file_offset):
+    for cls in recursive_subclasses(OpenTypeTable):
         if cls.tag == tag:
-            return cls(file, offset)
+            return cls(file, file_offset)
 
 
-class OpenTypeTable(dict):
+def context_array(reader, count_key):
+    return lambda table, file, not_used: array(reader, table[count_key])(file)
+
+
+def offset_array(entry_type, count_key):
+    def reader_function(table, file, file_offset):
+        offsets = array(offset, table[count_key])(file)
+        return [entry_type(file, file_offset + entry_offset)
+                for entry_offset in offsets]
+    return reader_function
+
+
+class OpenTypeTable(OrderedDict):
     tag = None
+    entries = []
 
-    def __init__(self, file, offset):
-        file.seek(offset)
-        for key, reader in self.entries:
-            value = reader(file)
+    def __init__(self, file, file_offset=None):
+        super().__init__()
+        if file_offset is not None:
+            file.seek(file_offset)
+        self.parse(file, file_offset, self.entries)
+
+    def parse(self, file, file_offset, entries):
+        for key, reader in entries:
+            try:
+                value = reader(file)
+            except TypeError: # reader requires the context
+                value = reader(self, file, file_offset)
             if key is not None:
                 self[key] = value
+
+
+class MultiFormatTable(OpenTypeTable):
+    formats = {}
+
+    def __init__(self, file, file_offset=None):
+        super().__init__(file, file_offset)
+        table_format = self[self.entries[0][0]]
+        if table_format in self.formats:
+            self.parse(file, file_offset, self.formats[table_format])
 
 
 class HeadTable(OpenTypeTable):
@@ -71,6 +105,8 @@ class HmtxTable(OpenTypeTable):
     tag = 'htmx'
 
     def __init__(self, file, offset, number_of_h_metrics, num_glyphs):
+        super().__init__(file, offset)
+        # TODO: rewrite using context_array ?
         file.seek(offset)
         advance_widths = []
         left_side_bearings = []
@@ -86,31 +122,24 @@ class HmtxTable(OpenTypeTable):
         self['leftSideBearing'] = left_side_bearings
 
 
-class MaxpTable(OpenTypeTable):
+class MaxpTable(MultiFormatTable):
     """Maximum profile"""
     tag = 'maxp'
     entries = [('version', fixed),
                ('numGlyphs', ushort),
-               ('maxPoints', ushort),
-               ('maxContours', ushort),
-               ('maxCompositePoints', ushort),
-               ('maxCompositeContours', ushort),
-               ('maxZones', ushort),
-               ('maxTwilightPoints', ushort),
-               ('maxStorage', ushort),
-               ('maxFunctionDefs', ushort),
-               ('maxInstructionDefs', ushort),
-               ('maxStackElements', ushort),
-               ('maxSizeOfInstructions', ushort),
-               ('maxComponentElements', ushort),
-               ('maxComponentDepth', ushort)]
-
-    def __init__(self, file, offset):
-        file.seek(offset)
-        for i, (key, reader) in enumerate(self.entries):
-            if key == 'maxPoints' and self['version'] != 1.0:
-                break
-            self[key] = reader(file)
+               ('maxPoints', ushort)]
+    format_entries = {1.0: [('maxContours', ushort),
+                            ('maxCompositePoints', ushort),
+                            ('maxCompositeContours', ushort),
+                            ('maxZones', ushort),
+                            ('maxTwilightPoints', ushort),
+                            ('maxStorage', ushort),
+                            ('maxFunctionDefs', ushort),
+                            ('maxInstructionDefs', ushort),
+                            ('maxStackElements', ushort),
+                            ('maxSizeOfInstructions', ushort),
+                            ('maxComponentElements', ushort),
+                            ('maxComponentDepth', ushort)]}
 
 
 class OS2Table(OpenTypeTable):
@@ -288,21 +317,24 @@ LANG_TAG_RECORD = [('length', ushort),
                    ('offset', ushort)]
 
 
+class KerningCoverage(Packed):
+    reader = ushort
+    fields = [('horizontal', 0b0001, bool),
+              ('minimum', 0b0010, bool),
+              ('cross-stream', 0b0100, bool),
+              ('override', 0b1000, bool),
+              ('format', 0xF0, int),]
+
+
 class KernSubTable(OpenTypeTable):
     """Kerning subtable"""
     entries = [('version', ushort),
                ('length', ushort),
-               ('coverage', ushort)]
+               ('coverage', KerningCoverage)]
 
     def __init__(self, file, offset):
         super().__init__(file, offset)
-        self.pairs = {}
-        self['horizontal'] = (self['coverage'] & 0b0001) == 1
-        self['minimum'] = (self['coverage'] & 0b0010) == 1
-        self['cross-stream'] = (self['coverage'] & 0b0100) == 1
-        self['override'] = (self['coverage'] & 0b1000) == 1
-        self['format'] = self['coverage'] & 0xF0
-        if self['format'] == 0:
+        if self['coverage']['format'] == 0:
             self.pairs = {}
             (n_pairs, search_range,
              entry_selector, range_shift) = array(ushort, 4)(file)
@@ -324,4 +356,7 @@ class KernTable(OpenTypeTable):
         super().__init__(file, offset)
         for i in range(self['nTables']):
             subtable = KernSubTable(file, file.tell())
-            self[subtable['format']] = subtable
+            self[subtable['coverage']['format']] = subtable
+
+
+from . import gpos

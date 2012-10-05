@@ -1,7 +1,6 @@
 
 import os
 import time
-from . import __file__ as pyte_file
 from urllib.request import pathname2url
 from urllib.parse import urljoin
 
@@ -33,6 +32,14 @@ def timed(f):
         print('{}: {:.4f} seconds'.format(name, time.clock() - start))
         return result
     return decorator
+
+
+def recursive_subclasses(cls):
+    """Generator that yields all subclasses of `cls` (recursive)"""
+    for subcls in cls.__subclasses__():
+        yield subcls
+        for subsubcls in recursive_subclasses(subcls):
+            yield subsubcls
 
 
 class cached_property(property):
