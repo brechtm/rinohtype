@@ -2,24 +2,8 @@
 from .tables import OpenTypeTable, MultiFormatTable, context_array, offset_array
 from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
 from .parse import Packed
-from .layout import ScriptListTable, FeatureListTable, LookupTable
+from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
 from .layout import Coverage, ClassDefinition
-
-
-class GposTable(OpenTypeTable):
-    """Glyph positioning table"""
-    tag = 'GPOS'
-    entries = [('Version', fixed)]
-
-    def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
-        script_offset, feature_offset, lookup_offset = array(offset, 3)(file)
-        self['ScriptList'] = ScriptListTable(file,
-                                             file_offset + script_offset)
-        self['FeatureList'] = FeatureListTable(file,
-                                               file_offset + feature_offset)
-        self['LookupList'] = GposLookupListTable(file,
-                                                 file_offset + lookup_offset)
 
 
 class ValueFormat(Packed):
@@ -32,6 +16,10 @@ class ValueFormat(Packed):
               ('YPlaDevice', 0x0020, bool),
               ('XAdvDevice', 0x0040, bool),
               ('YAdvDevice', 0x0080, bool)]
+
+
+class SingleAdjustmentSubtable(OpenTypeTable):
+    pass
 
 
 # TODO: MultiFormatTable
@@ -93,10 +81,8 @@ class ValueRecord(OpenTypeTable):
                 self[name] = self.formats[name](file)
 
 
-class GposLookupTable(LookupTable):
-    types = {2: PairAdjustmentSubtable}
-
-
-class GposLookupListTable(OpenTypeTable):
-    entries = [('LookupCount', uint16),
-               ('Lookup', offset_array(GposLookupTable, 'LookupCount'))]
+class GposTable(LayoutTable):
+    """Glyph positioning table"""
+    tag = 'GPOS'
+    lookup_types = {1: SingleAdjustmentSubtable,
+                    2: PairAdjustmentSubtable}

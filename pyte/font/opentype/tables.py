@@ -360,3 +360,4 @@ class KernTable(OpenTypeTable):
 
 
 from . import gpos
+from . import gsub

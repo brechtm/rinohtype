@@ -1,6 +1,6 @@
 
 from .tables import OpenTypeTable, MultiFormatTable, context_array, offset_array
-from .parse import array, uint16, tag, glyph_id, offset, Packed
+from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed
 
 
 class Record(OpenTypeTable):
@@ -28,13 +28,10 @@ class LangSysTable(OpenTypeTable):
                ('FeatureCount', uint16),
                ('FeatureIndex', context_array(uint16, 'FeatureCount'))]
 
-    def __init__(self, file, offset):
-        super().__init__(file, offset)
-
 
 class ScriptTable(ListTable):
     entry_type = LangSysTable
-    entries = [('DefaultLangSys', offset)] + ListTable.entries
+    entries = [('DefaultLangSys', indirect(LangSysTable))] + ListTable.entries
 
 
 class ScriptListTable(ListTable):
@@ -69,24 +66,6 @@ class LookupFlag(Packed):
               ('MarkAttachmentType', 0xFF00, int)]
 
 
-class LookupTable(OpenTypeTable):
-    types = None
-    entries = [('LookupType', uint16),
-               ('LookupFlag', LookupFlag),
-               ('SubTableCount', uint16)]
-
-    def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
-        offsets = array(uint16, self['SubTableCount'])(file)
-        if self['LookupFlag']['UseMarkFilteringSet']:
-            self['MarkFilteringSet'] = uint16(file)
-        if self['LookupType'] != 2: # TODO: remove
-            return
-        subtable_type = self.types[self['LookupType']]
-        self['SubTable'] = [subtable_type(file, file_offset + subtable_offset)
-                            for subtable_offset in offsets]
-
-
 class RangeRecord(OpenTypeTable):
     entries = [('Start', glyph_id),
                ('End', glyph_id),
@@ -115,3 +94,41 @@ class ClassDefinition(MultiFormatTable):
                2: [('ClassRangeCount', uint16),
                    ('ClassRangeRecord', context_array(ClassRangeRecord,
                                                       'ClassRangeCount'))]}
+
+
+class LookupTable(OpenTypeTable):
+    entries = [('LookupType', uint16),
+               ('LookupFlag', LookupFlag),
+               ('SubTableCount', uint16)]
+
+    def __init__(self, file, file_offset, subtable_types):
+        super().__init__(file, file_offset)
+        offsets = array(uint16, self['SubTableCount'])(file)
+        if self['LookupFlag']['UseMarkFilteringSet']:
+            self['MarkFilteringSet'] = uint16(file)
+        subtable_type = subtable_types[self['LookupType']]
+        self['SubTable'] = [subtable_type(file, file_offset + subtable_offset)
+                            for subtable_offset in offsets]
+
+
+class LookupListTable(OpenTypeTable):
+    entries = [('LookupCount', uint16)]
+
+    def __init__(self, file, file_offset, types):
+        super().__init__(file, file_offset)
+        lookup_offsets = array(offset, self['LookupCount'])(file)
+        self['Lookup'] = [LookupTable(file, file_offset + lookup_offset, types)
+                          for lookup_offset in lookup_offsets]
+
+
+class LayoutTable(OpenTypeTable):
+    entries = [('Version', fixed),
+               ('ScriptList', indirect(ScriptListTable)),
+               ('FeatureList', indirect(FeatureListTable))]
+
+    def __init__(self, file, file_offset):
+        super().__init__(file, file_offset)
+        lookup_list_offset = offset(file)
+        self['LookupList'] = LookupListTable(file,
+                                             file_offset + lookup_list_offset,
+                                             self.lookup_types)

@@ -143,7 +143,7 @@ class OpenTypeParser(dict):
                                      self['hhea']['numberOfHMetrics'],
                                      self['maxp']['numGlyphs'])
             self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
-            for tag in ('kern', 'GPOS'):
+            for tag in ('kern', 'GPOS', 'GSUB'):
                 if tag in tables:
                     self[tag] = parse_table(tag, file, tables[tag][0])
 
