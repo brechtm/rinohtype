@@ -15,7 +15,7 @@ def set_xml_catalog():
     catalog_path = os.path.join(DATA_PATH, 'xml', 'catalog')
     catalog_url = urljoin('file:', pathname2url(catalog_path))
     try:
-        xml_catalog_files = os.environ['XML_CATALOG_FILES'] + ' ' + catalog_url
+        os.environ['XML_CATALOG_FILES'] += ' ' + catalog_url
     except KeyError:
         os.environ['XML_CATALOG_FILES'] = catalog_url
     set_xml_catalog.done = True
