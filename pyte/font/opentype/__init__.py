@@ -1,9 +1,12 @@
 
 import ctypes
 
+from warnings import warn
+
 from .. import Font
 from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
 from ..metrics import FontMetrics, GlyphMetrics
+from ...warnings import PyteWarning
 
 from .parse import OpenTypeParser, NAME_PS_NAME
 
@@ -49,7 +52,12 @@ class OpenTypeMetrics(FontMetrics):
         return self._tables['name'][NAME_PS_NAME]
 
     def get_glyph(self, char, variant=None):
-        return self._glyphs[char]
+        try:
+            return self._glyphs[char]
+        except KeyError:
+            warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
+                 .format(self.name, ord(char), char), PyteWarning)
+            return self._glyphs['?']
 
     def get_ligature(self, glyph, successor_glyph):
         return None
