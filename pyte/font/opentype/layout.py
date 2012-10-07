@@ -18,8 +18,11 @@ class ListTable(OpenTypeTable):
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)
+        self.by_tag = {}
         for record in self['Record']:
             record.parse_value(file, file_offset, self.entry_type)
+            tag_list = self.by_tag.setdefault(record['Tag'], [])
+            tag_list.append(record['Value'])
 
 
 class LangSysTable(OpenTypeTable):
@@ -79,6 +82,16 @@ class Coverage(MultiFormatTable):
                2: [('RangeCount', uint16),
                    ('RangeRecord', context_array(RangeRecord, 'RangeCount'))]}
 
+    def index(self, glyph_id):
+        if self['CoverageFormat'] == 1:
+            return self['GlyphArray'].index(glyph_id)
+        else:
+            for record in self['RangeRecord']:
+                if record['Start'] <= glyph_id <= record['End']:
+                    return (record['StartCoverageIndex']
+                            + glyph_id - record['Start'])
+            raise ValueError
+
 
 class ClassRangeRecord(OpenTypeTable):
     entries = [('Start', glyph_id),
@@ -95,7 +108,19 @@ class ClassDefinition(MultiFormatTable):
                    ('ClassRangeRecord', context_array(ClassRangeRecord,
                                                       'ClassRangeCount'))]}
 
+    def class_number(self, glyph_id):
+        if self['ClassFormat'] == 1:
+            index = glyph_id - self['StartGlyph']
+            if 0 <= index < self['GlyphCount']:
+                return self['ClassValueArray'][index]
+        else:
+            for record in self['ClassRangeRecord']:
+                if record['Start'] <= glyph_id <= record['End']:
+                    return record['Class']
+        return 0
 
+
+# TODO: optimization - only load lookup tables when they are required
 class LookupTable(OpenTypeTable):
     entries = [('LookupType', uint16),
                ('LookupFlag', LookupFlag),
@@ -109,6 +134,14 @@ class LookupTable(OpenTypeTable):
         subtable_type = subtable_types[self['LookupType']]
         self['SubTable'] = [subtable_type(file, file_offset + subtable_offset)
                             for subtable_offset in offsets]
+
+    def lookup(self, a_id, b_id):
+        for subtable in self['SubTable']:
+            try:
+                return subtable.lookup(a_id, b_id)
+            except KeyError:
+                pass
+        raise KeyError
 
 
 class LookupListTable(OpenTypeTable):

@@ -63,4 +63,21 @@ class OpenTypeMetrics(FontMetrics):
         return None
 
     def get_kerning(self, a, b):
-        return 0.0
+        # TODO: avoid retrieving table over and over
+        default_script = self._tables['GPOS']['ScriptList'].by_tag['latn'][0]
+        default_lang_sys = default_script['DefaultLangSys']
+        feature_indices = default_lang_sys['FeatureIndex']
+        for index in feature_indices:
+            feature = self._tables['GPOS']['FeatureList']['Record'][index]
+            if feature['Tag'] == 'kern':
+                lookup_list_indices = feature['Value']['LookupListIndex']
+                break
+        # can point to pair adjustment (2) or Chained Context positioning (8)
+        # lookup subtables
+        lookup_tables = self._tables['GPOS']['LookupList']['Lookup']
+        kern_lookup_table = lookup_tables[lookup_list_indices[0]]
+        try:
+            kern_value = kern_lookup_table.lookup(a.code, b.code)
+            return kern_value
+        except KeyError:
+            return 0.0
