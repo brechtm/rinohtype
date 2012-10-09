@@ -37,6 +37,17 @@ class LigatureSubTable(OpenTypeTable):
                ('LigSetCount', uint16),
                ('LigatureSet', offset_array(LigatureSet, 'LigSetCount'))]
 
+    def lookup(self, a_id, b_id):
+        try:
+            index = self['Coverage'].index(a_id)
+        except ValueError:
+            raise KeyError
+        ligature_set = self['LigatureSet'][index]
+        for ligature in ligature_set['Ligature']:
+            if ligature['Component'] == [b_id]:
+                return ligature['LigGlyph']
+        raise KeyError
+
 
 class GsubTable(LayoutTable):
     """Glyph substitution table"""

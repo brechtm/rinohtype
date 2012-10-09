@@ -29,6 +29,7 @@ class OpenTypeMetrics(FontMetrics):
         super().__init__()
         self._tables = tables
         self._glyphs = {}
+        self._glyphs_by_code = {}
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
@@ -36,8 +37,9 @@ class OpenTypeMetrics(FontMetrics):
         # TODO: extract bboxes: http://www.tug.org/TUGboat/tb24-3/bella.pdf
         for ordinal, glyph_index in tables['cmap'][(3, 1)].items():
             width = tables['hmtx']['advanceWidth'][glyph_index]
-            self._glyphs[chr(ordinal)] = GlyphMetrics(None, width,
-                                                      None, glyph_index)
+            glyph_metrics = GlyphMetrics(None, width, None, glyph_index)
+            self._glyphs[chr(ordinal)] = glyph_metrics
+            self._glyphs_by_code[glyph_index] = glyph_metrics
 
         self.bbox = tables['CFF'].top_dicts[0]['FontBBox']
         self.italic_angle = tables['post']['italicAngle']
@@ -59,25 +61,53 @@ class OpenTypeMetrics(FontMetrics):
                  .format(self.name, ord(char), char), PyteWarning)
             return self._glyphs['?']
 
+    def _get_lookup_tables(self, table, feature, script='DFLT', language=None):
+        lookup_tables = self._tables[table]['LookupList']['Lookup']
+        try:
+            script_table = self._tables[table]['ScriptList'].by_tag[script][0]
+        except KeyError:
+            if script != 'DFLT':
+                warn('{} does not support the script "{}". Trying default '
+                     'script.'.format(self.name, script, PyteWarning))
+                return self._get_lookup_tables(table, feature)
+            else:
+                warn('{} has no default script defined.'
+                     .format(self.name, PyteWarning))
+                raise
+        if language:
+            try:
+                lang_sys_table = script_table.by_tag[language][0]
+            except KeyError:
+                warn('{} does not support the language "{}". Falling back to '
+                     'defaults.'.format(self.name, language, PyteWarning))
+            lang_sys_table = script_table['DefaultLangSys']
+        else:
+            lang_sys_table = script_table['DefaultLangSys']
+        feature_indices = lang_sys_table['FeatureIndex']
+        for index in feature_indices:
+            record = self._tables[table]['FeatureList']['Record'][index]
+            if record['Tag'] == feature:
+                lookup_list_indices = record['Value']['LookupListIndex']
+                return [lookup_tables[lookup_list_index]
+                        for lookup_list_index in lookup_list_indices]
+
     def get_ligature(self, glyph, successor_glyph):
+        lookup_tables = self._get_lookup_tables('GSUB', 'liga', 'latn')
+        for lookup_table in lookup_tables:
+            try:
+                code = lookup_table.lookup(glyph.code, successor_glyph.code)
+                return self._glyphs_by_code[code]
+            except KeyError:
+                pass
         return None
 
     def get_kerning(self, a, b):
-        # TODO: avoid retrieving table over and over
-        default_script = self._tables['GPOS']['ScriptList'].by_tag['latn'][0]
-        default_lang_sys = default_script['DefaultLangSys']
-        feature_indices = default_lang_sys['FeatureIndex']
-        for index in feature_indices:
-            feature = self._tables['GPOS']['FeatureList']['Record'][index]
-            if feature['Tag'] == 'kern':
-                lookup_list_indices = feature['Value']['LookupListIndex']
-                break
-        # can point to pair adjustment (2) or Chained Context positioning (8)
-        # lookup subtables
-        lookup_tables = self._tables['GPOS']['LookupList']['Lookup']
-        kern_lookup_table = lookup_tables[lookup_list_indices[0]]
-        try:
-            kern_value = kern_lookup_table.lookup(a.code, b.code)
-            return kern_value
-        except KeyError:
-            return 0.0
+        lookup_tables = self._get_lookup_tables('GPOS', 'kern', 'latn')
+        # TODO: 'kern' lookup list indices can point to pair adjustment (2) or
+        #       Chained Context positioning (8) lookup subtables
+        for lookup_table in lookup_tables:
+            try:
+                return lookup_table.lookup(a.code, b.code)
+            except KeyError:
+                pass
+        return 0.0
