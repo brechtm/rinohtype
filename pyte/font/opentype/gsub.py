@@ -7,8 +7,22 @@ from .layout import Coverage, ClassDefinition
 
 
 # Single subsitution (subtable format 1)
-class SingleSubTable(OpenTypeTable):
-    pass
+class SingleSubTable(MultiFormatTable):
+    entries = [('SubstFormat', uint16),
+               ('Coverage', indirect(Coverage))]
+    formats = {1: [('DeltaGlyphID', glyph_id)],
+               2: [('GlyphCount', uint16),
+                   ('Substitute', context_array(glyph_id, 'GlyphCount'))]}
+
+    def lookup(self, glyph_id):
+        try:
+            index = self['Coverage'].index(glyph_id)
+        except ValueError:
+            raise KeyError
+        if self['SubstFormat'] == 1:
+            return index + self['DeltaGlyphID']
+        else:
+            return self['Substitute'][index]
 
 
 # Alternate subtitition (subtable format 3)

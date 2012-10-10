@@ -5,6 +5,7 @@ from warnings import warn
 
 from .. import Font
 from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
+from ..style import SMALL_CAPITAL
 from ..metrics import FontMetrics, GlyphMetrics
 from ...warnings import PyteWarning
 
@@ -35,12 +36,11 @@ class OpenTypeMetrics(FontMetrics):
         self._kerning_pairs = {}
         # TODO: differentiate between TT/CFF
         # TODO: extract bboxes: http://www.tug.org/TUGboat/tb24-3/bella.pdf
-        for ordinal, glyph_index in tables['cmap'][(3, 1)].items():
-            width = tables['hmtx']['advanceWidth'][glyph_index]
+        for glyph_index, width in enumerate(tables['hmtx']['advanceWidth']):
             glyph_metrics = GlyphMetrics(None, width, None, glyph_index)
-            self._glyphs[chr(ordinal)] = glyph_metrics
             self._glyphs_by_code[glyph_index] = glyph_metrics
-
+        for ordinal, glyph_index in tables['cmap'][(3, 1)].items():
+            self._glyphs[chr(ordinal)] = self._glyphs_by_code[glyph_index]
         self.bbox = tables['CFF'].top_dicts[0]['FontBBox']
         self.italic_angle = tables['post']['italicAngle']
         self.ascent = tables['hhea']['Ascender']
@@ -55,11 +55,20 @@ class OpenTypeMetrics(FontMetrics):
 
     def get_glyph(self, char, variant=None):
         try:
-            return self._glyphs[char]
+            glyph = self._glyphs[char]
         except KeyError:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
                  .format(self.name, ord(char), char), PyteWarning)
             return self._glyphs['?']
+        if variant == SMALL_CAPITAL:
+            lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
+            for lookup_table in lookup_tables:
+                try:
+                    code = lookup_table.lookup(glyph.code)
+                    return self._glyphs_by_code[code]
+                except KeyError:
+                    pass
+        return glyph
 
     def _get_lookup_tables(self, table, feature, script='DFLT', language=None):
         lookup_tables = self._tables[table]['LookupList']['Lookup']

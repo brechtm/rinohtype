@@ -135,10 +135,10 @@ class LookupTable(OpenTypeTable):
         self['SubTable'] = [subtable_type(file, file_offset + subtable_offset)
                             for subtable_offset in offsets]
 
-    def lookup(self, a_id, b_id):
+    def lookup(self, *args, **kwargs):
         for subtable in self['SubTable']:
             try:
-                return subtable.lookup(a_id, b_id)
+                return subtable.lookup(*args, **kwargs)
             except KeyError:
                 pass
         raise KeyError

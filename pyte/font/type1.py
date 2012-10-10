@@ -105,8 +105,6 @@ class AdobeFontMetrics(FontMetrics):
                         self._suffixes[variant] = suffix
                         return suffix
             else:
-                warn('{} does not contain the {} variant for one or more '
-                     'characters'.format(self.name, variant), PyteWarning)
                 return ''
 ##            if not upper:
 ##                return self._find_suffix(self.char_to_name(char.upper()),
