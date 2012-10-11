@@ -30,17 +30,21 @@ class Class2Record(OpenTypeTable):
 
 
 # TODO: MultiFormatTable
-class PairAdjustmentSubtable(OpenTypeTable):
+class PairAdjustmentSubtable(MultiFormatTable):
     entries = [('PosFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('ValueFormat1', ValueFormat),
                ('ValueFormat2', ValueFormat)]
+    formats = {1: [('PairSetCount', uint16)],
+               2: [('ClassDef1', indirect(ClassDefinition)),
+                   ('ClassDef2', indirect(ClassDefinition)),
+                   ('Class1Count', uint16),
+                   ('Class2Count', uint16)]}
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)
         format_1, format_2 = self['ValueFormat1'], self['ValueFormat2']
         if self['PosFormat'] == 1:
-            self['PairSetCount'] = uint16(file)
             pst_reader = (lambda file, file_offset: PairSetTable(file,
                                                                  file_offset,
                                                                  format_1,
@@ -48,10 +52,6 @@ class PairAdjustmentSubtable(OpenTypeTable):
             self['PairSet'] = (offset_array(pst_reader, 'PairSetCount')
                                    (self, file, file_offset))
         elif self['PosFormat'] == 2:
-            self['ClassDef1'] = indirect(ClassDefinition)(self, file, file_offset)
-            self['ClassDef2'] = indirect(ClassDefinition)(self, file, file_offset)
-            self['Class1Count'] = uint16(file)
-            self['Class2Count'] = uint16(file)
             self['Class1Record'] = [[Class2Record(file, format_1, format_2)
                                      for j in range(self['Class2Count'])]
                                     for i in range(self['Class1Count'])]
@@ -64,7 +64,7 @@ class PairAdjustmentSubtable(OpenTypeTable):
                 raise KeyError
             pair_value_record = self['PairSet'][index].by_second_glyph_id[b_id]
             return pair_value_record['Value1']['XAdvance']
-        else:
+        elif self['PosFormat'] == 2:
             a_class = self['ClassDef1'].class_number(a_id)
             b_class = self['ClassDef2'].class_number(b_id)
             class_2_record = self['Class1Record'][a_class][b_class]
