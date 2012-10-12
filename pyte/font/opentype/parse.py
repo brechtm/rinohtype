@@ -16,12 +16,19 @@ def grab_datetime(file):
 # using the names and datatypes from the OpenType specification
 # http://www.microsoft.com/typography/otspec/
 
-byte = lambda file: grab(file, 'B')[0]
-char = lambda file: grab(file, 'b')[0]
-ushort = lambda file: grab(file, 'H')[0]
-short = lambda file: grab(file, 'h')[0]
-ulong = lambda file: grab(file, 'L')[0]
-long = lambda file: grab(file, 'l')[0]
+# TODO: speed up by not re-creating the struct over and over again
+#       (create once and re-use)
+def create_reader(data_format):
+    data_struct = struct.Struct('>' + data_format)
+    return lambda file: data_struct.unpack(file.read(data_struct.size))[0]
+
+
+byte = create_reader('B')
+char = create_reader('b')
+ushort = create_reader('H')
+short = create_reader('h')
+ulong = create_reader('L')
+long = create_reader('l')
 fixed = lambda file: grab(file, 'L')[0] / 2**16
 int16 = fword = short
 uint16 = ufword = ushort
@@ -30,6 +37,22 @@ string = lambda file: grab(file, '4s')[0].decode('ascii')
 tag = string
 glyph_id = uint16
 offset = uint16
+
+
+##byte = lambda file: grab(file, 'B')[0]
+##char = lambda file: grab(file, 'b')[0]
+##ushort = lambda file: grab(file, 'H')[0]
+##short = lambda file: grab(file, 'h')[0]
+##ulong = lambda file: grab(file, 'L')[0]
+##long = lambda file: grab(file, 'l')[0]
+##fixed = lambda file: grab(file, 'L')[0] / 2**16
+##int16 = fword = short
+##uint16 = ufword = ushort
+##longdatetime = lambda file: grab_datetime(file)
+##string = lambda file: grab(file, '4s')[0].decode('ascii')
+##tag = string
+##glyph_id = uint16
+##offset = uint16
 
 
 def array(reader, length):
