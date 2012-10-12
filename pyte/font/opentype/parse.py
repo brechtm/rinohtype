@@ -125,27 +125,27 @@ from .tables import parse_table, HmtxTable
 
 class OpenTypeParser(dict):
     def __init__(self, filename):
-        with open(filename, 'rb') as file:
-            tup = grab(file, '4sHHHH')
-            version, num_tables, search_range, entry_selector, range_shift = tup
-            tables = {}
-            for i in range(num_tables):
-                tag, checksum, offset, length = grab(file, '4sLLL')
-                tables[tag.decode('ascii')] = offset, length, checksum
-            for tag, (offset, length, checksum) in tables.items():
-                cs = self._calculate_checksum(file, offset, length, tag=='head')
-                assert cs == checksum
+        self.file = file = open(filename, 'rb')
+        tup = grab(file, '4sHHHH')
+        version, num_tables, search_range, entry_selector, range_shift = tup
+        tables = {}
+        for i in range(num_tables):
+            tag, checksum, offset, length = grab(file, '4sLLL')
+            tables[tag.decode('ascii')] = offset, length, checksum
+        for tag, (offset, length, checksum) in tables.items():
+            cs = self._calculate_checksum(file, offset, length, tag=='head')
+            assert cs == checksum
 
-            for tag in ('head', 'hhea', 'cmap', 'maxp', 'name', 'post', 'OS/2'):
+        for tag in ('head', 'hhea', 'cmap', 'maxp', 'name', 'post', 'OS/2'):
+            self[tag] = parse_table(tag, file, tables[tag][0])
+
+        self['hmtx'] = HmtxTable(file, tables['hmtx'][0],
+                                 self['hhea']['numberOfHMetrics'],
+                                 self['maxp']['numGlyphs'])
+        self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
+        for tag in ('kern', 'GPOS', 'GSUB'):
+            if tag in tables:
                 self[tag] = parse_table(tag, file, tables[tag][0])
-
-            self['hmtx'] = HmtxTable(file, tables['hmtx'][0],
-                                     self['hhea']['numberOfHMetrics'],
-                                     self['maxp']['numGlyphs'])
-            self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
-            for tag in ('kern', 'GPOS', 'GSUB'):
-                if tag in tables:
-                    self[tag] = parse_table(tag, file, tables[tag][0])
 
     def _calculate_checksum(self, file, offset, length, head=False):
         tmp = 0

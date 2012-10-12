@@ -144,14 +144,33 @@ class LookupTable(OpenTypeTable):
         raise KeyError
 
 
+class DelayedList(object):
+    def __init__(self, reader, file, file_offset, item_offsets):
+        self._reader = reader
+        self._file = file
+        self._item_offsets = [file_offset + item_offset
+                              for item_offset in item_offsets]
+        self._items = {}
+
+    def __getitem__(self, index):
+        try:
+            return self._items[index]
+        except KeyError:
+            item_offset = self._item_offsets[index]
+            self._items[index] = self._reader(self._file, item_offset)
+            return self._items[index]
+
+
 class LookupListTable(OpenTypeTable):
     entries = [('LookupCount', uint16)]
 
     def __init__(self, file, file_offset, types):
         super().__init__(file, file_offset)
         lookup_offsets = array(offset, self['LookupCount'])(file)
-        self['Lookup'] = [LookupTable(file, file_offset + lookup_offset, types)
-                          for lookup_offset in lookup_offsets]
+        lookup_reader = lambda file, file_offset: LookupTable(file, file_offset,
+                                                              types)
+        self['Lookup'] = DelayedList(lookup_reader, file, file_offset,
+                                     lookup_offsets)
 
 
 class LayoutTable(OpenTypeTable):
