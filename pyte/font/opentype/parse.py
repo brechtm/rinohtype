@@ -1,5 +1,5 @@
 
-import hashlib, math, struct
+import hashlib, math, io, struct
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
@@ -148,7 +148,9 @@ from .tables import parse_table, HmtxTable
 
 class OpenTypeParser(dict):
     def __init__(self, filename):
-        self.file = file = open(filename, 'rb')
+        disk_file = open(filename, 'rb')
+        file = io.BytesIO(disk_file.read())
+        disk_file.close()
         tup = grab(file, '4sHHHH')
         version, num_tables, search_range, entry_selector, range_shift = tup
         tables = {}
