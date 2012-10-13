@@ -1,7 +1,7 @@
 
-from .tables import OpenTypeTable, MultiFormatTable, context_array, offset_array
+from .parse import OpenTypeTable, MultiFormatTable
 from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
-from .parse import Packed
+from .parse import context_array, indirect_array, Packed
 from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
 from .layout import Coverage, ClassDefinition
 
@@ -42,14 +42,14 @@ class Ligature(OpenTypeTable):
 
 class LigatureSet(OpenTypeTable):
     entries = [('LigatureCount', uint16),
-               ('Ligature', offset_array(Ligature, 'LigatureCount'))]
+               ('Ligature', indirect_array(Ligature, 'LigatureCount'))]
 
 
 class LigatureSubTable(OpenTypeTable):
     entries = [('SubstFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('LigSetCount', uint16),
-               ('LigatureSet', offset_array(LigatureSet, 'LigSetCount'))]
+               ('LigatureSet', indirect_array(LigatureSet, 'LigSetCount'))]
 
     def lookup(self, a_id, b_id):
         try:

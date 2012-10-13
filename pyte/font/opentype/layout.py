@@ -1,5 +1,5 @@
 
-from .tables import OpenTypeTable, MultiFormatTable, context_array, offset_array
+from .parse import OpenTypeTable, MultiFormatTable, context_array
 from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed
 
 
@@ -120,7 +120,6 @@ class ClassDefinition(MultiFormatTable):
         return 0
 
 
-# TODO: optimization - only load lookup tables when they are required
 class LookupTable(OpenTypeTable):
     entries = [('LookupType', uint16),
                ('LookupFlag', LookupFlag),

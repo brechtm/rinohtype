@@ -3,13 +3,14 @@ import ctypes
 
 from warnings import warn
 
+from ...warnings import PyteWarning
 from .. import Font
+from ..metrics import FontMetrics, GlyphMetrics
 from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
 from ..style import SMALL_CAPITAL
-from ..metrics import FontMetrics, GlyphMetrics
-from ...warnings import PyteWarning
 
-from .parse import OpenTypeParser, NAME_PS_NAME
+from .parse import OpenTypeParser
+from .ids import NAME_PS_NAME
 
 
 class OpenTypeFont(Font):

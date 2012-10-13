@@ -1,59 +1,8 @@
 
-from collections import OrderedDict
-
-from ...util import recursive_subclasses
-from .parse import grab
+from .parse import OpenTypeTable, MultiFormatTable
 from .parse import byte, char, ushort, short, ulong, long, fixed
 from .parse import fword, ufword, longdatetime, string, array, offset, Packed
-from .parse import PLATFORM_WINDOWS, decode
-
-
-def parse_table(tag, file, file_offset):
-    for cls in recursive_subclasses(OpenTypeTable):
-        if cls.tag == tag:
-            return cls(file, file_offset)
-
-
-def context_array(reader, count_key):
-    return lambda table, file, not_used: array(reader, table[count_key])(file)
-
-
-def offset_array(entry_type, count_key):
-    def reader_function(table, file, file_offset):
-        offsets = array(offset, table[count_key])(file)
-        return [entry_type(file, file_offset + entry_offset)
-                for entry_offset in offsets]
-    return reader_function
-
-
-class OpenTypeTable(OrderedDict):
-    tag = None
-    entries = []
-
-    def __init__(self, file, file_offset=None):
-        super().__init__()
-        if file_offset is not None:
-            file.seek(file_offset)
-        self.parse(file, file_offset, self.entries)
-
-    def parse(self, file, file_offset, entries):
-        for key, reader in entries:
-            try:
-                value = reader(file)
-            except TypeError: # reader requires the context
-                value = reader(self, file, file_offset)
-            if key is not None:
-                self[key] = value
-
-
-class MultiFormatTable(OpenTypeTable):
-    formats = {}
-
-    def __init__(self, file, file_offset=None):
-        super().__init__(file, file_offset)
-        table_format = self[self.entries[0][0]]
-        if table_format in self.formats:
-            self.parse(file, file_offset, self.formats[table_format])
+from . import ids
 
 
 class HeadTable(OpenTypeTable):
@@ -111,11 +60,11 @@ class HmtxTable(OpenTypeTable):
         advance_widths = []
         left_side_bearings = []
         for i in range(number_of_h_metrics):
-            advance_width, lsb = grab(file, 'Hh')
+            advance_width, lsb = ushort(file), short(file)
             advance_widths.append(advance_width)
             left_side_bearings.append(lsb)
         for i in range(num_glyphs - number_of_h_metrics):
-            lsb, = grab(file, 'h')
+            lsb = short(file)
             advance_widths.append(advance_width)
             left_side_bearings.append(lsb)
         self['advanceWidth'] = advance_widths
@@ -218,6 +167,16 @@ class NameTable(OpenTypeTable):
     entries = [('format', ushort),
                ('count', ushort),
                ('stringOffset', ushort)]
+    encodings = {ids.PLATFORM_UNICODE: {},
+                 ids.PLATFORM_MACINTOSH: {},
+                 ids.PLATFORM_ISO: {},
+                 ids.PLATFORM_WINDOWS: {1: 'utf_16_be',
+                                        2: 'cp932',
+                                        3: 'gbk',
+                                        4: 'cp950',
+                                        5: 'euc_kr',
+                                        6: 'johab',
+                                        10: 'utf_32_be'}}
 
     def __init__(self, file, offset):
         super().__init__(file, offset)
@@ -232,9 +191,16 @@ class NameTable(OpenTypeTable):
             file.seek(data_offset + record['offset'])
             data = file.read(record['length'])
             # TODO: decode according to platform and encoding
-            if record['platformID'] == PLATFORM_WINDOWS:
-                self[record['nameID']] = decode(record['platformID'],
-                                                record['encodingID'], data)
+            if record['platformID'] == ids.PLATFORM_WINDOWS:
+                self[record['nameID']] = self._decode(data, record)
+
+    def _decode(self, data, record):
+        platform_id, encoding_id = record['platformID'], record['encodingID']
+        try:
+            encoding = self.encodings[platform_id][encoding_id]
+            return data.decode(encoding)
+        except KeyError:
+            raise NotImplementedError()
 
 
 class CmapRecord(OpenTypeTable):
@@ -284,8 +250,7 @@ class CmapTable(OpenTypeTable):
                 start_count = array(ushort, seg_count)(file)
                 id_delta = array(short, seg_count)(file)
                 id_range_offset = array(ushort, seg_count)(file)
-                glyph_id_array_length = (record_offset + length
-                                            - file.tell())
+                glyph_id_array_length = (record_offset + length - file.tell())
                 glyph_id_array = array(ushort,
                                        glyph_id_array_length >> 1)(file)
                 segments = zip(start_count, end_count, id_delta,
@@ -313,16 +278,12 @@ class CmapTable(OpenTypeTable):
             self[key] = out
 
 
-LANG_TAG_RECORD = [('length', ushort),
-                   ('offset', ushort)]
-
-
 class KerningCoverage(Packed):
     reader = ushort
-    fields = [('horizontal', 0b0001, bool),
-              ('minimum', 0b0010, bool),
-              ('cross-stream', 0b0100, bool),
-              ('override', 0b1000, bool),
+    fields = [('horizontal', 0x01, bool),
+              ('minimum', 0x02, bool),
+              ('cross-stream', 0x04, bool),
+              ('override', 0x08, bool),
               ('format', 0xF0, int),]
 
 

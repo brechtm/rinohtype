@@ -3,56 +3,37 @@ import hashlib, math, io, struct
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
-
-def grab(file, data_format):
-    data = file.read(struct.calcsize(data_format))
-    return struct.unpack('>' + data_format, data)
+from ...util import recursive_subclasses
+from .cff import CompactFontFormat
 
 
-def grab_datetime(file):
-    return datetime(1904, 1, 1, 12) + timedelta(seconds=grab(file, 'Q')[0])
-
-
-# using the names and datatypes from the OpenType specification
-# http://www.microsoft.com/typography/otspec/
-
-# TODO: speed up by not re-creating the struct over and over again
-#       (create once and re-use)
 def create_reader(data_format):
     data_struct = struct.Struct('>' + data_format)
     return lambda file: data_struct.unpack(file.read(data_struct.size))[0]
 
 
+# using the names and datatypes from the OpenType specification
+# http://www.microsoft.com/typography/otspec/
 byte = create_reader('B')
 char = create_reader('b')
 ushort = create_reader('H')
 short = create_reader('h')
 ulong = create_reader('L')
 long = create_reader('l')
-fixed = lambda file: grab(file, 'L')[0] / 2**16
+fixed = lambda file: ulong(file) / 2**16
 int16 = fword = short
 uint16 = ufword = ushort
-longdatetime = lambda file: grab_datetime(file)
-string = lambda file: grab(file, '4s')[0].decode('ascii')
+string = lambda file: string._grabber(file).decode('ascii').strip()
+string._grabber = create_reader('4s')
 tag = string
 glyph_id = uint16
 offset = uint16
 
+def longdatetime(file):
+    return longdatetime._epoch + timedelta(seconds=longdatetime._grabber(file))
 
-##byte = lambda file: grab(file, 'B')[0]
-##char = lambda file: grab(file, 'b')[0]
-##ushort = lambda file: grab(file, 'H')[0]
-##short = lambda file: grab(file, 'h')[0]
-##ulong = lambda file: grab(file, 'L')[0]
-##long = lambda file: grab(file, 'l')[0]
-##fixed = lambda file: grab(file, 'L')[0] / 2**16
-##int16 = fword = short
-##uint16 = ufword = ushort
-##longdatetime = lambda file: grab_datetime(file)
-##string = lambda file: grab(file, '4s')[0].decode('ascii')
-##tag = string
-##glyph_id = uint16
-##offset = uint16
+longdatetime._epoch = datetime(1904, 1, 1, 12)
+longdatetime._grabber = create_reader('Q')
 
 
 def array(reader, length):
@@ -69,6 +50,18 @@ def indirect(reader):
     return read_and_restore_file_position
 
 
+def context_array(reader, count_key):
+    return lambda table, file, not_used: array(reader, table[count_key])(file)
+
+
+def indirect_array(entry_type, count_key):
+    def reader_function(table, file, file_offset):
+        offsets = array(offset, table[count_key])(file)
+        return [entry_type(file, file_offset + entry_offset)
+                for entry_offset in offsets]
+    return reader_function
+
+
 class Packed(OrderedDict):
     reader = None
     fields = []
@@ -80,70 +73,64 @@ class Packed(OrderedDict):
             self[name] = processor(self.value & mask)
 
 
-PLATFORM_UNICODE = 0
-PLATFORM_MACINTOSH = 1
-PLATFORM_ISO = 2
-PLATFORM_WINDOWS = 3
-PLATFORM_CUSTOM = 4
+class OpenTypeTable(OrderedDict):
+    tag = None
+    entries = []
 
-NAME_COPYRIGHT = 0
-NAME_FAMILTY = 1
-NAME_SUBFAMILY = 2
-NAME_UID = 3
-NAME_FULL = 4
-NAME_VERSION = 5
-NAME_PS_NAME = 6
-NAME_TRADEMARK = 7
-NAME_MANUFACTURER = 8
-NAME_DESIGNER = 9
-NAME_DESCRIPTION = 10
-NAME_VENDOR_URL = 11
-NAME_DESIGNER_URL = 12
-NAME_LICENSE = 13
-NAME_LICENSE_URL = 14
-NAME_PREFERRED_FAMILY = 16
-NAME_PREFERRED_SUBFAMILY = 17
-# ...
+    def __init__(self, file, file_offset=None):
+        super().__init__()
+        if file_offset is not None:
+            file.seek(file_offset)
+        self.parse(file, file_offset, self.entries)
+
+    def parse(self, file, file_offset, entries):
+        for key, reader in entries:
+            try:
+                value = reader(file)
+            except TypeError: # reader requires the context
+                value = reader(self, file, file_offset)
+            if key is not None:
+                self[key] = value
 
 
-def decode(platform_id, encoding_id, data):
-    try:
-        return data.decode(encodings[platform_id][encoding_id])
-    except KeyError:
-        raise NotImplementedError()
+class MultiFormatTable(OpenTypeTable):
+    formats = {}
+
+    def __init__(self, file, file_offset=None):
+        super().__init__(file, file_offset)
+        table_format = self[self.entries[0][0]]
+        if table_format in self.formats:
+            self.parse(file, file_offset, self.formats[table_format])
 
 
-encodings = {}
-
-encodings[PLATFORM_UNICODE] = {}
-
-UNICODE_1_0 = 0
-UNICODE_1_1 = 1
-UNICODE_ISO_IEC_10646 = 2
-UNICODE_2_0_BMP = 3
-UNICODE_2_0_FULL = 4
-UNICODE_VAR_SEQ = 5
-UNICODE_FULL = 6
-
-encodings[PLATFORM_MACINTOSH] = {}
-
-encodings[PLATFORM_ISO] = {}
-
-ISO_ASCII = 0
-ISO_10646 = 1
-ISO_8859_1 = 2
-
-encodings[PLATFORM_WINDOWS] = {1: 'utf_16_be',
-                               2: 'cp932',
-                               3: 'gbk',
-                               4: 'cp950',
-                               5: 'euc_kr',
-                               6: 'johab',
-                               10: 'utf_32_be'}
+class OffsetTable(OpenTypeTable):
+    entries = [('sfnt version', fixed),
+               ('numTables', ushort),
+               ('searchRange', ushort),
+               ('entrySelector', ushort),
+               ('rangeShift', ushort)]
 
 
-from .cff import CompactFontFormat
-from .tables import parse_table, HmtxTable
+class TableRecord(OpenTypeTable):
+    entries = [('tag', tag),
+               ('checkSum', ulong),
+               ('offset', ulong),
+               ('length', ulong)]
+
+    def check_sum(self, file):
+        total = 0
+        table_offset = self['offset']
+        file.seek(table_offset)
+        end_of_data = table_offset + 4 * math.ceil(self['length'] / 4)
+        while file.tell() < end_of_data:
+            value = ulong(file)
+            if not (self['tag'] == 'head' and file.tell() == table_offset + 12):
+                total += value
+        checksum = total % 2**32
+        assert checksum == self['checkSum']
+
+
+from .tables import HmtxTable
 
 
 class OpenTypeParser(dict):
@@ -151,33 +138,26 @@ class OpenTypeParser(dict):
         disk_file = open(filename, 'rb')
         file = io.BytesIO(disk_file.read())
         disk_file.close()
-        tup = grab(file, '4sHHHH')
-        version, num_tables, search_range, entry_selector, range_shift = tup
-        tables = {}
-        for i in range(num_tables):
-            tag, checksum, offset, length = grab(file, '4sLLL')
-            tables[tag.decode('ascii')] = offset, length, checksum
-        for tag, (offset, length, checksum) in tables.items():
-            cs = self._calculate_checksum(file, offset, length, tag=='head')
-            assert cs == checksum
+        offset_table = OffsetTable(file)
+        table_records = OrderedDict()
+        for i in range(offset_table['numTables']):
+            record = TableRecord(file)
+            table_records[record['tag']] = record
+        for tag, record in table_records.items():
+            record.check_sum(file)
 
         for tag in ('head', 'hhea', 'cmap', 'maxp', 'name', 'post', 'OS/2'):
-            self[tag] = parse_table(tag, file, tables[tag][0])
+            self[tag] = self._parse_table(file, table_records[tag])
 
-        self['hmtx'] = HmtxTable(file, tables['hmtx'][0],
+        self['hmtx'] = HmtxTable(file, table_records['hmtx']['offset'],
                                  self['hhea']['numberOfHMetrics'],
                                  self['maxp']['numGlyphs'])
-        self['CFF'] = CompactFontFormat(file, tables['CFF '][0])
+        self['CFF'] = CompactFontFormat(file, table_records['CFF']['offset'])
         for tag in ('kern', 'GPOS', 'GSUB'):
-            if tag in tables:
-                self[tag] = parse_table(tag, file, tables[tag][0])
+            if tag in table_records:
+                self[tag] = self._parse_table(file, table_records[tag])
 
-    def _calculate_checksum(self, file, offset, length, head=False):
-        tmp = 0
-        file.seek(offset)
-        end_of_data = offset + 4 * math.ceil(length / 4)
-        while file.tell() < end_of_data:
-            uint32 = grab(file, 'L')[0]
-            if not (head and file.tell() == offset + 12):
-                tmp += uint32
-        return tmp % 2**32
+    def _parse_table(self, file, table_record):
+        for cls in recursive_subclasses(OpenTypeTable):
+            if cls.tag == table_record['tag']:
+                return cls(file, table_record['offset'])

@@ -1,7 +1,7 @@
 
 import struct
 
-from .tables import OpenTypeTable, MultiFormatTable, context_array, offset_array
+from .parse import OpenTypeTable, MultiFormatTable, context_array, indirect_array
 from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
 from .parse import Packed
 from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
@@ -68,7 +68,7 @@ class PairAdjustmentSubtable(MultiFormatTable):
                                                                  file_offset,
                                                                  format_1,
                                                                  format_2))
-            self['PairSet'] = (offset_array(pst_reader, 'PairSetCount')
+            self['PairSet'] = (indirect_array(pst_reader, 'PairSetCount')
                                    (self, file, file_offset))
         elif self['PosFormat'] == 2:
             record_format = format_1.data_format + format_2.data_format
