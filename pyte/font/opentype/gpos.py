@@ -94,11 +94,11 @@ class PairAdjustmentSubtable(MultiFormatTable):
         super().__init__(file, file_offset)
         format_1, format_2 = self['ValueFormat1'], self['ValueFormat2']
         if self['PosFormat'] == 1:
-            record_struct = struct.Struct('>' + format_1.data_format + format_2.data_format)
+            record_format = format_1.data_format + format_2.data_format
             value_1_length = len(format_1)
             pst_reader = (lambda file, file_offset: PairSetTable(file,
                                                                  file_offset,
-                                                                 record_struct,
+                                                                 record_format,
                                                                  value_1_length))
             self['PairSet'] = (offset_array(pst_reader, 'PairSetCount')
                                    (self, file, file_offset))
@@ -126,19 +126,21 @@ class PairAdjustmentSubtable(MultiFormatTable):
 class PairSetTable(OpenTypeTable):
     entries = [('PairValueCount', uint16)]
 
-    def __init__(self, file, file_offset, record_struct, value_1_length):
+    def __init__(self, file, file_offset, record_format, value_1_length):
         super().__init__(file, file_offset)
-##        pair_value_record_size = 2 + record_struct.size
-##        buffer = file.read(pair_value_record_size * self['PairValueCount'])
-        pvr_reader = lambda file: PairValueRecord(file, record_struct, value_1_length)
-        self['PairValueRecord'] = array(pvr_reader, self['PairValueCount'])(file)
+        pvr_struct = struct.Struct('>H' + record_format)
+        pvr_size = pvr_struct.size
+        pvr_list = []
         self.by_second_glyph_id = {}
-        for record in self['PairValueRecord']:
-            self.by_second_glyph_id[record['SecondGlyph']] = record
-
-
-class PairValueRecord(Class2Record):
-    entries = [('SecondGlyph', glyph_id)]
+        for i in range(self['PairValueCount']):
+            record_bytes = file.read(pvr_size)
+            record_data = pvr_struct.unpack(record_bytes)
+            second_glyph = record_data[0]
+            pvr = {'Value1': record_data[1:value_1_length + 1],
+                   'Value2': record_data[value_1_length + 1:]}
+            pvr_list.append(pvr)
+            self.by_second_glyph_id[second_glyph] = pvr
+        self['PairValueRecord'] = pvr_list
 
 
 ##class ValueRecord(OpenTypeTable):
