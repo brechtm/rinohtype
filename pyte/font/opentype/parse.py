@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from collections import OrderedDict
 
 from ...util import recursive_subclasses
-from .cff import CompactFontFormat
 
 
 def create_reader(data_format):
@@ -130,7 +129,9 @@ class TableRecord(OpenTypeTable):
         assert checksum == self['checkSum']
 
 
-from .tables import HmtxTable
+from .required import HmtxTable
+from .cff import CompactFontFormat
+from . import other, gpos, gsub
 
 
 class OpenTypeParser(dict):
