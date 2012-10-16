@@ -144,4 +144,9 @@ class OpenTypeMetrics(FontMetrics):
                     return lookup_table.lookup(a.code, b.code)
                 except KeyError:
                     pass
+        if 'kern' in self._tables:
+            try:
+                return self._tables['kern'][0].pairs[a.code][b.code]
+            except KeyError:
+                pass
         return 0.0
