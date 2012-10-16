@@ -1,7 +1,7 @@
 
 from .parse import OpenTypeTable, MultiFormatTable
-from .parse import byte, char, ushort, short, ulong, long, fixed
-from .parse import fword, ufword, longdatetime, string, array, offset, Packed
+from .parse import byte, ushort, short, ulong, fixed, fword, ufword
+from .parse import longdatetime, string, array, context_array, Packed
 from . import ids
 
 
@@ -25,6 +25,10 @@ class HeadTable(OpenTypeTable):
                ('fontDirectionHint', short),
                ('indexToLocFormat', short),
                ('glyphDataFormat', short)]
+
+    @property
+    def bounding_box(self):
+        return (self['xMin'], self['yMin'], self['xMax'], self['yMax'])
 
 
 class HheaTable(OpenTypeTable):
@@ -53,10 +57,10 @@ class HmtxTable(OpenTypeTable):
     """Horizontal metrics"""
     tag = 'htmx'
 
-    def __init__(self, file, offset, number_of_h_metrics, num_glyphs):
-        super().__init__(file, offset)
+    def __init__(self, file, file_offset, number_of_h_metrics, num_glyphs):
+        super().__init__(file, file_offset)
         # TODO: rewrite using context_array ?
-        file.seek(offset)
+        file.seek(file_offset)
         advance_widths = []
         left_side_bearings = []
         for i in range(number_of_h_metrics):
@@ -161,46 +165,42 @@ class NameRecord(OpenTypeTable):
                ('offset', ushort)]
 
 
-class NameTable(OpenTypeTable):
+class LangTagRecord(OpenTypeTable):
+    entries = [('length', ushort),
+               ('offset', ushort)]
+
+
+class NameTable(MultiFormatTable):
     """Naming table"""
     tag = 'name'
     entries = [('format', ushort),
                ('count', ushort),
-               ('stringOffset', ushort)]
-    encodings = {ids.PLATFORM_UNICODE: {},
-                 ids.PLATFORM_MACINTOSH: {},
-                 ids.PLATFORM_ISO: {},
-                 ids.PLATFORM_WINDOWS: {1: 'utf_16_be',
-                                        2: 'cp932',
-                                        3: 'gbk',
-                                        4: 'cp950',
-                                        5: 'euc_kr',
-                                        6: 'johab',
-                                        10: 'utf_32_be'}}
+               ('stringOffset', ushort),
+               ('nameRecord', context_array(NameRecord, 'count'))]
+    formats = {1: [('langTagCount', ushort),
+                   ('langTagRecord', context_array(LangTagRecord,
+                                                   'langTagCount'))]}
 
-    def __init__(self, file, offset):
-        super().__init__(file, offset)
-        records = []
-        for i in range(self['count']):
-            record = NameRecord(file, file.tell())
-            records.append(record)
+    def __init__(self, file, file_offset):
+        super().__init__(file, file_offset)
         if self['format'] == 1:
             raise NotImplementedError
-        data_offset = file.tell()
-        for record in records:
-            file.seek(data_offset + record['offset'])
+        string_offset = file_offset + self['stringOffset']
+        self.strings = {}
+        for record in self['nameRecord']:
+            file.seek(string_offset + record['offset'])
             data = file.read(record['length'])
-            # TODO: decode according to platform and encoding
-            if record['platformID'] == ids.PLATFORM_WINDOWS:
-                self[record['nameID']] = self._decode(data, record)
-
-    def _decode(self, data, record):
-        platform_id, encoding_id = record['platformID'], record['encodingID']
-        try:
-            encoding = self.encodings[platform_id][encoding_id]
-            return data.decode(encoding)
-        except KeyError:
-            raise NotImplementedError()
+            if record['platformID'] in (ids.PLATFORM_UNICODE,
+                                        ids.PLATFORM_WINDOWS):
+                string = data.decode('utf_16_be')
+            elif record['platformID'] == ids.PLATFORM_MACINTOSH:
+                # TODO: properly decode according to the specified encoding
+                string = data.decode('mac_roman')
+            else:
+                raise NotImplementedError
+            name = self.strings.setdefault(record['nameID'], {})
+            platform = name.setdefault(record['platformID'], {})
+            platform[record['languageID']] = string
 
 
 class CmapRecord(OpenTypeTable):
@@ -221,14 +221,14 @@ class CmapTable(OpenTypeTable):
     entries = [('version', ushort),
                ('numTables', ushort)]
 
-    def __init__(self, file, offset):
-        super().__init__(file, offset)
+    def __init__(self, file, file_offset):
+        super().__init__(file, file_offset)
         records = []
         for i in range(self['numTables']):
             record = CmapRecord(file, file.tell())
             records.append(record)
         for record in records:
-            record_offset = offset + record['offset']
+            record_offset = file_offset + record['offset']
             file.seek(record_offset)
             table_format = ushort(file)
             if table_format in (8, 10, 12, 13):

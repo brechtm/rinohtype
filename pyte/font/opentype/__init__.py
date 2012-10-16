@@ -10,7 +10,7 @@ from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
 from ..style import SMALL_CAPITAL
 
 from .parse import OpenTypeParser
-from .ids import NAME_PS_NAME
+from .ids import NAME_PS_NAME, PLATFORM_WINDOWS, LANGUAGE_WINDOWS_EN_US
 
 
 class OpenTypeFont(Font):
@@ -40,9 +40,13 @@ class OpenTypeMetrics(FontMetrics):
         for glyph_index, width in enumerate(tables['hmtx']['advanceWidth']):
             glyph_metrics = GlyphMetrics(None, width, None, glyph_index)
             self._glyphs_by_code[glyph_index] = glyph_metrics
-        for ordinal, glyph_index in tables['cmap'][(3, 1)].items():
-            self._glyphs[chr(ordinal)] = self._glyphs_by_code[glyph_index]
-        self.bbox = tables['CFF'].top_dicts[0]['FontBBox']
+        for encoding in [(1, 0), (3, 1)]:
+            if encoding not in tables['cmap']:
+                continue
+            for ordinal, glyph_index in tables['cmap'][encoding].items():
+                self._glyphs[chr(ordinal)] = self._glyphs_by_code[glyph_index]
+        assert self._glyphs
+        self.bbox = tables['head'].bounding_box
         self.italic_angle = tables['post']['italicAngle']
         self.ascent = tables['hhea']['Ascender']
         self.descent = tables['hhea']['Descender']
@@ -52,7 +56,8 @@ class OpenTypeMetrics(FontMetrics):
 
     @property
     def name(self):
-        return self._tables['name'][NAME_PS_NAME]
+        names = self._tables['name'].strings
+        return names[NAME_PS_NAME][PLATFORM_WINDOWS][LANGUAGE_WINDOWS_EN_US]
 
     def get_glyph(self, char, variant=None):
         try:
