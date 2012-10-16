@@ -1,7 +1,10 @@
 
+import struct
+
 from .parse import OpenTypeTable, MultiFormatTable
 from .parse import byte, ushort, short, ulong, fixed, fword, ufword
 from .parse import longdatetime, string, array, context_array, Packed
+from .macglyphs import MAC_GLYPHS
 from . import ids
 
 
@@ -137,7 +140,7 @@ class OS2Table(OpenTypeTable):
                ('usMaxContext', ushort)]
 
 
-class PostTable(OpenTypeTable):
+class PostTable(MultiFormatTable):
     """PostScript information"""
     tag = 'post'
     entries = [('version', fixed),
@@ -149,11 +152,31 @@ class PostTable(OpenTypeTable):
                ('maxMemType42', ulong),
                ('minMemType1', ulong),
                ('maxMemType1', ulong)]
+    formats = {2.0: [('numberOfGlyphs', ushort),
+                     ('glyphNameIndex', context_array(ushort,
+                                                      'numberOfGlyphs'))]}
 
-    def __init__(self, file, offset):
-        super().__init__(file, offset)
-        if self['version'] != 3.0:
-            raise NotImplementedError()
+    def __init__(self, file, file_offset):
+        super().__init__(file, file_offset)
+        self.names = []
+        if self['version'] == 2.0:
+            num_new_glyphs = max(self['glyphNameIndex']) - 257
+            names = []
+            for i in range(num_new_glyphs):
+                names.append(self._read_pascal_string(file))
+            for index in self['glyphNameIndex']:
+                if index < 258:
+                    name = MAC_GLYPHS[index]
+                else:
+                    name = names[index - 258]
+                self.names.append(name)
+        elif self['version'] != 3.0:
+            raise NotImplementedError
+
+    def _read_pascal_string(self, file):
+        length = byte(file)
+        return struct.unpack('>{}s'.format(length),
+                             file.read(length))[0].decode('ascii')
 
 
 class NameRecord(OpenTypeTable):
