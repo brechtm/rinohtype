@@ -525,8 +525,9 @@ class CIDFontType0(CIDFont):
 
 
 class CIDFontType2(CIDFont):
-    def __init__(self, cid_to_gid_map=None):
-        super().__init__()
+    def __init__(self, base_font, cid_system_info, font_descriptor,
+                 dw=1000, w=None, cid_to_gid_map=None):
+        super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
         self['Subtype'] = Name('CIDFontType2')
         if cid_to_gid_map:
             self['CIDToGIDMap'] = cid_to_gid_map

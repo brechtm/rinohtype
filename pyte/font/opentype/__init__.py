@@ -25,6 +25,10 @@ class OpenTypeFont(Font):
     def name(self):
         return self.metrics.name
 
+    @property
+    def scaling_factor(self):
+        return self.tables['head']['unitsPerEm']
+
 
 class OpenTypeMetrics(FontMetrics):
     def __init__(self, tables):
@@ -43,6 +47,12 @@ class OpenTypeMetrics(FontMetrics):
                 bbox = None
             glyph_metrics = GlyphMetrics(None, width, bbox, glyph_index)
             self._glyphs_by_code[glyph_index] = glyph_metrics
+        # TODO: support symbol/wingdings
+        #       "The 'cmap' subtable (platform 3, encoding 0) must use format 4.
+        #       The character codes should start at 0xF000, which is in the
+        #       Private Use Area of Unicode. It is suggested to derive the
+        #       format 4 encodings by simply adding 0xF000 to the format 0
+        #       (Macintosh) encodings."
         for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
             try:
                 for ordinal, index in tables['cmap'][encoding].items():
@@ -71,14 +81,16 @@ class OpenTypeMetrics(FontMetrics):
             warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
                  .format(self.name, ord(char), char), PyteWarning)
             return self._glyphs['?']
-        if variant == SMALL_CAPITAL:
-            lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
-            for lookup_table in lookup_tables:
-                try:
-                    code = lookup_table.lookup(glyph.code)
-                    return self._glyphs_by_code[code]
-                except KeyError:
-                    pass
+
+        if 'GSUB' in self._tables:
+            if variant == SMALL_CAPITAL:
+                lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
+                for lookup_table in lookup_tables:
+                    try:
+                        code = lookup_table.lookup(glyph.code)
+                        return self._glyphs_by_code[code]
+                    except KeyError:
+                        pass
         return glyph
 
     def _get_lookup_tables(self, table, feature, script='DFLT', language=None):
@@ -112,22 +124,24 @@ class OpenTypeMetrics(FontMetrics):
                         for lookup_list_index in lookup_list_indices]
 
     def get_ligature(self, glyph, successor_glyph):
-        lookup_tables = self._get_lookup_tables('GSUB', 'liga', 'latn')
-        for lookup_table in lookup_tables:
-            try:
-                code = lookup_table.lookup(glyph.code, successor_glyph.code)
-                return self._glyphs_by_code[code]
-            except KeyError:
-                pass
+        if 'GSUB' in self._tables:
+            lookup_tables = self._get_lookup_tables('GSUB', 'liga', 'latn')
+            for lookup_table in lookup_tables:
+                try:
+                    code = lookup_table.lookup(glyph.code, successor_glyph.code)
+                    return self._glyphs_by_code[code]
+                except KeyError:
+                    pass
         return None
 
     def get_kerning(self, a, b):
-        lookup_tables = self._get_lookup_tables('GPOS', 'kern', 'latn')
-        # TODO: 'kern' lookup list indices can point to pair adjustment (2) or
-        #       Chained Context positioning (8) lookup subtables
-        for lookup_table in lookup_tables:
-            try:
-                return lookup_table.lookup(a.code, b.code)
-            except KeyError:
-                pass
+        if 'GPOS' in self._tables:
+            lookup_tables = self._get_lookup_tables('GPOS', 'kern', 'latn')
+            # TODO: 'kern' lookup list indices can point to pair adjustment (2)
+            #       or Chained Context positioning (8) lookup subtables
+            for lookup_table in lookup_tables:
+                try:
+                    return lookup_table.lookup(a.code, b.code)
+                except KeyError:
+                    pass
         return 0.0

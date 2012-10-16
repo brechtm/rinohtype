@@ -247,6 +247,10 @@ class Type1Font(Font):
     def name(self):
         return self.metrics.name
 
+    @property
+    def scaling_factor(self):
+        return 1000
+
     def parse_pfa(self, file):
         raise NotImplementedError
 

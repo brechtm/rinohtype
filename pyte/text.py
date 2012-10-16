@@ -125,8 +125,8 @@ class StyledText(Styled):
 
     @cached_property
     def widths(self):
-        font_size = float(self.height) / 1000.0
-        font_metrics = self.font.metrics
+        scale = float(self.height) / self.font.scaling_factor
+        get_kerning = self.font.metrics.get_kerning
         kerning = self.get_style('kerning')
         glyphs = self.glyphs()
         widths = []
@@ -135,11 +135,11 @@ class StyledText(Styled):
         prev_width = prev_glyph.width
         for glyph in glyphs:
             if kerning:
-                prev_width += font_metrics.get_kerning(prev_glyph, glyph)
-            widths.append(prev_width * font_size)
+                prev_width += get_kerning(prev_glyph, glyph)
+            widths.append(prev_width * scale)
             prev_width = glyph.width
             prev_glyph = glyph
-        widths.append(prev_width * font_size)
+        widths.append(prev_width * scale)
         return widths
 
     def glyphs(self, variant=None):

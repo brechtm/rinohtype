@@ -49,8 +49,12 @@ class Document(object):
                 widths = font.tables['hmtx']['advanceWidth']
                 w = cos.Array([cos.Integer(0),
                                cos.Array(map(cos.Integer, widths))])
-                cid_font = cos.CIDFontType0(font.name, cid_system_info,
-                                            font_desc, w=w)
+                if 'CFF' in font.tables:
+                    cid_font = cos.CIDFontType0(font.name, cid_system_info,
+                                                font_desc, w=w)
+                else:
+                    cid_font = cos.CIDFontType2(font.name, cid_system_info,
+                                                font_desc, w=w)
                 font_rsc = cos.CompositeFont(cid_font, 'Identity-H')
             self.fonts[font] = font_rsc
         return font_rsc

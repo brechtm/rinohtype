@@ -142,9 +142,7 @@ class Line(list):
         super().append(item)
 
     def typeset(self, canvas, last_line=False):
-        """Typeset words on the current coordinates"""
-        chars = []
-        char_widths = []
+        """Typeset words at the current coordinates"""
         max_font_size = 0
         justify = self.paragraph.get_style('justify')
         if Tab in map(type, self) or justify == BOTH and last_line:

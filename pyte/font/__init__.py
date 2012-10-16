@@ -25,6 +25,10 @@ class Font(object):
         self.slant = slant
         self.width = width
 
+    @property
+    def scaling_factor(self):
+        raise NotImplementedError
+
 
 class TypeFace(dict):
     def __init__(self, name, *fonts, weight_order=WEIGHTS):
