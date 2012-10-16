@@ -35,16 +35,21 @@ class OpenTypeMetrics(FontMetrics):
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
-        # TODO: differentiate between TT/CFF
-        # TODO: extract bboxes: http://www.tug.org/TUGboat/tb24-3/bella.pdf
+        # TODO: extract bboxes from CFF: www.tug.org/TUGboat/tb24-3/bella.pdf
         for glyph_index, width in enumerate(tables['hmtx']['advanceWidth']):
-            glyph_metrics = GlyphMetrics(None, width, None, glyph_index)
+            try:
+                bbox = tables['glyf'][glyph_index].bounding_box
+            except KeyError:
+                bbox = None
+            glyph_metrics = GlyphMetrics(None, width, bbox, glyph_index)
             self._glyphs_by_code[glyph_index] = glyph_metrics
-        for encoding in [(1, 0), (3, 1)]:
-            if encoding not in tables['cmap']:
+        for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
+            try:
+                for ordinal, index in tables['cmap'][encoding].items():
+                    self._glyphs[chr(ordinal)] = self._glyphs_by_code[index]
+                break
+            except KeyError:
                 continue
-            for ordinal, glyph_index in tables['cmap'][encoding].items():
-                self._glyphs[chr(ordinal)] = self._glyphs_by_code[glyph_index]
         assert self._glyphs
         self.bbox = tables['head'].bounding_box
         self.italic_angle = tables['post']['italicAngle']

@@ -131,7 +131,7 @@ class TableRecord(OpenTypeTable):
 
 from .required import HmtxTable
 from .cff import CompactFontFormat
-from . import other, gpos, gsub
+from . import truetype, gpos, gsub, other
 
 
 class OpenTypeParser(dict):
@@ -153,7 +153,17 @@ class OpenTypeParser(dict):
         self['hmtx'] = HmtxTable(file, table_records['hmtx']['offset'],
                                  self['hhea']['numberOfHMetrics'],
                                  self['maxp']['numGlyphs'])
-        self['CFF'] = CompactFontFormat(file, table_records['CFF']['offset'])
+        try:
+            self['CFF'] = CompactFontFormat(file,
+                                            table_records['CFF']['offset'])
+        except KeyError:
+            self['loca'] = truetype.LocaTable(file,
+                                              table_records['loca']['offset'],
+                                              self['head']['indexToLocFormat'],
+                                              self['maxp']['numGlyphs'])
+            self['glyf'] = truetype.GlyfTable(file,
+                                              table_records['glyf']['offset'],
+                                              self['loca'])
         for tag in ('kern', 'GPOS', 'GSUB'):
             if tag in table_records:
                 self[tag] = self._parse_table(file, table_records[tag])
