@@ -2,7 +2,7 @@
 import time
 import pickle
 
-from lxml import etree, objectify
+##from lxml import etree, objectify
 
 from pyte.unit import pt
 from pyte.paper import Paper
@@ -71,19 +71,33 @@ class Document(object):
     cache_extension = '.ptc'
 
     def __init__(self, xmlfile, rngschema, lookup, backend=psg):
-        set_xml_catalog()
-        self.parser = objectify.makeparser(remove_comments=True,
-                                           no_network=True)
-        self.parser.set_element_class_lookup(lookup)
+        #set_xml_catalog()
+        #self.parser = objectify.makeparser(remove_comments=True,
+                                           #no_network=True)
+        #self.parser.set_element_class_lookup(lookup)
 
-        self.schema = etree.RelaxNG(etree.parse(rngschema))
-        self.xml = objectify.parse(xmlfile, self.parser)#, base_url=".")
-        self.xml.xinclude()
+        #self.schema = etree.RelaxNG(etree.parse(rngschema))
+        #self.xml = objectify.parse(xmlfile, self.parser)#, base_url=".")
+        #self.xml.xinclude()
 
-        if not self.schema.validate(self.xml):
-            err = self.schema.error_log
-            raise Exception("XML file didn't pass schema validation:\n%s" % err)
-            # TODO: proper error reporting
+        #if not self.schema.validate(self.xml):
+            #err = self.schema.error_log
+            #raise Exception("XML file didn't pass schema validation:\n%s" % err)
+            ## TODO: proper error reporting
+
+        import xml.etree.ElementTree as ET
+
+        target = ET.TreeBuilder(lookup)
+        parser = ET.XMLParser(target=target)
+        parser.entity['ndash'] = chr(0x02013)
+        parser.entity['rarr'] = chr(0x02192)
+        parser.entity['times'] = chr(0x000D7)
+        parser.entity['trade'] = chr(0x02122)
+        parser.entity['nbsp'] = chr(0x000A0)
+
+        self.xml = ET.ElementTree()
+        self.xml.parse(xmlfile, parser)
+
         self.root = self.xml.getroot()
 
         self.creator = "pyTe"
