@@ -1,7 +1,7 @@
 
 import struct
 
-from .parse import OpenTypeTable, MultiFormatTable, context_array, indirect_array
+from .parse import OpenTypeTable, MultiFormatTable, indirect_array
 from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
 from .parse import Packed
 from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
@@ -49,28 +49,52 @@ class SingleAdjustmentSubtable(OpenTypeTable):
     pass
 
 
+class PairSetTable(OpenTypeTable):
+    entries = [('PairValueCount', uint16)]
+
+    def __init__(self, file, file_offset, format_1, format_2):
+        super().__init__(file, file_offset)
+        record_format = format_1.data_format + format_2.data_format
+        value_1_length = len(format_1)
+        format_1_keys = format_1.present_keys
+        format_2_keys = format_2.present_keys
+        pvr_struct = struct.Struct('>H' + record_format)
+        pvr_size = pvr_struct.size
+        pvr_list = []
+        self.by_second_glyph_id = {}
+        for i in range(self['PairValueCount']):
+            record_data = pvr_struct.unpack(file.read(pvr_size))
+            second_glyph = record_data[0]
+            value_1 = {}
+            value_2 = {}
+            for i, key in enumerate(format_1_keys):
+                value_1[key] = record_data[1 + i]
+            for i, key in enumerate(format_2_keys):
+                value_2[key] = record_data[1 + value_1_length + i]
+            pvr = {'Value1': value_1,
+                   'Value2': value_2}
+            pvr_list.append(pvr)
+            self.by_second_glyph_id[second_glyph] = pvr
+        self['PairValueRecord'] = pvr_list
+
+
 class PairAdjustmentSubtable(MultiFormatTable):
     entries = [('PosFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('ValueFormat1', ValueFormat),
                ('ValueFormat2', ValueFormat)]
-    formats = {1: [('PairSetCount', uint16)],
+    formats = {1: [('PairSetCount', uint16),
+                   ('PairSet', indirect_array(PairSetTable, 'PairSetCount',
+                                              'ValueFormat1', 'ValueFormat2'))],
                2: [('ClassDef1', indirect(ClassDefinition)),
                    ('ClassDef2', indirect(ClassDefinition)),
                    ('Class1Count', uint16),
                    ('Class2Count', uint16)]}
 
-    def __init__(self, file, file_offset):
+    def __init__(self, file, file_offset=None):
         super().__init__(file, file_offset)
         format_1, format_2 = self['ValueFormat1'], self['ValueFormat2']
-        if self['PosFormat'] == 1:
-            pst_reader = (lambda file, file_offset: PairSetTable(file,
-                                                                 file_offset,
-                                                                 format_1,
-                                                                 format_2))
-            self['PairSet'] = (indirect_array(pst_reader, 'PairSetCount')
-                                   (self, file, file_offset))
-        elif self['PosFormat'] == 2:
+        if self['PosFormat'] == 2:
             record_format = format_1.data_format + format_2.data_format
             c2r_struct = struct.Struct('>' + record_format)
             c2r_size = c2r_struct.size
@@ -108,33 +132,7 @@ class PairAdjustmentSubtable(MultiFormatTable):
             return class_2_record['Value1']['XAdvance']
 
 
-class PairSetTable(OpenTypeTable):
-    entries = [('PairValueCount', uint16)]
 
-    def __init__(self, file, file_offset, format_1, format_2):
-        super().__init__(file, file_offset)
-        record_format = format_1.data_format + format_2.data_format
-        value_1_length = len(format_1)
-        format_1_keys = format_1.present_keys
-        format_2_keys = format_2.present_keys
-        pvr_struct = struct.Struct('>H' + record_format)
-        pvr_size = pvr_struct.size
-        pvr_list = []
-        self.by_second_glyph_id = {}
-        for i in range(self['PairValueCount']):
-            record_data = pvr_struct.unpack(file.read(pvr_size))
-            second_glyph = record_data[0]
-            value_1 = {}
-            value_2 = {}
-            for i, key in enumerate(format_1_keys):
-                value_1[key] = record_data[1 + i]
-            for i, key in enumerate(format_2_keys):
-                value_2[key] = record_data[1 + value_1_length + i]
-            pvr = {'Value1': value_1,
-                   'Value2': value_2}
-            pvr_list.append(pvr)
-            self.by_second_glyph_id[second_glyph] = pvr
-        self['PairValueRecord'] = pvr_list
 
 
 class GposTable(LayoutTable):

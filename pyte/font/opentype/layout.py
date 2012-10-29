@@ -1,9 +1,9 @@
 
-from .parse import OpenTypeTable, MultiFormatTable, context_array
+from .parse import OpenTypeTable, MultiFormatTable, Record, context_array
 from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed
 
 
-class Record(OpenTypeTable):
+class ListRecord(Record):
     entries = [('Tag', tag),
                ('Offset', offset)]
 
@@ -14,7 +14,7 @@ class Record(OpenTypeTable):
 class ListTable(OpenTypeTable):
     entry_type = None
     entries = [('Count', uint16),
-               ('Record', context_array(Record, 'Count'))]
+               ('Record', context_array(ListRecord, 'Count'))]
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)

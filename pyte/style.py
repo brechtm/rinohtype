@@ -28,7 +28,7 @@ class Style(object):
         self.__dict__.update(attributes)
 
     def __repr__(self):
-        return '{0}({1}) > {2}'.format(self.__class__.__name__ , self.name,
+        return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name,
                                        self.base)
 
         return self.get_default(name)

@@ -55,7 +55,7 @@ class OpenTypeMetrics(FontMetrics):
         #       (Macintosh) encodings."
         for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
             try:
-                for ordinal, index in tables['cmap'][encoding].items():
+                for ordinal, index in tables['cmap'][encoding].mapping.items():
                     self._glyphs[chr(ordinal)] = self._glyphs_by_code[index]
                 break
             except KeyError:
@@ -101,7 +101,10 @@ class OpenTypeMetrics(FontMetrics):
             if script != 'DFLT':
                 warn('{} does not support the script "{}". Trying default '
                      'script.'.format(self.name, script, PyteWarning))
-                return self._get_lookup_tables(table, feature)
+                try:
+                    return self._get_lookup_tables(table, feature)
+                except KeyError:
+                    return []
             else:
                 warn('{} has no default script defined.'
                      .format(self.name, PyteWarning))
@@ -122,6 +125,7 @@ class OpenTypeMetrics(FontMetrics):
                 lookup_list_indices = record['Value']['LookupListIndex']
                 return [lookup_tables[lookup_list_index]
                         for lookup_list_index in lookup_list_indices]
+        return []
 
     def get_ligature(self, glyph, successor_glyph):
         if 'GSUB' in self._tables:

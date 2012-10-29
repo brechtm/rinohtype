@@ -1,9 +1,9 @@
 
 import struct
 
-from .parse import OpenTypeTable, MultiFormatTable
-from .parse import byte, ushort, short, ulong, fixed, fword, ufword
-from .parse import longdatetime, string, array, context_array, Packed
+from .parse import OpenTypeTable, MultiFormatTable, Record
+from .parse import byte, ushort, short, ulong, fixed, fword, ufword, uint24
+from .parse import longdatetime, string, array, indirect, context_array, Packed
 from .macglyphs import MAC_GLYPHS
 from . import ids
 
@@ -179,7 +179,7 @@ class PostTable(MultiFormatTable):
                              file.read(length))[0].decode('ascii')
 
 
-class NameRecord(OpenTypeTable):
+class NameRecord(Record):
     entries = [('platformID', ushort),
                ('encodingID', ushort),
                ('languageID', ushort),
@@ -188,7 +188,7 @@ class NameRecord(OpenTypeTable):
                ('offset', ushort)]
 
 
-class LangTagRecord(OpenTypeTable):
+class LangTagRecord(Record):
     entries = [('length', ushort),
                ('offset', ushort)]
 
@@ -226,76 +226,154 @@ class NameTable(MultiFormatTable):
             platform[record['languageID']] = string
 
 
-class CmapRecord(OpenTypeTable):
+class SubHeader(OpenTypeTable):
+    entries = [('firstCode', ushort),
+               ('entryCount', ushort),
+               ('idDelta', short),
+               ('idRangeOffset', ushort)]
+
+
+class CmapGroup(OpenTypeTable):
+    entries = [('startCharCode', ulong),
+               ('endCharCode', ulong),
+               ('startGlyphID', ulong)]
+
+
+class VariationSelectorRecord(OpenTypeTable):
+    entries = [('varSelector', uint24),
+               ('defaultUVSOffset', ulong),
+               ('nonDefaultUVSOffset', ulong)]
+
+
+class CmapSubtable(MultiFormatTable):
+    entries = [('format', ushort)]
+    formats = {0: # Byte encoding table
+                  [('length', ushort),
+                   ('language', ushort),
+                   ('glyphIdArray', array(byte, 256))],
+               2: # High-byte mapping through table
+                  [('length', ushort),
+                   ('language', ushort),
+                   ('subHeaderKeys', array(ushort, 256))],
+               4: # Segment mapping to delta values
+                  [('length', ushort),
+                   ('language', ushort),
+                   ('segCountX2', ushort),
+                   ('searchRange', ushort),
+                   ('entrySelector', ushort),
+                   ('rangeShift', ushort),
+                   ('endCount', context_array(ushort, 'segCountX2', 0.5)),
+                   (None, ushort),
+                   ('startCount', context_array(ushort, 'segCountX2', 0.5)),
+                   ('idDelta', context_array(short, 'segCountX2', 0.5)),
+                   ('idRangeOffset', context_array(ushort, 'segCountX2', 0.5))],
+               6: # Trimmed table mapping
+                  [('length', ushort),
+                   ('language', ushort),
+                   ('firstCode', ushort),
+                   ('entryCount', ushort),
+                   ('glyphIdArray', context_array(ushort, 'entryCount'))],
+               8: # Mixed 16-bit and 32-bit coverage
+                  [(None, ushort),
+                   ('length', ulong),
+                   ('language', ulong),
+                   ('is32', array(byte, 8192)),
+                   ('nGroups', ulong),
+                   ('group', context_array(CmapGroup, 'nGroups'))],
+              10: # Trimmed array
+                  [(None, ushort),
+                   ('length', ulong),
+                   ('language', ulong),
+                   ('startCharCode', ulong),
+                   ('numchars', ulong),
+                   ('glyphs', context_array(ushort, 'numChars'))],
+              12: # Segmented coverage
+                  [(None, ushort),
+                   ('length', ulong),
+                   ('language', ulong),
+                   ('nGroups', ulong),
+                   ('groups', context_array(CmapGroup, 'nGroups'))],
+              13: # Many-to-one range mappings
+                  [(None, ushort),
+                   ('length', ulong),
+                   ('language', ulong),
+                   ('nGroups', ulong),
+                   ('groups', context_array(CmapGroup, 'nGroups'))],
+              14: # Unicode Variation Sequences
+                  [('length', ulong),
+                   ('numVarSelectorRecords', ulong),
+                   ('varSelectorRecord', context_array(VariationSelectorRecord,
+                                                       'numVarSelectorRecords'))]}
+
+    # TODO
+##    formats[99] = [('bla', ushort)]
+##    def _format_99_init(self):
+##        pass
+
+    def __init__(self, file, file_offset=None):
+        # TODO: detect already-parsed table (?)
+        super().__init__(file, file_offset)
+        # TODO: create format-dependent lookup function instead of storing
+        #       everything in a dict (not efficient for format 13 subtables fe)
+        if self['format'] == 0:
+            indices = array(byte, 256)(file)
+            out = {i: index for i, index in enumerate(self['glyphIdArray'])}
+        elif self['format'] == 2:
+            raise NotImplementedError
+        elif self['format'] == 4:
+            seg_count = self['segCountX2'] >> 1
+            self['glyphIdArray'] = array(ushort, self['length'])(file)
+            segments = zip(self['startCount'], self['endCount'],
+                           self['idDelta'], self['idRangeOffset'])
+            out = {}
+            for i, (start, end, delta, range_offset) in enumerate(segments):
+                if i == seg_count - 1:
+                    assert end == 0xFFFF
+                    break
+                if range_offset > 0:
+                    for j, code in enumerate(range(start, end + 1)):
+                        index = (range_offset >> 1) - seg_count + i + j
+                        out[code] = self['glyphIdArray'][index]
+                else:
+                    for code in range(start, end + 1):
+                        out[code] = (code + delta) % 2**16
+        elif self['format'] == 6:
+            out = {code: index for code, index in
+                   zip(range(self['firstCode'],
+                             self['firstCode'] + self['entryCount']),
+                       self['glyphIdArray'])}
+        elif self['format'] == 12:
+            out = {}
+            for group in self['groups']:
+                codes = range(group['startCharCode'], group['endCharCode'] + 1)
+                segment = {code: group['startGlyphID'] + index
+                           for index, code in enumerate(codes)}
+                out.update(segment)
+        elif self['format'] == 13:
+            out = {}
+            for group in self['groups']:
+                codes = range(group['startCharCode'], group['endCharCode'] + 1)
+                segment = {code: group['startGlyphID'] for code in codes}
+                out.update(segment)
+        else:
+            raise NotImplementedError
+        self.mapping = out
+
+
+class CmapRecord(Record):
     entries = [('platformID', ushort),
                ('encodingID', ushort),
-               ('offset', ulong)]
-
-
-class Cmap4Record(OpenTypeTable):
-    entries = [('segCountX2', ushort),
-               ('searchRange', ushort),
-               ('entrySelector', ushort),
-               ('rangeShift', ushort)]
+               ('subtable', indirect(CmapSubtable, offset_reader=ulong))]
 
 
 class CmapTable(OpenTypeTable):
     tag = 'cmap'
     entries = [('version', ushort),
-               ('numTables', ushort)]
+               ('numTables', ushort),
+               ('encodingRecord', context_array(CmapRecord, 'numTables'))]
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)
-        records = []
-        for i in range(self['numTables']):
-            record = CmapRecord(file, file.tell())
-            records.append(record)
-        for record in records:
-            record_offset = file_offset + record['offset']
-            file.seek(record_offset)
-            table_format = ushort(file)
-            if table_format in (8, 10, 12, 13):
-                reserved = ushort(file)
-            length = ushort(file)
-            if table_format != 14:
-                language = ushort(file),
-            # TODO: detect already-parsed table
-            if table_format == 0: # byte encoding table
-                indices = array(byte, 256)(file)
-                out = {i: index for i, index in enumerate(indices)}
-            elif table_format == 2: # high-byte mapping through table
-                raise NotImplementedError
-            elif table_format == 4: # segment mapping to delta values
-                meta = Cmap4Record(file, file.tell())
-                seg_count = meta['segCountX2'] >> 1
-                end_count = array(ushort, seg_count)(file)
-                reserved_pad = ushort(file)
-                start_count = array(ushort, seg_count)(file)
-                id_delta = array(short, seg_count)(file)
-                id_range_offset = array(ushort, seg_count)(file)
-                glyph_id_array_length = (record_offset + length - file.tell())
-                glyph_id_array = array(ushort,
-                                       glyph_id_array_length >> 1)(file)
-                segments = zip(start_count, end_count, id_delta,
-                               id_range_offset)
-                out = {}
-                for i, (start, end, delta, range_offset) in enumerate(segments):
-                    if i == seg_count - 1:
-                        assert end == 0xFFFF
-                        break
-                    if range_offset > 0:
-                        for j, code in enumerate(range(start, end + 1)):
-                            index = (range_offset >> 1) - seg_count + i + j
-                            out[code] = glyph_id_array[index]
-                    else:
-                        for code in range(start, end + 1):
-                            out[code] = (code + delta) % 2**16
-            elif table_format == 6: # trimmed table mapping
-                first_code, entry_count = ushort(file), ushort(file)
-                out = {code: index for code, index in
-                       zip(range(first_code, first_code + entry_count),
-                           array(ushort, entry_count)(file))}
-            else:
-                raise NotImplementedError('table format {}', table_format)
+        for record in self['encodingRecord']:
             key = (record['platformID'], record['encodingID'])
-            self[key] = out
+            self[key] = record['subtable']
