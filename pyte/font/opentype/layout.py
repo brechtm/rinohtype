@@ -180,3 +180,10 @@ class LayoutTable(OpenTypeTable):
         self['LookupList'] = LookupListTable(file,
                                              file_offset + lookup_list_offset,
                                              self.lookup_types)
+
+
+class Device(OpenTypeTable):
+    entries = [('StartSize', uint16),
+               ('EndSize', uint16),
+               ('DeltaFormat', uint16),
+               ('DeltaValue', uint16)]

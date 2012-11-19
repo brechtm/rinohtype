@@ -32,11 +32,8 @@ tag = string
 glyph_id = uint16
 offset = uint16
 
-def longdatetime(file):
-    return longdatetime._epoch + timedelta(seconds=longdatetime._grabber(file))
-
-longdatetime._epoch = datetime(1904, 1, 1, 12)
-longdatetime._grabber = create_reader('Q')
+longdatetime = create_reader('q', lambda data: datetime(1904, 1, 1)
+                                               + timedelta(seconds=data[0]))
 
 
 class Packed(OrderedDict):
@@ -56,20 +53,29 @@ def array(reader, length):
     return array_reader
 
 
-def context_array(reader, count_key, multiplier=1):
+def context(reader, *indirect_args):
+    def context_reader(file, base, table):
+        args = [table[key] for key in indirect_args]
+        return reader(file, *args)
+    return context_reader
+
+
+def context_array(reader, count_key, *indirect_args, multiplier=1):
     def context_array_reader(file, table=None, **kwargs):
         length = int(table[count_key] * multiplier)
+        args = [table[key] for key in indirect_args]
         try:
-            return array(reader, length)(file, table=table, **kwargs)
-        except TypeError as e:
-            return array(reader, length)(file)
+            return array(reader, length)(file, *args, table=table, **kwargs)
+        except TypeError:
+            return array(reader, length)(file, *args)
     return context_array_reader
 
 
-def indirect(reader, *args, offset_reader=offset):
+def indirect(reader, *indirect_args, offset_reader=offset):
     def indirect_reader(file, base, **kwargs):
         indirect_offset = offset_reader(file)
         restore_position = file.tell()
+        args = [table[key] for key in indirect_args]
         result = reader(file, base + indirect_offset, *args)
         file.seek(restore_position)
         return result

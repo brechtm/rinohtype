@@ -63,9 +63,37 @@ class LigatureSubTable(OpenTypeTable):
         raise KeyError
 
 
+# Chaining contextual subsitution (subtable format 6)
+class ChainSubRule(OpenTypeTable):
+    pass
+##    entries = [('BacktrackGlyphCount', uint16),
+##               ('Backtrack', context_array(glyph_id, 'BacktrackGlyphCount')),
+##               ('InputGlyphCount', uint16),
+##               ('Input', context_array(glyph_id, 'InputGlyphCount',
+##                                       lambda count: count - 1)),
+##               ('LookaheadGlyphCount', uint16),
+##               ('LookAhead', context_array(glyph_id, 'LookaheadGlyphCount')),
+##               ('SubstCount', uint16),
+##               ('SubstLookupRecord', context_array(glyph_id, 'SubstCount'))]
+
+
+class ChainSubRuleSet(OpenTypeTable):
+    entries = [('ChainSubRuleCount', uint16),
+               ('ChainSubRule', indirect(ChainSubRule))]
+
+
+class ChainingContextSubtable(MultiFormatTable):
+    entries = [('SubstFormat', uint16)]
+    formats = {1: [('Coverage', indirect(Coverage)),
+                   ('ChainSubRuleSetCount', uint16),
+                   ('ChainSubRuleSet', indirect_array(ChainSubRuleSet,
+                                                      'ChainSubRuleSetCount'))]}
+
+
 class GsubTable(LayoutTable):
     """Glyph substitution table"""
     tag = 'GSUB'
     lookup_types = {1: SingleSubTable,
                     3: AlternateSubTable,
-                    4: LigatureSubTable}
+                    4: LigatureSubTable}#,
+                    #6: ChainingContextSubtable}
