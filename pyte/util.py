@@ -6,18 +6,19 @@ from urllib.parse import urljoin
 
 
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+CATALOG_PATH = os.path.join(DATA_PATH, 'xml', 'catalog')
+CATALOG_URL = urljoin('file:', pathname2url(CATALOG_PATH))
+CATALOG_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
 
 def set_xml_catalog():
     if set_xml_catalog.done:
         return
 
-    catalog_path = os.path.join(DATA_PATH, 'xml', 'catalog')
-    catalog_url = urljoin('file:', pathname2url(catalog_path))
     try:
-        os.environ['XML_CATALOG_FILES'] += ' ' + catalog_url
+        os.environ['XML_CATALOG_FILES'] += ' ' + CATALOG_URL
     except KeyError:
-        os.environ['XML_CATALOG_FILES'] = catalog_url
+        os.environ['XML_CATALOG_FILES'] = CATALOG_URL
     set_xml_catalog.done = True
 
 set_xml_catalog.done = False
