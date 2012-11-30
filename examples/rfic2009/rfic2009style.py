@@ -4,6 +4,9 @@ from copy import copy
 import xml.etree.ElementTree as ET
 ##from lxml import etree, objectify
 
+import pyte.frontend
+pyte.frontend.XML_FRONTEND = 'pyte.frontend.xml.elementtree'
+
 from pyte.unit import inch, pt, cm
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.type1 import Type1Font
@@ -35,6 +38,7 @@ from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 from pyte.style import ParentStyle
+from pyte.frontend.xml import CustomElement
 from pyte.backend import pdf, psg
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
@@ -266,88 +270,6 @@ class IndexTerms(Paragraph):
 
 # render methods
 # ----------------------------------------------------------------------------
-
-# ElementBase restrictions!!
-# http://codespeak.net/lxml/element_classes.html
-
-# is it a good idea to inherit from ObjectifiedElement (not documented)?
-##class CustomElement(objectify.ObjectifiedElement):
-###class CustomElement(etree.ElementBase):
-##    def parse(self, document):
-##        raise NotImplementedError('tag: %s' % self.tag)
-
-
-##class ObjectifiedElement(ET.Element):
-##    ns = '{http://www.mos6581.org/ns/rficpaper}'
-##
-##    def __getattr__(self, name):
-##        result = self.find(self.ns + name)
-##        if result is None:
-##            raise AttributeError('No such element: {}'.format(name))
-##        return result
-##
-##    def __iter__(self):
-##        parent = self._parent_map[self]
-##        for child in parent.findall(self.tag):
-##            yield child
-
-
-class ObjectifiedElement(object):
-    ns = '{http://www.mos6581.org/ns/rficpaper}'
-
-    def __init__(self, tag, attrib={}, **extra):
-        self._element = ET.Element(tag, attrib, **extra)
-
-    @property
-    def tag(self):
-        return self._element.tag
-
-    @property
-    def text(self):
-        return self._element.text
-
-    @text.setter
-    def text(self, value):
-        self._element.text = value
-
-    @property
-    def tail(self):
-        return self._element.tail
-
-    @tail.setter
-    def tail(self, value):
-        self._element.tail = value
-
-    def __getattr__(self, name):
-        result = self._element.find(self.ns + name)
-        if result is None:
-            raise AttributeError('No such element: {}'.format(name))
-        return result
-
-    def __iter__(self):
-        parent = self._parent_map[self]
-        for child in parent.findall(self.tag):
-            yield child
-
-    def append(self, item):
-        self._element.append(item)
-
-    def iter(self, tag):
-        return self._element.iter(tag)
-
-    def get(self, key, default=None):
-        return self._element.get(key, default)
-
-    def getchildren(self):
-        return self._element.getchildren()
-
-
-class CustomElement(ObjectifiedElement):
-#class CustomElement(etree.ElementBase):
-    def parse(self, document):
-        raise NotImplementedError('tag: %s' % self.tag)
-
-
 
 class Section(CustomElement):
     def parse(self, document, level=1):
@@ -611,30 +533,11 @@ class RFICPage(Page):
 # ----------------------------------------------------------------------------
 class RFIC2009Paper(Document):
     rngschema = 'rfic.rng'
+    namespace = 'http://www.mos6581.org/ns/rficpaper'
 
     def __init__(self, filename, bibliography_source):
-        #lookup = etree.ElementNamespaceClassLookup()
-        #namespace = lookup.get_namespace('http://www.mos6581.org/ns/rficpaper')
-        #namespace[None] = CustomElement
-        #namespace.update(dict([(cls.__name__.lower(), cls)
-                               #for cls in CustomElement.__subclasses__()]))
-
-        ns = '{http://www.mos6581.org/ns/rficpaper}'
-
-        def factory(tag, attrs):
-            try:
-                return factory._tag_to_class[tag](tag, attrs)
-            except KeyError:
-                return CustomElement(tag, attrs)
-
-        factory._tag_to_class = {ns + cls.__name__.lower(): cls
-                                 for cls in CustomElement.__subclasses__()}
-
-        Document.__init__(self, filename, self.rngschema, factory, backend=pdf)
-
-        CustomElement._parent_map = dict((c, p) for p in self.xml.getiterator()
-                                         for c in p)
-
+        super().__init__(filename, namespace=self.namespace,
+                         schema=self.rngschema, backend=pdf)
         bibliography_style = CitationStylesStyle('ieee.csl')
         self.bibliography = CitationStylesBibliography(bibliography_style,
                                                        bibliography_source,

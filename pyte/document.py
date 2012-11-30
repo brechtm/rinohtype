@@ -3,17 +3,13 @@ import time
 import os
 import pickle
 
-from urllib.request import url2pathname
-
-##from lxml import etree, objectify
-
 from pyte.unit import pt
 from pyte.paper import Paper
 from pyte.layout import Container
 from pyte.paragraph import Paragraph
 from pyte.layout import EndOfPage
-from .util import set_xml_catalog, CATALOG_PATH, CATALOG_URL, CATALOG_NS
-from .backend import psg
+from .frontend.xml import Parser, CustomElement
+from .backend import pdf
 
 
 class Orientation:
@@ -70,83 +66,12 @@ class Page(Container):
         pass
 
 
-
-import xml.etree.ElementTree as ET
-from urllib.request import urlopen, pathname2url
-from urllib.parse import urlparse, urljoin
-from xml.parsers import expat
-
-
-class ElementTreeParser(ET.XMLParser):
-    def __init__(self, lookup):
-        target = ET.TreeBuilder(lookup)
-        super().__init__(target=target)
-        uri_rewrite_map = self.create_uri_rewrite_map()
-        self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
-        self.parser.ExternalEntityRefHandler \
-            = ExternalEntityRefHandler(self.parser, uri_rewrite_map)
-
-    def create_uri_rewrite_map(self):
-        rewrite_map = {}
-        catalog = ET.parse(CATALOG_PATH).getroot()
-        for elem in catalog.findall('{{{}}}{}'.format(CATALOG_NS,
-                                               'rewriteSystem')):
-            start_string = elem.get('systemIdStartString')
-            prefix = elem.get('rewritePrefix')
-            rewrite_map[start_string] = prefix
-        return rewrite_map
-
-    def parse(self, xmlfile):
-        xml = ET.ElementTree()
-        xml.parse(xmlfile, self)
-        return xml
-
-
-class ExternalEntityRefHandler(object):
-    def __init__(self, parser, uri_rewrite_map):
-        self.parser = parser
-        self.uri_rewrite_map = uri_rewrite_map
-
-    def __call__(self, context, base, system_id, public_id):
-        if base and not urlparse(system_id).netloc:
-            system_id = urljoin(base, system_id)
-        # look for local copies of common entity files
-        external_parser = self.parser.ExternalEntityParserCreate(context)
-        external_parser.ExternalEntityRefHandler \
-            = ExternalEntityRefHandler(self.parser, self.uri_rewrite_map)
-        for start_string, prefix in self.uri_rewrite_map.items():
-            if system_id.startswith(start_string):
-                remaining = system_id.split(start_string)[1]
-                base = urljoin(CATALOG_URL, prefix)
-                system_id = urljoin(base, remaining)
-                break
-        external_parser.SetBase(system_id)
-        with urlopen(system_id) as file:
-            external_parser.ParseFile(file)
-        return 1
-
-
 class Document(object):
     cache_extension = '.ptc'
 
-    def __init__(self, xmlfile, rngschema, lookup, backend=psg):
-        #set_xml_catalog()
-        #self.parser = objectify.makeparser(remove_comments=True,
-                                           #no_network=True)
-        #self.parser.set_element_class_lookup(lookup)
-
-        #self.schema = etree.RelaxNG(etree.parse(rngschema))
-        #self.xml = objectify.parse(xmlfile, self.parser)#, base_url=".")
-        #self.xml.xinclude()
-
-        #if not self.schema.validate(self.xml):
-            #err = self.schema.error_log
-            #raise Exception("XML file didn't pass schema validation:\n%s" % err)
-            ## TODO: proper error reporting
-
-        self.parser = ElementTreeParser(lookup)
-        self.xml = self.parser.parse(xmlfile)
-
+    def __init__(self, filename, namespace=None, backend=pdf, schema=None):
+        parser = Parser(namespace, schema=schema)
+        self.xml = parser.parse(filename)
         self.root = self.xml.getroot()
 
         self.creator = "pyTe"
