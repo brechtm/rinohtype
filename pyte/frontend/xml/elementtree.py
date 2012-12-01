@@ -3,9 +3,24 @@ from urllib.parse import urlparse, urljoin
 from urllib.request import urlopen, pathname2url
 from warnings import warn
 from xml.parsers import expat
-from xml.etree import ElementTree
+from xml.etree import ElementTree, ElementPath
 
 from . import  CATALOG_PATH, CATALOG_URL, CATALOG_NS
+
+
+class TreeBuilder(ElementTree.TreeBuilder):
+    def __init__(self, namespace, element_factory=None):
+        super().__init__(element_factory)
+        self._namespace = namespace
+
+    def end(self, tag):
+        last = super().end(tag)
+        try:
+            last._parent = self._elem[-1]
+        except IndexError:
+            last._parent = None
+        last._namespace = self._namespace
+        return last
 
 
 class Parser(ElementTree.XMLParser):
@@ -17,7 +32,7 @@ class Parser(ElementTree.XMLParser):
         self.namespace = '{{{}}}'.format(namespace)
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
                                 for cls in CustomElement.__subclasses__()}
-        tree_builder = ElementTree.TreeBuilder(self.lookup)
+        tree_builder = TreeBuilder(self.namespace, self.lookup)
         super().__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()
         self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
@@ -43,10 +58,6 @@ class Parser(ElementTree.XMLParser):
     def parse(self, xmlfile):
         xml = ElementTree.ElementTree()
         xml.parse(xmlfile, self)
-        xml._namespace = self.namespace
-        xml._parent_map = dict((c, p) for p in xml.getiterator() for c in p)
-        for elem in xml.getiterator():
-            elem._tree = xml
         return xml
 
 
@@ -74,53 +85,25 @@ class ExternalEntityRefHandler(object):
         return 1
 
 
-class ObjectifiedElement(object):
-    """Simulation of lxml.objectify.ObjectifiedElement using xml.ElementTree"""
-    def __init__(self, tag, attrib={}, **extra):
-        self._element = ElementTree.Element(tag, attrib, **extra)
-
-    @property
-    def tag(self):
-        return self._element.tag
-
-    @property
-    def text(self):
-        return self._element.text
-
-    @text.setter
-    def text(self, value):
-        self._element.text = value
-
-    @property
-    def tail(self):
-        return self._element.tail
-
-    @tail.setter
-    def tail(self, value):
-        self._element.tail = value
-
+class ObjectifiedElement(ElementTree.Element):
+    """Simulation of lxml's ObjectifiedElement for xml.etree"""
     def __getattr__(self, name):
-        result = self._element.find(self._element._tree._namespace + name)
+        # the following depends on ElementPath internals, but should be fine
+        result = ElementPath.find(self.getchildren(),
+                                  self._namespace + name)
         if result is None:
             raise AttributeError('No such element: {}'.format(name))
         return result
 
     def __iter__(self):
-        parent = self._element._tree._parent_map[self]
-        for child in parent.findall(self.tag):
-            yield child
-
-    def append(self, item):
-        self._element.append(item)
-
-    def iter(self, tag):
-        return self._element.iter(tag)
-
-    def get(self, key, default=None):
-        return self._element.get(key, default)
-
-    def getchildren(self):
-        return self._element.getchildren()
+        try:
+            # same hack as above
+            for child in ElementPath.findall(self._parent.getchildren(),
+                                             self.tag):
+                yield child
+        except AttributeError:
+            # this is the root element
+            yield self
 
 
 class CustomElement(ObjectifiedElement):
