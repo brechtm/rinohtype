@@ -24,12 +24,12 @@ class TreeBuilder(ElementTree.TreeBuilder):
 
 
 class Parser(ElementTree.XMLParser):
-    def __init__(self, namespace, schema=None):
+    def __init__(self, namespace=None, schema=None):
         if schema:
             warn('The ElementTree based XML parser does not support '
                  'validation. Please install lxml in order to enable '
                  'validation.')
-        self.namespace = '{{{}}}'.format(namespace)
+        self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
                                 for cls in CustomElement.__subclasses__()}
         tree_builder = TreeBuilder(self.namespace, self.lookup)
