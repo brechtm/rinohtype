@@ -27,10 +27,7 @@ except ImportError:
 
 class NestedElement(CustomElement):
     def parse(self, document):
-        if self.text is not None:
-            content = self.text
-        else:
-            content = ''
+        content = self.text or ''
         for child in self.getchildren():
             content += child.parse(document)
             if child.tail is not None:

@@ -77,16 +77,6 @@ class Styled(object):
         self.parent = None
         self.cached_style = {}
 
-    # TODO: doesn't belong here;
-    # intoduce class between Styled & MixedStyledText (and CharacterLike)
-    def __add__(self, other):
-        assert isinstance(other, Styled) or isinstance(other, str)
-        return MixedStyledText([self, other])
-
-    def __radd__(self, other):
-        assert isinstance(other, str)
-        return MixedStyledText([other, self])
-
     @property
     def page(self):
         return self.parent.page
@@ -105,6 +95,3 @@ class Styled(object):
                 value = self.parent.get_style(attribute)
             self.cached_style[attribute] = value
             return value
-
-
-from .text import MixedStyledText

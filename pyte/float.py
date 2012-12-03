@@ -4,7 +4,7 @@ from .number import format_number
 from .number.style import NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
-from .text import StyledText
+from .text import SingleStyledText
 from .unit import mm
 
 
@@ -50,7 +50,7 @@ class Caption(Paragraph):
         else:
             self.ref = None
             number = ''
-        styled_text = StyledText(category + ' ' + number + text)
+        styled_text = SingleStyledText(category + ' ' + number + text)
         styled_text.parent = self
         self.append(styled_text)
 

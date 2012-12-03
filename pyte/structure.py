@@ -8,7 +8,7 @@ from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
-from .text import StyledText, FixedWidthSpace, Tab
+from .text import SingleStyledText, FixedWidthSpace, Tab
 from .unit import pt
 from .warnings import PyteWarning
 
@@ -60,7 +60,7 @@ class Heading(Paragraph, Referenceable):
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
-                  'bullet': StyledText('&bull;'),
+                  'bullet': SingleStyledText('&bull;'),
                   'itemSpacing': ParagraphStyle.attributes['lineSpacing'],
                   'numberingStyle': NUMBER,
                   'numberingSeparator': ')'}

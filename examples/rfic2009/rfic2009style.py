@@ -19,7 +19,7 @@ from pyte.layout import Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
-from pyte.text import StyledText, MixedStyledText
+from pyte.text import SingleStyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
 from pyte.text import TextStyle, boldItalicStyle
 from pyte.text import Tab as PyteTab, FlowableEmbedder
@@ -256,13 +256,13 @@ tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
 
 class Abstract(Paragraph):
     def __init__(self, text):
-        label = StyledText("Abstract &mdash; ", boldItalicStyle)
+        label = SingleStyledText("Abstract &mdash; ", boldItalicStyle)
         return super().__init__([label, text], abstractStyle)
 
 
 class IndexTerms(Paragraph):
     def __init__(self, terms):
-        label = StyledText("Index Terms &mdash; ", boldItalicStyle)
+        label = SingleStyledText("Index Terms &mdash; ", boldItalicStyle)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
         return super().__init__([label, text], abstractStyle)
@@ -460,7 +460,7 @@ class CitationField(Field):
             text = self.citation.bibliography.cite(self.citation)
         except AttributeError:
             text = '[?]'
-        field_text = StyledText(text)
+        field_text = SingleStyledText(text)
         field_text.parent = self.parent
         return field_text.spans()
 

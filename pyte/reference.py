@@ -2,7 +2,7 @@
 from warnings import warn
 
 from .style import ParentStyle
-from .text import StyledText, TextStyle, Superscript
+from .text import SingleStyledText, TextStyle, Superscript
 from .warnings import PyteWarning
 
 
@@ -17,7 +17,7 @@ class LateEval(object):
         return self.field.field_spans()
 
 
-class Field(StyledText):
+class Field(SingleStyledText):
     def __init__(self, y_offset=0):
         super().__init__('', y_offset=y_offset)
 
@@ -53,7 +53,7 @@ class Variable(Field):
             if self.page.section:
                 text = self.page.section.title()
 
-        field_text = StyledText(text)
+        field_text = SingleStyledText(text)
         field_text.parent = self.parent
         return field_text.spans()
 
@@ -108,7 +108,7 @@ class Reference(Field):
             warn('Trying to reference unreferenceable object', PyteWarning)
             text = ' ' #'[not referenceable]'
 
-        field_text = StyledText(text)
+        field_text = SingleStyledText(text)
         field_text.parent = self.parent
         return field_text.spans()
 

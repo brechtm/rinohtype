@@ -1,7 +1,4 @@
 
-import itertools
-import os
-
 from warnings import warn
 
 from .dimension import Dimension
@@ -11,7 +8,7 @@ from .layout import EndOfContainer
 from .reference import LateEval, Footnote
 from .style import ParentStyle
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
-from .text import TextStyle, StyledText, MixedStyledText
+from .text import TextStyle, SingleStyledText, MixedStyledText
 from .unit import pt
 
 
@@ -164,13 +161,13 @@ class Line(list):
             if isinstance(self[i], Tab):
                 tab = self.pop(i)
                 try:
-                    fill_char = StyledText(tab.tab_stop.fill)
+                    fill_char = SingleStyledText(tab.tab_stop.fill)
                     fill_char.parent = tab.parent
                     number, rest = divmod(tab.tab_width, fill_char.width)
                     spacer = Spacer(rest)
                     spacer.parent = tab.parent
                     self.insert(i, spacer)
-                    fill_text = StyledText(tab.tab_stop.fill * int(number))
+                    fill_text = SingleStyledText(tab.tab_stop.fill * int(number))
                     fill_text.parent = tab.parent
                     self.insert(i + 1, fill_text)
                     i += 1
@@ -198,13 +195,14 @@ class Line(list):
             number_of_spaces = list(map(_is_scalable_space, self)).count(True)
             if number_of_spaces:
                 add_to_spaces = extra_space / number_of_spaces
+                # TODO: padding added to spaces should be prop. to font size
 
         # position cursor
         self.paragraph.newline(max_font_size)
 
         def render_span(item, font_style, glyphs, widths):
-            y = self.paragraph.container.cursor + item.y_offset
-            font, size = font_style
+            font, size, y_offset = font_style
+            y = self.paragraph.container.cursor + y_offset
             canvas.show_glyphs(x, y, font, size, glyphs, widths)
             total_width = sum(widths)
             del glyphs[:]
@@ -217,7 +215,7 @@ class Line(list):
         widths = []
         prev_font_style = None
         for item in self:
-            font_style = item.font, float(item.height)
+            font_style = item.font, float(item.height), item.y_offset
             if isinstance(item, Box):
                 if prev_item:
                     x += render_span(prev_item, prev_font_style, glyphs, widths)

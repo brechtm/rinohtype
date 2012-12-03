@@ -64,15 +64,60 @@ class CharacterLike(Styled):
         raise NotImplementedError
 
 
-# TODO: subclass str?
 class StyledText(Styled):
     style_class = TextStyle
 
-    def __init__(self, text, style=ParentStyle, y_offset=0):
+    def __init__(self, style=ParentStyle, y_offset=0):
         super().__init__(style)
+        self._y_offset = y_offset
+
+    def __add__(self, other):
+        assert isinstance(other, __class__) or isinstance(other, str)
+        return MixedStyledText([self, other])
+
+    def __radd__(self, other):
+        assert isinstance(other, str)
+        return MixedStyledText([other, self])
+
+    def __iadd__(self, other):
+        return self + other
+
+    superscript_position = 1 / 3
+    subscript_position = - 1 / 6
+    position_size = 583 / 1000
+
+    @property
+    def height(self):
+        height = float(self.get_style('fontSize'))
+        if self.get_style('position') in (SUPERSCRIPT, SUBSCRIPT):
+            height *= self.position_size
+        return height
+
+    @property
+    def y_offset(self):
+        try:
+            offset = self.parent.y_offset + self._y_offset
+        except (TypeError, AttributeError):
+            offset = self._y_offset
+        try:
+            # The Y offset should only change once for the nesting level where
+            # the position style is set, hence we don't recursively get the
+            # position style
+            if self.style.position == SUPERSCRIPT:
+                offset += float(self.get_style('fontSize')) * self.superscript_position
+            elif self.style.position == SUBSCRIPT:
+                offset += float(self.get_style('fontSize')) * self.subscript_position
+        except ParentStyleException:
+            pass
+        return offset
+
+
+# TODO: subclass str (requires messing around with __new__)?
+class SingleStyledText(StyledText):
+    def __init__(self, text, style=ParentStyle, y_offset=0):
+        super().__init__(style, y_offset)
         text = self._clean_text(text)
         self.text = self._decode_html_entities(text)
-        self.y_offset = y_offset
 
     def _clean_text(self, text):
         text = re.sub('[\t\r\n]', ' ', text)
@@ -99,11 +144,11 @@ class StyledText(Styled):
         for special, lst in itertools.groupby(self.text, is_special):
             if special:
                 for char in lst:
-                    item = special_chars[char](y_offset=self.y_offset)
+                    item = special_chars[char]()
                     item.parent = self
                     yield item
             else:
-                item = self.__class__(''.join(lst), y_offset=self.y_offset)
+                item = self.__class__(''.join(lst))
                 item.parent = self
                 yield item
 
@@ -114,10 +159,6 @@ class StyledText(Styled):
         slant = self.get_style('fontSlant')
         width = self.get_style('fontWidth')
         return typeface.get(weight=weight, slant=slant, width=width)
-
-    @property
-    def height(self):
-        return self.get_style('fontSize')
 
     @property
     def width(self):
@@ -183,34 +224,16 @@ class StyledText(Styled):
                 first.text += '-'
                 yield first, second
 
-    superscript_position = 1 / 3
-    subscript_position = - 1 / 6
-    position_size = 583 / 1000
-
     def spans(self):
         span = self
-        if self.get_style('position') == SUPERSCRIPT:
-            offset = float(self.height) * self.superscript_position
-            size = float(self.height) * self.position_size
-            style = TextStyle(name='super', position=NORMAL, fontSize=size)
-            span = StyledText(self.text, style, y_offset=self.y_offset + offset)
-            span.parent = self.parent
-        elif self.get_style('position') == SUBSCRIPT:
-            offset = float(self.height) * self.subscript_position
-            size = float(self.height) * self.position_size
-            style = TextStyle(name='sub', position=NORMAL, fontSize=size)
-            span = StyledText(self.text, style, y_offset=self.y_offset + offset)
-            span.parent = self.parent
         if self.get_style('smallCaps'):
             span = SmallCapitalsText(span.text, span.style,
                                      y_offset=self.y_offset)
             span.parent = self.parent
-            yield span
-        else:
-            yield span
+        yield span
 
 
-class SmallCapitalsText(StyledText):
+class SmallCapitalsText(SingleStyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
@@ -218,32 +241,23 @@ class SmallCapitalsText(StyledText):
         return super().glyphs(SMALL_CAPITAL)
 
 
-class MixedStyledText(list, Styled):
+class MixedStyledText(StyledText, list):
     style_class = TextStyle
 
     def __init__(self, items, style=ParentStyle, y_offset=0):
-        Styled.__init__(self, style)
+        StyledText.__init__(self, style, y_offset)
         # TODO: handle y_offset
-        if type(items) == str:
+        if isinstance(items, str):
             items = [items]
         for item in items:
             if isinstance(item, str):
-                item = StyledText(item, style=ParentStyle, y_offset=y_offset)
+                item = SingleStyledText(item, style=ParentStyle)
             item.parent = self
             self.append(item)
 
     def __repr__(self):
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
-
-    def __add__(self, other):
-        return __class__([self, other])
-
-    def __iadd__(self, other):
-        return self + other
-
-    def __radd__(self, other):
-        return __class__([other, self])
 
     def spans(self):
         # TODO: support for mixed-style words
@@ -254,7 +268,7 @@ class MixedStyledText(list, Styled):
 
 
 # TODO: make following classes immutable (override setattr) and store widths
-class Character(StyledText):
+class Character(SingleStyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
@@ -406,4 +420,4 @@ class Superscript(MixedStyledText):
 
 class Subscript(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        MixedStyledText.__init__(self, text, style=subscriptStyle, y_offset=y_offset)
+        super().__init__(text, style=subscriptStyle, y_offset=y_offset)
