@@ -23,8 +23,8 @@ grammar {
      | element b { inline }
      | element em { inline }
      | element sc { inline }
-     | element sup { text }
-     | element sub { text }
+     | element sup { inline }
+     | element sub { inline }
      | element tab { empty }
      | element math { text }
      | element eq {

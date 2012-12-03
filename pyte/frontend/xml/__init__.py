@@ -23,3 +23,16 @@ except ImportError:
         from .lxml import Parser, CustomElement
     except ImportError:
         from .elementtree import Parser, CustomElement
+
+
+class NestedElement(CustomElement):
+    def parse(self, document):
+        if self.text is not None:
+            content = self.text
+        else:
+            content = ''
+        for child in self.getchildren():
+            content += child.parse(document)
+            if child.tail is not None:
+                content += child.tail
+        return content

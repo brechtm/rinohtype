@@ -3,6 +3,7 @@ import os
 
 from lxml import etree, objectify
 
+from ...util import recursive_subclasses
 from . import CATALOG_URL
 
 
@@ -18,7 +19,7 @@ class Parser(object):
         namespace = lookup.get_namespace(namespace)
         namespace[None] = CustomElement
         namespace.update(dict([(cls.__name__.lower(), cls)
-                               for cls in CustomElement.__subclasses__()]))
+                               for cls in recursive_subclasses(CustomElement)]))
         self.parser = objectify.makeparser(remove_comments=True,
                                            no_network=True)
         self.parser.set_element_class_lookup(lookup)

@@ -5,6 +5,7 @@ from warnings import warn
 from xml.parsers import expat
 from xml.etree import ElementTree, ElementPath
 
+from ...util import recursive_subclasses
 from . import  CATALOG_PATH, CATALOG_URL, CATALOG_NS
 
 
@@ -31,7 +32,7 @@ class Parser(ElementTree.XMLParser):
                  'validation.')
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
-                                for cls in CustomElement.__subclasses__()}
+                                for cls in recursive_subclasses(CustomElement)}
         tree_builder = TreeBuilder(self.namespace, self.lookup)
         super().__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()

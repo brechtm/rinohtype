@@ -193,13 +193,13 @@ class StyledText(Styled):
             offset = float(self.height) * self.superscript_position
             size = float(self.height) * self.position_size
             style = TextStyle(name='super', position=NORMAL, fontSize=size)
-            span = StyledText(self.text, style, y_offset=offset)
+            span = StyledText(self.text, style, y_offset=self.y_offset + offset)
             span.parent = self.parent
         elif self.get_style('position') == SUBSCRIPT:
             offset = float(self.height) * self.subscript_position
             size = float(self.height) * self.position_size
             style = TextStyle(name='sub', position=NORMAL, fontSize=size)
-            span = StyledText(self.text, style, y_offset=offset)
+            span = StyledText(self.text, style, y_offset=self.y_offset + offset)
             span.parent = self.parent
         if self.get_style('smallCaps'):
             span = SmallCapitalsText(span.text, span.style,
@@ -228,7 +228,7 @@ class MixedStyledText(list, Styled):
             items = [items]
         for item in items:
             if isinstance(item, str):
-                item = StyledText(item, style=ParentStyle)
+                item = StyledText(item, style=ParentStyle, y_offset=y_offset)
             item.parent = self
             self.append(item)
 
@@ -237,22 +237,13 @@ class MixedStyledText(list, Styled):
                                         super().__repr__(), self.style)
 
     def __add__(self, other):
-##        assert (isinstance(other, MixedStyledText)
-##                or isinstance(other, str))
-        try:
-            result = super().__add__(other)
-        except TypeError:
-            result = super().__add__([other])
-        return __class__(result)
+        return __class__([self, other])
 
     def __iadd__(self, other):
         return self + other
 
     def __radd__(self, other):
-##        assert isinstance(other, StyledText) \
-##            or isinstance(other, MixedStyledText) \
-##            or isinstance(other, str)
-        return __class__(other) + self
+        return __class__([other, self])
 
     def spans(self):
         # TODO: support for mixed-style words

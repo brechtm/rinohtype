@@ -38,7 +38,7 @@ from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
 from pyte.style import ParentStyle
-from pyte.frontend.xml import CustomElement
+from pyte.frontend.xml import CustomElement, NestedElement
 from pyte.backend import pdf, psg
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
@@ -297,46 +297,37 @@ class Title(CustomElement):
                           level=level, id=id)
 
 
-class P(CustomElement):
+class P(NestedElement):
     def parse(self, document):
-        #print('P.render()')
-        if self.text is not None:
-            content = self.text
-        else:
-            content = ''
-        for child in self.getchildren():
-            content += child.parse(document)
-            if child.tail is not None:
-                content += child.tail
-        return Paragraph(content, style=bodyStyle)
+        return Paragraph(super().parse(document), style=bodyStyle)
 
 
-class B(CustomElement):
+class B(NestedElement):
     def parse(self, document):
         #print('B.render()')
-        return Bold(self.text)
+        return Bold(super().parse(document))
 
 
-class Em(CustomElement):
+class Em(NestedElement):
     def parse(self, document):
         #print('Em.render()')
-        return Emphasized(self.text)
+        return Emphasized(super().parse(document))
 
 
-class SC(CustomElement):
+class SC(NestedElement):
     def parse(self, document):
         #print('SC.render()')
-        return SmallCaps(self.text)
+        return SmallCaps(super().parse(document))
 
 
-class Sup(CustomElement):
+class Sup(NestedElement):
     def parse(self, document):
-        return Superscript(self.text)
+        return Superscript(super().parse(document))
 
 
-class Sub(CustomElement):
+class Sub(NestedElement):
     def parse(self, document):
-        return Subscript(self.text)
+        return Subscript(super().parse(document))
 
 
 class Tab(CustomElement):
