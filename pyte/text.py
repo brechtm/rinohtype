@@ -32,7 +32,7 @@ class TextStyle(Style):
                   'ligatures': True,
                   'hyphenate': True,
                   'hyphenChars': 2,
-                  'hyphenLang': 'en'}
+                  'hyphenLang': 'en_US'}
 
     def __init__(self, name, base=ParentStyle, **attributes):
         super().__init__(name, base=base, **attributes)
