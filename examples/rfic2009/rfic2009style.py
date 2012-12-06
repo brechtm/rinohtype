@@ -12,7 +12,7 @@ from pyte.font import TypeFace, TypeFamily
 from pyte.font.type1 import Type1Font
 from pyte.font.opentype import OpenTypeFont
 from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
-from pyte.paper import Paper, Letter
+from pyte.paper import Paper, LETTER
 from pyte.document import Document, Page, Orientation
 from pyte.layout import Container, DownExpandingContainer, FootnoteContainer
 from pyte.layout import Chain
@@ -474,7 +474,7 @@ class RFICPage(Page):
     column_spacing = 0.25 * inch
 
     def __init__(self, document, first=False):
-        super().__init__(document, Letter, Orientation.Portrait)
+        super().__init__(document, LETTER, Orientation.Portrait)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
