@@ -263,8 +263,24 @@ class MixedStyledText(StyledText, list):
         # TODO: support for mixed-style words
         # TODO: kerning between Glyphs
         for item in self:
-            for span in item.spans():
-                yield span
+            from .flowable import Flowable
+            if isinstance(item, Flowable):
+                yield item
+            else:
+                for span in item.spans():
+                    yield span
+
+
+class LiteralText(MixedStyledText):
+    def __init__(self, text, style=ParentStyle, y_offset=0):
+        items = []
+        for part in text.split('\n'):
+            items.append(part)
+            items.append(NewLine())
+        super().__init__(items, style, y_offset)
+
+    def _clean_text(self, text):
+        return text
 
 
 # TODO: make following classes immutable (override setattr) and store widths

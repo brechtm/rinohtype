@@ -308,7 +308,12 @@ class Paragraph(MixedStyledText, Flowable):
                                                   last_line=True)
                 if isinstance(word, Flowable):
                     self.word_pointer -= 1
-                    flowable_height = self.container.flow(word)
+                    from .layout import ExpandingContainer
+                    container = ExpandingContainer(self.container,
+                                    left=self.get_style('indentLeft'),
+                                    top=self.container._flowable_offset*pt)
+                    flowable_height = container.flow(word)
+                    self.container.advance(flowable_height)
                     self.word_pointer += 1
                 line = Line(self, line_width, indent_left)
             else:
