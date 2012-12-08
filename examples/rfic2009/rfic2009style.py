@@ -52,27 +52,27 @@ use_gyre = True
 # fonts
 # ----------------------------------------------------------------------------
 if use_gyre:
-    #termes_roman = Type1Font("fonts/qtmr", weight=REGULAR)
-    termes_roman = OpenTypeFont("fonts/texgyretermes-regular.otf",
+    #termes_roman = Type1Font("../fonts/qtmr", weight=REGULAR)
+    termes_roman = OpenTypeFont("../fonts/texgyretermes-regular.otf",
                                 weight=REGULAR)
-    termes_italic = Type1Font("fonts/qtmri", weight=REGULAR, slant=ITALIC)
-    termes_bold = Type1Font("fonts/qtmb", weight=BOLD)
-    termes_bold_italic = Type1Font("fonts/qtmbi", weight=BOLD, slant=ITALIC)
+    termes_italic = Type1Font("../fonts/qtmri", weight=REGULAR, slant=ITALIC)
+    termes_bold = Type1Font("../fonts/qtmb", weight=BOLD)
+    termes_bold_italic = Type1Font("../fonts/qtmbi", weight=BOLD, slant=ITALIC)
 
     termes = TypeFace("TeXGyreTermes", termes_roman, termes_bold,
                       termes_italic, termes_bold_italic)
-    cursor_regular = Type1Font("fonts/qcrr", weight=REGULAR)
+    cursor_regular = Type1Font("../fonts/qcrr", weight=REGULAR)
     cursor = TypeFace("TeXGyreCursor", cursor_regular)
 
     ieeeFamily = TypeFamily(serif=termes, mono=cursor)
 
-    schola_roman = Type1Font("fonts/qcsr", weight=REGULAR)
-    schola_italic = Type1Font("fonts/qcsri", weight=REGULAR, slant=ITALIC)
-    schola_bold = Type1Font("fonts/qcsb", weight=BOLD)
-    heros_roman = Type1Font("fonts/qhvr", weight=REGULAR)
-    chorus = Type1Font("fonts/qzcmi", weight=MEDIUM)
-    standard_symbols = Type1Font("fonts/usyr", weight=REGULAR)
-    cmex9 = Type1Font("fonts/cmex9", weight=REGULAR)
+    schola_roman = Type1Font("../fonts/qcsr", weight=REGULAR)
+    schola_italic = Type1Font("../fonts/qcsri", weight=REGULAR, slant=ITALIC)
+    schola_bold = Type1Font("../fonts/qcsb", weight=BOLD)
+    heros_roman = Type1Font("../fonts/qhvr", weight=REGULAR)
+    chorus = Type1Font("../fonts/qzcmi", weight=MEDIUM)
+    standard_symbols = Type1Font("../fonts/usyr", weight=REGULAR)
+    cmex9 = Type1Font("../fonts/cmex9", weight=REGULAR)
 
     mathfonts = MathFonts(schola_roman, schola_italic, schola_bold,
                           heros_roman, cursor_regular, chorus, standard_symbols,
