@@ -273,28 +273,25 @@ class IndexTerms(Paragraph):
 
 class Section(CustomElement):
     def parse(self, document, level=1):
-        #print('Section.render() %s' % self.attrib['title'])
         for element in self.getchildren():
             if isinstance(element, Title):
-                elem = element.parse(document, level=level, id=self.get('id', None))
+                elem = element.parse(document, level=level,
+                                     id=self.get('id', None))
             elif type(element) == Section:
                 elem = element.parse(document, level=level + 1)
             else:
                 elem = element.parse(document)
-            if isinstance(elem, Flowable):
-                yield elem
-            elif isinstance(elem, Float):
+            if isinstance(elem, Flowable) or isinstance(elem, Float):
                 yield elem
             else:
                 for flw in elem:
                     yield flw
 
 
-class Title(CustomElement):
+class Title(NestedElement):
     def parse(self, document, level=1, id=None):
-        #print('Title.render()')
-        return Heading(document, self.text, style=heading_styles[level - 1],
-                          level=level, id=id)
+        return Heading(document, super().parse(document),
+                       style=heading_styles[level - 1], level=level, id=id)
 
 
 class P(NestedElement):
