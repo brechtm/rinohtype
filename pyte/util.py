@@ -1,33 +1,21 @@
+"""Collection of miscellaneous utility functionality"""
 
-import os
 import time
-from urllib.request import pathname2url
-from urllib.parse import urljoin
-
-
-DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
-
-
-def timed(f):
-    """Decorator that times the function call."""
-    def decorator(self, *args, **kwargs):
-        name = self.__class__.__name__ + '.' + f.__name__
-        start = time.clock()
-        result = f(self, *args, **kwargs)
-        print('{}: {:.4f} seconds'.format(name, time.clock() - start))
-        return result
-    return decorator
 
 
 def recursive_subclasses(cls):
-    """Generator that yields all subclasses of `cls` (recursive)"""
+    """Generator yielding all subclasses of `cls` recursively"""
     for subcls in cls.__subclasses__():
         yield subcls
         for subsubcls in recursive_subclasses(subcls):
             yield subsubcls
 
 
+# method decorators
+
 class cached_property(property):
+    """Property decorator that additionally caches the return value of the
+    decorated method. The value is stored as a data attribute of the object."""
     def __init__(self, function, *args, **kwargs):
         super().__init__(function, *args, **kwargs)
         self._function_name = function.__name__
@@ -40,3 +28,14 @@ class cached_property(property):
             cache_value = super(cached_property, self).__get__(obj, *args)
             setattr(obj, cache_variable, cache_value)
             return cache_value
+
+
+def timed(function):
+    """Decorator timing the method call and printing the result to stdout."""
+    def function_wrapper(self, *args, **kwargs):
+        name = self.__class__.__name__ + '.' + function.__name__
+        start = time.clock()
+        result = function(self, *args, **kwargs)
+        print('{}: {:.4f} seconds'.format(name, time.clock() - start))
+        return result
+    return function_wrapper

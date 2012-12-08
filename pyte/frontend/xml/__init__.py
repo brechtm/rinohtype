@@ -5,7 +5,7 @@ from importlib import import_module
 from urllib.parse import urljoin
 from urllib.request import pathname2url
 
-from ...util import DATA_PATH
+from ... import DATA_PATH
 
 
 CATALOG_PATH = os.path.join(DATA_PATH, 'xml', 'catalog')

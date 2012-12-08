@@ -2,7 +2,7 @@
 
 import os
 
-from ..util import DATA_PATH
+from .. import DATA_PATH
 
 
 __all__ = ['adobe14', 'adobe35']
