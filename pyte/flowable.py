@@ -4,8 +4,8 @@ from .unit import pt
 
 
 class FlowableStyle(Style):
-    attributes = {'spaceAbove': 0 * pt,
-                  'spaceBelow': 0 * pt}
+    attributes = {'space_above': 0 * pt,
+                  'space_below': 0 * pt}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)

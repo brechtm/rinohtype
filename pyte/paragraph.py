@@ -32,10 +32,10 @@ DOUBLE = 2.0
 
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(TextStyle, FlowableStyle):
-    attributes = {'indentLeft': 0*pt,
-                  'indentRight': 0*pt,
-                  'indentFirst': 0*pt,
-                  'lineSpacing': STANDARD,
+    attributes = {'indent_left': 0*pt,
+                  'indent_right': 0*pt,
+                  'indent_first': 0*pt,
+                  'line_spacing': STANDARD,
                   'justify': BOTH,
                   'tab_stops': []}
 
@@ -271,9 +271,9 @@ class Paragraph(MixedStyledText, Flowable):
 
         start_offset = self.container._flowable_offset
 
-        indent_left = float(self.get_style('indentLeft'))
-        indent_right = float(self.get_style('indentRight'))
-        indent_first = float(self.get_style('indentFirst'))
+        indent_left = float(self.get_style('indent_left'))
+        indent_right = float(self.get_style('indent_right'))
+        indent_first = float(self.get_style('indent_first'))
         line_width = canvas.width - indent_right
 
         self._last_font_style = None
@@ -310,7 +310,7 @@ class Paragraph(MixedStyledText, Flowable):
                     self.word_pointer -= 1
                     from .layout import ExpandingContainer
                     container = ExpandingContainer(self.container,
-                                    left=self.get_style('indentLeft'),
+                                    left=self.get_style('indent_left'),
                                     top=self.container._flowable_offset*pt)
                     flowable_height = container.flow(word)
                     self.container.advance(flowable_height)
@@ -342,7 +342,7 @@ class Paragraph(MixedStyledText, Flowable):
         footnote_space.flow(note.note)
 
     def _line_spacing(self, line_height):
-        line_spacing = self.get_style('lineSpacing')
+        line_spacing = self.get_style('line_spacing')
         if isinstance(line_spacing, Dimension):
             return float(line_spacing)
         else:

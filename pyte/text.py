@@ -17,26 +17,26 @@ from .util import cached_property
 
 class TextStyle(Style):
     attributes = {'typeface': adobe14.times,
-                  'fontWeight': MEDIUM,
-                  'fontSlant': UPRIGHT,
-                  'fontWidth': NORMAL,
-                  'fontSize': 10*pt,
-                  'smallCaps': False,
+                  'font_weight': MEDIUM,
+                  'font_slant': UPRIGHT,
+                  'font_width': NORMAL,
+                  'font_size': 10*pt,
+                  'small_caps': False,
                   'position': NORMAL,
                   'kerning': True,
                   'ligatures': True,
                   'hyphenate': True,
-                  'hyphenChars': 2,
-                  'hyphenLang': 'en_US'}
+                  'hyphen_chars': 2,
+                  'hyphen_lang': 'en_US'}
 
     def __init__(self, name, base=ParentStyle, **attributes):
         super().__init__(name, base=base, **attributes)
 
     def get_font(self):
         typeface = self.get('typeface')
-        weight = self.get('fontWeight')
-        slant = self.get('fontSlant')
-        width = self.get('fontWidth')
+        weight = self.get('font_weight')
+        slant = self.get('font_slant')
+        width = self.get('font_width')
         return typeface.get(weight=weight, slant=slant, width=width)
 
 
@@ -83,7 +83,7 @@ class StyledText(Styled):
 
     @property
     def height(self):
-        height = float(self.get_style('fontSize'))
+        height = float(self.get_style('font_size'))
         if self.get_style('position') in (SUPERSCRIPT, SUBSCRIPT):
             height *= self.position_size
         return height
@@ -99,10 +99,10 @@ class StyledText(Styled):
             # the position style is set, hence we don't recursively get the
             # position style
             if self.style.position == SUPERSCRIPT:
-                offset += (float(self.get_style('fontSize'))
+                offset += (float(self.get_style('font_size'))
                            * self.superscript_position)
             elif self.style.position == SUBSCRIPT:
-                offset += (float(self.get_style('fontSize'))
+                offset += (float(self.get_style('font_size'))
                            * self.subscript_position)
         except ParentStyleException:
             pass
@@ -152,9 +152,9 @@ class SingleStyledText(StyledText):
     @cached_property
     def font(self):
         typeface = self.get_style('typeface')
-        weight = self.get_style('fontWeight')
-        slant = self.get_style('fontSlant')
-        width = self.get_style('fontWidth')
+        weight = self.get_style('font_weight')
+        slant = self.get_style('font_slant')
+        width = self.get_style('font_width')
         return typeface.get(weight=weight, slant=slant, width=width)
 
     @property
@@ -198,8 +198,8 @@ class SingleStyledText(StyledText):
 
     @property
     def _hyphenator(self):
-        hyphen_lang = self.get_style('hyphenLang')
-        hyphen_chars = self.get_style('hyphenChars')
+        hyphen_lang = self.get_style('hyphen_lang')
+        hyphen_chars = self.get_style('hyphen_chars')
         dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
         if not os.path.exists(dic_path):
             dic_path = os.path.join(self.dic_dir, dic_file)
@@ -223,7 +223,7 @@ class SingleStyledText(StyledText):
 
     def spans(self):
         span = self
-        if self.get_style('smallCaps'):
+        if self.get_style('small_caps'):
             span = SmallCapitalsText(span.text, span.style,
                                      y_offset=self.y_offset)
             span.parent = self.parent
@@ -396,12 +396,12 @@ class FlowableEmbedder(object):
 
 # predefined styles
 
-EMPHASIZED_STYLE = TextStyle(name="emphasized", fontSlant=ITALIC)
-BOLD_STYLE = TextStyle(name="bold", fontWeight=BOLD)
-ITALIC_STYLE = TextStyle(name="italic", fontSlant=ITALIC)
-BOLD_ITALIC_STYLE = TextStyle(name="bold italic", fontWeight=BOLD,
-                            fontSlant=ITALIC)
-SMALL_CAPITALS_STYLE = TextStyle(name="small capitals", smallCaps=True)
+EMPHASIZED_STYLE = TextStyle(name="emphasized", font_slant=ITALIC)
+BOLD_STYLE = TextStyle(name="bold", font_weight=BOLD)
+ITALIC_STYLE = TextStyle(name="italic", font_slant=ITALIC)
+BOLD_ITALIC_STYLE = TextStyle(name="bold italic", font_weight=BOLD,
+                            font_slant=ITALIC)
+SMALL_CAPITALS_STYLE = TextStyle(name="small capitals", small_caps=True)
 SUPERSCRIPT_STYLE = TextStyle(name="superscript", position=SUPERSCRIPT)
 SUBSCRIPT_STYLE = TextStyle(name="subscript", position=SUBSCRIPT)
 

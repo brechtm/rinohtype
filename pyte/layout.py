@@ -119,9 +119,9 @@ class Container(RenderTarget):
             start_offset = self._flowable_offset
             flowable.container = self
             if not continued:
-                self.advance(float(flowable.get_style('spaceAbove')))
+                self.advance(float(flowable.get_style('space_above')))
             flowable.render(self.canvas)
-            self.advance(float(flowable.get_style('spaceBelow')))
+            self.advance(float(flowable.get_style('space_below')))
             return self._flowable_offset - start_offset
 
     def render(self, canvas):

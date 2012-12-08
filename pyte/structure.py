@@ -14,8 +14,8 @@ from .warnings import PyteWarning
 
 
 class HeadingStyle(ParagraphStyle):
-    attributes = {'numberingStyle': NUMBER,
-                  'numberingSeparator': '.'}
+    attributes = {'numbering_style': NUMBER,
+                  'numbering_separator': '.'}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -28,14 +28,14 @@ class Heading(Paragraph, Referenceable):
     def __init__(self, document, title, style=None, level=1, id=None):
         self._title = title
         next_number = document.counters.setdefault(self.__class__, {1: 1})
-        if style.numberingStyle is not None:
+        if style.numbering_style is not None:
             if level in next_number:
                 next_number[level] += 1
                 next_number[level + 1] = 1
             else:
                 next_number[level] = 2
-            self.number = format_number(next_number[level], style.numberingStyle)
-            number = self.number + style.numberingSeparator + FixedWidthSpace()
+            self.number = format_number(next_number[level], style.numbering_style)
+            number = self.number + style.numbering_separator + FixedWidthSpace()
         else:
             self.number = None
             number = ""
@@ -61,9 +61,9 @@ class Heading(Paragraph, Referenceable):
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('&bull;'),
-                  'itemSpacing': ParagraphStyle.attributes['lineSpacing'],
-                  'numberingStyle': NUMBER,
-                  'numberingSeparator': ')'}
+                  'item_spacing': ParagraphStyle.attributes['line_spacing'],
+                  'numbering_style': NUMBER,
+                  'numbering_separator': ')'}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -75,16 +75,16 @@ class List(Paragraph):
     def __init__(self, items, style=None):
         super().__init__([], style)
         item_style = ParagraphStyle("list item",
-                                    spaceAbove=0*pt,
-                                    spaceBelow=style.itemSpacing,
+                                    space_above=0*pt,
+                                    space_below=style.item_spacing,
                                     base=style)
         last_item_style = ParagraphStyle("last list item",
-                                         spaceAbove=0*pt,
-                                         spaceBelow=0*pt,
+                                         space_above=0*pt,
+                                         space_below=0*pt,
                                          base=style)
         if style.ordered:
-            separator = style.numberingSeparator
-            numbers = [format_number(i + 1, self.get_style('numberingStyle'))
+            separator = style.numbering_separator
+            numbers = [format_number(i + 1, self.get_style('numbering_style'))
                        for i in range(len(items))]
         else:
             separator = ''

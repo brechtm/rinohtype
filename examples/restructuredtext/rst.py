@@ -42,47 +42,47 @@ fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
 titleStyle = ParagraphStyle('title',
                             typeface=fontFamily.serif,
-                            fontSize=16*pt,
-                            lineSpacing=1.2,
-                            spaceAbove=6*pt,
-                            spaceBelow=6*pt,
+                            font_size=16*pt,
+                            line_spacing=1.2,
+                            space_above=6*pt,
+                            space_below=6*pt,
                             justify=CENTER)
 
 bodyStyle = ParagraphStyle('body',
                            typeface=fontFamily.serif,
-                           fontWeight=REGULAR,
-                           fontSize=10*pt,
-                           lineSpacing=12*pt,
-                           #indentFirst=0.125*inch,
-                           spaceAbove=0*pt,
-                           spaceBelow=10*pt,
+                           font_weight=REGULAR,
+                           font_size=10*pt,
+                           line_spacing=12*pt,
+                           #indent_first=0.125*inch,
+                           space_above=0*pt,
+                           space_below=10*pt,
                            justify=BOTH)
 
 literalstyle = ParagraphStyle('literal', base=bodyStyle,
-                              #fontSize=9*pt,
+                              #font_size=9*pt,
                               justify=LEFT,
-                              indentLeft=1*cm,
+                              indent_left=1*cm,
                               typeface=fontFamily.mono)
 #                              noWrap=True,   # but warn on overflow
 #                              literal=True ?)
 
 blockQuotestyle = ParagraphStyle('literal', base=bodyStyle,
-                                 indentLeft=1*cm)
+                                 indent_left=1*cm)
 
 hd1Style = HeadingStyle('heading',
                         typeface=fontFamily.serif,
-                        fontSize=14*pt,
-                        lineSpacing=12*pt,
-                        spaceAbove=14*pt,
-                        spaceBelow=6*pt,
-                        numberingStyle=None)
+                        font_size=14*pt,
+                        line_spacing=12*pt,
+                        space_above=14*pt,
+                        space_below=6*pt,
+                        numbering_style=None)
 
 hd2Style = HeadingStyle('subheading', base=hd1Style,
-                        fontSlant=ITALIC,
-                        fontSize=12*pt,
-                        lineSpacing=12*pt,
-                        spaceAbove=6*pt,
-                        spaceBelow=6*pt)
+                        font_slant=ITALIC,
+                        font_size=12*pt,
+                        line_spacing=12*pt,
+                        space_above=6*pt,
+                        space_below=6*pt)
 
 heading_styles = [hd1Style, hd2Style]
 

@@ -31,7 +31,7 @@ class MathFonts(object):
 
 class MathStyle(Style):
     attributes = {'fonts': None, # no default fonts yet
-                  'fontSize': 10*pt}
+                  'font_size': 10*pt}
 
     def __init__(self, name, base=ParentStyle, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -47,7 +47,7 @@ class Math(CharacterLike):
 
     def spans(self):
         font_output = PyteFonts(self)
-        fontsize = float(self.get_style('fontSize'))
+        fontsize = float(self.get_style('font_size'))
         dpi = 72
 
         # This is a class variable so we don't rebuild the parser

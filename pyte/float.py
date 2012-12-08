@@ -28,8 +28,8 @@ class Image(Flowable):
 
 
 class CaptionStyle(ParagraphStyle):
-    attributes = {'numberingStyle': NUMBER,
-                  'numberingSeparator': '.'}
+    attributes = {'numbering_style': NUMBER,
+                  'numbering_separator': '.'}
 
     def __init__(self, name, base=None, **attributes):
         super().__init__(name, base=base, **attributes)
@@ -42,8 +42,8 @@ class Caption(Paragraph):
 
     def __init__(self, category, number, text, style=None):
         super().__init__('', style)
-        numbering_style = self.get_style('numberingStyle')
-        numbering_sep = self.get_style('numberingSeparator')
+        numbering_style = self.get_style('numbering_style')
+        numbering_sep = self.get_style('numbering_separator')
         if numbering_style is not None:
             self.ref = format_number(number, numbering_style)
             number = self.ref + numbering_sep + '&nbsp;'

@@ -89,28 +89,28 @@ else:
 # ----------------------------------------------------------------------------
 bodyStyle = ParagraphStyle('body',
                            typeface=ieeeFamily.serif,
-                           fontWeight=REGULAR,
-                           fontSize=10*pt,
-                           lineSpacing=12*pt,
-                           indentFirst=0.125*inch,
-                           spaceAbove=0*pt,
-                           spaceBelow=0*pt,
+                           font_weight=REGULAR,
+                           font_size=10*pt,
+                           line_spacing=12*pt,
+                           indent_first=0.125*inch,
+                           space_above=0*pt,
+                           space_below=0*pt,
                            justify=BOTH)
 
 #TextStyle.attributes['kerning'] = False
 #TextStyle.attributes['ligatures'] = False
 
 ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
-ParagraphStyle.attributes['hyphenLang'] = 'en_US'
-ParagraphStyle.attributes['hyphenChars'] = 4
+ParagraphStyle.attributes['hyphen_lang'] = 'en_US'
+ParagraphStyle.attributes['hyphen_chars'] = 4
 
 mathstyle = MathStyle('math', fonts=mathfonts)
 
 equationstyle = EquationStyle('equation', base=bodyStyle,
                               math_style=mathstyle,
-                              indentFirst=0*pt,
-                              spaceAbove=6*pt,
-                              spaceBelow=6*pt,
+                              indent_first=0*pt,
+                              space_above=6*pt,
+                              space_below=6*pt,
                               justify=CENTER,
                               tab_stops=[TabStop(0.5, CENTER),
                                          TabStop(1.0, RIGHT)])
@@ -118,122 +118,122 @@ equationstyle = EquationStyle('equation', base=bodyStyle,
 toc_base_style = ParagraphStyle('toc level 1', base=bodyStyle,
                                 tab_stops=[TabStop(0.6*cm),
                                            TabStop(1.0, RIGHT, '. ')])
-toc_levels = [ParagraphStyle('toc level 1', fontWeight=BOLD,
+toc_levels = [ParagraphStyle('toc level 1', font_weight=BOLD,
                              base=toc_base_style),
-              ParagraphStyle('toc level 2', indentLeft=0.5*cm,
+              ParagraphStyle('toc level 2', indent_left=0.5*cm,
                              base=toc_base_style),
-              ParagraphStyle('toc level 3', indentLeft=1.0*cm,
+              ParagraphStyle('toc level 3', indent_left=1.0*cm,
                              base=toc_base_style)]
 toc_style = TableOfContentsStyle('toc', base=bodyStyle)
 
 bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
-                                   fontSize=9*pt,
-                                   indentFirst=0*pt,
-                                   spaceAbove=0*pt,
-                                   spaceBelow=0*pt,
+                                   font_size=9*pt,
+                                   indent_first=0*pt,
+                                   space_above=0*pt,
+                                   space_below=0*pt,
                                    tab_stops=[TabStop(0.25*inch, LEFT)])
 
 titleStyle = ParagraphStyle("title",
                             typeface=ieeeFamily.serif,
-                            fontWeight=REGULAR,
-                            fontSize=18*pt,
-                            lineSpacing=1.2,
-                            spaceAbove=6*pt,
-                            spaceBelow=6*pt,
+                            font_weight=REGULAR,
+                            font_size=18*pt,
+                            line_spacing=1.2,
+                            space_above=6*pt,
+                            space_below=6*pt,
                             justify=CENTER)
 
 authorStyle = ParagraphStyle("author",
                              base=titleStyle,
-                             fontSize=12*pt,
-                             lineSpacing=1.2)
+                             font_size=12*pt,
+                             line_spacing=1.2)
 
 affiliationStyle = ParagraphStyle("affiliation",
                                   base=authorStyle,
-                                  spaceBelow=6*pt + 12*pt)
+                                  space_below=6*pt + 12*pt)
 
 abstractStyle = ParagraphStyle("abstract",
                                typeface=ieeeFamily.serif,
-                               fontWeight=BOLD,
-                               fontSize=9*pt,
-                               lineSpacing=10*pt,
-                               indentFirst=0.125*inch,
-                               spaceAbove=0*pt,
-                               spaceBelow=0*pt,
+                               font_weight=BOLD,
+                               font_size=9*pt,
+                               line_spacing=10*pt,
+                               indent_first=0.125*inch,
+                               space_above=0*pt,
+                               space_below=0*pt,
                                justify=BOTH)
 
 listStyle = ListStyle("list", base=bodyStyle,
-                      spaceAbove=5*pt,
-                      spaceBelow=5*pt,
-                      indentLeft=0*inch,
-                      indentFirst=0*inch,
+                      space_above=5*pt,
+                      space_below=5*pt,
+                      indent_left=0*inch,
+                      indent_first=0*inch,
                       ordered=True,
-                      itemSpacing=0*pt,
-                      numberingStyle=NUMBER,
-                      numberingSeparator=')')
+                      item_spacing=0*pt,
+                      numbering_style=NUMBER,
+                      numbering_separator=')')
 
 hd1Style = HeadingStyle("heading",
                         typeface=ieeeFamily.serif,
-                        fontWeight=REGULAR,
-                        fontSize=10*pt,
-                        smallCaps=True,
+                        font_weight=REGULAR,
+                        font_size=10*pt,
+                        small_caps=True,
                         justify=CENTER,
-                        lineSpacing=12*pt,
-                        spaceAbove=18*pt,
-                        spaceBelow=6*pt,
-                        numberingStyle=ROMAN_UC)
+                        line_spacing=12*pt,
+                        space_above=18*pt,
+                        space_below=6*pt,
+                        numbering_style=ROMAN_UC)
 
 unnumbered_heading_style = HeadingStyle("unnumbered", base=hd1Style,
-                                        numberingStyle=None)
+                                        numbering_style=None)
 
 hd2Style = HeadingStyle("subheading", base=hd1Style,
-                        fontSlant=ITALIC,
-                        fontSize=10*pt,
-                        smallCaps=False,
+                        font_slant=ITALIC,
+                        font_size=10*pt,
+                        small_caps=False,
                         justify=LEFT,
-                        lineSpacing=12*pt,
-                        spaceAbove=6*pt,
-                        spaceBelow=6*pt,
-                        numberingStyle=CHARACTER_UC)
+                        line_spacing=12*pt,
+                        space_above=6*pt,
+                        space_below=6*pt,
+                        numbering_style=CHARACTER_UC)
 #TODO: should only specify style once for each level!
 
 heading_styles = [hd1Style, hd2Style]
 
 header_style = HeaderStyle('header', base=bodyStyle,
-                           indentFirst=0 * pt,
-                           fontSize=9 * pt)
+                           indent_first=0 * pt,
+                           font_size=9 * pt)
 
 footer_style = FooterStyle('footer', base=header_style,
-                           indentFirst=0 * pt,
+                           indent_first=0 * pt,
                            justify=CENTER)
 
 figure_style = FlowableStyle('figure',
-                             spaceAbove=10 * pt,
-                             spaceBelow=12 * pt)
+                             space_above=10 * pt,
+                             space_below=12 * pt)
 
 fig_caption_style = CaptionStyle('figure caption',
                                  typeface=ieeeFamily.serif,
-                                 fontWeight=REGULAR,
-                                 fontSize=9*pt,
-                                 lineSpacing=10*pt,
-                                 indentFirst=0*pt,
-                                 spaceAbove=20*pt,
-                                 spaceBelow=0*pt,
+                                 font_weight=REGULAR,
+                                 font_size=9*pt,
+                                 line_spacing=10*pt,
+                                 indent_first=0*pt,
+                                 space_above=20*pt,
+                                 space_below=0*pt,
                                  justify=BOTH)
 
 footnote_style = ParagraphStyle('footnote', base=bodyStyle,
-                                fontSize=9*pt,
-                                lineSpacing=10*pt)
+                                font_size=9*pt,
+                                line_spacing=10*pt)
 
 red_line_style = LineStyle('tabular line', width=0.2*pt, color=RED)
 thick_line_style = LineStyle('tabular line')
 tabular_style = TabularStyle('tabular',
                              typeface=ieeeFamily.serif,
-                             fontWeight=REGULAR,
-                             fontSize=10*pt,
-                             lineSpacing=12*pt,
-                             indentFirst=0*pt,
-                             spaceAbove=0*pt,
-                             spaceBelow=0*pt,
+                             font_weight=REGULAR,
+                             font_size=10*pt,
+                             line_spacing=12*pt,
+                             indent_first=0*pt,
+                             space_above=0*pt,
+                             space_below=0*pt,
                              justify=CENTER,
                              vertical_align=MIDDLE,
                              left_border=red_line_style,
@@ -241,9 +241,9 @@ tabular_style = TabularStyle('tabular',
                              bottom_border=red_line_style,
                              top_border=red_line_style,
                              )
-first_row_style = CellStyle('first row', fontWeight=BOLD,
+first_row_style = CellStyle('first row', font_weight=BOLD,
                             bottom_border=thick_line_style)
-first_column_style = CellStyle('first column', fontSlant=ITALIC,
+first_column_style = CellStyle('first column', font_slant=ITALIC,
                                right_border=thick_line_style)
 numbers_style = CellStyle('numbers', typeface=ieeeFamily.mono)
 tabular_style.set_cell_style(first_row_style, rows=0)
