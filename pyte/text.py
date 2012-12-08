@@ -3,11 +3,7 @@ import itertools
 import re
 import os
 
-from copy import copy
 from html.entities import name2codepoint
-from warnings import warn
-
-from psg.fonts.encoding_tables import glyph_name_to_unicode
 
 from .hyphenator import Hyphenator
 from .unit import pt
@@ -15,7 +11,6 @@ from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
-from .warnings import PyteWarning
 from .style import Style, Styled, ParentStyle, ParentStyleException
 from .util import cached_property
 
@@ -25,7 +20,7 @@ class TextStyle(Style):
                   'fontWeight': MEDIUM,
                   'fontSlant': UPRIGHT,
                   'fontWidth': NORMAL,
-                  'fontSize': 10*pt, # TODO: change default
+                  'fontSize': 10*pt,
                   'smallCaps': False,
                   'position': NORMAL,
                   'kerning': True,
@@ -104,9 +99,11 @@ class StyledText(Styled):
             # the position style is set, hence we don't recursively get the
             # position style
             if self.style.position == SUPERSCRIPT:
-                offset += float(self.get_style('fontSize')) * self.superscript_position
+                offset += (float(self.get_style('fontSize'))
+                           * self.superscript_position)
             elif self.style.position == SUBSCRIPT:
-                offset += float(self.get_style('fontSize')) * self.subscript_position
+                offset += (float(self.get_style('fontSize'))
+                           * self.subscript_position)
         except ParentStyleException:
             pass
         return offset
@@ -139,12 +136,12 @@ class SingleStyledText(StyledText):
 
     def split(self):
         def is_special(char):
-            return char in special_chars.keys()
+            return char in SPECIAL_CHARS.keys()
 
         for special, lst in itertools.groupby(self.text, is_special):
             if special:
                 for char in lst:
-                    item = special_chars[char]()
+                    item = SPECIAL_CHARS[char]()
                     item.parent = self
                     yield item
             else:
@@ -215,9 +212,9 @@ class SingleStyledText(StyledText):
     def hyphenate(self):
         if self.get_style('hyphenate'):
             word = self.text
-            h = self._hyphenator
-            for position in reversed(h.positions(word)):
-                parts = h.wrap(word, position + 1)
+            hyphenator = self._hyphenator
+            for position in reversed(hyphenator.positions(word)):
+                parts = hyphenator.wrap(word, position + 1)
                 if ''.join((parts[0][:-1], parts[1])) != word:
                     raise NotImplementedError
                 first, second = self[:position], self[position:]
@@ -333,7 +330,7 @@ class Spacer(FixedWidthSpace):
         yield float(self.dimension)
 
 
-special_chars = {' ': Space,
+SPECIAL_CHARS = {' ': Space,
                  chr(0xa0): NoBreakSpace}
 
 
@@ -399,41 +396,41 @@ class FlowableEmbedder(object):
 
 # predefined styles
 
-emStyle = TextStyle(name="emphasized", fontSlant=ITALIC)
-boldStyle = TextStyle(name="bold", fontWeight=BOLD)
-italicStyle = TextStyle(name="italic", fontSlant=ITALIC)
-boldItalicStyle = TextStyle(name="bold italic", fontWeight=BOLD,
+EMPHASIZED_STYLE = TextStyle(name="emphasized", fontSlant=ITALIC)
+BOLD_STYLE = TextStyle(name="bold", fontWeight=BOLD)
+ITALIC_STYLE = TextStyle(name="italic", fontSlant=ITALIC)
+BOLD_ITALIC_STYLE = TextStyle(name="bold italic", fontWeight=BOLD,
                             fontSlant=ITALIC)
-smallCapsStyle = TextStyle(name="small capitals", smallCaps=True)
-superscriptStyle = TextStyle(name="superscript", position=SUPERSCRIPT)
-subscriptStyle = TextStyle(name="subscript", position=SUBSCRIPT)
+SMALL_CAPITALS_STYLE = TextStyle(name="small capitals", smallCaps=True)
+SUPERSCRIPT_STYLE = TextStyle(name="superscript", position=SUPERSCRIPT)
+SUBSCRIPT_STYLE = TextStyle(name="subscript", position=SUBSCRIPT)
 
 
 class Bold(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=boldStyle, y_offset=y_offset)
+        super().__init__(text, style=BOLD_STYLE, y_offset=y_offset)
 
 
 class Italic(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=italicStyle, y_offset=y_offset)
+        super().__init__(text, style=ITALIC_STYLE, y_offset=y_offset)
 
 
 class Emphasized(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=italicStyle, y_offset=y_offset)
+        super().__init__(text, style=ITALIC_STYLE, y_offset=y_offset)
 
 
 class SmallCaps(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=smallCapsStyle, y_offset=y_offset)
+        super().__init__(text, style=SMALL_CAPITALS_STYLE, y_offset=y_offset)
 
 
 class Superscript(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=superscriptStyle, y_offset=y_offset)
+        super().__init__(text, style=SUPERSCRIPT_STYLE, y_offset=y_offset)
 
 
 class Subscript(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=subscriptStyle, y_offset=y_offset)
+        super().__init__(text, style=SUBSCRIPT_STYLE, y_offset=y_offset)

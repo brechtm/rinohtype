@@ -21,7 +21,7 @@ from pyte.paragraph import TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from pyte.text import SingleStyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
-from pyte.text import TextStyle, boldItalicStyle
+from pyte.text import TextStyle, BOLD_ITALIC_STYLE
 from pyte.text import Tab as PyteTab, FlowableEmbedder
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
@@ -256,13 +256,13 @@ tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
 
 class Abstract(Paragraph):
     def __init__(self, text):
-        label = SingleStyledText("Abstract &mdash; ", boldItalicStyle)
+        label = SingleStyledText("Abstract &mdash; ", BOLD_ITALIC_STYLE)
         return super().__init__([label, text], abstractStyle)
 
 
 class IndexTerms(Paragraph):
     def __init__(self, terms):
-        label = SingleStyledText("Index Terms &mdash; ", boldItalicStyle)
+        label = SingleStyledText("Index Terms &mdash; ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
         return super().__init__([label, text], abstractStyle)
