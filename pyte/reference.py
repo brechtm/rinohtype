@@ -105,7 +105,8 @@ class Reference(Field):
             text = "??".format(self.id)
 
         if text is None:
-            warn('Trying to reference unreferenceable object', PyteWarning)
+            warn('Trying to reference unreferenceable object: \n   '
+                 + str(referenced_item), PyteWarning)
             text = ' ' #'[not referenceable]'
 
         field_text = SingleStyledText(text)

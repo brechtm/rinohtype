@@ -129,6 +129,9 @@ class SingleStyledText(StyledText):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
+    def __str__(self):
+        return self.text
+
     def __getitem__(self, index):
         result = self.__class__(self.text[index])
         result.parent = self.parent
@@ -255,6 +258,9 @@ class MixedStyledText(StyledText, list):
     def __repr__(self):
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
+
+    def __str__(self):
+        return ''.join([str(item) for item in self])
 
     def spans(self):
         # TODO: support for mixed-style words
