@@ -40,3 +40,7 @@ class Parser(object):
 class CustomElement(objectify.ObjectifiedElement):
     def parse(self, document):
         raise NotImplementedError('tag: %s' % self.tag)
+
+    @property
+    def location(self):
+        return self.getroottree().docinfo.URL, self.sourceline

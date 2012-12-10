@@ -18,8 +18,10 @@ class TreeBuilder(ElementTree.TreeBuilder):
         last = super().end(tag)
         try:
             last._parent = self._elem[-1]
+            last._root = self._elem[0]
         except IndexError:
             last._parent = None
+            last._root = self
         last._namespace = self._namespace
         return last
 
@@ -59,9 +61,11 @@ class Parser(ElementTree.XMLParser):
     def parse(self, xmlfile):
         xml = ElementTree.ElementTree()
         xml.parse(xmlfile, self)
+        xml._filename = xmlfile
+        xml.getroot()._roottree = xml
         return xml
 
-    # add sourceline attrib to each element (http://bugs.python.org/issue14078)
+    # store source line for each element (http://bugs.python.org/issue14078)
     def _start_list(self, *args, **kwargs):
         element = super()._start_list(*args, **kwargs)
         element.sourceline = self._parser.CurrentLineNumber
@@ -116,3 +120,7 @@ class ObjectifiedElement(ElementTree.Element):
 class CustomElement(ObjectifiedElement):
     def parse(self, document):
         raise NotImplementedError('tag: %s' % self.tag)
+
+    @property
+    def location(self):
+        return self._root._roottree._filename, self.sourceline
