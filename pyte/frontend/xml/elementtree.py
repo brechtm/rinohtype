@@ -61,6 +61,12 @@ class Parser(ElementTree.XMLParser):
         xml.parse(xmlfile, self)
         return xml
 
+    # add sourceline attrib to each element (http://bugs.python.org/issue14078)
+    def _start_list(self, *args, **kwargs):
+        element = super()._start_list(*args, **kwargs)
+        element.sourceline = self._parser.CurrentLineNumber
+        return element
+
 
 class ExternalEntityRefHandler(object):
     def __init__(self, parser, uri_rewrite_map):
