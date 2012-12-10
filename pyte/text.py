@@ -297,18 +297,6 @@ class Character(SingleStyledText):
         yield self
 
 
-class Glyph(Character):
-    def __init__(self, name, text='?', style=ParentStyle):
-        super().__init__(text, style)
-        self.name = name
-
-    def __repr__(self):
-        return "<glyph '{0}'> (style={1})".format(self.name, self.style)
-
-    def glyphs(self):
-        yield self.name
-
-
 class Space(Character):
     def __init__(self, fixed_width=False, style=ParentStyle, y_offset=0):
         super().__init__(' ', style, y_offset=y_offset)
