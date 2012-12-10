@@ -300,19 +300,16 @@ class P(NestedElement):
 
 class B(NestedElement):
     def parse(self, document):
-        #print('B.render()')
         return Bold(super().parse(document))
 
 
 class Em(NestedElement):
     def parse(self, document):
-        #print('Em.render()')
         return Emphasized(super().parse(document))
 
 
 class SC(NestedElement):
     def parse(self, document):
-        #print('SC.render()')
         return SmallCaps(super().parse(document))
 
 
@@ -333,11 +330,7 @@ class Tab(CustomElement):
 
 class OL(CustomElement):
     def parse(self, document):
-        #print('OL.render()')
-        items = []
-        for item in self.getchildren():
-            items.append(item.parse(document))
-        return List(items, style=listStyle)
+        return List([li.parse(document) for li in self.li], style=listStyle)
 
 
 class LI(NestedElement):
@@ -346,8 +339,7 @@ class LI(NestedElement):
 
 class Math(CustomElement):
     def parse(self, document):
-        math = PyteMath(self.text, style=mathstyle)
-        return math
+        return PyteMath(self.text, style=mathstyle)
 
 
 class Eq(CustomElement):
@@ -361,7 +353,6 @@ class Eq(CustomElement):
 
 class Cite(CustomElement):
     def parse(self, document):
-        #print('Cite.render()')
         keys = map(lambda x: x.strip(), self.get('id').split(','))
         items = [CitationItem(key) for key in keys]
         citation = Citation(items)
@@ -371,7 +362,6 @@ class Cite(CustomElement):
 
 class Ref(CustomElement):
     def parse(self, document):
-        #print('Ref.render()')
         return Reference(self.get('id'), self.get('type', REFERENCE))
 
 
@@ -383,7 +373,6 @@ class Footnote(NestedElement):
 
 class Acknowledgement(CustomElement):
     def parse(self, document):
-        #print('Acknowledgement.render()')
         yield Heading(document, 'Acknowledgement',
                       style=unnumbered_heading_style, level=1)
         for element in self.getchildren():
@@ -392,8 +381,7 @@ class Acknowledgement(CustomElement):
 
 class Figure(CustomElement):
     def parse(self, document):
-        #print('Figure.render()')
-        caption_text = self.getchildren()[0].text
+        caption_text = self.caption.parse(document)
         scale = float(self.get('scale'))
         figure = PyteFigure(document, self.get('path'), caption_text,
                             scale=scale, style=figure_style,
@@ -401,16 +389,18 @@ class Figure(CustomElement):
         return Float(figure)
 
 
+class Caption(NestedElement):
+    pass
+
+
 class Tabular(CustomElement):
     def parse(self, document):
-        #print('Tabular.render()')
         data = HTMLTabularData(self)
         return PyteTabular(data, style=tabular_style)
 
 
 class CSVTabular(CustomElement):
     def parse(self, document):
-        #print('Tabular.render()')
         data = CSVTabularData(self.get('path'))
         return PyteTabular(data, style=tabular_style)
 
