@@ -67,12 +67,10 @@ class StyledText(Styled):
         self._y_offset = y_offset
 
     def __add__(self, other):
-        assert isinstance(other, __class__) or isinstance(other, str)
-        return MixedStyledText([self, other])
+        return MixedStyledText([self, other]) if other else self
 
     def __radd__(self, other):
-        assert isinstance(other, str)
-        return MixedStyledText([other, self])
+        return MixedStyledText([other, self]) if other else self
 
     def __iadd__(self, other):
         return self + other
@@ -120,7 +118,7 @@ class SingleStyledText(StyledText):
         text = re.sub('[\t\r\n]', ' ', text)
         return re.sub(' +', ' ', text)
 
-    # from http://wiki.python.org/moin/EscapingHtml
+    # TODO: move to xml parser module
     def _decode_html_entities(self, text):
         return re.sub('&(%s);' % '|'.join(name2codepoint),
                       lambda m: chr(name2codepoint[m.group(1)]), text)
@@ -252,6 +250,7 @@ class MixedStyledText(StyledText, list):
         for item in items:
             if isinstance(item, str):
                 item = SingleStyledText(item, style=ParentStyle)
+            assert isinstance(item, StyledText)
             item.parent = self
             self.append(item)
 
@@ -291,7 +290,7 @@ class Character(SingleStyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
-    def __repr__(self):
+    def __str__(self):
         return self.text
 
     def split(self):
@@ -365,15 +364,12 @@ class Box(Character):
         return self.width
 
 
-class ControlCharacter(object):
+class ControlCharacter(Character):
     def __init__(self, text):
-        self.text = text
+        super().__init__(text)
 
     def __repr__(self):
         return self.__class__.__name__
-
-    def split(self):
-        yield self
 
     def spans(self):
         yield self
@@ -384,20 +380,10 @@ class NewLine(ControlCharacter):
         super().__init__('\n')
 
 
-class Tab(ControlCharacter, Character):
+class Tab(ControlCharacter):
     def __init__(self):
-        Character.__init__(self, ' ')
         super().__init__(' ')
         self.tab_width = 0
-
-
-class FlowableEmbedder(object):
-    def __init__(self, flowable):
-        self.flowable = flowable
-
-    def spans(self):
-        self.flowable.parent = self.parent
-        yield self.flowable
 
 
 # predefined styles

@@ -22,7 +22,7 @@ from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from pyte.text import SingleStyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
 from pyte.text import TextStyle, BOLD_ITALIC_STYLE
-from pyte.text import Tab as PyteTab, FlowableEmbedder
+from pyte.text import Tab as PyteTab
 from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
 from pyte.math import Math as PyteMath
 from pyte.structure import Heading, List
@@ -257,7 +257,7 @@ tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
 class Abstract(Paragraph):
     def __init__(self, text):
         label = SingleStyledText("Abstract &mdash; ", BOLD_ITALIC_STYLE)
-        return super().__init__([label, text], abstractStyle)
+        return super().__init__(label + text, abstractStyle)
 
 
 class IndexTerms(Paragraph):
@@ -265,7 +265,7 @@ class IndexTerms(Paragraph):
         label = SingleStyledText("Index Terms &mdash; ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
-        return super().__init__([label, text], abstractStyle)
+        return super().__init__(label + text, abstractStyle)
 
 
 # render methods
@@ -274,18 +274,17 @@ class IndexTerms(Paragraph):
 class Section(CustomElement):
     def parse(self, document, level=1):
         for element in self.getchildren():
-            if isinstance(element, Title):
-                elem = element.parse(document, level=level,
-                                     id=self.get('id', None))
-            elif type(element) == Section:
-                elem = element.parse(document, level=level + 1)
+            if type(element) == Section:
+                section = element.parse(document, level=level + 1)
+                for flowable in section:
+                    yield flowable
             else:
-                elem = element.parse(document)
-            if isinstance(elem, Flowable) or isinstance(elem, Float):
-                yield elem
-            else:
-                for flw in elem:
-                    yield flw
+                if isinstance(element, Title):
+                    flowable = element.parse(document, level=level,
+                                             id=self.get('id', None))
+                else:
+                    flowable = element.parse(document)
+                yield flowable
 
 
 class Title(NestedElement):
@@ -341,15 +340,8 @@ class OL(CustomElement):
         return List(items, style=listStyle)
 
 
-class LI(CustomElement):
-    def parse(self, document):
-        #print('LI.render()')
-        content = self.text
-        for child in self.getchildren():
-            content += child.parse(document)
-            if child.tail is not None:
-                content += child.tail
-        return content
+class LI(NestedElement):
+    pass
 
 
 class Math(CustomElement):
@@ -364,7 +356,7 @@ class Eq(CustomElement):
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
-        return MixedStyledText([FlowableEmbedder(equation)])
+        return MixedStyledText([equation])
 
 
 class Cite(CustomElement):
@@ -383,18 +375,10 @@ class Ref(CustomElement):
         return Reference(self.get('id'), self.get('type', REFERENCE))
 
 
-class Footnote(CustomElement):
+class Footnote(NestedElement):
     def parse(self, document):
-        if self.text is not None:
-            content = self.text
-        else:
-            content = ''
-        for child in self.getchildren():
-            content += child.parse(document)
-            if child.tail is not None:
-                content += child.tail
-        content = Paragraph(content, style=footnote_style)
-        return PyteFootnote(content)
+        par = Paragraph(super().parse(document), style=footnote_style)
+        return PyteFootnote(par)
 
 
 class Acknowledgement(CustomElement):
@@ -438,8 +422,7 @@ from pyte import csl_formatter
 
 class IEEEBibliography(Paragraph):
     def __init__(self, items):
-        items = [FlowableEmbedder(Paragraph(item, style=ParentStyle))
-                 for item in items]
+        items = [Paragraph(item, style=ParentStyle) for item in items]
         for item in items:
             item.parent = self
         return super().__init__(items, style=bibliographyStyle)
