@@ -8,7 +8,7 @@ from pyte.paper import Paper
 from pyte.layout import Container
 from pyte.paragraph import Paragraph
 from pyte.layout import EndOfPage
-from .frontend.xml import Parser, CustomElement
+from .frontend.xml import Parser
 from .backend import pdf
 
 

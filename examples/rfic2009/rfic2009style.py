@@ -275,52 +275,52 @@ class Section(CustomElement):
     def parse(self, document, level=1):
         for element in self.getchildren():
             if type(element) == Section:
-                section = element.parse(document, level=level + 1)
+                section = element.process(document, level=level + 1)
                 for flowable in section:
                     yield flowable
             else:
                 if isinstance(element, Title):
-                    flowable = element.parse(document, level=level,
-                                             id=self.get('id', None))
+                    flowable = element.process(document, level=level,
+                                               id=self.get('id', None))
                 else:
-                    flowable = element.parse(document)
+                    flowable = element.process(document)
                 yield flowable
 
 
 class Title(NestedElement):
     def parse(self, document, level=1, id=None):
-        return Heading(document, super().parse(document),
+        return Heading(document, self.process_content(document),
                        style=heading_styles[level - 1], level=level, id=id)
 
 
 class P(NestedElement):
     def parse(self, document):
-        return Paragraph(super().parse(document), style=bodyStyle)
+        return Paragraph(self.process_content(document), style=bodyStyle)
 
 
 class B(NestedElement):
     def parse(self, document):
-        return Bold(super().parse(document))
+        return Bold(self.process_content(document))
 
 
 class Em(NestedElement):
     def parse(self, document):
-        return Emphasized(super().parse(document))
+        return Emphasized(self.process_content(document))
 
 
 class SC(NestedElement):
     def parse(self, document):
-        return SmallCaps(super().parse(document))
+        return SmallCaps(self.process_content(document))
 
 
 class Sup(NestedElement):
     def parse(self, document):
-        return Superscript(super().parse(document))
+        return Superscript(self.process_content(document))
 
 
 class Sub(NestedElement):
     def parse(self, document):
-        return Subscript(super().parse(document))
+        return Subscript(self.process_content(document))
 
 
 class Tab(CustomElement):
@@ -330,7 +330,7 @@ class Tab(CustomElement):
 
 class OL(CustomElement):
     def parse(self, document):
-        return List([li.parse(document) for li in self.li], style=listStyle)
+        return List([li.process(document) for li in self.li], style=listStyle)
 
 
 class LI(NestedElement):
@@ -367,7 +367,7 @@ class Ref(CustomElement):
 
 class Footnote(NestedElement):
     def parse(self, document):
-        par = Paragraph(super().parse(document), style=footnote_style)
+        par = Paragraph(self.process_content(document), style=footnote_style)
         return PyteFootnote(par)
 
 
@@ -376,12 +376,12 @@ class Acknowledgement(CustomElement):
         yield Heading(document, 'Acknowledgement',
                       style=unnumbered_heading_style, level=1)
         for element in self.getchildren():
-            yield element.parse(document)
+            yield element.process(document)
 
 
 class Figure(CustomElement):
     def parse(self, document):
-        caption_text = self.caption.parse(document)
+        caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
         figure = PyteFigure(document, self.get('path'), caption_text,
                             scale=scale, style=figure_style,
@@ -425,11 +425,12 @@ class CitationField(Field):
         super().__init__()
         self.citation = citation
 
+    def warn_unknown_reference_id(self, item):
+        self.warn("Unknown reference ID '{}'".format(item.key))
+
     def field_spans(self):
-        try:
-            text = self.citation.bibliography.cite(self.citation)
-        except AttributeError:
-            text = '[?]'
+        text = self.citation.bibliography.cite(self.citation,
+                                               self.warn_unknown_reference_id)
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
         return field_text.spans()

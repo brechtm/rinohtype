@@ -3,11 +3,11 @@
 import time
 
 
-def recursive_subclasses(cls):
+def all_subclasses(cls):
     """Generator yielding all subclasses of `cls` recursively"""
     for subcls in cls.__subclasses__():
         yield subcls
-        for subsubcls in recursive_subclasses(subcls):
+        for subsubcls in all_subclasses(subcls):
             yield subsubcls
 
 

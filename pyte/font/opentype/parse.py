@@ -3,7 +3,7 @@ import hashlib, math, io, struct
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
-from ...util import recursive_subclasses
+from ...util import all_subclasses
 
 
 def create_reader(data_format, process_struct=lambda data: data[0]):
@@ -203,6 +203,6 @@ class OpenTypeParser(dict):
                 self[tag] = self._parse_table(file, table_records[tag])
 
     def _parse_table(self, file, table_record):
-        for cls in recursive_subclasses(OpenTypeTable):
+        for cls in all_subclasses(OpenTypeTable):
             if cls.tag == table_record['tag']:
                 return cls(file, table_record['offset'])

@@ -16,18 +16,40 @@ CATALOG_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 try:
     from .. import XML_FRONTEND
     xml_frontend = import_module(XML_FRONTEND)
-    Parser = xml_frontend.Parser
-    CustomElement = xml_frontend.CustomElement
 except ImportError:
     try:
-        from .lxml import Parser, CustomElement
+        from . import lxml as xml_frontend
     except ImportError:
-        from .elementtree import Parser, CustomElement
+        from . import elementtree as xml_frontend
+
+
+class CustomElement(xml_frontend.BaseElement):
+    def process(self, document, *args, **kwargs):
+        result = self.parse(document, *args, **kwargs)
+        try:
+            result._source = self
+        except AttributeError:
+            pass
+        return result
+
+    def parse(self, document, *args, **kwargs):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+    @property
+    def location(self):
+        return '{} line {}'.format(*self.filename_and_line)
 
 
 class NestedElement(CustomElement):
-    def parse(self, document):
+    def parse(self, document, *args, **kwargs):
+        return self.process_content(document)
+
+    def process_content(self, document):
         content = self.text
         for child in self.getchildren():
-            content += child.parse(document) + child.tail
+            content += child.process(document) + child.tail
         return content
+
+
+Parser = xml_frontend.Parser
+Parser.element_class = CustomElement

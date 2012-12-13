@@ -1,4 +1,6 @@
 
+from .warnings import warn
+
 
 class ParentStyleException(Exception):
     pass
@@ -95,3 +97,8 @@ class Styled(object):
                 value = self.parent.get_style(attribute)
             self.cached_style[attribute] = value
             return value
+
+    def warn(self, message):
+        if hasattr(self, '_source'):
+            message = '[{}] {}'.format(self._source.location, message)
+        warn(message)

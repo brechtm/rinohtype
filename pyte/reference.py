@@ -91,6 +91,9 @@ class Reference(Field):
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
                 text = referenced_item.reference()
+                if text is None:
+                    self.warn('Cannot reference "{}"'.format(referenced_item))
+                    text = ''
             elif self.type == PAGE:
                 try:
                     text = str(self.document.page_references[self.id])
@@ -101,13 +104,8 @@ class Reference(Field):
             else:
                 raise NotImplementedError
         except KeyError:
-            warn("Unknown label '{}'".format(self.id), PyteWarning)
+            self.warn("Unknown label '{}'".format(self.id))
             text = "??".format(self.id)
-
-        if text is None:
-            warn('Trying to reference unreferenceable object: \n   '
-                 + str(referenced_item), PyteWarning)
-            text = ' ' #'[not referenceable]'
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent

@@ -54,9 +54,8 @@ class Bibliography(list):
         try:
             reference = self.source[id]
         except KeyError:
-            warning = "Unknown reference ID '{}'".format(id)
-            warn(warning, PyteWarning)
-            return "[{}]".format(warning)
+            self.warn("Unknown reference ID '{}'".format(id))
+            return "[{}?]".format(id)
         self.append(reference)
         return self.formatter.format_citation(reference)
 

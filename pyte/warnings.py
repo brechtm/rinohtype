@@ -8,6 +8,10 @@ class PyteWarning(Warning):
     pass
 
 
+def warn(message):
+    warnings.warn(PyteWarning(message))
+
+
 def formatwarning(message, category, filename, lineno, line=None):
     if category == PyteWarning:
         return '{}\n'.format(message.args[0])

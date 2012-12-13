@@ -5,8 +5,8 @@ from warnings import warn
 from xml.parsers import expat
 from xml.etree import ElementTree, ElementPath
 
-from ...util import recursive_subclasses
-from . import  CATALOG_PATH, CATALOG_URL, CATALOG_NS
+from ...util import all_subclasses
+from . import CATALOG_PATH, CATALOG_URL, CATALOG_NS
 
 
 class TreeBuilder(ElementTree.TreeBuilder):
@@ -34,7 +34,7 @@ class Parser(ElementTree.XMLParser):
                  'validation.')
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
-                                for cls in recursive_subclasses(CustomElement)}
+                                for cls in all_subclasses(self.element_class)}
         tree_builder = TreeBuilder(self.namespace, self.lookup)
         super().__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()
@@ -46,7 +46,7 @@ class Parser(ElementTree.XMLParser):
         try:
             return self.element_classes[tag](tag, attrs)
         except KeyError:
-            return CustomElement(tag, attrs)
+            return self.element_class(tag, attrs)
 
     def create_uri_rewrite_map(self):
         rewrite_map = {}
@@ -117,10 +117,7 @@ class ObjectifiedElement(ElementTree.Element):
             yield self
 
 
-class CustomElement(ObjectifiedElement):
-    def parse(self, document):
-        raise NotImplementedError('tag: %s' % self.tag)
-
+class BaseElement(ObjectifiedElement):
     @property
-    def location(self):
+    def filename_and_line(self):
         return self._root._roottree._filename, self.sourceline
