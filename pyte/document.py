@@ -10,19 +10,18 @@ from .backend import pdf
 from .warnings import warn
 
 
-class Orientation:
-    Portrait = 0
-    Landscape = 1
+PORTRAIT = 'portrait'
+LANDSCAPE = 'landscape'
 
 
 class Page(Container):
-    def __init__(self, document, paper, orientation=Orientation.Portrait):
+    def __init__(self, document, paper, orientation=PORTRAIT):
         assert isinstance(document, Document)
         assert isinstance(paper, Paper)
         self._document = document
         self.paper = paper
         self.orientation = orientation
-        if self.orientation is Orientation.Portrait:
+        if self.orientation is PORTRAIT:
             width = self.paper.width
             height = self.paper.height
         else:

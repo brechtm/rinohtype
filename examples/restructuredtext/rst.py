@@ -16,7 +16,7 @@ from pyte.font.type1 import Type1Font
 from pyte.font.opentype import OpenTypeFont
 from pyte.unit import pt, cm, inch
 from pyte.paper import A5
-from pyte.document import Document, Page, Orientation
+from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import Container, Chain, FootnoteContainer
 from pyte.backend import pdf
 from pyte.structure import Heading, HeadingStyle
@@ -179,7 +179,7 @@ class SimplePage(Page):
     leftmargin = rightmargin = 2 * cm
 
     def __init__(self, document):
-        super().__init__(document, A5, Orientation.Portrait)
+        super().__init__(document, A5, PORTRAIT)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
