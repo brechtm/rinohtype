@@ -1,15 +1,13 @@
 
 import time
-import os
 import pickle
 
-from pyte.unit import pt
-from pyte.paper import Paper
-from pyte.layout import Container
-from pyte.paragraph import Paragraph
-from pyte.layout import EndOfPage
+from .unit import pt
+from .paper import Paper
+from .layout import Container, EndOfPage
 from .frontend.xml import Parser
 from .backend import pdf
+from .warnings import warn
 
 
 class Orientation:
@@ -152,3 +150,21 @@ class Document(object):
 
     def add_to_chain(self, chain):
         raise NotImplementedError
+
+
+class DocumentElement(object):
+    def __init__(self, parent=None):
+        self.parent = parent
+
+    @property
+    def page(self):
+        return self.parent.page
+
+    @property
+    def document(self):
+        return self.parent.document
+
+    def warn(self, message):
+        if hasattr(self, '_source'):
+            message = '[{}] {}'.format(self._source.location, message)
+        warn(message)

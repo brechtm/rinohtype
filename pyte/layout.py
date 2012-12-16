@@ -1,6 +1,5 @@
 
 from .dimension import Dimension
-from .flowable import Flowable
 from .unit import pt
 from .util import cached_property
 
@@ -22,7 +21,6 @@ class RenderTarget(object):
         raise NotImplementedError
 
     def add_flowable(self, flowable):
-        #assert isinstance(flowable, Flowable)
         flowable.document = self.document
         self.flowables.append(flowable)
 

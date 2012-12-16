@@ -1,5 +1,5 @@
 
-from .warnings import warn
+from .document import DocumentElement
 
 
 class ParentStyleException(Exception):
@@ -64,11 +64,11 @@ class Style(object):
         return attributes
 
 
-# TODO: link to xml line number
-class Styled(object):
+class Styled(DocumentElement):
     style_class = None
 
     def __init__(self, style=None):
+        super().__init__()
         if style is None:
             style = self.style_class('empty')
         if style != ParentStyle and not isinstance(style, self.style_class):
@@ -76,16 +76,7 @@ class Styled(object):
                             .format(self.__class__.__name__,
                                     self.style_class.__name__))
         self.style = style
-        self.parent = None
         self.cached_style = {}
-
-    @property
-    def page(self):
-        return self.parent.page
-
-    @property
-    def document(self):
-        return self.parent.document
 
     def get_style(self, attribute):
         try:
@@ -97,8 +88,3 @@ class Styled(object):
                 value = self.parent.get_style(attribute)
             self.cached_style[attribute] = value
             return value
-
-    def warn(self, message):
-        if hasattr(self, '_source'):
-            message = '[{}] {}'.format(self._source.location, message)
-        warn(message)
