@@ -36,5 +36,5 @@ class Parser(object):
 
 class BaseElement(objectify.ObjectifiedElement):
     @property
-    def filename_and_line(self):
-        return self.getroottree().docinfo.URL, self.sourceline
+    def filename(self):
+        return self.getroottree().docinfo.URL

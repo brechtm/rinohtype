@@ -119,5 +119,5 @@ class ObjectifiedElement(ElementTree.Element):
 
 class BaseElement(ObjectifiedElement):
     @property
-    def filename_and_line(self):
-        return self._root._roottree._filename, self.sourceline
+    def filename(self):
+        return self._root._roottree._filename

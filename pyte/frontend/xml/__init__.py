@@ -37,7 +37,8 @@ class CustomElement(xml_frontend.BaseElement):
 
     @property
     def location(self):
-        return '{} line {}'.format(*self.filename_and_line)
+        tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
+        return '{}: <{}> at line {}'.format(self.filename, tag, self.sourceline)
 
 
 class NestedElement(CustomElement):
