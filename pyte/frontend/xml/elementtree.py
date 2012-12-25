@@ -27,7 +27,8 @@ class TreeBuilder(ElementTree.TreeBuilder):
 
 
 class Parser(ElementTree.XMLParser):
-    def __init__(self, namespace=None, schema=None):
+    def __init__(self, element_class, namespace=None, schema=None):
+        self.element_class = element_class
         if schema:
             warn('The ElementTree based XML parser does not support '
                  'validation. Please install lxml in order to enable '

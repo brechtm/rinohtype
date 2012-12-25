@@ -17,8 +17,8 @@ class HeadingStyle(ParagraphStyle):
     attributes = {'numbering_style': NUMBER,
                   'numbering_separator': '.'}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 # TODO: share superclass with List (numbering)
@@ -65,8 +65,8 @@ class ListStyle(ParagraphStyle):
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class List(Paragraph):
@@ -74,12 +74,10 @@ class List(Paragraph):
 
     def __init__(self, items, style=None):
         super().__init__([], style)
-        item_style = ParagraphStyle("list item",
-                                    space_above=0*pt,
-                                    space_below=style.item_spacing,
+        item_style = ParagraphStyle(space_above=0*pt,
+                                    space_below=self.style.item_spacing,
                                     base=style)
-        last_item_style = ParagraphStyle("last list item",
-                                         space_above=0*pt,
+        last_item_style = ParagraphStyle(space_above=0*pt,
                                          space_below=0*pt,
                                          base=style)
         if style.ordered:
@@ -125,8 +123,8 @@ class List(Paragraph):
 class HeaderStyle(ParagraphStyle):
     attributes = {}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Header(Paragraph):
@@ -145,8 +143,8 @@ class Header(Paragraph):
 class FooterStyle(ParagraphStyle):
     attributes = {}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Footer(Paragraph):
@@ -165,8 +163,8 @@ class Footer(Paragraph):
 class TableOfContentsStyle(ParagraphStyle):
     attributes = {'depth': 3}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class TableOfContents(Paragraph):

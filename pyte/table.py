@@ -23,15 +23,15 @@ class CellStyle(ParagraphStyle):
                   'left_border': None,
                   'vertical_align': MIDDLE}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class TabularStyle(CellStyle):
     # TODO: attributes (colgroup line style, header line style, header text style
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
         self.cell_style = []
 
     def set_cell_style(self, style, rows=slice(None), cols=slice(None)):

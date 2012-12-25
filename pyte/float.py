@@ -31,8 +31,8 @@ class CaptionStyle(ParagraphStyle):
     attributes = {'numbering_style': NUMBER,
                   'numbering_separator': '.'}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Caption(Paragraph):

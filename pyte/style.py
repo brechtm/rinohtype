@@ -31,20 +31,36 @@ class DefaultValueException(Exception):
 class Style(dict):
     attributes = {}
 
-    def __init__(self, name, base=ParentStyle, **attributes):
-        self.name = name
+    def __init__(self, base=ParentStyle, **attributes):
         self.base = base
+        self.name = None
+        self.store = None
         for attribute in attributes:
             if attribute not in self._supported_attributes():
                 raise TypeError('%s is not a supported attribute' % attribute)
         self.update(attributes)
+
+    @property
+    def base(self):
+        if isinstance(self._base, str):
+            return self.store[self._base]
+        else:
+            return self._base
+
+    @base.setter
+    def base(self, base):
+        self._base = base
 
     def __repr__(self):
         return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name,
                                        self.base)
 
     def __copy__(self):
-        return self.__class__(self.name + ' (copy)', base=self.base, **self)
+        copy = self.__class__(base=self.base, **self)
+        if self.name is not None:
+            copy.name = self.name + ' (copy)'
+            copy.store = self.store
+        return copy
 
     def __getattr__(self, name):
         return self[name]
@@ -85,7 +101,7 @@ class Styled(DocumentElement):
     def __init__(self, style=None):
         super().__init__()
         if style is None:
-            style = self.style_class('empty')
+            style = self.style_class()
         if style != ParentStyle and not isinstance(style, self.style_class):
             raise TypeError('the style passed to {0} should be of type {1}'
                             .format(self.__class__.__name__,
@@ -103,3 +119,13 @@ class Styled(DocumentElement):
                 value = self.parent.get_style(attribute)
             self.cached_style[attribute] = value
             return value
+
+
+class StyleStore(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __setitem__(self, key, value):
+        value.name = key
+        value.store = self
+        super().__setitem__(key, value)

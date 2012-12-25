@@ -5,7 +5,6 @@ import pickle
 from .unit import pt
 from .paper import Paper
 from .layout import Container, EndOfPage
-from .frontend.xml import Parser
 from .backend import pdf
 from .warnings import warn
 
@@ -66,8 +65,7 @@ class Page(Container):
 class Document(object):
     cache_extension = '.ptc'
 
-    def __init__(self, filename, namespace=None, backend=pdf, schema=None):
-        parser = Parser(namespace, schema=schema)
+    def __init__(self, parser, filename, backend=pdf):
         self.xml = parser.parse(filename)
         self.root = self.xml.getroot()
 

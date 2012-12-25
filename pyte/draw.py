@@ -26,8 +26,8 @@ class LineStyle(Style):
     attributes = {'width': 1*pt,
                   'color': BLACK}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Line(Styled):

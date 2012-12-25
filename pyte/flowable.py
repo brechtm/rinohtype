@@ -7,8 +7,8 @@ class FlowableStyle(Style):
     attributes = {'space_above': 0 * pt,
                   'space_below': 0 * pt}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Flowable(Styled):

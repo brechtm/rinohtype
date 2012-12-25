@@ -1,12 +1,4 @@
 
-from copy import copy
-
-import xml.etree.ElementTree as ET
-##from lxml import etree, objectify
-
-import pyte.frontend
-pyte.frontend.XML_FRONTEND = 'pyte.frontend.xml.elementtree'
-
 from pyte.unit import inch, pt, cm
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.type1 import Type1Font
@@ -37,9 +29,11 @@ from pyte.float import Figure as PyteFigure, CaptionStyle, Float
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
-from pyte.style import ParentStyle
-from pyte.frontend.xml import CustomElement, NestedElement
+from pyte.style import ParentStyle, StyleStore
+from pyte.frontend.xml import element_factory
 from pyte.backend import pdf, psg
+
+import pyte.frontend.xml.elementtree as xml_frontend
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem, Locator
@@ -85,171 +79,162 @@ else:
     from pyte.fonts.adobe35 import postscript_mathfonts as mathfonts
 
 
-# paragraph styles
+# styles
 # ----------------------------------------------------------------------------
-bodyStyle = ParagraphStyle('body',
-                           typeface=ieeeFamily.serif,
-                           font_weight=REGULAR,
-                           font_size=10*pt,
-                           line_spacing=12*pt,
-                           indent_first=0.125*inch,
-                           space_above=0*pt,
-                           space_below=0*pt,
-                           justify=BOTH)
+styles = StyleStore()
+
+styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
+                                font_weight=REGULAR,
+                                font_size=10*pt,
+                                line_spacing=12*pt,
+                                indent_first=0.125*inch,
+                                space_above=0*pt,
+                                space_below=0*pt,
+                                justify=BOTH)
+
+# set style defaults
 
 #TextStyle.attributes['kerning'] = False
 #TextStyle.attributes['ligatures'] = False
-
-ParagraphStyle.attributes['typeface'] = bodyStyle.typeface
+ParagraphStyle.attributes['typeface'] = styles['body'].typeface
 ParagraphStyle.attributes['hyphen_lang'] = 'en_US'
 ParagraphStyle.attributes['hyphen_chars'] = 4
 
-mathstyle = MathStyle('math', fonts=mathfonts)
 
-equationstyle = EquationStyle('equation', base=bodyStyle,
-                              math_style=mathstyle,
-                              indent_first=0*pt,
-                              space_above=6*pt,
-                              space_below=6*pt,
-                              justify=CENTER,
-                              tab_stops=[TabStop(0.5, CENTER),
-                                         TabStop(1.0, RIGHT)])
+styles['math'] = MathStyle(fonts=mathfonts)
 
-toc_base_style = ParagraphStyle('toc level 1', base=bodyStyle,
+styles['equation'] = EquationStyle(base='body',
+                                   math_style='math',
+                                   indent_first=0*pt,
+                                   space_above=6*pt,
+                                   space_below=6*pt,
+                                   justify=CENTER,
+                                   tab_stops=[TabStop(0.5, CENTER),
+                                              TabStop(1.0, RIGHT)])
+
+styles['toc0'] = ParagraphStyle(base='body',
                                 tab_stops=[TabStop(0.6*cm),
                                            TabStop(1.0, RIGHT, '. ')])
-toc_levels = [ParagraphStyle('toc level 1', font_weight=BOLD,
-                             base=toc_base_style),
-              ParagraphStyle('toc level 2', indent_left=0.5*cm,
-                             base=toc_base_style),
-              ParagraphStyle('toc level 3', indent_left=1.0*cm,
-                             base=toc_base_style)]
-toc_style = TableOfContentsStyle('toc', base=bodyStyle)
+styles['toc1'] = ParagraphStyle(base='toc0', font_weight=BOLD)
+styles['toc2'] = ParagraphStyle(base='toc0', indent_left=0.5*cm)
+styles['toc3'] = ParagraphStyle(base='toc0', indent_left=1.0*cm)
 
-bibliographyStyle = ParagraphStyle('bibliography', base=bodyStyle,
-                                   font_size=9*pt,
-                                   indent_first=0*pt,
-                                   space_above=0*pt,
-                                   space_below=0*pt,
-                                   tab_stops=[TabStop(0.25*inch, LEFT)])
+styles['toc'] = TableOfContentsStyle(base='body')
 
-titleStyle = ParagraphStyle("title",
-                            typeface=ieeeFamily.serif,
-                            font_weight=REGULAR,
-                            font_size=18*pt,
-                            line_spacing=1.2,
-                            space_above=6*pt,
-                            space_below=6*pt,
-                            justify=CENTER)
+styles['bibliography'] = ParagraphStyle(base='body',
+                                        font_size=9*pt,
+                                        indent_first=0*pt,
+                                        space_above=0*pt,
+                                        space_below=0*pt,
+                                        tab_stops=[TabStop(0.25*inch, LEFT)])
 
-authorStyle = ParagraphStyle("author",
-                             base=titleStyle,
-                             font_size=12*pt,
-                             line_spacing=1.2)
+styles['title'] = ParagraphStyle(typeface=ieeeFamily.serif,
+                                 font_weight=REGULAR,
+                                 font_size=18*pt,
+                                 line_spacing=1.2,
+                                 space_above=6*pt,
+                                 space_below=6*pt,
+                                 justify=CENTER)
 
-affiliationStyle = ParagraphStyle("affiliation",
-                                  base=authorStyle,
-                                  space_below=6*pt + 12*pt)
+styles['author'] = ParagraphStyle(base='title',
+                                  font_size=12*pt,
+                                  line_spacing=1.2)
 
-abstractStyle = ParagraphStyle("abstract",
-                               typeface=ieeeFamily.serif,
-                               font_weight=BOLD,
-                               font_size=9*pt,
-                               line_spacing=10*pt,
-                               indent_first=0.125*inch,
-                               space_above=0*pt,
-                               space_below=0*pt,
-                               justify=BOTH)
+styles['affiliation'] = ParagraphStyle(base='author',
+                                       space_below=6*pt + 12*pt)
 
-listStyle = ListStyle("list", base=bodyStyle,
-                      space_above=5*pt,
-                      space_below=5*pt,
-                      indent_left=0*inch,
-                      indent_first=0*inch,
-                      ordered=True,
-                      item_spacing=0*pt,
-                      numbering_style=NUMBER,
-                      numbering_separator=')')
+styles['abstract'] = ParagraphStyle(typeface=ieeeFamily.serif,
+                                    font_weight=BOLD,
+                                    font_size=9*pt,
+                                    line_spacing=10*pt,
+                                    indent_first=0.125*inch,
+                                    space_above=0*pt,
+                                    space_below=0*pt,
+                                    justify=BOTH)
 
-hd1Style = HeadingStyle("heading",
-                        typeface=ieeeFamily.serif,
-                        font_weight=REGULAR,
-                        font_size=10*pt,
-                        small_caps=True,
-                        justify=CENTER,
-                        line_spacing=12*pt,
-                        space_above=18*pt,
-                        space_below=6*pt,
-                        numbering_style=ROMAN_UC)
+styles['list'] = ListStyle(base='body',
+                           space_above=5*pt,
+                           space_below=5*pt,
+                           indent_left=0*inch,
+                           indent_first=0*inch,
+                           ordered=True,
+                           item_spacing=0*pt,
+                           numbering_style=NUMBER,
+                           numbering_separator=')')
 
-unnumbered_heading_style = HeadingStyle("unnumbered", base=hd1Style,
-                                        numbering_style=None)
+styles['heading1'] = HeadingStyle(typeface=ieeeFamily.serif,
+                                  font_weight=REGULAR,
+                                  font_size=10*pt,
+                                  small_caps=True,
+                                  justify=CENTER,
+                                  line_spacing=12*pt,
+                                  space_above=18*pt,
+                                  space_below=6*pt,
+                                  numbering_style=ROMAN_UC)
 
-hd2Style = HeadingStyle("subheading", base=hd1Style,
-                        font_slant=ITALIC,
-                        font_size=10*pt,
-                        small_caps=False,
-                        justify=LEFT,
-                        line_spacing=12*pt,
-                        space_above=6*pt,
-                        space_below=6*pt,
-                        numbering_style=CHARACTER_UC)
+styles['unnumbered'] = HeadingStyle(base='heading1',
+                                    numbering_style=None)
+
+styles['heading2'] = HeadingStyle(base='heading1',
+                                  font_slant=ITALIC,
+                                  font_size=10*pt,
+                                  small_caps=False,
+                                  justify=LEFT,
+                                  line_spacing=12*pt,
+                                  space_above=6*pt,
+                                  space_below=6*pt,
+                                  numbering_style=CHARACTER_UC)
 #TODO: should only specify style once for each level!
 
-heading_styles = [hd1Style, hd2Style]
+styles['header'] = HeaderStyle(base='body',
+                               indent_first=0 * pt,
+                               font_size=9 * pt)
 
-header_style = HeaderStyle('header', base=bodyStyle,
-                           indent_first=0 * pt,
-                           font_size=9 * pt)
+styles['footer'] = FooterStyle(base='header',
+                               indent_first=0 * pt,
+                               justify=CENTER)
 
-footer_style = FooterStyle('footer', base=header_style,
-                           indent_first=0 * pt,
-                           justify=CENTER)
+styles['figure'] = FlowableStyle(space_above=10 * pt,
+                                 space_below=12 * pt)
 
-figure_style = FlowableStyle('figure',
-                             space_above=10 * pt,
-                             space_below=12 * pt)
+styles['figure caption'] = CaptionStyle(typeface=ieeeFamily.serif,
+                                        font_weight=REGULAR,
+                                        font_size=9*pt,
+                                        line_spacing=10*pt,
+                                        indent_first=0*pt,
+                                        space_above=20*pt,
+                                        space_below=0*pt,
+                                        justify=BOTH)
 
-fig_caption_style = CaptionStyle('figure caption',
-                                 typeface=ieeeFamily.serif,
+styles['footnote'] = ParagraphStyle(base='body',
+                                    font_size=9*pt,
+                                    line_spacing=10*pt)
+
+styles['red line'] = LineStyle(width=0.2*pt, color=RED)
+styles['thick line'] = LineStyle()
+styles['tabular'] = TabularStyle(typeface=ieeeFamily.serif,
                                  font_weight=REGULAR,
-                                 font_size=9*pt,
-                                 line_spacing=10*pt,
+                                 font_size=10*pt,
+                                 line_spacing=12*pt,
                                  indent_first=0*pt,
-                                 space_above=20*pt,
+                                 space_above=0*pt,
                                  space_below=0*pt,
-                                 justify=BOTH)
+                                 justify=CENTER,
+                                 vertical_align=MIDDLE,
+                                 left_border=styles['red line'],
+                                 right_border=styles['red line'],
+                                 bottom_border=styles['red line'],
+                                 top_border=styles['red line'])
 
-footnote_style = ParagraphStyle('footnote', base=bodyStyle,
-                                font_size=9*pt,
-                                line_spacing=10*pt)
-
-red_line_style = LineStyle('tabular line', width=0.2*pt, color=RED)
-thick_line_style = LineStyle('tabular line')
-tabular_style = TabularStyle('tabular',
-                             typeface=ieeeFamily.serif,
-                             font_weight=REGULAR,
-                             font_size=10*pt,
-                             line_spacing=12*pt,
-                             indent_first=0*pt,
-                             space_above=0*pt,
-                             space_below=0*pt,
-                             justify=CENTER,
-                             vertical_align=MIDDLE,
-                             left_border=red_line_style,
-                             right_border=red_line_style,
-                             bottom_border=red_line_style,
-                             top_border=red_line_style,
-                             )
-first_row_style = CellStyle('first row', font_weight=BOLD,
-                            bottom_border=thick_line_style)
-first_column_style = CellStyle('first column', font_slant=ITALIC,
-                               right_border=thick_line_style)
-numbers_style = CellStyle('numbers', typeface=ieeeFamily.mono)
-tabular_style.set_cell_style(first_row_style, rows=0)
-tabular_style.set_cell_style(first_column_style, cols=0)
-tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
-                             cols=slice(1,None))
+styles['first row'] = CellStyle(font_weight=BOLD,
+                                bottom_border=styles['thick line'])
+styles['first column'] = CellStyle(font_slant=ITALIC,
+                                   right_border=styles['thick line'])
+styles['numbers'] = CellStyle(typeface=ieeeFamily.mono)
+styles['tabular'].set_cell_style(styles['first row'], rows=0)
+styles['tabular'].set_cell_style(styles['first column'], cols=0)
+styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
+                                 cols=slice(1,None))
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -257,7 +242,7 @@ tabular_style.set_cell_style(numbers_style, rows=slice(1,None),
 class Abstract(Paragraph):
     def __init__(self, text):
         label = SingleStyledText("Abstract &mdash; ", BOLD_ITALIC_STYLE)
-        return super().__init__(label + text, abstractStyle)
+        return super().__init__(label + text, style=styles['abstract'])
 
 
 class IndexTerms(Paragraph):
@@ -265,11 +250,13 @@ class IndexTerms(Paragraph):
         label = SingleStyledText("Index Terms &mdash; ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
-        return super().__init__(label + text, abstractStyle)
+        return super().__init__(label + text, style=styles['abstract'])
 
 
-# render methods
+# input parsing
 # ----------------------------------------------------------------------------
+
+CustomElement, NestedElement = element_factory(xml_frontend, styles)
 
 class Section(CustomElement):
     def parse(self, document, level=1):
@@ -290,12 +277,13 @@ class Section(CustomElement):
 class Title(NestedElement):
     def parse(self, document, level=1, id=None):
         return Heading(document, self.process_content(document),
-                       style=heading_styles[level - 1], level=level, id=id)
+                       style=styles['heading{}'.format(level)],
+                       level=level, id=id)
 
 
 class P(NestedElement):
     def parse(self, document):
-        return Paragraph(self.process_content(document), style=bodyStyle)
+        return Paragraph(self.process_content(document), style=self.style('body'))
 
 
 class B(NestedElement):
@@ -330,7 +318,8 @@ class Tab(CustomElement):
 
 class OL(CustomElement):
     def parse(self, document):
-        return List([li.process(document) for li in self.li], style=listStyle)
+        return List([li.process(document) for li in self.li],
+                    style=self.style('list'))
 
 
 class LI(NestedElement):
@@ -339,12 +328,12 @@ class LI(NestedElement):
 
 class Math(CustomElement):
     def parse(self, document):
-        return PyteMath(self.text, style=mathstyle)
+        return PyteMath(self.text, style=self.style('math'))
 
 
 class Eq(CustomElement):
     def parse(self, document, id=None):
-        equation = Equation(self.text, style=equationstyle)
+        equation = Equation(self.text, style=self.style('equation'))
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
@@ -367,14 +356,15 @@ class Ref(CustomElement):
 
 class Footnote(NestedElement):
     def parse(self, document):
-        par = Paragraph(self.process_content(document), style=footnote_style)
+        par = Paragraph(self.process_content(document),
+                        style=self.style('footnote'))
         return PyteFootnote(par)
 
 
 class Acknowledgement(CustomElement):
     def parse(self, document):
         yield Heading(document, 'Acknowledgement',
-                      style=unnumbered_heading_style, level=1)
+                      style=self.style('unnumbered'), level=1)
         for element in self.getchildren():
             yield element.process(document)
 
@@ -384,8 +374,8 @@ class Figure(CustomElement):
         caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
         figure = PyteFigure(document, self.get('path'), caption_text,
-                            scale=scale, style=figure_style,
-                            caption_style=fig_caption_style)
+                            scale=scale, style=self.style('figure'),
+                            caption_style=self.style('figure caption'))
         return Float(figure)
 
 
@@ -396,13 +386,13 @@ class Caption(NestedElement):
 class Tabular(CustomElement):
     def parse(self, document):
         data = HTMLTabularData(self)
-        return PyteTabular(data, style=tabular_style)
+        return PyteTabular(data, style=self.style('tabular'))
 
 
 class CSVTabular(CustomElement):
     def parse(self, document):
         data = CSVTabularData(self.get('path'))
-        return PyteTabular(data, style=tabular_style)
+        return PyteTabular(data, style=self.style('tabular'))
 
 
 # bibliography
@@ -415,7 +405,7 @@ class IEEEBibliography(Paragraph):
         items = [Paragraph(item, style=ParentStyle) for item in items]
         for item in items:
             item.parent = self
-        return super().__init__(items, style=bibliographyStyle)
+        return super().__init__(items, style=styles['bibliography'])
 
 csl_formatter.Bibliography = IEEEBibliography
 
@@ -485,9 +475,9 @@ class RFICPage(Page):
         footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
         self.footer = Container(self, self.leftmargin, footer_vert_pos,
                                 body_width, 12*pt)
-        header_text = Header(header_style)
+        header_text = Header(styles['header'])
         self.header.add_flowable(header_text)
-        footer_text = Footer(footer_style)
+        footer_text = Footer(styles['footer'])
         self.footer.add_flowable(footer_text)
 
 
@@ -498,8 +488,9 @@ class RFIC2009Paper(Document):
     namespace = 'http://www.mos6581.org/ns/rficpaper'
 
     def __init__(self, filename, bibliography_source):
-        super().__init__(filename, namespace=self.namespace,
-                         schema=self.rngschema, backend=pdf)
+        parser = xml_frontend.Parser(CustomElement, self.namespace,
+                                     schema=self.rngschema)
+        super().__init__(parser, filename, backend=pdf)
         bibliography_style = CitationStylesStyle('ieee.csl')
         self.bibliography = CitationStylesBibliography(bibliography_style,
                                                        bibliography_source,
@@ -516,31 +507,33 @@ class RFIC2009Paper(Document):
         self.bibliography.sort()
 
     def parse_input(self):
-        self.title_par = Paragraph(self.title, titleStyle)
-        self.author_par = Paragraph(self.author, authorStyle)
+        self.title_par = Paragraph(self.title, style=styles['title'])
+        self.author_par = Paragraph(self.author, style=styles['author'])
         self.affiliation_par = Paragraph(self.root.head.affiliation.text,
-                                         affiliationStyle)
-        toc = TableOfContents(style=toc_style, styles=toc_levels)
+                                         style=styles['affiliation'])
+        toc = TableOfContents(style=styles['toc'],
+                              styles=[styles['toc1'], styles['toc2'],
+                                      styles['toc3']])
 
         self.content_flowables = [Abstract(self.root.head.abstract.text),
                                   IndexTerms(self.keywords),
                                   Heading(self, 'Table of Contents',
-                                          style=unnumbered_heading_style,
+                                          style=styles['unnumbered'],
                                           level=1),
                                   toc]
 
         for section in self.root.body.section:
-            for flowable in section.parse(self):
+            for flowable in section.process(self):
                 toc.register(flowable)
                 self.content_flowables.append(flowable)
         try:
-            for flowable in self.root.body.acknowledgement.parse(self):
+            for flowable in self.root.body.acknowledgement.process(self):
                 toc.register(flowable)
                 self.content_flowables.append(flowable)
         except AttributeError:
             pass
-        bib_heading = Heading(self, 'References',
-                              style=unnumbered_heading_style, level=1)
+        bib_heading = Heading(self, 'References', style=styles['unnumbered'],
+                              level=1)
         self.content_flowables.append(bib_heading)
 
     def setup(self):

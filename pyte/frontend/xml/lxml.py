@@ -14,7 +14,8 @@ except KeyError:
 
 
 class Parser(object):
-    def __init__(self, namespace, schema=None):
+    def __init__(self, element_class, namespace=None, schema=None):
+        self.element_class = element_class
         lookup = etree.ElementNamespaceClassLookup()
         namespace = lookup.get_namespace(namespace)
         namespace[None] = self.element_class

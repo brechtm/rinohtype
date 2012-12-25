@@ -33,8 +33,8 @@ class MathStyle(Style):
     attributes = {'fonts': None, # no default fonts yet
                   'font_size': 10*pt}
 
-    def __init__(self, name, base=ParentStyle, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=ParentStyle, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Math(CharacterLike):
@@ -71,8 +71,8 @@ class EquationStyle(ParagraphStyle):
     attributes = {'math_style': None,
                   'tab_stops': [TabStop(0.5, CENTER), TabStop(1.0, RIGHT)]}
 
-    def __init__(self, name, base=None, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
 
 
 class Equation(Paragraph):

@@ -29,8 +29,8 @@ class TextStyle(Style):
                   'hyphen_chars': 2,
                   'hyphen_lang': 'en_US'}
 
-    def __init__(self, name, base=ParentStyle, **attributes):
-        super().__init__(name, base=base, **attributes)
+    def __init__(self, base=ParentStyle, **attributes):
+        super().__init__(base=base, **attributes)
 
     def get_font(self):
         typeface = self.get('typeface')
@@ -376,14 +376,13 @@ class Tab(ControlCharacter):
 
 # predefined styles
 
-EMPHASIZED_STYLE = TextStyle(name="emphasized", font_slant=ITALIC)
-BOLD_STYLE = TextStyle(name="bold", font_weight=BOLD)
-ITALIC_STYLE = TextStyle(name="italic", font_slant=ITALIC)
-BOLD_ITALIC_STYLE = TextStyle(name="bold italic", font_weight=BOLD,
-                            font_slant=ITALIC)
-SMALL_CAPITALS_STYLE = TextStyle(name="small capitals", small_caps=True)
-SUPERSCRIPT_STYLE = TextStyle(name="superscript", position=SUPERSCRIPT)
-SUBSCRIPT_STYLE = TextStyle(name="subscript", position=SUBSCRIPT)
+EMPHASIZED_STYLE = TextStyle(font_slant=ITALIC)
+BOLD_STYLE = TextStyle(font_weight=BOLD)
+ITALIC_STYLE = TextStyle(font_slant=ITALIC)
+BOLD_ITALIC_STYLE = TextStyle(font_weight=BOLD, font_slant=ITALIC)
+SMALL_CAPITALS_STYLE = TextStyle(small_caps=True)
+SUPERSCRIPT_STYLE = TextStyle(position=SUPERSCRIPT)
+SUBSCRIPT_STYLE = TextStyle(position=SUBSCRIPT)
 
 
 class Bold(MixedStyledText):

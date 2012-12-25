@@ -13,44 +13,38 @@ CATALOG_URL = urljoin('file:', pathname2url(CATALOG_PATH))
 CATALOG_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
 
-try:
-    from .. import XML_FRONTEND
-    xml_frontend = import_module(XML_FRONTEND)
-except ImportError:
-    try:
-        from . import lxml as xml_frontend
-    except ImportError:
-        from . import elementtree as xml_frontend
+def element_factory(xml_frontend, styles_store):
+    class CustomElement(xml_frontend.BaseElement):
+        styles = styles_store
 
+        def style(self, name):
+            return self.styles[name]
 
-class CustomElement(xml_frontend.BaseElement):
-    def process(self, document, *args, **kwargs):
-        result = self.parse(document, *args, **kwargs)
-        try:
-            result._source = self
-        except AttributeError:
-            pass
-        return result
+        def process(self, document, *args, **kwargs):
+            result = self.parse(document, *args, **kwargs)
+            try:
+                result._source = self
+            except AttributeError:
+                pass
+            return result
 
-    def parse(self, document, *args, **kwargs):
-        raise NotImplementedError('tag: %s' % self.tag)
+        def parse(self, document, *args, **kwargs):
+            raise NotImplementedError('tag: %s' % self.tag)
 
-    @property
-    def location(self):
-        tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
-        return '{}: <{}> at line {}'.format(self.filename, tag, self.sourceline)
+        @property
+        def location(self):
+            tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
+            return '{}: <{}> at line {}'.format(self.filename, tag,
+                                                self.sourceline)
 
+    class NestedElement(CustomElement):
+        def parse(self, document, *args, **kwargs):
+            return self.process_content(document)
 
-class NestedElement(CustomElement):
-    def parse(self, document, *args, **kwargs):
-        return self.process_content(document)
+        def process_content(self, document):
+            content = self.text
+            for child in self.getchildren():
+                content += child.process(document) + child.tail
+            return content
 
-    def process_content(self, document):
-        content = self.text
-        for child in self.getchildren():
-            content += child.process(document) + child.tail
-        return content
-
-
-Parser = xml_frontend.Parser
-Parser.element_class = CustomElement
+    return CustomElement, NestedElement
