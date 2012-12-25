@@ -7,18 +7,28 @@ class ParentStyleException(Exception):
 
 
 class ParentStyleType(type):
+    def __repr__(cls):
+        return cls.__name__
+
     def __getattr__(cls, key):
         raise ParentStyleException
 
-    def __repr__(cls):
-        return cls.__name__
+    def __getitem__(cls, key):
+        raise ParentStyleException
+
+    def _recursive_get(cls, key):
+        raise ParentStyleException
 
 
 class ParentStyle(object, metaclass=ParentStyleType):
     pass
 
 
-class Style(object):
+class DefaultValueException(Exception):
+    pass
+
+
+class Style(dict):
     attributes = {}
 
     def __init__(self, name, base=ParentStyle, **attributes):
@@ -27,32 +37,37 @@ class Style(object):
         for attribute in attributes:
             if attribute not in self._supported_attributes():
                 raise TypeError('%s is not a supported attribute' % attribute)
-        self.__dict__.update(attributes)
+        self.update(attributes)
 
     def __repr__(self):
         return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name,
                                        self.base)
 
-        return self.get_default(name)
-
     def __copy__(self):
-        attributes = {k: v for k, v in self.__dict__.items() if k != 'name'}
-        return self.__class__(self.name + ' (copy)', **attributes)
+        return self.__class__(self.name + ' (copy)', base=self.base, **self)
 
     def __getattr__(self, name):
-        try:
-            return getattr(self.base, name)
-        except AttributeError:
-            # FIXME: default from lowest base now has priority (due to recursion)
-            return self._get_default(name)
+        return self[name]
 
-    def _get_default(self, name):
+    def __getitem__(self, key):
+        try:
+            return self._recursive_get(key)
+        except DefaultValueException:
+            return self._get_default(key)
+
+    def _recursive_get(self, key):
+        try:
+            return super().__getitem__(key)
+        except KeyError:
+            if self.base is None:
+                raise DefaultValueException
+            return self.base._recursive_get(key)
+
+    def _get_default(self, key):
         for cls in self.__class__.__mro__:
-            try:
-                return cls.attributes[name]
-            except (KeyError, AttributeError):
-                pass
-        raise AttributeError("No attribute '{}' in {}".format(name, self))
+            if key in cls.attributes:
+                return cls.attributes[key]
+        raise KeyError("No attribute '{}' in {}".format(key, self))
 
     def _supported_attributes(self):
         attributes = {}
@@ -83,7 +98,7 @@ class Styled(DocumentElement):
             return self.cached_style[attribute]
         except KeyError:
             try:
-                value = getattr(self.style, attribute)
+                value = self.style[attribute]
             except ParentStyleException:
                 value = self.parent.get_style(attribute)
             self.cached_style[attribute] = value
