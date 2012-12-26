@@ -240,8 +240,6 @@ class SmallCapitalsText(SingleStyledText):
 
 
 class MixedStyledText(StyledText, list):
-    style_class = TextStyle
-
     def __init__(self, items, style=ParentStyle, y_offset=0):
         StyledText.__init__(self, style, y_offset)
         # TODO: handle y_offset
@@ -327,7 +325,6 @@ SPECIAL_CHARS = {' ': Space,
                  chr(0xa0): NoBreakSpace}
 
 
-# TODO: shared superclass SpecialChar (or ControlChar) for Newline, Box, Tab
 class Box(Character):
     def __init__(self, width, height, depth, ps):
         super().__init__('?')
