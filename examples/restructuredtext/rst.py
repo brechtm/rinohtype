@@ -3,10 +3,6 @@ from io import BytesIO
 
 from docutils.core import publish_doctree, publish_from_doctree
 
-import pyte.frontend
-pyte.frontend.XML_FRONTEND = 'pyte.frontend.xml.elementtree'
-from pyte.frontend.xml import Parser, CustomElement, NestedElement
-
 from pyte.paragraph import Paragraph as RinohParagraph
 from pyte.paragraph import ParagraphStyle, LEFT, CENTER, BOTH
 from pyte.text import LiteralText, MixedStyledText, TextStyle, Emphasized, Bold
@@ -23,6 +19,11 @@ from pyte.structure import Heading, HeadingStyle
 from pyte.number import ROMAN_UC, CHARACTER_UC
 from pyte.flowable import Flowable
 from pyte.float import Float
+from pyte.style import StyleStore
+from pyte.frontend.xml import element_factory
+
+import pyte.frontend.xml.elementtree as xml_frontend
+
 
 pagella_regular = OpenTypeFont("../fonts/texgyrepagella-regular.otf",
                                weight=REGULAR)
@@ -40,71 +41,73 @@ cursor = TypeFace("TeXGyreCursor", cursor_regular)
 fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
 
-titleStyle = ParagraphStyle('title',
-                            typeface=fontFamily.serif,
-                            font_size=16*pt,
-                            line_spacing=1.2,
-                            space_above=6*pt,
-                            space_below=6*pt,
-                            justify=CENTER)
+styles = StyleStore()
 
-bodyStyle = ParagraphStyle('body',
-                           typeface=fontFamily.serif,
-                           font_weight=REGULAR,
-                           font_size=10*pt,
-                           line_spacing=12*pt,
-                           #indent_first=0.125*inch,
-                           space_above=0*pt,
-                           space_below=10*pt,
-                           justify=BOTH)
+styles['title'] = ParagraphStyle(typeface=fontFamily.serif,
+                                 font_size=16*pt,
+                                 line_spacing=1.2,
+                                 space_above=6*pt,
+                                 space_below=6*pt,
+                                 justify=CENTER)
 
-literalstyle = ParagraphStyle('literal', base=bodyStyle,
-                              #font_size=9*pt,
-                              justify=LEFT,
-                              indent_left=1*cm,
-                              typeface=fontFamily.mono)
-#                              noWrap=True,   # but warn on overflow
-#                              literal=True ?)
+styles['body'] = ParagraphStyle(typeface=fontFamily.serif,
+                                font_weight=REGULAR,
+                                font_size=10*pt,
+                                line_spacing=12*pt,
+                                #indent_first=0.125*inch,
+                                space_above=0*pt,
+                                space_below=10*pt,
+                                justify=BOTH)
 
-blockQuotestyle = ParagraphStyle('literal', base=bodyStyle,
-                                 indent_left=1*cm)
+styles['literal'] = ParagraphStyle(base='body',
+                                   #font_size=9*pt,
+                                   justify=LEFT,
+                                   indent_left=1*cm,
+                                   typeface=fontFamily.mono)
+#                                   noWrap=True,   # but warn on overflow
+#                                   literal=True ?)
 
-hd1Style = HeadingStyle('heading',
-                        typeface=fontFamily.serif,
-                        font_size=14*pt,
-                        line_spacing=12*pt,
-                        space_above=14*pt,
-                        space_below=6*pt,
-                        numbering_style=None)
+styles['block quote'] = ParagraphStyle(base='body',
+                                       indent_left=1*cm)
 
-hd2Style = HeadingStyle('subheading', base=hd1Style,
-                        font_slant=ITALIC,
-                        font_size=12*pt,
-                        line_spacing=12*pt,
-                        space_above=6*pt,
-                        space_below=6*pt)
+styles['heading1'] = HeadingStyle(typeface=fontFamily.serif,
+                                  font_size=14*pt,
+                                  line_spacing=12*pt,
+                                  space_above=14*pt,
+                                  space_below=6*pt,
+                                  numbering_style=None)
 
-heading_styles = [hd1Style, hd2Style]
+styles['heading2'] = HeadingStyle(base='heading1',
+                                  font_slant=ITALIC,
+                                  font_size=12*pt,
+                                  line_spacing=12*pt,
+                                  space_above=6*pt,
+                                  space_below=6*pt)
 
+styles['monospaced'] = TextStyle(typeface=fontFamily.mono)
 
-monoStyle = TextStyle(name="monospaced", typeface=fontFamily.mono)
 
 class Mono(MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=monoStyle, y_offset=y_offset)
+        super().__init__(text, style=styles['monospaced'], y_offset=y_offset)
 
 
+
+# input parsing
+# ----------------------------------------------------------------------------
+
+CustomElement, NestedElement = element_factory(xml_frontend, styles)
 
 class Section(CustomElement):
     def parse(self, document, level=1):
         for element in self.getchildren():
             if isinstance(element, Title):
-                elem = element.parse(document, level=level,
+                elem = element.process(document, level=level,
                                      id=self.get('id', None))
             elif type(element) == Section:
-                elem = element.parse(document, level=level + 1)
+                elem = element.process(document, level=level + 1)
             else:
-                elem = element.parse(document)
+                elem = element.process(document)
             if isinstance(elem, Flowable) or isinstance(elem, Float):
                 yield elem
             else:
@@ -114,18 +117,20 @@ class Section(CustomElement):
 
 class Paragraph(NestedElement):
     def parse(self, document):
-        return RinohParagraph(super().parse(document), style=bodyStyle)
+        return RinohParagraph(super().process_content(document),
+                              style=self.style('body'))
 
 
 class Title(CustomElement):
     def parse(self, document, level=1, id=None):
         #print('Title.render()')
-        return Heading(document, self.text, style=heading_styles[level - 1],
-                       level=level, id=id)
+        return Heading(document, self.text, level=level, id=id,
+                       style=self.style('heading{}'.format(level)))
 
 class Tip(NestedElement):
     def parse(self, document):
-        return RinohParagraph('TIP: ' + super().parse(document), style=bodyStyle)
+        return RinohParagraph('TIP: ' + super().process_content(document),
+                              style=self.style('body'))
 
 
 class Emphasis(CustomElement):
@@ -140,17 +145,19 @@ class Strong(CustomElement):
 
 class Literal(CustomElement):
     def parse(self, document):
-        return LiteralText(self.text, style=monoStyle)
+        return LiteralText(self.text, style=self.style('monospaced'))
 
 
 class Literal_Block(CustomElement):
     def parse(self, document):
-        return RinohParagraph(LiteralText(self.text), style=literalstyle)
+        return RinohParagraph(LiteralText(self.text),
+                              style=self.style('literal'))
 
 
 class Block_Quote(NestedElement):
     def parse(self, document):
-        return RinohParagraph(super().parse(document), style=blockQuotestyle)
+        return RinohParagraph(super().process_content(document),
+                              style=self.style('block quote'))
 
 
 class Reference(CustomElement):
@@ -160,7 +167,7 @@ class Reference(CustomElement):
 
 class Footnote(CustomElement):
     def parse(self, document):
-        return RinohParagraph('footnote', style=bodyStyle)
+        return RinohParagraph('footnote', style=self.style('body'))
 
 
 class Footnote_Reference(CustomElement):
@@ -170,7 +177,7 @@ class Footnote_Reference(CustomElement):
 
 class Target(CustomElement):
     def parse(self, document):
-        return RinohParagraph('', style=bodyStyle)
+        return RinohParagraph('', style=self.style('body'))
 
 
 
@@ -215,8 +222,8 @@ class ReStructuredTextDocument(Document):
         with open(filename) as file:
             doctree = publish_doctree(file.read())
         xml_buffer = BytesIO(publish_from_doctree(doctree, writer_name='xml'))
-        super().__init__(xml_buffer, backend=pdf)
-        self.title = self.root.title.text
+        parser = xml_frontend.Parser(CustomElement)
+        super().__init__(parser, xml_buffer, backend=pdf)
         self.parse_input()
 
     def parse_input(self):
@@ -224,7 +231,8 @@ class ReStructuredTextDocument(Document):
 
         self.content_flowables = []
 
-        self.content_flowables.append(RinohParagraph(self.title, titleStyle))
+        self.content_flowables.append(RinohParagraph(self.root.title.text,
+                                                     styles['title']))
 
         for section in self.root.section:
 ##            toc.register(flowable)
