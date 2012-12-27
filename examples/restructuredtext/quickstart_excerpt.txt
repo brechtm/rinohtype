@@ -97,6 +97,54 @@ __ quickref.html#escaping
 __ ../../ref/rst/restructuredtext.html#inline-markup
 
 
+Lists
+-----
+
+Lists of items come in three main flavours: **enumerated**,
+**bulleted** and **definitions**.  In all list cases, you may have as
+many paragraphs, sublists, etc. as you want, as long as the left-hand
+side of the paragraph or whatever aligns with the first line of text
+in the list item.
+
+Lists must always start a new paragraph -- that is, they must appear
+after a blank line.
+
+**enumerated** lists (numbers, letters or roman numerals; quickref__)
+  __ quickref.html#enumerated-lists
+
+  Start a line off with a number or letter followed by a period ".",
+  right bracket ")" or surrounded by brackets "( )" -- whatever you're
+  comfortable with.  All of the following forms are recognised
+
+**definition** lists (quickref__)
+  __ quickref.html#definition-lists
+
+  Unlike the other two, the definition lists consist of a term, and
+  the definition of that term.  The format of a definition list is::
+
+    what
+      Definition lists associate a term with a definition.
+
+    *how*
+      The term is a one-line phrase, and the definition is one or more
+      paragraphs or body elements, indented relative to the term.
+      Blank lines are not allowed between term and definition.
+
+  Results in:
+
+  what
+    Definition lists associate a term with a definition.
+
+  *how*
+    The term is a one-line phrase, and the definition is one or more
+    paragraphs or body elements, indented relative to the term.
+    Blank lines are not allowed between term and definition.
+
+
+
+
+
+
 
 
 What Next?

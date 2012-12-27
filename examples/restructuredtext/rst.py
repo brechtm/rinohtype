@@ -16,6 +16,7 @@ from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import Container, Chain, FootnoteContainer
 from pyte.backend import pdf
 from pyte.structure import Heading, HeadingStyle
+from pyte.structure import DefinitionList, DefinitionListStyle
 from pyte.number import ROMAN_UC, CHARACTER_UC
 from pyte.flowable import Flowable
 from pyte.float import Float
@@ -86,6 +87,8 @@ styles['heading2'] = HeadingStyle(base='heading1',
 
 styles['monospaced'] = TextStyle(typeface=fontFamily.mono)
 
+styles['definition list'] = DefinitionListStyle(base='body')
+
 
 class Mono(MixedStyledText):
     def __init__(self, text, y_offset=0):
@@ -103,7 +106,7 @@ class Section(CustomElement):
         for element in self.getchildren():
             if isinstance(element, Title):
                 elem = element.process(document, level=level,
-                                     id=self.get('id', None))
+                                       id=self.get('id', None))
             elif type(element) == Section:
                 elem = element.process(document, level=level + 1)
             else:
@@ -177,8 +180,26 @@ class Footnote_Reference(CustomElement):
 
 class Target(CustomElement):
     def parse(self, document):
-        return RinohParagraph('', style=self.style('body'))
+        return MixedStyledText([])
 
+
+class Definition_List(CustomElement):
+    def parse(self, document):
+        return DefinitionList([item.process(document)
+                               for item in self.definition_list_item],
+                              style=self.style('definition list'))
+
+class Definition_List_Item(CustomElement):
+    def parse(self, document):
+        return (self.term.process(document),
+                self.definition.process(document))
+
+class Term(NestedElement):
+    pass
+
+
+class Definition(NestedElement):
+    pass
 
 
 class SimplePage(Page):

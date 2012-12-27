@@ -10,6 +10,7 @@ from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, FixedWidthSpace, Tab
 from .unit import pt
+from .style import ParentStyle
 from .warnings import PyteWarning
 
 
@@ -118,6 +119,56 @@ class List(Paragraph):
 ##class ListItem(Paragraph):
 ##    def __init__(self, text):
 ##        Paragraph.__init__(self, text)
+
+
+class DefinitionListStyle(ParagraphStyle):
+    attributes = {'term_style': ParentStyle,
+                  'item_spacing': ParagraphStyle.attributes['line_spacing'],
+                  'indentation': 10*pt}
+
+    def __init__(self, base=None, **attributes):
+        super().__init__(base=base, **attributes)
+
+
+class DefinitionList(Paragraph):
+    style_class = DefinitionListStyle
+
+    def __init__(self, items, style=None):
+        super().__init__([], style)
+        term_style = self.style.term_style
+        term_style = ParagraphStyle(space_above=0*pt,
+                                    space_below=0*pt,
+                                    base=style)
+        definition_style = ParagraphStyle(space_above=0*pt,
+                                          space_below=self.style.item_spacing,
+                                          indent_left=self.style.indentation,
+                                          base=style)
+        last_definition_style = ParagraphStyle(space_above=0*pt,
+                                               space_below=0*pt,
+                                               indent_left=self.style.indentation,
+                                               base=style)
+        for i, item in enumerate(items[:-1]):
+            term, definition = item
+            term_par = Paragraph(term, style=term_style)
+            definition_par =  Paragraph(definition, style=definition_style)
+            term_par.parent = definition_par.parent = self
+            self.append(term_par)
+            self.append(definition_par)
+        last_term, last_definition = items[-1]
+        last_term_par = Paragraph(last_term, style=term_style)
+        last_definition_par = Paragraph(last_definition,
+                                        style=last_definition_style)
+        last_term_par.parent = last_definition_par.parent = self
+        self.append(last_term_par)
+        self.append(last_definition_par)
+        self.item_pointer = 0
+
+    def typeset(self, canvas, offset=0):
+        while self.item_pointer < len(self):
+            item = self[self.item_pointer]
+            self.container.flow(item)
+            self.item_pointer += 1
+        self.item_pointer = 0
 
 
 class HeaderStyle(ParagraphStyle):
