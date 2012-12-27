@@ -12,7 +12,7 @@ from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
 from .style import Style, Styled, ParentStyle, ParentStyleException
-from .util import cached_property
+from .util import intersperse, cached_property
 
 
 class TextStyle(Style):
@@ -273,10 +273,7 @@ class MixedStyledText(StyledText, list):
 
 class LiteralText(MixedStyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
-        items = []
-        for part in text.split('\n'):
-            items.append(part)
-            items.append(NewLine())
+        items = intersperse(text.split('\n'), NewLine())
         super().__init__(items, style, y_offset)
 
     def _clean_text(self, text):
