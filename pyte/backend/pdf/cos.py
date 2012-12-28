@@ -28,7 +28,7 @@ class Object(object):
 
     def delete(self, document):
         try:
-            reference = document._by_object_id[self]
+            reference = document._by_object_id[id(self)]
             reference.delete()
         except KeyError:
             pass
@@ -53,7 +53,7 @@ class Reference(object):
 
     @property
     def target(self):
-        return self.document[self.identifier][0]
+        return self.document[self.identifier]
 
     def delete(self, document=None):
         if document == self.document:
@@ -169,11 +169,25 @@ class Name(Object, str):
         return '/{}'.format(self).encode('utf_8')
 
 
-class Array(Object, list):
+class Container(Object):
+    def __init__(self, indirect=False):
+        super().__init__(indirect)
+
+    def register_indirect(self, document):
+        register_children = True
+        if self.indirect:
+            register_children = id(self) not in document._by_object_id
+            document.register(self)
+        if register_children:
+            for item in self.children():
+                item.register_indirect(document)
+
+
+class Array(Container, list):
     # TODO: not all methods of list are overridden, so funny
     # behavior is to be expected
     def __init__(self, items=[], indirect=False):
-        Object.__init__(self, indirect)
+        Container.__init__(self, indirect)
         list.__init__(self, items)
 
     def __repr__(self):
@@ -186,19 +200,14 @@ class Array(Object, list):
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
 
-    def register_indirect(self, document):
-        register_children = True
-        if self.indirect:
-            register_children = id(self) not in document._by_object_id
-            document.register(self)
-        if register_children:
-            for item in self:
-                item.register_indirect(document)
+    def children(self):
+        for item in self:
+            yield item
 
 
-class Dictionary(Object, OrderedDict):
+class Dictionary(Container, OrderedDict):
     def __init__(self, indirect=False):
-        Object.__init__(self, indirect)
+        Container.__init__(self, indirect)
         OrderedDict.__init__(self)
 
     def __repr__(self):
@@ -214,14 +223,9 @@ class Dictionary(Object, OrderedDict):
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
 
-    def register_indirect(self, document):
-        register_children = True
-        if self.indirect:
-            register_children = id(self) not in document._by_object_id
-            document.register(self)
-        if register_children:
-            for item in self.values():
-                item.register_indirect(document)
+    def children(self):
+        for item in self.values():
+            yield item
 
 
 class Stream(Dictionary):
