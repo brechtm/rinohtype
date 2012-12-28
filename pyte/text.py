@@ -273,7 +273,8 @@ class MixedStyledText(StyledText, list):
 
 class LiteralText(MixedStyledText):
     def __init__(self, text, style=ParentStyle, y_offset=0):
-        items = intersperse(text.split('\n'), NewLine())
+        text_with_no_break_spaces = text.replace(' ', chr(0xa0))
+        items = intersperse(text_with_no_break_spaces.split('\n'), NewLine())
         super().__init__(items, style, y_offset)
 
     def _clean_text(self, text):
