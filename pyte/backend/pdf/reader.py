@@ -310,7 +310,6 @@ class PDFReader(cos.Document):
         xref = {}
         self.file.seek(offset)
         assert self.next_token() == b'xref'
-        self.jump_to_next_line()
         while True:
             try:
                 identifier, entries = self.read_number(), self.read_number()
