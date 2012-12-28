@@ -93,7 +93,7 @@ class List(Paragraph):
                              style=item_style)
             item.parent = self
             self.append(item)
-        last = Paragraph(numbers[i] + separator + FixedWidthSpace() + items[-1],
+        last = Paragraph(numbers[-1] + separator + FixedWidthSpace() + items[-1],
                          style=last_item_style)
         last.parent = self
         self.append(last)
