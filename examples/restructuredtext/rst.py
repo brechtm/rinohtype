@@ -16,8 +16,8 @@ from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import Container, Chain, FootnoteContainer
 from pyte.backend import pdf
 from pyte.structure import Heading, HeadingStyle
-from pyte.structure import DefinitionList, DefinitionListStyle
-from pyte.number import ROMAN_UC, CHARACTER_UC
+from pyte.structure import List, ListStyle, DefinitionList, DefinitionListStyle
+from pyte.number import ROMAN_UC, CHARACTER_UC, NUMBER
 from pyte.flowable import Flowable
 from pyte.float import Float
 from pyte.style import StyleStore
@@ -86,6 +86,18 @@ styles['heading2'] = HeadingStyle(base='heading1',
                                   space_below=6*pt)
 
 styles['monospaced'] = TextStyle(typeface=fontFamily.mono)
+
+styles['enumerated list'] = ListStyle(base='body',
+                                      indent_left=5*pt,
+                                      ordered=True,
+                                      item_spacing=0*pt,
+                                      numbering_style=NUMBER,
+                                      numbering_separator='.')
+
+styles['bullet list'] = ListStyle(base='body',
+                                  indent_left=5*pt,
+                                  ordered=False,
+                                  item_spacing=0*pt)
 
 styles['definition list'] = DefinitionListStyle(base='body')
 
@@ -181,6 +193,23 @@ class Footnote_Reference(CustomElement):
 class Target(CustomElement):
     def parse(self, document):
         return MixedStyledText([])
+
+
+class Enumerated_List(CustomElement):
+    def parse(self, document):
+        # TODO: handle different numbering styles
+        return List([item.process(document) for item in self.list_item],
+                    style=self.style('enumerated list'))
+
+
+class Bullet_List(CustomElement):
+    def parse(self, document):
+        return List([item.process(document) for item in self.list_item],
+                    style=self.style('bullet list'))
+
+
+class List_Item(NestedElement):
+    pass
 
 
 class Definition_List(CustomElement):

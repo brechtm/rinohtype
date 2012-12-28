@@ -114,7 +114,75 @@ after a blank line.
 
   Start a line off with a number or letter followed by a period ".",
   right bracket ")" or surrounded by brackets "( )" -- whatever you're
-  comfortable with.  All of the following forms are recognised
+  comfortable with.  All of the following forms are recognised::
+
+    1. numbers
+
+    A. upper-case letters
+       and it goes over many lines
+
+       with two paragraphs and all!
+
+    a. lower-case letters
+
+       3. with a sub-list starting at a different number
+       4. make sure the numbers are in the correct sequence though!
+
+    I. upper-case roman numerals
+
+    i. lower-case roman numerals
+
+    (1) numbers again
+
+    1) and again
+
+  Results in (note: the different enumerated list styles are not
+  always supported by every web browser, so you may not get the full
+  effect here):
+
+  1. numbers
+
+  A. upper-case letters
+     and it goes over many lines
+
+     with two paragraphs and all!
+
+  a. lower-case letters
+
+     3. with a sub-list starting at a different number
+     4. make sure the numbers are in the correct sequence though!
+
+  I. upper-case roman numerals
+
+  i. lower-case roman numerals
+
+  (1) numbers again
+
+  1) and again
+
+**bulleted** lists (quickref__)
+  __ quickref.html#bullet-lists
+
+  Just like enumerated lists, start the line off with a bullet point
+  character - either "-", "+" or "*"::
+
+    * a bullet point using "*"
+
+      - a sub-list using "-"
+
+        + yet another sub-list
+
+      - another item
+
+  Results in:
+
+  * a bullet point using "*"
+
+    - a sub-list using "-"
+
+      + yet another sub-list
+
+    - another item
 
 **definition** lists (quickref__)
   __ quickref.html#definition-lists
