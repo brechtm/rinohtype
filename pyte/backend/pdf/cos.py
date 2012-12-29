@@ -31,6 +31,9 @@ class Object(object):
     def __init__(self, indirect=False):
         self.indirect = indirect
 
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__, self._repr())
+
     def bytes(self, document):
         if self.indirect:
             reference = document._by_object_id[id(self)]
@@ -82,8 +85,8 @@ class Boolean(Object):
         super().__init__(indirect)
         self.value = value
 
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.value)
+    def _repr(self):
+        return self.value
 
     def _bytes(self, document):
         return b'true' if self.value else b'false'
@@ -100,8 +103,8 @@ class Integer(Object, int):
     def __init__(self, value, base=10, indirect=False):
         Object.__init__(self, indirect)
 
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, int.__repr__(self))
+    def _repr(self):
+        return int.__repr__(self)
 
     def _bytes(self, document):
         return int.__str__(self).encode('utf_8')
@@ -114,8 +117,8 @@ class Real(Object, float):
     def __init__(self, value, indirect=False):
         Object.__init__(self, indirect)
 
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, float.__repr__(self))
+    def _repr(self):
+        return float.__repr__(self)
 
     def _bytes(self, document):
         return float.__repr__(self).encode('utf_8')
@@ -145,13 +148,14 @@ class String(Object, bytes):
         if self.startswith(BOM_UTF16_BE):
             return self.decode('utf_16')
         else:
-            try:
-                return self.decode('pdf_doc')
-            except UnicodeDecodeError:
-                return '<byte string>'
+            return self.decode('pdf_doc')
 
-    def __repr__(self):
-        return "{}('{}')".format(self.__class__.__name__, self)
+    def _repr(self):
+        try:
+            return "'" + str(self) + "'"
+        except UnicodeDecodeError:
+            return '<{}{}>'.format(hexlify(self[:10]).decode(),
+                                   '...' if len(self) > 10 else '')
 
     def _bytes(self, document):
         escaped = bytearray()
@@ -170,9 +174,8 @@ class HexString(Object, bytes):
     def __init__(self, byte_string, indirect=False):
         Object.__init__(self, indirect)
 
-    def __repr__(self):
-        return "{}('{}')".format(self.__class__.__name__,
-                                 hexlify(self).decode())
+    def _repr(self):
+        return hexlify(self).decode()
 
     def _bytes(self, document):
         return b'<' + hexlify(self) + b'>'
@@ -205,8 +208,8 @@ class Name(Object, bytes):
     def __str__(self):
         return self.decode('utf_8')
 
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self)
+    def _repr(self):
+        return str(self)
 
     def _bytes(self, document):
         escaped = bytearray()
@@ -239,9 +242,8 @@ class Array(Container, list):
         Container.__init__(self, indirect)
         list.__init__(self, items)
 
-    def __repr__(self):
-        contents = ', '.join([item.short_repr() for item in self])
-        return '{}({})'.format(self.__class__.__name__, contents)
+    def _repr(self):
+        return ', '.join([item.short_repr() for item in self])
 
     def _bytes(self, document):
         return b'[' + b' '.join([elem.bytes(document) for elem in self]) + b']'
@@ -259,10 +261,9 @@ class Dictionary(Container, OrderedDict):
         Container.__init__(self, indirect)
         OrderedDict.__init__(self)
 
-    def __repr__(self):
-        contents = ', '.join(['{}: {}'.format(key, value.short_repr())
-                              for key, value in self.items()])
-        return '{}({})'.format(self.__class__.__name__, contents)
+    def _repr(self):
+        return ', '.join(['{}: {}'.format(key, value.short_repr())
+                          for key, value in self.items()])
 
     def __setitem__(self, key, value):
         super().__setitem__(key if isinstance(key, Name) else Name(key), value)
