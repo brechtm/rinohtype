@@ -257,7 +257,7 @@ class MixedStyledText(StyledText, list):
                                         super().__repr__(), self.style)
 
     def __str__(self):
-        return ''.join([str(item) for item in self])
+        return ''.join(str(item) for item in self)
 
     def spans(self):
         # TODO: support for mixed-style words

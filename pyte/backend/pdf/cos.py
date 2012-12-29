@@ -243,10 +243,10 @@ class Array(Container, list):
         list.__init__(self, items)
 
     def _repr(self):
-        return ', '.join([item.short_repr() for item in self])
+        return ', '.join(item.short_repr() for item in self)
 
     def _bytes(self, document):
-        return b'[' + b' '.join([elem.bytes(document) for elem in self]) + b']'
+        return b'[' + b' '.join(elem.bytes(document) for elem in self) + b']'
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
@@ -262,8 +262,8 @@ class Dictionary(Container, OrderedDict):
         OrderedDict.__init__(self)
 
     def _repr(self):
-        return ', '.join(['{}: {}'.format(key, value.short_repr())
-                          for key, value in self.items()])
+        return ', '.join('{}: {}'.format(key, value.short_repr())
+                         for key, value in self.items())
 
     def __setitem__(self, key, value):
         super().__setitem__(key if isinstance(key, Name) else Name(key), value)
@@ -275,9 +275,9 @@ class Dictionary(Container, OrderedDict):
         return super().__contains__(key if isinstance(key, Name) else Name(key))
 
     def _bytes(self, document):
-        return b'<< ' + b' '.join([key.bytes(document) + b' ' +
-                                   value.bytes(document)
-                                   for key, value in self.items()]) + b' >>'
+        return b'<< ' + b' '.join(key.bytes(document) + b' ' +
+                                  value.bytes(document)
+                                  for key, value in self.items()) + b' >>'
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
