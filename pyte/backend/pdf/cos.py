@@ -1,17 +1,28 @@
 
+import codecs
 import hashlib, time
 
 from binascii import hexlify, unhexlify
+from codecs import BOM_UTF16_BE
 from collections import OrderedDict
 from datetime import datetime
 from io import BytesIO, SEEK_END
 
+from . import pdfdoccodec
 
 
 PDF_VERSION = '1.6'
 
 WHITESPACE = b'\0\t\n\f\r '
 DELIMITERS = b'()<>[]{}/%'
+
+
+def search_function(encoding):
+    if encoding == 'pdf_doc':
+        return pdfdoccodec.getregentry()
+
+
+codecs.register(search_function)
 
 # TODO: max line length (not streams)
 
@@ -110,24 +121,46 @@ class Real(Object, float):
         return float.__repr__(self).encode('utf_8')
 
 
-class String(Object):
-    def __init__(self, string, indirect=False):
-        super().__init__(indirect)
-        self.string = string
+class String(Object, bytes):
+    ESCAPED_CHARACTERS = {ord(b'\n'): br'\n',
+                          ord(b'\r'): br'\r',
+                          ord(b'\t'): br'\t',
+                          ord(b'\b'): br'\b',
+                          ord(b'\f'): br'\f',
+                          ord(b'\\'): br'\\',
+                          ord(b'('): br'\(',
+                          ord(b')'): br'\)'}
+
+    def __new__(cls, value, indirect=False):
+        try:
+            value = BOM_UTF16_BE + value.encode('utf_16_be')
+        except AttributeError:
+            pass
+        return bytes.__new__(cls, value)
+
+    def __init__(self, value, indirect=False):
+        Object.__init__(self, indirect)
+
+    def __str__(self):
+        if self.startswith(BOM_UTF16_BE):
+            return self.decode('utf_16')
+        else:
+            try:
+                return self.decode('pdf_doc')
+            except UnicodeDecodeError:
+                return '<byte string>'
 
     def __repr__(self):
-        return "{}('{}')".format(self.__class__.__name__, self.string)
+        return "{}('{}')".format(self.__class__.__name__, self)
 
     def _bytes(self, document):
-        escaped = self.string.replace('\n', r'\n')
-        escaped = escaped.replace('\r', r'\r')
-        escaped = escaped.replace('\t', r'\t')
-        escaped = escaped.replace('\b', r'\b')
-        escaped = escaped.replace('\f', r'\f')
-        for char in '\\()':
-            escaped = escaped.replace(char, '\\{}'.format(char))
-        out = '({})'.format(escaped)
-        return out.encode('utf_8')
+        escaped = bytearray()
+        for char in self:
+            if char in self.ESCAPED_CHARACTERS.keys():
+                escaped += ESCAPED_CHARACTERS[char]
+            else:
+                escaped.append(char)
+        return b'(' + escaped + b')'
 
 
 class HexString(Object):
@@ -144,7 +177,7 @@ class HexString(Object):
 
 
 class Date(String):
-    def __init__(self, timestamp, indirect=False):
+    def __new__(cls, timestamp, indirect=False):
         local_time = datetime.fromtimestamp(timestamp)
         utc_time = datetime.utcfromtimestamp(timestamp)
         utc_offset = local_time - utc_time
@@ -152,7 +185,7 @@ class Date(String):
         utc_offset_hours, utc_offset_minutes = divmod(utc_offset_minutes, 60)
         string = local_time.strftime('D:%Y%m%d%H%M%S')
         string += "{:+03d}'{:02d}'".format(utc_offset_hours, utc_offset_minutes)
-        super().__init__(string, indirect)
+        return String.__new__(cls, string, indirect)
 
 
 class Name(Object, bytes):
@@ -164,7 +197,7 @@ class Name(Object, bytes):
             pass
         return bytes.__new__(cls, value)
 
-    def __init__(self, name, indirect=False):
+    def __init__(self, value, indirect=False):
         Object.__init__(self, indirect)
 
     def __str__(self):

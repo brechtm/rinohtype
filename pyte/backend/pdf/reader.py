@@ -243,7 +243,7 @@ class PDFReader(cos.Document):
                 break
             else:
                 string += char
-        return cos.String(string.decode('utf_8'), indirect)
+        return cos.String(string, indirect)
 
     def read_hex_string(self, identifier=None):
         indirect = identifier is not None
