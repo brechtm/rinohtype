@@ -183,7 +183,7 @@ class PDFReader(cos.Document):
         self.eat_whitespace()
         dict_pos = self.file.tell()
         if self.next_token() == b'stream':
-            self.eat_whitespace()
+            self.jump_to_next_line()
             length = int(dictionary['Length'])
             stream = cos.Stream()
             stream.update(dictionary)
