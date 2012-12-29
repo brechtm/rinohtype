@@ -10,6 +10,8 @@ from io import BytesIO, SEEK_END
 
 PDF_VERSION = '1.6'
 
+WHITESPACE = b'\0\t\n\f\r '
+DELIMITERS = b'()<>[]{}/%'
 
 # TODO: max line length (not streams)
 
@@ -153,20 +155,32 @@ class Date(String):
         super().__init__(string, indirect)
 
 
-class Name(Object, str):
+class Name(Object, bytes):
     # TODO: names should be unique (per document), so check
     def __new__(cls, value, indirect=False):
-        return str.__new__(cls, value)
+        try:
+            value = value.encode('utf_8')
+        except AttributeError:
+            pass
+        return bytes.__new__(cls, value)
 
     def __init__(self, name, indirect=False):
         Object.__init__(self, indirect)
 
+    def __str__(self):
+        return self.decode('utf_8')
+
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, str.__repr__(self))
+        return '{}({})'.format(self.__class__.__name__, self)
 
     def _bytes(self, document):
-        # TODO: # escaping
-        return '/{}'.format(self).encode('utf_8')
+        escaped = bytearray()
+        for char in self:
+            if char in WHITESPACE + DELIMITERS + b'#':
+                escaped += '#{:02x}'.format(char).encode('ascii')
+            else:
+                escaped.append(char)
+        return b'/' + escaped
 
 
 class Container(Object):
@@ -215,8 +229,17 @@ class Dictionary(Container, OrderedDict):
                               for key, value in self.items()])
         return '{}({})'.format(self.__class__.__name__, contents)
 
+    def __setitem__(self, key, value):
+        super().__setitem__(key if isinstance(key, Name) else Name(key), value)
+
+    def __getitem__(self, key):
+        return super().__getitem__(key if isinstance(key, Name) else Name(key))
+
+    def __contains__(self, key):
+        return super().__contains__(key if isinstance(key, Name) else Name(key))
+
     def _bytes(self, document):
-        return b'<< ' + b' '.join([Name(key).bytes(document) + b' ' +
+        return b'<< ' + b' '.join([key.bytes(document) + b' ' +
                                    value.bytes(document)
                                    for key, value in self.items()]) + b' >>'
 

@@ -34,7 +34,7 @@ class PDFReader(cos.Document):
         if 'Info' in trailer:
             self.info = trailer['Info']
         else:
-            self.info = Dictionary(self)
+            self.info = cos.Dictionary()
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
@@ -68,13 +68,10 @@ class PDFReader(cos.Document):
                     self.file.seek(-1, SEEK_CUR)
                 break
 
-    whitespace = b'\0\t\n\f\r '
-    delimiters = b'()<>[]{}/%'
-
     def eat_whitespace(self):
         while True:
             char = self.file.read(1)
-            if char not in self.whitespace:
+            if char not in cos.WHITESPACE:
                 self.file.seek(-1, SEEK_CUR)
                 break
 
@@ -87,12 +84,12 @@ class PDFReader(cos.Document):
                 token += char
             else:
                 self.file.seek(-1, SEEK_CUR)
-        elif token in self.delimiters + self.whitespace:
+        elif token in cos.DELIMITERS + cos.WHITESPACE:
             pass
         else:
             while True:
                 char = self.file.read(1)
-                if char in self.delimiters + self.whitespace:
+                if char in cos.DELIMITERS + cos.WHITESPACE:
                     self.file.seek(-1, SEEK_CUR)
                     break
                 token += char
@@ -163,7 +160,7 @@ class PDFReader(cos.Document):
         name = ''
         while True:
             char = self.file.read(1)
-            if char in self.delimiters + self.whitespace:
+            if char in cos.DELIMITERS + cos.WHITESPACE:
                 self.file.seek(-1, SEEK_CUR)
                 break
             name += char.decode('utf_8')
@@ -203,11 +200,11 @@ class PDFReader(cos.Document):
             cls_name = dictionary['Type']
             if 'Subtype' in dictionary:
                 cls_name += dictionary['Subtype']
-            if cls_name in subclasses:
-                dictionary.__class__ = subclasses[cls_name]
+            str_cls_name = str(cls_name)
+            if str_cls_name in subclasses:
+                dictionary.__class__ = subclasses[str_cls_name]
         return dictionary
 
-    newline_chars = b'\n\r'
     escape_chars = b'nrtbf()\\'
 
     def read_string(self, identifier=None):
