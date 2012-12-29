@@ -163,17 +163,19 @@ class String(Object, bytes):
         return b'(' + escaped + b')'
 
 
-class HexString(Object):
+class HexString(Object, bytes):
+    def __new__(cls, value, indirect=False):
+        return bytes.__new__(cls, value)
+
     def __init__(self, byte_string, indirect=False):
-        super().__init__(indirect)
-        self.byte_string = byte_string
+        Object.__init__(self, indirect)
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__,
-                                 hexlify(self.byte_string).decode())
+                                 hexlify(self).decode())
 
     def _bytes(self, document):
-        return b'<' + hexlify(self.byte_string) + b'>'
+        return b'<' + hexlify(self) + b'>'
 
 
 class Date(String):
