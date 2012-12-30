@@ -28,19 +28,25 @@ codecs.register(search_function)
 
 
 class Object(object):
+    PREFIX = b''
+    POSTFIX = b''
+
     def __init__(self, indirect=False):
         self.indirect = indirect
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self._repr())
 
-    def bytes(self, document):
-        if self.indirect:
+    def bytes(self, document, force=False):
+        if not force and self.indirect:
             reference = document._by_object_id[id(self)]
             out = reference.bytes(document)
         else:
-            out = self._bytes(document)
+            out = self.direct_bytes(document)
         return out
+
+    def direct_bytes(self, document):
+        return self.PREFIX + self._bytes(document) + self.POSTFIX
 
     def delete(self, document):
         try:
@@ -125,6 +131,8 @@ class Real(Object, float):
 
 
 class String(Object, bytes):
+    PREFIX = b'('
+    POSTFIX = b')'
     ESCAPED_CHARACTERS = {ord(b'\n'): br'\n',
                           ord(b'\r'): br'\r',
                           ord(b'\t'): br'\t',
@@ -164,10 +172,13 @@ class String(Object, bytes):
                 escaped += ESCAPED_CHARACTERS[char]
             else:
                 escaped.append(char)
-        return b'(' + escaped + b')'
+        return escaped
 
 
 class HexString(Object, bytes):
+    PREFIX = b'<'
+    POSTFIX = b'>'
+
     def __new__(cls, value, indirect=False):
         return bytes.__new__(cls, value)
 
@@ -178,7 +189,7 @@ class HexString(Object, bytes):
         return hexlify(self).decode()
 
     def _bytes(self, document):
-        return b'<' + hexlify(self) + b'>'
+        return hexlify(self)
 
 
 class Date(String):
@@ -194,6 +205,8 @@ class Date(String):
 
 
 class Name(Object, bytes):
+    PREFIX = b'/'
+
     # TODO: names should be unique (per document), so check
     def __new__(cls, value, indirect=False):
         try:
@@ -218,7 +231,7 @@ class Name(Object, bytes):
                 escaped += '#{:02x}'.format(char).encode('ascii')
             else:
                 escaped.append(char)
-        return b'/' + escaped
+        return escaped
 
 
 class Container(Object):
@@ -236,6 +249,9 @@ class Container(Object):
 
 
 class Array(Container, list):
+    PREFIX = b'['
+    POSTFIX = b']'
+
     # TODO: not all methods of list are overridden, so funny
     # behavior is to be expected
     def __init__(self, items=[], indirect=False):
@@ -246,7 +262,7 @@ class Array(Container, list):
         return ', '.join(item.short_repr() for item in self)
 
     def _bytes(self, document):
-        return b'[' + b' '.join(elem.bytes(document) for elem in self) + b']'
+        return b' '.join(elem.bytes(document) for elem in self)
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
@@ -257,6 +273,9 @@ class Array(Container, list):
 
 
 class Dictionary(Container, OrderedDict):
+    PREFIX = b'<<'
+    POSTFIX = b'>>'
+
     def __init__(self, indirect=False):
         Container.__init__(self, indirect)
         OrderedDict.__init__(self)
@@ -275,9 +294,8 @@ class Dictionary(Container, OrderedDict):
         return super().__contains__(key if isinstance(key, Name) else Name(key))
 
     def _bytes(self, document):
-        return b'<< ' + b' '.join(key.bytes(document) + b' ' +
-                                  value.bytes(document)
-                                  for key, value in self.items()) + b' >>'
+        return b' '.join(key.bytes(document) + b' ' + value.bytes(document)
+                         for key, value in self.items())
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
@@ -294,7 +312,8 @@ class Stream(Dictionary):
         self.filter = filter
         self.data = BytesIO()
 
-    def _bytes(self, document):
+    def direct_bytes(self, document):
+        out = bytearray()
         if self.filter:
             encoded = self.filter.encode(self.data.getvalue())
             self.data = BytesIO(encoded)
@@ -302,7 +321,7 @@ class Stream(Dictionary):
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self.size)
-        out = super()._bytes(document)
+        out += super().direct_bytes(document)
         out += b'\nstream\n'
         out += self.data.getvalue()
         out += b'\nendstream'
@@ -414,13 +433,14 @@ class Document(dict):
 
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
         file.write(b'%\xDC\xE1\xD8\xB7\n')
+        # write out indirect objects
         addresses = {}
         for identifier in range(1, self.max_identifier + 1):
             if identifier in self:
                 obj = self[identifier]
                 addresses[identifier] = file.tell()
                 out('{} 0 obj'.format(identifier).encode('utf_8'))
-                out(obj._bytes(self))
+                out(obj.bytes(self, force=True))
                 out(b'endobj')
         xref_table_address = file.tell()
         self._write_xref_table(file, addresses)
@@ -671,11 +691,13 @@ class EncodingDifferences(Object):
         return code
 
     def _bytes(self, document):
+        # TODO: subclass Array
         output = b'['
         previous = 256
         for code in sorted(self.by_code.keys()):
             if code != previous + 1:
-                output += b' ' + Integer(code)._bytes(document)
-            output += b' ' + Name(self.by_code[code].name)._bytes(document)
+                output += b' ' + Integer(code).bytes(document)
+            output += b' ' + Name(self.by_code[code].name).bytes(document)
+            previous = code
         output += b' ]'
         return output
