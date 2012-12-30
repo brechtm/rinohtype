@@ -10,17 +10,6 @@ from ...util import all_subclasses
 
 
 class PDFReader(cos.Document):
-    DICT_BEGIN = b'<<'
-    DICT_END = b'>>'
-    STRING_BEGIN = b'('
-    STRING_END = b')'
-    ARRAY_BEGIN = b'['
-    ARRAY_END = b']'
-    HEXSTRING_BEGIN = b'<'
-    HEXSTRING_END = b'>'
-    NAME_BEGIN = b'/'
-    COMMENT_BEGIN = b'%'
-
     def __init__(self, file_or_filename):
         try:
             self.file = open(file_or_filename, 'rb')
@@ -77,7 +66,7 @@ class PDFReader(cos.Document):
 
     def next_token(self):
         token = self.file.read(1)
-        if token in (self.HEXSTRING_BEGIN, self.HEXSTRING_END):
+        if token in (cos.HexString.PREFIX, cos.HexString.POSTFIX):
             # check for dict begin/end
             char = self.file.read(1)
             if char == token:
@@ -100,15 +89,15 @@ class PDFReader(cos.Document):
         self.eat_whitespace()
         restore_pos = self.file.tell()
         token = self.next_token()
-        if token == self.STRING_BEGIN:
+        if token == cos.String.PREFIX:
             item = self.read_string(identifier)
-        elif token == self.HEXSTRING_BEGIN:
+        elif token == cos.HexString.PREFIX:
             item = self.read_hex_string(identifier)
-        elif token == self.ARRAY_BEGIN:
+        elif token == cos.Array.PREFIX:
             item = self.read_array(identifier)
-        elif token == self.NAME_BEGIN:
+        elif token == cos.Name.PREFIX:
             item = self.read_name(identifier)
-        elif token == self.DICT_BEGIN:
+        elif token == cos.Dictionary.PREFIX:
             item = self.read_dictionary_or_stream(identifier)
         elif token == b'true':
             item = cos.Boolean(True, indirect=indirect)
@@ -146,7 +135,7 @@ class PDFReader(cos.Document):
         while True:
             self.eat_whitespace()
             token = self.file.read(1)
-            if token == self.ARRAY_END:
+            if token == cos.Array.POSTFIX:
                 break
             self.file.seek(-1, SEEK_CUR)
             item = self.next_item()
@@ -176,7 +165,7 @@ class PDFReader(cos.Document):
         while True:
             self.eat_whitespace()
             token = self.next_token()
-            if token == self.DICT_END:
+            if token == cos.Dictionary.POSTFIX:
                 break
             key, value = self.read_name(), self.next_item()
             dictionary[key] = value
@@ -239,7 +228,7 @@ class PDFReader(cos.Document):
                 parenthesis_level += 1
             elif char == b')' and parenthesis_level > 0:
                 parenthesis_level -= 1
-            elif char == self.STRING_END:
+            elif char == cos.String.POSTFIX:
                 break
             else:
                 string += char
@@ -251,7 +240,7 @@ class PDFReader(cos.Document):
         while True:
             self.eat_whitespace()
             char = self.file.read(1)
-            if char == self.HEXSTRING_END:
+            if char == cos.HexString.POSTFIX:
                 break
             hex_string += char
         if len(hex_string) % 2 > 0:
