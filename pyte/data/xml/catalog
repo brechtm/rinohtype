@@ -6,7 +6,7 @@
    http://www.w3.org/2003/entities/2007/
 
   to
-  
+
   w3c-entities/
 
   This reduces the load on the W3C servers and inmproves parse times
@@ -18,4 +18,8 @@
     id = "w3centities"
     systemIdStartString = "http://www.w3.org/2003/entities/2007/"
     rewritePrefix = "w3c-entities/" />
+  <rewriteSystem
+    id = "docutils"
+    systemIdStartString = "http://docutils.sourceforge.net/docs/ref/"
+    rewritePrefix = "docutils/" />
 </catalog>
