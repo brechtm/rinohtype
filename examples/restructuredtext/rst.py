@@ -20,6 +20,7 @@ from pyte.structure import List, ListStyle, DefinitionList, DefinitionListStyle
 from pyte.number import ROMAN_UC, CHARACTER_UC, NUMBER
 from pyte.flowable import Flowable
 from pyte.float import Float
+from pyte.float import Image as PyteImage
 from pyte.style import StyleStore
 from pyte.frontend.xml import element_factory
 
@@ -229,6 +230,12 @@ class Term(NestedElement):
 
 class Definition(NestedElement):
     pass
+
+
+class Image(CustomElement):
+    def parse(self, document):
+        return PyteImage(self.get('uri').rsplit('.png', 1)[0])
+
 
 
 class SimplePage(Page):
