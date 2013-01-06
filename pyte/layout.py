@@ -167,7 +167,7 @@ class ExpandingContainer(Container):
         self.expand(height)
 
     def expand(self, height):
-        self.height.add(height * pt)
+        self.height += height * pt
 
 
 class DownExpandingContainer(ExpandingContainer):
@@ -193,10 +193,6 @@ class UpExpandingContainer(ExpandingContainer):
     @property
     def bottom(self):
         return self._bottom
-
-    def expand(self, height):
-        super().expand(height)
-        self.top.add(- height * pt)
 
 
 class FootnoteContainer(UpExpandingContainer):

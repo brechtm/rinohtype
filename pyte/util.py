@@ -1,6 +1,17 @@
-"""Collection of miscellaneous utility functionality"""
+"""
+Collection of miscellaneous utility functions and decorators:
+
+* `all_subclasses`: Generator yielding all subclasses of `cls` recursively
+* `intersperse`: Generator inserting an element between every two elements of
+                 a given iterable
+* `cached_property`: Caching property decorator
+* `timed`: Method decorator printing the time the method call took
+"""
 
 import time
+
+
+__all__ = ['all_subclasses', 'intersperse', 'cached_property', 'timed']
 
 
 def all_subclasses(cls):
@@ -26,24 +37,26 @@ def intersperse(iterable, element):
 
 class cached_property(property):
     """Property decorator that additionally caches the return value of the
-    decorated method. The value is stored as a data attribute of the object."""
+    decorated getter method"""
     def __init__(self, function, *args, **kwargs):
         super().__init__(function, *args, **kwargs)
         self._function_name = function.__name__
 
     def __get__(self, obj, *args):
+        #  the cached value is stored as an attribute of the object
         cache_variable = '_cached_' + self._function_name
         try:
             return getattr(obj, cache_variable)
         except AttributeError:
-            cache_value = super(cached_property, self).__get__(obj, *args)
+            cache_value = super().__get__(obj, *args)
             setattr(obj, cache_variable, cache_value)
             return cache_value
 
 
 def timed(function):
-    """Decorator timing the method call and printing the result to stdout."""
+    """Decorator timing the method call and printing the result to `stdout`"""
     def function_wrapper(self, *args, **kwargs):
+        """Wrapper function printing the time taken by the call to `function`"""
         name = self.__class__.__name__ + '.' + function.__name__
         start = time.clock()
         result = function(self, *args, **kwargs)

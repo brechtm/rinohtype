@@ -1,91 +1,116 @@
+"""
+This module only exports a single class:
+
+* `Dimension`: Late-evaluated dimension, forming the basis of the layout engine
+"""
 
 from copy import copy
 
 
-class Dimension(object): # internally always pt
-    # TODO: em, ex? (depends on context)
-    def __init__(self, value=0):
-        self.__value = value
-        self.__plusTerms = []
-        self.__minusTerms = []
-        self.__factor = 1
+__all__ = ['Dimension']
 
-    def add(self, other):
-        # TODO: allow adding ints and floats (pt)
-        assert isinstance(other, Dimension)
+
+class DimensionMeta(type):
+    """Metaclass for :class:`Dimension`. Maps comparison operators to their
+    equivalents in :class:`float`"""
+
+    def __new__(mcs, name, bases, cls_dict):
+        """Return a new class with predefined comparison operators"""
+        for method_name in ('__lt__', '__le__', '__gt__', '__ge__',
+                            '__eq__', '__ne__'):
+            cls_dict[method_name] = mcs._make_operator(method_name)
+        return type.__new__(mcs, name, bases, cls_dict)
+
+    @staticmethod
+    def _make_operator(method_name):
+        """Return an operator method that takes parameters of type
+        :class:`Dimension`, evaluates them, and delegates to the :class:`float`
+        operator with name `method_name`"""
+        def operator(self, other):
+            """Operator delegating to the :class:`float` method `method_name`"""
+            float_operator = getattr(float, method_name)
+            return float_operator(float(self), float(other))
+        return operator
+
+
+class Dimension(object, metaclass=DimensionMeta):
+    """Late-evaluated dimension.
+
+    The internal representations is in terms of PostScript points. A PostScript
+    pointhich is defined as one 72th of an inch.
+    The value of a dimension is only evaluated to a value in points when
+    required by converting it to a float. Its value depends recursively on the
+    evaluated values of the :class:`Dimension`s it depends upon."""
+
+    # TODO: em, ex? (depends on context)
+    def __init__(self, value=0, _plus_terms=None, _minus_terms=None, _factor=1):
+        """Initialize a :class:`Dimension` at `value` points.
+        You should *not* specify values for other arguments than `value`!"""
+        self._value = value
+        self._plus_terms = _plus_terms or []
+        self._minus_terms = _minus_terms or []
+        self._factor = _factor
+
+    def __neg__(self):
+        """Return the negative of this :class:`Dimension`"""
+        inverse = copy(self)
+        inverse._factor *= - 1
+        return inverse
+
+    def __iadd__(self, other):
+        """Return this :class:`Dimension`, adding `other` (in place)"""
         this = copy(self)
-        self.__init__(0)
-        self.__plusTerms = [this, other]
+        self.__init__(_plus_terms=[this, other])
+        return self
+
+    def __isub__(self, other):
+        """Return this :class:`Dimension`, subtracting `other` (in place)"""
+        this = copy(self)
+        self.__init__(_plus_terms=[this], _minus_terms=[other])
+        return self
 
     def __add__(self, other):
-        assert isinstance(other, Dimension)
-        result = Dimension()
-        result.__plusTerms = [self, other]
-        return result
+        """Return the sum of this :class:`Dimension` and `other`"""
+        return self.__class__(_plus_terms=[self, other])
 
     __radd__ = __add__
 
     def __sub__(self, other):
-        assert isinstance(other, Dimension)
-        result = Dimension()
-        result.__plusTerms = [self]
-        result.__minusTerms = [other]
-        return result
+        """Return the difference of this :class:`Dimension` and `other`"""
+        return self.__class__(_plus_terms=[self], _minus_terms=[other])
 
-    __rsub__ = __sub__
+    def __rsub__(self, other):
+        return self.__class__(_plus_terms=[other], _minus_terms=[self])
+
+    def __imul__(self, factor):
+        """Multiply this :class:`Dimension` by `factor` (in place)"""
+        self._factor *= factor
+        return self
 
     def __mul__(self, factor):
+        """Return the product of this :class:`Dimension` and `factor`"""
         result = copy(self)
-        result.__factor = self.__factor * factor
+        result._factor = self._factor * factor
         return result
 
     __rmul__ = __mul__
 
     def __truediv__(self, factor):
-        return self * (1.0/factor)
-
-    def __lt__(self, other):
-        return float(self) < float(other)
-
-    def __le__(self, other):
-        return float(self) <= float(other)
-
-    def __eq__(self, other):
-        return float(self) == float(other)
-
-    def __ne__(self, other):
-        return float(self) != float(other)
-
-    def __gt__(self, other):
-        return float(self) > float(other)
-
-    def __ge__(self, other):
-        return float(self) >= float(other)
+        """Return the quotient of this :class:`Dimension` and `factor`"""
+        return self * (1.0 / factor)
 
     def __copy__(self):
-        result = Dimension()
-        result.__value = self.__value
-        result.__plusTerms = copy(self.__plusTerms)
-        result.__minusTerms = copy(self.__minusTerms)
-        result.__factor = self.__factor
-        return result
+        """Return a copy of this :class:`Dimension`"""
+        # individual terms are not copied!
+        return self.__class__(self._value, copy(self._plus_terms),
+                              copy(self._minus_terms), self._factor)
 
     def __repr__(self):
-        #return str(self.evaluate()) + 'pt' + "    " + hex(id(self))
-        return str(self.evaluate()) + 'pt'
+        """Return a textual representation of the evaluated value"""
+        return str(float(self)) + 'pt'
 
     def __float__(self):
-        return float(self.evaluate())
-
-    def evaluate(self):
-        total = self.__value
-        for term in self.__plusTerms:
-            total += term.evaluate()
-        for term in self.__minusTerms:
-            total -= term.evaluate()
-        return total * self.__factor
-
-    def below(self, container):
-        # TODO: icky!
-        assert isinstance(container, Container)
-        return self + container.bottom()
+        """Evaluate the value of this :class:`Dimension` in points"""
+        total = (self._value + sum(map(float, self._plus_terms))
+                             - sum(map(float, self._minus_terms)))
+        return float(total) * self._factor
