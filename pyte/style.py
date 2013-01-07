@@ -1,47 +1,58 @@
+"""
+Base classes and exceptions for styles of document elements.
+
+* :class:`Style`: Dictionary storing a set of style attributes
+* :class:`Styled`: A styled entity, having a :class:`Style` associated with it
+* :class:`StyleStore`: Dictionary storing a set of related `Style`s by name
+* `PARENT_STYLE`: Special style that forwards style lookups to the parent
+                  :class:`Styled`
+* :class:`ParentStyleException`: Thrown when style attribute lookup needs to be
+                                 delegated to the parent :class:`Styled`
+"""
+
 
 from .document import DocumentElement
 
 
+__all__ = ['ParentStyleException', 'Style', 'Styled', 'StyleStore',
+           'PARENT_STYLE']
+
+
 class ParentStyleException(Exception):
-    pass
-
-
-class ParentStyleType(type):
-    def __repr__(cls):
-        return cls.__name__
-
-    def __getattr__(cls, key):
-        raise ParentStyleException
-
-    def __getitem__(cls, key):
-        raise ParentStyleException
-
-    def _recursive_get(cls, key):
-        raise ParentStyleException
-
-
-class ParentStyle(object, metaclass=ParentStyleType):
-    pass
+    """Style attribute not found. Consult the parent :class:`Styled`."""
 
 
 class DefaultValueException(Exception):
-    pass
+    """The attribute is not specified in this :class:`Style` or any of its base
+    styles. Return the default value for the attribute."""
 
 
 class Style(dict):
-    attributes = {}
+    """"Dictionary storing style attributes.
 
-    def __init__(self, base=ParentStyle, **attributes):
+    Attrributes can also be accessed as attributes."""
+
+    attributes = {}
+    """Dictionary holding the supported style attributes for this :class:`Style`
+    class (keys) and their default values (values)"""
+
+    def __init__(self, base=None, **attributes):
+        """Style attributes are as passed as keyword arguments. Optionally, a
+        base :class:`Style` is passed, where attributes are lookup up when they
+        have not been specified in this :class:`Style`. If `base` is
+        `PARENT_STYLE`, the attribute lookup is forwarded to the parent of the
+        element the lookup originates from."""
         self.base = base
         self.name = None
         self.store = None
         for attribute in attributes:
             if attribute not in self._supported_attributes():
                 raise TypeError('%s is not a supported attribute' % attribute)
-        self.update(attributes)
+        super().__init__(attributes)
 
     @property
     def base(self):
+        """Return the base :class:`Style` for this :class:`Style`"""
         if isinstance(self._base, str):
             return self.store[self._base]
         else:
@@ -49,10 +60,12 @@ class Style(dict):
 
     @base.setter
     def base(self, base):
+        """Set this :class:`Style`'s base to `base`"""
         self._base = base
 
     def __repr__(self):
-        return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name,
+        """Return a textual representation of this :class:`Style`"""
+        return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name or '',
                                        self.base)
 
     def __copy__(self):
@@ -62,30 +75,49 @@ class Style(dict):
             copy.store = self.store
         return copy
 
-    def __getattr__(self, name):
-        return self[name]
+    def __getattr__(self, attribute):
+        return self[attribute]
 
-    def __getitem__(self, key):
+    def __getitem__(self, attribute):
+        """Return the value of `attribute`.
+
+        If the attribute is not specified in this :class:`Style`, find it in
+        this :class:`Style`'s base styles, or ultimately return the default."""
         try:
-            return self._recursive_get(key)
+            return self._recursive_get(attribute)
         except DefaultValueException:
-            return self._get_default(key)
+            return self._get_default(attribute)
 
-    def _recursive_get(self, key):
+    def _recursive_get(self, attribute):
+        """Recursively search for the value of `attribute`.
+
+        If the attribute is not specified in this :class:`Style`, defer the
+        lookup to the base style. When the attribute is specified nowhere in the
+        chain of base :class:`Style`s, raise a :class:`DefaultValueException`.
+        """
         try:
-            return super().__getitem__(key)
+            return super().__getitem__(attribute)
         except KeyError:
             if self.base is None:
                 raise DefaultValueException
-            return self.base._recursive_get(key)
+            return self.base._recursive_get(attribute)
 
-    def _get_default(self, key):
-        for cls in self.__class__.__mro__:
-            if key in cls.attributes:
-                return cls.attributes[key]
-        raise KeyError("No attribute '{}' in {}".format(key, self))
+    def _get_default(self, attribute):
+        """Return the default value for `attribute`.
+
+        If no default is specified in this style class, get the default from the
+        nearest superclass.
+        If `attribute` is not supported, raise a :class:`KeyError`."""
+        try:
+            for cls in self.__class__.__mro__:
+                if attribute in cls.attributes:
+                    return cls.attributes[attribute]
+        except AttributeError:
+            raise KeyError("No attribute '{}' in {}".format(attribute, self))
 
     def _supported_attributes(self):
+        """Return a :class:`dict` of the attributes supported by this style
+        class."""
         attributes = {}
         for cls in reversed(self.__class__.__mro__):
             try:
@@ -95,14 +127,43 @@ class Style(dict):
         return attributes
 
 
+class ParentStyle(object):
+    """Special style that delegates attribute lookups by raising a
+    :class:`ParentStyleException` on each attempt to access an attribute."""
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+    def __getattr__(self, attribute):
+        raise ParentStyleException
+
+    def __getitem__(self, attribute):
+        raise ParentStyleException
+
+    def _recursive_get(self, attribute):
+        raise ParentStyleException
+
+
+PARENT_STYLE = ParentStyle()
+"""Special style that forwards style lookups to the parent of the
+:class:`Styled` from which the lookup originates."""
+
+
 class Styled(DocumentElement):
+    """An element that has a :class:`Style` associated with it."""
+
     style_class = None
+    """The :class:`Style` subclass that corresponds to this :class:`Styled`
+    subclass."""
 
     def __init__(self, style=None):
+        """Associates `style` with this element.
+
+        If `style` is None, an empty :class:`Style` will be used."""
         super().__init__()
         if style is None:
             style = self.style_class()
-        if style != ParentStyle and not isinstance(style, self.style_class):
+        if style != PARENT_STYLE and not isinstance(style, self.style_class):
             raise TypeError('the style passed to {0} should be of type {1}'
                             .format(self.__class__.__name__,
                                     self.style_class.__name__))
@@ -110,6 +171,10 @@ class Styled(DocumentElement):
         self.cached_style = {}
 
     def get_style(self, attribute):
+        """Return `attribute` of the associated :class:`Style`.
+
+        If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
+        the style attribute is fetched from this element's parent."""
         try:
             return self.cached_style[attribute]
         except KeyError:
@@ -122,8 +187,7 @@ class Styled(DocumentElement):
 
 
 class StyleStore(dict):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    """Dictionary storing a set of related :class:`Style`s by name."""
 
     def __setitem__(self, key, value):
         value.name = key

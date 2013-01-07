@@ -7,7 +7,7 @@ from psg.fonts.afm_metrics import afm_metrics
 
 from .unit import pt
 from .font import TypeFamily
-from .text import ParentStyle, Style, CharacterLike, Box, NewLine, Tab
+from .text import PARENT_STYLE, Style, CharacterLike, Box, NewLine, Tab
 from .text import MixedStyledText
 from .paragraph import Paragraph, ParagraphStyle, TabStop, RIGHT, CENTER
 from .mathtext import Fonts, MathtextBackendPs, MathTextWarning, Parser, Bunch
@@ -33,7 +33,7 @@ class MathStyle(Style):
     attributes = {'fonts': None, # no default fonts yet
                   'font_size': 10*pt}
 
-    def __init__(self, base=ParentStyle, **attributes):
+    def __init__(self, base=PARENT_STYLE, **attributes):
         super().__init__(base=base, **attributes)
 
 
@@ -41,7 +41,7 @@ class Math(CharacterLike):
     style_class = MathStyle
     _parser = None
 
-    def __init__(self, equation, style=ParentStyle):
+    def __init__(self, equation, style=PARENT_STYLE):
         super().__init__(style)
         self.equation = equation.strip()
 

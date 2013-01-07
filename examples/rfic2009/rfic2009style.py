@@ -29,7 +29,7 @@ from pyte.float import Figure as PyteFigure, CaptionStyle, Float
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
-from pyte.style import ParentStyle, StyleStore
+from pyte.style import PARENT_STYLE, StyleStore
 from pyte.frontend.xml import element_factory
 from pyte.backend import pdf, psg
 
@@ -402,7 +402,7 @@ from pyte import csl_formatter
 
 class IEEEBibliography(Paragraph):
     def __init__(self, items):
-        items = [Paragraph(item, style=ParentStyle) for item in items]
+        items = [Paragraph(item, style=PARENT_STYLE) for item in items]
         for item in items:
             item.parent = self
         return super().__init__(items, style=styles['bibliography'])

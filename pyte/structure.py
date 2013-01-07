@@ -10,7 +10,7 @@ from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, FixedWidthSpace, Tab
 from .unit import pt
-from .style import ParentStyle
+from .style import PARENT_STYLE
 from .warnings import PyteWarning
 
 
@@ -122,7 +122,7 @@ class List(Paragraph):
 
 
 class DefinitionListStyle(ParagraphStyle):
-    attributes = {'term_style': ParentStyle,
+    attributes = {'term_style': PARENT_STYLE,
                   'item_spacing': ParagraphStyle.attributes['line_spacing'],
                   'indentation': 10*pt}
 

@@ -1,7 +1,6 @@
 
 from warnings import warn
 
-from .style import ParentStyle
 from .text import SingleStyledText, TextStyle, Superscript
 from .warnings import PyteWarning
 

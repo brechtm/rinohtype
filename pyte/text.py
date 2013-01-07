@@ -11,7 +11,7 @@ from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
-from .style import Style, Styled, ParentStyle, ParentStyleException
+from .style import Style, Styled, PARENT_STYLE, ParentStyleException
 from .util import intersperse, cached_property
 
 
@@ -29,7 +29,7 @@ class TextStyle(Style):
                   'hyphen_chars': 2,
                   'hyphen_lang': 'en_US'}
 
-    def __init__(self, base=ParentStyle, **attributes):
+    def __init__(self, base=PARENT_STYLE, **attributes):
         super().__init__(base=base, **attributes)
 
     def get_font(self):
@@ -41,7 +41,7 @@ class TextStyle(Style):
 
 
 class CharacterLike(Styled):
-    def __init__(self, style=ParentStyle):
+    def __init__(self, style=PARENT_STYLE):
         super().__init__(style)
 
     def __repr__(self):
@@ -62,7 +62,7 @@ class CharacterLike(Styled):
 class StyledText(Styled):
     style_class = TextStyle
 
-    def __init__(self, style=ParentStyle, y_offset=0):
+    def __init__(self, style=PARENT_STYLE, y_offset=0):
         super().__init__(style)
         self._y_offset = y_offset
 
@@ -109,7 +109,7 @@ class StyledText(Styled):
 
 # TODO: subclass str (requires messing around with __new__)?
 class SingleStyledText(StyledText):
-    def __init__(self, text, style=ParentStyle, y_offset=0):
+    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
         super().__init__(style, y_offset)
         text = self._clean_text(text)
         self.text = self._decode_html_entities(text)
@@ -232,7 +232,7 @@ class SingleStyledText(StyledText):
 
 
 class SmallCapitalsText(SingleStyledText):
-    def __init__(self, text, style=ParentStyle, y_offset=0):
+    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
     def glyphs(self):
@@ -240,14 +240,14 @@ class SmallCapitalsText(SingleStyledText):
 
 
 class MixedStyledText(StyledText, list):
-    def __init__(self, items, style=ParentStyle, y_offset=0):
+    def __init__(self, items, style=PARENT_STYLE, y_offset=0):
         StyledText.__init__(self, style, y_offset)
         # TODO: handle y_offset
         if isinstance(items, str):
             items = [items]
         for item in items:
             if isinstance(item, str):
-                item = SingleStyledText(item, style=ParentStyle)
+                item = SingleStyledText(item, style=PARENT_STYLE)
             assert isinstance(item, StyledText)
             item.parent = self
             self.append(item)
@@ -272,7 +272,7 @@ class MixedStyledText(StyledText, list):
 
 
 class LiteralText(MixedStyledText):
-    def __init__(self, text, style=ParentStyle, y_offset=0):
+    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
         text_with_no_break_spaces = text.replace(' ', chr(0xa0))
         items = intersperse(text_with_no_break_spaces.split('\n'), NewLine())
         super().__init__(items, style, y_offset)
@@ -283,7 +283,7 @@ class LiteralText(MixedStyledText):
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(SingleStyledText):
-    def __init__(self, text, style=ParentStyle, y_offset=0):
+    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
         super().__init__(text, style, y_offset=y_offset)
 
     def __str__(self):
@@ -294,18 +294,18 @@ class Character(SingleStyledText):
 
 
 class Space(Character):
-    def __init__(self, fixed_width=False, style=ParentStyle, y_offset=0):
+    def __init__(self, fixed_width=False, style=PARENT_STYLE, y_offset=0):
         super().__init__(' ', style, y_offset=y_offset)
         self.fixed_width = fixed_width
 
 
 class FixedWidthSpace(Space):
-    def __init__(self, style=ParentStyle):
+    def __init__(self, style=PARENT_STYLE):
         super().__init__(True, style)
 
 
 class NoBreakSpace(Character):
-    def __init__(self, style=ParentStyle, y_offset=0):
+    def __init__(self, style=PARENT_STYLE, y_offset=0):
         super().__init__(' ', style, y_offset=y_offset)
 
 
