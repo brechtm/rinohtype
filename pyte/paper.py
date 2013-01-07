@@ -1,6 +1,6 @@
 
 from pyte.dimension import Dimension
-from pyte.unit import inch, mm
+from pyte.dimension import INCH, MM
 
 
 class Paper(object):
@@ -14,22 +14,22 @@ class Paper(object):
 
 
 # International (DIN 476 / ISO 216)
-A0 = Paper(841*mm, 1189*mm)
-A1 = Paper(594*mm, 841*mm)
-A2 = Paper(420*mm, 594*mm)
-A3 = Paper(297*mm, 420*mm)
-A4 = Paper(210*mm, 297*mm)
-A5 = Paper(148*mm, 210*mm)
-A6 = Paper(105*mm, 148*mm)
-A7 = Paper(74*mm, 105*mm)
-A8 = Paper(52*mm, 74*mm)
-A9 = Paper(37*mm, 52*mm)
-A10 = Paper(26*mm, 37*mm)
+A0 = Paper(841*MM, 1189*MM)
+A1 = Paper(594*MM, 841*MM)
+A2 = Paper(420*MM, 594*MM)
+A3 = Paper(297*MM, 420*MM)
+A4 = Paper(210*MM, 297*MM)
+A5 = Paper(148*MM, 210*MM)
+A6 = Paper(105*MM, 148*MM)
+A7 = Paper(74*MM, 105*MM)
+A8 = Paper(52*MM, 74*MM)
+A9 = Paper(37*MM, 52*MM)
+A10 = Paper(26*MM, 37*MM)
 
 
 # North America
-LETTER = Paper(8.5*inch, 11*inch)
-LEGAL = Paper(8.5*inch, 14*inch)
-JUNIOR_LEGAL = Paper(8*inch, 5*inch)
-LEDGER = Paper(17*inch, 11*inch)
-TABLOID = Paper(11*inch, 17*inch)
+LETTER = Paper(8.5*INCH, 11*INCH)
+LEGAL = Paper(8.5*INCH, 14*INCH)
+JUNIOR_LEGAL = Paper(8*INCH, 5*INCH)
+LEDGER = Paper(17*INCH, 11*INCH)
+TABLOID = Paper(11*INCH, 17*INCH)

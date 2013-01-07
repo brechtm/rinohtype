@@ -2,7 +2,7 @@
 import time
 import pickle
 
-from .unit import pt
+from .dimension import PT
 from .paper import Paper
 from .layout import Container, EndOfPage
 from .backend import pdf
@@ -26,7 +26,7 @@ class Page(Container):
         else:
             width = self.paper.height
             height = self.paper.width
-        super().__init__(None, 0*pt, 0*pt, width, height)
+        super().__init__(None, 0*PT, 0*PT, width, height)
         self.backend = self.document.backend
         self.section = None
 

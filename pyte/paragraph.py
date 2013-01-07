@@ -8,7 +8,7 @@ from .layout import EndOfContainer
 from .reference import LateEval, Footnote
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
-from .unit import pt
+from .dimension import PT
 
 
 # Text justification
@@ -31,9 +31,9 @@ DOUBLE = 2.0
 
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(TextStyle, FlowableStyle):
-    attributes = {'indent_left': 0*pt,
-                  'indent_right': 0*pt,
-                  'indent_first': 0*pt,
+    attributes = {'indent_left': 0*PT,
+                  'indent_right': 0*PT,
+                  'indent_first': 0*PT,
                   'line_spacing': STANDARD,
                   'justify': BOTH,
                   'tab_stops': []}
@@ -310,7 +310,7 @@ class Paragraph(MixedStyledText, Flowable):
                     from .layout import ExpandingContainer
                     container = ExpandingContainer(self.container,
                                     left=self.get_style('indent_left'),
-                                    top=self.container._flowable_offset*pt)
+                                    top=self.container._flowable_offset*PT)
                     flowable_height = container.flow(word)
                     self.container.advance(flowable_height)
                     self.word_pointer += 1

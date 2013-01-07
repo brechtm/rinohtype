@@ -8,7 +8,7 @@ from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
 from .paragraph import Paragraph, ParagraphStyle
 from .style import Style
-from .unit import pt
+from .dimension import PT
 
 
 TOP = 'top'
@@ -107,7 +107,7 @@ class Tabular(Flowable):
                 elif cell is None:
                     continue
                 cell_width = column_widths[c] * cell.colspan
-                buffer = VirtualContainer(self.container, cell_width * pt)
+                buffer = VirtualContainer(self.container, cell_width*PT)
                 cell_style = self.cell_styles[r][c]
                 cell_height = self.render_cell(cell, buffer, cell_style)
                 if cell.rowspan == 1:

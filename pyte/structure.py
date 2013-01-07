@@ -9,7 +9,7 @@ from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, FixedWidthSpace, Tab
-from .unit import pt
+from .dimension import PT
 from .style import PARENT_STYLE
 from .warnings import PyteWarning
 
@@ -75,11 +75,11 @@ class List(Paragraph):
 
     def __init__(self, items, style=None):
         super().__init__([], style)
-        item_style = ParagraphStyle(space_above=0*pt,
+        item_style = ParagraphStyle(space_above=0*PT,
                                     space_below=self.style.item_spacing,
                                     base=style)
-        last_item_style = ParagraphStyle(space_above=0*pt,
-                                         space_below=0*pt,
+        last_item_style = ParagraphStyle(space_above=0*PT,
+                                         space_below=0*PT,
                                          base=style)
         if style.ordered:
             separator = style.numbering_separator
@@ -124,7 +124,7 @@ class List(Paragraph):
 class DefinitionListStyle(ParagraphStyle):
     attributes = {'term_style': PARENT_STYLE,
                   'item_spacing': ParagraphStyle.attributes['line_spacing'],
-                  'indentation': 10*pt}
+                  'indentation': 10*PT}
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
@@ -136,15 +136,15 @@ class DefinitionList(Paragraph):
     def __init__(self, items, style=None):
         super().__init__([], style)
         term_style = self.style.term_style
-        term_style = ParagraphStyle(space_above=0*pt,
-                                    space_below=0*pt,
+        term_style = ParagraphStyle(space_above=0*PT,
+                                    space_below=0*PT,
                                     base=style)
-        definition_style = ParagraphStyle(space_above=0*pt,
+        definition_style = ParagraphStyle(space_above=0*PT,
                                           space_below=self.style.item_spacing,
                                           indent_left=self.style.indentation,
                                           base=style)
-        last_definition_style = ParagraphStyle(space_above=0*pt,
-                                               space_below=0*pt,
+        last_definition_style = ParagraphStyle(space_above=0*PT,
+                                               space_below=0*PT,
                                                indent_left=self.style.indentation,
                                                base=style)
         for i, item in enumerate(items[:-1]):

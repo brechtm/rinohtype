@@ -1,7 +1,15 @@
 """
-This module only exports a single class:
+This module exports a single class:
 
 * `Dimension`: Late-evaluated dimension, forming the basis of the layout engine
+
+It also exports a number of pre-defined dimensions:
+
+* `PT`: PostScript point
+* `INCH`: inch, equal to 72 PostScript points
+* `MM`: millimeter
+* `CM`: centimeter
+
 """
 
 from copy import copy
@@ -10,9 +18,8 @@ from copy import copy
 __all__ = ['Dimension']
 
 
-class DimensionMeta(type):
-    """Metaclass for :class:`Dimension`. Maps comparison operators to their
-    equivalents in :class:`float`"""
+class DimensionType(type):
+    """Maps comparison operators to their equivalents in :class:`float`"""
 
     def __new__(mcs, name, bases, cls_dict):
         """Return a new class with predefined comparison operators"""
@@ -33,7 +40,7 @@ class DimensionMeta(type):
         return operator
 
 
-class Dimension(object, metaclass=DimensionMeta):
+class Dimension(object, metaclass=DimensionType):
     """Late-evaluated dimension.
 
     The internal representations is in terms of PostScript points. A PostScript
@@ -114,3 +121,9 @@ class Dimension(object, metaclass=DimensionMeta):
         total = (self._value + sum(map(float, self._plus_terms))
                              - sum(map(float, self._minus_terms)))
         return float(total) * self._factor
+
+
+PT = Dimension(1)
+INCH = 72*PT
+MM = INCH / 25.4
+CM = 10*MM

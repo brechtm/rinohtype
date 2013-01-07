@@ -1,6 +1,6 @@
 
 from .dimension import Dimension
-from .unit import pt
+from .dimension import PT
 from .util import cached_property
 
 
@@ -30,7 +30,7 @@ class RenderTarget(object):
 
 
 class Container(RenderTarget):
-    def __init__(self, parent, left=0*pt, top=0*pt,
+    def __init__(self, parent, left=0*PT, top=0*PT,
                  width=None, height=None, right=None, bottom=None,
                  chain=None):
         super().__init__()
@@ -154,10 +154,10 @@ class Container(RenderTarget):
 
 
 class ExpandingContainer(Container):
-    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None,
+    def __init__(self, parent, left=0*PT, top=0*PT, width=None, right=None,
                  max_height=None):
         super().__init__(parent, left, top, width=width, right=right,
-                         height=0*pt)
+                         height=0*PT)
         self.max_height = max_height
 
     def advance(self, height):
@@ -167,11 +167,11 @@ class ExpandingContainer(Container):
         self.expand(height)
 
     def expand(self, height):
-        self.height += height * pt
+        self.height += height*PT
 
 
 class DownExpandingContainer(ExpandingContainer):
-    def __init__(self, parent, left=0*pt, top=0*pt, width=None, right=None):
+    def __init__(self, parent, left=0*PT, top=0*PT, width=None, right=None):
         super().__init__(parent, left, top, width=width, right=right)
 ##
 ##    def place(self):
@@ -182,7 +182,7 @@ class DownExpandingContainer(ExpandingContainer):
 
 
 class UpExpandingContainer(ExpandingContainer):
-    def __init__(self, parent, left=0*pt, bottom=0*pt, width=None, right=None):
+    def __init__(self, parent, left=0*PT, bottom=0*PT, width=None, right=None):
         self._bottom = bottom
         super().__init__(parent, left, top=None, width=width, right=right)
 
@@ -196,7 +196,7 @@ class UpExpandingContainer(ExpandingContainer):
 
 
 class FootnoteContainer(UpExpandingContainer):
-    def __init__(self, parent, left=0*pt, bottom=0*pt, width=None, right=None):
+    def __init__(self, parent, left=0*PT, bottom=0*PT, width=None, right=None):
         super().__init__(parent, left, bottom, width=width, right=right)
         self._footnote_number = 0
 
@@ -208,7 +208,7 @@ class FootnoteContainer(UpExpandingContainer):
 
 class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width):
-        super().__init__(parent.page, 0*pt, 0*pt, width=width)
+        super().__init__(parent.page, 0*PT, 0*PT, width=width)
 
     def place(self):
         pass

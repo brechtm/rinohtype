@@ -1,6 +1,6 @@
 
 from .style import Style, Styled
-from .unit import pt
+from .dimension import PT
 
 
 class Color(object):
@@ -23,7 +23,7 @@ BLUE = Color(0, 0, 1)
 
 
 class LineStyle(Style):
-    attributes = {'width': 1*pt,
+    attributes = {'width': 1*PT,
                   'color': BLACK}
 
     def __init__(self, base=None, **attributes):

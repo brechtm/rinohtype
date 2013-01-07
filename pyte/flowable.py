@@ -1,11 +1,11 @@
 
 from .style import Style, Styled
-from .unit import pt
+from .dimension import PT
 
 
 class FlowableStyle(Style):
-    attributes = {'space_above': 0 * pt,
-                  'space_below': 0 * pt}
+    attributes = {'space_above': 0*PT,
+                  'space_below': 0*PT}
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)

@@ -1,5 +1,5 @@
 
-from pyte.unit import inch, pt, cm
+from pyte.dimension import PT, INCH, CM
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.type1 import Type1Font
 from pyte.font.opentype import OpenTypeFont
@@ -85,11 +85,11 @@ styles = StyleStore()
 
 styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                 font_weight=REGULAR,
-                                font_size=10*pt,
-                                line_spacing=12*pt,
-                                indent_first=0.125*inch,
-                                space_above=0*pt,
-                                space_below=0*pt,
+                                font_size=10*PT,
+                                line_spacing=12*PT,
+                                indent_first=0.125*INCH,
+                                space_above=0*PT,
+                                space_below=0*PT,
                                 justify=BOTH)
 
 # set style defaults
@@ -105,71 +105,71 @@ styles['math'] = MathStyle(fonts=mathfonts)
 
 styles['equation'] = EquationStyle(base='body',
                                    math_style='math',
-                                   indent_first=0*pt,
-                                   space_above=6*pt,
-                                   space_below=6*pt,
+                                   indent_first=0*PT,
+                                   space_above=6*PT,
+                                   space_below=6*PT,
                                    justify=CENTER,
                                    tab_stops=[TabStop(0.5, CENTER),
                                               TabStop(1.0, RIGHT)])
 
 styles['toc0'] = ParagraphStyle(base='body',
-                                tab_stops=[TabStop(0.6*cm),
+                                tab_stops=[TabStop(0.6*CM),
                                            TabStop(1.0, RIGHT, '. ')])
 styles['toc1'] = ParagraphStyle(base='toc0', font_weight=BOLD)
-styles['toc2'] = ParagraphStyle(base='toc0', indent_left=0.5*cm)
-styles['toc3'] = ParagraphStyle(base='toc0', indent_left=1.0*cm)
+styles['toc2'] = ParagraphStyle(base='toc0', indent_left=0.5*CM)
+styles['toc3'] = ParagraphStyle(base='toc0', indent_left=1.0*CM)
 
 styles['toc'] = TableOfContentsStyle(base='body')
 
 styles['bibliography'] = ParagraphStyle(base='body',
-                                        font_size=9*pt,
-                                        indent_first=0*pt,
-                                        space_above=0*pt,
-                                        space_below=0*pt,
-                                        tab_stops=[TabStop(0.25*inch, LEFT)])
+                                        font_size=9*PT,
+                                        indent_first=0*PT,
+                                        space_above=0*PT,
+                                        space_below=0*PT,
+                                        tab_stops=[TabStop(0.25*INCH, LEFT)])
 
 styles['title'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                  font_weight=REGULAR,
-                                 font_size=18*pt,
+                                 font_size=18*PT,
                                  line_spacing=1.2,
-                                 space_above=6*pt,
-                                 space_below=6*pt,
+                                 space_above=6*PT,
+                                 space_below=6*PT,
                                  justify=CENTER)
 
 styles['author'] = ParagraphStyle(base='title',
-                                  font_size=12*pt,
+                                  font_size=12*PT,
                                   line_spacing=1.2)
 
 styles['affiliation'] = ParagraphStyle(base='author',
-                                       space_below=6*pt + 12*pt)
+                                       space_below=6*PT + 12*PT)
 
 styles['abstract'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                     font_weight=BOLD,
-                                    font_size=9*pt,
-                                    line_spacing=10*pt,
-                                    indent_first=0.125*inch,
-                                    space_above=0*pt,
-                                    space_below=0*pt,
+                                    font_size=9*PT,
+                                    line_spacing=10*PT,
+                                    indent_first=0.125*INCH,
+                                    space_above=0*PT,
+                                    space_below=0*PT,
                                     justify=BOTH)
 
 styles['list'] = ListStyle(base='body',
-                           space_above=5*pt,
-                           space_below=5*pt,
-                           indent_left=0*inch,
-                           indent_first=0*inch,
+                           space_above=5*PT,
+                           space_below=5*PT,
+                           indent_left=0*INCH,
+                           indent_first=0*INCH,
                            ordered=True,
-                           item_spacing=0*pt,
+                           item_spacing=0*PT,
                            numbering_style=NUMBER,
                            numbering_separator=')')
 
 styles['heading1'] = HeadingStyle(typeface=ieeeFamily.serif,
                                   font_weight=REGULAR,
-                                  font_size=10*pt,
+                                  font_size=10*PT,
                                   small_caps=True,
                                   justify=CENTER,
-                                  line_spacing=12*pt,
-                                  space_above=18*pt,
-                                  space_below=6*pt,
+                                  line_spacing=12*PT,
+                                  space_above=18*PT,
+                                  space_below=6*PT,
                                   numbering_style=ROMAN_UC)
 
 styles['unnumbered'] = HeadingStyle(base='heading1',
@@ -177,48 +177,48 @@ styles['unnumbered'] = HeadingStyle(base='heading1',
 
 styles['heading2'] = HeadingStyle(base='heading1',
                                   font_slant=ITALIC,
-                                  font_size=10*pt,
+                                  font_size=10*PT,
                                   small_caps=False,
                                   justify=LEFT,
-                                  line_spacing=12*pt,
-                                  space_above=6*pt,
-                                  space_below=6*pt,
+                                  line_spacing=12*PT,
+                                  space_above=6*PT,
+                                  space_below=6*PT,
                                   numbering_style=CHARACTER_UC)
 #TODO: should only specify style once for each level!
 
 styles['header'] = HeaderStyle(base='body',
-                               indent_first=0 * pt,
-                               font_size=9 * pt)
+                               indent_first=0*PT,
+                               font_size=9*PT)
 
 styles['footer'] = FooterStyle(base='header',
-                               indent_first=0 * pt,
+                               indent_first=0*PT,
                                justify=CENTER)
 
-styles['figure'] = FlowableStyle(space_above=10 * pt,
-                                 space_below=12 * pt)
+styles['figure'] = FlowableStyle(space_above=10*PT,
+                                 space_below=12*PT)
 
 styles['figure caption'] = CaptionStyle(typeface=ieeeFamily.serif,
                                         font_weight=REGULAR,
-                                        font_size=9*pt,
-                                        line_spacing=10*pt,
-                                        indent_first=0*pt,
-                                        space_above=20*pt,
-                                        space_below=0*pt,
+                                        font_size=9*PT,
+                                        line_spacing=10*PT,
+                                        indent_first=0*PT,
+                                        space_above=20*PT,
+                                        space_below=0*PT,
                                         justify=BOTH)
 
 styles['footnote'] = ParagraphStyle(base='body',
-                                    font_size=9*pt,
-                                    line_spacing=10*pt)
+                                    font_size=9*PT,
+                                    line_spacing=10*PT)
 
-styles['red line'] = LineStyle(width=0.2*pt, color=RED)
+styles['red line'] = LineStyle(width=0.2*PT, color=RED)
 styles['thick line'] = LineStyle()
 styles['tabular'] = TabularStyle(typeface=ieeeFamily.serif,
                                  font_weight=REGULAR,
-                                 font_size=10*pt,
-                                 line_spacing=12*pt,
-                                 indent_first=0*pt,
-                                 space_above=0*pt,
-                                 space_below=0*pt,
+                                 font_size=10*PT,
+                                 line_spacing=12*PT,
+                                 indent_first=0*PT,
+                                 space_above=0*PT,
+                                 space_below=0*PT,
                                  justify=CENTER,
                                  vertical_align=MIDDLE,
                                  left_border=styles['red line'],
@@ -430,9 +430,9 @@ class CitationField(Field):
 # ----------------------------------------------------------------------------
 
 class RFICPage(Page):
-    topmargin = bottommargin = 1.125 * inch
-    leftmargin = rightmargin = 0.85 * inch
-    column_spacing = 0.25 * inch
+    topmargin = bottommargin = 1.125*INCH
+    leftmargin = rightmargin = 0.85*INCH
+    column_spacing = 0.25*INCH
 
     def __init__(self, document, first=False):
         super().__init__(document, LETTER, PORTRAIT)
@@ -443,7 +443,7 @@ class RFICPage(Page):
                          body_width, body_height)
 
         column_width = (body.width - self.column_spacing) / 2.0
-        column_top = 0 * pt
+        column_top = 0*PT
         if first:
             self.title_box = DownExpandingContainer(body)
             column_top = self.title_box.bottom
@@ -453,10 +453,10 @@ class RFICPage(Page):
 
         self.content = document.content
 
-        self.footnote_space = FootnoteContainer(body, 0*pt, body_height)
+        self.footnote_space = FootnoteContainer(body, 0*PT, body_height)
         self._footnote_number = 0
 
-        self.column1 = Container(body, 0*pt, column_top,
+        self.column1 = Container(body, 0*PT, column_top,
                                  width=column_width,
                                  bottom=self.footnote_space.top,
                                  chain=document.content)
@@ -471,10 +471,10 @@ class RFICPage(Page):
         self.column2._float_space = self.float_space
 
         self.header = Container(self, self.leftmargin, self.topmargin / 2,
-                                body_width, 12*pt)
+                                body_width, 12*PT)
         footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
         self.footer = Container(self, self.leftmargin, footer_vert_pos,
-                                body_width, 12*pt)
+                                body_width, 12*PT)
         header_text = Header(styles['header'])
         self.header.add_flowable(header_text)
         footer_text = Footer(styles['footer'])

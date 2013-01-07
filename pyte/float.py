@@ -5,7 +5,6 @@ from .number.style import NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
 from .text import SingleStyledText
-from .unit import mm
 
 
 class Image(Flowable):

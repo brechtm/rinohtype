@@ -5,7 +5,7 @@ from warnings import warn
 
 from psg.fonts.afm_metrics import afm_metrics
 
-from .unit import pt
+from .dimension import PT
 from .font import TypeFamily
 from .text import PARENT_STYLE, Style, CharacterLike, Box, NewLine, Tab
 from .text import MixedStyledText
@@ -31,7 +31,7 @@ class MathFonts(object):
 
 class MathStyle(Style):
     attributes = {'fonts': None, # no default fonts yet
-                  'font_size': 10*pt}
+                  'font_size': 10*PT}
 
     def __init__(self, base=PARENT_STYLE, **attributes):
         super().__init__(base=base, **attributes)

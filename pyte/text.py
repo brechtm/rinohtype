@@ -6,7 +6,7 @@ import os
 from html.entities import name2codepoint
 
 from .hyphenator import Hyphenator
-from .unit import pt
+from .dimension import PT
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
@@ -20,7 +20,7 @@ class TextStyle(Style):
                   'font_weight': MEDIUM,
                   'font_slant': UPRIGHT,
                   'font_width': NORMAL,
-                  'font_size': 10*pt,
+                  'font_size': 10*PT,
                   'small_caps': False,
                   'position': NORMAL,
                   'kerning': True,
