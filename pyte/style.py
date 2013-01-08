@@ -14,8 +14,8 @@ Base classes and exceptions for styles of document elements.
 from .document import DocumentElement
 
 
-__all__ = ['ParentStyleException', 'Style', 'Styled', 'StyleStore',
-           'PARENT_STYLE']
+__all__ = ['Style', 'Styled', 'StyleStore',
+           'PARENT_STYLE', 'ParentStyleException']
 
 
 class ParentStyleException(Exception):
@@ -39,9 +39,12 @@ class Style(dict):
     def __init__(self, base=None, **attributes):
         """Style attributes are as passed as keyword arguments. Optionally, a
         base :class:`Style` is passed, where attributes are lookup up when they
-        have not been specified in this :class:`Style`. If `base` is
-        `PARENT_STYLE`, the attribute lookup is forwarded to the parent of the
-        element the lookup originates from."""
+        have not been specified in this :class:`Style`.
+
+        If `base` is `PARENT_STYLE`, the attribute lookup is forwarded to the
+        parent of the element the lookup originates from.
+        If `base` is a string, it is used to look up the base :class:`Style` in
+        the :class:`StyleStore` this :class:`Style` is stored in."""
         self.base = base
         self.name = None
         self.store = None
@@ -187,7 +190,10 @@ class Styled(DocumentElement):
 
 
 class StyleStore(dict):
-    """Dictionary storing a set of related :class:`Style`s by name."""
+    """Dictionary storing a set of related :class:`Style`s by name.
+
+    :class:`Style`s stored in a :class:`StyleStore` can refer to their base
+    style by name. See :class:`Style`."""
 
     def __setitem__(self, key, value):
         value.name = key
