@@ -1,7 +1,6 @@
 
 from .flowable import Flowable
-from .number import format_number
-from .number.style import NUMBER
+from .number import format_number, NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
 from .text import SingleStyledText

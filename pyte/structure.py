@@ -2,8 +2,7 @@
 from warnings import warn
 
 from .layout import EndOfContainer
-from .number import format_number
-from .number.style import NUMBER
+from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
