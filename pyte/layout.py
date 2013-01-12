@@ -1,117 +1,125 @@
 
-from .dimension import Dimension
 from .dimension import PT
 from .util import cached_property
 
 
+__all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
+           'VirtualContainer', 'Chain', 'EndOfContainer', 'EndOfPage']
+           # TODO: FootnoteContainer
+
+
 class EndOfContainer(Exception):
-    pass
+    """The end of the :class:`Container`has been reached."""
 
 
-class EndOfPage(Exception):
-    pass
+class EndOfPage(EndOfContainer):
+    """The end of the :class:`Page` has been reached."""
 
 
 class RenderTarget(object):
+    """Something that takes :class:`Flowable`\ s to be rendered."""
+
     def __init__(self):
         self.flowables = []
 
     @property
     def document(self):
+        """Return the :class:`Document` this :class:`RenderTarget` is part of.
+        """
         raise NotImplementedError
 
     def add_flowable(self, flowable):
+        """Add a :class:`Flowable` to be rendered by this :class:`RenderTarget`.
+        """
         flowable.document = self.document
         self.flowables.append(flowable)
 
     def render(self):
-        raise NotImplementedError("virtual method not implemented in class %s" %
-                                  self.__class__.__name__)
+        """Render the :class:`Flowable`\ s assigned to this
+        :class:`RenderTarget`, in the order that they have been added."""
+        raise NotImplementedError
 
 
-class Container(RenderTarget):
-    def __init__(self, parent, left=0*PT, top=0*PT,
-                 width=None, height=None, right=None, bottom=None,
-                 chain=None):
-        super().__init__()
+class ContainerBase(RenderTarget):
+    """Base class for containers that render their :class:`Flowable`\ s to a
+    rectangular area on a page. :class:`ContainerBase` takes care of the
+    container's width and horizontal positioning. Its subclasses handle height
+    and vertical positioning."""
+
+    def __init__(self, parent, left=None, width=None, right=None, chain=None):
+        """Initialize a this container as a child of the `parent` container.
+
+        The horizontal position and width of the container are determined from
+        `left`, `width` and `right`. If only `left` or `right` are specified,
+        the container's other opposite edge will be placed at the corresponding
+        edge of the parent container.
+
+        `chain` is a :class:`Chain` this container will be appended to."""
+        self.parent = parent
         if parent:
             parent.children.append(self)
-        self.parent = parent
+
+        if left is None:
+            left = 0*PT if (right and width) is None else (right - width)
+        if width is None:
+            width = (parent.width - left) if (right is None) else (right - left)
         self.left = left
-        if top:
-            self.top = top
-        self.height = height if height else bottom - self.top
-        self.dynamic = self.height == 0
-        if width:
-            self.width = width
-        elif right:
-            self.width = right - self.left
-        else:
-            self.width = self.parent.width - self.left
+        self.width = width
+        self.right = left + width
+
         self.children = []
         self.flowables = []
         self.chain = chain
-        if self.chain:
+        if chain is not None:
             chain.add_container(self)
-        self._flowable_offset = 0
-
-    def advance(self, height):
-        self._flowable_offset += height
-        if self._flowable_offset > self.height:
-            raise EndOfContainer
-
-    @property
-    def cursor(self):
-        return float(self.canvas.height) - self._flowable_offset
-
-    @property
-    def right(self):
-        return self.left + self.width
-
-    @property
-    def bottom(self):
-        return self.top + self.height
+        # the flowable offset pointer keeps track of where the next flowable
+        # needs to be placed in the container.
+        self._flowable_offset = 0   # initialized at the container's top edge
 
     @property
     def abs_left(self):
-        try:
-            return self.parent.abs_left + self.left
-        except AttributeError:
-            return self.left
+        """The position of the container's left edge in page coordinates."""
+        return self.parent.abs_left + self.left
 
     @property
     def abs_top(self):
-        try:
-            return self.parent.abs_top + self.top
-        except AttributeError:
-            return self.top
-
-    @property
-    def abs_right(self):
-        return self.abs_left + self.width
-
-    @property
-    def abs_bottom(self):
-        return self.abs_top + self.height
+        """The position of the container's top edge in page coordinates."""
+        return self.parent.abs_top + self.top
 
     @property
     def page(self):
+        """The page this container is located on."""
         return self.parent.page
 
     @property
     def document(self):
+        """The document this container is part of."""
         return self.page._document
 
     @cached_property
     def canvas(self):
+        """The canvas associated with this container."""
         left = float(self.abs_left)
         width = float(self.width)
         return self.page.canvas.new(left, 0, width, 0)
 
-    def flow(self, flowable, continued=False):
-        from .float import Float
-        if isinstance(flowable, Float):
-            self._float_space.flow(flowable.flowable)
+    @property
+    def cursor(self):
+        """A translation of the flowable offset pointer to the backend's
+        coordinate system."""
+        return float(self.canvas.height) - self._flowable_offset
+
+    def flow(self, flowable, continued=False, in_float_space=False):
+        """Flow `flowable` into this container and return the vertical space
+        taken up by the flowable.
+
+        `continued` indicates whether the flowable was already partially
+        rendered (to a previous in this container's chain).
+
+        If `flowable` is to be rendered as a float (`flowable.float` is `True`),
+        it is forwarded to the float space associated with this container."""
+        if flowable.float and not in_float_space:
+            self._float_space.flow(flowable, in_float_space=True)
             return 0
         else:
             start_offset = self._flowable_offset
@@ -153,12 +161,55 @@ class Container(RenderTarget):
         self.page.canvas.restore_state()
 
 
-class ExpandingContainer(Container):
-    def __init__(self, parent, left=0*PT, top=0*PT, width=None, right=None,
+class Container(ContainerBase):
+    """A container that renders its :class:`Flowable`\ s to a rectangular area
+    on a page.
+
+    A :class:`Container` has an origin (the top-left corner), and a width and
+    height. It's contents (:class:`Flowable`\ s) are rendered relative to the
+    :class:`Container`'s position in its parent :class:`Container`."""
+
+    def __init__(self, parent, left=None, top=None,
+                 width=None, height=None, right=None, bottom=None,
+                 chain=None):
+        """Initialize a :class:`Container` as a child of the `parent`
+        :class:`Container`. `left` and `top` establish the position of
+        this :class:`Container`'s top-left origin relative to that of its parent
+        :class:`Container`.
+
+        Optionally, `width` and `height` specify the size of the
+        :class:`Container`. If equal to `None`, the :class:`Container` fills up
+        the available space in the parent :class:`Container`.
+
+        In stead of `width` and `height`, `right` and `bottom` can be specified
+        to pass the abolute coordinates of the right and bottom edges of the
+        :class:`Container`.
+
+        Finally, `chain` is a :class:`Chain` this :class:`Container` will be
+        appended to."""
+        super().__init__(parent, left, width, right, chain)
+        if top is None:
+            top = 0*PT if (bottom and height) is None else (bottom - height)
+        if height is None:
+            height = (parent.height - top) if (bottom is None) else (bottom - top)
+        self.top = top
+        self.height = height
+        self.bottom = top + height
+
+    def advance(self, height):
+        """Advance the vertical position pointer by `height`. This pointer
+        determines the location where the next flowable is placed."""
+        self._flowable_offset += height
+        if self._flowable_offset > self.height:
+            raise EndOfContainer
+
+
+class ExpandingContainer(ContainerBase):
+    def __init__(self, parent, left=None, width=None, right=None,
                  max_height=None):
-        super().__init__(parent, left, top, width=width, right=right,
-                         height=0*PT)
+        super().__init__(parent, left, width, right)
         self.max_height = max_height
+        self.height = 0*PT
 
     def advance(self, height):
         self._flowable_offset += height
@@ -167,32 +218,31 @@ class ExpandingContainer(Container):
         self.expand(height)
 
     def expand(self, height):
-        self.height += height*PT
+        self.height += height
 
 
 class DownExpandingContainer(ExpandingContainer):
-    def __init__(self, parent, left=0*PT, top=0*PT, width=None, right=None):
-        super().__init__(parent, left, top, width=width, right=right)
-##
-##    def place(self):
-##        from .draw import Rectangle
-##        box = Rectangle((0, 0), float(self.width), - float(self.height))
-##        box.render(self.canvas)
-##        super().place()
-
-
-class UpExpandingContainer(ExpandingContainer):
-    def __init__(self, parent, left=0*PT, bottom=0*PT, width=None, right=None):
-        self._bottom = bottom
-        super().__init__(parent, left, top=None, width=width, right=right)
-
-    @property
-    def top(self):
-        return self._bottom - self.height
+    def __init__(self, parent, left=None, top=None, width=None, right=None,
+                 max_height=None):
+        super().__init__(parent, left, width, right, max_height)
+        if top is None:
+            top = 0*PT
+        self.top = top
 
     @property
     def bottom(self):
-        return self._bottom
+        return self.top + self.height
+
+
+class UpExpandingContainer(ExpandingContainer):
+    def __init__(self, parent, left=None, bottom=None, width=None, right=None,
+                 max_height=None):
+        super().__init__(parent, left, width, right, max_height)
+        self.bottom = bottom
+
+    @property
+    def top(self):
+        return self.bottom - self.height
 
 
 class FootnoteContainer(UpExpandingContainer):
@@ -208,7 +258,7 @@ class FootnoteContainer(UpExpandingContainer):
 
 class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width):
-        super().__init__(parent.page, 0*PT, 0*PT, width=width)
+        super().__init__(parent.page, width=width)
 
     def place(self):
         pass

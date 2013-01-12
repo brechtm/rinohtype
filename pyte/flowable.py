@@ -14,8 +14,9 @@ class FlowableStyle(Style):
 class Flowable(Styled):
     style_class = FlowableStyle
 
-    def __init__(self, style=None):
+    def __init__(self, style=None, float=False):
         super().__init__(style)
+        self.float = float
 
     @property
     def page(self):

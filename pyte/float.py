@@ -78,6 +78,6 @@ class Figure(Flowable, Referenceable):
         return image_height + caption_height
 
 
-class Float(object):
-    def __init__(self, flowable):
-        self.flowable = flowable
+def as_float(flowable):
+    flowable.float = True
+    return flowable

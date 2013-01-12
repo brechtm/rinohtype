@@ -19,7 +19,6 @@ from pyte.structure import Heading, HeadingStyle
 from pyte.structure import List, ListStyle, DefinitionList, DefinitionListStyle
 from pyte.number import ROMAN_UC, CHARACTER_UC, NUMBER
 from pyte.flowable import Flowable
-from pyte.float import Float
 from pyte.float import Image as PyteImage
 from pyte.style import StyleStore
 from pyte.frontend.xml import element_factory
@@ -124,7 +123,7 @@ class Section(CustomElement):
                 elem = element.process(document, level=level + 1)
             else:
                 elem = element.process(document)
-            if isinstance(elem, Flowable) or isinstance(elem, Float):
+            if isinstance(elem, Flowable):
                 yield elem
             else:
                 for flw in elem:

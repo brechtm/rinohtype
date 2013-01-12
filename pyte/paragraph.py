@@ -4,7 +4,7 @@ from warnings import warn
 from .dimension import Dimension
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
-from .layout import EndOfContainer
+from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
 from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
@@ -307,8 +307,7 @@ class Paragraph(MixedStyledText, Flowable):
                                                   last_line=True)
                 if isinstance(word, Flowable):
                     self.word_pointer -= 1
-                    from .layout import ExpandingContainer
-                    container = ExpandingContainer(self.container,
+                    container = DownExpandingContainer(self.container,
                                     left=self.get_style('indent_left'),
                                     top=self.container._flowable_offset*PT)
                     flowable_height = container.flow(word)

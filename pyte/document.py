@@ -31,6 +31,14 @@ class Page(Container):
         self.section = None
 
     @property
+    def abs_left(self):
+        return self.left
+
+    @property
+    def abs_top(self):
+        return self.top
+
+    @property
     def page(self):
         return self
 
