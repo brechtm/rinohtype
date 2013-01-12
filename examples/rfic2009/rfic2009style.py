@@ -25,7 +25,7 @@ from pyte.reference import Field, Reference, REFERENCE
 from pyte.reference import Footnote as PyteFootnote
 from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle
-from pyte.float import Figure as PyteFigure, CaptionStyle, as_float
+from pyte.float import Figure as PyteFigure, CaptionStyle, Floating
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
@@ -376,7 +376,7 @@ class Figure(CustomElement):
         figure = PyteFigure(document, self.get('path'), caption_text,
                             scale=scale, style=self.style('figure'),
                             caption_style=self.style('figure caption'))
-        return as_float(figure)
+        return Floating(figure)
 
 
 class Caption(NestedElement):

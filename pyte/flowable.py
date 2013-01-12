@@ -14,9 +14,9 @@ class FlowableStyle(Style):
 class Flowable(Styled):
     style_class = FlowableStyle
 
-    def __init__(self, style=None, float=False):
+    def __init__(self, style=None):
         super().__init__(style)
-        self.float = float
+        self.resume = False
 
     @property
     def page(self):
@@ -35,6 +35,13 @@ class Flowable(Styled):
 
     def split(self):
         yield self
+
+    def flow(self, container):
+        self.container = container
+        if not self.resume:
+            container.advance(float(self.get_style('space_above')))
+        self.render(container.canvas)
+        return container.advance(float(self.get_style('space_below')))
 
     def render(self, canvas, offset=0):
         raise NotImplementedError("virtual method not implemented in class %s" %

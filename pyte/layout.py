@@ -109,26 +109,12 @@ class ContainerBase(RenderTarget):
         coordinate system."""
         return float(self.canvas.height) - self._flowable_offset
 
-    def flow(self, flowable, continued=False, in_float_space=False):
+    def flow(self, flowable):
         """Flow `flowable` into this container and return the vertical space
-        taken up by the flowable.
-
-        `continued` indicates whether the flowable was already partially
-        rendered (to a previous in this container's chain).
-
-        If `flowable` is to be rendered as a float (`flowable.float` is `True`),
-        it is forwarded to the float space associated with this container."""
-        if flowable.float and not in_float_space:
-            self._float_space.flow(flowable, in_float_space=True)
-            return 0
-        else:
-            start_offset = self._flowable_offset
-            flowable.container = self
-            if not continued:
-                self.advance(float(flowable.get_style('space_above')))
-            flowable.render(self.canvas)
-            self.advance(float(flowable.get_style('space_below')))
-            return self._flowable_offset - start_offset
+        taken up by the flowable."""
+        start_offset = self._flowable_offset
+        flowable.flow(self)
+        return self._flowable_offset - start_offset
 
     def render(self, canvas):
         end_of_page = None
@@ -277,21 +263,17 @@ class Chain(RenderTarget):
         return self._document
 
     def render(self):
-        continued = False
         while self._container_index < len(self._containers):
             container = self._containers[self._container_index]
             self._container_index += 1
             try:
                 while self._flowable_index < len(self.flowables):
                     flowable = self.flowables[self._flowable_index]
-                    container.flow(flowable, continued)
+                    container.flow(flowable)
                     self._flowable_index += 1
-                    continued = False
             except EndOfContainer:
-                continued = True
                 if self._container_index > len(self._containers) - 1:
                     raise EndOfPage(self)
 
     def add_container(self, container):
-        assert isinstance(container, Container)
         self._containers.append(container)

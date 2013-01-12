@@ -78,6 +78,16 @@ class Figure(Flowable, Referenceable):
         return image_height + caption_height
 
 
-def as_float(flowable):
-    flowable.float = True
-    return flowable
+class Decorator(object):
+    def __new__(cls, decoratee, *args, **kwargs):
+        cls = type(cls.__name__ + decoratee.__class__.__name__,
+                   (cls, decoratee.__class__), decoratee.__dict__)
+        return object.__new__(cls)
+
+    def __init__(self, decoratee, *args, **kwargs):
+        self._decoratee = decoratee
+
+
+class Floating(Decorator):
+    def flow(self, container):
+        super().flow(container._float_space)
