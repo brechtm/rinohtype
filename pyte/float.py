@@ -12,11 +12,12 @@ class Image(Flowable):
         self.filename = filename
         self.scale = scale
 
-    def render(self, canvas, offset=0):
-        offset = self.container._flowable_offset
+    def render(self, container):
+        canvas = container.canvas
+        offset = container._flowable_offset
         canvas.save_state()
         image = canvas.document.backend.Image(self.filename)
-        self.container.advance(image.height)
+        container.advance(image.height)
         canvas.translate((canvas.width - image.width) / 2,
                          canvas.height - offset - image.height)
         canvas.scale(self.scale)
@@ -71,10 +72,10 @@ class Figure(Flowable, Referenceable):
     def title(self):
         return self.caption.text
 
-    def render(self, canvas, offset=0):
+    def render(self, container):
         image = Image(self.filename, scale=self.scale)
-        image_height = self.container.flow(image)
-        caption_height = self.container.flow(self.caption)
+        image_height = container.flow(image)
+        caption_height = container.flow(self.caption)
         return image_height + caption_height
 
 
@@ -91,3 +92,4 @@ class Decorator(object):
 class Floating(Decorator):
     def flow(self, container):
         super().flow(container._float_space)
+        return 0

@@ -80,8 +80,9 @@ class Tabular(Flowable):
                     self.cell_styles[ri][ci] = copy(style)
                     self.cell_styles[ri][ci].base = old_style
 
-    def render(self, canvas, offset=0):
+    def render(self, container):
         # TODO: allow data to override style (align)
+        canvas = container.canvas
         table_width = canvas.width
         row_heights = []
         rendered_rows = []
@@ -107,9 +108,10 @@ class Tabular(Flowable):
                 elif cell is None:
                     continue
                 cell_width = column_widths[c] * cell.colspan
-                buffer = VirtualContainer(self.container, cell_width*PT)
+                buffer = VirtualContainer(container, cell_width*PT)
                 cell_style = self.cell_styles[r][c]
-                cell_height = self.render_cell(cell, buffer, cell_style)
+                self.render_cell(cell, buffer, cell_style)
+                cell_height = float(buffer.height)
                 if cell.rowspan == 1:
                     row_height = max(row_height, cell_height)
                 rendered_cell = RenderedCell(cell, buffer.canvas, x_cursor,
@@ -132,9 +134,9 @@ class Tabular(Flowable):
                         for i in range(r, r + rendered_cell.rowspan):
                             row_heights[i] += padding
 
-        y_cursor = self.container._flowable_offset
+        y_cursor = container._flowable_offset
         table_height = sum(row_heights)
-        self.container.advance(table_height)
+        container.advance(table_height)
 
         # place cell content and render cell border
         for r, rendered_row in enumerate(rendered_rows):

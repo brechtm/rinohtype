@@ -51,11 +51,11 @@ class Heading(Paragraph, Referenceable):
     def title(self):
         return self._title
 
-    def render(self, canvas, offset=0):
+    def render(self, container):
         if self.level == 1:
             self.page.section = self
         self.update_page_reference()
-        return super().render(canvas, offset)
+        return super().render(container)
 
 
 class ListStyle(ParagraphStyle):
@@ -106,10 +106,10 @@ class List(Paragraph):
 ####        listItem.number = self.currentNumber
 ##        self.currentNumber += 1
 
-    def typeset(self, canvas, offset=0):
+    def typeset(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            self.container.flow(item)
+            container.flow(item)
             self.item_pointer += 1
         self.item_pointer = 0
 
@@ -162,10 +162,10 @@ class DefinitionList(Paragraph):
         self.append(last_definition_par)
         self.item_pointer = 0
 
-    def typeset(self, canvas, offset=0):
+    def typeset(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            self.container.flow(item)
+            container.flow(item)
             self.item_pointer += 1
         self.item_pointer = 0
 
@@ -183,11 +183,11 @@ class Header(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def typeset(self, pscanvas, offset=0):
+    def typeset(self, container):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         text.parent = self
         self.append(text)
-        return super().typeset(pscanvas, offset)
+        return super().typeset(container)
 
 
 class FooterStyle(ParagraphStyle):
@@ -203,11 +203,11 @@ class Footer(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def typeset(self, pscanvas, offset=0):
+    def typeset(self, container):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         text.parent = self
         self.append(text)
-        return super().typeset(pscanvas, offset)
+        return super().typeset(container)
 
 
 class TableOfContentsStyle(ParagraphStyle):
@@ -242,15 +242,15 @@ class TableOfContents(Paragraph):
             flowable.parent = self
             self.append(flowable)
 
-    def typeset(self, canvas, offset=0):
-        offset_begin = offset
+    def typeset(self, container):
+        offset_begin = container._flowable_offset
         while self.item_pointer < len(self):
             self.item_pointer += 1
             try:
                 item = self[self.item_pointer - 1]
-                self.container.flow(item)
+                container.flow(item)
             except EndOfContainer:
                 raise
 
         self.item_pointer = 0
-        return offset - offset_begin
+        return container._flowable_offset - offset_begin

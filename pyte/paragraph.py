@@ -261,14 +261,15 @@ class Paragraph(MixedStyledText, Flowable):
             words += span.split()
         return words
 
-    def render(self, canvas, offset=0):
-        return self.typeset(canvas, offset)
+    def render(self, container):
+        return self.typeset(container)
 
-    def typeset(self, canvas, offset=0):
+    def typeset(self, container):
         if not self._words:
             self._words = self._split_words(self.spans())
 
-        start_offset = self.container._flowable_offset
+        canvas = container.canvas
+        start_offset = container._flowable_offset
 
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
@@ -307,11 +308,10 @@ class Paragraph(MixedStyledText, Flowable):
                                                   last_line=True)
                 if isinstance(word, Flowable):
                     self.word_pointer -= 1
-                    container = DownExpandingContainer(self.container,
-                                    left=self.get_style('indent_left'),
-                                    top=self.container._flowable_offset*PT)
-                    flowable_height = container.flow(word)
-                    self.container.advance(flowable_height)
+                    child_container = DownExpandingContainer(container,
+                                        left=self.get_style('indent_left'),
+                                        top=container._flowable_offset*PT)
+                    container.advance(word.flow(child_container))
                     self.word_pointer += 1
                 line = Line(self, line_width, indent_left)
             else:
@@ -331,7 +331,7 @@ class Paragraph(MixedStyledText, Flowable):
             self.typeset_line(canvas, line, line_pointers, last_line=True)
 
         self._init_state()
-        return self.container._flowable_offset - start_offset
+        return container._flowable_offset - start_offset
 
     def _add_footnote(self, note):
         note.set_number(self.container._footnote_space.next_number)

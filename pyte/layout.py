@@ -112,9 +112,8 @@ class ContainerBase(RenderTarget):
     def flow(self, flowable):
         """Flow `flowable` into this container and return the vertical space
         taken up by the flowable."""
-        start_offset = self._flowable_offset
-        flowable.flow(self)
-        return self._flowable_offset - start_offset
+        flowable_height = flowable.flow(self)
+        return flowable_height
 
     def render(self, canvas):
         end_of_page = None
@@ -211,9 +210,7 @@ class DownExpandingContainer(ExpandingContainer):
     def __init__(self, parent, left=None, top=None, width=None, right=None,
                  max_height=None):
         super().__init__(parent, left, width, right, max_height)
-        if top is None:
-            top = 0*PT
-        self.top = top
+        self.top = top if top is not None else 0*PT
 
     @property
     def bottom(self):
