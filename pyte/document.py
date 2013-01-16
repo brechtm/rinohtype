@@ -31,14 +31,6 @@ class Page(Container):
         self.section = None
 
     @property
-    def abs_left(self):
-        return self.left
-
-    @property
-    def abs_top(self):
-        return self.top
-
-    @property
     def page(self):
         return self
 
@@ -56,7 +48,7 @@ class Page(Container):
                                               self.width, self.height)
         end_of_page = None
         try:
-            super().render(self.canvas)
+            super().render()
         except EndOfPage as e:
             end_of_page = e
 

@@ -43,8 +43,8 @@ class RenderTarget(object):
 class ContainerBase(RenderTarget):
     """Base class for containers that render their :class:`Flowable`\ s to a
     rectangular area on a page. :class:`ContainerBase` takes care of the
-    container's width and horizontal positioning. Its subclasses handle height
-    and vertical positioning."""
+    container's horizontal positioning and width. Its subclasses handle its
+    vertical positioning and height."""
 
     def __init__(self, parent, left=None, width=None, right=None, chain=None):
         """Initialize a this container as a child of the `parent` container.
@@ -62,7 +62,7 @@ class ContainerBase(RenderTarget):
         if left is None:
             left = 0*PT if (right and width) is None else (right - width)
         if width is None:
-            width = (parent.width - left) if (right is None) else (right - left)
+            width = (parent.width - left) if right is None else (right - left)
         self.left = left
         self.width = width
         self.right = left + width
@@ -77,16 +77,6 @@ class ContainerBase(RenderTarget):
         self._flowable_offset = 0   # initialized at the container's top edge
 
     @property
-    def abs_left(self):
-        """The position of the container's left edge in page coordinates."""
-        return self.parent.abs_left + self.left
-
-    @property
-    def abs_top(self):
-        """The position of the container's top edge in page coordinates."""
-        return self.parent.abs_top + self.top
-
-    @property
     def page(self):
         """The page this container is located on."""
         return self.parent.page
@@ -99,9 +89,7 @@ class ContainerBase(RenderTarget):
     @cached_property
     def canvas(self):
         """The canvas associated with this container."""
-        left = float(self.abs_left)
-        width = float(self.width)
-        return self.page.canvas.new(left, 0, width, 0)
+        return self.parent.canvas.new(0, 0, float(self.width), 0)
 
     @property
     def cursor(self):
@@ -115,11 +103,11 @@ class ContainerBase(RenderTarget):
         flowable_height = flowable.flow(self)
         return flowable_height
 
-    def render(self, canvas):
+    def render(self):
         end_of_page = None
         for child in self.children:
             try:
-                child.render(self.canvas)
+                child.render()
             except EndOfPage as e:
                 end_of_page = e
 
@@ -135,15 +123,20 @@ class ContainerBase(RenderTarget):
         if end_of_page is not None:
             raise end_of_page
 
-    def place(self):
-        for child in self.children:
-            child.place()
+    def place(self, level=1):
+##        print('>' * level, self.left, self.top, y_offset)
 
-        y_offset = float(self.page.height) - float(self.abs_top)
-        self.page.canvas.save_state()
-        self.page.canvas.translate(0, y_offset)
-        self.page.canvas.append(self.canvas)
-        self.page.canvas.restore_state()
+        for child in self.children:
+            child.place(level + 1)
+
+        self.parent.canvas.save_state()
+        if level == 1:
+            y_offset = float(self.parent.height) - float(self.top)
+        else:
+            y_offset = - float(self.top)
+        self.parent.canvas.translate(float(self.left), y_offset)
+        self.parent.canvas.append(self.canvas)
+        self.parent.canvas.restore_state()
 
 
 class Container(ContainerBase):
@@ -176,7 +169,7 @@ class Container(ContainerBase):
         if top is None:
             top = 0*PT if (bottom and height) is None else (bottom - height)
         if height is None:
-            height = (parent.height - top) if (bottom is None) else (bottom - top)
+            height = (parent.height - top) if bottom is None else (bottom - top)
         self.top = top
         self.height = height
         self.bottom = top + height
@@ -191,8 +184,8 @@ class Container(ContainerBase):
 
 class ExpandingContainer(ContainerBase):
     def __init__(self, parent, left=None, width=None, right=None,
-                 max_height=None):
-        super().__init__(parent, left, width, right)
+                 max_height=None, chain=None):
+        super().__init__(parent, left, width, right, chain)
         self.max_height = max_height
         self.height = 0*PT
 
@@ -208,8 +201,8 @@ class ExpandingContainer(ContainerBase):
 
 class DownExpandingContainer(ExpandingContainer):
     def __init__(self, parent, left=None, top=None, width=None, right=None,
-                 max_height=None):
-        super().__init__(parent, left, width, right, max_height)
+                 max_height=None, chain=None):
+        super().__init__(parent, left, width, right, max_height, chain)
         self.top = top if top is not None else 0*PT
 
     @property
@@ -219,8 +212,8 @@ class DownExpandingContainer(ExpandingContainer):
 
 class UpExpandingContainer(ExpandingContainer):
     def __init__(self, parent, left=None, bottom=None, width=None, right=None,
-                 max_height=None):
-        super().__init__(parent, left, width, right, max_height)
+                 max_height=None, chain=None):
+        super().__init__(parent, left, width, right, max_height, chain)
         self.bottom = bottom
 
     @property
