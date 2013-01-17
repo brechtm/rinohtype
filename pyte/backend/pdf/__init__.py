@@ -100,14 +100,9 @@ class Page(object):
 
 
 class Canvas(StringIO):
-    def __init__(self, parent, left, bottom, width, height, clip=False):
+    def __init__(self, parent, clip=False):
         super().__init__()
         self.parent = parent
-        self.left = left
-        self.bottom = bottom
-        self.width = width
-        self.height = height
-        self.translate(left, bottom)
 
     @property
     def page(self):
@@ -115,19 +110,20 @@ class Canvas(StringIO):
 
     @property
     def pdf_page(self):
-        return self.parent.page.backend_page
+        return self.page.backend_page
 
     @property
     def document(self):
         return self.page.document
 
-    def new(self, left, bottom, width, height, clip=False):
-        return Canvas(self, left, bottom, width, height, clip)
+    def new(self, clip=False):
+        return Canvas(self, clip)
 
-    def append(self, canvas):
-        self.save_state()
-        self.write(canvas.getvalue())
-        self.restore_state()
+    def append(self, left, top):
+        self.parent.save_state()
+        self.parent.translate(left, top)
+        self.parent.write(self.getvalue())
+        self.parent.restore_state()
 
     def save_state(self):
         print('q', file=self)
@@ -136,7 +132,7 @@ class Canvas(StringIO):
         print('Q', file=self)
 
     def translate(self, x, y):
-        print('1 0 0 1 {} {} cm'.format(x, y), file=self)
+        print('1 0 0 1 {} {} cm'.format(x, - y), file=self)
 
     def scale(self, x, y=None):
         if y is None:
@@ -232,7 +228,7 @@ class Canvas(StringIO):
         print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
 
-    def place_image(self, image):
+    def place_image(self, image, left, top, scale=1.0):
         resources = self.pdf_page.pdf_page['Resources']
         xobjects = resources.setdefault('XObject', cos.Dictionary())
         try:
@@ -241,7 +237,11 @@ class Canvas(StringIO):
             image_number = 0
         self.pdf_page.pdf_page.image_number = image_number + 1
         xobjects['Im{:03d}'.format(image_number)] = image.xobject
+        self.save_state()
+        self.translate(left, top + image.height)
+        self.scale(scale)
         print('/Im{:03d} Do'.format(image_number), file=self)
+        self.restore_state()
 
 
 class Image(object):
@@ -256,8 +256,9 @@ class Image(object):
 
 class PageCanvas(Canvas):
     def __init__(self, page):
-        super().__init__(None, 0, 0, page.width, page.height)
+        super().__init__(None)
         self.parent = page
+        self.translate(0, - float(page.height))
 
     @property
     def page(self):

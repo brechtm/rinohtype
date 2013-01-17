@@ -40,15 +40,18 @@ class TabularStyle(CellStyle):
 
 
 class RenderedCell(object):
-    def __init__(self, cell, canvas, x_position, height):
+    def __init__(self, cell, container, x_position):
         self.cell = cell
-        self.canvas = canvas
+        self.container = container
         self.x_position = x_position
-        self.height = height
 
     @property
     def width(self):
-        return self.canvas.width
+        return float(self.container.width)
+
+    @property
+    def height(self):
+        return float(self.container.height)
 
     @property
     def rowspan(self):
@@ -83,7 +86,7 @@ class Tabular(Flowable):
     def render(self, container):
         # TODO: allow data to override style (align)
         canvas = container.canvas
-        table_width = canvas.width
+        table_width = float(container.width)
         row_heights = []
         rendered_rows = []
 
@@ -111,12 +114,10 @@ class Tabular(Flowable):
                 buffer = VirtualContainer(container, cell_width*PT)
                 cell_style = self.cell_styles[r][c]
                 self.render_cell(cell, buffer, cell_style)
-                cell_height = float(buffer.height)
-                if cell.rowspan == 1:
-                    row_height = max(row_height, cell_height)
-                rendered_cell = RenderedCell(cell, buffer.canvas, x_cursor,
-                                             cell_height)
+                rendered_cell = RenderedCell(cell, buffer, x_cursor)
                 rendered_row.append(rendered_cell)
+                if cell.rowspan == 1:
+                    row_height = max(row_height, rendered_cell.height)
                 x_cursor += cell_width
                 for i in range(r + 1, r + cell.rowspan):
                     row_spanned_cells[i, c] = rendered_cell
@@ -146,23 +147,21 @@ class Tabular(Flowable):
                 else:
                     row_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
-                y_pos = canvas.height - y_cursor - row_height
+                y_pos = float(y_cursor + row_height)
                 cell_width = rendered_cell.width
-                border_buffer = canvas.new(x_cursor, y_pos,
-                                           cell_width, row_height)
+                border_buffer = canvas.new()
                 cell_style = self.cell_styles[r][c]
-                self.draw_cell_border(border_buffer, row_height, cell_style)
-                canvas.append(border_buffer)
+                self.draw_cell_border(border_buffer, cell_width, row_height,
+                                      cell_style)
+                border_buffer.append(x_cursor, y_pos)
                 if cell_style.vertical_align == MIDDLE:
                     vertical_offset = (row_height - rendered_cell.height) / 2
                 elif cell_style.vertical_align == BOTTOM:
                     vertical_offset = (row_height - rendered_cell.height)
                 else:
                     vertical_offset = 0
-                canvas.save_state()
-                canvas.translate(x_cursor, canvas.height - (y_cursor + vertical_offset))
-                canvas.append(rendered_cell.canvas)
-                canvas.restore_state()
+                y_offset = float(y_cursor + vertical_offset)
+                rendered_cell.container.canvas.append(x_cursor, y_offset)
             y_cursor += row_height
         return table_height
 
@@ -173,8 +172,8 @@ class Tabular(Flowable):
         else:
             return 0
 
-    def draw_cell_border(self, canvas, height, style):
-        left, bottom, right, top = 0, 0, canvas.width, canvas.height
+    def draw_cell_border(self, canvas, width, height, style):
+        left, bottom, right, top = 0, 0, width, height
         if style.top_border:
             line = Line((left, top), (right, top), style.top_border)
             line.render(canvas)

@@ -15,14 +15,11 @@ class Image(Flowable):
     def render(self, container):
         canvas = container.canvas
         offset = container._flowable_offset
-        canvas.save_state()
         image = canvas.document.backend.Image(self.filename)
-        container.advance(image.height)
-        canvas.translate((canvas.width - image.width) / 2,
-                         canvas.height - offset - image.height)
-        canvas.scale(self.scale)
-        canvas.place_image(image)
-        canvas.restore_state()
+        left = float(container.width - image.width) / 2
+        top = float(container._flowable_offset)
+        canvas.place_image(image, left, top, scale=self.scale)
+        container.advance(float(image.height))
         return image.height
 
 

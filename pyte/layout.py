@@ -89,13 +89,13 @@ class ContainerBase(RenderTarget):
     @cached_property
     def canvas(self):
         """The canvas associated with this container."""
-        return self.parent.canvas.new(0, 0, float(self.width), 0)
+        return self.parent.canvas.new()
 
     @property
     def cursor(self):
         """A translation of the flowable offset pointer to the backend's
         coordinate system."""
-        return float(self.canvas.height) - self._flowable_offset
+        return - self._flowable_offset
 
     def flow(self, flowable):
         """Flow `flowable` into this container and return the vertical space
@@ -123,20 +123,10 @@ class ContainerBase(RenderTarget):
         if end_of_page is not None:
             raise end_of_page
 
-    def place(self, level=1):
-##        print('>' * level, self.left, self.top, y_offset)
-
+    def place(self):
         for child in self.children:
-            child.place(level + 1)
-
-        self.parent.canvas.save_state()
-        if level == 1:
-            y_offset = float(self.parent.height) - float(self.top)
-        else:
-            y_offset = - float(self.top)
-        self.parent.canvas.translate(float(self.left), y_offset)
-        self.parent.canvas.append(self.canvas)
-        self.parent.canvas.restore_state()
+            child.place()
+        self.canvas.append(float(self.left), float(self.top))
 
 
 class Container(ContainerBase):
@@ -234,7 +224,7 @@ class FootnoteContainer(UpExpandingContainer):
 
 class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width):
-        super().__init__(parent.page, width=width)
+        super().__init__(parent, width=width)
 
     def place(self):
         pass
