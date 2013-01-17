@@ -27,18 +27,15 @@ class Heading(Paragraph, Referenceable):
 
     def __init__(self, document, title, style=None, level=1, id=None):
         self._title = title
-        next_number = document.counters.setdefault(self.__class__, {1: 1})
+        counters = document.counters.setdefault(self.__class__, {1: 1})
         if style.numbering_style is not None:
-            if level in next_number:
-                next_number[level] += 1
-                next_number[level + 1] = 1
-            else:
-                next_number[level] = 2
-            self.number = format_number(next_number[level], style.numbering_style)
+            self.number = format_number(counters[level], style.numbering_style)
             number = self.number + style.numbering_separator + FixedWidthSpace()
+            counters[level] += 1
+            counters[level + 1] = 1
         else:
             self.number = None
-            number = ""
+            number = ''
         self.level = level
         if id is None:
             id = document.unique_id
