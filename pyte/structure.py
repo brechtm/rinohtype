@@ -106,7 +106,7 @@ class List(Paragraph):
     def typeset(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            container.flow(item)
+            item.flow(container)
             self.item_pointer += 1
         self.item_pointer = 0
 
@@ -162,7 +162,7 @@ class DefinitionList(Paragraph):
     def typeset(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            container.flow(item)
+            item.flow(container)
             self.item_pointer += 1
         self.item_pointer = 0
 
@@ -245,7 +245,7 @@ class TableOfContents(Paragraph):
             self.item_pointer += 1
             try:
                 item = self[self.item_pointer - 1]
-                container.flow(item)
+                item.flow(container)
             except EndOfContainer:
                 raise
 

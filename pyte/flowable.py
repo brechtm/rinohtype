@@ -37,6 +37,8 @@ class Flowable(Styled):
         yield self
 
     def flow(self, container):
+        """Flow this flowable into `container` and return the vertical space
+        consumed."""
         start_offset = container._flowable_offset
         self.container = container
         if not self.resume:

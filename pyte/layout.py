@@ -97,12 +97,6 @@ class ContainerBase(RenderTarget):
         coordinate system."""
         return - self._flowable_offset
 
-    def flow(self, flowable):
-        """Flow `flowable` into this container and return the vertical space
-        taken up by the flowable."""
-        flowable_height = flowable.flow(self)
-        return flowable_height
-
     def render(self):
         end_of_page = None
         for child in self.children:
@@ -113,7 +107,7 @@ class ContainerBase(RenderTarget):
 
         if self.flowables:
             for flowable in self.flowables:
-                self.flow(flowable)
+                flowable.flow(self)
         elif self.chain:
             try:
                 self.chain.render()
@@ -249,7 +243,7 @@ class Chain(RenderTarget):
             try:
                 while self._flowable_index < len(self.flowables):
                     flowable = self.flowables[self._flowable_index]
-                    container.flow(flowable)
+                    flowable.flow(container)
                     self._flowable_index += 1
             except EndOfContainer:
                 if self._container_index > len(self._containers) - 1:

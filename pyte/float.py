@@ -71,8 +71,8 @@ class Figure(Flowable, Referenceable):
 
     def render(self, container):
         image = Image(self.filename, scale=self.scale)
-        image_height = container.flow(image)
-        caption_height = container.flow(self.caption)
+        image_height = image.flow(container)
+        caption_height = self.caption.flow(container)
         return image_height + caption_height
 
 
