@@ -240,7 +240,7 @@ class TableOfContents(Paragraph):
             self.append(flowable)
 
     def typeset(self, container):
-        offset_begin = container._flowable_offset
+        offset_begin = container.cursor
         while self.item_pointer < len(self):
             self.item_pointer += 1
             try:
@@ -250,4 +250,4 @@ class TableOfContents(Paragraph):
                 raise
 
         self.item_pointer = 0
-        return container._flowable_offset - offset_begin
+        return container.cursor - offset_begin

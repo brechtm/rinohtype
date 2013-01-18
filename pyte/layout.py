@@ -72,9 +72,9 @@ class ContainerBase(RenderTarget):
         self.chain = chain
         if chain is not None:
             chain.add_container(self)
-        # the flowable offset pointer keeps track of where the next flowable
-        # needs to be placed in the container.
-        self._flowable_offset = 0   # initialized at the container's top edge
+        self.cursor = 0   # initialized at the container's top edge
+        """the cursor keeps track of where the next flowable needs to be placed
+        in the container."""
 
     @property
     def page(self):
@@ -90,12 +90,6 @@ class ContainerBase(RenderTarget):
     def canvas(self):
         """The canvas associated with this container."""
         return self.parent.canvas.new()
-
-    @property
-    def cursor(self):
-        """A translation of the flowable offset pointer to the backend's
-        coordinate system."""
-        return - self._flowable_offset
 
     def render(self):
         end_of_page = None
@@ -161,8 +155,8 @@ class Container(ContainerBase):
     def advance(self, height):
         """Advance the vertical position pointer by `height`. This pointer
         determines the location where the next flowable is placed."""
-        self._flowable_offset += height
-        if self._flowable_offset > self.height:
+        self.cursor += height
+        if self.cursor > self.height:
             raise EndOfContainer
 
 
@@ -174,8 +168,8 @@ class ExpandingContainer(ContainerBase):
         self.height = 0*PT
 
     def advance(self, height):
-        self._flowable_offset += height
-        if self.max_height and self._flowable_offset > self.max_height:
+        self.cursor += height
+        if self.max_height and self.cursor > self.max_height:
             raise EndOfContainer
         self.expand(height)
 

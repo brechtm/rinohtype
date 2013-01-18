@@ -190,7 +190,7 @@ class Canvas(StringIO):
                 char = '\\' + char
         return char
 
-    def show_glyphs(self, x, y, font, size, glyphs, x_displacements):
+    def show_glyphs(self, left, top, font, size, glyphs, x_displacements):
         font_rsc, font_name = self.pdf_page.register_font(font)
         string = ''
         current_string = ''
@@ -224,7 +224,7 @@ class Canvas(StringIO):
 
         print('BT', file=self)
         print('/{} {} Tf'.format(font_name, size), file=self)
-        print('{} {} Td'.format(x, y), file=self)
+        print('{} {} Td'.format(left, - top), file=self)
         print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
 

@@ -201,7 +201,7 @@ class Line(list):
 
         def render_span(item, font_style, glyphs, widths):
             font, size, y_offset = font_style
-            y = self.paragraph.container.cursor + y_offset
+            y = self.paragraph.container.cursor - y_offset
             canvas.show_glyphs(x, y, font, size, glyphs, widths)
             total_width = sum(widths)
             del glyphs[:]
@@ -269,7 +269,7 @@ class Paragraph(MixedStyledText, Flowable):
             self._words = self._split_words(self.spans())
 
         canvas = container.canvas
-        start_offset = container._flowable_offset
+        start_offset = container.cursor
 
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
@@ -310,7 +310,7 @@ class Paragraph(MixedStyledText, Flowable):
                     self.word_pointer -= 1
                     child_container = DownExpandingContainer(container,
                                         left=self.get_style('indent_left'),
-                                        top=container._flowable_offset*PT)
+                                        top=container.cursor*PT)
                     container.advance(word.flow(child_container))
                     self.word_pointer += 1
                 line = Line(self, line_width, indent_left)
@@ -331,7 +331,7 @@ class Paragraph(MixedStyledText, Flowable):
             self.typeset_line(canvas, line, line_pointers, last_line=True)
 
         self._init_state()
-        return container._flowable_offset - start_offset
+        return container.cursor - start_offset
 
     def _add_footnote(self, note):
         note.set_number(self.container._footnote_space.next_number)

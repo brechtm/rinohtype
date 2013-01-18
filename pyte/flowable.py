@@ -39,7 +39,7 @@ class Flowable(Styled):
     def flow(self, container):
         """Flow this flowable into `container` and return the vertical space
         consumed."""
-        start_offset = container._flowable_offset
+        start_offset = container.cursor
         self.container = container
         if not self.resume:
             self.resume = True
@@ -47,7 +47,7 @@ class Flowable(Styled):
         self.render(container)
         self.resume = False
         container.advance(float(self.get_style('space_below')))
-        return container._flowable_offset - start_offset
+        return container.cursor - start_offset
 
     def render(self, canvas, offset=0):
         raise NotImplementedError("virtual method not implemented in class %s" %

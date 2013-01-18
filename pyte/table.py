@@ -135,7 +135,7 @@ class Tabular(Flowable):
                         for i in range(r, r + rendered_cell.rowspan):
                             row_heights[i] += padding
 
-        y_cursor = container._flowable_offset
+        y_cursor = container.cursor
         table_height = sum(row_heights)
         container.advance(table_height)
 
