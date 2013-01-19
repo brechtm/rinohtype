@@ -1,19 +1,26 @@
+"""
+The :class:`Paper` class and a number of predefined paper sizes:
 
-from pyte.dimension import Dimension
-from pyte.dimension import INCH, MM
+* International: :const:`A0` down to :const:`A10`
+* North America: :const:`LETTER`, :const:`LEGAL`, :const:`JUNIOR_LEGAL`,
+                 :const:`LEDGER` and :const:`TABLOID`
+"""
+
+
+from .dimension import Dimension, INCH, MM
 
 
 class Paper(object):
-    # origin = top left
-    #  TODO: make an option for other languages?
+    """Defines a paper size."""
+
     def __init__(self, width, height):
-        assert isinstance(width, Dimension)
-        assert isinstance(height, Dimension)
+        """Initialize paper with size `width` and `height`."""
         self.width = width
         self.height = height
 
 
 # International (DIN 476 / ISO 216)
+
 A0 = Paper(841*MM, 1189*MM)
 A1 = Paper(594*MM, 841*MM)
 A2 = Paper(420*MM, 594*MM)
@@ -28,6 +35,7 @@ A10 = Paper(26*MM, 37*MM)
 
 
 # North America
+
 LETTER = Paper(8.5*INCH, 11*INCH)
 LEGAL = Paper(8.5*INCH, 14*INCH)
 JUNIOR_LEGAL = Paper(8*INCH, 5*INCH)
