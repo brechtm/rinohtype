@@ -4,19 +4,13 @@ from .util import cached_property
 
 
 __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
-           'VirtualContainer', 'Chain', 'EndOfContainer', 'EndOfPage']
+           'VirtualContainer', 'Chain', 'EndOfContainer']
            # TODO: FootnoteContainer
 
 
 class EndOfContainer(Exception):
     """The end of the :class:`Container` has been reached."""
 
-
-class OutOfContainers(Exception):
-    """Collects :class:`Chain`s that have run out of containers."""
-
-    def __init__(self, *chains):
-        self.chains = chains
 
 
 class RenderTarget(object):
@@ -117,26 +111,18 @@ class ContainerBase(RenderTarget):
         only children or only flowables.
         On the other hand, the flowables from the chain are flowed following
         those assigned directly to this container, so it is possible to combine
-        both."""
-        interrupted_chains = []
-        # TODO: with try/finally?
+        both.
+
+        This method returns an iterator yielding all the :class:`Chain`s that
+        have run out of containers."""
         for child in self.children:
-            try:
-                child.render()
-            except OutOfContainers as exception:
-                interrupted_chains.append(exception.chains)
-
-        if self.flowables:
-            for flowable in self.flowables:
-                flowable.flow(self)
+            for chain in child.render():
+                yield chain
+        for flowable in self.flowables:
+            flowable.flow(self)
         if self.chain:
-            try:
-                self.chain.render()
-            except OutOfContainers as exception:
-                interrupted_chains.append(exception.chains)
-
-        if interrupted_chains:
-            raise OutOfContainers(*interrupted_chains)
+            for chain in self.chain.render():
+                yield chain
 
     def place(self):
         """Place the container's canvas at the correct location onto the canvas
@@ -263,7 +249,7 @@ class Chain(RenderTarget):
                     self._flowable_index += 1
             except EndOfContainer:
                 if self._container_index > len(self._containers) - 1:
-                    raise OutOfContainers(self)
+                    yield self
 
     def add_container(self, container):
         self._containers.append(container)

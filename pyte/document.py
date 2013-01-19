@@ -4,7 +4,7 @@ import pickle
 
 from .dimension import PT
 from .paper import Paper
-from .layout import Container, OutOfContainers
+from .layout import Container
 from .backend import pdf
 from .util import cached_property
 from .warnings import warn
@@ -27,7 +27,7 @@ class Page(Container):
         else:
             width = self.paper.height
             height = self.paper.width
-        super().__init__(None, 0*PT, 0*PT, width, height)
+        super().__init__(None, 0, 0, width, height)
         self.backend = self.document.backend
         self.section = None
 
@@ -47,10 +47,9 @@ class Page(Container):
         return self.backend_page.canvas
 
     def render(self):
-        try:
-            super().render()
-        finally:
-            self.place()
+        for chain in super().render():
+            yield chain
+        self.place()
 
     def place(self):
         for child in self.children:
@@ -131,10 +130,8 @@ class Document(object):
         while index < len(self.pages):
             page = self.pages[index]
             index += 1
-            try:
-                page.render()
-            except OutOfContainers as exception:
-                self.add_to_chain(exception.chains)
+            for chain in page.render():
+                self.add_to_chain(chain)
         return len(self.pages)
 
     def setup(self):
