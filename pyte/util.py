@@ -1,18 +1,47 @@
 """
-Collection of miscellaneous utility functions and decorators:
+Collection of miscellaneous classes, functions and decorators:
 
-* `all_subclasses`: Generator yielding all subclasses of `cls` recursively
-* `intersperse`: Generator inserting an element between every two elements of
-                 a given iterable
-* `cached_property`: Caching property decorator
-* `timed`: Method decorator printing the time the method call took
+* :class:`Decorator`: Superclass for decorator classes of the decorator design
+                      pattern
+* :func:`all_subclasses`: Generator yielding all subclasses of `cls` recursively
+* :func:`intersperse`: Generator inserting an element between every two elements
+                       of a given iterable
+* :class:`cached_property`: Caching property decorator
+* :func:`timed`: Method decorator printing the time the method call took
 """
+
 
 import time
 
 
-__all__ = ['all_subclasses', 'intersperse', 'cached_property', 'timed']
+__all__ = ['Decorator', 'all_subclasses', 'intersperse', 'cached_property',
+           'timed']
 
+
+# classes
+
+class Decorator(object):
+    """Class simplifying the implementation of the decorater pattern, which
+    allows for a sort of "run-time inheritance"."""
+
+    def __new__(cls, decoratee, *args, **kwargs):
+        """A decorator takes the object to be decorated as its first argument
+        `decoratee`.
+
+        Returns an object of a class with a name that is the concatenation of
+        the class names of the decorator and decorated classes. It also inherits
+        from thse two classes."""
+        cls = type(cls.__name__ + decoratee.__class__.__name__,
+                   (cls, decoratee.__class__), decoratee.__dict__)
+        return object.__new__(cls, *args, **kwargs)
+
+    def __init__(self, decoratee, *args, **kwargs):
+        """The `decoratee` is stored in the decorator as the :attr:`_decoratee`
+        attribute, where it is available for access by the decorator class."""
+        self._decoratee = decoratee
+
+
+# functions
 
 def all_subclasses(cls):
     """Generator yielding all subclasses of `cls` recursively"""
