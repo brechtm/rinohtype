@@ -314,16 +314,16 @@ class Stream(Dictionary):
 
     def direct_bytes(self, document):
         out = bytearray()
+        data = self.data.getvalue()
         if self.filter:
-            encoded = self.filter.encode(self.data.getvalue())
-            self.data = BytesIO(encoded)
             self['Filter'] = Name(self.filter.name)
+            data = self.filter.encode(data)
         if 'Length' in self:
             self['Length'].delete(document)
-        self['Length'] = Integer(self.size)
+        self['Length'] = Integer(len(data))
         out += super().direct_bytes(document)
         out += b'\nstream\n'
-        out += self.data.getvalue()
+        out += data
         out += b'\nendstream'
         return out
 
