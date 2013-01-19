@@ -80,7 +80,7 @@ class ContainerBase(FlowableTarget):
         self.right = left + width
 
         self.parent = parent
-        if parent is not None:
+        if parent is not None:  # the Page subclass has no parent
             super().__init__(parent.document)
             parent.children.append(self)
         self.children = []
@@ -89,7 +89,7 @@ class ContainerBase(FlowableTarget):
         if chain is not None:
             chain.append_container(self)
 
-        self.cursor = 0
+        self.cursor = 0     # initialized at the container's top edge
         """Keeps track of where the next flowable is to be placed. As flowables
         are flowed into the container, the cursor moves down."""
 
