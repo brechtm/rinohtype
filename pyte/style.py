@@ -4,10 +4,10 @@ Base classes and exceptions for styles of document elements.
 * :class:`Style`: Dictionary storing a set of style attributes
 * :class:`Styled`: A styled entity, having a :class:`Style` associated with it
 * :class:`StyleStore`: Dictionary storing a set of related `Style`s by name
-* `PARENT_STYLE`: Special style that forwards style lookups to the parent
-                  :class:`Styled`
-* :class:`ParentStyleException`: Thrown when style attribute lookup needs to be
-                                 delegated to the parent :class:`Styled`
+* :const:`PARENT_STYLE`: Special style that forwards style lookups to the parent
+                        :class:`Styled`
+* :exc:`ParentStyleException`: Thrown when style attribute lookup needs to be
+                               delegated to the parent :class:`Styled`
 """
 
 
