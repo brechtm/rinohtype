@@ -106,12 +106,6 @@ class Dimension(object, metaclass=DimensionType):
         """Return the quotient of this :class:`Dimension` and `factor`"""
         return self * (1.0 / factor)
 
-    def __copy__(self):
-        """Return a copy of this :class:`Dimension`"""
-        # individual terms are not copied!
-        return self.__class__(self._value, copy(self._plus_terms),
-                              copy(self._minus_terms), self._factor)
-
     def __repr__(self):
         """Return a textual representation of the evaluated value"""
         return str(float(self)) + 'pt'
