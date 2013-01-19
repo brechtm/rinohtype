@@ -4,8 +4,9 @@ import pickle
 
 from .dimension import PT
 from .paper import Paper
-from .layout import Container, EndOfPage
+from .layout import Container, OutOfContainers
 from .backend import pdf
+from .util import cached_property
 from .warnings import warn
 
 
@@ -38,28 +39,22 @@ class Page(Container):
     def document(self):
         return self._document
 
-    @property
+    @cached_property
     def canvas(self):
-        return self.backend_page.canvas
-
-    def render(self):
         backend_document = self.document.backend_document
         self.backend_page = self.backend.Page(self, backend_document,
                                               self.width, self.height)
-        end_of_page = None
+        return self.backend_page.canvas
+
+    def render(self):
         try:
             super().render()
-        except EndOfPage as e:
-            end_of_page = e
-
-        for child in self.children:
-            child.place()
-
-        if end_of_page is not None:
-            raise end_of_page
+        finally:
+            self.place()
 
     def place(self):
-        pass
+        for child in self.children:
+            child.place()
 
 
 class Document(object):
@@ -138,14 +133,14 @@ class Document(object):
             index += 1
             try:
                 page.render()
-            except EndOfPage as e:
-                self.add_to_chain(e.args[0])
+            except OutOfContainers as exception:
+                self.add_to_chain(exception.chains)
         return len(self.pages)
 
     def setup(self):
         raise NotImplementedError
 
-    def add_to_chain(self, chain):
+    def add_to_chain(self, chains):
         raise NotImplementedError
 
 

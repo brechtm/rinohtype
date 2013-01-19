@@ -9,11 +9,14 @@ __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
 
 
 class EndOfContainer(Exception):
-    """The end of the :class:`Container`has been reached."""
+    """The end of the :class:`Container` has been reached."""
 
 
-class EndOfPage(EndOfContainer):
-    """The end of the :class:`Page` has been reached."""
+class OutOfContainers(Exception):
+    """Collects :class:`Chain`s that have run out of containers."""
+
+    def __init__(self, *chains):
+        self.chains = chains
 
 
 class RenderTarget(object):
@@ -41,10 +44,14 @@ class RenderTarget(object):
 
 
 class ContainerBase(RenderTarget):
-    """Base class for containers that render their :class:`Flowable`\ s to a
+    """Base class for containers that render :class:`Flowable`\ s to a
     rectangular area on a page. :class:`ContainerBase` takes care of the
     container's horizontal positioning and width. Its subclasses handle its
-    vertical positioning and height."""
+    vertical positioning and height.
+
+    The container has a ´cursor´ attribute that keeps track of where the next
+    flowable is to be placed. As flowables are flowed into the container, the
+    cursor moves down."""
 
     def __init__(self, parent, left=None, width=None, right=None, chain=None):
         """Initialize a this container as a child of the `parent` container.
@@ -73,53 +80,75 @@ class ContainerBase(RenderTarget):
         if chain is not None:
             chain.add_container(self)
         self.cursor = 0   # initialized at the container's top edge
-        """the cursor keeps track of where the next flowable needs to be placed
-        in the container."""
 
     @property
     def page(self):
-        """The page this container is located on."""
+        """The :class:`Page` this container is located on."""
         return self.parent.page
 
     @property
     def document(self):
-        """The document this container is part of."""
-        return self.page._document
+        """The :class:`Document` this container is part of."""
+        return self.page.document
 
     @cached_property
     def canvas(self):
         """The canvas associated with this container."""
         return self.parent.canvas.new()
 
+    def advance(self, height):
+        """Advance the cursor by `height`. The cursor determines the location
+        where the next flowable is placed."""
+        self.cursor += height
+        if self.cursor > self.height:
+            raise EndOfContainer
+
     def render(self):
-        end_of_page = None
+        """Render the contents of this container to its canvas. The contents
+        include:
+
+        1. the contents of child containers,
+        2. :class:`Flowable`\ s that have been added to this container, and
+        3. :class:`Flowable`\ s from the :class:`Chain` associated with this
+           container.
+
+        The rendering of the child containers (1) does not affect the rendering
+        of the flowables (2 and 3). Therefore, a container typically either has
+        only children or only flowables.
+        On the other hand, the flowables from the chain are flowed following
+        those assigned directly to this container, so it is possible to combine
+        both."""
+        interrupted_chains = []
+        # TODO: with try/finally?
         for child in self.children:
             try:
                 child.render()
-            except EndOfPage as e:
-                end_of_page = e
+            except OutOfContainers as exception:
+                interrupted_chains.append(exception.chains)
 
         if self.flowables:
             for flowable in self.flowables:
                 flowable.flow(self)
-        elif self.chain:
+        if self.chain:
             try:
                 self.chain.render()
-            except EndOfPage as e:
-                end_of_page = e
+            except OutOfContainers as exception:
+                interrupted_chains.append(exception.chains)
 
-        if end_of_page is not None:
-            raise end_of_page
+        if interrupted_chains:
+            raise OutOfContainers(*interrupted_chains)
 
     def place(self):
+        """Place the container's canvas at the correct location onto the canvas
+        of its parent container."""
         for child in self.children:
             child.place()
         self.canvas.append(float(self.left), float(self.top))
 
 
 class Container(ContainerBase):
-    """A container that renders its :class:`Flowable`\ s to a rectangular area
-    on a page.
+    """A container that renders :class:`Flowable`\ s to a rectangular area on a
+    page.
 
     A :class:`Container` has an origin (the top-left corner), and a width and
     height. It's contents (:class:`Flowable`\ s) are rendered relative to the
@@ -151,13 +180,6 @@ class Container(ContainerBase):
         self.top = top
         self.height = height
         self.bottom = top + height
-
-    def advance(self, height):
-        """Advance the vertical position pointer by `height`. This pointer
-        determines the location where the next flowable is placed."""
-        self.cursor += height
-        if self.cursor > self.height:
-            raise EndOfContainer
 
 
 class ExpandingContainer(ContainerBase):
@@ -241,7 +263,7 @@ class Chain(RenderTarget):
                     self._flowable_index += 1
             except EndOfContainer:
                 if self._container_index > len(self._containers) - 1:
-                    raise EndOfPage(self)
+                    raise OutOfContainers(self)
 
     def add_container(self, container):
         self._containers.append(container)
