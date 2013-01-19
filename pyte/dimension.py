@@ -1,21 +1,22 @@
 """
 This module exports a single class:
 
-* `Dimension`: Late-evaluated dimension, forming the basis of the layout engine
+* :class:`Dimension`: Late-evaluated dimension, forming the basis of the layout
+  engine
 
-It also exports a number of pre-defined dimensions:
+It also exports a number of pre-defined units:
 
-* `PT`: PostScript point
-* `INCH`: inch, equal to 72 PostScript points
-* `MM`: millimeter
-* `CM`: centimeter
+* :const:`PT`: PostScript point
+* :const:`INCH`: Inch, equal to 72 PostScript points
+* :const:`MM`: Millimeter
+* :const:`CM`: Centimeter
 
 """
 
 from copy import copy
 
 
-__all__ = ['Dimension']
+__all__ = ['Dimension', 'PT', 'INCH', 'MM', 'CM']
 
 
 class DimensionType(type):
@@ -41,13 +42,13 @@ class DimensionType(type):
 
 
 class Dimension(object, metaclass=DimensionType):
-    """Late-evaluated dimension.
+    """Late-evaluated dimension. The result of mathematical operations on
+    dimension objects is not a statically evaluated version, but rather stores
+    references to the operator arguments. The result is only evaluated to a
+    number on conversion to a :class:`float`.
 
-    The internal representations is in terms of PostScript points. A PostScript
-    pointhich is defined as one 72th of an inch.
-    The value of a dimension is only evaluated to a value in points when
-    required by converting it to a float. Its value depends recursively on the
-    evaluated values of the :class:`Dimension`s it depends upon."""
+    The internal representation is in terms of PostScript points. A PostScript
+    point which is defined as one 72th of an inch."""
 
     # TODO: em, ex? (depends on context)
     def __init__(self, value=0, _plus_terms=None, _minus_terms=None, _factor=1):
@@ -59,43 +60,44 @@ class Dimension(object, metaclass=DimensionType):
         self._factor = _factor
 
     def __neg__(self):
-        """Return the negative of this :class:`Dimension`"""
+        """Return the negative of this :class:`Dimension`."""
         inverse = copy(self)
         inverse._factor *= - 1
         return inverse
 
     def __iadd__(self, other):
-        """Return this :class:`Dimension`, adding `other` (in place)"""
+        """Return this :class:`Dimension`, adding `other` (in place)."""
         this = copy(self)
         self.__init__(_plus_terms=[this, other])
         return self
 
     def __isub__(self, other):
-        """Return this :class:`Dimension`, subtracting `other` (in place)"""
+        """Return this :class:`Dimension`, subtracting `other` (in place)."""
         this = copy(self)
         self.__init__(_plus_terms=[this], _minus_terms=[other])
         return self
 
     def __add__(self, other):
-        """Return the sum of this :class:`Dimension` and `other`"""
+        """Return the sum of this :class:`Dimension` and `other`."""
         return self.__class__(_plus_terms=[self, other])
 
     __radd__ = __add__
 
     def __sub__(self, other):
-        """Return the difference of this :class:`Dimension` and `other`"""
+        """Return the difference of this :class:`Dimension` and `other`."""
         return self.__class__(_plus_terms=[self], _minus_terms=[other])
 
     def __rsub__(self, other):
+        """Return the difference of `other` and this :class:`Dimension`."""
         return self.__class__(_plus_terms=[other], _minus_terms=[self])
 
     def __imul__(self, factor):
-        """Multiply this :class:`Dimension` by `factor` (in place)"""
+        """Multiply this :class:`Dimension` by `factor` (in place)."""
         self._factor *= factor
         return self
 
     def __mul__(self, factor):
-        """Return the product of this :class:`Dimension` and `factor`"""
+        """Return the product of this :class:`Dimension` and `factor`."""
         result = copy(self)
         result._factor = self._factor * factor
         return result
@@ -103,19 +105,21 @@ class Dimension(object, metaclass=DimensionType):
     __rmul__ = __mul__
 
     def __truediv__(self, factor):
-        """Return the quotient of this :class:`Dimension` and `factor`"""
+        """Return the quotient of this :class:`Dimension` and `factor`."""
         return self * (1.0 / factor)
 
     def __repr__(self):
-        """Return a textual representation of the evaluated value"""
+        """Return a textual representation of the evaluated value."""
         return str(float(self)) + 'pt'
 
     def __float__(self):
-        """Evaluate the value of this :class:`Dimension` in points"""
+        """Evaluate the value of this :class:`Dimension` in points."""
         total = (self._value + sum(map(float, self._plus_terms))
                              - sum(map(float, self._minus_terms)))
         return float(total) * self._factor
 
+
+# Units
 
 PT = Dimension(1)
 INCH = 72*PT
