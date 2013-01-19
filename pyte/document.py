@@ -4,7 +4,7 @@ import pickle
 
 from .dimension import PT
 from .paper import Paper
-from .layout import Container
+from .layout import FlowableTarget, Container
 from .backend import pdf
 from .util import cached_property
 from .warnings import warn
@@ -18,26 +18,20 @@ class Page(Container):
     def __init__(self, document, paper, orientation=PORTRAIT):
         assert isinstance(document, Document)
         assert isinstance(paper, Paper)
-        self._document = document
         self.paper = paper
         self.orientation = orientation
-        if self.orientation is PORTRAIT:
-            width = self.paper.width
-            height = self.paper.height
-        else:
-            width = self.paper.height
-            height = self.paper.width
-        super().__init__(None, 0, 0, width, height)
-        self.backend = self.document.backend
+        if orientation is PORTRAIT:
+            width, height = paper.width, paper.height
+        elif orientation is LANDSCAPE:
+            width, height = paper.height, paper.width
+        FlowableTarget.__init__(self, document)
+        Container.__init__(self, None, 0, 0, width, height)
+        self.backend = document.backend
         self.section = None
 
     @property
     def page(self):
         return self
-
-    @property
-    def document(self):
-        return self._document
 
     @cached_property
     def canvas(self):

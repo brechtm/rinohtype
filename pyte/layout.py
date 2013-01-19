@@ -1,3 +1,23 @@
+"""
+The layout engine. The containers allow defining rectangular areas on a page to
+which :class:`Flowable`\ s can be rendered.
+
+* :class:`Container`: A rectangular area on a page to which flowables are
+                      rendered.
+* :class:`DownExpandingContainer`: A container that dynamically grows downwards
+                                   as flowables are rendered to it.
+* :class:`UpExpandingContainer`: Similar to a :class:`DownExpandingContainer`:,
+                                 but upwards expanding.
+* :class:`VirtualContainer`: A container who's rendered content is not
+                             automatically placed on the page. Afterwards, it
+                             can be manually placed, however.
+* :exc:`EndOfContainer`: Exception raised when a contianer "overflows" during
+                         the rendering of flowables.
+* :class:`Chain`: A chain of containers. When a container overflows, the
+                  rendering of the chain's flowables is continued in the next
+                  container in the chain.
+"""
+
 
 from .dimension import PT
 from .util import cached_property
@@ -12,54 +32,45 @@ class EndOfContainer(Exception):
     """The end of the :class:`Container` has been reached."""
 
 
-
-class RenderTarget(object):
+class FlowableTarget(object):
     """Something that takes :class:`Flowable`\ s to be rendered."""
 
-    def __init__(self):
+    def __init__(self, document):
+        """Initialize this flowable target.
+
+        `document` is the :class:`Document` this flowable target is part of."""
         self.flowables = []
 
-    @property
-    def document(self):
-        """Return the :class:`Document` this :class:`RenderTarget` is part of.
-        """
-        raise NotImplementedError
+        self.document = document
+        """The :class:`Document` this flowable target is part of."""
 
-    def add_flowable(self, flowable):
-        """Add a :class:`Flowable` to be rendered by this :class:`RenderTarget`.
-        """
+    def append_flowable(self, flowable):
+        """Append a `flowable` to the list of flowables to be rendered."""
         flowable.document = self.document
         self.flowables.append(flowable)
 
     def render(self):
-        """Render the :class:`Flowable`\ s assigned to this
-        :class:`RenderTarget`, in the order that they have been added."""
+        """Render the flowabless assigned to this flowable target, in the order
+        that they have been added."""
         raise NotImplementedError
 
 
-class ContainerBase(RenderTarget):
+class ContainerBase(FlowableTarget):
     """Base class for containers that render :class:`Flowable`\ s to a
     rectangular area on a page. :class:`ContainerBase` takes care of the
-    container's horizontal positioning and width. Its subclasses handle its
-    vertical positioning and height.
-
-    The container has a ´cursor´ attribute that keeps track of where the next
-    flowable is to be placed. As flowables are flowed into the container, the
-    cursor moves down."""
+    container's horizontal positioning and width. Its subclasses handle the
+    vertical positioning and height."""
 
     def __init__(self, parent, left=None, width=None, right=None, chain=None):
         """Initialize a this container as a child of the `parent` container.
 
         The horizontal position and width of the container are determined from
         `left`, `width` and `right`. If only `left` or `right` are specified,
-        the container's other opposite edge will be placed at the corresponding
-        edge of the parent container.
+        the container's opposite edge will be placed at the corresponding edge
+        of the parent container.
 
-        `chain` is a :class:`Chain` this container will be appended to."""
-        self.parent = parent
-        if parent:
-            parent.children.append(self)
-
+        Finally, `chain` is a :class:`Chain` this container will be appended to.
+        """
         if left is None:
             left = 0*PT if (right and width) is None else (right - width)
         if width is None:
@@ -68,22 +79,24 @@ class ContainerBase(RenderTarget):
         self.width = width
         self.right = left + width
 
+        self.parent = parent
+        if parent is not None:
+            super().__init__(parent.document)
+            parent.children.append(self)
         self.children = []
         self.flowables = []
         self.chain = chain
         if chain is not None:
-            chain.add_container(self)
-        self.cursor = 0   # initialized at the container's top edge
+            chain.append_container(self)
+
+        self.cursor = 0
+        """Keeps track of where the next flowable is to be placed. As flowables
+        are flowed into the container, the cursor moves down."""
 
     @property
     def page(self):
         """The :class:`Page` this container is located on."""
         return self.parent.page
-
-    @property
-    def document(self):
-        """The :class:`Document` this container is part of."""
-        return self.page.document
 
     @cached_property
     def canvas(self):
@@ -91,8 +104,9 @@ class ContainerBase(RenderTarget):
         return self.parent.canvas.new()
 
     def advance(self, height):
-        """Advance the cursor by `height`. The cursor determines the location
-        where the next flowable is placed."""
+        """Advance the cursor by `height`. If this would cause the cursor to
+        point beyond the bottom of the container, an :class:`EndOfContainer`
+        exception is raised."""
         self.cursor += height
         if self.cursor > self.height:
             raise EndOfContainer
@@ -113,7 +127,7 @@ class ContainerBase(RenderTarget):
         those assigned directly to this container, so it is possible to combine
         both.
 
-        This method returns an iterator yielding all the :class:`Chain`s that
+        This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
         for child in self.children:
             for chain in child.render():
@@ -125,8 +139,7 @@ class ContainerBase(RenderTarget):
                 yield chain
 
     def place(self):
-        """Place the container's canvas at the correct location onto the canvas
-        of its parent container."""
+        """Place this container's canvas onto the parent container's canvas."""
         for child in self.children:
             child.place()
         self.canvas.append(float(self.left), float(self.top))
@@ -137,27 +150,24 @@ class Container(ContainerBase):
     page.
 
     A :class:`Container` has an origin (the top-left corner), and a width and
-    height. It's contents (:class:`Flowable`\ s) are rendered relative to the
-    :class:`Container`'s position in its parent :class:`Container`."""
+    height. It's contents are rendered relative to the container's position in
+    its parent :class:`Container`."""
 
-    def __init__(self, parent, left=None, top=None,
-                 width=None, height=None, right=None, bottom=None,
-                 chain=None):
-        """Initialize a :class:`Container` as a child of the `parent`
-        :class:`Container`. `left` and `top` establish the position of
-        this :class:`Container`'s top-left origin relative to that of its parent
-        :class:`Container`.
+    def __init__(self, parent, left=None, top=None, width=None, height=None,
+                 right=None, bottom=None, chain=None):
+        """Initialize this container as a child of the `parent` container.
 
-        Optionally, `width` and `height` specify the size of the
-        :class:`Container`. If equal to `None`, the :class:`Container` fills up
-        the available space in the parent :class:`Container`.
+        The horizontal position and width of the container are determined from
+        `left`, `width` and `right`. If only `left` or `right` are specified,
+        the container's opposite edge will be placed at the corresponding edge
+        of the parent container.
+        Similarly, the vertical position and height of the container are
+        determined from `top`, `height` and `bottom`. If only one of `top` or
+        `bottom` is specified, the container's opposite edge is placed at the
+        corresponding edge of the parent container.
 
-        In stead of `width` and `height`, `right` and `bottom` can be specified
-        to pass the abolute coordinates of the right and bottom edges of the
-        :class:`Container`.
-
-        Finally, `chain` is a :class:`Chain` this :class:`Container` will be
-        appended to."""
+        Finally, `chain` is a :class:`Chain` this container will be appended to.
+        """
         super().__init__(parent, left, width, right, chain)
         if top is None:
             top = 0*PT if (bottom and height) is None else (bottom - height)
@@ -169,46 +179,96 @@ class Container(ContainerBase):
 
 
 class ExpandingContainer(ContainerBase):
+    """An dynamically (vertically) growing version of the :class:`Container`."""
+
     def __init__(self, parent, left=None, width=None, right=None,
                  max_height=None, chain=None):
+        """Initialize this expanding container as a child of the `parent`
+        container.
+
+        See :class:`ContainerBase` for information on the `left`, `width` and
+        `right` parameters. `max_height` is the maximum height this container
+        can grow to."""
         super().__init__(parent, left, width, right, chain)
         self.max_height = max_height
         self.height = 0*PT
 
     def advance(self, height):
+        """Advance the cursor by `height`. If this would expand the container
+        to become larger than its maximum height, an :class:`EndOfContainer`
+        exception is raised."""
         self.cursor += height
         if self.max_height and self.cursor > self.max_height:
             raise EndOfContainer
-        self.expand(height)
+        self._expand(height)
 
-    def expand(self, height):
+    def _expand(self, height):
+        """Grow this container by `height`"""
         self.height += height
 
 
 class DownExpandingContainer(ExpandingContainer):
+    """A container that is anchored at the top and expands downwards."""
+
     def __init__(self, parent, left=None, top=None, width=None, right=None,
                  max_height=None, chain=None):
+        """Initialize this down-expanding container as a child of the `parent`
+        container.
+
+        The horizontal position and width of the container are determined from
+        `left`, `width` and `right`. If only one of `left` or `right` is
+        specified, the container's opposite edge will be placed at the
+        corresponding edge of the parent container.
+        `top` specifies the location of the container's top edge with respect to
+        that of the parent container. When `top` is omitted, the top edge falls
+        together with the top edge of the parent container.
+        `max_height` is the maximum height this container can grow to."""
         super().__init__(parent, left, width, right, max_height, chain)
         self.top = top if top is not None else 0*PT
-
-    @property
-    def bottom(self):
-        return self.top + self.height
+        self.bottom = self.top + self.height
 
 
 class UpExpandingContainer(ExpandingContainer):
+    """A container that is anchored at the bottom and expands upwards."""
+
     def __init__(self, parent, left=None, bottom=None, width=None, right=None,
                  max_height=None, chain=None):
-        super().__init__(parent, left, width, right, max_height, chain)
-        self.bottom = bottom
+        """Initialize this up-expanding container as a child of the `parent`
+        container.
 
-    @property
-    def top(self):
-        return self.bottom - self.height
+        The horizontal position and width of the container are determined from
+        `left`, `width` and `right`. If only one of `left` or `right` is
+        specified, the container's opposite edge will be placed at the
+        corresponding edge of the parent container.
+        `bottom` specifies the location of the container's bottom edge with
+        respect to that of the parent container. When `bottom` is omitted, the
+        bottom edge falls together with the bottom edge of the parent container.
+        `max_height` is the maximum height this container can grow to."""
+        super().__init__(parent, left, width, right, max_height, chain)
+        self.bottom = bottom if bottom is not None else parent.height
+        self.top = self.bottom - self.height
+
+
+class VirtualContainer(DownExpandingContainer):
+    """A down-expanding container who's contents are rendered, but not placed on
+    the parent container's canvas afterwards. It can later be placed manually by
+    using the :meth:`Canvas.append` method of the container's :class:`Canvas`.
+    """
+
+    def __init__(self, parent, width):
+        """Initialize this virtual container as a child of the `parent`
+        container.
+
+        `width` specifies the width of the container."""
+        super().__init__(parent, width=width)
+
+    def place(self):
+        """This method has no effect."""
+        pass
 
 
 class FootnoteContainer(UpExpandingContainer):
-    def __init__(self, parent, left=0*PT, bottom=0*PT, width=None, right=None):
+    def __init__(self, parent, left=None, bottom=None, width=None, right=None):
         super().__init__(parent, left, bottom, width=width, right=right)
         self._footnote_number = 0
 
@@ -218,27 +278,30 @@ class FootnoteContainer(UpExpandingContainer):
         return self._footnote_number
 
 
-class VirtualContainer(DownExpandingContainer):
-    def __init__(self, parent, width):
-        super().__init__(parent, width=width)
+class Chain(FlowableTarget):
+    """A :class:`FlowableTarget` that renders its flowables to a series of
+    containers. Once a container is filled, the chain starts flowing flowables
+    into the next container."""
 
-    def place(self):
-        pass
-
-
-class Chain(RenderTarget):
     def __init__(self, document):
-        super().__init__()
-        self._document = document
+        """Initialize this chain.
+
+        `document` is the :class:`Document` this chain is part of."""
+        super().__init__(document)
         self._containers = []
         self._container_index = 0
         self._flowable_index = 0
 
-    @property
-    def document(self):
-        return self._document
-
     def render(self):
+        """Flow the flowables into the containers that have been added to this
+        chain.
+
+        Returns an empty iterator when all flowables have been sucessfully
+        rendered.
+        When the chain runs out of containers before all flowables have been
+        rendered, this method returns an iterator yielding itself. This signals
+        the :class:`Document` to generate a new page and register new containers
+        with this chain."""
         while self._container_index < len(self._containers):
             container = self._containers[self._container_index]
             self._container_index += 1
@@ -251,5 +314,6 @@ class Chain(RenderTarget):
                 if self._container_index > len(self._containers) - 1:
                     yield self
 
-    def add_container(self, container):
+    def append_container(self, container):
+        """Append `container` to the list of containers in this chain."""
         self._containers.append(container)

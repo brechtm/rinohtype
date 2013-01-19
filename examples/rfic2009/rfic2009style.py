@@ -476,9 +476,9 @@ class RFICPage(Page):
         self.footer = Container(self, self.leftmargin, footer_vert_pos,
                                 body_width, 12*PT)
         header_text = Header(styles['header'])
-        self.header.add_flowable(header_text)
+        self.header.append_flowable(header_text)
         footer_text = Footer(styles['footer'])
-        self.footer.add_flowable(footer_text)
+        self.footer.append_flowable(footer_text)
 
 
 # main document
@@ -542,15 +542,15 @@ class RFIC2009Paper(Document):
         page = RFICPage(self, first=True)
         self.add_page(page, self.page_count)
 
-        page.title_box.add_flowable(self.title_par)
-        page.title_box.add_flowable(self.author_par)
-        page.title_box.add_flowable(self.affiliation_par)
+        page.title_box.append_flowable(self.title_par)
+        page.title_box.append_flowable(self.author_par)
+        page.title_box.append_flowable(self.affiliation_par)
 
         for flowable in self.content_flowables:
-            self.content.add_flowable(flowable)
+            self.content.append_flowable(flowable)
 
         bib = self.bibliography.bibliography()
-        self.content.add_flowable(bib)
+        self.content.append_flowable(bib)
 
     def add_to_chain(self, chain):
         page = RFICPage(self)

@@ -266,9 +266,9 @@ class SimplePage(Page):
 ##        self.footer = Container(self, self.leftmargin, footer_vert_pos,
 ##                                body_width, 12*PT)
 ##        header_text = Header(header_style)
-##        self.header.add_flowable(header_text)
+##        self.header.append_flowable(header_text)
 ##        footer_text = Footer(footer_style)
-##        self.footer.add_flowable(footer_text)
+##        self.footer.append_flowable(footer_text)
 
 
 # main document
@@ -308,10 +308,10 @@ class ReStructuredTextDocument(Document):
         self.add_page(page, self.page_count)
 
         for flowable in self.content_flowables:
-            self.content.add_flowable(flowable)
+            self.content.append_flowable(flowable)
 
 ##        bib = self.bibliography.bibliography()
-##        self.content.add_flowable(bib)
+##        self.content.append_flowable(bib)
 
     def add_to_chain(self, chain):
         page = SimplePage(self)
