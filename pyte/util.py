@@ -30,7 +30,7 @@ class Decorator(object):
 
         Returns an object of a class with a name that is the concatenation of
         the class names of the decorator and decorated classes. It also inherits
-        from thse two classes."""
+        from these two classes."""
         cls = type(cls.__name__ + decoratee.__class__.__name__,
                    (cls, decoratee.__class__), decoratee.__dict__)
         return object.__new__(cls, *args, **kwargs)

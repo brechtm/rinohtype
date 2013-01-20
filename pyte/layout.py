@@ -45,7 +45,10 @@ class FlowableTarget(object):
         """The :class:`Document` this flowable target is part of."""
 
     def append_flowable(self, flowable):
-        """Append a `flowable` to the list of flowables to be rendered."""
+        """Append a `flowable` to the list of flowables to be rendered.
+
+        This also updates `flowable` to hold a reference to the
+        :class:`Document` this flowable target is part of."""
         flowable.document = self.document
         self.flowables.append(flowable)
 

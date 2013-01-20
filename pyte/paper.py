@@ -7,7 +7,7 @@ The :class:`Paper` class and a number of predefined paper sizes:
 """
 
 
-from .dimension import Dimension, INCH, MM
+from .dimension import INCH, MM
 
 
 class Paper(object):
