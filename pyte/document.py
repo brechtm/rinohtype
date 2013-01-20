@@ -15,9 +15,12 @@ LANDSCAPE = 'landscape'
 
 
 class Page(Container):
+    """A single page in a document."""
+
     def __init__(self, document, paper, orientation=PORTRAIT):
-        assert isinstance(document, Document)
-        assert isinstance(paper, Paper)
+        """Initialize this page as part of `document` with a size defined by
+        `paper`. The `orientation` can be :const:`PORTRAIT` or
+        :const:`LANDSCAPE`."""
         self.paper = paper
         self.orientation = orientation
         if orientation is PORTRAIT:
@@ -27,27 +30,20 @@ class Page(Container):
         FlowableTarget.__init__(self, document)
         Container.__init__(self, None, 0, 0, width, height)
         self.backend = document.backend
+        backend_document = self.document.backend_document
+        self.backend_page = self.backend.Page(self, backend_document,
+                                              self.width, self.height)
         self.section = None
 
     @property
     def page(self):
+        """Returns the page itself."""
         return self
 
-    @cached_property
+    @property
     def canvas(self):
-        backend_document = self.document.backend_document
-        self.backend_page = self.backend.Page(self, backend_document,
-                                              self.width, self.height)
+        """The canvas associated with this page."""
         return self.backend_page.canvas
-
-    def render(self):
-        for chain in super().render():
-            yield chain
-        self.place()
-
-    def place(self):
-        for child in self.children:
-            child.place()
 
 
 class Document(object):
@@ -104,20 +100,20 @@ class Document(object):
 
     def render(self, filename):
         self.load_cache(filename)
-        self.number_of_pages = self.render_loop()
+        self.number_of_pages = self.render_pages()
         while not self.has_converged():
             self._previous_number_of_pages = self.number_of_pages
             self._previous_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
-            self.number_of_pages = self.render_loop()
+            self.number_of_pages = self.render_pages()
         self.save_cache(filename)
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
         self.backend_document.write(filename)
 
-    def render_loop(self):
+    def render_pages(self):
         self.pages = []
         self.setup()
         index = 0
@@ -126,6 +122,7 @@ class Document(object):
             index += 1
             for chain in page.render():
                 self.add_to_chain(chain)
+            page.place()
         return len(self.pages)
 
     def setup(self):

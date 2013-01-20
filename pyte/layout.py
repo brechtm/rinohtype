@@ -127,6 +127,9 @@ class ContainerBase(FlowableTarget):
         those assigned directly to this container, so it is possible to combine
         both.
 
+        Note that the rendered contents need to be :meth:`place`d on the parent
+        container's canvas before they become visible.
+
         This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
         for child in self.children:

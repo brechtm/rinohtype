@@ -263,3 +263,6 @@ class PageCanvas(Canvas):
     @property
     def page(self):
         return self.parent.pyte_page
+
+    def append(self, left, top):
+        pass
