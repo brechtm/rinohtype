@@ -137,7 +137,7 @@ class Line(list):
         self.text_width += width
         super().append(item)
 
-    def typeset(self, canvas, last_line=False):
+    def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
         max_font_size = 0
         justify = self.paragraph.get_style('justify')
@@ -197,12 +197,12 @@ class Line(list):
                 # TODO: padding added to spaces should be prop. to font size
 
         # position cursor
-        self.paragraph.newline(max_font_size)
+        container.advance(max_font_size)
 
         def render_span(item, font_style, glyphs, widths):
             font, size, y_offset = font_style
-            y = self.paragraph.container.cursor - y_offset
-            canvas.show_glyphs(x, y, font, size, glyphs, widths)
+            y = container.cursor - y_offset
+            container.canvas.show_glyphs(x, y, font, size, glyphs, widths)
             total_width = sum(widths)
             del glyphs[:]
             del widths[:]
@@ -220,7 +220,8 @@ class Line(list):
                     x += render_span(prev_item, prev_font_style, glyphs, widths)
                     prev_item = None
                     prev_font_style = None
-                x += item.render(canvas, x, self.paragraph.container.cursor)
+                x += item.render(container.canvas, x,
+                                 self.paragraph.container.cursor)
                 continue
             if _is_scalable_space(item):
                 item_widths = [item.widths[0] + add_to_spaces]
@@ -258,7 +259,10 @@ class Paragraph(MixedStyledText, Flowable):
         join = False
         words = []
         for span in spans:
-            words += span.split()
+            try:
+                words += span.split()
+            except AttributeError:
+                words.append(span)
         return words
 
     def render(self, container):
@@ -286,10 +290,8 @@ class Paragraph(MixedStyledText, Flowable):
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
             if isinstance(word, LateEval):
-                if isinstance(word.field, Footnote):
-                    footnote_height = self._add_footnote(word.field)
                 if self.field_pointer is None:
-                    self._field_words = self._split_words(word.spans())
+                    self._field_words = self._split_words(word.spans(container))
                     self.field_pointer = 0
                 else:
                     self.field_pointer += 1
@@ -304,8 +306,8 @@ class Paragraph(MixedStyledText, Flowable):
                 self.word_pointer += 1
 
             if isinstance(word, (NewLine, Flowable)):
-                line_pointers = self.typeset_line(canvas, line, line_pointers,
-                                                  last_line=True)
+                line_pointers = self.typeset_line(container, line,
+                                                  line_pointers, last_line=True)
                 if isinstance(word, Flowable):
                     self.word_pointer -= 1
                     child_container = DownExpandingContainer(container,
@@ -318,7 +320,7 @@ class Paragraph(MixedStyledText, Flowable):
                 try:
                     line.append(word)
                 except EndOfLine as eol:
-                    line_pointers = self.typeset_line(canvas, line,
+                    line_pointers = self.typeset_line(container, line,
                                                       line_pointers)
                     line = Line(self, line_width, indent_left)
                     if eol.hyphenation_remainder:
@@ -328,16 +330,10 @@ class Paragraph(MixedStyledText, Flowable):
 
         # the last line
         if len(line) != 0:
-            self.typeset_line(canvas, line, line_pointers, last_line=True)
+            self.typeset_line(container, line, line_pointers, last_line=True)
 
         self._init_state()
         return container.cursor - start_offset
-
-    def _add_footnote(self, note):
-        note.set_number(self.container._footnote_space.next_number)
-        note.note._document = self.document
-        footnote_space = self.container._footnote_space
-        note.note.flow(footnote_space)
 
     def _line_spacing(self, line_height):
         line_spacing = self.get_style('line_spacing')
@@ -346,10 +342,10 @@ class Paragraph(MixedStyledText, Flowable):
         else:
             return line_spacing * line_height
 
-    def typeset_line(self, canvas, line, line_pointers, last_line=False):
+    def typeset_line(self, container, line, line_pointers, last_line=False):
         try:
-            line_height = line.typeset(canvas, last_line)
-            self.advance(self._line_spacing(line_height) - line_height)
+            line_height = line.typeset(container, last_line)
+            container.advance(self._line_spacing(line_height) - line_height)
             try:
                 line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
             except TypeError:
@@ -359,11 +355,3 @@ class Paragraph(MixedStyledText, Flowable):
             raise
         self.first_line = False
         return line_pointers
-
-    def newline(self, line_height):
-        """Move the cursor downwards by `line_height`"""
-        self.advance(line_height)
-
-    def advance(self, space):
-        """Advance the line cursor downward by `space`"""
-        self.container.advance(space)

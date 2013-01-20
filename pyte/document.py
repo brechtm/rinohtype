@@ -1,12 +1,17 @@
+"""
+
+* :class:`Page`:
+* :class:`Document`:
+* :class:`DocumentElement`:
+
+"""
+
 
 import time
 import pickle
 
-from .dimension import PT
-from .paper import Paper
 from .layout import FlowableTarget, Container
 from .backend import pdf
-from .util import cached_property
 from .warnings import warn
 
 
@@ -47,9 +52,15 @@ class Page(Container):
 
 
 class Document(object):
-    cache_extension = '.ptc'
+    """A document accepts an input file and renders it onto pages."""
+
+    _cache_extension = '.ptc'
 
     def __init__(self, parser, filename, backend=pdf):
+        """Initialize the document, reading the file with `filename` as input,
+        using `parser` is used to parse the input.
+
+        `backend` specifies the backend to use for rendering the document."""
         self.xml = parser.parse(filename)
         self.root = self.xml.getroot()
 
@@ -72,7 +83,7 @@ class Document(object):
 
     def load_cache(self, filename):
         try:
-            file = open(filename + self.cache_extension, 'rb')
+            file = open(filename + self._cache_extension, 'rb')
             self.number_of_pages, self.page_references = pickle.load(file)
             self._previous_number_of_pages = self.number_of_pages
             self._previous_page_references = self.page_references.copy()
@@ -84,7 +95,7 @@ class Document(object):
             self._previous_page_references = {}
 
     def save_cache(self, filename):
-        file = open(filename + self.cache_extension, 'wb')
+        file = open(filename + self._cache_extension, 'wb')
         data = (self.number_of_pages, self.page_references)
         pickle.dump(data, file)
         file.close()
@@ -128,21 +139,31 @@ class Document(object):
     def setup(self):
         raise NotImplementedError
 
-    def add_to_chain(self, chains):
+    def add_to_chain(self, chain):
         raise NotImplementedError
 
 
 class DocumentElement(object):
-    def __init__(self, parent=None):
+    """An element that is directly or indirectly part of a :class:`Document`
+    and is eventually rendered to the output."""
+
+    def __init__(self, document=None, parent=None):
+        """Initialize this document element as a child of `parent`."""
+        self._document = document
         self.parent = parent
 
     @property
-    def page(self):
-        return self.parent.page
-
-    @property
     def document(self):
-        return self.parent.document
+        """The document this element belongs to."""
+        if self._document is not None:
+            return self._document
+        else:
+            return self.parent.document
+
+    @document.setter
+    def document(self, document):
+        """"""
+        self._document = document
 
     def warn(self, message):
         if hasattr(self, '_source'):

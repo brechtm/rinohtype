@@ -50,8 +50,8 @@ class Heading(Paragraph, Referenceable):
 
     def render(self, container):
         if self.level == 1:
-            self.page.section = self
-        self.update_page_reference()
+            container.page.section = self
+        self.update_page_reference(container.page)
         return super().render(container)
 
 

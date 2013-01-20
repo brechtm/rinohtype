@@ -12,8 +12,8 @@ class LateEval(object):
     def split(self):
         yield self
 
-    def spans(self):
-        return self.field.field_spans()
+    def spans(self, container):
+        return self.field.field_spans(container)
 
 
 class Field(SingleStyledText):
@@ -38,19 +38,19 @@ class Variable(Field):
         super().__init__(y_offset=y_offset)
         self.type = type
 
-    def field_spans(self):
+    def field_spans(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:
-            text = str(self.page.number)
+            text = str(container.page.number)
         elif self.type == NUMBER_OF_PAGES:
             number = self.document.number_of_pages
             text = str(number)
         elif self.type == SECTION_NUMBER:
-            if self.page.section and self.page.section.number:
-                text = self.page.section.number
+            if container.page.section and container.page.section.number:
+                text = container.page.section.number
         elif self.type == SECTION_TITLE:
-            if self.page.section:
-                text = self.page.section.title()
+            if container.page.section:
+                text = container.page.section.title()
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
@@ -69,8 +69,8 @@ class Referenceable(object):
     def title(self):
         raise NotImplementedError
 
-    def update_page_reference(self):
-        self.document.page_references[self.id] = self.page.number
+    def update_page_reference(self, page):
+        self.document.page_references[self.id] = page.number
 
 
 REFERENCE = 'reference'
@@ -85,7 +85,7 @@ class Reference(Field):
         self.id = id
         self.type = type
 
-    def field_spans(self):
+    def field_spans(self, container):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
@@ -122,8 +122,10 @@ class Footnote(Field):
         nr.parent = self.note
         self.note.insert(0, nr)
 
-    def field_spans(self):
-        from .paragraph import Paragraph
+    def field_spans(self, container):
+        self.set_number(container._footnote_space.next_number)
+        self.note.document = self.document
+        self.note.flow(container._footnote_space)
         field_text = Superscript(str(self.number))
         field_text.parent = self.parent
         return field_text.spans()

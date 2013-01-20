@@ -418,7 +418,7 @@ class CitationField(Field):
     def warn_unknown_reference_id(self, item):
         self.warn("Unknown reference ID '{}'".format(item.key))
 
-    def field_spans(self):
+    def field_spans(self, container):
         text = self.citation.bibliography.cite(self.citation,
                                                self.warn_unknown_reference_id)
         field_text = SingleStyledText(text)
