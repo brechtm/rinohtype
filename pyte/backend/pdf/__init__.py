@@ -13,7 +13,7 @@ class Document(object):
 
     def __init__(self, pyte_document, title):
         self.pyte_document = pyte_document
-        self.pdf_document = cos.Document()
+        self.cos_document = cos.Document()
         self.pages = []
         self.fonts = {}
 
@@ -63,17 +63,17 @@ class Document(object):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue().encode('utf_8'))
-            page.pdf_page['Contents'] = contents
+            page.cos_page['Contents'] = contents
         file = open(filename + self.extension, 'wb')
-        self.pdf_document.write(file)
+        self.cos_document.write(file)
         file.close()
 
 
 class Page(object):
     def __init__(self, pyte_page, document, width, height):
         self.pyte_page = pyte_page
-        pdf_pages = document.pdf_document.catalog['Pages']
-        self.pdf_page = pdf_pages.new_page(float(width), float(height))
+        cos_pages = document.cos_document.catalog['Pages']
+        self.cos_page = cos_pages.new_page(float(width), float(height))
         self.width = width
         self.height = height
         self.canvas = PageCanvas(self)
@@ -92,7 +92,7 @@ class Page(object):
             font_rsc = self.document.backend_document.register_font(font)
             name = 'F{}'.format(self.font_number)
             self.font_number += 1
-            page_rsc = self.pdf_page['Resources']
+            page_rsc = self.cos_page['Resources']
             fonts_dict = page_rsc.setdefault('Font', cos.Dictionary())
             fonts_dict[name] = font_rsc
             self.font_names[font] = font_rsc, name
@@ -109,7 +109,7 @@ class Canvas(StringIO):
         return self.parent.page
 
     @property
-    def pdf_page(self):
+    def cos_page(self):
         return self.page.backend_page
 
     @property
@@ -191,7 +191,7 @@ class Canvas(StringIO):
         return char
 
     def show_glyphs(self, left, top, font, size, glyphs, x_displacements):
-        font_rsc, font_name = self.pdf_page.register_font(font)
+        font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''
         for glyph, displ in zip(glyphs, x_displacements):
@@ -229,13 +229,13 @@ class Canvas(StringIO):
         print('ET', file=self)
 
     def place_image(self, image, left, top, scale=1.0):
-        resources = self.pdf_page.pdf_page['Resources']
+        resources = self.cos_page.cos_page['Resources']
         xobjects = resources.setdefault('XObject', cos.Dictionary())
         try:
-            image_number = self.pdf_page.pdf_page.image_number
+            image_number = self.cos_page.cos_page.image_number
         except AttributeError:
             image_number = 0
-        self.pdf_page.pdf_page.image_number = image_number + 1
+        self.cos_page.cos_page.image_number = image_number + 1
         xobjects['Im{:03d}'.format(image_number)] = image.xobject
         self.save_state()
         self.translate(left, top + image.height)
@@ -255,14 +255,14 @@ class Image(object):
 
 
 class PageCanvas(Canvas):
-    def __init__(self, page):
+    def __init__(self, backend_page):
         super().__init__(None)
-        self.parent = page
-        self.translate(0, - float(page.height))
+        self._backend_page = backend_page
+        self.translate(0, - float(backend_page.height))
 
     @property
     def page(self):
-        return self.parent.pyte_page
+        return self._backend_page.pyte_page
 
     def append(self, left, top):
         pass
