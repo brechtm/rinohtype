@@ -24,8 +24,8 @@ from pyte.structure import TableOfContents, TableOfContentsStyle
 from pyte.reference import Field, Reference, REFERENCE
 from pyte.reference import Footnote as PyteFootnote
 from pyte.bibliography import Bibliography, BibliographyFormatter
-from pyte.flowable import Flowable, FlowableStyle
-from pyte.float import Figure as PyteFigure, CaptionStyle, Floating
+from pyte.flowable import Flowable, FlowableStyle, Floating
+from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular, MIDDLE
 from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from pyte.draw import LineStyle, RED
@@ -467,8 +467,8 @@ class RFICPage(Page):
 
         self.column1._footnote_space = self.footnote_space
         self.column2._footnote_space = self.footnote_space
-        self.column1._float_space = self.float_space
-        self.column2._float_space = self.float_space
+        self.column1.float_space = self.float_space
+        self.column2.float_space = self.float_space
 
         self.header = Container(self, self.leftmargin, self.topmargin / 2,
                                 body_width, 12*PT)

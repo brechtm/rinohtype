@@ -4,7 +4,6 @@ from .number import format_number, NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
 from .text import SingleStyledText
-from .util import Decorator
 
 
 class Image(Flowable):
@@ -73,9 +72,3 @@ class Figure(Flowable, Referenceable):
         image_height = image.flow(container)
         caption_height = self.caption.flow(container)
         return image_height + caption_height
-
-
-class Floating(Decorator):
-    def flow(self, container):
-        super().flow(container._float_space)
-        return 0
