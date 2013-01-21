@@ -15,6 +15,9 @@ from .backend import pdf
 from .warnings import warn
 
 
+__all__ = ['Page', 'Document', 'DocumentElement', 'PORTRAIT', 'LANDSCAPE']
+
+
 PORTRAIT = 'portrait'
 LANDSCAPE = 'landscape'
 
@@ -147,8 +150,14 @@ class DocumentElement(object):
     """An element that is directly or indirectly part of a :class:`Document`
     and is eventually rendered to the output."""
 
-    def __init__(self, document=None, parent=None):
-        """Initialize this document element as a child of `parent`."""
+    def __init__(self, document=None, parent=None, source=None):
+        """Initialize this document element as an element of `document` and/or
+        as child of `parent`.
+
+        Both parameters are optional, and are typically not set at object
+        initialization but rather at a later point."""
+        # TODO: document `source`
+        self.source = source
         self._document = document
         self.parent = parent
 
@@ -162,10 +171,12 @@ class DocumentElement(object):
 
     @document.setter
     def document(self, document):
-        """"""
+        """Set `document` as owner of this element."""
         self._document = document
 
     def warn(self, message):
+        """Present the warning `message` to the user, along with information on
+        where the """
         if hasattr(self, '_source'):
             message = '[{}] {}'.format(self._source.location, message)
         warn(message)

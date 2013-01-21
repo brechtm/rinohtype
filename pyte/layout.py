@@ -124,8 +124,8 @@ class ContainerBase(FlowableTarget):
            container.
 
         The rendering of the child containers (1) does not affect the rendering
-        of the flowables (2 and 3). Therefore, a container typically either has
-        only children or only flowables.
+        of the flowables (2 and 3). Therefore, a container typically has either
+        children or flowables.
         On the other hand, the flowables from the chain are flowed following
         those assigned directly to this container, so it is possible to combine
         both.
@@ -153,7 +153,8 @@ class ContainerBase(FlowableTarget):
 
 class Container(ContainerBase):
     """A container that renders :class:`Flowable`\ s to a rectangular area on a
-    page.
+    page. The first flowable is rendered at the top of the container. The next
+    flowable is rendered below the first one, and so on.
 
     A :class:`Container` has an origin (the top-left corner), and a width and
     height. It's contents are rendered relative to the container's position in
