@@ -23,7 +23,7 @@ def element_factory(xml_frontend, styles_store):
         def process(self, document, *args, **kwargs):
             result = self.parse(document, *args, **kwargs)
             try:
-                result._source = self
+                result.source = self
             except AttributeError:
                 pass
             return result

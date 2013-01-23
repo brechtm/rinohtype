@@ -230,7 +230,7 @@ class TableOfContents(Paragraph):
                     Reference(flowable.id, type=TITLE), Tab(),
                     Reference(flowable.id, type=PAGE)]
             for reference in text:
-                reference._source = self
+                reference.source = self
             try:
                 style_index = flowable.level - 1
                 flowable = Paragraph(text, style=self.styles[style_index])
