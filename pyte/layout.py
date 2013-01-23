@@ -52,6 +52,12 @@ class FlowableTarget(object):
         flowable.document = self.document
         self.flowables.append(flowable)
 
+    def __lshift__(self, flowable):
+        """Shorthand for :meth:`append_flowable`. Returns `self` so that it can
+        be chained."""
+        self.append_flowable(flowable)
+        return self
+
     def render(self):
         """Render the flowabless assigned to this flowable target, in the order
         that they have been added."""
@@ -295,6 +301,12 @@ class Chain(FlowableTarget):
 
         `document` is the :class:`Document` this chain is part of."""
         super().__init__(document)
+        self._init_state()
+
+    def _init_state(self):
+        """Reset the state of this chain: empty the list of containers, and zero
+        the counter keeping track of which flowable needs to be rendered next.
+        """
         self._containers = []
         self._container_index = 0
         self._flowable_index = 0
@@ -320,6 +332,7 @@ class Chain(FlowableTarget):
             except EndOfContainer:
                 if self._container_index > len(self._containers) - 1:
                     yield self
+        self._init_state()      # reset the state for the next rendering loop
 
     def append_container(self, container):
         """Append `container` to the list of containers in this chain."""

@@ -504,56 +504,48 @@ class RFIC2009Paper(Document):
         self.title = self.root.head.title.text
         self.keywords = [term.text for term in self.root.head.indexterms.term]
         self.parse_input()
-        self.bibliography.sort()
 
     def parse_input(self):
         self.title_par = Paragraph(self.title, style=styles['title'])
         self.author_par = Paragraph(self.author, style=styles['author'])
         self.affiliation_par = Paragraph(self.root.head.affiliation.text,
                                          style=styles['affiliation'])
+
+        self.content = Chain(self)
+        self.content << Abstract(self.root.head.abstract.text)
+        self.content << IndexTerms(self.keywords)
+
+        self.content << Heading(self, 'Table of Contents',
+                                style=styles['unnumbered'], level=1)
         toc = TableOfContents(style=styles['toc'],
                               styles=[styles['toc1'], styles['toc2'],
                                       styles['toc3']])
-
-        self.content_flowables = [Abstract(self.root.head.abstract.text),
-                                  IndexTerms(self.keywords),
-                                  Heading(self, 'Table of Contents',
-                                          style=styles['unnumbered'],
-                                          level=1),
-                                  toc]
-
+        self.content << toc
         for section in self.root.body.section:
             for flowable in section.process(self):
                 toc.register(flowable)
-                self.content_flowables.append(flowable)
+                self.content << flowable
         try:
             for flowable in self.root.body.acknowledgement.process(self):
                 toc.register(flowable)
-                self.content_flowables.append(flowable)
+                self.content << flowable
         except AttributeError:
             pass
-        bib_heading = Heading(self, 'References', style=styles['unnumbered'],
-                              level=1)
-        self.content_flowables.append(bib_heading)
+        self.content << Heading(self, 'References', style=styles['unnumbered'],
+                                level=1)
+        self.bibliography.sort()
+        self.content << self.bibliography.bibliography()
 
     def setup(self):
         self.page_count = 1
-        self.content = Chain(self)
         page = RFICPage(self, first=True)
         self.add_page(page, self.page_count)
 
-        page.title_box.append_flowable(self.title_par)
-        page.title_box.append_flowable(self.author_par)
-        page.title_box.append_flowable(self.affiliation_par)
-
-        for flowable in self.content_flowables:
-            self.content.append_flowable(flowable)
-
-        bib = self.bibliography.bibliography()
-        self.content.append_flowable(bib)
+        page.title_box << self.title_par
+        page.title_box << self.author_par
+        page.title_box << self.affiliation_par
 
     def add_to_chain(self, chain):
         page = RFICPage(self)
         self.page_count += 1
         self.add_page(page, self.page_count)
-        return page.column1
