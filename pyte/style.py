@@ -37,14 +37,17 @@ class Style(dict):
     class (keys) and their default values (values)"""
 
     def __init__(self, base=None, **attributes):
-        """Style attributes are as passed as keyword arguments. Optionally, a
-        base :class:`Style` is passed, where attributes are lookup up when they
-        have not been specified in this :class:`Style`.
+        """Style attributes are as passed as keyword arguments. Supported
+        attributes include those defined in the :attr:`attributes` attribute of
+        this style class and those defined in style classes this one inherits
+        from.
 
-        If `base` is `PARENT_STYLE`, the attribute lookup is forwarded to the
-        parent of the element the lookup originates from.
-        If `base` is a string, it is used to look up the base :class:`Style` in
-        the :class:`StyleStore` this :class:`Style` is stored in."""
+        Optionally, a `base` (:class:`Style`) is passed, where attributes are
+        looked up when they have not been specified in this style.
+        Alternatively, if `base` is :class:`PARENT_STYLE`, the attribute lookup
+        is forwarded to the parent of the element the lookup originates from.
+        If `base` is a :class:`str`, it is used to look up the base style in
+        the :class:`StyleStore` this style is stored in."""
         self.base = base
         self.name = None
         self.store = None
@@ -55,7 +58,7 @@ class Style(dict):
 
     @property
     def base(self):
-        """Return the base :class:`Style` for this :class:`Style`"""
+        """Return the base style for this style."""
         if isinstance(self._base, str):
             return self.store[self._base]
         else:
@@ -63,11 +66,11 @@ class Style(dict):
 
     @base.setter
     def base(self, base):
-        """Set this :class:`Style`'s base to `base`"""
+        """Set this style's base to `base`"""
         self._base = base
 
     def __repr__(self):
-        """Return a textual representation of this :class:`Style`"""
+        """Return a textual representation of this style."""
         return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name or '',
                                        self.base)
 
@@ -85,7 +88,8 @@ class Style(dict):
         """Return the value of `attribute`.
 
         If the attribute is not specified in this :class:`Style`, find it in
-        this :class:`Style`'s base styles, or ultimately return the default."""
+        this style's base styles (hierarchically), or ultimately return the
+        default value for `attribute`."""
         try:
             return self._recursive_get(attribute)
         except DefaultValueException:
@@ -94,9 +98,9 @@ class Style(dict):
     def _recursive_get(self, attribute):
         """Recursively search for the value of `attribute`.
 
-        If the attribute is not specified in this :class:`Style`, defer the
-        lookup to the base style. When the attribute is specified nowhere in the
-        chain of base :class:`Style`s, raise a :class:`DefaultValueException`.
+        If the attribute is not specified in this style, defer the lookup to the
+        base style. When the attribute is specified nowhere in the chain of base
+        styles, raise a :class:`DefaultValueException`.
         """
         try:
             return super().__getitem__(attribute)
@@ -108,7 +112,7 @@ class Style(dict):
     def _get_default(self, attribute):
         """Return the default value for `attribute`.
 
-        If no default is specified in this style class, get the default from the
+        If no default is specified in this style, get the default from the
         nearest superclass.
         If `attribute` is not supported, raise a :class:`KeyError`."""
         try:
