@@ -16,6 +16,32 @@ from .util import intersperse, cached_property
 
 
 class TextStyle(Style):
+    """The :class:`Style` for :class:`StyledText` objects. It has the following
+    attributes:
+
+    * `typeface`: :class:`TypeFace` to set the text in.
+    * `font_weight`: Thickness of the character outlines relative to their
+                     height.
+    * `font_slant`: Slope of the characters.
+    * `font_width`: Stretch of the characters.
+    * `font_size`: Height of characters expressed in PostScript points or
+                   :class:`Dimension`.
+    * `small_caps`: Use small capital glyphs or not (:class:`bool`).
+    * `position`: Vertical text position; normal, super- or subscript.
+    * `kerning`: Improve inter-letter spacing (:class:`bool`).
+    * `ligatures`: Run letters together, where possible (:class:`bool`).
+    * `hyphenate`: Allow words to be broken over two lines (:class:`bool`).
+    * `hyphen_chars`: Minimum number of characters in either part of a
+                      hyphenated word (:class:`int`).
+    * `hyphen_lang`: Language to use for hyphenation. Accepts language locale
+                     codes, such as 'en_US' (:class:`str`).
+
+    `font_weight`, `font_slant`, `font_width` and `position` accept the values
+    defined in the :mod:`font.style` module.
+
+    The default value for each of the style attributes are defined in the
+    :attr:`attributes` attribute."""
+
     attributes = {'typeface': adobe14.times,
                   'font_weight': MEDIUM,
                   'font_slant': UPRIGHT,
@@ -30,14 +56,10 @@ class TextStyle(Style):
                   'hyphen_lang': 'en_US'}
 
     def __init__(self, base=PARENT_STYLE, **attributes):
+        """Initialise this text style with the given style `attributes` and
+        `base` style. The default (:const:`PARENT_STYLE`) is to inherit the
+        style of the parent of the :class:`Styled` element."""
         super().__init__(base=base, **attributes)
-
-    def get_font(self):
-        typeface = self.get('typeface')
-        weight = self.get('font_weight')
-        slant = self.get('font_slant')
-        width = self.get('font_width')
-        return typeface.get(weight=weight, slant=slant, width=width)
 
 
 class CharacterLike(Styled):
@@ -152,6 +174,12 @@ class SingleStyledText(StyledText):
 
     @cached_property
     def font(self):
+        """The :class:`Font` described by this styled text's style.
+
+        If the exact font style, as determined by the `font_weight`,
+        `font_slant` and `font_width` style attributes is not present in the
+        `typeface`, the closest font available is returned instead, and a
+        warning is issued."""
         typeface = self.get_style('typeface')
         weight = self.get_style('font_weight')
         slant = self.get_style('font_slant')
