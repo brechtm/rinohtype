@@ -52,7 +52,7 @@ class Dimension(object, metaclass=DimensionType):
 
     # TODO: em, ex? (depends on context)
     def __init__(self, value=0, _plus_terms=None, _minus_terms=None, _factor=1):
-        """Initialize a :class:`Dimension` at `value` points.
+        """Initialize a dimension at `value` points.
         You should *not* specify values for other arguments than `value`!"""
         self._value = value
         self._plus_terms = _plus_terms or []
@@ -60,44 +60,44 @@ class Dimension(object, metaclass=DimensionType):
         self._factor = _factor
 
     def __neg__(self):
-        """Return the negative of this :class:`Dimension`."""
+        """Return the negative of this dimension."""
         inverse = copy(self)
-        inverse._factor *= - 1
+        inverse *= - 1
         return inverse
 
     def __iadd__(self, other):
-        """Return this :class:`Dimension`, adding `other` (in place)."""
+        """Return this dimension after adding `other` (in place)."""
         this = copy(self)
         self.__init__(_plus_terms=[this, other])
         return self
 
     def __isub__(self, other):
-        """Return this :class:`Dimension`, subtracting `other` (in place)."""
+        """Return this dimension after subtracting `other` (in place)."""
         this = copy(self)
         self.__init__(_plus_terms=[this], _minus_terms=[other])
         return self
 
     def __add__(self, other):
-        """Return the sum of this :class:`Dimension` and `other`."""
+        """Return the sum of this dimension and `other`."""
         return self.__class__(_plus_terms=[self, other])
 
     __radd__ = __add__
 
     def __sub__(self, other):
-        """Return the difference of this :class:`Dimension` and `other`."""
+        """Return the difference of this dimension and `other`."""
         return self.__class__(_plus_terms=[self], _minus_terms=[other])
 
     def __rsub__(self, other):
-        """Return the difference of `other` and this :class:`Dimension`."""
+        """Return the difference of `other` and this dimension."""
         return self.__class__(_plus_terms=[other], _minus_terms=[self])
 
     def __imul__(self, factor):
-        """Multiply this :class:`Dimension` by `factor` (in place)."""
+        """Return this dimension after multiplying it by `factor` (in place)."""
         self._factor *= factor
         return self
 
     def __mul__(self, factor):
-        """Return the product of this :class:`Dimension` and `factor`."""
+        """Return the product of this dimension and `factor`."""
         result = copy(self)
         result._factor = self._factor * factor
         return result
@@ -105,8 +105,13 @@ class Dimension(object, metaclass=DimensionType):
     __rmul__ = __mul__
 
     def __truediv__(self, factor):
-        """Return the quotient of this :class:`Dimension` and `factor`."""
+        """Return the quotient of this dimension and `factor`."""
         return self * (1.0 / factor)
+
+    def __itruediv__(self, factor):
+        """Return this dimension after dividing it by `factor` (in place)."""
+        self._factor /= factor
+        return self
 
     def __repr__(self):
         """Return a textual representation of the evaluated value."""
