@@ -17,8 +17,8 @@ class LateEval(object):
 
 
 class Field(SingleStyledText):
-    def __init__(self, y_offset=0):
-        super().__init__('', y_offset=y_offset)
+    def __init__(self):
+        super().__init__('')
 
     def spans(self):
         yield LateEval(self)
@@ -34,8 +34,8 @@ SECTION_TITLE = 'section title'
 
 
 class Variable(Field):
-    def __init__(self, type, y_offset=0):
-        super().__init__(y_offset=y_offset)
+    def __init__(self, type):
+        super().__init__()
         self.type = type
 
     def field_spans(self, container):
@@ -80,8 +80,8 @@ POSITION = 'position'
 
 
 class Reference(Field):
-    def __init__(self, id, type=REFERENCE, y_offset=0):
-        super().__init__(y_offset=y_offset)
+    def __init__(self, id, type=REFERENCE):
+        super().__init__()
         self.id = id
         self.type = type
 

@@ -8,8 +8,8 @@ def preformat(text):
 
 
 def factory(cls):
-    def __init__(self, string, y_offset=0):
-        return super(self.__class__, self).__init__(str(string), y_offset)
+    def __init__(self, string):
+        return super(self.__class__, self).__init__(str(string))
     space = {'__init__': __init__}
     return type(cls.__name__, (cls, ), space)
 

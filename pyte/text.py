@@ -84,9 +84,9 @@ class CharacterLike(Styled):
 class StyledText(Styled):
     style_class = TextStyle
 
-    def __init__(self, style=PARENT_STYLE, y_offset=0):
+    def __init__(self, style=PARENT_STYLE):
         super().__init__(style)
-        self._y_offset = y_offset
+        self._y_offset = 0
 
     def __add__(self, other):
         return MixedStyledText([self, other]) if other else self
@@ -131,8 +131,8 @@ class StyledText(Styled):
 
 # TODO: subclass str (requires messing around with __new__)?
 class SingleStyledText(StyledText):
-    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
-        super().__init__(style, y_offset)
+    def __init__(self, text, style=PARENT_STYLE):
+        super().__init__(style)
         text = self._clean_text(text)
         self.text = self._decode_html_entities(text)
 
@@ -253,24 +253,22 @@ class SingleStyledText(StyledText):
     def spans(self):
         span = self
         if self.get_style('small_caps'):
-            span = SmallCapitalsText(span.text, span.style,
-                                     y_offset=self.y_offset)
+            span = SmallCapitalsText(span.text, span.style)
             span.parent = self.parent
         yield span
 
 
 class SmallCapitalsText(SingleStyledText):
-    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
-        super().__init__(text, style, y_offset=y_offset)
+    def __init__(self, text, style=PARENT_STYLE):
+        super().__init__(text, style)
 
     def glyphs(self):
         return super().glyphs(SMALL_CAPITAL)
 
 
 class MixedStyledText(StyledText, list):
-    def __init__(self, items, style=PARENT_STYLE, y_offset=0):
-        StyledText.__init__(self, style, y_offset)
-        # TODO: handle y_offset
+    def __init__(self, items, style=PARENT_STYLE):
+        StyledText.__init__(self, style)
         if isinstance(items, str):
             items = [items]
         for item in items:
@@ -300,10 +298,10 @@ class MixedStyledText(StyledText, list):
 
 
 class LiteralText(MixedStyledText):
-    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
+    def __init__(self, text, style=PARENT_STYLE):
         text_with_no_break_spaces = text.replace(' ', chr(0xa0))
         items = intersperse(text_with_no_break_spaces.split('\n'), NewLine())
-        super().__init__(items, style, y_offset)
+        super().__init__(items, style)
 
     def _clean_text(self, text):
         return text
@@ -311,8 +309,8 @@ class LiteralText(MixedStyledText):
 
 # TODO: make following classes immutable (override setattr) and store widths
 class Character(SingleStyledText):
-    def __init__(self, text, style=PARENT_STYLE, y_offset=0):
-        super().__init__(text, style, y_offset=y_offset)
+    def __init__(self, text, style=PARENT_STYLE):
+        super().__init__(text, style)
 
     def __str__(self):
         return self.text
@@ -322,8 +320,8 @@ class Character(SingleStyledText):
 
 
 class Space(Character):
-    def __init__(self, fixed_width=False, style=PARENT_STYLE, y_offset=0):
-        super().__init__(' ', style, y_offset=y_offset)
+    def __init__(self, fixed_width=False, style=PARENT_STYLE):
+        super().__init__(' ', style)
         self.fixed_width = fixed_width
 
 
@@ -333,8 +331,8 @@ class FixedWidthSpace(Space):
 
 
 class NoBreakSpace(Character):
-    def __init__(self, style=PARENT_STYLE, y_offset=0):
-        super().__init__(' ', style, y_offset=y_offset)
+    def __init__(self, style=PARENT_STYLE):
+        super().__init__(' ', style)
 
 
 class Spacer(FixedWidthSpace):
@@ -409,30 +407,30 @@ SUBSCRIPT_STYLE = TextStyle(position=SUBSCRIPT)
 
 
 class Bold(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=BOLD_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=BOLD_STYLE)
 
 
 class Italic(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=ITALIC_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=ITALIC_STYLE)
 
 
 class Emphasized(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=ITALIC_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=ITALIC_STYLE)
 
 
 class SmallCaps(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=SMALL_CAPITALS_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=SMALL_CAPITALS_STYLE)
 
 
 class Superscript(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=SUPERSCRIPT_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=SUPERSCRIPT_STYLE)
 
 
 class Subscript(MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style=SUBSCRIPT_STYLE, y_offset=y_offset)
+    def __init__(self, text):
+        super().__init__(text, style=SUBSCRIPT_STYLE)
