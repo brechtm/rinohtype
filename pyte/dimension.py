@@ -98,9 +98,7 @@ class Dimension(object, metaclass=DimensionType):
 
     def __mul__(self, factor):
         """Return the product of this dimension and `factor`."""
-        result = copy(self)
-        result._factor = self._factor * factor
-        return result
+        return self.__class__(_plus_terms=[self], _factor=factor)
 
     __rmul__ = __mul__
 
