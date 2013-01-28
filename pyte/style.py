@@ -147,9 +147,6 @@ class ParentStyle(object):
     def __getitem__(self, attribute):
         raise ParentStyleException
 
-    def _recursive_get(self, attribute):
-        raise ParentStyleException
-
 
 PARENT_STYLE = ParentStyle()
 """Special style that forwards style lookups to the parent of the
