@@ -15,6 +15,9 @@ from .style import Style, Styled, PARENT_STYLE, ParentStyleException
 from .util import intersperse, cached_property
 
 
+__all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText']
+
+
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects. It has the following
     attributes:
@@ -48,7 +51,7 @@ class TextStyle(Style):
                   'font_width': NORMAL,
                   'font_size': 10*PT,
                   'small_caps': False,
-                  'position': NORMAL,
+                  'position': None,
                   'kerning': True,
                   'ligatures': True,
                   'hyphenate': True,
@@ -56,9 +59,9 @@ class TextStyle(Style):
                   'hyphen_lang': 'en_US'}
 
     def __init__(self, base=PARENT_STYLE, **attributes):
-        """Initialise this text style with the given style `attributes` and
-        `base` style. The default (:const:`PARENT_STYLE`) is to inherit the
-        style of the parent of the :class:`Styled` element."""
+        """Initialize this text style with the given style `attributes` and
+        `base` style. The default (`base` = :const:`PARENT_STYLE`) is to inherit
+        the style of the parent of the :class:`Styled` element."""
         super().__init__(base=base, **attributes)
 
 
@@ -82,51 +85,68 @@ class CharacterLike(Styled):
 
 
 class StyledText(Styled):
+    """Base class for text that has a :class:`TextStyle` associated with it."""
+
     style_class = TextStyle
 
     def __init__(self, style=PARENT_STYLE):
+        """Initialise this styled text with the given `style`. The default
+        (`style` = :const:`PARENT_STYLE`) is to inherit the style of the parent
+        of this styled text."""
         super().__init__(style)
         self._y_offset = 0
 
     def __add__(self, other):
-        return MixedStyledText([self, other]) if other else self
+        """Return the concatenation of this styled text and `other`. If `other`
+        is `None`, this styled text itself is returned."""
+        return MixedStyledText([self, other]) if other is not None else self
 
     def __radd__(self, other):
-        return MixedStyledText([other, self]) if other else self
+        """Return the concatenation of `other` and this styled text. If `other`
+        is `None`, this styled text itself is returned."""
+        return MixedStyledText([other, self]) if other is not None else self
 
     def __iadd__(self, other):
+        """Return the concatenation of this styled text and `other`. If `other`
+        is `None`, this styled text itself is returned."""
         return self + other
 
-    superscript_position = 1 / 3
-    subscript_position = - 1 / 6
+    position = {SUPERSCRIPT: 1 / 3,
+                SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
+
+    def is_script(self):
+        """Returns `True` if this styled text is super/subscript."""
+        try:
+            return self.style.get('position') is not None
+        except ParentStyleException:
+            return False
+
+    @property
+    def script_level(self):
+        """Nesting level of super/subscript."""
+        level = self.parent.script_level if (self.parent is not None) else -1
+        return level + 1 if self.is_script() else level
 
     @property
     def height(self):
+        """Font size after super/subscript size adjustment."""
         height = float(self.get_style('font_size'))
-        if self.get_style('position') in (SUPERSCRIPT, SUBSCRIPT):
-            height *= self.position_size
+        if self.script_level > -1:
+            height *= self.position_size * (5 / 6)**self.script_level
         return height
 
     @property
     def y_offset(self):
-        try:
-            offset = self.parent.y_offset + self._y_offset
-        except (TypeError, AttributeError):
-            offset = self._y_offset
-        try:
-            # The Y offset should only change once for the nesting level where
-            # the position style is set, hence we don't recursively get the
-            # position style
-            if self.style.position == SUPERSCRIPT:
-                offset += (float(self.get_style('font_size'))
-                           * self.superscript_position)
-            elif self.style.position == SUBSCRIPT:
-                offset += (float(self.get_style('font_size'))
-                           * self.subscript_position)
-        except ParentStyleException:
-            pass
+        """Vertical baseline offset (up is positive)."""
+        offset = self.parent.y_offset if (self.parent is not None) else 0
+        if self.is_script():
+            offset += self.parent.height * self.position[self.style.position]
+            # The Y offset should only change once for the nesting level
+            # where the position style is set, hence we don't recursively
+            # get the position style using self.get_style('position')
         return offset
+
 
 
 # TODO: subclass str (requires messing around with __new__)?
