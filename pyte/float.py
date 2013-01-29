@@ -3,7 +3,7 @@ from .flowable import Flowable
 from .number import format_number, NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
-from .text import SingleStyledText
+from .text import SingleStyledText, NoBreakSpace
 
 
 class Image(Flowable):
@@ -40,13 +40,13 @@ class Caption(Paragraph):
         numbering_sep = self.get_style('numbering_separator')
         if numbering_style is not None:
             self.ref = format_number(number, numbering_style)
-            number = self.ref + numbering_sep + '&nbsp;'
+            number = self.ref
         else:
             self.ref = None
             number = ''
-        styled_text = SingleStyledText(category + ' ' + number + text)
-        styled_text.parent = self
-        self.append(styled_text)
+        label = category + ' ' + number + numbering_sep
+        caption_text = label + NoBreakSpace() + text
+        self.append(caption_text)
 
 
 class Figure(Flowable, Referenceable):

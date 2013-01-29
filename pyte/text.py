@@ -1,9 +1,7 @@
 
 import itertools
-import re
 import os
-
-from html.entities import name2codepoint
+import re
 
 from .hyphenator import Hyphenator
 from .dimension import PT
@@ -148,22 +146,15 @@ class StyledText(Styled):
         return offset
 
 
-
-# TODO: subclass str (requires messing around with __new__)?
 class SingleStyledText(StyledText):
+    """Styled text where all text shares a single :class:`TextStyle`."""
+
     def __init__(self, text, style=PARENT_STYLE):
+        """Initialise this single-styled text with the given `style`. The
+        default (`style` = :const:`PARENT_STYLE`) is to inherit the style of the
+        parent of this styled text."""
         super().__init__(style)
-        text = self._clean_text(text)
-        self.text = self._decode_html_entities(text)
-
-    def _clean_text(self, text):
-        text = re.sub('[\t\r\n]', ' ', text)
-        return re.sub(' +', ' ', text)
-
-    # TODO: move to xml parser module
-    def _decode_html_entities(self, text):
-        return re.sub('&(%s);' % '|'.join(name2codepoint),
-                      lambda m: chr(name2codepoint[m.group(1)]), text)
+        self.text = re.sub('[\t\r\n ]+', ' ', text)
 
     def __repr__(self):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
@@ -292,10 +283,6 @@ class MixedStyledText(StyledText, list):
         if isinstance(items, str):
             items = [items]
         for item in items:
-            if isinstance(item, str):
-                item = SingleStyledText(item, style=PARENT_STYLE)
-            assert isinstance(item, StyledText)
-            item.parent = self
             self.append(item)
 
     def __repr__(self):
@@ -304,6 +291,12 @@ class MixedStyledText(StyledText, list):
 
     def __str__(self):
         return ''.join(str(item) for item in self)
+
+    def append(self, item):
+        if isinstance(item, str):
+            item = SingleStyledText(item, style=PARENT_STYLE)
+        item.parent = self
+        list.append(self, item)
 
     def spans(self):
         # TODO: support for mixed-style words

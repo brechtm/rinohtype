@@ -241,13 +241,13 @@ styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
 
 class Abstract(Paragraph):
     def __init__(self, text):
-        label = SingleStyledText("Abstract &mdash; ", BOLD_ITALIC_STYLE)
+        label = SingleStyledText("Abstract \N{EM DASH} ", BOLD_ITALIC_STYLE)
         return super().__init__(label + text, style=styles['abstract'])
 
 
 class IndexTerms(Paragraph):
     def __init__(self, terms):
-        label = SingleStyledText("Index Terms &mdash; ", BOLD_ITALIC_STYLE)
+        label = SingleStyledText("Index Terms \N{EM DASH} ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
         return super().__init__(label + text, style=styles['abstract'])

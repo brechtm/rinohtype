@@ -1,5 +1,5 @@
 
-from warnings import warn
+import unicodedata
 
 from .layout import EndOfContainer
 from .number import format_number, NUMBER
@@ -57,7 +57,7 @@ class Heading(Paragraph, Referenceable):
 
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
-                  'bullet': SingleStyledText('&bull;'),
+                  'bullet': SingleStyledText('\N{BULLET}'),
                   'item_spacing': ParagraphStyle.attributes['line_spacing'],
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
