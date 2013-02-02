@@ -123,9 +123,8 @@ class AdobeFontMetrics(FontMetrics):
                 except KeyError:
                     pass
             else:
-                warn('Don\'t know how to convert unicode index 0x{:04x} ({}) '
-                     'to a postscript glyph name.'.format(self.font.name,
-                                                          ord(char), char),
+                warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
+                     'to a postscript glyph name.'.format(ord(char), char),
                      PyteWarning)
                 yield 'question'
         # TODO: map to uniXXXX or uXXXX names
