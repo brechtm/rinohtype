@@ -252,14 +252,12 @@ class SingleStyledText(StyledText):
         return widths
 
     @cached_generator
-    def glyphs(self, variant=None):
+    def glyphs(self):
         """Generator yielding the glyphs of this single-styled text, taking care
         of substituting ligatures where possible (if enabled in the
-        :class:`TextStyle`).
-
-        `variant` optionally specifies the glyph variants to yield. This
-        currently accepts only :const:`SMALL_CAPITAL`."""
+        :class:`TextStyle`)."""
         characters = iter(self.text)
+        variant = SMALL_CAPITAL if self.get_style('small_caps') else None
         get_glyph = lambda char: self.font.metrics.get_glyph(char, variant)
         get_ligature = self.font.metrics.get_ligature
 
@@ -306,19 +304,8 @@ class SingleStyledText(StyledText):
                 yield first, second
 
     def spans(self):
-        if self.get_style('small_caps'):
-            yield SmallCapitalsText(self.text,
-                                    style=self.style, parent=self.parent)
-        else:
-            yield self
-
-# TODO: get rid of variant arg to glyphs()?
-class SmallCapitalsText(SingleStyledText):
-    def __init__(self, text, style=PARENT_STYLE, parent=None):
-        super().__init__(text, style, parent)
-
-    def glyphs(self):
-        return super().glyphs(SMALL_CAPITAL)
+        """Yield this single-styled text itself."""
+        yield self
 
 
 class MixedStyledText(StyledText, list):
