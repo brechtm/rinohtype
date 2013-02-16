@@ -160,11 +160,13 @@ class Styled(DocumentElement):
     """The :class:`Style` subclass that corresponds to this :class:`Styled`
     subclass."""
 
-    def __init__(self, style=None):
-        """Associates `style` with this element.
-
-        If `style` is None, an empty :class:`Style` will be used."""
-        super().__init__()
+    def __init__(self, style=None, parent=None):
+        """Associates `style` with this element. If `style` is `None`, an empty
+        :class:`Style` is create, effectively using the defaults defined for the
+        associated :class:`Style` class).
+        A `parent` can be passed on object initialization, or later by
+        assignment to the `parent` attribute."""
+        super().__init__(parent=parent)
         if style is None:
             style = self.style_class()
         if style != PARENT_STYLE and not isinstance(style, self.style_class):

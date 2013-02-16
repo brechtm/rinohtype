@@ -189,9 +189,8 @@ class DocumentElement(object):
         location in the input file when warnings or errors are generated (see
         the :meth:`warn` method).
 
-        All three parameters are optional, and are typically not set at object
-        initialization but rather at a later point by assinging to the
-        identically named instance attributes."""
+        All three parameters are optional, and can be set at a later point by
+        assinging to the identically named instance attributes."""
         self._document = document
         self.parent = parent
         self.source = source

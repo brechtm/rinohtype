@@ -36,9 +36,10 @@ class Flowable(Styled):
 
     style_class = FlowableStyle
 
-    def __init__(self, style=None):
-        """Initialize this flowable and associate it with the given `style`."""
-        super().__init__(style)
+    def __init__(self, style=None, parent=None):
+        """Initialize this flowable and associate it with the given `style` and
+        `parent` (see :class:`Styled`)."""
+        super().__init__(style, parent)
         self.resume = False
 
     def flow(self, container):

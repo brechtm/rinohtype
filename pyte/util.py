@@ -72,7 +72,7 @@ class cached_property(property):
         self._function_name = function.__name__
 
     def __get__(self, obj, *args):
-        #  the cached value is stored as an attribute of the object
+        # the cached value is stored as an attribute of the object
         cache_variable = '_cached_' + self._function_name
         try:
             return getattr(obj, cache_variable)
@@ -82,13 +82,30 @@ class cached_property(property):
             return cache_value
 
 
+def cached_generator(function):
+    """Method decorator caching a generator's yielded items."""
+    def function_wrapper(obj, *args, **kwargs):
+        # values are cached in a list stored in the object
+        cache_variable = '_cached_' + function.__name__
+        try:
+            for item in getattr(obj, cache_variable):
+                yield item
+        except AttributeError:
+            setattr(obj, cache_variable, [])
+            cache = getattr(obj, cache_variable)
+            for item in function(obj, *args, **kwargs):
+                cache.append(item)
+                yield item
+    return function_wrapper
+
+
 def timed(function):
     """Decorator timing the method call and printing the result to `stdout`"""
-    def function_wrapper(self, *args, **kwargs):
+    def function_wrapper(obj, *args, **kwargs):
         """Wrapper function printing the time taken by the call to `function`"""
-        name = self.__class__.__name__ + '.' + function.__name__
+        name = obj.__class__.__name__ + '.' + function.__name__
         start = time.clock()
-        result = function(self, *args, **kwargs)
+        result = function(obj, *args, **kwargs)
         print('{}: {:.4f} seconds'.format(name, time.clock() - start))
         return result
     return function_wrapper
