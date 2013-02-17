@@ -3,8 +3,10 @@ import itertools
 import os
 import re
 
+from . import DATA_PATH
 from .hyphenator import Hyphenator
 from .dimension import PT
+from .flowable import Flowable
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
@@ -88,7 +90,7 @@ class StyledText(Styled):
     style_class = TextStyle
 
     def __init__(self, style=PARENT_STYLE, parent=None):
-        """Initialise this styled text with the given `style` and `parent` (see
+        """Initialize this styled text with the given `style` and `parent` (see
         :class:`Styled`). The default (`style` = :const:`PARENT_STYLE`) is to
         inherit the style of the parent of this styled text. """
         super().__init__(style, parent)
@@ -155,7 +157,7 @@ class SingleStyledText(StyledText):
     """Styled text where all text shares a single :class:`TextStyle`."""
 
     def __init__(self, text, style=PARENT_STYLE, parent=None):
-        """Initialize this single-styled text with `text` (:class:`str`) and
+        """Initialize this single-styled text with `text` (:class:`str`),
         `style`, and `parent` (see :class:`StyledText`).
 
         In `text`, tab, line-feed and newline characters are all considered
@@ -166,7 +168,7 @@ class SingleStyledText(StyledText):
 
     def __repr__(self):
         """Return a representation of this single-styled text; the text itself
-        along with a repretentation of its :class:`Style`."""
+        along with a representation of its :class:`TextStyle`."""
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
@@ -272,15 +274,19 @@ class SingleStyledText(StyledText):
                 prev_glyph = glyph
         yield prev_glyph
 
-    dic_dir = os.path.join(os.path.dirname(__file__), 'data', 'hyphen')
-
     @property
     def _hyphenator(self):
+        """Return a :class:`Hyphenator` configured with the hyphenation options
+        specified in this single-styled text's :class:`TextStyle`.
+
+        The hyphenation dictionary corresponding to the specified language is
+        first searched in the current directory, then in RinohType's data
+        directory."""
         hyphen_lang = self.get_style('hyphen_lang')
         hyphen_chars = self.get_style('hyphen_chars')
         dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
         if not os.path.exists(dic_path):
-            dic_path = os.path.join(self.dic_dir, dic_file)
+            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
             if not os.path.exists(dic_path):
                 raise IOError("Hyphenation dictionary '{}' neither found in "
                               "current directory, nor in the data directory"
@@ -309,31 +315,48 @@ class SingleStyledText(StyledText):
 
 
 class MixedStyledText(StyledText, list):
-    def __init__(self, items, style=PARENT_STYLE):
-        StyledText.__init__(self, style=style)
-        if isinstance(items, str):
-            items = [items]
-        for item in items:
+    """Concatenation of :class:`StyledText` objects."""
+
+    def __init__(self, text_or_items, style=PARENT_STYLE, parent=None):
+        """Initialize this mixed-styled text as the concatenation of
+        `text_or_items`, which is either a single text item or an iterable of
+        text items. Individual text items can be :class:`StyledText` or
+        :class:`str` objects. This mixed-styled text is set as the parent of
+        each of the text items.
+
+        See :class:`StyledText` for information on `style`, and `parent`."""
+        super().__init__(style=style, parent=parent)
+        if (isinstance(text_or_items, str)
+            or isinstance(text_or_items, StyledText)):
+            text_or_items = (text_or_items, )
+        for item in text_or_items:
             self.append(item)
 
     def __repr__(self):
+        """Return a representation of this mixed-styled text; its children
+        along with a repretentation of its :class:`TextStyle`."""
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
 
     def __str__(self):
+        """Return the text content of this mixed-styled text."""
         return ''.join(str(item) for item in self)
 
     def append(self, item):
+        """Append `item` (:class:`StyledText` or :class:`str`) to the end of
+        this mixed-styled text.
+
+        The parent of `item` is set to this mixed-styled text."""
         if isinstance(item, str):
             item = SingleStyledText(item, style=PARENT_STYLE)
         item.parent = self
         list.append(self, item)
 
     def spans(self):
+        """Recursively yield all the :class:`SingleStyledText` items in this
+        mixed-styled text."""
         # TODO: support for mixed-style words
-        # TODO: kerning between Glyphs
         for item in self:
-            from .flowable import Flowable
             if isinstance(item, Flowable):
                 yield item
             else:
