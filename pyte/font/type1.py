@@ -9,7 +9,7 @@ from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
 from .style import SMALL_CAPITAL, OLD_STYLE
 from .metrics import FontMetrics, GlyphMetrics
-from .mapping import glyph_names, encodings
+from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
 from ..warnings import PyteWarning
 
 
@@ -92,15 +92,15 @@ class AdobeFontMetrics(FontMetrics):
     def name(self):
         return self['FontMetrics']['FontName']
 
-    _possible_suffixes = {SMALL_CAPITAL: ('.smcp', '.sc', 'small')}
+    _possible_suffixes = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
+                          OLD_STYLE: ('.oldstyle', )}
 
     def _find_suffix(self, char, variant, upper=False):
         try:
             return self._suffixes[variant]
         except KeyError:
-            names = list(self.char_to_name(char))
             for suffix in self._possible_suffixes[variant]:
-                for name in names:
+                for name in self.char_to_name(char):
                     if name + suffix in self._glyphs:
                         self._suffixes[variant] = suffix
                         return suffix
@@ -111,33 +111,36 @@ class AdobeFontMetrics(FontMetrics):
 ##                                         possible_suffixes, True)
 
     def char_to_name(self, char, variant=None):
-        # TODO: first search character using the font's encoding
-        name_or_names = glyph_names[ord(char)]
-        suffix = self._find_suffix(char, variant) if variant else ''
         try:
-            yield name_or_names + suffix
-        except TypeError:
-            for name in name_or_names:
-                try:
-                    yield name + suffix
-                except KeyError:
-                    pass
+            # TODO: first search character using the font's encoding
+            name_or_names = UNICODE_TO_GLYPH_NAME[ord(char)]
+            if variant and char != ' ':
+                suffix = self._find_suffix(char, variant)
             else:
-                warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
-                     'to a postscript glyph name.'.format(ord(char), char),
-                     PyteWarning)
-                yield 'question'
-        # TODO: map to uniXXXX or uXXXX names
+                suffix = ''
+            try:
+                yield name_or_names + suffix
+            except TypeError:
+                for name in name_or_names:
+                    yield name + suffix
+        except KeyError:
+            # TODO: map to uniXXXX or uXXXX names
+            warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
+                 'to a PostScript glyph name.'.format(ord(char), char),
+                 PyteWarning)
+            yield 'question'
 
     def get_glyph(self, char, variant=None):
-        names = self.char_to_name(char, variant)
-        for name in names:
+        for name in self.char_to_name(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
         if variant:
+            warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
+                 'back to the standard glyph.'.format(variant, ord(char), char),
+                 PyteWarning)
             return self.get_glyph(char)
         else:
-            warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
+            warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), PyteWarning)
             return self._glyphs['question']
 
@@ -232,7 +235,7 @@ class Type1Font(Font):
                              for glyph in self.metrics._glyphs.values()
                              if glyph.code > -1}
         else:
-            self.encoding = encodings[encoding_name]
+            self.encoding = ENCODINGS[encoding_name]
         super().__init__(weight, slant, width)
         self.filename = filename
         self.core = core
