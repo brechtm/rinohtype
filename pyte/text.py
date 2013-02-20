@@ -1,21 +1,53 @@
+"""
+Classes for describing styled text:
 
-import itertools
+* :class:`SingleStyledText`: Text of a single style.
+* :class:`MixedStyledText`: Text where different substrings can have different
+                            styles.
+* :class:`LiteralText`: Text that is typeset as is, including newlines and tabs.
+* :class:`TextStyle`: Style class specifying the font and other styling of text.
+
+A number of :class:`MixedStyledText` subclasses are provided for changing a
+single style attribute of the passed text:
+
+* :class:`Bold`
+* :class:`Italic`
+* :class:`Emphasized`
+* :class:`SmallCaps`
+* :class:`Superscript`
+* :class:`Subscript`
+
+Some characters with special properties and are represented by special classes:
+
+* :class:`Space`
+* :class:`FixedWidthSpace`
+* :class:`NoBreakSpace`
+* :class:`Spacer
+* :class:`Tab`
+* :class:`Newline`
+
+"""
+
 import os
 import re
 
 from . import DATA_PATH
-from .hyphenator import Hyphenator
 from .dimension import PT
 from .flowable import Flowable
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
+from .hyphenator import Hyphenator
 from .style import Style, Styled, PARENT_STYLE, ParentStyleException
 from .util import cached_property, cached_generator
 
 
-__all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText']
+__all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText', 'LiteralText',
+           'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
+           'Tab', 'Newline',
+           'Bold', 'Italic', 'Emphasized', 'SmallCaps', 'Superscript',
+           'Subscript']
 
 
 class TextStyle(Style):
@@ -166,7 +198,8 @@ class SingleStyledText(StyledText):
         super().__init__(style=style, parent=parent)
         self.text = self._filter_text(text)
 
-    def _filter_text(self, text):
+    @staticmethod
+    def _filter_text(text):
         """Replace tabulator, line-feed and newline characters in `text` with
         spaces and afterwards reduce consecutive spaces with a single space."""
         return re.sub('[\t\r\n ]+', ' ', text)
@@ -181,6 +214,15 @@ class SingleStyledText(StyledText):
         """Return the length (character count) of this single-styled text."""
         return len(self.text)
 
+    def __str__(self):
+        """Return the text content of this single-styled text."""
+        return self.text
+
+    def __getitem__(self, index):
+        """Indexing/slicing into this single-styled text. Its style and parent
+        are inherited by the result."""
+        return self.__class__(self.text[index], parent=self.parent)
+
     def lower(self):
         """Return a lowercase version of this single-styled text."""
         return self.__class__(self.text.lower(),
@@ -190,15 +232,6 @@ class SingleStyledText(StyledText):
         """Return an uppercase version of this single-styled text."""
         return self.__class__(self.text.upper(),
                               style=self.style, parent=self.parent)
-
-    def __str__(self):
-        """Return the text content of this single-styled text."""
-        return self.text
-
-    def __getitem__(self, index):
-        """Indexing/slicing into this single-styled text. Its style and parent
-        are inherited by the result."""
-        return self.__class__(self.text[index], parent=self.parent)
 
     def split(self):
         """Generator yielding words, whitespace and punctuation marks which make
@@ -379,7 +412,8 @@ class StyledRawText(SingleStyledText):
         and `parent` (see :class:`StyledText`)."""
         super().__init__(text, style=style, parent=parent)
 
-    def _filter_text(self, text):
+    @staticmethod
+    def _filter_text(text):
         """Return `text` as is."""
         return text
 
