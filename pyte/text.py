@@ -313,6 +313,8 @@ class SingleStyledText(StyledText):
                     raise NotImplementedError
                 first.text += '-'
                 yield first, second
+        else:
+            yield self, None
 
     def spans(self):
         """Yield this single-styled text itself."""
@@ -401,8 +403,8 @@ class Character(StyledRawText):
         yield self
 
     def hyphenate(self):
-        """A single character can't be split. Returns an empty iterator."""
-        return iter([])
+        """A single character can't be hyphenated."""
+        yield self, None
 
 
 class Space(Character):

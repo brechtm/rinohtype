@@ -93,30 +93,24 @@ class Line(list):
                     self._in_tab = None
         elif self._in_tab and self._in_tab.tab_stop.align == RIGHT:
             if self._in_tab.tab_width <= width:
-                try:
-                    for first, second in item.hyphenate():
-                        first_width = first.width
-                        if self._in_tab.tab_width >= first_width:
-                            self._in_tab.tab_width -= first_width
-                            super().append(first)
-                            raise EndOfLine(second)
-                except AttributeError:
-                    pass
+                for first, second in item.hyphenate():
+                    first_width = first.width
+                    if self._in_tab.tab_width >= first_width:
+                        self._in_tab.tab_width -= first_width
+                        super().append(first)
+                        raise EndOfLine(second)
                 raise EndOfLine
             else:
                 self._in_tab.tab_width -= width
                 self.text_width -= width
         elif self._in_tab and self._in_tab.tab_stop.align == CENTER:
             if self._in_tab.tab_width <= width:
-                try:
-                    for first, second in item.hyphenate():
-                        first_width = first.width
-                        if self._in_tab.tab_width >= first_width / 2:
-                            self._in_tab.tab_width -= first_width / 2
-                            super().append(first)
-                            raise EndOfLine(second)
-                except AttributeError:
-                    pass
+                for first, second in item.hyphenate():
+                    first_width = first.width
+                    if self._in_tab.tab_width >= first_width / 2:
+                        self._in_tab.tab_width -= first_width / 2
+                        super().append(first)
+                        raise EndOfLine(second)
                 raise EndOfLine
             else:
                 self._in_tab.tab_width -= width / 2
@@ -126,13 +120,10 @@ class Line(list):
                 warn('item too long to fit on line')
                 # TODO: print source location (and repeat for diff. occurences)
             else:
-                try:
-                    for first, second in item.hyphenate():
-                        if self.text_width + first.width < self.width:
-                            self.append(first)
-                            raise EndOfLine(second)
-                except AttributeError:
-                    pass
+                for first, second in item.hyphenate():
+                    if self.text_width + first.width < self.width:
+                        self.append(first)
+                        raise EndOfLine(second)
                 raise EndOfLine
 
         self.text_width += width
