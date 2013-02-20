@@ -6,7 +6,7 @@ from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
-from .text import Character, Space, Box, ControlCharacter, Newline, Tab, Spacer
+from .text import Character, Space, Box, Newline, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
 from .dimension import PT
 
