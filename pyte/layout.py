@@ -1,6 +1,6 @@
 """
-The layout engine. The containers allow defining rectangular areas on a page to
-which :class:`Flowable`\ s can be rendered.
+The layout engine. The container classes allow defining rectangular areas on a
+page to which :class:`Flowable`\ s can be rendered.
 
 * :class:`Container`: A rectangular area on a page to which flowables are
                       rendered.

@@ -1,5 +1,5 @@
 """
-Base classes and exceptions for styles of document elements.
+Base classes and exceptions for styled document elements.
 
 * :class:`Style`: Dictionary storing a set of style attributes
 * :class:`Styled`: A styled entity, having a :class:`Style` associated with it

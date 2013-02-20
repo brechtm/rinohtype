@@ -48,7 +48,7 @@ class Dimension(object, metaclass=DimensionType):
     number on conversion to a :class:`float`.
 
     The internal representation is in terms of PostScript points. A PostScript
-    point which is defined as one 72th of an inch."""
+    point is equal to one 72th of an inch."""
 
     # TODO: em, ex? (depends on context)
     def __init__(self, value=0, _plus_terms=None, _minus_terms=None, _factor=1):
