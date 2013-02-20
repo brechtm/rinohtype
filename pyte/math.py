@@ -7,7 +7,7 @@ from psg.fonts.afm_metrics import afm_metrics
 
 from .dimension import PT
 from .font import TypeFamily
-from .text import PARENT_STYLE, Style, CharacterLike, Box, NewLine, Tab
+from .text import PARENT_STYLE, Style, CharacterLike, Box, Tab
 from .text import MixedStyledText
 from .paragraph import Paragraph, ParagraphStyle, TabStop, RIGHT, CENTER
 from .mathtext import Fonts, MathtextBackendPs, MathTextWarning, Parser, Bunch

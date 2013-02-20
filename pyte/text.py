@@ -12,7 +12,7 @@ from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
 from .style import Style, Styled, PARENT_STYLE, ParentStyleException
-from .util import intersperse, cached_property, cached_generator
+from .util import cached_property, cached_generator
 
 
 __all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText']
@@ -164,7 +164,12 @@ class SingleStyledText(StyledText):
         whitespace. Consecutive whitespace characters are reduced to a single
         space."""
         super().__init__(style=style, parent=parent)
-        self.text = re.sub('[\t\r\n ]+', ' ', text)
+        self.text = self._filter_text(text)
+
+    def _filter_text(self, text):
+        """Replace tabulator, line-feed and newline characters in `text` with
+        spaces and afterwards reduce consecutive spaces with a single space."""
+        return re.sub('[\t\r\n ]+', ' ', text)
 
     def __repr__(self):
         """Return a representation of this single-styled text; the text itself
@@ -199,18 +204,18 @@ class SingleStyledText(StyledText):
         """Generator yielding words, whitespace and punctuation marks which make
         up this single-styled text. Yielded items inherit the style and parent
         from this single-styled text."""
-        style, parent = self.style, self.parent
+        style_and_parent = {'style': self.style, 'parent': self.parent}
         part = ''
         for char in self.text:
             if char in SPECIAL_CHARS:
                 if part:
-                    yield self.__class__(part, style=style, parent=parent)
-                yield SPECIAL_CHARS[char](style=style, parent=parent)
+                    yield self.__class__(part, **style_and_parent)
+                yield SPECIAL_CHARS[char](**style_and_parent)
                 part = ''
             else:
                 part += char
         if part:
-            yield self.__class__(part, style=style, parent=parent)
+            yield self.__class__(part, **style_and_parent)
 
     @cached_property
     def font(self):
@@ -297,7 +302,7 @@ class SingleStyledText(StyledText):
         """Generator yielding possible options for splitting this single-styled
         text (assuming it is a word) across two lines. Items yielded are tuples
         containing the first (with trailing hyphen) and second part of the split
-        word.
+        word. If hyphenation is not possible, an empty iterator is returned.
 
         In the first returned option, the word is split at the right-most
         possible break point. In subsequent items, the break point advances to
@@ -364,42 +369,56 @@ class MixedStyledText(StyledText, list):
                     yield span
 
 
-class LiteralText(MixedStyledText):
-    def __init__(self, text, style=PARENT_STYLE):
-        text_with_no_break_spaces = text.replace(' ', chr(0xa0))
-        items = intersperse(text_with_no_break_spaces.split('\n'), NewLine())
-        super().__init__(items, style)
+class StyledRawText(SingleStyledText):
+    """Styled text that preserves tabs, newlines and spaces."""
 
-    def _clean_text(self, text):
+    def __init__(self, text, style=PARENT_STYLE, parent=None):
+        """Initialize this styled raw text with `text` (:class:`str`), `style`,
+        and `parent` (see :class:`StyledText`)."""
+        super().__init__(text, style=style, parent=parent)
+
+    def _filter_text(self, text):
+        """Return `text` as is."""
         return text
 
 
-# TODO: make following classes immutable (override setattr) and store widths
-class Character(SingleStyledText):
-    def __init__(self, text, style=PARENT_STYLE, parent=None):
-        super().__init__(text, style, parent)
+class LiteralText(StyledRawText):
+    """Styled text which is typeset as is. No line wrapping is performed. Lines
+    are split where a newline character appears in the literal text."""
 
-    def __str__(self):
-        return self.text
+    def __init__(self, text, style=PARENT_STYLE, parent=None):
+        """Initialize this literal text with `text` (:class:`str`), `style`, and
+        `parent` (see :class:`StyledText`)."""
+        no_break_spaced = text.replace(' ', chr(0xa0))
+        super().__init__(no_break_spaced, style=style, parent=parent)
+
+
+class Character(StyledRawText):
+    """:class:`SingleStyledText` consisting of a single character."""
 
     def split(self):
+        """Yields this character itself."""
         yield self
+
+    def hyphenate(self):
+        """A single character can't be split. Returns an empty iterator."""
+        return iter([])
 
 
 class Space(Character):
     def __init__(self, fixed_width=False, style=PARENT_STYLE, parent=None):
-        super().__init__(' ', style, parent)
+        super().__init__(' ', style=style, parent=parent)
         self.fixed_width = fixed_width
 
 
 class FixedWidthSpace(Space):
     def __init__(self, style=PARENT_STYLE, parent=None):
-        super().__init__(True, style, parent)
+        super().__init__(True, style=style, parent=parent)
 
 
 class NoBreakSpace(Character):
     def __init__(self, style=PARENT_STYLE, parent=None):
-        super().__init__(' ', style, parent)
+        super().__init__(' ', style=style, parent=parent)
 
 
 class Spacer(FixedWidthSpace):
@@ -410,10 +429,6 @@ class Spacer(FixedWidthSpace):
     @property
     def widths(self):
         yield float(self.dimension)
-
-
-SPECIAL_CHARS = {' ': Space,
-                 chr(0xa0): NoBreakSpace}
 
 
 class Box(Character):
@@ -451,15 +466,20 @@ class ControlCharacter(Character):
         yield self
 
 
-class NewLine(ControlCharacter):
-    def __init__(self):
+class Newline(ControlCharacter):
+    def __init__(self, *args, **kwargs):
         super().__init__('\n')
 
 
 class Tab(ControlCharacter):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super().__init__(' ')
         self.tab_width = 0
+
+
+SPECIAL_CHARS = {' ': Space,
+                 '\t': Tab,
+                 '\n': Newline}
 
 
 # predefined styles

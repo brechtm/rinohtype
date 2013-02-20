@@ -6,7 +6,7 @@ from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
-from .text import Character, Space, Box, ControlCharacter, NewLine, Tab, Spacer
+from .text import Character, Space, Box, ControlCharacter, Newline, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
 from .dimension import PT
 
@@ -124,6 +124,7 @@ class Line(list):
         elif self.text_width + width > self.width:
             if len(self) == 0:
                 warn('item too long to fit on line')
+                # TODO: print source location (and repeat for diff. occurences)
             else:
                 try:
                     for first, second in item.hyphenate():
@@ -305,7 +306,7 @@ class Paragraph(MixedStyledText, Flowable):
             else:
                 self.word_pointer += 1
 
-            if isinstance(word, (NewLine, Flowable)):
+            if isinstance(word, (Newline, Flowable)):
                 line_pointers = self.typeset_line(container, line,
                                                   line_pointers, last_line=True)
                 if isinstance(word, Flowable):
