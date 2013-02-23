@@ -31,6 +31,8 @@ Some characters with special properties and are represented by special classes:
 import os
 import re
 
+from functools import partial
+
 from . import DATA_PATH
 from .dimension import PT
 from .flowable import Flowable
@@ -149,10 +151,10 @@ class StyledText(Styled):
 
     def is_script(self):
         """Returns `True` if this styled text is super/subscript."""
-        try:
-            return self.style.get('position') is not None
-        except ParentStyleException:
+        if self.style == PARENT_STYLE:
             return False
+        else:
+            return self.style.get('position') is not None
 
     @property
     def script_level(self):
@@ -298,7 +300,7 @@ class SingleStyledText(StyledText):
         :class:`TextStyle`)."""
         characters = iter(self.text)
         variant = SMALL_CAPITAL if self.get_style('small_caps') else None
-        get_glyph = lambda char: self.font.metrics.get_glyph(char, variant)
+        get_glyph = partial(self.font.metrics.get_glyph, variant=variant)
         get_ligature = self.font.metrics.get_ligature
 
         prev_glyph = get_glyph(next(characters))
