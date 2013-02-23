@@ -75,46 +75,49 @@ class Line(list):
         else:
             return None, None
 
-    def append(self, item):
-        width = item.width
-        if not self and isinstance(item, Space):
-            return
-        elif isinstance(item, Tab):
-            cursor = self.text_width
-            tab_stop, tab_position = self._find_tab_stop(cursor)
-            if tab_stop:
-                item.tab_stop = tab_stop
-                width = item.tab_width = tab_position - cursor
-                if tab_stop.align in (RIGHT, CENTER):
-                    self._in_tab = item
+    def append(self):
+        in_tab = None
+        while True:
+            item = (yield)
+            width = item.width
+            if not self and isinstance(item, Space):
+                continue
+            elif isinstance(item, Tab):
+                cursor = self.text_width
+                tab_stop, tab_position = self._find_tab_stop(cursor)
+                if tab_stop:
+                    item.tab_stop = tab_stop
+                    width = item.tab_width = tab_position - cursor
+                    if tab_stop.align in (RIGHT, CENTER):
+                        in_tab = item
+                    else:
+                        in_tab = None
+            elif in_tab:
+                factor = 2 if in_tab.tab_stop.align == CENTER else 1
+                if in_tab.tab_width <= width:
+                    for first, second in item.hyphenate():
+                        first_width = first.width / factor
+                        if in_tab.tab_width >= first_width:
+                            in_tab.tab_width -= first_width
+                            super().append(first)
+                            raise EndOfLine(second)
+                    raise EndOfLine
                 else:
-                    self._in_tab = None
-        elif self._in_tab:
-            factor = 2 if self._in_tab.tab_stop.align == CENTER else 1
-            if self._in_tab.tab_width <= width:
-                for first, second in item.hyphenate():
-                    first_width = first.width / factor
-                    if self._in_tab.tab_width >= first_width:
-                        self._in_tab.tab_width -= first_width
-                        super().append(first)
-                        raise EndOfLine(second)
-                raise EndOfLine
-            else:
-                self._in_tab.tab_width -= width / factor
-                self.text_width -= width / factor
-        elif self.text_width + width > self.width:
-            if len(self) == 0:
-                item.warn('item too long to fit on line')
-                # TODO: print source location (and repeat for diff. occurences)
-            else:
-                for first, second in item.hyphenate():
-                    if self.text_width + first.width < self.width:
-                        super().append(first)
-                        raise EndOfLine(second)
-                raise EndOfLine
+                    in_tab.tab_width -= width / factor
+                    self.text_width -= width / factor
+            elif self.text_width + width > self.width:
+                if len(self) == 0:
+                    item.warn('item too long to fit on line')
+                    # TODO: print source location (and repeat for diff. occurences)
+                else:
+                    for first, second in item.hyphenate():
+                        if self.text_width + first.width < self.width:
+                            super().append(first)
+                            raise EndOfLine(second)
+                    raise EndOfLine
 
-        self.text_width += width
-        super().append(item)
+            self.text_width += width
+            super().append(item)
 
     def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
@@ -265,6 +268,8 @@ class Paragraph(MixedStyledText, Flowable):
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
+        line_append = line.append()
+        next(line_append)
 
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
@@ -294,22 +299,29 @@ class Paragraph(MixedStyledText, Flowable):
                                         top=container.cursor*PT)
                     container.advance(word.flow(child_container))
                     self.word_pointer += 1
+                line_append.close()
                 line = Line(self, line_width, indent_left)
+                line_append = line.append()
+                next(line_append)
             else:
                 try:
-                    line.append(word)
+                    line_append.send(word)
                 except EndOfLine as eol:
                     line_pointers = self.typeset_line(container, line,
                                                       line_pointers)
+                    line_append.close()
                     line = Line(self, line_width, indent_left)
+                    line_append = line.append()
+                    next(line_append)
                     if eol.hyphenation_remainder:
-                        line.append(eol.hyphenation_remainder)
+                        line_append.send(eol.hyphenation_remainder)
                     else:
-                        line.append(word)
+                        line_append.send(word)
 
         # the last line
         if len(line) != 0:
             self.typeset_line(container, line, line_pointers, last_line=True)
+        line_append.close()
 
         self._init_state()
         return container.cursor - start_offset
