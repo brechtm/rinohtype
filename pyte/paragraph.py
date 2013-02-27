@@ -6,7 +6,6 @@ from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
 from .text import Character, Space, Box, Newline, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
-from .util import consumer
 
 
 # Text justification
@@ -65,6 +64,7 @@ class Line(list):
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
+        self._in_tab = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -74,48 +74,47 @@ class Line(list):
         else:
             return None, None
 
-    @consumer
-    def builder(self):
-        in_tab = None
-        while True:
-            item = (yield)
-            width = item.width
-            if not self and isinstance(item, Space):
-                continue
-            elif isinstance(item, Tab):
-                cursor = self.text_width
-                tab_stop, tab_position = self._find_tab_stop(cursor)
-                if tab_stop:
-                    item.tab_stop = tab_stop
-                    width = item.tab_width = tab_position - cursor
-                    in_tab = item if tab_stop.align in (RIGHT, CENTER) else None
-            elif in_tab:
-                factor = 2 if in_tab.tab_stop.align == CENTER else 1
-                if in_tab.tab_width <= width:
-                    for first, second in item.hyphenate():
-                        first_width = first.width / factor
-                        if in_tab.tab_width >= first_width:
-                            in_tab.tab_width -= first_width
-                            super().append(first)
-                            raise EndOfLine(second)
-                    raise EndOfLine
+    def append(self, item):
+        width = item.width
+        if not self and isinstance(item, Space):
+            return
+        elif isinstance(item, Tab):
+            cursor = self.text_width
+            tab_stop, tab_position = self._find_tab_stop(cursor)
+            if tab_stop:
+                item.tab_stop = tab_stop
+                width = item.tab_width = tab_position - cursor
+                if tab_stop.align in (RIGHT, CENTER):
+                    self._in_tab = item
                 else:
-                    in_tab.tab_width -= width / factor
-                    self.text_width -= width / factor
-            elif self.text_width + width > self.width:
-                if len(self) == 0:
-                    item.warn('item too long to fit on line')
-                    # TODO: print source location (and repeat for diff. occurences)
-                else:
-                    for first, second in item.hyphenate():
-                        if self.text_width + first.width < self.width:
-                            self.text_width += first.width
-                            super().append(first)
-                            raise EndOfLine(second)
-                    raise EndOfLine
+                    self._in_tab = None
+        elif self._in_tab:
+            factor = 2 if self._in_tab.tab_stop.align == CENTER else 1
+            if self._in_tab.tab_width <= width:
+                for first, second in item.hyphenate():
+                    first_width = first.width / factor
+                    if self._in_tab.tab_width >= first_width:
+                        self._in_tab.tab_width -= first_width
+                        super().append(first)
+                        raise EndOfLine(second)
+                raise EndOfLine
+            else:
+                self._in_tab.tab_width -= width / factor
+                self.text_width -= width / factor
+        elif self.text_width + width > self.width:
+            if len(self) == 0:
+                item.warn('item too long to fit on line')
+                # TODO: print source location (and repeat for diff. occurences)
+            else:
+                for first, second in item.hyphenate():
+                    if self.text_width + first.width < self.width:
+                        self.text_width += first.width
+                        super().append(first)
+                        raise EndOfLine(second)
+                raise EndOfLine
 
-            self.text_width += width
-            super().append(item)
+        self.text_width += width
+        super().append(item)
 
     def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
@@ -265,7 +264,6 @@ class Paragraph(MixedStyledText, Flowable):
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
-        line_builder = line.builder()
 
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
@@ -295,27 +293,22 @@ class Paragraph(MixedStyledText, Flowable):
                                         top=container.cursor*PT)
                     container.advance(word.flow(child_container))
                     self.word_pointer += 1
-                line_builder.close()
                 line = Line(self, line_width, indent_left)
-                line_builder = line.builder()
             else:
                 try:
-                    line_builder.send(word)
+                    line.append(word)
                 except EndOfLine as eol:
                     line_pointers = self.typeset_line(container, line,
                                                       line_pointers)
-                    line_builder.close()
                     line = Line(self, line_width, indent_left)
-                    line_builder = line.builder()
                     if eol.hyphenation_remainder:
-                        line_builder.send(eol.hyphenation_remainder)
+                        line.append(eol.hyphenation_remainder)
                     else:
-                        line_builder.send(word)
+                        line.append(word)
 
         # the last line
         if len(line) != 0:
             self.typeset_line(container, line, line_pointers, last_line=True)
-        line_builder.close()
 
         self._init_state()
         return container.cursor - start_offset

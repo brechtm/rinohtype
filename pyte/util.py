@@ -62,21 +62,6 @@ def intersperse(iterable, element):
         yield next_from_iterable
 
 
-# function decorators
-
-def consumer(function):
-    """Decorator that makes a generator function automatically advance to its
-    first yield point when initially called (PEP 342)."""
-    def wrapper(*args, **kwargs):
-        generator = function(*args, **kwargs)
-        next(generator)
-        return generator
-    wrapper.__name__ = function.__name__
-    wrapper.__dict__ = function.__dict__
-    wrapper.__doc__  = function.__doc__
-    return wrapper
-
-
 # method decorators
 
 def cached(function):
