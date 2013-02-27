@@ -337,11 +337,14 @@ class SingleStyledText(StyledText):
         """Generator yielding possible options for splitting this single-styled
         text (assuming it is a word) across two lines. Items yielded are tuples
         containing the first (with trailing hyphen) and second part of the split
-        word. If hyphenation is not possible, an empty iterator is returned.
+        word.
 
         In the first returned option, the word is split at the right-most
         possible break point. In subsequent items, the break point advances to
-        the front of the word."""
+        the front of the word.
+        If hyphenation is not possible or simply not enabled, a single tuple is
+        yielded of which the first element is the word itself, and the second
+        element is `None`."""
         if self.get_style('hyphenate'):
             for first, second in self._hyphenator.iterate(self):
                 if first.text + second.text != self.text:
