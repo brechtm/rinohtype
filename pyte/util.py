@@ -79,16 +79,35 @@ def consumer(function):
 
 # method decorators
 
+def cached(function):
+    """Method decorator caching a function's returned values."""
+    cache_variable = '_cached_' + function.__name__
+    def function_wrapper(obj, *args):
+        # values are cached in a dict stored in the object
+        try:
+            cache = getattr(obj, cache_variable)
+        except AttributeError:
+            cache = {}
+            setattr(obj, cache_variable, cache)
+        try:
+            return cache[args]
+        except KeyError:
+            cache_value = function(obj, *args)
+            cache[args] = cache_value
+            return cache_value
+    return function_wrapper
+
+
 class cached_property(property):
     """Property decorator that additionally caches the return value of the
     decorated getter method"""
     def __init__(self, function, *args, **kwargs):
         super().__init__(function, *args, **kwargs)
-        self._function_name = function.__name__
+        self._cache_variable = '_cached_' + function.__name__
 
     def __get__(self, obj, *args):
         # the cached value is stored as an attribute of the object
-        cache_variable = '_cached_' + self._function_name
+        cache_variable = self._cache_variable
         try:
             return getattr(obj, cache_variable)
         except AttributeError:
@@ -99,9 +118,9 @@ class cached_property(property):
 
 def cached_generator(function):
     """Method decorator caching a generator's yielded items."""
+    cache_variable = '_cached_' + function.__name__
     def function_wrapper(obj, *args, **kwargs):
         # values are cached in a list stored in the object
-        cache_variable = '_cached_' + function.__name__
         try:
             for item in getattr(obj, cache_variable):
                 yield item

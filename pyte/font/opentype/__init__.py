@@ -3,6 +3,7 @@ import ctypes
 
 from warnings import warn
 
+from ...util import cached
 from ...warnings import PyteWarning
 from .. import Font
 from ..metrics import FontMetrics, GlyphMetrics
@@ -127,6 +128,7 @@ class OpenTypeMetrics(FontMetrics):
                         for lookup_list_index in lookup_list_indices]
         return []
 
+    @cached
     def get_ligature(self, glyph, successor_glyph):
         if 'GSUB' in self._tables:
             lookup_tables = self._get_lookup_tables('GSUB', 'liga', 'latn')
@@ -138,6 +140,7 @@ class OpenTypeMetrics(FontMetrics):
                     pass
         return None
 
+    @cached
     def get_kerning(self, a, b):
         if 'GPOS' in self._tables:
             lookup_tables = self._get_lookup_tables('GPOS', 'kern', 'latn')
