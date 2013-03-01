@@ -1,12 +1,12 @@
 
-from .dimension import Dimension
+from .dimension import Dimension, PT
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
 from .text import Character, Space, Box, Newline, Tab, Spacer
 from .text import TextStyle, SingleStyledText, MixedStyledText
-from .dimension import PT
+from .util import consumer
 
 
 # Text justification
@@ -65,7 +65,6 @@ class Line(list):
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
-        self._in_tab = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -75,7 +74,8 @@ class Line(list):
         else:
             return None, None
 
-    def append(self):
+    @consumer
+    def builder(self):
         in_tab = None
         while True:
             item = (yield)
@@ -88,10 +88,7 @@ class Line(list):
                 if tab_stop:
                     item.tab_stop = tab_stop
                     width = item.tab_width = tab_position - cursor
-                    if tab_stop.align in (RIGHT, CENTER):
-                        in_tab = item
-                    else:
-                        in_tab = None
+                    in_tab = item if tab_stop.align in (RIGHT, CENTER) else None
             elif in_tab:
                 factor = 2 if in_tab.tab_stop.align == CENTER else 1
                 if in_tab.tab_width <= width:
@@ -112,6 +109,7 @@ class Line(list):
                 else:
                     for first, second in item.hyphenate():
                         if self.text_width + first.width < self.width:
+                            self.text_width += first.width
                             super().append(first)
                             raise EndOfLine(second)
                     raise EndOfLine
@@ -131,7 +129,7 @@ class Line(list):
         # drop spaces at the end of the line
         try:
             while isinstance(self[-1], Space):
-                self.pop()
+                self.text_width -= self.pop().width
         except IndexError:
             return 0
 
@@ -158,9 +156,8 @@ class Line(list):
                     self.insert(i, spacer)
             i += 1
 
-        line_width = sum(item.width for item in self)
-        max_font_size = max(float(item.height) for item in self)
-        extra_space = self.width - line_width
+        line_height = max(float(item.height) for item in self)
+        extra_space = self.width - self.text_width
 
         def _is_scalable_space(item):
             return isinstance(item, Space) and not item.fixed_width
@@ -179,7 +176,7 @@ class Line(list):
                 # TODO: padding added to spaces should be prop. to font size
 
         # position cursor
-        container.advance(max_font_size)
+        container.advance(line_height)
 
         def render_span(item, font_style, glyphs, widths):
             font, size, y_offset = font_style
@@ -218,7 +215,7 @@ class Line(list):
         if prev_item:
             x += render_span(prev_item, prev_font_style, glyphs, widths)
 
-        return max_font_size
+        return line_height
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -268,8 +265,7 @@ class Paragraph(MixedStyledText, Flowable):
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
-        line_append = line.append()
-        next(line_append)
+        line_builder = line.builder()
 
         while self.word_pointer < len(self._words):
             word = self._words[self.word_pointer]
@@ -299,29 +295,27 @@ class Paragraph(MixedStyledText, Flowable):
                                         top=container.cursor*PT)
                     container.advance(word.flow(child_container))
                     self.word_pointer += 1
-                line_append.close()
+                line_builder.close()
                 line = Line(self, line_width, indent_left)
-                line_append = line.append()
-                next(line_append)
+                line_builder = line.builder()
             else:
                 try:
-                    line_append.send(word)
+                    line_builder.send(word)
                 except EndOfLine as eol:
                     line_pointers = self.typeset_line(container, line,
                                                       line_pointers)
-                    line_append.close()
+                    line_builder.close()
                     line = Line(self, line_width, indent_left)
-                    line_append = line.append()
-                    next(line_append)
+                    line_builder = line.builder()
                     if eol.hyphenation_remainder:
-                        line_append.send(eol.hyphenation_remainder)
+                        line_builder.send(eol.hyphenation_remainder)
                     else:
-                        line_append.send(word)
+                        line_builder.send(word)
 
         # the last line
         if len(line) != 0:
             self.typeset_line(container, line, line_pointers, last_line=True)
-        line_append.close()
+        line_builder.close()
 
         self._init_state()
         return container.cursor - start_offset
