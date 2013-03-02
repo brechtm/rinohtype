@@ -133,27 +133,14 @@ class Line(list):
             return 0
 
         # replace tabs with spacers or fillers
-        # TODO: encapsulate (Tab.expand method)
-        i = 0
-        while i < len(self):
-            if isinstance(self[i], Tab):
-                tab = self.pop(i)
-                try:
-                    fill_char = SingleStyledText(tab.tab_stop.fill)
-                    fill_char.parent = tab.parent
-                    number, rest = divmod(tab.tab_width, fill_char.width)
-                    spacer = Spacer(rest)
-                    spacer.parent = tab.parent
-                    self.insert(i, spacer)
-                    fill_text = SingleStyledText(tab.tab_stop.fill * int(number))
-                    fill_text.parent = tab.parent
-                    self.insert(i + 1, fill_text)
-                    i += 1
-                except (AttributeError, TypeError):
-                    spacer = Spacer(tab.tab_width)
-                    spacer.parent = tab.parent
-                    self.insert(i, spacer)
-            i += 1
+        index = 0
+        while index < len(self):
+            if isinstance(self[index], Tab):
+                tab = self.pop(index)
+                for item in tab.expand():
+                    self.insert(index, item)
+                    index += 1
+            index += 1
 
         line_height = max(float(item.height) for item in self)
         extra_space = self.width - self.text_width

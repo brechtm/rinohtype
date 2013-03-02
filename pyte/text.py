@@ -480,9 +480,10 @@ class NoBreakSpace(Character):
 class Spacer(FixedWidthSpace):
     """A space of a specific width."""
 
-    def __init__(self, width):
-        """Initialize this spacer at `width`."""
-        super().__init__()
+    def __init__(self, width, style=PARENT_STYLE, parent=None):
+        """Initialize this spacer at `width` with `style` and `parent` (see
+        :class:`StyledText`)."""
+        super().__init__(style=style, parent=parent)
         self._width = width
 
     @property
@@ -543,6 +544,26 @@ class Tab(ControlCharacter):
         a later point in time when context (:class:`TabStop`) is available."""
         super().__init__(' ')
         self.tab_width = 0
+
+    def expand(self):
+        """Generator expanding this tab to either a spacer or a sequence of fill
+        strings. The yielded items have a total width equal to the required tab
+        width, as determined from the context.
+
+        If the associated :class:`TabStop` has a fill string set, the items
+        yielded consist of a sequence of these fill strings, preceeded by a
+        :class:`Spacer` to pad to the tab width. If no fill string is set, only
+        a single :class:`Spacer` is yielded."""
+        style_and_parent = {'style': self.style, 'parent': self.parent}
+        fill_string = self.tab_stop.fill
+        if fill_string:
+            fill_text = SingleStyledText(fill_string, **style_and_parent)
+            number, rest = divmod(self.tab_width, fill_text.width)
+            yield Spacer(rest, **style_and_parent)
+            for i in range(int(number)):
+                yield fill_text
+        else:
+            yield Spacer(self.tab_width, **style_and_parent)
 
 
 SPECIAL_CHARS = {' ': Space,
