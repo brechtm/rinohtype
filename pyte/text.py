@@ -269,29 +269,28 @@ class SingleStyledText(StyledText):
     @property
     def width(self):
         """The total width of this single-styled text."""
-        return sum(self.widths)
+        return sum(self.widths())
 
-    @cached_property
+    @cached_generator
     def widths(self):
-        """A list of the widths of the individual glyphs in this single-styled
-        text. Kerning adjustment (if enabled in the :class:`TextStyle`) between
-        two glyphs is added to the width of the first glyph."""
+        """Generator yielding the widths of the individual glyphs in this
+        single-styled text. Kerning adjustment (if enabled in the
+        :class:`TextStyle`) between two glyphs is added to the width of the
+        first glyph."""
         scale = float(self.height) / self.font.scaling_factor
         get_kerning = self.font.metrics.get_kerning
         kerning = self.get_style('kerning')
         glyphs = self.glyphs()
-        widths = []
 
         prev_glyph = next(glyphs)
         prev_width = prev_glyph.width
         for glyph in glyphs:
             if kerning:
                 prev_width += get_kerning(prev_glyph, glyph)
-            widths.append(prev_width * scale)
+            yield prev_width * scale
             prev_width = glyph.width
             prev_glyph = glyph
-        widths.append(prev_width * scale)
-        return widths
+        yield prev_width * scale
 
     @cached_generator
     def glyphs(self):
@@ -486,7 +485,6 @@ class Spacer(FixedWidthSpace):
         super().__init__(style=style, parent=parent)
         self._width = width
 
-    @property
     def widths(self):
         """Generator yielding the width of this spacer."""
         yield float(self._width)

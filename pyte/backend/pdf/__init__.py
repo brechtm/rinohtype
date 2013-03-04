@@ -190,43 +190,49 @@ class Canvas(StringIO):
                 char = '\\' + char
         return char
 
-    def show_glyphs(self, left, top, font, size, glyphs, x_displacements):
+    def show_glyphs(self, left, top, font, size):
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''
-        for glyph, displ in zip(glyphs, x_displacements):
-            displ = (1000 * displ) / size
-            if isinstance(font, Type1Font):
-                try:
-                    code = glyph.code
-                except KeyError:
-                    code = -1
-                if code < 0:
-                    try:
-                        differences = font_rsc['Encoding']['Differences']
-                    except KeyError:
-                        occupied_codes = list(font.encoding.values())
-                        differences = cos.EncodingDifferences(occupied_codes)
-                        font_rsc['Encoding']['Differences'] = differences
-                    code = differences.register(glyph)
-                char = self._code_to_char(code)
-            elif isinstance(font, OpenTypeFont):
-                high, low = glyph.code >> 8, glyph.code & 0xFF
-                char = self._code_to_char(high) + self._code_to_char(low)
-            adjust = int(glyph.width - displ)
-            if adjust:
-                string += '({}{}) {} '.format(current_string, char, adjust)
-                current_string = ''
-            else:
-                current_string += char
-        if current_string:
-            string += '({})'.format(current_string)
-
-        print('BT', file=self)
-        print('/{} {} Tf'.format(font_name, size), file=self)
-        print('{} {} Td'.format(left, - top), file=self)
-        print('[{}] TJ'.format(string), file=self)
-        print('ET', file=self)
+        last_width = 0
+        try:
+            while True:
+                glyphs_and_widths = (yield last_width)
+                last_width = 0
+                for glyph, width in glyphs_and_widths:
+                    last_width += width
+                    displ = (1000 * width) / size
+                    if isinstance(font, Type1Font):
+                        try:
+                            code = glyph.code
+                        except KeyError:
+                            code = -1
+                        if code < 0:
+                            try:
+                                differences = font_rsc['Encoding']['Differences']
+                            except KeyError:
+                                occupied_codes = list(font.encoding.values())
+                                differences = cos.EncodingDifferences(occupied_codes)
+                                font_rsc['Encoding']['Differences'] = differences
+                            code = differences.register(glyph)
+                        char = self._code_to_char(code)
+                    elif isinstance(font, OpenTypeFont):
+                        high, low = glyph.code >> 8, glyph.code & 0xFF
+                        char = self._code_to_char(high) + self._code_to_char(low)
+                    adjust = int(glyph.width - displ)
+                    if adjust:
+                        string += '({}{}) {} '.format(current_string, char, adjust)
+                        current_string = ''
+                    else:
+                        current_string += char
+        except GeneratorExit:
+            if current_string:
+                string += '({})'.format(current_string)
+            print('BT', file=self)
+            print('/{} {} Tf'.format(font_name, size), file=self)
+            print('{} {} Td'.format(left, - top), file=self)
+            print('[{}] TJ'.format(string), file=self)
+            print('ET', file=self)
 
     def place_image(self, image, left, top, scale=1.0):
         resources = self.cos_page.cos_page['Resources']

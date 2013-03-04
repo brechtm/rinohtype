@@ -164,42 +164,20 @@ class Line(list):
         # position cursor
         container.advance(line_height)
 
-        def render_span(item, font_style, glyphs, widths):
-            font, size, y_offset = font_style
-            y = container.cursor - y_offset
-            container.canvas.show_glyphs(x, y, font, size, glyphs, widths)
-            total_width = sum(widths)
-            del glyphs[:]
-            del widths[:]
-            return total_width
-
-        # typeset spans
-        prev_item = None
-        glyphs = []
-        widths = []
+        span = None
         prev_font_style = None
         for item in self:
-            font_style = item.font, float(item.height), item.y_offset
-            if isinstance(item, Box):
-                if prev_item:
-                    x += render_span(prev_item, prev_font_style, glyphs, widths)
-                    prev_item = None
-                    prev_font_style = None
-                x += item.render(container.canvas, x,
-                                 self.paragraph.container.cursor)
-                continue
+            font_style = font, size, y_offset = item.font, float(item.height), item.y_offset
+            if font_style != prev_font_style:
+                if span: span.close()
+                span = container.canvas.show_glyphs(x, container.cursor - y_offset, font, size)
+                next(span)
             if _is_scalable_space(item):
-                item_widths = [item.widths[0] + add_to_spaces]
+                x += span.send(zip(item.glyphs(), [next(item.widths()) + add_to_spaces]))
             else:
-                item_widths = item.widths
-            if prev_item and font_style != prev_font_style:
-                x += render_span(prev_item, prev_font_style, glyphs, widths)
-            widths += item_widths
-            glyphs += item.glyphs()
-            prev_item = item
+                x += span.send(zip(item.glyphs(), item.widths()))
             prev_font_style = font_style
-        if prev_item:
-            x += render_span(prev_item, prev_font_style, glyphs, widths)
+        span.close()
 
         return line_height
 
