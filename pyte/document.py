@@ -126,11 +126,11 @@ class Document(object):
             pickle.dump(cache, file)
 
     def _has_converged(self):
-        """Return `true` if the last rendering iteration converged to a stable
+        """Return `True` if the last rendering iteration converged to a stable
         result.
 
-        Practically, this means that the total number of pages and page
-        references to document elements have not changed since the previous
+        Practically, this tests whether the total number of pages and page
+        references to document elements have changed since the previous
         rendering iteration."""
         return (self.number_of_pages == self._previous_number_of_pages and
                 self.page_references == self._previous_page_references)
