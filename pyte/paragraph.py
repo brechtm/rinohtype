@@ -145,37 +145,40 @@ class Line(list):
         line_height = max(float(item.height) for item in self)
         extra_space = self.width - self.text_width
 
-        def _is_scalable_space(item):
-            return isinstance(item, Space) and not item.fixed_width
-
         # horizontal displacement
         x = self.indent
-        add_to_spaces = 0.0
-        if justification == CENTER:
-            x += extra_space / 2.0
-        elif justification == RIGHT:
-            x += extra_space
-        elif justification == BOTH:
-            number_of_spaces = list(map(_is_scalable_space, self)).count(True)
-            if number_of_spaces:
-                add_to_spaces = extra_space / number_of_spaces
-                # TODO: padding added to spaces should be prop. to font size
+
+        if justification == BOTH:
+            def stretch_spaces(add_to_spaces):
+                for item in self:
+                    if type(item) is Space:
+                        yield Spacer(item.width + add_to_spaces,
+                                     style=item.style, parent=item.parent)
+                    else:
+                        yield item
+
+            number_of_spaces = sum(1 for item in self if type(item) is Space)
+            items = stretch_spaces(extra_space / number_of_spaces)
+            # TODO: padding added to spaces should be prop. to font size
+        else:
+            items = iter(self)
+            if justification == CENTER:
+                x += extra_space / 2.0
+            elif justification == RIGHT:
+                x += extra_space
 
         # position cursor
         container.advance(line_height)
 
         span = None
         prev_font_style = None
-        for item in self:
+        for item in items:
             font_style = font, size, y_offset = item.font, float(item.height), item.y_offset
             if font_style != prev_font_style:
                 if span: span.close()
                 span = container.canvas.show_glyphs(x, container.cursor - y_offset, font, size)
                 next(span)
-            if _is_scalable_space(item):
-                x += span.send(zip(item.glyphs(), [next(item.widths()) + add_to_spaces]))
-            else:
-                x += span.send(zip(item.glyphs(), item.widths()))
+            x += span.send(zip(item.glyphs(), item.widths()))
             prev_font_style = font_style
         span.close()
 
