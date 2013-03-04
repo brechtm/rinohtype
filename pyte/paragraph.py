@@ -64,6 +64,7 @@ class Line(list):
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
+        self._has_tab = False
         self._in_tab = None
 
     def _find_tab_stop(self, cursor):
@@ -79,6 +80,7 @@ class Line(list):
         if not self and isinstance(item, Space):
             return
         elif isinstance(item, Tab):
+            self._has_tab = True
             cursor = self.text_width
             tab_stop, tab_position = self._find_tab_stop(cursor)
             if tab_stop:
@@ -118,12 +120,9 @@ class Line(list):
 
     def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
-        max_font_size = 0
-        justify = self.paragraph.get_style('justify')
-        if Tab in map(type, self) or justify == BOTH and last_line:
+        justification = self.paragraph.get_style('justify')
+        if self._has_tab or justification == BOTH and last_line:
             justification = LEFT
-        else:
-            justification = justify
 
         # drop spaces at the end of the line
         try:
@@ -133,23 +132,22 @@ class Line(list):
             return 0
 
         # replace tabs with spacers or fillers
-        index = 0
-        while index < len(self):
-            if isinstance(self[index], Tab):
-                tab = self.pop(index)
-                for item in tab.expand():
-                    self.insert(index, item)
-                    index += 1
-            index += 1
+        def expand_tabs(items):
+            for item in items:
+                if isinstance(item, Tab):
+                    for element in item.expand():
+                        yield element
+                else:
+                    yield item
 
-        line_height = max(float(item.height) for item in self)
-        extra_space = self.width - self.text_width
+        items = expand_tabs(self)
 
         # horizontal displacement
         x = self.indent
 
+        extra_space = self.width - self.text_width
         if justification == BOTH:
-            def stretch_spaces(add_to_spaces):
+            def stretch_spaces(items, add_to_spaces):
                 for item in self:
                     if type(item) is Space:
                         yield Spacer(item.width + add_to_spaces,
@@ -158,16 +156,15 @@ class Line(list):
                         yield item
 
             number_of_spaces = sum(1 for item in self if type(item) is Space)
-            items = stretch_spaces(extra_space / number_of_spaces)
+            items = stretch_spaces(items, extra_space / number_of_spaces)
             # TODO: padding added to spaces should be prop. to font size
-        else:
-            items = iter(self)
-            if justification == CENTER:
-                x += extra_space / 2.0
-            elif justification == RIGHT:
-                x += extra_space
+        elif justification == CENTER:
+            x += extra_space / 2.0
+        elif justification == RIGHT:
+            x += extra_space
 
         # position cursor
+        line_height = max(float(item.height) for item in self)
         container.advance(line_height)
 
         span = None
