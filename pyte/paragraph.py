@@ -1,4 +1,6 @@
 
+from itertools import tee
+
 from .dimension import Dimension, PT
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
@@ -197,23 +199,26 @@ class Paragraph(MixedStyledText, Flowable):
         self.word_pointer = 0
         self.field_pointer = None
         self.first_line = True
+        self.spillover = None
+        self.word_pointer = self._split_words(self.spans())
 
     def _split_words(self, spans):
-        join = False
-        words = []
         for span in spans:
             try:
-                words += span.split()
+                for part in span.split():
+                    yield part
             except AttributeError:
-                words.append(span)
-        return words
+                yield span
 
     def render(self, container):
         return self.typeset(container)
 
     def typeset(self, container):
         if not self._words:
-            self._words = self._split_words(self.spans())
+            self._words = True
+            #self._words = self._split_words(self.spans())
+            #self.word_pointer = iter(self._words)
+            self.word_pointer = self._split_words(self.spans())
 
         canvas = container.canvas
         start_offset = container.cursor
@@ -229,36 +234,41 @@ class Paragraph(MixedStyledText, Flowable):
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
+        self.word_pointer, self.saved_pointer = tee(self.word_pointer)
 
-        while self.word_pointer < len(self._words):
-            word = self._words[self.word_pointer]
+        if self.spillover:
+            pass
+
+        for word in self.word_pointer:
             if isinstance(word, LateEval):
-                if self.field_pointer is None:
-                    self._field_words = self._split_words(word.spans(container))
-                    self.field_pointer = 0
-                else:
-                    self.field_pointer += 1
-                if self._field_words:
-                    word = self._field_words[self.field_pointer]
-                if self.field_pointer >= len(self._field_words) - 1:
-                    self.field_pointer = None
-                    self.word_pointer += 1
-                if not self._field_words:
-                    continue
-            else:
-                self.word_pointer += 1
+                continue
+##                if self.field_pointer is None:
+##                    self._field_words = self._split_words(word.spans(container))
+##                    self.field_pointer = 0
+##                else:
+##                    self.field_pointer += 1
+##                if self._field_words:
+##                    word = self._field_words[self.field_pointer]
+##                if self.field_pointer >= len(self._field_words) - 1:
+##                    self.field_pointer = None
+####                    self.word_pointer += 1
+##                if not self._field_words:
+##                    continue
+####            else:
+####                self.word_pointer += 1
 
             if isinstance(word, (Newline, Flowable)):
                 line_pointers = self.typeset_line(container, line,
                                                   line_pointers, last_line=True)
                 if isinstance(word, Flowable):
-                    self.word_pointer -= 1
+##                    self.word_pointer -= 1
                     child_container = DownExpandingContainer(container,
                                         left=self.get_style('indent_left'),
                                         top=container.cursor*PT)
                     container.advance(word.flow(child_container))
-                    self.word_pointer += 1
+##                    self.word_pointer += 1
                 line = Line(self, line_width, indent_left)
+                self.word_pointer, self.saved_pointer = tee(self.word_pointer)
             else:
                 try:
                     line.append(word)
@@ -266,6 +276,7 @@ class Paragraph(MixedStyledText, Flowable):
                     line_pointers = self.typeset_line(container, line,
                                                       line_pointers)
                     line = Line(self, line_width, indent_left)
+                    self.word_pointer, self.saved_pointer = tee(self.word_pointer)
                     if eol.hyphenation_remainder:
                         line.append(eol.hyphenation_remainder)
                     else:
@@ -289,12 +300,8 @@ class Paragraph(MixedStyledText, Flowable):
         try:
             line_height = line.typeset(container, last_line)
             container.advance(self._line_spacing(line_height) - line_height)
-            try:
-                line_pointers = (self.word_pointer - 1, self.field_pointer - 1)
-            except TypeError:
-                line_pointers = (self.word_pointer - 1, self.field_pointer)
         except EndOfContainer:
-            self.word_pointer, self.field_pointer = line_pointers
+            self.word_pointer = self.saved_pointer
             raise
         self.first_line = False
         return line_pointers
