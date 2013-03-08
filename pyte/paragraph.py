@@ -7,7 +7,7 @@ from .flowable import Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEval, Footnote
 from .text import Character, Space, Box, Newline, Tab, Spacer
-from .text import TextStyle, SingleStyledText, MixedStyledText
+from .text import TextStyle, MixedStyledText
 
 
 # Text justification
@@ -101,7 +101,7 @@ class Line(list):
                         self._in_tab.tab_width -= first_width
                         super().append(first)
                         raise EndOfLine(second)
-                raise EndOfLine
+                raise EndOfLine(item)
             else:
                 self._in_tab.tab_width -= width / factor
                 self.text_width -= width / factor
@@ -115,7 +115,7 @@ class Line(list):
                         self.text_width += first.width
                         super().append(first)
                         raise EndOfLine(second)
-                raise EndOfLine
+                raise EndOfLine(item)
 
         self.text_width += width
         super().append(item)
@@ -231,6 +231,7 @@ class Paragraph(MixedStyledText, Flowable):
         self._last_font_style = None
         line_pointers = self.word_pointer, self.field_pointer
         if self.first_line:
+            self.first_line = False
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
@@ -238,6 +239,27 @@ class Paragraph(MixedStyledText, Flowable):
 
         if self.spillover:
             pass
+
+        def typeset_line(line, last_line=False):
+            try:
+                line_height = line.typeset(container, last_line)
+                container.advance(self._line_spacing(line_height) - line_height)
+            except EndOfContainer:
+                self.word_pointer = self.saved_pointer
+                raise
+
+        def append(line, word):
+            try:
+                line.append(word)
+                return line
+            except EndOfLine as eol:
+                typeset_line(line)
+                line = Line(self, line_width, indent_left)
+                self.word_pointer, self.saved_pointer = tee(self.word_pointer)
+                if eol.hyphenation_remainder:
+                    return append(line, eol.hyphenation_remainder)
+                else:
+                    return line
 
         for word in self.word_pointer:
             if isinstance(word, LateEval):
@@ -257,34 +279,20 @@ class Paragraph(MixedStyledText, Flowable):
 ####            else:
 ####                self.word_pointer += 1
 
-            if isinstance(word, (Newline, Flowable)):
-                line_pointers = self.typeset_line(container, line,
-                                                  line_pointers, last_line=True)
-                if isinstance(word, Flowable):
-##                    self.word_pointer -= 1
-                    child_container = DownExpandingContainer(container,
-                                        left=self.get_style('indent_left'),
-                                        top=container.cursor*PT)
-                    container.advance(word.flow(child_container))
-##                    self.word_pointer += 1
+            if isinstance(word, Flowable):
+                typeset_line(line, last_line=True)
+                child_container = DownExpandingContainer(container,
+                                    left=self.get_style('indent_left'),
+                                    top=container.cursor*PT)
+                container.advance(word.flow(child_container))
                 line = Line(self, line_width, indent_left)
                 self.word_pointer, self.saved_pointer = tee(self.word_pointer)
             else:
-                try:
-                    line.append(word)
-                except EndOfLine as eol:
-                    line_pointers = self.typeset_line(container, line,
-                                                      line_pointers)
-                    line = Line(self, line_width, indent_left)
-                    self.word_pointer, self.saved_pointer = tee(self.word_pointer)
-                    if eol.hyphenation_remainder:
-                        line.append(eol.hyphenation_remainder)
-                    else:
-                        line.append(word)
+                line = append(line, word)
 
         # the last line
         if len(line) != 0:
-            self.typeset_line(container, line, line_pointers, last_line=True)
+            typeset_line(line, last_line=True)
 
         self._init_state()
         return container.cursor - start_offset
@@ -295,13 +303,3 @@ class Paragraph(MixedStyledText, Flowable):
             return float(line_spacing)
         else:
             return line_spacing * line_height
-
-    def typeset_line(self, container, line, line_pointers, last_line=False):
-        try:
-            line_height = line.typeset(container, last_line)
-            container.advance(self._line_spacing(line_height) - line_height)
-        except EndOfContainer:
-            self.word_pointer = self.saved_pointer
-            raise
-        self.first_line = False
-        return line_pointers

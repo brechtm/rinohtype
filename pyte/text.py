@@ -533,6 +533,11 @@ class Newline(ControlCharacter):
         """Initiatize this newline character."""
         super().__init__('\n')
 
+    @property
+    def width(self):
+        from .paragraph import EndOfLine
+        raise EndOfLine
+
 
 class Tab(ControlCharacter):
     """Tabulator character, used for vertically aligning text."""
