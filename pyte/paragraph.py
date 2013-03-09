@@ -229,7 +229,7 @@ class Paragraph(MixedStyledText, Flowable):
             return words
 
         line = Line(self, line_width, first_line_indent)
-        words = self._words
+        self._words, words = tee(self._words)
         while True:
             try:
                 word = next(words)
