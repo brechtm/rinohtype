@@ -201,6 +201,7 @@ class Paragraph(MixedStyledText, Flowable):
         self.first_line = True
         self.spillover = None
         self.word_pointer = self._split_words(self.spans())
+        self.remainder = None
 
     def _split_words(self, spans):
         for span in spans:
@@ -237,9 +238,6 @@ class Paragraph(MixedStyledText, Flowable):
             line = Line(self, line_width, indent_left)
         self.word_pointer, self.saved_pointer = tee(self.word_pointer)
 
-        if self.spillover:
-            pass
-
         def typeset_line(line, last_line=False):
             try:
                 line_height = line.typeset(container, last_line)
@@ -249,17 +247,16 @@ class Paragraph(MixedStyledText, Flowable):
                 raise
 
         def append(line, word):
+            if not line and self.remainder:
+                line.append(self.remainder)
             try:
                 line.append(word)
-                return line
             except EndOfLine as eol:
                 typeset_line(line)
+                self.remainder = eol.hyphenation_remainder
                 line = Line(self, line_width, indent_left)
                 self.word_pointer, self.saved_pointer = tee(self.word_pointer)
-                if eol.hyphenation_remainder:
-                    return append(line, eol.hyphenation_remainder)
-                else:
-                    return line
+            return line
 
         for word in self.word_pointer:
             if isinstance(word, LateEval):
