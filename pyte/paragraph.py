@@ -184,6 +184,15 @@ class Line(list):
         return line_height
 
 
+def split_into_words(spans):
+    for span in spans:
+        try:
+            for part in span.split():
+                yield part
+        except AttributeError:
+            yield span
+
+
 class Paragraph(MixedStyledText, Flowable):
     style_class = ParagraphStyle
 
@@ -192,7 +201,6 @@ class Paragraph(MixedStyledText, Flowable):
         # TODO: move to TextStyle
         #self.char_spacing = 0.0
 
-        self._words = []
         self._init_state()
 
     def _init_state(self):
@@ -200,27 +208,13 @@ class Paragraph(MixedStyledText, Flowable):
         self.field_pointer = None
         self.first_line = True
         self.spillover = None
-        self.word_pointer = self._split_words(self.spans())
+        self.word_pointer = split_into_words(self.spans())
         self.remainder = None
-
-    def _split_words(self, spans):
-        for span in spans:
-            try:
-                for part in span.split():
-                    yield part
-            except AttributeError:
-                yield span
 
     def render(self, container):
         return self.typeset(container)
 
     def typeset(self, container):
-        if not self._words:
-            self._words = True
-            #self._words = self._split_words(self.spans())
-            #self.word_pointer = iter(self._words)
-            self.word_pointer = self._split_words(self.spans())
-
         canvas = container.canvas
         start_offset = container.cursor
 
@@ -262,7 +256,7 @@ class Paragraph(MixedStyledText, Flowable):
             if isinstance(word, LateEval):
                 continue
 ##                if self.field_pointer is None:
-##                    self._field_words = self._split_words(word.spans(container))
+##                    self._field_words = split_into_words(word.spans(container))
 ##                    self.field_pointer = 0
 ##                else:
 ##                    self.field_pointer += 1
