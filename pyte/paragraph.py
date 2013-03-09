@@ -204,12 +204,10 @@ class Paragraph(MixedStyledText, Flowable):
         self._init_state()
 
     def _init_state(self):
-        self.word_pointer = 0
+        self.word_pointer = split_into_words(self.spans())
         self.field_pointer = None
         self.first_line = True
         self.spillover = None
-        self.word_pointer = split_into_words(self.spans())
-        self.remainder = None
 
     def render(self, container):
         return self.typeset(container)
@@ -241,13 +239,13 @@ class Paragraph(MixedStyledText, Flowable):
                 raise
 
         def append(line, word):
-            if not line and self.remainder:
-                line.append(self.remainder)
+            if not line and self.spillover:
+                line.append(self.spillover)
             try:
                 line.append(word)
             except EndOfLine as eol:
                 typeset_line(line)
-                self.remainder = eol.hyphenation_remainder
+                self.spillover = eol.hyphenation_remainder
                 line = Line(self, line_width, indent_left)
                 self.word_pointer, self.saved_pointer = tee(self.word_pointer)
             return line
