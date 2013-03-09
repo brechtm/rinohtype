@@ -228,9 +228,11 @@ class Paragraph(MixedStyledText, Flowable):
         else:
             line = Line(self, line_width, indent_left)
 
-        def typeset_line(line, last_line=False):
+        def typeset_line(line, words, last_line=False):
             line_height = line.typeset(container, last_line)
             container.advance(self._line_spacing(line_height) - line_height)
+            self._words, words = tee(words)
+            return words
 
         while True:
             try:
@@ -240,26 +242,24 @@ class Paragraph(MixedStyledText, Flowable):
             try:
                 line.append(word)
             except EndOfLine as eol:
-                typeset_line(line)
                 if eol.spillover:
                     words = chain((eol.spillover, ), words)
-                self._words, words = tee(words)
+                words = typeset_line(line, words)
                 line = Line(self, line_width, indent_left)
             except LateEvalException:
                 late_eval_words = split_into_words(word.spans(container))
                 words = chain(late_eval_words, words)
             except FlowableException:
-                typeset_line(line, last_line=True)
+                words = typeset_line(line, words, last_line=True)
                 child_container = DownExpandingContainer(container,
                                     left=self.get_style('indent_left'),
                                     top=container.cursor*PT)
                 container.advance(word.flow(child_container))
                 line = Line(self, line_width, indent_left)
-                self._words, words = tee(words)
 
         # the last line
-        if len(line) != 0:
-            typeset_line(line, last_line=True)
+        if line:
+            typeset_line(line, words, last_line=True)
 
         self._init_state()
         return container.cursor - start_offset
