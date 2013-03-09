@@ -211,22 +211,16 @@ class Paragraph(MixedStyledText, Flowable):
         return self.typeset(container)
 
     def typeset(self, container):
-        canvas = container.canvas
         start_offset = container.cursor
 
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
         indent_first = float(self.get_style('indent_first'))
         line_width = float(container.width - indent_right)
-
-        words = self._words
-
-        self._last_font_style = None
+        first_line_indent = indent_left
         if self.first_line:
+            first_line_indent += indent_first
             self.first_line = False
-            line = Line(self, line_width, indent_left + indent_first)
-        else:
-            line = Line(self, line_width, indent_left)
 
         def typeset_line(line, words, last_line=False):
             line_height = line.typeset(container, last_line)
@@ -234,6 +228,8 @@ class Paragraph(MixedStyledText, Flowable):
             self._words, words = tee(words)
             return words
 
+        line = Line(self, line_width, first_line_indent)
+        words = self._words
         while True:
             try:
                 word = next(words)
