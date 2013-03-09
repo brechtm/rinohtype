@@ -17,6 +17,10 @@ from .util import Decorator
 __all__ = ['Flowable', 'FlowableStyle', 'Floating']
 
 
+class FlowableException(Exception):
+    pass
+
+
 class FlowableStyle(Style):
     """The :class:`Style` for :class:`Flowable` objects. It has the following
     attributes:
@@ -58,6 +62,10 @@ class Flowable(Styled):
         self.resume = False
         container.advance(float(self.get_style('space_below')))
         return container.cursor - start_offset
+
+    @property
+    def width(self):
+        raise FlowableException
 
     def render(self, container):
         """Renders the flowable's content to `container`. This is different for

@@ -3,7 +3,7 @@ from itertools import chain, tee
 
 from .dimension import Dimension, PT
 from .hyphenator import Hyphenator
-from .flowable import Flowable, FlowableStyle
+from .flowable import FlowableException, Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEvalException, Footnote
 from .text import Character, Space, Box, Newline, Tab, Spacer
@@ -237,7 +237,18 @@ class Paragraph(MixedStyledText, Flowable):
                 word = next(words)
             except StopIteration:
                 break
-            if isinstance(word, Flowable):
+            try:
+                line.append(word)
+            except EndOfLine as eol:
+                typeset_line(line)
+                if eol.spillover:
+                    words = chain((eol.spillover, ), words)
+                self._words, words = tee(words)
+                line = Line(self, line_width, indent_left)
+            except LateEvalException:
+                late_eval_words = split_into_words(word.spans(container))
+                words = chain(late_eval_words, words)
+            except FlowableException:
                 typeset_line(line, last_line=True)
                 child_container = DownExpandingContainer(container,
                                     left=self.get_style('indent_left'),
@@ -245,18 +256,6 @@ class Paragraph(MixedStyledText, Flowable):
                 container.advance(word.flow(child_container))
                 line = Line(self, line_width, indent_left)
                 self._words, words = tee(words)
-            else:
-                try:
-                    line.append(word)
-                except LateEvalException as late_eval:
-                    late_eval_words = split_into_words(word.spans(container))
-                    words = chain(late_eval_words, words)
-                except EndOfLine as eol:
-                    typeset_line(line)
-                    if eol.spillover:
-                        words = chain((eol.spillover, ), words)
-                    self._words, words = tee(words)
-                    line = Line(self, line_width, indent_left)
 
         # the last line
         if len(line) != 0:
