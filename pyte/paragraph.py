@@ -204,7 +204,7 @@ class Paragraph(MixedStyledText, Flowable):
         self._init_state()
 
     def _init_state(self):
-        self.word_pointer = split_into_words(self.spans())
+        self._words = split_into_words(self.spans())
         self.first_line = True
 
     def render(self, container):
@@ -219,40 +219,22 @@ class Paragraph(MixedStyledText, Flowable):
         indent_first = float(self.get_style('indent_first'))
         line_width = float(container.width - indent_right)
 
+        words = self._words
+
         self._last_font_style = None
         if self.first_line:
             self.first_line = False
             line = Line(self, line_width, indent_left + indent_first)
         else:
             line = Line(self, line_width, indent_left)
-        self.word_pointer, self.saved_pointer = tee(self.word_pointer)
 
         def typeset_line(line, last_line=False):
-            try:
-                line_height = line.typeset(container, last_line)
-                container.advance(self._line_spacing(line_height) - line_height)
-            except EndOfContainer:
-                self.word_pointer = self.saved_pointer
-                raise
-
-        def append(line, word):
-            try:
-                line.append(word)
-            except LateEvalException as late_eval:
-                late_eval_words = split_into_words(word.spans(container))
-                self.word_pointer = chain(late_eval_words, self.word_pointer)
-            except EndOfLine as eol:
-                typeset_line(line)
-                if eol.spillover:
-                    self.word_pointer = chain((eol.spillover, ),
-                                              self.word_pointer)
-                self.word_pointer, self.saved_pointer = tee(self.word_pointer)
-                line = Line(self, line_width, indent_left)
-            return line
+            line_height = line.typeset(container, last_line)
+            container.advance(self._line_spacing(line_height) - line_height)
 
         while True:
             try:
-                word = next(self.word_pointer)
+                word = next(words)
             except StopIteration:
                 break
             if isinstance(word, Flowable):
@@ -262,9 +244,19 @@ class Paragraph(MixedStyledText, Flowable):
                                     top=container.cursor*PT)
                 container.advance(word.flow(child_container))
                 line = Line(self, line_width, indent_left)
-                self.word_pointer, self.saved_pointer = tee(self.word_pointer)
+                self._words, words = tee(words)
             else:
-                line = append(line, word)
+                try:
+                    line.append(word)
+                except LateEvalException as late_eval:
+                    late_eval_words = split_into_words(word.spans(container))
+                    words = chain(late_eval_words, words)
+                except EndOfLine as eol:
+                    typeset_line(line)
+                    if eol.spillover:
+                        words = chain((eol.spillover, ), words)
+                    self._words, words = tee(words)
+                    line = Line(self, line_width, indent_left)
 
         # the last line
         if len(line) != 0:
