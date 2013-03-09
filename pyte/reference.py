@@ -5,9 +5,17 @@ from .text import SingleStyledText, TextStyle, Superscript
 from .warnings import PyteWarning
 
 
+class LateEvalException(Exception):
+    pass
+
+
 class LateEval(object):
     def __init__(self, field):
         self.field = field
+
+    @property
+    def width(self):
+        raise LateEvalException
 
     def split(self):
         yield self

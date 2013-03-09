@@ -1,11 +1,11 @@
 
-from itertools import tee
+from itertools import chain, tee
 
 from .dimension import Dimension, PT
 from .hyphenator import Hyphenator
 from .flowable import Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
-from .reference import LateEval, Footnote
+from .reference import LateEvalException, Footnote
 from .text import Character, Space, Box, Newline, Tab, Spacer
 from .text import TextStyle, MixedStyledText
 
@@ -205,7 +205,7 @@ class Paragraph(MixedStyledText, Flowable):
 
     def _init_state(self):
         self.word_pointer = split_into_words(self.spans())
-        self.field_pointer = None
+        self.field_pointer = self.saved_field_pointer = iter([])
         self.first_line = True
         self.spillover = None
 
@@ -222,7 +222,6 @@ class Paragraph(MixedStyledText, Flowable):
         line_width = float(container.width - indent_right)
 
         self._last_font_style = None
-        line_pointers = self.word_pointer, self.field_pointer
         if self.first_line:
             self.first_line = False
             line = Line(self, line_width, indent_left + indent_first)
@@ -243,31 +242,21 @@ class Paragraph(MixedStyledText, Flowable):
                 line.append(self.spillover)
             try:
                 line.append(word)
+            except LateEvalException as late_eval:
+                late_eval_words = split_into_words(word.spans(container))
+                self.word_pointer = chain(late_eval_words, self.word_pointer)
             except EndOfLine as eol:
                 typeset_line(line)
                 self.spillover = eol.hyphenation_remainder
-                line = Line(self, line_width, indent_left)
                 self.word_pointer, self.saved_pointer = tee(self.word_pointer)
+                line = Line(self, line_width, indent_left)
             return line
 
-        for word in self.word_pointer:
-            if isinstance(word, LateEval):
-                continue
-##                if self.field_pointer is None:
-##                    self._field_words = split_into_words(word.spans(container))
-##                    self.field_pointer = 0
-##                else:
-##                    self.field_pointer += 1
-##                if self._field_words:
-##                    word = self._field_words[self.field_pointer]
-##                if self.field_pointer >= len(self._field_words) - 1:
-##                    self.field_pointer = None
-####                    self.word_pointer += 1
-##                if not self._field_words:
-##                    continue
-####            else:
-####                self.word_pointer += 1
-
+        while True:
+            try:
+                word = next(self.word_pointer)
+            except StopIteration:
+                break
             if isinstance(word, Flowable):
                 typeset_line(line, last_line=True)
                 child_container = DownExpandingContainer(container,
