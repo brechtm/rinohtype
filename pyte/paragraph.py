@@ -55,8 +55,8 @@ class TabStop(object):
 
 
 class EndOfLine(Exception):
-    def __init__(self, hyphenation_remainder=None):
-        self.hyphenation_remainder = hyphenation_remainder
+    def __init__(self, spillover=None):
+        self.spillover = spillover
 
 
 class Line(list):
@@ -205,9 +205,7 @@ class Paragraph(MixedStyledText, Flowable):
 
     def _init_state(self):
         self.word_pointer = split_into_words(self.spans())
-        self.field_pointer = self.saved_field_pointer = iter([])
         self.first_line = True
-        self.spillover = None
 
     def render(self, container):
         return self.typeset(container)
@@ -238,8 +236,6 @@ class Paragraph(MixedStyledText, Flowable):
                 raise
 
         def append(line, word):
-            if not line and self.spillover:
-                line.append(self.spillover)
             try:
                 line.append(word)
             except LateEvalException as late_eval:
@@ -247,7 +243,9 @@ class Paragraph(MixedStyledText, Flowable):
                 self.word_pointer = chain(late_eval_words, self.word_pointer)
             except EndOfLine as eol:
                 typeset_line(line)
-                self.spillover = eol.hyphenation_remainder
+                if eol.spillover:
+                    self.word_pointer = chain((eol.spillover, ),
+                                              self.word_pointer)
                 self.word_pointer, self.saved_pointer = tee(self.word_pointer)
                 line = Line(self, line_width, indent_left)
             return line
