@@ -10,6 +10,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
+from .layout import EndOfContainer
 from .style import Style, Styled
 from .util import Decorator
 
@@ -60,7 +61,10 @@ class Flowable(Styled):
             container.advance(float(self.get_style('space_above')))
         self.render(container)
         self.resume = False
-        container.advance(float(self.get_style('space_below')))
+        try:
+            container.advance(float(self.get_style('space_below')))
+        except EndOfContainer:
+            pass
         return container.cursor - start_offset
 
     @property
