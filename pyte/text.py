@@ -526,6 +526,10 @@ class ControlCharacter(Character):
         return self.__class__.__name__
 
 
+class NewlineException(Exception):
+    pass
+
+
 class Newline(ControlCharacter):
     """Control character ending the current line and starting a new one."""
 
@@ -535,8 +539,7 @@ class Newline(ControlCharacter):
 
     @property
     def width(self):
-        from .paragraph import EndOfLine
-        raise EndOfLine
+        raise NewlineException
 
 
 class Tab(ControlCharacter):

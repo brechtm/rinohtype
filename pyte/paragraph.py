@@ -6,7 +6,7 @@ from .hyphenator import Hyphenator
 from .flowable import FlowableException, Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import LateEvalException, Footnote
-from .text import Character, Space, Box, Newline, Tab, Spacer
+from .text import Character, Space, Box, Newline, NewlineException, Tab, Spacer
 from .text import TextStyle, MixedStyledText
 
 
@@ -54,11 +54,6 @@ class TabStop(object):
             return width * self._position
 
 
-class EndOfLine(Exception):
-    def __init__(self, spillover=None):
-        self.spillover = spillover
-
-
 class Line(list):
     def __init__(self, paragraph, width, indent=0.0):
         super().__init__()
@@ -100,8 +95,8 @@ class Line(list):
                     if self._in_tab.tab_width >= first_width:
                         self._in_tab.tab_width -= first_width
                         super().append(first)
-                        raise EndOfLine(second)
-                raise EndOfLine(item)
+                        return second
+                return item
             else:
                 self._in_tab.tab_width -= width / factor
                 self.text_width -= width / factor
@@ -114,8 +109,8 @@ class Line(list):
                     if self.text_width + first.width < self.width:
                         self.text_width += first.width
                         super().append(first)
-                        raise EndOfLine(second)
-                raise EndOfLine(item)
+                        return second
+                return item
 
         self.text_width += width
         super().append(item)
@@ -236,11 +231,13 @@ class Paragraph(MixedStyledText, Flowable):
             except StopIteration:
                 break
             try:
-                line.append(word)
-            except EndOfLine as eol:
-                if eol.spillover:
-                    words = chain((eol.spillover, ), words)
-                words = typeset_line(line, words)
+                spillover = line.append(word)
+                if spillover:
+                    words = chain((spillover, ), words)
+                    words = typeset_line(line, words)
+                    line = Line(self, line_width, indent_left)
+            except NewlineException:
+                words = typeset_line(line, words, last_line=True)
                 line = Line(self, line_width, indent_left)
             except LateEvalException:
                 late_eval_words = split_into_words(word.spans(container))
