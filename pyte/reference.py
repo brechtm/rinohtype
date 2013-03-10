@@ -5,34 +5,26 @@ from .text import SingleStyledText, TextStyle, Superscript
 from .warnings import PyteWarning
 
 
-class LateEvalException(Exception):
+class FieldException(Exception):
     pass
-
-
-class LateEval(object):
-    def __init__(self, field):
-        self.field = field
-
-    @property
-    def width(self):
-        raise LateEvalException
-
-    def split(self):
-        yield self
-
-    def spans(self, container):
-        return self.field.field_spans(container)
 
 
 class Field(SingleStyledText):
     def __init__(self):
         super().__init__('')
 
-    def spans(self):
-        yield LateEval(self)
+    @property
+    def width(self):
+        raise FieldException
 
-    def field_spans(self):
-        return super().spans()
+    def split(self):
+        yield self
+
+    def spans(self):
+        yield self
+
+    def field_spans(self, container):
+        raise NotImplementedError
 
 
 PAGE_NUMBER = 'page number'
@@ -93,7 +85,7 @@ class Reference(Field):
         self.id = id
         self.type = type
 
-    def field_spans(self, container):
+    def field_spans(self, _container):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:

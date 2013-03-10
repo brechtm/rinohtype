@@ -5,7 +5,7 @@ from .dimension import Dimension, PT
 from .hyphenator import Hyphenator
 from .flowable import FlowableException, Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
-from .reference import LateEvalException, Footnote
+from .reference import FieldException, Footnote
 from .text import Character, Space, Box, Newline, NewlineException, Tab, Spacer
 from .text import TextStyle, MixedStyledText
 
@@ -239,9 +239,9 @@ class Paragraph(MixedStyledText, Flowable):
             except NewlineException:
                 words = typeset_line(line, words, last_line=True)
                 line = Line(self, line_width, indent_left)
-            except LateEvalException:
-                late_eval_words = split_into_words(word.spans(container))
-                words = chain(late_eval_words, words)
+            except FieldException:
+                field_words = split_into_words(word.field_spans(container))
+                words = chain(field_words, words)
             except FlowableException:
                 words = typeset_line(line, words, last_line=True)
                 child_container = DownExpandingContainer(container,
