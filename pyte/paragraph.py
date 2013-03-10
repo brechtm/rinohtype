@@ -101,15 +101,15 @@ class Line(list):
                 self._in_tab.tab_width -= width / factor
                 self.text_width -= width / factor
         elif self.text_width + width > self.width:
-            if len(self) == 0:
+            for first, second in item.hyphenate():
+                if self.text_width + first.width < self.width:
+                    self.text_width += first.width
+                    super().append(first)
+                    return second
+            if not self:
                 item.warn('item too long to fit on line')
                 # TODO: print source location (and repeat for diff. occurences)
             else:
-                for first, second in item.hyphenate():
-                    if self.text_width + first.width < self.width:
-                        self.text_width += first.width
-                        super().append(first)
-                        return second
                 return item
 
         self.text_width += width
