@@ -191,7 +191,7 @@ class DocumentElement(object):
 
         All three parameters are optional, and can be set at a later point by
         assinging to the identically named instance attributes."""
-        self._document = document
+        self.document = document
         self.parent = parent
         self.source = source
 
@@ -207,6 +207,19 @@ class DocumentElement(object):
     def document(self, document):
         """Set `document` as owner of this element."""
         self._document = document
+
+    @property
+    def source(self):
+        """The source element this document element was created from."""
+        if self._source is not None:
+            return self._source
+        else:
+            return self.parent.source
+
+    @source.setter
+    def source(self, source):
+        """Set `source` as the source element of this document element."""
+        self._source = source
 
     def warn(self, message):
         """Present the warning `message` to the user, adding information on the
