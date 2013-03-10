@@ -153,7 +153,8 @@ class Line(list):
                         yield item
 
             number_of_spaces = sum(1 for item in self if type(item) is Space)
-            items = stretch_spaces(items, extra_space / number_of_spaces)
+            if number_of_spaces:
+                items = stretch_spaces(items, extra_space / number_of_spaces)
             # TODO: padding added to spaces should be prop. to font size
         elif justification == CENTER:
             x += extra_space / 2.0
