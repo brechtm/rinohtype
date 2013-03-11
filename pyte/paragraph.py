@@ -6,7 +6,7 @@ from .hyphenator import Hyphenator
 from .flowable import FlowableException, Flowable, FlowableStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import FieldException, Footnote
-from .text import Character, Space, Box, Newline, NewlineException, Tab, Spacer
+from .text import Space, NewlineException, Tab, TabException, Spacer
 from .text import TextStyle, MixedStyledText
 
 
@@ -61,8 +61,8 @@ class Line(list):
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
-        self._has_tab = False
-        self._in_tab = None
+        self.has_tab = False
+        self._current_tab = None
 
     def _find_tab_stop(self, cursor):
         for tab_stop in self.paragraph.get_style('tab_stops'):
@@ -73,52 +73,50 @@ class Line(list):
             return None, None
 
     def append(self, item):
-        width = item.width
-        if not self and isinstance(item, Space):
-            return
-        elif isinstance(item, Tab):
-            self._has_tab = True
-            cursor = self.text_width
-            tab_stop, tab_position = self._find_tab_stop(cursor)
-            if tab_stop:
-                item.tab_stop = tab_stop
-                width = item.tab_width = tab_position - cursor
-                if tab_stop.align in (RIGHT, CENTER):
-                    self._in_tab = item
+        try:
+            width = item.width
+            if not self and isinstance(item, Space):
+                return
+            elif self._current_tab:
+                factor = 2 if self._current_tab.tab_stop.align == CENTER else 1
+                width /= factor
+                if self._current_tab.tab_width <= width:
+                    for first, second in item.hyphenate():
+                        first_width = first.width / factor
+                        if self._current_tab.tab_width >= first_width:
+                            self._current_tab.tab_width -= first_width
+                            super().append(first)
+                            return second
+                    return item
                 else:
-                    self._in_tab = None
-        elif self._in_tab:
-            factor = 2 if self._in_tab.tab_stop.align == CENTER else 1
-            if self._in_tab.tab_width <= width:
+                    self._current_tab.tab_width -= width
+            elif self.text_width + width > self.width:
                 for first, second in item.hyphenate():
-                    first_width = first.width / factor
-                    if self._in_tab.tab_width >= first_width:
-                        self._in_tab.tab_width -= first_width
+                    if self.text_width + first.width < self.width:
+                        self.text_width += first.width
                         super().append(first)
                         return second
-                return item
-            else:
-                self._in_tab.tab_width -= width / factor
-                self.text_width -= width / factor
-        elif self.text_width + width > self.width:
-            for first, second in item.hyphenate():
-                if self.text_width + first.width < self.width:
-                    self.text_width += first.width
-                    super().append(first)
-                    return second
-            if not self:
-                item.warn('item too long to fit on line')
-                # TODO: print source location (and repeat for diff. occurences)
-            else:
-                return item
-
+                if not self:
+                    item.warn('item too long to fit on line')
+                else:
+                    return item
+        except TabException:
+            self.has_tab = True
+            tab_stop, tab_position = self._find_tab_stop(self.text_width)
+            if tab_stop:
+                item.tab_stop = tab_stop
+                width = item.tab_width = tab_position - self.text_width
+                if tab_stop.align in (RIGHT, CENTER):
+                    self._current_tab = item
+                else:
+                    self._current_tab = None
         self.text_width += width
         super().append(item)
 
     def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
         justification = self.paragraph.get_style('justify')
-        if self._has_tab or justification == BOTH and last_line:
+        if self.has_tab or justification == BOTH and last_line:
             justification = LEFT
 
         # drop spaces at the end of the line
@@ -137,7 +135,7 @@ class Line(list):
                 else:
                     yield item
 
-        items = expand_tabs(self)
+        items = expand_tabs(self) if self.has_tab else self
 
         # horizontal displacement
         x = self.indent

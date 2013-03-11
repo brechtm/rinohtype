@@ -530,6 +530,10 @@ class NewlineException(Exception):
     pass
 
 
+class TabException(Exception):
+    pass
+
+
 class Newline(ControlCharacter):
     """Control character ending the current line and starting a new one."""
 
@@ -550,6 +554,10 @@ class Tab(ControlCharacter):
         a later point in time when context (:class:`TabStop`) is available."""
         super().__init__(' ')
         self.tab_width = 0
+
+    @property
+    def width(self):
+        raise TabException
 
     def expand(self):
         """Generator expanding this tab to either a spacer or a sequence of fill
