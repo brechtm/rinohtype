@@ -127,13 +127,6 @@ class Line(list):
             return 0
 
         # replace tabs with spacers or fillers
-        def expand_tabs(items):
-            for item in items:
-                if isinstance(item, Tab):
-                    for element in item.expand():
-                        yield element
-                else:
-                    yield item
 
         items = expand_tabs(self) if self.has_tab else self
 
@@ -142,14 +135,6 @@ class Line(list):
 
         extra_space = self.width - self.text_width
         if justification == BOTH:
-            def stretch_spaces(items, add_to_spaces):
-                for item in self:
-                    if type(item) is Space:
-                        yield Spacer(item.width + add_to_spaces,
-                                     style=item.style, parent=item.parent)
-                    else:
-                        yield item
-
             number_of_spaces = sum(1 for item in self if type(item) is Space)
             if number_of_spaces:
                 items = stretch_spaces(items, extra_space / number_of_spaces)
@@ -176,15 +161,6 @@ class Line(list):
         span.close()
 
         return line_height
-
-
-def split_into_words(spans):
-    for span in spans:
-        try:
-            for part in span.split():
-                yield part
-        except AttributeError:
-            yield span
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -262,3 +238,32 @@ class Paragraph(MixedStyledText, Flowable):
             return float(line_spacing)
         else:
             return line_spacing * line_height
+
+
+# utility functions
+
+def split_into_words(spans):
+    for span in spans:
+        try:
+            for part in span.split():
+                yield part
+        except AttributeError:
+            yield span
+
+
+def expand_tabs(items):
+    for item in items:
+        if isinstance(item, Tab):
+            for element in item.expand():
+                yield element
+        else:
+            yield item
+
+
+def stretch_spaces(items, add_to_spaces):
+    for item in items:
+        if type(item) is Space:
+            yield Spacer(item.width + add_to_spaces,
+                         style=item.style, parent=item.parent)
+        else:
+            yield item
