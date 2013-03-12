@@ -55,22 +55,14 @@ class TabStop(object):
 
 
 class Line(list):
-    def __init__(self, paragraph, width, indent=0.0):
+    def __init__(self, tab_stops, width, indent=0.0):
         super().__init__()
-        self.paragraph = paragraph
+        self.tab_stops = tab_stops
         self.width = width - indent
         self.indent = indent
         self.text_width = 0
         self.has_tab = False
         self._current_tab = None
-
-    def _find_tab_stop(self, cursor):
-        for tab_stop in self.paragraph.get_style('tab_stops'):
-            tab_position = tab_stop.get_position(self.width)
-            if cursor < tab_position:
-                return tab_stop, tab_position
-        else:
-            return None, None
 
     def _first_append(self, item):
         if not isinstance(item, Space):
@@ -118,21 +110,21 @@ class Line(list):
         super().append(item)
 
     def _handle_tab(self, tab):
-        tab_stop, tab_position = self._find_tab_stop(self.text_width)
-        if tab_stop:
-            tab.tab_stop = tab_stop
-            width = tab.tab_width = tab_position - self.text_width
-            if tab_stop.align in (RIGHT, CENTER):
-                self._current_tab = tab
-                self.append = self._tab_append
-            else:
-                self._current_tab = None
-                self.append = self._normal_append
-            return width
+        for tab_stop in self.tab_stops:
+            tab_position = tab_stop.get_position(self.width)
+            if self.text_width < tab_position:
+                tab.tab_stop = tab_stop
+                tab.tab_width = tab_position - self.text_width
+                if tab_stop.align in (RIGHT, CENTER):
+                    self._current_tab = tab
+                    self.append = self._tab_append
+                else:
+                    self._current_tab = None
+                    self.append = self._normal_append
+                return tab.tab_width
 
-    def typeset(self, container, last_line=False):
+    def typeset(self, container, justification, last_line=False):
         """Typeset words at the current coordinates"""
-        justification = self.paragraph.get_style('justify')
         if self.has_tab or justification == BOTH and last_line:
             justification = LEFT
 
@@ -144,7 +136,6 @@ class Line(list):
             return 0
 
         # replace tabs with spacers or fillers
-
         items = expand_tabs(self) if self.has_tab else self
 
         # horizontal displacement
@@ -200,6 +191,8 @@ class Paragraph(MixedStyledText, Flowable):
     def typeset(self, container):
         start_offset = container.cursor
 
+        justification = self.get_style('justify')
+        tab_stops = self.get_style('tab_stops')
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
         indent_first = float(self.get_style('indent_first'))
@@ -210,41 +203,37 @@ class Paragraph(MixedStyledText, Flowable):
             self.first_line = False
 
         def typeset_line(line, words, last_line=False):
-            line_height = line.typeset(container, last_line)
+            line_height = line.typeset(container, justification, last_line)
             container.advance(self._line_spacing(line_height) - line_height)
             self._words, words = tee(words)
             return words
 
-        line = Line(self, line_width, first_line_indent)
+        line = Line(tab_stops, line_width, first_line_indent)
         self._words, words = tee(self._words)
         while True:
             try:
-                word = next(words)
-            except StopIteration:
-                break
-            try:
-                spillover = line.append(word)
+                word = next(words)              # throws StopIteration
+                spillover = line.append(word)   # throws the other exceptions
                 if spillover:
-                    words = chain((spillover, ), words)
-                    words = typeset_line(line, words)
-                    line = Line(self, line_width, indent_left)
+                    words = typeset_line(line, chain((spillover, ), words))
+                    line = Line(tab_stops, line_width, indent_left)
             except NewlineException:
                 words = typeset_line(line, words, last_line=True)
-                line = Line(self, line_width, indent_left)
+                line = Line(tab_stops, line_width, indent_left)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
                 words = chain(field_words, words)
             except FlowableException:
                 words = typeset_line(line, words, last_line=True)
                 child_container = DownExpandingContainer(container,
-                                    left=self.get_style('indent_left'),
-                                    top=container.cursor*PT)
+                                                         left=indent_left,
+                                                         top=container.cursor)
                 container.advance(word.flow(child_container))
-                line = Line(self, line_width, indent_left)
-
-        # the last line
-        if line:
-            typeset_line(line, words, last_line=True)
+                line = Line(tab_stops, line_width, indent_left)
+            except StopIteration:
+                if line:
+                    typeset_line(line, words, last_line=True)
+                break
 
         self._init_state()
         return container.cursor - start_offset
