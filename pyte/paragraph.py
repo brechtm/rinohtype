@@ -72,25 +72,17 @@ class Line(list):
         else:
             return None, None
 
-    def append(self, item):
+    def _first_append(self, item):
+        if not isinstance(item, Space):
+            self.append = self._normal_append
+            return self.append(item)
+
+    append = _first_append
+
+    def _normal_append(self, item):
         try:
             width = item.width
-            if not self and isinstance(item, Space):
-                return
-            elif self._current_tab:
-                factor = 2 if self._current_tab.tab_stop.align == CENTER else 1
-                width /= factor
-                if self._current_tab.tab_width <= width:
-                    for first, second in item.hyphenate():
-                        first_width = first.width / factor
-                        if self._current_tab.tab_width >= first_width:
-                            self._current_tab.tab_width -= first_width
-                            super().append(first)
-                            return second
-                    return item
-                else:
-                    self._current_tab.tab_width -= width
-            elif self.text_width + width > self.width:
+            if self.text_width + width > self.width:
                 for first, second in item.hyphenate():
                     if self.text_width + first.width < self.width:
                         self.text_width += first.width
@@ -102,16 +94,41 @@ class Line(list):
                     return item
         except TabException:
             self.has_tab = True
-            tab_stop, tab_position = self._find_tab_stop(self.text_width)
-            if tab_stop:
-                item.tab_stop = tab_stop
-                width = item.tab_width = tab_position - self.text_width
-                if tab_stop.align in (RIGHT, CENTER):
-                    self._current_tab = item
-                else:
-                    self._current_tab = None
+            width = self._handle_tab(item)
         self.text_width += width
         super().append(item)
+
+    def _tab_append(self, item):
+        try:
+            factor = 2 if self._current_tab.tab_stop.align == CENTER else 1
+            width = item.width / factor
+            if self._current_tab.tab_width <= width:
+                for first, second in item.hyphenate():
+                    first_width = first.width / factor
+                    if self._current_tab.tab_width >= first_width:
+                        self._current_tab.tab_width -= first_width
+                        super().append(first)
+                        return second
+                return item
+            else:
+                self._current_tab.tab_width -= width
+        except TabException:
+            width = self._handle_tab(item)
+        self.text_width += width
+        super().append(item)
+
+    def _handle_tab(self, tab):
+        tab_stop, tab_position = self._find_tab_stop(self.text_width)
+        if tab_stop:
+            tab.tab_stop = tab_stop
+            width = tab.tab_width = tab_position - self.text_width
+            if tab_stop.align in (RIGHT, CENTER):
+                self._current_tab = tab
+                self.append = self._tab_append
+            else:
+                self._current_tab = None
+                self.append = self._normal_append
+            return width
 
     def typeset(self, container, last_line=False):
         """Typeset words at the current coordinates"""
