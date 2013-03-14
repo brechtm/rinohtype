@@ -370,8 +370,7 @@ class MixedStyledText(StyledText, list):
 
         See :class:`StyledText` for information on `style`, and `parent`."""
         super().__init__(style=style, parent=parent)
-        if (isinstance(text_or_items, str)
-            or isinstance(text_or_items, StyledText)):
+        if isinstance(text_or_items, (str, StyledText)):
             text_or_items = (text_or_items, )
         for item in text_or_items:
             self.append(item)
