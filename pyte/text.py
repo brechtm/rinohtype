@@ -401,11 +401,8 @@ class MixedStyledText(StyledText, list):
         mixed-styled text."""
         # TODO: support for mixed-style words
         for item in self:
-            if isinstance(item, Flowable):
-                yield item
-            else:
-                for span in item.spans():
-                    yield span
+            for span in item.spans():
+                yield span
 
 
 class StyledRawText(SingleStyledText):

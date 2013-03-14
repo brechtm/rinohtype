@@ -71,6 +71,9 @@ class Flowable(Styled):
     def width(self):
         raise FlowableException
 
+    def spans(self):
+        yield self
+
     def render(self, container):
         """Renders the flowable's content to `container`. This is different for
         each type of flowable."""

@@ -174,15 +174,16 @@ class Line(list):
 class Paragraph(MixedStyledText, Flowable):
     style_class = ParagraphStyle
 
+    spans = Flowable.spans
+
     def __init__(self, items, style=None):
         super().__init__(items, style=style)
         # TODO: move to TextStyle
         #self.char_spacing = 0.0
-
         self._init_state()
 
     def _init_state(self):
-        self._words = split_into_words(self.spans())
+        self._words = split_into_words(MixedStyledText.spans(self))
         self.first_line = True
 
     def render(self, container):
