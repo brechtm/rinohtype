@@ -419,14 +419,20 @@ class StyledRawText(SingleStyledText):
 
 
 class LiteralText(StyledRawText):
-    """Styled text which is typeset as is. No line wrapping is performed. Lines
-    are split where a newline character appears in the literal text."""
+    """Styled text which is typeset as is. No line wrapping, and thus no
+    hyphenation, is performed. Lines are split where a newline character appears
+    in the literal text."""
 
     def __init__(self, text, style=PARENT_STYLE, parent=None):
         """Initialize this literal text with `text` (:class:`str`), `style`, and
         `parent` (see :class:`StyledText`)."""
         no_break_spaced = text.replace(' ', chr(0xa0))
         super().__init__(no_break_spaced, style=style, parent=parent)
+
+    def hyphenate(self):
+        """Hyphenation is never performed for literal text, hence yields a
+        single tuple containing this literal text itself and `None`."""
+        yield self, None
 
 
 class Character(StyledRawText):
