@@ -23,7 +23,6 @@ from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
 from pyte.structure import TableOfContents, TableOfContentsStyle
 from pyte.reference import Field, Reference, REFERENCE
 from pyte.reference import Footnote as PyteFootnote
-from pyte.bibliography import Bibliography, BibliographyFormatter
 from pyte.flowable import Flowable, FlowableStyle, Floating
 from pyte.float import Figure as PyteFigure, CaptionStyle
 from pyte.table import Tabular as PyteTabular, MIDDLE
