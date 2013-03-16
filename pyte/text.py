@@ -513,6 +513,8 @@ class Box(Character):
 class ControlCharacter(Character):
     """A non-printing character that affects typesetting of the text near it."""
 
+    exception = Exception
+
     def __init__(self, char):
         """Initialize this control character with it's unicode `char`."""
         super().__init__(char)
@@ -521,39 +523,42 @@ class ControlCharacter(Character):
         """A textual representation of this control character."""
         return self.__class__.__name__
 
+    @property
+    def width(self):
+        """Raises the exception associated with this control character.
+
+        This method is called during typesetting."""
+        raise self.exception
+
 
 class NewlineException(Exception):
-    pass
+    """Exception signaling a :class:`Newline`"""
 
 
 class TabException(Exception):
-    pass
+    """Exception signaling a :class:`Tab`"""
 
 
 class Newline(ControlCharacter):
     """Control character ending the current line and starting a new one."""
 
+    exception = NewlineException
+
     def __init__(self, *args, **kwargs):
         """Initiatize this newline character."""
         super().__init__('\n')
 
-    @property
-    def width(self):
-        raise NewlineException
-
 
 class Tab(ControlCharacter):
     """Tabulator character, used for vertically aligning text."""
+
+    exception = TabException
 
     def __init__(self, *args, **kwargs):
         """Initialize this tab character. Its attribute :attr:`tab_width` is set
         a later point in time when context (:class:`TabStop`) is available."""
         super().__init__(' ')
         self.tab_width = 0
-
-    @property
-    def width(self):
-        raise TabException
 
     def expand(self):
         """Generator expanding this tab to either a spacer or a sequence of fill
