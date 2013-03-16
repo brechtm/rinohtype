@@ -229,8 +229,8 @@ class Paragraph(MixedStyledText, Flowable):
 
         def typeset_line(line, words, last_line=False):
             line_height = line.typeset(container, justification, last_line)
-            container.advance(line_spacing.pitch(line_height) - line_height)
             self._words, words = tee(words)
+            container.advance(line_spacing.pitch(line_height) - line_height)
             return words
 
         line = Line(tab_stops, line_width, first_line_indent)
