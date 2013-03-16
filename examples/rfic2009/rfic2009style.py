@@ -9,7 +9,7 @@ from pyte.document import Document, Page, PORTRAIT
 from pyte.layout import Container, DownExpandingContainer, FootnoteContainer
 from pyte.layout import Chain
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
-from pyte.paragraph import TabStop
+from pyte.paragraph import ProportionalSpacing, FixedSpacing, TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from pyte.text import SingleStyledText, MixedStyledText
 from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
@@ -85,7 +85,7 @@ styles = StyleStore()
 styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                 font_weight=REGULAR,
                                 font_size=10*PT,
-                                line_spacing=12*PT,
+                                line_spacing=FixedSpacing(12*PT),
                                 indent_first=0.125*INCH,
                                 space_above=0*PT,
                                 space_below=0*PT,
@@ -130,14 +130,14 @@ styles['bibliography'] = ParagraphStyle(base='body',
 styles['title'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                  font_weight=REGULAR,
                                  font_size=18*PT,
-                                 line_spacing=1.2,
+                                 line_spacing=ProportionalSpacing(1.2),
                                  space_above=6*PT,
                                  space_below=6*PT,
                                  justify=CENTER)
 
 styles['author'] = ParagraphStyle(base='title',
                                   font_size=12*PT,
-                                  line_spacing=1.2)
+                                  line_spacing=ProportionalSpacing(1.2))
 
 styles['affiliation'] = ParagraphStyle(base='author',
                                        space_below=6*PT + 12*PT)
@@ -145,7 +145,7 @@ styles['affiliation'] = ParagraphStyle(base='author',
 styles['abstract'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                     font_weight=BOLD,
                                     font_size=9*PT,
-                                    line_spacing=10*PT,
+                                    line_spacing=FixedSpacing(10*PT),
                                     indent_first=0.125*INCH,
                                     space_above=0*PT,
                                     space_below=0*PT,
@@ -166,7 +166,7 @@ styles['heading1'] = HeadingStyle(typeface=ieeeFamily.serif,
                                   font_size=10*PT,
                                   small_caps=True,
                                   justify=CENTER,
-                                  line_spacing=12*PT,
+                                  line_spacing=FixedSpacing(12*PT),
                                   space_above=18*PT,
                                   space_below=6*PT,
                                   numbering_style=ROMAN_UC)
@@ -179,7 +179,7 @@ styles['heading2'] = HeadingStyle(base='heading1',
                                   font_size=10*PT,
                                   small_caps=False,
                                   justify=LEFT,
-                                  line_spacing=12*PT,
+                                  line_spacing=FixedSpacing(12*PT),
                                   space_above=6*PT,
                                   space_below=6*PT,
                                   numbering_style=CHARACTER_UC)
@@ -199,7 +199,7 @@ styles['figure'] = FlowableStyle(space_above=10*PT,
 styles['figure caption'] = CaptionStyle(typeface=ieeeFamily.serif,
                                         font_weight=REGULAR,
                                         font_size=9*PT,
-                                        line_spacing=10*PT,
+                                        line_spacing=FixedSpacing(10*PT),
                                         indent_first=0*PT,
                                         space_above=20*PT,
                                         space_below=0*PT,
@@ -207,14 +207,14 @@ styles['figure caption'] = CaptionStyle(typeface=ieeeFamily.serif,
 
 styles['footnote'] = ParagraphStyle(base='body',
                                     font_size=9*PT,
-                                    line_spacing=10*PT)
+                                    line_spacing=FixedSpacing(10*PT))
 
 styles['red line'] = LineStyle(width=0.2*PT, color=RED)
 styles['thick line'] = LineStyle()
 styles['tabular'] = TabularStyle(typeface=ieeeFamily.serif,
                                  font_weight=REGULAR,
                                  font_size=10*PT,
-                                 line_spacing=12*PT,
+                                 line_spacing=FixedSpacing(12*PT),
                                  indent_first=0*PT,
                                  space_above=0*PT,
                                  space_below=0*PT,

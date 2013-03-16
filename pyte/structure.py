@@ -135,8 +135,9 @@ class DefinitionList(Paragraph):
         term_style = ParagraphStyle(space_above=0*PT,
                                     space_below=0*PT,
                                     base=style)
+        space_below = self.style.item_spacing.pitch(self.style.font_size)
         definition_style = ParagraphStyle(space_above=0*PT,
-                                          space_below=self.style.item_spacing,
+                                          space_below=space_below,
                                           indent_left=self.style.indentation,
                                           base=style)
         last_definition_style = ParagraphStyle(space_above=0*PT,

@@ -4,7 +4,7 @@ from io import BytesIO
 from docutils.core import publish_doctree, publish_from_doctree
 
 from pyte.paragraph import Paragraph as RinohParagraph
-from pyte.paragraph import ParagraphStyle, LEFT, CENTER, BOTH
+from pyte.paragraph import ParagraphStyle, LEFT, CENTER, BOTH, STANDARD
 from pyte.text import LiteralText, MixedStyledText, TextStyle, Emphasized, Bold
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
@@ -46,7 +46,7 @@ styles = StyleStore()
 
 styles['title'] = ParagraphStyle(typeface=fontFamily.serif,
                                  font_size=16*PT,
-                                 line_spacing=1.2,
+                                 line_spacing=STANDARD,
                                  space_above=6*PT,
                                  space_below=6*PT,
                                  justify=CENTER)
@@ -54,7 +54,7 @@ styles['title'] = ParagraphStyle(typeface=fontFamily.serif,
 styles['body'] = ParagraphStyle(typeface=fontFamily.serif,
                                 font_weight=REGULAR,
                                 font_size=10*PT,
-                                line_spacing=12*PT,
+                                line_spacing=STANDARD,
                                 #indent_first=0.125*INCH,
                                 space_above=0*PT,
                                 space_below=10*PT,
@@ -73,7 +73,7 @@ styles['block quote'] = ParagraphStyle(base='body',
 
 styles['heading1'] = HeadingStyle(typeface=fontFamily.serif,
                                   font_size=14*PT,
-                                  line_spacing=12*PT,
+                                  line_spacing=STANDARD,
                                   space_above=14*PT,
                                   space_below=6*PT,
                                   numbering_style=None)
@@ -81,7 +81,7 @@ styles['heading1'] = HeadingStyle(typeface=fontFamily.serif,
 styles['heading2'] = HeadingStyle(base='heading1',
                                   font_slant=ITALIC,
                                   font_size=12*PT,
-                                  line_spacing=12*PT,
+                                  line_spacing=STANDARD,
                                   space_above=6*PT,
                                   space_below=6*PT)
 

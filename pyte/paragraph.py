@@ -17,14 +17,39 @@ CENTER = 'center'
 BOTH = 'justify'
 
 
-# Line spacing
-STANDARD = 1.2
-SINGLE = 1.0
-DOUBLE = 2.0
+class LineSpacing(object):
+    def pitch(self, line_height):
+        raise NotImplementedError
 
-# TODO: LineSpacing class (leading, proportional, exact, at-least, ...)?
-##class LineSpacing(object):
-##    def __self__(self, leading, proportional, ...):
+
+class ProportionalSpacing(LineSpacing):
+    def __init__(self, factor):
+        self.factor = factor
+
+    def pitch(self, line_height):
+        return self.factor * line_height
+
+
+STANDARD = ProportionalSpacing(1.2)
+SINGLE = ProportionalSpacing(1.0)
+DOUBLE = ProportionalSpacing(2.0)
+
+
+class FixedSpacing(LineSpacing):
+    def __init__(self, pitch, minimum=STANDARD):
+        self._pitch = float(pitch)
+        self.minimum = minimum
+
+    def pitch(self, line_height):
+        return max(self._pitch, self.minimum.pitch(line_height))
+
+
+class Leading(LineSpacing):
+    def __init__(self, leading):
+        self.leading = leading
+
+    def pitch(self, line_height):
+        return float(line_height + self.leading)
 
 
 
@@ -125,9 +150,6 @@ class Line(list):
 
     def typeset(self, container, justification, last_line=False):
         """Typeset words at the current coordinates"""
-        if self.has_tab or justification == BOTH and last_line:
-            justification = LEFT
-
         # drop spaces at the end of the line
         try:
             while isinstance(self[-1], Space):
@@ -135,12 +157,17 @@ class Line(list):
         except IndexError:
             return 0
 
+        line_height = max(float(item.height) for item in self)
+        container.advance(line_height)
+
         # replace tabs with spacers or fillers
         items = expand_tabs(self) if self.has_tab else self
 
         # horizontal displacement
         x = self.indent
 
+        if self.has_tab or justification == BOTH and last_line:
+            justification = LEFT
         extra_space = self.width - self.text_width
         if justification == BOTH:
             number_of_spaces = sum(1 for item in self if type(item) is Space)
@@ -151,10 +178,6 @@ class Line(list):
             x += extra_space / 2.0
         elif justification == RIGHT:
             x += extra_space
-
-        # position cursor
-        line_height = max(float(item.height) for item in self)
-        container.advance(line_height)
 
         span = None
         prev_font_style = None
@@ -202,10 +225,11 @@ class Paragraph(MixedStyledText, Flowable):
         if self.first_line:
             first_line_indent += indent_first
             self.first_line = False
+        line_spacing = self.get_style('line_spacing')
 
         def typeset_line(line, words, last_line=False):
             line_height = line.typeset(container, justification, last_line)
-            container.advance(self._line_spacing(line_height) - line_height)
+            container.advance(line_spacing.pitch(line_height) - line_height)
             self._words, words = tee(words)
             return words
 
@@ -238,13 +262,6 @@ class Paragraph(MixedStyledText, Flowable):
 
         self._init_state()
         return container.cursor - start_offset
-
-    def _line_spacing(self, line_height):
-        line_spacing = self.get_style('line_spacing')
-        if isinstance(line_spacing, Dimension):
-            return float(line_spacing)
-        else:
-            return line_spacing * line_height
 
 
 # utility functions
