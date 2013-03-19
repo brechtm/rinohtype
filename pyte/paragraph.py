@@ -381,7 +381,6 @@ class Line(list):
                 font, size, y_offset = font_style
                 top = container.cursor - y_offset
                 span = container.canvas.show_glyphs(left, top, font, size)
-                next(span)
             left += span.send(zip(item.glyphs(), item.widths()))
             prev_font_style = font_style
         span.close()

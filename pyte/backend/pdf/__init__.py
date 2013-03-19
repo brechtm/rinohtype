@@ -6,6 +6,7 @@ from .reader import PDFReader
 from .filter import FlateDecode
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
+from ...util import consumer
 
 
 class Document(object):
@@ -190,6 +191,7 @@ class Canvas(StringIO):
                 char = '\\' + char
         return char
 
+    @consumer
     def show_glyphs(self, left, top, font, size):
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
