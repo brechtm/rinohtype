@@ -116,10 +116,14 @@ class Dimension(object, metaclass=DimensionType):
         return str(float(self)) + 'pt'
 
     def __float__(self):
-        """Evaluate the value of this :class:`Dimension` in points."""
+        """Evaluate the value of this dimension in points."""
         total = (self._value + sum(map(float, self._plus_terms))
                              - sum(map(float, self._minus_terms)))
         return float(total) * self._factor
+
+    def __abs__(self):
+        """Return the absolute value of this dimension (in points)."""
+        return abs(float(self))
 
 
 # Units

@@ -103,7 +103,7 @@ class List(Paragraph):
 ####        listItem.number = self.currentNumber
 ##        self.currentNumber += 1
 
-    def typeset(self, container):
+    def render(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
             item.flow(container)
@@ -160,7 +160,7 @@ class DefinitionList(Paragraph):
         self.append(last_definition_par)
         self.item_pointer = 0
 
-    def typeset(self, container):
+    def render(self, container):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
             item.flow(container)
@@ -181,11 +181,11 @@ class Header(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def typeset(self, container):
+    def render(self, container):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         text.parent = self
         self.append(text)
-        return super().typeset(container)
+        return super().render(container)
 
 
 class FooterStyle(ParagraphStyle):
@@ -201,11 +201,11 @@ class Footer(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def typeset(self, container):
+    def render(self, container):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         text.parent = self
         self.append(text)
-        return super().typeset(container)
+        return super().render(container)
 
 
 class TableOfContentsStyle(ParagraphStyle):
@@ -240,7 +240,7 @@ class TableOfContents(Paragraph):
             flowable.parent = self
             self.append(flowable)
 
-    def typeset(self, container):
+    def render(self, container):
         offset_begin = container.cursor
         while self.item_pointer < len(self):
             self.item_pointer += 1

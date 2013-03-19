@@ -69,14 +69,18 @@ class Flowable(Styled):
 
     @property
     def width(self):
+        """Raises :class:`FlowableException`.
+        (accessed when this flowable is embedded in a paragraph)"""
         raise FlowableException
 
     def spans(self):
+        """Generator yielding this flowable itself.
+        (called when this flowable is embedded in a paragraph)"""
         yield self
 
     def render(self, container):
-        """Renders the flowable's content to `container`. This is different for
-        each type of flowable."""
+        """Renders the flowable's content to `container`, with the flowable's
+        top edge lining up with the container's cursor."""
         raise NotImplementedError
 
 

@@ -112,11 +112,19 @@ styles['equation'] = EquationStyle(base='body',
                                               TabStop(1.0, RIGHT)])
 
 styles['toc0'] = ParagraphStyle(base='body',
+                                indent_first=0)
+styles['toc1'] = ParagraphStyle(base='toc0',
+                                font_weight=BOLD,
                                 tab_stops=[TabStop(0.6*CM),
                                            TabStop(1.0, RIGHT, '. ')])
-styles['toc1'] = ParagraphStyle(base='toc0', font_weight=BOLD)
-styles['toc2'] = ParagraphStyle(base='toc0', indent_left=0.5*CM)
-styles['toc3'] = ParagraphStyle(base='toc0', indent_left=1.0*CM)
+styles['toc2'] = ParagraphStyle(base='toc0',
+                                indent_left=0.6*CM,
+                                tab_stops=[TabStop(1.2*CM),
+                                           TabStop(1.0, RIGHT, '. ')])
+styles['toc3'] = ParagraphStyle(base='toc0',
+                                indent_left=1.2*CM,
+                                tab_stops=[TabStop(1.8*CM),
+                                           TabStop(1.0, RIGHT, '. ')])
 
 styles['toc'] = TableOfContentsStyle(base='body')
 

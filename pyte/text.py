@@ -88,6 +88,7 @@ class TextStyle(Style):
                   'position': None,
                   'kerning': True,
                   'ligatures': True,
+                  # TODO: character spacing
                   'hyphenate': True,
                   'hyphen_chars': 2,
                   'hyphen_lang': 'en_US'}
@@ -538,11 +539,16 @@ class ControlCharacter(Character):
 
 
 class NewlineException(Exception):
-    """Exception signaling a :class:`Newline`"""
+    """Exception signaling a :class:`Newline`."""
 
 
 class TabException(Exception):
-    """Exception signaling a :class:`Tab`"""
+    """Exception signaling a :class:`Tab`."""
+
+
+class TabSpaceExceeded(Exception):
+    """Exception raised when the space for a right- or center-aligned tab stop
+    is exhausted."""
 
 
 class Newline(ControlCharacter):
@@ -565,6 +571,13 @@ class Tab(ControlCharacter):
         a later point in time when context (:class:`TabStop`) is available."""
         super().__init__(' ')
         self.tab_width = 0
+
+    def shrink(self, width):
+        """Shrink the tab width by `width`."""
+        self.tab_width -= width
+        if self.tab_width < 0:
+            self.tab_width = 0
+            raise TabSpaceExceeded
 
     def expand(self):
         """Generator expanding this tab to either a spacer or a sequence of fill
@@ -626,7 +639,7 @@ class Emphasized(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=ITALIC_STYLE)
+        super().__init__(text, style=EMPHASIZED_STYLE)
 
 
 class SmallCaps(MixedStyledText):
