@@ -38,6 +38,10 @@ class Variable(Field):
         super().__init__()
         self.type = type
 
+    def __repr__(self):
+        return "{0}({1})".format(self.__class__.__name__,
+                                              self.type)
+
     def field_spans(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:

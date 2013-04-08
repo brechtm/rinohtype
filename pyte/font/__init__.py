@@ -11,7 +11,8 @@ from ..warnings import PyteWarning
 # TODO: provide predefined Font objects for known font filenames?
 
 class Font(object):
-    def __init__(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+    def __init__(self, metrics, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+        self.metrics = metrics
         if weight not in WEIGHTS:
             raise ValueError('Unknown font weight. Must be one of {}'
                   .format(', '.join(WEIGHTS)))
@@ -24,6 +25,9 @@ class Font(object):
         self.weight = weight
         self.slant = slant
         self.width = width
+        self.ascender = self.metrics.ascent / self.scaling_factor
+        self.descender = self.metrics.descent / self.scaling_factor
+        self.line_gap = self.metrics.line_gap / self.scaling_factor
 
     @property
     def scaling_factor(self):

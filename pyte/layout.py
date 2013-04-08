@@ -112,6 +112,10 @@ class ContainerBase(FlowableTarget):
         """The canvas associated with this container."""
         return self.parent.canvas.new()
 
+    @property
+    def remaining_height(self):
+        return self.height - self.cursor
+
     def advance(self, height):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
@@ -205,6 +209,13 @@ class ExpandingContainer(ContainerBase):
         super().__init__(parent, left, width, right, chain)
         self.max_height = max_height
         self.height = 0*PT
+
+    @property
+    def remaining_height(self):
+        if self.max_height:
+            return self.max_height - self.cursor
+        else:
+            return float('+inf')
 
     def advance(self, height):
         """Advance the cursor by `height`. If this would expand the container

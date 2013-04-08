@@ -18,9 +18,9 @@ class OpenTypeFont(Font):
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.filename = filename
         self.encoding = None
-        super().__init__(weight, slant, width)
         self.tables = OpenTypeParser(filename)
-        self.metrics = OpenTypeMetrics(self.tables)
+        metrics = OpenTypeMetrics(self.tables)
+        super().__init__(metrics, weight, slant, width)
 
     @property
     def name(self):
@@ -64,8 +64,9 @@ class OpenTypeMetrics(FontMetrics):
         assert self._glyphs
         self.bbox = tables['head'].bounding_box
         self.italic_angle = tables['post']['italicAngle']
-        self.ascent = tables['hhea']['Ascender']
-        self.descent = tables['hhea']['Descender']
+        self.ascent = tables['OS/2']['sTypoAscender']
+        self.descent = tables['OS/2']['sTypoDescender']
+        self.line_gap = tables['OS/2']['sTypoLineGap']
         self.cap_height = tables['OS/2']['sCapHeight']
         self.x_height = tables['OS/2']['sxHeight']
         self.stem_v = 50 # self['FontMetrics']['StdVW']

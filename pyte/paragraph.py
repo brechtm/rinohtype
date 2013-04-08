@@ -204,9 +204,8 @@ class Paragraph(MixedStyledText, Flowable):
             """Typeset `line` and, if succesful, update the paragraph's internal
             rendering state. Additionally, this function advances the
             container's pointer downwards the size of the interline spacing."""
-            line_height = line.typeset(container, justification, last_line)
+            line.typeset(container, justification, line_spacing, last_line)
             self._words, words = tee(words)
-            container.advance(line_spacing.pitch(line_height) - line_height)
             return words
 
         start_offset = container.cursor
@@ -338,7 +337,7 @@ class Line(list):
             tab.warn('Tab did not fall into any of the tab stops.')
             return 0, Space(style=tab.style, parent=tab.parent)
 
-    def typeset(self, container, justification, last_line=False):
+    def typeset(self, container, justification, line_spacing, last_line=False):
         """Typeset the line at the onto `container` below its current cursor
         position. `justification` is passed on from the paragraph style and
         `last_line` specifies whether this is the last line of the paragraph.
@@ -350,8 +349,13 @@ class Line(list):
         except IndexError:
             return 0
 
-        line_height = max(float(item.height) for item in self)
-        container.advance(line_height)
+        ascender = max(float(item.ascender) for item in self)
+        descender = min(float(item.descender) for item in self)
+        line_gap = max(item.line_gap for item in self)
+
+        container.advance(ascender)
+        if - descender > container.remaining_height:
+            raise EndOfContainer
 
         # replace tabs with spacers or fillers
         items = expand_tabs(self) if self._has_tab else self
@@ -384,8 +388,7 @@ class Line(list):
             left += span.send(zip(item.glyphs(), item.widths()))
             prev_font_style = font_style
         span.close()
-
-        return line_height
+        container.advance(line_gap - descender)
 
 
 # utility functions

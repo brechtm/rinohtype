@@ -79,13 +79,11 @@ class AdobeFontMetrics(FontMetrics):
 
         self.bbox = self['FontMetrics']['FontBBox']
         self.italic_angle = self['FontMetrics']['ItalicAngle']
-        try:
-            self.ascent = self['FontMetrics']['Ascender']
-            self.descent = self['FontMetrics']['Descender']
-            self.cap_height = self['FontMetrics']['CapHeight']
-            self.x_height = self['FontMetrics']['XHeight']
-        except KeyError:
-            pass
+        self.ascent = self['FontMetrics'].get('Ascender', 750)
+        self.descent = self['FontMetrics'].get('Descender', -250)
+        self.line_gap = 200
+        self.cap_height = self['FontMetrics'].get('CapHeight', 700)
+        self.x_height = self['FontMetrics'].get('XHeight', 500)
         self.stem_v = self['FontMetrics'].get('StdVW', 50)
 
     @property
@@ -228,7 +226,8 @@ class AdobeFontMetrics(FontMetrics):
 class Type1Font(Font):
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
                  core=False):
-        self.metrics = AdobeFontMetrics(filename + '.afm')
+        metrics = AdobeFontMetrics(filename + '.afm')
+        super().__init__(metrics, weight, slant, width)
         encoding_name = self.metrics['FontMetrics']['EncodingScheme']
         if encoding_name == 'FontSpecific':
             self.encoding = {glyph.name: glyph.code
@@ -236,7 +235,6 @@ class Type1Font(Font):
                              if glyph.code > -1}
         else:
             self.encoding = ENCODINGS[encoding_name]
-        super().__init__(weight, slant, width)
         self.filename = filename
         self.core = core
         if not core:
