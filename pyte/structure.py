@@ -103,14 +103,6 @@ class List(Paragraph):
 ####        listItem.number = self.currentNumber
 ##        self.currentNumber += 1
 
-    def render(self, container, last_descender):
-        while self.item_pointer < len(self):
-            item = self[self.item_pointer]
-            last_descender = item.render(container, last_descender)
-            self.item_pointer += 1
-        self.item_pointer = 0
-        return last_descender
-
 
 ### TODO: create common superclass for Heading and ListItem
 ##class ListItem(Paragraph):
@@ -136,7 +128,7 @@ class DefinitionList(Paragraph):
         term_style = ParagraphStyle(space_above=0*PT,
                                     space_below=0*PT,
                                     base=style)
-        space_below = self.style.item_spacing.pitch(self.style.font_size)
+        space_below = self.style.item_spacing.leading(self.style.font_size, None)
         definition_style = ParagraphStyle(space_above=0*PT,
                                           space_below=space_below,
                                           indent_left=self.style.indentation,
@@ -241,16 +233,3 @@ class TableOfContents(Paragraph):
                 flowable = Paragraph(text, style=self.styles[-1])
             flowable.parent = self
             self.append(flowable)
-
-    def render(self, container, last_descender):
-        offset_begin = container.cursor
-        while self.item_pointer < len(self):
-            self.item_pointer += 1
-            try:
-                item = self[self.item_pointer - 1]
-                last_descender = item.render(container, last_descender)
-            except EndOfContainer:
-                raise
-
-        self.item_pointer = 0
-        return last_descender

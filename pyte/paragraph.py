@@ -85,7 +85,7 @@ DOUBLE = ProportionalSpacing(2.0)
 class FixedSpacing(LineSpacing):
     """Fixed line spacing, with optional minimum spacing."""
 
-    def __init__(self, pitch, minimum=STANDARD):
+    def __init__(self, pitch, minimum=SINGLE):
         """`pitch` specifies the distance between two consecutive lines.
         Optionally, `minimum` specifies the minimum :class:`LineSpacing` to use,
         which can prevent lines with large fonts from overlapping. If no minimum
@@ -243,11 +243,12 @@ class Paragraph(MixedStyledText, Flowable):
                                                          left=indent_left,
                                                          top=container.cursor)
                 height, descender = word.flow(child_container, descender)
-                container.advance(descender)
+                container.advance(height)
                 line = Line(tab_stops, line_width, indent_left)
             except StopIteration:
                 if line:
-                    typeset_line(line, words, descender, last_line=True)
+                    words, descender = typeset_line(line, words, descender,
+                                                    last_line=True)
                 break
 
         self._init_state()  # reset the state for the next rendering pass
@@ -359,7 +360,7 @@ class Line(list):
             while isinstance(self[-1], Space):
                 self._cursor -= self.pop().width
         except IndexError:
-            return 0
+            return previous_descender
 
         max_font_size = max(float(item.height) for item in self)
         ascender = max(float(item.ascender) for item in self)
