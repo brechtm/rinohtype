@@ -47,7 +47,7 @@ class Flowable(Styled):
         super().__init__(style=style, parent=parent)
         self.resume = False
 
-    def flow(self, container):
+    def flow(self, container, last_descender):
         """Flow this flowable into `container` and return the vertical space
         consumed.
 
@@ -59,13 +59,13 @@ class Flowable(Styled):
         if not self.resume:
             self.resume = True
             container.advance(float(self.get_style('space_above')))
-        self.render(container)
+        last_descender = self.render(container, last_descender)
         self.resume = False
         try:
             container.advance(float(self.get_style('space_below')))
         except EndOfContainer:
             pass
-        return container.cursor - start_offset
+        return container.cursor - start_offset, last_descender
 
     @property
     def width(self):
@@ -93,8 +93,8 @@ class Floating(Decorator):
     This is typically used to place figures and tables at the top or bottom of a
     page, instead of in between paragraphs."""
 
-    def flow(self, container):
+    def flow(self, container, last_descender):
         """Flow this flowable into the float space associated with `container`.
         """
-        super().flow(container.float_space)
-        return 0
+        super().flow(container.float_space, None)
+        return 0, last_descender

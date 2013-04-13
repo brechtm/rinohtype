@@ -12,13 +12,12 @@ class Image(Flowable):
         self.filename = filename
         self.scale = scale
 
-    def render(self, container):
+    def render(self, container, last_descender):
         image = container.canvas.document.backend.Image(self.filename)
         left = float(container.width - image.width) / 2
         top = float(container.cursor)
         container.canvas.place_image(image, left, top, scale=self.scale)
         container.advance(float(image.height))
-        return image.height
 
 
 class CaptionStyle(ParagraphStyle):
@@ -67,8 +66,7 @@ class Figure(Flowable, Referenceable):
     def title(self):
         return self.caption.text
 
-    def render(self, container):
+    def render(self, container, last_descender):
         image = Image(self.filename, scale=self.scale)
-        image_height = image.flow(container)
-        caption_height = self.caption.flow(container)
-        return image_height + caption_height
+        image_height = image.flow(container, None)
+        caption_height = self.caption.flow(container, None)

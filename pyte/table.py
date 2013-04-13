@@ -83,7 +83,7 @@ class Tabular(Flowable):
                     self.cell_styles[ri][ci] = copy(style)
                     self.cell_styles[ri][ci].base = old_style
 
-    def render(self, container):
+    def render(self, container, last_descender):
         # TODO: allow data to override style (align)
         canvas = container.canvas
         table_width = float(container.width)
@@ -163,12 +163,11 @@ class Tabular(Flowable):
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.canvas.append(x_cursor, y_offset)
             y_cursor += row_height
-        return table_height
 
     def render_cell(self, cell, container, style):
         if cell is not None and cell.content:
             cell_par = Paragraph(cell.content, style=style)
-            return cell_par.flow(container)
+            return cell_par.flow(container, None)
         else:
             return 0
 

@@ -129,7 +129,7 @@ class Footnote(Field):
     def field_spans(self, container):
         self.set_number(container._footnote_space.next_number)
         self.note.document = self.document
-        self.note.flow(container._footnote_space)
+        self.note.flow(container._footnote_space, None)
         field_text = Superscript(str(self.number))
         field_text.parent = self.parent
         return field_text.spans()

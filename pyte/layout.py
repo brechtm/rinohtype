@@ -148,8 +148,9 @@ class ContainerBase(FlowableTarget):
         for child in self.children:
             for chain in child.render():
                 yield chain
+        last_descender = None
         for flowable in self.flowables:
-            flowable.flow(self)
+            height, last_descender = flowable.flow(self, last_descender)
         if self.chain:
             for chain in self.chain.render():
                 yield chain
@@ -334,11 +335,13 @@ class Chain(FlowableTarget):
         with this chain."""
         while self._container_index < len(self._containers):
             container = self._containers[self._container_index]
+            last_descender = None
             self._container_index += 1
             try:
                 while self._flowable_index < len(self.flowables):
                     flowable = self.flowables[self._flowable_index]
-                    flowable.flow(container)
+                    height, last_descender = flowable.flow(container,
+                                                           last_descender)
                     self._flowable_index += 1
             except EndOfContainer:
                 if self._container_index > len(self._containers) - 1:

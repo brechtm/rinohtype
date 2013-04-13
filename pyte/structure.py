@@ -48,11 +48,11 @@ class Heading(Paragraph, Referenceable):
     def title(self):
         return self._title
 
-    def render(self, container):
+    def render(self, container, last_descender):
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)
-        return super().render(container)
+        return super().render(container, last_descender)
 
 
 class ListStyle(ParagraphStyle):
@@ -103,12 +103,13 @@ class List(Paragraph):
 ####        listItem.number = self.currentNumber
 ##        self.currentNumber += 1
 
-    def render(self, container):
+    def render(self, container, last_descender):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            item.flow(container)
+            last_descender = item.render(container, last_descender)
             self.item_pointer += 1
         self.item_pointer = 0
+        return last_descender
 
 
 ### TODO: create common superclass for Heading and ListItem
@@ -160,12 +161,13 @@ class DefinitionList(Paragraph):
         self.append(last_definition_par)
         self.item_pointer = 0
 
-    def render(self, container):
+    def render(self, container, last_descender):
         while self.item_pointer < len(self):
             item = self[self.item_pointer]
-            item.flow(container)
+            last_descender = item.render(container, last_descender)
             self.item_pointer += 1
         self.item_pointer = 0
+        return last_descender
 
 
 class HeaderStyle(ParagraphStyle):
@@ -181,11 +183,11 @@ class Header(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def render(self, container):
+    def render(self, container, last_descender):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         text.parent = self
         self.append(text)
-        return super().render(container)
+        return super().render(container, last_descender)
 
 
 class FooterStyle(ParagraphStyle):
@@ -201,11 +203,11 @@ class Footer(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def render(self, container):
+    def render(self, container, last_descender):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         text.parent = self
         self.append(text)
-        return super().render(container)
+        return super().render(container, last_descender)
 
 
 class TableOfContentsStyle(ParagraphStyle):
@@ -240,15 +242,15 @@ class TableOfContents(Paragraph):
             flowable.parent = self
             self.append(flowable)
 
-    def render(self, container):
+    def render(self, container, last_descender):
         offset_begin = container.cursor
         while self.item_pointer < len(self):
             self.item_pointer += 1
             try:
                 item = self[self.item_pointer - 1]
-                item.flow(container)
+                last_descender = item.render(container, last_descender)
             except EndOfContainer:
                 raise
 
         self.item_pointer = 0
-        return container.cursor - offset_begin
+        return last_descender

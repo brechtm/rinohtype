@@ -184,7 +184,7 @@ class Paragraph(MixedStyledText, Flowable):
         self._words = split_into_words(MixedStyledText.spans(self))
         self.first_line = True
 
-    def render(self, container):
+    def render(self, container, last_descender):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. When the end of the container is
         reached, the rendering state is preserved to continue setting the rest
@@ -202,7 +202,7 @@ class Paragraph(MixedStyledText, Flowable):
             first_line_indent += indent_first
             self.first_line = False
 
-        descender = 0
+        descender = last_descender
 
         def typeset_line(line, words, previous_descender, last_line=False):
             """Typeset `line` and, if succesful, update the paragraph's internal
@@ -242,7 +242,8 @@ class Paragraph(MixedStyledText, Flowable):
                 child_container = DownExpandingContainer(container,
                                                          left=indent_left,
                                                          top=container.cursor)
-                container.advance(word.flow(child_container))
+                height, descender = word.flow(child_container, descender)
+                container.advance(descender)
                 line = Line(tab_stops, line_width, indent_left)
             except StopIteration:
                 if line:
@@ -250,7 +251,7 @@ class Paragraph(MixedStyledText, Flowable):
                 break
 
         self._init_state()  # reset the state for the next rendering pass
-        return container.cursor - start_offset
+        return descender
 
 
 class Line(list):
@@ -364,8 +365,8 @@ class Line(list):
         ascender = max(float(item.ascender) for item in self)
         descender = min(float(item.descender) for item in self)
 
-        if container.cursor < 0:
-            leading = 0
+        if previous_descender is None:
+            leading = ascender
         else:
             leading = line_spacing.leading(max_font_size, previous_descender)
         container.advance(leading)
