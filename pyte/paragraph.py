@@ -53,7 +53,7 @@ class LineSpacing(object):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
-    def pitch(self, line_height):
+    def leading(self, font_size, previous_descender):
         """Return the distance between the baselines of two successive lines."""
         raise NotImplementedError
 
@@ -66,8 +66,8 @@ class ProportionalSpacing(LineSpacing):
         to obtain the line spacing."""
         self.factor = factor
 
-    def pitch(self, line_height):
-        return self.factor * line_height
+    def leading(self, font_size, previous_descender):
+        return self.factor * font_size + previous_descender
 
 
 STANDARD = ProportionalSpacing(1.2)
@@ -93,11 +93,13 @@ class FixedSpacing(LineSpacing):
         self._pitch = float(pitch)
         self.minimum = minimum
 
-    def pitch(self, line_height):
+    def leading(self, font_size, previous_descender):
+        leading = self._pitch + previous_descender
         if self.minimum:
-            return max(self._pitch, self.minimum.pitch(line_height))
+            return max(leading,
+                       self.minimum.leading(font_size, previous_descender))
         else:
-            return self._pitch
+            return leading
 
 
 class Leading(LineSpacing):
@@ -106,10 +108,10 @@ class Leading(LineSpacing):
     def __init__(self, leading):
         """`leading` specifies the space between the bottom on a line and the
         top of the following line."""
-        self.leading = leading
+        self._leading = leading
 
-    def pitch(self, line_height):
-        return float(line_height + self.leading)
+    def leading(self, font_size, previous_descender):
+        return float(self._leading)
 
 
 class TabStop(object):
@@ -200,13 +202,17 @@ class Paragraph(MixedStyledText, Flowable):
             first_line_indent += indent_first
             self.first_line = False
 
-        def typeset_line(line, words, last_line=False):
+        descender = 0
+
+        def typeset_line(line, words, previous_descender, last_line=False):
             """Typeset `line` and, if succesful, update the paragraph's internal
             rendering state. Additionally, this function advances the
             container's pointer downwards the size of the interline spacing."""
-            line.typeset(container, justification, line_spacing, last_line)
+            previous_descender = line.typeset(container, justification,
+                                              line_spacing, previous_descender,
+                                              last_line)
             self._words, words = tee(words)
-            return words
+            return words, previous_descender
 
         start_offset = container.cursor
         line = Line(tab_stops, line_width, first_line_indent)
@@ -219,16 +225,20 @@ class Paragraph(MixedStyledText, Flowable):
                 word = next(words)              # throws StopIteration
                 spillover = line.append(word)   # throws the other exceptions
                 if spillover:
-                    words = typeset_line(line, chain((spillover, ), words))
+                    words, descender = typeset_line(line,
+                                                    chain((spillover, ), words),
+                                                    descender)
                     line = Line(tab_stops, line_width, indent_left)
             except NewlineException:
-                words = typeset_line(line, words, last_line=True)
+                words, descender = typeset_line(line, words, descender,
+                                                last_line=True)
                 line = Line(tab_stops, line_width, indent_left)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
                 words = chain(field_words, words)
             except FlowableException:
-                words = typeset_line(line, words, last_line=True)
+                words, descender = typeset_line(line, words, descender,
+                                                last_line=True)
                 child_container = DownExpandingContainer(container,
                                                          left=indent_left,
                                                          top=container.cursor)
@@ -236,7 +246,7 @@ class Paragraph(MixedStyledText, Flowable):
                 line = Line(tab_stops, line_width, indent_left)
             except StopIteration:
                 if line:
-                    typeset_line(line, words, last_line=True)
+                    typeset_line(line, words, descender, last_line=True)
                 break
 
         self._init_state()  # reset the state for the next rendering pass
@@ -337,7 +347,8 @@ class Line(list):
             tab.warn('Tab did not fall into any of the tab stops.')
             return 0, Space(style=tab.style, parent=tab.parent)
 
-    def typeset(self, container, justification, line_spacing, last_line=False):
+    def typeset(self, container, justification, line_spacing,
+                previous_descender, last_line=False):
         """Typeset the line at the onto `container` below its current cursor
         position. `justification` is passed on from the paragraph style and
         `last_line` specifies whether this is the last line of the paragraph.
@@ -349,11 +360,15 @@ class Line(list):
         except IndexError:
             return 0
 
+        max_font_size = max(float(item.height) for item in self)
         ascender = max(float(item.ascender) for item in self)
         descender = min(float(item.descender) for item in self)
-        line_gap = max(item.line_gap for item in self)
 
-        container.advance(ascender)
+        if container.cursor < 0:
+            leading = 0
+        else:
+            leading = line_spacing.leading(max_font_size, previous_descender)
+        container.advance(leading)
         if - descender > container.remaining_height:
             raise EndOfContainer
 
@@ -388,7 +403,8 @@ class Line(list):
             left += span.send(zip(item.glyphs(), item.widths()))
             prev_font_style = font_style
         span.close()
-        container.advance(line_gap - descender)
+        container.advance(- descender)
+        return descender
 
 
 # utility functions
