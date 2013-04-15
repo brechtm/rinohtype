@@ -19,16 +19,9 @@ class OpenTypeFont(Font):
         self.filename = filename
         self.encoding = None
         self.tables = OpenTypeParser(filename)
+        self.units_per_em = self.tables['head']['unitsPerEm']
         metrics = OpenTypeMetrics(self.tables)
         super().__init__(metrics, weight, slant, width)
-
-    @property
-    def name(self):
-        return self.metrics.name
-
-    @property
-    def scaling_factor(self):
-        return self.tables['head']['unitsPerEm']
 
 
 class OpenTypeMetrics(FontMetrics):
@@ -62,6 +55,8 @@ class OpenTypeMetrics(FontMetrics):
             except KeyError:
                 continue
         assert self._glyphs
+        name = self._tables['name'].strings
+        self.name = name[NAME_PS_NAME][PLATFORM_WINDOWS][LANGUAGE_WINDOWS_EN_US]
         self.bbox = tables['head'].bounding_box
         self.italic_angle = tables['post']['italicAngle']
         self.ascent = tables['OS/2']['sTypoAscender']
@@ -70,11 +65,6 @@ class OpenTypeMetrics(FontMetrics):
         self.cap_height = tables['OS/2']['sCapHeight']
         self.x_height = tables['OS/2']['sxHeight']
         self.stem_v = 50 # self['FontMetrics']['StdVW']
-
-    @property
-    def name(self):
-        names = self._tables['name'].strings
-        return names[NAME_PS_NAME][PLATFORM_WINDOWS][LANGUAGE_WINDOWS_EN_US]
 
     def get_glyph(self, char, variant=None):
         try:

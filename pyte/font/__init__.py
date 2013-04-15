@@ -11,6 +11,8 @@ from ..warnings import PyteWarning
 # TODO: provide predefined Font objects for known font filenames?
 
 class Font(object):
+    units_per_em = None
+
     def __init__(self, metrics, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.metrics = metrics
         if weight not in WEIGHTS:
@@ -25,13 +27,13 @@ class Font(object):
         self.weight = weight
         self.slant = slant
         self.width = width
-        self.ascender = self.metrics.ascent / self.scaling_factor
-        self.descender = self.metrics.descent / self.scaling_factor
-        self.line_gap = self.metrics.line_gap / self.scaling_factor
+        self.ascender = self.metrics.ascent / self.units_per_em
+        self.descender = self.metrics.descent / self.units_per_em
+        self.line_gap = self.metrics.line_gap / self.units_per_em
 
     @property
-    def scaling_factor(self):
-        raise NotImplementedError
+    def name(self):
+        return self.metrics.name
 
 
 class TypeFace(dict):

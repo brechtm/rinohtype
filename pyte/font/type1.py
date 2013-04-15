@@ -77,6 +77,7 @@ class AdobeFontMetrics(FontMetrics):
         if close_file:
             file.close()
 
+        self.name = self['FontMetrics']['FontName']
         self.bbox = self['FontMetrics']['FontBBox']
         self.italic_angle = self['FontMetrics']['ItalicAngle']
         self.ascent = self['FontMetrics'].get('Ascender', 750)
@@ -85,10 +86,6 @@ class AdobeFontMetrics(FontMetrics):
         self.cap_height = self['FontMetrics'].get('CapHeight', 700)
         self.x_height = self['FontMetrics'].get('XHeight', 500)
         self.stem_v = self['FontMetrics'].get('StdVW', 50)
-
-    @property
-    def name(self):
-        return self['FontMetrics']['FontName']
 
     _possible_suffixes = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
                           OLD_STYLE: ('.oldstyle', )}
@@ -224,6 +221,8 @@ class AdobeFontMetrics(FontMetrics):
 
 
 class Type1Font(Font):
+    units_per_em = 1000
+
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
                  core=False):
         metrics = AdobeFontMetrics(filename + '.afm')
@@ -242,14 +241,6 @@ class Type1Font(Font):
                 self.parse_pfa(filename + '.pfa')
             else:
                 self.parse_pfb(filename + '.pfb')
-
-    @property
-    def name(self):
-        return self.metrics.name
-
-    @property
-    def scaling_factor(self):
-        return 1000
 
     def parse_pfa(self, file):
         raise NotImplementedError

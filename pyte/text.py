@@ -290,7 +290,7 @@ class SingleStyledText(StyledText):
         single-styled text. Kerning adjustment (if enabled in the
         :class:`TextStyle`) between two glyphs is added to the width of the
         first glyph."""
-        scale = float(self.height) / self.font.scaling_factor
+        scale = float(self.height) / self.font.units_per_em
         get_kerning = self.font.metrics.get_kerning
         kerning = self.get_style('kerning')
         glyphs = self.glyphs()
