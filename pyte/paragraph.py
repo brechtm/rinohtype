@@ -53,8 +53,9 @@ class LineSpacing(object):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
-    def leading(self, font_size, previous_descender):
-        """Return the distance between the baselines of two successive lines."""
+    def advance(self, line, last_descender):
+        """Return the distance between the descender of the previous line and
+        the baseline of the current line."""
         raise NotImplementedError
 
 
@@ -66,8 +67,9 @@ class ProportionalSpacing(LineSpacing):
         to obtain the line spacing."""
         self.factor = factor
 
-    def leading(self, font_size, previous_descender):
-        return self.factor * font_size + previous_descender
+    def advance(self, line, last_descender):
+        max_font_size = max(float(item.height) for item in line)
+        return self.factor * max_font_size + last_descender
 
 
 STANDARD = ProportionalSpacing(1.2)
@@ -86,32 +88,34 @@ class FixedSpacing(LineSpacing):
     """Fixed line spacing, with optional minimum spacing."""
 
     def __init__(self, pitch, minimum=SINGLE):
-        """`pitch` specifies the distance between two consecutive lines.
+        """`pitch` specifies the distance between the baseline of two
+        consecutive lines of text.
         Optionally, `minimum` specifies the minimum :class:`LineSpacing` to use,
         which can prevent lines with large fonts from overlapping. If no minimum
         is required, set to `None`."""
-        self._pitch = float(pitch)
+        self.pitch = float(pitch)
         self.minimum = minimum
 
-    def leading(self, font_size, previous_descender):
-        leading = self._pitch + previous_descender
-        if self.minimum:
-            return max(leading,
-                       self.minimum.leading(font_size, previous_descender))
+    def advance(self, line, last_descender):
+        advance = self.pitch + last_descender
+        if self.minimum is not None:
+            minimum = self.minimum.advance(line, last_descender)
+            return max(advance, minimum)
         else:
-            return leading
+            return advance
 
 
 class Leading(LineSpacing):
     """Line spacing determined by the space in between two lines."""
 
     def __init__(self, leading):
-        """`leading` specifies the space between the bottom on a line and the
+        """`leading` specifies the space between the bottom of a line and the
         top of the following line."""
-        self._leading = leading
+        self.leading = float(leading)
 
-    def leading(self, font_size, previous_descender):
-        return float(self._leading)
+    def advance(self, line, last_descender):
+        ascender = max(float(item.ascender) for item in line)
+        return ascender + self.leading
 
 
 class TabStop(object):
@@ -204,15 +208,15 @@ class Paragraph(MixedStyledText, Flowable):
 
         descender = last_descender
 
-        def typeset_line(line, words, previous_descender, last_line=False):
+        def typeset_line(line, words, last_descender, last_line=False):
             """Typeset `line` and, if succesful, update the paragraph's internal
             rendering state. Additionally, this function advances the
             container's pointer downwards the size of the interline spacing."""
-            previous_descender = line.typeset(container, justification,
-                                              line_spacing, previous_descender,
-                                              last_line)
+            last_descender = line.typeset(container, justification,
+                                          line_spacing, last_descender,
+                                          last_line)
             self._words, words = tee(words)
-            return words, previous_descender
+            return words, last_descender
 
         start_offset = container.cursor
         line = Line(tab_stops, line_width, first_line_indent)
@@ -350,7 +354,7 @@ class Line(list):
             return 0, Space(style=tab.style, parent=tab.parent)
 
     def typeset(self, container, justification, line_spacing,
-                previous_descender, last_line=False):
+                last_descender, last_line=False):
         """Typeset the line at the onto `container` below its current cursor
         position. `justification` is passed on from the paragraph style and
         `last_line` specifies whether this is the last line of the paragraph.
@@ -360,17 +364,15 @@ class Line(list):
             while isinstance(self[-1], Space):
                 self._cursor -= self.pop().width
         except IndexError:
-            return previous_descender
+            return last_descender
 
-        max_font_size = max(float(item.height) for item in self)
-        ascender = max(float(item.ascender) for item in self)
         descender = min(float(item.descender) for item in self)
 
-        if previous_descender is None:
-            leading = ascender
+        if last_descender is None:
+            advance = max(float(item.ascender) for item in self)
         else:
-            leading = line_spacing.leading(max_font_size, previous_descender)
-        container.advance(leading)
+            advance = line_spacing.advance(self, last_descender)
+        container.advance(advance)
         if - descender > container.remaining_height:
             raise EndOfContainer
 
