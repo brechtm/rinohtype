@@ -200,7 +200,7 @@ class ExpandingContainer(ContainerBase):
     """An dynamically (vertically) growing version of the :class:`Container`."""
 
     def __init__(self, parent, left=None, width=None, right=None,
-                 max_height=None, chain=None):
+                 max_height=float('+inf'), chain=None):
         """Initialize this expanding container as a child of the `parent`
         container.
 
@@ -213,10 +213,7 @@ class ExpandingContainer(ContainerBase):
 
     @property
     def remaining_height(self):
-        if self.max_height:
-            return self.max_height - self.cursor
-        else:
-            return float('+inf')
+        return self.max_height - self.cursor
 
     def advance(self, height):
         """Advance the cursor by `height`. If this would expand the container
@@ -236,7 +233,7 @@ class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, parent, left=None, top=None, width=None, right=None,
-                 max_height=None, chain=None):
+                 max_height=float('+inf'), chain=None):
         """Initialize this down-expanding container as a child of the `parent`
         container.
 
@@ -257,7 +254,7 @@ class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, parent, left=None, bottom=None, width=None, right=None,
-                 max_height=None, chain=None):
+                 max_height=float('+inf'), chain=None):
         """Initialize this up-expanding container as a child of the `parent`
         container.
 
