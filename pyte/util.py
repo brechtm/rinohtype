@@ -13,6 +13,8 @@ Collection of miscellaneous classes, functions and decorators:
 
 import time
 
+from functools import wraps
+
 
 __all__ = ['Decorator', 'all_subclasses', 'intersperse', 'cached_property',
            'timed']
@@ -67,21 +69,20 @@ def intersperse(iterable, element):
 def consumer(function):
     """Decorator that makes a generator function automatically advance to its
     first yield point when initially called (PEP 342)."""
+    @wraps(function)
     def wrapper(*args, **kwargs):
         generator = function(*args, **kwargs)
         next(generator)
         return generator
-    wrapper.__name__ = function.__name__
-    wrapper.__dict__ = function.__dict__
-    wrapper.__doc__  = function.__doc__
     return wrapper
 
 
 # method decorators
 
 def cached(function):
-    """Method decorator caching a function's returned values."""
+    """Method decorator caching a method's returned values."""
     cache_variable = '_cached_' + function.__name__
+    @wraps(function)
     def function_wrapper(obj, *args):
         # values are cached in a dict stored in the object
         try:
@@ -100,7 +101,7 @@ def cached(function):
 
 class cached_property(property):
     """Property decorator that additionally caches the return value of the
-    decorated getter method"""
+    decorated getter method."""
     def __init__(self, function, *args, **kwargs):
         super().__init__(function, *args, **kwargs)
         self._cache_variable = '_cached_' + function.__name__
@@ -119,6 +120,7 @@ class cached_property(property):
 def cached_generator(function):
     """Method decorator caching a generator's yielded items."""
     cache_variable = '_cached_' + function.__name__
+    @wraps(function)
     def function_wrapper(obj, *args, **kwargs):
         # values are cached in a list stored in the object
         try:
@@ -135,6 +137,7 @@ def cached_generator(function):
 
 def timed(function):
     """Decorator timing the method call and printing the result to `stdout`"""
+    @wraps(function)
     def function_wrapper(obj, *args, **kwargs):
         """Wrapper function printing the time taken by the call to `function`"""
         name = obj.__class__.__name__ + '.' + function.__name__
