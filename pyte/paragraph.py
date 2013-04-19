@@ -14,13 +14,12 @@ The line spacing option in a :class:`ParagraphStyle` can be any of:
 * :const:`SINGLE`:
 * :const:`DOUBLE`:
 
-Horizontal justification of the can be:
+Horizontal justification of lines can be one of:
 
 * :const:`LEFT`
 * :const:`RIGHT`
 * :const:`CENTER`
 * :const:`BOTH`
-
 
 """
 
@@ -175,14 +174,13 @@ class Paragraph(MixedStyledText, Flowable):
     spans = Flowable.spans
 
     def __init__(self, text_or_items, style=None):
-        """"""
-        super().__init__(text_or_items, style=style)
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""
+        super().__init__(text_or_items, style=style)
         self._init_state()
 
     def _init_state(self):
-        """Prepare this paragraph's state for typesetting."""
+        """Initialize this paragraph's state for typesetting."""
         # self._words is an iterator yielding the (remaining) words or other
         # in-line items to typeset.
         self._words = split_into_words(MixedStyledText.spans(self))
@@ -190,9 +188,11 @@ class Paragraph(MixedStyledText, Flowable):
 
     def render(self, container, descender):
         """Typeset the paragraph onto `container`, starting below the current
-        cursor position of the container. When the end of the container is
-        reached, the rendering state is preserved to continue setting the rest
-        of the paragraph when this method is called with a new container."""
+        cursor position of the container. `descender` is the descender height of
+        the preceeding line or `None`.
+        When the end of the container is reached, the rendering state is
+        preserved to continue setting the rest of the paragraph when this method
+        is called with a new container."""
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
         indent_first = float(self.get_style('indent_first'))
@@ -212,8 +212,8 @@ class Paragraph(MixedStyledText, Flowable):
         self._words, words = tee(self._words)
 
         def typeset_line(line, last_line=False):
-            """Typeset `line` and, if succesful, update the paragraph's internal
-            rendering state."""
+            """Typeset `line` and, if no exception is raised, update the
+            paragraph's internal rendering state."""
             nonlocal words, descender
             descender = line.typeset(container, justification, line_spacing,
                                      descender, last_line)
@@ -346,14 +346,18 @@ class Line(list):
             tab.warn('Tab did not fall into any of the tab stops.')
             return 0, Space(style=tab.style, parent=tab.parent)
 
-    def typeset(self, container, justification, line_spacing,
-                last_descender, last_line=False):
-        """Typeset the line at the onto `container` below its current cursor
-        position. `justification` and `line_spacing` are passed on from the
+    def typeset(self, container, justification, line_spacing, last_descender,
+                last_line=False):
+        """Typeset the line at into `container` below its current cursor
+        position. Advances the container's cursor to below the descender of this
+        line.
+
+        `justification` and `line_spacing` are passed on from the
         paragraph style. `last_descender` is the last line's descender, used in
-        the vertical position of this line. Finally, `last_line` specifies
+        the vertical positioning of this line. Finally, `last_line` specifies
         whether this is the last line of the paragraph.
-        Returns the line's descender."""
+
+        Returns the line's descender size."""
         try:
             # drop spaces at the end of the line
             while isinstance(self[-1], Space):
@@ -409,6 +413,8 @@ class Line(list):
 # utility functions
 
 def split_into_words(spans):
+    """Generator yielding all words in `spans`.
+    Spans in `span` that do not have a split() method are yielded as is."""
     for span in spans:
         try:
             for part in span.split():
@@ -418,6 +424,8 @@ def split_into_words(spans):
 
 
 def expand_tabs(items):
+    """Generator expanding all :class:`Tab`s in `items`.
+    Non-tab items are yielded as is."""
     for item in items:
         if isinstance(item, Tab):
             for element in item.expand():
@@ -427,6 +435,9 @@ def expand_tabs(items):
 
 
 def stretch_spaces(items, add_to_spaces):
+    """Generator replacing all :class:`Space`s with :class:`Spacer`s with a with
+    equal to that of a space plus `add_to_spaces`.
+    Non-spaces are yielded as is."""
     for item in items:
         if type(item) is Space:
             yield Spacer(item.width + add_to_spaces,
