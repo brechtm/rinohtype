@@ -183,12 +183,12 @@ class Paragraph(MixedStyledText, Flowable):
 
     def _init_state(self):
         """Prepare this paragraph's state for typesetting."""
-        # self._words is an iterator yielding the (remainding) words or other
+        # self._words is an iterator yielding the (remaining) words or other
         # in-line items to typeset.
         self._words = split_into_words(MixedStyledText.spans(self))
         self.first_line = True
 
-    def render(self, container, last_descender):
+    def render(self, container, descender):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. When the end of the container is
         reached, the rendering state is preserved to continue setting the rest
@@ -206,43 +206,37 @@ class Paragraph(MixedStyledText, Flowable):
             first_line_indent += indent_first
             self.first_line = False
 
-        descender = last_descender
+        # self._words is updated after successfully rendering each line, so that
+        # when `container` overflows on rendering a line, the words in that line
+        # are yielded again on the next typeset() call.
+        self._words, words = tee(self._words)
 
-        def typeset_line(line, words, last_descender, last_line=False):
+        def typeset_line(line, last_line=False):
             """Typeset `line` and, if succesful, update the paragraph's internal
-            rendering state. Additionally, this function advances the
-            container's pointer downwards the size of the interline spacing."""
-            last_descender = line.typeset(container, justification,
-                                          line_spacing, last_descender,
-                                          last_line)
+            rendering state."""
+            nonlocal words, descender
+            descender = line.typeset(container, justification, line_spacing,
+                                     descender, last_line)
             self._words, words = tee(words)
-            return words, last_descender
 
         start_offset = container.cursor
         line = Line(tab_stops, line_width, first_line_indent)
-        # self._words is updated after successfully rendering each line, so that
-        # when `container` overflows on rendering a line, the words in that line
-        # can still be set on the next typeset() call.
-        self._words, words = tee(self._words)
         while True:
             try:
                 word = next(words)              # throws StopIteration
                 spillover = line.append(word)   # throws the other exceptions
                 if spillover:
-                    words, descender = typeset_line(line,
-                                                    chain((spillover, ), words),
-                                                    descender)
+                    words = chain((spillover, ), words)
+                    typeset_line(line)
                     line = Line(tab_stops, line_width, indent_left)
             except NewlineException:
-                words, descender = typeset_line(line, words, descender,
-                                                last_line=True)
+                typeset_line(line, last_line=True)
                 line = Line(tab_stops, line_width, indent_left)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
                 words = chain(field_words, words)
             except FlowableException:
-                words, descender = typeset_line(line, words, descender,
-                                                last_line=True)
+                typeset_line(line, last_line=True)
                 child_container = DownExpandingContainer(container,
                                                          left=indent_left,
                                                          top=container.cursor)
@@ -251,8 +245,7 @@ class Paragraph(MixedStyledText, Flowable):
                 line = Line(tab_stops, line_width, indent_left)
             except StopIteration:
                 if line:
-                    words, descender = typeset_line(line, words, descender,
-                                                    last_line=True)
+                    typeset_line(line, last_line=True)
                 break
 
         self._init_state()  # reset the state for the next rendering pass
@@ -356,9 +349,11 @@ class Line(list):
     def typeset(self, container, justification, line_spacing,
                 last_descender, last_line=False):
         """Typeset the line at the onto `container` below its current cursor
-        position. `justification` is passed on from the paragraph style and
-        `last_line` specifies whether this is the last line of the paragraph.
-        Returns the line's height."""
+        position. `justification` and `line_spacing` are passed on from the
+        paragraph style. `last_descender` is the last line's descender, used in
+        the vertical position of this line. Finally, `last_line` specifies
+        whether this is the last line of the paragraph.
+        Returns the line's descender."""
         try:
             # drop spaces at the end of the line
             while isinstance(self[-1], Space):
