@@ -78,9 +78,10 @@ class Flowable(Styled):
         (called when this flowable is embedded in a paragraph)"""
         yield self
 
-    def render(self, container):
+    def render(self, container, descender):
         """Renders the flowable's content to `container`, with the flowable's
-        top edge lining up with the container's cursor."""
+        top edge lining up with the container's cursor. `descender` is the
+        descender height of the preceeding line or `None`."""
         raise NotImplementedError
 
 

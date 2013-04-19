@@ -27,15 +27,17 @@ from itertools import chain, tee
 
 from .dimension import Dimension, PT
 from .flowable import FlowableException, Flowable, FlowableStyle
-from .hyphenator import Hyphenator
 from .layout import DownExpandingContainer, EndOfContainer
-from .reference import FieldException, Footnote
+from .reference import FieldException
 from .text import Space, Tab, Spacer
 from .text import NewlineException, TabException, TabSpaceExceeded
 from .text import TextStyle, MixedStyledText
 
 
-__all__ = ['']
+__all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
+           'ProportionalSpacing', 'FixedSpacing', 'Leading',
+           'STANDARD', 'SINGLE', 'DOUBLE',
+           'LEFT', 'RIGHT', 'CENTER', 'BOTH']
 
 
 # Text justification
@@ -219,7 +221,6 @@ class Paragraph(MixedStyledText, Flowable):
                                      descender, last_line)
             self._words, words = tee(words)
 
-        start_offset = container.cursor
         line = Line(tab_stops, line_width, first_line_indent)
         while True:
             try:
@@ -399,7 +400,8 @@ class Line(list):
         for item in items:
             font_style = item.font, float(item.height), item.y_offset
             if font_style != prev_font_style:
-                if span: span.close()
+                if span:
+                    span.close()
                 font, size, y_offset = font_style
                 top = container.cursor - y_offset
                 span = container.canvas.show_glyphs(left, top, font, size)
