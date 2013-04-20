@@ -1,18 +1,18 @@
 """
 Classes for representing paragraphs and typesetting them:
 
-* :class:`Paragraph`:
-* :class:`ParagraphStyle`:
-* :class:`TabStop`:
+* :class:`Paragraph`: A paragraph of mixed-styled text.
+* :class:`ParagraphStyle`: Style class specifying paragraph formatting.
+* :class:`TabStop`: Horizontal position for aligning text of successive lines.
 
 The line spacing option in a :class:`ParagraphStyle` can be any of:
 
-* :class:`ProportionalSpacing`:
-* :class:`FixedSpacing`:
-* :class:`Leading`:
-* :const:`STANDARD`:
-* :const:`SINGLE`:
-* :const:`DOUBLE`:
+* :class:`ProportionalSpacing`: Line spacing proportional to the line height.
+* :class:`FixedSpacing`: Fixed line spacing, with optional minimum spacing.
+* :class:`Leading`: Line spacing determined by the space in between two lines.
+* :const:`STANDARD`: Line spacing equal to 120% of the line height.
+* :const:`SINGLE`: Line spacing equal to the line height (no leading).
+* :const:`DOUBLE`: Line spacing of double the line height.
 
 Horizontal justification of lines can be one of:
 
