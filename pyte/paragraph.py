@@ -10,6 +10,7 @@ The line spacing option in a :class:`ParagraphStyle` can be any of:
 * :class:`ProportionalSpacing`: Line spacing proportional to the line height.
 * :class:`FixedSpacing`: Fixed line spacing, with optional minimum spacing.
 * :class:`Leading`: Line spacing determined by the space in between two lines.
+* :const:`DEFAULT`: The default line spacing as specified by the font.
 * :const:`STANDARD`: Line spacing equal to 120% of the line height.
 * :const:`SINGLE`: Line spacing equal to the line height (no leading).
 * :const:`DOUBLE`: Line spacing of double the line height.
@@ -58,6 +59,19 @@ class LineSpacing(object):
         """Return the distance between the descender of the previous line and
         the baseline of the current line."""
         raise NotImplementedError
+
+
+class DefaultSpacing(LineSpacing):
+    """The default line spacing as specified by the font."""
+
+    def advance(self, line, last_descender):
+        max_line_gap = max(float(item.line_gap) for item in line)
+        ascender = max(float(item.ascender) for item in line)
+        return ascender + max_line_gap
+
+
+DEFAULT = DefaultSpacing()
+"""The default line spacing as specified by the font."""
 
 
 class ProportionalSpacing(LineSpacing):
@@ -159,7 +173,7 @@ class ParagraphStyle(TextStyle, FlowableStyle):
     attributes = {'indent_left': 0*PT,
                   'indent_right': 0*PT,
                   'indent_first': 0*PT,
-                  'line_spacing': STANDARD,
+                  'line_spacing': DEFAULT,
                   'justify': BOTH,
                   'tab_stops': []}
 
