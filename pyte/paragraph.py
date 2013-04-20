@@ -235,7 +235,7 @@ class Paragraph(MixedStyledText, Flowable):
                                      descender, last_line)
             self._words, words = tee(words)
 
-        line = Line(tab_stops, line_width, first_line_indent)
+        line = Line(tab_stops, line_width, first_line_indent, container)
         while True:
             try:
                 word = next(words)              # throws StopIteration
@@ -243,10 +243,10 @@ class Paragraph(MixedStyledText, Flowable):
                 if spillover:
                     words = chain((spillover, ), words)
                     typeset_line(line)
-                    line = Line(tab_stops, line_width, indent_left)
+                    line = Line(tab_stops, line_width, indent_left, container)
             except NewlineException:
                 typeset_line(line, last_line=True)
-                line = Line(tab_stops, line_width, indent_left)
+                line = Line(tab_stops, line_width, indent_left, container)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
                 words = chain(field_words, words)
@@ -257,7 +257,7 @@ class Paragraph(MixedStyledText, Flowable):
                                                          top=container.cursor)
                 height, descender = word.flow(child_container, descender)
                 container.advance(height)
-                line = Line(tab_stops, line_width, indent_left)
+                line = Line(tab_stops, line_width, indent_left, container)
             except StopIteration:
                 if line:
                     typeset_line(line, last_line=True)
@@ -271,14 +271,16 @@ class Line(list):
     """Helper class for building and typesetting a single line of text within
     a :class:`Paragraph`."""
 
-    def __init__(self, tab_stops, width, indent):
+    def __init__(self, tab_stops, width, indent, container):
         """`tab_stops` is a list of tab stops, as given in the paragraph style.
         `width` is the available line width.
-        `indent` specifies the left indent width."""
+        `indent` specifies the left indent width.
+        `container` passes the :class:`Container` that wil hold this line."""
         super().__init__()
         self.tab_stops = tab_stops
         self.width = width
         self.indent = indent
+        self.container = container
         self._cursor = indent
         self._has_tab = False
         self._current_tab = None
@@ -307,7 +309,7 @@ class Line(list):
                         super().append(first)
                         return second
                 if not self:
-                    item.warn('item too long to fit on line')
+                    item.warn('item too long to fit on line', self.container)
                 else:
                     return item
         except TabException:
@@ -328,7 +330,7 @@ class Line(list):
         except TabException:
             width, item = self._handle_tab(item)
         except TabSpaceExceeded:
-            item.warn('Tab space exceeded.')
+            item.warn('Tab space exceeded.', self.container)
             self._cursor -= tab_width
             self.append = self._normal_append
             return self.append(item)
@@ -343,7 +345,8 @@ class Line(list):
           stop), and
         * the tab itself, or a :class:`Space` (if no tab stop was found)."""
         if not self.tab_stops:
-            tab.warn('No tab stops defined for this paragraph style.')
+            tab.warn('No tab stops defined for this paragraph style.',
+                     self.container)
             return 0, Space(style=tab.style, parent=tab.parent)
         for tab_stop in self.tab_stops:
             tab_position = tab_stop.get_position(self.width)

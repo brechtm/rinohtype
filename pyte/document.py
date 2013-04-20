@@ -221,9 +221,10 @@ class DocumentElement(object):
         """Set `source` as the source element of this document element."""
         self._source = source
 
-    def warn(self, message):
+    def warn(self, message, container):
         """Present the warning `message` to the user, adding information on the
         location of the related element in the input file."""
         if self.source is not None:
-            message = '[{}] {}'.format(self.source.location, message)
+            message = '[{}] '.format(self.source.location) + message
+        message += ' (page {})'.format(container.page.number)
         warn(message)

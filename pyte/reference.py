@@ -89,13 +89,14 @@ class Reference(Field):
         self.id = id
         self.type = type
 
-    def field_spans(self, _container):
+    def field_spans(self, container):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
                 text = referenced_item.reference()
                 if text is None:
-                    self.warn('Cannot reference "{}"'.format(referenced_item))
+                    self.warn('Cannot reference "{}"'.format(referenced_item),
+                              container)
                     text = ''
             elif self.type == PAGE:
                 try:
@@ -107,7 +108,7 @@ class Reference(Field):
             else:
                 raise NotImplementedError
         except KeyError:
-            self.warn("Unknown label '{}'".format(self.id))
+            self.warn("Unknown label '{}'".format(self.id), container)
             text = "??".format(self.id)
 
         field_text = SingleStyledText(text)
