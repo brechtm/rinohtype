@@ -58,7 +58,7 @@ class Heading(Paragraph, Referenceable):
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
-                  'item_spacing': ParagraphStyle.attributes['line_spacing'],
+                  'item_spacing': 0*PT,
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
@@ -112,7 +112,7 @@ class List(Paragraph):
 
 class DefinitionListStyle(ParagraphStyle):
     attributes = {'term_style': PARENT_STYLE,
-                  'item_spacing': ParagraphStyle.attributes['line_spacing'],
+                  'item_spacing': 0*PT,
                   'indentation': 10*PT}
 
     def __init__(self, base=None, **attributes):
@@ -128,9 +128,8 @@ class DefinitionList(Paragraph):
         term_style = ParagraphStyle(space_above=0*PT,
                                     space_below=0*PT,
                                     base=style)
-        space_below = self.style.item_spacing.leading(self.style.font_size, None)
         definition_style = ParagraphStyle(space_above=0*PT,
-                                          space_below=space_below,
+                                          space_below=self.style.item_spacing,
                                           indent_left=self.style.indentation,
                                           base=style)
         last_definition_style = ParagraphStyle(space_above=0*PT,
@@ -152,14 +151,6 @@ class DefinitionList(Paragraph):
         self.append(last_term_par)
         self.append(last_definition_par)
         self.item_pointer = 0
-
-    def render(self, container, last_descender):
-        while self.item_pointer < len(self):
-            item = self[self.item_pointer]
-            last_descender = item.render(container, last_descender)
-            self.item_pointer += 1
-        self.item_pointer = 0
-        return last_descender
 
 
 class HeaderStyle(ParagraphStyle):
