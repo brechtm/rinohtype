@@ -3,24 +3,14 @@ from io import BytesIO
 
 from docutils.core import publish_doctree, publish_from_doctree
 
-from pyte.paragraph import Paragraph as RinohParagraph
-from pyte.paragraph import ParagraphStyle, LEFT, CENTER, BOTH, STANDARD
-from pyte.text import LiteralText, MixedStyledText, TextStyle, Emphasized, Bold
+import pyte as rt
+
 from pyte.font import TypeFace, TypeFamily
 from pyte.font.style import REGULAR, BOLD, ITALIC
 from pyte.font.type1 import Type1Font
 from pyte.font.opentype import OpenTypeFont
 from pyte.dimension import PT, CM, INCH
-from pyte.paper import A5
-from pyte.document import Document, Page, PORTRAIT
-from pyte.layout import Container, Chain, FootnoteContainer
 from pyte.backend import pdf
-from pyte.structure import Heading, HeadingStyle
-from pyte.structure import List, ListStyle, DefinitionList, DefinitionListStyle
-from pyte.number import ROMAN_UC, CHARACTER_UC, NUMBER
-from pyte.flowable import Flowable
-from pyte.float import Image as PyteImage
-from pyte.style import StyleStore
 from pyte.frontend.xml import element_factory
 
 import pyte.frontend.xml.elementtree as xml_frontend
@@ -42,67 +32,67 @@ cursor = TypeFace("TeXGyreCursor", cursor_regular)
 fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
 
-styles = StyleStore()
+styles = rt.StyleStore()
 
-styles['title'] = ParagraphStyle(typeface=fontFamily.serif,
-                                 font_size=16*PT,
-                                 line_spacing=STANDARD,
-                                 space_above=6*PT,
-                                 space_below=6*PT,
-                                 justify=CENTER)
+styles['title'] = rt.ParagraphStyle(typeface=fontFamily.serif,
+                                    font_size=16*PT,
+                                    line_spacing=rt.DEFAULT,
+                                    space_above=6*PT,
+                                    space_below=6*PT,
+                                    justify=rt.CENTER)
 
-styles['body'] = ParagraphStyle(typeface=fontFamily.serif,
-                                font_weight=REGULAR,
-                                font_size=10*PT,
-                                line_spacing=STANDARD,
-                                #indent_first=0.125*INCH,
-                                space_above=0*PT,
-                                space_below=10*PT,
-                                justify=BOTH)
+styles['body'] = rt.ParagraphStyle(typeface=fontFamily.serif,
+                                   font_weight=REGULAR,
+                                   font_size=10*PT,
+                                   line_spacing=rt.DEFAULT,
+                                   #indent_first=0.125*INCH,
+                                   space_above=0*PT,
+                                   space_below=10*PT,
+                                   justify=rt.BOTH)
 
-styles['literal'] = ParagraphStyle(base='body',
-                                   #font_size=9*PT,
-                                   justify=LEFT,
-                                   indent_left=1*CM,
-                                   typeface=fontFamily.mono)
-#                                   noWrap=True,   # but warn on overflow
-#                                   literal=True ?)
+styles['literal'] = rt.ParagraphStyle(base='body',
+                                      #font_size=9*PT,
+                                      justify=rt.LEFT,
+                                      indent_left=1*CM,
+                                      typeface=fontFamily.mono)
+#                                      noWrap=True,   # but warn on overflow
+#                                      literal=True ?)
 
-styles['block quote'] = ParagraphStyle(base='body',
-                                       indent_left=1*CM)
+styles['block quote'] = rt.ParagraphStyle(base='body',
+                                          indent_left=1*CM)
 
-styles['heading1'] = HeadingStyle(typeface=fontFamily.serif,
-                                  font_size=14*PT,
-                                  line_spacing=STANDARD,
-                                  space_above=14*PT,
-                                  space_below=6*PT,
-                                  numbering_style=None)
+styles['heading1'] = rt.HeadingStyle(typeface=fontFamily.serif,
+                                     font_size=14*PT,
+                                     line_spacing=rt.DEFAULT,
+                                     space_above=14*PT,
+                                     space_below=6*PT,
+                                     numbering_style=None)
 
-styles['heading2'] = HeadingStyle(base='heading1',
-                                  font_slant=ITALIC,
-                                  font_size=12*PT,
-                                  line_spacing=STANDARD,
-                                  space_above=6*PT,
-                                  space_below=6*PT)
+styles['heading2'] = rt.HeadingStyle(base='heading1',
+                                     font_slant=ITALIC,
+                                     font_size=12*PT,
+                                     line_spacing=rt.DEFAULT,
+                                     space_above=6*PT,
+                                     space_below=6*PT)
 
-styles['monospaced'] = TextStyle(typeface=fontFamily.mono)
+styles['monospaced'] = rt.TextStyle(typeface=fontFamily.mono)
 
-styles['enumerated list'] = ListStyle(base='body',
-                                      indent_left=5*PT,
-                                      ordered=True,
-                                      item_spacing=0*PT,
-                                      numbering_style=NUMBER,
-                                      numbering_separator='.')
+styles['enumerated list'] = rt.ListStyle(base='body',
+                                         indent_left=5*PT,
+                                         ordered=True,
+                                         item_spacing=0*PT,
+                                         numbering_style=rt.NUMBER,
+                                         numbering_separator='.')
 
-styles['bullet list'] = ListStyle(base='body',
-                                  indent_left=5*PT,
-                                  ordered=False,
-                                  item_spacing=0*PT)
+styles['bullet list'] = rt.ListStyle(base='body',
+                                     indent_left=5*PT,
+                                     ordered=False,
+                                     item_spacing=0*PT)
 
-styles['definition list'] = DefinitionListStyle(base='body')
+styles['definition list'] = rt.DefinitionListStyle(base='body')
 
 
-class Mono(MixedStyledText):
+class Mono(rt.MixedStyledText):
     def __init__(self, text, y_offset=0):
         super().__init__(text, style=styles['monospaced'], y_offset=y_offset)
 
@@ -123,7 +113,7 @@ class Section(CustomElement):
                 elem = element.process(document, level=level + 1)
             else:
                 elem = element.process(document)
-            if isinstance(elem, Flowable):
+            if isinstance(elem, rt.Flowable):
                 yield elem
             else:
                 for flw in elem:
@@ -132,47 +122,47 @@ class Section(CustomElement):
 
 class Paragraph(NestedElement):
     def parse(self, document):
-        return RinohParagraph(super().process_content(document),
-                              style=self.style('body'))
+        return rt.Paragraph(super().process_content(document),
+                            style=self.style('body'))
 
 
 class Title(CustomElement):
     def parse(self, document, level=1, id=None):
         #print('Title.render()')
-        return Heading(document, self.text, level=level, id=id,
-                       style=self.style('heading{}'.format(level)))
+        return rt.Heading(document, self.text, level=level, id=id,
+                          style=self.style('heading{}'.format(level)))
 
 class Tip(NestedElement):
     def parse(self, document):
-        return RinohParagraph('TIP: ' + super().process_content(document),
-                              style=self.style('body'))
+        return rt.Paragraph('TIP: ' + super().process_content(document),
+                            style=self.style('body'))
 
 
 class Emphasis(CustomElement):
     def parse(self, document):
-        return Emphasized(self.text)
+        return rt.Emphasized(self.text)
 
 
 class Strong(CustomElement):
     def parse(self, document):
-        return Bold(self.text)
+        return rt.Bold(self.text)
 
 
 class Literal(CustomElement):
     def parse(self, document):
-        return LiteralText(self.text, style=self.style('monospaced'))
+        return rt.LiteralText(self.text, style=self.style('monospaced'))
 
 
 class Literal_Block(CustomElement):
     def parse(self, document):
-        return RinohParagraph(LiteralText(self.text),
-                              style=self.style('literal'))
+        return rt.Paragraph(rt.LiteralText(self.text),
+                            style=self.style('literal'))
 
 
 class Block_Quote(NestedElement):
     def parse(self, document):
-        return RinohParagraph(super().process_content(document),
-                              style=self.style('block quote'))
+        return rt.Paragraph(super().process_content(document),
+                            style=self.style('block quote'))
 
 
 class Reference(CustomElement):
@@ -182,7 +172,7 @@ class Reference(CustomElement):
 
 class Footnote(CustomElement):
     def parse(self, document):
-        return RinohParagraph('footnote', style=self.style('body'))
+        return rt.Paragraph('footnote', style=self.style('body'))
 
 
 class Footnote_Reference(CustomElement):
@@ -192,20 +182,20 @@ class Footnote_Reference(CustomElement):
 
 class Target(CustomElement):
     def parse(self, document):
-        return MixedStyledText([])
+        return rt.MixedStyledText([])
 
 
 class Enumerated_List(CustomElement):
     def parse(self, document):
         # TODO: handle different numbering styles
-        return List([item.process(document) for item in self.list_item],
-                    style=self.style('enumerated list'))
+        return rt.List([item.process(document) for item in self.list_item],
+                       style=self.style('enumerated list'))
 
 
 class Bullet_List(CustomElement):
     def parse(self, document):
-        return List([item.process(document) for item in self.list_item],
-                    style=self.style('bullet list'))
+        return rt.List([item.process(document) for item in self.list_item],
+                       style=self.style('bullet list'))
 
 
 class List_Item(NestedElement):
@@ -214,14 +204,15 @@ class List_Item(NestedElement):
 
 class Definition_List(CustomElement):
     def parse(self, document):
-        return DefinitionList([item.process(document)
-                               for item in self.definition_list_item],
-                              style=self.style('definition list'))
+        return rt.DefinitionList([item.process(document)
+                                  for item in self.definition_list_item],
+                                 style=self.style('definition list'))
 
 class Definition_List_Item(CustomElement):
     def parse(self, document):
         return (self.term.process(document),
                 self.definition.process(document))
+
 
 class Term(NestedElement):
     pass
@@ -233,38 +224,38 @@ class Definition(NestedElement):
 
 class Image(CustomElement):
     def parse(self, document):
-        return PyteImage(self.get('uri').rsplit('.png', 1)[0])
+        return rt.Image(self.get('uri').rsplit('.png', 1)[0])
 
 
 
-class SimplePage(Page):
+class SimplePage(rt.Page):
     topmargin = bottommargin = 2*CM
     leftmargin = rightmargin = 2*CM
 
     def __init__(self, document):
-        super().__init__(document, A5, PORTRAIT)
+        super().__init__(document, rt.A5, rt.PORTRAIT)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
-        self.body = Container(self, self.leftmargin, self.topmargin,
-                              body_width, body_height)
+        self.body = rt.Container(self, self.leftmargin, self.topmargin,
+                                 body_width, body_height)
 
         self.content = document.content
 
-        self.footnote_space = FootnoteContainer(self.body, 0*PT, body_height)
+        self.footnote_space = rt.FootnoteContainer(self.body, 0*PT, body_height)
         self._footnote_number = 0
 
-        self.content = Container(self.body, 0*PT, 0*PT,
-                                 bottom=self.footnote_space.top,
-                                 chain=document.content)
+        self.content = rt.Container(self.body, 0*PT, 0*PT,
+                                    bottom=self.footnote_space.top,
+                                    chain=document.content)
 
 ##        self.content._footnote_space = self.footnote_space
 ##
-##        self.header = Container(self, self.leftmargin, self.topmargin / 2,
-##                                body_width, 12*PT)
+##        self.header = rt.Container(self, self.leftmargin, self.topmargin / 2,
+##                                   body_width, 12*PT)
 ##        footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
-##        self.footer = Container(self, self.leftmargin, footer_vert_pos,
-##                                body_width, 12*PT)
+##        self.footer = rt.Container(self, self.leftmargin, footer_vert_pos,
+##                                   body_width, 12*PT)
 ##        header_text = Header(header_style)
 ##        self.header.append_flowable(header_text)
 ##        footer_text = Footer(footer_style)
@@ -273,7 +264,7 @@ class SimplePage(Page):
 
 # main document
 # ----------------------------------------------------------------------------
-class ReStructuredTextDocument(Document):
+class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
         with open(filename) as file:
             doctree = publish_doctree(file.read())
@@ -287,8 +278,8 @@ class ReStructuredTextDocument(Document):
 
         self.content_flowables = []
 
-        self.content_flowables.append(RinohParagraph(self.root.title.text,
-                                                     styles['title']))
+        self.content_flowables.append(rt.Paragraph(self.root.title.text,
+                                                   styles['title']))
 
         for section in self.root.section:
 ##            toc.register(flowable)
@@ -303,7 +294,7 @@ class ReStructuredTextDocument(Document):
 
     def setup(self):
         self.page_count = 1
-        self.content = Chain(self)
+        self.content = rt.Chain(self)
         page = SimplePage(self)
         self.add_page(page, self.page_count)
 
