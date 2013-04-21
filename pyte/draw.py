@@ -3,6 +3,10 @@ from .style import Style, Styled
 from .dimension import PT
 
 
+__all__ = ['Color', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
+           'LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
+
+
 class Color(object):
     def __init__(self, r, g, b, a=1):
         self.r = r

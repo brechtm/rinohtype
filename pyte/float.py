@@ -6,6 +6,9 @@ from .reference import Referenceable
 from .text import SingleStyledText, NoBreakSpace
 
 
+__all__ = ['Image', 'CaptionStyle', 'Caption', 'Figure']
+
+
 class Image(Flowable):
     def __init__(self, filename, scale=1.0, style=None):
         super().__init__(style)

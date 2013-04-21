@@ -10,6 +10,11 @@ The :class:`Paper` class and a number of predefined paper sizes:
 from .dimension import INCH, MM
 
 
+__all__ = ['Paper',
+           'A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',
+           'LETTER', 'LEGAL', 'JUNIOR_LEGAL', 'LEDGER', 'TABLOID']
+
+
 class Paper(object):
     """Defines a paper size."""
 

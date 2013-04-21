@@ -37,7 +37,7 @@ from .text import TextStyle, MixedStyledText
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
            'ProportionalSpacing', 'FixedSpacing', 'Leading',
-           'STANDARD', 'SINGLE', 'DOUBLE',
+           'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE',
            'LEFT', 'RIGHT', 'CENTER', 'BOTH']
 
 

@@ -16,6 +16,8 @@ page to which :class:`Flowable`\ s can be rendered.
 * :class:`Chain`: A chain of containers. When a container overflows, the
                   rendering of the chain's flowables is continued in the next
                   container in the chain.
+* :class:`FootnoteContainer`: TODO
+
 """
 
 
@@ -24,8 +26,7 @@ from .util import cached_property
 
 
 __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
-           'VirtualContainer', 'Chain', 'EndOfContainer']
-           # TODO: FootnoteContainer
+           'VirtualContainer', 'Chain', 'EndOfContainer', 'FootnoteContainer']
 
 
 class EndOfContainer(Exception):
