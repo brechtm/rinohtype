@@ -1,1 +1,22 @@
-*.afm -crlf
+* text=auto
+
+*.py text
+*.xml text
+*.rst text
+*.txt text
+*.dic text
+*.ent text
+
+*.otf binary
+*.ttf binary
+*.afm binary
+*.pfb binary
+*.pfa binary
+
+*.pdf binary
+*.eps binary
+*.png binary
+
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
