@@ -6,6 +6,7 @@ from binascii import hexlify, unhexlify
 from codecs import BOM_UTF16_BE
 from collections import OrderedDict
 from datetime import datetime
+from functools import wraps
 from io import BytesIO, SEEK_END
 
 from . import pdfdoccodec
@@ -248,9 +249,21 @@ class Container(Object):
                 item.register_indirect(document)
 
 
+def dereference_indirect_object(method):
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        result = method(*args, **kwargs)
+        if isinstance(result, Reference):
+            result = result.target
+        return result
+    return wrapper
+
+
 class Array(Container, list):
     PREFIX = b'['
     POSTFIX = b']'
+
+    __getitem__ = dereference_indirect_object(list.__getitem__)
 
     # TODO: not all methods of list are overridden, so funny
     # behavior is to be expected
@@ -287,6 +300,7 @@ class Dictionary(Container, OrderedDict):
     def __setitem__(self, key, value):
         super().__setitem__(key if isinstance(key, Name) else Name(key), value)
 
+    @dereference_indirect_object
     def __getitem__(self, key):
         return super().__getitem__(key if isinstance(key, Name) else Name(key))
 

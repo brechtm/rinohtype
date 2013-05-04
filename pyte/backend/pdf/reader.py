@@ -17,7 +17,7 @@ class PDFReader(cos.Document):
             self.file = file_or_filename
         self.timestamp = time.time()
         xref_offset = self.find_xref_offset()
-        self._xref = self.parse_xref_tables(xref_offset)
+        self._xref = self.parse_xref_table(xref_offset)
         self._by_object_id = {}
         trailer = self.parse_trailer()
         if 'Info' in trailer:
@@ -27,7 +27,6 @@ class PDFReader(cos.Document):
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
-        self.file.close()
 
     @property
     def max_identifier(self):
@@ -116,7 +115,7 @@ class PDFReader(cos.Document):
                     self.eat_whitespace()
                     r = self.next_token()
                     if isinstance(generation, cos.Integer) and r == b'R':
-                        item = self[int(item)]
+                        item = cos.Reference(self, int(item), int(generation))
                     else:
                         raise ValueError
                 except ValueError:
@@ -267,6 +266,11 @@ class PDFReader(cos.Document):
         assert self.next_token() == b'trailer'
         self.jump_to_next_line()
         trailer_dict = self.next_item()
+        if 'Prev' in trailer_dict:
+            prev_xref = self.parse_xref_table(trailer_dict['Prev'])
+            prev_xref.update(self._xref)
+            self._xref = prev_xref
+            self.parse_trailer()
         return trailer_dict
 ##/Size: (Required; must not be an indirect reference) The total number of entries in the file's
 ##cross-reference table, as defined by the combination of the original section and all
@@ -292,15 +296,15 @@ class PDFReader(cos.Document):
         self.file.seek(restore_pos)
         return obj
 
-    def parse_xref_tables(self, offset):
+    def parse_xref_table(self, offset):
         xref = {}
         self.file.seek(offset)
         assert self.next_token() == b'xref'
         while True:
             try:
-                identifier, entries = self.read_number(), self.read_number()
+                identifier, total = int(self.read_number()), self.read_number()
                 self.jump_to_next_line()
-                for i in range(entries):
+                for i in range(total):
                     line = self.file.read(20)
                     if line[17] == ord(b'n'):
                         address, generation = int(line[:10]), int(line[11:16])
