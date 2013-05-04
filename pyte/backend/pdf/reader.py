@@ -141,20 +141,18 @@ class PDFReader(cos.Document):
             array.append(item)
         return array
 
-    re_name_escape = re.compile(r'#\d\d')
-
     def read_name(self, identifier=None):
         indirect = identifier is not None
-        name = ''
+        name = b''
         while True:
             char = self.file.read(1)
             if char in cos.DELIMITERS + cos.WHITESPACE:
                 self.file.seek(-1, SEEK_CUR)
                 break
-            name += char.decode('utf_8')
-        for group in set(self.re_name_escape.findall(name)):
-            number = int(group[1:], 16)
-            name.replace(group, chr(number))
+            elif char == b'#':
+                char_code = self.file.read(2)
+                char = chr(int(char_code.decode('ascii'), 16)).encode('ascii')
+            name += char
         return cos.Name(name, indirect)
 
     def read_dictionary_or_stream(self, identifier=None):
