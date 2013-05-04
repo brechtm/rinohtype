@@ -145,7 +145,9 @@ class String(Object, bytes):
 
     def __new__(cls, value, indirect=False):
         try:
-            value = BOM_UTF16_BE + value.encode('utf_16_be')
+            value = value.encode('pdf_doc')
+        except UnicodeEncodeError:
+            value = BOM_UTF16_BE + value.encode('utf_16')
         except AttributeError:
             pass
         return bytes.__new__(cls, value)
