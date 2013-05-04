@@ -168,8 +168,8 @@ class String(Object, bytes):
     def _bytes(self, document):
         escaped = bytearray()
         for char in self:
-            if char in self.ESCAPED_CHARACTERS.keys():
-                escaped += ESCAPED_CHARACTERS[char]
+            if char in self.ESCAPED_CHARACTERS:
+                escaped += self.ESCAPED_CHARACTERS[char]
             else:
                 escaped.append(char)
         return escaped
