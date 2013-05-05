@@ -37,7 +37,8 @@ class PDFReader(cos.Document):
             obj = super().__getitem__(identifier)
         except KeyError:
             address = self._xref[identifier]
-            obj = self.parse_indirect_object(address)
+            obj_identifier, obj = self.parse_indirect_object(address)
+            assert obj_identifier == identifier
             self[identifier] = obj
         return obj
 
@@ -83,21 +84,20 @@ class PDFReader(cos.Document):
                 token += char
         return token
 
-    def next_item(self, identifier=None):
-        indirect = identifier is not None
+    def next_item(self, indirect=False):
         self.eat_whitespace()
         restore_pos = self.file.tell()
         token = self.next_token()
         if token == cos.String.PREFIX:
-            item = self.read_string(identifier)
+            item = self.read_string(indirect)
         elif token == cos.HexString.PREFIX:
-            item = self.read_hex_string(identifier)
+            item = self.read_hex_string(indirect)
         elif token == cos.Array.PREFIX:
-            item = self.read_array(identifier)
+            item = self.read_array(indirect)
         elif token == cos.Name.PREFIX:
-            item = self.read_name(identifier)
+            item = self.read_name(indirect)
         elif token == cos.Dictionary.PREFIX:
-            item = self.read_dictionary_or_stream(identifier)
+            item = self.read_dictionary_or_stream(indirect)
         elif token == b'true':
             item = cos.Boolean(True, indirect=indirect)
         elif token == b'false':
@@ -107,7 +107,7 @@ class PDFReader(cos.Document):
         else:
             # number or indirect reference
             self.file.seek(restore_pos)
-            item = self.read_number(identifier)
+            item = self.read_number(indirect)
             restore_pos = self.file.tell()
             if isinstance(item, cos.Integer):
                 try:
@@ -127,10 +127,8 @@ class PDFReader(cos.Document):
         print(self.file.read(length))
         self.file.seek(restore_pos)
 
-    def read_array(self, identifier=None):
-        array = cos.Array(indirect=identifier is not None)
-        if identifier:
-            self[identifier] = array
+    def read_array(self, indirect=False):
+        array = cos.Array(indirect=indirect)
         while True:
             self.eat_whitespace()
             token = self.file.read(1)
@@ -141,8 +139,7 @@ class PDFReader(cos.Document):
             array.append(item)
         return array
 
-    def read_name(self, identifier=None):
-        indirect = identifier is not None
+    def read_name(self, indirect=False):
         name = b''
         while True:
             char = self.file.read(1)
@@ -153,12 +150,10 @@ class PDFReader(cos.Document):
                 char_code = self.file.read(2)
                 char = chr(int(char_code.decode('ascii'), 16)).encode('ascii')
             name += char
-        return cos.Name(name, indirect)
+        return cos.Name(name, indirect=indirect)
 
-    def read_dictionary_or_stream(self, identifier=None):
-        dictionary = cos.Dictionary(indirect=identifier is not None)
-        if identifier:
-            self[identifier] = dictionary
+    def read_dictionary_or_stream(self, indirect=False):
+        dictionary = cos.Dictionary(indirect=indirect)
         while True:
             self.eat_whitespace()
             token = self.next_token()
@@ -193,11 +188,10 @@ class PDFReader(cos.Document):
 
     escape_chars = b'nrtbf()\\'
 
-    def read_string(self, identifier=None):
-        indirect = identifier is not None
+    def read_string(self, indirect=False):
         string = b''
         escape = False
-        parenthesis_level = 0
+        parenthesis_level = 0   # TODO: is currently not used
         while True:
             char = self.file.read(1)
             if escape:
@@ -229,10 +223,9 @@ class PDFReader(cos.Document):
                 break
             else:
                 string += char
-        return cos.String(string, indirect)
+        return cos.String(string, indirect=indirect)
 
-    def read_hex_string(self, identifier=None):
-        indirect = identifier is not None
+    def read_hex_string(self, indirect=False):
         hex_string = b''
         while True:
             self.eat_whitespace()
@@ -242,10 +235,9 @@ class PDFReader(cos.Document):
             hex_string += char
         if len(hex_string) % 2 > 0:
             hex_string += b'0'
-        return cos.HexString(unhexlify(hex_string), indirect)
+        return cos.HexString(unhexlify(hex_string), indirect=indirect)
 
-    def read_number(self, identifier=None):
-        indirect = identifier is not None
+    def read_number(self, indirect=False):
         self.eat_whitespace()
         number_string = b''
         while True:
@@ -286,13 +278,13 @@ class PDFReader(cos.Document):
         self.eat_whitespace()
         assert self.next_token() == b'obj'
         self.eat_whitespace()
-        obj = self.next_item(identifier=identifier)
+        obj = self.next_item(indirect=True)
         reference = cos.Reference(self, identifier, generation)
         self._by_object_id[id(obj)] = reference
         self.eat_whitespace()
         assert self.next_token() == b'endobj'
         self.file.seek(restore_pos)
-        return obj
+        return identifier, obj
 
     def parse_xref_table(self, offset):
         xref = {}
@@ -300,14 +292,16 @@ class PDFReader(cos.Document):
         assert self.next_token() == b'xref'
         while True:
             try:
-                identifier, total = int(self.read_number()), self.read_number()
+                first, total = int(self.read_number()), self.read_number()
                 self.jump_to_next_line()
-                for i in range(total):
+                for identifier in range(first, first + total):
                     line = self.file.read(20)
                     if line[17] == ord(b'n'):
                         address, generation = int(line[:10]), int(line[11:16])
                         xref[identifier] = address
-                    identifier += 1
+                    else:
+                        assert line[17] == ord(b'f')
+                        assert int(line[11:16]) == 65535
             except ValueError:
                 break
         return xref

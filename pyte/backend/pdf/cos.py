@@ -38,8 +38,12 @@ class Object(object):
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self._repr())
 
-    def bytes(self, document, force=False):
-        if not force and self.indirect:
+    @property
+    def object(self):
+        return self
+
+    def bytes(self, document):
+        if self.indirect:
             reference = document._by_object_id[id(self)]
             out = reference.bytes(document)
         else:
@@ -59,8 +63,8 @@ class Object(object):
     def short_repr(self):
         return repr(self)
 
-    def register_indirect(self, document):
-        if self.indirect:
+    def register_indirect(self, document, visited=None):
+        if self.indirect and id(self) not in visited:
             document.register(self)
 
 
@@ -70,20 +74,20 @@ class Reference(object):
         self.identifier = identifier
         self.generation = generation
 
+    @property
+    def object(self):
+        return self.document[self.identifier]
+
     def bytes(self, document):
         return '{} {} R'.format(self.identifier,
                                 self.generation).encode('utf_8')
-
-    @property
-    def target(self):
-        return self.document[self.identifier]
 
     def delete(self, document=None):
         if document == self.document:
             del self.document[self.identifier]
 
     def __repr__(self):
-        return '{}<{} {}>'.format(self.target.__class__.__name__,
+        return '{}<{} {}>'.format(self.object.__class__.__name__,
                                   self.identifier, self.generation)
 
 
@@ -241,31 +245,20 @@ class Container(Object):
     def __init__(self, indirect=False):
         super().__init__(indirect)
 
-    def register_indirect(self, document):
-        register_children = True
-        if self.indirect:
-            register_children = id(self) not in document._by_object_id
-            document.register(self)
-        if register_children:
+    def register_indirect(self, document, visited=None):
+        if visited is None:     # visited helps prevent infinite looping when
+            visited = set()     # an object holds a reference to an ancestor
+        if id(self) not in visited:
+            if self.indirect:
+                document.register(self)
+                visited.add(id(self))
             for item in self.children():
-                item.register_indirect(document)
-
-
-def dereference_indirect_object(method):
-    @wraps(method)
-    def wrapper(*args, **kwargs):
-        result = method(*args, **kwargs)
-        if isinstance(result, Reference):
-            result = result.target
-        return result
-    return wrapper
+                item.register_indirect(document, visited)
 
 
 class Array(Container, list):
     PREFIX = b'['
     POSTFIX = b']'
-
-    __getitem__ = dereference_indirect_object(list.__getitem__)
 
     # TODO: not all methods of list are overridden, so funny
     # behavior is to be expected
@@ -273,8 +266,14 @@ class Array(Container, list):
         Container.__init__(self, indirect)
         list.__init__(self, items)
 
+    def __getitem__(self, arg):
+        if isinstance(arg, slice):
+            return [elem.object for elem in super().__getitem__(arg)]
+        else:
+            return super().__getitem__(arg).object
+
     def _repr(self):
-        return ', '.join(item.short_repr() for item in self)
+        return ', '.join(elem.object.short_repr() for elem in self)
 
     def _bytes(self, document):
         return b' '.join(elem.bytes(document) for elem in self)
@@ -284,7 +283,16 @@ class Array(Container, list):
 
     def children(self):
         for item in self:
-            yield item
+            yield item.object
+
+
+def convert_key_to_name(method):
+    @wraps(method)
+    def wrapper(obj, key, *args, **kwargs):
+        if not isinstance(key, Name):
+            key = Name(key)
+        return method(obj, key, *args, **kwargs)
+    return wrapper
 
 
 class Dictionary(Container, OrderedDict):
@@ -296,18 +304,16 @@ class Dictionary(Container, OrderedDict):
         OrderedDict.__init__(self)
 
     def _repr(self):
-        return ', '.join('{}: {}'.format(key, value.short_repr())
+        return ', '.join('{}: {}'.format(key, value.object.short_repr())
                          for key, value in self.items())
 
-    def __setitem__(self, key, value):
-        super().__setitem__(key if isinstance(key, Name) else Name(key), value)
-
-    @dereference_indirect_object
+    @convert_key_to_name
     def __getitem__(self, key):
-        return super().__getitem__(key if isinstance(key, Name) else Name(key))
+        return super().__getitem__(key).object
 
-    def __contains__(self, key):
-        return super().__contains__(key if isinstance(key, Name) else Name(key))
+    __setitem__ = convert_key_to_name(OrderedDict.__setitem__)
+
+    __contains__ = convert_key_to_name(OrderedDict.__contains__)
 
     def _bytes(self, document):
         return b' '.join(key.bytes(document) + b' ' + value.bytes(document)
@@ -318,7 +324,7 @@ class Dictionary(Container, OrderedDict):
 
     def children(self):
         for item in self.values():
-            yield item
+            yield item.object
 
 
 class Stream(Dictionary):
@@ -456,7 +462,7 @@ class Document(dict):
                 obj = self[identifier]
                 addresses[identifier] = file.tell()
                 out('{} 0 obj'.format(identifier).encode('utf_8'))
-                out(obj.bytes(self, force=True))
+                out(obj.direct_bytes(self))
                 out(b'endobj')
         xref_table_address = file.tell()
         self._write_xref_table(file, addresses)
