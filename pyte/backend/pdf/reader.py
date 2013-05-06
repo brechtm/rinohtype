@@ -5,7 +5,7 @@ from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
 
-from . import cos
+from . import cos, filter
 from ...util import all_subclasses
 
 
@@ -13,6 +13,10 @@ DICTIONARY_SUBCLASSES = {}
 for cls in all_subclasses(cos.Dictionary):
     if cls.type is not None:
         DICTIONARY_SUBCLASSES.setdefault((cls.type, cls.subtype), cls)
+
+FILTER_SUBCLASSES = {cls.__name__: cls
+                     for cls in all_subclasses(filter.Filter)}
+
 
 
 class PDFReader(cos.Document):
@@ -175,9 +179,13 @@ class PDFReader(cos.Document):
             stream = cos.Stream()
             stream.update(dictionary)
             stream.write(self.file.read(length))
+            stream.seek(0)
             self.eat_whitespace()
             assert self.next_token() == b'endstream'
             dictionary = stream
+            if 'Filter' in dictionary:
+                stream_filter = str(dictionary['Filter'])
+                dictionary._filter = FILTER_SUBCLASSES[stream_filter]()
         else:
             self.file.seek(dict_pos)
         # try to map to specific Dictionary sub-class
