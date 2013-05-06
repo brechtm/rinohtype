@@ -2,6 +2,14 @@
 import codecs
 
 
+def search_function(encoding):
+    if encoding == 'pdf_doc':
+        return getregentry()
+
+
+codecs.register(search_function)
+
+
 ### Codec APIs
 
 class Codec(codecs.Codec):

@@ -18,13 +18,6 @@ WHITESPACE = b'\0\t\n\f\r '
 DELIMITERS = b'()<>[]{}/%'
 
 
-def search_function(encoding):
-    if encoding == 'pdf_doc':
-        return pdfdoccodec.getregentry()
-
-
-codecs.register(search_function)
-
 # TODO: max line length (not streams)
 
 
