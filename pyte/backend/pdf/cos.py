@@ -330,47 +330,36 @@ class Dictionary(Container, OrderedDict):
 class Stream(Dictionary):
     def __init__(self, filter=None):
         # (Streams are always indirectly referenced)
+        self._data = BytesIO()
+        self._filter = filter
         super().__init__(indirect=True)
-        self.filter = filter
-        self.data = BytesIO()
 
     def direct_bytes(self, document):
         out = bytearray()
-        data = self.data.getvalue()
-        if self.filter:
-            self['Filter'] = Name(self.filter.name)
-            data = self.filter.encode(data)
+        self._data.seek(0, SEEK_END)
+        if self._filter:
+            self._data.write(self._filter.finish())
+            self['Filter'] = Name(self._filter.name)
         if 'Length' in self:
             self['Length'].delete(document)
-        self['Length'] = Integer(len(data))
+        self['Length'] = Integer(self._data.tell())
         out += super().direct_bytes(document)
         out += b'\nstream\n'
-        out += data
+        out += self._data.getvalue()
         out += b'\nendstream'
         return out
 
-    def read(self, *args, **kwargs):
-        return self.data.read(*args, **kwargs)
+    def read(self, n=-1):
+        data = self._data.read(n)
+        return self._filter.decode(data) if self._filter else data
 
-    def write(self, *args, **kwargs):
-        return self.data.write(*args, **kwargs)
+    def write(self, b):
+        data = self._filter.encode(b) if self._filter else b
+        return self._data.write(data)
 
-    def tell(self, *args, **kwargs):
-        return self.data.tell(*args, **kwargs)
-
-    def seek(self, *args, **kwargs):
-        return self.data.seek(*args, **kwargs)
-
-    def getvalue(self):
-        return self.data.getvalue()
-
-    @property
-    def size(self):
-        restore_pos = self.tell()
-        self.seek(0, SEEK_END)
-        size = self.tell()
-        self.seek(restore_pos)
-        return size
+    def __getattr__(self, name):
+        # almost as good as inheriting from BytesIO (which is not possible)
+        return getattr(self._data, name)
 
 
 class XObjectForm(Stream):

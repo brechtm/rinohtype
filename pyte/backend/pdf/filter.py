@@ -39,10 +39,28 @@ class ASCII85Decode(Filter):
 class FlateDecode(Filter):
     def __init__(self, level=6):
         super().__init__()
-        self.level = level
+        self._compressor = zlib.compressobj(level)
+        self._decompressor = zlib.decompressobj()
+        self._mode = None
 
     def encode(self, data):
-        return zlib.compress(data, self.level)
+        if self._mode:
+            assert self._mode == 'compress'
+        else:
+            self._mode = 'compress'
+        return self._compressor.compress(data)
 
     def decode(self, data):
-        return zlib.decompress(data)
+        if self._mode:
+            assert self._mode == 'decompress'
+        else:
+            self._mode = 'decompress'
+        return self._decompressor.decompress(data)
+
+    def finish(self):
+        if self._mode == 'compress':
+            return self._compressor.flush()
+        elif self._mode == 'decompress':
+            return self._decompressor.flush()
+        else:
+            return b''
