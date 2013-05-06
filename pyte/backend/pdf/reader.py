@@ -9,6 +9,12 @@ from . import cos
 from ...util import all_subclasses
 
 
+DICTIONARY_SUBCLASSES = {}
+for cls in all_subclasses(cos.Dictionary):
+    if cls.type is not None:
+        DICTIONARY_SUBCLASSES.setdefault((cls.type, cls.subtype), cls)
+
+
 class PDFReader(cos.Document):
     def __init__(self, file_or_filename):
         try:
@@ -175,15 +181,11 @@ class PDFReader(cos.Document):
         else:
             self.file.seek(dict_pos)
         # try to map to specific Dictionary sub-class
-        subclasses = {subcls.__name__: subcls
-                      for subcls in all_subclasses(cos.Dictionary)}
-        if 'Type' in dictionary:
-            cls_name = dictionary['Type']
-            if 'Subtype' in dictionary:
-                cls_name += dictionary['Subtype']
-            str_cls_name = str(cls_name)
-            if str_cls_name in subclasses:
-                dictionary.__class__ = subclasses[str_cls_name]
+        type = dictionary.get('Type', None)
+        subtype = dictionary.get('Subtype', None)
+        key = str(type) if type else None, str(subtype) if subtype else None
+        if key in DICTIONARY_SUBCLASSES:
+            dictionary.__class__ = DICTIONARY_SUBCLASSES[key]
         return dictionary
 
     escape_chars = b'nrtbf()\\'

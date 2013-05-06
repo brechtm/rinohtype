@@ -292,9 +292,16 @@ class Dictionary(Container, OrderedDict):
     PREFIX = b'<<'
     POSTFIX = b'>>'
 
+    type = None
+    subtype = None
+
     def __init__(self, indirect=False):
         Container.__init__(self, indirect)
         OrderedDict.__init__(self)
+        if self.__class__.type:
+            self['Type'] = Name(self.__class__.type)
+        if self.__class__.subtype:
+            self['Subtype'] = Name(self.__class__.subtype)
 
     def _repr(self):
         return ', '.join('{}: {}'.format(key, value.object.short_repr())
@@ -307,6 +314,8 @@ class Dictionary(Container, OrderedDict):
     __setitem__ = convert_key_to_name(OrderedDict.__setitem__)
 
     __contains__ = convert_key_to_name(OrderedDict.__contains__)
+
+    get = convert_key_to_name(OrderedDict.get)
 
     def _bytes(self, document):
         return b' '.join(key.bytes(document) + b' ' + value.bytes(document)
@@ -356,11 +365,19 @@ class Stream(Dictionary):
 
 
 class XObjectForm(Stream):
+    type = 'XObject'
+    subtype = 'Form'
+
     def __init__(self, bounding_box):
         super().__init__()
-        self['Type'] = Name('XObject')
-        self['Subtype'] = Name('Form')
         self['BBox'] = bounding_box
+
+
+class ObjectStream(Stream):
+    type = 'ObjStm'
+
+    def __init__(self, ):
+        super().__init__()
 
 
 class Null(Object):
@@ -473,16 +490,18 @@ class Document(dict):
 
 
 class Catalog(Dictionary):
+    type = 'Catalog'
+
     def __init__(self):
         super().__init__(indirect=True)
-        self['Type'] = Name('Catalog')
         self['Pages'] = Pages()
 
 
 class Pages(Dictionary):
+    type = 'Pages'
+
     def __init__(self):
         super().__init__(indirect=True)
-        self['Type'] = Name('Pages')
         self['Count'] = Integer(0)
         self['Kids'] = Array()
 
@@ -494,9 +513,10 @@ class Pages(Dictionary):
 
 
 class Page(Dictionary):
+    type = 'Page'
+
     def __init__(self, parent, width, height):
         super().__init__(indirect=True)
-        self['Type'] = Name('Page')
         self['Parent'] = parent
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
@@ -514,9 +534,7 @@ class Page(Dictionary):
 
 
 class Font(Dictionary):
-    def __init__(self, indirect):
-        super().__init__(indirect)
-        self['Type'] = Name('Font')
+    type = 'Font'
 
 
 class SimpleFont(Font):
@@ -525,45 +543,48 @@ class SimpleFont(Font):
 
 
 class Type1Font(Font):
+    subtype = 'Type1'
+
     def __init__(self, font, encoding, font_descriptor):
         super().__init__(True)
         self.font = font
-        self['Subtype'] = Name('Type1')
         self['BaseFont'] = Name(font.name)
         self['Encoding'] = encoding
         self['FontDescriptor'] = font_descriptor
 
     def _bytes(self, document):
-        widths = []
-        by_code = {glyph.code: glyph
-                   for glyph in self.font.metrics._glyphs.values()
-                   if glyph.code >= 0}
-        try:
-            enc_differences = self['Encoding']['Differences']
-            first, last = min(enc_differences.taken), max(enc_differences.taken)
-        except KeyError:
-            first, last = min(by_code.keys()), max(by_code.keys())
-        self['FirstChar'] = Integer(first)
-        self['LastChar'] = Integer(last)
-        for code in range(first, last + 1):
+        if not 'Widths' in self:
+            widths = []
+            by_code = {glyph.code: glyph
+                       for glyph in self.font.metrics._glyphs.values()
+                       if glyph.code >= 0}
             try:
-                glyph = by_code[code]
-                width = glyph.width
+                differences = self['Encoding']['Differences']
+                first, last = min(differences.taken), max(differences.taken)
             except KeyError:
+                first, last = min(by_code.keys()), max(by_code.keys())
+            self['FirstChar'] = Integer(first)
+            self['LastChar'] = Integer(last)
+            for code in range(first, last + 1):
                 try:
-                    glyph = enc_differences.by_code[code]
+                    glyph = by_code[code]
                     width = glyph.width
-                except (KeyError, NameError):
-                    width = 0
-            widths.append(width)
-        self['Widths'] = Array(map(Real, widths))
+                except KeyError:
+                    try:
+                        glyph = differences.by_code[code]
+                        width = glyph.width
+                    except (KeyError, NameError):
+                        width = 0
+                widths.append(width)
+            self['Widths'] = Array(map(Real, widths))
         return super()._bytes(document)
 
 
 class CompositeFont(Font):
+    subtype = 'Type0'
+
     def __init__(self, descendant_font, encoding, to_unicode=None):
         super().__init__(True)
-        self['Subtype'] = Name('Type0')
         self['BaseFont'] = descendant_font.composite_font_name(encoding)
         self['DescendantFonts'] = Array([descendant_font], False)
         try:
@@ -598,10 +619,11 @@ class CIDFont(Font):
 
 
 class CIDFontType0(CIDFont):
+    subtype = 'CIDFontType0'
+
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None):
         super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
-        self['Subtype'] = Name('CIDFontType0')
 
     def composite_font_name(self, encoding):
         try:
@@ -612,10 +634,11 @@ class CIDFontType0(CIDFont):
 
 
 class CIDFontType2(CIDFont):
+    subtype = 'CIDFontType2'
+
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None, cid_to_gid_map=None):
         super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
-        self['Subtype'] = Name('CIDFontType2')
         if cid_to_gid_map:
             self['CIDToGIDMap'] = cid_to_gid_map
 
@@ -624,10 +647,11 @@ class CIDFontType2(CIDFont):
 
 
 class FontDescriptor(Dictionary):
+    type = 'FontDescriptor'
+
     def __init__(self, font_name, flags, font_bbox, italic_angle, ascent,
                  descent, cap_height, stem_v, font_file, x_height=0):
         super().__init__(True)
-        self['Type'] = Name('FontDescriptor')
         self['FontName'] = Name(font_name)
         self['Flags'] = Integer(flags)
         self['FontBBox'] = Array([Integer(item) for item in font_bbox])
