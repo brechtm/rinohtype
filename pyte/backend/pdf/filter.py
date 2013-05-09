@@ -3,6 +3,7 @@ import zlib
 
 from binascii import hexlify
 
+from .util import FIFOBuffer
 
 
 class Filter(object):
@@ -39,28 +40,28 @@ class ASCII85Decode(Filter):
 class FlateDecode(Filter):
     def __init__(self, level=6):
         super().__init__()
-        self._compressor = zlib.compressobj(level)
+        self.level = level
+
+    def encoder(self, source):
+        return FlateEncoder(source, level)
+
+    def decoder(self, source):
+        return FlateDecoder(source)
+
+
+class FlateDecoder(FIFOBuffer):
+    def __init__(self, source):
+        super().__init__(source)
         self._decompressor = zlib.decompressobj()
-        self._mode = None
 
-    def encode(self, data):
-        if self._mode:
-            assert self._mode == 'compress'
-        else:
-            self._mode = 'compress'
-        return self._compressor.compress(data)
-
-    def decode(self, data):
-        if self._mode:
-            assert self._mode == 'decompress'
-        else:
-            self._mode = 'decompress'
-        return self._decompressor.decompress(data)
-
-    def finish(self):
-        if self._mode == 'compress':
-            return self._compressor.flush()
-        elif self._mode == 'decompress':
-            return self._decompressor.flush()
-        else:
+    def read_from_source(self, n):
+        if self._decompressor is None:
             return b''
+        in_data = self._source.read(n)
+        out_data = self._decompressor.decompress(in_data)
+        if len(in_data) == 0:
+            out_data += self._decompressor.flush()
+            self._decompressor = None
+        elif len(out_data) == 0:
+            out_data = self.read_from_source(self, n)
+        return out_data

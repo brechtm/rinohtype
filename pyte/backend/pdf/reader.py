@@ -6,6 +6,7 @@ from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
 
 from . import cos, filter
+from .util import FIFOBuffer
 from ...util import all_subclasses
 
 
@@ -326,12 +327,10 @@ class PDFReader(cos.Document):
         xref = {}
         widths = [int(width) for width in xref_stream['W']]
         index = iter(int(value) for value in xref_stream['Index'])
-        data = BytesIO(xref_stream.read())
 
         columns = int(xref_stream['DecodeParms']['Columns'])
-        reverse_predictor = reverse_up_predict(columns)
-        next(reverse_predictor)
-
+        xref_stream.seek(0)
+        reconstructor = ReversePNGPredictor(xref_stream.reader(), columns)
         while True:
             try:
                 first, total = next(index), next(index)
@@ -339,11 +338,8 @@ class PDFReader(cos.Document):
                 break
             for identifier in range(first, first + total):
                 print(identifier, end='  ')
-                print(struct.unpack('B', data.read(1))[0], end='_ ')  # scanline predictor
                 for width in widths:
-                    struct_format = '>{}B'.format(width)
-                    byte = struct.unpack(struct_format, data.read(width))[0]
-                    byte = reverse_predictor.send(byte)
+                    byte = struct.unpack('>B', reconstructor.read(width))[0]
                     print(byte, end=' ')
                 print()
         assert identifier + 1 == int(xref_stream['Size'])
@@ -366,11 +362,46 @@ class PDFReader(cos.Document):
         return int(xref_offset)
 
 
-def reverse_up_predict(columns):
-    # Up(x) + Prior(x)
-    prior = [0] * columns
-    difference = yield
-    while True:
-        for column in range(columns):
-            prior[column] = (prior[column] + difference) % 256
-            difference = yield prior[column]
+PREDICTOR_STRUCT = struct.Struct('>B')
+
+
+NONE = 0
+SUB = 1
+UP = 2
+AVERAGE = 3
+PAETH = 4
+
+
+class ReversePNGPredictor(FIFOBuffer): # Reconstructor
+    # TODO: bitsper...
+    def __init__(self, source, columns):
+        super().__init__(source)
+        self.columns = columns
+        self._column_struct = struct.Struct('>{}B'.format(columns))
+        self._last_values = [0] * columns
+
+    def read_from_source(self, n):
+        predictor = PREDICTOR_STRUCT.unpack(self._source.read(1))[0]
+        row = self._source.read(self._column_struct.size)
+        values = list(self._column_struct.unpack(row))
+
+        if predictor == NONE:
+            out_row = row
+        elif predictor == SUB:
+            iter_values = iter(values)
+            a = next(iter_values)
+            for index, x in enumerate(iter_values):
+                values[index] = (x + a) % 256
+                a = x
+            out_row = self._column_struct.pack(*values)
+        elif predictor == UP:
+            for index, (b, x) in enumerate(zip(values, self._last_values)):
+                values[index] = (x + b) % 256
+            out_row = self._column_struct.pack(*values)
+        elif predictor == AVERAGE:
+            raise NotImplementedError
+        elif predictor == PAETH:
+            raise NotImplementedError
+
+        self._last_values = values
+        return out_row

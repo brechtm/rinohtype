@@ -338,9 +338,7 @@ class Stream(Dictionary):
 
     def direct_bytes(self, document):
         out = bytearray()
-        self._data.seek(0, SEEK_END)
         if self._filter:
-            self._data.write(self._filter.finish())
             self['Filter'] = Name(self._filter.name)
         if 'Length' in self:
             self['Length'].delete(document)
@@ -351,13 +349,8 @@ class Stream(Dictionary):
         out += b'\nendstream'
         return out
 
-    def read(self, n=-1):
-        data = self._data.read(n)
-        return self._filter.decode(data) if self._filter else data
-
-    def write(self, b):
-        data = self._filter.encode(b) if self._filter else b
-        return self._data.write(data)
+    def reader(self):
+        return self._filter.decoder(self._data) if self._filter else self._data
 
     def __getattr__(self, name):
         # almost as good as inheriting from BytesIO (which is not possible)
