@@ -1,7 +1,7 @@
 
 import zlib
 
-from binascii import hexlify
+from binascii import hexlify, unhexlify
 
 from .util import FIFOBuffer
 
@@ -19,6 +19,9 @@ class Filter(object):
 
 
 class Encoder(object):
+    def __init__(self, destination):
+        self._destination = destination
+
     def write(self, b):
         raise NotImplementedError
 
@@ -27,6 +30,9 @@ class Encoder(object):
 
 
 class Decoder(object):
+    def __init__(self, source):
+        self._source = source
+
     def read(self, n=-1):
         raise NotImplementedError
 
@@ -40,9 +46,6 @@ class PassThrough(Filter):
 
 
 class PassThroughEncoder(Encoder):
-    def __init__(self, destination):
-        self._destination = destination
-
     def write(self, b):
         return self._destination.write(b)
 
@@ -51,19 +54,29 @@ class PassThroughEncoder(Encoder):
 
 
 class PassThroughDecoder(Decoder):
-    def __init__(self, destination):
-        self._destination = destination
-
     def read(self, b):
         return self._destination.read(n)
 
 
 class ASCIIHexDecode(Filter):
-    def encode(self, data):
-        return hexlify(data)
+    def encoder(self, destination):
+        return ASCIIHexEncoder(destination)
 
-    def decode(self, data):
-        return unhexlify(data)
+    def decode(self, source):
+        return ASCIIHexDecoder(source)
+
+
+class ASCIIHexEncoder(Decoder):
+    def write(self, b):
+        self._destination.write(hexlify(b))
+
+    def close(self):
+        pass
+
+
+class ASCIIHexDecoder(Decoder):
+    def read(self, n=-1):
+        return unhexlify(self._source.read(n))
 
 
 class ASCII85Decode(Filter):
@@ -88,7 +101,7 @@ class FlateDecode(Filter):
 
 class FlateEncoder(Encoder):
     def __init__(self, destination, level):
-        self._destination = destination
+        super().__init__(destination)
         self._compressor = zlib.compressobj(level)
 
     def write(self, b):

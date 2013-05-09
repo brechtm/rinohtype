@@ -329,7 +329,7 @@ class PDFReader(cos.Document):
 
         columns = int(xref_stream['DecodeParms']['Columns'])
         xref_stream.seek(0)
-        reconstructor = ReversePNGPredictor(xref_stream, columns)
+        reconstructor = PNGReconstructor(xref_stream, columns)
         while True:
             try:
                 first, total = next(index), next(index)
@@ -371,7 +371,7 @@ AVERAGE = 3
 PAETH = 4
 
 
-class ReversePNGPredictor(FIFOBuffer): # Reconstructor
+class PNGReconstructor(FIFOBuffer):
     # TODO: bitsper...
     def __init__(self, source, columns):
         super().__init__(source)
@@ -380,6 +380,7 @@ class ReversePNGPredictor(FIFOBuffer): # Reconstructor
         self._last_values = [0] * columns
 
     def read_from_source(self, n):
+        # number of bytes requested `n` is ignored; a single row is fetched
         predictor = PREDICTOR_STRUCT.unpack(self._source.read(1))[0]
         row = self._source.read(self._column_struct.size)
         values = list(self._column_struct.unpack(row))
