@@ -266,7 +266,11 @@ class PDFReader(cos.Document):
         assert self.next_token() == b'trailer'
         self.jump_to_next_line()
         trailer_dict = self.next_item()
-        if 'Prev' in trailer_dict:
+        if 'XRefStm' in trailer_dict:
+            xref_stm = self.parse_xref_stream(trailer_dict['XRefStm'])
+            xref_stm.update(self._xref)
+            self._xref = xref_stm
+        elif 'Prev' in trailer_dict:
             prev_xref = self.parse_xref_table(trailer_dict['Prev'])
             prev_xref.update(self._xref)
             self._xref = prev_xref
@@ -316,6 +320,35 @@ class PDFReader(cos.Document):
                 break
         return xref
 
+    def parse_xref_stream(self, offset):
+        identifier, xref_stream = self.parse_indirect_object(offset)
+        self[identifier] = xref_stream
+        xref = {}
+        widths = [int(width) for width in xref_stream['W']]
+        index = iter(int(value) for value in xref_stream['Index'])
+        data = BytesIO(xref_stream.read())
+
+        columns = int(xref_stream['DecodeParms']['Columns'])
+        reverse_predictor = reverse_up_predict(columns)
+        next(reverse_predictor)
+
+        while True:
+            try:
+                first, total = next(index), next(index)
+            except StopIteration:
+                break
+            for identifier in range(first, first + total):
+                print(identifier, end='  ')
+                print(struct.unpack('B', data.read(1))[0], end='_ ')  # scanline predictor
+                for width in widths:
+                    struct_format = '>{}B'.format(width)
+                    byte = struct.unpack(struct_format, data.read(width))[0]
+                    byte = reverse_predictor.send(byte)
+                    print(byte, end=' ')
+                print()
+        assert identifier + 1 == int(xref_stream['Size'])
+        import sys; sys.exit()
+
     def find_xref_offset(self):
         self.file.seek(0, SEEK_END)
         offset = self.file.tell() - len('%%EOF')
@@ -331,3 +364,13 @@ class PDFReader(cos.Document):
                 break
             offset -= 1
         return int(xref_offset)
+
+
+def reverse_up_predict(columns):
+    # Up(x) + Prior(x)
+    prior = [0] * columns
+    difference = yield
+    while True:
+        for column in range(columns):
+            prior[column] = (prior[column] + difference) % 256
+            difference = yield prior[column]
