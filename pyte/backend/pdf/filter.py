@@ -7,18 +7,55 @@ from .util import FIFOBuffer
 
 
 class Filter(object):
-    def __init__(self):
-        pass
-
     @property
     def name(self):
         return self.__class__.__name__
 
-    def encode(self, data):
+    def encoder(self, destination):
         raise NotImplementedError
 
-    def decode(self, data):
+    def decoder(self, source):
         raise NotImplementedError
+
+
+class Encoder(object):
+    def write(self, b):
+        raise NotImplementedError
+
+    def close(self):
+        raise NotImplementedError
+
+
+class Decoder(object):
+    def read(self, n=-1):
+        raise NotImplementedError
+
+
+class PassThrough(Filter):
+    def encoder(self, destination):
+        return PassThroughEncoder(destination)
+
+    def decoder(self, source):
+        return PassThroughDecoder(source)
+
+
+class PassThroughEncoder(Encoder):
+    def __init__(self, destination):
+        self._destination = destination
+
+    def write(self, b):
+        return self._destination.write(b)
+
+    def close(self):
+        pass
+
+
+class PassThroughDecoder(Decoder):
+    def __init__(self, destination):
+        self._destination = destination
+
+    def read(self, b):
+        return self._destination.read(n)
 
 
 class ASCIIHexDecode(Filter):
@@ -43,13 +80,25 @@ class FlateDecode(Filter):
         self.level = level
 
     def encoder(self, source):
-        return FlateEncoder(source, level)
+        return FlateEncoder(source, self.level)
 
     def decoder(self, source):
         return FlateDecoder(source)
 
 
-class FlateDecoder(FIFOBuffer):
+class FlateEncoder(Encoder):
+    def __init__(self, destination, level):
+        self._destination = destination
+        self._compressor = zlib.compressobj(level)
+
+    def write(self, b):
+        self._destination.write(self._compressor.compress(b))
+
+    def close(self):
+        self._destination.write(self._compressor.flush())
+
+
+class FlateDecoder(FIFOBuffer, Decoder):
     def __init__(self, source):
         super().__init__(source)
         self._decompressor = zlib.decompressobj()

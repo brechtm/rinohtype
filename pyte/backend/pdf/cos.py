@@ -10,6 +10,7 @@ from functools import wraps
 from io import BytesIO, SEEK_END
 
 from . import pdfdoccodec
+from .filter import PassThrough
 
 
 PDF_VERSION = '1.6'
@@ -333,12 +334,17 @@ class Stream(Dictionary):
     def __init__(self, filter=None):
         # (Streams are always indirectly referenced)
         self._data = BytesIO()
-        self._filter = filter
+        self._filter = filter or PassThrough()
         super().__init__(indirect=True)
+        self._coder = None
 
     def direct_bytes(self, document):
         out = bytearray()
-        if self._filter:
+        try:
+            self._coder.close()
+        except AttributeError:
+            pass
+        if not isinstance(self._filter, PassThrough):
             self['Filter'] = Name(self._filter.name)
         if 'Length' in self:
             self['Length'].delete(document)
@@ -349,8 +355,24 @@ class Stream(Dictionary):
         out += b'\nendstream'
         return out
 
-    def reader(self):
-        return self._filter.decoder(self._data) if self._filter else self._data
+    def read(self, n=-1):
+        try:
+            return self._coder.read(n)
+        except AttributeError:
+            self._data.seek(0)
+            self._coder = self._filter.decoder(self._data)
+            return self.read(n)
+
+    def write(self, b):
+        try:
+            return self._coder.write(b)
+        except AttributeError:
+            self._data.seek(0)
+            self._coder = self._filter.encoder(self._data)
+            return self.write(b)
+
+    def reset(self):
+        self._coder = None
 
     def __getattr__(self, name):
         # almost as good as inheriting from BytesIO (which is not possible)

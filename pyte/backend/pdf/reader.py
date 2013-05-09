@@ -179,8 +179,7 @@ class PDFReader(cos.Document):
             length = int(dictionary['Length'])
             stream = cos.Stream()
             stream.update(dictionary)
-            stream.write(self.file.read(length))
-            stream.seek(0)
+            stream._data.write(self.file.read(length))
             self.eat_whitespace()
             assert self.next_token() == b'endstream'
             dictionary = stream
@@ -330,7 +329,7 @@ class PDFReader(cos.Document):
 
         columns = int(xref_stream['DecodeParms']['Columns'])
         xref_stream.seek(0)
-        reconstructor = ReversePNGPredictor(xref_stream.reader(), columns)
+        reconstructor = ReversePNGPredictor(xref_stream, columns)
         while True:
             try:
                 first, total = next(index), next(index)
