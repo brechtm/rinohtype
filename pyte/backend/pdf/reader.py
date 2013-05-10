@@ -4,9 +4,9 @@ import re, struct, time
 from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
-from math import floor
 
-from . import cos, filter
+from . import cos
+from .filter import Filter
 from .util import FIFOBuffer
 from ...util import all_subclasses
 
@@ -17,7 +17,7 @@ for cls in all_subclasses(cos.Dictionary):
         DICTIONARY_SUBCLASSES.setdefault((cls.type, cls.subtype), cls)
 
 FILTER_SUBCLASSES = {cls.__name__: cls
-                     for cls in all_subclasses(filter.Filter)}
+                     for cls in all_subclasses(Filter)}
 
 
 
@@ -178,15 +178,22 @@ class PDFReader(cos.Document):
         if self.next_token() == b'stream':
             self.jump_to_next_line()
             length = int(dictionary['Length'])
-            stream = cos.Stream()
+            if 'Filter' in dictionary:
+                filter_class = FILTER_SUBCLASSES[str(dictionary['Filter'])]
+                if 'DecodeParms' in dictionary:
+                    decode_params = dictionary['DecodeParms']
+                    decode_params.__class__ = filter_class.params_class
+                else:
+                    decode_params = None
+                stream_filter = filter_class(params=decode_params)
+            else:
+                stream_filter = None
+            stream = cos.Stream(stream_filter)
             stream.update(dictionary)
             stream._data.write(self.file.read(length))
             self.eat_whitespace()
             assert self.next_token() == b'endstream'
             dictionary = stream
-            if 'Filter' in dictionary:
-                stream_filter = str(dictionary['Filter'])
-                dictionary._filter = FILTER_SUBCLASSES[stream_filter]()
         else:
             self.file.seek(dict_pos)
         # try to map to specific Dictionary sub-class
@@ -328,9 +335,7 @@ class PDFReader(cos.Document):
         widths = [int(width) for width in xref_stream['W']]
         index = iter(int(value) for value in xref_stream['Index'])
 
-        columns = int(xref_stream['DecodeParms']['Columns'])
         xref_stream.seek(0)
-        reconstructor = PNGReconstructor(xref_stream, columns)
         while True:
             try:
                 first, total = next(index), next(index)
@@ -339,8 +344,9 @@ class PDFReader(cos.Document):
             for identifier in range(first, first + total):
                 print(identifier, end='  ')
                 for width in widths:
-                    byte = struct.unpack('>B', reconstructor.read(width))[0]
-                    print(byte, end=' ')
+                    number = struct.unpack('>{}B'.format(width),
+                                           xref_stream.read(width))[0]
+                    print(number, end=' ')
                 print()
         assert identifier + 1 == int(xref_stream['Size'])
         import sys; sys.exit()
@@ -360,71 +366,3 @@ class PDFReader(cos.Document):
                 break
             offset -= 1
         return int(xref_offset)
-
-
-PREDICTOR_STRUCT = struct.Struct('>B')
-
-
-NONE = 0
-SUB = 1
-UP = 2
-AVERAGE = 3
-PAETH = 4
-
-
-class PNGReconstructor(FIFOBuffer):
-    # TODO: bitsper...
-    def __init__(self, source, columns):
-        super().__init__(source)
-        self.columns = columns
-        self._column_struct = struct.Struct('>{}B'.format(columns))
-        self._last_values = [0] * columns
-
-    def read_from_source(self, n):
-        # number of bytes requested `n` is ignored; a single row is fetched
-        predictor = PREDICTOR_STRUCT.unpack(self._source.read(1))[0]
-        row = self._source.read(self._column_struct.size)
-        values = list(self._column_struct.unpack(row))
-
-        if predictor == NONE:
-            out_row = row
-        elif predictor == SUB:
-            recon_a = 0
-            for index, filt_x in enumerate(values):
-                recon_a = values[index] = (filt_x + recon_a) % 256
-            out_row = self._column_struct.pack(*values)
-        elif predictor == UP:
-            for index, (filt_x, recon_b) in enumerate(zip(values,
-                                                          self._last_values)):
-                values[index] = (filt_x + recon_b) % 256
-            out_row = self._column_struct.pack(*values)
-        elif predictor == AVERAGE:
-            recon_a = 0
-            for index, (filt_x, recon_b) in enumerate(zip(values,
-                                                          self._last_values)):
-                average = (recon_a + recon_b) // 2
-                recon_a = values[index] = (filt_x + average) % 256
-            out_row = self._column_struct.pack(*values)
-        elif predictor == PAETH:
-            recon_a = recon_c = 0
-            for index, (filt_x, recon_b) in enumerate(zip(values,
-                                                          self._last_values)):
-                prediction = paeth_predictor(recon_a, recon_b, recon_c)
-                recon_a = values[index] = (filt_x + prediction) % 256
-            out_row = self._column_struct.pack(*values)
-
-        self._last_values = values
-        return out_row
-
-
-def paeth_predictor(a, b, c):
-    p = a + b - c
-    pa = abs(p - a)
-    pb = abs(p - b)
-    pc = abs(p - c)
-    if pa <= pb and pa <= pc:
-        return a
-    elif pb <= pc:
-        return b
-    else:
-        return c

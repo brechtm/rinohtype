@@ -10,7 +10,6 @@ from functools import wraps
 from io import BytesIO, SEEK_END
 
 from . import pdfdoccodec
-from .filter import PassThrough
 
 
 PDF_VERSION = '1.6'
@@ -331,6 +330,9 @@ class Dictionary(Container, OrderedDict):
             yield item.object
 
 
+from .filter import PassThrough
+
+
 class Stream(Dictionary):
     def __init__(self, filter=None):
         # (Streams are always indirectly referenced)
@@ -347,6 +349,8 @@ class Stream(Dictionary):
             pass
         if not isinstance(self._filter, PassThrough):
             self['Filter'] = Name(self._filter.name)
+            if self._filter.params:
+                self['DecodeParms'] = self._filter.params
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self._data.tell())
