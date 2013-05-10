@@ -262,7 +262,8 @@ class Array(Container, list):
 
     def __getitem__(self, arg):
         if isinstance(arg, slice):
-            return [elem.object for elem in super().__getitem__(arg)]
+            items = [elem.object for elem in super().__getitem__(arg)]
+            return self.__class__(items, indirect=self.indirect)
         else:
             return super().__getitem__(arg).object
 
