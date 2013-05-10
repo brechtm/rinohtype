@@ -4,6 +4,7 @@ import re, struct, time
 from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
+from math import floor
 
 from . import cos, filter
 from .util import FIFOBuffer
@@ -388,20 +389,42 @@ class PNGReconstructor(FIFOBuffer):
         if predictor == NONE:
             out_row = row
         elif predictor == SUB:
-            iter_values = iter(values)
-            a = next(iter_values)
-            for index, x in enumerate(iter_values):
-                values[index] = (x + a) % 256
-                a = x
+            recon_a = 0
+            for index, filt_x in enumerate(values):
+                recon_a = values[index] = (filt_x + recon_a) % 256
             out_row = self._column_struct.pack(*values)
         elif predictor == UP:
-            for index, (b, x) in enumerate(zip(values, self._last_values)):
-                values[index] = (x + b) % 256
+            for index, (filt_x, recon_b) in enumerate(zip(values,
+                                                          self._last_values)):
+                values[index] = (filt_x + recon_b) % 256
             out_row = self._column_struct.pack(*values)
         elif predictor == AVERAGE:
-            raise NotImplementedError
+            recon_a = 0
+            for index, (filt_x, recon_b) in enumerate(zip(values,
+                                                          self._last_values)):
+                average = (recon_a + recon_b) // 2
+                recon_a = values[index] = (filt_x + average) % 256
+            out_row = self._column_struct.pack(*values)
         elif predictor == PAETH:
-            raise NotImplementedError
+            recon_a = recon_c = 0
+            for index, (filt_x, recon_b) in enumerate(zip(values,
+                                                          self._last_values)):
+                prediction = paeth_predictor(recon_a, recon_b, recon_c)
+                recon_a = values[index] = (filt_x + prediction) % 256
+            out_row = self._column_struct.pack(*values)
 
         self._last_values = values
         return out_row
+
+
+def paeth_predictor(a, b, c):
+    p = a + b - c
+    pa = abs(p - a)
+    pb = abs(p - b)
+    pc = abs(p - c)
+    if pa <= pb and pa <= pc:
+        return a
+    elif pb <= pc:
+        return b
+    else:
+        return c
