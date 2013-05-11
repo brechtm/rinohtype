@@ -28,10 +28,9 @@ class PDFReader(cos.Document):
         except TypeError:
             self.file = file_or_filename
         self.timestamp = time.time()
-        xref_offset = self.find_xref_offset()
-        self._xref = self.parse_xref_table(xref_offset)
         self._by_object_id = {}
-        trailer = self.parse_trailer()
+        xref_offset = self.find_xref_offset()
+        self._xref, trailer = self.parse_xref_table(xref_offset)
         if 'Info' in trailer:
             self.info = trailer['Info']
         else:
@@ -48,10 +47,7 @@ class PDFReader(cos.Document):
         try:
             obj = super().__getitem__(identifier)
         except KeyError:
-            address = self._xref[identifier]
-            obj_identifier, obj = self.parse_indirect_object(address)
-            assert obj_identifier == identifier
-            self[identifier] = obj
+            obj = self[identifier] = self._xref.get_object(identifier)
         return obj
 
     def __delitem__(self, identifier):
@@ -274,15 +270,6 @@ class PDFReader(cos.Document):
         assert self.next_token() == b'trailer'
         self.jump_to_next_line()
         trailer_dict = self.next_item()
-        if 'XRefStm' in trailer_dict:
-            xref_stm = self.parse_xref_stream(trailer_dict['XRefStm'])
-            xref_stm.update(self._xref)
-            self._xref = xref_stm
-        elif 'Prev' in trailer_dict:
-            prev_xref = self.parse_xref_table(trailer_dict['Prev'])
-            prev_xref.update(self._xref)
-            self._xref = prev_xref
-            self.parse_trailer()
         return trailer_dict
 ##/Size: (Required; must not be an indirect reference) The total number of entries in the file's
 ##cross-reference table, as defined by the combination of the original section and all
@@ -309,7 +296,7 @@ class PDFReader(cos.Document):
         return identifier, obj
 
     def parse_xref_table(self, offset):
-        xref = {}
+        xref = XRefTable(self)
         self.file.seek(offset)
         assert self.next_token() == b'xref'
         while True:
@@ -318,23 +305,41 @@ class PDFReader(cos.Document):
                 self.jump_to_next_line()
                 for identifier in range(first, first + total):
                     line = self.file.read(20)
+                    fields = identifier, int(line[:10]), int(line[11:16])
                     if line[17] == ord(b'n'):
-                        address, generation = int(line[:10]), int(line[11:16])
-                        xref[identifier] = address
+                        xref[identifier] = IndirectObjectEntry(*fields)
                     else:
                         assert line[17] == ord(b'f')
-                        assert int(line[11:16]) == 65535
+                        xref[identifier] = FreeObjectEntry(*fields)
             except ValueError:
                 break
-        return xref
+        trailer = self.parse_trailer()
+        prev_xref = xref_stm = None
+        if 'Prev' in trailer:
+            prev_xref, prev_trailer = self.parse_xref_table(trailer['Prev'])
+        if 'XRefStm' in trailer:
+            xref_stm, _ = self.parse_xref_stream(trailer['XRefStm'])
+            xref_stm.prev = prev_xref
+        xref.prev = xref_stm or prev_xref
+        return xref, trailer
 
     def parse_xref_stream(self, offset):
         identifier, xref_stream = self.parse_indirect_object(offset)
         self[identifier] = xref_stream
-        xref = {}
+        if 'Prev' in xref_stream:
+            prev = self.parse_indirect_object(xref_stream['Prev'])
+        else:
+            prev = None
+        xref = XRefTable(self, prev)
+        size = int(xref_stream['Size'])
         widths = [int(width) for width in xref_stream['W']]
-        index = iter(int(value) for value in xref_stream['Index'])
-
+        assert len(widths) == 3
+        if 'Index' in xref_stream:
+            index = iter(int(value) for value in xref_stream['Index'])
+        else:
+            index = (0, size)
+        row_struct = struct.Struct('>' + ''.join('{}B'.format(width)
+                                                 for width in widths))
         xref_stream.seek(0)
         while True:
             try:
@@ -342,14 +347,16 @@ class PDFReader(cos.Document):
             except StopIteration:
                 break
             for identifier in range(first, first + total):
-                print(identifier, end='  ')
-                for width in widths:
-                    number = struct.unpack('>{}B'.format(width),
-                                           xref_stream.read(width))[0]
-                    print(number, end=' ')
-                print()
-        assert identifier + 1 == int(xref_stream['Size'])
-        import sys; sys.exit()
+                fields = row_struct.unpack(xref_stream.read(row_struct.size))
+                if widths[0] == 0:
+                    field_type = 1
+                else:
+                    field_type = fields[0]
+                    fields = fields[1:]
+                field_class = FIELD_CLASSES[field_type]
+                xref[identifier] = field_class(identifier, *fields)
+        assert identifier + 1 == size
+        return xref, xref_stream
 
     def find_xref_offset(self):
         self.file.seek(0, SEEK_END)
@@ -366,3 +373,59 @@ class PDFReader(cos.Document):
                 break
             offset -= 1
         return int(xref_offset)
+
+
+class XRefTable(dict):
+    def __init__(self, document, prev=None):
+        self.document = document
+        self.prev = prev
+
+    def get_object(self, identifier):
+        try:
+            return self[identifier].get_object(self.document)
+        except KeyError:
+            return self.prev.get_object(identifier)
+
+
+class XRefEntry(object):
+    def get_object(self, document):
+        raise NotImplementedError
+
+
+class FreeObjectEntry(XRefEntry):
+    def __init__(self, identifier, next_free_object_identifier, generation):
+        self.identifier = identifier
+        self.next_free_object_identifier = next_free_object_identifier
+        self.generation = generation
+
+    def get_object(self, document):
+        raise Exception('Cannot retieve a free object with id {}'
+                        .format(self.identifier))
+
+
+class IndirectObjectEntry(XRefEntry):
+    def __init__(self, identifier, address, generation=0):
+        self.identifier = identifier
+        self.address = address
+        self.generation = generation
+
+    def get_object(self, document):
+        obj_identifier, obj = document.parse_indirect_object(self.address)
+        assert obj_identifier == self.identifier
+        return obj
+
+
+class CompressedObjectEntry(XRefEntry):
+    def __init__(self, identifier, object_stream_identifier, object_index):
+        self.identifier = identifier
+        self.object_stream_identifier = object_stream_identifier
+        self.object_index = object_index
+
+    def get_object(self, document):
+        object_stream = document[self.object_stream_identifier]
+        return object_stream.get_object(self.object_index)
+
+
+FIELD_CLASSES = {0: FreeObjectEntry,
+                 1: IndirectObjectEntry,
+                 2: CompressedObjectEntry}
