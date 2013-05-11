@@ -22,11 +22,12 @@ FILTER_SUBCLASSES = {cls.__name__: cls
 
 
 class PDFObjectReader(object):
-    def __init__(self, file_or_filename):
+    def __init__(self, file_or_filename, document=None):
         try:
             self.file = open(file_or_filename, 'rb')
         except TypeError:
             self.file = file_or_filename
+        self.document = document or self
 
     def jump_to_next_line(self):
         while True:
@@ -42,6 +43,8 @@ class PDFObjectReader(object):
     def eat_whitespace(self):
         while True:
             char = self.file.read(1)
+            if char == b'':
+                break
             if char not in cos.WHITESPACE:
                 self.file.seek(-1, SEEK_CUR)
                 break
@@ -97,7 +100,8 @@ class PDFObjectReader(object):
                     self.eat_whitespace()
                     r = self.next_token()
                     if isinstance(generation, cos.Integer) and r == b'R':
-                        item = cos.Reference(self, int(item), int(generation))
+                        item = cos.Reference(self.document, int(item),
+                                             int(generation))
                     else:
                         raise ValueError
                 except ValueError:
@@ -428,7 +432,7 @@ class CompressedObjectEntry(XRefEntry):
 
     def get_object(self, document):
         object_stream = document[self.object_stream_identifier]
-        return object_stream.get_object(self.object_index)
+        return object_stream.get_object(document, self.object_index)
 
 
 FIELD_CLASSES = {0: FreeObjectEntry,

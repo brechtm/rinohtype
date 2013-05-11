@@ -396,8 +396,22 @@ class XObjectForm(Stream):
 class ObjectStream(Stream):
     type = 'ObjStm'
 
-    def __init__(self, ):
-        super().__init__()
+    def get_object(self, document, index):
+        try:
+            object_reader = self._object_reader
+            offsets = self._offsets
+        except AttributeError:
+            decompressed_data = BytesIO(self.read())
+            from .reader import PDFObjectReader
+            object_reader = PDFObjectReader(decompressed_data, document)
+            offsets = self._offsets = {}
+            for i in range(self['N']):
+                object_number = int(object_reader.read_number())
+                offset = int(self['First'] + object_reader.read_number())
+                offsets[i] = offset
+            self._object_reader = object_reader
+        object_reader.file.seek(offsets[index])
+        return object_reader.next_item(indirect=True)
 
 
 class Null(Object):
