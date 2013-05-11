@@ -21,38 +21,12 @@ FILTER_SUBCLASSES = {cls.__name__: cls
 
 
 
-class PDFReader(cos.Document):
+class PDFObjectReader(object):
     def __init__(self, file_or_filename):
         try:
             self.file = open(file_or_filename, 'rb')
         except TypeError:
             self.file = file_or_filename
-        self.timestamp = time.time()
-        self._by_object_id = {}
-        xref_offset = self.find_xref_offset()
-        self._xref, trailer = self.parse_xref_table(xref_offset)
-        if 'Info' in trailer:
-            self.info = trailer['Info']
-        else:
-            self.info = cos.Dictionary()
-        self.id = trailer['ID'] if 'ID' in trailer else None
-        self._max_identifier_in_file = int(trailer['Size']) - 1
-        self.catalog = trailer['Root']
-
-    @property
-    def max_identifier(self):
-        return max(super().max_identifier, self._max_identifier_in_file)
-
-    def __getitem__(self, identifier):
-        try:
-            obj = super().__getitem__(identifier)
-        except KeyError:
-            obj = self[identifier] = self._xref.get_object(identifier)
-        return obj
-
-    def __delitem__(self, identifier):
-        del self._xref[identifier]
-        super().__delitem__(identifier)
 
     def jump_to_next_line(self):
         while True:
@@ -265,6 +239,37 @@ class PDFReader(cos.Document):
         except ValueError:
             number = cos.Real(number_string, indirect=indirect)
         return number
+
+
+class PDFReader(PDFObjectReader, cos.Document):
+    def __init__(self, file_or_filename):
+        super().__init__(file_or_filename)
+        self.timestamp = time.time()
+        self._by_object_id = {}
+        xref_offset = self.find_xref_offset()
+        self._xref, trailer = self.parse_xref_table(xref_offset)
+        if 'Info' in trailer:
+            self.info = trailer['Info']
+        else:
+            self.info = cos.Dictionary()
+        self.id = trailer['ID'] if 'ID' in trailer else None
+        self._max_identifier_in_file = int(trailer['Size']) - 1
+        self.catalog = trailer['Root']
+
+    @property
+    def max_identifier(self):
+        return max(super().max_identifier, self._max_identifier_in_file)
+
+    def __getitem__(self, identifier):
+        try:
+            obj = super().__getitem__(identifier)
+        except KeyError:
+            obj = self[identifier] = self._xref.get_object(identifier)
+        return obj
+
+    def __delitem__(self, identifier):
+        del self._xref[identifier]
+        super().__delitem__(identifier)
 
     def parse_trailer(self):
         assert self.next_token() == b'trailer'
