@@ -1,11 +1,11 @@
 
 import struct
 
-from .parse import OpenTypeTable, MultiFormatTable, indirect_array
-from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
-from .parse import Packed
+from .parse import OpenTypeTable, MultiFormatTable, Record
+from .parse import fixed, int16, uint16, tag, glyph_id, offset, Packed
+from .parse import array, context, context_array, indirect, indirect_array
 from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
-from .layout import Coverage, ClassDefinition
+from .layout import Coverage, ClassDefinition, Device
 from ...util import cached_property
 
 
@@ -45,8 +45,50 @@ class ValueFormat(Packed):
         return keys
 
 
-class SingleAdjustmentSubtable(OpenTypeTable):
-    pass
+class ValueRecord(OpenTypeTable):
+    formats = {'XPlacement': int16,
+               'YPlacement': int16,
+               'XAdvance': int16,
+               'YAdvance': int16,
+               'XPlaDevice': indirect(Device),
+               'YPlaDevice': indirect(Device),
+               'XAdvDevice': indirect(Device),
+               'YAdvDevice': indirect(Device)}
+
+    def __init__(self, file, value_format):
+        super().__init__(file)
+        for name, present in value_format.items():
+            if present:
+                self[name] = self.formats[name](file)
+
+
+class Anchor(MultiFormatTable):
+    entries = [('AnchorFormat', uint16),
+               ('XCoordinate', int16),
+               ('YCoordinate', int16)]
+    formats = {2: [('AnchorPoint', uint16)],
+               3: [('XDeviceTable', indirect(Device)),
+                   ('YDeviceTable', indirect(Device))]}
+
+
+class MarkRecord(Record):
+    entries = [('Class', uint16),
+               ('MarkAnchor', indirect(Anchor))]
+
+
+class MarkArray(OpenTypeTable):
+    entries = [('MarkCount', uint16),
+               ('MarkRecord', context_array(MarkRecord, 'MarkCount'))]
+
+
+class SingleAdjustmentSubtable(MultiFormatTable):
+    entries = [('PosFormat', uint16),
+               ('Coverage', indirect(Coverage)),
+               ('ValueFormat', ValueFormat)]
+    formats = {1: [('Value', context(ValueRecord, 'ValueFormat'))],
+               2: [('ValueCount', uint16),
+                   ('Value', context_array(ValueRecord, 'ValueCount',
+                                           'ValueFormat'))]}
 
 
 class PairSetTable(OpenTypeTable):
@@ -132,11 +174,71 @@ class PairAdjustmentSubtable(MultiFormatTable):
             return class_2_record['Value1']['XAdvance']
 
 
+class EntryExitRecord(OpenTypeTable):
+    entries = [('EntryAnchor', indirect(Anchor)),
+               ('ExitAnchor', indirect(Anchor, 'EntryExitCount'))]
 
+
+class CursiveAttachmentSubtable(OpenTypeTable):
+    entries = [('PosFormat', uint16),
+               ('Coverage', indirect(Coverage)),
+               ('EntryExitCount', uint16),
+               ('EntryExitRecord', context_array(EntryExitRecord, 'EntryExitCount'))]
+
+
+class MarkCoverage(OpenTypeTable):
+    pass
+
+
+class BaseCoverage(OpenTypeTable):
+    pass
+
+
+class Mark2Array(OpenTypeTable):
+    pass
+
+
+class BaseRecord(OpenTypeTable):
+##    entries = [('BaseAnchor', indirect_array(Anchor, 'ClassCount'))]
+
+    def __init__(self, file, file_offset, class_count):
+        super().__init__(self, file, file_offset)
+##        self['BaseAnchor'] = indirect_array(Anchor, 'ClassCount'])(file)
+
+
+class BaseArray(OpenTypeTable):
+    entries = [('BaseCount', uint16)]
+##               ('BaseRecord', context_array(BaseRecord, 'BaseCount'))]
+
+    def __init__(self, file, file_offset, class_count):
+        super().__init__(self, file, file_offset)
+        self['BaseRecord'] = array(BaseRecord, self['BaseCount'],
+                                   class_count=class_count)(file)
+
+
+class MarkToBaseAttachmentSubtable(OpenTypeTable):
+    entries = [('PosFormat', uint16),
+               ('MarkCoverage', indirect(MarkCoverage)),
+               ('BaseCoverage', indirect(BaseCoverage)),
+               ('ClassCount', uint16),
+               ('MarkArray', indirect(MarkArray)),
+               ('BaseArray', indirect(BaseArray, 'ClassCount'))]
+
+
+class MarkToMarkAttachmentSubtable(OpenTypeTable):
+    entries = [('PosFormat', uint16),
+               ('Mark1Coverage', indirect(MarkCoverage)),
+               ('Mark1Coverage', indirect(MarkCoverage)),
+               ('ClassCount', uint16),
+               ('Mark1Array', indirect(MarkArray)),
+               ('Mark1Array', indirect(Mark2Array))]
 
 
 class GposTable(LayoutTable):
     """Glyph positioning table"""
     tag = 'GPOS'
     lookup_types = {1: SingleAdjustmentSubtable,
-                    2: PairAdjustmentSubtable}
+                    2: PairAdjustmentSubtable,
+                    3: CursiveAttachmentSubtable,
+                    4: MarkToBaseAttachmentSubtable,
+                    6: MarkToMarkAttachmentSubtable}
