@@ -113,6 +113,7 @@ class PDFObjectReader(object):
         print(self.file.read(length))
         self.file.seek(restore_pos)
 
+    # TODO: move reader function outside to simplify unit testing
     def read_array(self, indirect=False):
         array = cos.Array(indirect=indirect)
         while True:
