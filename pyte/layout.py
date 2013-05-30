@@ -71,13 +71,19 @@ class ContainerBase(FlowableTarget):
     container's horizontal positioning and width. Its subclasses handle the
     vertical positioning and height."""
 
-    def __init__(self, parent, left=None, width=None, right=None, chain=None):
+    def __init__(self, parent, left=None, top=None, width=None, height=None,
+                 right=None, bottom=None, chain=None):
         """Initialize a this container as a child of the `parent` container.
 
         The horizontal position and width of the container are determined from
-        `left`, `width` and `right`. If only `left` or `right` are specified,
+        `left`, `width` and `right`. If only `left` or `right` is specified,
         the container's opposite edge will be placed at the corresponding edge
         of the parent container.
+
+        Similarly, the vertical position and height of the container are
+        determined from `top`, `height` and `bottom`. If only one of `top` or
+        `bottom` is specified, the container's opposite edge is placed at the
+        corresponding edge of the parent container.
 
         Finally, `chain` is a :class:`Chain` this container will be appended to.
         """
@@ -85,9 +91,21 @@ class ContainerBase(FlowableTarget):
             left = 0*PT if (right and width) is None else (right - width)
         if width is None:
             width = (parent.width - left) if right is None else (right - left)
+        if right is None:
+            right = left + width
         self.left = left
         self.width = width
-        self.right = left + width
+        self.right = right
+
+        if top is None:
+            top = 0*PT if (bottom and height) is None else (bottom - height)
+        if height is None:
+            height = (parent.height - top) if bottom is None else (bottom - top)
+        if bottom is None:
+            bottom = top + height
+        self.top = top
+        self.height = height
+        self.bottom = bottom
 
         self.parent = parent
         if parent is not None:  # the Page subclass has no parent
@@ -172,45 +190,18 @@ class Container(ContainerBase):
     height. It's contents are rendered relative to the container's position in
     its parent :class:`Container`."""
 
-    def __init__(self, parent, left=None, top=None, width=None, height=None,
-                 right=None, bottom=None, chain=None):
-        """Initialize this container as a child of the `parent` container.
-
-        The horizontal position and width of the container are determined from
-        `left`, `width` and `right`. If only `left` or `right` are specified,
-        the container's opposite edge will be placed at the corresponding edge
-        of the parent container.
-        Similarly, the vertical position and height of the container are
-        determined from `top`, `height` and `bottom`. If only one of `top` or
-        `bottom` is specified, the container's opposite edge is placed at the
-        corresponding edge of the parent container.
-
-        Finally, `chain` is a :class:`Chain` this container will be appended to.
-        """
-        super().__init__(parent, left, width, right, chain)
-        if top is None:
-            top = 0*PT if (bottom and height) is None else (bottom - height)
-        if height is None:
-            height = (parent.height - top) if bottom is None else (bottom - top)
-        self.top = top
-        self.height = height
-        self.bottom = top + height
-
 
 class ExpandingContainer(ContainerBase):
-    """An dynamically (vertically) growing version of the :class:`Container`."""
+    """An dynamically, vertically growing :class:`Container`."""
 
-    def __init__(self, parent, left=None, width=None, right=None,
-                 max_height=float('+inf'), chain=None):
-        """Initialize this expanding container as a child of the `parent`
-        container.
+    def __init__(self, parent, left, top, width, right, bottom,
+                 max_height=float('+inf')):
+        """See :class:`ContainerBase` for information on the `parent`, `left`,
+        `width` and `right` parameters.
 
-        See :class:`ContainerBase` for information on the `left`, `width` and
-        `right` parameters. `max_height` is the maximum height this container
-        can grow to."""
-        super().__init__(parent, left, width, right, chain)
+        `max_height` is the maximum height this container can grow to."""
+        super().__init__(parent, left, top, width, 0*PT, right, bottom)
         self.max_height = max_height
-        self.height = 0*PT
 
     @property
     def remaining_height(self):
@@ -234,42 +225,33 @@ class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, parent, left=None, top=None, width=None, right=None,
-                 max_height=float('+inf'), chain=None):
-        """Initialize this down-expanding container as a child of the `parent`
-        container.
+                 max_height=float('+inf')):
+        """See :class:`ContainerBase` for information on the `parent`, `left`,
+        `width` and `right` parameters.
 
-        The horizontal position and width of the container are determined from
-        `left`, `width` and `right`. If only one of `left` or `right` is
-        specified, the container's opposite edge will be placed at the
-        corresponding edge of the parent container.
         `top` specifies the location of the container's top edge with respect to
-        that of the parent container. When `top` is omitted, the top edge falls
-        together with the top edge of the parent container.
+        that of the parent container. When `top` is omitted, the top edge is
+        placed at the top edge of the parent container.
+
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(parent, left, width, right, max_height, chain)
-        self.top = top if top is not None else 0*PT
-        self.bottom = self.top + self.height
+        super().__init__(parent, left, top, width, right, None, max_height)
 
 
 class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, parent, left=None, bottom=None, width=None, right=None,
-                 max_height=float('+inf'), chain=None):
-        """Initialize this up-expanding container as a child of the `parent`
-        container.
+                 max_height=float('+inf')):
+        """See :class:`ContainerBase` for information on the `parent`, `left`,
+        `width` and `right` parameters.
 
-        The horizontal position and width of the container are determined from
-        `left`, `width` and `right`. If only one of `left` or `right` is
-        specified, the container's opposite edge will be placed at the
-        corresponding edge of the parent container.
         `bottom` specifies the location of the container's bottom edge with
         respect to that of the parent container. When `bottom` is omitted, the
-        bottom edge falls together with the bottom edge of the parent container.
+        bottom edge is placed at the bottom edge of the parent container.
+
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(parent, left, width, right, max_height, chain)
-        self.bottom = bottom if bottom is not None else parent.height
-        self.top = self.bottom - self.height
+        bottom = bottom or parent.height
+        super().__init__(parent, left, None, width, right, bottom, max_height)
 
 
 class VirtualContainer(DownExpandingContainer):
