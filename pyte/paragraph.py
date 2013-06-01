@@ -184,13 +184,16 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, words, first_line=True):
+    def __init__(self, words, first_line=True, nested_flowable_state=None):
         self.words = words
         self.first_line = first_line
+        self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
         self.words, copy_words = tee(self.words)
-        return self.__class__(copy_words, self.first_line)
+        copy_nested_flowable_state = copy(self.nested_flowable_state)
+        return self.__class__(copy_words, self.first_line,
+                              copy_nested_flowable_state)
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -243,10 +246,28 @@ class Paragraph(MixedStyledText, Flowable):
             try:
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line)
+                saved_state = copy(state)
             except EndOfContainer as e:
-                e.flowable_state = saved_state
-                raise e
-            saved_state = copy(state)
+                raise EndOfContainer(saved_state)
+
+        def render_nested_flowable(flowable):
+            nonlocal state, descender
+            max_height = float(container.remaining_height)
+            # FIXME: trouble if `container` is an ExpandingContainer
+            nested_container = DownExpandingContainer(container,
+                                                      left=indent_left,
+                                                      top=container.cursor,
+                                                      max_height=max_height)
+            try:
+                height, descender = flowable.flow(nested_container, descender,
+                                                  state.nested_flowable_state)
+                state.nested_flowable_state = None
+                container.advance(height)
+                line = Line(tab_stops, line_width, indent_left, container)
+            except EndOfContainer as e:
+                state.words = chain((flowable, ), state.words)
+                state.nested_flowable_state = e.flowable_state
+                raise EndOfContainer(state)
 
         line = Line(tab_stops, line_width, first_line_indent, container)
         while True:
@@ -265,12 +286,7 @@ class Paragraph(MixedStyledText, Flowable):
                 state.words = chain(field_words, state.words)
             except FlowableException:
                 typeset_line(line, last_line=True)
-                child_container = DownExpandingContainer(container,
-                                                         left=indent_left,
-                                                         top=container.cursor)
-                height, descender = word.flow(child_container, descender)
-                container.advance(height)
-                line = Line(tab_stops, line_width, indent_left, container)
+                render_nested_flowable(word)
             except StopIteration:
                 if line:
                     typeset_line(line, last_line=True)
