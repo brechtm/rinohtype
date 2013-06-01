@@ -184,16 +184,22 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, words, first_line=True, nested_flowable_state=None):
-        self.words = words
+    def __init__(self, items, first_line=True, nested_flowable_state=None):
+        self.items = items
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
-        self.words, copy_words = tee(self.words)
+        self.items, copy_items = tee(self.items)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_words, self.first_line,
+        return self.__class__(copy_items, self.first_line,
                               copy_nested_flowable_state)
+
+    def next_item(self):
+        return next(self.items)
+
+    def prepend(self, item):
+        self.items = chain((item, ), self.items)
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -265,17 +271,17 @@ class Paragraph(MixedStyledText, Flowable):
                 container.advance(height)
                 line = Line(tab_stops, line_width, indent_left, container)
             except EndOfContainer as e:
-                state.words = chain((flowable, ), state.words)
+                state.prepend(flowable)
                 state.nested_flowable_state = e.flowable_state
                 raise EndOfContainer(state)
 
         line = Line(tab_stops, line_width, first_line_indent, container)
         while True:
             try:
-                word = next(state.words)        # throws StopIteration
+                word = state.next_item()        # throws StopIteration
                 spillover = line.append(word)   # throws the other exceptions
                 if spillover:
-                    state.words = chain((spillover, ), state.words)
+                    state.prepend(spillover)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, indent_left, container)
             except NewlineException:
@@ -283,7 +289,7 @@ class Paragraph(MixedStyledText, Flowable):
                 line = Line(tab_stops, line_width, indent_left, container)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
-                state.words = chain(field_words, state.words)
+                state.items = chain(field_words, state.items)
             except FlowableException:
                 typeset_line(line, last_line=True)
                 render_nested_flowable(word)
