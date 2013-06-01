@@ -143,6 +143,10 @@ class ContainerBase(FlowableTarget):
         if self.cursor > self.height:
             raise EndOfContainer
 
+    def check_overflow(self):
+        if self.cursor > self.height:
+            print('Container overflow on page {}'.format(self.page.number))
+
     def render(self):
         """Render the contents of this container to its canvas. The contents
         include:
@@ -191,7 +195,8 @@ class Container(ContainerBase):
     its parent :class:`Container`."""
 
 
-class ExpandingContainer(ContainerBase):
+
+class ExpandingContainer(Container):
     """An dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, parent, left, top, width, right, bottom,
