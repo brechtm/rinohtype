@@ -60,6 +60,16 @@ class Page(Container):
         """The canvas associated with this page."""
         return self.backend_page.canvas
 
+    def handle_overflow(self):
+        overflowed_chains = []
+        for chain in self.check_overflow():
+            if chain not in overflowed_chains:
+               overflowed_chains.append(chain)
+        # reset each chain's container's cursors
+        for chain in overflowed_chains:
+            chain
+        # re-render the chains
+
 
 class Document(object):
     """A document renders the contents described in an input file onto pages.
@@ -183,7 +193,7 @@ class DocumentElement(object):
 
     def __init__(self, document=None, parent=None, source=None):
         """Initialize this document element as an element of `document`
-        (:class:`Document`) or as child of `parent` (:class:`Document`Element).
+        (:class:`Document`) or as child of `parent` (:class:`DocumentElement`).
         `source` should point to a node in the input's document tree
         corresponding to this document element. It is used to point to a
         location in the input file when warnings or errors are generated (see

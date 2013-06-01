@@ -102,5 +102,5 @@ class Floating(Decorator):
         # then a) reflow chain with overflowed containers with float in place
         #         (reset state & render)
         #  or  b) or re-render full page with float already in place?
-        container.page.check_overflow()
+        container.page.handle_overflow()
         return 0, last_descender

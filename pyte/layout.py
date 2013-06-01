@@ -144,8 +144,11 @@ class ContainerBase(FlowableTarget):
             raise EndOfContainer
 
     def check_overflow(self):
+        for child in self.children:
+            for chain in child.check_overflow():
+                yield chain
         if self.cursor > self.height:
-            print('Container overflow on page {}'.format(self.page.number))
+            yield self.chain
 
     def render(self):
         """Render the contents of this container to its canvas. The contents
