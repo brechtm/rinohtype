@@ -83,7 +83,7 @@ class Tabular(Flowable):
                     self.cell_styles[ri][ci] = copy(style)
                     self.cell_styles[ri][ci].base = old_style
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
         canvas = container.canvas
         table_width = float(container.width)

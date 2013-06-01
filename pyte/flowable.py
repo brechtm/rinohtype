@@ -47,7 +47,7 @@ class Flowable(Styled):
         super().__init__(style=style, parent=parent)
         self.resume = False
 
-    def flow(self, container, last_descender):
+    def flow(self, container, last_descender, state=None):
         """Flow this flowable into `container` and return the vertical space
         consumed.
 
@@ -59,7 +59,7 @@ class Flowable(Styled):
         if not self.resume:
             self.resume = True
             container.advance(float(self.get_style('space_above')))
-        last_descender = self.render(container, last_descender)
+        last_descender = self.render(container, last_descender, state=state)
         self.resume = False
         try:
             container.advance(float(self.get_style('space_below')))
@@ -78,10 +78,19 @@ class Flowable(Styled):
         (called when this flowable is embedded in a paragraph)"""
         yield self
 
-    def render(self, container, descender):
+    def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceeding line or `None`."""
+        raise NotImplementedError
+
+
+class FlowableState(object):
+    """Stores a :class:`Flowable`\'s rendering state, which can be copied. This
+    enables saving the rendering state at certain points in the rendering
+    process, so rendering can later be resumed at those points, if needed."""
+
+    def __copy__(self):
         raise NotImplementedError
 
 
@@ -94,7 +103,7 @@ class Floating(Decorator):
     This is typically used to place figures and tables at the top or bottom of a
     page, instead of in between paragraphs."""
 
-    def flow(self, container, last_descender):
+    def flow(self, container, last_descender, state=None):
         """Flow this flowable into the float space associated with `container`.
         """
         super().flow(container.float_space, None)

@@ -30,7 +30,13 @@ __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
 
 
 class EndOfContainer(Exception):
-    """The end of the :class:`Container` has been reached."""
+    """The end of the :class:`FlowableContainer` has been reached."""
+
+    def __init__(self, flowable_state=None):
+        """`flowable_state` represents the rendering state of the
+        :class:`Flowable` at the time the :class:`FlowableContainer`" overflows.
+        """
+        self.flowable_state = flowable_state
 
 
 class FlowableTarget(object):
@@ -321,6 +327,7 @@ class Chain(FlowableTarget):
         rendered, this method returns an iterator yielding itself. This signals
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
+        flowable_state = None
         while self._container_index < len(self._containers):
             container = self._containers[self._container_index]
             last_descender = None
@@ -329,11 +336,14 @@ class Chain(FlowableTarget):
                 while self._flowable_index < len(self.flowables):
                     flowable = self.flowables[self._flowable_index]
                     height, last_descender = flowable.flow(container,
-                                                           last_descender)
+                                                           last_descender,
+                                                           state=flowable_state)
+                    flowable_state = None
                     self._flowable_index += 1
-            except EndOfContainer:
+            except EndOfContainer as e:
                 if self._container_index > len(self._containers) - 1:
                     yield self
+                flowable_state = e.flowable_state
         self._init_state()      # reset the state for the next rendering loop
 
     def append_container(self, container):

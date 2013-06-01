@@ -24,10 +24,12 @@ Horizontal justification of lines can be one of:
 
 """
 
+from collections import namedtuple
+from copy import copy
 from itertools import chain, tee
 
 from .dimension import Dimension, PT
-from .flowable import FlowableException, Flowable, FlowableStyle
+from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import FieldException
 from .text import Space, Tab, Spacer
@@ -181,6 +183,16 @@ class ParagraphStyle(TextStyle, FlowableStyle):
         super().__init__(base=base, **attributes)
 
 
+class ParagraphState(FlowableState):
+    def __init__(self, words, first_line=True):
+        self.words = words
+        self.first_line = first_line
+
+    def __copy__(self):
+        self.words, copy_words = tee(self.words)
+        return self.__class__(copy_words, self.first_line)
+
+
 class Paragraph(MixedStyledText, Flowable):
     """A paragraph of mixed-styled text that can be flowed into a
     :class:`Container`."""
@@ -193,22 +205,19 @@ class Paragraph(MixedStyledText, Flowable):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""
         super().__init__(text_or_items, style=style)
-        self._init_state()
 
-    def _init_state(self):
-        """Initialize this paragraph's state for typesetting."""
-        # self._words is an iterator yielding the (remaining) words or other
-        # in-line items to typeset.
-        self._words = split_into_words(MixedStyledText.spans(self))
-        self.first_line = True
+    def initial_state(self):
+        """Return the initial rendering state for this paragraph."""
+        return ParagraphState(split_into_words(MixedStyledText.spans(self)))
 
-    def render(self, container, descender):
+    def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
         the preceeding line or `None`.
         When the end of the container is reached, the rendering state is
         preserved to continue setting the rest of the paragraph when this method
         is called with a new container."""
+        state = state or self.initial_state()
         indent_left = float(self.get_style('indent_left'))
         indent_right = float(self.get_style('indent_right'))
         indent_first = float(self.get_style('indent_first'))
@@ -218,30 +227,34 @@ class Paragraph(MixedStyledText, Flowable):
 
         line_width = float(container.width - indent_right)
         first_line_indent = indent_left
-        if self.first_line:
+        if state.first_line:
             first_line_indent += indent_first
-            self.first_line = False
+            state.first_line = False
 
-        # self._words is updated after successfully rendering each line, so that
+        # `saved_state` is updated after successfully rendering each line, so that
         # when `container` overflows on rendering a line, the words in that line
         # are yielded again on the next typeset() call.
-        self._words, words = tee(self._words)
+        saved_state = copy(state)
 
         def typeset_line(line, last_line=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal words, descender
-            descender = line.typeset(container, justification, line_spacing,
-                                     descender, last_line)
-            self._words, words = tee(words)
+            nonlocal saved_state, state, descender
+            try:
+                descender = line.typeset(container, justification, line_spacing,
+                                         descender, last_line)
+            except EndOfContainer as e:
+                e.flowable_state = saved_state
+                raise e
+            saved_state = copy(state)
 
         line = Line(tab_stops, line_width, first_line_indent, container)
         while True:
             try:
-                word = next(words)              # throws StopIteration
+                word = next(state.words)        # throws StopIteration
                 spillover = line.append(word)   # throws the other exceptions
                 if spillover:
-                    words = chain((spillover, ), words)
+                    state.words = chain((spillover, ), state.words)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, indent_left, container)
             except NewlineException:
@@ -249,7 +262,7 @@ class Paragraph(MixedStyledText, Flowable):
                 line = Line(tab_stops, line_width, indent_left, container)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
-                words = chain(field_words, words)
+                state.words = chain(field_words, state.words)
             except FlowableException:
                 typeset_line(line, last_line=True)
                 child_container = DownExpandingContainer(container,
@@ -263,7 +276,6 @@ class Paragraph(MixedStyledText, Flowable):
                     typeset_line(line, last_line=True)
                 break
 
-        self._init_state()  # reset the state for the next rendering pass
         return descender
 
 

@@ -15,7 +15,7 @@ class Image(Flowable):
         self.filename = filename
         self.scale = scale
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         image = container.canvas.document.backend.Image(self.filename)
         left = float(container.width - image.width) / 2
         top = float(container.cursor)
@@ -69,7 +69,7 @@ class Figure(Flowable, Referenceable):
     def title(self):
         return self.caption.text
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         image = Image(self.filename, scale=self.scale)
         image_height = image.flow(container, None)
         caption_height = self.caption.flow(container, None)

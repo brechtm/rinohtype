@@ -54,11 +54,11 @@ class Heading(Paragraph, Referenceable):
     def title(self):
         return self._title
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)
-        return super().render(container, last_descender)
+        return super().render(container, last_descender, state=state)
 
 
 class ListStyle(ParagraphStyle):
@@ -172,11 +172,11 @@ class Header(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         text.parent = self
         self.append(text)
-        return super().render(container, last_descender)
+        return super().render(container, last_descender, state=state)
 
 
 class FooterStyle(ParagraphStyle):
@@ -192,11 +192,11 @@ class Footer(Paragraph):
     def __init__(self, style=None):
         super().__init__([], style)
 
-    def render(self, container, last_descender):
+    def render(self, container, last_descender, state=None):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         text.parent = self
         self.append(text)
-        return super().render(container, last_descender)
+        return super().render(container, last_descender, state=state)
 
 
 class TableOfContentsStyle(ParagraphStyle):
