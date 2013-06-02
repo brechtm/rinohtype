@@ -168,8 +168,11 @@ class Document(object):
         self.pages = []
         self.setup()
         for page in self.pages:
+            chains = set()
             for chain in page.render():
-                self.add_to_chain(chain)    # this typically grows self.pages
+                chains.add(chain)
+            if chains:
+                self.new_page(chain)    # this grows self.pages
             page.place()
         return len(self.pages)
 
@@ -179,11 +182,11 @@ class Document(object):
         to this document using :meth:`add_page`."""
         raise NotImplementedError
 
-    def add_to_chain(self, chain):
-        """Called by :meth:`render_pages` when `chain` :class:`Chain` has filled
-        the last :class:`Container` assigned to it. This method should create a
-        new :class:`Page` wich contains a container associated with `chain` and
-        pass it to :meth:`add_page`."""
+    def new_page(self, chains):
+        """Called by :meth:`render_pages` with the :class:`Chain`s that need
+        more :class:`Container`s. This method should create a new :class:`Page`
+        wich contains a container associated with `chain` and pass it to
+        :meth:`add_page`."""
         raise NotImplementedError
 
 

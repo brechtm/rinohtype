@@ -552,7 +552,7 @@ class RFIC2009Paper(Document):
         page.title_box << self.author_par
         page.title_box << self.affiliation_par
 
-    def add_to_chain(self, chain):
+    def new_page(self, chains):
         page = RFICPage(self)
         self.page_count += 1
         self.add_page(page, self.page_count)

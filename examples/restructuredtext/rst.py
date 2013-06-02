@@ -304,7 +304,7 @@ class ReStructuredTextDocument(rt.Document):
 ##        bib = self.bibliography.bibliography()
 ##        self.content.append_flowable(bib)
 
-    def add_to_chain(self, chain):
+    def new_page(self, chains):
         page = SimplePage(self)
         self.page_count += 1
         self.add_page(page, self.page_count)
