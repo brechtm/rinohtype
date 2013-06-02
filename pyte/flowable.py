@@ -106,10 +106,12 @@ class Floating(Decorator):
     def flow(self, container, last_descender, state=None):
         """Flow this flowable into the float space associated with `container`.
         """
-        super().flow(container.float_space, None)
-        # TODO: check for overflowed (chained) containers on page
-        # then a) reflow chain with overflowed containers with float in place
-        #         (reset state & render)
-        #  or  b) or re-render full page with float already in place?
-        container.page.handle_overflow()
+        if self not in container.document.floats:
+            super().flow(container.float_space, None)
+            # TODO: check for overflowed (chained) containers on page
+            # then a) reflow chain with overflowed containers with float in place
+            #         (reset state & render)
+            #  or  b) or re-render full page with float already in place?
+            container.document.floats.add(self)
+            container.page.handle_overflow()
         return 0, last_descender

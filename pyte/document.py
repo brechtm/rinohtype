@@ -29,6 +29,11 @@ PORTRAIT = 'portrait'
 LANDSCAPE = 'landscape'
 
 
+class OverflowException(Exception):
+    def __init__(self, overflowed_chains):
+        self.overflowed_chains = overflowed_chains
+
+
 class Page(Container):
     """A single page in a document. A :class:`Page` is a :class:`Container`, so
     other containers can be added as children."""
@@ -49,26 +54,31 @@ class Page(Container):
         self.backend_page = document.backend.Page(self, backend_document,
                                                   self.width, self.height)
         self.section = None     # will point to the last section on this page
+        self.overflowed_chains = []
+        self.canvas = self.backend_page.canvas
 
     @property
     def page(self):
         """Returns the page itself."""
         return self
 
-    @property
-    def canvas(self):
-        """The canvas associated with this page."""
-        return self.backend_page.canvas
-
     def handle_overflow(self):
         overflowed_chains = []
         for chain in self.check_overflow():
             if chain not in overflowed_chains:
-               overflowed_chains.append(chain)
-        # reset each chain's container's cursors
-        for chain in overflowed_chains:
-            chain
-        # re-render the chains
+                print('Overflow on page {}'.format(self.number))
+                overflowed_chains.append(chain)
+        if overflowed_chains:
+            raise OverflowException(overflowed_chains)
+
+    def render(self):
+        try:
+            for chain in super().render(rerender=False):
+                yield chain
+        except OverflowException as e:
+            print('Rerender page {}'.format(self.number))
+            for chain in super().render(rerender=True):
+                yield chain
 
 
 class Document(object):
@@ -166,6 +176,7 @@ class Document(object):
         """Render the complete document once and return the number of pages
         rendered."""
         self.pages = []
+        self.floats = set()
         self.setup()
         for page in self.pages:
             chains = set()

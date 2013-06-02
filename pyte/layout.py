@@ -20,6 +20,7 @@ page to which :class:`Flowable`\ s can be rendered.
 
 """
 
+from copy import copy
 
 from .dimension import PT
 from .util import cached_property
@@ -117,11 +118,12 @@ class ContainerBase(FlowableTarget):
         if parent is not None:  # the Page subclass has no parent
             super().__init__(parent.document)
             parent.children.append(self)
+            self.empty_canvas()
         self.children = []
         self.flowables = []
         self.chain = chain
-        if chain is not None:
-            chain.append_container(self)
+        if chain:
+            self.chain.last_container = self
 
         self.cursor = 0     # initialized at the container's top edge
         """Keeps track of where the next flowable is to be placed. As flowables
@@ -132,10 +134,8 @@ class ContainerBase(FlowableTarget):
         """The :class:`Page` this container is located on."""
         return self.parent.page
 
-    @cached_property
-    def canvas(self):
-        """The canvas associated with this container."""
-        return self.parent.canvas.new()
+    def empty_canvas(self):
+        self.canvas = self.parent.canvas.new()
 
     @property
     def remaining_height(self):
@@ -153,10 +153,10 @@ class ContainerBase(FlowableTarget):
         for child in self.children:
             for chain in child.check_overflow():
                 yield chain
-        if self.cursor > self.height:
+        if self.chain and self.cursor > self.height:
             yield self.chain
 
-    def render(self):
+    def render(self, rerender=False):
         """Render the contents of this container to its canvas. The contents
         include:
 
@@ -177,15 +177,16 @@ class ContainerBase(FlowableTarget):
 
         This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
+        self.cursor = 0
         for child in self.children:
-            for chain in child.render():
+            for chain in child.render(rerender):
                 yield chain
-        last_descender = None
-        for flowable in self.flowables:
-            height, last_descender = flowable.flow(self, last_descender)
-        if self.chain:
-            for chain in self.chain.render():
-                yield chain
+        if not rerender:
+            last_descender = None
+            for flowable in self.flowables:
+                height, last_descender = flowable.flow(self, last_descender)
+        if self.chain and self.chain.render(self, rerender=rerender):
+            yield self.chain
 
     def place(self):
         """Place this container's canvas onto the parent container's canvas."""
@@ -313,11 +314,10 @@ class Chain(FlowableTarget):
         """Reset the state of this chain: empty the list of containers, and zero
         the counter keeping track of which flowable needs to be rendered next.
         """
-        self._containers = []
-        self._container_index = 0
-        self._flowable_index = 0
+        self._saved_index = self._flowable_index = 0
+        self._saved_state = self._flowable_state = None
 
-    def render(self):
+    def render(self, container, rerender=False):
         """Flow the flowables into the containers that have been added to this
         chain.
 
@@ -327,25 +327,27 @@ class Chain(FlowableTarget):
         rendered, this method returns an iterator yielding itself. This signals
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
-        flowable_state = None
-        while self._container_index < len(self._containers):
-            container = self._containers[self._container_index]
-            last_descender = None
-            self._container_index += 1
-            try:
-                while self._flowable_index < len(self.flowables):
-                    flowable = self.flowables[self._flowable_index]
-                    height, last_descender = flowable.flow(container,
-                                                           last_descender,
-                                                           state=flowable_state)
-                    flowable_state = None
-                    self._flowable_index += 1
-            except EndOfContainer as e:
-                if self._container_index > len(self._containers) - 1:
-                    yield self
-                flowable_state = e.flowable_state
+        if rerender and self._saved_index and self._saved_state:
+            self._flowable_index = self._saved_index
+            self._flowable_state = self._saved_state
+            self._saved_index = 0
+            self._saved_state = None
+        if rerender:
+            container.empty_canvas()
+        last_descender = None
+        try:
+            while self._flowable_index < len(self.flowables):
+                flowable = self.flowables[self._flowable_index]
+                height, last_descender = flowable.flow(container,
+                                                       last_descender,
+                                                       self._flowable_state)
+                self._flowable_state = None
+                self._flowable_index += 1
+        except EndOfContainer as e:
+            self._flowable_state = e.flowable_state
+            if container == self.last_container:
+                self._saved_state = copy(self._flowable_state)
+                self._saved_index = self._flowable_index
+            return container == self.last_container
         self._init_state()      # reset the state for the next rendering loop
-
-    def append_container(self, container):
-        """Append `container` to the list of containers in this chain."""
-        self._containers.append(container)
+        return False
