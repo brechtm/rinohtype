@@ -6,8 +6,8 @@ from pyte.font.opentype import OpenTypeFont
 from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
 from pyte.paper import Paper, LETTER
 from pyte.document import Document, Page, PORTRAIT
-from pyte.layout import Container, DownExpandingContainer, FootnoteContainer
-from pyte.layout import Chain
+from pyte.layout import Container, DownExpandingContainer, Chain
+from pyte.layout import TopFloatContainer, FootnoteContainer
 from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
 from pyte.paragraph import ProportionalSpacing, FixedSpacing, TabStop
 from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
@@ -455,7 +455,7 @@ class RFICPage(Page):
             self.title_box = DownExpandingContainer(body)
             column_top = self.title_box.bottom
 
-        self.float_space = DownExpandingContainer(body, top=column_top)
+        self.float_space = TopFloatContainer('top', body, top=column_top)
         column_top = self.float_space.bottom
 
         self.content = document.content

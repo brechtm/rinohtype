@@ -287,6 +287,26 @@ class VirtualContainer(DownExpandingContainer):
         pass
 
 
+class FloatContainer(ExpandingContainer):
+    def __init__(self, identifier, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.identifier = identifier
+
+
+class TopFloatContainer(FloatContainer, DownExpandingContainer):
+    def __init__(self, identifier, parent, left=None, top=None, width=None,
+                 right=None, max_height=float('+inf')):
+        super().__init__(identifier, parent, left, top, width, right,
+                         max_height)
+
+
+class BottomFloatContainer(UpExpandingContainer, FloatContainer):
+    def __init__(self, identifier, parent, left=None, bottom=None, width=None,
+                 right=None, max_height=float('+inf')):
+        super().__init__(identifier, parent, left, bottom, width, right,
+                         max_height)
+
+
 class FootnoteContainer(UpExpandingContainer):
     def __init__(self, parent, left=None, bottom=None, width=None, right=None):
         super().__init__(parent, left, bottom, width=width, right=right)
