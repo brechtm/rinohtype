@@ -113,5 +113,5 @@ class Floating(Decorator):
             #         (reset state & render)
             #  or  b) or re-render full page with float already in place?
             container.document.floats.add(self)
-            container.page.handle_overflow()
+            container.page.check_overflow()
         return 0, last_descender

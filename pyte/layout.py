@@ -40,6 +40,10 @@ class EndOfContainer(Exception):
         self.flowable_state = flowable_state
 
 
+class ReflowRequired(Exception):
+    """Reflow of the current page is required due to insertion of a float."""
+
+
 class FlowableTarget(object):
     """Something that takes :class:`Flowable`\ s to be rendered."""
 
@@ -151,10 +155,9 @@ class ContainerBase(FlowableTarget):
 
     def check_overflow(self):
         for child in self.children:
-            for chain in child.check_overflow():
-                yield chain
+            child.check_overflow()
         if self.chain and self.cursor > self.height:
-            yield self.chain
+            raise ReflowRequired
 
     def render(self, rerender=False):
         """Render the contents of this container to its canvas. The contents

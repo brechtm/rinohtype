@@ -17,7 +17,7 @@ Classes representing a document:
 import time
 import pickle
 
-from .layout import FlowableTarget, Container
+from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
 from .warnings import warn
 
@@ -27,11 +27,6 @@ __all__ = ['Page', 'Document', 'DocumentElement', 'PORTRAIT', 'LANDSCAPE']
 
 PORTRAIT = 'portrait'
 LANDSCAPE = 'landscape'
-
-
-class OverflowException(Exception):
-    def __init__(self, overflowed_chains):
-        self.overflowed_chains = overflowed_chains
 
 
 class Page(Container):
@@ -62,21 +57,12 @@ class Page(Container):
         """Returns the page itself."""
         return self
 
-    def handle_overflow(self):
-        overflowed_chains = []
-        for chain in self.check_overflow():
-            if chain not in overflowed_chains:
-                print('Overflow on page {}'.format(self.number))
-                overflowed_chains.append(chain)
-        if overflowed_chains:
-            raise OverflowException(overflowed_chains)
-
     def render(self):
         try:
             for chain in super().render(rerender=False):
                 yield chain
-        except OverflowException as e:
-            print('Rerender page {}'.format(self.number))
+        except ReflowRequired:
+            print('Overflow on page {}, reflowing...'.format(self.number))
             for chain in super().render(rerender=True):
                 yield chain
 
