@@ -356,6 +356,8 @@ class Chain(FlowableTarget):
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
         if rerender and self._saved_index and self._saved_state:
+            # reset saved index/state on the first container of this page
+            # TODO: find proper way of detecting the first container
             self._flowable_index = self._saved_index
             self._flowable_state = self._saved_state
             self._saved_index = 0
@@ -377,6 +379,15 @@ class Chain(FlowableTarget):
         except EndOfContainer as e:
             self._flowable_state = e.flowable_state
             if container == self.last_container:
+                # save state for when ReflowRequired occurs
                 self._saved_state = copy(self._flowable_state)
                 self._saved_index = self._flowable_index
+                # take another copy of state for when ReflowRequired occurs
+                # in another Container (on the same page) during rerendering
+                self._saved_state2 = copy(self._flowable_state)
+                self._saved_index2 = self._flowable_index
             return container == self.last_container
+        except ReflowRequired:
+            self._saved_state = copy(self._saved_state2)
+            self._saved_index = self._saved_index2
+            raise

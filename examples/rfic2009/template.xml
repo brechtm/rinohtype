@@ -138,10 +138,6 @@ or
 
 <p>If you have difficulties with the titles on your figures, you can always elect to add in the titles as separate text boxes, rather than importing the titles with the graph. This is sometimes helpful in getting a lengthy vertically-oriented title to display correctly.</p>
 
-<figure id="fig1" path="fig1" scale="1.0">
-  <caption>Estimated relationship between the time an author spends reading these instructions and the quality of the author's digest article.</caption>
-</figure>
-
 <p>Notice that prior to the graph, a single 12-point line is used to separate the preceding text from the graph. The equivalent of a blank line should exist between the bottom of the graph (the x-axis caption) and the figure caption. (In this particular case, there was no need to add a blank line between the x-axis label and the figure caption, because there was already adequate spacing provided by the image border.) After the figure caption, there should be a single 12-point blank line before the text resumes.</p>
 
 <p>More flexibility is obtained in inserting figures if you can place them exactly where you would like them to be on a page. This can be accomplished by inserting the figure, selecting the figure, and then choosing "Format Picture...". Various settings allow you to place the figure at an absolute position on a page; specify if the text is supposed to flow around the figure or if the figure should move with the text, etc. If you elect to let the text flow around the figure, then remember that you will have to insert a separate text box for the caption, otherwise the figure caption is likely to become separated from the figure.</p>
@@ -152,11 +148,11 @@ or
 
 <p>Here is a common example of what can go wrong with the numbering and sizing of axis titles on a graph. In this case, the graph was initially pasted at a much larger size than the column width, and then reduced to fit:</p>
 
-<figure id="fig2" path="fig2" scale="1.0">
-  <caption>Example of an improperly titled figure. The numerics and the labels on the axes are illegible. This will cause a submission to be rejected. Don’t let this happen to you!</caption>
-</figure>
-
 <p>Table I on the second page was inserted using "Insert", "TextBox", creating the text contained in Table I, and then formatting the text box using all the settings available under "Format","TextBox...". Table I also serves as an illustration of one of the rare instances when the double column format requirement can be violated. Certain figures and tables will require the full page width to display. It is usually best to place these figures and tables at the top or bottom, rather than in the middle of a page. Tables should be entered within a single column if this can be done cleanly, without the entry becoming too crowded.</p>
+
+<figure id="fig1" path="fig1" scale="1.0">
+  <caption>Estimated relationship between the time an author spends reading these instructions and the quality of the author's digest article.</caption>
+</figure>
 
 </section><!-- Figures -->
 
@@ -164,6 +160,10 @@ or
 <title>Citing Previous Work</title>
 
 <p>When referencing a journal article <cite id="Gould2002" />, a conference digest article <cite id="Yang2005" /> or a book <cite id="book" />, place the reference numbers within square brackets. To simultaneously cite these references <cite id="Gould2002,Yang2005" /> use the format just demonstrated. The reference list is the last section and references are listed in the order cited. Use 9 point Times. The paragraph description is set for a line spacing of exactly 10 points with 0 point spacing before and after. A 0.25 inch hanging indention should be specified.</p>
+
+<figure id="fig2" path="fig2" scale="1.0">
+  <caption>Example of an improperly titled figure. The numerics and the labels on the axes are illegible. This will cause a submission to be rejected. Don’t let this happen to you!</caption>
+</figure>
 
 <p>Generally speaking, references should be very detailed. For journal articles, list all authors by initials and last name, the title of the paper in quotations (capitalizing only the first letter of the first word, unless it would be capitalized in a sentence, e.g., a proper noun), the journal name in italics, the volume number, the issue number, the page numbers, and the date. Use the examples provided [1]–[3] as a guide.</p>
 
