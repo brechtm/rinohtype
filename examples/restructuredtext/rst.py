@@ -237,15 +237,16 @@ class SimplePage(rt.Page):
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
-        self.body = rt.Container(self, self.leftmargin, self.topmargin,
+        self.body = rt.Container('body', self, self.leftmargin, self.topmargin,
                                  body_width, body_height)
 
         self.content = document.content
 
-        self.footnote_space = rt.FootnoteContainer(self.body, 0*PT, body_height)
+        self.footnote_space = rt.FootnoteContainer('footnotes', self.body, 0*PT,
+                                                   body_height)
         self._footnote_number = 0
 
-        self.content = rt.Container(self.body, 0*PT, 0*PT,
+        self.content = rt.Container('content', self.body, 0*PT, 0*PT,
                                     bottom=self.footnote_space.top,
                                     chain=document.content)
 

@@ -44,7 +44,7 @@ class Page(Container):
         elif orientation is LANDSCAPE:
             width, height = paper.height, paper.width
         FlowableTarget.__init__(self, document)
-        Container.__init__(self, None, 0, 0, width, height)
+        Container.__init__(self, 'PAGE', None, 0, 0, width, height)
         backend_document = self.document.backend_document
         self.backend_page = document.backend.Page(self, backend_document,
                                                   self.width, self.height)

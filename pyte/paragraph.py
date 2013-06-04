@@ -24,7 +24,6 @@ Horizontal justification of lines can be one of:
 
 """
 
-from collections import namedtuple
 from copy import copy
 from itertools import chain, tee
 
@@ -260,7 +259,8 @@ class Paragraph(MixedStyledText, Flowable):
             nonlocal state, descender
             max_height = float(container.remaining_height)
             # FIXME: trouble if `container` is an ExpandingContainer
-            nested_container = DownExpandingContainer(container,
+            nested_container = DownExpandingContainer('nested_flowable',
+                                                      container,
                                                       left=indent_left,
                                                       top=container.cursor,
                                                       max_height=max_height)

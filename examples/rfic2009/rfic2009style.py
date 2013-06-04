@@ -446,28 +446,31 @@ class RFICPage(Page):
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
-        body = Container(self, self.leftmargin, self.topmargin,
+        body = Container('body', self, self.leftmargin, self.topmargin,
                          body_width, body_height)
 
         column_width = (body.width - self.column_spacing) / 2.0
         column_top = 0*PT
         if first:
-            self.title_box = DownExpandingContainer(body)
+            self.title_box = DownExpandingContainer('title', body)
             column_top = self.title_box.bottom
 
-        self.float_space = TopFloatContainer('top', body, top=column_top)
+        self.float_space = TopFloatContainer('top floats', body, top=column_top)
         column_top = self.float_space.bottom
 
         self.content = document.content
 
-        self.footnote_space = FootnoteContainer(body, 0*PT, body_height)
+        self.footnote_space = FootnoteContainer('footnotes', body, 0*PT,
+                                                body_height)
         self._footnote_number = 0
 
-        self.column1 = Container(body, 0*PT, column_top,
+        self.column1 = Container('column1', body, 0*PT, column_top,
                                  width=column_width,
                                  bottom=self.footnote_space.top,
                                  chain=document.content)
-        self.column2 = Container(body, column_width + self.column_spacing, column_top,
+        self.column2 = Container('column2', body,
+                                 column_width + self.column_spacing,
+                                 column_top,
                                  width=column_width,
                                  bottom=self.footnote_space.top,
                                  chain=document.content)
@@ -477,11 +480,11 @@ class RFICPage(Page):
         self.column1.float_space = self.float_space
         self.column2.float_space = self.float_space
 
-        self.header = Container(self, self.leftmargin, self.topmargin / 2,
-                                body_width, 12*PT)
+        self.header = Container('header', self, self.leftmargin,
+                                self.topmargin / 2, body_width, 12*PT)
         footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
-        self.footer = Container(self, self.leftmargin, footer_vert_pos,
-                                body_width, 12*PT)
+        self.footer = Container('footer', self, self.leftmargin,
+                                footer_vert_pos, body_width, 12*PT)
         header_text = Header(styles['header'])
         self.header.append_flowable(header_text)
         footer_text = Footer(styles['footer'])

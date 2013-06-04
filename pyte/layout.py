@@ -82,7 +82,7 @@ class ContainerBase(FlowableTarget):
     container's horizontal positioning and width. Its subclasses handle the
     vertical positioning and height."""
 
-    def __init__(self, parent, left=None, top=None, width=None, height=None,
+    def __init__(self, name, parent, left=None, top=None, width=None, height=None,
                  right=None, bottom=None, chain=None):
         """Initialize a this container as a child of the `parent` container.
 
@@ -118,6 +118,7 @@ class ContainerBase(FlowableTarget):
         self.height = height
         self.bottom = bottom
 
+        self.name = name
         self.parent = parent
         if parent is not None:  # the Page subclass has no parent
             super().__init__(parent.document)
@@ -132,6 +133,9 @@ class ContainerBase(FlowableTarget):
         self.cursor = 0     # initialized at the container's top edge
         """Keeps track of where the next flowable is to be placed. As flowables
         are flowed into the container, the cursor moves down."""
+
+    def __repr__(self):
+        return "{}('{}')".format(self.__class__.__name__, self.name)
 
     @property
     def page(self):
@@ -180,7 +184,6 @@ class ContainerBase(FlowableTarget):
 
         This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
-        self.cursor = 0
         for child in self.children:
             for chain in child.render(rerender):
                 yield chain
@@ -188,8 +191,10 @@ class ContainerBase(FlowableTarget):
             last_descender = None
             for flowable in self.flowables:
                 height, last_descender = flowable.flow(self, last_descender)
-        if self.chain and self.chain.render(self, rerender=rerender):
-            yield self.chain
+        if self.chain:
+            self.cursor = 0
+            if self.chain.render(self, rerender=rerender):
+                yield self.chain
 
     def place(self):
         """Place this container's canvas onto the parent container's canvas."""
@@ -212,13 +217,13 @@ class Container(ContainerBase):
 class ExpandingContainer(Container):
     """An dynamically, vertically growing :class:`Container`."""
 
-    def __init__(self, parent, left, top, width, right, bottom,
+    def __init__(self, name, parent, left, top, width, right, bottom,
                  max_height=float('+inf')):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(parent, left, top, width, 0*PT, right, bottom)
+        super().__init__(name, parent, left, top, width, 0*PT, right, bottom)
         self.max_height = max_height
 
     @property
@@ -242,7 +247,7 @@ class ExpandingContainer(Container):
 class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
-    def __init__(self, parent, left=None, top=None, width=None, right=None,
+    def __init__(self, name, parent, left=None, top=None, width=None, right=None,
                  max_height=float('+inf')):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
@@ -252,14 +257,15 @@ class DownExpandingContainer(ExpandingContainer):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(parent, left, top, width, right, None, max_height)
+        super().__init__(name, parent, left, top, width, right, None,
+                         max_height)
 
 
 class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
-    def __init__(self, parent, left=None, bottom=None, width=None, right=None,
-                 max_height=float('+inf')):
+    def __init__(self, name, parent, left=None, bottom=None, width=None,
+                 right=None, max_height=float('+inf')):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -269,7 +275,8 @@ class UpExpandingContainer(ExpandingContainer):
 
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
-        super().__init__(parent, left, None, width, right, bottom, max_height)
+        super().__init__(name, parent, left, None, width, right, bottom,
+                         max_height)
 
 
 class VirtualContainer(DownExpandingContainer):
@@ -283,7 +290,7 @@ class VirtualContainer(DownExpandingContainer):
         container.
 
         `width` specifies the width of the container."""
-        super().__init__(parent, width=width)
+        super().__init__('VIRTUAL', parent, width=width)
 
     def place(self):
         """This method has no effect."""
@@ -291,28 +298,26 @@ class VirtualContainer(DownExpandingContainer):
 
 
 class FloatContainer(ExpandingContainer):
-    def __init__(self, identifier, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.identifier = identifier
 
 
 class TopFloatContainer(FloatContainer, DownExpandingContainer):
-    def __init__(self, identifier, parent, left=None, top=None, width=None,
+    def __init__(self, name, parent, left=None, top=None, width=None,
                  right=None, max_height=float('+inf')):
-        super().__init__(identifier, parent, left, top, width, right,
-                         max_height)
+        super().__init__(name, parent, left, top, width, right, max_height)
 
 
 class BottomFloatContainer(UpExpandingContainer, FloatContainer):
-    def __init__(self, identifier, parent, left=None, bottom=None, width=None,
+    def __init__(self, name, parent, left=None, bottom=None, width=None,
                  right=None, max_height=float('+inf')):
-        super().__init__(identifier, parent, left, bottom, width, right,
-                         max_height)
+        super().__init__(name, parent, left, bottom, width, right, max_height)
 
 
 class FootnoteContainer(UpExpandingContainer):
-    def __init__(self, parent, left=None, bottom=None, width=None, right=None):
-        super().__init__(parent, left, bottom, width=width, right=right)
+    def __init__(self, name, parent, left=None, bottom=None, width=None,
+                 right=None):
+        super().__init__(name, parent, left, bottom, width=width, right=right)
         self._footnote_number = 0
 
     @property
