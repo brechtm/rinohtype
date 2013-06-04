@@ -17,6 +17,8 @@ Classes representing a document:
 import time
 import pickle
 
+from itertools import count
+
 from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
 from .warnings import warn
@@ -58,13 +60,13 @@ class Page(Container):
         return self
 
     def render(self):
-        try:
-            for chain in super().render(rerender=False):
-                yield chain
-        except ReflowRequired:
-            print('Overflow on page {}, reflowing...'.format(self.number))
-            for chain in super().render(rerender=True):
-                yield chain
+        for index in count():
+            try:
+                for chain in super().render(rerender=index > 0):
+                    yield chain
+                return
+            except ReflowRequired:
+                print('Overflow on page {}, reflowing...'.format(self.number))
 
 
 class Document(object):
@@ -165,12 +167,10 @@ class Document(object):
         self.floats = set()
         self.setup()
         for page in self.pages:
-            chains = set()
-            for chain in page.render():
-                chains.add(chain)
-            if chains:
-                self.new_page(chain)    # this grows self.pages
+            chains = set(chain for chain in page.render())
             page.place()
+            if chains:
+                self.new_page(chains)    # this grows self.pages
         return len(self.pages)
 
     def setup(self):

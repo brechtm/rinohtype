@@ -371,11 +371,11 @@ class Chain(FlowableTarget):
                                                        self._flowable_state)
                 self._flowable_state = None
                 self._flowable_index += 1
+            self._init_state()   # reset the state for the next rendering loop
+            return False
         except EndOfContainer as e:
             self._flowable_state = e.flowable_state
             if container == self.last_container:
                 self._saved_state = copy(self._flowable_state)
                 self._saved_index = self._flowable_index
             return container == self.last_container
-        self._init_state()      # reset the state for the next rendering loop
-        return False
