@@ -326,6 +326,19 @@ class FootnoteContainer(UpExpandingContainer):
         return self._footnote_number
 
 
+class ChainState(object):
+    def __init__(self, flowable_index=0, flowable_state=None):
+        self.flowable_index = flowable_index
+        self.flowable_state = flowable_state
+
+    def __copy__(self):
+        return self.__class__(self.flowable_index, copy(self.flowable_state))
+
+    def next_flowable(self):
+        self.flowable_index += 1
+        self.flowable_state = None
+
+
 class Chain(FlowableTarget):
     """A :class:`FlowableTarget` that renders its flowables to a series of
     containers. Once a container is filled, the chain starts flowing flowables
@@ -342,8 +355,9 @@ class Chain(FlowableTarget):
         """Reset the state of this chain: empty the list of containers, and zero
         the counter keeping track of which flowable needs to be rendered next.
         """
-        self._saved_index = self._flowable_index = 0
-        self._saved_state = self._flowable_state = None
+        self._state = ChainState()
+        self._fresh_page_state = copy(self._state)
+        self._rerendering = False
 
     def render(self, container, rerender=False):
         """Flow the flowables into the containers that have been added to this
@@ -355,39 +369,30 @@ class Chain(FlowableTarget):
         rendered, this method returns an iterator yielding itself. This signals
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
-        if rerender and self._saved_index and self._saved_state:
-            # reset saved index/state on the first container of this page
-            # TODO: find proper way of detecting the first container
-            self._flowable_index = self._saved_index
-            self._flowable_state = self._saved_state
-            self._saved_index = 0
-            self._saved_state = None
         if rerender:
             container.empty_canvas()
+            if not self._rerendering:
+                # restore saved state on this chain's 1st container on this page
+                self._state = copy(self._fresh_page_state)
+                self._rerendering = True
         last_descender = None
         try:
-            while self._flowable_index < len(self.flowables):
-                flowable = self.flowables[self._flowable_index]
-                height, last_descender = flowable.flow(container,
-                                                       last_descender,
-                                                       self._flowable_state)
-                self._flowable_state = None
-                self._flowable_index += 1
+            while self._state.flowable_index < len(self.flowables):
+                flowable = self.flowables[self._state.flowable_index]
+                height, last_descender \
+                    = flowable.flow(container, last_descender,
+                                    self._state.flowable_state)
+                self._state.next_flowable()
+            # all flowables have been rendered
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             return False
         except EndOfContainer as e:
-            self._flowable_state = e.flowable_state
+            self._state.flowable_state = e.flowable_state
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
-                self._saved_state = copy(self._flowable_state)
-                self._saved_index = self._flowable_index
-                # take another copy of state for when ReflowRequired occurs
-                # in another Container (on the same page) during rerendering
-                self._saved_state2 = copy(self._flowable_state)
-                self._saved_index2 = self._flowable_index
+                self._fresh_page_state = copy(self._state)
             return container == self.last_container
         except ReflowRequired:
-            self._saved_state = copy(self._saved_state2)
-            self._saved_index = self._saved_index2
+            self._rerendering = False
             raise
