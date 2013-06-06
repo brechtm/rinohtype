@@ -38,11 +38,11 @@
 <p>A detailed reference to section <ref id="file_formats"/> "<ref id="file_formats" type="title"/>" on page <ref id="file_formats" type="page"/>. Nested inline styles: <b>bold <em>and emphasized<sc> and small caps</sc></em></b>. This is super<sup>script <b>and bold <sup>with superscript</sup></b></sup> and sub<sub>script <sub> with subscript</sub></sub>. Super<sup>script with <sub>subscript</sub></sup>. A footnote here<footnote>first footnote</footnote> and there<footnote>second footnote</footnote>. Please read through this entire template before you start using it to create your paper! This will save you and the RFIC Committee considerable time, and improve your chances for acceptance. The following information is provided to help you prepare the Initial Submission as well as the Final Paper for submission to RFIC2006. (Many authors submit the same paper for the initial as well as the final submission. This is a common practice. See item #4 below.) A contributor should remember that:</p>
 
 <ol>
-<li>Deadlines are <em>absolute</em>, don't even ask!</li>
-<li>Summaries may not exceed <b>four</b> pages, including all figures, tables, references, etc. Additionally, there is a size limit on the electronic version of all Summaries. In Adobe Portable Document Format (PDF), submissions may not exceed 1 Megabyte.</li>
-<li>Acceptance rates have historically run at approximately 50%. There is not sufficient room within the Technical Program to accept all submissions.</li>
-<li>Many submitters with previous experience realize that, if their submission is accepted, they will be required to submit a version of their Final Paper to be published in the Symposium Digest. As the Digest paper will be similar in length to the Summary, many contributors opt to prepare their Summary in the format required for the Digest. This template contains the instructions for the proper preparation of such a document.</li>
-<li>Although not required, you are encouraged to employ this format. This document is being made available as a template for your convenience. If you elect not to use this template, please remember that you must still adhere to the general guidelines embodied in this document concerning, but not limited to, font size, margin size, page limits, file size, etc. (Note: Starting in 2004, Index Terms are required.)</li>
+<li><p>Deadlines are <em>absolute</em>, don't even ask!</p></li>
+<li><p>Summaries may not exceed <b>four</b> pages, including all figures, tables, references, etc. Additionally, there is a size limit on the electronic version of all Summaries. In Adobe Portable Document Format (PDF), submissions may not exceed 1 Megabyte.</p></li>
+<li><p>Acceptance rates have historically run at approximately 50%. There is not sufficient room within the Technical Program to accept all submissions.</p></li>
+<li><p>Many submitters with previous experience realize that, if their submission is accepted, they will be required to submit a version of their Final Paper to be published in the Symposium Digest. As the Digest paper will be similar in length to the Summary, many contributors opt to prepare their Summary in the format required for the Digest. This template contains the instructions for the proper preparation of such a document.</p></li>
+<li><p>Although not required, you are encouraged to employ this format. This document is being made available as a template for your convenience. If you elect not to use this template, please remember that you must still adhere to the general guidelines embodied in this document concerning, but not limited to, font size, margin size, page limits, file size, etc. (Note: Starting in 2004, Index Terms are required.)</p></li>
 </ol>
 
 <tabular>
@@ -177,11 +177,11 @@ or
 <p>Therefore for RFIC2009, we ask all authors to convert their Word documents to Portable Document Format (PDF), prior to submission for verification purposes. A simple and specific guideline is posted on the submission site. This will also avoid some of the pitfalls associated with having the author submit a paper using Word, and then having an automated system convert it to PDF without a through check. As always, with a conversion to PDF, authors should very carefully check a printed copy. Some conversion problems that have been known to occur are:</p>
 
 <ol>
-<li>A full 4-page Word document may “spill over” onto a fifth page, upon being converted.</li>
-<li>A text box that overlays a graph in Word might disappear when converted to PDF. This depends on how the graph was pasted into the Word document (the text box may become covered by the graphic in the PDF).</li>
-<li>Arrows in a drawing may become slightly discon- nected from their stems, and/or shifted in position.</li>
-<li>Check all special symbols and equations, especially right-hand brackets.</li>
-<li>Don’t expect the two bottom lines of a double column to line-up exactly with each other.</li>
+<li><p>A full 4-page Word document may “spill over” onto a fifth page, upon being converted.</p></li>
+<li><p>A text box that overlays a graph in Word might disappear when converted to PDF. This depends on how the graph was pasted into the Word document (the text box may become covered by the graphic in the PDF).</p></li>
+<li><p>Arrows in a drawing may become slightly discon- nected from their stems, and/or shifted in position.</p></li>
+<li><p>Check all special symbols and equations, especially right-hand brackets.</p></li>
+<li><p>Don’t expect the two bottom lines of a double column to line-up exactly with each other.</p></li>
 </ol>
 
 <p>Authors should perform a careful check to catch minor nuisances and resolve any problems encountered. To ensure compatibility with the new search requirements for the IEEE Xplore database and maintain the quality of the published work, we require you to submit your final manuscript electronically in two formats: 1) pdf file, and 2) the source file. The accepted source file formats are: MS Word, TeX DVI format, Adobe Framemaker interchange format or RTF format, and (La)TEX. All source files must be contained in a single file such as a single MS Word (.doc), rich text (.rtf) or Framemaker (.fm) file. For (La)TeX source files, create a single ZIP- file which contains the DVI-file and the corresponding EPS-files for the graphics. Name the ZIP-file "xxxx_dvi.zip", where the "xxxx" part of the name is whatever you wish.</p>

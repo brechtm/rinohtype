@@ -18,6 +18,8 @@ grammar {
   bodyContent =
     Section+,
     Acknowledgement?
+  Paragraph =
+    element p { inline }
   inline =
     (text
      | element b { inline }
@@ -50,7 +52,7 @@ grammar {
     element acknowledgement { sectionContent }
   sectionContent =
     (Section
-     | element p { inline }
+     | Paragraph
      | element ol { listContent }
      | element ul { listContent }
      | element figure {figureContent}
@@ -58,7 +60,7 @@ grammar {
      | element csvtabular {csvTabularContent}
      )*
   listContent =
-    element li { inline }+
+    element li { Paragraph }+
   figureContent =
     attribute id { text },
     attribute path { text },
