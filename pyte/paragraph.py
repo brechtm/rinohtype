@@ -269,7 +269,6 @@ class Paragraph(MixedStyledText, Flowable):
                                                   state.nested_flowable_state)
                 state.nested_flowable_state = None
                 container.advance(height)
-                line = Line(tab_stops, line_width, indent_left, container)
             except EndOfContainer as e:
                 state.prepend(flowable)
                 state.nested_flowable_state = e.flowable_state
@@ -293,6 +292,7 @@ class Paragraph(MixedStyledText, Flowable):
             except FlowableException:
                 typeset_line(line, last_line=True)
                 render_nested_flowable(word)
+                line = Line(tab_stops, line_width, indent_left, container)
             except StopIteration:
                 if line:
                     typeset_line(line, last_line=True)
