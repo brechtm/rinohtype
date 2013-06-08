@@ -1,5 +1,5 @@
 
-from .flowable import Flowable
+from .flowable import Flowable, GroupedFlowables
 from .number import format_number, NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
@@ -51,25 +51,18 @@ class Caption(Paragraph):
         self.append(caption_text)
 
 
-class Figure(Flowable, Referenceable):
+class Figure(GroupedFlowables, Referenceable):
     def __init__(self, document, filename, caption, scale=1.0, style=None,
                  caption_style=None, id=None):
-        self.number = document.counters.setdefault(self.__class__, 1)
+        number = document.counters.setdefault(self.__class__, 1)
         document.counters[self.__class__] += 1
-        Flowable.__init__(self, style)
+        image = Image(filename, scale=scale)
+        caption = Caption('Figure', number, caption, style=caption_style)
+        GroupedFlowables.__init__(self, [image, caption], style)
         Referenceable.__init__(self, document, id)
-        self.filename = filename
-        self.scale = scale
-        self.caption = Caption('Figure', self.number, caption,
-                               style=caption_style)
 
     def reference(self):
         return str(self.number)
 
     def title(self):
         return self.caption.text
-
-    def render(self, container, last_descender, state=None):
-        image = Image(self.filename, scale=self.scale)
-        image_height = image.flow(container, None)
-        caption_height = self.caption.flow(container, None)

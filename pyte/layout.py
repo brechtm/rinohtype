@@ -279,6 +279,14 @@ class UpExpandingContainer(ExpandingContainer):
                          max_height)
 
 
+class MaybeContainer(DownExpandingContainer):
+    do_place = False
+
+    def place(self):
+        if self.do_place:
+            super().place()
+
+
 class VirtualContainer(DownExpandingContainer):
     """A down-expanding container who's contents are rendered, but not placed on
     the parent container's canvas afterwards. It can later be placed manually by

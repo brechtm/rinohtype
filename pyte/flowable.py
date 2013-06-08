@@ -10,7 +10,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
-from .layout import EndOfContainer
+from .layout import EndOfContainer, MaybeContainer
 from .style import Style, Styled
 from .util import Decorator
 
@@ -92,6 +92,27 @@ class FlowableState(object):
 
     def __copy__(self):
         raise NotImplementedError
+
+
+class GroupedFlowables(Flowable):
+    def __init__(self, flowables, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.flowables = flowables
+
+    def render(self, container, last_descender, state=None):
+        max_height = float(container.remaining_height)
+        maybe_container = MaybeContainer('grouped', container,
+                                         top=container.cursor,
+                                         max_height=max_height)
+        for flowable in self.flowables:
+            height, last_descender = flowable.flow(maybe_container,
+                                                   last_descender)
+        maybe_container.do_place = True
+        container.advance(float(maybe_container.height))
+        return last_descender
+
+
+
 
 
 class Floating(Decorator):
