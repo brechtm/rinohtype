@@ -117,16 +117,15 @@ class ListItem(Flowable):
     def __init__(self, number, separator, flowables, style=None):
         super().__init__(style=style)
         tab_stop = TabStop(self.get_style('item_indent'), align=RIGHT)
-        number_style = ParagraphStyle(base=style, tab_stops=[tab_stop])
-        self.number_and_separator = ListItemNumber([Tab() + number + separator],
-                                                   style=number_style)
+        marker_style = ParagraphStyle(base=style, tab_stops=[tab_stop])
+        self.marker = ListItemNumber([Tab() + number + separator],
+                                     style=marker_style)
         self.flowables = flowables
 
     def render(self, container, last_descender, state=None):
         if not state:
             maybe_container = MaybeContainer(container)
-            height, last_descender = \
-                self.number_and_separator.flow(maybe_container, last_descender)
+            height, _ = self.marker.flow(maybe_container, last_descender)
             try:
                 flowables_iterator = iter(self.flowables)
                 first_flowable = next(flowables_iterator)
