@@ -330,7 +330,8 @@ class OL(CustomElement):
 
 
 class LI(NestedElement):
-    pass
+    def parse(self, document):
+        return [item.process(document) for item in self.getchildren()]
 
 
 class Math(CustomElement):

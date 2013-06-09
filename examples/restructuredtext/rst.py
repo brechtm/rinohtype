@@ -199,7 +199,8 @@ class Bullet_List(CustomElement):
 
 
 class List_Item(NestedElement):
-    pass
+    def parse(self, document):
+        return [item.process(document) for item in self.getchildren()]
 
 
 class Definition_List(CustomElement):

@@ -242,7 +242,7 @@ class Paragraph(MixedStyledText, Flowable):
         # `saved_state` is updated after successfully rendering each line, so that
         # when `container` overflows on rendering a line, the words in that line
         # are yielded again on the next typeset() call.
-        saved_state = copy(state)
+        saved_state = None
 
         def typeset_line(line, last_line=False):
             """Typeset `line` and, if no exception is raised, update the

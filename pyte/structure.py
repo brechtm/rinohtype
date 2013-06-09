@@ -1,7 +1,11 @@
 
 import unicodedata
 
-from .layout import EndOfContainer
+from copy import copy
+from itertools import chain, tee
+
+from .layout import EndOfContainer, MaybeContainer
+from .flowable import Flowable, FlowableState
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
@@ -77,6 +81,7 @@ class List(Paragraph):
 
     def __init__(self, items, style=None):
         super().__init__([], style)
+        # TODO: replace item styles with custom render method
         item_style = ParagraphStyle(space_above=0*PT,
                                     space_below=self.style.item_spacing,
                                     base=style)
@@ -91,29 +96,80 @@ class List(Paragraph):
             separator = ''
             numbers = [style.bullet] * len(items)
         for i, item in enumerate(items[:-1]):
-            item = Paragraph(numbers[i] + separator + FixedWidthSpace() + item,
-                             style=item_style)
+            item = ListItem(numbers[i], separator, item, style=item_style)
             item.parent = self
             self.append(item)
-        last = Paragraph(numbers[-1] + separator + FixedWidthSpace() + items[-1],
-                         style=last_item_style)
+        last = ListItem(numbers[-1], separator, items[-1], style=last_item_style)
         last.parent = self
         self.append(last)
         self.item_pointer = 0
 
-##    def append(self, listItem):
-####        assert isinstance(listItem, ListItem)
-##        item_par = Paragraph("{}.&nbsp;".format(self.currentNumber) + listItem,
-##                             self.itemStyle)
-##        list.append(self, item_par)
-####        listItem.number = self.currentNumber
-##        self.currentNumber += 1
+
+class ListItemNumber(Paragraph):
+    def render(self, container, descender, state=None):
+        before = container.cursor
+        result = super().render(container, descender, state=state)
+        container.advance(before - container.cursor)
+        return result
 
 
-### TODO: create common superclass for Heading and ListItem
-##class ListItem(Paragraph):
-##    def __init__(self, text):
-##        Paragraph.__init__(self, text)
+class ListItem(Flowable):
+    def __init__(self, number, separator, flowables, style=PARENT_STYLE,
+                 parent=None):
+        number_style = ParagraphStyle(indent_left=-10*PT, base=style)
+        self.number_and_separator = ListItemNumber([number + separator], style=number_style)
+        super().__init__(style=style, parent=parent)
+        self.flowables = flowables
+
+    def render(self, container, last_descender, state=None):
+        if not state:
+            max_height = float(container.remaining_height)
+            maybe_container = MaybeContainer('grouped', container,
+                                             top=container.cursor,
+                                             max_height=max_height)
+            height, last_descender = \
+                self.number_and_separator.flow(maybe_container,
+                                               last_descender)
+            try:
+                flowables_iterator = iter(self.flowables)
+                first_flowable = next(flowables_iterator)
+                height, last_descender = first_flowable.flow(maybe_container,
+                                                             last_descender)
+                state = ListItemState(flowables_iterator)
+                maybe_container.do_place = True
+                container.advance(float(maybe_container.height))
+            except EndOfContainer as e:
+                if e.flowable_state:
+                    maybe_container.do_place = True
+                    container.advance(float(maybe_container.height))
+                    state = ListItemState(flowables_iterator, e.flowable_state)
+                    state.prepend(first_flowable)
+                raise EndOfContainer(state)
+        for flowable in state.flowable_iterator:
+            try:
+                height, last_descender = flowable.flow(container,
+                                                       last_descender,
+                                                       state.flowable_state)
+                state.flowable_state = None
+            except EndOfContainer as e:
+                state.prepend(flowable)
+                state.flowable_state = e.flowable_state
+                raise EndOfContainer(state)
+        return last_descender
+
+
+class ListItemState(FlowableState):
+    def __init__(self, flowable_iterator, flowable_state=None):
+        self.flowable_iterator = flowable_iterator
+        self.flowable_state = flowable_state
+
+    def __copy__(self):
+        self.flowable_iterator, copy_iterator = tee(self.flowable_iterator)
+        return self.__class__(copy_iterator, copy(self.flowable_state))
+
+    def prepend(self, flowable):
+        self.flowable_iterator = chain((flowable, ), self.flowable_iterator)
+
 
 
 class DefinitionListStyle(ParagraphStyle):
