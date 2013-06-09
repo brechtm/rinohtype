@@ -100,19 +100,12 @@ class GroupedFlowables(Flowable):
         self.flowables = flowables
 
     def render(self, container, last_descender, state=None):
-        max_height = float(container.remaining_height)
-        maybe_container = MaybeContainer('grouped', container,
-                                         top=container.cursor,
-                                         max_height=max_height)
+        maybe_container = MaybeContainer(container)
         for flowable in self.flowables:
             height, last_descender = flowable.flow(maybe_container,
                                                    last_descender)
-        maybe_container.do_place = True
-        container.advance(float(maybe_container.height))
+        maybe_container.do_place()
         return last_descender
-
-
-
 
 
 class Floating(Decorator):

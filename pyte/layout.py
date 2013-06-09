@@ -280,10 +280,18 @@ class UpExpandingContainer(ExpandingContainer):
 
 
 class MaybeContainer(DownExpandingContainer):
-    do_place = False
+    def __init__(self, parent, left=None, width=None, right=None):
+        max_height = parent.remaining_height
+        super().__init__('MAYBE', parent, left=left, top=parent.cursor,
+                         width=width, right=right, max_height=max_height)
+        self._do_place = False
+
+    def do_place(self):
+        self.parent.advance(self.cursor)
+        self._do_place = True
 
     def place(self):
-        if self.do_place:
+        if self._do_place:
             super().place()
 
 

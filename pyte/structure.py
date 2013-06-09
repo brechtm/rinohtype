@@ -124,10 +124,7 @@ class ListItem(Flowable):
 
     def render(self, container, last_descender, state=None):
         if not state:
-            max_height = float(container.remaining_height)
-            maybe_container = MaybeContainer('grouped', container,
-                                             top=container.cursor,
-                                             max_height=max_height)
+            maybe_container = MaybeContainer(container)
             height, last_descender = \
                 self.number_and_separator.flow(maybe_container, last_descender)
             try:
@@ -136,12 +133,10 @@ class ListItem(Flowable):
                 height, last_descender = first_flowable.flow(maybe_container,
                                                              last_descender)
                 state = ListItemState(flowables_iterator)
-                maybe_container.do_place = True
-                container.advance(float(maybe_container.height))
+                maybe_container.do_place()
             except EndOfContainer as e:
                 if e.flowable_state:
-                    maybe_container.do_place = True
-                    container.advance(float(maybe_container.height))
+                    maybe_container.do_place()
                     state = ListItemState(flowables_iterator, e.flowable_state)
                     state.prepend(first_flowable)
                 raise EndOfContainer(state)
