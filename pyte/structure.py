@@ -7,7 +7,7 @@ from itertools import chain, tee
 from .layout import EndOfContainer, MaybeContainer
 from .flowable import Flowable, FlowableState
 from .number import format_number, NUMBER
-from .paragraph import ParagraphStyle, Paragraph
+from .paragraph import ParagraphStyle, Paragraph, Tab, TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
@@ -68,6 +68,7 @@ class Heading(Paragraph, Referenceable):
 class ListStyle(ParagraphStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
+                  'item_indent': 12*PT,
                   'item_spacing': 0*PT,
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
@@ -82,12 +83,11 @@ class List(Paragraph):
     def __init__(self, items, style=None):
         super().__init__([], style)
         # TODO: replace item styles with custom render method
-        item_style = ParagraphStyle(space_above=0*PT,
-                                    space_below=self.style.item_spacing,
+        item_style = ListStyle(space_above=0*PT,
+                               space_below=self.style.item_spacing,
+                               base=style)
+        last_item_style = ListStyle(space_above=0*PT, space_below=0*PT,
                                     base=style)
-        last_item_style = ParagraphStyle(space_above=0*PT,
-                                         space_below=0*PT,
-                                         base=style)
         if style.ordered:
             separator = style.numbering_separator
             numbers = [format_number(i + 1, self.get_style('numbering_style'))
@@ -114,11 +114,12 @@ class ListItemNumber(Paragraph):
 
 
 class ListItem(Flowable):
-    def __init__(self, number, separator, flowables, style=PARENT_STYLE,
-                 parent=None):
-        number_style = ParagraphStyle(indent_left=-10*PT, base=style)
-        self.number_and_separator = ListItemNumber([number + separator], style=number_style)
-        super().__init__(style=style, parent=parent)
+    def __init__(self, number, separator, flowables, style=None):
+        super().__init__(style=style)
+        tab_stop = TabStop(self.get_style('item_indent'), align=RIGHT)
+        number_style = ParagraphStyle(base=style, tab_stops=[tab_stop])
+        self.number_and_separator = ListItemNumber([Tab() + number + separator],
+                                                   style=number_style)
         self.flowables = flowables
 
     def render(self, container, last_descender, state=None):
@@ -128,8 +129,7 @@ class ListItem(Flowable):
                                              top=container.cursor,
                                              max_height=max_height)
             height, last_descender = \
-                self.number_and_separator.flow(maybe_container,
-                                               last_descender)
+                self.number_and_separator.flow(maybe_container, last_descender)
             try:
                 flowables_iterator = iter(self.flowables)
                 first_flowable = next(flowables_iterator)
