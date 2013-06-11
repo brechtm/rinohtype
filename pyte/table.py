@@ -161,7 +161,7 @@ class Tabular(Flowable):
                 else:
                     vertical_offset = 0
                 y_offset = float(y_cursor + vertical_offset)
-                rendered_cell.container.canvas.append(x_cursor, y_offset)
+                rendered_cell.container.place_at(x_cursor, y_offset)
             y_cursor += row_height
 
     def render_cell(self, cell, container, style):

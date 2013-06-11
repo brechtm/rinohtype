@@ -10,7 +10,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
-from .layout import EndOfContainer, MaybeContainer
+from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
 from .util import Decorator
 
@@ -28,10 +28,14 @@ class FlowableStyle(Style):
 
     * `space_above`: Vertical space preceding the flowable (:class:`Dimension`)
     * `space_below`: Vertical space following the flowable (:class:`Dimension`)
+    * `indent_left`: Left indentation of text (class:`Dimension`).
+    * `indent_right`: Right indentation of text (class:`Dimension`).
     """
 
     attributes = {'space_above': 0,
-                  'space_below': 0}
+                  'space_below': 0,
+                  'indent_left': 0,
+                  'indent_right': 0}
 
 
 class Flowable(Styled):
@@ -59,7 +63,16 @@ class Flowable(Styled):
         if not self.resume:
             self.resume = True
             container.advance(float(self.get_style('space_above')))
-        last_descender = self.render(container, last_descender, state=state)
+        left = self.get_style('indent_left')
+        right = container.width - self.get_style('indent_right')
+        max_height = float(container.remaining_height)
+        pad_container = DownExpandingContainer('PADDED',
+                                               container,
+                                               top=container.cursor,
+                                               left=left, right=right,
+                                               max_height=max_height)
+        last_descender = self.render(pad_container, last_descender, state=state)
+        container.advance(pad_container.cursor)
         self.resume = False
         try:
             container.advance(float(self.get_style('space_below')))

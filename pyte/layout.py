@@ -312,6 +312,12 @@ class VirtualContainer(DownExpandingContainer):
         """This method has no effect."""
         pass
 
+    def place_at(self, left, top):
+        for child in self.children:
+            child.place()
+        self.canvas.append(float(left), float(top))
+
+
 
 class FloatContainer(ExpandingContainer):
     def __init__(self, *args, **kwargs):

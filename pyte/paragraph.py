@@ -161,8 +161,6 @@ class ParagraphStyle(TextStyle, FlowableStyle):
     """The :class:`Style` for :class:`Paragraph` objects. It has the following
     attributes:
 
-    * `indent_left`: Left indentation of text (class:`Dimension`).
-    * `indent_right`: Right indentation of text (class:`Dimension`).
     * `indent_first`: Indentation of the first line of text (class:`Dimension`).
     * `line_spacing`: Spacing between the baselines of two successive lines of
                       text (:class:`LineSpacing`).
@@ -171,9 +169,7 @@ class ParagraphStyle(TextStyle, FlowableStyle):
     * `tab_stops`: The tab stops for this paragraph (list of :class:`TabStop`).
     """
 
-    attributes = {'indent_left': 0*PT,
-                  'indent_right': 0*PT,
-                  'indent_first': 0*PT,
+    attributes = {'indent_first': 0*PT,
                   'line_spacing': DEFAULT,
                   'justify': BOTH,
                   'tab_stops': []}
@@ -225,23 +221,16 @@ class Paragraph(MixedStyledText, Flowable):
         When the end of the container is reached, the rendering state is
         preserved to continue setting the rest of the paragraph when this method
         is called with a new container."""
-        state = state or self.initial_state()
-        indent_left = float(self.get_style('indent_left'))
-        indent_right = float(self.get_style('indent_right'))
-        indent_first = float(self.get_style('indent_first'))
+        indent_first = 0 if state else float(self.get_style('indent_first'))
+        line_width = float(container.width)
         line_spacing = self.get_style('line_spacing')
         justification = self.get_style('justify')
         tab_stops = self.get_style('tab_stops')
 
-        line_width = float(container.width - indent_right)
-        first_line_indent = indent_left
-        if state.first_line:
-            first_line_indent += indent_first
-            state.first_line = False
-
         # `saved_state` is updated after successfully rendering each line, so that
         # when `container` overflows on rendering a line, the words in that line
         # are yielded again on the next typeset() call.
+        state = state or self.initial_state()
         saved_state = None
 
         def typeset_line(line, last_line=False):
@@ -257,24 +246,16 @@ class Paragraph(MixedStyledText, Flowable):
 
         def render_nested_flowable(flowable):
             nonlocal state, descender
-            max_height = float(container.remaining_height)
-            # FIXME: trouble if `container` is an ExpandingContainer
-            nested_container = DownExpandingContainer('nested_flowable',
-                                                      container,
-                                                      left=indent_left,
-                                                      top=container.cursor,
-                                                      max_height=max_height)
             try:
-                height, descender = flowable.flow(nested_container, descender,
+                height, descender = flowable.flow(container, descender,
                                                   state.nested_flowable_state)
                 state.nested_flowable_state = None
-                container.advance(height)
             except EndOfContainer as e:
                 state.prepend(flowable)
                 state.nested_flowable_state = e.flowable_state
                 raise EndOfContainer(state)
 
-        line = Line(tab_stops, line_width, first_line_indent, container)
+        line = Line(tab_stops, line_width, container, indent_first)
         while True:
             try:
                 word = state.next_item()        # throws StopIteration
@@ -282,17 +263,17 @@ class Paragraph(MixedStyledText, Flowable):
                 if spillover:
                     state.prepend(spillover)
                     typeset_line(line)
-                    line = Line(tab_stops, line_width, indent_left, container)
+                    line = Line(tab_stops, line_width, container)
             except NewlineException:
                 typeset_line(line, last_line=True)
-                line = Line(tab_stops, line_width, indent_left, container)
+                line = Line(tab_stops, line_width, container)
             except FieldException:
                 field_words = split_into_words(word.field_spans(container))
                 state.items = chain(field_words, state.items)
             except FlowableException:
                 typeset_line(line, last_line=True)
                 render_nested_flowable(word)
-                line = Line(tab_stops, line_width, indent_left, container)
+                line = Line(tab_stops, line_width, container)
             except StopIteration:
                 if line:
                     typeset_line(line, last_line=True)
@@ -305,7 +286,7 @@ class Line(list):
     """Helper class for building and typesetting a single line of text within
     a :class:`Paragraph`."""
 
-    def __init__(self, tab_stops, width, indent, container):
+    def __init__(self, tab_stops, width, container, indent=0):
         """`tab_stops` is a list of tab stops, as given in the paragraph style.
         `width` is the available line width.
         `indent` specifies the left indent width.
