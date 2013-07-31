@@ -78,11 +78,15 @@ styles['heading2'] = rt.HeadingStyle(base='heading1',
 styles['monospaced'] = rt.TextStyle(typeface=fontFamily.mono)
 
 styles['enumerated list'] = rt.ListStyle(base='body',
-                                         indent_left=5*PT,
                                          ordered=True,
+                                         indent_left=5*PT,
+                                         item_indent=12*PT,
                                          item_spacing=0*PT,
                                          numbering_style=rt.NUMBER,
                                          numbering_separator='.')
+
+styles['list item'] = rt.ParagraphStyle(base='body',
+                                        indent_first=17*PT)
 
 styles['bullet list'] = rt.ListStyle(base='body',
                                      indent_left=5*PT,
@@ -122,8 +126,12 @@ class Section(CustomElement):
 
 class Paragraph(NestedElement):
     def parse(self, document):
+        if isinstance(self._parent, List_Item):
+            style = 'list item'
+        else:
+            style = 'body'
         return rt.Paragraph(super().process_content(document),
-                            style=self.style('body'))
+                            style=self.style(style))
 
 
 class Title(CustomElement):

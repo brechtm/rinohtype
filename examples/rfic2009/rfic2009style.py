@@ -169,6 +169,9 @@ styles['list'] = ListStyle(base='body',
                            numbering_style=NUMBER,
                            numbering_separator=')')
 
+styles['list item'] = ParagraphStyle(base='body',
+                                     indent_first=14*PT)
+
 styles['heading1'] = HeadingStyle(typeface=ieeeFamily.serif,
                                   font_weight=REGULAR,
                                   font_size=10*PT,
@@ -290,7 +293,11 @@ class Title(NestedElement):
 
 class P(NestedElement):
     def parse(self, document):
-        return Paragraph(self.process_content(document), style=self.style('body'))
+        if isinstance(self._parent, LI):
+            style = 'list item'
+        else:
+            style = 'body'
+        return Paragraph(self.process_content(document), style=self.style(style))
 
 
 class B(NestedElement):
@@ -329,7 +336,7 @@ class OL(CustomElement):
                     style=self.style('list'))
 
 
-class LI(NestedElement):
+class LI(CustomElement):
     def parse(self, document):
         return [item.process(document) for item in self.getchildren()]
 
