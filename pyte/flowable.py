@@ -65,7 +65,7 @@ class Flowable(Styled):
             container.advance(float(self.get_style('space_above')))
         left = self.get_style('indent_left')
         right = container.width - self.get_style('indent_right')
-        max_height = float(container.remaining_height)
+        max_height = container.remaining_height
         pad_container = DownExpandingContainer('PADDED',
                                                container,
                                                top=container.cursor,
