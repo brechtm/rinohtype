@@ -31,7 +31,7 @@ class Parser(ElementTree.XMLParser):
         self.element_class = element_class
         if schema:
             warn('The ElementTree based XML parser does not support '
-                 'validation. Please install lxml in order to enable '
+                 'validation. Please use the lxml frontend if you require '
                  'validation.')
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
@@ -101,8 +101,7 @@ class ObjectifiedElement(ElementTree.Element):
     """Simulation of lxml's ObjectifiedElement for xml.etree"""
     def __getattr__(self, name):
         # the following depends on ElementPath internals, but should be fine
-        result = ElementPath.find(self.getchildren(),
-                                  self._namespace + name)
+        result = ElementPath.find(self.getchildren(), self._namespace + name)
         if result is None:
             raise AttributeError('No such element: {}'.format(name))
         return result
