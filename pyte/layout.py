@@ -137,6 +137,11 @@ class ContainerBase(FlowableTarget):
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
 
+    def __getattr__(self, name):
+        if name == '_footnote_space':
+            return getattr(self.parent, name)
+        raise AttributeError
+
     @property
     def page(self):
         """The :class:`Page` this container is located on."""
