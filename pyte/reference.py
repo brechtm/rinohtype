@@ -1,4 +1,5 @@
 
+from copy import copy
 from warnings import warn
 
 from .text import SingleStyledText, TextStyle, Superscript
@@ -126,16 +127,14 @@ class Footnote(Field):
         super().__init__()
         self.note = note
 
-    def set_number(self, number):
-        self.number = number
-        nr = Superscript(str(number) + '  ')
-        nr.parent = self.note
-        self.note.insert(0, nr)
-
     def field_spans(self, container):
-        self.set_number(container._footnote_space.next_number)
-        self.note.document = self.document
-        self.note.flow(container._footnote_space, None)
-        field_text = Superscript(str(self.number))
+        number = container._footnote_space.next_number
+        note = copy(self.note)
+        nr = Superscript(str(number) + '  ')
+        nr.parent = note
+        note.insert(0, nr)
+        note.document = self.document
+        note.flow(container._footnote_space, None)
+        field_text = Superscript(str(number))
         field_text.parent = self.parent
         return field_text.spans()
