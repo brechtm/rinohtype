@@ -64,9 +64,10 @@ class Page(Container):
             try:
                 for chain in super().render(rerender=index > 0):
                     yield chain
-                return
+                break
             except ReflowRequired:
-                print('Overflow on page {}, reflowing...'.format(self.number))
+                print('Overflow on page {}, reflowing ({})...'
+                      .format(self.number, index + 1))
 
 
 class Document(object):

@@ -192,10 +192,9 @@ class ContainerBase(FlowableTarget):
         for child in self.children:
             for chain in child.render(rerender):
                 yield chain
-        if not rerender:
-            last_descender = None
-            for flowable in self.flowables:
-                height, last_descender = flowable.flow(self, last_descender)
+        last_descender = None
+        for flowable in self.flowables:
+            height, last_descender = flowable.flow(self, last_descender)
         if self.chain:
             self.cursor = 0
             if self.chain.render(self, rerender=rerender):
