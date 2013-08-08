@@ -49,7 +49,6 @@ class Flowable(Styled):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
         super().__init__(style=style, parent=parent)
-        self.resume = False
 
     def flow(self, container, last_descender, state=None):
         """Flow this flowable into `container` and return the vertical space
@@ -60,8 +59,7 @@ class Flowable(Styled):
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
         start_offset = container.cursor
-        if not self.resume:
-            self.resume = True
+        if not state:
             container.advance(float(self.get_style('space_above')))
         left = self.get_style('indent_left')
         right = container.width - self.get_style('indent_right')
@@ -73,7 +71,6 @@ class Flowable(Styled):
                                                max_height=max_height)
         last_descender = self.render(pad_container, last_descender, state=state)
         container.advance(pad_container.cursor)
-        self.resume = False
         try:
             container.advance(float(self.get_style('space_below')))
         except EndOfContainer:
