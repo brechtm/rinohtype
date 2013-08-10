@@ -506,9 +506,11 @@ class RFIC2009Paper(Document):
     namespace = 'http://www.mos6581.org/ns/rficpaper'
 
     def __init__(self, filename, bibliography_source):
+        super().__init__(backend=pdf)
         parser = xml_frontend.Parser(CustomElement, self.namespace,
                                      schema=self.rngschema)
-        super().__init__(parser, filename, backend=pdf)
+        xml_tree = parser.parse(filename)
+        self.root = xml_tree.getroot()
         bibliography_style = CitationStylesStyle('ieee.csl')
         self.bibliography = CitationStylesBibliography(bibliography_style,
                                                        bibliography_source,

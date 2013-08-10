@@ -77,17 +77,11 @@ class Document(object):
 
     _cache_extension = '.ptc'
 
-    def __init__(self, parser, filename, backend=pdf,
-                 title=None, author=None, keywords=None):
-        """Initialize the document, reading the file with `filename` as input,
-        using `parser` to parse it.
-
-        `backend` specifies the backend to use for rendering the document.
+    def __init__(self, backend=pdf, title=None, author=None, keywords=None):
+        """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
         backend."""
-        self.tree = parser.parse(filename)
-        self.root = self.tree.getroot()
         self.backend = backend
         self.backend_document = self.backend.Document(self, title)
 
