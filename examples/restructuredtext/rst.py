@@ -1,6 +1,7 @@
 
 from io import BytesIO
 
+from docutils import nodes
 from docutils.core import publish_doctree, publish_from_doctree
 
 import pyte as rt
@@ -12,6 +13,7 @@ from pyte.font.opentype import OpenTypeFont
 from pyte.dimension import PT, CM, INCH
 from pyte.backend import pdf
 from pyte.frontend.xml import element_factory
+from pyte.util import all_subclasses
 
 import pyte.frontend.xml.elementtree as xml_frontend
 
@@ -105,14 +107,100 @@ class Mono(rt.MixedStyledText):
 # input parsing
 # ----------------------------------------------------------------------------
 
-CustomElement, NestedElement = element_factory(xml_frontend, styles)
+
+def element_factory(styles_store):
+    class CustomElement(object):
+        styles = styles_store
+
+        def __init__(self, doctree_node):
+            self.node = doctree_node
+
+        def __getattr__(self, name):
+            for child in self.node.children:
+                if child.tagname == name:
+                    return map(child)
+            raise AttributeError('No such element: {}'.format(name))
+
+        def __iter__(self):
+            try:
+                for child in self.parent.node.children:
+                    if child.tagname == self.node.tagname:
+                        yield map(child)
+            except AttributeError:
+                # this is the root element
+                yield self
+
+        @property
+        def parent(self):
+            if self.node.parent is not None:
+                return map(self.node.parent)
+
+        @property
+        def text(self):
+            return self.node.astext()
+
+        def get(self, key, default=None):
+            return self.node.get(key, default)
+
+        def getchildren(self):
+            return [map(child) for child in self.node.children]
+
+        def style(self, name):
+            return self.styles[name]
+
+        def process(self, document, *args, **kwargs):
+            result = self.parse(document, *args, **kwargs)
+            try:
+                result.source = self
+            except AttributeError:
+                pass
+            return result
+
+        def parse(self, document, *args, **kwargs):
+            raise NotImplementedError('tag: %s' % self.tag)
+
+        @property
+        def location(self):
+            return '{}: <{}> at line {}'.format(self.node.source,
+                                                self.node.tagname,
+                                                self.node.line)
+
+    class NestedElement(CustomElement):
+        def parse(self, document, *args, **kwargs):
+            return self.process_content(document)
+
+        def process_content(self, document):
+            content = ''
+            for child in self.getchildren():
+                content += child.process(document)
+            return content
+
+    return CustomElement, NestedElement
+
+
+CustomElement, NestedElement = element_factory(styles)
+
+
+class Text(CustomElement):
+    def process(self, document, *args, **kwargs):
+        return self.text
+
+
+class Document(CustomElement):
+    pass
+
+
+class System_Message(CustomElement):
+    def process(self, document, *args, **kwargs):
+        return rt.Paragraph(self.text, style=self.style('body'))
+
 
 class Section(CustomElement):
     def parse(self, document, level=1):
         for element in self.getchildren():
             if isinstance(element, Title):
                 elem = element.process(document, level=level,
-                                       id=self.get('id', None))
+                                       id=self.get('ids', None)[0])
             elif type(element) == Section:
                 elem = element.process(document, level=level + 1)
             else:
@@ -126,7 +214,7 @@ class Section(CustomElement):
 
 class Paragraph(NestedElement):
     def parse(self, document):
-        if isinstance(self._parent, List_Item):
+        if isinstance(self.parent, List_Item):
             style = 'list item'
         else:
             style = 'body'
@@ -146,7 +234,7 @@ class Tip(NestedElement):
                             style=self.style('body'))
 
 
-class Emphasis(CustomElement):
+class Emphasis(NestedElement):
     def parse(self, document):
         return rt.Emphasized(self.text)
 
@@ -215,12 +303,11 @@ class Definition_List(CustomElement):
     def parse(self, document):
         return rt.DefinitionList([item.process(document)
                                   for item in self.definition_list_item],
-                                 style=self.style('definition list'))
+                                  style=self.style('definition list'))
 
 class Definition_List_Item(CustomElement):
     def parse(self, document):
-        return (self.term.process(document),
-                self.definition.process(document))
+        return (self.term.process(document), self.definition.process(document))
 
 
 class Term(NestedElement):
@@ -272,15 +359,22 @@ class SimplePage(rt.Page):
 ##        self.footer.append_flowable(footer_text)
 
 
+MAPPING = {cls.__name__.lower(): cls
+           for cls in all_subclasses(CustomElement)}
+MAPPING['Text'] = Text
+
+
+def map(node):
+    return MAPPING[node.__class__.__name__](node)
+
 # main document
 # ----------------------------------------------------------------------------
 class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
+        super().__init__(backend=pdf)
         with open(filename) as file:
-            doctree = publish_doctree(file.read())
-        xml_buffer = BytesIO(publish_from_doctree(doctree, writer_name='xml'))
-        parser = xml_frontend.Parser(CustomElement)
-        super().__init__(parser, xml_buffer, backend=pdf)
+            doctree = publish_doctree(file.read(), source_path=filename)
+        self.root = map(doctree.document)
         self.parse_input()
 
     def parse_input(self):
