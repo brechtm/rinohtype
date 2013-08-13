@@ -10,7 +10,7 @@ from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
 from .style import SMALL_CAPITAL, OLD_STYLE
 from .metrics import FontMetrics, GlyphMetrics
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
-from ..warnings import PyteWarning
+from ..warnings import RinohWarning
 
 
 def string(string):
@@ -122,7 +122,7 @@ class AdobeFontMetrics(FontMetrics):
             # TODO: map to uniXXXX or uXXXX names
             warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
                  'to a PostScript glyph name.'.format(ord(char), char),
-                 PyteWarning)
+                 RinohWarning)
             yield 'question'
 
     def get_glyph(self, char, variant=None):
@@ -132,11 +132,11 @@ class AdobeFontMetrics(FontMetrics):
         if variant:
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
                  'back to the standard glyph.'.format(variant, ord(char), char),
-                 PyteWarning)
+                 RinohWarning)
             return self.get_glyph(char)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
-                 .format(self.name, ord(char), char), PyteWarning)
+                 .format(self.name, ord(char), char), RinohWarning)
             return self._glyphs['question']
 
     def get_ligature(self, glyph, successor_glyph):

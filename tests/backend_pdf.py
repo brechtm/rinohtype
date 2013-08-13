@@ -1,9 +1,9 @@
 
 from io import StringIO, BytesIO
 
-from pyte.backend.pdf.cos import (Document, Boolean, Catalog, String,
+from rinoh.backend.pdf.cos import (Document, Boolean, Catalog, String,
                                   Dictionary, Stream, XObjectForm)
-from pyte.backend.pdf.reader import PDFReader
+from rinoh.backend.pdf.reader import PDFReader
 
 
 

@@ -1,8 +1,8 @@
 
 import time
 
-from pyte.font.opentype import OpenTypeFont
-from pyte.font.style import SMALL_CAPITAL
+from rinoh.font.opentype import OpenTypeFont
+from rinoh.font.style import SMALL_CAPITAL
 
 
 if __name__ == '__main__':

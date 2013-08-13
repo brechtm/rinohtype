@@ -3,9 +3,9 @@
 import unittest
 
 
-from pyte.dimension import PT
-from pyte.paragraph import TabStop, Line, LEFT, RIGHT, CENTER
-from pyte.text import Tab, Spacer
+from rinoh.dimension import PT
+from rinoh.paragraph import TabStop, Line, LEFT, RIGHT, CENTER
+from rinoh.text import Tab, Spacer
 
 
 class StyledTextStub(object):

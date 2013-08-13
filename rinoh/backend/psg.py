@@ -7,8 +7,8 @@ from psg.drawing.box import eps_image, canvas as psg_Canvas
 class Document(object):
     extension = '.ps'
 
-    def __init__(self, pyte_document, title):
-        self.pyte_document = pyte_document
+    def __init__(self, rinoh_document, title):
+        self.rinoh_document = rinoh_document
         self.psg_doc = dsc_document(title)
 
     def write(self, filename):
@@ -18,15 +18,15 @@ class Document(object):
 
 
 class Page(object):
-    def __init__(self, pyte_page, psg_document, width, height):
-        self.pyte_page = pyte_page
+    def __init__(self, rinoh_page, psg_document, width, height):
+        self.rinoh_page = rinoh_page
         self.psg_doc = psg_document
         self.psg_page = psg_document.psg_doc.page((float(width), float(height)))
         self.canvas = PageCanvas(self, self.psg_page.canvas())
 
     @property
     def document(self):
-        return self.pyte_page.document
+        return self.rinoh_page.document
 
 
 class Canvas(object):
@@ -148,4 +148,4 @@ class PageCanvas(Canvas):
 
     @property
     def page(self):
-        return self.parent.pyte_page
+        return self.parent.rinoh_page

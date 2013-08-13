@@ -1,5 +1,5 @@
 ﻿
-from pyte.backend.pdf.reader import PDFReader
+from rinoh.backend.pdf.reader import PDFReader
 
 
 

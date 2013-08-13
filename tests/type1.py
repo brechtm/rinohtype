@@ -1,6 +1,6 @@
 
 
-from pyte.font.type1 import Type1Font
+from rinoh.font.type1 import Type1Font
 
 
 if __name__ == '__main__':

@@ -12,8 +12,8 @@ from ...util import consumer
 class Document(object):
     extension = '.pdf'
 
-    def __init__(self, pyte_document, title):
-        self.pyte_document = pyte_document
+    def __init__(self, rinoh_document, title):
+        self.rinoh_document = rinoh_document
         self.cos_document = cos.Document()
         self.pages = []
         self.fonts = {}
@@ -71,8 +71,8 @@ class Document(object):
 
 
 class Page(object):
-    def __init__(self, pyte_page, document, width, height):
-        self.pyte_page = pyte_page
+    def __init__(self, rinoh_page, document, width, height):
+        self.rinoh_page = rinoh_page
         cos_pages = document.cos_document.catalog['Pages']
         self.cos_page = cos_pages.new_page(float(width), float(height))
         self.width = width
@@ -84,7 +84,7 @@ class Page(object):
 
     @property
     def document(self):
-        return self.pyte_page.document
+        return self.rinoh_page.document
 
     def register_font(self, font):
         try:
@@ -270,7 +270,7 @@ class PageCanvas(Canvas):
 
     @property
     def page(self):
-        return self._backend_page.pyte_page
+        return self._backend_page.rinoh_page
 
     def append(self, left, top):
         pass

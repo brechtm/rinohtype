@@ -3,7 +3,6 @@ from copy import copy
 from warnings import warn
 
 from .text import SingleStyledText, TextStyle, Superscript
-from .warnings import PyteWarning
 
 
 __all__ = ['FieldException', 'Referenceable',

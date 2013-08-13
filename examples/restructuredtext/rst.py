@@ -4,18 +4,18 @@ from io import BytesIO
 from docutils import nodes
 from docutils.core import publish_doctree, publish_from_doctree
 
-import pyte as rt
+import rinoh as rt
 
-from pyte.font import TypeFace, TypeFamily
-from pyte.font.style import REGULAR, BOLD, ITALIC
-from pyte.font.type1 import Type1Font
-from pyte.font.opentype import OpenTypeFont
-from pyte.dimension import PT, CM, INCH
-from pyte.backend import pdf
-from pyte.frontend.xml import element_factory
-from pyte.util import all_subclasses
+from rinoh.font import TypeFace, TypeFamily
+from rinoh.font.style import REGULAR, BOLD, ITALIC
+from rinoh.font.type1 import Type1Font
+from rinoh.font.opentype import OpenTypeFont
+from rinoh.dimension import PT, CM, INCH
+from rinoh.backend import pdf
+from rinoh.frontend.xml import element_factory
+from rinoh.util import all_subclasses
 
-import pyte.frontend.xml.elementtree as xml_frontend
+import rinoh.frontend.xml.elementtree as xml_frontend
 
 
 pagella_regular = OpenTypeFont("../fonts/texgyrepagella-regular.otf",

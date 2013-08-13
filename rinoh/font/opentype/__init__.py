@@ -4,7 +4,7 @@ import ctypes
 from warnings import warn
 
 from ...util import cached
-from ...warnings import PyteWarning
+from ...warnings import RinohWarning
 from .. import Font
 from ..metrics import FontMetrics, GlyphMetrics
 from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
@@ -71,7 +71,7 @@ class OpenTypeMetrics(FontMetrics):
             glyph = self._glyphs[char]
         except KeyError:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
-                 .format(self.name, ord(char), char), PyteWarning)
+                 .format(self.name, ord(char), char), RinohWarning)
             return self._glyphs['?']
 
         if 'GSUB' in self._tables:
@@ -92,21 +92,21 @@ class OpenTypeMetrics(FontMetrics):
         except KeyError:
             if script != 'DFLT':
                 warn('{} does not support the script "{}". Trying default '
-                     'script.'.format(self.name, script, PyteWarning))
+                     'script.'.format(self.name, script, RinohWarning))
                 try:
                     return self._get_lookup_tables(table, feature)
                 except KeyError:
                     return []
             else:
                 warn('{} has no default script defined.'
-                     .format(self.name, PyteWarning))
+                     .format(self.name, RinohWarning))
                 raise
         if language:
             try:
                 lang_sys_table = script_table.by_tag[language][0]
             except KeyError:
                 warn('{} does not support the language "{}". Falling back to '
-                     'defaults.'.format(self.name, language, PyteWarning))
+                     'defaults.'.format(self.name, language, RinohWarning))
             lang_sys_table = script_table['DefaultLangSys']
         else:
             lang_sys_table = script_table['DefaultLangSys']

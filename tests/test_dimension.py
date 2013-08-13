@@ -3,7 +3,7 @@
 import unittest
 
 
-from pyte.dimension import Dimension, PT, INCH
+from rinoh.dimension import Dimension, PT, INCH
 
 
 class TestDimension(unittest.TestCase):

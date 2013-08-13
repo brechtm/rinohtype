@@ -5,7 +5,7 @@ from warnings import warn
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
-from ..warnings import PyteWarning
+from ..warnings import RinohWarning
 
 
 # TODO: provide predefined Font objects for known font filenames?
@@ -85,7 +85,7 @@ class TypeFace(dict):
             warn('{} has no {} {} {} style available. Falling back to {} {} {}'
                  .format(self.name, width, weight, slant,
                          available_width, available_weight, available_slant),
-                 PyteWarning)
+                 RinohWarning)
 
         return font
 

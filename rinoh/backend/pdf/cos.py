@@ -483,7 +483,7 @@ class Document(dict):
             self.info['Producer'].delete(self)
         if 'ModDate' in self.info:
             self.info['ModDate'].delete(self)
-        self.info['Producer'] = String('pyte PDF backend')
+        self.info['Producer'] = String('RinohType')
         self.info['ModDate'] = Date(self.timestamp)
 
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))

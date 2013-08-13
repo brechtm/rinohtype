@@ -46,7 +46,7 @@ class Math(CharacterLike):
         self.equation = equation.strip()
 
     def spans(self):
-        font_output = PyteFonts(self)
+        font_output = RinohFonts(self)
         fontsize = float(self.get_style('font_size'))
         dpi = 72
 
@@ -93,7 +93,7 @@ class Equation(Paragraph):
 
 
 # adapted from matplotlib.mathtext.StandardPsFonts
-class PyteFonts(Fonts):
+class RinohFonts(Fonts):
     def __init__(self, styled):
         Fonts.__init__(self, None, MathtextBackendPs())
         self.styled = styled

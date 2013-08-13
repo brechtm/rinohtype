@@ -14,7 +14,6 @@ from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, FixedWidthSpace, Tab
 from .dimension import PT
 from .style import PARENT_STYLE
-from .warnings import PyteWarning
 
 
 __all__ = ['HeadingStyle', 'Heading', 'ListStyle', 'List',

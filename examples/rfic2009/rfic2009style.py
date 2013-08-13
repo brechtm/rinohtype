@@ -1,38 +1,38 @@
 
-from pyte.dimension import PT, INCH, CM
-from pyte.font import TypeFace, TypeFamily
-from pyte.font.type1 import Type1Font
-from pyte.font.opentype import OpenTypeFont
-from pyte.font.style import REGULAR, MEDIUM, BOLD, ITALIC
-from pyte.paper import Paper, LETTER
-from pyte.document import Document, Page, PORTRAIT
-from pyte.layout import Container, DownExpandingContainer, Chain
-from pyte.layout import TopFloatContainer, FootnoteContainer
-from pyte.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
-from pyte.paragraph import ProportionalSpacing, FixedSpacing, TabStop
-from pyte.number import CHARACTER_UC, ROMAN_UC, NUMBER
-from pyte.text import SingleStyledText, MixedStyledText
-from pyte.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
-from pyte.text import TextStyle, BOLD_ITALIC_STYLE
-from pyte.text import Tab as PyteTab
-from pyte.math import MathFonts, MathStyle, Equation, EquationStyle
-from pyte.math import Math as PyteMath
-from pyte.structure import Heading, List
-from pyte.structure import HeadingStyle, ListStyle
-from pyte.structure import Header, Footer, HeaderStyle, FooterStyle
-from pyte.structure import TableOfContents, TableOfContentsStyle
-from pyte.reference import Field, Reference, REFERENCE
-from pyte.reference import Footnote as PyteFootnote
-from pyte.flowable import Flowable, FlowableStyle, Floating
-from pyte.float import Figure as PyteFigure, CaptionStyle
-from pyte.table import Tabular as PyteTabular, MIDDLE
-from pyte.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
-from pyte.draw import LineStyle, RED
-from pyte.style import PARENT_STYLE, StyleStore
-from pyte.frontend.xml import element_factory
-from pyte.backend import pdf, psg
+from rinoh.dimension import PT, INCH, CM
+from rinoh.font import TypeFace, TypeFamily
+from rinoh.font.type1 import Type1Font
+from rinoh.font.opentype import OpenTypeFont
+from rinoh.font.style import REGULAR, MEDIUM, BOLD, ITALIC
+from rinoh.paper import Paper, LETTER
+from rinoh.document import Document, Page, PORTRAIT
+from rinoh.layout import Container, DownExpandingContainer, Chain
+from rinoh.layout import TopFloatContainer, FootnoteContainer
+from rinoh.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
+from rinoh.paragraph import ProportionalSpacing, FixedSpacing, TabStop
+from rinoh.number import CHARACTER_UC, ROMAN_UC, NUMBER
+from rinoh.text import SingleStyledText, MixedStyledText
+from rinoh.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
+from rinoh.text import TextStyle, BOLD_ITALIC_STYLE
+from rinoh.text import Tab as RinohTab
+from rinoh.math import MathFonts, MathStyle, Equation, EquationStyle
+from rinoh.math import Math as RinohMath
+from rinoh.structure import Heading, List
+from rinoh.structure import HeadingStyle, ListStyle
+from rinoh.structure import Header, Footer, HeaderStyle, FooterStyle
+from rinoh.structure import TableOfContents, TableOfContentsStyle
+from rinoh.reference import Field, Reference, REFERENCE
+from rinoh.reference import Footnote as RinohFootnote
+from rinoh.flowable import Flowable, FlowableStyle, Floating
+from rinoh.float import Figure as RinohFigure, CaptionStyle
+from rinoh.table import Tabular as RinohTabular, MIDDLE
+from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
+from rinoh.draw import LineStyle, RED
+from rinoh.style import PARENT_STYLE, StyleStore
+from rinoh.frontend.xml import element_factory
+from rinoh.backend import pdf, psg
 
-import pyte.frontend.xml.elementtree as xml_frontend
+import rinoh.frontend.xml.elementtree as xml_frontend
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem, Locator
@@ -71,11 +71,11 @@ if use_gyre:
                           heros_roman, cursor_regular, chorus, standard_symbols,
                           cmex9)
 else:
-    from pyte.fonts.adobe14 import pdf_family as ieeeFamily
-    #from pyte.fonts.adobe35 import palatino, helvetica, courier
-    #from pyte.fonts.adobe35 import newcenturyschlbk, bookman
+    from rinoh.fonts.adobe14 import pdf_family as ieeeFamily
+    #from rinoh.fonts.adobe35 import palatino, helvetica, courier
+    #from rinoh.fonts.adobe35 import newcenturyschlbk, bookman
     #ieeeFamily = TypeFamily(serif=palatino, sans=helvetica, mono=courier)
-    from pyte.fonts.adobe35 import postscript_mathfonts as mathfonts
+    from rinoh.fonts.adobe35 import postscript_mathfonts as mathfonts
 
 
 # styles
@@ -327,7 +327,7 @@ class Sub(NestedElement):
 
 class Tab(CustomElement):
     def parse(self, document):
-        return MixedStyledText([PyteTab()])
+        return MixedStyledText([RinohTab()])
 
 
 class OL(CustomElement):
@@ -343,7 +343,7 @@ class LI(CustomElement):
 
 class Math(CustomElement):
     def parse(self, document):
-        return PyteMath(self.text, style=self.style('math'))
+        return RinohMath(self.text, style=self.style('math'))
 
 
 class Eq(CustomElement):
@@ -373,7 +373,7 @@ class Footnote(NestedElement):
     def parse(self, document):
         par = Paragraph(self.process_content(document),
                         style=self.style('footnote'))
-        return PyteFootnote(par)
+        return RinohFootnote(par)
 
 
 class Acknowledgement(CustomElement):
@@ -388,7 +388,7 @@ class Figure(CustomElement):
     def parse(self, document):
         caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
-        figure = PyteFigure(document, self.get('path'), caption_text,
+        figure = RinohFigure(document, self.get('path'), caption_text,
                             scale=scale, style=self.style('figure'),
                             caption_style=self.style('figure caption'))
         return Floating(figure)
@@ -401,19 +401,19 @@ class Caption(NestedElement):
 class Tabular(CustomElement):
     def parse(self, document):
         data = HTMLTabularData(self)
-        return PyteTabular(data, style=self.style('tabular'))
+        return RinohTabular(data, style=self.style('tabular'))
 
 
 class CSVTabular(CustomElement):
     def parse(self, document):
         data = CSVTabularData(self.get('path'))
-        return PyteTabular(data, style=self.style('tabular'))
+        return RinohTabular(data, style=self.style('tabular'))
 
 
 # bibliography
 # ----------------------------------------------------------------------------
 
-from pyte import csl_formatter
+from rinoh import csl_formatter
 
 class IEEEBibliography(Paragraph):
     def __init__(self, items):
