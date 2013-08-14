@@ -1,3 +1,10 @@
+# This file is part of RinohType, the Python document preparation system.
+#
+# Copyright (c) Brecht Machiels.
+#
+# Use of this source code is subject to the terms of the GNU Affero General
+# Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
+
 
 from .parse import OpenTypeTable, MultiFormatTable, Record, context_array
 from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed

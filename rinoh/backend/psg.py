@@ -1,3 +1,10 @@
+# This file is part of RinohType, the Python document preparation system.
+#
+# Copyright (c) Brecht Machiels.
+#
+# Use of this source code is subject to the terms of the GNU Affero General
+# Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
+
 
 from psg.document.dsc import dsc_document
 from psg.drawing.box import eps_image, canvas as psg_Canvas
