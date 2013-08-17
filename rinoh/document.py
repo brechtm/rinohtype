@@ -26,6 +26,7 @@ import pickle
 
 from itertools import count
 
+from . import __version__, __release_date__
 from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
 from .warnings import warn
@@ -89,6 +90,7 @@ class Document(object):
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
         backend."""
+        self._print_version_and_license()
         self.backend = backend
         self.backend_document = self.backend.Document(self, title)
 
@@ -101,6 +103,13 @@ class Document(object):
         self.counters = {}      # counters for Headings, Figures and Tables
         self.elements = {}      # mapping id's to Referenceables
         self._unique_id = 0
+
+    def _print_version_and_license(self):
+        print('RinohType {} ({})  Copyright (c) Brecht Machiels'
+              .format(__version__, __release_date__))
+        print('''\
+This program comes with ABSOLUTELY NO WARRANTY. Its use is subject
+to the terms of the GNU Affero General Public License version 3.''')
 
     @property
     def unique_id(self):

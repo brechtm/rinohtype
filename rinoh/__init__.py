@@ -14,6 +14,12 @@ import os
 
 from importlib import import_module
 
+try:
+    from .version import __version__, __release_date__
+except ImportError:
+    __version__ = 'devel'
+    __release_date__ = 'now'
+
 
 CORE_MODULES = ['dimension', 'document', 'draw', 'float', 'flowable', 'layout',
                 'number', 'paper', 'paragraph', 'reference', 'structure',

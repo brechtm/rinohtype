@@ -1,4 +1,7 @@
 *.pyc
 *~
 /citeproc-test
-
+/build
+/dist
+/MANIFEST
+/rinoh/version.py
