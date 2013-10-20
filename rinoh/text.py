@@ -333,6 +333,19 @@ class SingleStyledText(StyledText):
                 prev_glyph = glyph
         yield prev_glyph
 
+    HYPHENATORS = {}
+
+    @staticmethod
+    def _create_hyphenator(hyphen_lang, hyphen_chars):
+        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+
     @property
     def _hyphenator(self):
         """Return a :class:`Hyphenator` configured with the hyphenation options
@@ -343,14 +356,12 @@ class SingleStyledText(StyledText):
         directory."""
         hyphen_lang = self.get_style('hyphen_lang')
         hyphen_chars = self.get_style('hyphen_chars')
-        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
-        if not os.path.exists(dic_path):
-            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
-            if not os.path.exists(dic_path):
-                raise IOError("Hyphenation dictionary '{}' neither found in "
-                              "current directory, nor in the data directory"
-                              .format(dic_file))
-        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+        try:
+            return self.HYPHENATORS[(hyphen_lang, hyphen_chars)]
+        except KeyError:
+            hyphenator = self._create_hyphenator(hyphen_lang, hyphen_chars)
+            self.HYPHENATORS[(hyphen_lang, hyphen_chars)] = hyphenator
+            return hyphenator
 
     def hyphenate(self):
         """Generator yielding possible options for splitting this single-styled
