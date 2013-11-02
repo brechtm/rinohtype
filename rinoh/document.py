@@ -178,10 +178,10 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.floats = set()
         self.setup()
         for page in self.pages:
-            chains = set(chain for chain in page.render())
+            chains_requiring_new_page = set(chain for chain in page.render())
             page.place()
-            if chains:
-                self.new_page(chains)    # this grows self.pages
+            if chains_requiring_new_page:
+                self.new_page(chains_requiring_new_page) # this grows self.pages
         return len(self.pages)
 
     def setup(self):

@@ -388,13 +388,12 @@ class Line(list):
 
     def typeset(self, container, justification, line_spacing, last_descender,
                 last_line=False):
-        """Typeset the line at into `container` below its current cursor
-        position. Advances the container's cursor to below the descender of this
-        line.
+        """Typeset the line in `container` below its current cursor position.
+        Advances the container's cursor to below the descender of this line.
 
-        `justification` and `line_spacing` are passed on from the
-        paragraph style. `last_descender` is the last line's descender, used in
-        the vertical positioning of this line. Finally, `last_line` specifies
+        `justification` and `line_spacing` are passed on from the paragraph
+        style. `last_descender` is the previous line's descender, used in the
+        vertical positioning of this line. Finally, `last_line` specifies
         whether this is the last line of the paragraph.
 
         Returns the line's descender size."""
@@ -476,8 +475,8 @@ def expand_tabs(items):
 
 
 def stretch_spaces(items, add_to_spaces):
-    """Generator replacing all :class:`Space`s with :class:`Spacer`s with a with
-    equal to that of a space plus `add_to_spaces`.
+    """Generator replacing all :class:`Space`s with :class:`Spacer`s with a
+    width equal to that of a space plus `add_to_spaces`.
     Non-spaces are yielded as is."""
     for item in items:
         if type(item) is Space:
