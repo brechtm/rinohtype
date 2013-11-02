@@ -30,7 +30,7 @@ from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from rinoh.draw import LineStyle, RED
 from rinoh.style import PARENT_STYLE, StyleStore
 from rinoh.frontend.xml import element_factory
-from rinoh.backend import pdf, psg
+from rinoh.backend import pdf
 
 import rinoh.frontend.xml.elementtree as xml_frontend
 

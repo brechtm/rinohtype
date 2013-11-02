@@ -10,8 +10,6 @@ import os
 import unicodedata
 from warnings import warn
 
-from psg.fonts.afm_metrics import afm_metrics
-
 from .dimension import PT
 from .font import TypeFamily
 from .text import PARENT_STYLE, Style, CharacterLike, Box, Tab
