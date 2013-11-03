@@ -1,44 +1,7 @@
+RinohType
+=========
 
+This README is on my to-do list. For now, see this `blog article`_ for an 
+introduction on RinohType.
 
-use restview
-
-    TODO mail RFIC & David Goodger (quickstart.rst)
-
-
-
-introduction
-============
-
-
-features
-========
-
-copy advertising from presentation
-see noteliner
-
-
-Requirements
-============
-
-
-
-Getting started
-===============
-
-
-copyright & license
-===================
-
-# 3rd party files:
-# * hyphenator
-# * Adobe font AFMs
-# * Unicode and Adobe char mapping
-# * data files
-#   * HTML entity definitions
-#   * docutils DTD (still needed?)
-#   * hyphenation file(s)
-# * (mathtext)
-# * (psg)
-# * (svgmath)
-
-# examples quistart & rfic
+ .. _blog article: http://www.mos6581.org/introducing-rinohtype
