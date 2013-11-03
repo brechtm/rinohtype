@@ -6,20 +6,42 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import sys
+
 from urllib.parse import urlparse, urljoin
-from urllib.request import urlopen, pathname2url
+from urllib.request import urlopen
 from warnings import warn
 from xml.parsers import expat
+
+# this module depends on internals of the Python ElementTree implementation, so
+# we can't use the C accelerated versions (which are the default in Python 3.3+)
+_cached_etree_modules = {}
+for name in list(sys.modules.keys()):
+    if name.startswith('xml.etree') or name == '_elementtree':
+        _cached_etree_modules[name] = sys.modules.pop(name)
+sys.modules['_elementtree'] = None
+
 from xml.etree import ElementTree, ElementPath
+
+for name in list(sys.modules.keys()):
+    if name.startswith('xml.etree'):
+        del sys.modules[name]
+sys.modules.update(_cached_etree_modules)
 
 from ...util import all_subclasses
 from . import CATALOG_PATH, CATALOG_URL, CATALOG_NS
 
 
 class TreeBuilder(ElementTree.TreeBuilder):
-    def __init__(self, namespace, element_factory=None):
+    def __init__(self, namespace, line_callback, element_factory=None):
         super().__init__(element_factory)
         self._namespace = namespace
+        self._line_callback = line_callback
+
+    def start(self, tag, attrs):
+        elem = super().start(tag, attrs)
+        elem.sourceline = self._line_callback()
+        return elem
 
     def end(self, tag):
         last = super().end(tag)
@@ -43,12 +65,16 @@ class Parser(ElementTree.XMLParser):
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         self.element_classes = {self.namespace + cls.__name__.lower(): cls
                                 for cls in all_subclasses(self.element_class)}
-        tree_builder = TreeBuilder(self.namespace, self.lookup)
+        tree_builder = TreeBuilder(self.namespace, self.get_current_line_number,
+                                   self.lookup)
         super().__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()
         self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         self.parser.ExternalEntityRefHandler \
             = ExternalEntityRefHandler(self.parser, uri_rewrite_map)
+
+    def get_current_line_number(self):
+        return self.parser.CurrentLineNumber
 
     def lookup(self, tag, attrs):
         try:
@@ -72,12 +98,6 @@ class Parser(ElementTree.XMLParser):
         xml._filename = xmlfile
         xml.getroot()._roottree = xml
         return xml
-
-    # store source line for each element (http://bugs.python.org/issue14078)
-    def _start_list(self, *args, **kwargs):
-        element = super()._start_list(*args, **kwargs)
-        element.sourceline = self._parser.CurrentLineNumber
-        return element
 
 
 class ExternalEntityRefHandler(object):
