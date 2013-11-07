@@ -54,6 +54,7 @@ class OpenTypeMetrics(FontMetrics):
         #       Private Use Area of Unicode. It is suggested to derive the
         #       format 4 encodings by simply adding 0xF000 to the format 0
         #       (Macintosh) encodings."
+        # TODO: properly handle encodings
         for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
             try:
                 for ordinal, index in tables['cmap'][encoding].mapping.items():

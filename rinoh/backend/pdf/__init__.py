@@ -63,7 +63,9 @@ class Document(object):
                 else:
                     cid_font = cos.CIDFontType2(font.name, cid_system_info,
                                                 font_desc, w=w)
-                font_rsc = cos.CompositeFont(cid_font, 'Identity-H')
+                mapping = font.tables['cmap'][(3, 1)].mapping
+                to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
+                font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
             self.fonts[font] = font_rsc
         return font_rsc
 

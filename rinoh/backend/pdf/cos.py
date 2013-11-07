@@ -9,15 +9,15 @@
 import codecs
 import hashlib, time
 
-from binascii import hexlify, unhexlify
+from binascii import hexlify
 from codecs import BOM_UTF16_BE
+from contextlib import contextmanager
 from collections import OrderedDict
 from datetime import datetime
 from functools import wraps
 from io import BytesIO, SEEK_END
 
 from . import pdfdoccodec
-
 
 PDF_VERSION = '1.6'
 
@@ -632,7 +632,7 @@ class CompositeFont(Font):
             self['Encoding'] = Name(encoding)
         except NotImplementedError:
             self['Encoding'] = encoding
-        if to_unicode:
+        if to_unicode is not None:
             self['ToUnicode'] = to_unicode
 
 
@@ -770,3 +770,62 @@ class EncodingDifferences(Object):
             previous = code
         output += b' ]'
         return output
+
+
+class ToUnicode(Stream):
+    def __init__(self, mapping, filter=None):
+        super().__init__(filter=filter)
+        with self._begin_resource('/CIDInit /ProcSet findresource'):
+            with self._begin_resource('12 dict'):
+                with self._begin('cmap'):
+                    cid_system_info = Dictionary()
+                    cid_system_info['Registry'] = String('Adobe')
+                    cid_system_info['Ordering'] = String('UCS')
+                    cid_system_info['Supplement'] = Integer('0')
+                    self._def('CIDSystemInfo', cid_system_info)
+                    self._def('CMapName', Name('Adobe-Identity-UCS'))
+                    self._def('CMapType', Integer(2))
+                    with self._begin('codespacerange', 1):
+                        self._value(0x0000)
+                        self._value(0xFFFF)
+                        self.write(b'\n')
+                    #with self._begin('bfrange', 1):
+                    #    # TODO: limit to sets of 100 entries
+                    #    # TODO: ranges should not cross first-byte limits
+                    #    self._value(0x0000)
+                    #    self._value(0xFFFF)
+                    #    self._value(0x0000)
+                    with self._begin('bfchar', len(mapping)):
+                        # TODO: limit to sets of 100 entries
+                        for unicode, cid in mapping.items():
+                            self._value(cid)
+                            self._value(unicode)
+                            self.write(b'\n')
+                self.print('CMapName currentdict /CMap defineresource pop')
+
+    @contextmanager
+    def _begin_resource(self, string):
+        self.print('{} begin'.format(string))
+        yield
+        self.print('end')
+
+    @contextmanager
+    def _begin(self, string, length=None):
+        if length:
+            self.print('{} '.format(length), end='')
+        self.print('begin{}'.format(string))
+        yield
+        self.print('end{}'.format(string))
+
+    def _def(self, key, value):
+        self.print('/{} '.format(key), end='')
+        self.write(value.bytes(None))
+        self.print(' def')
+
+    def _value(self, value, number_of_bytes=2):
+        hex_str = HexString((value).to_bytes(number_of_bytes, byteorder='big'))
+        self.write(hex_str.bytes(None))
+
+    def print(self, strng, end='\n'):
+        self.write(strng.encode('ascii'))
+        self.write(end.encode('ascii'))
