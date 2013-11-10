@@ -39,6 +39,13 @@ PORTRAIT = 'portrait'
 LANDSCAPE = 'landscape'
 
 
+try:
+    profile
+except NameError:
+    def profile(function):
+        return function
+
+
 class Page(Container):
     """A single page in a document. A :class:`Page` is a :class:`Container`, so
     other containers can be added as children."""

@@ -16,6 +16,13 @@ from ...font.opentype import OpenTypeFont
 from ...util import consumer
 
 
+try:
+    profile
+except NameError:
+    def profile(function):
+        return function
+
+
 class Document(object):
     extension = '.pdf'
 
@@ -201,6 +208,7 @@ class Canvas(StringIO):
         return char
 
     @consumer
+    @profile
     def show_glyphs(self, left, top, font, size):
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''

@@ -57,6 +57,13 @@ CENTER = 'center'
 BOTH = 'justify'
 
 
+try:
+    profile
+except NameError:
+    def profile(function):
+        return function
+
+
 # Line spacing
 
 class LineSpacing(object):
@@ -217,6 +224,7 @@ class Paragraph(MixedStyledText, Flowable):
         a parent, `style` should be specified."""
         super().__init__(text_or_items, style=style)
 
+    @profile
     def initial_state(self):
         """Return the initial rendering state for this paragraph."""
         return ParagraphState(split_into_words(MixedStyledText.spans(self)))
@@ -319,6 +327,7 @@ class Line(list):
 
     append = _empty_append
 
+    @profile
     def _normal_append(self, item):
         """Appends `item` to this line. If the item doesn't fit on the line,
         returns the spillover. Otherwise returns `None`."""
@@ -386,6 +395,7 @@ class Line(list):
             tab.warn('Tab did not fall into any of the tab stops.')
             return 0, Space(style=tab.style, parent=tab.parent)
 
+    @profile
     def typeset(self, container, justification, line_spacing, last_descender,
                 last_line=False):
         """Typeset the line in `container` below its current cursor position.

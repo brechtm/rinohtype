@@ -59,6 +59,13 @@ __all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText', 'LiteralText',
            'Subscript']
 
 
+try:
+    profile
+except NameError:
+    def profile(function):
+        return function
+
+
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects. It has the following
     attributes:
@@ -165,12 +172,14 @@ class StyledText(Styled):
             return self.style.get('position') is not None
 
     @property
+    @profile
     def script_level(self):
         """Nesting level of super/subscript."""
         level = self.parent.script_level if (self.parent is not None) else -1
         return level + 1 if self.is_script() else level
 
     @property
+    @profile
     def height(self):
         """Font size after super/subscript size adjustment."""
         height = float(self.get_style('font_size'))
@@ -179,6 +188,7 @@ class StyledText(Styled):
         return height
 
     @property
+    @profile
     def y_offset(self):
         """Vertical baseline offset (up is positive)."""
         offset = self.parent.y_offset if (self.parent is not None) else 0
@@ -243,6 +253,7 @@ class SingleStyledText(StyledText):
         return self.__class__(self.text.upper(),
                               style=self.style, parent=self.parent)
 
+    @profile
     def split(self):
         """Generator yielding words, whitespace and punctuation marks which make
         up this single-styled text. Yielded items inherit the style and parent
@@ -261,6 +272,7 @@ class SingleStyledText(StyledText):
             yield self.__class__(part, **style_and_parent)
 
     @cached_property
+    @profile
     def font(self):
         """The :class:`Font` described by this single-styled text's style.
 
@@ -287,11 +299,13 @@ class SingleStyledText(StyledText):
         return self.font.line_gap * float(self.get_style('font_size'))
 
     @property
+    @profile
     def width(self):
         """The total width of this single-styled text."""
         return sum(self.widths())
 
     @cached_generator
+    @profile
     def widths(self):
         """Generator yielding the widths of the individual glyphs in this
         single-styled text. Kerning adjustment (if enabled in the
@@ -313,6 +327,7 @@ class SingleStyledText(StyledText):
         yield prev_width * scale
 
     @cached_generator
+    @profile
     def glyphs(self):
         """Generator yielding the glyphs of this single-styled text, taking care
         of substituting ligatures where possible (if enabled in the
