@@ -277,68 +277,38 @@ class Paragraph(MixedStyledText, Flowable):
                 line.new_span(span.parent)
                 font = span.parent.font
                 scale = span.parent.height / font.units_per_em
-                kerning = self.get_style('kerning')
-                ligatures = self.get_style('ligatures')
                 variant = SMALL_CAPITAL if span.parent.get_style('small_caps') else None
                 get_glyph = partial(font.metrics.get_glyph, variant=variant)
                 # TODO: handle ligatures at span borders
-                get_kerning = font.metrics.get_kerning
-                get_ligature = font.metrics.get_ligature
-                word_glyphs = []
-                glyph_widths = []
 
-                prev_glyph = None
-                saved_characters, characters = tee(iter(span.parent.text))
+                if self.get_style('kerning'):
+                    kerning_filter = create_kerning_filter(font.metrics.get_kerning, scale)
+                else:
+                    kerning_filter = pass_through_filter
+                if self.get_style('ligatures'):
+                    ligature_filter = create_ligature_filter(font.metrics.get_ligature, scale)
+                else:
+                    ligature_filter = pass_through_filter
+
+                characters = iter(span.parent.text)
+                words, saved_words = tee(characters_to_words(characters))
                 while True:
                     try:
-                        char = next(characters)
+                        word = next(words)
                     except StopIteration:
-                        if word_glyphs:
-                            spillover = line.append(word_glyphs, glyph_widths)
-                            if spillover:
-                                characters = saved_characters
                         break
-                    glyph = get_glyph(char)
-                    glyph_width = scale * glyph.width
-                    if char in ' \t\n':
-                        if word_glyphs:
-                            spillover = line.append(word_glyphs, glyph_widths)
-                            if spillover:
-                                typeset_line(line)
-                                characters = saved_characters
-                                line = Line(tab_stops, line_width, container)
-                                line.new_span(span.parent)
-                        if char == ' ':
-                            space_spillover = line.append([glyph], [glyph_width])
-                            if not space_spillover:
-                                line.number_of_spaces += 1
-                        elif char == '\n':
-                            typeset_line(line, last_line=True)
-                            line = Line(tab_stops, line_width, container)
-                        #else:
-                        #    line.special(char)
-                        word_glyphs = []
-                        glyph_widths = []
-                        prev_glyph = None
-                        saved_characters, characters = tee(characters)
-                        continue
-                    if ligatures and prev_glyph:
-                        ligature = get_ligature(prev_glyph, glyph)
-                        if ligature:
-                            word_glyphs.pop()
-                            glyph_widths.pop()
-                            glyph = ligature
-                            glyph_width = scale * ligature.width
-                            try:
-                                prev_glyph = word_glyphs[-1]
-                            except IndexError:
-                                prev_glyph = None
-                    if kerning and prev_glyph:
-                        glyph_widths[-1] += scale * get_kerning(prev_glyph, glyph)
-                    word_glyphs.append(glyph)
-                    glyph_widths.append(glyph_width)
-                    prev_glyph = glyph
-
+                    glyphs_and_widths = ((glyph, scale * glyph.width)
+                                         for glyph in (get_glyph(char)
+                                                       for char in word))
+                    glyphs_and_widths = kerning_filter(glyphs_and_widths)
+                    glyphs_and_widths = list(ligature_filter(glyphs_and_widths))
+                    spillover = line.append(glyphs_and_widths)
+                    if spillover:
+                        typeset_line(line)
+                        words = saved_words
+                        line = Line(tab_stops, line_width, container)
+                        line.new_span(span.parent)
+                    words, saved_words = tee(words)
             except FieldException:
                 pass
                 #field_words = split_into_words(word.field_spans(container))
@@ -353,6 +323,51 @@ class Paragraph(MixedStyledText, Flowable):
                 break
 
         return descender
+
+
+def characters_to_words(characters):
+    word_chars = []
+    for char in characters:
+        if char in ' \t\n':
+            if word_chars:
+                yield ''.join(word_chars)
+                word_chars = []
+            yield char
+        else:
+            word_chars.append(char)
+    if word_chars:
+        yield ''.join(word_chars)
+
+
+def pass_through_filter(glyphs_and_widths):
+    for glyph_and_width in glyphs_and_widths:
+        yield glyph_and_width
+
+
+def create_ligature_filter(get_ligature, scale):
+    def ligature_filter(glyphs_and_widths):
+        prev_glyph, prev_width = next(glyphs_and_widths)
+        for glyph, width in glyphs_and_widths:
+            ligature_glyph = get_ligature(prev_glyph, glyph)
+            if ligature_glyph:
+                prev_glyph = ligature_glyph
+                prev_width = ligature_glyph.width * scale
+            else:
+                yield prev_glyph, prev_width
+                prev_glyph, prev_width = glyph, width
+        yield prev_glyph, prev_width
+    return ligature_filter
+
+
+def create_kerning_filter(get_kerning, scale):
+    def kerning_filter(glyphs_and_widths):
+        prev_glyph, prev_width = next(glyphs_and_widths)
+        for glyph, width in glyphs_and_widths:
+            prev_width += get_kerning(prev_glyph, glyph) * scale
+            yield prev_glyph, prev_width
+            prev_glyph, prev_width = glyph, width
+        yield prev_glyph, prev_width
+    return kerning_filter
 
 
 class Span(list):
@@ -394,17 +409,17 @@ class Line(list):
             return self.append(item)
 
     @profile
-    def _normal_append(self, glyphs, widths):
+    def _normal_append(self, glyphs_and_widths):
         """Appends `item` to this line. If the item doesn't fit on the line,
         returns the spillover. Otherwise returns `None`."""
-        width = sum(widths)
+        width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
             if not self:
                 self[-1].parent.warn('item too long to fit on line', self.container)
             else:
-                return glyphs, widths
+                return glyphs_and_widths
         self._cursor += width
-        self[-1].append((glyphs, widths))
+        self[-1].append(glyphs_and_widths)
 
         #try:
         #    width = item.width
@@ -525,8 +540,8 @@ class Line(list):
             y_offset = span.parent.y_offset
             top = container.cursor - y_offset
             sg = container.canvas.show_glyphs(left, top, span.parent.font, span.parent.height)
-            for glyphs, widths in span:
-                left += sg.send(zip(glyphs, widths))
+            for glyphs_and_widths in span:
+                left += sg.send(glyphs_and_widths)
             sg.close()
         container.advance(- descender)
         return descender
