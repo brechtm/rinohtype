@@ -31,14 +31,19 @@ Horizontal justification of lines can be one of:
 
 """
 
+import os
+
+from collections import defaultdict
 from copy import copy
 from functools import partial
 from itertools import chain, tee
 
+from . import DATA_PATH
 from .dimension import Dimension, PT
 from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
 from .font.style import SMALL_CAPITAL
-from .layout import DownExpandingContainer, EndOfContainer
+from .hyphenator import Hyphenator
+from .layout import EndOfContainer
 from .reference import FieldException
 from .text import Space, Tab, Spacer, SPECIAL_CHARS
 from .text import NewlineException, TabException, TabSpaceExceeded
@@ -289,8 +294,14 @@ class Paragraph(MixedStyledText, Flowable):
                 else:
                     ligature_filter = pass_through_filter
 
+                if self.get_style('hyphenate'):
+                    hyphenate = create_hyphenate(self.get_style('hyphen_lang'),
+                                                 self.get_style('hyphen_chars'))
+                else:
+                    hyphenate = dont_hyphenate
+
                 characters = iter(span.parent.text)
-                words, saved_words = tee(characters_to_words(characters))
+                saved_words, words = tee(characters_to_words(characters))
                 while True:
                     try:
                         word = next(words)
@@ -301,8 +312,15 @@ class Paragraph(MixedStyledText, Flowable):
                                                        for char in word))
                     glyphs_and_widths = kerning_filter(glyphs_and_widths)
                     glyphs_and_widths = list(ligature_filter(glyphs_and_widths))
-                    spillover = line.append(glyphs_and_widths)
-                    if spillover:
+                    if not line.append(glyphs_and_widths):
+                        for first, second in hyphenate(word):
+                            glyphs_and_widths = ((glyph, scale * glyph.width)
+                                                 for glyph in (get_glyph(char)
+                                                               for char in first))
+                            glyphs_and_widths = kerning_filter(glyphs_and_widths)
+                            glyphs_and_widths = list(ligature_filter(glyphs_and_widths))
+                            if line.append(glyphs_and_widths):
+                                saved_words, words = tee(chain([second], words))
                         typeset_line(line)
                         words = saved_words
                         line = Line(tab_stops, line_width, container)
@@ -369,6 +387,46 @@ def create_kerning_filter(get_kerning, scale):
     return kerning_filter
 
 
+class HyphenatorStore(defaultdict):
+    def __missing__(self, key):
+        hyphen_lang, hyphen_chars = key
+        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+
+
+HYPHENATORS = HyphenatorStore()
+
+
+def create_hyphenate(hyphen_lang, hyphen_chars):
+    hyphenator = HYPHENATORS[hyphen_lang, hyphen_chars]
+    def hyphenate(word):
+        """Generator yielding possible options for splitting this single-styled
+        text (assuming it is a word) across two lines. Items yielded are tuples
+        containing the first (with trailing hyphen) and second part of the split
+        word.
+
+        In the first returned option, the word is split at the right-most
+        possible break point. In subsequent items, the break point advances to
+        the front of the word.
+        If hyphenation is not possible or simply not enabled, a single tuple is
+        yielded of which the first element is the word itself, and the second
+        element is `None`."""
+        for first, second in hyphenator.iterate(word):
+            yield first + '-', second
+    return hyphenate
+
+
+def dont_hyphenate(word):
+    return
+    yield
+
+
 class Span(list):
     def __init__(self, parent):
         super().__init__()
@@ -414,29 +472,13 @@ class Line(list):
         width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
             if not self:
-                self[-1].parent.warn('item too long to fit on line', self.container)
+                self[-1].parent.warn('item too long to fit on line',
+                                     self.container)
             else:
-                return glyphs_and_widths
+                return False
         self._cursor += width
         self[-1].append(glyphs_and_widths)
-
-        #try:
-        #    width = item.width
-        #    if self._cursor + width > self.width:
-        #        for first, second in item.hyphenate():
-        #            if self._cursor + first.width < self.width:
-        #                self._cursor += first.width
-        #                super().append(first)
-        #                return second
-        #        if not self:
-        #            item.warn('item too long to fit on line', self.container)
-        #        else:
-        #            return item
-        #except TabException:
-        #    self._has_tab = True
-        #    width, item = self._handle_tab(item)
-        #self._cursor += width
-        #super().append(item)
+        return True
 
     append = _normal_append
 

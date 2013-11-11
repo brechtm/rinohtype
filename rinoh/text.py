@@ -35,21 +35,14 @@ Some characters with special properties and are represented by special classes:
 
 """
 
-import os
 import re
 
-from functools import partial
-
-from . import DATA_PATH
 from .dimension import PT
-from .flowable import Flowable
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
-from .font.style import SMALL_CAPITAL
 from .fonts import adobe14
-from .hyphenator import Hyphenator
-from .style import Style, Styled, PARENT_STYLE, ParentStyleException
-from .util import cached_property, cached_generator
+from .style import Style, Styled, PARENT_STYLE
+from .util import cached_property
 
 
 __all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText', 'LiteralText',
@@ -279,57 +272,6 @@ class SingleStyledText(StyledText):
     @property
     def line_gap(self):
         return self.font.line_gap * float(self.get_style('font_size'))
-
-    HYPHENATORS = {}
-
-    @staticmethod
-    def _create_hyphenator(hyphen_lang, hyphen_chars):
-        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
-        if not os.path.exists(dic_path):
-            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
-            if not os.path.exists(dic_path):
-                raise IOError("Hyphenation dictionary '{}' neither found in "
-                              "current directory, nor in the data directory"
-                              .format(dic_file))
-        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
-
-    @property
-    def _hyphenator(self):
-        """Return a :class:`Hyphenator` configured with the hyphenation options
-        specified in this single-styled text's :class:`TextStyle`.
-
-        The hyphenation dictionary corresponding to the specified language is
-        first searched in the current directory, then in RinohType's data
-        directory."""
-        hyphen_lang = self.get_style('hyphen_lang')
-        hyphen_chars = self.get_style('hyphen_chars')
-        try:
-            return self.HYPHENATORS[(hyphen_lang, hyphen_chars)]
-        except KeyError:
-            hyphenator = self._create_hyphenator(hyphen_lang, hyphen_chars)
-            self.HYPHENATORS[(hyphen_lang, hyphen_chars)] = hyphenator
-            return hyphenator
-
-    def hyphenate(self):
-        """Generator yielding possible options for splitting this single-styled
-        text (assuming it is a word) across two lines. Items yielded are tuples
-        containing the first (with trailing hyphen) and second part of the split
-        word.
-
-        In the first returned option, the word is split at the right-most
-        possible break point. In subsequent items, the break point advances to
-        the front of the word.
-        If hyphenation is not possible or simply not enabled, a single tuple is
-        yielded of which the first element is the word itself, and the second
-        element is `None`."""
-        if self.get_style('hyphenate'):
-            for first, second in self._hyphenator.iterate(self):
-                if first.text + second.text != self.text:
-                    raise NotImplementedError
-                first.text += '-'
-                yield first, second
-        else:
-            yield self, None
 
     def spans(self):
         """Yield this single-styled text itself."""
