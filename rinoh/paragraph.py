@@ -32,13 +32,15 @@ Horizontal justification of lines can be one of:
 """
 
 from copy import copy
+from functools import partial
 from itertools import chain, tee
 
 from .dimension import Dimension, PT
 from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
+from .font.style import SMALL_CAPITAL
 from .layout import DownExpandingContainer, EndOfContainer
 from .reference import FieldException
-from .text import Space, Tab, Spacer
+from .text import Space, Tab, Spacer, SPECIAL_CHARS
 from .text import NewlineException, TabException, TabSpaceExceeded
 from .text import TextStyle, MixedStyledText
 
@@ -80,8 +82,8 @@ class DefaultSpacing(LineSpacing):
     """The default line spacing as specified by the font."""
 
     def advance(self, line, last_descender):
-        max_line_gap = max(float(item.line_gap) for item in line)
-        ascender = max(float(item.ascender) for item in line)
+        max_line_gap = max(float(span.parent.line_gap) for span in line)
+        ascender = max(float(span.parent.ascender) for span in line)
         return ascender + max_line_gap
 
 
@@ -98,7 +100,7 @@ class ProportionalSpacing(LineSpacing):
         self.factor = factor
 
     def advance(self, line, last_descender):
-        max_font_size = max(float(item.height) for item in line)
+        max_font_size = max(float(span.parent.height) for span in line)
         return self.factor * max_font_size + last_descender
 
 
@@ -193,22 +195,22 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, items, first_line=True, nested_flowable_state=None):
-        self.items = items
+    def __init__(self, spans, first_line=True, nested_flowable_state=None):
+        self.spans = spans
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
-        self.items, copy_items = tee(self.items)
+        self.spans, copy_items = tee(self.spans)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
         return self.__class__(copy_items, self.first_line,
                               copy_nested_flowable_state)
 
-    def next_item(self):
-        return next(self.items)
+    def next_span(self):
+        return next(self.spans)
 
     def prepend(self, item):
-        self.items = chain((item, ), self.items)
+        self.spans = chain((item, ), self.spans)
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -225,10 +227,6 @@ class Paragraph(MixedStyledText, Flowable):
         super().__init__(text_or_items, style=style)
 
     @profile
-    def initial_state(self):
-        """Return the initial rendering state for this paragraph."""
-        return ParagraphState(split_into_words(MixedStyledText.spans(self)))
-
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
@@ -242,10 +240,10 @@ class Paragraph(MixedStyledText, Flowable):
         justification = self.get_style('justify')
         tab_stops = self.get_style('tab_stops')
 
-        # `saved_state` is updated after successfully rendering each line, so that
-        # when `container` overflows on rendering a line, the words in that line
-        # are yielded again on the next typeset() call.
-        state = state or self.initial_state()
+        # `saved_state` is updated after successfully rendering each line, so
+        # that when `container` overflows on rendering a line, the words in that
+        # line are yielded again on the next typeset() call.
+        state = state or ParagraphState(MixedStyledText.spans(self))
         saved_state = None
 
         def typeset_line(line, last_line=False):
@@ -253,9 +251,10 @@ class Paragraph(MixedStyledText, Flowable):
             paragraph's internal rendering state."""
             nonlocal saved_state, state, descender
             try:
-                descender = line.typeset(container, justification, line_spacing,
-                                         descender, last_line)
-                saved_state = copy(state)
+                if line:
+                    descender = line.typeset(container, justification, line_spacing,
+                                             descender, last_line)
+                    saved_state = copy(state)
             except EndOfContainer as e:
                 raise EndOfContainer(saved_state)
 
@@ -270,24 +269,83 @@ class Paragraph(MixedStyledText, Flowable):
                 state.nested_flowable_state = e.flowable_state
                 raise EndOfContainer(state)
 
+        spillover = None
         line = Line(tab_stops, line_width, container, indent_first)
         while True:
             try:
-                word = state.next_item()        # throws StopIteration
-                spillover = line.append(word)   # throws the other exceptions
-                if spillover:
-                    state.prepend(spillover)
-                    typeset_line(line)
-                    line = Line(tab_stops, line_width, container)
-            except NewlineException:
-                typeset_line(line, last_line=True)
-                line = Line(tab_stops, line_width, container)
+                span = state.next_span()        # throws StopIteration
+                line.new_span(span.parent)
+                font = span.parent.font
+                scale = span.parent.height / font.units_per_em
+                kerning = self.get_style('kerning')
+                ligatures = self.get_style('ligatures')
+                variant = SMALL_CAPITAL if span.parent.get_style('small_caps') else None
+                get_glyph = partial(font.metrics.get_glyph, variant=variant)
+                # TODO: handle ligatures at span borders
+                get_kerning = font.metrics.get_kerning
+                get_ligature = font.metrics.get_ligature
+                word_glyphs = []
+                glyph_widths = []
+
+                prev_glyph = None
+                saved_characters, characters = tee(iter(span.parent.text))
+                while True:
+                    try:
+                        char = next(characters)
+                    except StopIteration:
+                        if word_glyphs:
+                            spillover = line.append(word_glyphs, glyph_widths)
+                            if spillover:
+                                characters = saved_characters
+                        break
+                    glyph = get_glyph(char)
+                    glyph_width = scale * glyph.width
+                    if char in ' \t\n':
+                        if word_glyphs:
+                            spillover = line.append(word_glyphs, glyph_widths)
+                            if spillover:
+                                typeset_line(line)
+                                characters = saved_characters
+                                line = Line(tab_stops, line_width, container)
+                                line.new_span(span.parent)
+                        if char == ' ':
+                            space_spillover = line.append([glyph], [glyph_width])
+                            if not space_spillover:
+                                line.number_of_spaces += 1
+                        elif char == '\n':
+                            typeset_line(line, last_line=True)
+                            line = Line(tab_stops, line_width, container)
+                        #else:
+                        #    line.special(char)
+                        word_glyphs = []
+                        glyph_widths = []
+                        prev_glyph = None
+                        saved_characters, characters = tee(characters)
+                        continue
+                    if ligatures and prev_glyph:
+                        ligature = get_ligature(prev_glyph, glyph)
+                        if ligature:
+                            word_glyphs.pop()
+                            glyph_widths.pop()
+                            glyph = ligature
+                            glyph_width = scale * ligature.width
+                            try:
+                                prev_glyph = word_glyphs[-1]
+                            except IndexError:
+                                prev_glyph = None
+                    if kerning and prev_glyph:
+                        glyph_widths[-1] += scale * get_kerning(prev_glyph, glyph)
+                    word_glyphs.append(glyph)
+                    glyph_widths.append(glyph_width)
+                    prev_glyph = glyph
+
             except FieldException:
-                field_words = split_into_words(word.field_spans(container))
-                state.items = chain(field_words, state.items)
+                pass
+                #field_words = split_into_words(word.field_spans(container))
+                #state.spans = chain(field_words, state.spans)
             except FlowableException:
                 typeset_line(line, last_line=True)
-                render_nested_flowable(word)
+                #render_nested_flowable(word)
                 line = Line(tab_stops, line_width, container)
             except StopIteration:
                 if line:
@@ -295,6 +353,12 @@ class Paragraph(MixedStyledText, Flowable):
                 break
 
         return descender
+
+
+class Span(list):
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
 
 
 class Line(list):
@@ -314,6 +378,10 @@ class Line(list):
         self._cursor = indent
         self._has_tab = False
         self._current_tab = None
+        self.number_of_spaces = 0
+
+    def new_span(self, parent):
+        super().append(Span(parent))
 
     # Line is a simple state machine. Different methods are assigned to
     # Line.append, depending on the current state.
@@ -325,29 +393,38 @@ class Line(list):
             self.append = self._normal_append
             return self.append(item)
 
-    append = _empty_append
-
     @profile
-    def _normal_append(self, item):
+    def _normal_append(self, glyphs, widths):
         """Appends `item` to this line. If the item doesn't fit on the line,
         returns the spillover. Otherwise returns `None`."""
-        try:
-            width = item.width
-            if self._cursor + width > self.width:
-                for first, second in item.hyphenate():
-                    if self._cursor + first.width < self.width:
-                        self._cursor += first.width
-                        super().append(first)
-                        return second
-                if not self:
-                    item.warn('item too long to fit on line', self.container)
-                else:
-                    return item
-        except TabException:
-            self._has_tab = True
-            width, item = self._handle_tab(item)
+        width = sum(widths)
+        if self._cursor + width > self.width:
+            if not self:
+                self[-1].parent.warn('item too long to fit on line', self.container)
+            else:
+                return glyphs, widths
         self._cursor += width
-        super().append(item)
+        self[-1].append((glyphs, widths))
+
+        #try:
+        #    width = item.width
+        #    if self._cursor + width > self.width:
+        #        for first, second in item.hyphenate():
+        #            if self._cursor + first.width < self.width:
+        #                self._cursor += first.width
+        #                super().append(first)
+        #                return second
+        #        if not self:
+        #            item.warn('item too long to fit on line', self.container)
+        #        else:
+        #            return item
+        #except TabException:
+        #    self._has_tab = True
+        #    width, item = self._handle_tab(item)
+        #self._cursor += width
+        #super().append(item)
+
+    append = _normal_append
 
     def _tab_append(self, item):
         """Append method used when we are in the context of a right-, or center-
@@ -407,17 +484,18 @@ class Line(list):
         whether this is the last line of the paragraph.
 
         Returns the line's descender size."""
-        try:
-            # drop spaces at the end of the line
-            while isinstance(self[-1], Space):
-                self._cursor -= self.pop().width
-        except IndexError:
-            return last_descender
+        #try:
+        #    # drop spaces at the end of the line
+        #    while isinstance(self.spans[-1][-1], ' '):
+        #        #self._cursor -= self.pop().width
+        #        self.spans[-1].pop()
+        #except IndexError:
+        #    return last_descender
 
-        descender = min(float(item.descender) for item in self)
+        descender = min(float(span.parent.descender) for span in self)
 
         if last_descender is None:
-            advance = max(float(item.ascender) for item in self)
+            advance = max(float(span.parent.ascender) for span in self)
         else:
             advance = line_spacing.advance(self, last_descender)
         container.advance(advance)
@@ -425,7 +503,7 @@ class Line(list):
             raise EndOfContainer
 
         # replace tabs with spacers or fillers
-        items = expand_tabs(self) if self._has_tab else self
+        #items = expand_tabs(self) if self._has_tab else self
 
         # horizontal displacement
         left = self.indent
@@ -434,28 +512,22 @@ class Line(list):
             justification = LEFT
         extra_space = self.width - self._cursor
         if justification == BOTH:
-            number_of_spaces = sum(1 for item in self if type(item) is Space)
-            if number_of_spaces:
-                # TODO: padding added to spaces should be prop. to font size
-                items = stretch_spaces(items, extra_space / number_of_spaces)
+            #if self.number_of_spaces:
+            #    # TODO: padding added to spaces should be prop. to font size
+            #    items = stretch_spaces(items, extra_space / self.number_of_spaces)
+            pass
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:
             left += extra_space
 
-        span = None
-        prev_font_style = None
-        for item in items:
-            font_style = item.font, float(item.height), item.y_offset
-            if font_style != prev_font_style:
-                if span:
-                    span.close()
-                font, size, y_offset = font_style
-                top = container.cursor - y_offset
-                span = container.canvas.show_glyphs(left, top, font, size)
-            left += span.send(zip(item.glyphs(), item.widths()))
-            prev_font_style = font_style
-        span.close()
+        for span in self:
+            y_offset = span.parent.y_offset
+            top = container.cursor - y_offset
+            sg = container.canvas.show_glyphs(left, top, span.parent.font, span.parent.height)
+            for glyphs, widths in span:
+                left += sg.send(zip(glyphs, widths))
+            sg.close()
         container.advance(- descender)
         return descender
 

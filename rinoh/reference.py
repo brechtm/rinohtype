@@ -25,15 +25,8 @@ class Field(SingleStyledText):
     def __init__(self):
         super().__init__('')
 
-    @property
-    def width(self):
-        raise FieldException
-
-    def split(self):
-        yield self
-
     def spans(self):
-        yield self
+        raise FieldException
 
     def field_spans(self, container):
         raise NotImplementedError

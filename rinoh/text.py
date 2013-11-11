@@ -298,56 +298,6 @@ class SingleStyledText(StyledText):
     def line_gap(self):
         return self.font.line_gap * float(self.get_style('font_size'))
 
-    @property
-    @profile
-    def width(self):
-        """The total width of this single-styled text."""
-        return sum(self.widths())
-
-    @cached_generator
-    @profile
-    def widths(self):
-        """Generator yielding the widths of the individual glyphs in this
-        single-styled text. Kerning adjustment (if enabled in the
-        :class:`TextStyle`) between two glyphs is added to the width of the
-        first glyph."""
-        scale = float(self.height) / self.font.units_per_em
-        get_kerning = self.font.metrics.get_kerning
-        kerning = self.get_style('kerning')
-        glyphs = self.glyphs()
-
-        prev_glyph = next(glyphs)
-        prev_width = prev_glyph.width
-        for glyph in glyphs:
-            if kerning:
-                prev_width += get_kerning(prev_glyph, glyph)
-            yield prev_width * scale
-            prev_width = glyph.width
-            prev_glyph = glyph
-        yield prev_width * scale
-
-    @cached_generator
-    @profile
-    def glyphs(self):
-        """Generator yielding the glyphs of this single-styled text, taking care
-        of substituting ligatures where possible (if enabled in the
-        :class:`TextStyle`)."""
-        characters = iter(self.text)
-        variant = SMALL_CAPITAL if self.get_style('small_caps') else None
-        get_glyph = partial(self.font.metrics.get_glyph, variant=variant)
-        get_ligature = self.font.metrics.get_ligature
-
-        prev_glyph = get_glyph(next(characters))
-        for char in characters:
-            glyph = get_glyph(char)
-            ligature = get_ligature(prev_glyph, glyph)
-            if ligature:
-                prev_glyph = ligature
-            else:
-                yield prev_glyph
-                prev_glyph = glyph
-        yield prev_glyph
-
     HYPHENATORS = {}
 
     @staticmethod
@@ -401,7 +351,15 @@ class SingleStyledText(StyledText):
 
     def spans(self):
         """Yield this single-styled text itself."""
-        yield self
+        yield Span(self)
+
+
+class Span(object):
+    def __init__(self, parent):
+        self.parent = parent
+
+    def split(self):
+        return self.parent.split()
 
 
 class MixedStyledText(StyledText, list):
