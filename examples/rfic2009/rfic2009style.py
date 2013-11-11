@@ -48,6 +48,7 @@ if use_gyre:
     #termes_roman = Type1Font("../fonts/qtmr", weight=REGULAR)
     termes_roman = OpenTypeFont("../fonts/texgyretermes-regular.otf",
                                 weight=REGULAR)
+    #termes_roman = OpenTypeFont(r"C:\Windows\Fonts\times.ttf", weight=REGULAR)
     termes_italic = Type1Font("../fonts/qtmri", weight=REGULAR, slant=ITALIC)
     termes_bold = Type1Font("../fonts/qtmb", weight=BOLD)
     termes_bold_italic = Type1Font("../fonts/qtmbi", weight=BOLD, slant=ITALIC)
@@ -98,7 +99,12 @@ styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
 ParagraphStyle.attributes['typeface'] = styles['body'].typeface
 ParagraphStyle.attributes['hyphen_lang'] = 'en_US'
 ParagraphStyle.attributes['hyphen_chars'] = 4
+#ParagraphStyle.attributes['hyphenate'] = False
 
+# pre-load hyphenation dictionary (which otherwise occurs during page rendering,
+# and thus invalidates per-page render time)
+from rinoh.paragraph import HYPHENATORS
+HYPHENATORS[(styles['body'].hyphen_lang, styles['body'].hyphen_chars)]
 
 styles['math'] = MathStyle(fonts=mathfonts)
 
