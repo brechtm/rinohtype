@@ -90,18 +90,19 @@ def cached(function):
     """Method decorator caching a method's returned values."""
     cache_variable = '_cached_' + function.__name__
     @wraps(function)
-    def function_wrapper(obj, *args):
+    def function_wrapper(obj, *args, **kwargs):
         # values are cached in a dict stored in the object
         try:
             cache = getattr(obj, cache_variable)
         except AttributeError:
             cache = {}
             setattr(obj, cache_variable, cache)
+        args_kwargs = args + tuple(kwargs.values())
         try:
-            return cache[args]
+            return cache[args_kwargs]
         except KeyError:
-            cache_value = function(obj, *args)
-            cache[args] = cache_value
+            cache_value = function(obj, *args, **kwargs)
+            cache[args_kwargs] = cache_value
             return cache_value
     return function_wrapper
 
