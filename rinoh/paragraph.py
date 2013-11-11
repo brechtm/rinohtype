@@ -283,16 +283,22 @@ class Paragraph(MixedStyledText, Flowable):
                 scale = span.parent.height / font.units_per_em
                 variant = SMALL_CAPITAL if span.parent.get_style('small_caps') else None
                 get_glyph = partial(font.metrics.get_glyph, variant=variant)
+                kerning = self.get_style('kerning')
+                ligatures = self.get_style('ligatures')
                 # TODO: handle ligatures at span borders
 
-                if self.get_style('kerning'):
-                    kerning_filter = create_kerning_filter(font.metrics.get_kerning, scale)
-                else:
-                    kerning_filter = pass_through_filter
-                if self.get_style('ligatures'):
-                    ligature_filter = create_ligature_filter(font.metrics.get_ligature, scale)
-                else:
-                    ligature_filter = pass_through_filter
+                def words_to_glyphs(word):
+                    glyphs_widths = ((glyph, scale * glyph.width)
+                                      for glyph in (get_glyph(char)
+                                                    for char in word))
+                    if kerning:
+                        glyphs_widths = kern(glyphs_widths,
+                                             font.metrics.get_kerning, scale)
+                    if ligatures:
+                        glyphs_widths = form_ligatures(glyphs_widths,
+                                                       font.metrics.get_ligature,
+                                                       scale)
+                    return list(glyphs_widths)
 
                 if self.get_style('hyphenate'):
                     hyphenate = create_hyphenate(self.get_style('hyphen_lang'),
@@ -307,18 +313,10 @@ class Paragraph(MixedStyledText, Flowable):
                         word = next(words)
                     except StopIteration:
                         break
-                    glyphs_and_widths = ((glyph, scale * glyph.width)
-                                         for glyph in (get_glyph(char)
-                                                       for char in word))
-                    glyphs_and_widths = kerning_filter(glyphs_and_widths)
-                    glyphs_and_widths = list(ligature_filter(glyphs_and_widths))
+                    glyphs_and_widths = words_to_glyphs(word)
                     if not line.append(glyphs_and_widths):
                         for first, second in hyphenate(word):
-                            glyphs_and_widths = ((glyph, scale * glyph.width)
-                                                 for glyph in (get_glyph(char)
-                                                               for char in first))
-                            glyphs_and_widths = kerning_filter(glyphs_and_widths)
-                            glyphs_and_widths = list(ligature_filter(glyphs_and_widths))
+                            glyphs_and_widths = words_to_glyphs(first)
                             if line.append(glyphs_and_widths):
                                 saved_words, words = tee(chain([second], words))
                         typeset_line(line)
@@ -361,30 +359,26 @@ def pass_through_filter(glyphs_and_widths):
         yield glyph_and_width
 
 
-def create_ligature_filter(get_ligature, scale):
-    def ligature_filter(glyphs_and_widths):
-        prev_glyph, prev_width = next(glyphs_and_widths)
-        for glyph, width in glyphs_and_widths:
-            ligature_glyph = get_ligature(prev_glyph, glyph)
-            if ligature_glyph:
-                prev_glyph = ligature_glyph
-                prev_width = ligature_glyph.width * scale
-            else:
-                yield prev_glyph, prev_width
-                prev_glyph, prev_width = glyph, width
-        yield prev_glyph, prev_width
-    return ligature_filter
-
-
-def create_kerning_filter(get_kerning, scale):
-    def kerning_filter(glyphs_and_widths):
-        prev_glyph, prev_width = next(glyphs_and_widths)
-        for glyph, width in glyphs_and_widths:
-            prev_width += get_kerning(prev_glyph, glyph) * scale
+def form_ligatures(glyphs_and_widths, get_ligature, scale):
+    prev_glyph, prev_width = next(glyphs_and_widths)
+    for glyph, width in glyphs_and_widths:
+        ligature_glyph = get_ligature(prev_glyph, glyph)
+        if ligature_glyph:
+            prev_glyph = ligature_glyph
+            prev_width = ligature_glyph.width * scale
+        else:
             yield prev_glyph, prev_width
             prev_glyph, prev_width = glyph, width
+    yield prev_glyph, prev_width
+
+
+def kern(glyphs_and_widths, get_kerning, scale):
+    prev_glyph, prev_width = next(glyphs_and_widths)
+    for glyph, width in glyphs_and_widths:
+        prev_width += get_kerning(prev_glyph, glyph) * scale
         yield prev_glyph, prev_width
-    return kerning_filter
+        prev_glyph, prev_width = glyph, width
+    yield prev_glyph, prev_width
 
 
 class HyphenatorStore(defaultdict):
