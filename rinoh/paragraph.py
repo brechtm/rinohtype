@@ -269,7 +269,6 @@ class Paragraph(MixedStyledText, Flowable):
                 state.nested_flowable_state = e.flowable_state
                 raise EndOfContainer(state)
 
-        spillover = None
         line = Line(tab_stops, line_width, container, indent_first)
         while True:
             try:
@@ -548,17 +547,6 @@ class Line(list):
 
 
 # utility functions
-
-def split_into_words(spans):
-    """Generator yielding all words in `spans`.
-    Spans in `span` that do not have a split() method are yielded as is."""
-    for span in spans:
-        try:
-            for part in span.split():
-                yield part
-        except AttributeError:
-            yield span
-
 
 def expand_tabs(items):
     """Generator expanding all :class:`Tab`s in `items`.

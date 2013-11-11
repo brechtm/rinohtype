@@ -253,24 +253,6 @@ class SingleStyledText(StyledText):
         return self.__class__(self.text.upper(),
                               style=self.style, parent=self.parent)
 
-    @profile
-    def split(self):
-        """Generator yielding words, whitespace and punctuation marks which make
-        up this single-styled text. Yielded items inherit the style and parent
-        from this single-styled text."""
-        style_and_parent = {'style': self.style, 'parent': self.parent}
-        part = ''
-        for char in self.text:
-            if char in SPECIAL_CHARS:
-                if part:
-                    yield self.__class__(part, **style_and_parent)
-                yield SPECIAL_CHARS[char](**style_and_parent)
-                part = ''
-            else:
-                part += char
-        if part:
-            yield self.__class__(part, **style_and_parent)
-
     @cached_property
     @profile
     def font(self):
