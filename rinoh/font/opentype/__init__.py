@@ -82,15 +82,14 @@ class OpenTypeMetrics(FontMetrics):
                  .format(self.name, ord(char), char), RinohWarning)
             return self._glyphs['?']
 
-        if 'GSUB' in self._tables:
-            if variant == SMALL_CAPITAL:
-                lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
-                for lookup_table in lookup_tables:
-                    try:
-                        code = lookup_table.lookup(glyph.code)
-                        return self._glyphs_by_code[code]
-                    except KeyError:
-                        pass
+        if variant == SMALL_CAPITAL and 'GSUB' in self._tables:
+            lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
+            for lookup_table in lookup_tables:
+                try:
+                    code = lookup_table.lookup(glyph.code)
+                    return self._glyphs_by_code[code]
+                except KeyError:
+                    pass
         return glyph
 
     def _get_lookup_tables(self, table, feature, script='DFLT', language=None):
