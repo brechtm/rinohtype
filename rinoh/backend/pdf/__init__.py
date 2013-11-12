@@ -209,7 +209,9 @@ class Canvas(StringIO):
 
     @consumer
     @profile
-    def show_glyphs(self, left, top, font, size):
+    def show_glyphs(self, left, top, span):
+        font = span.font
+        size = span.height
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''

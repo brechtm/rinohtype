@@ -87,8 +87,10 @@ class DefaultSpacing(LineSpacing):
     """The default line spacing as specified by the font."""
 
     def advance(self, line, last_descender):
-        max_line_gap = max(float(span.parent.line_gap) for span in line)
-        ascender = max(float(span.parent.ascender) for span in line)
+        max_line_gap = max(float(glyph_span.span.line_gap)
+                           for glyph_span in line)
+        ascender = max(float(glyph_span.span.ascender)
+                       for glyph_span in line)
         return ascender + max_line_gap
 
 
@@ -105,7 +107,8 @@ class ProportionalSpacing(LineSpacing):
         self.factor = factor
 
     def advance(self, line, last_descender):
-        max_font_size = max(float(span.parent.height) for span in line)
+        max_font_size = max(float(glyph_span.span.height)
+                            for glyph_span in line)
         return self.factor * max_font_size + last_descender
 
 
@@ -415,10 +418,10 @@ def dont_hyphenate(word):
     yield
 
 
-class Span(list):
-    def __init__(self, parent):
+class GlyphsSpan(list):
+    def __init__(self, span):
         super().__init__()
-        self.parent = parent
+        self.span = span
 
 
 class Line(list):
@@ -441,7 +444,7 @@ class Line(list):
         self.number_of_spaces = 0
 
     def new_span(self, parent):
-        super().append(Span(parent))
+        super().append(GlyphsSpan(parent))
 
     # Line is a simple state machine. Different methods are assigned to
     # Line.append, depending on the current state.
@@ -460,8 +463,8 @@ class Line(list):
         width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
             if not self:
-                self[-1].parent.warn('item too long to fit on line',
-                                     self.container)
+                self[-1].span.warn('item too long to fit on line',
+                                   self.container)
             else:
                 return False
         self._cursor += width
@@ -536,10 +539,11 @@ class Line(list):
         #except IndexError:
         #    return last_descender
 
-        descender = min(float(span.parent.descender) for span in self)
-
+        descender = min(float(glyph_span.span.descender)
+                        for glyph_span in self)
         if last_descender is None:
-            advance = max(float(span.parent.ascender) for span in self)
+            advance = max(float(glyph_span.span.ascender)
+                          for glyph_span in self)
         else:
             advance = line_spacing.advance(self, last_descender)
         container.advance(advance)
@@ -565,11 +569,11 @@ class Line(list):
         elif justification == RIGHT:
             left += extra_space
 
-        for span in self:
-            y_offset = span.parent.y_offset
+        for glyph_span in self:
+            y_offset = glyph_span.span.y_offset
             top = container.cursor - y_offset
-            sg = container.canvas.show_glyphs(left, top, span.parent.font, span.parent.height)
-            for glyphs_and_widths in span:
+            sg = container.canvas.show_glyphs(left, top, glyph_span.span)
+            for glyphs_and_widths in glyph_span:
                 left += sg.send(glyphs_and_widths)
             sg.close()
         container.advance(- descender)
