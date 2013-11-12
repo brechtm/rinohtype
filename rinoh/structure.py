@@ -14,7 +14,7 @@ from itertools import chain, tee
 from .layout import EndOfContainer, MaybeContainer
 from .flowable import Flowable, FlowableState
 from .number import format_number, NUMBER
-from .paragraph import ParagraphStyle, Paragraph, Tab, TabStop, RIGHT
+from .paragraph import ParagraphStyle, Paragraph, TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE

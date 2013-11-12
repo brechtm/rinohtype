@@ -45,7 +45,6 @@ from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .layout import EndOfContainer
 from .reference import FieldException
-from .text import Space, Tab, Spacer, SPECIAL_CHARS
 from .text import NewlineException, TabException, TabSpaceExceeded
 from .text import TextStyle, MixedStyledText
 
@@ -260,8 +259,8 @@ class Paragraph(MixedStyledText, Flowable):
             nonlocal saved_state, state, descender
             try:
                 if line:
-                    descender = line.typeset(container, justification, line_spacing,
-                                             descender, last_line)
+                    descender = line.typeset(container, justification,
+                                             line_spacing, descender, last_line)
                     saved_state = copy(state)
             except EndOfContainer as e:
                 raise EndOfContainer(saved_state)
@@ -292,7 +291,7 @@ class Paragraph(MixedStyledText, Flowable):
                 ligatures = self.get_style('ligatures')
                 # TODO: handle ligatures at span borders
 
-                def words_to_glyphs(word):
+                def word_to_glyphs(word):
                     glyphs_widths = ((glyph, scale * glyph.width)
                                      for glyph in (get_glyph(char)
                                                    for char in word))
@@ -317,10 +316,12 @@ class Paragraph(MixedStyledText, Flowable):
                         word = next(words)
                     except StopIteration:
                         break
-                    glyphs_and_widths = words_to_glyphs(word)
-                    if not line.append(glyphs_and_widths):
+                    glyphs_and_widths = word_to_glyphs(word)
+                    if word == ' ' and line:
+                        line.append_space(glyphs_and_widths[0])
+                    elif not line.append(glyphs_and_widths):
                         for first, second in hyphenate(word):
-                            glyphs_and_widths = words_to_glyphs(first)
+                            glyphs_and_widths = word_to_glyphs(first)
                             if line.append(glyphs_and_widths):
                                 saved_words, words = tee(chain([second], words))
                         typeset_line(line)
@@ -422,6 +423,12 @@ class GlyphsSpan(list):
     def __init__(self, span):
         super().__init__()
         self.span = span
+        self.space_indices = set()
+        self.space_glyph_and_width = None, 0.0
+
+    def append_space(self, glyph_and_width):
+        self.space_indices.add(len(self))
+        self.space_glyph_and_width = glyph_and_width
 
 
 class Line(list):
@@ -441,20 +448,16 @@ class Line(list):
         self._cursor = indent
         self._has_tab = False
         self._current_tab = None
-        self.number_of_spaces = 0
 
     def new_span(self, parent):
         super().append(GlyphsSpan(parent))
 
+    def append_space(self, glyph_and_width):
+        self._cursor += glyph_and_width[1]
+        self[-1].append_space(glyph_and_width)
+
     # Line is a simple state machine. Different methods are assigned to
     # Line.append, depending on the current state.
-
-    def _empty_append(self, item):
-        """Append method used when the line is still empty. Discards `item` if
-        it is a space (:class:`Space` and subclasses)."""
-        if not isinstance(item, Space):
-            self.append = self._normal_append
-            return self.append(item)
 
     @profile
     def _normal_append(self, glyphs_and_widths):
@@ -531,13 +534,8 @@ class Line(list):
         whether this is the last line of the paragraph.
 
         Returns the line's descender size."""
-        #try:
-        #    # drop spaces at the end of the line
-        #    while isinstance(self.spans[-1][-1], ' '):
-        #        #self._cursor -= self.pop().width
-        #        self.spans[-1].pop()
-        #except IndexError:
-        #    return last_descender
+        # drop space at the end of the line
+        self[-1].space_indices.discard(len(self[-1]))
 
         descender = min(float(glyph_span.span.descender)
                         for glyph_span in self)
@@ -560,10 +558,14 @@ class Line(list):
             justification = LEFT
         extra_space = self.width - self._cursor
         if justification == BOTH:
-            #if self.number_of_spaces:
-            #    # TODO: padding added to spaces should be prop. to font size
-            #    items = stretch_spaces(items, extra_space / self.number_of_spaces)
-            pass
+            # TODO: padding added to spaces should be prop. to font size
+            nr_spaces = sum(len(glyph_span.space_indices)
+                            for glyph_span in self)
+            add_to_spaces = extra_space / nr_spaces
+            for glyph_span in self:
+                space_glyph, space_width = glyph_span.space_glyph_and_width
+                space_width += add_to_spaces
+                glyph_span.space_glyph_and_width = space_glyph, space_width
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:
@@ -573,8 +575,12 @@ class Line(list):
             y_offset = glyph_span.span.y_offset
             top = container.cursor - y_offset
             sg = container.canvas.show_glyphs(left, top, glyph_span.span)
-            for glyphs_and_widths in glyph_span:
+            for index, glyphs_and_widths in enumerate(glyph_span):
+                if index in glyph_span.space_indices:
+                    left += sg.send([glyph_span.space_glyph_and_width])
                 left += sg.send(glyphs_and_widths)
+            if len(glyph_span) in glyph_span.space_indices:
+                left += sg.send([glyph_span.space_glyph_and_width])
             sg.close()
         container.advance(- descender)
         return descender
@@ -589,17 +595,5 @@ def expand_tabs(items):
         if isinstance(item, Tab):
             for element in item.expand():
                 yield element
-        else:
-            yield item
-
-
-def stretch_spaces(items, add_to_spaces):
-    """Generator replacing all :class:`Space`s with :class:`Spacer`s with a
-    width equal to that of a space plus `add_to_spaces`.
-    Non-spaces are yielded as is."""
-    for item in items:
-        if type(item) is Space:
-            yield Spacer(item.width + add_to_spaces,
-                         style=item.style, parent=item.parent)
         else:
             yield item
