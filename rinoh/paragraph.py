@@ -265,17 +265,6 @@ class Paragraph(MixedStyledText, Flowable):
             except EndOfContainer as e:
                 raise EndOfContainer(saved_state)
 
-        def render_nested_flowable(flowable):
-            nonlocal state, descender
-            try:
-                height, descender = flowable.flow(container, descender,
-                                                  state.nested_flowable_state)
-                state.nested_flowable_state = None
-            except EndOfContainer as e:
-                state.prepend(flowable)
-                state.nested_flowable_state = e.flowable_state
-                raise EndOfContainer(state)
-
         line = Line(tab_stops, line_width, container, indent_first)
         while True:
             try:
@@ -317,7 +306,7 @@ class Paragraph(MixedStyledText, Flowable):
                     except StopIteration:
                         break
                     glyphs_and_widths = word_to_glyphs(word)
-                    if word == ' ' and line:
+                    if word == ' ':
                         line.append_space(glyphs_and_widths[0])
                     elif not line.append(glyphs_and_widths):
                         for first, second in hyphenate(word):
@@ -331,9 +320,16 @@ class Paragraph(MixedStyledText, Flowable):
                     words, saved_words = tee(words)
             except FieldException as e:
                 state.spans = chain(e.field_spans(container), state.spans)
-            except FlowableException:
+            except FlowableException as e:
                 typeset_line(line, last_line=True)
-                #render_nested_flowable(word)
+                try:
+                    height, descender = e.flowable.flow(container, descender,
+                                                        state.nested_flowable_state)
+                    state.nested_flowable_state = None
+                except EndOfContainer as e:
+                    state.prepend(e.flowable)
+                    state.nested_flowable_state = e.flowable_state
+                    raise EndOfContainer(state)
                 line = Line(tab_stops, line_width, container)
             except StopIteration:
                 if line:

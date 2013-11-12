@@ -26,7 +26,8 @@ __all__ = ['Flowable', 'FlowableStyle', 'Floating']
 
 
 class FlowableException(Exception):
-    pass
+    def __init__(self, flowable):
+        self.flowable = flowable
 
 
 class FlowableStyle(Style):
@@ -84,10 +85,14 @@ class Flowable(Styled):
             pass
         return container.cursor - start_offset, last_descender
 
+    @property
+    def text(self):
+        raise FlowableException(self)
+
     def spans(self):
         """Raises :class:`FlowableException`.
         (accessed when this flowable is embedded in a paragraph)"""
-        raise FlowableException
+        yield self
 
     def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's
