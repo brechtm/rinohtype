@@ -9,7 +9,7 @@
 from copy import copy
 from warnings import warn
 
-from .text import SingleStyledText, TextStyle, Superscript
+from .text import StyledText, SingleStyledText, Superscript
 
 
 __all__ = ['FieldException', 'Referenceable',
@@ -18,15 +18,17 @@ __all__ = ['FieldException', 'Referenceable',
 
 
 class FieldException(Exception):
-    pass
+    def __init__(self, field_spans):
+        self.field_spans = field_spans
 
 
-class Field(SingleStyledText):
-    def __init__(self):
-        super().__init__('')
+class Field(StyledText):
+    @property
+    def text(self):
+        raise FieldException(self.field_spans)
 
     def spans(self):
-        raise FieldException
+        yield self
 
     def field_spans(self, container):
         raise NotImplementedError

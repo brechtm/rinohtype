@@ -278,10 +278,12 @@ class Paragraph(MixedStyledText, Flowable):
         while True:
             try:
                 span = state.next_span()        # throws StopIteration
-                line.new_span(span.parent)
-                font = span.parent.font
-                scale = span.parent.height / font.units_per_em
-                variant = SMALL_CAPITAL if span.parent.get_style('small_caps') else None
+                characters = iter(span.text)    # throws the other exceptions
+                line.new_span(span)
+                font = span.font
+                scale = span.height / font.units_per_em
+                variant = (SMALL_CAPITAL if span.get_style('small_caps')
+                           else None)
                 get_glyph = partial(font.metrics.get_glyph, variant=variant)
                 kerning = self.get_style('kerning')
                 ligatures = self.get_style('ligatures')
@@ -289,8 +291,8 @@ class Paragraph(MixedStyledText, Flowable):
 
                 def words_to_glyphs(word):
                     glyphs_widths = ((glyph, scale * glyph.width)
-                                      for glyph in (get_glyph(char)
-                                                    for char in word))
+                                     for glyph in (get_glyph(char)
+                                                   for char in word))
                     if kerning:
                         glyphs_widths = kern(glyphs_widths,
                                              font.metrics.get_kerning, scale)
@@ -306,7 +308,6 @@ class Paragraph(MixedStyledText, Flowable):
                 else:
                     hyphenate = dont_hyphenate
 
-                characters = iter(span.parent.text)
                 saved_words, words = tee(characters_to_words(characters))
                 while True:
                     try:
@@ -322,12 +323,10 @@ class Paragraph(MixedStyledText, Flowable):
                         typeset_line(line)
                         words = saved_words
                         line = Line(tab_stops, line_width, container)
-                        line.new_span(span.parent)
+                        line.new_span(span)
                     words, saved_words = tee(words)
-            except FieldException:
-                pass
-                #field_words = split_into_words(word.field_spans(container))
-                #state.spans = chain(field_words, state.spans)
+            except FieldException as e:
+                state.spans = chain(e.field_spans(container), state.spans)
             except FlowableException:
                 typeset_line(line, last_line=True)
                 #render_nested_flowable(word)
@@ -352,11 +351,6 @@ def characters_to_words(characters):
             word_chars.append(char)
     if word_chars:
         yield ''.join(word_chars)
-
-
-def pass_through_filter(glyphs_and_widths):
-    for glyph_and_width in glyphs_and_widths:
-        yield glyph_and_width
 
 
 def form_ligatures(glyphs_and_widths, get_ligature, scale):

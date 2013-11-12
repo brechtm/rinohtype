@@ -275,15 +275,7 @@ class SingleStyledText(StyledText):
 
     def spans(self):
         """Yield this single-styled text itself."""
-        yield Span(self)
-
-
-class Span(object):
-    def __init__(self, parent):
-        self.parent = parent
-
-    def split(self):
-        return self.parent.split()
+        yield self
 
 
 class MixedStyledText(StyledText, list):
