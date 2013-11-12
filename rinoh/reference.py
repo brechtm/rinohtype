@@ -23,12 +23,12 @@ class FieldException(Exception):
 
 
 class Field(StyledText):
-    @property
-    def text(self):
-        raise FieldException(self.field_spans)
-
     def spans(self):
-        yield self
+        yield self, None
+
+    @property
+    def font(self):
+        raise FieldException(self.field_spans)
 
     def field_spans(self, container):
         raise NotImplementedError

@@ -275,7 +275,19 @@ class SingleStyledText(StyledText):
 
     def spans(self):
         """Yield this single-styled text itself."""
-        yield self
+        characters = self.text
+        word_chars = []
+        for char in characters:
+            if char in ' \t\n':
+                if word_chars:
+                    yield self, ''.join(word_chars)
+                    word_chars = []
+                yield self, char
+            else:
+                word_chars.append(char)
+        if word_chars:
+            yield self, ''.join(word_chars)
+
 
 
 class MixedStyledText(StyledText, list):

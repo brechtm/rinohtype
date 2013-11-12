@@ -85,14 +85,14 @@ class Flowable(Styled):
             pass
         return container.cursor - start_offset, last_descender
 
-    @property
-    def text(self):
-        raise FlowableException(self)
-
     def spans(self):
         """Raises :class:`FlowableException`.
         (accessed when this flowable is embedded in a paragraph)"""
-        yield self
+        yield self, None
+
+    @property
+    def font(self):
+        raise FlowableException(self)
 
     def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's
