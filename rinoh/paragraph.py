@@ -202,22 +202,22 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, spans, first_line=True, nested_flowable_state=None):
-        self.spans = spans
+    def __init__(self, items, first_line=True, nested_flowable_state=None):
+        self.items = items
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
-        copy_spans, self.spans = tee(self.spans)
+        copy_items, self.items = tee(self.items)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_spans, self.first_line,
+        return self.__class__(copy_items, self.first_line,
                               copy_nested_flowable_state)
 
-    def next_span(self):
-        return next(self.spans)
+    def next_item(self):
+        return next(self.items)
 
-    def prepend(self, span):
-        self.spans = chain((span, ), self.spans)
+    def prepend(self, span, item):
+        self.items = chain(((span, item), ), self.items)
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -226,7 +226,7 @@ class Paragraph(MixedStyledText, Flowable):
 
     style_class = ParagraphStyle
 
-    spans = Flowable.spans
+    split = Flowable.split
 
     def __init__(self, text_or_items, style=None):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
@@ -250,7 +250,7 @@ class Paragraph(MixedStyledText, Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(MixedStyledText.spans(self))
+        state = state or ParagraphState(MixedStyledText.split(self))
         saved_state = copy(state)
 
         def typeset_line(line, last_line=False):
@@ -269,64 +269,37 @@ class Paragraph(MixedStyledText, Flowable):
         span = None
         while True:
             try:
-                word_span, word = state.next_span()
-                if word_span is not span:
-                    span = word_span
-                    font = span.font
+                new_span, word = state.next_item()      # raises StopIteration
+                if new_span is not span:
+                    span = new_span
+                    to_glyphs, hyphenate = create_to_glyphs_and_hyphenate(span)
                     line.new_span(span)
-                    scale = span.height / font.units_per_em
-                    variant = (SMALL_CAPITAL if span.get_style('small_caps')
-                               else None)
-                    get_glyph = partial(font.metrics.get_glyph, variant=variant)
-                    kerning = self.get_style('kerning')
-                    ligatures = self.get_style('ligatures')
-                    # TODO: handle ligatures at span borders
 
-                    def word_to_glyphs(word):
-                        glyphs_widths = ((glyph, scale * glyph.width)
-                                         for glyph in (get_glyph(char)
-                                                       for char in word))
-                        if kerning:
-                            glyphs_widths = kern(glyphs_widths,
-                                                 font.metrics.get_kerning, scale)
-                        if ligatures:
-                            glyphs_widths = form_ligatures(glyphs_widths,
-                                                           font.metrics.get_ligature,
-                                                           scale)
-                        return list(glyphs_widths)
-
-                    if self.get_style('hyphenate'):
-                        hyphenate = create_hyphenate(self.get_style('hyphen_lang'),
-                                                     self.get_style('hyphen_chars'))
-                    else:
-                        hyphenate = dont_hyphenate
-
-                glyphs_and_widths = word_to_glyphs(word)
+                glyphs_and_widths = to_glyphs(word)
                 if word == ' ':
                     line.append_space(glyphs_and_widths[0])
                 elif not line.append(glyphs_and_widths):
                     for first, second in hyphenate(word):
-                        glyphs_and_widths = word_to_glyphs(first)
+                        glyphs_and_widths = to_glyphs(first)
                         if line.append(glyphs_and_widths):
-                            state.prepend((span, second))
+                            state.prepend(span, second)
                             break
                     else:
-                       state.prepend((span, word))
+                        state.prepend(span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
                     line.new_span(span)
             except FieldException as e:
-                state.spans = chain(e.field_spans(container), state.spans)
-            except FlowableException as e:
-                flowable = e.flowable
+                state.items = chain(e.split_field(container), state.items)
+            except FlowableException as fe:
                 typeset_line(line, last_line=True)
                 try:
-                    height, descender = flowable.flow(container, descender,
-                                                      state.nested_flowable_state)
+                    _, descender = fe.flowable.flow(container, descender,
+                                                    state.nested_flowable_state)
                     state.nested_flowable_state = None
-                except EndOfContainer as e:
-                    state.prepend(flowable)
-                    state.nested_flowable_state = e.flowable_state
+                except EndOfContainer as eoc:
+                    state.prepend(fe.flowable, None)
+                    state.nested_flowable_state = eoc.flowable_state
                     raise EndOfContainer(state)
                 line = Line(tab_stops, line_width, container)
             except StopIteration:
@@ -335,6 +308,34 @@ class Paragraph(MixedStyledText, Flowable):
                 break
 
         return descender
+
+
+def create_to_glyphs_and_hyphenate(span):
+    font = span.font
+    scale = span.height / font.units_per_em
+    variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
+    get_glyph = partial(font.metrics.get_glyph, variant=variant)
+    kerning = span.get_style('kerning')
+    ligatures = span.get_style('ligatures')
+    # TODO: handle ligatures at span borders
+
+    def word_to_glyphs(word):
+        glyphs_widths = ((glyph, scale * glyph.width)
+                         for glyph in (get_glyph(char) for char in word))
+        if kerning:
+            glyphs_widths = kern(glyphs_widths, font.metrics.get_kerning, scale)
+        if ligatures:
+            glyphs_widths = form_ligatures(glyphs_widths,
+                                           font.metrics.get_ligature, scale)
+        return list(glyphs_widths)
+
+    if span.get_style('hyphenate'):
+        hyphenate = create_hyphenate(span.get_style('hyphen_lang'),
+                                     span.get_style('hyphen_chars'))
+    else:
+        hyphenate = dont_hyphenate
+
+    return word_to_glyphs, hyphenate
 
 
 def form_ligatures(glyphs_and_widths, get_ligature, scale):

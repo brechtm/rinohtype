@@ -439,12 +439,12 @@ class CitationField(Field):
     def warn_unknown_reference_id(self, item, container):
         self.warn("Unknown reference ID '{}'".format(item.key), container)
 
-    def field_spans(self, container):
+    def split_field(self, container):
         callback = lambda item: self.warn_unknown_reference_id(item, container)
         text = self.citation.bibliography.cite(self.citation, callback)
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
-        return field_text.spans()
+        return field_text.split()
 
 
 # pages and their layout

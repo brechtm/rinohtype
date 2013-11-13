@@ -85,13 +85,13 @@ class Flowable(Styled):
             pass
         return container.cursor - start_offset, last_descender
 
-    def spans(self):
-        """Raises :class:`FlowableException`.
-        (accessed when this flowable is embedded in a paragraph)"""
+    def split(self):
         yield self, None
 
     @property
     def font(self):
+        """Raises :class:`FlowableException`.
+        (accessed when this flowable is embedded in a paragraph)"""
         raise FlowableException(self)
 
     def render(self, container, descender, state=None):

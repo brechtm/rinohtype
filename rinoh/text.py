@@ -192,9 +192,9 @@ class StyledText(Styled):
             # get the position style using self.get_style('position')
         return offset
 
-    def spans(self):
+    def split(self):
         """Generator yielding all of this styled text, one
-        :class:`SingleStyledText` at a time (used in typesetting)."""
+        item (word or space) at a time (used in typesetting)."""
         raise NotImplementedError
 
 
@@ -273,8 +273,8 @@ class SingleStyledText(StyledText):
     def line_gap(self):
         return self.font.line_gap * float(self.get_style('font_size'))
 
-    def spans(self):
-        """Yield this single-styled text itself."""
+    def split(self):
+        """Yield the words and spaces in this single-styled text."""
         characters = self.text
         word_chars = []
         for char in characters:
@@ -327,13 +327,13 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self):
+    def split(self):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
         # TODO: support for mixed-style words
         for item in self:
-            for span in item.spans():
-                yield span
+            for item in item.split():
+                yield item
 
 
 class StyledRawText(SingleStyledText):
@@ -361,22 +361,13 @@ class LiteralText(StyledRawText):
         no_break_spaced = text.replace(' ', chr(0xa0))
         super().__init__(no_break_spaced, style=style, parent=parent)
 
-    def hyphenate(self):
-        """Hyphenation is never performed for literal text, hence yields a
-        single tuple containing this literal text itself and `None`."""
-        yield self, None
-
 
 class Character(StyledRawText):
     """:class:`SingleStyledText` consisting of a single character."""
 
     def split(self):
         """Yields this character itself."""
-        yield self
-
-    def hyphenate(self):
-        """A single character can't be hyphenated."""
-        yield self, None
+        yield self, self.text
 
 
 class Space(Character):

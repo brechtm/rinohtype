@@ -18,19 +18,19 @@ __all__ = ['FieldException', 'Referenceable',
 
 
 class FieldException(Exception):
-    def __init__(self, field_spans):
-        self.field_spans = field_spans
+    def __init__(self, split_field):
+        self.split_field = split_field
 
 
 class Field(StyledText):
-    def spans(self):
+    def split(self):
         yield self, None
 
     @property
     def font(self):
-        raise FieldException(self.field_spans)
+        raise FieldException(self.split_field)
 
-    def field_spans(self, container):
+    def split_field(self, container):
         raise NotImplementedError
 
 
@@ -46,10 +46,9 @@ class Variable(Field):
         self.type = type
 
     def __repr__(self):
-        return "{0}({1})".format(self.__class__.__name__,
-                                              self.type)
+        return "{0}({1})".format(self.__class__.__name__, self.type)
 
-    def field_spans(self, container):
+    def split_field(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:
             text = str(container.page.number)
@@ -65,7 +64,7 @@ class Variable(Field):
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
-        return field_text.spans()
+        return field_text.split()
 
 
 class Referenceable(object):
@@ -96,7 +95,7 @@ class Reference(Field):
         self.id = id
         self.type = type
 
-    def field_spans(self, container):
+    def split_field(self, container):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
@@ -120,7 +119,7 @@ class Reference(Field):
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
-        return field_text.spans()
+        return field_text.split()
 
 
 class Footnote(Field):
@@ -128,7 +127,7 @@ class Footnote(Field):
         super().__init__()
         self.note = note
 
-    def field_spans(self, container):
+    def split_field(self, container):
         number = container._footnote_space.next_number
         note = copy(self.note)
         nr = Superscript(str(number) + '  ')
@@ -138,4 +137,4 @@ class Footnote(Field):
         note.flow(container._footnote_space, None)
         field_text = Superscript(str(number))
         field_text.parent = self.parent
-        return field_text.spans()
+        return field_text.split()
