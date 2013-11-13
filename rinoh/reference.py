@@ -18,19 +18,22 @@ __all__ = ['FieldException', 'Referenceable',
 
 
 class FieldException(Exception):
-    def __init__(self, split_field):
-        self.split_field = split_field
+    def __init__(self, field_spans):
+        self.field_spans = field_spans
 
 
 class Field(StyledText):
+    def spans(self):
+        yield self
+
     def split(self):
-        yield self, None
+        yield
 
     @property
     def font(self):
-        raise FieldException(self.split_field)
+        raise FieldException(self.field_spans)
 
-    def split_field(self, container):
+    def field_spans(self, container):
         raise NotImplementedError
 
 
@@ -48,7 +51,7 @@ class Variable(Field):
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
-    def split_field(self, container):
+    def field_spans(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:
             text = str(container.page.number)
@@ -64,7 +67,7 @@ class Variable(Field):
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
-        return field_text.split()
+        return field_text.spans()
 
 
 class Referenceable(object):
@@ -95,7 +98,7 @@ class Reference(Field):
         self.id = id
         self.type = type
 
-    def split_field(self, container):
+    def field_spans(self, container):
         try:
             referenced_item = self.document.elements[self.id]
             if self.type == REFERENCE:
@@ -119,7 +122,7 @@ class Reference(Field):
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
-        return field_text.split()
+        return field_text.spans()
 
 
 class Footnote(Field):
@@ -127,7 +130,7 @@ class Footnote(Field):
         super().__init__()
         self.note = note
 
-    def split_field(self, container):
+    def field_spans(self, container):
         number = container._footnote_space.next_number
         note = copy(self.note)
         nr = Superscript(str(number) + '  ')
@@ -137,4 +140,4 @@ class Footnote(Field):
         note.flow(container._footnote_space, None)
         field_text = Superscript(str(number))
         field_text.parent = self.parent
-        return field_text.split()
+        return field_text.spans()

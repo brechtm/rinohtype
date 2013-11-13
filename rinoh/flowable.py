@@ -85,8 +85,11 @@ class Flowable(Styled):
             pass
         return container.cursor - start_offset, last_descender
 
+    def spans(self):
+        yield self
+
     def split(self):
-        yield self, None
+        yield
 
     @property
     def font(self):

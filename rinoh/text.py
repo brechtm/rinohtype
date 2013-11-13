@@ -192,9 +192,9 @@ class StyledText(Styled):
             # get the position style using self.get_style('position')
         return offset
 
-    def split(self):
-        """Generator yielding all of this styled text, one
-        item (word or space) at a time (used in typesetting)."""
+    def span(self):
+        """Generator yielding all spans in this styled text, one
+        item at a time (used in typesetting)."""
         raise NotImplementedError
 
 
@@ -273,6 +273,9 @@ class SingleStyledText(StyledText):
     def line_gap(self):
         return self.font.line_gap * float(self.get_style('font_size'))
 
+    def spans(self):
+        yield self
+
     def split(self):
         """Yield the words and spaces in this single-styled text."""
         characters = self.text
@@ -280,13 +283,13 @@ class SingleStyledText(StyledText):
         for char in characters:
             if char in ' \t\n':
                 if word_chars:
-                    yield self, ''.join(word_chars)
+                    yield ''.join(word_chars)
                     word_chars = []
-                yield self, char
+                yield char
             else:
                 word_chars.append(char)
         if word_chars:
-            yield self, ''.join(word_chars)
+            yield ''.join(word_chars)
 
 
 
@@ -327,13 +330,10 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def split(self):
+    def spans(self):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        # TODO: support for mixed-style words
-        for item in self:
-            for item in item.split():
-                yield item
+        return (span for item in self for span in item.spans())
 
 
 class StyledRawText(SingleStyledText):
@@ -365,9 +365,9 @@ class LiteralText(StyledRawText):
 class Character(StyledRawText):
     """:class:`SingleStyledText` consisting of a single character."""
 
-    def split(self):
+    def spans(self):
         """Yields this character itself."""
-        yield self, self.text
+        yield self
 
 
 class Space(Character):

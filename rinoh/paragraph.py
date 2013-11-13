@@ -202,8 +202,9 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, items, first_line=True, nested_flowable_state=None):
-        self.items = items
+    def __init__(self, spans, first_line=True, nested_flowable_state=None,
+                 _copy=False):
+        self.items = spans if _copy else self._form_span_item_pairs(spans)
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
@@ -211,13 +212,20 @@ class ParagraphState(FlowableState):
         copy_items, self.items = tee(self.items)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
         return self.__class__(copy_items, self.first_line,
-                              copy_nested_flowable_state)
+                              copy_nested_flowable_state, _copy=True)
 
     def next_item(self):
         return next(self.items)
 
-    def prepend(self, span, item):
+    def prepend_item(self, span, item):
         self.items = chain(((span, item), ), self.items)
+
+    def prepend_spans(self, spans):
+        self.items = chain(self._form_span_item_pairs(spans), self.items)
+
+    @staticmethod
+    def _form_span_item_pairs(spans):
+        return ((span, item) for span in spans for item in span.split())
 
 
 class Paragraph(MixedStyledText, Flowable):
@@ -250,7 +258,7 @@ class Paragraph(MixedStyledText, Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(MixedStyledText.split(self))
+        state = state or ParagraphState(MixedStyledText.spans(self))
         saved_state = copy(state)
 
         def typeset_line(line, last_line=False):
@@ -282,15 +290,15 @@ class Paragraph(MixedStyledText, Flowable):
                     for first, second in hyphenate(word):
                         glyphs_and_widths = to_glyphs(first)
                         if line.append(glyphs_and_widths):
-                            state.prepend(span, second)
+                            state.prepend_item(span, second)
                             break
                     else:
-                        state.prepend(span, word)
+                        state.prepend_item(span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
                     line.new_span(span)
             except FieldException as e:
-                state.items = chain(e.split_field(container), state.items)
+                state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
                 typeset_line(line, last_line=True)
                 try:
@@ -298,7 +306,7 @@ class Paragraph(MixedStyledText, Flowable):
                                                     state.nested_flowable_state)
                     state.nested_flowable_state = None
                 except EndOfContainer as eoc:
-                    state.prepend(fe.flowable, None)
+                    state.prepend_item(fe.flowable, None)
                     state.nested_flowable_state = eoc.flowable_state
                     raise EndOfContainer(state)
                 line = Line(tab_stops, line_width, container)
