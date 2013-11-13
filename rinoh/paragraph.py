@@ -515,6 +515,9 @@ class Line(list):
         whether this is the last line of the paragraph.
 
         Returns the line's descender size."""
+        # remove empty spans at the end of the line
+        while len(self[-1]) == 0:
+            self.pop()
         # drop space at the end of the line
         self[-1].space_indices.discard(len(self[-1]))
 
