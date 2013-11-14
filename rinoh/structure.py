@@ -83,24 +83,42 @@ class ListStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class ListState(FlowableState):
-    def __init__(self, list_items, current_list_item_state=None):
-        self.list_items = list_items
-        self.current_list_item_state = current_list_item_state
+class GroupedFlowablesState(FlowableState):
+    def __init__(self, flowables, first_flowable_state=None):
+        self.flowables = flowables
+        self.first_flowable_state = first_flowable_state
 
     def __copy__(self):
-        copy_list_items, self.list_items = tee(self.list_items)
-        copy_current_list_item_state = copy(self.current_list_item_state)
-        return self.__class__(copy_list_items, copy_current_list_item_state)
+        copy_list_items, self.flowables = tee(self.flowables)
+        copy_first_flowable_state = copy(self.first_flowable_state)
+        return self.__class__(copy_list_items, copy_first_flowable_state)
 
-    def next_list_item(self):
-        return next(self.list_items)
+    def next_flowable(self):
+        return next(self.flowables)
 
-    def prepend_list_item(self, list_item):
-        self.list_items = chain((list_item, ), self.list_items)
+    def prepend(self, flowable, first_flowable_state):
+        self.flowables = chain((flowable, ), self.flowables)
+        self.first_flowable_state = first_flowable_state
 
 
-class List(Flowable, list):
+class GroupedFlowables(Flowable, list):
+    def render(self, container, descender, state=None):
+        state = state or GroupedFlowablesState(iter(self), None)
+
+        try:
+            while True:
+                flowable = state.next_flowable()
+                _, descender = flowable.flow(container, descender,
+                                             state=state.first_flowable_state)
+                state.first_flowable_state = None
+        except EndOfContainer as eoc:
+            state.prepend(flowable, eoc.flowable_state)
+            raise EndOfContainer(state)
+        except StopIteration:
+            pass
+
+
+class List(GroupedFlowables):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
@@ -125,22 +143,6 @@ class List(Flowable, list):
         last = ListItem(numbers[-1], separator, items[-1],
                         style=last_item_style, parent=self)
         self.append(last)
-
-    def render(self, container, descender, state=None):
-        state = state or ListState(iter(self), None)
-
-        try:
-            while True:
-                list_item = state.next_list_item()
-                _, descender = list_item.flow(container, descender,
-                                              state=state.current_list_item_state)
-                state.current_list_item_state = None
-        except EndOfContainer as eoc:
-            state.prepend_list_item(list_item)
-            state.current_list_item_state = eoc.flowable_state
-            raise EndOfContainer(state)
-        except StopIteration:
-            pass
 
 
 class ListItemNumber(Paragraph):
@@ -293,12 +295,12 @@ class TableOfContentsStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class TableOfContents(Paragraph):
+class TableOfContents(GroupedFlowables):
     style_class = TableOfContentsStyle
     location = 'table of contents'
 
-    def __init__(self, style=None, styles=[]):
-        super().__init__([], style)
+    def __init__(self, style=None, parent=None, styles=[]):
+        super().__init__(style=style, parent=parent)
         self.styles = styles
 
     def register(self, flowable):
