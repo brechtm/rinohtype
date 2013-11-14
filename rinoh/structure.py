@@ -83,11 +83,28 @@ class ListStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class List(Paragraph):
+class ListState(FlowableState):
+    def __init__(self, list_items, current_list_item_state=None):
+        self.list_items = list_items
+        self.current_list_item_state = current_list_item_state
+
+    def __copy__(self):
+        copy_list_items, self.list_items = tee(self.list_items)
+        copy_current_list_item_state = copy(self.current_list_item_state)
+        return self.__class__(copy_list_items, copy_current_list_item_state)
+
+    def next_list_item(self):
+        return next(self.list_items)
+
+    def prepend_list_item(self, list_item):
+        self.list_items = chain((list_item, ), self.list_items)
+
+
+class List(Flowable, list):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
-        super().__init__([], style)
+        super().__init__(style)
         # TODO: replace item styles with custom render method
         item_style = ListStyle(space_above=0*PT,
                                space_below=self.style.item_spacing,
@@ -102,13 +119,28 @@ class List(Paragraph):
             separator = ''
             numbers = [style.bullet] * len(items)
         for i, item in enumerate(items[:-1]):
-            item = ListItem(numbers[i], separator, item, style=item_style)
-            item.parent = self
+            item = ListItem(numbers[i], separator, item, style=item_style,
+                            parent=self)
             self.append(item)
-        last = ListItem(numbers[-1], separator, items[-1], style=last_item_style)
-        last.parent = self
+        last = ListItem(numbers[-1], separator, items[-1],
+                        style=last_item_style, parent=self)
         self.append(last)
-        self.item_pointer = 0
+
+    def render(self, container, descender, state=None):
+        state = state or ListState(iter(self), None)
+
+        try:
+            while True:
+                list_item = state.next_list_item()
+                _, descender = list_item.flow(container, descender,
+                                              state=state.current_list_item_state)
+                state.current_list_item_state = None
+        except EndOfContainer as eoc:
+            state.prepend_list_item(list_item)
+            state.current_list_item_state = eoc.flowable_state
+            raise EndOfContainer(state)
+        except StopIteration:
+            pass
 
 
 class ListItemNumber(Paragraph):
@@ -120,8 +152,8 @@ class ListItemNumber(Paragraph):
 
 
 class ListItem(Flowable):
-    def __init__(self, number, separator, flowables, style=None):
-        super().__init__(style=style)
+    def __init__(self, number, separator, flowables, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
         tab_stop = TabStop(self.get_style('item_indent'), align=RIGHT)
         marker_style = ParagraphStyle(base=style, tab_stops=[tab_stop])
         self.marker = ListItemNumber([Tab() + number + separator],
@@ -212,7 +244,6 @@ class DefinitionList(Paragraph):
         last_term_par.parent = last_definition_par.parent = self
         self.append(last_term_par)
         self.append(last_definition_par)
-        self.item_pointer = 0
 
 
 class HeaderStyle(ParagraphStyle):
@@ -269,7 +300,6 @@ class TableOfContents(Paragraph):
     def __init__(self, style=None, styles=[]):
         super().__init__([], style)
         self.styles = styles
-        self.item_pointer = 0
 
     def register(self, flowable):
         if (isinstance(flowable, Heading) and
