@@ -157,7 +157,7 @@ class ListItem(Flowable):
         tab_stop = TabStop(self.get_style('item_indent'), align=RIGHT)
         marker_style = ParagraphStyle(base=style, tab_stops=[tab_stop])
         self.marker = ListItemNumber([Tab() + number + separator],
-                                     style=marker_style)
+                                     style=marker_style, parent=self)
         self.flowables = flowables
 
     def render(self, container, last_descender, state=None):

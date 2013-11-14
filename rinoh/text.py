@@ -168,7 +168,10 @@ class StyledText(Styled):
     @profile
     def script_level(self):
         """Nesting level of super/subscript."""
-        level = self.parent.script_level if (self.parent is not None) else -1
+        try:
+            level = self.parent.script_level
+        except AttributeError:
+            level = -1
         return level + 1 if self.is_script() else level
 
     @property
@@ -184,7 +187,10 @@ class StyledText(Styled):
     @profile
     def y_offset(self):
         """Vertical baseline offset (up is positive)."""
-        offset = self.parent.y_offset if (self.parent is not None) else 0
+        try:
+            offset = self.parent.y_offset
+        except AttributeError:
+            offset = 0
         if self.is_script():
             offset += self.parent.height * self.position[self.style.position]
             # The Y offset should only change once for the nesting level

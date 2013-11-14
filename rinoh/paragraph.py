@@ -236,10 +236,10 @@ class Paragraph(MixedStyledText, Flowable):
 
     split = Flowable.split
 
-    def __init__(self, text_or_items, style=None):
+    def __init__(self, text_or_items, style=None, parent=None):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""
-        super().__init__(text_or_items, style=style)
+        super().__init__(text_or_items, style=style, parent=parent)
 
     @profile
     def render(self, container, descender, state=None):
