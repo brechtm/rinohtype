@@ -470,15 +470,6 @@ class NewlineException(Exception):
     """Exception signaling a :class:`Newline`."""
 
 
-class TabException(Exception):
-    """Exception signaling a :class:`Tab`."""
-
-
-class TabSpaceExceeded(Exception):
-    """Exception raised when the space for a right- or center-aligned tab stop
-    is exhausted."""
-
-
 class Newline(ControlCharacter):
     """Control character ending the current line and starting a new one."""
 
@@ -492,45 +483,10 @@ class Newline(ControlCharacter):
 class Tab(ControlCharacter):
     """Tabulator character, used for vertically aligning text."""
 
-    exception = TabException
-
     def __init__(self, *args, **kwargs):
         """Initialize this tab character. Its attribute :attr:`tab_width` is set
         a later point in time when context (:class:`TabStop`) is available."""
-        super().__init__(' ')
-        self.tab_width = 0
-
-    def shrink(self, width):
-        """Shrink the tab width by `width`."""
-        self.tab_width -= width
-        if self.tab_width < 0:
-            self.tab_width = 0
-            raise TabSpaceExceeded
-
-    def expand(self):
-        """Generator expanding this tab to either a spacer or a sequence of fill
-        strings. The yielded items have a total width equal to the required tab
-        width, as determined from the context.
-
-        If the associated :class:`TabStop` has a fill string set, the items
-        yielded consist of a sequence of these fill strings, preceeded by a
-        :class:`Spacer` to pad to the tab width. If no fill string is set, only
-        a single :class:`Spacer` is yielded."""
-        style_and_parent = {'style': self.style, 'parent': self.parent}
-        fill_string = self.tab_stop.fill
-        if fill_string:
-            fill_text = SingleStyledText(fill_string, **style_and_parent)
-            number, rest = divmod(self.tab_width, fill_text.width)
-            yield Spacer(rest, **style_and_parent)
-            for i in range(int(number)):
-                yield fill_text
-        else:
-            yield Spacer(self.tab_width, **style_and_parent)
-
-
-SPECIAL_CHARS = {' ': Space,
-                 '\t': Tab,
-                 '\n': Newline}
+        super().__init__('\t')
 
 
 # predefined text styles

@@ -45,7 +45,7 @@ from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .layout import EndOfContainer
 from .reference import FieldException
-from .text import NewlineException, TabException, TabSpaceExceeded
+from .text import NewlineException
 from .text import TextStyle, MixedStyledText
 
 
@@ -287,6 +287,8 @@ class Paragraph(MixedStyledText, Flowable):
                 glyphs_and_widths = to_glyphs(word)
                 if word == ' ':
                     line.append_space()
+                elif word == '\t':
+                    line.append_tab()
                 elif not line.append(glyphs_and_widths):
                     for first, second in hyphenate(word):
                         glyphs_and_widths = to_glyphs(first)
@@ -437,6 +439,8 @@ class Line(list):
         self._cursor = indent
         self._has_tab = False
         self._current_tab = None
+        self._current_tab_stop = None
+        self._tabs = []
 
     def new_span(self, parent, space_glyph_and_width):
         super().append(GlyphsSpan(parent, space_glyph_and_width))
@@ -445,9 +449,33 @@ class Line(list):
         self._cursor += self[-1].space_glyph_and_width[1]
         self[-1].append_space()
 
-    def append_space(self, glyph_and_width):
-        self._cursor += glyph_and_width[1]
-        self[-1].append_space(glyph_and_width)
+    def append_tab(self):
+        if not self.tab_stops:
+            self[-1].span.warn('No tab stops defined for this paragraph style.',
+                               self.container)
+            return self.append_space()
+        for tab_stop in self.tab_stops:
+            tab_position = tab_stop.get_position(self.width)
+            if self._cursor < tab_position:
+                tab_width = tab_position - self._cursor
+                tab_glyph_and_width = [self[-1].space_glyph_and_width[0],
+                                       tab_width]
+                self[-1].append((tab_glyph_and_width, ))
+                self._cursor += tab_width
+                self._current_tab_stop = tab_stop
+                if tab_stop.align in (RIGHT, CENTER):
+                    self._current_tab = tab_glyph_and_width
+                    self._current_tab_stop = tab_stop
+                    self.append = self._tab_append
+                else:
+                    self._current_tab = None
+                    self._current_tab_stop = None
+                    self.append = self._normal_append
+                break
+        else:
+            self[-1].span.warn('Tab did not fall into any of the tab stops.',
+                               self.container)
+        return True
 
     # Line is a simple state machine. Different methods are assigned to
     # Line.append, depending on the current state.
@@ -469,24 +497,22 @@ class Line(list):
 
     append = _normal_append
 
-    def _tab_append(self, item):
+    def _tab_append(self, glyphs_and_widths):
         """Append method used when we are in the context of a right-, or center-
-        aligned tab stop. This shrinks the width of the preceeding tab character
-        in order to obtain the alignment."""
-        tab_width = self._current_tab.tab_width
-        try:
-            factor = 2 if self._current_tab.tab_stop.align == CENTER else 1
-            width = item.width / factor
-            self._current_tab.shrink(width)
-        except TabException:
-            width, item = self._handle_tab(item)
-        except TabSpaceExceeded:
-            item.warn('Tab space exceeded.', self.container)
-            self._cursor -= tab_width
+        aligned tab stop. This shrinks the width of the preceding tab character
+        in order to obtain the tab alignment."""
+        item_width = sum(width for glyph, width in glyphs_and_widths)
+        tab_width = self._current_tab[1]
+        if self._current_tab_stop.align == CENTER:
+            item_width /= 2
+        if item_width < tab_width:
+            self._current_tab[1] -= item_width
+        else:
+            self[-1].span.warn('Tab space exceeded.', self.container)
+            self._current_tab[1] = 0
             self.append = self._normal_append
-            return self.append(item)
-        self._cursor += width
-        super().append(item)
+        self._cursor -= tab_width
+        return self._normal_append(glyphs_and_widths)
 
     def _handle_tab(self, tab):
         """Called when a :class:`Tab` is appended to the line. Searches for the
