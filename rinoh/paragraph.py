@@ -281,11 +281,12 @@ class Paragraph(MixedStyledText, Flowable):
                 if new_span is not span:
                     span = new_span
                     to_glyphs, hyphenate = create_to_glyphs_and_hyphenate(span)
-                    line.new_span(span)
+                    space_glyph_and_width = to_glyphs(' ')[0]
+                    line.new_span(span, space_glyph_and_width)
 
                 glyphs_and_widths = to_glyphs(word)
                 if word == ' ':
-                    line.append_space(glyphs_and_widths[0])
+                    line.append_space()
                 elif not line.append(glyphs_and_widths):
                     for first, second in hyphenate(word):
                         glyphs_and_widths = to_glyphs(first)
@@ -296,7 +297,7 @@ class Paragraph(MixedStyledText, Flowable):
                         state.prepend_item(span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(span)
+                    line.new_span(span, space_glyph_and_width)
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
@@ -409,15 +410,14 @@ def dont_hyphenate(word):
 
 
 class GlyphsSpan(list):
-    def __init__(self, span):
+    def __init__(self, span, space_glyph_and_width):
         super().__init__()
         self.span = span
         self.space_indices = set()
-        self.space_glyph_and_width = None, 0.0
+        self.space_glyph_and_width = space_glyph_and_width
 
-    def append_space(self, glyph_and_width):
+    def append_space(self):
         self.space_indices.add(len(self))
-        self.space_glyph_and_width = glyph_and_width
 
 
 class Line(list):
@@ -438,8 +438,12 @@ class Line(list):
         self._has_tab = False
         self._current_tab = None
 
-    def new_span(self, parent):
-        super().append(GlyphsSpan(parent))
+    def new_span(self, parent, space_glyph_and_width):
+        super().append(GlyphsSpan(parent, space_glyph_and_width))
+
+    def append_space(self):
+        self._cursor += self[-1].space_glyph_and_width[1]
+        self[-1].append_space()
 
     def append_space(self, glyph_and_width):
         self._cursor += glyph_and_width[1]
@@ -566,13 +570,14 @@ class Line(list):
         for glyph_span in self:
             y_offset = glyph_span.span.y_offset
             top = container.cursor - y_offset
+            space = (glyph_span.space_glyph_and_width, )
             sg = container.canvas.show_glyphs(left, top, glyph_span.span)
             for index, glyphs_and_widths in enumerate(glyph_span):
                 if index in glyph_span.space_indices:
-                    left += sg.send([glyph_span.space_glyph_and_width])
+                    left += sg.send(space)
                 left += sg.send(glyphs_and_widths)
             if len(glyph_span) in glyph_span.space_indices:
-                left += sg.send([glyph_span.space_glyph_and_width])
+                left += sg.send(space)
             sg.close()
         container.advance(- descender)
         return descender
