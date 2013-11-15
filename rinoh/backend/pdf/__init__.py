@@ -198,15 +198,6 @@ class Canvas(StringIO):
         print('f', file=self)
         self.restore_state()
 
-    def _code_to_char(self, code):
-        if code < 32 or code > 127:
-            char = '\{:03o}'.format(code)
-        else:
-            char = chr(code)
-            if char in ('\\', '(', ')'):
-                char = '\\' + char
-        return char
-
     @consumer
     @profile
     def show_glyphs(self, left, top, span):
@@ -236,10 +227,10 @@ class Canvas(StringIO):
                                 differences = cos.EncodingDifferences(occupied_codes)
                                 font_rsc['Encoding']['Differences'] = differences
                             code = differences.register(glyph)
-                        char = self._code_to_char(code)
+                        char = CODE_TO_CHAR[code]
                     elif isinstance(font, OpenTypeFont):
                         high, low = glyph.code >> 8, glyph.code & 0xFF
-                        char = self._code_to_char(high) + self._code_to_char(low)
+                        char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
                     adjust = int(glyph.width - displ)
                     if adjust:
                         string += '({}{}) {} '.format(current_string, char, adjust)
@@ -293,3 +284,20 @@ class PageCanvas(Canvas):
 
     def append(self, left, top):
         pass
+
+
+CODE_TO_CHAR = {}
+
+
+def _code_to_char(code):
+    if code < 32 or code > 127:
+        char = '\{:03o}'.format(code)
+    else:
+        char = chr(code)
+        if char in ('\\', '(', ')'):
+            char = '\\' + char
+    return char
+
+
+for code in range(256):
+    CODE_TO_CHAR[code] = _code_to_char(code)
