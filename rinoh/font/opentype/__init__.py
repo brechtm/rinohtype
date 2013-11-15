@@ -114,7 +114,7 @@ class OpenTypeMetrics(FontMetrics):
             except KeyError:
                 warn('{} does not support the language "{}". Falling back to '
                      'defaults.'.format(self.name, language, RinohWarning))
-            lang_sys_table = script_table['DefaultLangSys']
+                lang_sys_table = script_table['DefaultLangSys']
         else:
             lang_sys_table = script_table['DefaultLangSys']
         feature_indices = lang_sys_table['FeatureIndex']
