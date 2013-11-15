@@ -23,7 +23,7 @@ from rinoh.structure import Header, Footer, HeaderStyle, FooterStyle
 from rinoh.structure import TableOfContents, TableOfContentsStyle
 from rinoh.reference import Field, Reference, REFERENCE
 from rinoh.reference import Footnote as RinohFootnote
-from rinoh.flowable import Flowable, FlowableStyle, Floating
+from rinoh.flowable import Flowable, FlowableStyle, GroupedFlowables, Floating
 from rinoh.float import Figure as RinohFigure, CaptionStyle
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
@@ -421,12 +421,12 @@ class CSVTabular(CustomElement):
 
 from rinoh import csl_formatter
 
-class IEEEBibliography(Paragraph):
+
+class IEEEBibliography(GroupedFlowables):
     def __init__(self, items):
-        items = [Paragraph(item, style=PARENT_STYLE) for item in items]
+        super().__init__()
         for item in items:
-            item.parent = self
-        return super().__init__(items, style=styles['bibliography'])
+            self.append(Paragraph(item, style=styles['bibliography']))
 
 csl_formatter.Bibliography = IEEEBibliography
 
