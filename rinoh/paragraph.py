@@ -283,15 +283,16 @@ class Paragraph(MixedStyledText, Flowable):
                     to_glyphs, hyphenate = create_to_glyphs_and_hyphenate(span)
                     line.new_span(span, to_glyphs)
 
-                glyphs_and_widths = to_glyphs(word)
                 if word == ' ':
                     line.append_space()
                 elif word == '\t':
                     line.append_tab()
-                elif not line.append(glyphs_and_widths):
+                elif word == '\n':
+                    typeset_line(line, last_line=True)
+                    line = Line(tab_stops, line_width, container)
+                elif not line.append(to_glyphs(word)):
                     for first, second in hyphenate(word):
-                        glyphs_and_widths = to_glyphs(first)
-                        if line.append(glyphs_and_widths):
+                        if line.append(to_glyphs(first)):
                             state.prepend_item(span, second)
                             break
                     else:
