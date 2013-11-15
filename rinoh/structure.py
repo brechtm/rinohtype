@@ -12,7 +12,7 @@ from copy import copy
 from itertools import chain, tee
 
 from .layout import EndOfContainer, MaybeContainer
-from .flowable import Flowable, FlowableState
+from .flowable import Flowable, FlowableState, GroupedFlowables
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, Paragraph, TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
@@ -81,41 +81,6 @@ class ListStyle(ParagraphStyle):
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
-
-
-class GroupedFlowablesState(FlowableState):
-    def __init__(self, flowables, first_flowable_state=None):
-        self.flowables = flowables
-        self.first_flowable_state = first_flowable_state
-
-    def __copy__(self):
-        copy_list_items, self.flowables = tee(self.flowables)
-        copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(copy_list_items, copy_first_flowable_state)
-
-    def next_flowable(self):
-        return next(self.flowables)
-
-    def prepend(self, flowable, first_flowable_state):
-        self.flowables = chain((flowable, ), self.flowables)
-        self.first_flowable_state = first_flowable_state
-
-
-class GroupedFlowables(Flowable, list):
-    def render(self, container, descender, state=None):
-        state = state or GroupedFlowablesState(iter(self), None)
-
-        try:
-            while True:
-                flowable = state.next_flowable()
-                _, descender = flowable.flow(container, descender,
-                                             state=state.first_flowable_state)
-                state.first_flowable_state = None
-        except EndOfContainer as eoc:
-            state.prepend(flowable, eoc.flowable_state)
-            raise EndOfContainer(state)
-        except StopIteration:
-            pass
 
 
 class List(GroupedFlowables):

@@ -17,6 +17,8 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
+from itertools import chain, tee
+
 from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
 from .util import Decorator
@@ -44,6 +46,15 @@ class FlowableStyle(Style):
                   'space_below': 0,
                   'indent_left': 0,
                   'indent_right': 0}
+
+
+class FlowableState(object):
+    """Stores a :class:`Flowable`\'s rendering state, which can be copied. This
+    enables saving the rendering state at certain points in the rendering
+    process, so rendering can later be resumed at those points, if needed."""
+
+    def __copy__(self):
+        raise NotImplementedError
 
 
 class Flowable(Styled):
@@ -104,16 +115,7 @@ class Flowable(Styled):
         raise NotImplementedError
 
 
-class FlowableState(object):
-    """Stores a :class:`Flowable`\'s rendering state, which can be copied. This
-    enables saving the rendering state at certain points in the rendering
-    process, so rendering can later be resumed at those points, if needed."""
-
-    def __copy__(self):
-        raise NotImplementedError
-
-
-class GroupedFlowables(Flowable):
+class InseparableFlowables(Flowable):
     def __init__(self, flowables, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.flowables = flowables
@@ -121,10 +123,44 @@ class GroupedFlowables(Flowable):
     def render(self, container, last_descender, state=None):
         maybe_container = MaybeContainer(container)
         for flowable in self.flowables:
-            height, last_descender = flowable.flow(maybe_container,
-                                                   last_descender)
+            _, last_descender = flowable.flow(maybe_container, last_descender)
         maybe_container.do_place()
         return last_descender
+
+
+class GroupedFlowablesState(FlowableState):
+    def __init__(self, flowables, first_flowable_state=None):
+        self.flowables = flowables
+        self.first_flowable_state = first_flowable_state
+
+    def __copy__(self):
+        copy_list_items, self.flowables = tee(self.flowables)
+        copy_first_flowable_state = copy(self.first_flowable_state)
+        return self.__class__(copy_list_items, copy_first_flowable_state)
+
+    def next_flowable(self):
+        return next(self.flowables)
+
+    def prepend(self, flowable, first_flowable_state):
+        self.flowables = chain((flowable, ), self.flowables)
+        self.first_flowable_state = first_flowable_state
+
+
+class GroupedFlowables(Flowable, list):
+    def render(self, container, descender, state=None):
+        state = state or GroupedFlowablesState(iter(self), None)
+
+        try:
+            while True:
+                flowable = state.next_flowable()
+                _, descender = flowable.flow(container, descender,
+                                             state=state.first_flowable_state)
+                state.first_flowable_state = None
+        except EndOfContainer as eoc:
+            state.prepend(flowable, eoc.flowable_state)
+            raise EndOfContainer(state)
+        except StopIteration:
+            pass
 
 
 class Floating(Decorator):

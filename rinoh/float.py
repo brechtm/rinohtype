@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import Flowable, GroupedFlowables
+from .flowable import Flowable, InseparableFlowables
 from .number import format_number, NUMBER
 from .paragraph import Paragraph, ParagraphStyle
 from .reference import Referenceable
@@ -58,14 +58,14 @@ class Caption(Paragraph):
         self.append(caption_text)
 
 
-class Figure(GroupedFlowables, Referenceable):
+class Figure(InseparableFlowables, Referenceable):
     def __init__(self, document, filename, caption, scale=1.0, style=None,
                  caption_style=None, id=None):
         number = document.counters.setdefault(self.__class__, 1)
         document.counters[self.__class__] += 1
         image = Image(filename, scale=scale)
         caption = Caption('Figure', number, caption, style=caption_style)
-        GroupedFlowables.__init__(self, [image, caption], style)
+        InseparableFlowables.__init__(self, [image, caption], style)
         Referenceable.__init__(self, document, id)
 
     def reference(self):
