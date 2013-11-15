@@ -321,6 +321,7 @@ class Paragraph(MixedStyledText, Flowable):
 
 
 def create_to_glyphs_and_hyphenate(span):
+    # TODO: memoize as a function of the parameters below
     font = span.font
     scale = span.height / font.units_per_em
     variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
@@ -551,7 +552,11 @@ class Line(list):
         while len(self[-1]) == 0:
             self.pop()
         # drop space at the end of the line
-        self[-1].space_indices.discard(len(self[-1]))
+        last_span = self[-1]
+        last_span_length = len(last_span)
+        if last_span_length in last_span.space_indices:
+            last_span.space_indices.discard(last_span_length)
+            self._cursor -= last_span.space_glyph_and_width[1]
 
         descender = min(float(glyph_span.span.descender)
                         for glyph_span in self)
