@@ -18,6 +18,7 @@ from functools import wraps
 from io import BytesIO, SEEK_END
 
 from . import pdfdoccodec
+from ... import __version__, __release_date__
 
 PDF_VERSION = '1.6'
 
@@ -490,7 +491,8 @@ class Document(dict):
             self.info['Producer'].delete(self)
         if 'ModDate' in self.info:
             self.info['ModDate'].delete(self)
-        self.info['Producer'] = String('RinohType')
+        self.info['Producer'] = String('RinohType v{} ({})'
+                                       .format(__version__, __release_date__))
         self.info['ModDate'] = Date(self.timestamp)
 
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))
