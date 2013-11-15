@@ -281,8 +281,7 @@ class Paragraph(MixedStyledText, Flowable):
                 if new_span is not span:
                     span = new_span
                     to_glyphs, hyphenate = create_to_glyphs_and_hyphenate(span)
-                    space_glyph_and_width = to_glyphs(' ')[0]
-                    line.new_span(span, space_glyph_and_width)
+                    line.new_span(span, to_glyphs)
 
                 glyphs_and_widths = to_glyphs(word)
                 if word == ' ':
@@ -299,7 +298,7 @@ class Paragraph(MixedStyledText, Flowable):
                         state.prepend_item(span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(span, space_glyph_and_width)
+                    line.new_span(span, to_glyphs)
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
@@ -412,11 +411,13 @@ def dont_hyphenate(word):
 
 
 class GlyphsSpan(list):
-    def __init__(self, span, space_glyph_and_width):
+    def __init__(self, span, to_glyphs):
         super().__init__()
         self.span = span
         self.space_indices = set()
-        self.space_glyph_and_width = space_glyph_and_width
+        self.filled_tabs = {}
+        self.to_glyphs = to_glyphs
+        self.space_glyph_and_width = to_glyphs(' ')[0]
 
     def append_space(self):
         self.space_indices.add(len(self))
@@ -438,33 +439,40 @@ class Line(list):
         self.container = container
         self._cursor = indent
         self._has_tab = False
+        self._has_filled_tab = False
         self._current_tab = None
         self._current_tab_stop = None
-        self._tabs = []
 
-    def new_span(self, parent, space_glyph_and_width):
-        super().append(GlyphsSpan(parent, space_glyph_and_width))
+    def new_span(self, parent, to_glyphs):
+        super().append(GlyphsSpan(parent, to_glyphs))
 
     def append_space(self):
         self._cursor += self[-1].space_glyph_and_width[1]
         self[-1].append_space()
 
     def append_tab(self):
+        """Determines which :class:`TabStop` the cursor jumps to and creates a
+        space filling up the tab space."""
+        glyph_span = self[-1]
         if not self.tab_stops:
-            self[-1].span.warn('No tab stops defined for this paragraph style.',
-                               self.container)
+            glyph_span.span.warn('No tab stops defined for this paragraph '
+                                 'style.', self.container)
             return self.append_space()
+        self._has_tab = True
         for tab_stop in self.tab_stops:
             tab_position = tab_stop.get_position(self.width)
             if self._cursor < tab_position:
                 tab_width = tab_position - self._cursor
-                tab_glyph_and_width = [self[-1].space_glyph_and_width[0],
-                                       tab_width]
-                self[-1].append((tab_glyph_and_width, ))
+                tab_span = [[glyph_span.space_glyph_and_width[0],
+                                        tab_width]]
+                if tab_stop.fill:
+                    self._has_filled_tab = True
+                    glyph_span.filled_tabs[len(glyph_span)] = tab_stop.fill
+                glyph_span.append(tab_span)
                 self._cursor += tab_width
                 self._current_tab_stop = tab_stop
                 if tab_stop.align in (RIGHT, CENTER):
-                    self._current_tab = tab_glyph_and_width
+                    self._current_tab = tab_span
                     self._current_tab_stop = tab_stop
                     self.append = self._tab_append
                 else:
@@ -473,8 +481,8 @@ class Line(list):
                     self.append = self._normal_append
                 break
         else:
-            self[-1].span.warn('Tab did not fall into any of the tab stops.',
-                               self.container)
+            glyph_span.span.warn('Tab did not fall into any of the tab stops.',
+                                 self.container)
         return True
 
     # Line is a simple state machine. Different methods are assigned to
@@ -486,7 +494,7 @@ class Line(list):
         returns the spillover. Otherwise returns `None`."""
         width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
-            if not self:
+            if not self[0]:
                 self[-1].span.warn('item too long to fit on line',
                                    self.container)
             else:
@@ -501,45 +509,31 @@ class Line(list):
         """Append method used when we are in the context of a right-, or center-
         aligned tab stop. This shrinks the width of the preceding tab character
         in order to obtain the tab alignment."""
+        current_tab = self._current_tab[0]
         item_width = sum(width for glyph, width in glyphs_and_widths)
-        tab_width = self._current_tab[1]
+        tab_width = current_tab[1]
         if self._current_tab_stop.align == CENTER:
             item_width /= 2
         if item_width < tab_width:
-            self._current_tab[1] -= item_width
+            current_tab[1] -= item_width
         else:
             self[-1].span.warn('Tab space exceeded.', self.container)
-            self._current_tab[1] = 0
+            current_tab[1] = 0
             self.append = self._normal_append
         self._cursor -= tab_width
         return self._normal_append(glyphs_and_widths)
 
-    def _handle_tab(self, tab):
-        """Called when a :class:`Tab` is appended to the line. Searches for the
-        :class:`TabStop` `tab` jumps to. Returns a tuple containing:
-
-        * the tab width (determined from the line cursor position and the tab
-          stop), and
-        * the tab itself, or a :class:`Space` (if no tab stop was found)."""
-        if not self.tab_stops:
-            tab.warn('No tab stops defined for this paragraph style.',
-                     self.container)
-            return 0, Space(style=tab.style, parent=tab.parent)
-        for tab_stop in self.tab_stops:
-            tab_position = tab_stop.get_position(self.width)
-            if self._cursor < tab_position:
-                tab.tab_stop = tab_stop
-                tab.tab_width = tab_position - self._cursor
-                if tab_stop.align in (RIGHT, CENTER):
-                    self._current_tab = tab
-                    self.append = self._tab_append
-                else:
-                    self._current_tab = None
-                    self.append = self._normal_append
-                return tab.tab_width, tab
-        else:
-            tab.warn('Tab did not fall into any of the tab stops.')
-            return 0, Space(style=tab.style, parent=tab.parent)
+    def expand_tabs(self):
+        # TODO: turn into generator?
+        for glyph_span in self:
+            for tab_span_index, fill_string in glyph_span.filled_tabs.items():
+                tab_span = glyph_span[tab_span_index]
+                tab_width = tab_span[0][1]
+                fill_glyphs = glyph_span.to_glyphs(fill_string)
+                fill_string_width = sum(width for glyph, width in fill_glyphs)
+                number, rest = divmod(tab_width, fill_string_width)
+                tab_span[0][1] = rest
+                tab_span += fill_glyphs * int(number)
 
     @profile
     def typeset(self, container, justification, line_spacing, last_descender,
@@ -571,7 +565,7 @@ class Line(list):
             raise EndOfContainer
 
         # replace tabs with spacers or fillers
-        #items = expand_tabs(self) if self._has_tab else self
+        self.expand_tabs() if self._has_filled_tab else self
 
         # horizontal displacement
         left = self.indent
@@ -607,16 +601,3 @@ class Line(list):
             sg.close()
         container.advance(- descender)
         return descender
-
-
-# utility functions
-
-def expand_tabs(items):
-    """Generator expanding all :class:`Tab`s in `items`.
-    Non-tab items are yielded as is."""
-    for item in items:
-        if isinstance(item, Tab):
-            for element in item.expand():
-                yield element
-        else:
-            yield item
