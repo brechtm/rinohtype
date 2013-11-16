@@ -129,8 +129,11 @@ class ListItem(Flowable):
 
     def render(self, container, last_descender, state=None):
         if not state:
-            maybe_container = MaybeContainer(container)
-            height, _ = self.marker.flow(maybe_container, last_descender)
+            try:
+                maybe_container = MaybeContainer(container)
+                height, _ = self.marker.flow(maybe_container, last_descender)
+            except EndOfContainer:
+                raise EndOfContainer(state)
             try:
                 flowables_iterator = iter(self.flowables)
                 first_flowable = next(flowables_iterator)

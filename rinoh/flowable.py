@@ -17,6 +17,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
+from copy import copy
 from itertools import chain, tee
 
 from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
