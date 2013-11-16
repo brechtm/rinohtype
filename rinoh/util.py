@@ -84,6 +84,15 @@ def consumer(function):
     return wrapper
 
 
+def static_variable(variable_name, value):
+    """Decorator that sets a static variable `variable_name` with initial value
+    `value` on the decorated function."""
+    def wrapper(function):
+        setattr(function, variable_name, value)
+        return function
+    return wrapper
+
+
 # method decorators
 
 def cached(function):

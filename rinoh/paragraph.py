@@ -47,6 +47,7 @@ from .layout import EndOfContainer
 from .reference import FieldException
 from .text import NewlineException
 from .text import TextStyle, MixedStyledText
+from .util import static_variable
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -321,8 +322,8 @@ class Paragraph(MixedStyledText, Flowable):
         return descender
 
 
+@static_variable('cache', {})
 def create_to_glyphs_and_hyphenate(span):
-    # TODO: memoize as a function of the parameters below
     font = span.font
     scale = span.height / font.units_per_em
     variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
@@ -330,6 +331,11 @@ def create_to_glyphs_and_hyphenate(span):
     kerning = span.get_style('kerning')
     ligatures = span.get_style('ligatures')
     # TODO: handle ligatures at span borders
+
+    # TODO: perhaps we should use an LRU cache to limit memory usage
+    cache_key = (font, scale, variant, kerning, ligatures)
+    if cache_key in create_to_glyphs_and_hyphenate.cache:
+       return create_to_glyphs_and_hyphenate.cache[cache_key]
 
     def word_to_glyphs(word):
         glyphs_widths = ((glyph, scale * glyph.width)
@@ -347,6 +353,7 @@ def create_to_glyphs_and_hyphenate(span):
     else:
         hyphenate = dont_hyphenate
 
+    create_to_glyphs_and_hyphenate.cache[cache_key] = word_to_glyphs, hyphenate
     return word_to_glyphs, hyphenate
 
 
