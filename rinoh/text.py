@@ -192,7 +192,7 @@ class StyledText(Styled):
             # get the position style using self.get_style('position')
         return offset
 
-    def span(self):
+    def spans(self):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
         raise NotImplementedError

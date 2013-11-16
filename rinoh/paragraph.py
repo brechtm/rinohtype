@@ -229,18 +229,16 @@ class ParagraphState(FlowableState):
         return ((span, item) for span in spans for item in span.split())
 
 
-class Paragraph(MixedStyledText, Flowable):
+class Paragraph(Flowable, MixedStyledText):
     """A paragraph of mixed-styled text that can be flowed into a
     :class:`Container`."""
 
     style_class = ParagraphStyle
 
-    split = Flowable.split
-
     def __init__(self, text_or_items, style=None, parent=None):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""
-        super().__init__(text_or_items, style=style, parent=parent)
+        MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
 
     @profile
     def render(self, container, descender, state=None):
@@ -262,15 +260,14 @@ class Paragraph(MixedStyledText, Flowable):
         state = state or ParagraphState(MixedStyledText.spans(self))
         saved_state = copy(state)
 
-        def typeset_line(line, last_line=False):
+        def typeset_line(line, last_line=False, force=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
             nonlocal state, saved_state, descender
             try:
-                if line:
-                    descender = line.typeset(container, justification,
-                                             line_spacing, descender, last_line)
-                    saved_state = copy(state)
+                descender = line.typeset(container, justification, line_spacing,
+                                         descender, last_line, force)
+                saved_state = copy(state)
             except EndOfContainer:
                 raise EndOfContainer(saved_state)
 
@@ -289,8 +286,9 @@ class Paragraph(MixedStyledText, Flowable):
                 elif word == '\t':
                     line.append_tab()
                 elif word == '\n':
-                    typeset_line(line, last_line=True)
+                    typeset_line(line, last_line=True, force=True)
                     line = Line(tab_stops, line_width, container)
+                    line.new_span(span, to_glyphs)
                 elif not line.append(to_glyphs(word)):
                     for first, second in hyphenate(word):
                         if line.append(to_glyphs(first)):
@@ -335,7 +333,7 @@ def create_to_glyphs_and_hyphenate(span):
     # TODO: perhaps we should use an LRU cache to limit memory usage
     cache_key = (font, scale, variant, kerning, ligatures)
     if cache_key in create_to_glyphs_and_hyphenate.cache:
-       return create_to_glyphs_and_hyphenate.cache[cache_key]
+        return create_to_glyphs_and_hyphenate.cache[cache_key]
 
     def word_to_glyphs(word):
         glyphs_widths = ((glyph, scale * glyph.width)
@@ -472,8 +470,7 @@ class Line(list):
             tab_position = tab_stop.get_position(self.width)
             if self._cursor < tab_position:
                 tab_width = tab_position - self._cursor
-                tab_span = [[glyph_span.space_glyph_and_width[0],
-                                        tab_width]]
+                tab_span = [[glyph_span.space_glyph_and_width[0], tab_width]]
                 if tab_stop.fill:
                     self._has_filled_tab = True
                     glyph_span.filled_tabs[len(glyph_span)] = tab_stop.fill
@@ -546,7 +543,7 @@ class Line(list):
 
     @profile
     def typeset(self, container, justification, line_spacing, last_descender,
-                last_line=False):
+                last_line=False, force=False):
         """Typeset the line in `container` below its current cursor position.
         Advances the container's cursor to below the descender of this line.
 
@@ -557,8 +554,13 @@ class Line(list):
 
         Returns the line's descender size."""
         # remove empty spans at the end of the line
-        while len(self[-1]) == 0:
+        while len(self) > 1 and len(self[-1]) == 0:
             self.pop()
+
+        # abort if the line is empty
+        if not self or (not force and len(self) == 1 and len(self[-1]) == 0):
+            return last_descender
+
         # drop space at the end of the line
         last_span = self[-1]
         last_span_length = len(last_span)
@@ -566,18 +568,16 @@ class Line(list):
             last_span.space_indices.discard(last_span_length)
             self._cursor -= last_span.space_glyph_and_width[1]
 
-        descender = min(float(glyph_span.span.descender)
-                        for glyph_span in self)
+        descender = min(glyph_span.span.descender for glyph_span in self)
         if last_descender is None:
-            advance = max(float(glyph_span.span.ascender)
-                          for glyph_span in self)
+            advance = max(glyph_span.span.ascender for glyph_span in self)
         else:
             advance = line_spacing.advance(self, last_descender)
         container.advance(advance)
         if - descender > container.remaining_height:
             raise EndOfContainer
 
-        # replace tabs with spacers or fillers
+        # replace tabs with fillers
         self.expand_tabs() if self._has_filled_tab else self
 
         # horizontal displacement
@@ -590,11 +590,12 @@ class Line(list):
             # TODO: padding added to spaces should be prop. to font size
             nr_spaces = sum(len(glyph_span.space_indices)
                             for glyph_span in self)
-            add_to_spaces = extra_space / nr_spaces
-            for glyph_span in self:
-                space_glyph, space_width = glyph_span.space_glyph_and_width
-                space_width += add_to_spaces
-                glyph_span.space_glyph_and_width = space_glyph, space_width
+            if nr_spaces > 0:
+                add_to_spaces = extra_space / nr_spaces
+                for glyph_span in self:
+                    space_glyph, space_width = glyph_span.space_glyph_and_width
+                    space_width += add_to_spaces
+                    glyph_span.space_glyph_and_width = space_glyph, space_width
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:
