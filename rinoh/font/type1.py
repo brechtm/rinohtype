@@ -6,7 +6,9 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import struct, os
+import os
+import re
+import struct
 
 from warnings import warn
 
@@ -75,9 +77,11 @@ class AdobeFontMetrics(FontMetrics):
         self._ligatures = {}
         self._kerning_pairs = {}
         try:
+            self.filename = file_or_filename
             file = open(file_or_filename, 'rt', encoding='ascii')
             close_file = True
         except TypeError:
+            self.filename = None
             file = file_or_filename
             close_file = False
         self.parse(file)
@@ -189,6 +193,11 @@ class AdobeFontMetrics(FontMetrics):
                     self._kerning_pairs[pair] = number(kerning)
                 else:
                     raise NotImplementedError
+            elif section_names[-1] == 'Composites':
+                warn('Composites in Type1 fonts are currently not supported.'
+                     '({})'.format(self.filename) if self.filename else '')
+            elif key == chr(26):    # EOF marker
+                assert not file.read()
             else:
                 funcs = self.keywords[key]
                 try:
@@ -198,27 +207,30 @@ class AdobeFontMetrics(FontMetrics):
                     values = funcs(values)
                 section[key] = values
 
+    HEX_NUMBER = re.compile(r'<([\da-f]+)>', re.I)
+
     def parse_character_metrics(self, line):
         ligatures = {}
         for item in line.strip().split(';'):
             if not item:
                 continue
             tokens = item.split()
-            if tokens[0] == 'C':
+            key = tokens[0]
+            if key == 'C':
                 code = int(tokens[1])
-            elif tokens[0] == 'C':
-                code = int(tokens[1], base=16)
-            elif tokens[0] in ('WX', 'W0X'):
+            elif key == 'CH':
+                code = int(self.HEX_NUMBER.match(tokens[1]).group(1), base=16)
+            elif key in ('WX', 'W0X'):
                 width = number(tokens[1])
-            elif tokens[0] in ('WY', 'W0Y'):
+            elif key in ('WY', 'W0Y'):
                 height = number(tokens[1])
-            elif tokens[0] in ('W', 'W0'):
+            elif key in ('W', 'W0'):
                 width, height = number(tokens[1]), number(tokens[2])
-            elif tokens[0] == 'N':
+            elif key == 'N':
                 name = tokens[1]
-            elif tokens[0] == 'B':
+            elif key == 'B':
                 bbox = tuple(number(num) for num in tokens[1:])
-            elif tokens[0] == 'L':
+            elif key == 'L':
                 ligatures[tokens[1]] = tokens[2]
             else:
                 raise NotImplementedError
