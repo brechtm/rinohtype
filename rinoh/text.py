@@ -36,6 +36,7 @@ Some characters with special properties and are represented by special classes:
 """
 
 import re
+import unicodedata
 
 from .dimension import PT
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
@@ -358,8 +359,8 @@ class LiteralText(StyledRawText):
     def __init__(self, text, style=PARENT_STYLE, parent=None):
         """Initialize this literal text with `text` (:class:`str`), `style`, and
         `parent` (see :class:`StyledText`)."""
-        no_break_spaced = text.replace(' ', chr(0xa0))
-        super().__init__(no_break_spaced, style=style, parent=parent)
+        unbreakable = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
+        super().__init__(unbreakable, style=style, parent=parent)
 
 
 class Character(StyledRawText):
