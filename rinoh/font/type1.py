@@ -229,6 +229,7 @@ class AdobeFontMetrics(FontMetrics):
 
 class Type1Font(Font):
     units_per_em = 1000
+    cid_font = False
 
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
                  core=False):

@@ -22,6 +22,8 @@ from .ids import NAME_PS_NAME, PLATFORM_WINDOWS, LANGUAGE_WINDOWS_EN_US
 
 
 class OpenTypeFont(Font):
+    cid_font = True
+
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.filename = filename
         self.encoding = None

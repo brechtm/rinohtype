@@ -20,17 +20,22 @@ from ..warnings import RinohWarning
 class Font(object):
     units_per_em = None
 
+    cid_font = False
+    """Indicates whether this is a CID-keyed font; glyphs can be directly
+    addressed without the need for an encoding (and thus support more than 256
+    glyphs)."""
+
     def __init__(self, metrics, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.metrics = metrics
         if weight not in WEIGHTS:
             raise ValueError('Unknown font weight. Must be one of {}'
-                  .format(', '.join(WEIGHTS)))
+                             .format(', '.join(WEIGHTS)))
         if slant not in SLANTS:
             raise ValueError('Unknown font slant. Must be one of {}'
-                  .format(', '.join(SLANTS)))
+                             .format(', '.join(SLANTS)))
         if width not in WIDTHS:
             raise ValueError('Unknown font width. Must be one of {}'
-                  .format(', '.join(WIDTHS)))
+                             .format(', '.join(WIDTHS)))
         self.weight = weight
         self.slant = slant
         self.width = width
