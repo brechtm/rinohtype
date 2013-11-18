@@ -12,12 +12,9 @@ import struct
 
 from warnings import warn
 
-from . import Font
-from .style import WEIGHTS, MEDIUM
-from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
-from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
+from . import Font, GlyphMetrics, LeafGetter
+from .style import MEDIUM,  UPRIGHT, NORMAL
 from .style import SMALL_CAPITAL, OLD_STYLE
-from .metrics import FontMetrics, GlyphMetrics
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
 from ..warnings import RinohWarning
 
@@ -38,11 +35,11 @@ def boolean(string):
     return string.strip() == 'true'
 
 
-class AdobeFontMetrics(FontMetrics):
-    sections = {'FontMetrics': string,
+class AdobeFontMetricsParser(dict):
+    SECTIONS = {'FontMetrics': string,
                 'CharMetrics': int}
 
-    keywords = {'FontName': string,
+    KEYWORDS = {'FontName': string,
                 'FullName': string,
                 'FamilyName': string,
                 'Weight': string,
@@ -70,100 +67,11 @@ class AdobeFontMetrics(FontMetrics):
                 'CharWidth': (number, number),
                 'IsFixedPitch': boolean}
 
-    def __init__(self, file_or_filename):
-        super().__init__()
-        self._glyphs = {}
-        self._suffixes = {}
-        self._ligatures = {}
-        self._kerning_pairs = {}
-        try:
-            self.filename = file_or_filename
-            file = open(file_or_filename, 'rt', encoding='ascii')
-            close_file = True
-        except TypeError:
-            self.filename = None
-            file = file_or_filename
-            close_file = False
-        self.parse(file)
-        if close_file:
-            file.close()
+    HEX_NUMBER = re.compile(r'<([\da-f]+)>', re.I)
 
-        self.name = self['FontMetrics']['FontName']
-        self.bbox = self['FontMetrics']['FontBBox']
-        self.italic_angle = self['FontMetrics']['ItalicAngle']
-        self.ascent = self['FontMetrics'].get('Ascender', 750)
-        self.descent = self['FontMetrics'].get('Descender', -250)
-        self.line_gap = 200
-        self.cap_height = self['FontMetrics'].get('CapHeight', 700)
-        self.x_height = self['FontMetrics'].get('XHeight', 500)
-        self.stem_v = self['FontMetrics'].get('StdVW', 50)
-
-    _possible_suffixes = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
-                          OLD_STYLE: ('.oldstyle', )}
-
-    def _find_suffix(self, char, variant, upper=False):
-        try:
-            return self._suffixes[variant]
-        except KeyError:
-            for suffix in self._possible_suffixes[variant]:
-                for name in self.char_to_name(char):
-                    if name + suffix in self._glyphs:
-                        self._suffixes[variant] = suffix
-                        return suffix
-            else:
-                return ''
-##            if not upper:
-##                return self._find_suffix(self.char_to_name(char.upper()),
-##                                         possible_suffixes, True)
-
-    def char_to_name(self, char, variant=None):
-        try:
-            # TODO: first search character using the font's encoding
-            name_or_names = UNICODE_TO_GLYPH_NAME[ord(char)]
-            if variant and char != ' ':
-                suffix = self._find_suffix(char, variant)
-            else:
-                suffix = ''
-            try:
-                yield name_or_names + suffix
-            except TypeError:
-                for name in name_or_names:
-                    yield name + suffix
-        except KeyError:
-            # TODO: map to uniXXXX or uXXXX names
-            warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
-                 'to a PostScript glyph name.'.format(ord(char), char),
-                 RinohWarning)
-            yield 'question'
-
-    def get_glyph(self, char, variant=None):
-        for name in self.char_to_name(char, variant):
-            if name in self._glyphs:
-                return self._glyphs[name]
-        if variant:
-            warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
-                 'back to the standard glyph.'.format(variant, ord(char), char),
-                 RinohWarning)
-            return self.get_glyph(char)
-        else:
-            warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
-                 .format(self.name, ord(char), char), RinohWarning)
-            return self._glyphs['question']
-
-    def get_ligature(self, glyph, successor_glyph):
-        try:
-            ligature_name = self._ligatures[glyph.name][successor_glyph.name]
-            return self._glyphs[ligature_name]
-        except KeyError:
-            return None
-
-    def get_kerning(self, a, b):
-        return self._kerning_pairs.get((a.name, b.name), 0.0)
-
-    def parse(self, file):
-        sections = [self]
+    def __init__(self, file):
+        sections, section = [self], self
         section_names = [None]
-        section = self
         for line in file.readlines():
             try:
                 key, values = line.split(None, 1)
@@ -184,7 +92,7 @@ class AdobeFontMetrics(FontMetrics):
                 sections.pop()
                 section = sections[-1]
             elif section_names[-1] == 'CharMetrics':
-                glyph_metrics = self.parse_character_metrics(line)
+                glyph_metrics = self._parse_character_metrics(line)
                 self._glyphs[glyph_metrics.name] = glyph_metrics
             elif section_names[-1] == 'KernPairs':
                 tokens = line.split()
@@ -199,7 +107,7 @@ class AdobeFontMetrics(FontMetrics):
             elif key == chr(26):    # EOF marker
                 assert not file.read()
             else:
-                funcs = self.keywords[key]
+                funcs = self.KEYWORDS[key]
                 try:
                     values = [func(val)
                               for func, val in zip(funcs, values.split())]
@@ -207,9 +115,7 @@ class AdobeFontMetrics(FontMetrics):
                     values = funcs(values)
                 section[key] = values
 
-    HEX_NUMBER = re.compile(r'<([\da-f]+)>', re.I)
-
-    def parse_character_metrics(self, line):
+    def _parse_character_metrics(self, line):
         ligatures = {}
         for item in line.strip().split(';'):
             if not item:
@@ -239,46 +145,157 @@ class AdobeFontMetrics(FontMetrics):
         return GlyphMetrics(name, width, bbox, code)
 
 
-class Type1Font(Font):
+class AdobeFontMetrics(Font, AdobeFontMetricsParser):
     units_per_em = 1000
-    cid_font = False
+    # encoding is set in __init__
 
-    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
-                 core=False):
-        metrics = AdobeFontMetrics(filename + '.afm')
-        super().__init__(metrics, weight, slant, width)
-        encoding_name = self.metrics['FontMetrics']['EncodingScheme']
+    name = LeafGetter('FontMetrics', 'FontName')
+    bounding_box = LeafGetter('FontMetrics', 'FontBBox')
+    italic_angle = LeafGetter('FontMetrics', 'ItalicAngle')
+    ascender = LeafGetter('FontMetrics', 'Ascender', default=750)
+    descender = LeafGetter('FontMetrics', 'Descender', default=-250)
+    line_gap = 200
+    cap_height = LeafGetter('FontMetrics', 'CapHeight', default=700)
+    x_height = LeafGetter('FontMetrics', 'XHeight', default=500)
+    stem_v = LeafGetter('FontMetrics', 'StdVW', default=50)
+
+    def __init__(self, file_or_filename, weight=MEDIUM, slant=UPRIGHT,
+                 width=NORMAL):
+        try:
+            filename = file_or_filename
+            file = open(file_or_filename, 'rt', encoding='ascii')
+            close_file = True
+        except TypeError:
+            filename = None
+            file = file_or_filename
+            close_file = False
+        self._glyphs = {}
+        self._suffixes = {}
+        self._ligatures = {}
+        self._kerning_pairs = {}
+        AdobeFontMetricsParser.__init__(self, file)
+        if close_file:
+            file.close()
+        encoding_name = self['FontMetrics']['EncodingScheme']
         if encoding_name == 'FontSpecific':
             self.encoding = {glyph.name: glyph.code
-                             for glyph in self.metrics._glyphs.values()
+                             for glyph in self._glyphs.values()
                              if glyph.code > -1}
         else:
             self.encoding = ENCODINGS[encoding_name]
-        self.filename = filename
+        super().__init__(filename,  weight, slant, width)
+
+    _SUFFIXES = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
+                 OLD_STYLE: ('.oldstyle', )}
+
+    def _find_suffix(self, char, variant, upper=False):
+        try:
+            return self._suffixes[variant]
+        except KeyError:
+            for suffix in self._SUFFIXES[variant]:
+                for name in self._char_to_name(char):
+                    if name + suffix in self._glyphs:
+                        self._suffixes[variant] = suffix
+                        return suffix
+            else:
+                return ''
+##            if not upper:
+##                return self._find_suffix(self.char_to_name(char.upper()),
+##                                         possible_suffixes, True)
+
+    def _char_to_name(self, char, variant=None):
+        try:
+            # TODO: first search character using the font's encoding
+            name_or_names = UNICODE_TO_GLYPH_NAME[ord(char)]
+            if variant and char != ' ':
+                suffix = self._find_suffix(char, variant)
+            else:
+                suffix = ''
+            try:
+                yield name_or_names + suffix
+            except TypeError:
+                for name in name_or_names:
+                    yield name + suffix
+        except KeyError:
+            # TODO: map to uniXXXX or uXXXX names
+            warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
+                 'to a PostScript glyph name.'.format(ord(char), char),
+                 RinohWarning)
+            yield 'question'
+
+    def get_glyph(self, char, variant=None):
+        for name in self._char_to_name(char, variant):
+            if name in self._glyphs:
+                return self._glyphs[name]
+        if variant:
+            warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
+                 'back to the standard glyph.'.format(variant, ord(char), char),
+                 RinohWarning)
+            return self.get_glyph(char)
+        else:
+            warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
+                 .format(self.name, ord(char), char), RinohWarning)
+            return self._glyphs['question']
+
+    def get_ligature(self, glyph, successor_glyph):
+        try:
+            ligature_name = self._ligatures[glyph.name][successor_glyph.name]
+            return self._glyphs[ligature_name]
+        except KeyError:
+            return None
+
+    def get_kerning(self, a, b):
+        return self._kerning_pairs.get((a.name, b.name), 0.0)
+
+
+class PrinterFont(object):
+    def __init__(self, header, body, trailer):
+        self.header = header
+        self.body = body
+        self.trailer = trailer
+
+
+class PrinterFontASCII(PrinterFont):
+    def __init__(self, filename):
+        raise NotImplementedError
+
+
+class PrinterFontBinary(PrinterFont):
+    SECTION_HEADER_FMT = '<BBI'
+    SEGMENT_TYPES = {'header': 1,
+                     'body': 2,
+                     'trailer': 1}
+
+    def __init__(self, filename):
+        with open(filename, 'rb') as file:
+            segments = []
+            for segment_name in ('header', 'body', 'trailer'):
+                segment_type, segment = self._read_pfb_segment(file)
+                if self.SEGMENT_TYPES[segment_name] != segment_type:
+                    raise TypeError('Not a PFB file')
+                segments.append(segment)
+            check, eof_type = struct.unpack('<BB', file.read(2))
+            if check != 128 or eof_type != 3:
+                raise TypeError('Not a PFB file')
+        super().__init__(*segments)
+
+    @classmethod
+    def _read_pfb_segment(cls, file):
+        header_data = file.read(struct.calcsize(cls.SECTION_HEADER_FMT))
+        check, segment_type, length = struct.unpack(cls.SECTION_HEADER_FMT,
+                                                    header_data)
+        if check != 128:
+            raise TypeError('Not a PFB file')
+        return int(segment_type), file.read(length)
+
+
+class Type1Font(AdobeFontMetrics):
+    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
+                 core=False):
+        AdobeFontMetrics.__init__(self, filename + '.afm',  weight, slant, width)
         self.core = core
         if not core:
             if os.path.exists(filename + '.pfa'):
-                self.parse_pfa(filename + '.pfa')
+                self.font_program = PrinterFontASCII(filename + '.pfa')
             else:
-                self.parse_pfb(filename + '.pfb')
-
-    def parse_pfa(self, file):
-        raise NotImplementedError
-
-    def parse_pfb(self, filename):
-        file = open(filename, 'rb')
-        header_type, header_length, self.header = self.read_pfb_segment(file)
-        body_type, body_length, self.body = self.read_pfb_segment(file)
-        trailer_type, trailer_length, self.trailer = self.read_pfb_segment(file)
-        check, eof_type = struct.unpack('<BB', file.read(2))
-        file.close()
-        if check != 128 or eof_type != 3:
-            raise TypeError('Not a PFB file')
-
-    def read_pfb_segment(self, file):
-        header_fmt = '<BBI'
-        header_data = file.read(struct.calcsize(header_fmt))
-        check, segment_type, length = struct.unpack(header_fmt, header_data)
-        if check != 128:
-            raise TypeError('Not a PFB file')
-        return segment_type, length, file.read(length)
+                self.font_program = PrinterFontBinary(filename + '.pfb')

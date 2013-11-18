@@ -209,7 +209,8 @@ class OpenTypeParser(dict):
             if tag in table_records:
                 self[tag] = self._parse_table(file, table_records[tag])
 
-    def _parse_table(self, file, table_record):
+    @staticmethod
+    def _parse_table(file, table_record):
         for cls in all_subclasses(OpenTypeTable):
             if cls.tag == table_record['tag']:
                 return cls(file, table_record['offset'])

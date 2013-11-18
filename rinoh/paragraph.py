@@ -325,7 +325,7 @@ def create_to_glyphs_and_hyphenate(span):
     font = span.font
     scale = span.height / font.units_per_em
     variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
-    get_glyph = partial(font.metrics.get_glyph, variant=variant)
+    get_glyph = partial(font.get_glyph, variant=variant)
     kerning = span.get_style('kerning')
     ligatures = span.get_style('ligatures')
     # TODO: handle ligatures at span borders
@@ -339,10 +339,10 @@ def create_to_glyphs_and_hyphenate(span):
         glyphs_widths = ((glyph, scale * glyph.width)
                          for glyph in (get_glyph(char) for char in word))
         if kerning:
-            glyphs_widths = kern(glyphs_widths, font.metrics.get_kerning, scale)
+            glyphs_widths = kern(glyphs_widths, font.get_kerning, scale)
         if ligatures:
             glyphs_widths = form_ligatures(glyphs_widths,
-                                           font.metrics.get_ligature, scale)
+                                           font.get_ligature, scale)
         return list(glyphs_widths)
 
     if span.get_style('hyphenate'):

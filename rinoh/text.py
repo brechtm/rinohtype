@@ -264,15 +264,15 @@ class SingleStyledText(StyledText):
 
     @property
     def ascender(self):
-        return self.font.ascender * float(self.get_style('font_size'))
+        return self.font.ascender_in_pt * float(self.get_style('font_size'))
 
     @property
     def descender(self):
-        return self.font.descender * float(self.get_style('font_size'))
+        return self.font.descender_in_pt * float(self.get_style('font_size'))
 
     @property
     def line_gap(self):
-        return self.font.line_gap * float(self.get_style('font_size'))
+        return self.font.line_gap_in_pt * float(self.get_style('font_size'))
 
     def spans(self):
         yield self

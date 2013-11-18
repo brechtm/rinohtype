@@ -37,40 +37,37 @@ class Document(object):
             font_rsc = self.fonts[font]
         except KeyError:
             if isinstance(font, Type1Font):
-                font_file = cos.Type1FontFile(font.header, font.body,
+                font_file = cos.Type1FontFile(font.font_program.header,
+                                              font.font_program.body,
                                               filter=FlateDecode())
             elif isinstance(font, OpenTypeFont):
                 with open(font.filename, 'rb') as font_data:
                     font_file = cos.OpenTypeFontFile(font_data.read(),
                                                      filter=FlateDecode())
-            try:
-                stem_v = font.metrics.stem_v
-            except KeyError:
-                stem_v = 50 # TODO: make a proper guess
-            font_desc = cos.FontDescriptor(font.metrics.name,
+            font_desc = cos.FontDescriptor(font.name,
                                            4, # TODO: properly determine flags
-                                           font.metrics.bbox,
-                                           font.metrics.italic_angle,
-                                           font.metrics.ascent,
-                                           font.metrics.descent,
-                                           font.metrics.cap_height,
-                                           stem_v,
+                                           font.bounding_box,
+                                           font.italic_angle,
+                                           font.ascender,
+                                           font.descender,
+                                           font.cap_height,
+                                           font.stem_v,
                                            font_file,
-                                           font.metrics.x_height)
+                                           font.x_height)
             if isinstance(font, Type1Font):
                 font_rsc = cos.Type1Font(font, cos.FontEncoding(), font_desc)
             elif isinstance(font, OpenTypeFont):
                 cid_system_info = cos.CIDSystemInfo('Identity', 'Adobe', 0)
-                widths = font.tables['hmtx']['advanceWidth']
+                widths = font['hmtx']['advanceWidth']
                 w = cos.Array([cos.Integer(0),
                                cos.Array(map(cos.Integer, widths))])
-                if 'CFF' in font.tables:
+                if 'CFF' in font:
                     cid_font = cos.CIDFontType0(font.name, cid_system_info,
                                                 font_desc, w=w)
                 else:
                     cid_font = cos.CIDFontType2(font.name, cid_system_info,
                                                 font_desc, w=w)
-                mapping = font.tables['cmap'][(3, 1)].mapping
+                mapping = font['cmap'][(3, 1)].mapping
                 to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
                 font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
             self.fonts[font] = font_rsc
@@ -217,10 +214,7 @@ class Canvas(StringIO):
                 last_width += width
                 displ = (1000 * width) / size
                 code = glyph.code
-                if font.cid_font:
-                    high, low = code >> 8, code & 0xFF
-                    char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
-                else:
+                if font.encoding:
                     if code < 0:
                         try:
                             differences = font_rsc['Encoding']['Differences']
@@ -230,6 +224,9 @@ class Canvas(StringIO):
                             font_rsc['Encoding']['Differences'] = differences
                         code = differences.register(glyph)
                     char = CODE_TO_CHAR[code]
+                else:
+                    high, low = code >> 8, code & 0xFF
+                    char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
                 adjust = int(glyph.width - displ)
                 if adjust:
                     string += '({}{}) {} '.format(current_string, char,

@@ -6,50 +6,62 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import ctypes
-
 from warnings import warn
 
 from ...util import cached
 from ...warnings import RinohWarning
-from .. import Font
-from ..metrics import FontMetrics, GlyphMetrics
-from ..style import MEDIUM, UPRIGHT, NORMAL, ITALIC
+from .. import Font, GlyphMetrics, LeafGetter
+from ..style import MEDIUM, UPRIGHT, NORMAL
 from ..style import SMALL_CAPITAL
 
 from .parse import OpenTypeParser
 from .ids import NAME_PS_NAME, PLATFORM_WINDOWS, LANGUAGE_WINDOWS_EN_US
 
 
-class OpenTypeFont(Font):
-    cid_font = True
+class OpenTypeFont(Font, OpenTypeParser):
+    units_per_em = LeafGetter('head', 'unitsPerEm')
+    encoding = None
+
+    @property
+    def name(self):
+        names = self['name'].strings
+        return names[NAME_PS_NAME][PLATFORM_WINDOWS][LANGUAGE_WINDOWS_EN_US]
+
+    @property
+    def bounding_box(self):
+        return self['head'].bounding_box
+
+    italic_angle = LeafGetter('post', 'italicAngle')
+    ascender = LeafGetter('OS/2', 'sTypoAscender')
+    descender = LeafGetter('OS/2', 'sTypoDescender')
+    line_gap = LeafGetter('OS/2', 'sTypoLineGap')
+    cap_height = LeafGetter('OS/2', 'sCapHeight')
+    x_height = LeafGetter('OS/2', 'sxHeight')
+    stem_v = 50
 
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
-        self.filename = filename
-        self.encoding = None
-        self.tables = OpenTypeParser(filename)
-        self.units_per_em = self.tables['head']['unitsPerEm']
-        metrics = OpenTypeMetrics(self.tables)
-        super().__init__(metrics, weight, slant, width)
-
-
-class OpenTypeMetrics(FontMetrics):
-    def __init__(self, tables):
-        super().__init__()
-        self._tables = tables
-        self._glyphs = {}
-        self._glyphs_by_code = {}
+        OpenTypeParser.__init__(self, filename)
+        super().__init__(filename, weight, slant, width)
+        self._glyphs_by_code = self._create_glyph_metrics()
+        self._glyphs = self._create_glyphs_by_char(self._glyphs_by_code)
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
+
+    def _create_glyph_metrics(self):
+        glyphs_by_code = {}
         # TODO: extract bboxes from CFF: www.tug.org/TUGboat/tb24-3/bella.pdf
-        for glyph_index, width in enumerate(tables['hmtx']['advanceWidth']):
-            try:
-                bbox = tables['glyf'][glyph_index].bounding_box
-            except KeyError:
-                bbox = None
+        advance_width_table = self['hmtx']['advanceWidth']
+        glyf_table = self['glyf'] if 'glyf' in self else None
+        for glyph_index, width in enumerate(advance_width_table):
+            bbox = (glyf_table[glyph_index].bounding_box
+                    if glyf_table and glyph_index in glyf_table
+                    else None)
             glyph_metrics = GlyphMetrics(None, width, bbox, glyph_index)
-            self._glyphs_by_code[glyph_index] = glyph_metrics
+            glyphs_by_code[glyph_index] = glyph_metrics
+        return glyphs_by_code
+
+    def _create_glyphs_by_char(self, glyphs_by_code):
         # TODO: support symbol/wingdings
         #       "The 'cmap' subtable (platform 3, encoding 0) must use format 4.
         #       The character codes should start at 0xF000, which is in the
@@ -57,24 +69,18 @@ class OpenTypeMetrics(FontMetrics):
         #       format 4 encodings by simply adding 0xF000 to the format 0
         #       (Macintosh) encodings."
         # TODO: properly handle encodings
+        glyphs_by_char = {}
+        cmap_tables = self['cmap']
         for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
             try:
-                for ordinal, index in tables['cmap'][encoding].mapping.items():
-                    self._glyphs[chr(ordinal)] = self._glyphs_by_code[index]
+                for ordinal, index in cmap_tables[encoding].mapping.items():
+                    glyphs_by_char[chr(ordinal)] = glyphs_by_code[index]
                 break
             except KeyError:
                 continue
-        assert self._glyphs
-        name = self._tables['name'].strings
-        self.name = name[NAME_PS_NAME][PLATFORM_WINDOWS][LANGUAGE_WINDOWS_EN_US]
-        self.bbox = tables['head'].bounding_box
-        self.italic_angle = tables['post']['italicAngle']
-        self.ascent = tables['OS/2']['sTypoAscender']
-        self.descent = tables['OS/2']['sTypoDescender']
-        self.line_gap = tables['OS/2']['sTypoLineGap']
-        self.cap_height = tables['OS/2']['sCapHeight']
-        self.x_height = tables['OS/2']['sxHeight']
-        self.stem_v = 50 # self['FontMetrics']['StdVW']
+        if not glyphs_by_char:
+            raise Exception
+        return glyphs_by_char
 
     def get_glyph(self, char, variant=None):
         try:
@@ -84,7 +90,7 @@ class OpenTypeMetrics(FontMetrics):
                  .format(self.name, ord(char), char), RinohWarning)
             return self._glyphs['?']
 
-        if variant == SMALL_CAPITAL and 'GSUB' in self._tables:
+        if variant == SMALL_CAPITAL and 'GSUB' in self:
             lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
             for lookup_table in lookup_tables:
                 try:
@@ -95,9 +101,9 @@ class OpenTypeMetrics(FontMetrics):
         return glyph
 
     def _get_lookup_tables(self, table, feature, script='DFLT', language=None):
-        lookup_tables = self._tables[table]['LookupList']['Lookup']
+        lookup_tables = self[table]['LookupList']['Lookup']
         try:
-            script_table = self._tables[table]['ScriptList'].by_tag[script][0]
+            script_table = self[table]['ScriptList'].by_tag[script][0]
         except KeyError:
             if script != 'DFLT':
                 warn('{} does not support the script "{}". Trying default '
@@ -121,7 +127,7 @@ class OpenTypeMetrics(FontMetrics):
             lang_sys_table = script_table['DefaultLangSys']
         feature_indices = lang_sys_table['FeatureIndex']
         for index in feature_indices:
-            record = self._tables[table]['FeatureList']['Record'][index]
+            record = self[table]['FeatureList']['Record'][index]
             if record['Tag'] == feature:
                 lookup_list_indices = record['Value']['LookupListIndex']
                 return [lookup_tables[lookup_list_index]
@@ -130,7 +136,7 @@ class OpenTypeMetrics(FontMetrics):
 
     @cached
     def get_ligature(self, glyph, successor_glyph):
-        if 'GSUB' in self._tables:
+        if 'GSUB' in self:
             lookup_tables = self._get_lookup_tables('GSUB', 'liga', 'latn')
             for lookup_table in lookup_tables:
                 try:
@@ -142,7 +148,7 @@ class OpenTypeMetrics(FontMetrics):
 
     @cached
     def get_kerning(self, a, b):
-        if 'GPOS' in self._tables:
+        if 'GPOS' in self:
             lookup_tables = self._get_lookup_tables('GPOS', 'kern', 'latn')
             # TODO: 'kern' lookup list indices can point to pair adjustment (2)
             #       or Chained Context positioning (8) lookup subtables
@@ -151,9 +157,9 @@ class OpenTypeMetrics(FontMetrics):
                     return lookup_table.lookup(a.code, b.code)
                 except KeyError:
                     pass
-        if 'kern' in self._tables:
+        if 'kern' in self:
             try:
-                return self._tables['kern'][0].pairs[a.code][b.code]
+                return self['kern'][0].pairs[a.code][b.code]
             except KeyError:
                 pass
         return 0.0

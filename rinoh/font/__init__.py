@@ -17,16 +17,42 @@ from ..warnings import RinohWarning
 
 # TODO: provide predefined Font objects for known font filenames?
 
+class GlyphMetrics(object):
+    def __init__(self, name, width, bounding_box, code):
+        self.name = name
+        self.width = width
+        self.bounding_box = bounding_box
+        self.code = code
+
+
+class NotImplementedAttribute(object):
+    """Descriptor raising :class:`NotImplementedError` on attribute access"""
+    def __get__(self, instance, owner):
+        raise NotImplementedError('Attribute implementation is missing in '
+                                  'subclass')
+
+
 class Font(object):
-    units_per_em = None
+    units_per_em = NotImplementedAttribute()
 
-    cid_font = False
-    """Indicates whether this is a CID-keyed font; glyphs can be directly
-    addressed without the need for an encoding (and thus support more than 256
-    glyphs)."""
+    encoding = NotImplementedAttribute()
+    """If no encoding is set for the :class:`Font`, glyphs are addressed by
+    glyph ID (and thus support more than 256 glyphs)."""
 
-    def __init__(self, metrics, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
-        self.metrics = metrics
+    name = NotImplementedAttribute()
+    bounding_box = NotImplementedAttribute()
+
+    # font metrics in font coordinates
+    italic_angle = NotImplementedAttribute()
+    ascender = NotImplementedAttribute()
+    descender = NotImplementedAttribute()
+    line_gap = NotImplementedAttribute()
+    cap_height = NotImplementedAttribute()
+    x_height = NotImplementedAttribute()
+    stem_v = NotImplementedAttribute()
+
+    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+        self.filename = filename
         if weight not in WEIGHTS:
             raise ValueError('Unknown font weight. Must be one of {}'
                              .format(', '.join(WEIGHTS)))
@@ -39,13 +65,22 @@ class Font(object):
         self.weight = weight
         self.slant = slant
         self.width = width
-        self.ascender = self.metrics.ascent / self.units_per_em
-        self.descender = self.metrics.descent / self.units_per_em
-        self.line_gap = self.metrics.line_gap / self.units_per_em
+        # font metrics in Postscript points
+        self.ascender_in_pt = self.ascender / self.units_per_em
+        self.descender_in_pt = self.descender / self.units_per_em
+        self.line_gap_in_pt = self.line_gap / self.units_per_em
 
-    @property
-    def name(self):
-        return self.metrics.name
+    def __hash__(self):
+        return hash((self.name, self.filename))
+
+    def get_glyph(self, char, variant=None):
+        raise NotImplementedError
+
+    def get_ligature(self, glyph, successor_glyph):
+        raise NotImplementedError
+
+    def get_kerning(self, a, b):
+        raise NotImplementedError
 
 
 class TypeFace(dict):
@@ -115,3 +150,24 @@ class TypeFamily(object):
         self.cursive = cursive
         self.symbol = symbol
         self.dingbats = dingbats
+
+
+class LeafGetter(object):
+    """Descriptor that looks up the value from a given path in the instance (it
+    is assumed the instance subclasses :class:`dict` which holds parsed data in
+    a tree structure."""
+    def __init__(self, *path, default=None):
+        self.path = path
+        self.default = default
+
+    def __get__(self, instance, owner):
+        try:
+            leaf = instance
+            for item in self.path:
+                leaf = leaf[item]
+            return leaf
+        except KeyError:
+            if self.default:
+                return self.default
+            else:
+                raise

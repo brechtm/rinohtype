@@ -599,7 +599,7 @@ class Type1Font(Font):
         if not 'Widths' in self:
             widths = []
             by_code = {glyph.code: glyph
-                       for glyph in self.font.metrics._glyphs.values()
+                       for glyph in self.font._glyphs.values()
                        if glyph.code >= 0}
             try:
                 differences = self['Encoding']['Differences']
