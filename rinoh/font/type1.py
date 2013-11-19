@@ -10,6 +10,8 @@ import os
 import re
 import struct
 
+from binascii import unhexlify
+from io import BytesIO
 from warnings import warn
 
 from . import Font, GlyphMetrics, LeafGetter
@@ -256,8 +258,44 @@ class PrinterFont(object):
 
 
 class PrinterFontASCII(PrinterFont):
+    START_OF_BODY = re.compile(br'\s*currentfile\s+eexec\s*')
+
     def __init__(self, filename):
-        raise NotImplementedError
+        with open(filename, 'rb') as file:
+            header = self._parse_header(file)
+            body, trailer = self._parse_body_and_trailer(file)
+        super().__init__(header, body, trailer)
+
+    @classmethod
+    def _parse_header(cls, file):
+        header = BytesIO()
+        for line in file:
+            # Adobe Reader can't handle carriage returns, so we remove them
+            header.write(line.translate(None, b'\r'))
+            if cls.START_OF_BODY.match(line.translate(None, b'\r\n')):
+                break
+        return header.getvalue()
+
+    @staticmethod
+    def _parse_body_and_trailer(file):
+        body = BytesIO()
+        trailer_lines = []
+        number_of_zeros = 0
+        lines = file.readlines()
+        for line in reversed(lines):
+            number_of_zeros += line.count(b'0')
+            trailer_lines.append(lines.pop())
+            if number_of_zeros == 512:
+                break
+            elif number_of_zeros > 512:
+                raise Type1ParseError
+        for line in lines:
+            cleaned = line.translate(None, b' \t\r\n')
+            body.write(unhexlify(cleaned))
+        trailer = BytesIO()
+        for line in reversed(trailer_lines):
+            trailer.write(line.translate(None, b'\r'))
+        return body.getvalue(), trailer.getvalue()
 
 
 class PrinterFontBinary(PrinterFont):
@@ -272,11 +310,11 @@ class PrinterFontBinary(PrinterFont):
             for segment_name in ('header', 'body', 'trailer'):
                 segment_type, segment = self._read_pfb_segment(file)
                 if self.SEGMENT_TYPES[segment_name] != segment_type:
-                    raise TypeError('Not a PFB file')
+                    raise Type1ParseError('Not a PFB file')
                 segments.append(segment)
             check, eof_type = struct.unpack('<BB', file.read(2))
             if check != 128 or eof_type != 3:
-                raise TypeError('Not a PFB file')
+                raise Type1ParseError('Not a PFB file')
         super().__init__(*segments)
 
     @classmethod
@@ -285,7 +323,7 @@ class PrinterFontBinary(PrinterFont):
         check, segment_type, length = struct.unpack(cls.SECTION_HEADER_FMT,
                                                     header_data)
         if check != 128:
-            raise TypeError('Not a PFB file')
+            raise Type1ParseError('Not a PFB file')
         return int(segment_type), file.read(length)
 
 
@@ -295,7 +333,11 @@ class Type1Font(AdobeFontMetrics):
         AdobeFontMetrics.__init__(self, filename + '.afm',  weight, slant, width)
         self.core = core
         if not core:
-            if os.path.exists(filename + '.pfa'):
-                self.font_program = PrinterFontASCII(filename + '.pfa')
-            else:
+            if os.path.exists(filename + '.pfb'):
                 self.font_program = PrinterFontBinary(filename + '.pfb')
+            else:
+                self.font_program = PrinterFontASCII(filename + '.pfa')
+
+
+class Type1ParseError(Exception):
+    pass
