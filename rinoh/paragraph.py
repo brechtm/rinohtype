@@ -46,7 +46,7 @@ from .hyphenator import Hyphenator
 from .layout import EndOfContainer
 from .reference import FieldException
 from .text import TextStyle, MixedStyledText
-from .util import static_variable
+from .util import static_variable, consumer
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -277,27 +277,23 @@ class Paragraph(Flowable, MixedStyledText):
                 span, word = state.next_item()      # raises StopIteration
                 if span is not current_span:
                     current_span = span
-                    line.new_span(span)
+                    line_span_send = line.new_span(span).send
                     hyphenate = create_hyphenate(span)
 
-                if word == ' ':
-                    line.append_space()
-                elif word == '\t':
-                    line.append_tab()
-                elif word == '\n':
+                if word == '\n':
                     typeset_line(line, last_line=True, force=True)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(current_span)
-                elif not line.append(word):
+                    line_span_send = line.new_span(current_span).send
+                elif not line_span_send(word):
                     for first, second in hyphenate(word):
-                        if line.append(first):
+                        if line_span_send(first):
                             state.prepend_item(current_span, second)
                             break
                     else:
                         state.prepend_item(current_span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(current_span)
+                    line_span_send = line.new_span(current_span).send
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
@@ -445,8 +441,24 @@ class Line(list):
         self._current_tab = None
         self._current_tab_stop = None
 
+    @consumer
+    @profile
     def new_span(self, span):
-        super().append(GlyphsSpan(span))
+        glyph_span = GlyphsSpan(span)
+        super().append(glyph_span)
+        word_to_glyphs = glyph_span.word_to_glyphs
+
+        success = True
+        while True:
+            word = (yield success)
+            success = True
+            if word == ' ':
+                self.append_space()
+            elif word == '\t':
+                self.append_tab()
+            else:
+                glyphs_and_widths = word_to_glyphs(word)
+                success = self.append(glyphs_and_widths)
 
     def append_space(self):
         self._cursor += self[-1].space_glyph_and_width[1]
@@ -490,10 +502,9 @@ class Line(list):
     # Line.append, depending on the current state.
 
     @profile
-    def _normal_append(self, word):
+    def _normal_append(self, glyphs_and_widths):
         """Appends `item` to this line. If the item doesn't fit on the line,
         returns the spillover. Otherwise returns `None`."""
-        glyphs_and_widths = self[-1].word_to_glyphs(word)
         width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
             if not self[0]:
@@ -507,11 +518,10 @@ class Line(list):
 
     append = _normal_append
 
-    def _tab_append(self, word):
+    def _tab_append(self, glyphs_and_widths):
         """Append method used when we are in the context of a right-, or center-
         aligned tab stop. This shrinks the width of the preceding tab character
         in order to obtain the tab alignment."""
-        glyphs_and_widths = self[-1].word_to_glyphs(word)
         current_tab = self._current_tab[0]
         item_width = sum(width for glyph, width in glyphs_and_widths)
         tab_width = current_tab[1]
@@ -524,7 +534,7 @@ class Line(list):
             current_tab[1] = 0
             self.append = self._normal_append
         self._cursor -= tab_width
-        return self._normal_append(word)
+        return self._normal_append(glyphs_and_widths)
 
     def expand_tabs(self):
         # TODO: turn into generator?
