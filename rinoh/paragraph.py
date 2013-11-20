@@ -35,7 +35,7 @@ import os
 
 from collections import defaultdict
 from copy import copy
-from functools import partial
+from functools import lru_cache, partial
 from itertools import chain, tee
 
 from . import DATA_PATH
@@ -46,7 +46,7 @@ from .hyphenator import Hyphenator
 from .layout import EndOfContainer
 from .reference import FieldException
 from .text import TextStyle, MixedStyledText
-from .util import static_variable, consumer
+from .util import consumer
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -357,21 +357,10 @@ def create_hyphenate(span):
     return hyphenate
 
 
-@static_variable('cache', {})
-def create_to_glyphs(span):
-    font = span.font
-    scale = span.height / font.units_per_em
-    variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
+@lru_cache()
+def create_to_glyphs(font, scale, variant, kerning, ligatures):
     get_glyph = partial(font.get_glyph, variant=variant)
-    kerning = span.get_style('kerning')
-    ligatures = span.get_style('ligatures')
     # TODO: handle ligatures at span borders
-
-    # TODO: perhaps we should use an LRU cache to limit memory usage
-    cache_key = (font, scale, variant, kerning, ligatures)
-    if cache_key in create_to_glyphs.cache:
-        return create_to_glyphs.cache[cache_key]
-
     def word_to_glyphs(word):
         glyphs_widths = ((glyph, scale * glyph.width)
                          for glyph in (get_glyph(char) for char in word))
@@ -382,7 +371,6 @@ def create_to_glyphs(span):
                                            font.get_ligature, scale)
         return list(glyphs_widths)
 
-    create_to_glyphs.cache[cache_key] = word_to_glyphs
     return word_to_glyphs
 
 
@@ -409,13 +397,13 @@ def kern(glyphs_and_widths, get_kerning, scale):
 
 
 class GlyphsSpan(list):
-    def __init__(self, span):
+    def __init__(self, span, word_to_glyphs):
         super().__init__()
         self.span = span
         self.space_indices = set()
         self.filled_tabs = {}
-        self.word_to_glyphs = create_to_glyphs(span)
-        self.space_glyph_and_width = self.word_to_glyphs(' ')[0]
+        self.word_to_glyphs = word_to_glyphs
+        self.space_glyph_and_width = word_to_glyphs(' ')[0]
 
     def append_space(self):
         self.space_indices.add(len(self))
@@ -444,9 +432,13 @@ class Line(list):
     @consumer
     @profile
     def new_span(self, span):
-        glyph_span = GlyphsSpan(span)
-        super().append(glyph_span)
-        word_to_glyphs = glyph_span.word_to_glyphs
+        font = span.font
+        scale = span.height / font.units_per_em
+        variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
+        word_to_glyphs = create_to_glyphs(font, scale, variant,
+                                          span.get_style('kerning'),
+                                          span.get_style('ligatures'))
+        super().append(GlyphsSpan(span, word_to_glyphs))
 
         success = True
         while True:
