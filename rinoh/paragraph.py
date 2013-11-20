@@ -438,95 +438,71 @@ class Line(list):
         word_to_glyphs = create_to_glyphs(font, scale, variant,
                                           span.get_style('kerning'),
                                           span.get_style('ligatures'))
-        super().append(GlyphsSpan(span, word_to_glyphs))
+        glyphs_span = GlyphsSpan(span, word_to_glyphs)
+        space_glyph, space_width = word_to_glyphs(' ')[0]
+        super().append(glyphs_span)
 
         success = True
         while True:
             word = (yield success)
             success = True
             if word == ' ':
-                self.append_space()
+                self._cursor += space_width
+                glyphs_span.append_space()
             elif word == '\t':
-                self.append_tab()
+                if not self.tab_stops:
+                    span.warn('No tab stops defined for this  paragraph style.',
+                              self.container)
+                    self._cursor += space_width
+                    glyphs_span.append_space()
+                    continue
+                self._has_tab = True
+                for tab_stop in self.tab_stops:
+                    tab_position = tab_stop.get_position(self.width)
+                    if self._cursor < tab_position:
+                        tab_width = tab_position - self._cursor
+                        tab_span = [[glyphs_span.space_glyph_and_width[0],
+                                     tab_width]]
+                        if tab_stop.fill:
+                            self._has_filled_tab = True
+                            glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
+                        glyphs_span.append(tab_span)
+                        self._cursor += tab_width
+                        self._current_tab_stop = tab_stop
+                        if tab_stop.align in (RIGHT, CENTER):
+                            self._current_tab = tab_span
+                            self._current_tab_stop = tab_stop
+                        else:
+                            self._current_tab = None
+                            self._current_tab_stop = None
+                        break
+                else:
+                    span.warn('Tab did not fall into any of the tab stops.',
+                              self.container)
             else:
                 glyphs_and_widths = word_to_glyphs(word)
-                success = self.append(glyphs_and_widths)
-
-    def append_space(self):
-        self._cursor += self[-1].space_glyph_and_width[1]
-        self[-1].append_space()
-
-    def append_tab(self):
-        """Determines which :class:`TabStop` the cursor jumps to and creates a
-        space filling up the tab space."""
-        glyph_span = self[-1]
-        if not self.tab_stops:
-            glyph_span.span.warn('No tab stops defined for this paragraph '
-                                 'style.', self.container)
-            return self.append_space()
-        self._has_tab = True
-        for tab_stop in self.tab_stops:
-            tab_position = tab_stop.get_position(self.width)
-            if self._cursor < tab_position:
-                tab_width = tab_position - self._cursor
-                tab_span = [[glyph_span.space_glyph_and_width[0], tab_width]]
-                if tab_stop.fill:
-                    self._has_filled_tab = True
-                    glyph_span.filled_tabs[len(glyph_span)] = tab_stop.fill
-                glyph_span.append(tab_span)
-                self._cursor += tab_width
-                self._current_tab_stop = tab_stop
-                if tab_stop.align in (RIGHT, CENTER):
-                    self._current_tab = tab_span
-                    self._current_tab_stop = tab_stop
-                    self.append = self._tab_append
-                else:
-                    self._current_tab = None
-                    self._current_tab_stop = None
-                    self.append = self._normal_append
-                break
-        else:
-            glyph_span.span.warn('Tab did not fall into any of the tab stops.',
-                                 self.container)
-        return True
-
-    # Line is a simple state machine. Different methods are assigned to
-    # Line.append, depending on the current state.
-
-    @profile
-    def _normal_append(self, glyphs_and_widths):
-        """Appends `item` to this line. If the item doesn't fit on the line,
-        returns the spillover. Otherwise returns `None`."""
-        width = sum(width for glyph, width in glyphs_and_widths)
-        if self._cursor + width > self.width:
-            if not self[0]:
-                self[-1].span.warn('item too long to fit on line',
-                                   self.container)
-            else:
-                return False
-        self._cursor += width
-        self[-1].append(glyphs_and_widths)
-        return True
-
-    append = _normal_append
-
-    def _tab_append(self, glyphs_and_widths):
-        """Append method used when we are in the context of a right-, or center-
-        aligned tab stop. This shrinks the width of the preceding tab character
-        in order to obtain the tab alignment."""
-        current_tab = self._current_tab[0]
-        item_width = sum(width for glyph, width in glyphs_and_widths)
-        tab_width = current_tab[1]
-        if self._current_tab_stop.align == CENTER:
-            item_width /= 2
-        if item_width < tab_width:
-            current_tab[1] -= item_width
-        else:
-            self[-1].span.warn('Tab space exceeded.', self.container)
-            current_tab[1] = 0
-            self.append = self._normal_append
-        self._cursor -= tab_width
-        return self._normal_append(glyphs_and_widths)
+                width = sum(width for glyph, width in glyphs_and_widths)
+                if self._current_tab:
+                    current_tab = self._current_tab[0]
+                    tab_width = current_tab[1]
+                    factor = 2 if self._current_tab_stop.align == CENTER else 1
+                    item_width = width / factor
+                    if item_width < tab_width:
+                        current_tab[1] -= item_width
+                    else:
+                        span.warn('Tab space exceeded.', self.container)
+                        current_tab[1] = 0
+                        self._current_tab = None
+                    self._cursor -= tab_width
+                if self._cursor + width > self.width:
+                    if not self[0]:
+                        span.warn('item too long to fit on line',
+                                  self.container)
+                    else:
+                        success = False
+                        continue
+                self._cursor += width
+                glyphs_span.append(glyphs_and_widths)
 
     def expand_tabs(self):
         # TODO: turn into generator?
