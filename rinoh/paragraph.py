@@ -45,7 +45,6 @@ from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .layout import EndOfContainer
 from .reference import FieldException
-from .text import NewlineException
 from .text import TextStyle, MixedStyledText
 from .util import static_variable
 
@@ -272,14 +271,14 @@ class Paragraph(Flowable, MixedStyledText):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        span = None
+        current_span = None
         while True:
             try:
-                new_span, word = state.next_item()      # raises StopIteration
-                if new_span is not span:
-                    span = new_span
-                    to_glyphs, hyphenate = create_to_glyphs_and_hyphenate(span)
-                    line.new_span(span, to_glyphs)
+                span, word = state.next_item()      # raises StopIteration
+                if span is not current_span:
+                    current_span = span
+                    line.new_span(span)
+                    hyphenate = create_hyphenate(span)
 
                 if word == ' ':
                     line.append_space()
@@ -288,17 +287,17 @@ class Paragraph(Flowable, MixedStyledText):
                 elif word == '\n':
                     typeset_line(line, last_line=True, force=True)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(span, to_glyphs)
-                elif not line.append(to_glyphs(word)):
+                    line.new_span(current_span)
+                elif not line.append(word):
                     for first, second in hyphenate(word):
-                        if line.append(to_glyphs(first)):
-                            state.prepend_item(span, second)
+                        if line.append(first):
+                            state.prepend_item(current_span, second)
                             break
                     else:
-                        state.prepend_item(span, word)
+                        state.prepend_item(current_span, word)
                     typeset_line(line)
                     line = Line(tab_stops, line_width, container)
-                    line.new_span(span, to_glyphs)
+                    line.new_span(current_span)
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
@@ -320,8 +319,50 @@ class Paragraph(Flowable, MixedStyledText):
         return descender
 
 
+class HyphenatorStore(defaultdict):
+    def __missing__(self, key):
+        hyphen_lang, hyphen_chars = key
+        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
+        if not os.path.exists(dic_path):
+            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
+            if not os.path.exists(dic_path):
+                raise IOError("Hyphenation dictionary '{}' neither found in "
+                              "current directory, nor in the data directory"
+                              .format(dic_file))
+        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+
+
+HYPHENATORS = HyphenatorStore()
+
+
+def create_hyphenate(span):
+    if not span.get_style('hyphenate'):
+        def dont_hyphenate(word):
+            return
+            yield
+        return dont_hyphenate
+
+    hyphenator = HYPHENATORS[span.get_style('hyphen_lang'),
+                             span.get_style('hyphen_chars')]
+    def hyphenate(word):
+        """Generator yielding possible options for splitting this single-styled
+        text (assuming it is a word) across two lines. Items yielded are tuples
+        containing the first (with trailing hyphen) and second part of the split
+        word.
+
+        In the first returned option, the word is split at the right-most
+        possible break point. In subsequent items, the break point advances to
+        the front of the word.
+        If hyphenation is not possible or simply not enabled, a single tuple is
+        yielded of which the first element is the word itself, and the second
+        element is `None`."""
+        for first, second in hyphenator.iterate(word):
+            yield first + '-', second
+    return hyphenate
+
+
 @static_variable('cache', {})
-def create_to_glyphs_and_hyphenate(span):
+def create_to_glyphs(span):
     font = span.font
     scale = span.height / font.units_per_em
     variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
@@ -332,8 +373,8 @@ def create_to_glyphs_and_hyphenate(span):
 
     # TODO: perhaps we should use an LRU cache to limit memory usage
     cache_key = (font, scale, variant, kerning, ligatures)
-    if cache_key in create_to_glyphs_and_hyphenate.cache:
-        return create_to_glyphs_and_hyphenate.cache[cache_key]
+    if cache_key in create_to_glyphs.cache:
+        return create_to_glyphs.cache[cache_key]
 
     def word_to_glyphs(word):
         glyphs_widths = ((glyph, scale * glyph.width)
@@ -345,14 +386,8 @@ def create_to_glyphs_and_hyphenate(span):
                                            font.get_ligature, scale)
         return list(glyphs_widths)
 
-    if span.get_style('hyphenate'):
-        hyphenate = create_hyphenate(span.get_style('hyphen_lang'),
-                                     span.get_style('hyphen_chars'))
-    else:
-        hyphenate = dont_hyphenate
-
-    create_to_glyphs_and_hyphenate.cache[cache_key] = word_to_glyphs, hyphenate
-    return word_to_glyphs, hyphenate
+    create_to_glyphs.cache[cache_key] = word_to_glyphs
+    return word_to_glyphs
 
 
 def form_ligatures(glyphs_and_widths, get_ligature, scale):
@@ -377,54 +412,14 @@ def kern(glyphs_and_widths, get_kerning, scale):
     yield prev_glyph, prev_width
 
 
-class HyphenatorStore(defaultdict):
-    def __missing__(self, key):
-        hyphen_lang, hyphen_chars = key
-        dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
-        if not os.path.exists(dic_path):
-            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
-            if not os.path.exists(dic_path):
-                raise IOError("Hyphenation dictionary '{}' neither found in "
-                              "current directory, nor in the data directory"
-                              .format(dic_file))
-        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
-
-
-HYPHENATORS = HyphenatorStore()
-
-
-def create_hyphenate(hyphen_lang, hyphen_chars):
-    hyphenator = HYPHENATORS[hyphen_lang, hyphen_chars]
-    def hyphenate(word):
-        """Generator yielding possible options for splitting this single-styled
-        text (assuming it is a word) across two lines. Items yielded are tuples
-        containing the first (with trailing hyphen) and second part of the split
-        word.
-
-        In the first returned option, the word is split at the right-most
-        possible break point. In subsequent items, the break point advances to
-        the front of the word.
-        If hyphenation is not possible or simply not enabled, a single tuple is
-        yielded of which the first element is the word itself, and the second
-        element is `None`."""
-        for first, second in hyphenator.iterate(word):
-            yield first + '-', second
-    return hyphenate
-
-
-def dont_hyphenate(word):
-    return
-    yield
-
-
 class GlyphsSpan(list):
-    def __init__(self, span, to_glyphs):
+    def __init__(self, span):
         super().__init__()
         self.span = span
         self.space_indices = set()
         self.filled_tabs = {}
-        self.to_glyphs = to_glyphs
-        self.space_glyph_and_width = to_glyphs(' ')[0]
+        self.word_to_glyphs = create_to_glyphs(span)
+        self.space_glyph_and_width = self.word_to_glyphs(' ')[0]
 
     def append_space(self):
         self.space_indices.add(len(self))
@@ -450,8 +445,8 @@ class Line(list):
         self._current_tab = None
         self._current_tab_stop = None
 
-    def new_span(self, parent, to_glyphs):
-        super().append(GlyphsSpan(parent, to_glyphs))
+    def new_span(self, span):
+        super().append(GlyphsSpan(span))
 
     def append_space(self):
         self._cursor += self[-1].space_glyph_and_width[1]
@@ -495,9 +490,10 @@ class Line(list):
     # Line.append, depending on the current state.
 
     @profile
-    def _normal_append(self, glyphs_and_widths):
+    def _normal_append(self, word):
         """Appends `item` to this line. If the item doesn't fit on the line,
         returns the spillover. Otherwise returns `None`."""
+        glyphs_and_widths = self[-1].word_to_glyphs(word)
         width = sum(width for glyph, width in glyphs_and_widths)
         if self._cursor + width > self.width:
             if not self[0]:
@@ -511,10 +507,11 @@ class Line(list):
 
     append = _normal_append
 
-    def _tab_append(self, glyphs_and_widths):
+    def _tab_append(self, word):
         """Append method used when we are in the context of a right-, or center-
         aligned tab stop. This shrinks the width of the preceding tab character
         in order to obtain the tab alignment."""
+        glyphs_and_widths = self[-1].word_to_glyphs(word)
         current_tab = self._current_tab[0]
         item_width = sum(width for glyph, width in glyphs_and_widths)
         tab_width = current_tab[1]
@@ -527,7 +524,7 @@ class Line(list):
             current_tab[1] = 0
             self.append = self._normal_append
         self._cursor -= tab_width
-        return self._normal_append(glyphs_and_widths)
+        return self._normal_append(word)
 
     def expand_tabs(self):
         # TODO: turn into generator?
@@ -535,7 +532,7 @@ class Line(list):
             for tab_span_index, fill_string in glyph_span.filled_tabs.items():
                 tab_span = glyph_span[tab_span_index]
                 tab_width = tab_span[0][1]
-                fill_glyphs = glyph_span.to_glyphs(fill_string)
+                fill_glyphs = glyph_span.word_to_glyphs(fill_string)
                 fill_string_width = sum(width for glyph, width in fill_glyphs)
                 number, rest = divmod(tab_width, fill_string_width)
                 tab_span[0][1] = rest
