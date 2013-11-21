@@ -262,40 +262,41 @@ class Paragraph(Flowable, MixedStyledText):
         def typeset_line(line, last_line=False, force=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal current_span, state, saved_state, descender
+            nonlocal span, state, saved_state, descender
             try:
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
                 saved_state = copy(state)
-                current_span = None
-                return Line(tab_stops, line_width, container)
+                new_line = Line(tab_stops, line_width, container)
+                return new_line, new_line.new_span(span).send
             except EndOfContainer:
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        current_span = None
+        last_span = None
         while True:
             try:
                 span, word = state.next_item()      # raises StopIteration
-                if span is not current_span:
+                if span is not last_span:
                     line_span_send = line.new_span(span).send
                     hyphenate = create_hyphenate(span)
-                    current_span = span
+                    last_span = span
 
                 if word == '\n':
-                    line = typeset_line(line, last_line=True, force=True)
+                    line, line_span_send = typeset_line(line, last_line=True,
+                                                        force=True)
                 elif not line_span_send(word):
                     for first, second in hyphenate(word):
                         if line_span_send(first):
-                            state.prepend_item(current_span, second)
+                            state.prepend_item(span, second)
                             break
                     else:
-                        state.prepend_item(current_span, word)
-                    line = typeset_line(line)
+                        state.prepend_item(span, word)
+                    line, line_span_send = typeset_line(line)
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
-                line = typeset_line(line, last_line=True)
+                line, line_span_send = typeset_line(line, last_line=True)
                 try:
                     _, descender = fe.flowable.flow(container, descender,
                                                     state.nested_flowable_state)
@@ -328,7 +329,6 @@ class HyphenatorStore(defaultdict):
 HYPHENATORS = HyphenatorStore()
 
 
-@lru_cache()
 def create_hyphenate(span):
     if not span.get_style('hyphenate'):
         def dont_hyphenate(word):
