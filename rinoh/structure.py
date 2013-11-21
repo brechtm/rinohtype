@@ -270,6 +270,7 @@ class TableOfContents(GroupedFlowables):
     def __init__(self, style=None, parent=None, styles=[]):
         super().__init__(style=style, parent=parent)
         self.styles = styles
+        self.source = self
 
     def register(self, flowable):
         if (isinstance(flowable, Heading) and

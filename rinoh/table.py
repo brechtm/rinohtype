@@ -173,7 +173,7 @@ class Tabular(Flowable):
 
     def render_cell(self, cell, container, style):
         if cell is not None and cell.content:
-            cell_par = Paragraph(cell.content, style=style)
+            cell_par = Paragraph(cell.content, style=style, parent=self)
             return cell_par.flow(container, None)
         else:
             return 0
