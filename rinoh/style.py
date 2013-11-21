@@ -19,6 +19,7 @@ Base classes and exceptions for styled document elements.
 
 
 from .document import DocumentElement
+from .util import cached
 
 
 __all__ = ['Style', 'Styled', 'StyleStore',
@@ -181,22 +182,18 @@ class Styled(DocumentElement):
                             .format(self.__class__.__name__,
                                     self.style_class.__name__))
         self.style = style
-        self.cached_style = {}
 
+    @cached
     def get_style(self, attribute):
         """Return `attribute` of the associated :class:`Style`.
 
         If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
         the style attribute is fetched from this element's parent."""
         try:
-            return self.cached_style[attribute]
-        except KeyError:
-            try:
-                value = self.style[attribute]
-            except ParentStyleException:
-                value = self.parent.get_style(attribute)
-            self.cached_style[attribute] = value
-            return value
+            value = self.style[attribute]
+        except ParentStyleException:
+            value = self.parent.get_style(attribute)
+        return value
 
 
 class StyleStore(dict):
