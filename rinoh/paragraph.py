@@ -359,6 +359,7 @@ def create_hyphenate(span):
 def create_to_glyphs(font, scale, variant, kerning, ligatures):
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders
+    @profile
     def word_to_glyphs(word):
         glyphs_widths = ((glyph, scale * glyph.width)
                          for glyph in (get_glyph(char) for char in word))
@@ -372,6 +373,7 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
     return word_to_glyphs
 
 
+@profile
 def form_ligatures(glyphs_and_widths, get_ligature, scale):
     prev_glyph, prev_width = next(glyphs_and_widths)
     for glyph, width in glyphs_and_widths:
@@ -385,6 +387,7 @@ def form_ligatures(glyphs_and_widths, get_ligature, scale):
     yield prev_glyph, prev_width
 
 
+@profile
 def kern(glyphs_and_widths, get_kerning, scale):
     prev_glyph, prev_width = next(glyphs_and_widths)
     for glyph, width in glyphs_and_widths:
@@ -437,7 +440,7 @@ class Line(list):
                                           span.get_style('kerning'),
                                           span.get_style('ligatures'))
         glyphs_span = GlyphsSpan(span, word_to_glyphs)
-        space_glyph, space_width = word_to_glyphs(' ')[0]
+        space_glyph, space_width = glyphs_span.space_glyph_and_width
         super().append(glyphs_span)
 
         success = True
