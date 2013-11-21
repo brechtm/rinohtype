@@ -33,7 +33,6 @@ Horizontal justification of lines can be one of:
 
 import os
 
-from collections import defaultdict
 from copy import copy
 from functools import lru_cache, partial
 from itertools import chain, tee
@@ -313,7 +312,7 @@ class Paragraph(Flowable, MixedStyledText):
         return descender
 
 
-class HyphenatorStore(defaultdict):
+class HyphenatorStore(dict):
     def __missing__(self, key):
         hyphen_lang, hyphen_chars = key
         dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
@@ -323,8 +322,7 @@ class HyphenatorStore(defaultdict):
                 raise IOError("Hyphenation dictionary '{}' neither found in "
                               "current directory, nor in the data directory"
                               .format(dic_file))
-        hyphenator = Hyphenator(dic_path, hyphen_chars, hyphen_chars)
-        self[key] = hyphenator
+        self[key] = hyphenator = Hyphenator(dic_path, hyphen_chars, hyphen_chars)
         return hyphenator
 
 
