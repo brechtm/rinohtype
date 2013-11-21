@@ -323,7 +323,9 @@ class HyphenatorStore(defaultdict):
                 raise IOError("Hyphenation dictionary '{}' neither found in "
                               "current directory, nor in the data directory"
                               .format(dic_file))
-        return Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+        hyphenator = Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+        self[key] = hyphenator
+        return hyphenator
 
 
 HYPHENATORS = HyphenatorStore()
