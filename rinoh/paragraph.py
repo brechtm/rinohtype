@@ -361,40 +361,37 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
     # TODO: handle ligatures at span borders
     @profile
     def word_to_glyphs(word):
-        glyphs_widths = ((glyph, scale * glyph.width)
-                         for glyph in (get_glyph(char) for char in word))
-        if kerning:
-            glyphs_widths = kern(glyphs_widths, font.get_kerning, scale)
+        glyphs = (get_glyph(char) for char in word)
         if ligatures:
-            glyphs_widths = form_ligatures(glyphs_widths,
-                                           font.get_ligature, scale)
-        return list(glyphs_widths)
+            glyphs = form_ligatures(glyphs, font.get_ligature)
+        if kerning:
+            glyphs_kern = kern(glyphs, font.get_kerning)
+        return list((glyph, scale * (glyph.width + kern_adjust))
+                    for glyph, kern_adjust in glyphs_kern)
 
     return word_to_glyphs
 
 
 @profile
-def form_ligatures(glyphs_and_widths, get_ligature, scale):
-    prev_glyph, prev_width = next(glyphs_and_widths)
-    for glyph, width in glyphs_and_widths:
+def form_ligatures(glyphs, get_ligature):
+    prev_glyph = next(glyphs)
+    for glyph in glyphs:
         ligature_glyph = get_ligature(prev_glyph, glyph)
         if ligature_glyph:
             prev_glyph = ligature_glyph
-            prev_width = ligature_glyph.width * scale
         else:
-            yield prev_glyph, prev_width
-            prev_glyph, prev_width = glyph, width
-    yield prev_glyph, prev_width
+            yield prev_glyph
+            prev_glyph = glyph
+    yield prev_glyph
 
 
 @profile
-def kern(glyphs_and_widths, get_kerning, scale):
-    prev_glyph, prev_width = next(glyphs_and_widths)
-    for glyph, width in glyphs_and_widths:
-        prev_width += get_kerning(prev_glyph, glyph) * scale
-        yield prev_glyph, prev_width
-        prev_glyph, prev_width = glyph, width
-    yield prev_glyph, prev_width
+def kern(glyphs, get_kerning):
+    prev_glyph = next(glyphs)
+    for glyph in glyphs:
+        yield prev_glyph, get_kerning(prev_glyph, glyph)
+        prev_glyph = glyph
+    yield prev_glyph, 0
 
 
 class GlyphsSpan(list):
