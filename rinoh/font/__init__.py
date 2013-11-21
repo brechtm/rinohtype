@@ -18,6 +18,8 @@ from ..warnings import RinohWarning
 # TODO: provide predefined Font objects for known font filenames?
 
 class GlyphMetrics(object):
+    __slots__ = ['name', 'width', 'bounding_box', 'code']
+
     def __init__(self, name, width, bounding_box, code):
         self.name = name
         self.width = width
