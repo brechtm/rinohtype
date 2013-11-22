@@ -14,21 +14,27 @@ from rinoh.font.glyphmetrics cimport GlyphMetrics
 
 @cython.boundscheck(False)
 def show_glyphs(object self, int left, unsigned int cursor, GlyphsSpan glyph_span):
-    span = glyph_span.span
-    font = span.font
-    cdef int font_has_encoding = font.encoding is not None
-    cdef float size = span.height
-    cdef float y_offset = span.y_offset
+    cdef:
+        object span = glyph_span.span
+        object font = span.font
+        int font_has_encoding = font.encoding is not None
+        float size = span.height
+        float y_offset = span.y_offset
+        object font_rsc
+        object font_name
+        unicode string = ''
+        unicode current_string = ''
+        float total_width = 0
+        float width
+        int displ
+        unicode uni_char
+        int adjust
+        GlyphMetrics glyph
+        size_t index
+
     font_rsc, font_name = self.cos_page.register_font(font)
-    cdef unicode string = ''
-    cdef unicode current_string = ''
-    cdef float total_width = 0
-    cdef float width
-    cdef int displ
-    cdef unicode uni_char
-    cdef int adjust
-    cdef GlyphMetrics glyph
-    for glyph, width in glyph_span:
+    for index in range(len(glyph_span)):
+        glyph, width = glyph_span[index]
         total_width += width
         displ = <int> ((1000.0 * width) / size)
         if font_has_encoding:
