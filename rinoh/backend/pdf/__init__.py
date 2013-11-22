@@ -7,6 +7,8 @@
 
 
 from io import StringIO
+from warnings import warn
+
 from . import cos
 
 from .reader import PDFReader
@@ -254,10 +256,13 @@ class Canvas(StringIO):
 
 try:
     from .show_glyphs import show_glyphs
-    from types import MethodType
-    Canvas.show_glyphs = lambda self, *args: show_glyphs(self, *args)
+    #from types import MethodType
+    #Canvas.show_glyphs = lambda self, *args: show_glyphs(self, *args)
+    from _testcapi import instancemethod
+    Canvas.show_glyphs = instancemethod(show_glyphs)
 except ImportError:
-    pass
+    warn('Import of optimized Cython version of show_glyphs failed. Falling '
+         'back to the pure-Python version')
 
 
 class Image(object):

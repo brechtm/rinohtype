@@ -27,6 +27,13 @@ class GlyphMetrics(object):
         self.code = code
 
 
+try:
+    from .glyphmetrics import GlyphMetrics
+except ImportError:
+    warn('Import of optimized Cython version of GlyphMetrics failed. Falling '
+         'back to the pure-Python version')
+
+
 class NotImplementedAttribute(object):
     """Descriptor raising :class:`NotImplementedError` on attribute access"""
     def __get__(self, instance, owner):
