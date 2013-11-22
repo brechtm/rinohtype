@@ -8,11 +8,12 @@ from libcpp cimport bool
 from . import cos
 
 
+from rinoh.cparagraph cimport GlyphsSpan
 from rinoh.font.glyphmetrics cimport GlyphMetrics
 
 
 @cython.boundscheck(False)
-def show_glyphs(object self, int left, unsigned int cursor, object glyph_span):
+def show_glyphs(object self, int left, unsigned int cursor, GlyphsSpan glyph_span):
     span = glyph_span.span
     font = span.font
     cdef int font_has_encoding = font.encoding is not None

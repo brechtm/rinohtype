@@ -429,6 +429,13 @@ class GlyphsSpan(list):
             return super().__iter__()
 
 
+try:
+    from .cparagraph import GlyphsSpan
+except ImportError:
+    warn('Import of optimized Cython version of GlyphsSpan failed. Falling '
+         'back to the pure-Python version')
+
+
 class Line(list):
     """Helper class for building and typesetting a single line of text within
     a :class:`Paragraph`."""
