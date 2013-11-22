@@ -13,7 +13,6 @@ from .reader import PDFReader
 from .filter import FlateDecode
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
-from ...util import consumer
 
 
 try:
@@ -195,52 +194,47 @@ class Canvas(StringIO):
         print('f', file=self)
         self.restore_state()
 
-    @consumer
     @profile
-    def show_glyphs(self, left, top, span):
+    def show_glyphs(self, left, cursor, glyph_span):
+        span = glyph_span.span
         font = span.font
         size = span.height
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''
-        last_width = 0
-        while True:
-            try:
-                glyphs_and_widths = (yield last_width)
-            except GeneratorExit:
-                break
-            last_width = 0
-            for glyph, width in glyphs_and_widths:
-                last_width += width
-                displ = (1000 * width) / size
-                code = glyph.code
-                if font.encoding:
-                    if code < 0:
-                        try:
-                            differences = font_rsc['Encoding']['Differences']
-                        except KeyError:
-                            occupied = list(font.encoding.values())
-                            differences = cos.EncodingDifferences(occupied)
-                            font_rsc['Encoding']['Differences'] = differences
-                        code = differences.register(glyph)
-                    char = CODE_TO_CHAR[code]
-                else:
-                    high, low = code >> 8, code & 0xFF
-                    char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
-                adjust = int(glyph.width - displ)
-                if adjust:
-                    string += '({}{}) {} '.format(current_string, char,
-                                                  adjust)
-                    current_string = ''
-                else:
-                    current_string += char
+        total_width = 0
+        for glyph, width in glyph_span:
+            total_width += width
+            displ = (1000 * width) / size
+            code = glyph.code
+            if font.encoding:
+                if code < 0:
+                    try:
+                        differences = font_rsc['Encoding']['Differences']
+                    except KeyError:
+                        occupied = list(font.encoding.values())
+                        differences = cos.EncodingDifferences(occupied)
+                        font_rsc['Encoding']['Differences'] = differences
+                    code = differences.register(glyph)
+                char = CODE_TO_CHAR[code]
+            else:
+                high, low = code >> 8, code & 0xFF
+                char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
+            adjust = int(glyph.width - displ)
+            if adjust:
+                string += '({}{}) {} '.format(current_string, char,
+                                              adjust)
+                current_string = ''
+            else:
+                current_string += char
         if current_string:
             string += '({})'.format(current_string)
         print('BT', file=self)
         print('/{} {} Tf'.format(font_name, size), file=self)
-        print('{} {} Td'.format(left, - top), file=self)
+        print('{} {} Td'.format(left, - (cursor - span.y_offset)), file=self)
         print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
+        return total_width
 
     def place_image(self, image, left, top, scale=1.0):
         resources = self.cos_page.cos_page['Resources']

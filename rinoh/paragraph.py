@@ -398,13 +398,35 @@ class GlyphsSpan(list):
     def __init__(self, span, word_to_glyphs):
         super().__init__()
         self.span = span
-        self.space_indices = set()
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
-        self.space_glyph_and_width = word_to_glyphs(' ')[0]
+        self.number_of_spaces = 0
+        self.space_glyph_and_width = list(word_to_glyphs(' ')[0])
 
     def append_space(self):
-        self.space_indices.add(len(self))
+        self.number_of_spaces += 1
+        self.append(self.space_glyph_and_width)
+
+    def _fill_tabs(self):
+        for index, glyph_and_width in enumerate(super().__iter__()):
+            if index in self.filled_tabs:
+                fill_string = self.filled_tabs[index]
+                tab_width = glyph_and_width[1]
+                fill_glyphs = self.word_to_glyphs(fill_string)
+                fill_string_width = sum(width for glyph, width in fill_glyphs)
+                number, rest = divmod(tab_width, fill_string_width)
+                yield glyph_and_width[0], rest
+                for i in range(int(number)):
+                    for fill_glyph_and_width in fill_glyphs:
+                        yield fill_glyph_and_width
+            else:
+                yield glyph_and_width
+
+    def __iter__(self):
+        if self.filled_tabs:
+            return self._fill_tabs()
+        else:
+            return super().__iter__()
 
 
 class Line(list):
@@ -459,16 +481,16 @@ class Line(list):
                     tab_position = tab_stop.get_position(self.width)
                     if self._cursor < tab_position:
                         tab_width = tab_position - self._cursor
-                        tab_span = [[glyphs_span.space_glyph_and_width[0],
-                                     tab_width]]
+                        tab_glyph_and_width = [glyphs_span.space_glyph_and_width[0],
+                                               tab_width]
                         if tab_stop.fill:
                             self._has_filled_tab = True
                             glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
-                        glyphs_span.append(tab_span)
+                        glyphs_span.append(tab_glyph_and_width)
                         self._cursor += tab_width
                         self._current_tab_stop = tab_stop
                         if tab_stop.align in (RIGHT, CENTER):
-                            self._current_tab = tab_span
+                            self._current_tab = tab_glyph_and_width
                             self._current_tab_stop = tab_stop
                         else:
                             self._current_tab = None
@@ -481,7 +503,7 @@ class Line(list):
                 glyphs_and_widths = word_to_glyphs(word)
                 width = sum(width for glyph, width in glyphs_and_widths)
                 if self._current_tab:
-                    current_tab = self._current_tab[0]
+                    current_tab = self._current_tab
                     tab_width = current_tab[1]
                     factor = 2 if self._current_tab_stop.align == CENTER else 1
                     item_width = width / factor
@@ -500,19 +522,7 @@ class Line(list):
                         success = False
                         continue
                 self._cursor += width
-                glyphs_span.append(glyphs_and_widths)
-
-    def expand_tabs(self):
-        # TODO: turn into generator?
-        for glyph_span in self:
-            for tab_span_index, fill_string in glyph_span.filled_tabs.items():
-                tab_span = glyph_span[tab_span_index]
-                tab_width = tab_span[0][1]
-                fill_glyphs = glyph_span.word_to_glyphs(fill_string)
-                fill_string_width = sum(width for glyph, width in fill_glyphs)
-                number, rest = divmod(tab_width, fill_string_width)
-                tab_span[0][1] = rest
-                tab_span += fill_glyphs * int(number)
+                glyphs_span += glyphs_and_widths
 
     @profile
     def typeset(self, container, justification, line_spacing, last_descender,
@@ -536,9 +546,9 @@ class Line(list):
 
         # drop space at the end of the line
         last_span = self[-1]
-        last_span_length = len(last_span)
-        if last_span_length in last_span.space_indices:
-            last_span.space_indices.discard(last_span_length)
+        if last_span[-1] == last_span.space_glyph_and_width:
+            last_span.pop()
+            last_span.number_of_spaces -= 1
             self._cursor -= last_span.space_glyph_and_width[1]
 
         descender = min(glyph_span.span.descender for glyph_span in self)
@@ -550,9 +560,6 @@ class Line(list):
         if - descender > container.remaining_height:
             raise EndOfContainer
 
-        # replace tabs with fillers
-        self.expand_tabs() if self._has_filled_tab else self
-
         # horizontal displacement
         left = self.indent
 
@@ -561,30 +568,18 @@ class Line(list):
         extra_space = self.width - self._cursor
         if justification == BOTH:
             # TODO: padding added to spaces should be prop. to font size
-            nr_spaces = sum(len(glyph_span.space_indices)
-                            for glyph_span in self)
+            nr_spaces = sum(glyph_span.number_of_spaces for glyph_span in self)
             if nr_spaces > 0:
                 add_to_spaces = extra_space / nr_spaces
                 for glyph_span in self:
-                    space_glyph, space_width = glyph_span.space_glyph_and_width
-                    space_width += add_to_spaces
-                    glyph_span.space_glyph_and_width = space_glyph, space_width
+                    glyph_span.space_glyph_and_width[1] += add_to_spaces
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:
             left += extra_space
 
         for glyph_span in self:
-            y_offset = glyph_span.span.y_offset
-            top = container.cursor - y_offset
-            space = (glyph_span.space_glyph_and_width, )
-            sg = container.canvas.show_glyphs(left, top, glyph_span.span)
-            for index, glyphs_and_widths in enumerate(glyph_span):
-                if index in glyph_span.space_indices:
-                    left += sg.send(space)
-                left += sg.send(glyphs_and_widths)
-            if len(glyph_span) in glyph_span.space_indices:
-                left += sg.send(space)
-            sg.close()
+            left += container.canvas.show_glyphs(left, container.cursor,
+                                                 glyph_span)
         container.advance(- descender)
         return descender
