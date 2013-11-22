@@ -252,6 +252,14 @@ class Canvas(StringIO):
         self.restore_state()
 
 
+try:
+    from .show_glyphs import show_glyphs
+    from types import MethodType
+    Canvas.show_glyphs = lambda self, *args: show_glyphs(self, *args)
+except ImportError:
+    pass
+
+
 class Image(object):
     extensions = ('.pdf', )
 
