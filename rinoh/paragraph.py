@@ -36,6 +36,7 @@ import os
 from copy import copy
 from functools import lru_cache, partial
 from itertools import chain, tee
+from warnings import warn
 
 from . import DATA_PATH
 from .dimension import Dimension, PT
