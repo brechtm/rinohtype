@@ -15,13 +15,6 @@ from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
 
 
-try:
-    profile
-except NameError:
-    def profile(function):
-        return function
-
-
 class Document(object):
     extension = '.pdf'
 
@@ -194,7 +187,6 @@ class Canvas(StringIO):
         print('f', file=self)
         self.restore_state()
 
-    @profile
     def show_glyphs(self, left, cursor, glyph_span):
         span = glyph_span.span
         font = span.font

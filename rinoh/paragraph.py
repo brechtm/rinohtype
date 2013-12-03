@@ -62,12 +62,6 @@ CENTER = 'center'
 BOTH = 'justify'
 
 
-try:
-    profile
-except NameError:
-    def profile(function):
-        return function
-
 
 # Line spacing
 
@@ -238,7 +232,6 @@ class Paragraph(Flowable, MixedStyledText):
         a parent, `style` should be specified."""
         MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
 
-    @profile
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
@@ -359,7 +352,6 @@ def create_hyphenate(span):
 def create_to_glyphs(font, scale, variant, kerning, ligatures):
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders
-    @profile
     def word_to_glyphs(word):
         glyphs = (get_glyph(char) for char in word)
         if ligatures:
@@ -372,7 +364,6 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
     return word_to_glyphs
 
 
-@profile
 def form_ligatures(glyphs, get_ligature):
     prev_glyph = next(glyphs)
     for glyph in glyphs:
@@ -385,7 +376,6 @@ def form_ligatures(glyphs, get_ligature):
     yield prev_glyph
 
 
-@profile
 def kern(glyphs, get_kerning):
     prev_glyph = next(glyphs)
     for glyph in glyphs:
@@ -450,7 +440,6 @@ class Line(list):
         self._current_tab_stop = None
 
     @consumer
-    @profile
     def new_span(self, span):
         font = span.font
         scale = span.height / font.units_per_em
@@ -524,7 +513,6 @@ class Line(list):
                 self._cursor += width
                 glyphs_span += glyphs_and_widths
 
-    @profile
     def typeset(self, container, justification, line_spacing, last_descender,
                 last_line=False, force=False):
         """Typeset the line in `container` below its current cursor position.

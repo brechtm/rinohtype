@@ -53,13 +53,6 @@ __all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText', 'LiteralText',
            'Subscript']
 
 
-try:
-    profile
-except NameError:
-    def profile(function):
-        return function
-
-
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects. It has the following
     attributes:
@@ -165,14 +158,12 @@ class StyledText(Styled):
         return False
 
     @property
-    @profile
     def script_level(self):
         """Nesting level of super/subscript."""
         level = getattr(self.parent, 'script_level', -1)
         return level + 1 if self.is_script() else level
 
     @property
-    @profile
     def height(self):
         """Font size after super/subscript size adjustment."""
         height = float(self.get_style('font_size'))
@@ -181,7 +172,6 @@ class StyledText(Styled):
         return height
 
     @property
-    @profile
     def y_offset(self):
         """Vertical baseline offset (up is positive)."""
         offset = getattr(self.parent, 'y_offset', 0)
@@ -247,7 +237,6 @@ class SingleStyledText(StyledText):
                               style=self.style, parent=self.parent)
 
     @cached_property
-    @profile
     def font(self):
         """The :class:`Font` described by this single-styled text's style.
 
