@@ -135,9 +135,17 @@ class DimensionMultiplication(DimensionBase):
         return float(self.multiplicand) * self.multiplier
 
 
+class DimensionUnit(object):
+    def __init__(self, points_per_unit):
+        self.points_per_unit = float(points_per_unit)
+
+    def __rmul__(self, value):
+        return Dimension(value * self.points_per_unit)
+
+
 # Units
 
-PT = Dimension(1)
-INCH = 72*PT
-MM = INCH / 25.4
-CM = 10*MM
+PT = DimensionUnit(1)
+INCH = DimensionUnit(72*PT)
+MM = DimensionUnit(1 / 25.4 * INCH)
+CM = DimensionUnit(10*MM)
