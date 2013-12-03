@@ -18,6 +18,7 @@ from . import Font, GlyphMetrics, LeafGetter
 from .style import MEDIUM,  UPRIGHT, NORMAL
 from .style import SMALL_CAPITAL, OLD_STYLE
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
+from ..util import cached
 from ..warnings import RinohWarning
 
 
@@ -225,6 +226,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
                  RinohWarning)
             yield 'question'
 
+    @cached
     def get_glyph(self, char, variant=None):
         for name in self._char_to_name(char, variant):
             if name in self._glyphs:
