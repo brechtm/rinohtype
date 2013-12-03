@@ -352,35 +352,41 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders
     def word_to_glyphs(word):
-        glyphs = (get_glyph(char) for char in word)
+        glyphs = [get_glyph(char) for char in word]
         if ligatures:
             glyphs = form_ligatures(glyphs, font.get_ligature)
         if kerning:
             glyphs_kern = kern(glyphs, font.get_kerning)
-        return list((glyph, scale * (glyph.width + kern_adjust))
-                    for glyph, kern_adjust in glyphs_kern)
+        return [(glyph, scale * (glyph.width + kern_adjust))
+                for glyph, kern_adjust in glyphs_kern]
 
     return word_to_glyphs
 
 
 def form_ligatures(glyphs, get_ligature):
+    glyphs = iter(glyphs)
+    result = []
     prev_glyph = next(glyphs)
     for glyph in glyphs:
         ligature_glyph = get_ligature(prev_glyph, glyph)
         if ligature_glyph:
             prev_glyph = ligature_glyph
         else:
-            yield prev_glyph
+            result.append(prev_glyph)
             prev_glyph = glyph
-    yield prev_glyph
+    result.append(prev_glyph)
+    return result
 
 
 def kern(glyphs, get_kerning):
+    glyphs = iter(glyphs)
+    result = []
     prev_glyph = next(glyphs)
     for glyph in glyphs:
-        yield prev_glyph, get_kerning(prev_glyph, glyph)
+        result.append((prev_glyph, get_kerning(prev_glyph, glyph)))
         prev_glyph = glyph
-    yield prev_glyph, 0
+    result.append((prev_glyph, 0.0))
+    return result
 
 
 class GlyphsSpan(list):
