@@ -72,6 +72,9 @@ class AdobeFontMetricsParser(dict):
     HEX_NUMBER = re.compile(r'<([\da-f]+)>', re.I)
 
     def __init__(self, file):
+        self._glyphs = {}
+        self._ligatures = {}
+        self._kerning_pairs = {}
         sections, section = [self], self
         section_names = [None]
         for line in file.readlines():
@@ -171,10 +174,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             filename = None
             file = file_or_filename
             close_file = False
-        self._glyphs = {}
         self._suffixes = {}
-        self._ligatures = {}
-        self._kerning_pairs = {}
         AdobeFontMetricsParser.__init__(self, file)
         if close_file:
             file.close()
