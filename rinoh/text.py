@@ -163,7 +163,7 @@ class StyledText(Styled):
         level = getattr(self.parent, 'script_level', -1)
         return level + 1 if self.is_script() else level
 
-    @property
+    @cached_property
     def height(self):
         """Font size after super/subscript size adjustment."""
         height = float(self.get_style('font_size'))
