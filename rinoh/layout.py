@@ -252,7 +252,7 @@ class ExpandingContainer(Container):
 
     def _expand(self, height):
         """Grow this container by `height`"""
-        self.height += height
+        self.height.grow(height)
 
 
 class DownExpandingContainer(ExpandingContainer):

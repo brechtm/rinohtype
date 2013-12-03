@@ -101,8 +101,8 @@ class Dimension(DimensionBase):
         """Initialize a dimension at `value` points."""
         self._value = value
 
-    def __iadd__(self, other):
-        self._value += other
+    def grow(self, value):
+        self._value += float(value)
         return self
 
     def __float__(self):
