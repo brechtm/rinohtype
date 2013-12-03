@@ -29,8 +29,7 @@ page to which :class:`Flowable`\ s can be rendered.
 
 from copy import copy
 
-from .dimension import PT
-from .util import cached_property
+from .dimension import Dimension, PT
 
 
 __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
@@ -234,7 +233,8 @@ class ExpandingContainer(Container):
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(name, parent, left, top, width, 0*PT, right, bottom)
+        height = Dimension(0)
+        super().__init__(name, parent, left, top, width, height, right, bottom)
         self.max_height = max_height
 
     @property

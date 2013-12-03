@@ -38,7 +38,7 @@ from functools import lru_cache, partial
 from itertools import chain, tee
 
 from . import DATA_PATH
-from .dimension import Dimension, PT
+from .dimension import DimensionBase, PT
 from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
 from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
@@ -60,7 +60,6 @@ LEFT = 'left'
 RIGHT = 'right'
 CENTER = 'center'
 BOTH = 'justify'
-
 
 
 # Line spacing
@@ -156,7 +155,7 @@ class TabStop(object):
     def __init__(self, position, align=LEFT, fill=None):
         """`position` can be an absolute position (:class:`Dimension`) or can
         be relative to the line width (:class:`float`, between 0 and 1).
-        The alinment of text with respect to the tab stop is determined by
+        The alingment of text with respect to the tab stop is determined by
         `align`, which can be :const:`LEFT`, :const:`RIGHT` or :const:`CENTER`.
         Optionally, `fill` specifies a string pattern to fill the empty tab
         space with."""
@@ -166,7 +165,7 @@ class TabStop(object):
 
     def get_position(self, line_width):
         """Return the absolute position of this tab stop."""
-        if isinstance(self._position, Dimension):
+        if isinstance(self._position, DimensionBase):
             return float(self._position)
         else:
             return line_width * self._position

@@ -20,8 +20,6 @@ It also exports a number of pre-defined units:
 
 """
 
-from copy import copy
-
 
 __all__ = ['Dimension', 'PT', 'INCH', 'MM', 'CM']
 
@@ -48,7 +46,7 @@ class DimensionType(type):
         return operator
 
 
-class Dimension(object, metaclass=DimensionType):
+class DimensionBase(object, metaclass=DimensionType):
     """Late-evaluated dimension. The result of mathematical operations on
     dimension objects is not a statically evaluated version, but rather stores
     references to the operator arguments. The result is only evaluated to a
@@ -57,80 +55,84 @@ class Dimension(object, metaclass=DimensionType):
     The internal representation is in terms of PostScript points. A PostScript
     point is equal to one 72th of an inch."""
 
-    # TODO: em, ex? (depends on context)
-    def __init__(self, value=0, _plus_terms=None, _minus_terms=None, _factor=1):
-        """Initialize a dimension at `value` points.
-        You should *not* specify values for other arguments than `value`!"""
-        self._value = value
-        self._plus_terms = _plus_terms or []
-        self._minus_terms = _minus_terms or []
-        self._factor = _factor
-
     def __neg__(self):
-        """Return the negative of this dimension."""
-        inverse = copy(self)
-        inverse *= - 1
-        return inverse
-
-    def __iadd__(self, other):
-        """Return this dimension after adding `other` (in place)."""
-        this = copy(self)
-        self.__init__(_plus_terms=[this, other])
-        return self
-
-    def __isub__(self, other):
-        """Return this dimension after subtracting `other` (in place)."""
-        this = copy(self)
-        self.__init__(_plus_terms=[this], _minus_terms=[other])
-        return self
+        return DimensionMultiplication(self, -1)
 
     def __add__(self, other):
         """Return the sum of this dimension and `other`."""
-        return self.__class__(_plus_terms=[self, other])
+        return DimensionAddition(self, other)
 
     __radd__ = __add__
 
     def __sub__(self, other):
         """Return the difference of this dimension and `other`."""
-        return self.__class__(_plus_terms=[self], _minus_terms=[other])
+        return DimensionSubtraction(self, other)
 
     def __rsub__(self, other):
         """Return the difference of `other` and this dimension."""
-        return self.__class__(_plus_terms=[other], _minus_terms=[self])
-
-    def __imul__(self, factor):
-        """Return this dimension after multiplying it by `factor` (in place)."""
-        self._factor *= factor
-        return self
+        return DimensionSubtraction(other, self)
 
     def __mul__(self, factor):
         """Return the product of this dimension and `factor`."""
-        return self.__class__(_plus_terms=[self], _factor=factor)
+        return DimensionMultiplication(self, factor)
 
     __rmul__ = __mul__
 
-    def __truediv__(self, factor):
-        """Return the quotient of this dimension and `factor`."""
-        return self * (1.0 / factor)
-
-    def __itruediv__(self, factor):
-        """Return this dimension after dividing it by `factor` (in place)."""
-        self._factor /= factor
-        return self
+    def __truediv__(self, divisor):
+        """Return the quotient of this dimension and `divisor`."""
+        return DimensionMultiplication(self, 1.0 / divisor)
 
     def __repr__(self):
         """Return a textual representation of the evaluated value."""
         return str(float(self)) + 'pt'
 
-    def __float__(self):
-        """Evaluate the value of this dimension in points."""
-        total = (self._value + sum(map(float, self._plus_terms))
-                             - sum(map(float, self._minus_terms)))
-        return float(total) * self._factor
-
     def __abs__(self):
         """Return the absolute value of this dimension (in points)."""
         return abs(float(self))
+
+    def __float__(self):
+        """Evaluate the value of this dimension in points."""
+        raise NotImplementedError
+
+
+class Dimension(DimensionBase):
+    # TODO: em, ex? (depends on context)
+    def __init__(self, value=0):
+        """Initialize a dimension at `value` points."""
+        self._value = value
+
+    def __iadd__(self, other):
+        self._value += other
+        return self
+
+    def __float__(self):
+        return float(self._value)
+
+
+class DimensionAddition(DimensionBase):
+    def __init__(self, *addends):
+        self.addends = addends
+
+    def __float__(self):
+        return sum(map(float, self.addends))
+
+
+class DimensionSubtraction(DimensionBase):
+    def __init__(self, minuend, subtrahend):
+        self.minuend = minuend
+        self.subtrahend = subtrahend
+
+    def __float__(self):
+        return float(self.minuend) - float(self.subtrahend)
+
+
+class DimensionMultiplication(DimensionBase):
+    def __init__(self, multiplicand, multiplier):
+        self.multiplicand = multiplicand
+        self.multiplier = multiplier
+
+    def __float__(self):
+        return float(self.multiplicand) * self.multiplier
 
 
 # Units
