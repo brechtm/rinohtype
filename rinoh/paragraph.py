@@ -357,6 +357,8 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
             glyphs = form_ligatures(glyphs, font.get_ligature)
         if kerning:
             glyphs_kern = kern(glyphs, font.get_kerning)
+        else:
+            glyphs_kern = [(glyph, 0.0) for glyph in glyphs]
         return [(glyph, scale * (glyph.width + kern_adjust))
                 for glyph, kern_adjust in glyphs_kern]
 
