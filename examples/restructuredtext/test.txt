@@ -1,4 +1,0 @@
-
-My *favorite* language is Python_.
-
-.. _Python: http://www.python.org/
