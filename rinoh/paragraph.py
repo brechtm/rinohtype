@@ -258,8 +258,7 @@ class Paragraph(Flowable, MixedStyledText):
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
                 saved_state = copy(state)
-                new_line = Line(tab_stops, line_width, container)
-                return new_line, new_line.new_span(span).send
+                return Line(tab_stops, line_width, container)
             except EndOfContainer:
                 raise EndOfContainer(saved_state)
 
@@ -274,8 +273,8 @@ class Paragraph(Flowable, MixedStyledText):
                     last_span = span
 
                 if word == '\n':
-                    line, line_span_send = typeset_line(line, last_line=True,
-                                                        force=True)
+                    line = typeset_line(line, last_line=True, force=True)
+                    line_span_send = line.new_span(span).send
                 elif not line_span_send(word):
                     for first, second in hyphenate(word):
                         if line_span_send(first):
@@ -283,11 +282,13 @@ class Paragraph(Flowable, MixedStyledText):
                             break
                     else:
                         state.prepend_item(span, word)
-                    line, line_span_send = typeset_line(line)
+                    line = typeset_line(line)
+                    line_span_send = line.new_span(span).send
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
-                line, line_span_send = typeset_line(line, last_line=True)
+                line = typeset_line(line, last_line=True)
+                span = None
                 try:
                     _, descender = fe.flowable.flow(container, descender,
                                                     state.nested_flowable_state)
@@ -541,7 +542,7 @@ class Line(list):
 
         # drop space at the end of the line
         last_span = self[-1]
-        if last_span[-1] == last_span.space_glyph_and_width:
+        if last_span and last_span[-1] == last_span.space_glyph_and_width:
             last_span.pop()
             last_span.number_of_spaces -= 1
             self._cursor -= last_span.space_glyph_and_width[1]
