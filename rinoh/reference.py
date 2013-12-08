@@ -56,7 +56,7 @@ class Variable(Field):
         if self.type == PAGE_NUMBER:
             text = str(container.page.number)
         elif self.type == NUMBER_OF_PAGES:
-            number = self.document.number_of_pages
+            number = container.document.number_of_pages
             text = str(number)
         elif self.type == SECTION_NUMBER:
             if container.page.section and container.page.section.number:
@@ -72,8 +72,8 @@ class Variable(Field):
 
 class Referenceable(object):
     def __init__(self, document, id):
-        if id:
-            document.elements[id] = self
+        id = id or document.unique_id
+        document.elements[id] = self
         self.id = id
 
     def reference(self):
@@ -83,7 +83,7 @@ class Referenceable(object):
         raise NotImplementedError
 
     def update_page_reference(self, page):
-        self.document.page_references[self.id] = page.number
+        page.document.page_references[self.id] = page.number
 
 
 REFERENCE = 'reference'
@@ -100,7 +100,7 @@ class Reference(Field):
 
     def field_spans(self, container):
         try:
-            referenced_item = self.document.elements[self.id]
+            referenced_item = container.document.elements[self.id]
             if self.type == REFERENCE:
                 text = referenced_item.reference()
                 if text is None:
@@ -109,7 +109,7 @@ class Reference(Field):
                     text = ''
             elif self.type == PAGE:
                 try:
-                    text = str(self.document.page_references[self.id])
+                    text = str(container.document.page_references[self.id])
                 except KeyError:
                     text = '??'
             elif self.type == TITLE:
@@ -136,7 +136,7 @@ class Footnote(Field):
         nr = Superscript(str(number) + '  ')
         nr.parent = note
         note.insert(0, nr)
-        note.document = self.document
+        note.document = container.document
         note.flow(container._footnote_space, None)
         field_text = Superscript(str(number))
         field_text.parent = self.parent

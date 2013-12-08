@@ -202,32 +202,18 @@ class DocumentElement(object):
     """An element that is directly or indirectly part of a :class:`Document`
     and is eventually rendered to the output."""
 
-    def __init__(self, document=None, parent=None, source=None):
-        """Initialize this document element as an element of `document`
-        (:class:`Document`) or as child of `parent` (:class:`DocumentElement`).
-        `source` should point to a node in the input's document tree
+    def __init__(self, parent=None, source=None):
+        """Initialize this document element as as a child of `parent` 
+        (:class:`DocumentElement`) if it is not a top-level :class:`Flowable`
+        element. `source` should point to a node in the input's document tree
         corresponding to this document element. It is used to point to a
         location in the input file when warnings or errors are generated (see
         the :meth:`warn` method).
 
-        All three parameters are optional, and can be set at a later point by
-        assinging to the identically named instance attributes."""
-        self.document = document
+        Both parameters are optional, and can be set at a later point by
+        assigning to the identically named instance attributes."""
         self.parent = parent
         self.source = source
-
-    @property
-    def document(self):
-        """The document this element belongs to."""
-        if self._document is not None:
-            return self._document
-        else:
-            return self.parent.document
-
-    @document.setter
-    def document(self, document):
-        """Set `document` as owner of this element."""
-        self._document = document
 
     @property
     def source(self):
