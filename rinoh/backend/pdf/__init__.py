@@ -187,10 +187,10 @@ class Canvas(StringIO):
         print('f', file=self)
         self.restore_state()
 
-    def show_glyphs(self, left, cursor, glyph_span):
+    def show_glyphs(self, left, cursor, glyph_span, document):
         span = glyph_span.span
-        font = span.font
-        size = span.height
+        font = span.font(document)
+        size = span.height(document)
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''
@@ -223,7 +223,8 @@ class Canvas(StringIO):
             string += '({})'.format(current_string)
         print('BT', file=self)
         print('/{} {} Tf'.format(font_name, size), file=self)
-        print('{} {} Td'.format(left, - (cursor - span.y_offset)), file=self)
+        print('{} {} Td'.format(left, - (cursor - span.y_offset(document))),
+              file=self)
         print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
         return total_width

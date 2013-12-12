@@ -79,10 +79,11 @@ class Flowable(Styled):
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
         start_offset = container.cursor
+        document = container.document
         if not state:
-            container.advance(float(self.get_style('space_above')))
-        left = self.get_style('indent_left')
-        right = container.width - self.get_style('indent_right')
+            container.advance(float(self.get_style('space_above', document)))
+        left = self.get_style('indent_left', document)
+        right = container.width - self.get_style('indent_right', document)
         max_height = container.remaining_height
         pad_container = DownExpandingContainer('PADDED',
                                                container,
@@ -92,7 +93,7 @@ class Flowable(Styled):
         last_descender = self.render(pad_container, last_descender, state=state)
         container.advance(pad_container.cursor)
         try:
-            container.advance(float(self.get_style('space_below')))
+            container.advance(float(self.get_style('space_below', document)))
         except EndOfContainer:
             pass
         return container.cursor - start_offset, last_descender

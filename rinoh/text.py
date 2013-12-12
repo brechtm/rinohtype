@@ -112,8 +112,7 @@ class CharacterLike(Styled):
     def width(self):
         raise NotImplementedError
 
-    @property
-    def height(self):
+    def height(self, document):
         raise NotImplementedError
 
     def render(self):
@@ -130,7 +129,6 @@ class StyledText(Styled):
         :class:`Styled`). The default (`style` = :const:`PARENT_STYLE`) is to
         inherit the style of the parent of this styled text. """
         super().__init__(style, parent)
-        self._y_offset = 0
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
@@ -163,20 +161,20 @@ class StyledText(Styled):
         level = getattr(self.parent, 'script_level', -1)
         return level + 1 if self.is_script() else level
 
-    @cached_property
-    def height(self):
+    def height(self, document):
         """Font size after super/subscript size adjustment."""
-        height = float(self.get_style('font_size'))
+        height = float(self.get_style('font_size', document))
         if self.script_level > -1:
             height *= self.position_size * (5 / 6)**self.script_level
         return height
 
-    @property
-    def y_offset(self):
+    def y_offset(self, document):
         """Vertical baseline offset (up is positive)."""
-        offset = getattr(self.parent, 'y_offset', 0)
+        offset = (self.parent.y_offset(document)\
+                  if hasattr(self.parent, 'y_offset') else 0)
         if self.is_script():
-            offset += self.parent.height * self.position[self.style.position]
+            offset += (self.parent.height(document) *
+                       self.position[self.style.position])
             # The Y offset should only change once for the nesting level
             # where the position style is set, hence we don't recursively
             # get the position style using self.get_style('position')
@@ -236,31 +234,30 @@ class SingleStyledText(StyledText):
         return self.__class__(self.text.upper(),
                               style=self.style, parent=self.parent)
 
-    @cached_property
-    def font(self):
+    def font(self, document):
         """The :class:`Font` described by this single-styled text's style.
 
         If the exact font style as described by the `font_weight`,
         `font_slant` and `font_width` style attributes is not present in the
         `typeface`, the closest font available is returned instead, and a
         warning is printed."""
-        typeface = self.get_style('typeface')
-        weight = self.get_style('font_weight')
-        slant = self.get_style('font_slant')
-        width = self.get_style('font_width')
+        typeface = self.get_style('typeface', document)
+        weight = self.get_style('font_weight', document)
+        slant = self.get_style('font_slant', document)
+        width = self.get_style('font_width', document)
         return typeface.get(weight=weight, slant=slant, width=width)
 
-    @property
-    def ascender(self):
-        return self.font.ascender_in_pt * float(self.get_style('font_size'))
+    def ascender(self, document):
+        return (self.font(document).ascender_in_pt
+                * float(self.get_style('font_size', document)))
 
-    @property
-    def descender(self):
-        return self.font.descender_in_pt * float(self.get_style('font_size'))
+    def descender(self, document):
+        return (self.font(document).descender_in_pt
+                * float(self.get_style('font_size', document)))
 
-    @property
-    def line_gap(self):
-        return self.font.line_gap_in_pt * float(self.get_style('font_size'))
+    def line_gap(self, document):
+        return (self.font(document).line_gap_in_pt
+                * float(self.get_style('font_size', document)))
 
     def spans(self):
         yield self
@@ -416,8 +413,7 @@ class Box(Character):
     def width(self):
         return self._width
 
-    @property
-    def height(self):
+    def height(self, document):
         return self._height
 
     def render(self, canvas, x, y):

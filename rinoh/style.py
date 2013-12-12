@@ -177,22 +177,26 @@ class Styled(DocumentElement):
         super().__init__(parent=parent)
         if style is None:
             style = self.style_class()
-        if style != PARENT_STYLE and not isinstance(style, self.style_class):
-            raise TypeError('the style passed to {0} should be of type {1}'
-                            .format(self.__class__.__name__,
-                                    self.style_class.__name__))
+        # if style != PARENT_STYLE and not isinstance(style, self.style_class):
+        #     raise TypeError('the style passed to {0} should be of type {1}'
+        #                     .format(self.__class__.__name__,
+        #                             self.style_class.__name__))
         self.style = style
 
-    @cached
-    def get_style(self, attribute):
+    #@cached
+    def get_style(self, attribute, document=None):
         """Return `attribute` of the associated :class:`Style`.
 
         If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
         the style attribute is fetched from this element's parent."""
         try:
-            value = self.style[attribute]
+            if isinstance(self.style, str):
+                style = document.styles[self.style]
+            else:
+                style = self.style
+            value = style[attribute]
         except ParentStyleException:
-            value = self.parent.get_style(attribute)
+            value = self.parent.get_style(attribute, document)
         return value
 
 

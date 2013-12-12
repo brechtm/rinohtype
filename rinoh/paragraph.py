@@ -68,7 +68,7 @@ class LineSpacing(object):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
-    def advance(self, line, last_descender):
+    def advance(self, line, last_descender, document):
         """Return the distance between the descender of the previous line and
         the baseline of the current line."""
         raise NotImplementedError
@@ -77,10 +77,10 @@ class LineSpacing(object):
 class DefaultSpacing(LineSpacing):
     """The default line spacing as specified by the font."""
 
-    def advance(self, line, last_descender):
-        max_line_gap = max(float(glyph_span.span.line_gap)
+    def advance(self, line, last_descender, document):
+        max_line_gap = max(float(glyph_span.span.line_gap(document))
                            for glyph_span in line)
-        ascender = max(float(glyph_span.span.ascender)
+        ascender = max(float(glyph_span.span.ascender(document))
                        for glyph_span in line)
         return ascender + max_line_gap
 
@@ -97,8 +97,8 @@ class ProportionalSpacing(LineSpacing):
         to obtain the line spacing."""
         self.factor = factor
 
-    def advance(self, line, last_descender):
-        max_font_size = max(float(glyph_span.span.height)
+    def advance(self, line, last_descender, document):
+        max_font_size = max(float(glyph_span.span.height(document))
                             for glyph_span in line)
         return self.factor * max_font_size + last_descender
 
@@ -127,10 +127,10 @@ class FixedSpacing(LineSpacing):
         self.pitch = float(pitch)
         self.minimum = minimum
 
-    def advance(self, line, last_descender):
+    def advance(self, line, last_descender, document):
         advance = self.pitch + last_descender
         if self.minimum is not None:
-            minimum = self.minimum.advance(line, last_descender)
+            minimum = self.minimum.advance(line, last_descender, document)
             return max(advance, minimum)
         else:
             return advance
@@ -238,11 +238,13 @@ class Paragraph(Flowable, MixedStyledText):
         When the end of the container is reached, the rendering state is
         preserved to continue setting the rest of the paragraph when this method
         is called with a new container."""
-        indent_first = 0 if state else float(self.get_style('indent_first'))
+        document = container.document
+        indent_first = 0 if state else float(self.get_style('indent_first',
+                                                            document))
         line_width = float(container.width)
-        line_spacing = self.get_style('line_spacing')
-        justification = self.get_style('justify')
-        tab_stops = self.get_style('tab_stops')
+        line_spacing = self.get_style('line_spacing', document)
+        justification = self.get_style('justify', document)
+        tab_stops = self.get_style('tab_stops', document)
 
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
@@ -268,13 +270,13 @@ class Paragraph(Flowable, MixedStyledText):
             try:
                 span, word = state.next_item()      # raises StopIteration
                 if span is not last_span:
-                    line_span_send = line.new_span(span).send
-                    hyphenate = create_hyphenate(span)
+                    line_span_send = line.new_span(span, document).send
+                    hyphenate = create_hyphenate(span, document)
                     last_span = span
 
                 if word == '\n':
                     line = typeset_line(line, last_line=True, force=True)
-                    line_span_send = line.new_span(span).send
+                    line_span_send = line.new_span(span, document).send
                 elif not line_span_send(word):
                     for first, second in hyphenate(word):
                         if line_span_send(first):
@@ -283,7 +285,7 @@ class Paragraph(Flowable, MixedStyledText):
                     else:
                         state.prepend_item(span, word)
                     line = typeset_line(line)
-                    line_span_send = line.new_span(span).send
+                    line_span_send = line.new_span(span, document).send
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
@@ -322,15 +324,15 @@ class HyphenatorStore(dict):
 HYPHENATORS = HyphenatorStore()
 
 
-def create_hyphenate(span):
-    if not span.get_style('hyphenate'):
+def create_hyphenate(span, document):
+    if not span.get_style('hyphenate', document):
         def dont_hyphenate(word):
             return
             yield
         return dont_hyphenate
 
-    hyphenator = HYPHENATORS[span.get_style('hyphen_lang'),
-                             span.get_style('hyphen_chars')]
+    hyphenator = HYPHENATORS[span.get_style('hyphen_lang', document),
+                             span.get_style('hyphen_chars', document)]
     def hyphenate(word):
         """Generator yielding possible options for splitting this single-styled
         text (assuming it is a word) across two lines. Items yielded are tuples
@@ -448,13 +450,13 @@ class Line(list):
         self._current_tab_stop = None
 
     @consumer
-    def new_span(self, span):
-        font = span.font
-        scale = span.height / font.units_per_em
-        variant = (SMALL_CAPITAL if span.get_style('small_caps') else None)
+    def new_span(self, span, document):
+        font = span.font(document)
+        scale = span.height(document) / font.units_per_em
+        variant = (SMALL_CAPITAL if span.get_style('small_caps', document) else None)
         word_to_glyphs = create_to_glyphs(font, scale, variant,
-                                          span.get_style('kerning'),
-                                          span.get_style('ligatures'))
+                                          span.get_style('kerning', document),
+                                          span.get_style('ligatures', document))
         glyphs_span = GlyphsSpan(span, word_to_glyphs)
         space_glyph, space_width = glyphs_span.space_glyph_and_width
         super().append(glyphs_span)
@@ -532,6 +534,8 @@ class Line(list):
         whether this is the last line of the paragraph.
 
         Returns the line's descender size."""
+        document = container.document
+
         # remove empty spans at the end of the line
         while len(self) > 1 and len(self[-1]) == 0:
             self.pop()
@@ -547,11 +551,13 @@ class Line(list):
             last_span.number_of_spaces -= 1
             self._cursor -= last_span.space_glyph_and_width[1]
 
-        descender = min(glyph_span.span.descender for glyph_span in self)
+        descender = min(glyph_span.span.descender(document)
+                        for glyph_span in self)
         if last_descender is None:
-            advance = max(glyph_span.span.ascender for glyph_span in self)
+            advance = max(glyph_span.span.ascender(document)
+                          for glyph_span in self)
         else:
-            advance = line_spacing.advance(self, last_descender)
+            advance = line_spacing.advance(self, last_descender, document)
         container.advance(advance)
         if - descender > container.remaining_height:
             raise EndOfContainer
@@ -576,6 +582,6 @@ class Line(list):
 
         for glyph_span in self:
             left += container.canvas.show_glyphs(left, container.cursor,
-                                                 glyph_span)
+                                                 glyph_span, document)
         container.advance(- descender)
         return descender

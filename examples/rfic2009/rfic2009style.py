@@ -258,7 +258,7 @@ styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
 class Abstract(Paragraph):
     def __init__(self, text):
         label = SingleStyledText("Abstract \N{EM DASH} ", BOLD_ITALIC_STYLE)
-        return super().__init__(label + text, style=styles['abstract'])
+        return super().__init__(label + text, style='abstract')
 
 
 class IndexTerms(Paragraph):
@@ -266,7 +266,7 @@ class IndexTerms(Paragraph):
         label = SingleStyledText("Index Terms \N{EM DASH} ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
-        return super().__init__(label + text, style=styles['abstract'])
+        return super().__init__(label + text, style='abstract')
 
 
 # input parsing
@@ -303,7 +303,7 @@ class P(NestedElement):
             style = 'list item'
         else:
             style = 'body'
-        return Paragraph(self.process_content(document), style=self.style(style))
+        return Paragraph(self.process_content(document), style=style)
 
 
 class B(NestedElement):
@@ -349,12 +349,12 @@ class LI(CustomElement):
 
 class Math(CustomElement):
     def parse(self, document):
-        return RinohMath(self.text, style=self.style('math'))
+        return RinohMath(self.text, style='math')
 
 
 class Eq(CustomElement):
     def parse(self, document, id=None):
-        equation = Equation(self.text, style=self.style('equation'))
+        equation = Equation(self.text, style='equation')
         id = self.get('id', None)
         if id:
             document.elements[id] = equation
@@ -378,7 +378,7 @@ class Ref(CustomElement):
 class Footnote(NestedElement):
     def parse(self, document):
         par = Paragraph(self.process_content(document),
-                        style=self.style('footnote'))
+                        style='footnote')
         return RinohFootnote(par)
 
 
@@ -395,7 +395,7 @@ class Figure(CustomElement):
         caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
         figure = RinohFigure(document, self.get('path'), caption_text,
-                            scale=scale, style=self.style('figure'),
+                            scale=scale, style='figure',
                             caption_style=self.style('figure caption'))
         return Floating(figure)
 
@@ -426,7 +426,7 @@ class IEEEBibliography(GroupedFlowables):
     def __init__(self, items):
         super().__init__()
         for item in items:
-            self.append(Paragraph(item, style=styles['bibliography']))
+            self.append(Paragraph(item, style='bibliography'))
 
 csl_formatter.Bibliography = IEEEBibliography
 
@@ -499,9 +499,9 @@ class RFICPage(Page):
         footer_vert_pos = self.topmargin + body_height + self.bottommargin /2
         self.footer = Container('footer', self, self.leftmargin,
                                 footer_vert_pos, body_width, 12*PT)
-        header_text = Header(styles['header'])
+        header_text = Header('header')
         self.header.append_flowable(header_text)
-        footer_text = Footer(styles['footer'])
+        footer_text = Footer('footer')
         self.footer.append_flowable(footer_text)
 
 
@@ -513,6 +513,7 @@ class RFIC2009Paper(Document):
 
     def __init__(self, filename, bibliography_source):
         super().__init__(backend=pdf)
+        self.styles = styles
         parser = xml_frontend.Parser(CustomElement, self.namespace,
                                      schema=self.rngschema)
         xml_tree = parser.parse(filename)
@@ -532,10 +533,10 @@ class RFIC2009Paper(Document):
         self.parse_input()
 
     def parse_input(self):
-        self.title_par = Paragraph(self.title, style=styles['title'])
-        self.author_par = Paragraph(self.author, style=styles['author'])
+        self.title_par = Paragraph(self.title, style='title')
+        self.author_par = Paragraph(self.author, style='author')
         self.affiliation_par = Paragraph(self.root.head.affiliation.text,
-                                         style=styles['affiliation'])
+                                         style='affiliation')
 
         self.content = Chain(self)
         self.content << Abstract(self.root.head.abstract.text)
