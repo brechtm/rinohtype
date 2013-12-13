@@ -58,12 +58,12 @@ class Variable(Field):
         elif self.type == NUMBER_OF_PAGES:
             number = container.document.number_of_pages
             text = str(number)
-        elif self.type == SECTION_NUMBER:
-            if container.page.section and container.page.section.number:
-                text = container.page.section.number
-        elif self.type == SECTION_TITLE:
-            if container.page.section:
-                text = container.page.section.title()
+        elif self.type == SECTION_NUMBER and container.page.section:
+            section_id = container.page.section.id
+            text = container.document.get_reference(section_id, REFERENCE) or ''
+        elif self.type == SECTION_TITLE and container.page.section:
+                section_id = container.page.section.id
+                text = container.document.get_reference(section_id, TITLE)
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
@@ -75,12 +75,6 @@ class Referenceable(object):
         id = id or document.unique_id
         document.elements[id] = self
         self.id = id
-
-    def reference(self):
-        raise NotImplementedError
-
-    def title(self):
-        raise NotImplementedError
 
     def update_page_reference(self, page):
         page.document.page_references[self.id] = page.number
@@ -100,11 +94,10 @@ class Reference(Field):
 
     def field_spans(self, container):
         try:
-            referenced_item = container.document.elements[self.id]
             if self.type == REFERENCE:
-                text = referenced_item.reference()
+                text = container.document.get_reference(self.id, self.type)
                 if text is None:
-                    self.warn('Cannot reference "{}"'.format(referenced_item),
+                    self.warn('Cannot reference "{}"'.format(self.id),
                               container)
                     text = ''
             elif self.type == PAGE:
@@ -113,7 +106,7 @@ class Reference(Field):
                 except KeyError:
                     text = '??'
             elif self.type == TITLE:
-                text = referenced_item.title()
+                text = container.document.get_reference(self.id, self.type)
             else:
                 raise NotImplementedError
         except KeyError:

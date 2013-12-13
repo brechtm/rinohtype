@@ -55,14 +55,10 @@ class Heading(Paragraph, Referenceable):
         self.level = level
         if id is None:
             id = document.unique_id
+        document.set_reference(id, REFERENCE, self.number)
+        document.set_reference(id, TITLE, self._title)
         Paragraph.__init__(self, number + title, style)
         Referenceable.__init__(self, document, id)
-
-    def reference(self):
-        return self.number
-
-    def title(self):
-        return self._title
 
     def render(self, container, last_descender, state=None):
         if self.level == 1:

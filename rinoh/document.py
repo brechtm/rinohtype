@@ -102,6 +102,7 @@ class Document(object):
 
         self.counters = {}      # counters for Headings, Figures and Tables
         self.elements = {}      # mapping id's to Referenceables
+        self.references = {}    # mapping id's to reference data
         self._unique_id = 0
 
     def _print_version_and_license(self):
@@ -118,6 +119,13 @@ to the terms of the GNU Affero General Public License version 3.''')
         specified."""
         self._unique_id += 1
         return self._unique_id
+
+    def set_reference(self, id, reference_type, value):
+        id_references = self.references.setdefault(id, {})
+        id_references[reference_type] = value
+
+    def get_reference(self, id, reference_type):
+        return self.references[id][reference_type]
 
     def add_page(self, page, number):
         """Add `page` (:class:`Page`) with page `number` (as displayed) to this
