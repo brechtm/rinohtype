@@ -421,11 +421,15 @@ class CSVTabular(CustomElement):
 from rinoh import csl_formatter
 
 
-class IEEEBibliography(GroupedFlowables):
+class IEEEBibliography(GroupedFlowables, list):
     def __init__(self, items):
         super().__init__()
         for item in items:
             self.append(Paragraph(item, style='bibliography'))
+
+    def flowables(self, document):
+        return iter(self)
+
 
 csl_formatter.Bibliography = IEEEBibliography
 

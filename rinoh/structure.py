@@ -100,7 +100,7 @@ class ListStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class List(GroupedFlowables):
+class List(GroupedFlowables, list):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
@@ -125,6 +125,9 @@ class List(GroupedFlowables):
         last = ListItem(numbers[-1], separator, items[-1],
                         style=last_item_style, parent=self)
         self.append(last)
+
+    def flowables(self, document):
+        return iter(self)
 
 
 class ListItemNumber(Paragraph):
@@ -278,6 +281,11 @@ class TableOfContents(GroupedFlowables):
         super().__init__(style=style, parent=parent)
         self.styles = styles
         self.source = self
+        self.fs = []
+
+    def flowables(self, document):
+        for flowable in self.fs:
+            yield flowable
 
     def register(self, flowable):
         if (isinstance(flowable, Heading) and
@@ -293,4 +301,4 @@ class TableOfContents(GroupedFlowables):
             except AttributeError:
                 flowable = Paragraph(text, style=self.styles[-1])
             flowable.parent = self
-            self.append(flowable)
+            self.fs.append(flowable)

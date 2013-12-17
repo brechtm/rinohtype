@@ -148,9 +148,13 @@ class GroupedFlowablesState(FlowableState):
         self.first_flowable_state = first_flowable_state
 
 
-class GroupedFlowables(Flowable, list):
+class GroupedFlowables(Flowable):
+    def flowables(self, document):
+        raise NotImplementedError
+
     def render(self, container, descender, state=None):
-        state = state or GroupedFlowablesState(iter(self), None)
+        flowables = self.flowables(container.document)
+        state = state or GroupedFlowablesState(flowables, None)
 
         try:
             while True:
