@@ -293,7 +293,7 @@ class Section(CustomElement):
 class Title(NestedElement):
     def parse(self, document, level=1, id=None):
         return Heading(document, self.process_content(document),
-                       style=styles['heading{}'.format(level)],
+                       style='heading{}'.format(level),
                        level=level, id=id)
 
 

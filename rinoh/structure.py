@@ -14,11 +14,11 @@ from itertools import chain, tee
 from .layout import EndOfContainer, MaybeContainer
 from .flowable import Flowable, FlowableState, GroupedFlowables
 from .number import format_number, NUMBER
-from .paragraph import ParagraphStyle, Paragraph, TabStop, RIGHT
+from .paragraph import ParagraphStyle, Paragraph, ParagraphState, TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
-from .text import SingleStyledText, FixedWidthSpace, Tab
+from .text import SingleStyledText, MixedStyledText, FixedWidthSpace, Tab
 from .dimension import PT
 from .style import PARENT_STYLE
 
@@ -42,25 +42,38 @@ class Heading(Paragraph, Referenceable):
     style_class = HeadingStyle
 
     def __init__(self, document, title, style=None, level=1, id=None):
-        self._title = title
-        counters = document.counters.setdefault(self.__class__, {1: 1})
-        if style.numbering_style is not None:
-            self.number = format_number(counters[level], style.numbering_style)
-            number = self.number + style.numbering_separator + FixedWidthSpace()
-            counters[level] += 1
-            counters[level + 1] = 1
-        else:
-            self.number = None
-            number = ''
-        self.level = level
-        if id is None:
-            id = document.unique_id
-        document.set_reference(id, REFERENCE, self.number)
-        document.set_reference(id, TITLE, self._title)
-        Paragraph.__init__(self, number + title, style)
+        Paragraph.__init__(self, [], style)
         Referenceable.__init__(self, document, id)
+        self._title = title
+        self.level = level
+        document.set_reference(self.id, TITLE, self._title)
+        heading_counters = document.counters.setdefault(__class__, {})
+        level_counter = heading_counters.setdefault(level, [])
+        level_counter.append(self)
+
+    def init_state(self, document):
+        number = 0
+        for element in document.counters[__class__][self.level]:
+            if element.get_style('numbering_style', document) is not None:
+                number += 1
+            if element is self:
+                break
+        numbering_style = self.get_style('numbering_style', document)
+        if numbering_style is not None:
+            separator = self.get_style('numbering_separator', document)
+            formatted_number = format_number(number, numbering_style)
+            try:
+                document.get_reference(self.id, REFERENCE)
+            except KeyError:
+                document.set_reference(self.id, REFERENCE, formatted_number)
+            text = formatted_number + separator + FixedWidthSpace()
+        else:
+            text = ''
+        text = MixedStyledText(text + self._title, parent=self)
+        return ParagraphState(text.spans())
 
     def render(self, container, last_descender, state=None):
+        state = state or self.init_state(container.document)
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)
