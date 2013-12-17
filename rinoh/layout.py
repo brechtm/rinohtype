@@ -64,11 +64,7 @@ class FlowableTarget(object):
         """The :class:`Document` this flowable target is part of."""
 
     def append_flowable(self, flowable):
-        """Append a `flowable` to the list of flowables to be rendered.
-
-        This also updates `flowable` to hold a reference to the
-        :class:`Document` this flowable target is part of."""
-        flowable.document = self.document
+        """Append a `flowable` to the list of flowables to be rendered."""
         self.flowables.append(flowable)
 
     def __lshift__(self, flowable):

@@ -118,13 +118,12 @@ class Flowable(Styled):
 
 
 class InseparableFlowables(Flowable):
-    def __init__(self, flowables, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.flowables = flowables
+    def flowables(self, document):
+        raise NotImplementedError
 
     def render(self, container, last_descender, state=None):
         maybe_container = MaybeContainer(container)
-        for flowable in self.flowables:
+        for flowable in self.flowables(container.document):
             _, last_descender = flowable.flow(maybe_container, last_descender)
         maybe_container.do_place()
         return last_descender

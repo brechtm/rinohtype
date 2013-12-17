@@ -71,7 +71,7 @@ class Variable(Field):
 
 
 class Referenceable(object):
-    def __init__(self, document, id):
+    def __init__(self, id):
         self.id = id
 
     def prepare(self, document):

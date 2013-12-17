@@ -393,9 +393,9 @@ class Figure(CustomElement):
     def parse(self, document):
         caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
-        figure = RinohFigure(document, self.get('path'), caption_text,
-                            scale=scale, style='figure',
-                            caption_style=self.style('figure caption'))
+        figure = RinohFigure(self.get('path'), caption_text, scale=scale,
+                             style='figure',
+                             caption_style=self.style('figure caption'))
         return Floating(figure)
 
 

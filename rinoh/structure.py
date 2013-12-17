@@ -44,7 +44,7 @@ class Heading(Referenceable, ParagraphBase):
 
     def __init__(self, title, style=None, level=1, id=None):
         ParagraphBase.__init__(self, style)
-        Referenceable.__init__(self, None, id)
+        Referenceable.__init__(self, id)
         self.title = title
         self.level = level
 
