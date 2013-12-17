@@ -292,7 +292,7 @@ class Section(CustomElement):
 
 class Title(NestedElement):
     def parse(self, document, level=1, id=None):
-        return Heading(document, self.process_content(document),
+        return Heading(self.process_content(document),
                        style='heading{}'.format(level),
                        level=level, id=id)
 
@@ -384,8 +384,7 @@ class Footnote(NestedElement):
 
 class Acknowledgement(CustomElement):
     def parse(self, document):
-        yield Heading(document, 'Acknowledgement',
-                      style=self.style('unnumbered'), level=1)
+        yield Heading('Acknowledgement', style='unnumbered', level=1)
         for element in self.getchildren():
             yield element.process(document)
 
@@ -542,8 +541,8 @@ class RFIC2009Paper(Document):
         self.content << Abstract(self.root.head.abstract.text)
         self.content << IndexTerms(self.keywords)
 
-        self.content << Heading(self, 'Table of Contents',
-                                style=styles['unnumbered'], level=1)
+        self.content << Heading('Table of Contents', style='unnumbered',
+                                level=1)
         toc = TableOfContents(style=styles['toc'],
                               styles=[styles['toc1'], styles['toc2'],
                                       styles['toc3']])
@@ -558,8 +557,7 @@ class RFIC2009Paper(Document):
                 self.content << flowable
         except AttributeError:
             pass
-        self.content << Heading(self, 'References', style=styles['unnumbered'],
-                                level=1)
+        self.content << Heading('References', style='unnumbered', level=1)
         self.bibliography.sort()
         self.content << self.bibliography.bibliography()
 

@@ -101,9 +101,10 @@ class Document(object):
         self.creation_time = time.asctime()
 
         self.flowable_targets = []
-        self.counters = {}      # counters for Headings, Figures and Tables
-        self.elements = {}      # mapping id's to Referenceables
-        self.references = {}    # mapping id's to reference data
+        self.counters = {}          # counters for Headings, Figures and Tables
+        self.elements = {}          # mapping id's to Referenceables
+        self.ids_by_element = {}    # mapping elements to id's
+        self.references = {}        # mapping id's to reference data
         self._unique_id = 0
 
     def _print_version_and_license(self):

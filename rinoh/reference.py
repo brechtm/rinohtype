@@ -59,11 +59,11 @@ class Variable(Field):
             number = container.document.number_of_pages
             text = str(number)
         elif self.type == SECTION_NUMBER and container.page.section:
-            section_id = container.page.section.id
+            section_id = container.page.section.get_id(container.document)
             text = container.document.get_reference(section_id, REFERENCE) or ''
         elif self.type == SECTION_TITLE and container.page.section:
-                section_id = container.page.section.id
-                text = container.document.get_reference(section_id, TITLE)
+            section_id = container.page.section.get_id(container.document)
+            text = container.document.get_reference(section_id, TITLE)
 
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
@@ -72,9 +72,15 @@ class Variable(Field):
 
 class Referenceable(object):
     def __init__(self, document, id):
-        id = id or document.unique_id
-        document.elements[id] = self
         self.id = id
+
+    def prepare(self, document):
+        element_id = self.id or document.unique_id
+        document.elements[element_id] = self
+        document.ids_by_element[self] = element_id
+
+    def get_id(self, document):
+        return self.id or document.ids_by_element[self]
 
     def update_page_reference(self, page):
         page.document.page_references[self.id] = page.number

@@ -39,16 +39,18 @@ class HeadingStyle(ParagraphStyle):
 
 
 # TODO: share superclass with List (numbering)
-class Heading(ParagraphBase, Referenceable):
+class Heading(Referenceable, ParagraphBase):
     style_class = HeadingStyle
 
-    def __init__(self, document, title, style=None, level=1, id=None):
+    def __init__(self, title, style=None, level=1, id=None):
         ParagraphBase.__init__(self, style)
-        Referenceable.__init__(self, document, id)
+        Referenceable.__init__(self, None, id)
         self.title = title
         self.level = level
 
     def prepare(self, document):
+        super().prepare(document)
+        element_id = self.get_id(document)
         heading_counters = document.counters.setdefault(__class__, {})
         level_counter = heading_counters.setdefault(self.level, [])
         level_counter.append(self)
@@ -64,11 +66,12 @@ class Heading(ParagraphBase, Referenceable):
             formatted_number = format_number(number, numbering_style)
         else:
             formatted_number = ''
-        document.set_reference(self.id, REFERENCE, formatted_number)
-        document.set_reference(self.id, TITLE, self.title)
+        document.set_reference(element_id, REFERENCE, formatted_number)
+        document.set_reference(element_id, TITLE, self.title)
 
     def spans(self, document):
-        formatted_number = document.get_reference(self.id, REFERENCE)
+        formatted_number = document.get_reference(self.get_id(document),
+                                                  REFERENCE)
         if formatted_number:
             separator = self.get_style('numbering_separator', document)
             number = formatted_number + separator + FixedWidthSpace()
