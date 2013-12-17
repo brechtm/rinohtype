@@ -220,16 +220,11 @@ class ParagraphState(FlowableState):
         return ((span, item) for span in spans for item in span.split())
 
 
-class Paragraph(Flowable, MixedStyledText):
+class ParagraphBase(Flowable):
     """A paragraph of mixed-styled text that can be flowed into a
     :class:`Container`."""
 
     style_class = ParagraphStyle
-
-    def __init__(self, text_or_items, style=None, parent=None):
-        """See :class:`MixedStyledText`. As a paragraph typically doesn't have
-        a parent, `style` should be specified."""
-        MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
 
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
@@ -249,7 +244,7 @@ class Paragraph(Flowable, MixedStyledText):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(MixedStyledText.spans(self))
+        state = state or ParagraphState(self.spans())
         saved_state = copy(state)
 
         def typeset_line(line, last_line=False, force=False):
@@ -305,6 +300,13 @@ class Paragraph(Flowable, MixedStyledText):
                 break
 
         return descender
+
+
+class Paragraph(MixedStyledText, ParagraphBase):
+    def __init__(self, text_or_items, style=None, parent=None):
+        """See :class:`MixedStyledText`. As a paragraph typically doesn't have
+        a parent, `style` should be specified."""
+        super().__init__(text_or_items, style=style, parent=parent)
 
 
 class HyphenatorStore(dict):

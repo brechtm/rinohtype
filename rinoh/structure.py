@@ -14,7 +14,8 @@ from itertools import chain, tee
 from .layout import EndOfContainer, MaybeContainer
 from .flowable import Flowable, FlowableState, GroupedFlowables
 from .number import format_number, NUMBER
-from .paragraph import ParagraphStyle, Paragraph, ParagraphState, TabStop, RIGHT
+from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
+from .paragraph import TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
@@ -38,11 +39,11 @@ class HeadingStyle(ParagraphStyle):
 
 
 # TODO: share superclass with List (numbering)
-class Heading(Paragraph, Referenceable):
+class Heading(ParagraphBase, Referenceable):
     style_class = HeadingStyle
 
     def __init__(self, document, title, style=None, level=1, id=None):
-        Paragraph.__init__(self, [], style)
+        ParagraphBase.__init__(self, style)
         Referenceable.__init__(self, document, id)
         self._title = title
         self.level = level
@@ -62,13 +63,13 @@ class Heading(Paragraph, Referenceable):
         if numbering_style is not None:
             separator = self.get_style('numbering_separator', document)
             formatted_number = format_number(number, numbering_style)
-            try:
-                document.get_reference(self.id, REFERENCE)
-            except KeyError:
-                document.set_reference(self.id, REFERENCE, formatted_number)
             text = formatted_number + separator + FixedWidthSpace()
         else:
-            text = ''
+            formatted_number = text = ''
+        try:
+            document.get_reference(self.id, REFERENCE)
+        except KeyError:
+            document.set_reference(self.id, REFERENCE, formatted_number)
         text = MixedStyledText(text + self._title, parent=self)
         return ParagraphState(text.spans())
 
@@ -232,17 +233,12 @@ class HeaderStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class Header(Paragraph):
+class Header(ParagraphBase):
     style_class = HeaderStyle
 
-    def __init__(self, style=None):
-        super().__init__([], style)
-
-    def render(self, container, last_descender, state=None):
+    def spans(self):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
-        text.parent = self
-        self.append(text)
-        return super().render(container, last_descender, state=state)
+        return MixedStyledText(text, parent=self).spans()
 
 
 class FooterStyle(ParagraphStyle):
@@ -252,17 +248,12 @@ class FooterStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class Footer(Paragraph):
+class Footer(ParagraphBase):
     style_class = FooterStyle
 
-    def __init__(self, style=None):
-        super().__init__([], style)
-
-    def render(self, container, last_descender, state=None):
+    def spans(self):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
-        text.parent = self
-        self.append(text)
-        return super().render(container, last_descender, state=state)
+        return MixedStyledText(text, parent=self).spans()
 
 
 class TableOfContentsStyle(ParagraphStyle):
