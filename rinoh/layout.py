@@ -58,6 +58,7 @@ class FlowableTarget(object):
 
         `document` is the :class:`Document` this flowable target is part of."""
         self.flowables = []
+        document.flowable_targets.append(self)
 
         self.document = document
         """The :class:`Document` this flowable target is part of."""

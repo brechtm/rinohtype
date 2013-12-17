@@ -308,6 +308,10 @@ class Paragraph(MixedStyledText, ParagraphBase):
         a parent, `style` should be specified."""
         super().__init__(text_or_items, style=style, parent=parent)
 
+    def prepare(self, document):
+        for item in self:
+            item.prepare(document)
+
 
 class HyphenatorStore(dict):
     def __missing__(self, key):

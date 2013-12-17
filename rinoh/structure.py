@@ -45,14 +45,14 @@ class Heading(ParagraphBase, Referenceable):
     def __init__(self, document, title, style=None, level=1, id=None):
         ParagraphBase.__init__(self, style)
         Referenceable.__init__(self, document, id)
-        self._title = title
+        self.title = title
         self.level = level
-        document.set_reference(self.id, TITLE, self._title)
+
+    def prepare(self, document):
         heading_counters = document.counters.setdefault(__class__, {})
-        level_counter = heading_counters.setdefault(level, [])
+        level_counter = heading_counters.setdefault(self.level, [])
         level_counter.append(self)
 
-    def init_state(self, document):
         number = 0
         for element in document.counters[__class__][self.level]:
             if element.get_style('numbering_style', document) is not None:
@@ -61,20 +61,24 @@ class Heading(ParagraphBase, Referenceable):
                 break
         numbering_style = self.get_style('numbering_style', document)
         if numbering_style is not None:
-            separator = self.get_style('numbering_separator', document)
             formatted_number = format_number(number, numbering_style)
-            text = formatted_number + separator + FixedWidthSpace()
         else:
-            formatted_number = text = ''
-        try:
-            document.get_reference(self.id, REFERENCE)
-        except KeyError:
-            document.set_reference(self.id, REFERENCE, formatted_number)
-        text = MixedStyledText(text + self._title, parent=self)
+            formatted_number = ''
+        document.set_reference(self.id, REFERENCE, formatted_number)
+        document.set_reference(self.id, TITLE, self.title)
+
+    def spans(self, document):
+        formatted_number = document.get_reference(self.id, REFERENCE)
+        if formatted_number:
+            separator = self.get_style('numbering_separator', document)
+            number = formatted_number + separator + FixedWidthSpace()
+        else:
+            number = ''
+        text = MixedStyledText(number + self.title, parent=self)
         return ParagraphState(text.spans())
 
     def render(self, container, last_descender, state=None):
-        state = state or self.init_state(container.document)
+        state = state or self.spans(container.document)
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)

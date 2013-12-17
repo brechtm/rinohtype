@@ -100,6 +100,7 @@ class Document(object):
         self.creator = "RinohType"
         self.creation_time = time.asctime()
 
+        self.flowable_targets = []
         self.counters = {}      # counters for Headings, Figures and Tables
         self.elements = {}      # mapping id's to Referenceables
         self.references = {}    # mapping id's to reference data
@@ -166,6 +167,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
         self._load_cache(filename)
+        for flowable in (flowable for target in self.flowable_targets
+                         for flowable in target.flowables):
+            flowable.prepare(self)
         self.number_of_pages = self.render_pages()
         while not self._has_converged():
             self._previous_number_of_pages = self.number_of_pages
@@ -235,6 +239,9 @@ class DocumentElement(object):
     def source(self, source):
         """Set `source` as the source element of this document element."""
         self._source = source
+
+    def prepare(self, document):
+        pass
 
     def warn(self, message, container):
         """Present the warning `message` to the user, adding information on the
