@@ -83,7 +83,8 @@ class Referenceable(object):
         return self.id or document.ids_by_element[self]
 
     def update_page_reference(self, page):
-        page.document.page_references[self.id] = page.number
+        document = page.document
+        document.page_references[self.get_id(document)] = page.number
 
 
 REFERENCE = 'reference'

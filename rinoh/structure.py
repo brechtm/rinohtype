@@ -281,24 +281,22 @@ class TableOfContents(GroupedFlowables):
         super().__init__(style=style, parent=parent)
         self.styles = styles
         self.source = self
-        self.fs = []
 
     def flowables(self, document):
-        for flowable in self.fs:
-            yield flowable
-
-    def register(self, flowable):
-        if (isinstance(flowable, Heading) and
-            flowable.level <= self.get_style('depth')):
-            text = [Reference(flowable.id, type=REFERENCE), Tab(),
-                    Reference(flowable.id, type=TITLE), Tab(),
-                    Reference(flowable.id, type=PAGE)]
-            for reference in text:
-                reference.source = self
-            try:
-                style_index = flowable.level - 1
-                flowable = Paragraph(text, style=self.styles[style_index])
-            except AttributeError:
-                flowable = Paragraph(text, style=self.styles[-1])
-            flowable.parent = self
-            self.fs.append(flowable)
+        depth = self.get_style('depth', document)
+        for flowable in (flowable for target in document.flowable_targets
+                         for flowable in target.flowables):
+            if isinstance(flowable, Heading) and flowable.level <= depth:
+                flowable_id = flowable.get_id(document)
+                text = [Reference(flowable_id, type=REFERENCE), Tab(),
+                        Reference(flowable_id, type=TITLE), Tab(),
+                        Reference(flowable_id, type=PAGE)]
+                for reference in text:
+                    reference.source = self
+                try:
+                    style_index = flowable.level - 1
+                    entry = Paragraph(text, style=self.styles[style_index],
+                                      parent=self)
+                except AttributeError:
+                    entry = Paragraph(text, style=self.styles[-1], parent=self)
+                yield entry

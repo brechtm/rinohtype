@@ -553,11 +553,9 @@ class RFIC2009Paper(Document):
         self.content << toc
         for section in self.root.body.section:
             for flowable in section.process(self):
-                toc.register(flowable)
                 self.content << flowable
         try:
             for flowable in self.root.body.acknowledgement.process(self):
-                toc.register(flowable)
                 self.content << flowable
         except AttributeError:
             pass
