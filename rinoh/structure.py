@@ -108,10 +108,12 @@ class List(GroupedFlowables):
         # TODO: replace item styles with custom render method
 
     def flowables(self, document):
-        item_style = ListStyle(space_above=0*PT,
+        item_style = ListStyle(base=PARENT_STYLE,
+                               space_above=0*PT,
                                space_below=self.get_style('item_spacing',
                                                           document))
-        last_item_style = ListStyle(space_above=0*PT, space_below=0*PT)
+        last_item_style = ListStyle(base=PARENT_STYLE, space_above=0*PT,
+                                    space_below=0*PT)
         if self.get_style('ordered', document):
             separator = self.get_style('numbering_separator', document)
             numbers = [format_number(i + 1, self.get_style('numbering_style',

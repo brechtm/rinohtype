@@ -225,7 +225,7 @@ class Paragraph(NestedElement):
 class Title(CustomElement):
     def parse(self, document, level=1, id=None):
         #print('Title.render()')
-        return rt.Heading(document, self.text, level=level, id=id,
+        return rt.Heading(self.text, level=level, id=id,
                           style=self.style('heading{}'.format(level)))
 
 class Tip(NestedElement):
