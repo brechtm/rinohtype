@@ -226,18 +226,18 @@ class StyleStore(OrderedDict):
 
 
 class Selector(object):
-    def __init__(self, cls):
-        self.cls = cls
-
     def match(self, styled):
-        return type(styled) == self.cls
+        raise NotImplementedError
 
 
 class ClassSelector(Selector):
-    def __init__(self, cls, style_class):
-        super().__init__(cls)
+    def __init__(self, cls, style_class=None):
+        self.cls = cls
         self.style_class = style_class
 
     def match(self, styled):
-        return super().match(styled) and styled.style == self.style_class
+        result = type(styled) == self.cls
+        if self.style_class is not None:
+            result = result and styled.style == self.style_class
+        return result
 

@@ -92,7 +92,7 @@ styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                 space_below=0*PT,
                                 justify=BOTH)
 
-styles(Selector(Paragraph),
+styles(ClassSelector(Paragraph),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
        font_size=10*PT,
