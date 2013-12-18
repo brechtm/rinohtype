@@ -28,7 +28,7 @@ from rinoh.float import Figure as RinohFigure, CaptionStyle
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from rinoh.draw import LineStyle, RED
-from rinoh.style import PARENT_STYLE, StyleStore
+from rinoh.style import PARENT_STYLE, StyleStore, Selector, ClassSelector
 from rinoh.frontend.xml import element_factory
 from rinoh.backend import pdf
 
@@ -91,6 +91,34 @@ styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                 space_above=0*PT,
                                 space_below=0*PT,
                                 justify=BOTH)
+
+styles(Selector(Paragraph),
+       typeface=ieeeFamily.serif,
+       font_weight=REGULAR,
+       font_size=10*PT,
+       line_spacing=FixedSpacing(12*PT),
+       indent_first=0.125*INCH,
+       space_above=0*PT,
+       space_below=0*PT,
+       justify=BOTH)
+
+styles(ClassSelector(Paragraph, 'title'),
+       typeface=ieeeFamily.serif,
+       font_weight=REGULAR,
+       font_size=18*PT,
+       line_spacing=ProportionalSpacing(1.2),
+       space_above=6*PT,
+       space_below=6*PT,
+       justify=CENTER)
+
+styles(ClassSelector(Paragraph, 'author'),
+       base='title',
+       font_size=12*PT,
+       line_spacing=ProportionalSpacing(1.2))
+
+styles(ClassSelector(Paragraph, 'affiliation'),
+       base='author',
+       space_below=6*PT + 12*PT)
 
 # set style defaults
 
@@ -547,7 +575,7 @@ class RFIC2009Paper(Document):
 
         self.content << Heading('Table of Contents', style='unnumbered',
                                 level=1)
-        toc = TableOfContents(style=styles['toc'],
+        toc = TableOfContents(style='toc',
                               styles=[styles['toc1'], styles['toc2'],
                                       styles['toc3']])
         self.content << toc

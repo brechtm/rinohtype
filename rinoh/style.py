@@ -18,6 +18,8 @@ Base classes and exceptions for styled document elements.
 """
 
 
+from collections import OrderedDict
+
 from .document import DocumentElement
 from .util import cached
 
@@ -190,8 +192,8 @@ class Styled(DocumentElement):
         If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
         the style attribute is fetched from this element's parent."""
         try:
-            if isinstance(self.style, str):
-                style = document.styles[self.style]
+            if self.style is None or isinstance(self.style, str):
+                style = document.styles.find_style(self)
             else:
                 style = self.style
             value = style[attribute]
@@ -200,7 +202,7 @@ class Styled(DocumentElement):
         return value
 
 
-class StyleStore(dict):
+class StyleStore(OrderedDict):
     """Dictionary storing a set of related :class:`Style`s by name.
 
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
@@ -210,3 +212,32 @@ class StyleStore(dict):
         value.name = key
         value.store = self
         super().__setitem__(key, value)
+
+    def __call__(self, selector, **kwargs):
+        self[selector] = selector.cls.style_class(**kwargs)
+
+    def find_style(self, styled):
+        for selector in reversed(self):
+            if not isinstance(selector, Selector):
+                continue
+            if selector.match(styled):
+                return self[selector]
+        return self[styled.style]
+
+
+class Selector(object):
+    def __init__(self, cls):
+        self.cls = cls
+
+    def match(self, styled):
+        return type(styled) == self.cls
+
+
+class ClassSelector(Selector):
+    def __init__(self, cls, style_class):
+        super().__init__(cls)
+        self.style_class = style_class
+
+    def match(self, styled):
+        return super().match(styled) and styled.style == self.style_class
+
