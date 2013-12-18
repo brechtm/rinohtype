@@ -406,13 +406,13 @@ class Caption(NestedElement):
 class Tabular(CustomElement):
     def parse(self, document):
         data = HTMLTabularData(self)
-        return RinohTabular(data, style=self.style('tabular'))
+        return RinohTabular(data, style='tabular')
 
 
 class CSVTabular(CustomElement):
     def parse(self, document):
         data = CSVTabularData(self.get('path'))
-        return RinohTabular(data, style=self.style('tabular'))
+        return RinohTabular(data, style='tabular')
 
 
 # bibliography

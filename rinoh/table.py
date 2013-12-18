@@ -71,31 +71,38 @@ class Tabular(Flowable):
     def __init__(self, data, style=None):
         super().__init__(style=style)
         self.data = data
-        self.cell_styles = Array([[style for c in range(self.data.columns)]
-                                  for r in range(self.data.rows)])
-        for (row_slice, col_slice), style in self.style.cell_style:
+
+    def render(self, container, last_descender, state=None):
+        # TODO: allow data to override style (align)
+        doc = container.document
+        canvas = container.canvas
+        table_width = float(container.width)
+        row_heights = []
+        rendered_rows = []
+
+        # set up cell styles
+        if isinstance(self.style, str):
+            style = doc.styles[self.style]
+        else:
+            style = self.style
+        cell_styles = Array([[self.style for c in range(self.data.columns)]
+                             for r in range(self.data.rows)])
+        for (row_slice, col_slice), style in style.cell_style:
             if isinstance(row_slice, int):
                 row_range = [row_slice]
             else:
-                row_indices = row_slice.indices(self.cell_styles.rows)
+                row_indices = row_slice.indices(cell_styles.rows)
                 row_range = range(*row_indices)
             for ri in row_range:
                 if isinstance(col_slice, int):
                     col_range = [col_slice]
                 else:
-                    col_indices = col_slice.indices(self.cell_styles.columns)
+                    col_indices = col_slice.indices(cell_styles.columns)
                     col_range = range(*col_indices)
                 for ci in col_range:
-                    old_style = self.cell_styles[ri][ci]
-                    self.cell_styles[ri][ci] = copy(style)
-                    self.cell_styles[ri][ci].base = old_style
-
-    def render(self, container, last_descender, state=None):
-        # TODO: allow data to override style (align)
-        canvas = container.canvas
-        table_width = float(container.width)
-        row_heights = []
-        rendered_rows = []
+                    old_style = cell_styles[ri][ci]
+                    cell_styles[ri][ci] = copy(style)
+                    cell_styles[ri][ci].base = old_style
 
         # calculate column widths (static)
         column_widths = []
@@ -119,7 +126,7 @@ class Tabular(Flowable):
                     continue
                 cell_width = column_widths[c] * cell.colspan
                 buffer = VirtualContainer(container, cell_width*PT)
-                cell_style = self.cell_styles[r][c]
+                cell_style = cell_styles[r][c]
                 self.render_cell(cell, buffer, cell_style)
                 rendered_cell = RenderedCell(cell, buffer, x_cursor)
                 rendered_row.append(rendered_cell)
@@ -157,7 +164,7 @@ class Tabular(Flowable):
                 y_pos = float(y_cursor + row_height)
                 cell_width = rendered_cell.width
                 border_buffer = canvas.new()
-                cell_style = self.cell_styles[r][c]
+                cell_style = cell_styles[r][c]
                 self.draw_cell_border(border_buffer, cell_width, row_height,
                                       cell_style)
                 border_buffer.append(x_cursor, y_pos)
