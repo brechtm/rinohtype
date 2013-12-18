@@ -217,12 +217,25 @@ class StyleStore(OrderedDict):
         self[selector] = selector.cls.style_class(**kwargs)
 
     def find_style(self, styled):
-        for selector in reversed(self):
+        max_score = Specificity(0, 0)
+        for selector in self:
             if not isinstance(selector, Selector):
                 continue
-            if selector.match(styled):
-                return self[selector]
+            score = selector.match(styled)
+            if score > max_score:
+                best_selector = selector
+                max_score = score
+        if sum(max_score):
+            return self[best_selector]
         return self[styled.style]
+
+
+class Specificity(tuple):
+    def __new__(cls, *items):
+        return super().__new__(cls, items)
+
+    def __add__(self, other):
+        return tuple(a + b for a, b in zip(self, other))
 
 
 class Selector(object):
@@ -236,8 +249,12 @@ class ClassSelector(Selector):
         self.style_class = style_class
 
     def match(self, styled):
-        result = type(styled) == self.cls
+        class_match = type(styled) == self.cls
         if self.style_class is not None:
-            result = result and styled.style == self.style_class
-        return result
+            if styled.style == self.style_class:
+                return Specificity(True, True)
+            else:
+                return Specificity(False, False)
+        else:
+            return Specificity(False, class_match)
 
