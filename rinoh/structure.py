@@ -70,9 +70,9 @@ class Heading(Referenceable, ParagraphBase):
         document.set_reference(element_id, TITLE, self.title)
 
     def spans(self, document):
-        formatted_number = document.get_reference(self.get_id(document),
-                                                  REFERENCE)
-        if formatted_number:
+        numbering_style = self.get_style('numbering_style', document)
+        if numbering_style is not None:
+            formatted_number = Reference(self.get_id(document), REFERENCE)
             separator = self.get_style('numbering_separator', document)
             number = formatted_number + separator + FixedWidthSpace()
         else:
