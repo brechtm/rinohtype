@@ -75,8 +75,9 @@ class Referenceable(object):
 
     def prepare(self, document):
         element_id = self.id or document.unique_id
+        if self.id is None:
+            document.ids_by_element[self] = element_id
         document.elements[element_id] = self
-        document.ids_by_element[self] = element_id
 
     def get_id(self, document):
         return self.id or document.ids_by_element[self]
