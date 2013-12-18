@@ -8,9 +8,9 @@
 
 from .flowable import Flowable, InseparableFlowables
 from .number import format_number, NUMBER
-from .paragraph import Paragraph, ParagraphStyle
+from .paragraph import ParagraphBase, ParagraphState, ParagraphStyle
 from .reference import Referenceable, Reference, REFERENCE, TITLE
-from .text import NoBreakSpace
+from .text import MixedStyledText, NoBreakSpace
 
 
 __all__ = ['Image', 'CaptionStyle', 'Caption', 'Figure']
@@ -38,24 +38,31 @@ class CaptionStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class Caption(Paragraph):
+class Caption(ParagraphBase):
     style_class = CaptionStyle
 
     next_number = {}
 
     def __init__(self, category, number, text, style=None):
-        super().__init__('', style)
-        numbering_style = self.get_style('numbering_style')
-        numbering_sep = self.get_style('numbering_separator')
+        super().__init__(style)
+        self.category = category
+        self.number = number
+        self.text = text
+
+    def spans(self, document):
+        numbering_style = self.get_style('numbering_style', document)
+        separator = self.get_style('numbering_separator', document)
         if numbering_style is not None:
-            self.ref = format_number(number, numbering_style)
-            number = self.ref
+            formatted_number = format_number(self.number, numbering_style)
         else:
-            self.ref = None
-            number = ''
-        label = category + ' ' + number + numbering_sep
-        caption_text = label + NoBreakSpace() + text
-        self.append(caption_text)
+            formatted_number = ''
+        label = self.category + ' ' + formatted_number + separator
+        caption_text = label + NoBreakSpace() + self.text
+        return MixedStyledText(caption_text, parent=self).spans()
+
+    def render(self, container, last_descender, state=None):
+        state = state or ParagraphState(self.spans(container.document))
+        return super().render(container, last_descender, state=state)
 
 
 class Figure(Referenceable, InseparableFlowables):
@@ -72,7 +79,8 @@ class Figure(Referenceable, InseparableFlowables):
         element_id = self.get_id(document)
         number = document.counters.setdefault(__class__, 1)
         document.counters[__class__] += 1
-        document.set_reference(element_id, REFERENCE, number)
+        document.set_reference(element_id, REFERENCE, str(number))
+        # TODO: need to store formatted number
         document.set_reference(element_id, TITLE, self.caption_text)
 
     def flowables(self, document):
