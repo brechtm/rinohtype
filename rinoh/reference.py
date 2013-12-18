@@ -65,8 +65,7 @@ class Variable(Field):
             section_id = container.page.section.get_id(container.document)
             text = container.document.get_reference(section_id, TITLE)
 
-        field_text = SingleStyledText(text)
-        field_text.parent = self.parent
+        field_text = SingleStyledText(text, parent=self.parent)
         return field_text.spans()
 
 
@@ -120,8 +119,7 @@ class Reference(Field):
             self.warn("Unknown label '{}'".format(self.id), container)
             text = "??".format(self.id)
 
-        field_text = SingleStyledText(text)
-        field_text.parent = self.parent
+        field_text = SingleStyledText(text, parent=self.parent)
         return field_text.spans()
 
 

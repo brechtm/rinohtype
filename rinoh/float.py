@@ -80,9 +80,3 @@ class Figure(Referenceable, InseparableFlowables):
         caption = Caption('Figure', number, self.caption_text,
                           style=self.caption_style)
         return self.image, caption
-
-    def reference(self):
-        return str(self.number)
-
-    def title(self):
-        return self.caption.text
