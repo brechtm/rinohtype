@@ -339,7 +339,7 @@ class Tab(CustomElement):
 class OL(CustomElement):
     def parse(self, document):
         return List([li.process(document) for li in self.li],
-                    style=self.style('list'))
+                    style='list')
 
 
 class LI(CustomElement):

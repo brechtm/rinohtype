@@ -100,34 +100,34 @@ class ListStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class List(GroupedFlowables, list):
+class List(GroupedFlowables):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
         super().__init__(style)
+        self.items = items
         # TODO: replace item styles with custom render method
-        item_style = ListStyle(space_above=0*PT,
-                               space_below=self.style.item_spacing,
-                               base=style)
-        last_item_style = ListStyle(space_above=0*PT, space_below=0*PT,
-                                    base=style)
-        if style.ordered:
-            separator = style.numbering_separator
-            numbers = [format_number(i + 1, self.get_style('numbering_style'))
-                       for i in range(len(items))]
-        else:
-            separator = ''
-            numbers = [style.bullet] * len(items)
-        for i, item in enumerate(items[:-1]):
-            item = ListItem(numbers[i], separator, item, style=item_style,
-                            parent=self)
-            self.append(item)
-        last = ListItem(numbers[-1], separator, items[-1],
-                        style=last_item_style, parent=self)
-        self.append(last)
 
     def flowables(self, document):
-        return iter(self)
+        item_style = ListStyle(space_above=0*PT,
+                               space_below=self.get_style('item_spacing',
+                                                          document))
+        last_item_style = ListStyle(space_above=0*PT, space_below=0*PT)
+        if self.get_style('ordered', document):
+            separator = self.get_style('numbering_separator', document)
+            numbers = [format_number(i + 1, self.get_style('numbering_style',
+                                                           document))
+                       for i in range(len(self.items))]
+        else:
+            separator = ''
+            numbers = [self.get_style('bullet', document)] * len(self.items)
+        for i, item in enumerate(self.items[:-1]):
+            item = ListItem(numbers[i], separator, item, style=item_style,
+                            parent=self)
+            yield item
+        last = ListItem(numbers[-1], separator, self.items[-1],
+                        style=last_item_style, parent=self)
+        yield last
 
 
 class ListItemNumber(Paragraph):
