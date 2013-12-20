@@ -8,7 +8,7 @@ from rinoh.paper import LETTER
 from rinoh.document import Document, Page, PORTRAIT
 from rinoh.layout import Container, DownExpandingContainer, Chain
 from rinoh.layout import TopFloatContainer, FootnoteContainer
-from rinoh.paragraph import ParagraphStyle, Paragraph, LEFT, RIGHT, CENTER, BOTH
+from rinoh.paragraph import Paragraph, LEFT, RIGHT, CENTER, BOTH
 from rinoh.paragraph import ProportionalSpacing, FixedSpacing, TabStop
 from rinoh.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from rinoh.text import SingleStyledText, MixedStyledText
@@ -24,8 +24,8 @@ from rinoh.reference import Footnote as RinohFootnote
 from rinoh.flowable import GroupedFlowables, Floating
 from rinoh.float import Figure as RinohFigure, Caption
 from rinoh.table import Tabular as RinohTabular, MIDDLE
-from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
-from rinoh.draw import LineStyle, RED
+from rinoh.table import HTMLTabularData, CSVTabularData, Tabular
+from rinoh.draw import Line, RED
 from rinoh.style import StyleStore, ClassSelector, ContextSelector
 from rinoh.frontend.xml import element_factory
 from rinoh.backend import pdf
@@ -222,55 +222,66 @@ styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
 
 styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
                                              ClassSelector(Paragraph)),
-       base='body',
+       base='body',  # TODO: if no base, fall back to next-best selector match?
        font_size=9*PT,
        indent_first=0*PT,
        space_above=0*PT,
        space_below=0*PT,
        tab_stops=[TabStop(0.25*INCH, LEFT)])
 
+styles('tabular', ClassSelector(Tabular),
+       typeface=ieeeFamily.serif,
+       font_weight=REGULAR,
+       font_size=10*PT,
+       line_spacing=FixedSpacing(12*PT),
+       indent_first=0*PT,
+       space_above=0*PT,
+       space_below=0*PT,
+       justify=CENTER,
+       vertical_align=MIDDLE,
+       left_border='red line',
+       right_border='red line',
+       bottom_border='red line',
+       top_border='red line')
+
+styles('red line', ClassSelector(Line),
+       width=0.2*PT,
+       color=RED)
+
+styles('thick line', ClassSelector(Line),
+       width=1*PT)
+
+styles('first row', ClassSelector(Tabular),
+       font_weight=BOLD,
+       bottom_border='thick line')
+
+styles('first column', ClassSelector(Tabular),
+       font_slant=ITALIC,
+       right_border='thick line')
+
+styles('numbers', ClassSelector(Tabular),
+       typeface=ieeeFamily.mono)
+
+styles['tabular'].set_cell_style(styles['first row'], rows=0)
+styles['tabular'].set_cell_style(styles['first column'], cols=0)
+styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
+                                 cols=slice(1,None))
 
 # pre-load hyphenation dictionary (which otherwise occurs during page rendering,
 # and thus invalidates per-page render time)
 from rinoh.paragraph import HYPHENATORS
 HYPHENATORS[(styles['body'].hyphen_lang, styles['body'].hyphen_chars)]
 
-styles['math'] = MathStyle(fonts=mathfonts)
-
-styles['equation'] = EquationStyle(base='body',
-                                   math_style='math',
-                                   indent_first=0*PT,
-                                   space_above=6*PT,
-                                   space_below=6*PT,
-                                   justify=CENTER,
-                                   tab_stops=[TabStop(0.5, CENTER),
-                                              TabStop(1.0, RIGHT)])
-
-styles['red line'] = LineStyle(width=0.2*PT, color=RED)
-styles['thick line'] = LineStyle()
-styles['tabular'] = TabularStyle(typeface=ieeeFamily.serif,
-                                 font_weight=REGULAR,
-                                 font_size=10*PT,
-                                 line_spacing=FixedSpacing(12*PT),
-                                 indent_first=0*PT,
-                                 space_above=0*PT,
-                                 space_below=0*PT,
-                                 justify=CENTER,
-                                 vertical_align=MIDDLE,
-                                 left_border=styles['red line'],
-                                 right_border=styles['red line'],
-                                 bottom_border=styles['red line'],
-                                 top_border=styles['red line'])
-
-styles['first row'] = CellStyle(font_weight=BOLD,
-                                bottom_border=styles['thick line'])
-styles['first column'] = CellStyle(font_slant=ITALIC,
-                                   right_border=styles['thick line'])
-styles['numbers'] = CellStyle(typeface=ieeeFamily.mono)
-styles['tabular'].set_cell_style(styles['first row'], rows=0)
-styles['tabular'].set_cell_style(styles['first column'], cols=0)
-styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
-                                 cols=slice(1,None))
+# styles['math'] = MathStyle(fonts=mathfonts)
+#
+# styles['equation'] = EquationStyle(base='body',
+#                                    math_style='math',
+#                                    indent_first=0*PT,
+#                                    space_above=6*PT,
+#                                    space_below=6*PT,
+#                                    justify=CENTER,
+#                                    tab_stops=[TabStop(0.5, CENTER),
+#                                               TabStop(1.0, RIGHT)])
 
 # custom paragraphs
 # ----------------------------------------------------------------------------
@@ -418,13 +429,13 @@ class Caption(NestedElement):
 class Tabular(CustomElement):
     def parse(self, document):
         data = HTMLTabularData(self)
-        return RinohTabular(data, style='tabular')
+        return RinohTabular(data)
 
 
 class CSVTabular(CustomElement):
     def parse(self, document):
         data = CSVTabularData(self.get('path'))
-        return RinohTabular(data, style='tabular')
+        return RinohTabular(data)
 
 
 # bibliography

@@ -184,17 +184,18 @@ class Styled(DocumentElement):
                                     style.__class__.__name__))
         self.style = style
 
+    def _style(self, document):
+        return (self.style if isinstance(self.style, Style)
+                else document.styles.find_style(self))
+
     #@cached
     def get_style(self, attribute, document=None):
         """Return `attribute` of the associated :class:`Style`.
 
         If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
         the style attribute is fetched from this element's parent."""
+        style = self._style(document)
         try:
-            if isinstance(self.style, Style):
-                style = self.style
-            else:
-                style = document.styles.find_style(self)
             if style is None:
                 value = self.style_class._get_default(attribute)
             else:

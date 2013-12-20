@@ -41,6 +41,12 @@ class TabularStyle(CellStyle):
         super().__init__(base=base, **attributes)
         self.cell_style = []
 
+    def __getitem__(self, attribute):
+        value = super().__getitem__(attribute)
+        if attribute.endswith('_border'):
+            value = self.store[value]
+        return value
+
     def set_cell_style(self, style, rows=slice(None), cols=slice(None)):
         self.cell_style.append(((rows, cols), style))
         style.base = self
@@ -84,8 +90,8 @@ class Tabular(Flowable):
         if isinstance(self.style, str):
             style = doc.styles[self.style]
         else:
-            style = self.style
-        cell_styles = Array([[self.style for c in range(self.data.columns)]
+            style = self._style(container.document)
+        cell_styles = Array([[style for c in range(self.data.columns)]
                              for r in range(self.data.rows)])
         for (row_slice, col_slice), style in style.cell_style:
             if isinstance(row_slice, int):
