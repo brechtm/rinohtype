@@ -125,7 +125,7 @@ styles('abstract', ClassSelector(Paragraph, 'abstract'),
        space_below=0*PT,
        justify=BOTH)
 
-styles('heading level 1', ClassSelector(Heading, 'level1'),
+styles('heading level 1', ClassSelector(Heading, level=1),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
        font_size=10*PT,
@@ -136,11 +136,12 @@ styles('heading level 1', ClassSelector(Heading, 'level1'),
        space_below=6*PT,
        numbering_style=ROMAN_UC)
 
-styles('unnumbered heading level 1', ClassSelector(Heading, 'unnumbered'),
+styles('unnumbered heading level 1', ClassSelector(Heading, 'unnumbered',
+                                                   level=1),
        base='heading level 1',
        numbering_style=None)
 
-styles('heading level 2', ClassSelector(Heading, 'level2'),
+styles('heading level 2', ClassSelector(Heading, level=2),
        base='heading level 1',
        font_slant=ITALIC,
        font_size=10*PT,
@@ -300,8 +301,7 @@ class Section(CustomElement):
 
 class Title(NestedElement):
     def parse(self, document, level=1, id=None):
-        return Heading(self.process_content(document),
-                       style='level{}'.format(level), level=level, id=id)
+        return Heading(self.process_content(document), level=level, id=id)
 
 
 class P(NestedElement):

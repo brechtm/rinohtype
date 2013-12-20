@@ -224,7 +224,7 @@ class StyleStore(OrderedDict):
         self.selectors[name] = selector
 
     def find_style(self, styled):
-        max_score = Specificity(0, 0)
+        max_score = Specificity(0, 0, 0)
         for name, selector in self.selectors.items():
             if not isinstance(selector, Selector):
                 continue
@@ -257,19 +257,30 @@ class Selector(object):
 
 
 class ClassSelector(Selector):
-    def __init__(self, cls, style_class=None):
+    def __init__(self, cls, style_class=None, **attributes):
         super().__init__(cls)
         self.style_class = style_class
+        self.attributes = attributes
 
     def match(self, styled):
-        class_match = type(styled) == self.cls
-        if self.style_class is not None:
-            if styled.style == self.style_class:
-                return Specificity(True, True)
+        if not type(styled) == self.cls:
+            return Specificity(False, False, False)
+        attributes_result = style_class_result = None
+        if self.attributes:
+            for attribute, value in self.attributes.items():
+                if getattr(styled, attribute) != value:
+                    attributes_result = False
+                    break
             else:
-                return Specificity(False, False)
+                attributes_result = True
+        if self.style_class is not None:
+            style_class_result = styled.style == self.style_class
+
+        if False in (attributes_result, style_class_result):
+            return Specificity(False, False, False)
         else:
-            return Specificity(False, class_match)
+            return Specificity(style_class_result or False,
+                               attributes_result or False, True)
 
 
 class ContextSelector(Selector):
@@ -278,7 +289,7 @@ class ContextSelector(Selector):
         self.selectors = selectors
 
     def match(self, styled):
-        total_score = Specificity(0, 0)
+        total_score = Specificity(0, 0, 0)
         for selector in reversed(self.selectors):
             score = selector.match(styled)
             if not score:
@@ -286,5 +297,5 @@ class ContextSelector(Selector):
             total_score += score
             styled = styled.parent
             if styled is None:
-                return Specificity(False, False)
+                return Specificity(False, False, False)
         return total_score
