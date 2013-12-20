@@ -261,8 +261,9 @@ class ClassSelector(Selector):
         self.attributes = attributes
 
     def match(self, styled):
-        if not type(styled) == self.cls:
+        if not isinstance(styled, self.cls):
             return Specificity(False, False, False)
+        class_match = 2 if type(styled) == self.cls else 1
         attributes_result = style_class_result = None
         if self.attributes:
             for attribute, value in self.attributes.items():
@@ -278,7 +279,7 @@ class ClassSelector(Selector):
             return Specificity(False, False, False)
         else:
             return Specificity(style_class_result or False,
-                               attributes_result or False, True)
+                               attributes_result or False, class_match)
 
 
 class ContextSelector(Selector):
