@@ -175,12 +175,13 @@ class Styled(DocumentElement):
         A `parent` can be passed on object initialization, or later by
         assignment to the `parent` attribute."""
         super().__init__(parent=parent)
-        # if style is None:
-        #     style = self.style_class()
-        # if style != PARENT_STYLE and not isinstance(style, self.style_class):
-        #     raise TypeError('the style passed to {0} should be of type {1}'
-        #                     .format(self.__class__.__name__,
-        #                             self.style_class.__name__))
+        if (isinstance(style, Style)
+                and not isinstance(style, (self.style_class, ParentStyle))):
+            raise TypeError('the style passed to {} should be of type {} '
+                            '(a {} was passed instead)'
+                            .format(self.__class__.__name__,
+                                    self.style_class.__name__,
+                                    style.__class__.__name__))
         self.style = style
 
     #@cached
