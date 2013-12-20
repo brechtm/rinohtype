@@ -151,6 +151,7 @@ class StyledText(Styled):
 
     def is_script(self):
         """Returns `True` if this styled text is super/subscript."""
+        # TODO: adapt to new changes
         if self.style not in (PARENT_STYLE, None) and 'position' in self.style:
             return self.style.position is not None
         return False

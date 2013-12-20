@@ -371,18 +371,18 @@ class LI(CustomElement):
         return [item.process(document) for item in self.getchildren()]
 
 
-class Math(CustomElement):
-    def parse(self, document):
-        return RinohMath(self.text, style='math')
-
-
-class Eq(CustomElement):
-    def parse(self, document, id=None):
-        equation = Equation(self.text, style='equation')
-        id = self.get('id', None)
-        if id:
-            document.elements[id] = equation
-        return MixedStyledText([equation])
+# class Math(CustomElement):
+#     def parse(self, document):
+#         return RinohMath(self.text, style='math')
+#
+#
+# class Eq(CustomElement):
+#     def parse(self, document, id=None):
+#         equation = Equation(self.text, style='equation')
+#         id = self.get('id', None)
+#         if id:
+#             document.elements[id] = equation
+#         return MixedStyledText([equation])
 
 
 class Cite(CustomElement):
@@ -417,8 +417,7 @@ class Figure(CustomElement):
         caption_text = self.caption.process(document)
         scale = float(self.get('scale'))
         figure = RinohFigure(self.get('path'), caption_text, scale=scale,
-                             id=self.get('id', None), style='figure',
-                             caption_style='figure caption')
+                             id=self.get('id', None))
         return Floating(figure)
 
 

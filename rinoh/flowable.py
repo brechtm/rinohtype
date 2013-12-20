@@ -146,6 +146,7 @@ class GroupedFlowablesState(FlowableState):
         self.flowables = chain((flowable, ), self.flowables)
         self.first_flowable_state = first_flowable_state
 
+# TODO: GroupedFlowablesStyle with attribute flowable_spacing
 
 class GroupedFlowables(Flowable):
     def flowables(self, document):
