@@ -114,16 +114,6 @@ styles('affiliation', ClassSelector(Paragraph, 'affiliation'),
        base='author',
        space_below=6*PT + 12*PT)
 
-styles('abstract', ClassSelector(Paragraph, 'abstract'),
-       typeface=ieeeFamily.serif,
-       font_weight=BOLD,
-       font_size=9*PT,
-       line_spacing=FixedSpacing(10*PT),
-       indent_first=0.125*INCH,
-       space_above=0*PT,
-       space_below=0*PT,
-       justify=BOTH)
-
 styles('heading level 1', ClassSelector(Heading, level=1),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
@@ -289,7 +279,7 @@ HYPHENATORS[(styles['body'].hyphen_lang, styles['body'].hyphen_chars)]
 class Abstract(Paragraph):
     def __init__(self, text):
         label = SingleStyledText("Abstract \N{EM DASH} ", BOLD_ITALIC_STYLE)
-        return super().__init__(label + text, style='abstract')
+        return super().__init__(label + text)
 
 
 class IndexTerms(Paragraph):
@@ -297,7 +287,21 @@ class IndexTerms(Paragraph):
         label = SingleStyledText("Index Terms \N{EM DASH} ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
-        return super().__init__(label + text, style='abstract')
+        return super().__init__(label + text)
+
+
+styles('abstract', ClassSelector(Abstract),
+       typeface=ieeeFamily.serif,
+       font_weight=BOLD,
+       font_size=9*PT,
+       line_spacing=FixedSpacing(10*PT),
+       indent_first=0.125*INCH,
+       space_above=0*PT,
+       space_below=0*PT,
+       justify=BOTH)
+
+styles('index terms', ClassSelector(IndexTerms),
+       base='abstract')
 
 
 # input parsing
