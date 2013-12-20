@@ -83,16 +83,7 @@ else:
 # ----------------------------------------------------------------------------
 styles = StyleStore()
 
-styles['body'] = ParagraphStyle(typeface=ieeeFamily.serif,
-                                font_weight=REGULAR,
-                                font_size=10*PT,
-                                line_spacing=FixedSpacing(12*PT),
-                                indent_first=0.125*INCH,
-                                space_above=0*PT,
-                                space_below=0*PT,
-                                justify=BOTH)
-
-styles(ClassSelector(Paragraph),
+styles('body', ClassSelector(Paragraph),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
        font_size=10*PT,
@@ -106,7 +97,7 @@ styles(ClassSelector(Paragraph),
        hyphen_lang='en_US',
        hyphen_chars=4)
 
-styles(ClassSelector(Paragraph, 'title'),
+styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
        font_size=18*PT,
@@ -115,16 +106,17 @@ styles(ClassSelector(Paragraph, 'title'),
        space_below=6*PT,
        justify=CENTER)
 
-styles(ClassSelector(Paragraph, 'author'),
+styles('author', ClassSelector(Paragraph, 'author'),
        base='title',
        font_size=12*PT,
        line_spacing=ProportionalSpacing(1.2))
 
-styles(ClassSelector(Paragraph, 'affiliation'),
+styles('affiliation', ClassSelector(Paragraph, 'affiliation'),
        base='author',
        space_below=6*PT + 12*PT)
 
-styles(ContextSelector(ClassSelector(ListItem), ClassSelector(Paragraph)),
+styles('list item', ContextSelector(ClassSelector(ListItem),
+                                    ClassSelector(Paragraph)),
        base='body',
        indent_first=14*PT)
 
@@ -169,21 +161,6 @@ styles['bibliography'] = ParagraphStyle(base='body',
                                         space_below=0*PT,
                                         tab_stops=[TabStop(0.25*INCH, LEFT)])
 
-styles['title'] = ParagraphStyle(typeface=ieeeFamily.serif,
-                                 font_weight=REGULAR,
-                                 font_size=18*PT,
-                                 line_spacing=ProportionalSpacing(1.2),
-                                 space_above=6*PT,
-                                 space_below=6*PT,
-                                 justify=CENTER)
-
-styles['author'] = ParagraphStyle(base='title',
-                                  font_size=12*PT,
-                                  line_spacing=ProportionalSpacing(1.2))
-
-styles['affiliation'] = ParagraphStyle(base='author',
-                                       space_below=6*PT + 12*PT)
-
 styles['abstract'] = ParagraphStyle(typeface=ieeeFamily.serif,
                                     font_weight=BOLD,
                                     font_size=9*PT,
@@ -202,9 +179,6 @@ styles['list'] = ListStyle(base='body',
                            item_spacing=0*PT,
                            numbering_style=NUMBER,
                            numbering_separator=')')
-
-styles['list item'] = ParagraphStyle(base='body',
-                                     indent_first=14*PT)
 
 styles['heading1'] = HeadingStyle(typeface=ieeeFamily.serif,
                                   font_weight=REGULAR,

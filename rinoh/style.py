@@ -210,25 +210,30 @@ class StyleStore(OrderedDict):
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
 
-    def __setitem__(self, key, value):
-        value.name = key
-        value.store = self
-        super().__setitem__(key, value)
+    def __init__(self):
+        super().__init__()
+        self.selectors = {}
 
-    def __call__(self, selector, **kwargs):
-        self[selector] = selector.cls.style_class(**kwargs)
+    def __setitem__(self, name, style):
+        style.name = name
+        style.store = self
+        super().__setitem__(name, style)
+
+    def __call__(self, name, selector, **kwargs):
+        self[name] = selector.cls.style_class(**kwargs)
+        self.selectors[name] = selector
 
     def find_style(self, styled):
         max_score = Specificity(0, 0)
-        for selector in self:
+        for name, selector in self.selectors.items():
             if not isinstance(selector, Selector):
                 continue
             score = selector.match(styled)
             if score > max_score:
-                best_selector = selector
+                best_match = name
                 max_score = score
         if sum(max_score):
-            return self[best_selector]
+            return self[best_match]
         try:
             return self[styled.style]
         except KeyError:
