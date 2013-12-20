@@ -100,7 +100,11 @@ styles(ClassSelector(Paragraph),
        indent_first=0.125*INCH,
        space_above=0*PT,
        space_below=0*PT,
-       justify=BOTH)
+       justify=BOTH,
+       kerning=True,
+       ligatures=True,
+       hyphen_lang='en_US',
+       hyphen_chars=4)
 
 styles(ClassSelector(Paragraph, 'title'),
        typeface=ieeeFamily.serif,
@@ -124,15 +128,6 @@ styles(ContextSelector(ClassSelector(ListItem), ClassSelector(Paragraph)),
        base='body',
        indent_first=14*PT)
 
-
-# set style defaults
-
-#TextStyle.attributes['kerning'] = False
-#TextStyle.attributes['ligatures'] = False
-ParagraphStyle.attributes['typeface'] = styles['body'].typeface
-ParagraphStyle.attributes['hyphen_lang'] = 'en_US'
-ParagraphStyle.attributes['hyphen_chars'] = 4
-#ParagraphStyle.attributes['hyphenate'] = False
 
 # pre-load hyphenation dictionary (which otherwise occurs during page rendering,
 # and thus invalidates per-page render time)
