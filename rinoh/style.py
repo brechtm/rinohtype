@@ -235,7 +235,7 @@ class StyleStore(OrderedDict):
                 max_score = score
         if sum(max_score):
             return self[best_match]
-        print('Falling back to default style for {}'.format(styled))
+        styled.warn('Falling back to default style for {}'.format(styled))
 
 
 class Specificity(tuple):

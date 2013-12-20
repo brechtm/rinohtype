@@ -244,10 +244,11 @@ class DocumentElement(object):
     def prepare(self, document):
         pass
 
-    def warn(self, message, container):
+    def warn(self, message, container=None):
         """Present the warning `message` to the user, adding information on the
         location of the related element in the input file."""
         if self.source is not None:
             message = '[{}] '.format(self.source.location) + message
-        message += ' (page {})'.format(container.page.number)
+        if container is not None:
+            message += ' (page {})'.format(container.page.number)
         warn(message)
