@@ -297,5 +297,5 @@ class ContextSelector(Selector):
             total_score += score
             styled = styled.parent
             if styled is None:
-                return Specificity(False, False, False)
+                break
         return total_score

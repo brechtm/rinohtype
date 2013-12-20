@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .flowable import GroupedFlowables
 from .paragraph import Paragraph
 from . import text
 
@@ -35,6 +36,10 @@ Subscript = factory(text.Subscript)
 SmallCaps = factory(text.SmallCaps)
 
 
-##class Bibliography(Paragraph):
-##    def __init__(self, items):
-##        return super().__new__(self, items, style=None)
+class Bibliography(GroupedFlowables, list):
+    def __init__(self, items, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        list.__init__(self, (Paragraph(item, parent=self) for item in items))
+
+    def flowables(self, document):
+        return iter(self)

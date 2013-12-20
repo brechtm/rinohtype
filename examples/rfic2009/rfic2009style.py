@@ -34,7 +34,8 @@ import rinoh.frontend.xml.elementtree as xml_frontend
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem
-
+from rinoh import csl_formatter
+from rinoh.csl_formatter import Bibliography
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -219,6 +220,15 @@ styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
        tab_stops=[TabStop(1.8*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
+styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
+                                             ClassSelector(Paragraph)),
+       base='body',
+       font_size=9*PT,
+       indent_first=0*PT,
+       space_above=0*PT,
+       space_below=0*PT,
+       tab_stops=[TabStop(0.25*INCH, LEFT)])
+
 
 # pre-load hyphenation dictionary (which otherwise occurs during page rendering,
 # and thus invalidates per-page render time)
@@ -235,13 +245,6 @@ styles['equation'] = EquationStyle(base='body',
                                    justify=CENTER,
                                    tab_stops=[TabStop(0.5, CENTER),
                                               TabStop(1.0, RIGHT)])
-
-styles['bibliography'] = ParagraphStyle(base='body',
-                                        font_size=9*PT,
-                                        indent_first=0*PT,
-                                        space_above=0*PT,
-                                        space_below=0*PT,
-                                        tab_stops=[TabStop(0.25*INCH, LEFT)])
 
 styles['red line'] = LineStyle(width=0.2*PT, color=RED)
 styles['thick line'] = LineStyle()
@@ -426,22 +429,6 @@ class CSVTabular(CustomElement):
 
 # bibliography
 # ----------------------------------------------------------------------------
-
-from rinoh import csl_formatter
-
-
-class IEEEBibliography(GroupedFlowables, list):
-    def __init__(self, items):
-        super().__init__()
-        for item in items:
-            self.append(Paragraph(item, style='bibliography'))
-
-    def flowables(self, document):
-        return iter(self)
-
-
-csl_formatter.Bibliography = IEEEBibliography
-
 
 class CitationField(Field):
     def __init__(self, citation):
