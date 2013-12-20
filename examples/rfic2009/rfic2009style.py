@@ -19,7 +19,7 @@ from rinoh.math import MathFonts, MathStyle, Equation, EquationStyle
 from rinoh.math import Math as RinohMath
 from rinoh.structure import Heading, List, ListItem, Header, Footer
 from rinoh.structure import TableOfContents, TableOfContentsStyle
-from rinoh.reference import Field, Reference, REFERENCE
+from rinoh.reference import Field, Reference, REFERENCE, FootnoteParagraph
 from rinoh.reference import Footnote as RinohFootnote
 from rinoh.flowable import GroupedFlowables, Floating
 from rinoh.float import Figure as RinohFigure, Caption
@@ -176,7 +176,7 @@ styles('footer', ClassSelector(Footer),
        indent_first=0*PT,
        justify=CENTER)
 
-styles('footnote', ClassSelector(Paragraph, 'footnote'),
+styles('footnote', ClassSelector(FootnoteParagraph),
        base='body',
        font_size=9*PT,
        line_spacing=FixedSpacing(10*PT))
@@ -382,7 +382,7 @@ class Ref(CustomElement):
 
 class Footnote(NestedElement):
     def parse(self, document):
-        par = Paragraph(self.process_content(document), style='footnote')
+        par = FootnoteParagraph(self.process_content(document))
         return RinohFootnote(par)
 
 

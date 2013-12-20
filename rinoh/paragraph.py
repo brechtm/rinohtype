@@ -43,7 +43,6 @@ from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
 from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .layout import EndOfContainer
-from .reference import FieldException
 from .text import TextStyle, MixedStyledText
 from .util import consumer
 
@@ -593,3 +592,6 @@ class Line(list):
                                                  glyph_span, document)
         container.advance(- descender)
         return descender
+
+
+from .reference import FieldException

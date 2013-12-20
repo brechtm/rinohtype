@@ -9,6 +9,7 @@
 from copy import copy
 from warnings import warn
 
+from .paragraph import Paragraph
 from .text import StyledText, SingleStyledText, Superscript
 
 
@@ -140,3 +141,7 @@ class Footnote(Field):
         field_text = Superscript(str(number))
         field_text.parent = self.parent
         return field_text.spans()
+
+
+class FootnoteParagraph(Paragraph):
+    pass
