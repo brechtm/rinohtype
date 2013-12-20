@@ -119,18 +119,19 @@ class Style(dict):
                 raise DefaultValueException
             return self.base._recursive_get(attribute)
 
-    def _get_default(self, attribute):
+    @classmethod
+    def _get_default(cls, attribute):
         """Return the default value for `attribute`.
 
         If no default is specified in this style, get the default from the
         nearest superclass.
         If `attribute` is not supported, raise a :class:`KeyError`."""
         try:
-            for cls in self.__class__.__mro__:
-                if attribute in cls.attributes:
-                    return cls.attributes[attribute]
+            for super_cls in cls.__mro__:
+                if attribute in super_cls.attributes:
+                    return super_cls.attributes[attribute]
         except AttributeError:
-            raise KeyError("No attribute '{}' in {}".format(attribute, self))
+            raise KeyError("No attribute '{}' in {}".format(attribute, cls))
 
     def _supported_attributes(self):
         """Return a :class:`dict` of the attributes supported by this style
@@ -144,17 +145,14 @@ class Style(dict):
         return attributes
 
 
-class ParentStyle(object):
+class ParentStyle(Style):
     """Special style that delegates attribute lookups by raising a
     :class:`ParentStyleException` on each attempt to access an attribute."""
 
     def __repr__(self):
         return self.__class__.__name__
 
-    def __getattr__(self, attribute):
-        raise ParentStyleException
-
-    def __getitem__(self, attribute):
+    def _recursive_get(self, attribute):
         raise ParentStyleException
 
 
@@ -177,8 +175,8 @@ class Styled(DocumentElement):
         A `parent` can be passed on object initialization, or later by
         assignment to the `parent` attribute."""
         super().__init__(parent=parent)
-        if style is None:
-            style = self.style_class()
+        # if style is None:
+        #     style = self.style_class()
         # if style != PARENT_STYLE and not isinstance(style, self.style_class):
         #     raise TypeError('the style passed to {0} should be of type {1}'
         #                     .format(self.__class__.__name__,
@@ -192,11 +190,14 @@ class Styled(DocumentElement):
         If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
         the style attribute is fetched from this element's parent."""
         try:
-            if self.style is None or isinstance(self.style, str):
-                style = document.styles.find_style(self)
-            else:
+            if isinstance(self.style, Style):
                 style = self.style
-            value = style[attribute]
+            else:
+                style = document.styles.find_style(self)
+            if style is None:
+                value = self.style_class._get_default(attribute)
+            else:
+                value = style[attribute]
         except ParentStyleException:
             value = self.parent.get_style(attribute, document)
         return value
@@ -227,7 +228,10 @@ class StyleStore(OrderedDict):
                 max_score = score
         if sum(max_score):
             return self[best_selector]
-        return self[styled.style]
+        try:
+            return self[styled.style]
+        except KeyError:
+            return None
 
 
 class Specificity(tuple):
@@ -239,13 +243,16 @@ class Specificity(tuple):
 
 
 class Selector(object):
+    def __init__(self, cls):
+        self.cls = cls
+
     def match(self, styled):
         raise NotImplementedError
 
 
 class ClassSelector(Selector):
     def __init__(self, cls, style_class=None):
-        self.cls = cls
+        super().__init__(cls)
         self.style_class = style_class
 
     def match(self, styled):
@@ -258,3 +265,20 @@ class ClassSelector(Selector):
         else:
             return Specificity(False, class_match)
 
+
+class ContextSelector(Selector):
+    def __init__(self, *selectors):
+        super().__init__(selectors[-1].cls)
+        self.selectors = selectors
+
+    def match(self, styled):
+        total_score = Specificity(0, 0)
+        for selector in reversed(self.selectors):
+            score = selector.match(styled)
+            if not score:
+                return False
+            total_score += score
+            styled = styled.parent
+            if styled is None:
+                return Specificity(False, False)
+        return total_score

@@ -145,6 +145,8 @@ class ListItem(Flowable):
         self.number = number
         self.separator = separator
         self.flowables = flowables
+        for flowable in flowables:
+            flowable.parent = self
 
     def render(self, container, last_descender, state=None):
         if not state:

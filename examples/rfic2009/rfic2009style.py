@@ -17,7 +17,7 @@ from rinoh.text import TextStyle, BOLD_ITALIC_STYLE
 from rinoh.text import Tab as RinohTab
 from rinoh.math import MathFonts, MathStyle, Equation, EquationStyle
 from rinoh.math import Math as RinohMath
-from rinoh.structure import Heading, List
+from rinoh.structure import Heading, List, ListItem
 from rinoh.structure import HeadingStyle, ListStyle
 from rinoh.structure import Header, Footer, HeaderStyle, FooterStyle
 from rinoh.structure import TableOfContents, TableOfContentsStyle
@@ -28,7 +28,7 @@ from rinoh.float import Figure as RinohFigure, CaptionStyle
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from rinoh.draw import LineStyle, RED
-from rinoh.style import PARENT_STYLE, StyleStore, Selector, ClassSelector
+from rinoh.style import PARENT_STYLE, StyleStore, ClassSelector, ContextSelector
 from rinoh.frontend.xml import element_factory
 from rinoh.backend import pdf
 
@@ -119,6 +119,11 @@ styles(ClassSelector(Paragraph, 'author'),
 styles(ClassSelector(Paragraph, 'affiliation'),
        base='author',
        space_below=6*PT + 12*PT)
+
+styles(ContextSelector(ClassSelector(ListItem), ClassSelector(Paragraph)),
+       base='body',
+       indent_first=14*PT)
+
 
 # set style defaults
 
@@ -327,11 +332,7 @@ class Title(NestedElement):
 
 class P(NestedElement):
     def parse(self, document):
-        if isinstance(self._parent, LI):
-            style = 'list item'
-        else:
-            style = 'body'
-        return Paragraph(self.process_content(document), style=style)
+        return Paragraph(self.process_content(document))
 
 
 class B(NestedElement):
