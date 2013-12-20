@@ -4,7 +4,7 @@ from rinoh.font import TypeFace, TypeFamily
 from rinoh.font.type1 import Type1Font
 from rinoh.font.opentype import OpenTypeFont
 from rinoh.font.style import REGULAR, MEDIUM, BOLD, ITALIC
-from rinoh.paper import Paper, LETTER
+from rinoh.paper import LETTER
 from rinoh.document import Document, Page, PORTRAIT
 from rinoh.layout import Container, DownExpandingContainer, Chain
 from rinoh.layout import TopFloatContainer, FootnoteContainer
@@ -13,29 +13,27 @@ from rinoh.paragraph import ProportionalSpacing, FixedSpacing, TabStop
 from rinoh.number import CHARACTER_UC, ROMAN_UC, NUMBER
 from rinoh.text import SingleStyledText, MixedStyledText
 from rinoh.text import Bold, Emphasized, SmallCaps, Superscript, Subscript
-from rinoh.text import TextStyle, BOLD_ITALIC_STYLE
+from rinoh.text import BOLD_ITALIC_STYLE
 from rinoh.text import Tab as RinohTab
 from rinoh.math import MathFonts, MathStyle, Equation, EquationStyle
 from rinoh.math import Math as RinohMath
-from rinoh.structure import Heading, List, ListItem
-from rinoh.structure import HeadingStyle, ListStyle
-from rinoh.structure import Header, Footer, HeaderStyle, FooterStyle
+from rinoh.structure import Heading, List, ListItem, Header, Footer
 from rinoh.structure import TableOfContents, TableOfContentsStyle
 from rinoh.reference import Field, Reference, REFERENCE
 from rinoh.reference import Footnote as RinohFootnote
-from rinoh.flowable import Flowable, FlowableStyle, GroupedFlowables, Floating
-from rinoh.float import Figure as RinohFigure, CaptionStyle
+from rinoh.flowable import GroupedFlowables, Floating
+from rinoh.float import Figure as RinohFigure, Caption
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, TabularStyle, CellStyle
 from rinoh.draw import LineStyle, RED
-from rinoh.style import PARENT_STYLE, StyleStore, ClassSelector, ContextSelector
+from rinoh.style import StyleStore, ClassSelector, ContextSelector
 from rinoh.frontend.xml import element_factory
 from rinoh.backend import pdf
 
 import rinoh.frontend.xml.elementtree as xml_frontend
 
 from citeproc import CitationStylesStyle, CitationStylesBibliography
-from citeproc import Citation, CitationItem, Locator
+from citeproc import Citation, CitationItem
 
 
 
@@ -178,6 +176,27 @@ styles('footer', ClassSelector(Footer),
        indent_first=0*PT,
        justify=CENTER)
 
+styles('footnote', ClassSelector(Paragraph, 'footnote'),
+       base='body',
+       font_size=9*PT,
+       line_spacing=FixedSpacing(10*PT))
+
+styles('figure', ClassSelector(RinohFigure),
+       space_above=10*PT,
+       space_below=12*PT)
+
+styles('figure caption', ContextSelector(ClassSelector(RinohFigure),
+                                         ClassSelector(Caption)),
+       typeface=ieeeFamily.serif,
+       font_weight=REGULAR,
+       font_size=9*PT,
+       line_spacing=FixedSpacing(10*PT),
+       indent_first=0*PT,
+       space_above=20*PT,
+       space_below=0*PT,
+       justify=BOTH)
+
+
 
 # pre-load hyphenation dictionary (which otherwise occurs during page rendering,
 # and thus invalidates per-page render time)
@@ -218,22 +237,6 @@ styles['bibliography'] = ParagraphStyle(base='body',
                                         space_above=0*PT,
                                         space_below=0*PT,
                                         tab_stops=[TabStop(0.25*INCH, LEFT)])
-
-styles['figure'] = FlowableStyle(space_above=10*PT,
-                                 space_below=12*PT)
-
-styles['figure caption'] = CaptionStyle(typeface=ieeeFamily.serif,
-                                        font_weight=REGULAR,
-                                        font_size=9*PT,
-                                        line_spacing=FixedSpacing(10*PT),
-                                        indent_first=0*PT,
-                                        space_above=20*PT,
-                                        space_below=0*PT,
-                                        justify=BOTH)
-
-styles['footnote'] = ParagraphStyle(base='body',
-                                    font_size=9*PT,
-                                    line_spacing=FixedSpacing(10*PT))
 
 styles['red line'] = LineStyle(width=0.2*PT, color=RED)
 styles['thick line'] = LineStyle()
@@ -379,8 +382,7 @@ class Ref(CustomElement):
 
 class Footnote(NestedElement):
     def parse(self, document):
-        par = Paragraph(self.process_content(document),
-                        style='footnote')
+        par = Paragraph(self.process_content(document), style='footnote')
         return RinohFootnote(par)
 
 
