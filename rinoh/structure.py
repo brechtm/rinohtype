@@ -301,10 +301,12 @@ class TableOfContents(GroupedFlowables):
                         Reference(flowable_id, type=PAGE)]
                 for reference in text:
                     reference.source = self
-                try:
-                    style_index = flowable.level - 1
-                    entry = Paragraph(text, style=self.styles[style_index],
-                                      parent=self)
-                except AttributeError:
-                    entry = Paragraph(text, style=self.styles[-1], parent=self)
+                entry = TableOfContentsEntry(text, level=flowable.level,
+                                             parent=self)
                 yield entry
+
+
+class TableOfContentsEntry(Paragraph):
+    def __init__(self, text_or_items, level, style=None, parent=None):
+        super().__init__(text_or_items, style=style, parent=parent)
+        self.level = level

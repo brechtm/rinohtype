@@ -18,7 +18,7 @@ from rinoh.text import Tab as RinohTab
 from rinoh.math import MathFonts, MathStyle, Equation, EquationStyle
 from rinoh.math import Math as RinohMath
 from rinoh.structure import Heading, List, ListItem, Header, Footer
-from rinoh.structure import TableOfContents, TableOfContentsStyle
+from rinoh.structure import TableOfContents, TableOfContentsEntry
 from rinoh.reference import Field, Reference, REFERENCE, FootnoteParagraph
 from rinoh.reference import Footnote as RinohFootnote
 from rinoh.flowable import GroupedFlowables, Floating
@@ -196,6 +196,28 @@ styles('figure caption', ContextSelector(ClassSelector(RinohFigure),
        space_below=0*PT,
        justify=BOTH)
 
+styles('table of contents', ClassSelector(TableOfContents),
+       base='body',
+       indent_first=0,
+       depth=3)
+
+styles('toc level 1', ClassSelector(TableOfContentsEntry, level=1),
+       base='table of contents',
+       font_weight=BOLD,
+       tab_stops=[TabStop(0.6*CM),
+                  TabStop(1.0, RIGHT, '. ')])
+
+styles('toc level 2', ClassSelector(TableOfContentsEntry, level=2),
+       base='table of contents',
+       indent_left=0.6*CM,
+       tab_stops=[TabStop(1.2*CM),
+                  TabStop(1.0, RIGHT, '. ')])
+
+styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
+       base='table of contents',
+       indent_left=1.2*CM,
+       tab_stops=[TabStop(1.8*CM),
+                  TabStop(1.0, RIGHT, '. ')])
 
 
 # pre-load hyphenation dictionary (which otherwise occurs during page rendering,
@@ -213,23 +235,6 @@ styles['equation'] = EquationStyle(base='body',
                                    justify=CENTER,
                                    tab_stops=[TabStop(0.5, CENTER),
                                               TabStop(1.0, RIGHT)])
-
-styles['toc0'] = ParagraphStyle(base='body',
-                                indent_first=0)
-styles['toc1'] = ParagraphStyle(base='toc0',
-                                font_weight=BOLD,
-                                tab_stops=[TabStop(0.6*CM),
-                                           TabStop(1.0, RIGHT, '. ')])
-styles['toc2'] = ParagraphStyle(base='toc0',
-                                indent_left=0.6*CM,
-                                tab_stops=[TabStop(1.2*CM),
-                                           TabStop(1.0, RIGHT, '. ')])
-styles['toc3'] = ParagraphStyle(base='toc0',
-                                indent_left=1.2*CM,
-                                tab_stops=[TabStop(1.8*CM),
-                                           TabStop(1.0, RIGHT, '. ')])
-
-styles['toc'] = TableOfContentsStyle(base='body')
 
 styles['bibliography'] = ParagraphStyle(base='body',
                                         font_size=9*PT,
@@ -551,9 +556,7 @@ class RFIC2009Paper(Document):
 
         self.content << Heading('Table of Contents', style='unnumbered',
                                 level=1)
-        toc = TableOfContents(style='toc',
-                              styles=[styles['toc1'], styles['toc2'],
-                                      styles['toc3']])
+        toc = TableOfContents()
         self.content << toc
         for section in self.root.body.section:
             for flowable in section.process(self):
