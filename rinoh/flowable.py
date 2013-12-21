@@ -22,10 +22,9 @@ from itertools import chain, tee
 
 from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
-from .util import Decorator
 
 
-__all__ = ['Flowable', 'FlowableStyle', 'Floating']
+__all__ = ['Flowable', 'FlowableStyle', 'Float']
 
 
 class FlowableException(Exception):
@@ -169,20 +168,27 @@ class GroupedFlowables(Flowable):
             pass
 
 
-class Floating(Decorator):
-    """Decorator to transform a :class:`Flowable` into a floating element. A
-    floating element or 'float' is not flowed into its designated container, but
-    is forwarded to another container, pointed to by the former's
-    :attr:`Container.float_space` attribute.
+class Float(Flowable):
+    """Transform a :class:`Flowable` into a floating element. A floating element
+    or 'float' is not flowed into its designated container, but is forwarded to
+    another container pointed to by the former's :attr:`Container.float_space`
+    attribute.
 
     This is typically used to place figures and tables at the top or bottom of a
     page, instead of in between paragraphs."""
 
+    def __init__(self, flowable, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.flowable = flowable
+        flowable.parent = self
+
+    def prepare(self, document):
+        self.flowable.prepare(document)
+
     def flow(self, container, last_descender, state=None):
-        """Flow this flowable into the float space associated with `container`.
-        """
+        """Flow contents into the float space associated with `container`."""
         if self not in container.document.floats:
-            super().flow(container.float_space, None)
+            self.flowable.flow(container.float_space, None)
             container.document.floats.add(self)
             container.page.check_overflow()
         return 0, last_descender

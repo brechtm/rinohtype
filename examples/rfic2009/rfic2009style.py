@@ -21,7 +21,7 @@ from rinoh.structure import Heading, List, ListItem, Header, Footer
 from rinoh.structure import TableOfContents, TableOfContentsEntry
 from rinoh.reference import Field, Reference, REFERENCE, FootnoteParagraph
 from rinoh.reference import Footnote as RinohFootnote
-from rinoh.flowable import GroupedFlowables, Floating
+from rinoh.flowable import GroupedFlowables, Float
 from rinoh.float import Figure as RinohFigure, Caption
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, Tabular
@@ -411,7 +411,7 @@ class Figure(CustomElement):
         scale = float(self.get('scale'))
         figure = RinohFigure(self.get('path'), caption_text, scale=scale,
                              id=self.get('id', None))
-        return Floating(figure)
+        return Float(figure)
 
 
 class Caption(NestedElement):
