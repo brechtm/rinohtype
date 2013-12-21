@@ -106,9 +106,9 @@ class List(GroupedFlowables):
     def __init__(self, items, style=None):
         super().__init__(style)
         self.items = items
-        # TODO: replace item styles with custom render method
 
     def flowables(self, document):
+        # TODO: rethink item_style
         item_style = ListStyle(base=PARENT_STYLE,
                                space_above=0, space_below=0,
                                indent_left=0, indent_right=0)
@@ -142,6 +142,7 @@ class ListItem(Flowable):
             flowable.parent = self
 
     def render(self, container, last_descender, state=None):
+        # TODO: line up baseline of ListItemNumber and first flowable
         if not state:
             try:
                 maybe_container = MaybeContainer(container)
