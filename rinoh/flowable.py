@@ -159,7 +159,7 @@ class GroupedFlowables(Flowable):
     def render(self, container, descender, state=None):
         flowables = self.flowables(container.document)
         item_spacing = self.get_style('flowable_spacing', container.document)
-        state = state or GroupedFlowablesState(flowables, None)
+        state = state or GroupedFlowablesState(flowables)
         flowable = state.next_flowable()
         try:
             while True:

@@ -6,12 +6,11 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from copy import copy
-from itertools import chain, tee, count, repeat
+from itertools import count, repeat
 
 from .layout import EndOfContainer, MaybeContainer
-from .flowable import Flowable, FlowableState, FlowableStyle
-from .flowable import GroupedFlowables, GroupedFlowablesStyle
+from .flowable import Flowable, GroupedFlowables, GroupedFlowablesStyle
+from .flowable import GroupedFlowablesState
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
 from .paragraph import TabStop, RIGHT
@@ -157,42 +156,25 @@ class ListItem(Flowable):
             except EndOfContainer:
                 raise EndOfContainer(state)
             try:
-                flowables_iterator = iter(self.flowables)
-                first_flowable = next(flowables_iterator)
+                state = GroupedFlowablesState(iter(self.flowables))
+                first_flowable = state.next_flowable()
                 height, last_descender = first_flowable.flow(maybe_container,
                                                              last_descender)
-                state = ListItemState(flowables_iterator)
                 maybe_container.do_place()
             except EndOfContainer as e:
                 if e.flowable_state:
                     maybe_container.do_place()
-                    state = ListItemState(flowables_iterator, e.flowable_state)
-                    state.prepend(first_flowable)
+                    state.prepend(first_flowable, e.flowable_state)
                 raise EndOfContainer(state)
-        for flowable in state.flowable_iterator:
+        for flowable in state.flowables:
             try:
-                height, last_descender = flowable.flow(container,
-                                                       last_descender,
-                                                       state.flowable_state)
+                _, last_descender = flowable.flow(container, last_descender,
+                                                  state.first_flowable_state)
                 state.flowable_state = None
             except EndOfContainer as e:
                 state.prepend(flowable, e.flowable_state)
                 raise EndOfContainer(state)
         return last_descender
-
-
-class ListItemState(FlowableState):
-    def __init__(self, flowable_iterator, flowable_state=None):
-        self.flowable_iterator = flowable_iterator
-        self.flowable_state = flowable_state
-
-    def __copy__(self):
-        self.flowable_iterator, copy_iterator = tee(self.flowable_iterator)
-        return self.__class__(copy_iterator, copy(self.flowable_state))
-
-    def prepend(self, flowable, flowable_state=None):
-        self.flowable_iterator = chain((flowable, ), self.flowable_iterator)
-        self.flowable_state = flowable_state
 
 
 
