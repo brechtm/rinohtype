@@ -34,15 +34,3 @@ Superscript = factory(text.Superscript)
 Subscript = factory(text.Subscript)
 
 SmallCaps = factory(text.SmallCaps)
-
-
-class Bibliography(GroupedFlowables, list):
-    location = 'bibliography'
-
-    def __init__(self, items, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        list.__init__(self, (Paragraph(item, parent=self) for item in items))
-        self.source = self
-
-    def flowables(self, document):
-        return iter(self)

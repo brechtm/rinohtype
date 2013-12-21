@@ -35,7 +35,6 @@ import rinoh.frontend.xml.elementtree as xml_frontend
 from citeproc import CitationStylesStyle, CitationStylesBibliography
 from citeproc import Citation, CitationItem
 from rinoh import csl_formatter
-from rinoh.csl_formatter import Bibliography
 
 
 # use Gyre Termes instead of (PDF Core) Times
@@ -210,15 +209,6 @@ styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
        tab_stops=[TabStop(1.8*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
-                                             ClassSelector(Paragraph)),
-       base='body',  # TODO: if no base, fall back to next-best selector match?
-       font_size=9*PT,
-       indent_first=0*PT,
-       space_above=0*PT,
-       space_below=0*PT,
-       tab_stops=[TabStop(0.25*INCH, LEFT)])
-
 styles('tabular', ClassSelector(Tabular),
        typeface=ieeeFamily.serif,
        font_weight=REGULAR,
@@ -307,81 +297,81 @@ styles('index terms', ClassSelector(IndexTerms),
 # input parsing
 # ----------------------------------------------------------------------------
 
-CustomElement, NestedElement = element_factory(xml_frontend, styles)
+CustomElement, NestedElement = element_factory(xml_frontend)
 
 class Section(CustomElement):
-    def parse(self, document, level=1):
+    def parse(self, level=1):
         for element in self.getchildren():
             if type(element) == Section:
-                section = element.process(document, level=level + 1)
+                section = element.process(level=level + 1)
                 for flowable in section:
                     yield flowable
             else:
                 if isinstance(element, Title):
-                    flowable = element.process(document, level=level,
+                    flowable = element.process(level=level,
                                                id=self.get('id', None))
                 else:
-                    flowable = element.process(document)
+                    flowable = element.process()
                 yield flowable
 
 
 class Title(NestedElement):
-    def parse(self, document, level=1, id=None):
-        return Heading(self.process_content(document), level=level, id=id)
+    def parse(self, level=1, id=None):
+        return Heading(self.process_content(), level=level, id=id)
 
 
 class P(NestedElement):
-    def parse(self, document):
-        return Paragraph(self.process_content(document))
+    def parse(self):
+        return Paragraph(self.process_content())
 
 
 class B(NestedElement):
-    def parse(self, document):
-        return Bold(self.process_content(document))
+    def parse(self):
+        return Bold(self.process_content())
 
 
 class Em(NestedElement):
-    def parse(self, document):
-        return Emphasized(self.process_content(document))
+    def parse(self):
+        return Emphasized(self.process_content())
 
 
 class SC(NestedElement):
-    def parse(self, document):
-        return SmallCaps(self.process_content(document))
+    def parse(self):
+        return SmallCaps(self.process_content())
 
 
 class Sup(NestedElement):
-    def parse(self, document):
-        return Superscript(self.process_content(document))
+    def parse(self):
+        return Superscript(self.process_content())
 
 
 class Sub(NestedElement):
-    def parse(self, document):
-        return Subscript(self.process_content(document))
+    def parse(self):
+        return Subscript(self.process_content())
 
 
 class Tab(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return MixedStyledText([RinohTab()])
 
 
 class OL(CustomElement):
-    def parse(self, document):
-        return List([li.process(document) for li in self.li], style='ordered')
+    def parse(self):
+        return List([li.process() for li in self.li], style='ordered')
 
 
 class LI(CustomElement):
-    def parse(self, document):
-        return [item.process(document) for item in self.getchildren()]
+    def parse(self):
+        return [item.process() for item in self.getchildren()]
 
 
 # class Math(CustomElement):
-#     def parse(self, document):
+#     def parse(self):
 #         return RinohMath(self.text, style='math')
 #
 #
 # class Eq(CustomElement):
-#     def parse(self, document, id=None):
+#     def parse(self, id=None):
 #         equation = Equation(self.text, style='equation')
 #         id = self.get('id', None)
 #         if id:
@@ -390,35 +380,34 @@ class LI(CustomElement):
 
 
 class Cite(CustomElement):
-    def parse(self, document):
+    def parse(self):
         keys = map(lambda x: x.strip(), self.get('id').split(','))
         items = [CitationItem(key) for key in keys]
         citation = Citation(items)
-        document.bibliography.register(citation)
         return CitationField(citation)
 
 
 class Ref(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return Reference(self.get('id'), self.get('type', REFERENCE))
 
 
 class Footnote(NestedElement):
-    def parse(self, document):
-        par = FootnoteParagraph(self.process_content(document))
+    def parse(self):
+        par = FootnoteParagraph(self.process_content())
         return RinohFootnote(par)
 
 
 class Acknowledgement(CustomElement):
-    def parse(self, document):
+    def parse(self):
         yield Heading('Acknowledgement', style='unnumbered', level=1)
         for element in self.getchildren():
-            yield element.process(document)
+            yield element.process()
 
 
 class Figure(CustomElement):
-    def parse(self, document):
-        caption_text = self.caption.process(document)
+    def parse(self):
+        caption_text = self.caption.process()
         scale = float(self.get('scale'))
         figure = RinohFigure(self.get('path'), caption_text, scale=scale,
                              id=self.get('id', None))
@@ -430,13 +419,13 @@ class Caption(NestedElement):
 
 
 class Tabular(CustomElement):
-    def parse(self, document):
+    def parse(self):
         data = HTMLTabularData(self)
         return RinohTabular(data)
 
 
 class CSVTabular(CustomElement):
-    def parse(self, document):
+    def parse(self):
         data = CSVTabularData(self.get('path'))
         return RinohTabular(data)
 
@@ -449,6 +438,9 @@ class CitationField(Field):
         super().__init__()
         self.citation = citation
 
+    def prepare(self, document):
+        document.bibliography.register(self.citation)
+
     def warn_unknown_reference_id(self, item, container):
         self.warn("Unknown reference ID '{}'".format(item.key), container)
 
@@ -458,6 +450,29 @@ class CitationField(Field):
         field_text = SingleStyledText(text)
         field_text.parent = self.parent
         return field_text.spans()
+
+
+class Bibliography(GroupedFlowables):
+    location = 'bibliography'
+
+    def __init__(self, bibliography, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.source = self
+        self.bibliography = bibliography
+
+    def flowables(self, document):
+        for entry in self.bibliography.bibliography():
+            yield Paragraph(entry, parent=self)
+
+
+styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
+                                             ClassSelector(Paragraph)),
+       base='body',  # TODO: if no base, fall back to next-best selector match?
+       font_size=9*PT,
+       indent_first=0*PT,
+       space_above=0*PT,
+       space_below=0*PT,
+       tab_stops=[TabStop(0.25*INCH, LEFT)])
 
 
 # pages and their layout
@@ -560,16 +575,16 @@ class RFIC2009Paper(Document):
         toc = TableOfContents()
         self.content << toc
         for section in self.root.body.section:
-            for flowable in section.process(self):
+            for flowable in section.process():
                 self.content << flowable
         try:
-            for flowable in self.root.body.acknowledgement.process(self):
+            for flowable in self.root.body.acknowledgement.process():
                 self.content << flowable
         except AttributeError:
             pass
         self.content << Heading('References', style='unnumbered', level=1)
         self.bibliography.sort()
-        self.content << self.bibliography.bibliography()
+        self.content << Bibliography(self.bibliography)
 
     def setup(self):
         self.page_count = 1

@@ -307,6 +307,10 @@ class MixedStyledText(StyledText, list):
         """Return the text content of this mixed-styled text."""
         return ''.join(str(item) for item in self)
 
+    def prepare(self, document):
+        for item in self:
+            item.prepare(document)
+
     def append(self, item):
         """Append `item` (:class:`StyledText` or :class:`str`) to the end of
         this mixed-styled text.

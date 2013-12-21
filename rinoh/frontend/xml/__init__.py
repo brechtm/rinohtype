@@ -8,7 +8,6 @@
 
 import os
 
-from importlib import import_module
 from urllib.parse import urljoin
 from urllib.request import pathname2url
 
@@ -20,22 +19,17 @@ CATALOG_URL = urljoin('file:', pathname2url(CATALOG_PATH))
 CATALOG_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 
 
-def element_factory(xml_frontend, styles_store):
+def element_factory(xml_frontend):
     class CustomElement(xml_frontend.BaseElement):
-        styles = styles_store
-
-        def style(self, name):
-            return self.styles[name]
-
-        def process(self, document, *args, **kwargs):
-            result = self.parse(document, *args, **kwargs)
+        def process(self, *args, **kwargs):
+            result = self.parse(*args, **kwargs)
             try:
                 result.source = self
             except AttributeError:
                 pass
             return result
 
-        def parse(self, document, *args, **kwargs):
+        def parse(self, *args, **kwargs):
             raise NotImplementedError('tag: %s' % self.tag)
 
         @property
@@ -45,13 +39,13 @@ def element_factory(xml_frontend, styles_store):
                                                 self.sourceline)
 
     class NestedElement(CustomElement):
-        def parse(self, document, *args, **kwargs):
-            return self.process_content(document)
+        def parse(self, *args, **kwargs):
+            return self.process_content()
 
-        def process_content(self, document):
+        def process_content(self):
             content = self.text
             for child in self.getchildren():
-                content += child.process(document) + child.tail
+                content += child.process() + child.tail
             return content
 
     return CustomElement, NestedElement
