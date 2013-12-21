@@ -301,13 +301,15 @@ class ParagraphBase(Flowable):
         return descender
 
 
-class Paragraph(MixedStyledText, ParagraphBase):
-    style_class = ParagraphStyle
-
+class Paragraph(ParagraphBase, MixedStyledText):
     def __init__(self, text_or_items, style=None, parent=None):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""
-        super().__init__(text_or_items, style=style, parent=parent)
+        MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
+
+    def render(self, container, descender, state=None):
+        state = state or ParagraphState(MixedStyledText.spans(self))
+        return super().render(container, descender, state)
 
 
 class HyphenatorStore(dict):
