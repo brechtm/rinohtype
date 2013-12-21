@@ -160,13 +160,13 @@ class GroupedFlowables(Flowable):
         flowables = self.flowables(container.document)
         item_spacing = self.get_style('flowable_spacing', container.document)
         state = state or GroupedFlowablesState(flowables, None)
-
+        flowable = state.next_flowable()
         try:
             while True:
-                flowable = state.next_flowable()
                 _, descender = flowable.flow(container, descender,
                                              state=state.first_flowable_state)
                 state.first_flowable_state = None
+                flowable = state.next_flowable()
                 container.advance(item_spacing)
         except EndOfContainer as eoc:
             state.prepend(flowable, eoc.flowable_state)
