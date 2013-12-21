@@ -294,11 +294,11 @@ class ContextSelector(Selector):
     def match(self, styled):
         total_score = Specificity(0, 0, 0)
         for selector in reversed(self.selectors):
+            if styled is None:
+                return Specificity(0, 0, 0)
             score = selector.match(styled)
             if not score:
                 return Specificity(0, 0, 0)
             total_score += score
             styled = styled.parent
-            if styled is None:
-                break
         return total_score
