@@ -231,15 +231,15 @@ styles('red line', ClassSelector(Line),
 styles('thick line', ClassSelector(Line),
        width=1*PT)
 
-styles('first row', ClassSelector(Tabular),
+styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
        font_weight=BOLD,
        bottom_border='thick line')
 
-styles('first column', ClassSelector(Tabular),
+styles('first column', ClassSelector(Tabular, 'NOMATCH'),
        font_slant=ITALIC,
        right_border='thick line')
 
-styles('numbers', ClassSelector(Tabular),
+styles('numbers', ClassSelector(Tabular, 'NOMATCH'),
        typeface=ieeeFamily.mono)
 
 styles['tabular'].set_cell_style(styles['first row'], rows=0)
