@@ -184,11 +184,12 @@ class Styled(DocumentElement):
                                     style.__class__.__name__))
         self.style = style
 
+    @cached
     def _style(self, document):
         return (self.style if isinstance(self.style, Style)
                 else document.styles.find_style(self))
 
-    #@cached
+    @cached
     def get_style(self, attribute, document=None):
         """Return `attribute` of the associated :class:`Style`.
 
