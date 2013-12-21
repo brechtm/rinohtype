@@ -245,6 +245,9 @@ class Specificity(tuple):
     def __add__(self, other):
         return tuple(a + b for a, b in zip(self, other))
 
+    def __bool__(self):
+        return any(self)
+
 
 class Selector(object):
     def __init__(self, cls):
@@ -292,7 +295,7 @@ class ContextSelector(Selector):
         for selector in reversed(self.selectors):
             score = selector.match(styled)
             if not score:
-                return False
+                return Specificity(0, 0, 0)
             total_score += score
             styled = styled.parent
             if styled is None:
