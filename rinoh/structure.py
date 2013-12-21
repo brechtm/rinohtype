@@ -22,7 +22,7 @@ from .dimension import PT
 from .style import PARENT_STYLE
 
 
-__all__ = ['HeadingStyle', 'Heading', 'ListStyle', 'List',
+__all__ = ['HeadingStyle', 'Heading', 'ListStyle', 'List', 'ListItem',
            'DefinitionListStyle', 'DefinitionList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents']
@@ -179,46 +179,52 @@ class ListItem(Flowable):
 
 
 
-class DefinitionListStyle(ParagraphStyle):
+class DefinitionListStyle(GroupedFlowablesStyle, ParagraphStyle):
     attributes = {'term_style': PARENT_STYLE,
-                  'item_spacing': 0*PT,
                   'indentation': 10*PT}
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
 
 
-class DefinitionList(Paragraph):
+class DefinitionList(GroupedFlowables):
     style_class = DefinitionListStyle
 
     def __init__(self, items, style=None):
-        super().__init__([], style)
-        term_style = self.style.term_style
+        super().__init__(style)
+        self.items = items
+
+    def flowables(self, document):
+        term_style = self.get_style('term_style', document)
+        flowable_spacing = self.get_style('flowable_spacing', document)
+        indentation = self.get_style('indentation', document)
         term_style = ParagraphStyle(space_above=0*PT,
                                     space_below=0*PT,
-                                    base=style)
+                                    base=PARENT_STYLE)
         definition_style = ParagraphStyle(space_above=0*PT,
-                                          space_below=self.style.item_spacing,
-                                          indent_left=self.style.indentation,
-                                          base=style)
+                                          space_below=flowable_spacing,
+                                          indent_left=indentation,
+                                          base=PARENT_STYLE)
         last_definition_style = ParagraphStyle(space_above=0*PT,
                                                space_below=0*PT,
-                                               indent_left=self.style.indentation,
-                                               base=style)
-        for i, item in enumerate(items[:-1]):
+                                               indent_left=indentation,
+                                               base=PARENT_STYLE)
+        for i, item in enumerate(self.items[:-1]):
             term, definition = item
-            term_par = Paragraph(term, style=term_style)
-            definition_par =  Paragraph(definition, style=definition_style)
+            term_par = Paragraph(term, style=term_style, parent=self)
+            definition_par =  Paragraph(definition, style=definition_style,
+                                        parent=self)
             term_par.parent = definition_par.parent = self
-            self.append(term_par)
-            self.append(definition_par)
-        last_term, last_definition = items[-1]
-        last_term_par = Paragraph(last_term, style=term_style)
+            yield term_par
+            yield definition_par
+        last_term, last_definition = self.items[-1]
+        last_term_par = Paragraph(last_term, style=term_style, parent=self)
         last_definition_par = Paragraph(last_definition,
-                                        style=last_definition_style)
+                                        style=last_definition_style,
+                                        parent=self)
         last_term_par.parent = last_definition_par.parent = self
-        self.append(last_term_par)
-        self.append(last_definition_par)
+        yield last_term_par
+        yield last_definition_par
 
 
 class HeaderStyle(ParagraphStyle):

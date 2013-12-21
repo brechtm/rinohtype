@@ -46,8 +46,8 @@ from .style import Style, Styled, PARENT_STYLE
 from .util import cached_property
 
 
-__all__ = ['TextStyle', 'SingleStyledText', 'MixedStyledText', 'LiteralText',
-           'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
+__all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
+           'LiteralText', 'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
            'Tab', 'Newline',
            'Bold', 'Italic', 'Emphasized', 'SmallCaps', 'Superscript',
            'Subscript']

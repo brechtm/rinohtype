@@ -24,7 +24,7 @@ from .document import DocumentElement
 from .util import cached
 
 
-__all__ = ['Style', 'Styled', 'StyleStore',
+__all__ = ['Style', 'Styled', 'StyleStore', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'ParentStyleException']
 
 

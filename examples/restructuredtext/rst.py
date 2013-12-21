@@ -36,71 +36,83 @@ fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
 styles = rt.StyleStore()
 
-styles['title'] = rt.ParagraphStyle(typeface=fontFamily.serif,
-                                    font_size=16*PT,
-                                    line_spacing=rt.DEFAULT,
-                                    space_above=6*PT,
-                                    space_below=6*PT,
-                                    justify=rt.CENTER)
+styles('body', rt.ClassSelector(rt.Paragraph),
+       typeface=fontFamily.serif,
+       font_weight=REGULAR,
+       font_size=10*PT,
+       line_spacing=rt.DEFAULT,
+       #indent_first=0.125*INCH,
+       space_above=0*PT,
+       space_below=10*PT,
+       justify=rt.BOTH)
 
-styles['body'] = rt.ParagraphStyle(typeface=fontFamily.serif,
-                                   font_weight=REGULAR,
-                                   font_size=10*PT,
-                                   line_spacing=rt.DEFAULT,
-                                   #indent_first=0.125*INCH,
-                                   space_above=0*PT,
-                                   space_below=10*PT,
-                                   justify=rt.BOTH)
+styles('title', rt.ClassSelector(rt.Paragraph, 'title'),
+       typeface=fontFamily.serif,
+       font_size=16*PT,
+       line_spacing=rt.DEFAULT,
+       space_above=6*PT,
+       space_below=6*PT,
+       justify=rt.CENTER)
 
-styles['literal'] = rt.ParagraphStyle(base='body',
-                                      #font_size=9*PT,
-                                      justify=rt.LEFT,
-                                      indent_left=1*CM,
-                                      typeface=fontFamily.mono)
-#                                      noWrap=True,   # but warn on overflow
-#                                      literal=True ?)
+styles('literal', rt.ClassSelector(rt.Paragraph, 'literal'),
+       base='body',
+       #font_size=9*PT,
+       justify=rt.LEFT,
+       indent_left=1*CM,
+       typeface=fontFamily.mono)
+       #noWrap=True,   # but warn on overflow
+       #literal=True ?)
 
-styles['block quote'] = rt.ParagraphStyle(base='body',
-                                          indent_left=1*CM)
+styles('block quote', rt.ClassSelector(rt.Paragraph, 'block quote'),
+       base='body',
+       indent_left=1*CM)
 
-styles['heading1'] = rt.HeadingStyle(typeface=fontFamily.serif,
-                                     font_size=14*PT,
-                                     line_spacing=rt.DEFAULT,
-                                     space_above=14*PT,
-                                     space_below=6*PT,
-                                     numbering_style=None)
+styles('heading level 1', rt.ClassSelector(rt.Heading, level=1),
+       typeface=fontFamily.serif,
+       font_size=14*PT,
+       line_spacing=rt.DEFAULT,
+       space_above=14*PT,
+       space_below=6*PT,
+       numbering_style=None)
 
-styles['heading2'] = rt.HeadingStyle(base='heading1',
-                                     font_slant=ITALIC,
-                                     font_size=12*PT,
-                                     line_spacing=rt.DEFAULT,
-                                     space_above=6*PT,
-                                     space_below=6*PT)
+styles('heading level 2', rt.ClassSelector(rt.Heading, level=2),
+       base='heading level 1',
+       font_slant=ITALIC,
+       font_size=12*PT,
+       line_spacing=rt.DEFAULT,
+       space_above=6*PT,
+       space_below=6*PT)
 
-styles['monospaced'] = rt.TextStyle(typeface=fontFamily.mono)
+styles('monospaced', rt.ClassSelector(rt.StyledText, 'monospaced'),
+       typeface=fontFamily.mono)
 
-styles['enumerated list'] = rt.ListStyle(base='body',
-                                         ordered=True,
-                                         indent_left=5*PT,
-                                         item_indent=12*PT,
-                                         item_spacing=0*PT,
-                                         numbering_style=rt.NUMBER,
-                                         numbering_separator='.')
+styles('enumerated list', rt.ClassSelector(rt.List, 'enumerated'),
+       base='body',
+       ordered=True,
+       indent_left=5*PT,
+       item_indent=12*PT,
+       flowable_spacing=0*PT,
+       numbering_style=rt.NUMBER,
+       numbering_separator='.')
 
-styles['list item'] = rt.ParagraphStyle(base='body',
-                                        indent_first=17*PT)
+styles('bulleted list', rt.ClassSelector(rt.List, 'bulleted'),
+       base='body',
+       indent_left=5*PT,
+       ordered=False,
+       flowable_spacing=0*PT)
 
-styles['bullet list'] = rt.ListStyle(base='body',
-                                     indent_left=5*PT,
-                                     ordered=False,
-                                     item_spacing=0*PT)
+styles('list item paragraph', rt.ContextSelector(rt.ClassSelector(rt.ListItem),
+                                                 rt.ClassSelector(rt.Paragraph)),
+       base='body',
+       indent_first=17*PT)
 
-styles['definition list'] = rt.DefinitionListStyle(base='body')
+styles('definition list', rt.ClassSelector(rt.DefinitionList),
+       base='body')
 
 
 class Mono(rt.MixedStyledText):
     def __init__(self, text, y_offset=0):
-        super().__init__(text, style=styles['monospaced'], y_offset=y_offset)
+        super().__init__(text, style='monospaced', y_offset=y_offset)
 
 
 
@@ -108,10 +120,8 @@ class Mono(rt.MixedStyledText):
 # ----------------------------------------------------------------------------
 
 
-def element_factory(styles_store):
+def element_factory():
     class CustomElement(object):
-        styles = styles_store
-
         def __init__(self, doctree_node):
             self.node = doctree_node
 
@@ -145,18 +155,15 @@ def element_factory(styles_store):
         def getchildren(self):
             return [map(child) for child in self.node.children]
 
-        def style(self, name):
-            return self.styles[name]
-
-        def process(self, document, *args, **kwargs):
-            result = self.parse(document, *args, **kwargs)
+        def process(self, *args, **kwargs):
+            result = self.parse(*args, **kwargs)
             try:
                 result.source = self
             except AttributeError:
                 pass
             return result
 
-        def parse(self, document, *args, **kwargs):
+        def parse(self, *args, **kwargs):
             raise NotImplementedError('tag: %s' % self.tag)
 
         @property
@@ -166,23 +173,23 @@ def element_factory(styles_store):
                                                 self.node.line)
 
     class NestedElement(CustomElement):
-        def parse(self, document, *args, **kwargs):
-            return self.process_content(document)
+        def parse(self, *args, **kwargs):
+            return self.process_content()
 
-        def process_content(self, document):
+        def process_content(self):
             content = ''
             for child in self.getchildren():
-                content += child.process(document)
+                content += child.process()
             return content
 
     return CustomElement, NestedElement
 
 
-CustomElement, NestedElement = element_factory(styles)
+CustomElement, NestedElement = element_factory()
 
 
 class Text(CustomElement):
-    def process(self, document, *args, **kwargs):
+    def process(self, *args, **kwargs):
         return self.text
 
 
@@ -191,20 +198,19 @@ class Document(CustomElement):
 
 
 class System_Message(CustomElement):
-    def process(self, document, *args, **kwargs):
-        return rt.Paragraph(self.text, style=self.style('body'))
+    def process(self, *args, **kwargs):
+        return rt.Paragraph(self.text)
 
 
 class Section(CustomElement):
-    def parse(self, document, level=1):
+    def parse(self, level=1):
         for element in self.getchildren():
             if isinstance(element, Title):
-                elem = element.process(document, level=level,
-                                       id=self.get('ids', None)[0])
+                elem = element.process(level=level, id=self.get('ids', None)[0])
             elif type(element) == Section:
-                elem = element.process(document, level=level + 1)
+                elem = element.process(level=level + 1)
             else:
-                elem = element.process(document)
+                elem = element.process()
             if isinstance(elem, rt.Flowable):
                 yield elem
             else:
@@ -213,101 +219,91 @@ class Section(CustomElement):
 
 
 class Paragraph(NestedElement):
-    def parse(self, document):
-        if isinstance(self.parent, List_Item):
-            style = 'list item'
-        else:
-            style = 'body'
-        return rt.Paragraph(super().process_content(document),
-                            style=self.style(style))
+    def parse(self):
+        return rt.Paragraph(super().process_content())
 
 
 class Title(CustomElement):
-    def parse(self, document, level=1, id=None):
+    def parse(self, level=1, id=None):
         #print('Title.render()')
-        return rt.Heading(self.text, level=level, id=id,
-                          style=self.style('heading{}'.format(level)))
+        return rt.Heading(self.text, level=level, id=id)
 
 class Tip(NestedElement):
-    def parse(self, document):
-        return rt.Paragraph('TIP: ' + super().process_content(document),
-                            style=self.style('body'))
+    def parse(self):
+        return rt.Paragraph('TIP: ' + super().process_content())
 
 
 class Emphasis(NestedElement):
-    def parse(self, document):
+    def parse(self):
         return rt.Emphasized(self.text)
 
 
 class Strong(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return rt.Bold(self.text)
 
 
 class Literal(CustomElement):
-    def parse(self, document):
-        return rt.LiteralText(self.text, style=self.style('monospaced'))
+    def parse(self):
+        return rt.LiteralText(self.text, style='monospaced')
 
 
 class Literal_Block(CustomElement):
-    def parse(self, document):
-        return rt.Paragraph(rt.LiteralText(self.text),
-                            style=self.style('literal'))
+    def parse(self):
+        return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
 class Block_Quote(NestedElement):
-    def parse(self, document):
-        return rt.Paragraph(super().process_content(document),
-                            style=self.style('block quote'))
+    def parse(self):
+        return rt.Paragraph(super().process_content(), style='block quote')
 
 
 class Reference(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return self.text
 
 
 class Footnote(CustomElement):
-    def parse(self, document):
-        return rt.Paragraph('footnote', style=self.style('body'))
+    def parse(self):
+        return rt.Paragraph('footnote')
 
 
 class Footnote_Reference(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return self.text
 
 
 class Target(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return rt.MixedStyledText([])
 
 
 class Enumerated_List(CustomElement):
-    def parse(self, document):
+    def parse(self):
         # TODO: handle different numbering styles
-        return rt.List([item.process(document) for item in self.list_item],
-                       style=self.style('enumerated list'))
+        return rt.List([item.process() for item in self.list_item],
+                       style='enumerated')
 
 
 class Bullet_List(CustomElement):
-    def parse(self, document):
-        return rt.List([item.process(document) for item in self.list_item],
-                       style=self.style('bullet list'))
+    def parse(self):
+        return rt.List([item.process() for item in self.list_item],
+                       style='bulleted')
 
 
 class List_Item(NestedElement):
-    def parse(self, document):
-        return [item.process(document) for item in self.getchildren()]
+    def parse(self):
+        return [item.process() for item in self.getchildren()]
 
 
 class Definition_List(CustomElement):
-    def parse(self, document):
-        return rt.DefinitionList([item.process(document)
-                                  for item in self.definition_list_item],
-                                  style=self.style('definition list'))
+    def parse(self):
+        return rt.DefinitionList([item.process()
+                                  for item in self.definition_list_item])
 
 class Definition_List_Item(CustomElement):
-    def parse(self, document):
-        return (self.term.process(document), self.definition.process(document))
+    def parse(self):
+        return (self.term.process(), self.definition.process())
 
 
 class Term(NestedElement):
@@ -319,7 +315,7 @@ class Definition(NestedElement):
 
 
 class Image(CustomElement):
-    def parse(self, document):
+    def parse(self):
         return rt.Image(self.get('uri').rsplit('.png', 1)[0])
 
 
@@ -372,6 +368,7 @@ def map(node):
 class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
         super().__init__(backend=pdf)
+        self.styles = styles
         with open(filename) as file:
             doctree = publish_doctree(file.read(), source_path=filename)
         self.root = map(doctree.document)
@@ -383,11 +380,11 @@ class ReStructuredTextDocument(rt.Document):
         self.content_flowables = []
 
         self.content_flowables.append(rt.Paragraph(self.root.title.text,
-                                                   styles['title']))
+                                                   style='title'))
 
         for section in self.root.section:
 ##            toc.register(flowable)
-            for flowable in section.parse(self):
+            for flowable in section.parse():
                 self.content_flowables.append(flowable)
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):
