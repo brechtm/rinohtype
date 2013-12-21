@@ -225,6 +225,9 @@ class ParagraphBase(Flowable):
 
     style_class = ParagraphStyle
 
+    def initial_state(self, document):
+        return ParagraphState(self.spans())
+
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
@@ -243,7 +246,7 @@ class ParagraphBase(Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(self.spans())
+        state = state or self.initial_state(document)
         saved_state = copy(state)
 
         def typeset_line(line, last_line=False, force=False):
@@ -307,9 +310,8 @@ class Paragraph(ParagraphBase, MixedStyledText):
         a parent, `style` should be specified."""
         MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
 
-    def render(self, container, descender, state=None):
-        state = state or ParagraphState(MixedStyledText.spans(self))
-        return super().render(container, descender, state)
+    def initial_state(self, document):
+        return ParagraphState(MixedStyledText.spans(self))
 
 
 class HyphenatorStore(dict):

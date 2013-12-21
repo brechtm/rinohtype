@@ -71,7 +71,7 @@ class Heading(Referenceable, ParagraphBase):
         document.set_reference(element_id, REFERENCE, formatted_number)
         document.set_reference(element_id, TITLE, self.title)
 
-    def spans(self, document):
+    def initial_state(self, document):
         numbering_style = self.get_style('numbering_style', document)
         if numbering_style is not None:
             formatted_number = Reference(self.get_id(document), REFERENCE)
@@ -79,10 +79,10 @@ class Heading(Referenceable, ParagraphBase):
             number = formatted_number + separator + FixedWidthSpace()
         else:
             number = ''
-        return MixedStyledText(number + self.title, parent=self).spans()
+        text = MixedStyledText(number + self.title, parent=self)
+        return ParagraphState(text.spans())
 
     def render(self, container, last_descender, state=None):
-        state = state or ParagraphState(self.spans(container.document))
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)
