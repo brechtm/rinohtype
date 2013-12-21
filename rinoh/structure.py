@@ -10,7 +10,7 @@ from copy import copy
 from itertools import chain, tee, count, repeat
 
 from .layout import EndOfContainer, MaybeContainer
-from .flowable import Flowable, FlowableState
+from .flowable import Flowable, FlowableState, FlowableStyle
 from .flowable import GroupedFlowables, GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
@@ -111,26 +111,18 @@ class List(GroupedFlowables):
 
     def flowables(self, document):
         item_style = ListStyle(base=PARENT_STYLE,
-                               space_above=0*PT,
-                               space_below=self.get_style('flowable_spacing',
-                                                          document))
-        last_item_style = ListStyle(base=PARENT_STYLE, space_above=0*PT,
-                                    space_below=0*PT)
+                               space_above=0, space_below=0,
+                               indent_left=0, indent_right=0)
         if self.get_style('ordered', document):
             separator = self.get_style('numbering_separator', document)
-            numbers = [format_number(i + 1, self.get_style('numbering_style',
-                                                           document))
-                       for i in range(len(self.items))]
+            numbering_style = self.get_style('numbering_style', document)
+            numbers = (format_number(i, numbering_style) for i in count(1))
         else:
             separator = ''
-            numbers = [self.get_style('bullet', document)] * len(self.items)
-        for i, item in enumerate(self.items[:-1]):
-            item = ListItem(numbers[i], separator, item, style=item_style,
-                            parent=self)
-            yield item
-        last = ListItem(numbers[-1], separator, self.items[-1],
-                        style=last_item_style, parent=self)
-        yield last
+            numbers = repeat(self.get_style('bullet', document))
+        for number, item in zip(numbers, self.items):
+            yield ListItem(number, separator, item, style=item_style,
+                           parent=self)
 
 
 class ListItemNumber(Paragraph):
@@ -157,7 +149,7 @@ class ListItem(Flowable):
                 tab_stop = TabStop(self.get_style('item_indent',
                                                   container.document),
                                    align=RIGHT)
-                marker_style = ParagraphStyle(base=self.style,
+                marker_style = ParagraphStyle(base=PARENT_STYLE,
                                               tab_stops=[tab_stop])
                 marker = ListItemNumber([Tab() + self.number + self.separator],
                                         style=marker_style, parent=self)
