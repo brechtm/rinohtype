@@ -48,6 +48,10 @@ class Heading(Referenceable, ParagraphBase):
         self.title = title
         self.level = level
 
+    def __repr__(self):
+        return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
+                                        self.style)
+
     def prepare(self, document):
         super().prepare(document)
         element_id = self.get_id(document)
