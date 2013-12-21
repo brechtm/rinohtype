@@ -145,14 +145,20 @@ class GroupedFlowablesState(FlowableState):
         self.flowables = chain((flowable, ), self.flowables)
         self.first_flowable_state = first_flowable_state
 
-# TODO: GroupedFlowablesStyle with attribute flowable_spacing
+
+class GroupedFlowablesStyle(FlowableStyle):
+    attributes = {'flowable_spacing': 0}
+
 
 class GroupedFlowables(Flowable):
+    style_class = GroupedFlowablesStyle
+
     def flowables(self, document):
         raise NotImplementedError
 
     def render(self, container, descender, state=None):
         flowables = self.flowables(container.document)
+        item_spacing = self.get_style('flowable_spacing', container.document)
         state = state or GroupedFlowablesState(flowables, None)
 
         try:
@@ -161,6 +167,7 @@ class GroupedFlowables(Flowable):
                 _, descender = flowable.flow(container, descender,
                                              state=state.first_flowable_state)
                 state.first_flowable_state = None
+                container.advance(item_spacing)
         except EndOfContainer as eoc:
             state.prepend(flowable, eoc.flowable_state)
             raise EndOfContainer(state)

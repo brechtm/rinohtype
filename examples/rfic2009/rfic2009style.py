@@ -147,13 +147,15 @@ styles('list', ClassSelector(List, 'ordered'),
        indent_left=0*INCH,
        indent_first=0*INCH,
        ordered=True,
-       item_spacing=0*PT,
+       flowable_spacing=0*PT,
        numbering_style=NUMBER,
        numbering_separator=')')
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
                                               ClassSelector(Paragraph)),
        base='body',
+       space_above=0*PT,
+       space_below=0*PT,
        indent_first=14*PT)
 
 styles('header', ClassSelector(Header),

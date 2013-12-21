@@ -6,13 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import unicodedata
-
 from copy import copy
-from itertools import chain, tee
+from itertools import chain, tee, count, repeat
 
 from .layout import EndOfContainer, MaybeContainer
-from .flowable import Flowable, FlowableState, GroupedFlowables
+from .flowable import Flowable, FlowableState
+from .flowable import GroupedFlowables, GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
 from .paragraph import TabStop, RIGHT
@@ -91,11 +90,10 @@ class Heading(Referenceable, ParagraphBase):
         return super().render(container, last_descender, state=state)
 
 
-class ListStyle(ParagraphStyle):
+class ListStyle(GroupedFlowablesStyle, ParagraphStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
                   'item_indent': 12*PT,
-                  'item_spacing': 0*PT,
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
@@ -114,7 +112,7 @@ class List(GroupedFlowables):
     def flowables(self, document):
         item_style = ListStyle(base=PARENT_STYLE,
                                space_above=0*PT,
-                               space_below=self.get_style('item_spacing',
+                               space_below=self.get_style('flowable_spacing',
                                                           document))
         last_item_style = ListStyle(base=PARENT_STYLE, space_above=0*PT,
                                     space_below=0*PT)
@@ -186,8 +184,7 @@ class ListItem(Flowable):
                                                        state.flowable_state)
                 state.flowable_state = None
             except EndOfContainer as e:
-                state.prepend(flowable)
-                state.flowable_state = e.flowable_state
+                state.prepend(flowable, e.flowable_state)
                 raise EndOfContainer(state)
         return last_descender
 
@@ -201,8 +198,9 @@ class ListItemState(FlowableState):
         self.flowable_iterator, copy_iterator = tee(self.flowable_iterator)
         return self.__class__(copy_iterator, copy(self.flowable_state))
 
-    def prepend(self, flowable):
+    def prepend(self, flowable, flowable_state=None):
         self.flowable_iterator = chain((flowable, ), self.flowable_iterator)
+        self.flowable_state = flowable_state
 
 
 
@@ -278,7 +276,7 @@ class Footer(ParagraphBase):
         return MixedStyledText(text, parent=self).spans()
 
 
-class TableOfContentsStyle(ParagraphStyle):
+class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
     attributes = {'depth': 3}
 
     def __init__(self, base=None, **attributes):
@@ -289,9 +287,8 @@ class TableOfContents(GroupedFlowables):
     style_class = TableOfContentsStyle
     location = 'table of contents'
 
-    def __init__(self, style=None, parent=None, styles=[]):
+    def __init__(self, style=None, parent=None):
         super().__init__(style=style, parent=parent)
-        self.styles = styles
         self.source = self
 
     def flowables(self, document):
