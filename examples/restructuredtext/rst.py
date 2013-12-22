@@ -1,9 +1,4 @@
 
-from io import BytesIO
-
-from docutils import nodes
-from docutils.core import publish_doctree, publish_from_doctree
-
 import rinoh as rt
 
 from rinoh.font import TypeFace, TypeFamily
@@ -12,10 +7,7 @@ from rinoh.font.type1 import Type1Font
 from rinoh.font.opentype import OpenTypeFont
 from rinoh.dimension import PT, CM, INCH
 from rinoh.backend import pdf
-from rinoh.frontend.xml import element_factory
-from rinoh.util import all_subclasses
-
-import rinoh.frontend.xml.elementtree as xml_frontend
+from rinoh.frontend.rst import ReStructuredTextParser
 
 
 pagella_regular = OpenTypeFont("../fonts/texgyrepagella-regular.otf",
@@ -110,215 +102,8 @@ styles('definition list', rt.ClassSelector(rt.DefinitionList),
        base='body')
 
 
-class Mono(rt.MixedStyledText):
-    def __init__(self, text, y_offset=0):
-        super().__init__(text, style='monospaced', y_offset=y_offset)
-
-
-
-# input parsing
+# page definition
 # ----------------------------------------------------------------------------
-
-
-def element_factory():
-    class CustomElement(object):
-        def __init__(self, doctree_node):
-            self.node = doctree_node
-
-        def __getattr__(self, name):
-            for child in self.node.children:
-                if child.tagname == name:
-                    return map(child)
-            raise AttributeError('No such element: {}'.format(name))
-
-        def __iter__(self):
-            try:
-                for child in self.parent.node.children:
-                    if child.tagname == self.node.tagname:
-                        yield map(child)
-            except AttributeError:
-                # this is the root element
-                yield self
-
-        @property
-        def parent(self):
-            if self.node.parent is not None:
-                return map(self.node.parent)
-
-        @property
-        def text(self):
-            return self.node.astext()
-
-        def get(self, key, default=None):
-            return self.node.get(key, default)
-
-        def getchildren(self):
-            return [map(child) for child in self.node.children]
-
-        def process(self, *args, **kwargs):
-            result = self.parse(*args, **kwargs)
-            try:
-                result.source = self
-            except AttributeError:
-                pass
-            return result
-
-        def parse(self, *args, **kwargs):
-            raise NotImplementedError('tag: %s' % self.tag)
-
-        @property
-        def location(self):
-            return '{}: <{}> at line {}'.format(self.node.source,
-                                                self.node.tagname,
-                                                self.node.line)
-
-    class NestedElement(CustomElement):
-        def parse(self, *args, **kwargs):
-            return self.process_content()
-
-        def process_content(self):
-            content = ''
-            for child in self.getchildren():
-                content += child.process()
-            return content
-
-    return CustomElement, NestedElement
-
-
-CustomElement, NestedElement = element_factory()
-
-
-class Text(CustomElement):
-    def process(self, *args, **kwargs):
-        return self.text
-
-
-class Document(CustomElement):
-    pass
-
-
-class System_Message(CustomElement):
-    def process(self, *args, **kwargs):
-        return rt.Paragraph(self.text)
-
-
-class Section(CustomElement):
-    def parse(self, level=1):
-        for element in self.getchildren():
-            if isinstance(element, Title):
-                elem = element.process(level=level, id=self.get('ids', None)[0])
-            elif type(element) == Section:
-                elem = element.process(level=level + 1)
-            else:
-                elem = element.process()
-            if isinstance(elem, rt.Flowable):
-                yield elem
-            else:
-                for flw in elem:
-                    yield flw
-
-
-class Paragraph(NestedElement):
-    def parse(self):
-        return rt.Paragraph(super().process_content())
-
-
-class Title(CustomElement):
-    def parse(self, level=1, id=None):
-        #print('Title.render()')
-        return rt.Heading(self.text, level=level, id=id)
-
-class Tip(NestedElement):
-    def parse(self):
-        return rt.Paragraph('TIP: ' + super().process_content())
-
-
-class Emphasis(NestedElement):
-    def parse(self):
-        return rt.Emphasized(self.text)
-
-
-class Strong(CustomElement):
-    def parse(self):
-        return rt.Bold(self.text)
-
-
-class Literal(CustomElement):
-    def parse(self):
-        return rt.LiteralText(self.text, style='monospaced')
-
-
-class Literal_Block(CustomElement):
-    def parse(self):
-        return rt.Paragraph(rt.LiteralText(self.text), style='literal')
-
-
-class Block_Quote(NestedElement):
-    def parse(self):
-        return rt.Paragraph(super().process_content(), style='block quote')
-
-
-class Reference(CustomElement):
-    def parse(self):
-        return self.text
-
-
-class Footnote(CustomElement):
-    def parse(self):
-        return rt.Paragraph('footnote')
-
-
-class Footnote_Reference(CustomElement):
-    def parse(self):
-        return self.text
-
-
-class Target(CustomElement):
-    def parse(self):
-        return rt.MixedStyledText([])
-
-
-class Enumerated_List(CustomElement):
-    def parse(self):
-        # TODO: handle different numbering styles
-        return rt.List([item.process() for item in self.list_item],
-                       style='enumerated')
-
-
-class Bullet_List(CustomElement):
-    def parse(self):
-        return rt.List([item.process() for item in self.list_item],
-                       style='bulleted')
-
-
-class List_Item(NestedElement):
-    def parse(self):
-        return [item.process() for item in self.getchildren()]
-
-
-class Definition_List(CustomElement):
-    def parse(self):
-        return rt.DefinitionList([item.process()
-                                  for item in self.definition_list_item])
-
-class Definition_List_Item(CustomElement):
-    def parse(self):
-        return (self.term.process(), self.definition.process())
-
-
-class Term(NestedElement):
-    pass
-
-
-class Definition(NestedElement):
-    pass
-
-
-class Image(CustomElement):
-    def parse(self):
-        return rt.Image(self.get('uri').rsplit('.png', 1)[0])
-
-
 
 class SimplePage(rt.Page):
     topmargin = bottommargin = 2*CM
@@ -355,23 +140,14 @@ class SimplePage(rt.Page):
 ##        self.footer.append_flowable(footer_text)
 
 
-MAPPING = {cls.__name__.lower(): cls
-           for cls in all_subclasses(CustomElement)}
-MAPPING['Text'] = Text
-
-
-def map(node):
-    return MAPPING[node.__class__.__name__](node)
-
 # main document
 # ----------------------------------------------------------------------------
 class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
         super().__init__(backend=pdf)
         self.styles = styles
-        with open(filename) as file:
-            doctree = publish_doctree(file.read(), source_path=filename)
-        self.root = map(doctree.document)
+        parser = ReStructuredTextParser()
+        self.root = parser.parse(filename)
         self.parse_input()
 
     def parse_input(self):
