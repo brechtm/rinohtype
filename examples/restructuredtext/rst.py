@@ -26,7 +26,7 @@ cursor = TypeFace("TeXGyreCursor", cursor_regular)
 fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
 
-styles = rt.StyleStore()
+styles = rt.StyleSheet('rST')
 
 styles('body', rt.ClassSelector(rt.Paragraph),
        typeface=fontFamily.serif,

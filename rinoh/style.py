@@ -24,7 +24,7 @@ from .document import DocumentElement
 from .util import cached
 
 
-__all__ = ['Style', 'Styled', 'StyleStore', 'ClassSelector', 'ContextSelector',
+__all__ = ['Style', 'Styled', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'ParentStyleException']
 
 
@@ -206,14 +206,15 @@ class Styled(DocumentElement):
         return value
 
 
-class StyleStore(OrderedDict):
+class StyleSheet(OrderedDict):
     """Dictionary storing a set of related :class:`Style`s by name.
 
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
 
-    def __init__(self):
+    def __init__(self, name):
         super().__init__()
+        self.name = name
         self.selectors = {}
 
     def __setitem__(self, name, style):

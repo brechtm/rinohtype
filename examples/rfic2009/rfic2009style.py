@@ -26,7 +26,7 @@ from rinoh.float import Figure as RinohFigure, Caption
 from rinoh.table import Tabular as RinohTabular, MIDDLE
 from rinoh.table import HTMLTabularData, CSVTabularData, Tabular
 from rinoh.draw import Line, RED
-from rinoh.style import StyleStore, ClassSelector, ContextSelector
+from rinoh.style import StyleSheet, ClassSelector, ContextSelector
 from rinoh.frontend.xml import element_factory
 from rinoh.backend import pdf
 
@@ -79,7 +79,7 @@ else:
 
 # styles
 # ----------------------------------------------------------------------------
-styles = StyleStore()
+styles = StyleSheet('RFIC')
 
 styles('body', ClassSelector(Paragraph),
        typeface=ieeeFamily.serif,
