@@ -25,7 +25,7 @@ from .style import PARENT_STYLE
 __all__ = ['HeadingStyle', 'Heading', 'ListStyle', 'List', 'ListItem',
            'DefinitionListStyle', 'DefinitionList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
-           'TableOfContentsStyle', 'TableOfContents']
+           'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry']
 
 
 class HeadingStyle(ParagraphStyle):

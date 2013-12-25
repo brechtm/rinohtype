@@ -11,11 +11,14 @@ import csv
 from copy import copy
 
 from .draw import Line
-from .flowable import Flowable, FlowableStyle
+from .flowable import Flowable
 from .layout import VirtualContainer
 from .paragraph import Paragraph, ParagraphStyle
-from .style import Style
 from .dimension import PT
+
+
+__all__ = ['Tabular', 'TabularStyle', 'HTMLTabularData', 'CSVTabularData',
+           'TOP', 'MIDDLE', 'BOTTOM']
 
 
 TOP = 'top'

@@ -1,0 +1,26 @@
+###########################################################################
+############          The TeX Gyre Collection of Fonts         ############
+############                 The font Termes                   ############
+###########################################################################
+
+Font: TeX Gyre Termes
+Authors: Bogus\l{}aw Jackowski and Janusz M. Nowacki
+Version: 2.004
+Date: 7 X 2009
+Downloads: http://www.gust.org.pl/projects/e-foundry/tex-gyre/termes
+
+License:
+  % Copyright 2006--2009 for TeX Gyre extensions by B. Jackowski
+  % and J.M. Nowacki (on behalf of TeX Users Groups).
+  % Vietnamese characters were added by Han The Thanh.
+  %
+  % This work can be freely used and distributed under
+  % the GUST Font License (GFL -- see GUST-FONT-LICENSE.txt)
+  % which is actually an instance of the LaTeX Project Public License
+  % (LPPL -- see http://www.latex-project.org/lppl.txt ).
+  %
+  % This work has the maintenance status "maintained". The Current Maintainer
+  % of this work is Bogus\l{}aw Jackowski and Janusz M. Nowacki.
+  %
+  % This work consists of the files listed
+  % in the MANIFEST-TeX-Gyre-Termes.txt file.

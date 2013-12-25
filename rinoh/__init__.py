@@ -23,7 +23,7 @@ except ImportError:
 
 CORE_MODULES = ['dimension', 'document', 'draw', 'float', 'flowable', 'layout',
                 'number', 'paper', 'paragraph', 'reference', 'structure',
-                'style', 'text']
+                'style', 'table', 'text']
 
 __all__ = CORE_MODULES + ['font', 'frontend', 'backend']
 
