@@ -141,7 +141,7 @@ class Tab(CustomElement):
 
 class OL(CustomElement):
     def parse(self):
-        return List([li.process() for li in self.li], style='ordered')
+        return List([li.process() for li in self.li], style='enumerated')
 
 
 class LI(CustomElement):

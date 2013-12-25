@@ -6,7 +6,7 @@ from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
 
-from rinohlib.stylesheets.rinascimento import styles
+from rinohlib.stylesheets.ieee import styles
 
 # page definition
 # ----------------------------------------------------------------------------

@@ -33,6 +33,22 @@ styles('body', ClassSelector(Paragraph),
        hyphen_lang='en_US',
        hyphen_chars=4)
 
+styles('monospaced', ClassSelector(StyledText, 'monospaced'),
+       typeface=ieee_family.mono)
+
+styles('literal', ClassSelector(Paragraph, 'literal'),
+       base='body',
+       #font_size=9*PT,
+       justify=LEFT,
+       indent_left=1*CM,
+       typeface=ieee_family.mono)
+       #noWrap=True,   # but warn on overflow
+       #literal=True ?)
+
+styles('block quote', ClassSelector(Paragraph, 'block quote'),
+       base='body',
+       indent_left=1*CM)
+
 styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieee_family.serif,
        font_weight=REGULAR,
@@ -78,7 +94,7 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_below=6*PT,
        numbering_style=CHARACTER_UC)
 
-styles('list', ClassSelector(List, 'ordered'),
+styles('list', ClassSelector(List, 'enumerated'),
        base='body',
        space_above=5*PT,
        space_below=5*PT,
@@ -89,12 +105,21 @@ styles('list', ClassSelector(List, 'ordered'),
        numbering_style=NUMBER,
        numbering_separator=')')
 
+styles('bulleted list', ClassSelector(List, 'bulleted'),
+       base='body',
+       indent_left=5*PT,
+       ordered=False,
+       flowable_spacing=0*PT)
+
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
                                               ClassSelector(Paragraph)),
        base='body',
        space_above=0*PT,
        space_below=0*PT,
        indent_first=14*PT)
+
+styles('definition list', ClassSelector(DefinitionList),
+       base='body')
 
 styles('header', ClassSelector(Header),
        base='body',
