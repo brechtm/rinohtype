@@ -4,24 +4,13 @@ import rinoh as rt
 from rinoh.font import TypeFace, TypeFamily
 from rinoh.font.style import REGULAR, BOLD, ITALIC
 from rinoh.font.type1 import Type1Font
-from rinoh.font.opentype import OpenTypeFont
 from rinoh.dimension import PT, CM, INCH
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
+from rinohlib.fonts.texgyre.pagella import typeface as pagella
+from rinohlib.fonts.texgyre.cursor import typeface as cursor
 
-pagella_regular = OpenTypeFont("../fonts/texgyrepagella-regular.otf",
-                               weight=REGULAR)
-pagella_italic = OpenTypeFont("../fonts/texgyrepagella-italic.otf",
-                              weight=REGULAR, slant=ITALIC)
-pagella_bold = OpenTypeFont("../fonts/texgyrepagella-bold.otf", weight=BOLD)
-pagella_bold_italic = OpenTypeFont("../fonts/texgyrepagella-bolditalic.otf",
-                                   weight=BOLD, slant=ITALIC)
-
-pagella = TypeFace("TeXGyrePagella", pagella_regular, pagella_italic,
-                   pagella_bold, pagella_bold_italic)
-cursor_regular = Type1Font("../fonts/qcrr", weight=REGULAR)
-cursor = TypeFace("TeXGyreCursor", cursor_regular)
 
 fontFamily = TypeFamily(serif=pagella, mono=cursor)
 
