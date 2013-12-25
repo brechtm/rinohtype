@@ -54,20 +54,17 @@ class ReStructuredTextDocument(rt.Document):
         self.styles = styles
         parser = ReStructuredTextParser()
         self.root = parser.parse(filename)
+        self.content = rt.Chain(self)
         self.parse_input()
 
     def parse_input(self):
 ##        toc = TableOfContents(style=toc_style, styles=toc_levels)
-
-        self.content_flowables = []
-
-        self.content_flowables.append(rt.Paragraph(self.root.title.text,
-                                                   style='title'))
+        self.content << rt.Paragraph(self.root.title.text, style='title')
 
         for section in self.root.section:
 ##            toc.register(flowable)
             for flowable in section.parse():
-                self.content_flowables.append(flowable)
+                self.content << flowable
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):
 ##                toc.register(flowable)
@@ -77,13 +74,8 @@ class ReStructuredTextDocument(rt.Document):
 
     def setup(self):
         self.page_count = 1
-        self.content = rt.Chain(self)
         page = SimplePage(self)
         self.add_page(page, self.page_count)
-
-        for flowable in self.content_flowables:
-            self.content.append_flowable(flowable)
-
 ##        bib = self.bibliography.bibliography()
 ##        self.content.append_flowable(bib)
 
