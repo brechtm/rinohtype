@@ -1,95 +1,12 @@
 
 import rinoh as rt
 
-from rinoh.font import TypeFace, TypeFamily
-from rinoh.font.style import REGULAR, BOLD, ITALIC
-from rinoh.font.type1 import Type1Font
 from rinoh.dimension import PT, CM, INCH
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
-from rinohlib.fonts.texgyre.pagella import typeface as pagella
-from rinohlib.fonts.texgyre.cursor import typeface as cursor
 
-
-fontFamily = TypeFamily(serif=pagella, mono=cursor)
-
-
-styles = rt.StyleSheet('rST')
-
-styles('body', rt.ClassSelector(rt.Paragraph),
-       typeface=fontFamily.serif,
-       font_weight=REGULAR,
-       font_size=10*PT,
-       line_spacing=rt.DEFAULT,
-       #indent_first=0.125*INCH,
-       space_above=0*PT,
-       space_below=10*PT,
-       justify=rt.BOTH)
-
-styles('title', rt.ClassSelector(rt.Paragraph, 'title'),
-       typeface=fontFamily.serif,
-       font_size=16*PT,
-       line_spacing=rt.DEFAULT,
-       space_above=6*PT,
-       space_below=6*PT,
-       justify=rt.CENTER)
-
-styles('literal', rt.ClassSelector(rt.Paragraph, 'literal'),
-       base='body',
-       #font_size=9*PT,
-       justify=rt.LEFT,
-       indent_left=1*CM,
-       typeface=fontFamily.mono)
-       #noWrap=True,   # but warn on overflow
-       #literal=True ?)
-
-styles('block quote', rt.ClassSelector(rt.Paragraph, 'block quote'),
-       base='body',
-       indent_left=1*CM)
-
-styles('heading level 1', rt.ClassSelector(rt.Heading, level=1),
-       typeface=fontFamily.serif,
-       font_size=14*PT,
-       line_spacing=rt.DEFAULT,
-       space_above=14*PT,
-       space_below=6*PT,
-       numbering_style=None)
-
-styles('heading level 2', rt.ClassSelector(rt.Heading, level=2),
-       base='heading level 1',
-       font_slant=ITALIC,
-       font_size=12*PT,
-       line_spacing=rt.DEFAULT,
-       space_above=6*PT,
-       space_below=6*PT)
-
-styles('monospaced', rt.ClassSelector(rt.StyledText, 'monospaced'),
-       typeface=fontFamily.mono)
-
-styles('enumerated list', rt.ClassSelector(rt.List, 'enumerated'),
-       base='body',
-       ordered=True,
-       indent_left=5*PT,
-       item_indent=12*PT,
-       flowable_spacing=0*PT,
-       numbering_style=rt.NUMBER,
-       numbering_separator='.')
-
-styles('bulleted list', rt.ClassSelector(rt.List, 'bulleted'),
-       base='body',
-       indent_left=5*PT,
-       ordered=False,
-       flowable_spacing=0*PT)
-
-styles('list item paragraph', rt.ContextSelector(rt.ClassSelector(rt.ListItem),
-                                                 rt.ClassSelector(rt.Paragraph)),
-       base='body',
-       indent_first=17*PT)
-
-styles('definition list', rt.ClassSelector(rt.DefinitionList),
-       base='body')
-
+from rinohlib.stylesheets.rinascimento import styles
 
 # page definition
 # ----------------------------------------------------------------------------
