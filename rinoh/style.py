@@ -186,8 +186,12 @@ class Styled(DocumentElement):
 
     @cached
     def _style(self, document):
-        return (self.style if isinstance(self.style, Style)
-                else document.styles.find_style(self))
+        if isinstance(self.style, Style):
+            return self.style
+        else:
+            style_name = document.styles.find_style(self)
+            if style_name is not None:
+                return document.styles[style_name]
 
     @cached
     def get_style(self, attribute, document=None):
@@ -198,6 +202,7 @@ class Styled(DocumentElement):
         style = self._style(document)
         try:
             if style is None:
+                self.warn('Falling back to default style for {}'.format(self))
                 value = self.style_class._get_default(attribute)
             else:
                 value = style[attribute]
@@ -212,10 +217,19 @@ class StyleSheet(OrderedDict):
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
 
-    def __init__(self, name):
+    def __init__(self, name, base=None):
         super().__init__()
         self.name = name
+        self.base = base
         self.selectors = {}
+
+    def __getitem__(self, name):
+        if name in self:
+            return super().__getitem__(name)
+        elif self.base is not None:
+            return self.base[name]
+        else:
+            raise KeyError
 
     def __setitem__(self, name, style):
         style.name = name
@@ -236,8 +250,9 @@ class StyleSheet(OrderedDict):
                 best_match = name
                 max_score = score
         if sum(max_score):
-            return self[best_match]
-        styled.warn('Falling back to default style for {}'.format(styled))
+            return best_match
+        elif self.base is not None:
+            return self.base.find_style(styled)
 
 
 class Specificity(tuple):

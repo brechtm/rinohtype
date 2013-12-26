@@ -6,7 +6,12 @@ from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
 
-from rinohlib.stylesheets.ieee import styles
+from rinohlib.stylesheets.ieee import styles as ieee_styles
+
+
+styles = rt.StyleSheet('IEEE for rST', base=ieee_styles)
+styles['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
+                                   space_below=6*PT)
 
 # page definition
 # ----------------------------------------------------------------------------
