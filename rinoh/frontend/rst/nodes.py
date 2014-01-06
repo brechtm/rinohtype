@@ -59,6 +59,11 @@ class Strong(CustomElement):
         return rt.Bold(self.text)
 
 
+class Title_Reference(NestedElement):
+    def parse(self):
+        return rt.Italic(self.text)
+
+
 class Literal(CustomElement):
     def parse(self):
         return rt.LiteralText(self.text, style='monospaced')
