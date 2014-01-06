@@ -91,7 +91,7 @@ class Footnote_Reference(CustomElement):
 
 class Target(CustomElement):
     def parse(self):
-        return rt.MixedStyledText([])
+        return rt.DummyFlowable()
 
 
 class Enumerated_List(CustomElement):
@@ -123,11 +123,14 @@ class Definition_List_Item(CustomElement):
 
 
 class Term(NestedElement):
-    pass
+    def parse(self):
+        return rt.MixedStyledText(self.process_content())
 
 
-class Definition(NestedElement):
-    pass
+class Definition(CustomElement):
+    def parse(self):
+        return rt.StaticGroupedFlowables([item.process()
+                                          for item in self.getchildren()])
 
 
 class Image(CustomElement):

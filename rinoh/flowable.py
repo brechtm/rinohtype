@@ -24,7 +24,10 @@ from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
 
 
-__all__ = ['Flowable', 'WarnFlowable', 'FlowableStyle', 'Float']
+__all__ = ['Flowable', 'FlowableStyle',
+           'DummyFlowable', 'WarnFlowable',
+           'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
+           'Float']
 
 
 class FlowableException(Exception):
@@ -193,6 +196,15 @@ class GroupedFlowables(Flowable):
             raise EndOfContainer(state)
         except StopIteration:
             pass
+
+
+class StaticGroupedFlowables(GroupedFlowables):
+    def __init__(self, flowables, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.children = flowables
+
+    def flowables(self, document):
+        return iter(self.children)
 
 
 class Float(Flowable):

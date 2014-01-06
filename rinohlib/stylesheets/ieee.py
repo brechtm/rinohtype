@@ -2,7 +2,8 @@
 from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
     StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
-    List, ListItem, DefinitionList, Header, Footer, Figure, Caption, Tabular,
+    List, ListItem, DefinitionList, GroupedFlowables,
+    Header, Footer, Figure, Caption, Tabular,
     Footnote, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
     PT, INCH, CM, RED,
@@ -131,6 +132,10 @@ styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
 
 styles('definition list', ClassSelector(DefinitionList),
        base='body')
+
+styles('definition', ContextSelector(ClassSelector(DefinitionList),
+                                     ClassSelector(GroupedFlowables)),
+       indent_left=15*PT)
 
 styles('header', ClassSelector(Header),
        base='body',

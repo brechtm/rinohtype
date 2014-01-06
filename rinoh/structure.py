@@ -193,38 +193,18 @@ class DefinitionList(GroupedFlowables):
     def __init__(self, items, style=None):
         super().__init__(style)
         self.items = items
+        for term, definition in items:
+            term.parent = definition.parent = self
 
     def flowables(self, document):
-        term_style = self.get_style('term_style', document)
-        flowable_spacing = self.get_style('flowable_spacing', document)
-        indentation = self.get_style('indentation', document)
         term_style = ParagraphStyle(space_above=0*PT,
                                     space_below=0*PT,
                                     base=PARENT_STYLE)
-        definition_style = ParagraphStyle(space_above=0*PT,
-                                          space_below=flowable_spacing,
-                                          indent_left=indentation,
-                                          base=PARENT_STYLE)
-        last_definition_style = ParagraphStyle(space_above=0*PT,
-                                               space_below=0*PT,
-                                               indent_left=indentation,
-                                               base=PARENT_STYLE)
-        for i, item in enumerate(self.items[:-1]):
+        for i, item in enumerate(self.items):
             term, definition = item
             term_par = Paragraph(term, style=term_style, parent=self)
-            definition_par =  Paragraph(definition, style=definition_style,
-                                        parent=self)
-            term_par.parent = definition_par.parent = self
             yield term_par
-            yield definition_par
-        last_term, last_definition = self.items[-1]
-        last_term_par = Paragraph(last_term, style=term_style, parent=self)
-        last_definition_par = Paragraph(last_definition,
-                                        style=last_definition_style,
-                                        parent=self)
-        last_term_par.parent = last_definition_par.parent = self
-        yield last_term_par
-        yield last_definition_par
+            yield definition
 
 
 class HeaderStyle(ParagraphStyle):
