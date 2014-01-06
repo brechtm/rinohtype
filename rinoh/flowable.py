@@ -24,7 +24,7 @@ from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
 
 
-__all__ = ['Flowable', 'FlowableStyle', 'Float']
+__all__ = ['Flowable', 'WarnFlowable', 'FlowableStyle', 'Float']
 
 
 class FlowableException(Exception):
@@ -114,6 +114,26 @@ class Flowable(Styled):
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceeding line or `None`."""
         raise NotImplementedError
+
+
+class DummyFlowable(Flowable):
+    style_class = None
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+
+    def flow(self, container, last_descender, state=None):
+        return 0, last_descender
+
+
+class WarnFlowable(DummyFlowable):
+    def __init__(self, message, parent=None):
+        super().__init__(parent=parent)
+        self.message = message
+
+    def flow(self, container, last_descender, state=None):
+        self.warn(self.message, container)
+        return super().flow(container, last_descender, state)
 
 
 class InseparableFlowables(Flowable):

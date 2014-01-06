@@ -15,7 +15,7 @@ class Document(CustomElement):
 
 class System_Message(CustomElement):
     def process(self, *args, **kwargs):
-        return rt.Paragraph(self.text)
+        return rt.WarnFlowable(self.text)
 
 
 class Section(CustomElement):
