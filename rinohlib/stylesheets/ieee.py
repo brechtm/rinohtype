@@ -128,7 +128,8 @@ styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
        base='body',
        space_above=0*PT,
        space_below=0*PT,
-       indent_first=15*PT)
+       indent_left=15*PT,
+       indent_first=0*PT)
 
 styles('definition list', ClassSelector(DefinitionList),
        base='body')
