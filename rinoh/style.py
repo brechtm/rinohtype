@@ -186,12 +186,8 @@ class Styled(DocumentElement):
 
     @cached
     def _style(self, document):
-        if isinstance(self.style, Style):
-            return self.style
-        else:
-            style_name = document.styles.find_style(self)
-            if style_name is not None:
-                return document.styles[style_name]
+        return (self.style if isinstance(self.style, Style)
+                else document.styles.find_style(self))
 
     @cached
     def get_style(self, attribute, document=None):
@@ -240,8 +236,8 @@ class StyleSheet(OrderedDict):
         self[name] = selector.cls.style_class(**kwargs)
         self.selectors[name] = selector
 
-    def find_style(self, styled):
-        max_score = Specificity(0, 0, 0)
+    def best_match(self, styled):
+        max_score, best_match = Specificity(0, 0, 0), None
         for name, selector in self.selectors.items():
             if not isinstance(selector, Selector):
                 continue
@@ -249,10 +245,16 @@ class StyleSheet(OrderedDict):
             if score > max_score:
                 best_match = name
                 max_score = score
+        return max_score, best_match
+
+    def find_style(self, styled):
+        max_score, best_match = self.best_match(styled)
+        if self.base:
+            base_max_score, base_best_match = self.base.best_match(styled)
+            if base_max_score > max_score:
+                max_score, best_match = base_max_score, base_best_match
         if sum(max_score):
-            return best_match
-        elif self.base is not None:
-            return self.base.find_style(styled)
+            return self[best_match]
 
 
 class Specificity(tuple):
