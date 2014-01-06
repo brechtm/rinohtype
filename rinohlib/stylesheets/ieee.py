@@ -94,29 +94,40 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_below=6*PT,
        numbering_style=CHARACTER_UC)
 
-styles('list', ClassSelector(List, 'enumerated'),
+styles('enumerated list', ClassSelector(List, 'enumerated'),
        base='body',
        space_above=5*PT,
        space_below=5*PT,
-       indent_left=0*INCH,
-       indent_first=0*INCH,
+       indent_left=0*PT,
+       indent_first=0*PT,
+       item_indent=12*PT,
        ordered=True,
        flowable_spacing=0*PT,
        numbering_style=NUMBER,
        numbering_separator=')')
 
+styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
+                                                 ClassSelector(List,
+                                                               'enumerated')),
+       base='enumerated list',
+       indent_left=10*PT)
+
 styles('bulleted list', ClassSelector(List, 'bulleted'),
-       base='body',
-       indent_left=5*PT,
+       base='enumerated list',
        ordered=False,
        flowable_spacing=0*PT)
+
+styles('nested bulleted list', ContextSelector(ClassSelector(ListItem),
+                                               ClassSelector(List, 'bulleted')),
+       base='bulleted list',
+       indent_left=10*PT)
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
                                               ClassSelector(Paragraph)),
        base='body',
        space_above=0*PT,
        space_below=0*PT,
-       indent_first=14*PT)
+       indent_first=15*PT)
 
 styles('definition list', ClassSelector(DefinitionList),
        base='body')
