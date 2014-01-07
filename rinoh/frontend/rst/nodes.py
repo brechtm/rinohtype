@@ -18,6 +18,11 @@ class System_Message(CustomElement):
         return rt.WarnFlowable(self.text)
 
 
+class Comment(CustomElement):
+    def process(self, *args, **kwargs):
+        return rt.DummyFlowable()
+
+
 class Section(CustomElement):
     def parse(self, level=1):
         for element in self.getchildren():

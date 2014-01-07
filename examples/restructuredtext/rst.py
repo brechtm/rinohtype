@@ -11,6 +11,7 @@ from rinohlib.stylesheets.ieee import styles as ieee_styles
 
 styles = rt.StyleSheet('IEEE for rST', base=ieee_styles)
 styles['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
+                                   indent_first=0,
                                    space_below=6*PT)
 
 # page definition

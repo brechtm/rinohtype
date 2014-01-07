@@ -35,12 +35,16 @@ styles('body', ClassSelector(Paragraph),
        hyphen_chars=4)
 
 styles('monospaced', ClassSelector(StyledText, 'monospaced'),
-       typeface=ieee_family.mono)
+       font_size=9*PT,
+       typeface=ieee_family.mono,
+       hyphenate=False,
+       ligatures=False)
 
 styles('literal', ClassSelector(Paragraph, 'literal'),
        base='body',
-       #font_size=9*PT,
+       font_size=9*PT,
        justify=LEFT,
+       indent_first=0,
        indent_left=1*CM,
        typeface=ieee_family.mono)
        #noWrap=True,   # but warn on overflow

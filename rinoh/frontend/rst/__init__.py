@@ -1,6 +1,7 @@
 
 from docutils.core import publish_doctree
 
+from rinoh.text import MixedStyledText
 from rinoh.util import all_subclasses
 
 
@@ -61,7 +62,7 @@ class NestedElement(CustomElement):
         return self.process_content()
 
     def process_content(self):
-        content = ''
+        content = MixedStyledText([])
         for child in self.getchildren():
             content += child.process()
         return content
