@@ -34,8 +34,8 @@ from rinoh.backend import pdf
 
 import rinoh.frontend.xml.elementtree as xml_frontend
 
-from citeproc import CitationStylesStyle, CitationStylesBibliography
-from citeproc import Citation, CitationItem, Locator
+#from citeproc import CitationStylesStyle, CitationStylesBibliography
+#from citeproc import Citation, CitationItem, Locator
 
 
 
@@ -363,11 +363,12 @@ class Eq(CustomElement):
 
 class Cite(CustomElement):
     def parse(self, document):
-        keys = map(lambda x: x.strip(), self.get('id').split(','))
-        items = [CitationItem(key) for key in keys]
-        citation = Citation(items)
-        document.bibliography.register(citation)
-        return CitationField(citation)
+        #keys = map(lambda x: x.strip(), self.get('id').split(','))
+        #items = [CitationItem(key) for key in keys]
+        #citation = Citation(items)
+        #document.bibliography.register(citation)
+        #return CitationField(citation)
+        return SingleStyledText('cite')
 
 
 class Ref(CustomElement):
@@ -419,32 +420,32 @@ class CSVTabular(CustomElement):
 # bibliography
 # ----------------------------------------------------------------------------
 
-from rinoh import csl_formatter
-
-
-class IEEEBibliography(GroupedFlowables):
-    def __init__(self, items):
-        super().__init__()
-        for item in items:
-            self.append(Paragraph(item, style=styles['bibliography']))
-
-csl_formatter.Bibliography = IEEEBibliography
-
-
-class CitationField(Field):
-    def __init__(self, citation):
-        super().__init__()
-        self.citation = citation
-
-    def warn_unknown_reference_id(self, item, container):
-        self.warn("Unknown reference ID '{}'".format(item.key), container)
-
-    def field_spans(self, container):
-        callback = lambda item: self.warn_unknown_reference_id(item, container)
-        text = self.citation.bibliography.cite(self.citation, callback)
-        field_text = SingleStyledText(text)
-        field_text.parent = self.parent
-        return field_text.spans()
+#from rinoh import csl_formatter
+#
+#
+#class IEEEBibliography(GroupedFlowables):
+#    def __init__(self, items):
+#        super().__init__()
+#        for item in items:
+#            self.append(Paragraph(item, style=styles['bibliography']))
+#
+#csl_formatter.Bibliography = IEEEBibliography
+#
+#
+#class CitationField(Field):
+#    def __init__(self, citation):
+#        super().__init__()
+#        self.citation = citation
+#
+#    def warn_unknown_reference_id(self, item, container):
+#        self.warn("Unknown reference ID '{}'".format(item.key), container)
+#
+#    def field_spans(self, container):
+#        callback = lambda item: self.warn_unknown_reference_id(item, container)
+#        text = self.citation.bibliography.cite(self.citation, callback)
+#        field_text = SingleStyledText(text)
+#        field_text.parent = self.parent
+#        return field_text.spans()
 
 
 # pages and their layout
@@ -517,10 +518,10 @@ class RFIC2009Paper(Document):
                                      schema=self.rngschema)
         xml_tree = parser.parse(filename)
         self.root = xml_tree.getroot()
-        bibliography_style = CitationStylesStyle('ieee.csl')
-        self.bibliography = CitationStylesBibliography(bibliography_style,
-                                                       bibliography_source,
-                                                       csl_formatter)
+        #bibliography_style = CitationStylesStyle('ieee.csl')
+        #self.bibliography = CitationStylesBibliography(bibliography_style,
+        #                                               bibliography_source,
+        #                                               csl_formatter)
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -547,10 +548,11 @@ class RFIC2009Paper(Document):
                               styles=[styles['toc1'], styles['toc2'],
                                       styles['toc3']])
         self.content << toc
-        for section in self.root.body.section:
-            for flowable in section.process(self):
-                toc.register(flowable)
-                self.content << flowable
+        for i in range(5):
+            for section in self.root.body.section:
+                for flowable in section.process(self):
+                    toc.register(flowable)
+                    self.content << flowable
         try:
             for flowable in self.root.body.acknowledgement.process(self):
                 toc.register(flowable)
@@ -559,8 +561,8 @@ class RFIC2009Paper(Document):
             pass
         self.content << Heading(self, 'References', style=styles['unnumbered'],
                                 level=1)
-        self.bibliography.sort()
-        self.content << self.bibliography.bibliography()
+        #self.bibliography.sort()
+        #self.content << self.bibliography.bibliography()
 
     def setup(self):
         self.page_count = 1
