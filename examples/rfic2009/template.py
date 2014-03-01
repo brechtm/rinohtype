@@ -4,14 +4,15 @@ import time
 
 before_time = time.clock()
 from rfic2009style import RFIC2009Paper
-from citeproc.source.bibtex import BibTeX
+# from citeproc.source.bibtex import BibTeX
 after_time = time.clock()
 import_time = after_time - before_time
 print('Module import time: {:.2f} seconds'.format(import_time))
 
 before_time = time.clock()
-bib_source = BibTeX('references.bib')
-doc = RFIC2009Paper('template.xml', bib_source)
+# bib_source = BibTeX('references.bib')
+# doc = RFIC2009Paper('template.xml', bib_source)
+doc = RFIC2009Paper('template.xml', None)
 after_time = time.clock()
 setup_time = after_time - before_time
 print('Setup time: {:.2f} seconds'.format(setup_time))

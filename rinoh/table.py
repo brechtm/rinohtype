@@ -46,8 +46,8 @@ class TabularStyle(CellStyle):
 
     def __getitem__(self, attribute):
         value = super(TabularStyle, self).__getitem__(attribute)
-        if attribute.endswith('_border'):
-            value = self.store[value]
+        # if attribute.endswith('_border'):
+        #     value = self.store[value]
         return value
 
     def set_cell_style(self, style, rows=slice(None), cols=slice(None)):

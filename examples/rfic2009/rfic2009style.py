@@ -29,8 +29,8 @@ from rinoh.backend import pdf
 
 import rinoh.frontend.xml.elementtree as xml_frontend
 
-from citeproc import CitationStylesStyle, CitationStylesBibliography
-from citeproc import Citation, CitationItem
+# from citeproc import CitationStylesStyle, CitationStylesBibliography
+# from citeproc import Citation, CitationItem
 from rinoh import csl_formatter
 
 from rinohlib.stylesheets.ieee import styles
@@ -169,10 +169,11 @@ class LI(CustomElement):
 
 class Cite(CustomElement):
     def parse(self):
-        keys = map(lambda x: x.strip(), self.get('id').split(','))
-        items = [CitationItem(key) for key in keys]
-        citation = Citation(items)
-        return CitationField(citation)
+        # keys = map(lambda x: x.strip(), self.get('id').split(','))
+        # items = [CitationItem(key) for key in keys]
+        # citation = Citation(items)
+        # return CitationField(citation)
+        return SingleStyledText('cite')
 
 
 class Ref(CustomElement):
@@ -221,46 +222,46 @@ class CSVTabular(CustomElement):
 # bibliography
 # ----------------------------------------------------------------------------
 
-class CitationField(Field):
-    def __init__(self, citation):
-        super(CitationField, self).__init__()
-        self.citation = citation
-
-    def prepare(self, document):
-        document.bibliography.register(self.citation)
-
-    def warn_unknown_reference_id(self, item, container):
-        self.warn("Unknown reference ID '{}'".format(item.key), container)
-
-    def field_spans(self, container):
-        callback = lambda item: self.warn_unknown_reference_id(item, container)
-        text = self.citation.bibliography.cite(self.citation, callback)
-        field_text = SingleStyledText(text)
-        field_text.parent = self.parent
-        return field_text.spans()
-
-
-class Bibliography(GroupedFlowables):
-    location = 'bibliography'
-
-    def __init__(self, bibliography, style=None, parent=None):
-        super(Bibliography, self).__init__(style=style, parent=parent)
-        self.source = self
-        self.bibliography = bibliography
-
-    def flowables(self, document):
-        for entry in self.bibliography.bibliography():
-            yield Paragraph(entry, parent=self)
-
-
-styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
-                                             ClassSelector(Paragraph)),
-       base='body',  # TODO: if no base, fall back to next-best selector match?
-       font_size=9*PT,
-       indent_first=0*PT,
-       space_above=0*PT,
-       space_below=0*PT,
-       tab_stops=[TabStop(0.25*INCH, LEFT)])
+# class CitationField(Field):
+#     def __init__(self, citation):
+#         super(CitationField, self).__init__()
+#         self.citation = citation
+#
+#     def prepare(self, document):
+#         document.bibliography.register(self.citation)
+#
+#     def warn_unknown_reference_id(self, item, container):
+#         self.warn("Unknown reference ID '{}'".format(item.key), container)
+#
+#     def field_spans(self, container):
+#         callback = lambda item: self.warn_unknown_reference_id(item, container)
+#         text = self.citation.bibliography.cite(self.citation, callback)
+#         field_text = SingleStyledText(text)
+#         field_text.parent = self.parent
+#         return field_text.spans()
+#
+#
+# class Bibliography(GroupedFlowables):
+#     location = 'bibliography'
+#
+#     def __init__(self, bibliography, style=None, parent=None):
+#         super(Bibliography, self).__init__(style=style, parent=parent)
+#         self.source = self
+#         self.bibliography = bibliography
+#
+#     def flowables(self, document):
+#         for entry in self.bibliography.bibliography():
+#             yield Paragraph(entry, parent=self)
+#
+#
+# styles('bibliography entry', ContextSelector(ClassSelector(Bibliography),
+#                                              ClassSelector(Paragraph)),
+#        base='body',  # TODO: if no base, fall back to next-best selector match?
+#        font_size=9*PT,
+#        indent_first=0*PT,
+#        space_above=0*PT,
+#        space_below=0*PT,
+#        tab_stops=[TabStop(0.25*INCH, LEFT)])
 
 
 # pages and their layout
@@ -334,10 +335,10 @@ class RFIC2009Paper(Document):
                                      schema=self.rngschema)
         xml_tree = parser.parse(filename)
         self.root = xml_tree.getroot()
-        bibliography_style = CitationStylesStyle('ieee.csl')
-        self.bibliography = CitationStylesBibliography(bibliography_style,
-                                                       bibliography_source,
-                                                       csl_formatter)
+        # bibliography_style = CitationStylesStyle('ieee.csl')
+        # self.bibliography = CitationStylesBibliography(bibliography_style,
+        #                                                bibliography_source,
+        #                                                csl_formatter)
 
         authors = [author.text for author in self.root.head.authors.author]
         if len(authors) > 1:
@@ -362,17 +363,18 @@ class RFIC2009Paper(Document):
                                 level=1)
         toc = TableOfContents()
         self.content << toc
-        for section in self.root.body.section:
-            for flowable in section.process():
-                self.content << flowable
+        for i in range(5):
+            for section in self.root.body.section:
+                for flowable in section.process():
+                    self.content << flowable
         try:
             for flowable in self.root.body.acknowledgement.process():
                 self.content << flowable
         except AttributeError:
             pass
         self.content << Heading('References', style='unnumbered', level=1)
-        self.bibliography.sort()
-        self.content << Bibliography(self.bibliography)
+        # self.bibliography.sort()
+        # self.content << Bibliography(self.bibliography)
 
     def setup(self):
         self.page_count = 1
