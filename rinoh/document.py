@@ -29,7 +29,7 @@ from itertools import count
 from . import __version__, __release_date__
 from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
-from .warnings import warn
+from .warning import warn
 
 
 __all__ = ['Page', 'Document', 'DocumentElement', 'PORTRAIT', 'LANDSCAPE']
@@ -70,7 +70,7 @@ class Page(Container):
     def render(self):
         for index in count():
             try:
-                for chain in super().render(rerender=index > 0):
+                for chain in super(Page, self).render(rerender=index > 0):
                     yield chain
                 break
             except ReflowRequired:

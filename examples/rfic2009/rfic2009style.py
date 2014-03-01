@@ -1,4 +1,8 @@
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 from rinoh.dimension import PT, INCH
 from rinoh.font.style import BOLD
 from rinoh.paper import LETTER
@@ -53,7 +57,7 @@ HYPHENATORS[(styles['body'].hyphen_lang, styles['body'].hyphen_chars)]
 class Abstract(Paragraph):
     def __init__(self, text):
         label = SingleStyledText("Abstract \N{EM DASH} ", BOLD_ITALIC_STYLE)
-        return super().__init__(label + text)
+        return super(Abstract, self).__init__(label + text)
 
 
 class IndexTerms(Paragraph):
@@ -61,7 +65,7 @@ class IndexTerms(Paragraph):
         label = SingleStyledText("Index Terms \N{EM DASH} ", BOLD_ITALIC_STYLE)
         text = ", ".join(sorted(terms)) + "."
         text = text.capitalize()
-        return super().__init__(label + text)
+        return super(IndexTerms, self).__init__(label + text)
 
 
 styles('abstract', ClassSelector(Abstract),
@@ -219,7 +223,7 @@ class CSVTabular(CustomElement):
 
 class CitationField(Field):
     def __init__(self, citation):
-        super().__init__()
+        super(CitationField, self).__init__()
         self.citation = citation
 
     def prepare(self, document):
@@ -240,7 +244,7 @@ class Bibliography(GroupedFlowables):
     location = 'bibliography'
 
     def __init__(self, bibliography, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(Bibliography, self).__init__(style=style, parent=parent)
         self.source = self
         self.bibliography = bibliography
 
@@ -268,7 +272,7 @@ class RFICPage(Page):
     column_spacing = 0.25*INCH
 
     def __init__(self, document, first=False):
-        super().__init__(document, LETTER, PORTRAIT)
+        super(RFICPage, self).__init__(document, LETTER, PORTRAIT)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
@@ -324,7 +328,7 @@ class RFIC2009Paper(Document):
     namespace = 'http://www.mos6581.org/ns/rficpaper'
 
     def __init__(self, filename, bibliography_source):
-        super().__init__(backend=pdf)
+        super(RFIC2009Paper, self).__init__(backend=pdf)
         self.styles = styles
         parser = xml_frontend.Parser(CustomElement, self.namespace,
                                      schema=self.rngschema)

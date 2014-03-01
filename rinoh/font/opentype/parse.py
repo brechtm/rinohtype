@@ -5,6 +5,9 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
 
 import hashlib, math, io, struct
 from datetime import datetime, timedelta
@@ -14,7 +17,7 @@ from ...util import all_subclasses
 
 
 def create_reader(data_format, process_struct=lambda data: data[0]):
-    data_struct = struct.Struct('>' + data_format)
+    data_struct = struct.Struct(b'>' + data_format)
     def reader(file):
         data = data_struct.unpack(file.read(data_struct.size))
         return process_struct(data)
@@ -23,24 +26,24 @@ def create_reader(data_format, process_struct=lambda data: data[0]):
 
 # using the names and datatypes from the OpenType specification
 # http://www.microsoft.com/typography/otspec/
-byte = create_reader('B')
-char = create_reader('b')
-ushort = create_reader('H')
-short = create_reader('h')
-ulong = create_reader('L')
-long = create_reader('l')
-fixed = create_reader('L', lambda data: data[0] / 2**16)
+byte = create_reader(b'B')
+char = create_reader(b'b')
+ushort = create_reader(b'H')
+short = create_reader(b'h')
+ulong = create_reader(b'L')
+long = create_reader(b'l')
+fixed = create_reader(b'L', lambda data: data[0] / 2**16)
 int16 = fword = short
 uint16 = ufword = ushort
-uint24 = create_reader('3B', lambda data: sum([byte << (2 - i)
-                                           for i, byte in enumerate(data)]))
-string = create_reader('4s', lambda data: data[0].decode('ascii').strip())
+uint24 = create_reader(b'3B', lambda data: sum([byte << (2 - i)
+                                            for i, byte in enumerate(data)]))
+string = create_reader(b'4s', lambda data: data[0].decode('ascii').strip())
 tag = string
 glyph_id = uint16
 offset = uint16
 
-longdatetime = create_reader('q', lambda data: datetime(1904, 1, 1)
-                                               + timedelta(seconds=data[0]))
+longdatetime = create_reader(b'q', lambda data: datetime(1904, 1, 1)
+                                                + timedelta(seconds=data[0]))
 
 
 class Packed(OrderedDict):
@@ -48,8 +51,9 @@ class Packed(OrderedDict):
     fields = []
 
     def __init__(self, file):
-        super().__init__(self)
-        self.value = self.__class__.reader(file)
+        super(Packed, self).__init__(self)
+        reader = self.__class__.__dict__['reader']
+        self.value = reader(file)
         for name, mask, processor in self.fields:
             self[name] = processor(self.value & mask)
 
@@ -67,7 +71,8 @@ def context(reader, *indirect_args):
     return context_reader
 
 
-def context_array(reader, count_key, *indirect_args, multiplier=1):
+def context_array(reader, count_key, *indirect_args, **kwargs):
+    multiplier = kwargs.pop('multiplier', 1)
     def context_array_reader(file, table=None, **kwargs):
         length = int(table[count_key] * multiplier)
         args = [table[key] for key in indirect_args]
@@ -78,7 +83,8 @@ def context_array(reader, count_key, *indirect_args, multiplier=1):
     return context_array_reader
 
 
-def indirect(reader, *indirect_args, offset_reader=offset):
+def indirect(reader, *indirect_args, **kwargs):
+    offset_reader = kwargs.pop('offset_reader', offset)
     def indirect_reader(file, base, **kwargs):
         indirect_offset = offset_reader(file)
         restore_position = file.tell()

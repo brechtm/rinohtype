@@ -18,6 +18,10 @@ Base classes and exceptions for styled document elements.
 """
 
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 from collections import OrderedDict
 
 from .document import DocumentElement
@@ -64,12 +68,12 @@ class Style(dict):
         for attribute in attributes:
             if attribute not in self._supported_attributes():
                 raise TypeError('%s is not a supported attribute' % attribute)
-        super().__init__(attributes)
+        super(Style, self).__init__(attributes)
 
     @property
     def base(self):
         """Return the base style for this style."""
-        if isinstance(self._base, str):
+        if isinstance(self._base, (str, py2str)):
             return self.store[self._base]
         else:
             return self._base
@@ -113,7 +117,7 @@ class Style(dict):
         styles, raise a :class:`DefaultValueException`.
         """
         try:
-            return super().__getitem__(attribute)
+            return super(Style, self).__getitem__(attribute)
         except KeyError:
             if self.base is None:
                 raise DefaultValueException
@@ -174,7 +178,7 @@ class Styled(DocumentElement):
         associated :class:`Style` class).
         A `parent` can be passed on object initialization, or later by
         assignment to the `parent` attribute."""
-        super().__init__(parent=parent)
+        super(Styled, self).__init__(parent=parent)
         if (isinstance(style, Style)
                 and not isinstance(style, (self.style_class, ParentStyle))):
             raise TypeError('the style passed to {} should be of type {} '
@@ -259,7 +263,7 @@ class StyleSheet(OrderedDict):
 
 class Specificity(tuple):
     def __new__(cls, *items):
-        return super().__new__(cls, items)
+        return super(Specificity, cls).__new__(cls, items)
 
     def __add__(self, other):
         return tuple(a + b for a, b in zip(self, other))

@@ -5,11 +5,14 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
 
 from warnings import warn
 
 from ...util import cached
-from ...warnings import RinohWarning
+from ...warning import RinohWarning
 from .. import Font, GlyphMetrics, LeafGetter
 from ..style import MEDIUM, UPRIGHT, NORMAL
 from ..style import SMALL_CAPITAL

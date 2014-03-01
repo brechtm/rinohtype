@@ -22,7 +22,7 @@ class SimplePage(rt.Page):
     leftmargin = rightmargin = 2*CM
 
     def __init__(self, document):
-        super().__init__(document, rt.A5, rt.PORTRAIT)
+        super(SimplePage, self).__init__(document, rt.A5, rt.PORTRAIT)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
@@ -56,7 +56,7 @@ class SimplePage(rt.Page):
 # ----------------------------------------------------------------------------
 class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
-        super().__init__(backend=pdf)
+        super(ReStructuredTextDocument, self).__init__(backend=pdf)
         self.styles = styles
         parser = ReStructuredTextParser()
         self.root = parser.parse(filename)

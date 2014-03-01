@@ -6,6 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 import codecs
 
 

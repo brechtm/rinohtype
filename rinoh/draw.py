@@ -38,14 +38,14 @@ class LineStyle(Style):
                   'color': BLACK}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(LineStyle, self).__init__(base=base, **attributes)
 
 
 class Line(Styled):
     style_class = LineStyle
 
     def __init__(self, start, end, style=None):
-        super().__init__(style)
+        super(Line, self).__init__(style)
         self.start = start
         self.end = end
 
@@ -60,7 +60,7 @@ class Shape(Styled):
     style_class = LineStyle
 
     def __init__(self, style=None):
-        super().__init__(style)
+        super(Shape, self).__init__(style)
 
     def render(self, canvas, offset=0):
         raise NotImplementedError
@@ -68,7 +68,7 @@ class Shape(Styled):
 
 class Polygon(Shape):
     def __init__(self, points, style=None):
-        super().__init__(style)
+        super(Polygon, self).__init__(style)
         self.points = points
 
     def render(self, canvas, offset=0):
@@ -83,4 +83,4 @@ class Rectangle(Polygon):
         top_right = (bottom_left[0] + width, bottom_left[1] + height)
         top_left = (bottom_left[0], bottom_left[1] + height)
         points = bottom_left, bottom_right, top_right, top_left
-        super().__init__(points, style)
+        super(Rectangle, self).__init__(points, style)

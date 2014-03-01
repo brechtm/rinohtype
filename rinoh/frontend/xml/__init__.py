@@ -8,8 +8,14 @@
 
 import os
 
-from urllib.parse import urljoin
-from urllib.request import pathname2url
+try:
+    from urllib.parse import urljoin
+    from urllib.request import pathname2url
+except ImportError:
+    import urllib2
+    urljoin = urllib2.urlparse.urljoin
+    from urllib import pathname2url
+
 
 from ... import DATA_PATH
 

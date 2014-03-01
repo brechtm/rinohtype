@@ -34,7 +34,11 @@ Horizontal justification of lines can be one of:
 import os
 
 from copy import copy
-from functools import lru_cache, partial
+from functools import partial
+try:
+    from functools import lru_cache
+except ImportError:
+    from .lru_cache import lru_cache
 from itertools import chain, tee
 
 from . import DATA_PATH
@@ -189,7 +193,7 @@ class ParagraphStyle(TextStyle, FlowableStyle):
                   'tab_stops': []}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(TextStyle, self).__init__(base=base, **attributes)
 
 
 class ParagraphState(FlowableState):
@@ -249,15 +253,16 @@ class ParagraphBase(Flowable):
         state = state or self.initial_state(document)
         saved_state = copy(state)
 
-        def typeset_line(line, last_line=False, force=False):
+        def typeset_line(vars, line, last_line=False, force=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal span, state, saved_state, descender
+            span, state, saved_state, descender = vars
             try:
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
                 saved_state = copy(state)
-                return Line(tab_stops, line_width, container)
+                vars = span, state, saved_state, descender
+                return vars, Line(tab_stops, line_width, container)
             except EndOfContainer:
                 raise EndOfContainer(saved_state)
 
@@ -272,7 +277,9 @@ class ParagraphBase(Flowable):
                     last_span = span
 
                 if word == '\n':
-                    line = typeset_line(line, last_line=True, force=True)
+                    vars = span, state, saved_state, descender
+                    vars, line = typeset_line(vars, line, last_line=True, force=True)
+                    span, state, saved_state, descender = vars
                     line_span_send = line.new_span(span, document).send
                 elif not line_span_send(word):
                     for first, second in hyphenate(word):
@@ -281,12 +288,16 @@ class ParagraphBase(Flowable):
                             break
                     else:
                         state.prepend_item(span, word)
-                    line = typeset_line(line)
+                    vars = span, state, saved_state, descender
+                    vars, line = typeset_line(vars, line)
+                    span, state, saved_state, descender = vars
                     line_span_send = line.new_span(span, document).send
             except FieldException as e:
                 state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
-                line = typeset_line(line, last_line=True)
+                vars = span, state, saved_state, descender
+                vars, line = typeset_line(vars, line, last_line=True)
+                span, state, saved_state, descender = vars
                 span = None
                 try:
                     _, descender = fe.flowable.flow(container, descender,
@@ -298,7 +309,8 @@ class ParagraphBase(Flowable):
                     raise EndOfContainer(state)
             except StopIteration:
                 if line:
-                    typeset_line(line, last_line=True)
+                    vars = span, state, saved_state, descender
+                    typeset_line(vars, line, last_line=True)
                 break
 
         return descender
@@ -466,7 +478,7 @@ class Line(list):
                                           span.get_style('ligatures', document))
         glyphs_span = GlyphsSpan(span, word_to_glyphs)
         space_glyph, space_width = glyphs_span.space_glyph_and_width
-        super().append(glyphs_span)
+        super(Line, self).append(glyphs_span)
 
         success = True
         while True:

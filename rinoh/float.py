@@ -35,7 +35,7 @@ class CaptionStyle(ParagraphStyle):
                   'numbering_separator': '.'}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(CaptionStyle, self).__init__(base=base, **attributes)
 
 
 class Caption(ParagraphBase):
@@ -77,8 +77,8 @@ class Figure(Referenceable, InseparableFlowables):
     def prepare(self, document):
         super().prepare(document)
         element_id = self.get_id(document)
-        number = document.counters.setdefault(__class__, 1)
-        document.counters[__class__] += 1
+        number = document.counters.setdefault(self.__class__, 1)
+        document.counters[self.__class__] += 1
         document.set_reference(element_id, REFERENCE, str(number))
         # TODO: need to store formatted number
         document.set_reference(element_id, TITLE, self.caption_text)

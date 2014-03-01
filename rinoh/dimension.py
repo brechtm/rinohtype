@@ -20,6 +20,12 @@ It also exports a number of pre-defined units:
 
 """
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
+from six import add_metaclass
+
 
 __all__ = ['Dimension', 'PT', 'INCH', 'MM', 'CM']
 
@@ -46,7 +52,8 @@ class DimensionType(type):
         return operator
 
 
-class DimensionBase(object, metaclass=DimensionType):
+@add_metaclass(DimensionType)
+class DimensionBase(object):
     """Late-evaluated dimension. The result of mathematical operations on
     dimension objects is not a statically evaluated version, but rather stores
     references to the operator arguments. The result is only evaluated to a

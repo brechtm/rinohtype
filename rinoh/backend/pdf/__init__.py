@@ -6,6 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 from io import StringIO
 from . import cos
 
@@ -60,8 +64,8 @@ class Document(object):
                     cid_font = cos.CIDFontType2(font.name, cid_system_info,
                                                 font_desc, w=w)
                 mapping = font['cmap'][(3, 1)].mapping
-                to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
-                font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
+                #to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
+                font_rsc = cos.CompositeFont(cid_font, 'Identity-H')#, to_unicode)
             self.fonts[font] = font_rsc
         return font_rsc
 

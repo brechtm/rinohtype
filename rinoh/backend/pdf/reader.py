@@ -6,6 +6,14 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
+if PY2:
+    def ord(char):
+        return char
+
 import re, struct, time
 
 from binascii import unhexlify

@@ -34,18 +34,18 @@ class CellStyle(ParagraphStyle):
                   'vertical_align': MIDDLE}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(CellStyle, self).__init__(base=base, **attributes)
 
 
 class TabularStyle(CellStyle):
     # TODO: attributes (colgroup line style, header line style, header text style
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(TabularStyle, self).__init__(base=base, **attributes)
         self.cell_style = []
 
     def __getitem__(self, attribute):
-        value = super().__getitem__(attribute)
+        value = super(TabularStyle, self).__getitem__(attribute)
         if attribute.endswith('_border'):
             value = self.store[value]
         return value
@@ -343,7 +343,7 @@ class HTMLTabularData(TabularData):
 class CSVTabularData(TabularData):
     def __init__(self, filename):
         rows = []
-        with open(filename, newline='') as f:
+        with open(filename) as f:
             reader = csv.reader(f)
             for row in reader:
                 row_cells = [TabularCell(cell) for cell in row]

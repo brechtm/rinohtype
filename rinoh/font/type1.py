@@ -5,6 +5,9 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
 
 import os
 import re
@@ -19,7 +22,7 @@ from .style import MEDIUM,  UPRIGHT, NORMAL
 from .style import SMALL_CAPITAL, OLD_STYLE
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
 from ..util import cached
-from ..warnings import RinohWarning
+from ..warning import RinohWarning
 
 
 def string(string):
@@ -186,7 +189,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
                              if glyph.code > -1}
         else:
             self.encoding = ENCODINGS[encoding_name]
-        super().__init__(filename,  weight, slant, width)
+        super(AdobeFontMetrics, self).__init__(filename,  weight, slant, width)
 
     _SUFFIXES = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
                  OLD_STYLE: ('.oldstyle', )}

@@ -5,11 +5,21 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
 
 import sys
 
-from urllib.parse import urlparse, urljoin
-from urllib.request import urlopen
+try:
+    from urllib.parse import urljoin
+    from urllib.request import pathname2url
+except ImportError:
+    import urllib2
+    urljoin = urllib2.urlparse.urljoin
+    urlparse = urllib2.urlparse.urlparse
+    from urllib import urlopen
+
 from warnings import warn
 from xml.parsers import expat
 
@@ -119,8 +129,9 @@ class ExternalEntityRefHandler(object):
                 system_id = urljoin(base, remaining)
                 break
         external_parser.SetBase(system_id)
-        with urlopen(system_id) as file:
-            external_parser.ParseFile(file)
+        file = urlopen(system_id)
+        external_parser.ParseFile(file)
+        file.close()
         return 1
 
 

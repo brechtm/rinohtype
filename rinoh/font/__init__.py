@@ -12,7 +12,7 @@ from warnings import warn
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
-from ..warnings import RinohWarning
+from ..warning import RinohWarning
 
 
 # TODO: provide predefined Font objects for known font filenames?
@@ -86,7 +86,8 @@ class Font(object):
 
 
 class TypeFace(dict):
-    def __init__(self, name, *fonts, weight_order=WEIGHTS):
+    def __init__(self, name, *fonts, **kwargs):
+        weight_order = kwargs.get('weight_order', WEIGHTS)
         self.name = name
         self.weight_order = weight_order
         for font in fonts:
@@ -158,7 +159,8 @@ class LeafGetter(object):
     """Descriptor that looks up the value from a given path in the instance (it
     is assumed the instance subclasses :class:`dict` which holds parsed data in
     a tree structure."""
-    def __init__(self, *path, default=None):
+    def __init__(self, *path, **kwargs):
+        default = kwargs.get('default', None)
         self.path = path
         self.default = default
 

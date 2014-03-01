@@ -33,7 +33,7 @@ class HeadingStyle(ParagraphStyle):
                   'numbering_separator': '.'}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(HeadingStyle, self).__init__(base=base, **attributes)
 
 
 # TODO: share superclass with List (numbering)
@@ -53,12 +53,12 @@ class Heading(Referenceable, ParagraphBase):
     def prepare(self, document):
         super().prepare(document)
         element_id = self.get_id(document)
-        heading_counters = document.counters.setdefault(__class__, {})
+        heading_counters = document.counters.setdefault(self.__class__, {})
         level_counter = heading_counters.setdefault(self.level, [])
         level_counter.append(self)
 
         number = 0
-        for element in document.counters[__class__][self.level]:
+        for element in document.counters[self.__class__][self.level]:
             if element.get_style('numbering_style', document) is not None:
                 number += 1
             if element is self:
@@ -97,7 +97,7 @@ class ListStyle(GroupedFlowablesStyle, ParagraphStyle):
                   'numbering_separator': ')'}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(ListStyle, self).__init__(base=base, **attributes)
 
 
 class List(GroupedFlowables):
@@ -184,7 +184,7 @@ class DefinitionListStyle(GroupedFlowablesStyle, ParagraphStyle):
                   'indentation': 10*PT}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(DefinitionListStyle, self).__init__(base=base, **attributes)
 
 
 class DefinitionList(GroupedFlowables):
@@ -211,7 +211,7 @@ class HeaderStyle(ParagraphStyle):
     attributes = {}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(HeaderStyle, self).__init__(base=base, **attributes)
 
 
 class Header(ParagraphBase):
@@ -226,7 +226,7 @@ class FooterStyle(ParagraphStyle):
     attributes = {}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(FooterStyle, self).__init__(base=base, **attributes)
 
 
 class Footer(ParagraphBase):
@@ -241,7 +241,7 @@ class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
     attributes = {'depth': 3}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(TableOfContentsStyle, self).__init__(base=base, **attributes)
 
 
 class TableOfContents(GroupedFlowables):

@@ -6,6 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 import codecs
 import hashlib, time
 
@@ -278,7 +282,10 @@ class Array(Container, list):
         return ', '.join(elem.object.short_repr() for elem in self)
 
     def _bytes(self, document):
-        return b' '.join(elem.bytes(document) for elem in self)
+        out = b''
+        for elem in self:
+            out += b' ' + elem.bytes(document)
+        return out
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
@@ -289,7 +296,7 @@ class Array(Container, list):
 
 
 def convert_key_to_name(method):
-    @wraps(method)
+    @wraps(method, assigned=('__doc__', '__name__'))
     def wrapper(obj, key, *args, **kwargs):
         if not isinstance(key, Name):
             key = Name(key)
@@ -318,7 +325,7 @@ class Dictionary(Container, OrderedDict):
 
     @convert_key_to_name
     def __getitem__(self, key):
-        return super().__getitem__(key).object
+        return super(Dictionary, self).__getitem__(key).object
 
     __setitem__ = convert_key_to_name(OrderedDict.__setitem__)
 
@@ -327,8 +334,10 @@ class Dictionary(Container, OrderedDict):
     get = convert_key_to_name(OrderedDict.get)
 
     def _bytes(self, document):
-        return b' '.join(key.bytes(document) + b' ' + value.bytes(document)
-                         for key, value in self.items())
+        out = b''
+        for key, value in self.items():
+            out += b' ' + key.bytes(document) + b' ' + value.bytes(document)
+        return out
 
     def short_repr(self):
         return '<{} {}>'.format(self.__class__.__name__, id(self))
@@ -397,7 +406,7 @@ class XObjectForm(Stream):
     subtype = 'Form'
 
     def __init__(self, bounding_box):
-        super().__init__()
+        super(XObjectForm, self).__init__()
         self['BBox'] = bounding_box
 
 
@@ -728,7 +737,7 @@ class OpenTypeFontFile(Stream):
     key = 'FontFile3'
 
     def __init__(self, font_data, filter=None):
-        super().__init__(filter)
+        super(OpenTypeFontFile, self).__init__(filter)
         self['Subtype'] = Name('OpenType')
         self.write(font_data)
 
@@ -741,7 +750,7 @@ class FontEncoding(Dictionary):
 
 class EncodingDifferences(Object):
     def __init__(self, taken):
-        super().__init__(False)
+        super(EncodingDifferences, self).__init__(False)
         self.taken = taken
         self.previous_free = 1
         self.by_glyph = {}
@@ -776,7 +785,7 @@ class EncodingDifferences(Object):
 
 class ToUnicode(Stream):
     def __init__(self, mapping, filter=None):
-        super().__init__(filter=filter)
+        super(ToUnicode, self).__init__(filter=filter)
         with self._begin_resource('/CIDInit /ProcSet findresource'):
             with self._begin_resource('12 dict'):
                 with self._begin('cmap'):

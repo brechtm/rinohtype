@@ -97,7 +97,7 @@ class cached_property(property):
     """Property decorator that additionally caches the return value of the
     decorated getter method."""
     def __init__(self, function, *args, **kwargs):
-        super().__init__(function, *args, **kwargs)
+        super(cached_property, self).__init__(function, *args, **kwargs)
         self._cache_variable = '_cached_' + function.__name__
 
     def __get__(self, obj, *args):

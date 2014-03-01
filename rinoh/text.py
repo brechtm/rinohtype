@@ -35,6 +35,10 @@ Some characters with special properties and are represented by special classes:
 
 """
 
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+from rinoh.py2compat import *
+
 import re
 import unicodedata
 
@@ -98,12 +102,12 @@ class TextStyle(Style):
         """Initialize this text style with the given style `attributes` and
         `base` style. The default (`base` = :const:`PARENT_STYLE`) is to inherit
         the style of the parent of the :class:`Styled` element."""
-        super().__init__(base=base, **attributes)
+        super(TextStyle, self).__init__(base=base, **attributes)
 
 
 class CharacterLike(Styled):
     def __init__(self, style=PARENT_STYLE):
-        super().__init__(style)
+        super(CharacterLike, self).__init__(style)
 
     def __repr__(self):
         return "{0}(style={1})".format(self.__class__.__name__, self.style)
@@ -128,7 +132,7 @@ class StyledText(Styled):
         """Initialize this styled text with the given `style` and `parent` (see
         :class:`Styled`). The default (`style` = :const:`PARENT_STYLE`) is to
         inherit the style of the parent of this styled text. """
-        super().__init__(style, parent)
+        super(StyledText, self).__init__(style, parent)
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
@@ -197,7 +201,7 @@ class SingleStyledText(StyledText):
         In `text`, tab, line-feed and newline characters are all considered
         whitespace. Consecutive whitespace characters are reduced to a single
         space."""
-        super().__init__(style=style, parent=parent)
+        super(SingleStyledText, self).__init__(style=style, parent=parent)
         self.text = self._filter_text(text)
 
     @staticmethod
@@ -291,7 +295,7 @@ class MixedStyledText(StyledText, list):
         each of the text items.
 
         See :class:`StyledText` for information on `style`, and `parent`."""
-        super().__init__(style=style, parent=parent)
+        super(MixedStyledText, self).__init__(style=style, parent=parent)
         if isinstance(text_or_items, (str, StyledText)):
             text_or_items = (text_or_items, )
         for item in text_or_items:
@@ -316,6 +320,8 @@ class MixedStyledText(StyledText, list):
         this mixed-styled text.
 
         The parent of `item` is set to this mixed-styled text."""
+        if isinstance(item, py2str):
+            item = str(item)
         if isinstance(item, str):
             item = SingleStyledText(item, style=PARENT_STYLE)
         item.parent = self
@@ -333,7 +339,7 @@ class StyledRawText(SingleStyledText):
     def __init__(self, text, style=PARENT_STYLE, parent=None):
         """Initialize this styled raw text with `text` (:class:`str`), `style`,
         and `parent` (see :class:`StyledText`)."""
-        super().__init__(text, style=style, parent=parent)
+        super(StyledRawText, self).__init__(text, style=style, parent=parent)
 
     @staticmethod
     def _filter_text(text):
@@ -350,7 +356,7 @@ class LiteralText(StyledRawText):
         """Initialize this literal text with `text` (:class:`str`), `style`, and
         `parent` (see :class:`StyledText`)."""
         unbreakable = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        super().__init__(unbreakable, style=style, parent=parent)
+        super(LiteralText, self).__init__(unbreakable, style=style, parent=parent)
 
 
 class Character(StyledRawText):
@@ -368,7 +374,7 @@ class Space(Character):
         """Initialize this space. `fixed_width` specifies whether this space
         can be stretched (`False`) or not (`True`) in justified paragraphs.
         See :class:`StyledText` about `style` and `parent`."""
-        super().__init__(' ', style=style, parent=parent)
+        super(Space, self).__init__(' ', style=style, parent=parent)
         self.fixed_width = fixed_width
 
 
@@ -378,7 +384,7 @@ class FixedWidthSpace(Space):
     def __init__(self, style=PARENT_STYLE, parent=None):
         """Initialize this fixed-width space with `style` and `parent` (see
         :class:`StyledText`)."""
-        super().__init__(True, style=style, parent=parent)
+        super(FixedWidthSpace, self).__init__(True, style=style, parent=parent)
 
 
 class NoBreakSpace(Character):
@@ -389,7 +395,7 @@ class NoBreakSpace(Character):
     def __init__(self, style=PARENT_STYLE, parent=None):
         """Initialize this non-breaking space with `style` and `parent` (see
         :class:`StyledText`)."""
-        super().__init__(' ', style=style, parent=parent)
+        super(NoBreakSpace, self).__init__(' ', style=style, parent=parent)
 
 
 class Spacer(FixedWidthSpace):
@@ -398,7 +404,7 @@ class Spacer(FixedWidthSpace):
     def __init__(self, width, style=PARENT_STYLE, parent=None):
         """Initialize this spacer at `width` with `style` and `parent` (see
         :class:`StyledText`)."""
-        super().__init__(style=style, parent=parent)
+        super(Spacer, self).__init__(style=style, parent=parent)
         self._width = width
 
     def widths(self):
@@ -408,7 +414,7 @@ class Spacer(FixedWidthSpace):
 
 class Box(Character):
     def __init__(self, width, height, depth, ps):
-        super().__init__('?')
+        super(Box, self).__init__('?')
         self._width = width
         self._height = height
         self.depth = depth
@@ -436,7 +442,7 @@ class ControlCharacter(Character):
 
     def __init__(self, char):
         """Initialize this control character with it's unicode `char`."""
-        super().__init__(char)
+        super(ControlCharacter, self).__init__(char)
 
     def __repr__(self):
         """A textual representation of this control character."""
@@ -461,7 +467,7 @@ class Newline(ControlCharacter):
 
     def __init__(self, *args, **kwargs):
         """Initiatize this newline character."""
-        super().__init__('\n')
+        super(Newline, self).__init__('\n')
 
 
 class Tab(ControlCharacter):
@@ -470,7 +476,7 @@ class Tab(ControlCharacter):
     def __init__(self, *args, **kwargs):
         """Initialize this tab character. Its attribute :attr:`tab_width` is set
         a later point in time when context (:class:`TabStop`) is available."""
-        super().__init__('\t')
+        super(Tab, self).__init__('\t')
 
 
 # predefined text styles
@@ -489,7 +495,7 @@ class Bold(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=BOLD_STYLE)
+        super(Bold, self).__init__(text, style=BOLD_STYLE)
 
 
 class Italic(MixedStyledText):
@@ -498,7 +504,7 @@ class Italic(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=ITALIC_STYLE)
+        super(Italic, self).__init__(text, style=ITALIC_STYLE)
 
 
 class Emphasized(MixedStyledText):
@@ -507,7 +513,7 @@ class Emphasized(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=EMPHASIZED_STYLE)
+        super(Emphasized, self).__init__(text, style=EMPHASIZED_STYLE)
 
 
 class SmallCaps(MixedStyledText):
@@ -516,7 +522,7 @@ class SmallCaps(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SMALL_CAPITALS_STYLE)
+        super(SmallCaps, self).__init__(text, style=SMALL_CAPITALS_STYLE)
 
 
 class Superscript(MixedStyledText):
@@ -525,7 +531,7 @@ class Superscript(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUPERSCRIPT_STYLE)
+        super(Superscript, self).__init__(text, style=SUPERSCRIPT_STYLE)
 
 
 class Subscript(MixedStyledText):
@@ -534,4 +540,4 @@ class Subscript(MixedStyledText):
     def __init__(self, text):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUBSCRIPT_STYLE)
+        super(Subscript, self).__init__(text, style=SUBSCRIPT_STYLE)
