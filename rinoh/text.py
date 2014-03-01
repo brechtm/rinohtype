@@ -296,7 +296,8 @@ class MixedStyledText(StyledText, list):
 
         See :class:`StyledText` for information on `style`, and `parent`."""
         super(MixedStyledText, self).__init__(style=style, parent=parent)
-        if isinstance(text_or_items, (str, StyledText)):
+        if (isinstance(text_or_items, (str, StyledText))
+                or PY2 and isinstance(text_or_items, py2str)):
             text_or_items = (text_or_items, )
         for item in text_or_items:
             self.append(item)
