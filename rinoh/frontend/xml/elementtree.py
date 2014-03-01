@@ -12,8 +12,8 @@ from rinoh.py2compat import *
 import sys
 
 try:
-    from urllib.parse import urljoin
-    from urllib.request import pathname2url
+    from urllib.parse import urljoin, urlparse
+    from urllib.request import pathname2url, urlopen
 except ImportError:
     import urllib2
     urljoin = urllib2.urlparse.urljoin

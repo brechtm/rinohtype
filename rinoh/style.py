@@ -73,7 +73,7 @@ class Style(dict):
     @property
     def base(self):
         """Return the base style for this style."""
-        if isinstance(self._base, (str, py2str)):
+        if isinstance(self._base, str) or PY2 and isinstance(self._base, py2str):
             return self.store[self._base]
         else:
             return self._base

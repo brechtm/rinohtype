@@ -320,7 +320,7 @@ class MixedStyledText(StyledText, list):
         this mixed-styled text.
 
         The parent of `item` is set to this mixed-styled text."""
-        if isinstance(item, py2str):
+        if PY2 and isinstance(item, py2str):
             item = str(item)
         if isinstance(item, str):
             item = SingleStyledText(item, style=PARENT_STYLE)
