@@ -16,7 +16,7 @@ class GlyfTable(OpenTypeTable):
     tag = 'glyf'
 
     def __init__(self, file, file_offset, loca_table):
-        super().__init__(file, file_offset)
+        super(GlyfTable, self).__init__(file, file_offset)
         self._file_offset = file_offset
         for index, glyph_offset in enumerate(loca_table.offsets()):
             if glyph_offset is not None:
@@ -41,7 +41,7 @@ class LocaTable(OpenTypeTable):
     tag = 'loca'
 
     def __init__(self, file, file_offset, version, num_glyphs):
-        super().__init__(file, file_offset)
+        super(LocaTable, self).__init__(file, file_offset)
         self._num_glyphs = num_glyphs
         data_format = 'L' if version == 1 else 'H'
         data_struct = struct.Struct('>{}{}'.format(num_glyphs + 1, data_format))

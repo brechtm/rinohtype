@@ -218,14 +218,14 @@ class StyleSheet(OrderedDict):
     style by name. See :class:`Style`."""
 
     def __init__(self, name, base=None):
-        super().__init__()
+        super(StyleSheet, self).__init__()
         self.name = name
         self.base = base
         self.selectors = {}
 
     def __getitem__(self, name):
         if name in self:
-            return super().__getitem__(name)
+            return super(StyleSheet, self).__getitem__(name)
         elif self.base is not None:
             return self.base[name]
         else:
@@ -234,7 +234,7 @@ class StyleSheet(OrderedDict):
     def __setitem__(self, name, style):
         style.name = name
         style.store = self
-        super().__setitem__(name, style)
+        super(StyleSheet, self).__setitem__(name, style)
 
     def __call__(self, name, selector, **kwargs):
         self[name] = selector.cls.style_class(**kwargs)
@@ -282,7 +282,7 @@ class Selector(object):
 
 class ClassSelector(Selector):
     def __init__(self, cls, style_class=None, **attributes):
-        super().__init__(cls)
+        super(ClassSelector, self).__init__(cls)
         self.style_class = style_class
         self.attributes = attributes
 
@@ -310,7 +310,7 @@ class ClassSelector(Selector):
 
 class ContextSelector(Selector):
     def __init__(self, *selectors):
-        super().__init__(selectors[-1].cls)
+        super(ContextSelector, self).__init__(selectors[-1].cls)
         self.selectors = selectors
 
     def match(self, styled):

@@ -111,7 +111,7 @@ class Page(object):
 
 class Canvas(StringIO):
     def __init__(self, parent, clip=False):
-        super().__init__()
+        super(Canvas, self).__init__()
         self.parent = parent
 
     @property
@@ -261,7 +261,7 @@ class Image(object):
 
 class PageCanvas(Canvas):
     def __init__(self, backend_page):
-        super().__init__(None)
+        super(PageCanvas, self).__init__(None)
         self._backend_page = backend_page
         self.translate(0, - float(backend_page.height))
 

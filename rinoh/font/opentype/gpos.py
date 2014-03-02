@@ -63,7 +63,7 @@ class ValueRecord(OpenTypeTable):
                'YAdvDevice': indirect(Device)}
 
     def __init__(self, file, value_format):
-        super().__init__(file)
+        super(ValueRecord, self).__init__(file)
         for name, present in value_format.items():
             if present:
                 self[name] = self.formats[name](file)
@@ -102,7 +102,7 @@ class PairSetTable(OpenTypeTable):
     entries = [('PairValueCount', uint16)]
 
     def __init__(self, file, file_offset, format_1, format_2):
-        super().__init__(file, file_offset)
+        super(PairSetTable, self).__init__(file, file_offset)
         record_format = format_1.data_format + format_2.data_format
         value_1_length = len(format_1)
         format_1_keys = format_1.present_keys
@@ -141,7 +141,7 @@ class PairAdjustmentSubtable(MultiFormatTable):
                    ('Class2Count', uint16)]}
 
     def __init__(self, file, file_offset=None):
-        super().__init__(file, file_offset)
+        super(PairAdjustmentSubtable, self).__init__(file, file_offset)
         format_1, format_2 = self['ValueFormat1'], self['ValueFormat2']
         if self['PosFormat'] == 2:
             record_format = format_1.data_format + format_2.data_format
@@ -209,7 +209,7 @@ class BaseRecord(OpenTypeTable):
 ##    entries = [('BaseAnchor', indirect_array(Anchor, 'ClassCount'))]
 
     def __init__(self, file, file_offset, class_count):
-        super().__init__(self, file, file_offset)
+        super(BaseRecord, self).__init__(self, file, file_offset)
 ##        self['BaseAnchor'] = indirect_array(Anchor, 'ClassCount'])(file)
 
 
@@ -218,7 +218,7 @@ class BaseArray(OpenTypeTable):
 ##               ('BaseRecord', context_array(BaseRecord, 'BaseCount'))]
 
     def __init__(self, file, file_offset, class_count):
-        super().__init__(self, file, file_offset)
+        super(BaseArray, self).__init__(self, file, file_offset)
         self['BaseRecord'] = array(BaseRecord, self['BaseCount'],
                                    class_count=class_count)(file)
 

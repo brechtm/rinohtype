@@ -106,7 +106,7 @@ class cached_property(property):
         try:
             return getattr(obj, cache_variable)
         except AttributeError:
-            cache_value = super().__get__(obj, *args)
+            cache_value = super(cached_property, self).__get__(obj, *args)
             setattr(obj, cache_variable, cache_value)
             return cache_value
 

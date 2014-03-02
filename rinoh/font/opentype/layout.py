@@ -24,7 +24,7 @@ class ListTable(OpenTypeTable):
                ('Record', context_array(ListRecord, 'Count'))]
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(ListTable, self).__init__(file, file_offset)
         self.by_tag = {}
         for record in self['Record']:
             record.parse_value(file, file_offset, self.entry_type)
@@ -54,7 +54,7 @@ class FeatureTable(OpenTypeTable):
                ('LookupListIndex', context_array(uint16, 'LookupCount'))]
 
     def __init__(self, file, offset):
-        super().__init__(file, offset)
+        super(FeatureTable, self).__init__(file, offset)
         if self['FeatureParams']:
             # TODO: parse Feature Parameters
             pass
@@ -133,7 +133,7 @@ class LookupTable(OpenTypeTable):
                ('SubTableCount', uint16)]
 
     def __init__(self, file, file_offset, subtable_types):
-        super().__init__(file, file_offset)
+        super(LookupTable, self).__init__(file, file_offset)
         offsets = array(uint16, self['SubTableCount'])(file)
         if self['LookupFlag']['UseMarkFilteringSet']:
             self['MarkFilteringSet'] = uint16(file)
@@ -152,23 +152,23 @@ class LookupTable(OpenTypeTable):
 
 class DelayedList(list):
     def __init__(self, reader, file, file_offset, item_offsets):
-        super().__init__([None] * len(item_offsets))
+        super(DelayedList, self).__init__([None] * len(item_offsets))
         self._reader = reader
         self._file = file
         self._offsets = [file_offset + item_offset
                          for item_offset in item_offsets]
 
     def __getitem__(self, index):
-        if super().__getitem__(index) is None:
+        if super(DelayedList, self).__getitem__(index) is None:
             self[index] = self._reader(self._file, self._offsets[index])
-        return super().__getitem__(index)
+        return super(DelayedList, self).__getitem__(index)
 
 
 class LookupListTable(OpenTypeTable):
     entries = [('LookupCount', uint16)]
 
     def __init__(self, file, file_offset, types):
-        super().__init__(file, file_offset)
+        super(LookupListTable, self).__init__(file, file_offset)
         lookup_offsets = array(offset, self['LookupCount'])(file)
         lookup_reader = lambda file, file_offset: LookupTable(file, file_offset,
                                                               types)
@@ -182,7 +182,7 @@ class LayoutTable(OpenTypeTable):
                ('FeatureList', indirect(FeatureListTable))]
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(LayoutTable, self).__init__(file, file_offset)
         lookup_list_offset = offset(file)
         self['LookupList'] = LookupListTable(file,
                                              file_offset + lookup_list_offset,

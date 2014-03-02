@@ -124,7 +124,7 @@ class ContainerBase(FlowableTarget):
         self.name = name
         self.parent = parent
         if parent is not None:  # the Page subclass has no parent
-            super().__init__(parent.document)
+            super(ContainerBase, self).__init__(parent.document)
             parent.children.append(self)
             self.empty_canvas()
         self.children = []
@@ -231,7 +231,7 @@ class ExpandingContainer(Container):
 
         `max_height` is the maximum height this container can grow to."""
         height = Dimension(0)
-        super().__init__(name, parent, left, top, width, height, right, bottom)
+        super(ExpandingContainer, self).__init__(name, parent, left, top, width, height, right, bottom)
         self.max_height = max_height
 
     @property
@@ -265,7 +265,7 @@ class DownExpandingContainer(ExpandingContainer):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(name, parent, left, top, width, right, None,
+        super(DownExpandingContainer, self).__init__(name, parent, left, top, width, right, None,
                          max_height)
 
 
@@ -283,14 +283,14 @@ class UpExpandingContainer(ExpandingContainer):
 
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
-        super().__init__(name, parent, left, None, width, right, bottom,
+        super(UpExpandingContainer, self).__init__(name, parent, left, None, width, right, bottom,
                          max_height)
 
 
 class MaybeContainer(DownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
         max_height = parent.remaining_height
-        super().__init__('MAYBE', parent, left=left, top=parent.cursor,
+        super(MaybeContainer, self).__init__('MAYBE', parent, left=left, top=parent.cursor,
                          width=width, right=right, max_height=max_height)
         self._do_place = False
 
@@ -300,7 +300,7 @@ class MaybeContainer(DownExpandingContainer):
 
     def place(self):
         if self._do_place:
-            super().place()
+            super(MaybeContainer, self).place()
 
 
 class VirtualContainer(DownExpandingContainer):
@@ -314,7 +314,7 @@ class VirtualContainer(DownExpandingContainer):
         container.
 
         `width` specifies the width of the container."""
-        super().__init__('VIRTUAL', parent, width=width)
+        super(VirtualContainer, self).__init__('VIRTUAL', parent, width=width)
 
     def place(self):
         """This method has no effect."""
@@ -329,25 +329,25 @@ class VirtualContainer(DownExpandingContainer):
 
 class FloatContainer(ExpandingContainer):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(FloatContainer, self).__init__(*args, **kwargs)
 
 
 class TopFloatContainer(FloatContainer, DownExpandingContainer):
     def __init__(self, name, parent, left=None, top=None, width=None,
                  right=None, max_height=float('+inf')):
-        super().__init__(name, parent, left, top, width, right, max_height)
+        super(TopFloatContainer, self).__init__(name, parent, left, top, width, right, max_height)
 
 
 class BottomFloatContainer(UpExpandingContainer, FloatContainer):
     def __init__(self, name, parent, left=None, bottom=None, width=None,
                  right=None, max_height=float('+inf')):
-        super().__init__(name, parent, left, bottom, width, right, max_height)
+        super(BottomFloatContainer, self).__init__(name, parent, left, bottom, width, right, max_height)
 
 
 class FootnoteContainer(UpExpandingContainer):
     def __init__(self, name, parent, left=None, bottom=None, width=None,
                  right=None):
-        super().__init__(name, parent, left, bottom, width=width, right=right)
+        super(FootnoteContainer, self).__init__(name, parent, left, bottom, width=width, right=right)
         self._footnote_number = 0
 
     @property
@@ -378,7 +378,7 @@ class Chain(FlowableTarget):
         """Initialize this chain.
 
         `document` is the :class:`Document` this chain is part of."""
-        super().__init__(document)
+        super(Chain, self).__init__(document)
         self._init_state()
 
     def _init_state(self):

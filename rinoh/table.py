@@ -78,7 +78,7 @@ class Tabular(Flowable):
     style_class = TabularStyle
 
     def __init__(self, data, style=None):
-        super().__init__(style=style)
+        super(Tabular, self).__init__(style=style)
         self.data = data
 
     def render(self, container, last_descender, state=None):
@@ -212,7 +212,7 @@ class Tabular(Flowable):
 
 class Array(list):
     def __init__(self, rows):
-        super().__init__(rows)
+        super(Array, self).__init__(rows)
 
     @property
     def rows(self):
@@ -238,7 +238,7 @@ class TabularCell(object):
 
 class TabularRow(list):
     def __init__(self, items):
-        super().__init__(items)
+        super(TabularRow, self).__init__(items)
 
 
 class TabularData(object):
@@ -293,7 +293,7 @@ class HTMLTabularData(TabularData):
             body = self.parse_row_group(element)
             head = foot = None
         column_groups, column_options = self.parse_column_options(element)
-        super().__init__(body, head, foot, column_options, column_groups)
+        super(HTMLTabularData, self).__init__(body, head, foot, column_options, column_groups)
 
     def parse_column_options(self, element):
         try:
@@ -349,4 +349,4 @@ class CSVTabularData(TabularData):
                 row_cells = [TabularCell(cell) for cell in row]
                 rows.append(TabularRow(row_cells))
         body = Array(rows)
-        super().__init__(body)
+        super(CSVTabularData, self).__init__(body)

@@ -108,7 +108,7 @@ class OpenTypeTableBase(OrderedDict):
     entries = []
 
     def __init__(self, file, file_offset=None):
-        super().__init__()
+        super(OpenTypeTableBase, self).__init__()
         self.parse(file, file_offset, self.entries)
 
     def parse(self, file, base, entries):
@@ -127,7 +127,7 @@ class OpenTypeTable(OpenTypeTableBase):
     def __init__(self, file, file_offset=None):
         if file_offset is not None:
             file.seek(file_offset)
-        super().__init__(file, file_offset)
+        super(OpenTypeTable, self).__init__(file, file_offset)
 
 
 
@@ -135,7 +135,7 @@ class MultiFormatTable(OpenTypeTable):
     formats = {}
 
     def __init__(self, file, file_offset=None, **kwargs):
-        super().__init__(file, file_offset)
+        super(MultiFormatTable, self).__init__(file, file_offset)
         table_format = self[self.entries[0][0]]
         if table_format in self.formats:
             self.parse(file, file_offset, self.formats[table_format])
@@ -145,7 +145,7 @@ class Record(OpenTypeTableBase):
     """The base offset for indirect entries in a `Record` is the parent table's
     base, not the `Record`'s base."""
     def __init__(self, file, table=None, base=None):
-        super().__init__(file, base)
+        super(Record, self).__init__(file, base)
         self._parent_table = table
 
 

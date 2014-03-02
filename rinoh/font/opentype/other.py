@@ -25,7 +25,7 @@ class KernSubTable(OpenTypeTable):
                ('coverage', KerningCoverage)]
 
     def __init__(self, file, offset):
-        super().__init__(file, offset)
+        super(KernSubTable, self).__init__(file, offset)
         if self['coverage']['format'] == 0:
             self.pairs = {}
             (n_pairs, search_range,
@@ -45,7 +45,7 @@ class KernTable(OpenTypeTable):
                ('nTables', ushort)]
 
     def __init__(self, file, offset):
-        super().__init__(file, offset)
+        super(KernTable, self).__init__(file, offset)
         for i in range(self['nTables']):
             subtable = KernSubTable(file, file.tell())
             self[subtable['coverage']['format']] = subtable

@@ -39,7 +39,7 @@ class MathStyle(Style):
                   'font_size': 10*PT}
 
     def __init__(self, base=PARENT_STYLE, **attributes):
-        super().__init__(base=base, **attributes)
+        super(MathStyle, self).__init__(base=base, **attributes)
 
 
 class Math(CharacterLike):
@@ -47,7 +47,7 @@ class Math(CharacterLike):
     _parser = None
 
     def __init__(self, equation, style=PARENT_STYLE):
-        super().__init__(style)
+        super(Math, self).__init__(style)
         self.equation = equation.strip()
 
     def spans(self):
@@ -77,7 +77,7 @@ class EquationStyle(ParagraphStyle):
                   'tab_stops': [TabStop(0.5, CENTER), TabStop(1.0, RIGHT)]}
 
     def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+        super(EquationStyle, self).__init__(base=base, **attributes)
 
 
 class Equation(Paragraph):
@@ -91,7 +91,7 @@ class Equation(Paragraph):
         math = Math(equation, style=style.math_style)
         math.parent = self # TODO: encapsulate
         text = [Tab(), math, Tab(), number]
-        super().__init__(text, style)
+        super(Equation, self).__init__(text, style)
 
     def reference(self):
         return self.ref

@@ -18,7 +18,7 @@ __all__ = ['Image', 'CaptionStyle', 'Caption', 'Figure']
 
 class Image(Flowable):
     def __init__(self, filename, scale=1.0, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(Image, self).__init__(style=style, parent=parent)
         self.filename = filename
         self.scale = scale
 
@@ -44,7 +44,7 @@ class Caption(ParagraphBase):
     next_number = {}
 
     def __init__(self, category, number, text, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(Caption, self).__init__(style=style, parent=parent)
         self.category = category
         self.number = number
         self.text = text
@@ -62,7 +62,7 @@ class Caption(ParagraphBase):
 
     def render(self, container, last_descender, state=None):
         state = state or ParagraphState(self.spans(container.document))
-        return super().render(container, last_descender, state=state)
+        return super(Caption, self).render(container, last_descender, state=state)
 
 
 class Figure(Referenceable, InseparableFlowables):
@@ -75,7 +75,7 @@ class Figure(Referenceable, InseparableFlowables):
         Referenceable.__init__(self, id)
 
     def prepare(self, document):
-        super().prepare(document)
+        super(Figure, self).prepare(document)
         element_id = self.get_id(document)
         number = document.counters.setdefault(self.__class__, 1)
         document.counters[self.__class__] += 1

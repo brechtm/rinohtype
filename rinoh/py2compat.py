@@ -12,10 +12,9 @@ __all__ = ['PY2']
 PY2 = sys.version_info < (3, 0)
 
 if PY2:
-    __all__ += ['str', 'print', 'open', 'super', 'chr', 'py2str']
+    __all__ += ['str', 'print', 'open', 'chr', 'py2str']
 
     from io import open
-    from .magicsuper import super
     py2str = str
     str = unicode
     std_print = print

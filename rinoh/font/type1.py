@@ -269,7 +269,7 @@ class PrinterFontASCII(PrinterFont):
         with open(filename, 'rb') as file:
             header = self._parse_header(file)
             body, trailer = self._parse_body_and_trailer(file)
-        super().__init__(header, body, trailer)
+        super(PrinterFontASCII, self).__init__(header, body, trailer)
 
     @classmethod
     def _parse_header(cls, file):
@@ -320,7 +320,7 @@ class PrinterFontBinary(PrinterFont):
             check, eof_type = struct.unpack('<BB', file.read(2))
             if check != 128 or eof_type != 3:
                 raise Type1ParseError('Not a PFB file')
-        super().__init__(*segments)
+        super(PrinterFontBinary, self).__init__(*segments)
 
     @classmethod
     def _read_pfb_segment(cls, file):

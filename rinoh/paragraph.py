@@ -415,7 +415,7 @@ def kern(glyphs, get_kerning):
 
 class GlyphsSpan(list):
     def __init__(self, span, word_to_glyphs):
-        super().__init__()
+        super(GlyphsSpan, self).__init__()
         self.span = span
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
@@ -427,7 +427,7 @@ class GlyphsSpan(list):
         self.append(self.space_glyph_and_width)
 
     def _fill_tabs(self):
-        for index, glyph_and_width in enumerate(super().__iter__()):
+        for index, glyph_and_width in enumerate(super(GlyphsSpan, self).__iter__()):
             if index in self.filled_tabs:
                 fill_string = self.filled_tabs[index]
                 tab_width = glyph_and_width[1]
@@ -445,7 +445,7 @@ class GlyphsSpan(list):
         if self.filled_tabs:
             return self._fill_tabs()
         else:
-            return super().__iter__()
+            return super(GlyphsSpan, self).__iter__()
 
 
 class Line(list):
@@ -457,7 +457,7 @@ class Line(list):
         `width` is the available line width.
         `indent` specifies the left indent width.
         `container` passes the :class:`Container` that wil hold this line."""
-        super().__init__()
+        super(Line, self).__init__()
         self.tab_stops = tab_stops
         self.width = width
         self.indent = indent

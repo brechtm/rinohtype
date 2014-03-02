@@ -68,7 +68,7 @@ class HmtxTable(OpenTypeTable):
     tag = 'htmx'
 
     def __init__(self, file, file_offset, number_of_h_metrics, num_glyphs):
-        super().__init__(file, file_offset)
+        super(HmtxTable, self).__init__(file, file_offset)
         # TODO: rewrite using context_array ?
         file.seek(file_offset)
         advance_widths = []
@@ -164,7 +164,7 @@ class PostTable(MultiFormatTable):
                                                       'numberOfGlyphs'))]}
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(PostTable, self).__init__(file, file_offset)
         self.names = []
         if self['version'] == 2.0:
             num_new_glyphs = max(self['glyphNameIndex']) - 257
@@ -212,7 +212,7 @@ class NameTable(MultiFormatTable):
                                                    'langTagCount'))]}
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(NameTable, self).__init__(file, file_offset)
         if self['format'] == 1:
             raise NotImplementedError
         string_offset = file_offset + self['stringOffset']
@@ -323,7 +323,7 @@ class CmapSubtable(MultiFormatTable):
 
     def __init__(self, file, file_offset=None):
         # TODO: detect already-parsed table (?)
-        super().__init__(file, file_offset)
+        super(CmapSubtable, self).__init__(file, file_offset)
         # TODO: create format-dependent lookup function instead of storing
         #       everything in a dict (not efficient for format 13 subtables fe)
         if self['format'] == 0:
@@ -384,7 +384,7 @@ class CmapTable(OpenTypeTable):
                ('encodingRecord', context_array(CmapRecord, 'numTables'))]
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(CmapTable, self).__init__(file, file_offset)
         for record in self['encodingRecord']:
             key = (record['platformID'], record['encodingID'])
             self[key] = record['subtable']

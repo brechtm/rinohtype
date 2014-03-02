@@ -306,7 +306,7 @@ class MixedStyledText(StyledText, list):
         """Return a representation of this mixed-styled text; its children
         along with a representation of its :class:`TextStyle`."""
         return '{}{} (style={})'.format(self.__class__.__name__,
-                                        super().__repr__(), self.style)
+                                        super(MixedStyledText, self).__repr__(), self.style)
 
     def __str__(self):
         """Return the text content of this mixed-styled text."""

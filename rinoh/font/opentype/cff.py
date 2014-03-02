@@ -166,7 +166,7 @@ class Index(list):
 
 class NameIndex(Index):
     def __init__(self, file, offset=None):
-        super().__init__(file, offset)
+        super(NameIndex, self).__init__(file, offset)
         for name_offset, size in zip(self.offsets, self.sizes):
             file.seek(self.offset_reference + name_offset)
             name = file.read(size).decode('ascii')
@@ -175,7 +175,7 @@ class NameIndex(Index):
 
 class TopDictIndex(Index):
     def __init__(self, file, offset=None):
-        super().__init__(file, offset)
+        super(TopDictIndex, self).__init__(file, offset)
         for dict_offset, size in zip(self.offsets, self.sizes):
             self.append(TopDict(file, size, self.offset_reference + dict_offset))
 

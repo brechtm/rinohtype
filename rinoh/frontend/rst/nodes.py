@@ -41,7 +41,7 @@ class Section(CustomElement):
 
 class Paragraph(NestedElement):
     def parse(self):
-        return rt.Paragraph(super().process_content())
+        return rt.Paragraph(super(Paragraph, self).process_content())
 
 
 class Title(CustomElement):
@@ -51,7 +51,7 @@ class Title(CustomElement):
 
 class Tip(NestedElement):
     def parse(self):
-        return rt.Paragraph('TIP: ' + super().process_content())
+        return rt.Paragraph('TIP: ' + super(Tip, self).process_content())
 
 
 class Emphasis(NestedElement):
@@ -81,7 +81,7 @@ class Literal_Block(CustomElement):
 
 class Block_Quote(NestedElement):
     def parse(self):
-        return rt.Paragraph(super().process_content(), style='block quote')
+        return rt.Paragraph(super(Block_Quote, self).process_content(), style='block quote')
 
 
 class Reference(CustomElement):

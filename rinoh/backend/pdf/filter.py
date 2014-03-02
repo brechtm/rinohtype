@@ -124,7 +124,7 @@ class FlateDecode(Filter):
     params_class = FlateDecodeParams
 
     def __init__(self, params=None, level=6):
-        super().__init__()
+        super(FlateDecode, self).__init__()
         self.params = params
         self.level = level
 
@@ -144,7 +144,7 @@ class FlateDecode(Filter):
 
 class FlateEncoder(Encoder):
     def __init__(self, destination, level):
-        super().__init__(destination)
+        super(FlateEncoder, self).__init__(destination)
         self._compressor = zlib.compressobj(level)
 
     def write(self, b):
@@ -156,7 +156,7 @@ class FlateEncoder(Encoder):
 
 class FlateDecoder(FIFOBuffer, Decoder):
     def __init__(self, source):
-        super().__init__(source)
+        super(FlateDecoder, self).__init__(source)
         self._decompressor = zlib.decompressobj()
 
     def read_from_source(self, n):
@@ -175,7 +175,7 @@ class FlateDecoder(FIFOBuffer, Decoder):
 class LZWDecodeParams(FlateDecodeParams):
     def __init__(self, predictor=None, colors=None, bits_per_component=None,
                  columns=None, early_change=None):
-        super().__init__(predictor, colors, bits_per_component, columns)
+        super(LZWDecodeParams, self).__init__(predictor, colors, bits_per_component, columns)
         if early_change:
             self['EarlyChange'] = cos.Integer(early_change)
 
@@ -189,7 +189,7 @@ class PNGReconstructor(FIFOBuffer):
 
     # TODO: bitsper...
     def __init__(self, source, bytes_per_column):
-        super().__init__(source)
+        super(PNGReconstructor, self).__init__(source)
         self.bytes_per_column = bytes_per_column
         self._column_struct = struct.Struct('>{}B'.format(bytes_per_column))
         self._last_values = [0] * bytes_per_column

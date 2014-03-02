@@ -43,7 +43,7 @@ class Ligature(OpenTypeTable):
                ('CompCount', uint16)]
 
     def __init__(self, file, file_offset):
-        super().__init__(file, file_offset)
+        super(Ligature, self).__init__(file, file_offset)
         self['Component'] = array(glyph_id, self['CompCount'] - 1)(file)
 
 

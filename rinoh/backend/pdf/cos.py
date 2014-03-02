@@ -98,7 +98,7 @@ class Reference(object):
 
 class Boolean(Object):
     def __init__(self, value, indirect=False):
-        super().__init__(indirect)
+        super(Boolean, self).__init__(indirect)
         self.value = value
 
     def _repr(self):
@@ -248,7 +248,7 @@ class Name(Object, bytes):
 
 class Container(Object):
     def __init__(self, indirect=False):
-        super().__init__(indirect)
+        super(Container, self).__init__(indirect)
 
     def register_indirect(self, document, visited=None):
         if visited is None:     # visited helps prevent infinite looping when
@@ -273,10 +273,10 @@ class Array(Container, list):
 
     def __getitem__(self, arg):
         if isinstance(arg, slice):
-            items = [elem.object for elem in super().__getitem__(arg)]
+            items = [elem.object for elem in super(Array, self).__getitem__(arg)]
             return self.__class__(items, indirect=self.indirect)
         else:
-            return super().__getitem__(arg).object
+            return super(Array, self).__getitem__(arg).object
 
     def _repr(self):
         return ', '.join(elem.object.short_repr() for elem in self)
@@ -355,7 +355,7 @@ class Stream(Dictionary):
         # (Streams are always indirectly referenced)
         self._data = BytesIO()
         self._filter = filter or PassThrough()
-        super().__init__(indirect=True)
+        super(Stream, self).__init__(indirect=True)
         self._coder = None
 
     def direct_bytes(self, document):
@@ -371,7 +371,7 @@ class Stream(Dictionary):
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self._data.tell())
-        out += super().direct_bytes(document)
+        out += super(Stream, self).direct_bytes(document)
         out += b'\nstream\n'
         out += self._data.getvalue()
         out += b'\nendstream'
@@ -433,7 +433,7 @@ class ObjectStream(Stream):
 
 class Null(Object):
     def __init__(self, indirect=False):
-        super().__init__(indirect)
+        super(Null, self).__init__(indirect)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -545,7 +545,7 @@ class Catalog(Dictionary):
     type = 'Catalog'
 
     def __init__(self):
-        super().__init__(indirect=True)
+        super(Catalog, self).__init__(indirect=True)
         self['Pages'] = Pages()
 
 
@@ -553,7 +553,7 @@ class Pages(Dictionary):
     type = 'Pages'
 
     def __init__(self):
-        super().__init__(indirect=True)
+        super(Pages, self).__init__(indirect=True)
         self['Count'] = Integer(0)
         self['Kids'] = Array()
 
@@ -568,7 +568,7 @@ class Page(Dictionary):
     type = 'Page'
 
     def __init__(self, parent, width, height):
-        super().__init__(indirect=True)
+        super(Page, self).__init__(indirect=True)
         self['Parent'] = parent
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
@@ -598,7 +598,7 @@ class Type1Font(Font):
     subtype = 'Type1'
 
     def __init__(self, font, encoding, font_descriptor):
-        super().__init__(True)
+        super(Type1Font, self).__init__(True)
         self.font = font
         self['BaseFont'] = Name(font.name)
         self['Encoding'] = encoding
@@ -629,14 +629,14 @@ class Type1Font(Font):
                         width = 0
                 widths.append(width)
             self['Widths'] = Array(map(Real, widths))
-        return super()._bytes(document)
+        return super(Type1Font, self)._bytes(document)
 
 
 class CompositeFont(Font):
     subtype = 'Type0'
 
     def __init__(self, descendant_font, encoding, to_unicode=None):
-        super().__init__(True)
+        super(CompositeFont, self).__init__(True)
         self['BaseFont'] = descendant_font.composite_font_name(encoding)
         self['DescendantFonts'] = Array([descendant_font], False)
         try:
@@ -649,7 +649,7 @@ class CompositeFont(Font):
 
 class CIDSystemInfo(Dictionary):
     def __init__(self, ordering, registry, supplement):
-        super().__init__(False)
+        super(CIDSystemInfo, self).__init__(False)
         self['Ordering'] = String(ordering)
         self['Registry'] = String(registry)
         self['Supplement'] = Integer(supplement)
@@ -658,7 +658,7 @@ class CIDSystemInfo(Dictionary):
 class CIDFont(Font):
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None):
-        super().__init__(True)
+        super(CIDFont, self).__init__(True)
         self['BaseFont'] = Name(base_font)
         self['FontDescriptor'] = font_descriptor
         self['CIDSystemInfo'] = cid_system_info
@@ -675,7 +675,7 @@ class CIDFontType0(CIDFont):
 
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None):
-        super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
+        super(CIDFontType0, self).__init__(base_font, cid_system_info, font_descriptor, dw, w)
 
     def composite_font_name(self, encoding):
         try:
@@ -690,7 +690,7 @@ class CIDFontType2(CIDFont):
 
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None, cid_to_gid_map=None):
-        super().__init__(base_font, cid_system_info, font_descriptor, dw, w)
+        super(CIDFontType2, self).__init__(base_font, cid_system_info, font_descriptor, dw, w)
         if cid_to_gid_map:
             self['CIDToGIDMap'] = cid_to_gid_map
 
@@ -703,7 +703,7 @@ class FontDescriptor(Dictionary):
 
     def __init__(self, font_name, flags, font_bbox, italic_angle, ascent,
                  descent, cap_height, stem_v, font_file, x_height=0):
-        super().__init__(True)
+        super(FontDescriptor, self).__init__(True)
         self['FontName'] = Name(font_name)
         self['Flags'] = Integer(flags)
         self['FontBBox'] = Array([Integer(item) for item in font_bbox])
@@ -725,7 +725,7 @@ class Type1FontFile(Stream):
     key = 'FontFile'
 
     def __init__(self, header, body, filter=None):
-        super().__init__(filter)
+        super(Type1FontFile, self).__init__(filter)
         self['Length1'] = Integer(len(header))
         self['Length2'] = Integer(len(body))
         self['Length3'] = Integer(0)
@@ -744,7 +744,7 @@ class OpenTypeFontFile(Stream):
 
 class FontEncoding(Dictionary):
     def __init__(self, indirect=True):
-        super().__init__(indirect)
+        super(FontEncoding, self).__init__(indirect)
         self['Type'] = Name('Encoding')
 
 

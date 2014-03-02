@@ -51,7 +51,7 @@ class Heading(Referenceable, ParagraphBase):
                                         self.style)
 
     def prepare(self, document):
-        super().prepare(document)
+        super(Heading, self).prepare(document)
         element_id = self.get_id(document)
         heading_counters = document.counters.setdefault(self.__class__, {})
         level_counter = heading_counters.setdefault(self.level, [])
@@ -86,7 +86,7 @@ class Heading(Referenceable, ParagraphBase):
         if self.level == 1:
             container.page.section = self
         self.update_page_reference(container.page)
-        return super().render(container, last_descender, state=state)
+        return super(Heading, self).render(container, last_descender, state=state)
 
 
 class ListStyle(GroupedFlowablesStyle, ParagraphStyle):
@@ -104,7 +104,7 @@ class List(GroupedFlowables):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
-        super().__init__(style)
+        super(List, self).__init__(style)
         self.items = items
 
     def flowables(self, document):
@@ -127,14 +127,14 @@ class List(GroupedFlowables):
 class ListItemNumber(Paragraph):
     def render(self, container, descender, state=None):
         before = container.cursor
-        result = super().render(container, descender, state=state)
+        result = super(ListItemNumber, self).render(container, descender, state=state)
         container.advance(before - container.cursor)
         return result
 
 
 class ListItem(Flowable):
     def __init__(self, number, separator, flowables, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(ListItem, self).__init__(style=style, parent=parent)
         self.number = number
         self.separator = separator
         self.flowables = flowables
@@ -191,7 +191,7 @@ class DefinitionList(GroupedFlowables):
     style_class = DefinitionListStyle
 
     def __init__(self, items, style=None):
-        super().__init__(style)
+        super(DefinitionList, self).__init__(style)
         self.items = items
         for term, definition in items:
             term.parent = definition.parent = self
@@ -249,7 +249,7 @@ class TableOfContents(GroupedFlowables):
     location = 'table of contents'
 
     def __init__(self, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(TableOfContents, self).__init__(style=style, parent=parent)
         self.source = self
 
     def flowables(self, document):
@@ -270,5 +270,5 @@ class TableOfContents(GroupedFlowables):
 
 class TableOfContentsEntry(Paragraph):
     def __init__(self, text_or_items, level, style=None, parent=None):
-        super().__init__(text_or_items, style=style, parent=parent)
+        super(TableOfContentsEntry, self).__init__(text_or_items, style=style, parent=parent)
         self.level = level

@@ -44,7 +44,7 @@ class OpenTypeFont(Font, OpenTypeParser):
 
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         OpenTypeParser.__init__(self, filename)
-        super().__init__(filename, weight, slant, width)
+        super(OpenTypeFont, self).__init__(filename, weight, slant, width)
         self._glyphs_by_code = self._create_glyph_metrics()
         self._glyphs = self._create_glyphs_by_char(self._glyphs_by_code)
         self._suffixes = {}

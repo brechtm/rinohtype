@@ -44,17 +44,17 @@ from . import CATALOG_PATH, CATALOG_URL, CATALOG_NS
 
 class TreeBuilder(ElementTree.TreeBuilder):
     def __init__(self, namespace, line_callback, element_factory=None):
-        super().__init__(element_factory)
+        super(TreeBuilder, self).__init__(element_factory)
         self._namespace = namespace
         self._line_callback = line_callback
 
     def start(self, tag, attrs):
-        elem = super().start(tag, attrs)
+        elem = super(TreeBuilder, self).start(tag, attrs)
         elem.sourceline = self._line_callback()
         return elem
 
     def end(self, tag):
-        last = super().end(tag)
+        last = super(TreeBuilder, self).end(tag)
         try:
             last._parent = self._elem[-1]
             last._root = self._elem[0]
@@ -77,7 +77,7 @@ class Parser(ElementTree.XMLParser):
                                 for cls in all_subclasses(self.element_class)}
         tree_builder = TreeBuilder(self.namespace, self.get_current_line_number,
                                    self.lookup)
-        super().__init__(target=tree_builder)
+        super(Parser, self).__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()
         self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         self.parser.ExternalEntityRefHandler \

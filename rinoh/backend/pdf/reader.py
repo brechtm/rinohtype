@@ -263,7 +263,7 @@ class PDFObjectReader(object):
 
 class PDFReader(PDFObjectReader, cos.Document):
     def __init__(self, file_or_filename):
-        super().__init__(file_or_filename)
+        super(PDFReader, self).__init__(file_or_filename)
         self.timestamp = time.time()
         self._by_object_id = {}
         xref_offset = self.find_xref_offset()
@@ -278,18 +278,18 @@ class PDFReader(PDFObjectReader, cos.Document):
 
     @property
     def max_identifier(self):
-        return max(super().max_identifier, self._max_identifier_in_file)
+        return max(super(PDFReader, self).max_identifier, self._max_identifier_in_file)
 
     def __getitem__(self, identifier):
         try:
-            obj = super().__getitem__(identifier)
+            obj = super(PDFReader, self).__getitem__(identifier)
         except KeyError:
             obj = self[identifier] = self._xref.get_object(identifier)
         return obj
 
     def __delitem__(self, identifier):
         del self._xref[identifier]
-        super().__delitem__(identifier)
+        super(PDFReader, self).__delitem__(identifier)
 
     def parse_trailer(self):
         assert self.next_token() == b'trailer'

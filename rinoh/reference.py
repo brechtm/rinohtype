@@ -46,7 +46,7 @@ SECTION_TITLE = 'section title'
 
 class Variable(Field):
     def __init__(self, type):
-        super().__init__()
+        super(Variable, self).__init__()
         self.type = type
 
     def __repr__(self):
@@ -96,7 +96,7 @@ POSITION = 'position'
 
 class Reference(Field):
     def __init__(self, id, type=REFERENCE):
-        super().__init__()
+        super(Reference, self).__init__()
         self.id = id
         self.type = type
 
@@ -127,7 +127,7 @@ class Reference(Field):
 
 class Footnote(Field):
     def __init__(self, note):
-        super().__init__()
+        super(Footnote, self).__init__()
         self.note = note
 
     def field_spans(self, container):

@@ -70,7 +70,7 @@ class Flowable(Styled):
     def __init__(self, style=None, parent=None):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
-        super().__init__(style=style, parent=parent)
+        super(Flowable, self).__init__(style=style, parent=parent)
 
     def flow(self, container, last_descender, state=None):
         """Flow this flowable into `container` and return the vertical space
@@ -123,7 +123,7 @@ class DummyFlowable(Flowable):
     style_class = None
 
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
+        super(DummyFlowable, self).__init__(parent=parent)
 
     def flow(self, container, last_descender, state=None):
         return 0, last_descender
@@ -131,12 +131,12 @@ class DummyFlowable(Flowable):
 
 class WarnFlowable(DummyFlowable):
     def __init__(self, message, parent=None):
-        super().__init__(parent=parent)
+        super(WarnFlowable, self).__init__(parent=parent)
         self.message = message
 
     def flow(self, container, last_descender, state=None):
         self.warn(self.message, container)
-        return super().flow(container, last_descender, state)
+        return super(WarnFlowable, self).flow(container, last_descender, state)
 
 
 class InseparableFlowables(Flowable):
@@ -200,7 +200,7 @@ class GroupedFlowables(Flowable):
 
 class StaticGroupedFlowables(GroupedFlowables):
     def __init__(self, flowables, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(StaticGroupedFlowables, self).__init__(style=style, parent=parent)
         self.children = flowables
 
     def flowables(self, document):
@@ -217,7 +217,7 @@ class Float(Flowable):
     page, instead of in between paragraphs."""
 
     def __init__(self, flowable, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+        super(Float, self).__init__(style=style, parent=parent)
         self.flowable = flowable
         flowable.parent = self
 
