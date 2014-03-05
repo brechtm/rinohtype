@@ -4,17 +4,14 @@
 Setup script for RinohType
 """
 
-import os
 import sys
 
 from datetime import datetime
-from distutils.core import setup
-from pkgutil import walk_packages
+from setuptools import setup, find_packages
 from subprocess import Popen, PIPE
 
 
 PACKAGE = 'rinoh'
-PACKAGE_ABSPATH = os.path.abspath(PACKAGE)
 VERSION_FILE = PACKAGE + '/version.py'
 
 # retrieve the version number from git or VERSION_FILE
@@ -42,18 +39,10 @@ with open('README.rst') as file:
     README = file.read()
 
 
-def find_packages(path, prefix):
-    yield prefix
-    prefix = prefix + "."
-    for _, name, ispkg in walk_packages(path, prefix):
-        if ispkg:
-            yield name
-
-
 setup(
     name='RinohType',
     version=__version__,
-    packages=list(find_packages([PACKAGE_ABSPATH], PACKAGE)),
+    packages=find_packages(),
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',
                             'data/fonts/adobe14/MustRead.html',
                             'data/fonts/adobe35/*.afm',
@@ -62,13 +51,13 @@ setup(
                             'data/xml/catalog',
                             'data/xml/w3c-entities/*.ent']},
     scripts=[],
-    requires=['docutils'],
+    install_requires=['docutils'],
     provides=[PACKAGE],
     #test_suite='nose.collector',
-    
+
     author='Brecht Machiels',
     author_email='brecht@mos6581.org',
-    description='The Python document preparation system',
+    description='The Python document processor',
     long_description=README,
     url='https://github.com/brechtm/rinohtype',
     keywords='rst xml pdf opentype',
