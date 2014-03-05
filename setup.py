@@ -6,6 +6,9 @@ Setup script for RinohType
 
 import sys
 
+print('Not yet supported! See README.rst on how to try out RinohType.')
+sys.exit(1)
+
 from datetime import datetime
 from setuptools import setup, find_packages
 from subprocess import Popen, PIPE
