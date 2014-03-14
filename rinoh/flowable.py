@@ -20,6 +20,7 @@ that make up the content of a document and are rendered onto its pages.
 from copy import copy
 from itertools import chain, tee
 
+from .dimension import PT
 from .layout import EndOfContainer, DownExpandingContainer, MaybeContainer
 from .style import Style, Styled
 
@@ -209,7 +210,14 @@ class StaticGroupedFlowables(GroupedFlowables):
         return iter(self.children)
 
 
+class LabeledFlowableStyle(FlowableStyle):
+    attributes = {'label_width': 12*PT,
+                  'label_spacing': 3*PT}
+
+
 class LabeledFlowable(Flowable):
+    style_class = LabeledFlowableStyle
+
     def __init__(self, style=None, parent=None):
         super().__init__(style=style, parent=parent)
 
@@ -219,27 +227,46 @@ class LabeledFlowable(Flowable):
     def content_flowable(self, document):
         raise NotImplementedError
 
-    def render(self, container, descender, state=None):
+    def render(self, container, last_descender, state=None):
         # TODO: line up baseline of label and first flowable
-        content = self.content_flowable(container.document)
+        label_width = self.get_style('label_width', container.document)
         if not state:
+            maybe_container = MaybeContainer(container)
             try:
-                maybe_container = MaybeContainer(container)
-                label = self.label_flowable(container.document)
-                height, _ = label.flow(maybe_container, descender)
+                self.render_label(maybe_container, last_descender, label_width)
             except EndOfContainer:
                 raise EndOfContainer
             try:
-                _, descender = content.flow(maybe_container, descender)
+                descender = self.render_content(maybe_container, last_descender,
+                                                label_width)
                 maybe_container.do_place()
             except EndOfContainer as e:
                 if e.flowable_state:
                     maybe_container.do_place()
                 raise
         else:
-            _, descender = content.flow(container, descender, state=state)
+            descender = self.render_content(container, last_descender,
+                                            label_width, state)
         return descender
 
+    def render_label(self, container, descender, label_width):
+        max_height = container.remaining_height
+        label_container = DownExpandingContainer('LABEL', container,
+                                                 width=label_width,
+                                                 max_height=max_height)
+        label = self.label_flowable(container.document)
+        height, _ = label.flow(label_container, descender)
+
+    def render_content(self, container, descender, label_width, state=None):
+        content = self.content_flowable(container.document)
+        left = label_width + self.get_style('label_spacing', container.document)
+        max_height = container.remaining_height
+        content_container = DownExpandingContainer('CONTENT', container,
+                                                   left=left,
+                                                   max_height=max_height)
+        _, descender = content.flow(content_container, descender, state=state)
+        container.advance(content_container.cursor)
+        return descender
 
 
 class Float(Flowable):

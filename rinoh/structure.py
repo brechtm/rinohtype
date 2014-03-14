@@ -12,7 +12,6 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables, LabeledFlowable
 from .flowable import GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
-from .paragraph import TabStop, RIGHT
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
@@ -88,10 +87,9 @@ class Heading(Referenceable, ParagraphBase):
         return super().render(container, last_descender, state=state)
 
 
-class ListStyle(GroupedFlowablesStyle, ParagraphStyle):
+class ListStyle(GroupedFlowablesStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
-                  'item_indent': 12*PT,
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
@@ -107,10 +105,6 @@ class List(GroupedFlowables):
         self.items = items
 
     def flowables(self, document):
-        # TODO: rethink item_style
-        item_style = ListStyle(base=PARENT_STYLE,
-                               space_above=0, space_below=0,
-                               indent_left=0, indent_right=0)
         if self.get_style('ordered', document):
             separator = self.get_style('numbering_separator', document)
             numbering_style = self.get_style('numbering_style', document)
@@ -119,8 +113,7 @@ class List(GroupedFlowables):
             separator = ''
             numbers = repeat(self.get_style('bullet', document))
         for number, item in zip(numbers, self.items):
-            yield ListItem(number, separator, item, style=item_style,
-                           parent=self)
+            yield ListItem(number, separator, item, parent=self)
 
 
 class ListItemNumber(Paragraph):
@@ -135,15 +128,11 @@ class ListItem(LabeledFlowable):
     def __init__(self, number, separator, flowables, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.number = number
-        self.separator = separator
+        self.label = ListItemNumber(self.number + separator, parent=self)
         self.flowables = StaticGroupedFlowables(flowables, parent=self)
 
     def label_flowable(self, document):
-        tab_stop = TabStop(self.get_style('item_indent', document), align=RIGHT)
-        marker_style = ParagraphStyle(base=PARENT_STYLE, tab_stops=[tab_stop])
-        marker = ListItemNumber([Tab() + self.number + self.separator],
-                                style=marker_style, parent=self)
-        return marker
+        return self.label
 
     def content_flowable(self, document):
         return self.flowables

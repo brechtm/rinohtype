@@ -99,13 +99,18 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_below=6*PT,
        numbering_style=CHARACTER_UC)
 
-styles('enumerated list', ClassSelector(List, 'enumerated'),
+styles('list item', ClassSelector(ListItem),
+       label_width=12*PT,
+       label_spacing=3*PT)
+
+styles('list item number', ContextSelector(ClassSelector(ListItem),
+                                           ClassSelector(Paragraph)),
        base='body',
+       justify=RIGHT)
+
+styles('enumerated list', ClassSelector(List, 'enumerated'),
        space_above=5*PT,
        space_below=5*PT,
-       indent_left=0*PT,
-       indent_first=0*PT,
-       item_indent=12*PT,
        ordered=True,
        flowable_spacing=0*PT,
        numbering_style=NUMBER,
@@ -133,7 +138,7 @@ styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
        base='body',
        space_above=0*PT,
        space_below=0*PT,
-       indent_left=15*PT,
+       indent_left=0*PT,
        indent_first=0*PT)
 
 styles('definition list', ClassSelector(DefinitionList),

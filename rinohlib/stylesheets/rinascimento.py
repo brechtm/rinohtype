@@ -2,9 +2,10 @@
 
 from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
+    GroupedFlowables,
     StyledText, Paragraph, Heading,
     List, ListItem, DefinitionList,
-    DEFAULT, LEFT, CENTER, BOTH, NUMBER,
+    DEFAULT, LEFT, CENTER, RIGHT, BOTH, NUMBER,
     PT, CM
 )
 
@@ -69,25 +70,34 @@ styles('heading level 2', ClassSelector(Heading, level=2),
 styles('monospaced', ClassSelector(StyledText, 'monospaced'),
        typeface=fontFamily.mono)
 
+styles('list item', ClassSelector(ListItem),
+       label_width=12*PT,
+       label_spacing=3*PT)
+
+styles('list item label', ContextSelector(ClassSelector(ListItem),
+                                          ClassSelector(Paragraph)),
+       base='body',
+       justify=RIGHT)
+
 styles('enumerated list', ClassSelector(List, 'enumerated'),
        base='body',
        ordered=True,
        indent_left=5*PT,
-       item_indent=12*PT,
        flowable_spacing=0*PT,
        numbering_style=NUMBER,
        numbering_separator='.')
 
 styles('bulleted list', ClassSelector(List, 'bulleted'),
        base='body',
-       indent_left=5*PT,
        ordered=False,
+       indent_left=5*PT,
        flowable_spacing=0*PT)
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
+                                              ClassSelector(GroupedFlowables),
                                               ClassSelector(Paragraph)),
        base='body',
-       indent_first=17*PT)
+       indent_first=0)
 
 styles('definition list', ClassSelector(DefinitionList),
        base='body')
