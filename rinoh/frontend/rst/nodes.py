@@ -91,12 +91,23 @@ class Reference(CustomElement):
 
 class Footnote(CustomElement):
     def parse(self):
-        return rt.Paragraph('footnote')
+        return rt.DummyFlowable()
 
 
-class Footnote_Reference(CustomElement):
+class Label(CustomElement):
     def parse(self):
-        return self.text
+        return rt.DummyFlowable()
+
+
+class Footnote_Reference(NestedElement):
+    def parse(self):
+        # TODO: fix docutils so that each node has a reference to document
+        for footnote in self.node.parent.document.autofootnotes:
+            if footnote['auto'] == self.node['auto']:
+                nodes = self.map_node(footnote).getchildren()[1:]  # drop label
+                content = [node.parse() for node in nodes]
+                return rt.NoteMarker(rt.StaticGroupedFlowables(content))
+        raise KeyError('Footnote {} not found.'.format(self.node['auto']))
 
 
 class Substitution_Definition(CustomElement):

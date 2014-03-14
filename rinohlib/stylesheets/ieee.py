@@ -4,7 +4,7 @@ from rinoh import (
     StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular,
-    Footnote, TableOfContents, TableOfContentsEntry, Line, TabStop,
+    Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
     PT, INCH, CM, RED,
 )
@@ -158,11 +158,18 @@ styles('footer', ClassSelector(Footer),
        indent_first=0*PT,
        justify=CENTER)
 
-styles('footnote', ContextSelector(ClassSelector(Footnote),
-                                   ClassSelector(Paragraph)),
+styles('footnote paragraph', ContextSelector(ClassSelector(Note),
+                                             ClassSelector(GroupedFlowables),
+                                             ClassSelector(Paragraph)),
        base='body',
        font_size=9*PT,
+       indent_first=0,
        line_spacing=FixedSpacing(10*PT))
+
+styles('footnote label', ContextSelector(ClassSelector(Note),
+                                         ClassSelector(Paragraph)),
+       base='footnote paragraph',
+       justify=RIGHT)
 
 styles('figure', ClassSelector(Figure),
        space_above=10*PT,

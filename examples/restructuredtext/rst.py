@@ -6,6 +6,7 @@ from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
 
+#from rinohlib.stylesheets.rinascimento import styles as ieee_styles
 from rinohlib.stylesheets.ieee import styles as ieee_styles
 
 
@@ -39,7 +40,7 @@ class SimplePage(rt.Page):
                                     bottom=self.footnote_space.top,
                                     chain=document.content)
 
-##        self.content._footnote_space = self.footnote_space
+        self.content._footnote_space = self.footnote_space
 ##
 ##        self.header = rt.Container(self, self.leftmargin, self.topmargin / 2,
 ##                                   body_width, 12*PT)
@@ -69,7 +70,7 @@ class ReStructuredTextDocument(rt.Document):
 
         for section in self.root.section:
 ##            toc.register(flowable)
-            for flowable in section.parse():
+            for flowable in section.process():
                 self.content << flowable
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):

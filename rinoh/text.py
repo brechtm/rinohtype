@@ -495,43 +495,43 @@ class Bold(MixedStyledText):
 class Italic(MixedStyledText):
     """Italic text."""
 
-    def __init__(self, text):
+    def __init__(self, text, parent=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=ITALIC_STYLE)
+        super().__init__(text, style=ITALIC_STYLE, parent=parent)
 
 
 class Emphasized(MixedStyledText):
     """Emphasized text."""
 
-    def __init__(self, text):
+    def __init__(self, text, parent=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=EMPHASIZED_STYLE)
+        super().__init__(text, style=EMPHASIZED_STYLE, parent=parent)
 
 
 class SmallCaps(MixedStyledText):
     """Small capitals text."""
 
-    def __init__(self, text):
+    def __init__(self, text, parent=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SMALL_CAPITALS_STYLE)
+        super().__init__(text, style=SMALL_CAPITALS_STYLE, parent=parent)
 
 
 class Superscript(MixedStyledText):
     """Superscript."""
 
-    def __init__(self, text):
+    def __init__(self, text, parent=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUPERSCRIPT_STYLE)
+        super().__init__(text, style=SUPERSCRIPT_STYLE, parent=parent)
 
 
 class Subscript(MixedStyledText):
     """Subscript."""
 
-    def __init__(self, text):
+    def __init__(self, text, parent=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUBSCRIPT_STYLE)
+        super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent)

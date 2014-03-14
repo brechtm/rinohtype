@@ -6,15 +6,13 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from copy import copy
-from warnings import warn
-
+from .flowable import LabeledFlowable
 from .paragraph import Paragraph
 from .text import StyledText, SingleStyledText, Superscript
 
 
 __all__ = ['FieldException', 'Referenceable',
-           'Field', 'Variable', 'Reference', 'Footnote',
+           'Field', 'Variable', 'Reference', 'NoteMarker', 'Note',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
 
 
@@ -125,23 +123,21 @@ class Reference(Field):
         return field_text.spans()
 
 
-class Footnote(Field):
-    def __init__(self, note):
+class NoteMarker(Field):
+    def __init__(self, note_flowable):
         super().__init__()
-        self.note = note
+        self.note_flowable = note_flowable
 
     def field_spans(self, container):
         number = container._footnote_space.next_number
-        note = copy(self.note)
-        nr = Superscript(str(number) + '  ')
-        nr.parent = note
-        note.insert(0, nr)
-        note.document = container.document
+        label = Paragraph(str(number) + '.')
+        note = Note(label, self.note_flowable)
+        note.source = self.source
         note.flow(container._footnote_space, None)
-        field_text = Superscript(str(number))
-        field_text.parent = self.parent
+        field_text = Superscript(str(number), parent=self)
         return field_text.spans()
+        # TODO: handle overflow in footnote_space
 
 
-class FootnoteParagraph(Paragraph):
+class Note(LabeledFlowable):
     pass

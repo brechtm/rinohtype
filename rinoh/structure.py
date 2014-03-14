@@ -106,37 +106,20 @@ class List(GroupedFlowables):
 
     def flowables(self, document):
         if self.get_style('ordered', document):
-            separator = self.get_style('numbering_separator', document)
             numbering_style = self.get_style('numbering_style', document)
             numbers = (format_number(i, numbering_style) for i in count(1))
+            separator = self.get_style('numbering_separator', document)
         else:
-            separator = ''
             numbers = repeat(self.get_style('bullet', document))
+            separator = ''
         for number, item in zip(numbers, self.items):
-            yield ListItem(number, separator, item, parent=self)
-
-
-class ListItemNumber(Paragraph):
-    def render(self, container, descender, state=None):
-        before = container.cursor
-        result = super().render(container, descender, state=state)
-        container.advance(before - container.cursor)
-        return result
+            label = Paragraph(number + separator)
+            flowable = StaticGroupedFlowables(item)
+            yield ListItem(label, flowable, parent=self)
 
 
 class ListItem(LabeledFlowable):
-    def __init__(self, number, separator, flowables, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.number = number
-        self.label = ListItemNumber(self.number + separator, parent=self)
-        self.flowables = StaticGroupedFlowables(flowables, parent=self)
-
-    def label_flowable(self, document):
-        return self.label
-
-    def content_flowable(self, document):
-        return self.flowables
-
+    pass
 
 
 class DefinitionListStyle(GroupedFlowablesStyle, ParagraphStyle):

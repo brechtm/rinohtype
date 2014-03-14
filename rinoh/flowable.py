@@ -218,14 +218,11 @@ class LabeledFlowableStyle(FlowableStyle):
 class LabeledFlowable(Flowable):
     style_class = LabeledFlowableStyle
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, label, flowable, style=None, parent=None):
         super().__init__(style=style, parent=parent)
-
-    def label_flowable(self, document):
-        raise NotImplementedError
-
-    def content_flowable(self, document):
-        raise NotImplementedError
+        self.label = label
+        self.flowable = flowable
+        label.parent = flowable.parent = self
 
     def render(self, container, last_descender, state=None):
         # TODO: line up baseline of label and first flowable
@@ -254,17 +251,16 @@ class LabeledFlowable(Flowable):
         label_container = DownExpandingContainer('LABEL', container,
                                                  width=label_width,
                                                  max_height=max_height)
-        label = self.label_flowable(container.document)
-        height, _ = label.flow(label_container, descender)
+        height, _ = self.label.flow(label_container, descender)
 
     def render_content(self, container, descender, label_width, state=None):
-        content = self.content_flowable(container.document)
         left = label_width + self.get_style('label_spacing', container.document)
         max_height = container.remaining_height
         content_container = DownExpandingContainer('CONTENT', container,
                                                    left=left,
                                                    max_height=max_height)
-        _, descender = content.flow(content_container, descender, state=state)
+        _, descender = self.flowable.flow(content_container, descender,
+                                          state=state)
         container.advance(content_container.cursor)
         return descender
 

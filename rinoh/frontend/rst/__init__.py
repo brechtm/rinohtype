@@ -6,20 +6,24 @@ from rinoh.util import all_subclasses
 
 
 class CustomElement(object):
+    @classmethod
+    def map_node(cls, node):
+        return cls.MAPPING[node.__class__.__name__](node)
+
     def __init__(self, doctree_node):
         self.node = doctree_node
 
     def __getattr__(self, name):
         for child in self.node.children:
             if child.tagname == name:
-                return map_node(child)
+                return self.map_node(child)
         raise AttributeError('No such element: {}'.format(name))
 
     def __iter__(self):
         try:
             for child in self.parent.node.children:
                 if child.tagname == self.node.tagname:
-                    yield map_node(child)
+                    yield self.map_node(child)
         except AttributeError:
             # this is the root element
             yield self
@@ -27,7 +31,7 @@ class CustomElement(object):
     @property
     def parent(self):
         if self.node.parent is not None:
-            return map_node(self.node.parent)
+            return self.map_node(self.node.parent)
 
     @property
     def text(self):
@@ -37,7 +41,7 @@ class CustomElement(object):
         return self.node.get(key, default)
 
     def getchildren(self):
-        return [map_node(child) for child in self.node.children]
+        return [self.map_node(child) for child in self.node.children]
 
     def process(self, *args, **kwargs):
         result = self.parse(*args, **kwargs)
@@ -70,17 +74,13 @@ class NestedElement(CustomElement):
 
 from . import nodes
 
-
-MAPPING = {cls.__name__.lower(): cls for cls in all_subclasses(CustomElement)}
-MAPPING['Text'] = nodes.Text
-
-
-def map_node(node):
-    return MAPPING[node.__class__.__name__](node)
+CustomElement.MAPPING = {cls.__name__.lower(): cls
+                         for cls in all_subclasses(CustomElement)}
+CustomElement.MAPPING['Text'] = nodes.Text
 
 
 class ReStructuredTextParser(object):
     def parse(self, filename):
         with open(filename) as file:
             doctree = publish_doctree(file.read(), source_path=filename)
-        return map_node(doctree.document)
+        return CustomElement.map_node(doctree.document)
