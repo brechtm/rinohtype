@@ -27,7 +27,7 @@ from .style import Style, Styled
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
-           'Float']
+           'LabeledFlowable', 'Float']
 
 
 class FlowableException(Exception):
@@ -195,16 +195,51 @@ class GroupedFlowables(Flowable):
             state.prepend(flowable, eoc.flowable_state)
             raise EndOfContainer(state)
         except StopIteration:
-            pass
+            return descender
 
 
 class StaticGroupedFlowables(GroupedFlowables):
     def __init__(self, flowables, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.children = flowables
+        for flowable in flowables:
+            flowable.parent = self
 
     def flowables(self, document):
         return iter(self.children)
+
+
+class LabeledFlowable(Flowable):
+    def __init__(self, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+
+    def label_flowable(self, document):
+        raise NotImplementedError
+
+    def content_flowable(self, document):
+        raise NotImplementedError
+
+    def render(self, container, descender, state=None):
+        # TODO: line up baseline of label and first flowable
+        content = self.content_flowable(container.document)
+        if not state:
+            try:
+                maybe_container = MaybeContainer(container)
+                label = self.label_flowable(container.document)
+                height, _ = label.flow(maybe_container, descender)
+            except EndOfContainer:
+                raise EndOfContainer
+            try:
+                _, descender = content.flow(maybe_container, descender)
+                maybe_container.do_place()
+            except EndOfContainer as e:
+                if e.flowable_state:
+                    maybe_container.do_place()
+                raise
+        else:
+            _, descender = content.flow(container, descender, state=state)
+        return descender
+
 
 
 class Float(Flowable):

@@ -8,9 +8,8 @@
 
 from itertools import count, repeat
 
-from .layout import EndOfContainer, MaybeContainer
-from .flowable import Flowable, GroupedFlowables, GroupedFlowablesStyle
-from .flowable import GroupedFlowablesState
+from .flowable import GroupedFlowables, StaticGroupedFlowables, LabeledFlowable
+from .flowable import GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
 from .paragraph import TabStop, RIGHT
@@ -132,50 +131,22 @@ class ListItemNumber(Paragraph):
         return result
 
 
-class ListItem(Flowable):
+class ListItem(LabeledFlowable):
     def __init__(self, number, separator, flowables, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.number = number
         self.separator = separator
-        self.flowables = flowables
-        for flowable in flowables:
-            flowable.parent = self
+        self.flowables = StaticGroupedFlowables(flowables, parent=self)
 
-    def render(self, container, last_descender, state=None):
-        # TODO: line up baseline of ListItemNumber and first flowable
-        if not state:
-            try:
-                maybe_container = MaybeContainer(container)
-                tab_stop = TabStop(self.get_style('item_indent',
-                                                  container.document),
-                                   align=RIGHT)
-                marker_style = ParagraphStyle(base=PARENT_STYLE,
-                                              tab_stops=[tab_stop])
-                marker = ListItemNumber([Tab() + self.number + self.separator],
-                                        style=marker_style, parent=self)
-                height, _ = marker.flow(maybe_container, last_descender)
-            except EndOfContainer:
-                raise EndOfContainer(state)
-            try:
-                state = GroupedFlowablesState(iter(self.flowables))
-                first_flowable = state.next_flowable()
-                height, last_descender = first_flowable.flow(maybe_container,
-                                                             last_descender)
-                maybe_container.do_place()
-            except EndOfContainer as e:
-                if e.flowable_state:
-                    maybe_container.do_place()
-                    state.prepend(first_flowable, e.flowable_state)
-                raise EndOfContainer(state)
-        for flowable in state.flowables:
-            try:
-                _, last_descender = flowable.flow(container, last_descender,
-                                                  state.first_flowable_state)
-                state.flowable_state = None
-            except EndOfContainer as e:
-                state.prepend(flowable, e.flowable_state)
-                raise EndOfContainer(state)
-        return last_descender
+    def label_flowable(self, document):
+        tab_stop = TabStop(self.get_style('item_indent', document), align=RIGHT)
+        marker_style = ParagraphStyle(base=PARENT_STYLE, tab_stops=[tab_stop])
+        marker = ListItemNumber([Tab() + self.number + self.separator],
+                                style=marker_style, parent=self)
+        return marker
+
+    def content_flowable(self, document):
+        return self.flowables
 
 
 

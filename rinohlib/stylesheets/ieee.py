@@ -2,7 +2,7 @@
 from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
     StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
-    List, ListItem, DefinitionList, GroupedFlowables,
+    List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular,
     Footnote, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
@@ -128,6 +128,7 @@ styles('nested bulleted list', ContextSelector(ClassSelector(ListItem),
        indent_left=10*PT)
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
+                                              ClassSelector(GroupedFlowables),
                                               ClassSelector(Paragraph)),
        base='body',
        space_above=0*PT,
