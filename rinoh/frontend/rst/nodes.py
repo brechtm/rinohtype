@@ -161,18 +161,19 @@ class Definition(CustomElement):
 
 class Field_List(CustomElement):
     def parse(self):
-        return rt.StaticGroupedFlowables([field.process() for field in self.field])
+        return rt.StaticGroupedFlowables([field.process()
+                                          for field in self.field])
 
 
 class Field(CustomElement):
     def parse(self):
-        return rt.StaticGroupedFlowables([self.field_name.process(),
-                                          self.field_body.process()])
+        return rt.LabeledFlowable(self.field_name.process(),
+                                  self.field_body.process())
 
 
-class Field_Name(CustomElement):
+class Field_Name(NestedElement):
     def parse(self):
-        return rt.Paragraph(self.text)
+        return rt.Paragraph(self.process_content())
 
 
 class Field_Body(CustomElement):
