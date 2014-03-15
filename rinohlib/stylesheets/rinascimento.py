@@ -43,7 +43,8 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        #font_size=9*PT,
        justify=LEFT,
        indent_left=1*CM,
-       typeface=fontFamily.mono)
+       typeface=fontFamily.mono,
+       ligatures=False)
        #noWrap=True,   # but warn on overflow
        #literal=True ?)
 

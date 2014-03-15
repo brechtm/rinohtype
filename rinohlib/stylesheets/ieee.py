@@ -46,7 +46,8 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        justify=LEFT,
        indent_first=0,
        indent_left=1*CM,
-       typeface=ieee_family.mono)
+       typeface=ieee_family.mono,
+       ligatures=False)
        #noWrap=True,   # but warn on overflow
        #literal=True ?)
 
