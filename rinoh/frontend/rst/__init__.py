@@ -2,6 +2,7 @@
 from docutils.core import publish_doctree
 
 from rinoh.text import MixedStyledText
+from rinoh.flowable import StaticGroupedFlowables
 from rinoh.util import all_subclasses
 
 
@@ -70,6 +71,15 @@ class NestedElement(CustomElement):
         for child in self.getchildren():
             content += child.process()
         return content
+
+
+class GroupingElement(CustomElement):
+    style = None
+
+    def parse(self):
+        return StaticGroupedFlowables([item.process()
+                                       for item in self.getchildren()],
+                                      style=self.style)
 
 
 from . import nodes

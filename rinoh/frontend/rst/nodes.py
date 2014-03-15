@@ -1,7 +1,7 @@
 
 import rinoh as rt
 
-from . import CustomElement, NestedElement
+from . import CustomElement, NestedElement, GroupingElement
 
 
 class Text(CustomElement):
@@ -153,10 +153,8 @@ class Term(NestedElement):
         return rt.MixedStyledText(self.process_content())
 
 
-class Definition(CustomElement):
-    def parse(self):
-        return rt.StaticGroupedFlowables([item.process()
-                                          for item in self.getchildren()])
+class Definition(GroupingElement):
+    pass
 
 
 class Field_List(CustomElement):
@@ -176,10 +174,8 @@ class Field_Name(NestedElement):
         return rt.Paragraph(self.process_content())
 
 
-class Field_Body(CustomElement):
-    def parse(self):
-        return rt.StaticGroupedFlowables([child.process()
-                                          for child in self.getchildren()])
+class Field_Body(GroupingElement):
+    pass
 
 
 class Image(CustomElement):
