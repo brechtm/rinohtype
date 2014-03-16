@@ -42,7 +42,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        base='body',
        #font_size=9*PT,
        justify=LEFT,
-       indent_left=1*CM,
+       margin_left=1*CM,
        typeface=fontFamily.mono,
        ligatures=False)
        #noWrap=True,   # but warn on overflow
@@ -50,7 +50,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
 
 styles('block quote', ClassSelector(Paragraph, 'block quote'),
        base='body',
-       indent_left=1*CM)
+       margin_left=1*CM)
 
 styles('heading level 1', ClassSelector(Heading, level=1),
        typeface=fontFamily.serif,
@@ -83,7 +83,7 @@ styles('list item label', ContextSelector(ClassSelector(ListItem),
 styles('enumerated list', ClassSelector(List, 'enumerated'),
        base='body',
        ordered=True,
-       indent_left=5*PT,
+       margin_left=5*PT,
        flowable_spacing=0*PT,
        numbering_style=NUMBER,
        numbering_separator='.')
@@ -91,7 +91,7 @@ styles('enumerated list', ClassSelector(List, 'enumerated'),
 styles('bulleted list', ClassSelector(List, 'bulleted'),
        base='body',
        ordered=False,
-       indent_left=5*PT,
+       margin_left=5*PT,
        flowable_spacing=0*PT)
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),

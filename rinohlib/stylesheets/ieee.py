@@ -45,7 +45,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        font_size=9*PT,
        justify=LEFT,
        indent_first=0,
-       indent_left=1*CM,
+       margin_left=1*CM,
        typeface=ieee_family.mono,
        ligatures=False)
        #noWrap=True,   # but warn on overflow
@@ -53,7 +53,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
 
 styles('block quote', ClassSelector(Paragraph, 'block quote'),
        base='body',
-       indent_left=1*CM)
+       margin_left=1*CM)
 
 styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieee_family.serif,
@@ -121,7 +121,7 @@ styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
                                                  ClassSelector(List,
                                                                'enumerated')),
        base='enumerated list',
-       indent_left=10*PT)
+       margin_left=10*PT)
 
 styles('bulleted list', ClassSelector(List, 'bulleted'),
        base='enumerated list',
@@ -131,7 +131,14 @@ styles('bulleted list', ClassSelector(List, 'bulleted'),
 styles('nested bulleted list', ContextSelector(ClassSelector(ListItem),
                                                ClassSelector(List, 'bulleted')),
        base='bulleted list',
-       indent_left=10*PT)
+       margin_left=10*PT)
+
+styles('list item body', ContextSelector(ClassSelector(ListItem),
+                                         ClassSelector(GroupedFlowables)),
+       space_above=0,
+       space_below=0,
+       margin_left=0,
+       margin_right=0)
 
 styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
                                               ClassSelector(GroupedFlowables),
@@ -139,7 +146,7 @@ styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
        base='body',
        space_above=0*PT,
        space_below=0*PT,
-       indent_left=0*PT,
+       margin_left=0*PT,
        indent_first=0*PT)
 
 styles('definition list', ClassSelector(DefinitionList),
@@ -147,7 +154,7 @@ styles('definition list', ClassSelector(DefinitionList),
 
 styles('definition', ContextSelector(ClassSelector(DefinitionList),
                                      ClassSelector(GroupedFlowables)),
-       indent_left=15*PT)
+       margin_left=15*PT)
 
 styles('framed', ClassSelector(Framed),
        padding_left=10*PT,
@@ -209,13 +216,13 @@ styles('toc level 1', ClassSelector(TableOfContentsEntry, level=1),
 
 styles('toc level 2', ClassSelector(TableOfContentsEntry, level=2),
        base='table of contents',
-       indent_left=0.6*CM,
+       margin_left=0.6*CM,
        tab_stops=[TabStop(1.2*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
 styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
        base='table of contents',
-       indent_left=1.2*CM,
+       margin_left=1.2*CM,
        tab_stops=[TabStop(1.8*CM),
                   TabStop(1.0, RIGHT, '. ')])
 

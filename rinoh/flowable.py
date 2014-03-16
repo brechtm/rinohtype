@@ -42,14 +42,14 @@ class FlowableStyle(Style):
 
     * `space_above`: Vertical space preceding the flowable (:class:`Dimension`)
     * `space_below`: Vertical space following the flowable (:class:`Dimension`)
-    * `indent_left`: Left indentation of text (class:`Dimension`).
-    * `indent_right`: Right indentation of text (class:`Dimension`).
+    * `margin_left`: Left margin (class:`Dimension`).
+    * `margin_right`: Right margin (class:`Dimension`).
     """
 
     attributes = {'space_above': 0,
                   'space_below': 0,
-                  'indent_left': 0,
-                  'indent_right': 0}
+                  'margin_left': 0,
+                  'margin_right': 0}
 
 
 class FlowableState(object):
@@ -85,21 +85,20 @@ class Flowable(Styled):
         document = container.document
         if not state:
             container.advance(float(self.get_style('space_above', document)))
-        left = self.get_style('indent_left', document)
-        right = container.width - self.get_style('indent_right', document)
+        left = self.get_style('margin_left', document)
+        right = container.width - self.get_style('margin_right', document)
         max_height = container.remaining_height
-        pad_container = DownExpandingContainer('PADDED',
-                                               container,
-                                               top=container.cursor,
-                                               left=left, right=right,
-                                               max_height=max_height)
-        last_descender = self.render(pad_container, last_descender, state=state)
-        container.advance(pad_container.cursor)
+        margin_container = DownExpandingContainer('MARGIN', container,
+                                                  top=container.cursor,
+                                                  left=left, right=right,
+                                                  max_height=max_height)
+        descender = self.render(margin_container, last_descender, state=state)
+        container.advance(margin_container.cursor)
         try:
             container.advance(float(self.get_style('space_below', document)))
         except EndOfContainer:
             pass
-        return container.cursor - start_offset, last_descender
+        return container.cursor - start_offset, descender
 
     def spans(self):
         yield self
