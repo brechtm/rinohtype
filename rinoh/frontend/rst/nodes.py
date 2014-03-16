@@ -46,12 +46,14 @@ class Paragraph(NestedElement):
 
 class Title(CustomElement):
     def parse(self, level=1, id=None):
-        #print('Title.render()')
         return rt.Heading(self.text, level=level, id=id)
 
-class Tip(NestedElement):
+
+class Tip(GroupingElement):
     def parse(self):
-        return rt.Paragraph('TIP: ' + super().process_content())
+        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Note')),
+                                             super().parse()])
+        return rt.Framed(content)
 
 
 class Emphasis(NestedElement):

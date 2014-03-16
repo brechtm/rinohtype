@@ -162,29 +162,40 @@ class Canvas(StringIO):
         self.move_to(*points[0])
         for point in points[1:]:
             self.line_to(*point)
-        self.close_path()
 
     def line_width(self, width):
-        print('{0} w'.format(width), file=self)
+        print('{0} w'.format(float(width)), file=self)
 
-    def color(self, color):
+    def stroke_color(self, color):
         r, g, b, a = color.rgba
-        #print('{0} {1} {2} setrgbcolor'.format(r, g, b), file=self)
+        print('{0} {1} {2} RG'.format(r, g, b), file=self)
 
-    def stroke(self, linewidth=None, color=None):
+    def fill_color(self, color):
+        r, g, b, a = color.rgba
+        print('{0} {1} {2} rg'.format(r, g, b), file=self)
+
+    def stroke(self, line_width=None, color=None):
         self.save_state()
         if color:
-            self.color(color)
-        if linewidth:
-            self.line_width(float(linewidth))
+            self.stroke_color(color)
+        if line_width:
+            self.line_width(line_width)
         print('s', file=self)
         self.restore_state()
 
     def fill(self, color=None):
         self.save_state()
         if color:
-            self.color(color)
+            self.fill_color(color)
         print('f', file=self)
+        self.restore_state()
+
+    def stroke_and_fill(self, stroke_width, stroke_color, fill_color):
+        self.save_state()
+        self.line_width(stroke_width)
+        self.stroke_color(stroke_color)
+        self.fill_color(fill_color)
+        print('B', file=self)
         self.restore_state()
 
     def show_glyphs(self, left, cursor, glyph_span, document):

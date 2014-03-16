@@ -3,10 +3,10 @@ from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
     StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
-    Header, Footer, Figure, Caption, Tabular,
+    Header, Footer, Figure, Caption, Tabular, Framed,
     Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
-    PT, INCH, CM, RED,
+    PT, INCH, CM, RED, Color, Gray
 )
 
 from rinoh.font import TypeFamily
@@ -149,6 +149,15 @@ styles('definition', ContextSelector(ClassSelector(DefinitionList),
                                      ClassSelector(GroupedFlowables)),
        indent_left=15*PT)
 
+styles('framed', ClassSelector(Framed),
+       padding_left=10*PT,
+       padding_right=10*PT,
+       padding_top=4*PT,
+       padding_bottom=4*PT,
+       fill_color=Color(0.94, 0.94, 1.0),
+       stroke_width=1*PT,
+       stroke_color=Gray(0.4))
+
 styles('header', ClassSelector(Header),
        base='body',
        indent_first=0*PT,
@@ -226,11 +235,11 @@ styles('tabular', ClassSelector(Tabular),
        top_border='red line')
 
 styles('red line', ClassSelector(Line),
-       width=0.2*PT,
-       color=RED)
+       stroke_width=0.2*PT,
+       stroke_color=RED)
 
 styles('thick line', ClassSelector(Line),
-       width=1*PT)
+       stroke_width=1*PT)
 
 styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
        font_weight=BOLD,
