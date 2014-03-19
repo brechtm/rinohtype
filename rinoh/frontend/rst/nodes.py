@@ -13,6 +13,11 @@ class Document(CustomElement):
     pass
 
 
+class DocInfo(CustomElement):
+    def parse(self):
+        return rt.DummyFlowable()
+
+
 class System_Message(CustomElement):
     def parse(self, *args, **kwargs):
         return rt.WarnFlowable(self.text)
@@ -20,6 +25,11 @@ class System_Message(CustomElement):
 
 class Comment(CustomElement):
     def process(self, *args, **kwargs):
+        return rt.DummyFlowable()
+
+
+class Topic(CustomElement):
+    def parse(self):
         return rt.DummyFlowable()
 
 
@@ -45,13 +55,23 @@ class Paragraph(NestedElement):
 
 
 class Title(CustomElement):
-    def parse(self, level=1, id=None):
-        return rt.Heading(self.text, level=level, id=id)
+    def parse(self, level=None, id=None):
+        if level is None:
+            return rt.Paragraph(self.text, style='title')
+        else:
+            return rt.Heading(self.text, level=level, id=id)
+
+
+class Note(GroupingElement):
+    def parse(self):
+        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Note')),
+                                             super().parse()])
+        return rt.Framed(content)
 
 
 class Tip(GroupingElement):
     def parse(self):
-        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Note')),
+        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Tip')),
                                              super().parse()])
         return rt.Framed(content)
 

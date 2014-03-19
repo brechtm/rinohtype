@@ -66,12 +66,13 @@ class ReStructuredTextDocument(rt.Document):
 
     def parse_input(self):
 ##        toc = TableOfContents(style=toc_style, styles=toc_levels)
-        self.content << rt.Paragraph(self.root.title.text, style='title')
-
-        for section in self.root.section:
+        for child in self.root.getchildren():
 ##            toc.register(flowable)
-            for flowable in section.process():
-                self.content << flowable
+            if child.node.tagname == 'section':
+                for flowable in child.process():
+                    self.content << flowable
+            else:
+                self.content << child.process()
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):
 ##                toc.register(flowable)
