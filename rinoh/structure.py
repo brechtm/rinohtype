@@ -8,8 +8,9 @@
 
 from itertools import count, repeat
 
+from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables, LabeledFlowable
-from .flowable import GroupedFlowablesStyle
+from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
@@ -23,7 +24,8 @@ from .style import PARENT_STYLE
 __all__ = ['Section', 'HeadingStyle', 'Heading', 'ListStyle', 'List',
            'ListItem', 'DefinitionListStyle', 'DefinitionList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
-           'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry']
+           'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
+           'HorizontalRule', 'HorizontalRuleStyle']
 
 
 class Section(Referenceable, StaticGroupedFlowables):
@@ -222,3 +224,16 @@ class TableOfContentsEntry(Paragraph):
     def __init__(self, text_or_items, depth, style=None, parent=None):
         super().__init__(text_or_items, style=style, parent=parent)
         self.depth = depth
+
+
+class HorizontalRuleStyle(FlowableStyle, LineStyle):
+    pass
+
+
+class HorizontalRule(Flowable):
+    style_class = HorizontalRuleStyle
+
+    def render(self, container, descender, state=None):
+        width = float(container.width)
+        line = Line((0, 0), (width, 0), style=PARENT_STYLE, parent=self)
+        line.render(container.canvas)

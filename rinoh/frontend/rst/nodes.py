@@ -55,6 +55,11 @@ class Title(CustomElement):
             return rt.Paragraph(self.text, 'title')
 
 
+class Subtitle(CustomElement):
+    def parse(self):
+        return rt.Paragraph(self.text, 'subtitle')
+
+
 class Note(GroupingElement):
     def parse(self):
         content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Note')),
@@ -196,3 +201,8 @@ class Field_Body(GroupingElement):
 class Image(CustomElement):
     def parse(self):
         return rt.Image(self.get('uri').rsplit('.png', 1)[0])
+
+
+class Transition(CustomElement):
+    def parse(self):
+        return rt.HorizontalRule()

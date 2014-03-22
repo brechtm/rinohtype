@@ -52,8 +52,8 @@ class LineStyle(Style):
 class Line(Styled):
     style_class = LineStyle
 
-    def __init__(self, start, end, style=None):
-        super().__init__(style)
+    def __init__(self, start, end, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
         self.start = start
         self.end = end
 

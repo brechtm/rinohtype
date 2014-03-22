@@ -3,7 +3,7 @@ from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
     StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
-    Header, Footer, Figure, Caption, Tabular, Framed,
+    Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
     Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
     PT, INCH, CM, RED, Color, Gray
@@ -63,6 +63,10 @@ styles('title', ClassSelector(Paragraph, 'title'),
        space_above=6*PT,
        space_below=6*PT,
        justify=CENTER)
+
+styles('subtitle', ClassSelector(Paragraph, 'subtitle'),
+       base='title',
+       font_size=14*PT)
 
 styles('author', ClassSelector(Paragraph, 'author'),
        base='title',
@@ -264,3 +268,9 @@ styles['tabular'].set_cell_style(styles['first row'], rows=0)
 styles['tabular'].set_cell_style(styles['first column'], cols=0)
 styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
                                  cols=slice(1,None))
+
+styles('horizontal rule', ClassSelector(HorizontalRule),
+       space_above=10*PT,
+       space_below=15*PT,
+       margin_left=40*PT,
+       margin_right=40*PT)
