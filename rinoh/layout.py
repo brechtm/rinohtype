@@ -168,7 +168,7 @@ class ContainerBase(FlowableTarget):
     def check_overflow(self):
         for child in self.children:
             child.check_overflow()
-        if self.chain and self.cursor > self.height:
+        if self.remaining_height < 0:
             raise ReflowRequired
 
     def render(self, rerender=False):
