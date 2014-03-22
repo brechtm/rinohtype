@@ -7,6 +7,8 @@
 
 
 from io import StringIO
+from contextlib import contextmanager
+
 from . import cos
 
 from .reader import PDFReader
@@ -126,15 +128,14 @@ class Canvas(StringIO):
         return Canvas(self, clip)
 
     def append(self, left, top):
-        self.parent.save_state()
-        self.parent.translate(left, top)
-        self.parent.write(self.getvalue())
-        self.parent.restore_state()
+        with self.parent.save_state():
+            self.parent.translate(left, top)
+            self.parent.write(self.getvalue())
 
+    @contextmanager
     def save_state(self):
         print('q', file=self)
-
-    def restore_state(self):
+        yield
         print('Q', file=self)
 
     def translate(self, x, y):
@@ -175,28 +176,25 @@ class Canvas(StringIO):
         print('{0} {1} {2} rg'.format(r, g, b), file=self)
 
     def stroke(self, line_width=None, color=None):
-        self.save_state()
-        if color:
-            self.stroke_color(color)
-        if line_width:
-            self.line_width(line_width)
-        print('s', file=self)
-        self.restore_state()
+        with self.save_state():
+            if color:
+                self.stroke_color(color)
+            if line_width:
+                self.line_width(line_width)
+            print('s', file=self)
 
     def fill(self, color=None):
-        self.save_state()
-        if color:
-            self.fill_color(color)
-        print('f', file=self)
-        self.restore_state()
+        with self.save_state():
+            if color:
+                self.fill_color(color)
+            print('f', file=self)
 
     def stroke_and_fill(self, stroke_width, stroke_color, fill_color):
-        self.save_state()
-        self.line_width(stroke_width)
-        self.stroke_color(stroke_color)
-        self.fill_color(fill_color)
-        print('B', file=self)
-        self.restore_state()
+        with self.save_state():
+            self.line_width(stroke_width)
+            self.stroke_color(stroke_color)
+            self.fill_color(fill_color)
+            print('B', file=self)
 
     def show_glyphs(self, left, cursor, glyph_span, document):
         span = glyph_span.span
@@ -233,15 +231,14 @@ class Canvas(StringIO):
                 current_string += char
         if current_string:
             string += '({})'.format(current_string)
-        self.save_state()
-        print('BT', file=self)
-        print('/{} {} Tf'.format(font_name, size), file=self)
-        self.fill_color(color)
-        print('{} {} Td'.format(left, - (cursor - span.y_offset(document))),
-              file=self)
-        print('[{}] TJ'.format(string), file=self)
-        print('ET', file=self)
-        self.restore_state()
+        with self.save_state():
+            print('BT', file=self)
+            print('/{} {} Tf'.format(font_name, size), file=self)
+            self.fill_color(color)
+            print('{} {} Td'.format(left, - (cursor - span.y_offset(document))),
+                  file=self)
+            print('[{}] TJ'.format(string), file=self)
+            print('ET', file=self)
         return total_width
 
     def place_image(self, image, left, top, scale=1.0):
@@ -253,11 +250,10 @@ class Canvas(StringIO):
             image_number = 0
         self.cos_page.cos_page.image_number = image_number + 1
         xobjects['Im{:03d}'.format(image_number)] = image.xobject
-        self.save_state()
-        self.translate(left, top + image.height)
-        self.scale(scale)
-        print('/Im{:03d} Do'.format(image_number), file=self)
-        self.restore_state()
+        with self.save_state():
+            self.translate(left, top + image.height)
+            self.scale(scale)
+            print('/Im{:03d} Do'.format(image_number), file=self)
 
 
 class Image(object):
