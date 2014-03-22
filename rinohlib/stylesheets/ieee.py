@@ -107,6 +107,7 @@ styles('list item', ClassSelector(ListItem),
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
        base='body',
+       indent_first=0,
        justify=RIGHT)
 
 styles('enumerated list', ClassSelector(List, 'enumerated'),
