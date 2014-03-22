@@ -73,6 +73,13 @@ class Flowable(Styled):
         `parent` (see :class:`Styled`)."""
         super().__init__(style=style, parent=parent)
 
+    @property
+    def level(self):
+        try:
+            return self.parent.level
+        except AttributeError:
+            return 0
+
     def flow(self, container, last_descender, state=None):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -204,6 +211,11 @@ class StaticGroupedFlowables(GroupedFlowables):
         self.children = flowables
         for flowable in flowables:
             flowable.parent = self
+
+    def prepare(self, document):
+        super().prepare(document)
+        for child in self.children:
+            child.prepare(document)
 
     def flowables(self, document):
         return iter(self.children)

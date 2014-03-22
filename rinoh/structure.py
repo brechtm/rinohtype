@@ -20,10 +20,30 @@ from .dimension import PT
 from .style import PARENT_STYLE
 
 
-__all__ = ['HeadingStyle', 'Heading', 'ListStyle', 'List', 'ListItem',
-           'DefinitionListStyle', 'DefinitionList',
+__all__ = ['Section', 'HeadingStyle', 'Heading', 'ListStyle', 'List',
+           'ListItem', 'DefinitionListStyle', 'DefinitionList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry']
+
+
+class Section(Referenceable, StaticGroupedFlowables):
+    def __init__(self, flowables, id=None, style=None, parent=None):
+        Referenceable.__init__(self, id)
+        StaticGroupedFlowables.__init__(self, flowables, style=style,
+                                        parent=parent)
+
+    @property
+    def level(self):
+        try:
+            return self.parent.level + 1
+        except AttributeError:
+            return 1
+
+    def render(self, container, last_descender, state=None):
+        if self.level == 1:
+            container.page.section = self
+        self.update_page_reference(container.page)
+        return super().render(container, last_descender, state=state)
 
 
 class HeadingStyle(ParagraphStyle):
@@ -35,22 +55,19 @@ class HeadingStyle(ParagraphStyle):
 
 
 # TODO: share superclass with List (numbering)
-class Heading(Referenceable, ParagraphBase):
+class Heading(ParagraphBase):
     style_class = HeadingStyle
 
-    def __init__(self, title, style=None, level=1, id=None):
-        ParagraphBase.__init__(self, style)
-        Referenceable.__init__(self, id)
+    def __init__(self, title, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
         self.title = title
-        self.level = level
 
     def __repr__(self):
         return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
-                                        self.style)
+                                          self.style)
 
     def prepare(self, document):
-        super().prepare(document)
-        element_id = self.get_id(document)
+        element_id = self.parent.get_id(document)
         heading_counters = document.counters.setdefault(__class__, {})
         level_counter = heading_counters.setdefault(self.level, [])
         level_counter.append(self)
@@ -72,19 +89,14 @@ class Heading(Referenceable, ParagraphBase):
     def initial_state(self, document):
         numbering_style = self.get_style('numbering_style', document)
         if numbering_style is not None:
-            formatted_number = Reference(self.get_id(document), REFERENCE)
+            formatted_number = Reference(self.parent.get_id(document),
+                                         REFERENCE)
             separator = self.get_style('numbering_separator', document)
             number = formatted_number + separator + FixedWidthSpace()
         else:
             number = ''
         text = MixedStyledText(number + self.title, parent=self)
         return ParagraphState(text.spans())
-
-    def render(self, container, last_descender, state=None):
-        if self.level == 1:
-            container.page.section = self
-        self.update_page_reference(container.page)
-        return super().render(container, last_descender, state=state)
 
 
 class ListStyle(GroupedFlowablesStyle):
@@ -197,21 +209,16 @@ class TableOfContents(GroupedFlowables):
 
     def flowables(self, document):
         depth = self.get_style('depth', document)
-        for flowable in (flowable for target in document.flowable_targets
-                         for flowable in target.flowables):
-            if isinstance(flowable, Heading) and flowable.level <= depth:
-                flowable_id = flowable.get_id(document)
+        for flowable_id, flowable in document.elements.items():
+            if isinstance(flowable, Section) and flowable.level <= depth:
                 text = [Reference(flowable_id, type=REFERENCE), Tab(),
                         Reference(flowable_id, type=TITLE), Tab(),
                         Reference(flowable_id, type=PAGE)]
-                for reference in text:
-                    reference.source = self
-                entry = TableOfContentsEntry(text, level=flowable.level,
-                                             parent=self)
+                entry = TableOfContentsEntry(text, flowable.level, parent=self)
                 yield entry
 
 
 class TableOfContentsEntry(Paragraph):
-    def __init__(self, text_or_items, level, style=None, parent=None):
+    def __init__(self, text_or_items, depth, style=None, parent=None):
         super().__init__(text_or_items, style=style, parent=parent)
-        self.level = level
+        self.depth = depth

@@ -208,19 +208,19 @@ styles('table of contents', ClassSelector(TableOfContents),
        indent_first=0,
        depth=3)
 
-styles('toc level 1', ClassSelector(TableOfContentsEntry, level=1),
+styles('toc level 1', ClassSelector(TableOfContentsEntry, depth=1),
        base='table of contents',
        font_weight=BOLD,
        tab_stops=[TabStop(0.6*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-styles('toc level 2', ClassSelector(TableOfContentsEntry, level=2),
+styles('toc level 2', ClassSelector(TableOfContentsEntry, depth=2),
        base='table of contents',
        margin_left=0.6*CM,
        tab_stops=[TabStop(1.2*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-styles('toc level 3', ClassSelector(TableOfContentsEntry, level=3),
+styles('toc level 3', ClassSelector(TableOfContentsEntry, depth=3),
        base='table of contents',
        margin_left=1.2*CM,
        tab_stops=[TabStop(1.8*CM),

@@ -34,19 +34,12 @@ class Topic(CustomElement):
 
 
 class Section(CustomElement):
-    def parse(self, level=1):
+    def parse(self):
+        flowables = []
         for element in self.getchildren():
-            if isinstance(element, Title):
-                elem = element.process(level=level, id=self.get('ids', None)[0])
-            elif type(element) == Section:
-                elem = element.process(level=level + 1)
-            else:
-                elem = element.process()
-            if isinstance(elem, rt.Flowable):
-                yield elem
-            else:
-                for flw in elem:
-                    yield flw
+            flowable = element.process()
+            flowables.append(flowable)
+        return rt.Section(flowables, id=self.get('ids', None)[0])
 
 
 class Paragraph(NestedElement):
@@ -55,11 +48,11 @@ class Paragraph(NestedElement):
 
 
 class Title(CustomElement):
-    def parse(self, level=None, id=None):
-        if level is None:
-            return rt.Paragraph(self.text, style='title')
+    def parse(self):
+        if isinstance(self.parent, Section):
+            return rt.Heading(self.text)
         else:
-            return rt.Heading(self.text, level=level, id=id)
+            return rt.Paragraph(self.text, 'title')
 
 
 class Note(GroupingElement):

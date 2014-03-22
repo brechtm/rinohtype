@@ -1,4 +1,6 @@
 
+import rinoh as rt
+
 from rinoh.dimension import PT, INCH
 from rinoh.font.style import BOLD
 from rinoh.paper import LETTER
@@ -82,25 +84,19 @@ styles('index terms', ClassSelector(IndexTerms),
 
 CustomElement, NestedElement = element_factory(xml_frontend)
 
+
 class Section(CustomElement):
-    def parse(self, level=1):
+    def parse(self):
+        flowables = []
         for element in self.getchildren():
-            if type(element) == Section:
-                section = element.process(level=level + 1)
-                for flowable in section:
-                    yield flowable
-            else:
-                if isinstance(element, Title):
-                    flowable = element.process(level=level,
-                                               id=self.get('id', None))
-                else:
-                    flowable = element.process()
-                yield flowable
+            flowable = element.process()
+            flowables.append(flowable)
+        return rt.Section(flowables, id=self.get('id', None))
 
 
 class Title(NestedElement):
-    def parse(self, level=1, id=None):
-        return Heading(self.process_content(), level=level, id=id)
+    def parse(self):
+        return Heading(self.process_content())
 
 
 class P(NestedElement):
@@ -184,9 +180,9 @@ class Footnote(NestedElement):
 
 class Acknowledgement(CustomElement):
     def parse(self):
-        yield Heading('Acknowledgement', style='unnumbered', level=1)
-        for element in self.getchildren():
-            yield element.process()
+        heading = Heading('Acknowledgement', style='unnumbered')
+        content = [child.process() for child in self.getchildren()]
+        return rt.Section([heading] + content)
 
 
 class Figure(CustomElement):
@@ -354,21 +350,16 @@ class RFIC2009Paper(Document):
         self.content << Abstract(self.root.head.abstract.text)
         self.content << IndexTerms(self.keywords)
 
-        self.content << Heading('Table of Contents', style='unnumbered',
-                                level=1)
+        toc_heading = Heading('Table of Contents', style='unnumbered')
         toc = TableOfContents()
-        self.content << toc
-        for section in self.root.body.section:
-            for flowable in section.process():
-                self.content << flowable
-        try:
-            for flowable in self.root.body.acknowledgement.process():
-                self.content << flowable
-        except AttributeError:
-            pass
-        self.content << Heading('References', style='unnumbered', level=1)
+        self.content << rt.Section([toc_heading, toc])
+        for element in self.root.body.getchildren():
+            self.content << element.process()
+
+        bib_heading = Heading('References', style='unnumbered')
         self.bibliography.sort()
-        self.content << Bibliography(self.bibliography)
+        bib = Bibliography(self.bibliography)
+        self.content << rt.Section([bib_heading, bib])
 
     def setup(self):
         self.page_count = 1

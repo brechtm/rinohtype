@@ -24,6 +24,7 @@ Classes representing a document:
 import time
 import pickle
 
+from collections import OrderedDict
 from itertools import count
 
 from . import __version__, __release_date__
@@ -101,10 +102,10 @@ class Document(object):
         self.creation_time = time.asctime()
 
         self.flowable_targets = []
-        self.counters = {}          # counters for Headings, Figures and Tables
-        self.elements = {}          # mapping id's to Referenceables
-        self.ids_by_element = {}    # mapping elements to id's
-        self.references = {}        # mapping id's to reference data
+        self.counters = {}             # counters for Headings, Figures, Tables
+        self.elements = OrderedDict()  # mapping id's to Referenceables
+        self.ids_by_element = {}       # mapping elements to id's
+        self.references = {}           # mapping id's to reference data
         self._unique_id = 0
 
     def _print_version_and_license(self):
@@ -211,12 +212,17 @@ to the terms of the GNU Affero General Public License version 3.''')
         raise NotImplementedError
 
 
+class Location(object):
+    def __init__(self, document_element):
+        self.location = document_element.__class__.__name__
+
+
 class DocumentElement(object):
     """An element that is directly or indirectly part of a :class:`Document`
     and is eventually rendered to the output."""
 
     def __init__(self, parent=None, source=None):
-        """Initialize this document element as as a child of `parent` 
+        """Initialize this document element as as a child of `parent`
         (:class:`DocumentElement`) if it is not a top-level :class:`Flowable`
         element. `source` should point to a node in the input's document tree
         corresponding to this document element. It is used to point to a
@@ -233,8 +239,10 @@ class DocumentElement(object):
         """The source element this document element was created from."""
         if self._source is not None:
             return self._source
-        else:
+        elif self.parent is not None:
             return self.parent.source
+        else:
+            return Location(self)
 
     @source.setter
     def source(self, source):

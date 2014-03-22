@@ -77,6 +77,7 @@ class Referenceable(object):
         if self.id is None:
             document.ids_by_element[self] = element_id
         document.elements[element_id] = self
+        super().prepare(document)
 
     def get_id(self, document):
         return self.id or document.ids_by_element[self]

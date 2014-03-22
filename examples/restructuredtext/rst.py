@@ -68,11 +68,7 @@ class ReStructuredTextDocument(rt.Document):
 ##        toc = TableOfContents(style=toc_style, styles=toc_levels)
         for child in self.root.getchildren():
 ##            toc.register(flowable)
-            if child.node.tagname == 'section':
-                for flowable in child.process():
-                    self.content << flowable
-            else:
-                self.content << child.process()
+            self.content << child.process()
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):
 ##                toc.register(flowable)
