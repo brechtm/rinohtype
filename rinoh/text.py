@@ -39,6 +39,7 @@ import re
 import unicodedata
 
 from .dimension import PT
+from .draw import BLACK
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14
@@ -85,6 +86,7 @@ class TextStyle(Style):
                   'font_slant': UPRIGHT,
                   'font_width': NORMAL,
                   'font_size': 10*PT,
+                  'font_color': BLACK,
                   'small_caps': False,
                   'position': None,
                   'kerning': True,

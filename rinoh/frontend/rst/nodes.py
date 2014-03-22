@@ -94,6 +94,11 @@ class Literal(CustomElement):
         return rt.LiteralText(self.text, style='monospaced')
 
 
+class Problematic(CustomElement):
+    def parse(self):
+        return rt.SingleStyledText(self.text, style='error')
+
+
 class Literal_Block(CustomElement):
     def parse(self):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')

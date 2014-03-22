@@ -202,6 +202,7 @@ class Canvas(StringIO):
         span = glyph_span.span
         font = span.font(document)
         size = span.height(document)
+        color = span.get_style('font_color', document)
         font_rsc, font_name = self.cos_page.register_font(font)
         string = ''
         current_string = ''
@@ -232,12 +233,15 @@ class Canvas(StringIO):
                 current_string += char
         if current_string:
             string += '({})'.format(current_string)
+        self.save_state()
         print('BT', file=self)
         print('/{} {} Tf'.format(font_name, size), file=self)
+        self.fill_color(color)
         print('{} {} Td'.format(left, - (cursor - span.y_offset(document))),
               file=self)
         print('[{}] TJ'.format(string), file=self)
         print('ET', file=self)
+        self.restore_state()
         return total_width
 
     def place_image(self, image, left, top, scale=1.0):

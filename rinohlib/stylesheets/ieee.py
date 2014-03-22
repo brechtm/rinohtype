@@ -40,6 +40,9 @@ styles('monospaced', ClassSelector(StyledText, 'monospaced'),
        hyphenate=False,
        ligatures=False)
 
+styles('error', ClassSelector(StyledText, 'error'),
+       font_color=RED)
+
 styles('literal', ClassSelector(Paragraph, 'literal'),
        base='body',
        font_size=9*PT,
