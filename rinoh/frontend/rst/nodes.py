@@ -94,6 +94,16 @@ class Literal(CustomElement):
         return rt.LiteralText(self.text, style='monospaced')
 
 
+class Superscript(NestedElement):
+    def parse(self):
+        return rt.Superscript(self.process_content())
+
+
+class Subscript(NestedElement):
+    def parse(self):
+        return rt.Subscript(self.process_content())
+
+
 class Problematic(CustomElement):
     def parse(self):
         return rt.SingleStyledText(self.text, style='error')
