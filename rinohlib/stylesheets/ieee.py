@@ -108,7 +108,8 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        numbering_style=CHARACTER_UC)
 
 styles('list item', ClassSelector(ListItem),
-       label_width=12*PT,
+       label_min_width=12*PT,
+       label_max_width=30*PT,
        label_spacing=3*PT)
 
 styles('list item number', ContextSelector(ClassSelector(ListItem),
