@@ -237,3 +237,4 @@ class HorizontalRule(Flowable):
         width = float(container.width)
         line = Line((0, 0), (width, 0), style=PARENT_STYLE, parent=self)
         line.render(container.canvas)
+        return width, 0

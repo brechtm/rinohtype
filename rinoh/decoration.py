@@ -42,12 +42,12 @@ class Framed(Flowable):
                                                    top=container.cursor,
                                                    left=left, right=right,
                                                    max_height=max_height)
-            height, descender = self.flowable.flow(pad_container, descender,
-                                                   state=state)
+            _, descender = self.flowable.flow(pad_container, descender,
+                                              state=state)
             container.advance(pad_container.cursor
                               + self.get_style('padding_bottom', document))
             self.render_frame(container, container.height)
-            return descender
+            return container.width, descender
         except EndOfContainer:
             self.render_frame(container, container.max_height)
             raise

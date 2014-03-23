@@ -28,6 +28,7 @@ class Image(Flowable):
         top = float(container.cursor)
         container.canvas.place_image(image, left, top, scale=self.scale)
         container.advance(float(image.height))
+        return image.width, 0
 
 
 class CaptionStyle(ParagraphStyle):

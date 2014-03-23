@@ -88,24 +88,25 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        start_offset = container.cursor
         document = container.document
         if not state:
             container.advance(float(self.get_style('space_above', document)))
-        left = self.get_style('margin_left', document)
-        right = container.width - self.get_style('margin_right', document)
+        margin_left = self.get_style('margin_left', document)
+        margin_right = self.get_style('margin_right', document)
+        right = container.width - margin_right
         max_height = container.remaining_height
         margin_container = DownExpandingContainer('MARGIN', container,
                                                   top=container.cursor,
-                                                  left=left, right=right,
+                                                  left=margin_left, right=right,
                                                   max_height=max_height)
-        descender = self.render(margin_container, last_descender, state=state)
+        width, descender = self.render(margin_container, last_descender,
+                                       state=state)
         container.advance(margin_container.cursor)
         try:
             container.advance(float(self.get_style('space_below', document)))
         except EndOfContainer:
             pass
-        return container.cursor - start_offset, descender
+        return margin_left + width + margin_right, descender
 
     def spans(self):
         yield self
@@ -151,11 +152,14 @@ class InseparableFlowables(Flowable):
         raise NotImplementedError
 
     def render(self, container, last_descender, state=None):
+        max_flowabe_width = 0
         maybe_container = MaybeContainer(container)
         for flowable in self.flowables(container.document):
-            _, last_descender = flowable.flow(maybe_container, last_descender)
+            width, last_descender = flowable.flow(maybe_container,
+                                                  last_descender)
+            max_flowabe_width = max(max_flowabe_width, width)
         maybe_container.do_place()
-        return last_descender
+        return max_flowabe_width, last_descender
 
 
 class GroupedFlowablesState(FlowableState):
@@ -187,14 +191,17 @@ class GroupedFlowables(Flowable):
         raise NotImplementedError
 
     def render(self, container, descender, state=None):
+        max_flowable_width = 0
         flowables = self.flowables(container.document)
         item_spacing = self.get_style('flowable_spacing', container.document)
         state = state or GroupedFlowablesState(flowables)
         flowable = state.next_flowable()
         try:
             while True:
-                _, descender = flowable.flow(container, descender,
-                                             state=state.first_flowable_state)
+                width, descender = \
+                    flowable.flow(container, descender,
+                                  state=state.first_flowable_state)
+                max_flowable_width = max(max_flowable_width, width)
                 state.first_flowable_state = None
                 flowable = state.next_flowable()
                 container.advance(item_spacing)
@@ -202,7 +209,7 @@ class GroupedFlowables(Flowable):
             state.prepend(flowable, eoc.flowable_state)
             raise EndOfContainer(state)
         except StopIteration:
-            return descender
+            return max_flowable_width, descender
 
 
 class StaticGroupedFlowables(GroupedFlowables):
@@ -255,7 +262,7 @@ class LabeledFlowable(Flowable):
         else:
             descender = self.render_content(container, last_descender,
                                             label_width, state)
-        return descender
+        return container.width, descender
 
     def render_label(self, container, descender, label_width):
         max_height = container.remaining_height

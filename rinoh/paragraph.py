@@ -248,12 +248,14 @@ class ParagraphBase(Flowable):
         # line are yielded again on the next typeset() call.
         state = state or self.initial_state(document)
         saved_state = copy(state)
+        max_line_width = 0
 
         def typeset_line(line, last_line=False, force=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal span, state, saved_state, descender
+            nonlocal span, state, saved_state, max_line_width, descender
             try:
+                max_line_width = max(max_line_width, line._cursor)
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
                 saved_state = copy(state)
@@ -301,7 +303,7 @@ class ParagraphBase(Flowable):
                     typeset_line(line, last_line=True)
                 break
 
-        return descender
+        return max_line_width, descender
 
 
 class Paragraph(ParagraphBase, MixedStyledText):

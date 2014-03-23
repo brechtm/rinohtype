@@ -186,6 +186,7 @@ class Tabular(Flowable):
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(x_cursor, y_offset)
             y_cursor += row_height
+        return container.width, 0
 
     def render_cell(self, cell, container, style):
         if cell is not None and cell.content:
