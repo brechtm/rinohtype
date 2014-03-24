@@ -9,7 +9,8 @@
 from itertools import count, repeat
 
 from .draw import Line, LineStyle
-from .flowable import GroupedFlowables, StaticGroupedFlowables, LabeledFlowable
+from .flowable import GroupedFlowables, StaticGroupedFlowables
+from .flowable import LabeledFlowables, LabeledFlowablesStyle, LabeledFlowable
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
@@ -22,7 +23,7 @@ from .style import PARENT_STYLE
 
 
 __all__ = ['Section', 'HeadingStyle', 'Heading', 'ListStyle', 'List',
-           'ListItem', 'DefinitionListStyle', 'DefinitionList',
+           'ListItem', 'DefinitionListStyle', 'DefinitionList', 'FieldList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -101,17 +102,14 @@ class Heading(ParagraphBase):
         return ParagraphState(text.spans())
 
 
-class ListStyle(GroupedFlowablesStyle):
+class ListStyle(LabeledFlowablesStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
 
-
-class List(GroupedFlowables):
+class List(LabeledFlowables):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
@@ -133,6 +131,10 @@ class List(GroupedFlowables):
 
 
 class ListItem(LabeledFlowable):
+    pass
+
+
+class FieldList(LabeledFlowables, StaticGroupedFlowables):
     pass
 
 

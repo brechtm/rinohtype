@@ -107,11 +107,6 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_below=6*PT,
        numbering_style=CHARACTER_UC)
 
-styles('list item', ClassSelector(ListItem),
-       label_min_width=12*PT,
-       label_max_width=30*PT,
-       label_spacing=3*PT)
-
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
        base='body',

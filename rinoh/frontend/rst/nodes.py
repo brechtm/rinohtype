@@ -194,7 +194,7 @@ class Definition(GroupingElement):
 
 class Field_List(CustomElement):
     def parse(self):
-        return rt.LabeledFlowables([field.process() for field in self.field])
+        return rt.FieldList([field.process() for field in self.field])
 
 
 class Field(CustomElement):
