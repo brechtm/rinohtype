@@ -22,7 +22,7 @@ from itertools import chain, tee
 
 from .dimension import PT
 from .layout import (EndOfContainer, DownExpandingContainer, MaybeContainer,
-                     VirtualContainer)
+                     VirtualContainer, discard_state)
 from .style import Style, Styled
 
 
@@ -154,14 +154,13 @@ class InseparableFlowables(Flowable):
         raise NotImplementedError
 
     def render(self, container, last_descender, state=None):
-        max_flowabe_width = 0
-        maybe_container = MaybeContainer(container)
-        for flowable in self.flowables(container.document):
-            width, last_descender = flowable.flow(maybe_container,
-                                                  last_descender)
-            max_flowabe_width = max(max_flowabe_width, width)
-        maybe_container.do_place()
-        return max_flowabe_width, last_descender
+        max_flowable_width = 0
+        with MaybeContainer(container) as maybe_container, discard_state():
+            for flowable in self.flowables(container.document):
+                width, last_descender = flowable.flow(maybe_container,
+                                                      last_descender)
+                max_flowable_width = max(max_flowable_width, width)
+        return max_flowable_width, last_descender
 
 
 class GroupedFlowablesState(FlowableState):
@@ -266,19 +265,12 @@ class LabeledFlowable(Flowable):
         # TODO: line up baseline of label and first flowable
         label_width = self.parent.label_width
         if not state:
-            maybe_container = MaybeContainer(container)
-            try:
-                self.render_label(maybe_container, last_descender, label_width)
-            except EndOfContainer:
-                raise EndOfContainer
-            try:
+            with MaybeContainer(container) as maybe_container:
+                with discard_state():
+                    self.render_label(maybe_container, last_descender,
+                                      label_width)
                 descender = self.render_content(maybe_container, last_descender,
                                                 label_width)
-                maybe_container.do_place()
-            except EndOfContainer as e:
-                if e.flowable_state:
-                    maybe_container.do_place()
-                raise
         else:
             descender = self.render_content(container, last_descender,
                                             label_width, state)

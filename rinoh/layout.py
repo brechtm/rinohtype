@@ -27,13 +27,15 @@ page to which :class:`Flowable`\ s can be rendered.
 
 """
 
+from contextlib import contextmanager
 from copy import copy
 
 from .dimension import Dimension, PT
 
 
 __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
-           'VirtualContainer', 'Chain', 'EndOfContainer', 'FootnoteContainer']
+           'VirtualContainer', 'Chain', 'EndOfContainer', 'FootnoteContainer',
+           'MaybeContainer', 'discard_state']
 
 
 class EndOfContainer(Exception):
@@ -294,6 +296,14 @@ class MaybeContainer(DownExpandingContainer):
                          width=width, right=right, max_height=max_height)
         self._do_place = False
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, _):
+        if (exc_type is None or (issubclass(exc_type, EndOfContainer)
+                                 and exc_value.flowable_state)):
+            self.do_place()
+
     def do_place(self):
         self.parent.advance(self.cursor)
         self._do_place = True
@@ -301,6 +311,14 @@ class MaybeContainer(DownExpandingContainer):
     def place(self):
         if self._do_place:
             super().place()
+
+
+@contextmanager
+def discard_state():
+    try:
+        yield
+    except EndOfContainer:
+        raise EndOfContainer
 
 
 class VirtualContainer(DownExpandingContainer):
