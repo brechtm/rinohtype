@@ -264,15 +264,12 @@ class LabeledFlowable(Flowable):
     def render(self, container, last_descender, state=None):
         # TODO: line up baseline of label and first flowable
         label_width = self.parent.label_width
-        if not state:
-            with MaybeContainer(container) as maybe_container:
+        with MaybeContainer(container) as maybe_container:
+            if not state:
                 with discard_state():
                     self.render_label(maybe_container, last_descender,
                                       label_width)
-                descender = self.render_content(maybe_container, last_descender,
-                                                label_width)
-        else:
-            descender = self.render_content(container, last_descender,
+            descender = self.render_content(maybe_container, last_descender,
                                             label_width, state)
         return container.width, descender
 
