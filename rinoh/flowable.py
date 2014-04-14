@@ -29,7 +29,7 @@ from .style import Style, Styled
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
-           'LabeledFlowables', 'LabeledFlowable',
+           'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float']
 
 
@@ -82,7 +82,7 @@ class Flowable(Styled):
         except AttributeError:
             return 0
 
-    def flow(self, container, last_descender, state=None):
+    def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
 
@@ -102,7 +102,7 @@ class Flowable(Styled):
                                                   left=margin_left, right=right,
                                                   max_height=max_height)
         width, descender = self.render(margin_container, last_descender,
-                                       state=state)
+                                       state=state, **kwargs)
         container.advance(margin_container.cursor)
         try:
             container.advance(float(self.get_style('space_below', document)))
@@ -191,7 +191,7 @@ class GroupedFlowables(Flowable):
     def flowables(self, document):
         raise NotImplementedError
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state=None, **kwargs):
         max_flowable_width = 0
         flowables = self.flowables(container.document)
         item_spacing = self.get_style('flowable_spacing', container.document)
@@ -201,7 +201,7 @@ class GroupedFlowables(Flowable):
             while True:
                 width, descender = \
                     flowable.flow(container, descender,
-                                  state=state.first_flowable_state)
+                                  state=state.first_flowable_state, **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
                 state.first_flowable_state = None
                 flowable = state.next_flowable()
@@ -229,41 +229,24 @@ class StaticGroupedFlowables(GroupedFlowables):
         return iter(self.children)
 
 
-class LabeledFlowablesStyle(GroupedFlowablesStyle):
+class LabeledFlowableStyle(FlowableStyle):
     attributes = {'label_min_width': 12*PT,
                   'label_max_width': 80*PT,
                   'label_spacing': 3*PT}
 
 
-class LabeledFlowables(GroupedFlowables):
-    style_class = LabeledFlowablesStyle
-
-    def _calculate_label_width(self, container):
-        label_min_width = self.get_style('label_min_width', container.document)
-        label_max_width = self.get_style('label_max_width', container.document)
-        max_width = 0
-        for labeled_flowable in self.flowables(container.document):
-            virt_container = VirtualContainer(container, label_max_width)
-            label_width, _ = labeled_flowable.label.flow(virt_container, 0)
-            max_width = max(max_width, label_width)
-        return max(max_width, label_min_width)
-
-    def render(self, container, descender, state=None):
-        if state is None:
-            self.label_width = self._calculate_label_width(container)
-        return super().render(container, descender, state=state)
-
-
 class LabeledFlowable(Flowable):
+    style_class = LabeledFlowableStyle
+
     def __init__(self, label, flowable, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.label = label
         self.flowable = flowable
         label.parent = flowable.parent = self
 
-    def render(self, container, last_descender, state=None):
+    def render(self, container, last_descender, state=None, label_width=None):
         # TODO: line up baseline of label and first flowable
-        label_width = self.parent.label_width
+        label_width = label_width or self.label_width(container)
         with MaybeContainer(container) as maybe_container:
             if not state:
                 with discard_state():
@@ -273,6 +256,13 @@ class LabeledFlowable(Flowable):
                                             label_width, state)
         return container.width, descender
 
+    def label_width(self, container):
+        label_min_width = self.get_style('label_min_width', container.document)
+        label_max_width = self.get_style('label_max_width', container.document)
+        virtual_container = VirtualContainer(container, label_max_width)
+        label_width, _ = self.label.flow(virtual_container, 0)
+        return max(label_width, label_min_width)
+
     def render_label(self, container, descender, label_width):
         max_height = container.remaining_height
         label_container = DownExpandingContainer('LABEL', container,
@@ -281,7 +271,7 @@ class LabeledFlowable(Flowable):
         return self.label.flow(label_container, descender)
 
     def render_content(self, container, descender, label_width, state=None):
-        spacing = self.parent.get_style('label_spacing', container.document)
+        spacing = self.get_style('label_spacing', container.document)
         max_height = container.remaining_height
         content_container = DownExpandingContainer('CONTENT', container,
                                                    left=label_width + spacing,
@@ -290,6 +280,24 @@ class LabeledFlowable(Flowable):
                                           state=state)
         container.advance(content_container.cursor)
         return descender
+
+
+class GroupedLabeledFlowables(GroupedFlowables):
+    def _calculate_label_width(self, container):
+        return max(flowable.label_width(container)
+                   for flowable in self.flowables(container.document))
+
+    def render(self, container, descender, state=None):
+        if state is None:
+            label_width = self._calculate_label_width(container)
+        else:
+            label_width = state.label_width
+        try:
+            return super().render(container, descender, state=state,
+                                  label_width=label_width)
+        except EndOfContainer as eoc:
+            eoc.flowable_state.label_width = label_width
+            raise
 
 
 class Float(Flowable):

@@ -10,7 +10,7 @@ from itertools import count, repeat
 
 from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
-from .flowable import LabeledFlowables, LabeledFlowablesStyle, LabeledFlowable
+from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .number import format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
@@ -102,14 +102,14 @@ class Heading(ParagraphBase):
         return ParagraphState(text.spans())
 
 
-class ListStyle(LabeledFlowablesStyle):
+class ListStyle(GroupedFlowablesStyle):
     attributes = {'ordered': False,
                   'bullet': SingleStyledText('\N{BULLET}'),
                   'numbering_style': NUMBER,
                   'numbering_separator': ')'}
 
 
-class List(LabeledFlowables):
+class List(GroupedLabeledFlowables):
     style_class = ListStyle
 
     def __init__(self, items, style=None):
@@ -134,7 +134,7 @@ class ListItem(LabeledFlowable):
     pass
 
 
-class FieldList(LabeledFlowables, StaticGroupedFlowables):
+class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
