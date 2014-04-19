@@ -250,10 +250,20 @@ class LabeledFlowable(Flowable):
         with MaybeContainer(container) as maybe_container:
             if not state:
                 with discard_state():
-                    self.render_label(maybe_container, last_descender,
-                                      label_width)
-            descender = self.render_content(maybe_container, last_descender,
-                                            label_width, state)
+                    label_height, label_descender = \
+                        self.render_label(maybe_container, last_descender,
+                                          label_width)
+            else:
+                label_height = label_descender = 0
+            content_height, content_descender = \
+                self.render_content(maybe_container, last_descender,
+                                    label_width, state)
+            if label_height > content_height:
+                container.advance(label_height)
+                descender = label_descender
+            else:
+                container.advance(content_height)
+                descender = content_descender
         return container.width, descender
 
     def label_width(self, container):
@@ -268,7 +278,8 @@ class LabeledFlowable(Flowable):
         label_container = DownExpandingContainer('LABEL', container,
                                                  width=label_width,
                                                  max_height=max_height)
-        return self.label.flow(label_container, descender)
+        _, descender = self.label.flow(label_container, descender)
+        return label_container.cursor, descender
 
     def render_content(self, container, descender, label_width, state=None):
         spacing = self.get_style('label_spacing', container.document)
@@ -278,8 +289,7 @@ class LabeledFlowable(Flowable):
                                                    max_height=max_height)
         _, descender = self.flowable.flow(content_container, descender,
                                           state=state)
-        container.advance(content_container.cursor)
-        return descender
+        return content_container.cursor, descender
 
 
 class GroupedLabeledFlowables(GroupedFlowables):
