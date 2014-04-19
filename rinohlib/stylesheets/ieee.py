@@ -161,6 +161,15 @@ styles('definition', ContextSelector(ClassSelector(DefinitionList),
                                      ClassSelector(GroupedFlowables)),
        margin_left=15*PT)
 
+
+# field lists
+
+styles('field name', ClassSelector(Paragraph, 'field_name'),
+       base='body',
+       indent_first=0,
+       font_weight=BOLD)
+
+
 # option lists
 
 styles('option string', ClassSelector(MixedStyledText, 'option_string'),

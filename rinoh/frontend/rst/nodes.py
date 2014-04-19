@@ -206,7 +206,7 @@ class Field(CustomElement):
 
 class Field_Name(NestedElement):
     def parse(self):
-        return rt.Paragraph(self.process_content())
+        return rt.Paragraph(self.process_content(), style='field_name')
 
 
 class Field_Body(GroupingElement):
