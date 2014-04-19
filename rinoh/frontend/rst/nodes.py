@@ -2,6 +2,7 @@
 import rinoh as rt
 
 from . import CustomElement, NestedElement, GroupingElement
+from ...util import intersperse
 
 
 class Text(CustomElement):
@@ -209,6 +210,48 @@ class Field_Name(NestedElement):
 
 
 class Field_Body(GroupingElement):
+    pass
+
+
+class Option_List(CustomElement):
+    def parse(self):
+        return rt.FieldList([item.process() for item in self.option_list_item])
+
+
+class Option_List_Item(CustomElement):
+    def parse(self):
+        return rt.LabeledFlowable(self.option_group.process(),
+                                  self.description.process(),
+                                  style='option')
+
+
+class Option_Group(NestedElement):
+    def parse(self):
+        options = (option.process() for option in self.option)
+        return rt.Paragraph(intersperse(options, ', '))
+
+
+class Option(NestedElement):
+    def parse(self):
+        text = self.option_string.process()
+        try:
+            text += ' ' + self.option_argument.process()
+        except AttributeError:
+            pass
+        return rt.MixedStyledText(text)
+
+
+class Option_String(NestedElement):
+    def parse(self):
+        return rt.MixedStyledText(self.process_content(), style='option_string')
+
+
+class Option_Argument(NestedElement):
+    def parse(self):
+        return rt.MixedStyledText(self.process_content(), style='option_arg')
+
+
+class Description(GroupingElement):
     pass
 
 

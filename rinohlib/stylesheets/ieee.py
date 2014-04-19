@@ -1,7 +1,8 @@
 
 from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
-    StyledText, Paragraph, Heading, FixedSpacing, ProportionalSpacing,
+    StyledText, MixedStyledText, Paragraph, Heading,
+    FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
     Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
@@ -159,6 +160,18 @@ styles('definition list', ClassSelector(DefinitionList),
 styles('definition', ContextSelector(ClassSelector(DefinitionList),
                                      ClassSelector(GroupedFlowables)),
        margin_left=15*PT)
+
+# option lists
+
+styles('option string', ClassSelector(MixedStyledText, 'option_string'),
+       base='body',
+       typeface=ieee_family.mono,
+       font_size=8*PT)
+
+styles('option argument', ClassSelector(MixedStyledText, 'option_arg'),
+       base='body',
+       font_slant=ITALIC)
+
 
 styles('framed', ClassSelector(Framed),
        padding_left=10*PT,
