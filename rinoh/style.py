@@ -184,6 +184,11 @@ class Styled(DocumentElement):
                                     style.__class__.__name__))
         self.style = style
 
+    def __str__(self):
+        parent = str(self.parent) + ' > ' if self.parent else ''
+        style = '[{}]'.format(self.style) if self.style else ''
+        return parent + self.__class__.__name__ + style
+
     @cached
     def _style(self, document):
         return (self.style if isinstance(self.style, Style)
@@ -198,7 +203,7 @@ class Styled(DocumentElement):
         style = self._style(document)
         try:
             if style is None:
-                self.warn('Falling back to default style for {}'.format(self))
+                self.warn('Falling back to default style for ({})'.format(self))
                 value = self.style_class._get_default(attribute)
             else:
                 value = style[attribute]
