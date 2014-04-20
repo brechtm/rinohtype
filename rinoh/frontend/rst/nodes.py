@@ -115,7 +115,8 @@ class Literal_Block(CustomElement):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
-class Block_Quote(NestedElement):
+class Block_Quote(GroupingElement):
+    style = 'block quote'
 
 
 class Line_Block(GroupingElement):

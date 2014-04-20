@@ -55,8 +55,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        #noWrap=True,   # but warn on overflow
        #literal=True ?)
 
-styles('block quote', ClassSelector(Paragraph, 'block quote'),
-       base='body',
+styles('block quote', ClassSelector(GroupedFlowables, 'block quote'),
        margin_left=1*CM)
 
 styles('line block', ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
