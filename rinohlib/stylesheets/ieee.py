@@ -59,6 +59,10 @@ styles('block quote', ClassSelector(Paragraph, 'block quote'),
        base='body',
        margin_left=1*CM)
 
+styles('line block', ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
+                                     ClassSelector(GroupedFlowables, 'line block')),
+       margin_left=0.5*CM)
+
 styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieee_family.serif,
        font_weight=REGULAR,

@@ -116,8 +116,16 @@ class Literal_Block(CustomElement):
 
 
 class Block_Quote(NestedElement):
+
+
+class Line_Block(GroupingElement):
+    style = 'line block'
+
+
+class Line(NestedElement):
     def parse(self):
-        return rt.Paragraph(super().process_content(), style='block quote')
+        return rt.Paragraph(self.process_content() or '\n',
+                            style='line block line')
 
 
 class Reference(CustomElement):

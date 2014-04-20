@@ -14,6 +14,10 @@ styles = rt.StyleSheet('IEEE for rST', base=ieee_styles)
 styles['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
                                    indent_first=0,
                                    space_below=6*PT)
+styles('line block line', rt.ClassSelector(rt.Paragraph, 'line block line'),
+       base='body',
+       space_below=0*PT)
+
 
 # page definition
 # ----------------------------------------------------------------------------
