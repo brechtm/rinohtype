@@ -119,6 +119,12 @@ class Block_Quote(GroupingElement):
     style = 'block quote'
 
 
+class Attribution(Paragraph):
+    def parse(self):
+        return rt.Paragraph('\N{EM DASH}' + self.process_content(),
+                            style='attribution')
+
+
 class Line_Block(GroupingElement):
     style = 'line block'
 
