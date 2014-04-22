@@ -227,14 +227,14 @@ class ExpandingContainer(Container):
     """An dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, name, parent, left, top, width, right, bottom,
-                 max_height=float('+inf')):
+                 max_height=None):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
         height = Dimension(0)
         super().__init__(name, parent, left, top, width, height, right, bottom)
-        self.max_height = max_height
+        self.max_height = max_height or parent.remaining_height
 
     @property
     def remaining_height(self):
@@ -257,8 +257,8 @@ class ExpandingContainer(Container):
 class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None, right=None,
-                 max_height=float('+inf')):
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 right=None, max_height=None):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -275,7 +275,7 @@ class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, name, parent, left=None, bottom=None, width=None,
-                 right=None, max_height=float('+inf')):
+                 right=None, max_height=None):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -291,9 +291,8 @@ class UpExpandingContainer(ExpandingContainer):
 
 class MaybeContainer(DownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
-        max_height = parent.remaining_height
         super().__init__('MAYBE', parent, left=left, top=parent.cursor,
-                         width=width, right=right, max_height=max_height)
+                         width=width, right=right)
         self._do_place = False
 
     def __enter__(self):
@@ -322,17 +321,18 @@ def discard_state():
 
 
 class VirtualContainer(DownExpandingContainer):
-    """A down-expanding container who's contents are rendered, but not placed on
-    the parent container's canvas afterwards. It can later be placed manually by
-    using the :meth:`Canvas.append` method of the container's :class:`Canvas`.
-    """
+    """An infinitely down-expanding container who's contents are rendered, but
+    not placed on the parent container's canvas afterwards. It can later be
+    placed manually by using the :meth:`Canvas.append` method of the
+    container's :class:`Canvas`."""
 
     def __init__(self, parent, width=None):
         """Initialize this virtual container as a child of the `parent`
         container.
 
         `width` specifies the width of the container."""
-        super().__init__('VIRTUAL', parent, width=width)
+        super().__init__('VIRTUAL', parent, width=width,
+                         max_height=float('+inf'))
 
     def place(self):
         """This method has no effect."""
@@ -352,13 +352,13 @@ class FloatContainer(ExpandingContainer):
 
 class TopFloatContainer(FloatContainer, DownExpandingContainer):
     def __init__(self, name, parent, left=None, top=None, width=None,
-                 right=None, max_height=float('+inf')):
+                 right=None, max_height=None):
         super().__init__(name, parent, left, top, width, right, max_height)
 
 
 class BottomFloatContainer(UpExpandingContainer, FloatContainer):
     def __init__(self, name, parent, left=None, bottom=None, width=None,
-                 right=None, max_height=float('+inf')):
+                 right=None, max_height=None):
         super().__init__(name, parent, left, bottom, width, right, max_height)
 
 

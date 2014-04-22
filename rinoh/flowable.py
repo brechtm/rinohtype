@@ -96,11 +96,9 @@ class Flowable(Styled):
         margin_left = self.get_style('margin_left', document)
         margin_right = self.get_style('margin_right', document)
         right = container.width - margin_right
-        max_height = container.remaining_height
         margin_container = DownExpandingContainer('MARGIN', container,
                                                   top=container.cursor,
-                                                  left=margin_left, right=right,
-                                                  max_height=max_height)
+                                                  left=margin_left, right=right)
         width, descender = self.render(margin_container, last_descender,
                                        state=state, **kwargs)
         container.advance(margin_container.cursor)
@@ -265,10 +263,8 @@ class LabeledFlowable(Flowable):
 
         def render_label(container):
             width = None if label_spillover else label_column_width
-            max_height = container.remaining_height
             label_container = DownExpandingContainer('LABEL', container,
-                                                     width=width,
-                                                     max_height=max_height)
+                                                     width=width)
             _, descender = self.label.flow(label_container, last_descender)
             return label_container.cursor, descender
 
@@ -276,10 +272,8 @@ class LabeledFlowable(Flowable):
             label_spacing = self.get_style('label_spacing', container.document)
             top = float(container.cursor)
             left = label_column_width + label_spacing
-            max_height = container.remaining_height
             content_container = DownExpandingContainer('CONTENT', container,
-                                                       top=top, left=left,
-                                                       max_height=max_height)
+                                                       top=top, left=left)
             _, descender = self.flowable.flow(content_container, descender,
                                               state=state)
             return content_container.cursor, descender
