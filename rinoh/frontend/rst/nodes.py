@@ -248,7 +248,7 @@ class Option_List_Item(CustomElement):
 class Option_Group(NestedElement):
     def parse(self):
         options = (option.process() for option in self.option)
-        return rt.Paragraph(intersperse(options, ', '))
+        return rt.Paragraph(intersperse(options, ', '), style='option_group')
 
 
 class Option(NestedElement):

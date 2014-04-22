@@ -170,10 +170,16 @@ styles('definition', ContextSelector(ClassSelector(DefinitionList),
 styles('field name', ClassSelector(Paragraph, 'field_name'),
        base='body',
        indent_first=0,
+       justify=LEFT,
        font_weight=BOLD)
 
 
 # option lists
+
+styles('option', ClassSelector(Paragraph, 'option_group'),
+       base='body',
+       indent_first=0,
+       justify=LEFT)
 
 styles('option string', ClassSelector(MixedStyledText, 'option_string'),
        base='body',
