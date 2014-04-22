@@ -135,6 +135,11 @@ class Line(NestedElement):
                             style='line block line')
 
 
+class Doctest_Block(CustomElement):
+    def parse(self):
+        return rt.Paragraph(rt.LiteralText(self.text), style='literal')
+
+
 class Reference(CustomElement):
     def parse(self):
         return self.text
