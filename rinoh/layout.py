@@ -327,7 +327,7 @@ class VirtualContainer(DownExpandingContainer):
     using the :meth:`Canvas.append` method of the container's :class:`Canvas`.
     """
 
-    def __init__(self, parent, width):
+    def __init__(self, parent, width=None):
         """Initialize this virtual container as a child of the `parent`
         container.
 

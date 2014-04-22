@@ -246,7 +246,7 @@ class LabeledFlowable(Flowable):
         label.parent = flowable.parent = self
 
     def label_width(self, container):
-        virtual_container = VirtualContainer(container, width=None)
+        virtual_container = VirtualContainer(container)
         label_width, _ = self.label.flow(virtual_container, 0)
         return label_width
 
