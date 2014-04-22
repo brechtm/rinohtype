@@ -37,7 +37,6 @@ class Framed(Flowable):
             left = self.get_style('padding_left', document)
             right = container.width - self.get_style('padding_right', document)
             pad_container = DownExpandingContainer('PADDING', container,
-                                                   top=container.cursor,
                                                    left=left, right=right)
             _, descender = self.flowable.flow(pad_container, descender,
                                               state=state)

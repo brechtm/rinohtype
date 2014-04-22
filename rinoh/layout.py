@@ -267,6 +267,7 @@ class DownExpandingContainer(ExpandingContainer):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
+        top = top or parent.cursor
         super().__init__(name, parent, left, top, width, right, None,
                          max_height)
 

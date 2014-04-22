@@ -97,7 +97,6 @@ class Flowable(Styled):
         margin_right = self.get_style('margin_right', document)
         right = container.width - margin_right
         margin_container = DownExpandingContainer('MARGIN', container,
-                                                  top=container.cursor,
                                                   left=margin_left, right=right)
         width, descender = self.render(margin_container, last_descender,
                                        state=state, **kwargs)
@@ -270,10 +269,9 @@ class LabeledFlowable(Flowable):
 
         def render_content(container, descender):
             label_spacing = self.get_style('label_spacing', container.document)
-            top = float(container.cursor)
             left = label_column_width + label_spacing
             content_container = DownExpandingContainer('CONTENT', container,
-                                                       top=top, left=left)
+                                                       left=left)
             _, descender = self.flowable.flow(content_container, descender,
                                               state=state)
             return content_container.cursor, descender
