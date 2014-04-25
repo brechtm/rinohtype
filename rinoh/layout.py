@@ -27,6 +27,7 @@ page to which :class:`Flowable`\ s can be rendered.
 
 """
 
+from collections import deque
 from contextlib import contextmanager
 from copy import copy
 
@@ -370,6 +371,21 @@ class FootnoteContainer(UpExpandingContainer):
         self._footnote_number = 0
         self._footnote_space = self
         self.last_descender = 0
+        self.footnote_queue = deque()
+        self.rendered_footnotes = set()
+
+    def add_footnote(self, footnote):
+        self.footnote_queue.append(footnote)
+        if len(self.footnote_queue) == 1:
+            self.flow_footnotes()
+
+    def flow_footnotes(self):
+        while self.footnote_queue:
+            footnote = self.footnote_queue[0]
+            if footnote not in self.rendered_footnotes:
+                _, self.last_descender = footnote.flow(self, self.last_descender)
+                self.rendered_footnotes.add(footnote)
+            self.footnote_queue.popleft()
 
     @property
     def next_number(self):
