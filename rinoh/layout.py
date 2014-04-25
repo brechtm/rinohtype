@@ -368,6 +368,7 @@ class FootnoteContainer(UpExpandingContainer):
                  right=None):
         super().__init__(name, parent, left, bottom, width=width, right=right)
         self._footnote_number = 0
+        self._footnote_space = self
         self.last_descender = 0
 
     @property
