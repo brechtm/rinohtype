@@ -184,8 +184,9 @@ class Styled(DocumentElement):
                                     style.__class__.__name__))
         self.style = style
 
-    def __str__(self):
-        parent = str(self.parent) + ' > ' if self.parent else ''
+    @property
+    def path(self):
+        parent = self.parent.path + ' > ' if self.parent else ''
         style = '[{}]'.format(self.style) if self.style else ''
         return parent + self.__class__.__name__ + style
 
@@ -203,7 +204,8 @@ class Styled(DocumentElement):
         style = self._style(document)
         try:
             if style is None:
-                self.warn('Falling back to default style for ({})'.format(self))
+                self.warn('Falling back to default style for ({})'
+                          .format(self.path))
                 value = self.style_class._get_default(attribute)
             else:
                 value = style[attribute]
@@ -259,6 +261,7 @@ class StyleSheet(OrderedDict):
             if base_max_score > max_score:
                 max_score, best_match = base_max_score, base_best_match
         if sum(max_score):
+            print("({}) matches '{}'".format(styled.path, best_match))
             return self[best_match]
 
 
