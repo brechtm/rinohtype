@@ -70,30 +70,24 @@ class Heading(ParagraphBase):
                                           self.style)
 
     def prepare(self, document):
-        element_id = self.parent.get_id(document)
-        heading_counters = document.counters.setdefault(__class__, {})
-        level_counter = heading_counters.setdefault(self.level, [])
-        level_counter.append(self)
-
-        number = 0
-        for element in document.counters[__class__][self.level]:
-            if element.get_style('numbering_style', document) is not None:
-                number += 1
-            if element is self:
-                break
+        section_id = self.parent.get_id(document)
         numbering_style = self.get_style('numbering_style', document)
-        if numbering_style is not None:
+        if numbering_style:
+            heading_counters = document.counters.setdefault(__class__, {})
+            level_counter = heading_counters.setdefault(self.level, [])
+            level_counter.append(self)
+            number = len(level_counter)
             formatted_number = format_number(number, numbering_style)
         else:
-            formatted_number = ''
-        document.set_reference(element_id, REFERENCE, formatted_number)
-        document.set_reference(element_id, TITLE, self.title)
+            formatted_number = None
+        document.set_reference(section_id, REFERENCE, formatted_number)
+        document.set_reference(section_id, TITLE, self.title)
 
     def initial_state(self, document):
         numbering_style = self.get_style('numbering_style', document)
-        if numbering_style is not None:
-            formatted_number = Reference(self.parent.get_id(document),
-                                         REFERENCE)
+        if numbering_style:
+            section_id = self.parent.get_id(document)
+            formatted_number = Reference(section_id, REFERENCE)
             separator = self.get_style('numbering_separator', document)
             number = formatted_number + separator + FixedWidthSpace()
         else:
