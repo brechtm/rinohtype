@@ -15,7 +15,8 @@ from rinoh.text import BOLD_ITALIC_STYLE
 from rinoh.text import Tab as RinohTab
 from rinoh.structure import Heading, List, Header, Footer
 from rinoh.structure import TableOfContents
-from rinoh.reference import Field, Reference, REFERENCE, NoteMarker
+from rinoh.reference import Field, Reference, REFERENCE
+from rinoh.reference import Note, NoteMarkerWithNote
 from rinoh.flowable import GroupedFlowables, StaticGroupedFlowables, Float
 from rinoh.float import Figure as RinohFigure
 from rinoh.table import Tabular as RinohTabular
@@ -174,8 +175,8 @@ class Ref(CustomElement):
 class Footnote(NestedElement):
     def parse(self):
         content = [element.parse() for element in self.getchildren()]
-        par = StaticGroupedFlowables(content)
-        return NoteMarker(par)
+        note = Note(StaticGroupedFlowables(content), id=None)
+        return NoteMarkerWithNote(note)
 
 
 class Acknowledgement(CustomElement):

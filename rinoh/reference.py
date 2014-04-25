@@ -6,13 +6,14 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import LabeledFlowable
+from .flowable import LabeledFlowable, DummyFlowable
 from .paragraph import Paragraph
-from .text import StyledText, SingleStyledText, Superscript
+from .text import StyledText, SingleStyledText
 
 
 __all__ = ['FieldException', 'Referenceable',
            'Field', 'Variable', 'Reference', 'NoteMarker', 'Note',
+           'RegisterNote', 'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
 
 
@@ -43,8 +44,8 @@ SECTION_TITLE = 'section title'
 
 
 class Variable(Field):
-    def __init__(self, type):
-        super().__init__()
+    def __init__(self, type, style=None):
+        super().__init__(style=style)
         self.type = type
 
     def __repr__(self):
@@ -94,8 +95,8 @@ POSITION = 'position'
 
 
 class Reference(Field):
-    def __init__(self, id, type=REFERENCE):
-        super().__init__()
+    def __init__(self, id, type=REFERENCE, style=None):
+        super().__init__(style=style)
         self.id = id
         self.type = type
 
@@ -124,22 +125,43 @@ class Reference(Field):
         return field_text.spans()
 
 
-class NoteMarker(Field):
-    def __init__(self, note_flowable):
-        super().__init__()
-        self.note_flowable = note_flowable
+class Note(Referenceable, LabeledFlowable):
+    def __init__(self, flowable, id, style=None, parent=None):
+        Referenceable.__init__(self, id)
+        label = Paragraph('*')
+        LabeledFlowable.__init__(self, label, flowable, style=style,
+                                 parent=parent)
+
+    def prepare(self, document):
+        super().prepare(document)
+        document.set_reference(self.get_id(document), REFERENCE, '$')
+
+
+class RegisterNote(DummyFlowable):
+    def __init__(self, note, parent=None):
+        super().__init__(parent=parent)
+        self.note = note
+
+    def prepare(self, document):
+        self.note.prepare(document)
+
+
+class NoteMarker(Reference):
+    def __init__(self, id, style=None):
+        super().__init__(id, style=style)
 
     def field_spans(self, container):
-        footnote_container = container._footnote_space
-        number = footnote_container.next_number
-        label = Paragraph(str(number) + '.')
-        note = Note(label, self.note_flowable)
-        note.source = self.source
-        footnote_container.add_footnote(note)
-        field_text = Superscript(str(number), parent=self)
-        return field_text.spans()
+        note = container.document.elements[self.id]
+        container._footnote_space.add_footnote(note)
+        return super().field_spans(container)
         # TODO: handle overflow in footnote_space
 
 
-class Note(LabeledFlowable):
-    pass
+class NoteMarkerWithNote(NoteMarker):
+    def __init__(self, note, id=None, style=None):
+        super().__init__(id, style=style)
+        self.note = note
+
+    def prepare(self, document):
+        self.note.prepare(document)
+        self.id = self.note.get_id(document)

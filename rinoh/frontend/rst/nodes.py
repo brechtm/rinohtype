@@ -149,7 +149,11 @@ class Reference(CustomElement):
 
 class Footnote(CustomElement):
     def parse(self):
-        return rt.DummyFlowable()
+        assert len(self.node['ids']) == 1
+        note_id = self.node['ids'][0]
+        content = [node.process() for node in self.getchildren()[1:]]
+        note = rt.Note(rt.StaticGroupedFlowables(content), id=note_id)
+        return rt.RegisterNote(note)
 
 
 class Label(CustomElement):
@@ -159,23 +163,7 @@ class Label(CustomElement):
 
 class Footnote_Reference(NestedElement):
     def parse(self):
-        footnote = self._find_matching_footnote()
-        nodes = self.map_node(footnote).getchildren()[1:]  # drop label
-        content = [node.parse() for node in nodes]
-        return rt.NoteMarker(rt.StaticGroupedFlowables(content))
-
-    def _find_matching_footnote(self):
-        # TODO: fix docutils so that each node has a reference to document
-        def get_document(node):
-            return node.document or get_document(node.parent)
-
-        docutils_document = get_document(self.node)
-        for footnote in chain(docutils_document.autofootnotes,
-                              docutils_document.symbol_footnotes,
-                              docutils_document.footnotes):
-            if self.node['refid'] in footnote['ids']:
-                return footnote
-        raise KeyError('Footnote {} not found.'.format(self.node['refid']))
+        return rt.NoteMarker(self.node['refid'])
 
 
 

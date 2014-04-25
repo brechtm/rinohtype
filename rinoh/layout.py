@@ -382,9 +382,10 @@ class FootnoteContainer(UpExpandingContainer):
     def flow_footnotes(self):
         while self.footnote_queue:
             footnote = self.footnote_queue[0]
-            if footnote not in self.rendered_footnotes:
+            footnote_id = footnote.get_id(self.document)
+            if footnote_id not in self.rendered_footnotes:
                 _, self.last_descender = footnote.flow(self, self.last_descender)
-                self.rendered_footnotes.add(footnote)
+                self.rendered_footnotes.add(footnote_id)
             self.footnote_queue.popleft()
 
     @property
