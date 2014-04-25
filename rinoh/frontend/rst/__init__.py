@@ -20,6 +20,9 @@ class CustomElement(object):
                 return self.map_node(child)
         raise AttributeError('No such element: {}'.format(name))
 
+    def __getitem__(self, name):
+        return self.node[name]
+
     def __iter__(self):
         try:
             for child in self.parent.node.children:

@@ -269,7 +269,9 @@ class Option(NestedElement):
     def parse(self):
         text = self.option_string.process()
         try:
-            text += ' ' + self.option_argument.process()
+            delimiter = rt.MixedStyledText(self.option_argument['delimiter'],
+                                           style='option_string')
+            text += delimiter + self.option_argument.process()
         except AttributeError:
             pass
         return rt.MixedStyledText(text)
