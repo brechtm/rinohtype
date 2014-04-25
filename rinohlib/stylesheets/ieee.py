@@ -49,7 +49,7 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        font_size=9*PT,
        justify=LEFT,
        indent_first=0,
-       margin_left=1*CM,
+       margin_left=0.5*CM,
        typeface=ieee_family.mono,
        ligatures=False)
        #noWrap=True,   # but warn on overflow
@@ -57,6 +57,10 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
 
 styles('block quote', ClassSelector(GroupedFlowables, 'block quote'),
        margin_left=1*CM)
+
+styles('attribution', ClassSelector(Paragraph, 'attribution'),
+       base='body',
+       justify=RIGHT)
 
 styles('line block', ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
                                      ClassSelector(GroupedFlowables, 'line block')),
