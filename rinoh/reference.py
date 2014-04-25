@@ -130,11 +130,13 @@ class NoteMarker(Field):
         self.note_flowable = note_flowable
 
     def field_spans(self, container):
-        number = container._footnote_space.next_number
+        footnote_container = container._footnote_space
+        number = footnote_container.next_number
         label = Paragraph(str(number) + '.')
         note = Note(label, self.note_flowable)
         note.source = self.source
-        note.flow(container._footnote_space, None)
+        _, footnote_container.last_descender = \
+            note.flow(footnote_container, footnote_container.last_descender)
         field_text = Superscript(str(number), parent=self)
         return field_text.spans()
         # TODO: handle overflow in footnote_space
