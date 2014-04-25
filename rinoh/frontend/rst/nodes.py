@@ -171,9 +171,9 @@ class Substitution_Definition(CustomElement):
         return rt.DummyFlowable()
 
 
-class Target(CustomElement):
+class Target(NestedElement):
     def parse(self):
-        return rt.DummyFlowable()
+        return self.process_content() or rt.DummyFlowable()
 
 
 class Enumerated_List(CustomElement):
