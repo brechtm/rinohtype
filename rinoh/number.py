@@ -14,7 +14,7 @@ Functions for formatting numbers:
 
 
 __all__ = ['NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
-           'format_number']
+           'SYMBOL', 'format_number']
 
 
 NUMBER = 'number'
@@ -22,10 +22,11 @@ CHARACTER_LC = 'character'
 CHARACTER_UC = 'CHARACTER'
 ROMAN_LC = 'roman'
 ROMAN_UC = 'ROMAN'
+SYMBOL = 'symbol'
 
 
-def format_number(number, style):
-    """Format `number` according the given `style`:
+def format_number(number, format):
+    """Format `number` according the given `format`:
 
     * :const:`NUMBER`: plain arabic number (1, 2, 3, ...)
     * :const:`CHARACTER_LC`: lowercase letters (a, b, c, ..., aa, ab, ...)
@@ -34,9 +35,9 @@ def format_number(number, style):
     * :const:`ROMAN_UC`: uppercase Roman (I, II, III, IV, V, VI, ...)
 
     """
-    if style == NUMBER:
+    if format == NUMBER:
         return str(number)
-    elif style == CHARACTER_LC:
+    elif format == CHARACTER_LC:
         string = ''
         while number > 0:
             number, ordinal = divmod(number, 26)
@@ -45,14 +46,16 @@ def format_number(number, style):
                 number -= 1
             string = chr(ord('a') - 1 + ordinal) + string
         return string
-    elif style == CHARACTER_UC:
+    elif format == CHARACTER_UC:
         return format_number(number, CHARACTER_LC).upper()
-    elif style == ROMAN_LC:
+    elif format == ROMAN_LC:
         return romanize(number).lower()
-    elif style == ROMAN_UC:
+    elif format == ROMAN_UC:
         return romanize(number)
+    elif format == SYMBOL:
+        return symbolize(number)
     else:
-        raise ValueError("Unknown numbering style '{}'".format(style))
+        raise ValueError("Unknown number format '{}'".format(format))
 
 
 # romanize by Kay Schluehr - from http://billmill.org/python_roman.html
@@ -68,3 +71,11 @@ def romanize(number):
         times, number = divmod(number, value)
         roman.append(times * numeral)
     return ''.join(roman)
+
+
+SYMBOLS = ('*', '†', '‡', '§', '‖', '¶', '#')
+
+def symbolize(number):
+    """Convert `number` to a foot/endnote symbol."""
+    repeat, index = divmod(number - 1, len(SYMBOLS))
+    return SYMBOLS[index] * (1 + repeat)
