@@ -12,8 +12,11 @@ Functions for formatting numbers:
 
 """
 
+from .style import Style
 
-__all__ = ['NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
+
+__all__ = ['NumberStyle',
+           'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
            'SYMBOL', 'format_number']
 
 
@@ -79,3 +82,8 @@ def symbolize(number):
     """Convert `number` to a foot/endnote symbol."""
     repeat, index = divmod(number - 1, len(SYMBOLS))
     return SYMBOLS[index] * (1 + repeat)
+
+
+class NumberStyle(Style):
+    attributes = {'number_format': NUMBER,
+                  'number_separator': '.'}

@@ -97,12 +97,12 @@ styles('heading level 1', ClassSelector(Heading, level=1),
        line_spacing=FixedSpacing(12*PT),
        space_above=18*PT,
        space_below=6*PT,
-       numbering_style=ROMAN_UC)
+       number_format=ROMAN_UC)
 
 styles('unnumbered heading level 1', ClassSelector(Heading, 'unnumbered',
                                                    level=1),
        base='heading level 1',
-       numbering_style=None)
+       number_format=None)
 
 styles('heading level 2', ClassSelector(Heading, level=2),
        base='heading level 1',
@@ -113,7 +113,7 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        line_spacing=FixedSpacing(12*PT),
        space_above=6*PT,
        space_below=6*PT,
-       numbering_style=CHARACTER_UC)
+       number_format=CHARACTER_UC)
 
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
@@ -126,8 +126,8 @@ styles('enumerated list', ClassSelector(List, 'enumerated'),
        space_below=5*PT,
        ordered=True,
        flowable_spacing=0*PT,
-       numbering_style=NUMBER,
-       numbering_separator=')')
+       number_format=NUMBER,
+       number_separator=')')
 
 styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
                                                  ClassSelector(List,

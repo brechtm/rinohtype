@@ -12,7 +12,7 @@ from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import format_number, NUMBER
+from .number import NumberStyle, format_number, NUMBER
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
 from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
@@ -49,12 +49,8 @@ class Section(Referenceable, StaticGroupedFlowables):
         return super().render(container, last_descender, state=state)
 
 
-class HeadingStyle(ParagraphStyle):
-    attributes = {'numbering_style': NUMBER,
-                  'numbering_separator': '.'}
-
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+class HeadingStyle(ParagraphStyle, NumberStyle):
+    pass
 
 
 # TODO: share superclass with List (numbering)
@@ -71,7 +67,7 @@ class Heading(ParagraphBase):
 
     def prepare(self, document):
         section_id = self.parent.get_id(document)
-        numbering_style = self.get_style('numbering_style', document)
+        numbering_style = self.get_style('number_format', document)
         if numbering_style:
             heading_counters = document.counters.setdefault(__class__, {})
             level_counter = heading_counters.setdefault(self.level, [])
@@ -84,11 +80,11 @@ class Heading(ParagraphBase):
         document.set_reference(section_id, TITLE, self.title)
 
     def initial_state(self, document):
-        numbering_style = self.get_style('numbering_style', document)
+        numbering_style = self.get_style('number_format', document)
         if numbering_style:
             section_id = self.parent.get_id(document)
             formatted_number = Reference(section_id, REFERENCE)
-            separator = self.get_style('numbering_separator', document)
+            separator = self.get_style('number_separator', document)
             number = formatted_number + separator + FixedWidthSpace()
         else:
             number = ''
@@ -96,11 +92,9 @@ class Heading(ParagraphBase):
         return ParagraphState(text.spans())
 
 
-class ListStyle(GroupedFlowablesStyle):
+class ListStyle(GroupedFlowablesStyle, NumberStyle):
     attributes = {'ordered': False,
-                  'bullet': SingleStyledText('\N{BULLET}'),
-                  'numbering_style': NUMBER,
-                  'numbering_separator': ')'}
+                  'bullet': SingleStyledText('\N{BULLET}')}
 
 
 class List(GroupedLabeledFlowables):
@@ -112,9 +106,9 @@ class List(GroupedLabeledFlowables):
 
     def flowables(self, document):
         if self.get_style('ordered', document):
-            numbering_style = self.get_style('numbering_style', document)
-            numbers = (format_number(i, numbering_style) for i in count(1))
-            separator = self.get_style('numbering_separator', document)
+            number_format = self.get_style('number_format', document)
+            numbers = (format_number(i, number_format) for i in count(1))
+            separator = self.get_style('number_separator', document)
         else:
             numbers = repeat(self.get_style('bullet', document))
             separator = ''
