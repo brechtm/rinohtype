@@ -7,8 +7,10 @@
 
 
 from .flowable import LabeledFlowable, DummyFlowable
+from .number import NumberStyle, format_number
 from .paragraph import Paragraph
-from .text import StyledText, SingleStyledText
+from .style import PARENT_STYLE
+from .text import StyledText, SingleStyledText, TextStyle
 
 
 __all__ = ['FieldException', 'Referenceable',
@@ -44,7 +46,7 @@ SECTION_TITLE = 'section title'
 
 
 class Variable(Field):
-    def __init__(self, type, style=None):
+    def __init__(self, type, style=PARENT_STYLE):
         super().__init__(style=style)
         self.type = type
 
@@ -65,7 +67,7 @@ class Variable(Field):
             section_id = container.page.section.get_id(container.document)
             text = container.document.get_reference(section_id, TITLE)
 
-        field_text = SingleStyledText(text, parent=self.parent)
+        field_text = SingleStyledText(text, parent=self)
         return field_text.spans()
 
 
@@ -95,7 +97,7 @@ POSITION = 'position'
 
 
 class Reference(Field):
-    def __init__(self, id, type=REFERENCE, style=None):
+    def __init__(self, id, type=REFERENCE, style=PARENT_STYLE):
         super().__init__(style=style)
         self.id = id
         self.type = type
@@ -121,7 +123,7 @@ class Reference(Field):
             self.warn("Unknown label '{}'".format(self.id), container)
             text = "??".format(self.id)
 
-        field_text = SingleStyledText(text, parent=self.parent)
+        field_text = SingleStyledText(text, parent=self)
         return field_text.spans()
 
 
