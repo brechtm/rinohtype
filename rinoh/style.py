@@ -98,26 +98,14 @@ class Style(dict):
         """Return the value of `attribute`.
 
         If the attribute is not specified in this :class:`Style`, find it in
-        this style's base styles (hierarchically), or ultimately return the
-        default value for `attribute`."""
-        try:
-            return self._recursive_get(attribute)
-        except DefaultValueException:
-            return self._get_default(attribute)
-
-    def _recursive_get(self, attribute):
-        """Recursively search for the value of `attribute`.
-
-        If the attribute is not specified in this style, defer the lookup to the
-        base style. When the attribute is specified nowhere in the chain of base
-        styles, raise a :class:`DefaultValueException`.
-        """
+        this style's base styles (hierarchically), or ultimately raise a
+        :class:`DefaultValueException`."""
         try:
             return super().__getitem__(attribute)
         except KeyError:
             if self.base is None:
                 raise DefaultValueException
-            return self.base._recursive_get(attribute)
+            return self.base[attribute]
 
     @classmethod
     def _get_default(cls, attribute):
@@ -152,7 +140,7 @@ class ParentStyle(Style):
     def __repr__(self):
         return self.__class__.__name__
 
-    def _recursive_get(self, attribute):
+    def __getitem__(self, attribute):
         raise ParentStyleException
 
 
@@ -191,27 +179,27 @@ class Styled(DocumentElement):
         return parent + self.__class__.__name__ + style
 
     @cached
+    def get_style(self, attribute, document=None):
+        try:
+            return self.get_style_recursive(attribute, document)
+        except DefaultValueException:
+            self.warn('Falling back to default style for ({})'
+                      .format(self.path))
+            return self.style_class._get_default(attribute)
+
+    def get_style_recursive(self, attribute, document=None):
+        style = self._style(document)
+        if style is None:
+            raise DefaultValueException
+        try:
+            return style[attribute]
+        except ParentStyleException:
+            return self.parent.get_style_recursive(attribute, document)
+
+    @cached
     def _style(self, document):
         return (self.style if isinstance(self.style, Style)
                 else document.styles.find_style(self))
-
-    @cached
-    def get_style(self, attribute, document=None):
-        """Return `attribute` of the associated :class:`Style`.
-
-        If this element's :class:`Style` or one of its bases is `PARENT_STYLE`,
-        the style attribute is fetched from this element's parent."""
-        style = self._style(document)
-        try:
-            if style is None:
-                self.warn('Falling back to default style for ({})'
-                          .format(self.path))
-                value = self.style_class._get_default(attribute)
-            else:
-                value = style[attribute]
-        except ParentStyleException:
-            value = self.parent.get_style(attribute, document)
-        return value
 
 
 class StyleSheet(OrderedDict):
