@@ -130,12 +130,13 @@ class Reference(Field):
 class Note(Referenceable, LabeledFlowable):
     def __init__(self, flowable, id, style=None, parent=None):
         Referenceable.__init__(self, id)
-        label = Paragraph('*')
+        label = Paragraph(Reference(self.id))
         LabeledFlowable.__init__(self, label, flowable, style=style,
                                  parent=parent)
 
     def prepare(self, document):
         super().prepare(document)
+        self.label[0].id = self.get_id(document)  # TODO: handle this properly
 
 
 class RegisterNote(DummyFlowable):
@@ -158,12 +159,14 @@ class NoteMarker(Reference):
         super().__init__(id, style=style)
 
     def prepare(self, document):
-        number_format = self.get_style('number_format', document)
-        counter = document.counters.setdefault(__class__, [])
-        counter.append(self)
-        number = len(counter)
-        formatted_number = format_number(number, number_format)
-        document.set_reference(self.id, REFERENCE, formatted_number)
+        try:  # set reference only once (notes can be referenced multiple times)
+            document.get_reference(self.id, REFERENCE)
+        except KeyError:
+            number_format = self.get_style('number_format', document)
+            counter = document.counters.setdefault(__class__, [])
+            counter.append(self)
+            formatted_number = format_number(len(counter), number_format)
+            document.set_reference(self.id, REFERENCE, formatted_number)
 
     def field_spans(self, container):
         note = container.document.elements[self.id]

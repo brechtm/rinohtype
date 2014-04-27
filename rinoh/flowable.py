@@ -242,6 +242,10 @@ class LabeledFlowable(Flowable):
         self.flowable = flowable
         label.parent = flowable.parent = self
 
+    def prepare(self, document):
+        self.label.prepare(document)
+        self.flowable.prepare(document)
+
     def label_width(self, container):
         virtual_container = VirtualContainer(container)
         label_width, _ = self.label.flow(virtual_container, 0)
