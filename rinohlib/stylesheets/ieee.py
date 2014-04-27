@@ -5,13 +5,14 @@ from rinoh import (
     FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
-    Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
-    DEFAULT, LEFT, RIGHT, CENTER, BOTH, NUMBER, ROMAN_UC, CHARACTER_UC, MIDDLE,
+    NoteMarker, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
+    DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
+    NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
     PT, INCH, CM, RED, Color, Gray
 )
 
 from rinoh.font import TypeFamily
-from rinoh.font.style import REGULAR, ITALIC, BOLD
+from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
 
 from rinohlib.fonts.texgyre.termes import typeface as times
 from rinohlib.fonts.texgyre.cursor import typeface as courier
@@ -213,6 +214,10 @@ styles('footer', ClassSelector(Footer),
        base='header',
        indent_first=0*PT,
        justify=CENTER)
+
+styles('footnote marker', ClassSelector(NoteMarker),
+       position=SUPERSCRIPT,
+       number_format=SYMBOL)
 
 styles('footnote paragraph', ContextSelector(ClassSelector(Note),
                                              ClassSelector(GroupedFlowables),

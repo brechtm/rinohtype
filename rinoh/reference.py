@@ -136,7 +136,6 @@ class Note(Referenceable, LabeledFlowable):
 
     def prepare(self, document):
         super().prepare(document)
-        document.set_reference(self.get_id(document), REFERENCE, '$')
 
 
 class RegisterNote(DummyFlowable):
@@ -148,9 +147,23 @@ class RegisterNote(DummyFlowable):
         self.note.prepare(document)
 
 
+class NoteMarkerStyle(TextStyle, NumberStyle):
+    pass
+
+
 class NoteMarker(Reference):
+    style_class = NoteMarkerStyle
+
     def __init__(self, id, style=None):
         super().__init__(id, style=style)
+
+    def prepare(self, document):
+        number_format = self.get_style('number_format', document)
+        counter = document.counters.setdefault(__class__, [])
+        counter.append(self)
+        number = len(counter)
+        formatted_number = format_number(number, number_format)
+        document.set_reference(self.id, REFERENCE, formatted_number)
 
     def field_spans(self, container):
         note = container.document.elements[self.id]
@@ -167,3 +180,4 @@ class NoteMarkerWithNote(NoteMarker):
     def prepare(self, document):
         self.note.prepare(document)
         self.id = self.note.get_id(document)
+        super().prepare(document)
