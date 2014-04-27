@@ -151,33 +151,36 @@ class StyledText(Styled):
                 SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
 
-    def is_script(self):
+    def is_script(self, document):
         """Returns `True` if this styled text is super/subscript."""
-        # TODO: adapt to new changes
-        if self.style not in (PARENT_STYLE, None) and 'position' in self.style:
-            return self.style.position is not None
+        style = self._style(document)
+        if style not in (PARENT_STYLE, None) and 'position' in style:
+            return style.position is not None
         return False
 
-    @property
-    def script_level(self):
+    def script_level(self, document):
         """Nesting level of super/subscript."""
-        level = getattr(self.parent, 'script_level', -1)
-        return level + 1 if self.is_script() else level
+        try:
+            level = self.parent.script_level(document)
+        except AttributeError:
+            level = -1
+        return level + 1 if self.is_script(document) else level
 
     def height(self, document):
         """Font size after super/subscript size adjustment."""
         height = float(self.get_style('font_size', document))
-        if self.script_level > -1:
-            height *= self.position_size * (5 / 6)**self.script_level
+        script_level = self.script_level(document)
+        if script_level > -1:
+            height *= self.position_size * (5 / 6)**script_level
         return height
 
     def y_offset(self, document):
         """Vertical baseline offset (up is positive)."""
         offset = (self.parent.y_offset(document)\
                   if hasattr(self.parent, 'y_offset') else 0)
-        if self.is_script():
+        if self.is_script(document):
             offset += (self.parent.height(document) *
-                       self.position[self.style.position])
+                       self.position[self._style(document).position])
             # The Y offset should only change once for the nesting level
             # where the position style is set, hence we don't recursively
             # get the position style using self.get_style('position')
