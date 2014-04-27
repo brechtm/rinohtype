@@ -133,16 +133,16 @@ class Style(dict):
         except AttributeError:
             raise KeyError("No attribute '{}' in {}".format(attribute, cls))
 
-    def _supported_attributes(self):
-        """Return a :class:`dict` of the attributes supported by this style
+    @classmethod
+    def _supported_attributes(cls):
+        """Return a :class:`set` of the attributes supported by this style
         class."""
-        attributes = {}
-        for cls in reversed(self.__class__.__mro__):
-            try:
-                attributes.update(cls.attributes)
-            except AttributeError:
-                pass
-        return attributes
+        attributes = set()
+        try:
+            for super_cls in cls.__mro__:
+                attributes.update(super_cls.attributes.keys())
+        except AttributeError:
+            return attributes
 
 
 class ParentStyle(Style):
