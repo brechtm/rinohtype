@@ -97,46 +97,55 @@ POSITION = 'position'
 
 
 class Reference(Field):
-    def __init__(self, id, type=REFERENCE, style=PARENT_STYLE):
+    def __init__(self, target_id, type=REFERENCE, style=PARENT_STYLE):
         super().__init__(style=style)
-        self.id = id
+        self._target_id = target_id
         self.type = type
 
+    def target_id(self, document):
+        return self._target_id
+
     def field_spans(self, container):
+        target_id = self.target_id(container.document)
         try:
             if self.type == REFERENCE:
-                text = container.document.get_reference(self.id, self.type)
+                text = container.document.get_reference(target_id, self.type)
                 if text is None:
-                    self.warn('Cannot reference "{}"'.format(self.id),
+                    self.warn('Cannot reference "{}"'.format(id),
                               container)
                     text = ''
             elif self.type == PAGE:
                 try:
-                    text = str(container.document.page_references[self.id])
+                    text = str(container.document.page_references[target_id])
                 except KeyError:
                     text = '??'
             elif self.type == TITLE:
-                text = container.document.get_reference(self.id, self.type)
+                text = container.document.get_reference(target_id, self.type)
             else:
                 raise NotImplementedError
         except KeyError:
-            self.warn("Unknown label '{}'".format(self.id), container)
-            text = "??".format(self.id)
+            self.warn("Unknown label '{}'".format(target_id), container)
+            text = "??".format(target_id)
 
         field_text = SingleStyledText(text, parent=self)
         return field_text.spans()
 
 
+class DirectReference(Reference):
+    def __init__(self, referenceable, type=REFERENCE, style=PARENT_STYLE):
+        super().__init__(None, type=type, style=style)
+        self.referenceable = referenceable
+
+    def target_id(self, document):
+        return self.referenceable.get_id(document)
+
+
 class Note(Referenceable, LabeledFlowable):
     def __init__(self, flowable, id, style=None, parent=None):
         Referenceable.__init__(self, id)
-        label = Paragraph(Reference(self.id))
+        label = Paragraph(DirectReference(self))
         LabeledFlowable.__init__(self, label, flowable, style=style,
                                  parent=parent)
-
-    def prepare(self, document):
-        super().prepare(document)
-        self.label[0].id = self.get_id(document)  # TODO: handle this properly
 
 
 class RegisterNote(DummyFlowable):
@@ -155,32 +164,32 @@ class NoteMarkerStyle(TextStyle, NumberStyle):
 class NoteMarker(Reference):
     style_class = NoteMarkerStyle
 
-    def __init__(self, id, style=None):
-        super().__init__(id, style=style)
+    def __init__(self, target_id, type=REFERENCE, style=None):
+        super().__init__(target_id, type=type, style=style)
 
     def prepare(self, document):
+        target_id = self.target_id(document)
         try:  # set reference only once (notes can be referenced multiple times)
-            document.get_reference(self.id, REFERENCE)
+            document.get_reference(target_id, REFERENCE)
         except KeyError:
             number_format = self.get_style('number_format', document)
             counter = document.counters.setdefault(__class__, [])
             counter.append(self)
             formatted_number = format_number(len(counter), number_format)
-            document.set_reference(self.id, REFERENCE, formatted_number)
+            document.set_reference(target_id, REFERENCE, formatted_number)
 
     def field_spans(self, container):
-        note = container.document.elements[self.id]
+        note = container.document.elements[self.target_id(container.document)]
         container._footnote_space.add_footnote(note)
         return super().field_spans(container)
         # TODO: handle overflow in footnote_space
 
 
-class NoteMarkerWithNote(NoteMarker):
-    def __init__(self, note, id=None, style=None):
-        super().__init__(id, style=style)
+class NoteMarkerWithNote(DirectReference, NoteMarker):
+    def __init__(self, note, type=REFERENCE, style=PARENT_STYLE):
+        super().__init__(note, type=type, style=style)
         self.note = note
 
     def prepare(self, document):
         self.note.prepare(document)
-        self.id = self.note.get_id(document)
         super().prepare(document)
