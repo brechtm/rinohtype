@@ -198,8 +198,13 @@ class Styled(DocumentElement):
 
     @cached
     def _style(self, document):
-        return (self.style if isinstance(self.style, Style)
-                else document.styles.find_style(self))
+        if isinstance(self.style, Style):
+            if isinstance(self.style, ParentStyle):
+                return document.styles.find_style(self) or self.style
+            else:
+                return self.style
+        else:
+            return document.styles.find_style(self)
 
 
 class StyleSheet(OrderedDict):
