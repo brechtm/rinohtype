@@ -251,13 +251,17 @@ class SingleStyledText(StyledText):
     def spans(self):
         yield self
 
-    def split(self):
-        """Yield the words and spaces in this single-styled text."""
+    @staticmethod
+    def split_words(text):
         def character_group(char):
             return char if char in ' \t\n' else None
 
-        for _, characters in groupby(self.text, character_group):
+        for _, characters in groupby(text, character_group):
             yield ''.join(characters)
+
+    def split(self, container):
+        """Yield the words and spaces in this single-styled text."""
+        return self.split_words(self.text)
 
 
 class MixedStyledText(StyledText, list):

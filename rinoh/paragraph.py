@@ -35,7 +35,7 @@ import os
 
 from copy import copy
 from functools import lru_cache, partial
-from itertools import chain, tee
+from itertools import tee
 
 from . import DATA_PATH
 from .dimension import DimensionBase, PT
@@ -194,29 +194,37 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 class ParagraphState(FlowableState):
     def __init__(self, spans, first_line=True, nested_flowable_state=None,
-                 _copy=False):
-        self.items = spans if _copy else self._form_span_item_pairs(spans)
+                 _current_span=None, _items=None, _current_item=None):
+        self.spans = spans
+        self.current_span = _current_span or None
+        self.items = _items or iter([])
+        self.current_item = _current_item or None
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
+        copy_spans, self.spans = tee(self.spans)
         copy_items, self.items = tee(self.items)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_items, self.first_line,
-                              copy_nested_flowable_state, _copy=True)
+        return self.__class__(copy_spans, self.first_line,
+                              copy_nested_flowable_state,
+                              _current_span=self.current_span,
+                              _items=copy_items,
+                              _current_item=self.current_item)
 
-    def next_item(self):
-        return next(self.items)
+    def next_item(self, container):
+        if self.current_item:
+            self.current_item, current_item = None, self.current_item
+            return self.current_span, current_item
+        try:
+            return self.current_span, next(self.items)
+        except StopIteration:
+            self.current_span = next(self.spans)
+            self.items = self.current_span.split(container)
+            return self.next_item(container)
 
-    def prepend_item(self, span, item):
-        self.items = chain(((span, item), ), self.items)
-
-    def prepend_spans(self, spans):
-        self.items = chain(self._form_span_item_pairs(spans), self.items)
-
-    @staticmethod
-    def _form_span_item_pairs(spans):
-        return ((span, item) for span in spans for item in span.split())
+    def prepend_item(self, item):
+        self.current_item = item
 
 
 class ParagraphBase(Flowable):
@@ -267,7 +275,7 @@ class ParagraphBase(Flowable):
         last_span = None
         while True:
             try:
-                span, word = state.next_item()      # raises StopIteration
+                span, word = state.next_item(container)  # raises StopIteration
                 if span is not last_span:
                     line_span_send = line.new_span(span, document).send
                     hyphenate = create_hyphenate(span, document)
@@ -279,14 +287,12 @@ class ParagraphBase(Flowable):
                 elif not line_span_send(word):
                     for first, second in hyphenate(word):
                         if line_span_send(first):
-                            state.prepend_item(span, second)
+                            state.prepend_item(second)
                             break
                     else:
-                        state.prepend_item(span, word)
+                        state.prepend_item(word)
                     line = typeset_line(line)
                     line_span_send = line.new_span(span, document).send
-            except FieldException as e:
-                state.prepend_spans(e.field_spans(container))
             except FlowableException as fe:
                 line = typeset_line(line, last_line=True)
                 span = None
@@ -295,7 +301,6 @@ class ParagraphBase(Flowable):
                                                     state.nested_flowable_state)
                     state.nested_flowable_state = None
                 except EndOfContainer as eoc:
-                    state.prepend_item(fe.flowable, None)
                     state.nested_flowable_state = eoc.flowable_state
                     raise EndOfContainer(state)
             except StopIteration:
@@ -596,6 +601,3 @@ class Line(list):
                                                  glyph_span, document)
         container.advance(- descender)
         return descender
-
-
-from .reference import FieldException

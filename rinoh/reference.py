@@ -10,33 +10,17 @@ from .flowable import LabeledFlowable, DummyFlowable
 from .number import NumberStyle, format_number
 from .paragraph import Paragraph
 from .style import PARENT_STYLE
-from .text import StyledText, SingleStyledText, TextStyle
+from .text import SingleStyledText, TextStyle
 
 
-__all__ = ['FieldException', 'Referenceable',
-           'Field', 'Variable', 'Reference', 'NoteMarker', 'Note',
-           'RegisterNote', 'NoteMarkerWithNote',
+__all__ = ['Field', 'Variable', 'Referenceable', 'Reference',
+           'NoteMarker', 'Note', 'RegisterNote', 'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
 
 
-class FieldException(Exception):
-    def __init__(self, field_spans):
-        self.field_spans = field_spans
-
-
-class Field(StyledText):
-    def spans(self):
-        yield self
-
-    def split(self):
-        yield
-
-    @property
-    def font(self):
-        raise FieldException(self.field_spans)
-
-    def field_spans(self, container):
-        raise NotImplementedError
+class Field(SingleStyledText):
+    def __init__(self, style=PARENT_STYLE, parent=None):
+        super().__init__('', style=style, parent=parent)
 
 
 PAGE_NUMBER = 'page number'
@@ -53,7 +37,7 @@ class Variable(Field):
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
-    def field_spans(self, container):
+    def split(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:
             text = str(container.page.number)
@@ -67,8 +51,7 @@ class Variable(Field):
             section_id = container.page.section.get_id(container.document)
             text = container.document.get_reference(section_id, TITLE)
 
-        field_text = SingleStyledText(text, parent=self)
-        return field_text.spans()
+        return self.split_words(text)
 
 
 class Referenceable(object):
@@ -105,13 +88,13 @@ class Reference(Field):
     def target_id(self, document):
         return self._target_id
 
-    def field_spans(self, container):
+    def split(self, container):
         target_id = self.target_id(container.document)
         try:
             if self.type == REFERENCE:
                 text = container.document.get_reference(target_id, self.type)
                 if text is None:
-                    self.warn('Cannot reference "{}"'.format(id),
+                    self.warn('Cannot reference "{}"'.format(target_id),
                               container)
                     text = ''
             elif self.type == PAGE:
@@ -127,8 +110,7 @@ class Reference(Field):
             self.warn("Unknown label '{}'".format(target_id), container)
             text = "??".format(target_id)
 
-        field_text = SingleStyledText(text, parent=self)
-        return field_text.spans()
+        return self.split_words(text)
 
 
 class DirectReference(Reference):
@@ -178,10 +160,10 @@ class NoteMarker(Reference):
             formatted_number = format_number(len(counter), number_format)
             document.set_reference(target_id, REFERENCE, formatted_number)
 
-    def field_spans(self, container):
+    def split(self, container):
         note = container.document.elements[self.target_id(container.document)]
         container._footnote_space.add_footnote(note)
-        return super().field_spans(container)
+        return super().split(container)
         # TODO: handle overflow in footnote_space
 
 
