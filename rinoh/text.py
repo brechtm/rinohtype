@@ -38,13 +38,14 @@ Some characters with special properties and are represented by special classes:
 import re
 import unicodedata
 
+from itertools import groupby
+
 from .dimension import PT
 from .draw import BLACK
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14
 from .style import Style, Styled, PARENT_STYLE
-from .util import cached_property
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
@@ -270,19 +271,11 @@ class SingleStyledText(StyledText):
 
     def split(self):
         """Yield the words and spaces in this single-styled text."""
-        characters = self.text
-        word_chars = []
-        for char in characters:
-            if char in ' \t\n':
-                if word_chars:
-                    yield ''.join(word_chars)
-                    word_chars = []
-                yield char
-            else:
-                word_chars.append(char)
-        if word_chars:
-            yield ''.join(word_chars)
+        def character_group(char):
+            return char if char in ' \t\n' else None
 
+        for _, characters in groupby(self.text, character_group):
+            yield ''.join(characters)
 
 
 class MixedStyledText(StyledText, list):
