@@ -210,6 +210,7 @@ class SingleStyledText(StyledText):
     def _filter_text(text):
         """Replace tabulator, line-feed and newline characters in `text` with
         spaces and afterwards reduce consecutive spaces with a single space."""
+        # TODO: this should be handled by the frontend
         return re.sub('[\t\r\n ]+', ' ', text)
 
     def __repr__(self):
@@ -218,28 +219,9 @@ class SingleStyledText(StyledText):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
-    def __len__(self):
-        """Return the length (character count) of this single-styled text."""
-        return len(self.text)
-
     def __str__(self):
         """Return the text content of this single-styled text."""
         return self.text
-
-    def __getitem__(self, index):
-        """Indexing/slicing into this single-styled text. Its style and parent
-        are inherited by the result."""
-        return self.__class__(self.text[index], parent=self.parent)
-
-    def lower(self):
-        """Return a lowercase version of this single-styled text."""
-        return self.__class__(self.text.lower(),
-                              style=self.style, parent=self.parent)
-
-    def upper(self):
-        """Return an uppercase version of this single-styled text."""
-        return self.__class__(self.text.upper(),
-                              style=self.style, parent=self.parent)
 
     def font(self, document):
         """The :class:`Font` described by this single-styled text's style.
