@@ -33,6 +33,11 @@ class Topic(GroupingElement):
     style = 'topic'
 
 
+class Rubric(NestedElement):
+    def parse(self):
+        return rt.Paragraph(self.process_content(), style='rubric')
+
+
 class Section(CustomElement):
     def parse(self):
         flowables = []

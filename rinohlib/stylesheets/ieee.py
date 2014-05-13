@@ -127,6 +127,11 @@ styles('topic title', ContextSelector(ClassSelector(GroupedFlowables, 'topic'),
        space_above=5*PT,
        space_below=5*PT)
 
+styles('rubric', ClassSelector(Paragraph, 'rubric'),
+       base='topic title',
+       justify=CENTER,
+       font_color=Color(0.5, 0, 0))
+
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
        base='body',
