@@ -13,18 +13,18 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .number import NumberedParagraph, NumberStyle, format_number
-from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
-from .reference import Referenceable, Reference, DirectReference
+from .paragraph import ParagraphStyle, Paragraph
+from .reference import Referenceable, Reference
 from .reference import REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
-from .text import SingleStyledText, MixedStyledText, FixedWidthSpace, Tab
+from .text import SingleStyledText, MixedStyledText, Tab
 from .dimension import PT
 from .style import PARENT_STYLE
 
 
-__all__ = ['Section', 'HeadingStyle', 'Heading', 'ListStyle', 'List',
-           'ListItem', 'DefinitionListStyle', 'DefinitionList', 'FieldList',
+__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
+           'DefinitionListStyle', 'DefinitionList', 'FieldList',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -50,13 +50,7 @@ class Section(Referenceable, StaticGroupedFlowables):
         return super().render(container, last_descender, state=state)
 
 
-class HeadingStyle(ParagraphStyle, NumberStyle):
-    pass
-
-
 class Heading(NumberedParagraph):
-    style_class = HeadingStyle
-
     def __init__(self, title, style=None, parent=None):
         super().__init__(title, style=style, parent=parent)
 

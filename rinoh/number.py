@@ -12,7 +12,7 @@ Functions for formatting numbers:
 
 """
 
-from .paragraph import ParagraphBase
+from .paragraph import ParagraphBase, ParagraphStyle
 from .style import Style
 from .text import FixedWidthSpace
 
@@ -91,7 +91,13 @@ class NumberStyle(Style):
                   'number_separator': '.'}
 
 
+class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
+    pass
+
+
 class NumberedParagraph(ParagraphBase):
+    style_class = NumberedParagraphStyle
+
     def __init__(self, content, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.content = content

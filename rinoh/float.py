@@ -7,13 +7,12 @@
 
 
 from .flowable import Flowable, InseparableFlowables
-from .number import NumberedParagraph, NumberStyle
-from .paragraph import ParagraphState, ParagraphStyle
+from .number import NumberedParagraph
 from .reference import Referenceable, REFERENCE, TITLE
 from .text import MixedStyledText
 
 
-__all__ = ['Image', 'CaptionStyle', 'Caption', 'Figure']
+__all__ = ['Image', 'Caption', 'Figure']
 
 
 class Image(Flowable):
@@ -31,13 +30,7 @@ class Image(Flowable):
         return image.width, 0
 
 
-class CaptionStyle(ParagraphStyle, NumberStyle):
-    pass
-
-
 class Caption(NumberedParagraph):
-    style_class = CaptionStyle
-
     def text(self, document):
         label = self.parent.category + ' ' + self.number(document)
         return MixedStyledText(label + self.content, parent=self)
