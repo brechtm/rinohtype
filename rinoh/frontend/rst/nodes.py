@@ -1,6 +1,4 @@
 
-from itertools import chain
-
 import rinoh as rt
 
 from . import CustomElement, NestedElement, GroupingElement
@@ -48,6 +46,10 @@ class Section(CustomElement):
 class Paragraph(NestedElement):
     def parse(self):
         return rt.Paragraph(super().process_content())
+
+
+class Compound(GroupingElement):
+    pass
 
 
 class Title(CustomElement):
