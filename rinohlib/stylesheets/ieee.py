@@ -116,6 +116,17 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_below=6*PT,
        number_format=CHARACTER_UC)
 
+styles('topic', ClassSelector(GroupedFlowables, 'topic'),
+       margin_left=0.5*CM)
+
+styles('topic title', ContextSelector(ClassSelector(GroupedFlowables, 'topic'),
+                                      ClassSelector(Paragraph, 'title')),
+       base='body',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
+
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
        base='body',

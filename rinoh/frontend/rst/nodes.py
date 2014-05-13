@@ -29,9 +29,8 @@ class Comment(CustomElement):
         return rt.DummyFlowable()
 
 
-class Topic(CustomElement):
-    def parse(self):
-        return rt.DummyFlowable()
+class Topic(GroupingElement):
+    style = 'topic'
 
 
 class Section(CustomElement):
