@@ -304,8 +304,6 @@ class Paragraph(ParagraphBase, MixedStyledText):
         a parent, `style` should be specified."""
         MixedStyledText.__init__(self, text_or_items, style=style, parent=parent)
 
-    __str__ = ParagraphBase.__str__
-
     def text(self, document):
         return self
 
