@@ -12,9 +12,10 @@ from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import NumberStyle, format_number, NUMBER
+from .number import NumberedParagraph, NumberStyle, format_number
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph, ParagraphState
-from .reference import Reference, Referenceable, REFERENCE, TITLE, PAGE
+from .reference import Referenceable, Reference, DirectReference
+from .reference import REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, MixedStyledText, FixedWidthSpace, Tab
@@ -53,13 +54,11 @@ class HeadingStyle(ParagraphStyle, NumberStyle):
     pass
 
 
-# TODO: share superclass with List (numbering)
-class Heading(ParagraphBase):
+class Heading(NumberedParagraph):
     style_class = HeadingStyle
 
     def __init__(self, title, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.title = title
+        super().__init__(title, style=style, parent=parent)
 
     def __repr__(self):
         return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
@@ -77,18 +76,10 @@ class Heading(ParagraphBase):
         else:
             formatted_number = None
         document.set_reference(section_id, REFERENCE, formatted_number)
-        document.set_reference(section_id, TITLE, self.title)
+        document.set_reference(section_id, TITLE, self.text)
 
     def initial_state(self, document):
-        numbering_style = self.get_style('number_format', document)
-        if numbering_style:
-            section_id = self.parent.get_id(document)
-            formatted_number = Reference(section_id, REFERENCE)
-            separator = self.get_style('number_separator', document)
-            number = formatted_number + separator + FixedWidthSpace()
-        else:
-            number = ''
-        text = MixedStyledText(number + self.title, parent=self)
+        text = MixedStyledText(self.number(document) + self.text, parent=self)
         return ParagraphState(text.spans())
 
 

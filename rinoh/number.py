@@ -12,10 +12,12 @@ Functions for formatting numbers:
 
 """
 
+from .paragraph import ParagraphBase
 from .style import Style
+from .text import FixedWidthSpace
 
 
-__all__ = ['NumberStyle',
+__all__ = ['NumberStyle', 'NumberedParagraph',
            'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
            'SYMBOL', 'format_number']
 
@@ -87,3 +89,20 @@ def symbolize(number):
 class NumberStyle(Style):
     attributes = {'number_format': NUMBER,
                   'number_separator': '.'}
+
+
+class NumberedParagraph(ParagraphBase):
+    def __init__(self, text, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.text = text
+
+    def number(self, document):
+        number_format = self.get_style('number_format', document)
+        if not number_format:
+            return ''
+        separator = self.get_style('number_separator', document)
+        formatted_number = DirectReference(self.parent, REFERENCE)
+        return formatted_number + separator + FixedWidthSpace()
+
+
+from .reference import DirectReference, REFERENCE
