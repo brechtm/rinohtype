@@ -152,12 +152,12 @@ class HeaderStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class Header(ParagraphBase):
+class Header(Paragraph):
     style_class = HeaderStyle
 
-    def text(self, document):
+    def __init__(self, style=None, parent=None):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
-        return MixedStyledText(text, parent=self)
+        super().__init__(text, style=style, parent=parent)
 
 
 class FooterStyle(ParagraphStyle):
@@ -167,12 +167,12 @@ class FooterStyle(ParagraphStyle):
         super().__init__(base=base, **attributes)
 
 
-class Footer(ParagraphBase):
+class Footer(Paragraph):
     style_class = FooterStyle
 
-    def text(self, document):
+    def __init__(self, style=None, parent=None):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
-        return MixedStyledText(text, parent=self)
+        super().__init__(text, style=style, parent=parent)
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
