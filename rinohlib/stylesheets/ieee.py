@@ -234,7 +234,9 @@ styles('option argument', ClassSelector(MixedStyledText, 'option_arg'),
        font_slant=ITALIC)
 
 
-styles('framed', ClassSelector(Framed),
+styles('admonition', ClassSelector(Framed, 'admonition'),
+       space_above=5*PT,
+       space_below=5*PT,
        padding_left=10*PT,
        padding_right=10*PT,
        padding_top=4*PT,
@@ -242,6 +244,15 @@ styles('framed', ClassSelector(Framed),
        fill_color=Color(0.94, 0.94, 1.0),
        stroke_width=1*PT,
        stroke_color=Gray(0.4))
+
+styles('admonition title', ContextSelector(ClassSelector(Framed, 'admonition'),
+                                           ClassSelector(GroupedFlowables),
+                                           ClassSelector(Paragraph, 'title')),
+       base='body',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
 
 styles('header', ClassSelector(Header),
        base='body',

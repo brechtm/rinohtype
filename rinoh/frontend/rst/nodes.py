@@ -75,18 +75,54 @@ class Subtitle(CustomElement):
         return rt.Paragraph(self.text, 'subtitle')
 
 
-class Note(GroupingElement):
+class Admonition(GroupingElement):
     def parse(self):
-        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Note')),
-                                             super().parse()])
-        return rt.Framed(content)
+        return rt.Framed(super().parse(), style='admonition')
 
 
-class Tip(GroupingElement):
+class AdmonitionBase(GroupingElement):
+    title = None
+
     def parse(self):
-        content = rt.StaticGroupedFlowables([rt.Paragraph(rt.Bold('Tip')),
-                                             super().parse()])
-        return rt.Framed(content)
+        title_par = rt.Paragraph(self.title, style='title')
+        content = rt.StaticGroupedFlowables([title_par, super().parse()])
+        return rt.Framed(content, style='admonition')
+
+
+class Attention(AdmonitionBase):
+    title = 'Attention!'
+
+
+class Caution(AdmonitionBase):
+    title = 'Caution!'
+
+
+class Danger(AdmonitionBase):
+    title = '!DANGER!'
+
+
+class Error(AdmonitionBase):
+    title = 'Error'
+
+
+class Hint(AdmonitionBase):
+    title = 'Hint'
+
+
+class Important(AdmonitionBase):
+    title = 'Important'
+
+
+class Note(AdmonitionBase):
+    title = 'Note'
+
+
+class Tip(AdmonitionBase):
+    title = 'Tip'
+
+
+class Warning(AdmonitionBase):
+    title = 'Warning'
 
 
 class Emphasis(NestedElement):
