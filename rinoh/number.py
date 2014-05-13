@@ -92,9 +92,9 @@ class NumberStyle(Style):
 
 
 class NumberedParagraph(ParagraphBase):
-    def __init__(self, text, style=None, parent=None):
+    def __init__(self, content, style=None, parent=None):
         super().__init__(style=style, parent=parent)
-        self.text = text
+        self.content = content
 
     def number(self, document):
         number_format = self.get_style('number_format', document)
@@ -103,6 +103,9 @@ class NumberedParagraph(ParagraphBase):
         separator = self.get_style('number_separator', document)
         formatted_number = DirectReference(self.parent, REFERENCE)
         return formatted_number + separator + FixedWidthSpace()
+
+    def text(self, document):
+        raise NotImplementedError
 
 
 from .reference import DirectReference, REFERENCE

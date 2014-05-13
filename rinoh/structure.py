@@ -76,11 +76,11 @@ class Heading(NumberedParagraph):
         else:
             formatted_number = None
         document.set_reference(section_id, REFERENCE, formatted_number)
-        document.set_reference(section_id, TITLE, self.text)
+        document.set_reference(section_id, TITLE, self.content)
 
-    def initial_state(self, document):
-        text = MixedStyledText(self.number(document) + self.text, parent=self)
-        return ParagraphState(text.spans())
+    def text(self, document):
+        number = self.number(document)
+        return MixedStyledText(number + self.content, parent=self)
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
@@ -155,9 +155,9 @@ class HeaderStyle(ParagraphStyle):
 class Header(ParagraphBase):
     style_class = HeaderStyle
 
-    def spans(self):
+    def text(self, document):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
-        return MixedStyledText(text, parent=self).spans()
+        return MixedStyledText(text, parent=self)
 
 
 class FooterStyle(ParagraphStyle):
@@ -170,9 +170,9 @@ class FooterStyle(ParagraphStyle):
 class Footer(ParagraphBase):
     style_class = FooterStyle
 
-    def spans(self):
+    def text(self, document):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
-        return MixedStyledText(text, parent=self).spans()
+        return MixedStyledText(text, parent=self)
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):

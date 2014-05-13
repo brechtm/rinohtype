@@ -38,10 +38,9 @@ class CaptionStyle(ParagraphStyle, NumberStyle):
 class Caption(NumberedParagraph):
     style_class = CaptionStyle
 
-    def initial_state(self, document):
+    def text(self, document):
         label = self.parent.category + ' ' + self.number(document)
-        text = MixedStyledText(label + self.text, parent=self)
-        return ParagraphState(text.spans())
+        return MixedStyledText(label + self.content, parent=self)
 
 
 class Figure(Referenceable, InseparableFlowables):
