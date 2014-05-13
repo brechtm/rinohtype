@@ -33,11 +33,6 @@ __all__ = ['Flowable', 'FlowableStyle',
            'Float']
 
 
-class FlowableException(Exception):
-    def __init__(self, flowable):
-        self.flowable = flowable
-
-
 class FlowableStyle(Style):
     """The :class:`Style` for :class:`Flowable` objects. It has the following
     attributes:
@@ -106,18 +101,6 @@ class Flowable(Styled):
         except EndOfContainer:
             pass
         return margin_left + width + margin_right, descender
-
-    def spans(self):
-        yield self
-
-    def split(self):
-        yield
-
-    @property
-    def font(self):
-        """Raises :class:`FlowableException`.
-        (accessed when this flowable is embedded in a paragraph)"""
-        raise FlowableException(self)
 
     def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's

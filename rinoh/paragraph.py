@@ -39,7 +39,7 @@ from itertools import tee
 
 from . import DATA_PATH
 from .dimension import DimensionBase, PT
-from .flowable import FlowableException, Flowable, FlowableStyle, FlowableState
+from .flowable import Flowable, FlowableStyle, FlowableState
 from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .layout import EndOfContainer
@@ -233,9 +233,6 @@ class ParagraphBase(Flowable):
 
     style_class = ParagraphStyle
 
-    def initial_state(self, document):
-        return ParagraphState(self.text(document).spans())
-
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
@@ -254,7 +251,7 @@ class ParagraphBase(Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or self.initial_state(document)
+        state = state or ParagraphState(self.text(document).spans())
         saved_state = copy(state)
         max_line_width = 0
 
@@ -293,16 +290,6 @@ class ParagraphBase(Flowable):
                         state.prepend_item(word)
                     line = typeset_line(line)
                     line_span_send = line.new_span(span, document).send
-            except FlowableException as fe:
-                line = typeset_line(line, last_line=True)
-                span = None
-                try:
-                    _, descender = fe.flowable.flow(container, descender,
-                                                    state.nested_flowable_state)
-                    state.nested_flowable_state = None
-                except EndOfContainer as eoc:
-                    state.nested_flowable_state = eoc.flowable_state
-                    raise EndOfContainer(state)
             except StopIteration:
                 if line:
                     typeset_line(line, last_line=True)
@@ -319,8 +306,8 @@ class Paragraph(ParagraphBase, MixedStyledText):
 
     __str__ = ParagraphBase.__str__
 
-    def initial_state(self, document):
-        return ParagraphState(MixedStyledText.spans(self))
+    def text(self, document):
+        return self
 
 
 class HyphenatorStore(dict):
