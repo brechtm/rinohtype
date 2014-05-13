@@ -38,6 +38,12 @@ class Rubric(NestedElement):
         return rt.Paragraph(self.process_content(), style='rubric')
 
 
+class Sidebar(GroupingElement):
+    def parse(self):
+        grouped_flowables = super().parse()
+        return rt.Framed(grouped_flowables, style='sidebar')
+
+
 class Section(CustomElement):
     def parse(self):
         flowables = []

@@ -132,6 +132,28 @@ styles('rubric', ClassSelector(Paragraph, 'rubric'),
        justify=CENTER,
        font_color=Color(0.5, 0, 0))
 
+styles('sidebar frame', ClassSelector(Framed, 'sidebar'),
+       fill_color=Color(1.0, 1.0, 0.9))
+
+styles('sidebar title', ContextSelector(ClassSelector(Framed, 'sidebar'),
+                                        ClassSelector(GroupedFlowables),
+                                        ClassSelector(Paragraph, 'title')),
+       base='body',
+       font_size=12*PT,
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
+
+styles('sidebar subtitle', ContextSelector(ClassSelector(Framed, 'sidebar'),
+                                           ClassSelector(GroupedFlowables),
+                                           ClassSelector(Paragraph, 'subtitle')),
+       base='body',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=2*PT,
+       space_below=2*PT)
+
 styles('list item number', ContextSelector(ClassSelector(ListItem),
                                            ClassSelector(Paragraph)),
        base='body',
