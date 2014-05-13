@@ -372,7 +372,6 @@ class FootnoteContainer(UpExpandingContainer):
         self._footnote_space = self
         self.last_descender = 0
         self.footnote_queue = deque()
-        self.rendered_footnotes = set()
 
     def add_footnote(self, footnote):
         self.footnote_queue.append(footnote)
@@ -383,9 +382,9 @@ class FootnoteContainer(UpExpandingContainer):
         while self.footnote_queue:
             footnote = self.footnote_queue[0]
             footnote_id = footnote.get_id(self.document)
-            if footnote_id not in self.rendered_footnotes:
+            if footnote_id not in self.document.placed_footnotes:
                 _, self.last_descender = footnote.flow(self, self.last_descender)
-                self.rendered_footnotes.add(footnote_id)
+                self.document.placed_footnotes.add(footnote_id)
             self.footnote_queue.popleft()
 
     @property

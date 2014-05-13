@@ -190,6 +190,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         rendered."""
         self.pages = []
         self.floats = set()
+        self.placed_footnotes = set()
         self.setup()
         for page in self.pages:
             chains_requiring_new_page = set(chain for chain in page.render())
