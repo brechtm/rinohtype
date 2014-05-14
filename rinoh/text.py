@@ -253,11 +253,15 @@ class SingleStyledText(StyledText):
 
     @staticmethod
     def split_words(text):
-        def character_group(char):
-            return char if char in ' \t\n' else None
+        def is_special_character(char):
+            return char in ' \t\n'
 
-        for _, characters in groupby(text, character_group):
-            yield ''.join(characters)
+        for is_special, characters in groupby(text, is_special_character):
+            if is_special:
+                for char in characters:
+                    yield char
+            else:
+                yield ''.join(characters)
 
     def split(self, container):
         """Yield the words and spaces in this single-styled text."""
