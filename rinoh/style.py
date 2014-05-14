@@ -234,13 +234,11 @@ class StyleSheet(OrderedDict):
 
     def __call__(self, name, selector, **kwargs):
         self[name] = selector.cls.style_class(**kwargs)
-        self.selectors[name] = selector
+        self.selectors[selector] = name
 
     def best_match(self, styled):
         max_score, best_match = Specificity(0, 0, 0), None
-        for name, selector in self.selectors.items():
-            if not isinstance(selector, Selector):
-                continue
+        for selector, name in self.selectors.items():
             score = selector.match(styled)
             if score > max_score:
                 best_match = name
@@ -289,8 +287,8 @@ class ClassSelector(Selector):
         class_match = 2 if type(styled) == self.cls else 1
         attributes_result = style_class_result = None
         if self.attributes:
-            for attribute, value in self.attributes.items():
-                if getattr(styled, attribute) != value:
+            for attr, value in self.attributes.items():
+                if not hasattr(styled, attr) or getattr(styled, attr) != value:
                     attributes_result = False
                     break
             else:

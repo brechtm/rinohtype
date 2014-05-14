@@ -1,7 +1,7 @@
 
 from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
-    StyledText, MixedStyledText, Paragraph, Heading,
+    StyledText, MixedStyledText, Paragraph, Heading, ParagraphStyle,
     FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
@@ -253,6 +253,17 @@ styles('admonition title', ContextSelector(ClassSelector(Framed, 'admonition'),
        indent_first=0,
        space_above=5*PT,
        space_below=5*PT)
+
+styles['red admonition title'] = ParagraphStyle(base='admonition title',
+                                                font_color=RED)
+
+for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
+    selector = ContextSelector(ClassSelector(Framed, 'admonition',
+                                             admonition_type=admonition_type),
+                               ClassSelector(GroupedFlowables),
+                               ClassSelector(Paragraph, 'title'))
+    styles.selectors[selector] = 'red admonition title'
+
 
 styles('header', ClassSelector(Header),
        base='body',

@@ -86,7 +86,9 @@ class AdmonitionBase(GroupingElement):
     def parse(self):
         title_par = rt.Paragraph(self.title, style='title')
         content = rt.StaticGroupedFlowables([title_par, super().parse()])
-        return rt.Framed(content, style='admonition')
+        framed = rt.Framed(content, style='admonition')
+        framed.admonition_type = self.__class__.__name__.lower()
+        return framed
 
 
 class Attention(AdmonitionBase):
