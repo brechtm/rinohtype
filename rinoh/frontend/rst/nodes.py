@@ -192,9 +192,8 @@ class Doctest_Block(CustomElement):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
-class Reference(CustomElement):
-    def parse(self):
-        return self.text
+class Reference(NestedElement):
+    pass
 
 
 class Footnote(CustomElement):
