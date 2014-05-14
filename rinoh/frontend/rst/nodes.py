@@ -157,9 +157,12 @@ class Subscript(NestedElement):
         return rt.Subscript(self.process_content())
 
 
-class Problematic(CustomElement):
+class Problematic(NestedElement):
     def parse(self):
-        return rt.SingleStyledText(self.text, style='error')
+        if self.text:
+            return rt.SingleStyledText(self.text, style='error')
+        else:
+            return rt.DummyFlowable()
 
 
 class Literal_Block(CustomElement):
