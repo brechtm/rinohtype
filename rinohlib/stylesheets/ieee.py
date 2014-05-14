@@ -52,7 +52,8 @@ styles('literal', ClassSelector(Paragraph, 'literal'),
        indent_first=0,
        margin_left=0.5*CM,
        typeface=ieee_family.mono,
-       ligatures=False)
+       ligatures=False,
+       hyphenate=False)
        #noWrap=True,   # but warn on overflow
        #literal=True ?)
 
