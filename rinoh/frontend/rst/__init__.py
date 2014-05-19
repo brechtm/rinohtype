@@ -65,6 +65,12 @@ class CustomElement(object):
                                             self.node.line)
 
 
+class InlineElement(CustomElement):
+    def process(self, inline):
+        assert inline
+        return super().process()
+
+
 class NestedElement(CustomElement):
     def parse(self, *args, **kwargs):
         return self.process_content()
@@ -72,7 +78,7 @@ class NestedElement(CustomElement):
     def process_content(self):
         content = MixedStyledText([])
         for child in self.getchildren():
-            content += child.process()
+            content += child.process(inline=True)
         return content
 
 

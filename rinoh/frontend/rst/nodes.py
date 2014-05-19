@@ -1,7 +1,7 @@
 
 import rinoh as rt
 
-from . import CustomElement, NestedElement, GroupingElement
+from . import CustomElement, InlineElement, NestedElement, GroupingElement
 from ...util import intersperse
 
 
@@ -127,12 +127,12 @@ class Warning(AdmonitionBase):
     title = 'Warning'
 
 
-class Emphasis(NestedElement):
+class Emphasis(InlineElement):
     def parse(self):
         return rt.Emphasized(self.text)
 
 
-class Strong(CustomElement):
+class Strong(InlineElement):
     def parse(self):
         return rt.Bold(self.text)
 
@@ -142,24 +142,24 @@ class Title_Reference(NestedElement):
         return rt.Italic(self.text)
 
 
-class Literal(CustomElement):
+class Literal(InlineElement):
     def parse(self):
         return rt.LiteralText(self.text, style='monospaced')
 
 
-class Superscript(NestedElement):
+class Superscript(InlineElement):
     def parse(self):
         return rt.Superscript(self.process_content())
 
 
-class Subscript(NestedElement):
+class Subscript(InlineElement):
     def parse(self):
         return rt.Subscript(self.process_content())
 
 
 class Problematic(NestedElement):
-    def parse(self):
-        if self.text:
+    def parse(self, inline=False):
+        if inline:
             return rt.SingleStyledText(self.text, style='error')
         else:
             return rt.DummyFlowable()
@@ -189,14 +189,19 @@ class Line(NestedElement):
         return rt.Paragraph(self.process_content() or '\n',
                             style='line block line')
 
-
 class Doctest_Block(CustomElement):
     def parse(self):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
 class Reference(NestedElement):
-    pass
+    def parse(self, inline=False):
+        if not inline:
+            children = self.getchildren()
+            assert len(children) == 1
+            return self.image.parse()
+        else:
+            return super().parse()
 
 
 class Footnote(CustomElement):
@@ -213,7 +218,7 @@ class Label(CustomElement):
         return rt.DummyFlowable()
 
 
-class Footnote_Reference(NestedElement):
+class Footnote_Reference(InlineElement):
     def parse(self):
         return rt.NoteMarker(self.node['refid'])
 
@@ -226,8 +231,11 @@ class Substitution_Definition(CustomElement):
 
 
 class Target(NestedElement):
-    def parse(self):
-        return self.process_content() or rt.DummyFlowable()
+    def parse(self, inline=False):
+        if inline:
+            return self.process_content()
+        else:
+            return rt.DummyFlowable()
 
 
 class Enumerated_List(CustomElement):
