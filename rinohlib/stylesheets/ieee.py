@@ -12,7 +12,7 @@ from rinoh import (
 )
 
 from rinoh.font import TypeFamily
-from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
+from rinoh.font.style import REGULAR, UPRIGHT, ITALIC, BOLD, SUPERSCRIPT
 
 from rinohlib.fonts.texgyre.termes import typeface as times
 from rinohlib.fonts.texgyre.cursor import typeface as courier
@@ -116,6 +116,16 @@ styles('heading level 2', ClassSelector(Heading, level=2),
        space_above=6*PT,
        space_below=6*PT,
        number_format=CHARACTER_UC)
+
+styles('heading level 3', ClassSelector(Heading, level=3),
+       base='heading level 2',
+       font_size=9*PT,
+       font_slant=UPRIGHT,
+       font_weight=BOLD,
+       line_spacing=FixedSpacing(12*PT),
+       space_above=3*PT,
+       space_below=3*PT,
+       number_format=None)
 
 styles('topic', ClassSelector(GroupedFlowables, 'topic'),
        margin_left=0.5*CM)
