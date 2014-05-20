@@ -122,9 +122,9 @@ class Compound(GroupingElement):
 class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Section):
-            return rt.Heading(self.text)
+            return rt.Heading(self.process_content())
         else:
-            return rt.Paragraph(self.text, 'title')
+            return rt.Paragraph(self.process_content(), 'title')
 
 
 class Subtitle(BodyElement):
@@ -182,6 +182,11 @@ class Tip(AdmonitionBase):
 
 class Warning(AdmonitionBase):
     title = 'Warning'
+
+
+class Generated(InlineElement):
+    def styled_text(self):
+        return None
 
 
 class Emphasis(InlineElement):

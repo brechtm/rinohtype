@@ -70,7 +70,7 @@ class Heading(NumberedParagraph):
         else:
             formatted_number = None
         document.set_reference(section_id, REFERENCE, formatted_number)
-        document.set_reference(section_id, TITLE, self.content)
+        document.set_reference(section_id, TITLE, str(self.content))
 
     def text(self, document):
         number = self.number(document)

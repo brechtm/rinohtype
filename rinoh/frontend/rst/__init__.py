@@ -50,8 +50,10 @@ class CustomElement(object):
         return [self.map_node(child) for child in self.node.children]
 
     def process_content(self):
-        return MixedStyledText([child.styled_text()
-                                for child in self.getchildren()])
+        return MixedStyledText([text
+                                for text in (child.styled_text()
+                                             for child in self.getchildren())
+                                if text])
 
     @property
     def location(self):
