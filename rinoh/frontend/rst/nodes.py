@@ -19,8 +19,63 @@ class Document(BodyElement):
 
 class DocInfo(BodyElement):
     def build_flowable(self):
-        return rt.DummyFlowable()
+        return rt.FieldList([child.flowable() for child in self.getchildren()])
 
+
+# bibliographic elements
+
+class DocInfoField(BodyElement):
+    def build_flowable(self, content=None):
+        field_name = rt.Paragraph(self.__class__.__name__, style='field_name')
+        content = content or rt.Paragraph(self.process_content())
+        return rt.LabeledFlowable(field_name, content)
+
+
+class Author(DocInfoField):
+    pass
+
+
+class Authors(DocInfoField):
+    def build_flowable(self):
+        authors = []
+        for author in self.author:
+            authors.append(rt.Paragraph(author.process_content()))
+        return super().build_flowable(rt.StaticGroupedFlowables(authors))
+
+
+class Copyright(DocInfoField):
+    pass
+
+
+class Address(DocInfoField):
+    pass
+
+
+class Organization(DocInfoField):
+    pass
+
+
+class Contact(DocInfoField):
+    pass
+
+
+class Date(DocInfoField):
+    pass
+
+
+class Version(DocInfoField):
+    pass
+
+
+class Revision(DocInfoField):
+    pass
+
+
+class Status(DocInfoField):
+    pass
+
+
+# body elements
 
 class System_Message(BodyElement):
     def build_flowable(self):
