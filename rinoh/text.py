@@ -35,9 +35,6 @@ Some characters with special properties and are represented by special classes:
 
 """
 
-import re
-import unicodedata
-
 from itertools import groupby
 
 from .dimension import PT
@@ -49,7 +46,7 @@ from .style import Style, Styled, PARENT_STYLE
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
-           'LiteralText', 'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
+           'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
            'Tab', 'Newline',
            'Bold', 'Italic', 'Emphasized', 'SmallCaps', 'Superscript',
            'Subscript']
@@ -204,14 +201,7 @@ class SingleStyledText(StyledText):
         whitespace. Consecutive whitespace characters are reduced to a single
         space."""
         super().__init__(style=style, parent=parent)
-        self.text = self._filter_text(text)
-
-    @staticmethod
-    def _filter_text(text):
-        """Replace tabulator, line-feed and newline characters in `text` with
-        spaces and afterwards reduce consecutive spaces with a single space."""
-        # TODO: this should be handled by the frontend
-        return re.sub('[\t\r\n ]+', ' ', text)
+        self.text = text
 
     def __repr__(self):
         """Return a representation of this single-styled text; the text string
@@ -315,38 +305,8 @@ class MixedStyledText(StyledText, list):
         return (span for item in self for span in item.spans())
 
 
-class StyledRawText(SingleStyledText):
-    """Styled text that preserves tabs, newlines and spaces."""
-
-    def __init__(self, text, style=PARENT_STYLE, parent=None):
-        """Initialize this styled raw text with `text` (:class:`str`), `style`,
-        and `parent` (see :class:`StyledText`)."""
-        super().__init__(text, style=style, parent=parent)
-
-    @staticmethod
-    def _filter_text(text):
-        """Return `text` as is."""
-        return text
-
-
-class LiteralText(StyledRawText):
-    """Styled text which is typeset as is. No line wrapping, and thus no
-    hyphenation, is performed. Lines are split where a newline character appears
-    in the literal text."""
-
-    def __init__(self, text, style=PARENT_STYLE, parent=None):
-        """Initialize this literal text with `text` (:class:`str`), `style`, and
-        `parent` (see :class:`StyledText`)."""
-        unbreakable = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        super().__init__(unbreakable, style=style, parent=parent)
-
-
-class Character(StyledRawText):
+class Character(SingleStyledText):
     """:class:`SingleStyledText` consisting of a single character."""
-
-    def spans(self):
-        """Yields this character itself."""
-        yield self
 
 
 class Space(Character):

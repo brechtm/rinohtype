@@ -1,4 +1,7 @@
 
+import re
+import unicodedata
+
 import rinoh as rt
 
 from . import BodyElement, BodySubElement, InlineElement, GroupingElement
@@ -7,7 +10,7 @@ from ...util import intersperse
 
 class Text(InlineElement):
     def styled_text(self):
-        return self.text
+        return re.sub('[\t\r\n ]+', ' ', self.text)
 
 
 class Document(BodyElement):
@@ -143,7 +146,8 @@ class Title_Reference(InlineElement):
 
 class Literal(InlineElement):
     def build_styled_text(self):
-        return rt.LiteralText(self.text, style='monospaced')
+        text = self.text.replace('\n', ' ')
+        return rt.SingleStyledText(text, style='monospaced')
 
 
 class Superscript(InlineElement):
@@ -166,7 +170,8 @@ class Problematic(BodyElement, InlineElement):
 
 class Literal_Block(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(rt.LiteralText(self.text), style='literal')
+        text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
+        return rt.Paragraph(text, style='literal')
 
 
 class Block_Quote(GroupingElement):
@@ -190,7 +195,8 @@ class Line(BodyElement):
 
 class Doctest_Block(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(rt.LiteralText(self.text), style='literal')
+        text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
+        return rt.Paragraph(text, style='literal')
 
 
 class Reference(BodyElement, InlineElement):

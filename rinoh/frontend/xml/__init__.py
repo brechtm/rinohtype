@@ -7,6 +7,7 @@
 
 
 import os
+import re
 
 from urllib.parse import urljoin
 from urllib.request import pathname2url
@@ -43,7 +44,7 @@ def element_factory(xml_frontend):
             return self.process_content()
 
         def process_content(self):
-            content = self.text
+            content = re.sub('[\t\r\n ]+', ' ', self.text)
             for child in self.getchildren():
                 content += child.process() + child.tail
             return content
