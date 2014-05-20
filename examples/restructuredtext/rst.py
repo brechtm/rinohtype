@@ -34,8 +34,6 @@ class SimplePage(rt.Page):
         self.body = rt.Container('body', self, self.leftmargin, self.topmargin,
                                  body_width, body_height)
 
-        self.content = document.content
-
         self.footnote_space = rt.FootnoteContainer('footnotes', self.body, 0*PT,
                                                    body_height)
         self._footnote_number = 0
@@ -72,7 +70,7 @@ class ReStructuredTextDocument(rt.Document):
 ##        toc = TableOfContents(style=toc_style, styles=toc_levels)
         for child in self.root.getchildren():
 ##            toc.register(flowable)
-            self.content << child.process()
+            self.content << child.flowable()
 ##        try:
 ##            for flowable in self.root.body.acknowledgement.parse(self):
 ##                toc.register(flowable)

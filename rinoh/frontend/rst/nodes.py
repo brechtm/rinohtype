@@ -1,31 +1,31 @@
 
 import rinoh as rt
 
-from . import CustomElement, InlineElement, NestedElement, GroupingElement
+from . import BodyElement, BodySubElement, InlineElement, GroupingElement
 from ...util import intersperse
 
 
-class Text(CustomElement):
-    def process(self, *args, **kwargs):
+class Text(InlineElement):
+    def styled_text(self):
         return self.text
 
 
-class Document(CustomElement):
+class Document(BodyElement):
     pass
 
 
-class DocInfo(CustomElement):
-    def parse(self):
+class DocInfo(BodyElement):
+    def build_flowable(self):
         return rt.DummyFlowable()
 
 
-class System_Message(CustomElement):
-    def parse(self, *args, **kwargs):
+class System_Message(BodyElement):
+    def build_flowable(self):
         return rt.WarnFlowable(self.text)
 
 
-class Comment(CustomElement):
-    def process(self, *args, **kwargs):
+class Comment(BodyElement):
+    def build_flowable(self):
         return rt.DummyFlowable()
 
 
@@ -33,28 +33,27 @@ class Topic(GroupingElement):
     style = 'topic'
 
 
-class Rubric(NestedElement):
-    def parse(self):
+class Rubric(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(self.process_content(), style='rubric')
 
 
 class Sidebar(GroupingElement):
-    def parse(self):
-        grouped_flowables = super().parse()
+    def flowable(self):
+        grouped_flowables = super().flowable()
         return rt.Framed(grouped_flowables, style='sidebar')
 
 
-class Section(CustomElement):
-    def parse(self):
+class Section(BodyElement):
+    def build_flowable(self):
         flowables = []
         for element in self.getchildren():
-            flowable = element.process()
-            flowables.append(flowable)
+            flowables.append(element.flowable())
         return rt.Section(flowables, id=self.get('ids', None)[0])
 
 
-class Paragraph(NestedElement):
-    def parse(self):
+class Paragraph(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(super().process_content())
 
 
@@ -62,30 +61,30 @@ class Compound(GroupingElement):
     pass
 
 
-class Title(CustomElement):
-    def parse(self):
+class Title(BodyElement):
+    def build_flowable(self):
         if isinstance(self.parent, Section):
             return rt.Heading(self.text)
         else:
             return rt.Paragraph(self.text, 'title')
 
 
-class Subtitle(CustomElement):
-    def parse(self):
+class Subtitle(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(self.text, 'subtitle')
 
 
 class Admonition(GroupingElement):
-    def parse(self):
-        return rt.Framed(super().parse(), style='admonition')
+    def flowable(self):
+        return rt.Framed(super().flowable(), style='admonition')
 
 
 class AdmonitionBase(GroupingElement):
     title = None
 
-    def parse(self):
+    def flowable(self):
         title_par = rt.Paragraph(self.title, style='title')
-        content = rt.StaticGroupedFlowables([title_par, super().parse()])
+        content = rt.StaticGroupedFlowables([title_par, super().flowable()])
         framed = rt.Framed(content, style='admonition')
         framed.admonition_type = self.__class__.__name__.lower()
         return framed
@@ -128,45 +127,45 @@ class Warning(AdmonitionBase):
 
 
 class Emphasis(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.Emphasized(self.text)
 
 
 class Strong(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.Bold(self.text)
 
 
-class Title_Reference(NestedElement):
-    def parse(self):
+class Title_Reference(InlineElement):
+    def build_styled_text(self):
         return rt.Italic(self.text)
 
 
 class Literal(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.LiteralText(self.text, style='monospaced')
 
 
 class Superscript(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.Superscript(self.process_content())
 
 
 class Subscript(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.Subscript(self.process_content())
 
 
-class Problematic(NestedElement):
-    def parse(self, inline=False):
-        if inline:
-            return rt.SingleStyledText(self.text, style='error')
-        else:
-            return rt.DummyFlowable()
+class Problematic(BodyElement, InlineElement):
+    def build_styled_text(self):
+        return rt.SingleStyledText(self.text, style='error')
+
+    def build_flowable(self):
+        return rt.DummyFlowable()
 
 
-class Literal_Block(CustomElement):
-    def parse(self):
+class Literal_Block(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
@@ -175,7 +174,7 @@ class Block_Quote(GroupingElement):
 
 
 class Attribution(Paragraph):
-    def parse(self):
+    def build_flowable(self):
         return rt.Paragraph('\N{EM DASH}' + self.process_content(),
                             style='attribution')
 
@@ -184,90 +183,90 @@ class Line_Block(GroupingElement):
     style = 'line block'
 
 
-class Line(NestedElement):
-    def parse(self):
+class Line(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(self.process_content() or '\n',
                             style='line block line')
 
-class Doctest_Block(CustomElement):
-    def parse(self):
+class Doctest_Block(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(rt.LiteralText(self.text), style='literal')
 
 
-class Reference(NestedElement):
-    def parse(self, inline=False):
-        if not inline:
-            children = self.getchildren()
-            assert len(children) == 1
-            return self.image.parse()
-        else:
-            return super().parse()
+class Reference(BodyElement, InlineElement):
+    def build_styled_text(self):
+        return self.process_content()
+
+    def build_flowable(self):
+        children = self.getchildren()
+        assert len(children) == 1
+        return self.image.flowable()
 
 
-class Footnote(CustomElement):
-    def parse(self):
+class Footnote(BodyElement):
+    def build_flowable(self):
         assert len(self.node['ids']) == 1
         note_id = self.node['ids'][0]
-        content = [node.process() for node in self.getchildren()[1:]]
+        content = [node.flowable() for node in self.getchildren()[1:]]
         note = rt.Note(rt.StaticGroupedFlowables(content), id=note_id)
         return rt.RegisterNote(note)
 
 
-class Label(CustomElement):
-    def parse(self):
+class Label(BodyElement):
+    def build_flowable(self):
         return rt.DummyFlowable()
 
 
 class Footnote_Reference(InlineElement):
-    def parse(self):
+    def build_styled_text(self):
         return rt.NoteMarker(self.node['refid'])
 
 
 
 
-class Substitution_Definition(CustomElement):
-    def parse(self):
+class Substitution_Definition(BodyElement):
+    def build_flowable(self):
         return rt.DummyFlowable()
 
 
-class Target(NestedElement):
-    def parse(self, inline=False):
-        if inline:
-            return self.process_content()
-        else:
-            return rt.DummyFlowable()
+class Target(BodyElement, InlineElement):
+    def build_styled_text(self):
+        return self.process_content()
+
+    def build_flowable(self):
+        return rt.DummyFlowable()
 
 
-class Enumerated_List(CustomElement):
-    def parse(self):
+class Enumerated_List(BodyElement):
+    def build_flowable(self):
         # TODO: handle different numbering styles
         return rt.List([item.process() for item in self.list_item],
                        style='enumerated')
 
 
-class Bullet_List(CustomElement):
-    def parse(self):
+class Bullet_List(BodyElement):
+    def build_flowable(self):
         return rt.List([item.process() for item in self.list_item],
                        style='bulleted')
 
 
-class List_Item(NestedElement):
-    def parse(self):
-        return [item.process() for item in self.getchildren()]
+class List_Item(BodySubElement):
+    def process(self):
+        return [item.flowable() for item in self.getchildren()]
 
 
-class Definition_List(CustomElement):
-    def parse(self):
+class Definition_List(BodyElement):
+    def build_flowable(self):
         return rt.DefinitionList([item.process()
                                   for item in self.definition_list_item])
 
-class Definition_List_Item(CustomElement):
-    def parse(self):
-        return (self.term.process(), self.definition.process())
+class Definition_List_Item(BodySubElement):
+    def process(self):
+        return (self.term.styled_text(), self.definition.flowable())
 
 
-class Term(NestedElement):
-    def parse(self):
+class Term(InlineElement):
+    def build_styled_text(self):
         return rt.MixedStyledText(self.process_content())
 
 
@@ -275,19 +274,19 @@ class Definition(GroupingElement):
     pass
 
 
-class Field_List(CustomElement):
-    def parse(self):
-        return rt.FieldList([field.process() for field in self.field])
+class Field_List(BodyElement):
+    def build_flowable(self):
+        return rt.FieldList([field.flowable() for field in self.field])
 
 
-class Field(CustomElement):
-    def parse(self):
-        return rt.LabeledFlowable(self.field_name.process(),
-                                  self.field_body.process())
+class Field(BodyElement):
+    def build_flowable(self):
+        return rt.LabeledFlowable(self.field_name.flowable(),
+                                  self.field_body.flowable())
 
 
-class Field_Name(NestedElement):
-    def parse(self):
+class Field_Name(BodyElement):
+    def build_flowable(self):
         return rt.Paragraph(self.process_content(), style='field_name')
 
 
@@ -295,43 +294,43 @@ class Field_Body(GroupingElement):
     pass
 
 
-class Option_List(CustomElement):
-    def parse(self):
-        return rt.FieldList([item.process() for item in self.option_list_item])
+class Option_List(BodyElement):
+    def build_flowable(self):
+        return rt.FieldList([item.flowable() for item in self.option_list_item])
 
 
-class Option_List_Item(CustomElement):
-    def parse(self):
-        return rt.LabeledFlowable(self.option_group.process(),
-                                  self.description.process(),
+class Option_List_Item(BodyElement):
+    def build_flowable(self):
+        return rt.LabeledFlowable(self.option_group.flowable(),
+                                  self.description.flowable(),
                                   style='option')
 
 
-class Option_Group(NestedElement):
-    def parse(self):
-        options = (option.process() for option in self.option)
+class Option_Group(BodyElement):
+    def build_flowable(self):
+        options = (option.styled_text() for option in self.option)
         return rt.Paragraph(intersperse(options, ', '), style='option_group')
 
 
-class Option(NestedElement):
-    def parse(self):
-        text = self.option_string.process()
+class Option(InlineElement):
+    def build_styled_text(self):
+        text = self.option_string.styled_text()
         try:
             delimiter = rt.MixedStyledText(self.option_argument['delimiter'],
                                            style='option_string')
-            text += delimiter + self.option_argument.process()
+            text += delimiter + self.option_argument.styled_text()
         except AttributeError:
             pass
         return rt.MixedStyledText(text)
 
 
-class Option_String(NestedElement):
-    def parse(self):
+class Option_String(InlineElement):
+    def build_styled_text(self):
         return rt.MixedStyledText(self.process_content(), style='option_string')
 
 
-class Option_Argument(NestedElement):
-    def parse(self):
+class Option_Argument(InlineElement):
+    def build_styled_text(self):
         return rt.MixedStyledText(self.process_content(), style='option_arg')
 
 
@@ -339,11 +338,11 @@ class Description(GroupingElement):
     pass
 
 
-class Image(CustomElement):
-    def parse(self):
+class Image(BodyElement):
+    def build_flowable(self):
         return rt.Image(self.get('uri').rsplit('.png', 1)[0])
 
 
-class Transition(CustomElement):
-    def parse(self):
+class Transition(BodyElement):
+    def build_flowable(self):
         return rt.HorizontalRule()

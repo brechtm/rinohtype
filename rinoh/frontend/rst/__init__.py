@@ -1,4 +1,6 @@
 
+from functools import wraps
+
 from docutils.core import publish_doctree
 
 from rinoh.text import MixedStyledText
@@ -47,16 +49,11 @@ class CustomElement(object):
     def getchildren(self):
         return [self.map_node(child) for child in self.node.children]
 
-    def process(self, *args, **kwargs):
-        result = self.parse(*args, **kwargs)
-        try:
-            result.source = self
-        except AttributeError:
-            pass
-        return result
-
-    def parse(self, *args, **kwargs):
-        raise NotImplementedError('tag: %s' % self.tag)
+    def process_content(self):
+        content = MixedStyledText([])
+        for child in self.getchildren():
+            content += child.styled_text()
+        return content
 
     @property
     def location(self):
@@ -65,28 +62,48 @@ class CustomElement(object):
                                             self.node.line)
 
 
+def set_source(method):
+    """Decorator that sets the `source` attribute of the returned object to
+    `self`"""
+    @wraps(method)
+    def method_wrapper(obj, *args, **kwargs):
+        result = method(obj, *args, **kwargs)
+        try:
+            result.source = obj
+        except AttributeError:
+            pass
+        return result
+    return method_wrapper
+
+
+class BodyElement(CustomElement):
+    @set_source
+    def flowable(self):
+        return self.build_flowable()
+
+    def build_flowable(self):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+
+class BodySubElement(CustomElement):
+    def process(self):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+
 class InlineElement(CustomElement):
-    def process(self, inline):
-        assert inline
-        return super().process()
+    @set_source
+    def styled_text(self):
+        return self.build_styled_text()
+
+    def build_styled_text(self):
+        raise NotImplementedError('tag: %s' % self.tag)
 
 
-class NestedElement(CustomElement):
-    def parse(self, *args, **kwargs):
-        return self.process_content()
-
-    def process_content(self):
-        content = MixedStyledText([])
-        for child in self.getchildren():
-            content += child.process(inline=True)
-        return content
-
-
-class GroupingElement(CustomElement):
+class GroupingElement(BodyElement):
     style = None
 
-    def parse(self):
-        return StaticGroupedFlowables([item.process()
+    def build_flowable(self):
+        return StaticGroupedFlowables([item.flowable()
                                        for item in self.getchildren()],
                                       style=self.style)
 
