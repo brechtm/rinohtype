@@ -43,12 +43,6 @@ class Section(Referenceable, StaticGroupedFlowables):
         except AttributeError:
             return 1
 
-    def render(self, container, last_descender, state=None):
-        if self.level == 1:
-            container.page.section = self
-        self.update_page_reference(container.page)
-        return super().render(container, last_descender, state=state)
-
 
 class Heading(NumberedParagraph):
     def __init__(self, title, style=None, parent=None):
@@ -75,6 +69,13 @@ class Heading(NumberedParagraph):
     def text(self, document):
         number = self.number(document)
         return MixedStyledText(number + self.content, parent=self)
+
+    def render(self, container, last_descender, state=None):
+        result = super().render(container, last_descender, state=state)
+        if self.level == 1:
+            container.page.section = self.parent
+        self.parent.update_page_reference(container.page)
+        return result
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
