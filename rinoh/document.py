@@ -106,7 +106,10 @@ class Document(object):
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
         self.references = {}           # mapping id's to reference data
+        self.number_of_pages = 0       # page count
+        self.page_references = {}      # mapping id's to page numbers
         self._unique_id = 0
+
 
     def _print_version_and_license(self):
         print('RinohType {} ({})  Copyright (c) Brecht Machiels'
@@ -140,14 +143,10 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Load the cached page references from `<filename>.ptc`."""
         try:
             with open(filename + self._cache_extension, 'rb') as file:
-                self.number_of_pages, self.page_references = pickle.load(file)
-                self._previous_number_of_pages = self.number_of_pages
-                self._previous_page_references = self.page_references.copy()
+                prev_number_of_pages, prev_page_references = pickle.load(file)
         except IOError:
-            self.number_of_pages = 0
-            self._previous_number_of_pages = -1
-            self.page_references = {}
-            self._previous_page_references = {}
+            prev_number_of_pages, prev_page_references = -1, {}
+        return prev_number_of_pages, prev_page_references
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
@@ -155,27 +154,31 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = self.number_of_pages, self.page_references
             pickle.dump(cache, file)
 
-    def _has_converged(self):
-        """Return `True` if the last rendering iteration converged to a stable
-        result.
-
-        Practically, this tests whether the total number of pages and page
-        references to document elements have changed since the previous
-        rendering iteration."""
-        return (self.number_of_pages == self._previous_number_of_pages and
-                self.page_references == self._previous_page_references)
-
     def render(self, filename):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
-        self._load_cache(filename)
+
+        def has_converged():
+            """Return `True` if the last rendering iteration converged to a
+            stable result.
+
+            Practically, this tests whether the total number of pages and page
+            references to document elements have changed since the previous
+            rendering iteration."""
+            nonlocal prev_number_of_pages, prev_page_references
+            return (self.number_of_pages == prev_number_of_pages and
+                    self.page_references == prev_page_references)
+
+        prev_number_of_pages, prev_page_references = self._load_cache(filename)
+        self.number_of_pages = prev_number_of_pages
+        self.page_references = prev_page_references.copy()
         for flowable in (flowable for target in self.flowable_targets
                          for flowable in target.flowables):
             flowable.prepare(self)
         self.number_of_pages = self.render_pages()
-        while not self._has_converged():
-            self._previous_number_of_pages = self.number_of_pages
-            self._previous_page_references = self.page_references.copy()
+        while not has_converged():
+            prev_number_of_pages = self.number_of_pages
+            prev_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.title)
