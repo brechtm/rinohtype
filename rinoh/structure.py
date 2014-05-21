@@ -43,6 +43,10 @@ class Section(Referenceable, StaticGroupedFlowables):
         except AttributeError:
             return 1
 
+    @property
+    def section(self):
+        return self
+
 
 class Heading(NumberedParagraph):
     def __init__(self, title, style=None, parent=None):
@@ -181,19 +185,37 @@ class TableOfContents(GroupedFlowables):
     style_class = TableOfContentsStyle
     location = 'table of contents'
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, local=False, style=None, parent=None):
         super().__init__(style=style, parent=parent)
+        self.local = local
         self.source = self
 
     def flowables(self, document):
+        def limit_items(items, section):
+            section_id = section.get_id(document)
+            section_level = section.level
+
+            # fast-forward `items` to the first sub-section of `section`
+            while next(items)[0] != section_id:
+                pass
+
+            for flowable_id, flowable in items:
+                if flowable.level == section_level:
+                    break
+                yield flowable_id, flowable
+
         depth = self.get_style('depth', document)
-        for flowable_id, flowable in document.elements.items():
-            if isinstance(flowable, Section) and flowable.level <= depth:
-                text = [Reference(flowable_id, type=REFERENCE), Tab(),
-                        Reference(flowable_id, type=TITLE), Tab(),
-                        Reference(flowable_id, type=PAGE)]
-                entry = TableOfContentsEntry(text, flowable.level, parent=self)
-                yield entry
+        items = ((flowable_id, flowable)
+                 for flowable_id, flowable in document.elements.items()
+                 if isinstance(flowable, Section) and flowable.level <= depth)
+        if self.local and self.section:
+            items = limit_items(items, self.section)
+
+        for flowable_id, flowable in items:
+            text = [Reference(flowable_id, type=REFERENCE), Tab(),
+                    Reference(flowable_id, type=TITLE), Tab(),
+                    Reference(flowable_id, type=PAGE)]
+            yield TableOfContentsEntry(text, flowable.level, parent=self)
 
 
 class TableOfContentsEntry(Paragraph):

@@ -341,6 +341,13 @@ styles('toc level 3', ClassSelector(TableOfContentsEntry, depth=3),
        tab_stops=[TabStop(1.8*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
+styles('L3 toc level 3', ContextSelector(ClassSelector(TableOfContents, level=2),
+                                         ClassSelector(TableOfContentsEntry, depth=3)),
+       base='table of contents',
+       margin_left=0,
+       tab_stops=[TabStop(0.6*CM),
+                  TabStop(1.0, RIGHT, '. ')])
+
 styles('tabular', ClassSelector(Tabular),
        typeface=ieee_family.serif,
        font_weight=REGULAR,

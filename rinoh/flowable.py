@@ -77,6 +77,13 @@ class Flowable(Styled):
         except AttributeError:
             return 0
 
+    @property
+    def section(self):
+        try:
+            return self.parent.section
+        except AttributeError:
+            return None
+
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.

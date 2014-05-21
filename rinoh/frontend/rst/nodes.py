@@ -90,6 +90,19 @@ class Comment(BodyElement):
 class Topic(GroupingElement):
     style = 'topic'
 
+    def build_flowable(self):
+        classes = self.get('classes')
+        if 'contents' in classes:
+            flowables = [rt.TableOfContents(local='local' in classes)]
+            try:
+                flowables.insert(0, self.title.flowable())
+            except AttributeError:
+                pass
+            return rt.StaticGroupedFlowables(flowables,
+                                             style='table of contents')
+        else:
+            return super().build_flowable()
+
 
 class Rubric(BodyElement):
     def build_flowable(self):
