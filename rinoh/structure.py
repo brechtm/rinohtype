@@ -23,8 +23,8 @@ from .dimension import PT
 from .style import PARENT_STYLE
 
 
-__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
-           'DefinitionListStyle', 'DefinitionList', 'FieldList',
+__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
+           'DefinitionListStyle', 'DefinitionList', 'DefinitionTerm',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -131,17 +131,16 @@ class DefinitionList(GroupedFlowables):
         super().__init__(style)
         self.items = items
         for term, definition in items:
-            term.parent = definition.parent = self
+            definition.parent = self
 
     def flowables(self, document):
-        term_style = ParagraphStyle(space_above=0*PT,
-                                    space_below=0*PT,
-                                    base=PARENT_STYLE)
-        for i, item in enumerate(self.items):
-            term, definition = item
-            term_par = Paragraph(term, style=term_style, parent=self)
-            yield term_par
+        for (term, definition) in self.items:
+            yield DefinitionTerm(term, parent=self)
             yield definition
+
+
+class DefinitionTerm(Paragraph):
+    pass
 
 
 class HeaderStyle(ParagraphStyle):

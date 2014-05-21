@@ -339,14 +339,25 @@ class Definition_List(BodyElement):
         return rt.DefinitionList([item.process()
                                   for item in self.definition_list_item])
 
+
 class Definition_List_Item(BodySubElement):
     def process(self):
-        return (self.term.styled_text(), self.definition.flowable())
+        term = self.term.styled_text()
+        try:
+            term += ' : ' + self.classifier.styled_text()
+        except AttributeError:
+            pass
+        return (term, self.definition.flowable())
 
 
 class Term(InlineElement):
     def build_styled_text(self):
-        return rt.MixedStyledText(self.process_content())
+        return self.process_content()
+
+
+class Classifier(InlineElement):
+    def build_styled_text(self):
+        return self.process_content('classifier')
 
 
 class Definition(GroupingElement):

@@ -5,6 +5,7 @@ from docutils.core import publish_doctree
 
 from rinoh.text import MixedStyledText
 from rinoh.flowable import StaticGroupedFlowables
+from rinoh.style import PARENT_STYLE
 from rinoh.util import all_subclasses
 
 
@@ -49,11 +50,11 @@ class CustomElement(object):
     def getchildren(self):
         return [self.map_node(child) for child in self.node.children]
 
-    def process_content(self):
+    def process_content(self, style=PARENT_STYLE):
         return MixedStyledText([text
                                 for text in (child.styled_text()
                                              for child in self.getchildren())
-                                if text])
+                                if text], style=style)
 
     @property
     def location(self):

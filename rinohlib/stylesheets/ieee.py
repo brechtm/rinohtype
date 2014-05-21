@@ -3,7 +3,8 @@ from rinoh import (
     StyleSheet, ClassSelector, ContextSelector,
     StyledText, MixedStyledText, Paragraph, Heading, ParagraphStyle,
     FixedSpacing, ProportionalSpacing,
-    List, ListItem, DefinitionList, GroupedFlowables, StaticGroupedFlowables,
+    List, ListItem, DefinitionList, DefinitionTerm,
+    GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
     NoteMarker, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
@@ -213,6 +214,14 @@ styles('list item paragraph', ContextSelector(ClassSelector(ListItem),
 
 styles('definition list', ClassSelector(DefinitionList),
        base='body')
+
+styles('definition term', ClassSelector(DefinitionTerm),
+       base='body',
+       indent_first=0,
+       font_weight=BOLD)
+
+styles('definition term classifier', ClassSelector(StyledText, 'classifier'),
+       font_weight=REGULAR)
 
 styles('definition', ContextSelector(ClassSelector(DefinitionList),
                                      ClassSelector(GroupedFlowables)),
