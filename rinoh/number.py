@@ -88,7 +88,7 @@ def symbolize(number):
 
 class NumberStyle(Style):
     attributes = {'number_format': NUMBER,
-                  'number_separator': '.'}
+                  'number_suffix': '.'}
 
 
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
@@ -106,9 +106,9 @@ class NumberedParagraph(ParagraphBase):
         number_format = self.get_style('number_format', document)
         if not number_format:
             return ''
-        separator = self.get_style('number_separator', document)
-        formatted_number = DirectReference(self.parent, REFERENCE)
-        return formatted_number + separator + FixedWidthSpace()
+        suffix = self.get_style('number_suffix', document)
+        formatted_number = DirectReference(self.section, REFERENCE)
+        return formatted_number + suffix + FixedWidthSpace()
 
     def text(self, document):
         raise NotImplementedError

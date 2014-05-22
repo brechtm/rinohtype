@@ -12,7 +12,8 @@ from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import NumberedParagraph, NumberStyle, format_number
+from .number import NumberStyle, format_number
+from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Referenceable, Reference
 from .reference import REFERENCE, TITLE, PAGE
@@ -48,7 +49,13 @@ class Section(Referenceable, StaticGroupedFlowables):
         return self
 
 
+class HeadingStyle(NumberedParagraphStyle):
+    attributes = {'number_separator': '.'}
+
+
 class Heading(NumberedParagraph):
+    style_class = HeadingStyle
+
     def __init__(self, title, style=None, parent=None):
         super().__init__(title, style=style, parent=parent)
 
@@ -57,7 +64,7 @@ class Heading(NumberedParagraph):
                                           self.style)
 
     def prepare(self, document):
-        section_id = self.parent.get_id(document)
+        section_id = self.section.get_id(document)
         numbering_style = self.get_style('number_format', document)
         if numbering_style:
             heading_counters = document.counters.setdefault(__class__, {})
@@ -65,6 +72,11 @@ class Heading(NumberedParagraph):
             level_counter.append(self)
             number = len(level_counter)
             formatted_number = format_number(number, numbering_style)
+            separator = self.get_style('number_separator', document)
+            if separator is not None and self.level > 1:
+                parent_id = self.section.parent.section.get_id(document)
+                parent_ref = document.get_reference(parent_id, REFERENCE)
+                formatted_number = parent_ref + separator + formatted_number
         else:
             formatted_number = None
         document.set_reference(section_id, REFERENCE, formatted_number)
@@ -98,12 +110,12 @@ class List(GroupedLabeledFlowables):
         if self.get_style('ordered', document):
             number_format = self.get_style('number_format', document)
             numbers = (format_number(i, number_format) for i in count(1))
-            separator = self.get_style('number_separator', document)
+            suffix = self.get_style('number_suffix', document)
         else:
             numbers = repeat(self.get_style('bullet', document))
-            separator = ''
+            suffix = ''
         for number, item in zip(numbers, self.items):
-            label = Paragraph(number + separator)
+            label = Paragraph(number + suffix)
             flowable = StaticGroupedFlowables(item)
             yield ListItem(label, flowable, parent=self)
 

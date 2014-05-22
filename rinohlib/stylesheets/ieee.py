@@ -178,7 +178,7 @@ styles('enumerated list', ClassSelector(List, 'enumerated'),
        ordered=True,
        flowable_spacing=0*PT,
        number_format=NUMBER,
-       number_separator=')')
+       number_suffix=')')
 
 styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
                                                  ClassSelector(List,
