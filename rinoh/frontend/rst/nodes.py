@@ -75,6 +75,16 @@ class Status(DocInfoField):
     pass
 
 
+# FIXME: the meta elements are removed from the docutils doctree
+class Meta(BodyElement):
+    MAP = {'keywords': 'keywords',
+           'description': 'subject'}
+
+    def build_flowable(self):
+        metadata = {self.MAP[self.get('name')]: self.get('content')}
+        return rt.SetMetadataFlowable(**metadata)
+
+
 # body elements
 
 class System_Message(BodyElement):

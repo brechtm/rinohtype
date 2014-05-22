@@ -27,7 +27,7 @@ from .style import Style, Styled
 
 
 __all__ = ['Flowable', 'FlowableStyle',
-           'DummyFlowable', 'WarnFlowable',
+           'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float']
@@ -134,6 +134,17 @@ class WarnFlowable(DummyFlowable):
     def flow(self, container, last_descender, state=None):
         self.warn(self.message, container)
         return super().flow(container, last_descender, state)
+
+
+class SetMetadataFlowable(DummyFlowable):
+    def __init__(self, parent=None, **metadata):
+        super().__init__(parent=parent)
+        self.metadata = metadata
+
+    def flow(self, container, last_descender, state=None):
+        for field, value in self.metadata:
+            setattr(container.document, field, value)
+        return super().flow(container)
 
 
 class InseparableFlowables(Flowable):
