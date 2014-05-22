@@ -59,10 +59,10 @@ class SimplePage(rt.Page):
 # ----------------------------------------------------------------------------
 class ReStructuredTextDocument(rt.Document):
     def __init__(self, filename):
-        super().__init__(backend=pdf)
         self.styles = styles
         parser = ReStructuredTextParser()
         self.root = parser.parse(filename)
+        super().__init__(backend=pdf, title=self.root.get('title'))
         self.content = rt.Chain(self)
         self.parse_input()
 

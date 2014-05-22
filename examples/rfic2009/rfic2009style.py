@@ -319,24 +319,28 @@ class RFIC2009Paper(Document):
     namespace = 'http://www.mos6581.org/ns/rficpaper'
 
     def __init__(self, filename, bibliography_source):
-        super().__init__(backend=pdf)
         self.styles = styles
         parser = xml_frontend.Parser(CustomElement, self.namespace,
                                      schema=self.rngschema)
         xml_tree = parser.parse(filename)
         self.root = xml_tree.getroot()
+
+        title = self.root.head.title.text
+        authors = [author.text for author in self.root.head.authors.author]
+        if len(authors) > 1:
+            author = ', '.join(authors[:-1]) + ', and ' + authors[-1]
+        else:
+            author = authors[0]
+        self.keyword_list = [term.text
+                             for term in self.root.head.indexterms.term]
+
+        super().__init__(backend=pdf, title=title, author=author,
+                         keywords=', '.join(self.keyword_list))
         bibliography_style = CitationStylesStyle('ieee.csl')
         self.bibliography = CitationStylesBibliography(bibliography_style,
                                                        bibliography_source,
                                                        csl_formatter)
 
-        authors = [author.text for author in self.root.head.authors.author]
-        if len(authors) > 1:
-            self.author = ', '.join(authors[:-1]) + ', and ' + authors[-1]
-        else:
-            self.author = authors[0]
-        self.title = self.root.head.title.text
-        self.keywords = [term.text for term in self.root.head.indexterms.term]
         self.parse_input()
 
     def parse_input(self):
@@ -347,7 +351,7 @@ class RFIC2009Paper(Document):
 
         self.content = Chain(self)
         self.content << Abstract(self.root.head.abstract.text)
-        self.content << IndexTerms(self.keywords)
+        self.content << IndexTerms(self.keyword_list)
 
         toc_heading = Heading('Table of Contents', style='unnumbered')
         toc = TableOfContents()

@@ -435,10 +435,15 @@ class Null(Object):
 
 
 class Document(dict):
-    def __init__(self):
+    PRODUCER = 'RinohType v{} PDF backend ({})'.format(__version__,
+                                                       __release_date__)
+
+    def __init__(self, creator):
         self.catalog = Catalog()
         self.info = Dictionary(indirect=True)
         self.timestamp = time.time()
+        self.set_info('Creator', creator)
+        self.set_info('Producer', self.PRODUCER)
         self.info['CreationDate'] = Date(self.timestamp)
         self.id = None
         self._by_object_id = {}
@@ -465,14 +470,20 @@ class Document(dict):
         out(b'xref')
         out('0 {}'.format(self.max_identifier + 1).encode('utf_8'))
         out(b'0000000000 65535 f ')
-        last_free = 0
         for identifier in range(1, self.max_identifier + 1):
             try:
                 address = addresses[identifier]
                 out('{:010d} {:05d} n '.format(address, 0).encode('utf_8'))
             except KeyError:
                 out(b'0000000000 65535 f ')
-                last_free = identifier
+
+    def set_info(self, field, string):
+        assert field in ('Creator', 'Producer',
+                         'Title', 'Author', 'Subject', 'Keywords')
+        if string:
+            if field in self.info:
+                self.info[field].delete(self)
+            self.info[field] = String(string)
 
     def write(self, file_or_filename):
         def out(string):
@@ -487,12 +498,8 @@ class Document(dict):
 
         self.catalog.register_indirect(self)
         self.info.register_indirect(self)
-        if 'Producer' in self.info:
-            self.info['Producer'].delete(self)
         if 'ModDate' in self.info:
             self.info['ModDate'].delete(self)
-        self.info['Producer'] = String('RinohType v{} ({})'
-                                       .format(__version__, __release_date__))
         self.info['ModDate'] = Date(self.timestamp)
 
         out('%PDF-{}'.format(PDF_VERSION).encode('utf_8'))

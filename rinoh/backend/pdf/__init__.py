@@ -20,11 +20,17 @@ from ...font.opentype import OpenTypeFont
 class Document(object):
     extension = '.pdf'
 
-    def __init__(self, rinoh_document, title):
+    def __init__(self, rinoh_document, creator):
         self.rinoh_document = rinoh_document
-        self.cos_document = cos.Document()
+        self.cos_document = cos.Document(creator)
         self.pages = []
         self.fonts = {}
+
+    def get_metadata(self, field):
+        return str(self.cos_document.info[field.capitalize()])
+
+    def set_metadata(self, field, value):
+        self.cos_document.set_info(field.capitalize(), value)
 
     def register_font(self, font):
         try:

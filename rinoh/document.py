@@ -79,27 +79,44 @@ class Page(Container):
                       .format(self.number, index + 1))
 
 
+class BackendDocumentMetadata(object):
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, instance, object_type):
+        return instance.backend_document.get_metadata(self.name)
+
+    def __set__(self, instance, value):
+        return instance.backend_document.set_metadata(self.name, value)
+
+
 class Document(object):
     """A document renders the contents described in an input file onto pages.
     This is an abstract base class; subclasses should implement :meth:`setup`
     and :meth:`add_to_chain`."""
 
     _cache_extension = '.ptc'
+    CREATOR = 'RinohType v{} ({})'.format(__version__, __release_date__)
 
-    def __init__(self, backend=pdf, title=None, author=None, keywords=None):
+    title = BackendDocumentMetadata('title')
+    author = BackendDocumentMetadata('author')
+    subject = BackendDocumentMetadata('subject')
+    keywords = BackendDocumentMetadata('keywords')
+
+    def __init__(self, backend=pdf, title=None, author=None, subject=None,
+                 keywords=None):
         """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
         backend."""
         self._print_version_and_license()
         self.backend = backend
-        self.backend_document = self.backend.Document(self, title)
+        self.backend_document = self.backend.Document(self, self.CREATOR)
 
         self.author = author
         self.title = title
+        self.subject = subject
         self.keywords = keywords
-        self.creator = "RinohType"
-        self.creation_time = time.asctime()
 
         self.flowable_targets = []
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -109,7 +126,6 @@ class Document(object):
         self.number_of_pages = 0       # page count
         self.page_references = {}      # mapping id's to page numbers
         self._unique_id = 0
-
 
     def _print_version_and_license(self):
         print('RinohType {} ({})  Copyright (c) Brecht Machiels'
@@ -181,7 +197,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             prev_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
             del self.backend_document
-            self.backend_document = self.backend.Document(self, self.title)
+            self.backend_document = self.backend.Document(self, self.CREATOR)
             self.number_of_pages = self.render_pages()
         self._save_cache(filename)
         print('Writing output: {}'.format(filename +
