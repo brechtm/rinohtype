@@ -95,8 +95,9 @@ class Document(object):
     This is an abstract base class; subclasses should implement :meth:`setup`
     and :meth:`add_to_chain`."""
 
-    _cache_extension = '.ptc'
     CREATOR = 'RinohType v{} ({})'.format(__version__, __release_date__)
+
+    CACHE_EXTENSION = '.rtc'
 
     title = BackendDocumentMetadata('title')
     author = BackendDocumentMetadata('author')
@@ -158,7 +159,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
         try:
-            with open(filename + self._cache_extension, 'rb') as file:
+            with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
         except IOError:
             prev_number_of_pages, prev_page_references = -1, {}
@@ -166,7 +167,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
-        with open(filename + self._cache_extension, 'wb') as file:
+        with open(filename + self.CACHE_EXTENSION, 'wb') as file:
             cache = self.number_of_pages, self.page_references
             pickle.dump(cache, file)
 
