@@ -351,6 +351,14 @@ def create_hyphenate(span, document):
     return hyphenate
 
 
+class GlyphAndWidth(object):
+    __slots__ = ('glyph', 'width')
+
+    def __init__(self, glyph, width):
+        self.glyph = glyph
+        self.width = width
+
+
 @lru_cache()
 def create_to_glyphs(font, scale, variant, kerning, ligatures):
     get_glyph = partial(font.get_glyph, variant=variant)
@@ -363,7 +371,7 @@ def create_to_glyphs(font, scale, variant, kerning, ligatures):
             glyphs_kern = kern(glyphs, font.get_kerning)
         else:
             glyphs_kern = [(glyph, 0.0) for glyph in glyphs]
-        return [(glyph, scale * (glyph.width + kern_adjust))
+        return [GlyphAndWidth(glyph, scale * (glyph.width + kern_adjust))
                 for glyph, kern_adjust in glyphs_kern]
 
     return word_to_glyphs
@@ -402,21 +410,20 @@ class GlyphsSpan(list):
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
         self.number_of_spaces = 0
-        self.space_glyph_and_width = list(word_to_glyphs(' ')[0])
+        self.space = word_to_glyphs(' ')[0]
 
     def append_space(self):
         self.number_of_spaces += 1
-        self.append(self.space_glyph_and_width)
+        self.append(self.space)
 
     def _fill_tabs(self):
         for index, glyph_and_width in enumerate(super().__iter__()):
             if index in self.filled_tabs:
                 fill_string = self.filled_tabs[index]
-                tab_width = glyph_and_width[1]
                 fill_glyphs = self.word_to_glyphs(fill_string)
-                fill_string_width = sum(width for glyph, width in fill_glyphs)
-                number, rest = divmod(tab_width, fill_string_width)
-                yield glyph_and_width[0], rest
+                fill_string_width = sum(glyph.width for glyph in fill_glyphs)
+                number, rest = divmod(glyph_and_width.width, fill_string_width)
+                yield GlyphAndWidth(glyph_and_width.glyph, rest)
                 for i in range(int(number)):
                     for fill_glyph_and_width in fill_glyphs:
                         yield fill_glyph_and_width
@@ -450,6 +457,36 @@ class Line(list):
         self._current_tab = None
         self._current_tab_stop = None
 
+    def _handle_tab(self, glyphs_span, span):
+        if not self.tab_stops:
+            span.warn('No tab stops defined for this  paragraph style.',
+                      self.container)
+            self._cursor += glyphs_span.space.width
+            glyphs_span.append_space()
+            return
+        self._has_tab = True
+        for tab_stop in self.tab_stops:
+            tab_position = tab_stop.get_position(self.width)
+            if self._cursor < tab_position:
+                tab_width = tab_position - self._cursor
+                tab = GlyphAndWidth(glyphs_span.space.glyph, tab_width)
+                if tab_stop.fill:
+                    self._has_filled_tab = True
+                    glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
+                glyphs_span.append(tab)
+                self._cursor += tab_width
+                self._current_tab_stop = tab_stop
+                if tab_stop.align in (RIGHT, CENTER):
+                    self._current_tab = tab
+                    self._current_tab_stop = tab_stop
+                else:
+                    self._current_tab = None
+                    self._current_tab_stop = None
+                break
+        else:
+            span.warn('Tab did not fall into any of the tab stops.',
+                      self.container)
+
     @consumer
     def new_span(self, span, document):
         font = span.font(document)
@@ -459,7 +496,6 @@ class Line(list):
                                           span.get_style('kerning', document),
                                           span.get_style('ligatures', document))
         glyphs_span = GlyphsSpan(span, word_to_glyphs)
-        space_glyph, space_width = glyphs_span.space_glyph_and_width
         super().append(glyphs_span)
 
         success = True
@@ -467,51 +503,23 @@ class Line(list):
             word = (yield success)
             success = True
             if word == ' ':
-                self._cursor += space_width
+                self._cursor += glyphs_span.space.width
                 glyphs_span.append_space()
             elif word == '\t':
-                if not self.tab_stops:
-                    span.warn('No tab stops defined for this  paragraph style.',
-                              self.container)
-                    self._cursor += space_width
-                    glyphs_span.append_space()
-                    continue
-                self._has_tab = True
-                for tab_stop in self.tab_stops:
-                    tab_position = tab_stop.get_position(self.width)
-                    if self._cursor < tab_position:
-                        tab_width = tab_position - self._cursor
-                        tab_glyph_and_width = [glyphs_span.space_glyph_and_width[0],
-                                               tab_width]
-                        if tab_stop.fill:
-                            self._has_filled_tab = True
-                            glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
-                        glyphs_span.append(tab_glyph_and_width)
-                        self._cursor += tab_width
-                        self._current_tab_stop = tab_stop
-                        if tab_stop.align in (RIGHT, CENTER):
-                            self._current_tab = tab_glyph_and_width
-                            self._current_tab_stop = tab_stop
-                        else:
-                            self._current_tab = None
-                            self._current_tab_stop = None
-                        break
-                else:
-                    span.warn('Tab did not fall into any of the tab stops.',
-                              self.container)
+                self._handle_tab(glyphs_span, span)
             else:
                 glyphs_and_widths = word_to_glyphs(word)
-                width = sum(width for glyph, width in glyphs_and_widths)
+                width = sum(glyph.width for glyph in glyphs_and_widths)
                 if self._current_tab:
                     current_tab = self._current_tab
-                    tab_width = current_tab[1]
+                    tab_width = current_tab.width
                     factor = 2 if self._current_tab_stop.align == CENTER else 1
                     item_width = width / factor
                     if item_width < tab_width:
-                        current_tab[1] -= item_width
+                        current_tab.width -= item_width
                     else:
                         span.warn('Tab space exceeded.', self.container)
-                        current_tab[1] = 0
+                        current_tab.width = 0
                         self._current_tab = None
                     self._cursor -= tab_width
                 if self._cursor + width > self.width:
@@ -523,6 +531,9 @@ class Line(list):
                         continue
                 self._cursor += width
                 glyphs_span += glyphs_and_widths
+
+    def add_flowable(self, flowable, document):
+        pass
 
     def typeset(self, container, justification, line_spacing, last_descender,
                 last_line=False, force=False):
@@ -547,10 +558,10 @@ class Line(list):
 
         # drop space at the end of the line
         last_span = self[-1]
-        if last_span and last_span[-1] == last_span.space_glyph_and_width:
+        if last_span and last_span[-1] == last_span.space:
             last_span.pop()
             last_span.number_of_spaces -= 1
-            self._cursor -= last_span.space_glyph_and_width[1]
+            self._cursor -= last_span.space.width
 
         descender = min(glyph_span.span.descender(document)
                         for glyph_span in self)
@@ -575,7 +586,7 @@ class Line(list):
             if nr_spaces > 0:
                 add_to_spaces = extra_space / nr_spaces
                 for glyph_span in self:
-                    glyph_span.space_glyph_and_width[1] += add_to_spaces
+                    glyph_span.space.width += add_to_spaces
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:

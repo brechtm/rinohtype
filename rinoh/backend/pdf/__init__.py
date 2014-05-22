@@ -211,7 +211,8 @@ class Canvas(StringIO):
         string = ''
         current_string = ''
         total_width = 0
-        for glyph, width in glyph_span:
+        for glyph_and_width in glyph_span:
+            glyph, width = glyph_and_width.glyph, glyph_and_width.width
             total_width += width
             displ = (1000 * width) / size
             code = glyph.code
