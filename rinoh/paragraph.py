@@ -548,20 +548,18 @@ class Line(list):
         Returns the line's descender size."""
         document = container.document
 
-        # remove empty spans at the end of the line
-        while len(self) > 1 and len(self[-1]) == 0:
+        # drop spaces (and empty spans) at the end of the line
+        while self:
+            last_span = self[-1]
+            while last_span and last_span[-1] is last_span.space:
+                last_span.pop()
+                last_span.number_of_spaces -= 1
+                self._cursor -= last_span.space.width
+            if last_span or (force and len(self) == 1):
+                break
             self.pop()
-
-        # abort if the line is empty
-        if not self or (not force and len(self) == 1 and len(self[-1]) == 0):
+        else:   # abort if the line is empty
             return last_descender
-
-        # drop space at the end of the line
-        last_span = self[-1]
-        if last_span and last_span[-1] == last_span.space:
-            last_span.pop()
-            last_span.number_of_spaces -= 1
-            self._cursor -= last_span.space.width
 
         descender = min(glyph_span.span.descender(document)
                         for glyph_span in self)
