@@ -409,12 +409,14 @@ class GlyphsSpan(list):
         self.span = span
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
-        self.number_of_spaces = 0
         self.space = word_to_glyphs(' ')[0]
 
     def append_space(self):
-        self.number_of_spaces += 1
         self.append(self.space)
+
+    @property
+    def number_of_spaces(self):
+        return self.count(self.space)
 
     def _fill_tabs(self):
         for index, glyph_and_width in enumerate(super().__iter__()):
@@ -553,7 +555,6 @@ class Line(list):
             last_span = self[-1]
             while last_span and last_span[-1] is last_span.space:
                 last_span.pop()
-                last_span.number_of_spaces -= 1
                 self._cursor -= last_span.space.width
             if last_span or (force and len(self) == 1):
                 break
