@@ -438,9 +438,16 @@ class Description(GroupingElement):
     pass
 
 
-class Image(BodyElement):
+class Image(BodyElement, InlineElement):
+    @property
+    def image_path(self):
+        return self.get('uri').rsplit('.png', 1)[0]
+
     def build_flowable(self):
-        return rt.Image(self.get('uri').rsplit('.png', 1)[0])
+        return rt.Image(self.image_path)
+
+    def build_styled_text(self):
+        return rt.InlineImage(self.image_path)
 
 
 class Transition(BodyElement):

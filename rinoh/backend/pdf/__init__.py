@@ -258,8 +258,9 @@ class Canvas(StringIO):
         self.cos_page.cos_page.image_number = image_number + 1
         xobjects['Im{:03d}'.format(image_number)] = image.xobject
         with self.save_state():
-            self.translate(left, top + image.height)
+            self.translate(left, top)
             self.scale(scale)
+            self.translate(0, image.height)
             print('/Im{:03d} Do'.format(image_number), file=self)
 
 

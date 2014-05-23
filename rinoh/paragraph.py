@@ -42,6 +42,7 @@ from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
+from .inline import InlineFlowableException
 from .layout import EndOfContainer
 from .text import TextStyle, MixedStyledText
 from .util import consumer
@@ -273,10 +274,16 @@ class ParagraphBase(Flowable):
         while True:
             try:
                 span, word = state.next_item(container)  # raises StopIteration
-                if span is not last_span:
-                    line_span_send = line.new_span(span, document).send
-                    hyphenate = create_hyphenate(span, document)
-                    last_span = span
+                try:
+                    if span is not last_span:
+                        line_span_send = line.new_span(span, document).send
+                        hyphenate = create_hyphenate(span, document)
+                        last_span = span
+                except InlineFlowableException:
+                    if not line.add_flowable(word, container, descender or 0):
+                        line = typeset_line(line)
+                        line_span_send = line.add_flowable(word, container, descender or 0)
+                    continue
 
                 if word == '\n':
                     line = typeset_line(line, last_line=True, force=True)
@@ -411,12 +418,16 @@ class GlyphsSpan(list):
         self.word_to_glyphs = word_to_glyphs
         self.space = word_to_glyphs(' ')[0]
 
-    def append_space(self):
-        self.append(self.space)
-
     @property
     def number_of_spaces(self):
         return self.count(self.space)
+
+    @property
+    def ends_with_space(self):
+        return self[-1] is self.space
+
+    def append_space(self):
+        self.append(self.space)
 
     def _fill_tabs(self):
         for index, glyph_and_width in enumerate(super().__iter__()):
@@ -534,8 +545,16 @@ class Line(list):
                 self._cursor += width
                 glyphs_span += glyphs_and_widths
 
-    def add_flowable(self, flowable, document):
-        pass
+    def add_flowable(self, flowable, container, last_descender):
+        inline_flowable_span = flowable.flow_inline(container, last_descender)
+        if self._cursor + inline_flowable_span.width > self.width:
+            if not self:
+                flowable.warn('item too long to fit on line', self.container)
+            else:
+                return False
+        self._cursor += inline_flowable_span.width
+        self.append(inline_flowable_span)
+        return True
 
     def typeset(self, container, justification, line_spacing, last_descender,
                 last_line=False, force=False):
@@ -553,7 +572,7 @@ class Line(list):
         # drop spaces (and empty spans) at the end of the line
         while self:
             last_span = self[-1]
-            while last_span and last_span[-1] is last_span.space:
+            while last_span and last_span.ends_with_space:
                 last_span.pop()
                 self._cursor -= last_span.space.width
             if last_span or (force and len(self) == 1):
@@ -585,14 +604,20 @@ class Line(list):
             if nr_spaces > 0:
                 add_to_spaces = extra_space / nr_spaces
                 for glyph_span in self:
-                    glyph_span.space.width += add_to_spaces
+                    if glyph_span.number_of_spaces > 0:
+                        glyph_span.space.width += add_to_spaces
         elif justification == CENTER:
             left += extra_space / 2.0
         elif justification == RIGHT:
             left += extra_space
 
         for glyph_span in self:
-            left += container.canvas.show_glyphs(left, container.cursor,
-                                                 glyph_span, document)
+            try:
+                left += container.canvas.show_glyphs(left, container.cursor,
+                                                     glyph_span, document)
+            except InlineFlowableException:
+                top = container.cursor - glyph_span.height(container.document)
+                glyph_span.virtual_container.place_at(left, top)
+                left += glyph_span.width
         container.advance(- descender)
         return descender

@@ -6,28 +6,63 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import Flowable, InseparableFlowables
+from .flowable import Flowable, FlowableStyle, InseparableFlowables
+from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .reference import Referenceable, REFERENCE, TITLE
 from .text import MixedStyledText
 
 
-__all__ = ['Image', 'Caption', 'Figure']
+__all__ = ['InlineImage', 'Image', 'Caption', 'Figure']
 
 
-class Image(Flowable):
+LEFT = 'left'
+CENTER = 'center'
+RIGHT = 'right'
+
+
+class HorizontallyAlignedFlowableStyle(FlowableStyle):
+    attributes = {'horizontal_align': CENTER}
+
+
+class HorizontallyAlignedFlowable(Flowable):
+    style_class = HorizontallyAlignedFlowableStyle
+
+
+class ImageBase(Flowable):
     def __init__(self, filename, scale=1.0, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.filename = filename
         self.scale = scale
 
+    def left(self, image, container):
+        raise NotImplementedError
+
     def render(self, container, last_descender, state=None):
         image = container.canvas.document.backend.Image(self.filename)
-        left = float(container.width - image.width) / 2
+        if last_descender:
+            container.advance(- last_descender)
         top = float(container.cursor)
+        left = self.left(image, container)
         container.canvas.place_image(image, left, top, scale=self.scale)
-        container.advance(float(image.height))
-        return image.width, 0
+        container.advance(float(image.height * self.scale))
+        return image.width * self.scale, 0
+
+
+class InlineImage(ImageBase, InlineFlowable):
+    def left(self, image, container):
+        return 0
+
+
+class Image(ImageBase, HorizontallyAlignedFlowable):
+    def left(self, image, container):
+        align = self.get_style('horizontal_align', container.document)
+        if align == LEFT:
+            return 0
+        elif align == RIGHT:
+            return float(container.width)
+        elif align == CENTER:
+            return float(container.width - image.width * self.scale) / 2
 
 
 class Caption(NumberedParagraph):
