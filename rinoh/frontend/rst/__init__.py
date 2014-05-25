@@ -51,8 +51,9 @@ class CustomElement(object):
         return [self.map_node(child) for child in self.node.children]
 
     def process_content(self, style=PARENT_STYLE):
+        preserve_space = self.get('xml:space', None) == 'preserve'
         return MixedStyledText([text
-                                for text in (child.styled_text()
+                                for text in (child.styled_text(preserve_space)
                                              for child in self.getchildren())
                                 if text], style=style)
 
@@ -93,7 +94,7 @@ class BodySubElement(CustomElement):
 
 class InlineElement(CustomElement):
     @set_source
-    def styled_text(self):
+    def styled_text(self, preserve_space=False):
         return self.build_styled_text()
 
     def build_styled_text(self):

@@ -9,8 +9,13 @@ from ...util import intersperse
 
 
 class Text(InlineElement):
-    def styled_text(self):
-        return re.sub('[\t\r\n ]+', ' ', self.text)
+    RE_NORMALIZE_SPACE = re.compile('[\t\r\n ]+')
+
+    def styled_text(self, preserve_space=False):
+        if preserve_space:
+            return self.node
+        else:
+            return self.RE_NORMALIZE_SPACE.sub(' ', self.node)
 
 
 class Document(BodyElement):
@@ -208,7 +213,7 @@ class Warning(AdmonitionBase):
 
 
 class Generated(InlineElement):
-    def styled_text(self):
+    def styled_text(self, preserve_space=False):
         return None
 
 
