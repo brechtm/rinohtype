@@ -613,6 +613,7 @@ class Line(list):
 
         canvas = container.canvas
         cursor = container.cursor
+        current_annotation = CurrentAnnotation(container)
         for glyph_span in self:
             try:
                 width = canvas.show_glyphs(left, cursor, glyph_span, document)
@@ -620,12 +621,42 @@ class Line(list):
                 top = cursor - glyph_span.height(document)
                 glyph_span.virtual_container.place_at(left, top)
                 width = glyph_span.width
-            try:
-                span = glyph_span.span
-                canvas.annotate(left, cursor - span.ascender(document),
-                                width, span.height(document), span.annotation)
-            except AttributeError:
-                pass
+            current_annotation.update(glyph_span.span, left, width)
             left += width
+        current_annotation.place_if_any()
         container.advance(- descender)
         return descender
+
+
+class CurrentAnnotation(object):
+    __slots__ = ('annotation', 'left', 'width', 'ascender', 'height',
+                 'container')
+
+    def __init__(self, container):
+        self.annotation = None
+        self.container = container
+
+    def update(self, span, left, width):
+        if not hasattr(span, 'annotation'):
+            return
+        annotation = span.annotation
+        if annotation is not self.annotation:
+            self.place_if_any()
+        if annotation:
+            document = self.container.document
+            if annotation is self.annotation:
+                self.width += width
+                self.ascender = max(self.ascender, span.ascender(document))
+                self.height = max(self.height, span.height(document))
+            else:
+                self.left = left
+                self.width = width
+                self.ascender = span.ascender(document)
+                self.height = span.height(document)
+        self.annotation = annotation
+
+    def place_if_any(self):
+        if self.annotation:
+            top = self.container.cursor - self.ascender
+            self.container.canvas.annotate(self.left, top, self.width,
+                                           self.height, self.annotation)
