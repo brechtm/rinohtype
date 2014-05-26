@@ -292,7 +292,7 @@ class Reference(BodyElement, InlineElement):
         refuri = self.get('refuri', None)
         if refuri:
             link = rt.HyperLink(refuri)
-            return rt.AnnotatedText(self.process_content(), link)
+            return rt.AnnotatedText(self.process_content(), link, style='link')
         else:
             return self.process_content()
 

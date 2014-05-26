@@ -9,7 +9,7 @@ from rinoh import (
     NoteMarker, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
-    PT, INCH, CM, RED, Color, Gray
+    PT, INCH, CM, RED, BLUE, Color, Gray
 )
 
 from rinoh.font import TypeFamily
@@ -45,6 +45,9 @@ styles('monospaced', ClassSelector(StyledText, 'monospaced'),
 
 styles('error', ClassSelector(StyledText, 'error'),
        font_color=RED)
+
+styles('hyperlink', ClassSelector(StyledText, 'link'),
+       font_color=BLUE)
 
 styles('literal', ClassSelector(Paragraph, 'literal'),
        base='body',
