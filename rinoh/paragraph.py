@@ -611,13 +611,21 @@ class Line(list):
         elif justification == RIGHT:
             left += extra_space
 
+        canvas = container.canvas
+        cursor = container.cursor
         for glyph_span in self:
             try:
-                left += container.canvas.show_glyphs(left, container.cursor,
-                                                     glyph_span, document)
+                width = canvas.show_glyphs(left, cursor, glyph_span, document)
             except InlineFlowableException:
-                top = container.cursor - glyph_span.height(container.document)
+                top = cursor - glyph_span.height(document)
                 glyph_span.virtual_container.place_at(left, top)
-                left += glyph_span.width
+                width = glyph_span.width
+            try:
+                span = glyph_span.span
+                canvas.annotate(left, cursor - span.ascender(document),
+                                width, span.height(document), span.annotation)
+            except AttributeError:
+                pass
+            left += width
         container.advance(- descender)
         return descender

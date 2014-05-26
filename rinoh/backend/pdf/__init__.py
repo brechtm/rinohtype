@@ -117,6 +117,8 @@ class Canvas(StringIO):
     def __init__(self, parent, clip=False):
         super().__init__()
         self.parent = parent
+        self.annotations = []
+        self.offset = None
 
     @property
     def page(self):
@@ -134,9 +136,21 @@ class Canvas(StringIO):
         return Canvas(self, clip)
 
     def append(self, left, top):
+        self.offset = left, top
         with self.parent.save_state():
             self.parent.translate(left, top)
             self.parent.write(self.getvalue())
+        self.place_annotations(self.annotations)
+
+    def place_annotations(self, annotations):
+        if self.offset:
+            left, top = self.offset
+            for annotation_placement in self.annotations:
+                annotation_placement.left += left
+                annotation_placement.top += top
+            self.parent.place_annotations(annotations)
+        else:
+            self.annotations += annotations
 
     @contextmanager
     def save_state(self):
@@ -248,6 +262,10 @@ class Canvas(StringIO):
             print('ET', file=self)
         return total_width
 
+    def annotate(self, left, top, width, height, annotation):
+        placement = AnnotationPlacement(left, top, width, height, annotation)
+        self.annotations.append(placement)
+
     def place_image(self, image, left, top, scale=1.0):
         resources = self.cos_page.cos_page['Resources']
         xobjects = resources.setdefault('XObject', cos.Dictionary())
@@ -256,12 +274,22 @@ class Canvas(StringIO):
         except AttributeError:
             image_number = 0
         self.cos_page.cos_page.image_number = image_number + 1
+        # TODO: delay adding Image XObject to page until Canvas.append
         xobjects['Im{:03d}'.format(image_number)] = image.xobject
         with self.save_state():
             self.translate(left, top)
             self.scale(scale)
             self.translate(0, image.height)
             print('/Im{:03d} Do'.format(image_number), file=self)
+
+
+class AnnotationPlacement(object):
+    def __init__(self, left, top, width, height, annotation):
+        self.left = left
+        self.top = top
+        self.width = width
+        self.height = height
+        self.annotation = annotation
 
 
 class Image(object):
@@ -286,6 +314,22 @@ class PageCanvas(Canvas):
 
     def append(self, left, top):
         pass
+
+    def place_annotations(self, annotations):
+        annots = self.cos_page.cos_page.setdefault('Annots', cos.Array())
+        page_height = float(self._backend_page.height)
+        for annotation_placement in annotations:
+            left = annotation_placement.left
+            top = page_height - annotation_placement.top
+            right = left + annotation_placement.width
+            bottom = top - annotation_placement.height
+            rect = cos.Rectangle(left, bottom, right, top)
+            if annotation_placement.annotation.type == 'URI':
+                a = cos.URIAction(annotation_placement.annotation.target)
+                annot = cos.LinkAnnotation(rect, action=a)
+            else:
+                raise NotImplementedError
+            annots.append(annot)
 
 
 CODE_TO_CHAR = {}

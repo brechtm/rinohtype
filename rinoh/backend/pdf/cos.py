@@ -583,6 +583,62 @@ class Page(Dictionary):
         return xobject
 
 
+class Rectangle(Array):
+    def __init__(self, left, bottom, right, top, indirect=False):
+        super().__init__([Real(value) for value in (left, bottom, right, top)],
+                         indirect)
+
+
+# interactivity
+
+class Action(Dictionary):
+    type = 'Action'
+    action_type = None
+
+    def __init__(self, next=None, indirect=False):
+        super().__init__(indirect)
+        if self.__class__.action_type:
+            self['S'] = Name(self.__class__.action_type)
+        if next:
+            self['Next'] = next
+
+
+class Destination(Dictionary):
+    pass
+
+
+class URIAction(Action):
+    action_type = 'URI'
+
+    def __init__(self, uri, is_map=False, next=None, indirect=False):
+        super().__init__(next, indirect)
+        self['URI'] = String(uri)
+        self['IsMap'] = Boolean(is_map)
+
+
+class Annotation(Dictionary):
+    type = 'Annot'
+
+    def __init__(self, rectangle, indirect=False):
+        super().__init__(indirect)
+        self['Rect'] = rectangle
+
+
+class LinkAnnotation(Annotation):
+    subtype = 'Link'
+
+    def __init__(self, rectangle, action=None, destination=None,
+                 indirect=False):
+        super().__init__(rectangle, indirect)
+        assert (action and destination) is None
+        if action:
+            self['A'] = action
+        if destination:
+            self['Dest'] = destination
+
+
+# fonts
+
 class Font(Dictionary):
     type = 'Font'
 
