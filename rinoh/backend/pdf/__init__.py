@@ -118,6 +118,7 @@ class Canvas(StringIO):
         super().__init__()
         self.parent = parent
         self.annotations = []
+        self.destinations = []
         self.offset = None
 
     @property
@@ -140,17 +141,21 @@ class Canvas(StringIO):
         with self.parent.save_state():
             self.parent.translate(left, top)
             self.parent.write(self.getvalue())
-        self.place_annotations(self.annotations)
+        self.propagate(self.annotations, self.destinations)
 
-    def place_annotations(self, annotations):
+    def propagate(self, annotations, destinations):
         if self.offset:
             left, top = self.offset
-            for annotation_placement in self.annotations:
+            for annotation_placement in annotations:
                 annotation_placement.left += left
                 annotation_placement.top += top
-            self.parent.place_annotations(annotations)
+            for destination in destinations:
+                destination.left += left
+                destination.top += top
+            self.parent.propagate(annotations, destinations)
         else:
             self.annotations += annotations
+            self.destinations += destinations
 
     @contextmanager
     def save_state(self):
@@ -266,6 +271,10 @@ class Canvas(StringIO):
         placement = AnnotationPlacement(left, top, width, height, annotation)
         self.annotations.append(placement)
 
+    def set_destination(self, name, left, top):
+        destination = Destination(name, left, top)
+        self.destinations.append(destination)
+
     def place_image(self, image, left, top, scale=1.0):
         resources = self.cos_page.cos_page['Resources']
         xobjects = resources.setdefault('XObject', cos.Dictionary())
@@ -292,6 +301,13 @@ class AnnotationPlacement(object):
         self.annotation = annotation
 
 
+class Destination(object):
+    def __init__(self, name, left, top):
+        self.name = name
+        self.left = left
+        self.top = top
+
+
 class Image(object):
     extensions = ('.pdf', )
 
@@ -315,21 +331,38 @@ class PageCanvas(Canvas):
     def append(self, left, top):
         pass
 
-    def place_annotations(self, annotations):
-        annots = self.cos_page.cos_page.setdefault('Annots', cos.Array())
+    def propagate(self, annotations, destinations):
         page_height = float(self._backend_page.height)
+        annots = self.cos_page.cos_page.setdefault('Annots', cos.Array())
         for annotation_placement in annotations:
+            annotation = annotation_placement.annotation
             left = annotation_placement.left
             top = page_height - annotation_placement.top
             right = left + annotation_placement.width
             bottom = top - annotation_placement.height
             rect = cos.Rectangle(left, bottom, right, top)
-            if annotation_placement.annotation.type == 'URI':
-                a = cos.URIAction(annotation_placement.annotation.target)
+            if annotation.type == 'URI':
+                a = cos.URIAction(annotation.target)
                 annot = cos.LinkAnnotation(rect, action=a)
+            elif annotation.type == 'NamedDestination':
+                name = cos.String(annotation.name)
+                annot = cos.LinkAnnotation(rect, destination=name)
             else:
                 raise NotImplementedError
             annots.append(annot)
+
+        cos_document = self.page.document.backend_document.cos_document
+        cos_page = self.cos_page.cos_page
+        names = cos_document.catalog.setdefault('Names', cos.Dictionary(True))
+        dests = names.setdefault('Dests', cos.Dictionary(True))
+        # TODO: dest_names should be sorted by name
+        dests_names = dests.setdefault('Names', cos.Array())
+        for destination in destinations:
+            left, top = destination.left, page_height - destination.top
+            dest = cos.Array([cos_page, cos.Name('XYZ'),
+                              cos.Real(left), cos.Real(top), cos.Real(0)], True)
+            dests_names.append(cos.String(destination.name))
+            dests_names.append(dest)
 
 
 CODE_TO_CHAR = {}

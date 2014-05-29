@@ -36,6 +36,10 @@ class CustomElement(object):
             yield self
 
     @property
+    def attributes(self):
+        return self.node.attributes
+
+    @property
     def parent(self):
         if self.node.parent is not None:
             return self.map_node(self.node.parent)

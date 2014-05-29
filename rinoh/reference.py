@@ -6,7 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import LabeledFlowable, DummyFlowable
+from .annotation import NamedDestinationLink, AnnotatedSpan
+from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, format_number
 from .paragraph import Paragraph
 from .style import PARENT_STYLE
@@ -54,7 +55,7 @@ class Variable(Field):
         return self.split_words(text)
 
 
-class Referenceable(object):
+class Referenceable(Flowable):
     def __init__(self, id):
         self.id = id
 
@@ -71,6 +72,11 @@ class Referenceable(object):
     def update_page_reference(self, page):
         document = page.document
         document.page_references[self.get_id(document)] = page.number
+
+    def render(self, container, last_descender, state=None):
+        name = self.get_id(container.document)
+        container.canvas.set_destination(name, 0, 0)
+        return super().render(container, last_descender, state=state)
 
 
 REFERENCE = 'reference'
@@ -111,6 +117,11 @@ class Reference(Field):
             text = "??".format(target_id)
 
         return self.split_words(text)
+
+    def spans(self):
+        annotation = NamedDestinationLink(str(self._target_id))
+        return (AnnotatedSpan(span, annotation) for span in super().spans())
+
 
 
 class DirectReference(Reference):

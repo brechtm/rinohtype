@@ -289,12 +289,11 @@ class Doctest_Block(BodyElement):
 
 class Reference(BodyElement, InlineElement):
     def build_styled_text(self):
-        refuri = self.get('refuri', None)
-        if refuri:
-            link = rt.HyperLink(refuri)
-            return rt.AnnotatedText(self.process_content(), link, style='link')
-        else:
-            return self.process_content()
+        if 'refid' in self.attributes:
+            link = rt.NamedDestinationLink(self.get('refid'))
+        elif 'refuri' in self.attributes:
+            link = rt.HyperLink(self.get('refuri'))
+        return rt.AnnotatedText(self.process_content(), link, style='link')
 
     def build_flowable(self):
         children = self.getchildren()
