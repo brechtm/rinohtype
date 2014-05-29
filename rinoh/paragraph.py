@@ -613,7 +613,7 @@ class Line(list):
 
         canvas = container.canvas
         cursor = container.cursor
-        current_annotation = CurrentAnnotation(container)
+        current_annotation = AnnotationState(container)
         for glyph_span in self:
             try:
                 width = canvas.show_glyphs(left, cursor, glyph_span, document)
@@ -628,7 +628,7 @@ class Line(list):
         return descender
 
 
-class CurrentAnnotation(object):
+class AnnotationState(object):
     __slots__ = ('annotation', 'left', 'width', 'ascender', 'height',
                  'container')
 
@@ -658,5 +658,5 @@ class CurrentAnnotation(object):
     def place_if_any(self):
         if self.annotation:
             top = self.container.cursor - self.ascender
-            self.container.canvas.annotate(self.left, top, self.width,
-                                           self.height, self.annotation)
+            self.container.canvas.annotate(self.annotation, self.left, top,
+                                           self.width, self.height)

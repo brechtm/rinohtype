@@ -147,11 +147,9 @@ class Canvas(StringIO):
         if self.offset:
             left, top = self.offset
             for annotation_placement in annotations:
-                annotation_placement.left += left
-                annotation_placement.top += top
+                annotation_placement.translate(left, top)
             for destination in destinations:
-                destination.left += left
-                destination.top += top
+                destination.translate(left, top)
             self.parent.propagate(annotations, destinations)
         else:
             self.annotations += annotations
@@ -267,12 +265,12 @@ class Canvas(StringIO):
             print('ET', file=self)
         return total_width
 
-    def annotate(self, left, top, width, height, annotation):
-        placement = AnnotationPlacement(left, top, width, height, annotation)
-        self.annotations.append(placement)
+    def annotate(self, annotation, left, top, width, height):
+        ann_loc = AnnotationLocation(annotation, left, top, width, height)
+        self.annotations.append(ann_loc)
 
     def set_destination(self, name, left, top):
-        destination = Destination(name, left, top)
+        destination = DestinationLocation(name, left, top)
         self.destinations.append(destination)
 
     def place_image(self, image, left, top, scale=1.0):
@@ -292,32 +290,6 @@ class Canvas(StringIO):
             print('/Im{:03d} Do'.format(image_number), file=self)
 
 
-class AnnotationPlacement(object):
-    def __init__(self, left, top, width, height, annotation):
-        self.left = left
-        self.top = top
-        self.width = width
-        self.height = height
-        self.annotation = annotation
-
-
-class Destination(object):
-    def __init__(self, name, left, top):
-        self.name = name
-        self.left = left
-        self.top = top
-
-
-class Image(object):
-    extensions = ('.pdf', )
-
-    def __init__(self, filename):
-        image = PDFReader(filename + self.extensions[0])
-        image_page = image.catalog['Pages']['Kids'][0]
-        self.width, self.height = image_page['MediaBox'][2:]
-        self.xobject = image_page.to_xobject_form()
-
-
 class PageCanvas(Canvas):
     def __init__(self, backend_page):
         super().__init__(None)
@@ -334,12 +306,12 @@ class PageCanvas(Canvas):
     def propagate(self, annotations, destinations):
         page_height = float(self._backend_page.height)
         annots = self.cos_page.cos_page.setdefault('Annots', cos.Array())
-        for annotation_placement in annotations:
-            annotation = annotation_placement.annotation
-            left = annotation_placement.left
-            top = page_height - annotation_placement.top
-            right = left + annotation_placement.width
-            bottom = top - annotation_placement.height
+        for annotation_location in annotations:
+            annotation = annotation_location.annotation
+            left = annotation_location.left
+            top = page_height - annotation_location.top
+            right = left + annotation_location.width
+            bottom = top - annotation_location.height
             rect = cos.Rectangle(left, bottom, right, top)
             if annotation.type == 'URI':
                 a = cos.URIAction(annotation.target)
@@ -357,12 +329,47 @@ class PageCanvas(Canvas):
         dests = names.setdefault('Dests', cos.Dictionary(True))
         # TODO: dest_names should be sorted by name
         dests_names = dests.setdefault('Names', cos.Array())
-        for destination in destinations:
-            left, top = destination.left, page_height - destination.top
+        for destination_location in destinations:
+            left = destination_location.left
+            top = page_height - destination_location.top
             dest = cos.Array([cos_page, cos.Name('XYZ'),
                               cos.Real(left), cos.Real(top), cos.Real(0)], True)
-            dests_names.append(cos.String(destination.name))
+            dests_names.append(cos.String(destination_location.name))
             dests_names.append(dest)
+
+
+class Location(object):
+    def __init__(self, left, top):
+        self.left = left
+        self.top = top
+
+    def translate(self, offset_left, offset_top):
+        self.left += offset_left
+        self.top += offset_top
+
+
+class AnnotationLocation(Location):
+    def __init__(self, annotation, left, top, width, height):
+        super().__init__(left, top)
+        self.annotation = annotation
+        self.width = width
+        self.height = height
+
+
+class DestinationLocation(Location):
+    def __init__(self, name, left, top):
+        super().__init__(left, top)
+        self.name = name
+
+
+class Image(object):
+    extensions = ('.pdf', )
+
+    def __init__(self, filename):
+        image = PDFReader(filename + self.extensions[0])
+        image_page = image.catalog['Pages']['Kids'][0]
+        self.width, self.height = image_page['MediaBox'][2:]
+        self.xobject = image_page.to_xobject_form()
 
 
 CODE_TO_CHAR = {}
