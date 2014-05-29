@@ -332,7 +332,8 @@ class Target(BodyElement, InlineElement):
         return self.process_content()
 
     def build_flowable(self):
-        return rt.DummyFlowable()
+        target_id = self.get('refid')
+        return rt.DestinationFlowable(target_id)
 
 
 class Enumerated_List(BodyElement):

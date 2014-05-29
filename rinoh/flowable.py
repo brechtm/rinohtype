@@ -27,7 +27,8 @@ from .style import Style, Styled
 
 
 __all__ = ['Flowable', 'FlowableStyle',
-           'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
+           'DummyFlowable', 'WarnFlowable', 'DestinationFlowable',
+           'SetMetadataFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float']
@@ -116,6 +117,8 @@ class Flowable(Styled):
         raise NotImplementedError
 
 
+# flowables that do not render anything (but with optional side-effects)
+
 class DummyFlowable(Flowable):
     style_class = None
 
@@ -136,6 +139,16 @@ class WarnFlowable(DummyFlowable):
         return super().flow(container, last_descender, state)
 
 
+class DestinationFlowable(DummyFlowable):
+    def __init__(self, id, parent=None):
+        super().__init__(parent=parent)
+        self.id = id
+
+    def flow(self, container, last_descender, state=None):
+        container.canvas.set_destination(str(self.id), 0, container.cursor)
+        return super().flow(container, last_descender, state=state)
+
+
 class SetMetadataFlowable(DummyFlowable):
     def __init__(self, parent=None, **metadata):
         super().__init__(parent=parent)
@@ -146,6 +159,8 @@ class SetMetadataFlowable(DummyFlowable):
             setattr(container.document, field, value)
         return super().flow(container)
 
+
+# grouping flowables
 
 class InseparableFlowables(Flowable):
     def flowables(self, document):
