@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestinationLink, AnnotatedSpan
+from .annotation import NamedDestination, NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, format_number
 from .paragraph import Paragraph
@@ -74,8 +74,8 @@ class Referenceable(Flowable):
         document.page_references[self.get_id(document)] = page.number
 
     def render(self, container, last_descender, state=None):
-        name = self.get_id(container.document)
-        container.canvas.set_destination(name, 0, 0)
+        destination = NamedDestination(self.get_id(container.document))
+        container.canvas.annotate(destination, 0, 0, container.width, None)
         return super().render(container, last_descender, state=state)
 
 

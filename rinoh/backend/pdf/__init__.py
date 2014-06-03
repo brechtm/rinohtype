@@ -141,19 +141,16 @@ class Canvas(StringIO):
         with self.parent.save_state():
             self.parent.translate(left, top)
             self.parent.write(self.getvalue())
-        self.propagate(self.annotations, self.destinations)
+        self.propagate(self.annotations)
 
-    def propagate(self, annotations, destinations):
+    def propagate(self, annotations):
         if self.offset:
             left, top = self.offset
             for annotation_placement in annotations:
                 annotation_placement.translate(left, top)
-            for destination in destinations:
-                destination.translate(left, top)
-            self.parent.propagate(annotations, destinations)
+            self.parent.propagate(annotations)
         else:
             self.annotations += annotations
-            self.destinations += destinations
 
     @contextmanager
     def save_state(self):
@@ -269,10 +266,6 @@ class Canvas(StringIO):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)
         self.annotations.append(ann_loc)
 
-    def set_destination(self, name, left, top):
-        destination = DestinationLocation(name, left, top)
-        self.destinations.append(destination)
-
     def place_image(self, image, left, top, scale=1.0):
         resources = self.cos_page.cos_page['Resources']
         xobjects = resources.setdefault('XObject', cos.Dictionary())
@@ -303,13 +296,28 @@ class PageCanvas(Canvas):
     def append(self, left, top):
         pass
 
-    def propagate(self, annotations, destinations):
+    def propagate(self, annotations):
         page_height = float(self._backend_page.height)
-        annots = self.cos_page.cos_page.setdefault('Annots', cos.Array())
+        cos_document = self.page.document.backend_document.cos_document
+        cos_page = self.cos_page.cos_page
+        names = cos_document.catalog.setdefault('Names', cos.Dictionary(True))
+        dests = names.setdefault('Dests', cos.Dictionary(True))
+        # TODO: dest_names should be sorted by name
+        dests_names = dests.setdefault('Names', cos.Array())
+        annots = cos_page.setdefault('Annots', cos.Array())
         for annotation_location in annotations:
             annotation = annotation_location.annotation
             left = annotation_location.left
             top = page_height - annotation_location.top
+            if annotation.type == 'NamedDestination':
+                dest = cos.Array([cos_page, cos.Name('XYZ'),
+                                  cos.Real(left), cos.Real(top), cos.Real(0)],
+                                 indirect=True)
+                key = cos.String(annotation.name)
+                if key not in dests_names:  # avoid dupes
+                    dests_names.append(key)
+                    dests_names.append(dest)
+                continue
             right = left + annotation_location.width
             bottom = top - annotation_location.height
             rect = cos.Rectangle(left, bottom, right, top)
@@ -319,53 +327,22 @@ class PageCanvas(Canvas):
             elif annotation.type == 'NamedDestinationLink':
                 name = cos.String(annotation.name)
                 annot = cos.LinkAnnotation(rect, destination=name)
-            elif annotation.type == 'NamedDestination':
-                destination_location = DestinationLocation(annotation.name, left,
-                                                           annotation_location.top)
-                destinations.append(destination_location)
             else:
                 raise NotImplementedError
             annots.append(annot)
 
-        cos_document = self.page.document.backend_document.cos_document
-        cos_page = self.cos_page.cos_page
-        names = cos_document.catalog.setdefault('Names', cos.Dictionary(True))
-        dests = names.setdefault('Dests', cos.Dictionary(True))
-        # TODO: dest_names should be sorted by name
-        dests_names = dests.setdefault('Names', cos.Array())
-        for destination_location in destinations:
-            left = destination_location.left
-            top = page_height - destination_location.top
-            dest = cos.Array([cos_page, cos.Name('XYZ'),
-                              cos.Real(left), cos.Real(top), cos.Real(0)], True)
-            key = cos.String(destination_location.name)
-            if key not in dests_names:  # avoid dupes
-                dests_names.append(key)
-                dests_names.append(dest)
 
-
-class Location(object):
-    def __init__(self, left, top):
+class AnnotationLocation(object):
+    def __init__(self, annotation, left, top, width, height):
+        self.annotation = annotation
         self.left = left
         self.top = top
+        self.width = width
+        self.height = height
 
     def translate(self, offset_left, offset_top):
         self.left += offset_left
         self.top += offset_top
-
-
-class AnnotationLocation(Location):
-    def __init__(self, annotation, left, top, width, height):
-        super().__init__(left, top)
-        self.annotation = annotation
-        self.width = width
-        self.height = height
-
-
-class DestinationLocation(Location):
-    def __init__(self, name, left, top):
-        super().__init__(left, top)
-        self.name = name
 
 
 class Image(object):

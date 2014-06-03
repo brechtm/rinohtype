@@ -20,6 +20,7 @@ that make up the content of a document and are rendered onto its pages.
 from copy import copy
 from itertools import chain, tee
 
+from .annotation import NamedDestination
 from .dimension import PT
 from .layout import (EndOfContainer, DownExpandingContainer, MaybeContainer,
                      VirtualContainer, discard_state)
@@ -145,7 +146,9 @@ class DestinationFlowable(DummyFlowable):
         self.id = id
 
     def flow(self, container, last_descender, state=None):
-        container.canvas.set_destination(str(self.id), 0, container.cursor)
+        destination = NamedDestination(str(self.id))
+        container.canvas.annotate(destination, 0, container.cursor,
+                                  container.width, None)
         return super().flow(container, last_descender, state=state)
 
 
