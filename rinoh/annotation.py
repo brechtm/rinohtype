@@ -11,7 +11,7 @@ from .style import PARENT_STYLE
 from .text import MixedStyledText
 
 
-__all__ = ['Annotation', 'NamedDestinationLink', 'HyperLink',
+__all__ = ['NamedDestination', 'NamedDestinationLink', 'HyperLink',
            'AnnotatedSpan', 'AnnotatedText']
 
 
@@ -19,8 +19,15 @@ class Annotation(object):
     pass
 
 
-class NamedDestinationLink(Annotation):
+class NamedDestination(Annotation):
     type = 'NamedDestination'
+
+    def __init__(self, name):
+        self.name = name
+
+
+class NamedDestinationLink(Annotation):
+    type = 'NamedDestinationLink'
 
     def __init__(self, name):
         self.name = name

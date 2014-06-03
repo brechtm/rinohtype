@@ -316,9 +316,13 @@ class PageCanvas(Canvas):
             if annotation.type == 'URI':
                 a = cos.URIAction(annotation.target)
                 annot = cos.LinkAnnotation(rect, action=a)
-            elif annotation.type == 'NamedDestination':
+            elif annotation.type == 'NamedDestinationLink':
                 name = cos.String(annotation.name)
                 annot = cos.LinkAnnotation(rect, destination=name)
+            elif annotation.type == 'NamedDestination':
+                destination_location = DestinationLocation(annotation.name, left,
+                                                           annotation_location.top)
+                destinations.append(destination_location)
             else:
                 raise NotImplementedError
             annots.append(annot)
@@ -334,8 +338,10 @@ class PageCanvas(Canvas):
             top = page_height - destination_location.top
             dest = cos.Array([cos_page, cos.Name('XYZ'),
                               cos.Real(left), cos.Real(top), cos.Real(0)], True)
-            dests_names.append(cos.String(destination_location.name))
-            dests_names.append(dest)
+            key = cos.String(destination_location.name)
+            if key not in dests_names:  # avoid dupes
+                dests_names.append(key)
+                dests_names.append(dest)
 
 
 class Location(object):

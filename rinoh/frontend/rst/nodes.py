@@ -329,7 +329,8 @@ class Substitution_Definition(BodyElement):
 
 class Target(BodyElement, InlineElement):
     def build_styled_text(self):
-        return self.process_content()
+        destination = rt.NamedDestination(self.get('ids')[0])
+        return rt.AnnotatedText(self.process_content(), destination)
 
     def build_flowable(self):
         target_id = self.get('refid')
