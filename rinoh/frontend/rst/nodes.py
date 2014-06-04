@@ -24,7 +24,8 @@ class Document(BodyElement):
 
 class DocInfo(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([child.flowable() for child in self.getchildren()])
+        return rt.FieldList([child.flowable() for child in self.getchildren()],
+                            id=self.id)
 
 
 # bibliographic elements
@@ -33,7 +34,7 @@ class DocInfoField(BodyElement):
     def build_flowable(self, content=None):
         field_name = rt.Paragraph(self.__class__.__name__, style='field_name')
         content = content or rt.Paragraph(self.process_content())
-        return rt.LabeledFlowable(field_name, content)
+        return rt.LabeledFlowable(field_name, content, id=self.id)
 
 
 class Author(DocInfoField):
@@ -113,7 +114,7 @@ class Topic(GroupingElement):
                 flowables.insert(0, self.title.flowable())
             except AttributeError:
                 pass
-            return rt.StaticGroupedFlowables(flowables,
+            return rt.StaticGroupedFlowables(flowables, id=self.id,
                                              style='table of contents')
         else:
             return super().build_flowable()
@@ -121,7 +122,7 @@ class Topic(GroupingElement):
 
 class Rubric(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.process_content(), style='rubric')
+        return rt.Paragraph(self.process_content(), id=self.id, style='rubric')
 
 
 class Sidebar(GroupingElement):
@@ -135,12 +136,12 @@ class Section(BodyElement):
         flowables = []
         for element in self.getchildren():
             flowables.append(element.flowable())
-        return rt.Section(flowables, id=self.get('ids', None)[0])
+        return rt.Section(flowables, id=self.id)
 
 
 class Paragraph(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(super().process_content())
+        return rt.Paragraph(super().process_content(), id=self.id)
 
 
 class Compound(GroupingElement):
@@ -150,14 +151,15 @@ class Compound(GroupingElement):
 class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Section):
-            return rt.Heading(self.process_content())
+            return rt.Heading(self.process_content(), id=self.id)
         else:
-            return rt.Paragraph(self.process_content(), 'title')
+            return rt.Paragraph(self.process_content(), id=self.id,
+                                style='title')
 
 
 class Subtitle(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.text, 'subtitle')
+        return rt.Paragraph(self.text, id=self.id, style='subtitle')
 
 
 class Admonition(GroupingElement):
@@ -170,7 +172,8 @@ class AdmonitionBase(GroupingElement):
 
     def flowable(self):
         title_par = rt.Paragraph(self.title, style='title')
-        content = rt.StaticGroupedFlowables([title_par, super().flowable()])
+        content = rt.StaticGroupedFlowables([title_par, super().flowable()],
+                                            id=self.id)
         framed = rt.Framed(content, style='admonition')
         framed.admonition_type = self.__class__.__name__.lower()
         return framed
@@ -259,7 +262,7 @@ class Problematic(BodyElement, InlineElement):
 class Literal_Block(BodyElement):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, style='literal')
+        return rt.Paragraph(text, id=self.id, style='literal')
 
 
 class Block_Quote(GroupingElement):
@@ -269,7 +272,7 @@ class Block_Quote(GroupingElement):
 class Attribution(Paragraph):
     def build_flowable(self):
         return rt.Paragraph('\N{EM DASH}' + self.process_content(),
-                            style='attribution')
+                            id=self.id, style='attribution')
 
 
 class Line_Block(GroupingElement):
@@ -279,12 +282,13 @@ class Line_Block(GroupingElement):
 class Line(BodyElement):
     def build_flowable(self):
         return rt.Paragraph(self.process_content() or '\n',
-                            style='line block line')
+                            id=self.id, style='line block line')
+
 
 class Doctest_Block(BodyElement):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, style='literal')
+        return rt.Paragraph(text, id=self.id, style='literal')
 
 
 class Reference(BodyElement, InlineElement):
@@ -303,10 +307,8 @@ class Reference(BodyElement, InlineElement):
 
 class Footnote(BodyElement):
     def build_flowable(self):
-        assert len(self.node['ids']) == 1
-        note_id = self.node['ids'][0]
         content = [node.flowable() for node in self.getchildren()[1:]]
-        note = rt.Note(rt.StaticGroupedFlowables(content), id=note_id)
+        note = rt.Note(rt.StaticGroupedFlowables(content), id=self.id)
         return rt.RegisterNote(note)
 
 
@@ -329,25 +331,24 @@ class Substitution_Definition(BodyElement):
 
 class Target(BodyElement, InlineElement):
     def build_styled_text(self):
-        destination = rt.NamedDestination(self.get('ids')[0])
+        destination = rt.NamedDestination(self.id)
         return rt.AnnotatedText(self.process_content(), destination)
 
     def build_flowable(self):
-        target_id = self.get('refid')
-        return rt.DestinationFlowable(target_id)
+        return rt.DummyFlowable()
 
 
 class Enumerated_List(BodyElement):
     def build_flowable(self):
         # TODO: handle different numbering styles
         return rt.List([item.process() for item in self.list_item],
-                       style='enumerated')
+                       id=self.id, style='enumerated')
 
 
 class Bullet_List(BodyElement):
     def build_flowable(self):
         return rt.List([item.process() for item in self.list_item],
-                       style='bulleted')
+                       id=self.id, style='bulleted')
 
 
 class List_Item(BodySubElement):
@@ -358,7 +359,8 @@ class List_Item(BodySubElement):
 class Definition_List(BodyElement):
     def build_flowable(self):
         return rt.DefinitionList([item.process()
-                                  for item in self.definition_list_item])
+                                  for item in self.definition_list_item],
+                                 id=self.id)
 
 
 class Definition_List_Item(BodySubElement):
@@ -368,7 +370,7 @@ class Definition_List_Item(BodySubElement):
             term += ' : ' + self.classifier.styled_text()
         except AttributeError:
             pass
-        return (term, self.definition.flowable())
+        return term, self.definition.flowable()
 
 
 class Term(InlineElement):
@@ -387,18 +389,20 @@ class Definition(GroupingElement):
 
 class Field_List(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([field.flowable() for field in self.field])
+        return rt.FieldList([field.flowable() for field in self.field],
+                            id=self.id)
 
 
 class Field(BodyElement):
     def build_flowable(self):
         return rt.LabeledFlowable(self.field_name.flowable(),
-                                  self.field_body.flowable())
+                                  self.field_body.flowable(), id=self.id)
 
 
 class Field_Name(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.process_content(), style='field_name')
+        return rt.Paragraph(self.process_content(),
+                            id=self.id, style='field_name')
 
 
 class Field_Body(GroupingElement):
@@ -407,14 +411,15 @@ class Field_Body(GroupingElement):
 
 class Option_List(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([item.flowable() for item in self.option_list_item])
+        return rt.FieldList([item.flowable() for item in self.option_list_item],
+                            id=self.id)
 
 
 class Option_List_Item(BodyElement):
     def build_flowable(self):
         return rt.LabeledFlowable(self.option_group.flowable(),
                                   self.description.flowable(),
-                                  style='option')
+                                  id=self.id, style='option')
 
 
 class Option_Group(BodyElement):
@@ -455,7 +460,7 @@ class Image(BodyElement, InlineElement):
         return self.get('uri').rsplit('.png', 1)[0]
 
     def build_flowable(self):
-        return rt.Image(self.image_path)
+        return rt.Image(self.image_path, id=self.id)
 
     def build_styled_text(self):
         return rt.InlineImage(self.image_path)

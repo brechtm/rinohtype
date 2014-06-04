@@ -28,8 +28,7 @@ from .style import Style, Styled
 
 
 __all__ = ['Flowable', 'FlowableStyle',
-           'DummyFlowable', 'WarnFlowable', 'DestinationFlowable',
-           'SetMetadataFlowable',
+           'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float']
@@ -67,10 +66,14 @@ class Flowable(Styled):
 
     style_class = FlowableStyle
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, id=None, style=None, parent=None):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
         super().__init__(style=style, parent=parent)
+        self.id = id
+
+    def get_id(self, document):
+        return self.id
 
     @property
     def level(self):
@@ -102,9 +105,16 @@ class Flowable(Styled):
         right = container.width - margin_right
         margin_container = DownExpandingContainer('MARGIN', container,
                                                   left=margin_left, right=right)
-        width, descender = self.render(margin_container, last_descender,
-                                       state=state, **kwargs)
-        container.advance(margin_container.cursor)
+        try:
+            width, descender = self.render(margin_container, last_descender,
+                                           state=state, **kwargs)
+            container.advance(margin_container.cursor)
+        finally:
+            reference_id = self.get_id(container.document)
+            if reference_id and margin_container.cursor:
+                destination = NamedDestination(str(reference_id))
+                margin_container.canvas.annotate(destination, 0, 0,
+                                                 margin_container.width, None)
         try:
             container.advance(float(self.get_style('space_below', document)))
         except EndOfContainer:
@@ -140,18 +150,6 @@ class WarnFlowable(DummyFlowable):
         return super().flow(container, last_descender, state)
 
 
-class DestinationFlowable(DummyFlowable):
-    def __init__(self, id, parent=None):
-        super().__init__(parent=parent)
-        self.id = id
-
-    def flow(self, container, last_descender, state=None):
-        destination = NamedDestination(str(self.id))
-        container.canvas.annotate(destination, 0, container.cursor,
-                                  container.width, None)
-        return super().flow(container, last_descender, state=state)
-
-
 class SetMetadataFlowable(DummyFlowable):
     def __init__(self, parent=None, **metadata):
         super().__init__(parent=parent)
@@ -160,7 +158,7 @@ class SetMetadataFlowable(DummyFlowable):
     def flow(self, container, last_descender, state=None):
         for field, value in self.metadata:
             setattr(container.document, field, value)
-        return super().flow(container)
+        return super().flow(container, last_descender, state=state)
 
 
 # grouping flowables
@@ -230,8 +228,8 @@ class GroupedFlowables(Flowable):
 
 
 class StaticGroupedFlowables(GroupedFlowables):
-    def __init__(self, flowables, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, flowables, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.children = flowables
         for flowable in flowables:
             flowable.parent = self
@@ -255,8 +253,8 @@ class LabeledFlowableStyle(FlowableStyle):
 class LabeledFlowable(Flowable):
     style_class = LabeledFlowableStyle
 
-    def __init__(self, label, flowable, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, label, flowable, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.label = label
         self.flowable = flowable
         label.parent = flowable.parent = self

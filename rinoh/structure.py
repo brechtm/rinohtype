@@ -33,9 +33,7 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
 
 class Section(Referenceable, StaticGroupedFlowables):
     def __init__(self, flowables, id=None, style=None, parent=None):
-        Referenceable.__init__(self, id)
-        StaticGroupedFlowables.__init__(self, flowables, style=style,
-                                        parent=parent)
+        super().__init__(flowables, id=id, style=style, parent=parent)
 
     @property
     def level(self):
@@ -56,8 +54,8 @@ class HeadingStyle(NumberedParagraphStyle):
 class Heading(NumberedParagraph):
     style_class = HeadingStyle
 
-    def __init__(self, title, style=None, parent=None):
-        super().__init__(title, style=style, parent=parent)
+    def __init__(self, title, id=None, style=None, parent=None):
+        super().__init__(title, id=id, style=style, parent=parent)
 
     def __repr__(self):
         return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
@@ -102,8 +100,8 @@ class ListStyle(GroupedFlowablesStyle, NumberStyle):
 class List(GroupedLabeledFlowables):
     style_class = ListStyle
 
-    def __init__(self, items, style=None):
-        super().__init__(style)
+    def __init__(self, items, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.items = items
 
     def flowables(self, document):
@@ -139,8 +137,8 @@ class DefinitionListStyle(GroupedFlowablesStyle, ParagraphStyle):
 class DefinitionList(GroupedFlowables):
     style_class = DefinitionListStyle
 
-    def __init__(self, items, style=None):
-        super().__init__(style)
+    def __init__(self, items, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.items = items
         for term, definition in items:
             definition.parent = self
@@ -165,9 +163,9 @@ class HeaderStyle(ParagraphStyle):
 class Header(Paragraph):
     style_class = HeaderStyle
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, id=None, style=None, parent=None):
         text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
-        super().__init__(text, style=style, parent=parent)
+        super().__init__(text, id=id, style=style, parent=parent)
 
 
 class FooterStyle(ParagraphStyle):
@@ -180,9 +178,9 @@ class FooterStyle(ParagraphStyle):
 class Footer(Paragraph):
     style_class = FooterStyle
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, id=None, style=None, parent=None):
         text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
-        super().__init__(text, style=style, parent=parent)
+        super().__init__(text, id=id, style=style, parent=parent)
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
@@ -196,8 +194,8 @@ class TableOfContents(GroupedFlowables):
     style_class = TableOfContentsStyle
     location = 'table of contents'
 
-    def __init__(self, local=False, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, local=False, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.local = local
         self.source = self
 
@@ -230,8 +228,8 @@ class TableOfContents(GroupedFlowables):
 
 
 class TableOfContentsEntry(Paragraph):
-    def __init__(self, text_or_items, depth, style=None, parent=None):
-        super().__init__(text_or_items, style=style, parent=parent)
+    def __init__(self, text_or_items, depth, id=None, style=None, parent=None):
+        super().__init__(text_or_items, id=id, style=style, parent=parent)
         self.depth = depth
 
 

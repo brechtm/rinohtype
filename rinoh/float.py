@@ -30,8 +30,8 @@ class HorizontallyAlignedFlowable(Flowable):
 
 
 class ImageBase(Flowable):
-    def __init__(self, filename, scale=1.0, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, filename, scale=1.0, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.filename = filename
         self.scale = scale
 

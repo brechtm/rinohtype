@@ -56,9 +56,6 @@ class Variable(Field):
 
 
 class Referenceable(Flowable):
-    def __init__(self, id):
-        self.id = id
-
     def prepare(self, document):
         element_id = self.id or document.unique_id
         if self.id is None:
@@ -72,11 +69,6 @@ class Referenceable(Flowable):
     def update_page_reference(self, page):
         document = page.document
         document.page_references[self.get_id(document)] = page.number
-
-    def render(self, container, last_descender, state=None):
-        destination = NamedDestination(self.get_id(container.document))
-        container.canvas.annotate(destination, 0, 0, container.width, None)
-        return super().render(container, last_descender, state=state)
 
 
 REFERENCE = 'reference'
@@ -134,11 +126,9 @@ class DirectReference(Reference):
 
 
 class Note(Referenceable, LabeledFlowable):
-    def __init__(self, flowable, id, style=None, parent=None):
-        Referenceable.__init__(self, id)
+    def __init__(self, flowable, id=None, style=None, parent=None):
         label = Paragraph(DirectReference(self))
-        LabeledFlowable.__init__(self, label, flowable, style=style,
-                                 parent=parent)
+        super().__init__(label, flowable, id=id, style=style, parent=parent)
 
 
 class RegisterNote(DummyFlowable):

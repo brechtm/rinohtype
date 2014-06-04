@@ -98,8 +98,8 @@ class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
 class NumberedParagraph(ParagraphBase):
     style_class = NumberedParagraphStyle
 
-    def __init__(self, content, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, content, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.content = content
 
     def number(self, document):

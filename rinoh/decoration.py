@@ -25,8 +25,8 @@ class FrameStyle(FlowableStyle, ShapeStyle):
 class Framed(Flowable):
     style_class = FrameStyle
 
-    def __init__(self, flowable, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
         self.flowable = flowable
         flowable.parent = self
 

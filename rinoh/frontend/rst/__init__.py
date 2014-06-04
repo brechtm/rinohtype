@@ -48,6 +48,13 @@ class CustomElement(object):
     def text(self):
         return self.node.astext()
 
+    @property
+    def id(self):
+        ids = self.get('ids', [None])
+        if ids:
+            # assert len(ids) == 1
+            return ids[0]
+
     def get(self, key, default=None):
         return self.node.get(key, default)
 
@@ -111,7 +118,7 @@ class GroupingElement(BodyElement):
     def build_flowable(self):
         return StaticGroupedFlowables([item.flowable()
                                        for item in self.getchildren()],
-                                      style=self.style)
+                                      id=self.id, style=self.style)
 
 
 from . import nodes
