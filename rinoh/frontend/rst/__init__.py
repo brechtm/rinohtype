@@ -48,13 +48,6 @@ class CustomElement(object):
     def text(self):
         return self.node.astext()
 
-    @property
-    def id(self):
-        ids = self.get('ids', [None])
-        if ids:
-            # assert len(ids) == 1
-            return ids[0]
-
     def get(self, key, default=None):
         return self.node.get(key, default)
 
@@ -92,7 +85,12 @@ def set_source(method):
 class BodyElement(CustomElement):
     @set_source
     def flowable(self):
-        return self.build_flowable()
+        flowable = self.build_flowable()
+        ids = self.get('ids')
+        if ids:
+            # assert len(ids) == 1
+            flowable.id = ids[0]
+        return flowable
 
     def build_flowable(self):
         raise NotImplementedError('tag: %s' % self.tag)
@@ -118,7 +116,7 @@ class GroupingElement(BodyElement):
     def build_flowable(self):
         return StaticGroupedFlowables([item.flowable()
                                        for item in self.getchildren()],
-                                      id=self.id, style=self.style)
+                                      style=self.style)
 
 
 from . import nodes

@@ -24,8 +24,7 @@ class Document(BodyElement):
 
 class DocInfo(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([child.flowable() for child in self.getchildren()],
-                            id=self.id)
+        return rt.FieldList([child.flowable() for child in self.getchildren()])
 
 
 # bibliographic elements
@@ -34,7 +33,7 @@ class DocInfoField(BodyElement):
     def build_flowable(self, content=None):
         field_name = rt.Paragraph(self.__class__.__name__, style='field_name')
         content = content or rt.Paragraph(self.process_content())
-        return rt.LabeledFlowable(field_name, content, id=self.id)
+        return rt.LabeledFlowable(field_name, content)
 
 
 class Author(DocInfoField):
@@ -114,7 +113,7 @@ class Topic(GroupingElement):
                 flowables.insert(0, self.title.flowable())
             except AttributeError:
                 pass
-            return rt.StaticGroupedFlowables(flowables, id=self.id,
+            return rt.StaticGroupedFlowables(flowables,
                                              style='table of contents')
         else:
             return super().build_flowable()
@@ -122,7 +121,7 @@ class Topic(GroupingElement):
 
 class Rubric(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.process_content(), id=self.id, style='rubric')
+        return rt.Paragraph(self.process_content(), style='rubric')
 
 
 class Sidebar(GroupingElement):
@@ -136,12 +135,12 @@ class Section(BodyElement):
         flowables = []
         for element in self.getchildren():
             flowables.append(element.flowable())
-        return rt.Section(flowables, id=self.id)
+        return rt.Section(flowables)
 
 
 class Paragraph(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(super().process_content(), id=self.id)
+        return rt.Paragraph(super().process_content())
 
 
 class Compound(GroupingElement):
@@ -151,15 +150,14 @@ class Compound(GroupingElement):
 class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Section):
-            return rt.Heading(self.process_content(), id=self.id)
+            return rt.Heading(self.process_content())
         else:
-            return rt.Paragraph(self.process_content(), id=self.id,
-                                style='title')
+            return rt.Paragraph(self.process_content(), style='title')
 
 
 class Subtitle(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.text, id=self.id, style='subtitle')
+        return rt.Paragraph(self.text, style='subtitle')
 
 
 class Admonition(GroupingElement):
@@ -172,8 +170,7 @@ class AdmonitionBase(GroupingElement):
 
     def flowable(self):
         title_par = rt.Paragraph(self.title, style='title')
-        content = rt.StaticGroupedFlowables([title_par, super().flowable()],
-                                            id=self.id)
+        content = rt.StaticGroupedFlowables([title_par, super().flowable()])
         framed = rt.Framed(content, style='admonition')
         framed.admonition_type = self.__class__.__name__.lower()
         return framed
@@ -262,7 +259,7 @@ class Problematic(BodyElement, InlineElement):
 class Literal_Block(BodyElement):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, id=self.id, style='literal')
+        return rt.Paragraph(text, style='literal')
 
 
 class Block_Quote(GroupingElement):
@@ -272,7 +269,7 @@ class Block_Quote(GroupingElement):
 class Attribution(Paragraph):
     def build_flowable(self):
         return rt.Paragraph('\N{EM DASH}' + self.process_content(),
-                            id=self.id, style='attribution')
+                            style='attribution')
 
 
 class Line_Block(GroupingElement):
@@ -282,13 +279,13 @@ class Line_Block(GroupingElement):
 class Line(BodyElement):
     def build_flowable(self):
         return rt.Paragraph(self.process_content() or '\n',
-                            id=self.id, style='line block line')
+                            style='line block line')
 
 
 class Doctest_Block(BodyElement):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, id=self.id, style='literal')
+        return rt.Paragraph(text, style='literal')
 
 
 class Reference(BodyElement, InlineElement):
@@ -306,10 +303,12 @@ class Reference(BodyElement, InlineElement):
 
 
 class Footnote(BodyElement):
+    def flowable(self):
+        return rt.RegisterNote(super().flowable())
+
     def build_flowable(self):
         content = [node.flowable() for node in self.getchildren()[1:]]
-        note = rt.Note(rt.StaticGroupedFlowables(content), id=self.id)
-        return rt.RegisterNote(note)
+        return rt.Note(rt.StaticGroupedFlowables(content))
 
 
 class Label(BodyElement):
@@ -331,7 +330,7 @@ class Substitution_Definition(BodyElement):
 
 class Target(BodyElement, InlineElement):
     def build_styled_text(self):
-        destination = rt.NamedDestination(self.id)
+        destination = rt.NamedDestination(self.get('ids')[0])
         return rt.AnnotatedText(self.process_content(), destination)
 
     def build_flowable(self):
@@ -342,13 +341,13 @@ class Enumerated_List(BodyElement):
     def build_flowable(self):
         # TODO: handle different numbering styles
         return rt.List([item.process() for item in self.list_item],
-                       id=self.id, style='enumerated')
+                       style='enumerated')
 
 
 class Bullet_List(BodyElement):
     def build_flowable(self):
         return rt.List([item.process() for item in self.list_item],
-                       id=self.id, style='bulleted')
+                       style='bulleted')
 
 
 class List_Item(BodySubElement):
@@ -359,8 +358,7 @@ class List_Item(BodySubElement):
 class Definition_List(BodyElement):
     def build_flowable(self):
         return rt.DefinitionList([item.process()
-                                  for item in self.definition_list_item],
-                                 id=self.id)
+                                  for item in self.definition_list_item])
 
 
 class Definition_List_Item(BodySubElement):
@@ -389,20 +387,18 @@ class Definition(GroupingElement):
 
 class Field_List(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([field.flowable() for field in self.field],
-                            id=self.id)
+        return rt.FieldList([field.flowable() for field in self.field])
 
 
 class Field(BodyElement):
     def build_flowable(self):
         return rt.LabeledFlowable(self.field_name.flowable(),
-                                  self.field_body.flowable(), id=self.id)
+                                  self.field_body.flowable())
 
 
 class Field_Name(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.process_content(),
-                            id=self.id, style='field_name')
+        return rt.Paragraph(self.process_content(), style='field_name')
 
 
 class Field_Body(GroupingElement):
@@ -411,15 +407,13 @@ class Field_Body(GroupingElement):
 
 class Option_List(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([item.flowable() for item in self.option_list_item],
-                            id=self.id)
+        return rt.FieldList([item.flowable() for item in self.option_list_item])
 
 
 class Option_List_Item(BodyElement):
     def build_flowable(self):
         return rt.LabeledFlowable(self.option_group.flowable(),
-                                  self.description.flowable(),
-                                  id=self.id, style='option')
+                                  self.description.flowable(), style='option')
 
 
 class Option_Group(BodyElement):
@@ -460,7 +454,7 @@ class Image(BodyElement, InlineElement):
         return self.get('uri').rsplit('.png', 1)[0]
 
     def build_flowable(self):
-        return rt.Image(self.image_path, id=self.id)
+        return rt.Image(self.image_path)
 
     def build_styled_text(self):
         return rt.InlineImage(self.image_path)
