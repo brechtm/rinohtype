@@ -57,6 +57,10 @@ class Heading(NumberedParagraph):
     def __init__(self, title, id=None, style=None, parent=None):
         super().__init__(title, id=id, style=style, parent=parent)
 
+    @property
+    def referenceable(self):
+        return self.section
+
     def __repr__(self):
         return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
                                           self.style)

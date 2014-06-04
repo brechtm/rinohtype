@@ -66,6 +66,10 @@ class Image(ImageBase, HorizontallyAlignedFlowable):
 
 
 class Caption(NumberedParagraph):
+    @property
+    def referenceable(self):
+        return self.parent
+
     def text(self, document):
         label = self.parent.category + ' ' + self.number(document)
         return MixedStyledText(label + self.content, parent=self)

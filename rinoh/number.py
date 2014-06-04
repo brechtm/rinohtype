@@ -102,16 +102,21 @@ class NumberedParagraph(ParagraphBase):
         super().__init__(id=id, style=style, parent=parent)
         self.content = content
 
+    @property
+    def referenceable(self):
+        raise NotImplementedError
+
     def number(self, document):
-        number_format = self.get_style('number_format', document)
-        if not number_format:
+        target_id = self.referenceable.get_id(document)
+        formatted_number = document.get_reference(target_id, REFERENCE)
+        if formatted_number:
+            suffix = self.get_style('number_suffix', document)
+            return formatted_number + suffix + FixedWidthSpace()
+        else:
             return ''
-        suffix = self.get_style('number_suffix', document)
-        formatted_number = DirectReference(self.section, REFERENCE)
-        return formatted_number + suffix + FixedWidthSpace()
 
     def text(self, document):
         raise NotImplementedError
 
 
-from .reference import DirectReference, REFERENCE
+from .reference import REFERENCE
