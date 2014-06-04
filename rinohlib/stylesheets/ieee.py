@@ -6,7 +6,7 @@ from rinoh import (
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
-    NoteMarker, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
+    NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
     PT, INCH, CM, RED, BLUE, Color, Gray
@@ -298,7 +298,7 @@ styles('footer', ClassSelector(Footer),
        indent_first=0*PT,
        justify=CENTER)
 
-styles('footnote marker', ClassSelector(NoteMarker),
+styles('footnote marker', ClassSelector(NoteMarkerBase),
        position=SUPERSCRIPT,
        number_format=SYMBOL)
 

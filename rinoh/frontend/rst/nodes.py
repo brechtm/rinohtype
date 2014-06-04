@@ -318,7 +318,7 @@ class Label(BodyElement):
 
 class Footnote_Reference(InlineElement):
     def build_styled_text(self):
-        return rt.NoteMarker(self.node['refid'])
+        return rt.NoteMarkerByID(self.node['refid'])
 
 
 

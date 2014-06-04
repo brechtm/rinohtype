@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestination, NamedDestinationLink, AnnotatedSpan
+from .annotation import NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, format_number
 from .paragraph import Paragraph
@@ -15,7 +15,8 @@ from .text import SingleStyledText, TextStyle
 
 
 __all__ = ['Field', 'Variable', 'Referenceable', 'Reference',
-           'NoteMarker', 'Note', 'RegisterNote', 'NoteMarkerWithNote',
+           'Note', 'RegisterNote',
+           'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
 
 
@@ -77,14 +78,13 @@ TITLE = 'title'
 POSITION = 'position'
 
 
-class Reference(Field):
-    def __init__(self, target_id, type=REFERENCE, style=PARENT_STYLE):
+class ReferenceBase(Field):
+    def __init__(self, type=REFERENCE, style=PARENT_STYLE):
         super().__init__(style=style)
-        self._target_id = target_id
         self.type = type
 
-    def target_id(self, document):
-        return self._target_id
+    def target_id(self):
+        raise NotImplementedError
 
     def split(self, container):
         target_id = self.target_id(container.document)
@@ -110,15 +110,23 @@ class Reference(Field):
 
         return self.split_words(text)
 
+
+class Reference(ReferenceBase):
+    def __init__(self, target_id, type=REFERENCE, style=PARENT_STYLE):
+        super().__init__(type=type, style=style)
+        self._target_id = target_id
+
+    def target_id(self, document):
+        return self._target_id
+
     def spans(self):
         annotation = NamedDestinationLink(str(self._target_id))
         return (AnnotatedSpan(span, annotation) for span in super().spans())
 
 
-
-class DirectReference(Reference):
+class DirectReference(ReferenceBase):
     def __init__(self, referenceable, type=REFERENCE, style=PARENT_STYLE):
-        super().__init__(None, type=type, style=style)
+        super().__init__(type=type, style=style)
         self.referenceable = referenceable
 
     def target_id(self, document):
@@ -144,11 +152,8 @@ class NoteMarkerStyle(TextStyle, NumberStyle):
     pass
 
 
-class NoteMarker(Reference):
+class NoteMarkerBase(ReferenceBase):
     style_class = NoteMarkerStyle
-
-    def __init__(self, target_id, type=REFERENCE, style=None):
-        super().__init__(target_id, type=type, style=style)
 
     def prepare(self, document):
         target_id = self.target_id(document)
@@ -168,11 +173,15 @@ class NoteMarker(Reference):
         # TODO: handle overflow in footnote_space
 
 
-class NoteMarkerWithNote(DirectReference, NoteMarker):
-    def __init__(self, note, type=REFERENCE, style=PARENT_STYLE):
-        super().__init__(note, type=type, style=style)
-        self.note = note
+class NoteMarkerByID(Reference, NoteMarkerBase):
+    def __init__(self, note_id, style=PARENT_STYLE):
+        super().__init__(note_id, style=style)
+
+
+class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
+    def __init__(self, note, style=PARENT_STYLE):
+        super().__init__(note, style=style)
 
     def prepare(self, document):
-        self.note.prepare(document)
+        self.referenceable.prepare(document)
         super().prepare(document)
