@@ -149,22 +149,30 @@ class RegisterNote(DummyFlowable):
 
 
 class NoteMarkerStyle(TextStyle, NumberStyle):
-    pass
+    attributes = {'custom_label': False}
 
 
 class NoteMarkerBase(ReferenceBase):
     style_class = NoteMarkerStyle
+
+    def __init__(self, custom_label=None, type=REFERENCE, style=PARENT_STYLE):
+        super().__init__(type=type, style=style)
+        self.custom_label = custom_label
 
     def prepare(self, document):
         target_id = self.target_id(document)
         try:  # set reference only once (notes can be referenced multiple times)
             document.get_reference(target_id, REFERENCE)
         except KeyError:
-            number_format = self.get_style('number_format', document)
-            counter = document.counters.setdefault(__class__, [])
-            counter.append(self)
-            formatted_number = format_number(len(counter), number_format)
-            document.set_reference(target_id, REFERENCE, formatted_number)
+            if self.get_style('custom_label', document):
+                assert self.custom_label is not None
+                formatted_number = str(self.custom_label)
+            else:
+                number_format = self.get_style('number_format', document)
+                counter = document.counters.setdefault(__class__, [])
+                counter.append(self)
+                formatted_number = format_number(len(counter), number_format)
+            document.set_reference(target_id, REFERENCE, str(formatted_number))
 
     def split(self, container):
         note = container.document.elements[self.target_id(container.document)]
@@ -174,13 +182,15 @@ class NoteMarkerBase(ReferenceBase):
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
-    def __init__(self, note_id, style=PARENT_STYLE):
-        super().__init__(note_id, style=style)
+    def __init__(self, note_id, custom_label=None, style=PARENT_STYLE):
+        Reference.__init__(self, note_id, style=style)
+        NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
 
 
 class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
-    def __init__(self, note, style=PARENT_STYLE):
-        super().__init__(note, style=style)
+    def __init__(self, note, custom_label=None, style=PARENT_STYLE):
+        DirectReference.__init__(self, note, style=style)
+        NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
 
     def prepare(self, document):
         self.referenceable.prepare(document)
