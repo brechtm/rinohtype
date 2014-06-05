@@ -48,14 +48,17 @@ class Section(Referenceable, StaticGroupedFlowables):
 
 
 class HeadingStyle(NumberedParagraphStyle):
-    attributes = {'number_separator': '.'}
+    attributes = {'number_separator': '.',
+                  'custom_label': False}
 
 
 class Heading(NumberedParagraph):
     style_class = HeadingStyle
 
-    def __init__(self, title, id=None, style=None, parent=None):
+    def __init__(self, title, custom_label=None,
+                 id=None, style=None, parent=None):
         super().__init__(title, id=id, style=style, parent=parent)
+        self.custom_label = custom_label
 
     @property
     def referenceable(self):
@@ -68,7 +71,10 @@ class Heading(NumberedParagraph):
     def prepare(self, document):
         section_id = self.section.get_id(document)
         numbering_style = self.get_style('number_format', document)
-        if numbering_style:
+        if self.get_style('custom_label', document):
+            assert self.custom_label is not None
+            formatted_number = str(self.custom_label)
+        elif numbering_style:
             heading_counters = document.counters.setdefault(__class__, {})
             level_counter = heading_counters.setdefault(self.level, [])
             level_counter.append(self)

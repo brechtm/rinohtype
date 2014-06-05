@@ -150,7 +150,8 @@ class Compound(GroupingElement):
 class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Section):
-            return rt.Heading(self.process_content())
+            return rt.Heading(self.process_content(),
+                              custom_label=self.generated.build_styled_text())
         else:
             return rt.Paragraph(self.process_content(), style='title')
 
@@ -215,6 +216,9 @@ class Warning(AdmonitionBase):
 class Generated(InlineElement):
     def styled_text(self, preserve_space=False):
         return None
+
+    def build_styled_text(self):
+        return self.process_content()
 
 
 class Emphasis(InlineElement):
