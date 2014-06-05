@@ -321,11 +321,20 @@ class Label(BodyElement):
 
 
 class Footnote_Reference(InlineElement):
+    style = 'footnote'
+
     def build_styled_text(self):
         return rt.NoteMarkerByID(self.node['refid'],
-                                 custom_label=self.process_content())
+                                 custom_label=self.process_content(),
+                                 style=self.style)
 
 
+class Citation(Footnote):
+    pass
+
+
+class Citation_Reference(Footnote_Reference):
+    style = 'citation'
 
 
 class Substitution_Definition(BodyElement):

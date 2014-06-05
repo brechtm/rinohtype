@@ -176,7 +176,7 @@ class Footnote(NestedElement):
     def parse(self):
         content = [element.parse() for element in self.getchildren()]
         note = Note(StaticGroupedFlowables(content), id=None)
-        return NoteMarkerWithNote(note)
+        return NoteMarkerWithNote(note, style='footnote')
 
 
 class Acknowledgement(CustomElement):

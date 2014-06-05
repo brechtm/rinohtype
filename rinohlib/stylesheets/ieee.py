@@ -298,9 +298,14 @@ styles('footer', ClassSelector(Footer),
        indent_first=0*PT,
        justify=CENTER)
 
-styles('footnote marker', ClassSelector(NoteMarkerBase),
+styles('footnote marker', ClassSelector(NoteMarkerBase, 'footnote'),
        position=SUPERSCRIPT,
        number_format=SYMBOL)
+
+styles('citation marker', ClassSelector(NoteMarkerBase, 'citation'),
+       # prefix='[',
+       # suffix=']',
+       custom_label=True)
 
 styles('footnote paragraph', ContextSelector(ClassSelector(Note),
                                              ClassSelector(GroupedFlowables),
