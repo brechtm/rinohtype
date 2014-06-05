@@ -55,6 +55,9 @@ class FlowableState(object):
     enables saving the rendering state at certain points in the rendering
     process, so rendering can later be resumed at those points, if needed."""
 
+    def __init__(self, _initial=True):
+        self.initial = _initial
+
     def __copy__(self):
         raise NotImplementedError
 
@@ -105,13 +108,20 @@ class Flowable(Styled):
         right = container.width - margin_right
         margin_container = DownExpandingContainer('MARGIN', container,
                                                   left=margin_left, right=right)
+        initial_before = True if state is None else state.initial
+        initial_after = True
         try:
             width, descender = self.render(margin_container, last_descender,
                                            state=state, **kwargs)
+            initial_after = False
             container.advance(margin_container.cursor)
+        except EndOfContainer as eoc:
+            if eoc.flowable_state:
+                initial_after = eoc.flowable_state.initial
+            raise eoc
         finally:
             reference_id = self.get_id(container.document)
-            if reference_id and margin_container.cursor:
+            if reference_id and initial_before and not initial_after:
                 destination = NamedDestination(str(reference_id))
                 margin_container.canvas.annotate(destination, 0, 0,
                                                  margin_container.width, None)
@@ -178,21 +188,25 @@ class InseparableFlowables(Flowable):
 
 
 class GroupedFlowablesState(FlowableState):
-    def __init__(self, flowables, first_flowable_state=None):
+    def __init__(self, flowables, first_flowable_state=None, _initial=True):
+        super().__init__(_initial)
         self.flowables = flowables
         self.first_flowable_state = first_flowable_state
 
     def __copy__(self):
         copy_list_items, self.flowables = tee(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(copy_list_items, copy_first_flowable_state)
+        return self.__class__(copy_list_items, copy_first_flowable_state,
+                              _initial=self.initial)
 
     def next_flowable(self):
         return next(self.flowables)
 
     def prepend(self, flowable, first_flowable_state):
         self.flowables = chain((flowable, ), self.flowables)
-        self.first_flowable_state = first_flowable_state
+        if first_flowable_state:
+            self.first_flowable_state = first_flowable_state
+            self.initial = self.initial and first_flowable_state.initial
 
 
 class GroupedFlowablesStyle(FlowableStyle):
@@ -217,6 +231,7 @@ class GroupedFlowables(Flowable):
                     flowable.flow(container, descender,
                                   state=state.first_flowable_state, **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
+                state.initial = False
                 state.first_flowable_state = None
                 flowable = state.next_flowable()
                 container.advance(item_spacing)

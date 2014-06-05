@@ -195,7 +195,9 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 class ParagraphState(FlowableState):
     def __init__(self, spans, first_line=True, nested_flowable_state=None,
-                 _current_span=None, _items=None, _current_item=None):
+                 _current_span=None, _items=None, _current_item=None,
+                 _initial=True):
+        super().__init__(_initial)
         self.spans = spans
         self.current_span = _current_span or None
         self.items = _items or iter([])
@@ -211,7 +213,8 @@ class ParagraphState(FlowableState):
                               copy_nested_flowable_state,
                               _current_span=self.current_span,
                               _items=copy_items,
-                              _current_item=self.current_item)
+                              _current_item=self.current_item,
+                              _initial=self.initial)
 
     def next_item(self, container):
         if self.current_item:
@@ -264,6 +267,7 @@ class ParagraphBase(Flowable):
                 max_line_width = max(max_line_width, line._cursor)
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
+                state.initial = False
                 saved_state = copy(state)
                 return Line(tab_stops, line_width, container)
             except EndOfContainer:
