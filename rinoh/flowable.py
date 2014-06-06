@@ -114,7 +114,7 @@ class Flowable(Styled):
             width, descender = self.render(margin_container, last_descender,
                                            state=state, **kwargs)
             initial_after = False
-            container.advance(margin_container.cursor)
+            container.advance(margin_container.cursor, False)
         except EndOfContainer as eoc:
             if eoc.flowable_state:
                 initial_after = eoc.flowable_state.initial
@@ -125,10 +125,7 @@ class Flowable(Styled):
                 destination = NamedDestination(str(reference_id))
                 margin_container.canvas.annotate(destination, 0, 0,
                                                  margin_container.width, None)
-        try:
-            container.advance(float(self.get_style('space_below', document)))
-        except EndOfContainer:
-            pass
+        container.advance(float(self.get_style('space_below', document)), False)
         return margin_left + width + margin_right, descender
 
     def render(self, container, descender, state=None):
@@ -234,7 +231,7 @@ class GroupedFlowables(Flowable):
                 state.initial = False
                 state.first_flowable_state = None
                 flowable = state.next_flowable()
-                container.advance(item_spacing)
+                container.advance(item_spacing, False)
         except EndOfContainer as eoc:
             state.prepend(flowable, eoc.flowable_state)
             raise EndOfContainer(state)

@@ -160,12 +160,12 @@ class ContainerBase(FlowableTarget):
     def remaining_height(self):
         return self.height - self.cursor
 
-    def advance(self, height):
+    def advance(self, height, check_overflow=True):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
         self.cursor += height
-        if self.cursor > self.height:
+        if check_overflow and self.cursor > self.height:
             raise EndOfContainer
 
     def check_overflow(self):
@@ -241,12 +241,12 @@ class ExpandingContainer(Container):
     def remaining_height(self):
         return self.max_height - self.cursor
 
-    def advance(self, height):
+    def advance(self, height, check_overflow=True):
         """Advance the cursor by `height`. If this would expand the container
         to become larger than its maximum height, an :class:`EndOfContainer`
         exception is raised."""
         self.cursor += height
-        if self.max_height and self.cursor > self.max_height:
+        if check_overflow and self.max_height and self.cursor > self.max_height:
             raise EndOfContainer
         self._expand(height)
 
