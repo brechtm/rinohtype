@@ -14,12 +14,11 @@ Functions for formatting numbers:
 
 from .paragraph import ParagraphBase, ParagraphStyle
 from .style import Style
-from .text import FixedWidthSpace
 
 
-__all__ = ['NumberStyle', 'NumberedParagraph',
+__all__ = ['NumberStyle', 'Label', 'NumberedParagraph',
            'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
-           'SYMBOL', 'format_number', 'format_label']
+           'SYMBOL', 'format_number']
 
 
 NUMBER = 'number'
@@ -89,29 +88,36 @@ def symbolize(number):
 class LabelStyle(Style):
     attributes = {'prefix': None,
                   'suffix': None,
-                  'separator': None}
+                  'separator': None,
+                  'custom_label': False}
+
+
+class Label(object):
+    def __init__(self, custom_label=None):
+        self.custom_label = custom_label
+
+    def format_label(self, label, document):
+        prefix = self.get_style('prefix', document) or ''
+        suffix = self.get_style('suffix', document) or ''
+        separator = self.get_style('separator', document) or ''
+        return prefix + label + suffix + separator
 
 
 class NumberStyle(LabelStyle):
     attributes = {'number_format': NUMBER}
 
 
-def format_label(styled, label, document):
-    prefix = styled.get_style('prefix', document) or ''
-    suffix = styled.get_style('suffix', document) or ''
-    separator = styled.get_style('separator', document) or ''
-    return prefix + label + suffix + separator
-
-
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
     pass
 
 
-class NumberedParagraph(ParagraphBase):
+class NumberedParagraph(ParagraphBase, Label):
     style_class = NumberedParagraphStyle
 
-    def __init__(self, content, id=None, style=None, parent=None):
+    def __init__(self, content, custom_label=None,
+                 id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
+        Label.__init__(self, custom_label=custom_label)
         self.content = content
 
     @property
@@ -122,7 +128,7 @@ class NumberedParagraph(ParagraphBase):
         target_id = self.referenceable.get_id(document)
         formatted_number = document.get_reference(target_id, REFERENCE)
         if formatted_number:
-            return format_label(self, formatted_number, document)
+            return self.format_label(formatted_number, document)
         else:
             return ''
 

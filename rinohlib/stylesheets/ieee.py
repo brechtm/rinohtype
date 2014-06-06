@@ -104,6 +104,7 @@ styles('heading level 1', ClassSelector(Heading, level=1),
        space_above=18*PT,
        space_below=6*PT,
        number_format=ROMAN_UC,
+       suffix='.',
        separator=FixedWidthSpace())
 
 styles('unnumbered heading level 1', ClassSelector(Heading, 'unnumbered',

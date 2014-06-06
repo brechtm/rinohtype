@@ -12,7 +12,7 @@ from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import NumberStyle, format_number, format_label
+from .number import NumberStyle, Label, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Referenceable, Reference
@@ -48,8 +48,7 @@ class Section(Referenceable, StaticGroupedFlowables):
 
 
 class HeadingStyle(NumberedParagraphStyle):
-    attributes = {'number_separator': '.',
-                  'custom_label': False}
+    attributes = {'number_separator': '.'}
 
 
 class Heading(NumberedParagraph):
@@ -73,21 +72,21 @@ class Heading(NumberedParagraph):
         numbering_style = self.get_style('number_format', document)
         if self.get_style('custom_label', document):
             assert self.custom_label is not None
-            formatted_number = str(self.custom_label)
+            label = str(self.custom_label)
         elif numbering_style:
             heading_counters = document.counters.setdefault(__class__, {})
             level_counter = heading_counters.setdefault(self.level, [])
             level_counter.append(self)
             number = len(level_counter)
-            formatted_number = format_number(number, numbering_style)
+            label = format_number(number, numbering_style)
             separator = self.get_style('number_separator', document)
             if separator is not None and self.level > 1:
                 parent_id = self.section.parent.section.get_id(document)
                 parent_ref = document.get_reference(parent_id, REFERENCE)
-                formatted_number = parent_ref + separator + formatted_number
+                label = parent_ref + separator + label
         else:
-            formatted_number = None
-        document.set_reference(section_id, REFERENCE, formatted_number)
+            label = None
+        document.set_reference(section_id, REFERENCE, label)
         document.set_reference(section_id, TITLE, str(self.content))
 
     def text(self, document):
@@ -107,7 +106,7 @@ class ListStyle(GroupedFlowablesStyle, NumberStyle):
                   'bullet': SingleStyledText('\N{BULLET}')}
 
 
-class List(GroupedLabeledFlowables):
+class List(GroupedLabeledFlowables, Label):
     style_class = ListStyle
 
     def __init__(self, items, id=None, style=None, parent=None):
@@ -121,7 +120,7 @@ class List(GroupedLabeledFlowables):
         else:
             numbers = repeat(self.get_style('bullet', document))
         for number, item in zip(numbers, self.items):
-            label = Paragraph(format_label(self, number, document))
+            label = Paragraph(self.format_label(number, document))
             flowable = StaticGroupedFlowables(item)
             yield ListItem(label, flowable, parent=self)
 
