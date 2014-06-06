@@ -122,8 +122,8 @@ class ReferenceBase(Field):
 
 class Reference(ReferenceBase):
     def __init__(self, target_id, type=REFERENCE, link=True,
-                 style=PARENT_STYLE):
-        super().__init__(type=type, link=link, style=style)
+                 style=PARENT_STYLE, **kwargs):
+        super().__init__(type=type, link=link, style=style, **kwargs)
         self._target_id = target_id
 
     def target_id(self, document):
@@ -132,8 +132,8 @@ class Reference(ReferenceBase):
 
 class DirectReference(ReferenceBase):
     def __init__(self, referenceable, type=REFERENCE, link=False,
-                 style=PARENT_STYLE):
-        super().__init__(type=type, link=link, style=style)
+                 style=PARENT_STYLE, **kwargs):
+        super().__init__(type=type, link=link, style=style, **kwargs)
         self.referenceable = referenceable
 
     def target_id(self, document):
@@ -162,9 +162,9 @@ class NoteMarkerStyle(TextStyle, NumberStyle):
 class NoteMarkerBase(ReferenceBase, Label):
     style_class = NoteMarkerStyle
 
-    def __init__(self, custom_label=None, type=REFERENCE, link=True,
-                 style=PARENT_STYLE):
-        super().__init__(link=link, type=type, style=style)
+    def __init__(self, custom_label=None, **kwargs):
+        kwargs.update(type=REFERENCE, link=True)
+        super().__init__(**kwargs)
         Label.__init__(self, custom_label=custom_label)
 
     def prepare(self, document):
@@ -192,14 +192,12 @@ class NoteMarkerBase(ReferenceBase, Label):
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
     def __init__(self, note_id, custom_label=None, style=PARENT_STYLE):
-        Reference.__init__(self, note_id, link=True, style=style)
-        NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
+        super().__init__(note_id, custom_label=custom_label, style=style)
 
 
 class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
     def __init__(self, note, custom_label=None, style=PARENT_STYLE):
-        DirectReference.__init__(self, note, link=True, style=style)
-        NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
+        super().__init__(note, custom_label=custom_label, style=style)
 
     def prepare(self, document):
         self.referenceable.prepare(document)
