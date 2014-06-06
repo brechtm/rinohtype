@@ -19,7 +19,7 @@ from .text import FixedWidthSpace
 
 __all__ = ['NumberStyle', 'NumberedParagraph',
            'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
-           'SYMBOL', 'format_number']
+           'SYMBOL', 'format_number', 'format_label']
 
 
 NUMBER = 'number'
@@ -86,9 +86,21 @@ def symbolize(number):
     return SYMBOLS[index] * (1 + repeat)
 
 
-class NumberStyle(Style):
-    attributes = {'number_format': NUMBER,
-                  'number_suffix': '.'}
+class LabelStyle(Style):
+    attributes = {'prefix': None,
+                  'suffix': None,
+                  'separator': None}
+
+
+class NumberStyle(LabelStyle):
+    attributes = {'number_format': NUMBER}
+
+
+def format_label(styled, label, document):
+    prefix = styled.get_style('prefix', document) or ''
+    suffix = styled.get_style('suffix', document) or ''
+    separator = styled.get_style('separator', document) or ''
+    return prefix + label + suffix + separator
 
 
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
@@ -110,8 +122,7 @@ class NumberedParagraph(ParagraphBase):
         target_id = self.referenceable.get_id(document)
         formatted_number = document.get_reference(target_id, REFERENCE)
         if formatted_number:
-            suffix = self.get_style('number_suffix', document)
-            return formatted_number + suffix + FixedWidthSpace()
+            return format_label(self, formatted_number, document)
         else:
             return ''
 

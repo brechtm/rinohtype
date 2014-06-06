@@ -12,7 +12,7 @@ from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import NumberStyle, format_number
+from .number import NumberStyle, format_number, format_label
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Referenceable, Reference
@@ -118,12 +118,10 @@ class List(GroupedLabeledFlowables):
         if self.get_style('ordered', document):
             number_format = self.get_style('number_format', document)
             numbers = (format_number(i, number_format) for i in count(1))
-            suffix = self.get_style('number_suffix', document)
         else:
             numbers = repeat(self.get_style('bullet', document))
-            suffix = ''
         for number, item in zip(numbers, self.items):
-            label = Paragraph(number + suffix)
+            label = Paragraph(format_label(self, number, document))
             flowable = StaticGroupedFlowables(item)
             yield ListItem(label, flowable, parent=self)
 

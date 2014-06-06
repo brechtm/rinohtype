@@ -8,7 +8,7 @@
 
 from .annotation import NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
-from .number import NumberStyle, format_number
+from .number import NumberStyle, format_number, format_label
 from .paragraph import Paragraph
 from .style import PARENT_STYLE
 from .text import SingleStyledText, TextStyle
@@ -172,7 +172,8 @@ class NoteMarkerBase(ReferenceBase):
                 counter = document.counters.setdefault(__class__, [])
                 counter.append(self)
                 formatted_number = format_number(len(counter), number_format)
-            document.set_reference(target_id, REFERENCE, str(formatted_number))
+            label = format_label(self, str(formatted_number), document)
+            document.set_reference(target_id, REFERENCE, str(label))
 
     def split(self, container):
         note = container.document.elements[self.target_id(container.document)]
