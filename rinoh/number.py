@@ -86,9 +86,8 @@ def symbolize(number):
 
 
 class LabelStyle(Style):
-    attributes = {'prefix': None,
-                  'suffix': None,
-                  'separator': None,
+    attributes = {'label_prefix': None,
+                  'label_suffix': None,
                   'custom_label': False}
 
 
@@ -97,10 +96,9 @@ class Label(object):
         self.custom_label = custom_label
 
     def format_label(self, label, document):
-        prefix = self.get_style('prefix', document) or ''
-        suffix = self.get_style('suffix', document) or ''
-        separator = self.get_style('separator', document) or ''
-        return prefix + label + suffix + separator
+        prefix = self.get_style('label_prefix', document) or ''
+        suffix = self.get_style('label_suffix', document) or ''
+        return prefix + label + suffix
 
 
 class NumberStyle(LabelStyle):

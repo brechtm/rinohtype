@@ -104,8 +104,7 @@ styles('heading level 1', ClassSelector(Heading, level=1),
        space_above=18*PT,
        space_below=6*PT,
        number_format=ROMAN_UC,
-       suffix='.',
-       separator=FixedWidthSpace())
+       label_suffix='.' + FixedWidthSpace())
 
 styles('unnumbered heading level 1', ClassSelector(Heading, 'unnumbered',
                                                    level=1),
@@ -183,7 +182,7 @@ styles('enumerated list', ClassSelector(List, 'enumerated'),
        ordered=True,
        flowable_spacing=0*PT,
        number_format=NUMBER,
-       suffix=')')
+       label_suffix=')')
 
 styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
                                                  ClassSelector(List,
@@ -194,7 +193,7 @@ styles('nested enumerated list', ContextSelector(ClassSelector(ListItem),
 styles('bulleted list', ClassSelector(List, 'bulleted'),
        base='enumerated list',
        ordered=False,
-       suffix=None,
+       label_suffix=None,
        flowable_spacing=0*PT)
 
 styles('nested bulleted list', ContextSelector(ClassSelector(ListItem),
@@ -306,8 +305,8 @@ styles('footnote marker', ClassSelector(NoteMarkerBase, 'footnote'),
        number_format=SYMBOL)
 
 styles('citation marker', ClassSelector(NoteMarkerBase, 'citation'),
-       prefix='[',
-       suffix=']',
+       label_prefix='[',
+       label_suffix=']',
        custom_label=True)
 
 styles('footnote paragraph', ContextSelector(ClassSelector(Note),
