@@ -284,9 +284,9 @@ class ParagraphBase(Flowable):
                         hyphenate = create_hyphenate(span, document)
                         last_span = span
                 except InlineFlowableException:
-                    if not line.add_flowable(word, container, descender or 0):
+                    if not line.add_flowable(word, container, descender):
                         line = typeset_line(line)
-                        line_span_send = line.add_flowable(word, container, descender or 0)
+                        line.add_flowable(word, container, descender)
                     continue
 
                 if word == '\n':
