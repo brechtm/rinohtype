@@ -255,7 +255,7 @@ class ParagraphBase(Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(self.text(document).spans())
+        state = state or ParagraphState(self.text(document).spans(document))
         saved_state = copy(state)
         max_line_width = 0
 

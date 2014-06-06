@@ -24,7 +24,7 @@ class InlineFlowable(Flowable):
     def y_offset(self, document):
         return 0
 
-    def spans(self):
+    def spans(self, document):
         yield self
 
     def split(self, container):

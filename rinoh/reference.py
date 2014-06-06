@@ -79,9 +79,10 @@ POSITION = 'position'
 
 
 class ReferenceBase(Field):
-    def __init__(self, type=REFERENCE, style=PARENT_STYLE):
+    def __init__(self, type=REFERENCE, link=True, style=PARENT_STYLE):
         super().__init__(style=style)
         self.type = type
+        self.link = link
 
     def target_id(self):
         raise NotImplementedError
@@ -110,23 +111,29 @@ class ReferenceBase(Field):
 
         return self.split_words(text)
 
+    def spans(self, document):
+        if self.link:
+            annotation = NamedDestinationLink(str(self.target_id(document)))
+            return (AnnotatedSpan(span, annotation)
+                    for span in super().spans(document))
+        else:
+            return super().spans(document)
+
 
 class Reference(ReferenceBase):
-    def __init__(self, target_id, type=REFERENCE, style=PARENT_STYLE):
-        super().__init__(type=type, style=style)
+    def __init__(self, target_id, type=REFERENCE, link=True,
+                 style=PARENT_STYLE):
+        super().__init__(type=type, link=link, style=style)
         self._target_id = target_id
 
     def target_id(self, document):
         return self._target_id
 
-    def spans(self):
-        annotation = NamedDestinationLink(str(self._target_id))
-        return (AnnotatedSpan(span, annotation) for span in super().spans())
-
 
 class DirectReference(ReferenceBase):
-    def __init__(self, referenceable, type=REFERENCE, style=PARENT_STYLE):
-        super().__init__(type=type, style=style)
+    def __init__(self, referenceable, type=REFERENCE, link=False,
+                 style=PARENT_STYLE):
+        super().__init__(type=type, link=link, style=style)
         self.referenceable = referenceable
 
     def target_id(self, document):
@@ -155,8 +162,9 @@ class NoteMarkerStyle(TextStyle, NumberStyle):
 class NoteMarkerBase(ReferenceBase, Label):
     style_class = NoteMarkerStyle
 
-    def __init__(self, custom_label=None, type=REFERENCE, style=PARENT_STYLE):
-        super().__init__(type=type, style=style)
+    def __init__(self, custom_label=None, type=REFERENCE, link=True,
+                 style=PARENT_STYLE):
+        super().__init__(link=link, type=type, style=style)
         Label.__init__(self, custom_label=custom_label)
 
     def prepare(self, document):
@@ -184,13 +192,13 @@ class NoteMarkerBase(ReferenceBase, Label):
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
     def __init__(self, note_id, custom_label=None, style=PARENT_STYLE):
-        Reference.__init__(self, note_id, style=style)
+        Reference.__init__(self, note_id, link=True, style=style)
         NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
 
 
 class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
     def __init__(self, note, custom_label=None, style=PARENT_STYLE):
-        DirectReference.__init__(self, note, style=style)
+        DirectReference.__init__(self, note, link=True, style=style)
         NoteMarkerBase.__init__(self, custom_label=custom_label, style=style)
 
     def prepare(self, document):

@@ -238,7 +238,7 @@ class SingleStyledText(StyledText):
         return (self.font(document).line_gap_in_pt
                 * float(self.get_style('font_size', document)))
 
-    def spans(self):
+    def spans(self, document):
         yield self
 
     @staticmethod
@@ -299,10 +299,10 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self):
+    def spans(self, document):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        return (span for item in self for span in item.spans())
+        return (span for item in self for span in item.spans(document))
 
 
 class Character(SingleStyledText):
