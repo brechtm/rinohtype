@@ -257,6 +257,7 @@ class ParagraphBase(Flowable):
         # line are yielded again on the next typeset() call.
         state = state or ParagraphState(self.text(document).spans(document))
         saved_state = copy(state)
+        prev_word_state = copy(state)
         max_line_width = 0
 
         def typeset_line(line, last_line=False, force=False):
@@ -289,19 +290,24 @@ class ParagraphBase(Flowable):
                         line.add_flowable(word, container, descender)
                     continue
 
+                if word in (' ', '\t'):
+                    prev_word_state = copy(state)
                 if word == '\n':
+                    line.add_current_word()
                     line = typeset_line(line, last_line=True, force=True)
                     line_span_send = line.new_span(span, document).send
                 elif not line_span_send(word):
-                    for first, second in hyphenate(word):
-                        if line_span_send(first):
-                            state.prepend_item(second)
-                            break
-                    else:
-                        state.prepend_item(word)
+                    state = prev_word_state
+                    # for first, second in hyphenate(word):
+                    #     if line_span_send(first):
+                    #         state.prepend_item(second)
+                    #         break
+                    # else:
+                    #     state.prepend_item(word)
                     line = typeset_line(line)
                     line_span_send = line.new_span(span, document).send
             except StopIteration:
+                line.add_current_word()
                 if line:
                     typeset_line(line, last_line=True)
                 break
@@ -425,6 +431,10 @@ class GlyphsSpan(list):
         self.space = word_to_glyphs(' ')[0]
 
     @property
+    def width(self):
+        return sum(item.width for item in self)
+
+    @property
     def number_of_spaces(self):
         return self.count(self.space)
 
@@ -475,25 +485,32 @@ class Line(list):
         self._has_filled_tab = False
         self._current_tab = None
         self._current_tab_stop = None
+        self._current_word = []
+
+    @property
+    def cursor(self):
+        return self._cursor + sum(span.width for span in self._current_word)
+
+    @cursor.setter
+    def cursor(self, value):
+        self._cursor = value
 
     def _handle_tab(self, glyphs_span, span):
         if not self.tab_stops:
-            span.warn('No tab stops defined for this  paragraph style.',
+            span.warn('No tab stops defined for this paragraph style.',
                       self.container)
-            self._cursor += glyphs_span.space.width
             glyphs_span.append_space()
             return
         self._has_tab = True
         for tab_stop in self.tab_stops:
             tab_position = tab_stop.get_position(self.width)
-            if self._cursor < tab_position:
-                tab_width = tab_position - self._cursor
+            if self.cursor < tab_position:
+                tab_width = tab_position - self.cursor
                 tab = GlyphAndWidth(glyphs_span.space.glyph, tab_width)
                 if tab_stop.fill:
                     self._has_filled_tab = True
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
-                self._cursor += tab_width
                 self._current_tab_stop = tab_stop
                 if tab_stop.align in (RIGHT, CENTER):
                     self._current_tab = tab
@@ -506,6 +523,15 @@ class Line(list):
             span.warn('Tab did not fall into any of the tab stops.',
                       self.container)
 
+    def add_current_word(self):
+        for glyphs_span in self._current_word:
+            self.append(glyphs_span)
+            self._cursor += glyphs_span.width
+
+    def new_word(self, span, word_to_glyphs):
+        self.add_current_word()
+        self._current_word = [GlyphsSpan(span, word_to_glyphs)]
+
     @consumer
     def new_span(self, span, document):
         font = span.font(document)
@@ -515,14 +541,16 @@ class Line(list):
                                           span.get_style('kerning', document),
                                           span.get_style('ligatures', document))
         glyphs_span = GlyphsSpan(span, word_to_glyphs)
-        super().append(glyphs_span)
+        self._current_word.append(glyphs_span)
 
         success = True
         while True:
             word = (yield success)
             success = True
+            if word in (' ', '\t'):
+                self.new_word(span, word_to_glyphs)
+                glyphs_span = self._current_word[-1]
             if word == ' ':
-                self._cursor += glyphs_span.space.width
                 glyphs_span.append_space()
             elif word == '\t':
                 self._handle_tab(glyphs_span, span)
@@ -541,19 +569,19 @@ class Line(list):
                         current_tab.width = 0
                         self._current_tab = None
                     self._cursor -= tab_width
-                if self._cursor + width > self.width:
-                    if not self[0]:
+                if self.cursor + width > self.width:
+                    if not self and not self._current_word[0]:
                         span.warn('item too long to fit on line',
                                   self.container)
                     else:
                         success = False
                         continue
-                self._cursor += width
                 glyphs_span += glyphs_and_widths
 
     def add_flowable(self, flowable, container, last_descender):
+        self.add_current_word()
         inline_flowable_span = flowable.flow_inline(container, last_descender)
-        if self._cursor + inline_flowable_span.width > self.width:
+        if self.cursor + inline_flowable_span.width > self.width:
             if not self:
                 flowable.warn('item too long to fit on line', self.container)
             else:
