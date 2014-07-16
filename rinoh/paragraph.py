@@ -278,25 +278,25 @@ class ParagraphBase(Flowable):
         last_span = None
         while True:
             try:
-                span, word = state.next_item(container)  # raises StopIteration
+                span, chars = state.next_item(container)  # raises StopIteration
                 try:
                     if span is not last_span:
                         line_span_send = line.new_span(span, document).send
                         hyphenate = create_hyphenate(span, document)
                         last_span = span
                 except InlineFlowableException:
-                    if not line.add_flowable(word, container, descender):
+                    if not line.add_flowable(chars, container, descender):
                         line = typeset_line(line)
-                        line.add_flowable(word, container, descender)
+                        line.add_flowable(chars, container, descender)
                     continue
 
-                if word in (' ', '\t'):
+                if chars in (' ', '\t'):
                     prev_word_state = copy(state)
-                if word == '\n':
+                if chars == '\n':
                     line.add_current_word()
                     line = typeset_line(line, last_line=True, force=True)
                     line_span_send = line.new_span(span, document).send
-                elif not line_span_send(word):
+                elif not line_span_send(chars):
                     state = prev_word_state
                     # for first, second in hyphenate(word):
                     #     if line_span_send(first):
@@ -466,6 +466,18 @@ class GlyphsSpan(list):
             return super().__iter__()
 
 
+class WordGlyphsSpans(list):
+    def __init__(self, glyph_spans=None):
+        super().__init__(glyph_spans or [])
+
+    @property
+    def width(self):
+        return sum(span.width for span in self)
+
+    def hyphenate(self):
+        raise NotImplementedError
+
+
 class Line(list):
     """Helper class for building and typesetting a single line of text within
     a :class:`Paragraph`."""
@@ -485,7 +497,7 @@ class Line(list):
         self._has_filled_tab = False
         self._current_tab = None
         self._current_tab_stop = None
-        self._current_word = []
+        self._current_word = WordGlyphsSpans()
 
     @property
     def cursor(self):
@@ -524,13 +536,12 @@ class Line(list):
                       self.container)
 
     def add_current_word(self):
-        for glyphs_span in self._current_word:
-            self.append(glyphs_span)
-            self._cursor += glyphs_span.width
+        self += self._current_word
+        self._cursor += self._current_word.width
 
     def new_word(self, span, word_to_glyphs):
         self.add_current_word()
-        self._current_word = [GlyphsSpan(span, word_to_glyphs)]
+        self._current_word = WordGlyphsSpans([GlyphsSpan(span, word_to_glyphs)])
 
     @consumer
     def new_span(self, span, document):
@@ -545,17 +556,17 @@ class Line(list):
 
         success = True
         while True:
-            word = (yield success)
+            chars = (yield success)
             success = True
-            if word in (' ', '\t'):
+            if chars in (' ', '\t'):
                 self.new_word(span, word_to_glyphs)
                 glyphs_span = self._current_word[-1]
-            if word == ' ':
+            if chars == ' ':
                 glyphs_span.append_space()
-            elif word == '\t':
+            elif chars == '\t':
                 self._handle_tab(glyphs_span, span)
             else:
-                glyphs_and_widths = word_to_glyphs(word)
+                glyphs_and_widths = word_to_glyphs(chars)
                 width = sum(glyph.width for glyph in glyphs_and_widths)
                 if self._current_tab:
                     current_tab = self._current_tab
