@@ -12,7 +12,7 @@ Classes for representing paragraphs and typesetting them:
 * :class:`ParagraphStyle`: Style class specifying paragraph formatting.
 * :class:`TabStop`: Horizontal position for aligning text of successive lines.
 
-The line spacing option in a :class:`ParagraphStyle` can be any of:
+The `line_spacing` option in a :class:`ParagraphStyle` can be any of:
 
 * :class:`ProportionalSpacing`: Line spacing proportional to the line height.
 * :class:`FixedSpacing`: Fixed line spacing, with optional minimum spacing.
@@ -275,44 +275,40 @@ class ParagraphBase(Flowable):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        last_span = None
+        word = Word()
         while True:
             try:
                 span, chars = state.next_item(container)  # raises StopIteration
-                try:
-                    if span is not last_span:
-                        line_span_send = line.new_span(span, document).send
-                        hyphenate = create_hyphenate(span, document)
-                        last_span = span
-                except InlineFlowableException:
-                    if not line.add_flowable(chars, container, descender):
+                if chars in (' ', '\t', '\n'):
+                    if not line.append_word(word, container, descender):
+                        # for first, second in hyphenate(word):
+                        #     if line_span_send(first):
+                        #         state.prepend_item(second)
+                        #         break
+                        # else:
+                        #     state.prepend_item(word)
                         line = typeset_line(line)
-                        line.add_flowable(chars, container, descender)
-                    continue
-
-                if chars in (' ', '\t'):
-                    prev_word_state = copy(state)
+                        state = prev_word_state
+                        continue
+                    word = Word()
                 if chars == '\n':
                     line.add_current_word()
                     line = typeset_line(line, last_line=True, force=True)
-                    line_span_send = line.new_span(span, document).send
-                elif not line_span_send(chars):
-                    state = prev_word_state
-                    # for first, second in hyphenate(word):
-                    #     if line_span_send(first):
-                    #         state.prepend_item(second)
-                    #         break
-                    # else:
-                    #     state.prepend_item(word)
-                    line = typeset_line(line)
-                    line_span_send = line.new_span(span, document).send
+                else:
+                    prev_word_state = copy(state)
+                    word.append((span, chars))
+
             except StopIteration:
-                line.add_current_word()
+                line.append_word(word, container, descender)      # TODO: handle line overflow
                 if line:
                     typeset_line(line, last_line=True)
                 break
 
         return max_line_width, descender
+
+
+class Word(list):
+    pass
 
 
 class Paragraph(ParagraphBase, MixedStyledText):
@@ -499,6 +495,8 @@ class Line(list):
         self._current_tab_stop = None
         self._current_word = WordGlyphsSpans()
 
+        self.last_span = None
+
     @property
     def cursor(self):
         return self._cursor + sum(span.width for span in self._current_word)
@@ -540,11 +538,28 @@ class Line(list):
         self._cursor += self._current_word.width
 
     def new_word(self, span, word_to_glyphs):
-        self.add_current_word()
         self._current_word = WordGlyphsSpans([GlyphsSpan(span, word_to_glyphs)])
 
+    def append_word(self, word, container, descender):
+        for span, chars in word:
+            if span is not self.last_span:
+                try:
+                    self.line_span_send = self.new_span(span).send
+                    # hyphenate = create_hyphenate(span, document)
+                    self.last_span = span
+                except InlineFlowableException:
+                    if not self.add_flowable(chars, container, descender):
+                        return False
+                    self.last_span = None
+                    return True
+            if not self.line_span_send(chars):
+                return False
+        self.add_current_word()
+        return True
+
     @consumer
-    def new_span(self, span, document):
+    def new_span(self, span):
+        document = self.container.document
         font = span.font(document)
         scale = span.height(document) / font.units_per_em
         variant = (SMALL_CAPITAL if span.get_style('small_caps', document) else None)
@@ -590,7 +605,6 @@ class Line(list):
                 glyphs_span += glyphs_and_widths
 
     def add_flowable(self, flowable, container, last_descender):
-        self.add_current_word()
         inline_flowable_span = flowable.flow_inline(container, last_descender)
         if self.cursor + inline_flowable_span.width > self.width:
             if not self:
