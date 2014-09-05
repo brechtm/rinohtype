@@ -194,23 +194,20 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, spans, first_line=True, nested_flowable_state=None,
-                 _current_span=None, _items=None, _current_word=None,
-                 _initial=True):
+    def __init__(self, spans, nested_flowable_state=None, _current_span=None,
+                 _items=None, _current_word=None, _initial=True):
         super().__init__(_initial)
         self.spans = spans
         self.current_span = _current_span or None
         self.items = _items or iter([])
         self.current_word = _current_word or None
-        self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
     def __copy__(self):
         copy_spans, self.spans = tee(self.spans)
         copy_items, self.items = tee(self.items)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_spans, self.first_line,
-                              copy_nested_flowable_state,
+        return self.__class__(copy_spans, copy_nested_flowable_state,
                               _current_span=self.current_span,
                               _items=copy_items,
                               _current_word=self.current_word,
@@ -222,9 +219,6 @@ class ParagraphState(FlowableState):
         last_span = None
         while True:
             try:
-                if self.current_word:
-                    yield self.current_word
-                    self.current_word = None
                 span, chars = self.next_item(container)  # raises StopIteration
                 try:
                     if span is not last_span:
@@ -262,9 +256,6 @@ class ParagraphState(FlowableState):
             self.items = self.current_span.split(container)
             return self.next_item(container)
 
-    def prepend_word(self, word):
-        self.current_word = word
-
 
 class ParagraphBase(Flowable):
     """A paragraph of mixed-styled text that can be flowed into a
@@ -292,7 +283,7 @@ class ParagraphBase(Flowable):
         # line are yielded again on the next typeset() call.
         state = state or ParagraphState(self.text(document).spans(document))
         saved_state = copy(state)
-        prev_word_state = copy(state)
+        prev_state = copy(state)
         max_line_width = 0
 
         def typeset_line(line, last_line=False, force=False):
@@ -310,7 +301,12 @@ class ParagraphBase(Flowable):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        for word in state.words(container):
+        words = state.words(container)
+        while True:
+            try:
+                word = next(words)
+            except StopIteration:
+                break
             if not line.append_word(word, container, descender):
                 # for first, second in hyphenate(word):
                 #     if line_span_send(first):
@@ -318,15 +314,14 @@ class ParagraphBase(Flowable):
                 #         break
                 # else:
                 #     state.prepend_item(word)
-                state.prepend_word(word)
+                # state.prepend_word(word)
+                state = prev_state
+                words = state.words(container)
                 line = typeset_line(line)
-                # state = prev_word_state
                 continue
             if word.is_newline:
-                # line.add_current_word()
                 line = typeset_line(line, last_line=True, force=True)
-            # else:
-            #     prev_word_state = copy(state)
+            prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
 
