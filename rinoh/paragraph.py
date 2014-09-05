@@ -234,7 +234,9 @@ class ParagraphState(FlowableState):
                     glyphs_span = GlyphsSpan(span, word_to_glyphs)
                     glyphs_span += word_to_glyphs(chars)
                 except InlineFlowableException:
-                    yield chars
+                    # TODO: take descender into account
+                    glyphs_span = chars.flow_inline(container, 0)
+                    chars = '<inline image>'
                     last_span = None
             except StopIteration:
                 if word:
@@ -585,17 +587,6 @@ class Line(list):
         self.cursor += width
         for glyphs_span, chars in word_or_inline:
             self.append(glyphs_span)
-        return True
-
-    def add_flowable(self, flowable, container, last_descender):
-        inline_flowable_span = flowable.flow_inline(container, last_descender)
-        if self.cursor + inline_flowable_span.width > self.width:
-            if not self:
-                flowable.warn('item too long to fit on line', self.container)
-            else:
-                return False
-        self.cursor += inline_flowable_span.width
-        self.append(inline_flowable_span)
         return True
 
     def typeset(self, container, justification, line_spacing, last_descender,
