@@ -195,13 +195,13 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 class ParagraphState(FlowableState):
     def __init__(self, spans, first_line=True, nested_flowable_state=None,
-                 _current_span=None, _items=None, _current_item=None,
+                 _current_span=None, _items=None, _current_word=None,
                  _initial=True):
         super().__init__(_initial)
         self.spans = spans
         self.current_span = _current_span or None
         self.items = _items or iter([])
-        self.current_item = _current_item or None
+        self.current_word = _current_word or None
         self.first_line = first_line
         self.nested_flowable_state = nested_flowable_state
 
@@ -213,7 +213,7 @@ class ParagraphState(FlowableState):
                               copy_nested_flowable_state,
                               _current_span=self.current_span,
                               _items=copy_items,
-                              _current_item=self.current_item,
+                              _current_word=self.current_word,
                               _initial=self.initial)
 
     def words(self, container):
@@ -222,6 +222,9 @@ class ParagraphState(FlowableState):
         last_span = None
         while True:
             try:
+                if self.current_word:
+                    yield self.current_word
+                    self.current_word = None
                 span, chars = self.next_item(container)  # raises StopIteration
                 try:
                     if span is not last_span:
@@ -252,9 +255,6 @@ class ParagraphState(FlowableState):
                 word.append((glyphs_span, chars))
 
     def next_item(self, container):
-        if self.current_item:
-            self.current_item, current_item = None, self.current_item
-            return self.current_span, current_item
         try:
             return self.current_span, next(self.items)
         except StopIteration:
@@ -262,8 +262,8 @@ class ParagraphState(FlowableState):
             self.items = self.current_span.split(container)
             return self.next_item(container)
 
-    def prepend_item(self, item):
-        self.current_item = item
+    def prepend_word(self, word):
+        self.current_word = word
 
 
 class ParagraphBase(Flowable):
@@ -318,32 +318,15 @@ class ParagraphBase(Flowable):
                 #         break
                 # else:
                 #     state.prepend_item(word)
+                state.prepend_word(word)
                 line = typeset_line(line)
-                state = prev_word_state
+                # state = prev_word_state
                 continue
             if word.is_newline:
                 # line.add_current_word()
                 line = typeset_line(line, last_line=True, force=True)
-            else:
-                prev_word_state = copy(state)
-                # if chars in (' ', '\t', '\n'):
-                #     if not line.append_word(word, container, descender):
-                #         # for first, second in hyphenate(word):
-                #         #     if line_span_send(first):
-                #         #         state.prepend_item(second)
-                #         #         break
-                #         # else:
-                #         #     state.prepend_item(word)
-                #         line = typeset_line(line)
-                #         state = prev_word_state
-                #         continue
-                #     word = Word()
-                # if chars == '\n':
-                #     line.add_current_word()
-                #     line = typeset_line(line, last_line=True, force=True)
-                # else:
-                #     prev_word_state = copy(state)
-                #     word.append((span, chars))
+            # else:
+            #     prev_word_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
 
@@ -593,6 +576,8 @@ class Line(list):
             return self.add_flowable(word_or_inline, container, descender)
 
         if first_chars == ' ':
+            if not self:
+                return True
             first_glyphs_span.space = first_glyphs_span[0]
         elif first_chars == '\t':
             self._handle_tab(first_glyphs_span, first_glyphs_span.span)
