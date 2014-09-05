@@ -291,7 +291,7 @@ class ParagraphBase(Flowable):
             paragraph's internal rendering state."""
             nonlocal state, saved_state, max_line_width, descender
             try:
-                max_line_width = max(max_line_width, line._cursor)
+                max_line_width = max(max_line_width, line.cursor)
                 descender = line.typeset(container, justification, line_spacing,
                                          descender, last_line, force)
                 state.initial = False
@@ -307,7 +307,11 @@ class ParagraphBase(Flowable):
                 word = next(words)
             except StopIteration:
                 break
-            if not line.append_word(word, container, descender):
+            if word.is_newline:
+                line = typeset_line(line, last_line=True, force=True)
+                # (glyphs_span, chars), = word
+                # line.append(glyphs_span)
+            elif not line.append_word(word, container, descender):
                 # for first, second in hyphenate(word):
                 #     if line_span_send(first):
                 #         state.prepend_item(second)
@@ -319,8 +323,6 @@ class ParagraphBase(Flowable):
                 words = state.words(container)
                 line = typeset_line(line)
                 continue
-            if word.is_newline:
-                line = typeset_line(line, last_line=True, force=True)
             prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
@@ -512,22 +514,11 @@ class Line(list):
         self.width = width
         self.indent = indent
         self.container = container
-        self._cursor = indent
+        self.cursor = indent
         self._has_tab = False
         self._has_filled_tab = False
         self._current_tab = None
         self._current_tab_stop = None
-        # self._current_word = WordGlyphsSpans()
-
-        self.last_span = None
-
-    @property
-    def cursor(self):
-        return self._cursor #+ sum(span.width for span in self._current_word)
-
-    @cursor.setter
-    def cursor(self, value):
-        self._cursor = value
 
     def _handle_tab(self, glyphs_span, span):
         if not self.tab_stops:
@@ -557,13 +548,6 @@ class Line(list):
             span.warn('Tab did not fall into any of the tab stops.',
                       self.container)
 
-    # def add_current_word(self):
-    #     self += self._current_word
-    #     self._cursor += self._current_word.width
-
-    # def new_word(self, span, word_to_glyphs):
-    #     self._current_word = WordGlyphsSpans([GlyphsSpan(span, word_to_glyphs)])
-
     def append_word(self, word_or_inline, container, descender):
         try:
             first_glyphs_span, first_chars = word_or_inline[0]
@@ -590,80 +574,17 @@ class Line(list):
                                             self.container)
                 current_tab.width = 0
                 self._current_tab = None
-            self._cursor -= tab_width
+            self.cursor -= tab_width
         if self.cursor + width > self.width:
             if not self:
                 first_glyphs_span.span.warn('item too long to fit on line',
                                             self.container)
             else:
                 return False
-        self._cursor += width
+        self.cursor += width
         for glyphs_span, chars in word_or_inline:
             self.append(glyphs_span)
         return True
-
-        # for glyphs_span, chars in word:
-        #     if glyphs_span.span is not self.last_span:
-        #         try:
-        #             self.line_span_send = self.new_span(glyphs_span).send
-        #             # hyphenate = create_hyphenate(span, document)
-        #             self.last_span = glyphs_span
-        #         except InlineFlowableException:
-        #             if not self.add_flowable(chars, container, descender):
-        #                 return False
-        #             self.last_span = None
-        #             return True
-        #     if not self.line_span_send(chars):
-        #         return False
-        # self.add_current_word()
-        # return True
-
-    @consumer
-    def new_span(self, span):
-        document = self.container.document
-        font = span.font(document)
-        scale = span.height(document) / font.units_per_em
-        variant = (SMALL_CAPITAL if span.get_style('small_caps', document) else None)
-        word_to_glyphs = create_to_glyphs(font, scale, variant,
-                                          span.get_style('kerning', document),
-                                          span.get_style('ligatures', document))
-        glyphs_span = GlyphsSpan(span, word_to_glyphs)
-        self._current_word.append(glyphs_span)
-
-        success = True
-        while True:
-            chars = (yield success)
-            success = True
-            if chars in (' ', '\t'):
-                self.new_word(span, word_to_glyphs)
-                glyphs_span = self._current_word[-1]
-            if chars == ' ':
-                glyphs_span.append_space()
-            elif chars == '\t':
-                self._handle_tab(glyphs_span, span)
-            else:
-                glyphs_and_widths = word_to_glyphs(chars)
-                width = sum(glyph.width for glyph in glyphs_and_widths)
-                if self._current_tab:
-                    current_tab = self._current_tab
-                    tab_width = current_tab.width
-                    factor = 2 if self._current_tab_stop.align == CENTER else 1
-                    item_width = width / factor
-                    if item_width < tab_width:
-                        current_tab.width -= item_width
-                    else:
-                        span.warn('Tab space exceeded.', self.container)
-                        current_tab.width = 0
-                        self._current_tab = None
-                    self._cursor -= tab_width
-                if self.cursor + width > self.width:
-                    if not self and not self._current_word[0]:
-                        span.warn('item too long to fit on line',
-                                  self.container)
-                    else:
-                        success = False
-                        continue
-                glyphs_span += glyphs_and_widths
 
     def add_flowable(self, flowable, container, last_descender):
         inline_flowable_span = flowable.flow_inline(container, last_descender)
@@ -672,7 +593,7 @@ class Line(list):
                 flowable.warn('item too long to fit on line', self.container)
             else:
                 return False
-        self._cursor += inline_flowable_span.width
+        self.cursor += inline_flowable_span.width
         self.append(inline_flowable_span)
         return True
 
@@ -694,7 +615,7 @@ class Line(list):
             last_span = self[-1]
             while last_span and last_span.ends_with_space:
                 last_span.pop()
-                self._cursor -= last_span.space.width
+                self.cursor -= last_span.space.width
             if last_span or (force and len(self) == 1):
                 break
             self.pop()
@@ -717,7 +638,7 @@ class Line(list):
 
         if self._has_tab or justification == BOTH and last_line:
             justification = LEFT
-        extra_space = self.width - self._cursor
+        extra_space = self.width - self.cursor
         if justification == BOTH:
             # TODO: padding added to spaces should be prop. to font size
             nr_spaces = sum(glyph_span.number_of_spaces for glyph_span in self)
