@@ -222,14 +222,7 @@ class ParagraphState(FlowableState):
                 span, chars = self.next_item(container)  # raises StopIteration
                 try:
                     if span is not last_span:
-                        font = span.font(document)
-                        scale = span.height(document) / font.units_per_em
-                        variant = (SMALL_CAPITAL
-                                   if span.get_style('small_caps', document)
-                                   else None)
-                        word_to_glyphs = create_to_glyphs(font, scale, variant,
-                                                          span.get_style('kerning', document),
-                                                          span.get_style('ligatures', document))
+                        word_to_glyphs = create_to_glyphs(span, document)
                         last_span = span
                     glyphs_span = GlyphsSpan(span, word_to_glyphs)
                     glyphs_span += word_to_glyphs(chars)
@@ -397,7 +390,13 @@ class GlyphAndWidth(object):
 
 
 @lru_cache()
-def create_to_glyphs(font, scale, variant, kerning, ligatures):
+def create_to_glyphs(span, document):
+    font = span.font(document)
+    scale = span.height(document) / font.units_per_em
+    variant = (SMALL_CAPITAL if span.get_style('small_caps', document)
+               else None)
+    kerning = span.get_style('kerning', document),
+    ligatures = span.get_style('ligatures', document)
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders
     def word_to_glyphs(word):
