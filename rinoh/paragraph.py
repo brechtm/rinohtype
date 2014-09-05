@@ -216,6 +216,23 @@ class ParagraphState(FlowableState):
                               _current_item=self.current_item,
                               _initial=self.initial)
 
+    def words(self, container):
+        word = Word()
+        while True:
+            try:
+                span, chars = self.next_item(container)  # raises StopIteration
+            except StopIteration:
+                if word:
+                    yield word
+                break
+            if chars in (' ', '\t', '\n'):
+                if word:
+                    yield word
+                yield Word([(span, chars)])
+                word = Word()
+            else:
+                word.append((span, chars))
+
     def next_item(self, container):
         if self.current_item:
             self.current_item, current_item = None, self.current_item
@@ -263,7 +280,7 @@ class ParagraphBase(Flowable):
         def typeset_line(line, last_line=False, force=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal span, state, saved_state, max_line_width, descender
+            nonlocal state, saved_state, max_line_width, descender
             try:
                 max_line_width = max(max_line_width, line._cursor)
                 descender = line.typeset(container, justification, line_spacing,
@@ -275,34 +292,42 @@ class ParagraphBase(Flowable):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        word = Word()
-        while True:
-            try:
-                span, chars = state.next_item(container)  # raises StopIteration
-                if chars in (' ', '\t', '\n'):
-                    if not line.append_word(word, container, descender):
-                        # for first, second in hyphenate(word):
-                        #     if line_span_send(first):
-                        #         state.prepend_item(second)
-                        #         break
-                        # else:
-                        #     state.prepend_item(word)
-                        line = typeset_line(line)
-                        state = prev_word_state
-                        continue
-                    word = Word()
-                if chars == '\n':
-                    line.add_current_word()
-                    line = typeset_line(line, last_line=True, force=True)
-                else:
-                    prev_word_state = copy(state)
-                    word.append((span, chars))
-
-            except StopIteration:
-                line.append_word(word, container, descender)      # TODO: handle line overflow
-                if line:
-                    typeset_line(line, last_line=True)
-                break
+        for word in state.words(container):
+            if not line.append_word(word, container, descender):
+                # for first, second in hyphenate(word):
+                #     if line_span_send(first):
+                #         state.prepend_item(second)
+                #         break
+                # else:
+                #     state.prepend_item(word)
+                line = typeset_line(line)
+                state = prev_word_state
+                continue
+            if word[0][1] == '\n':
+                line.add_current_word()
+                line = typeset_line(line, last_line=True, force=True)
+            else:
+                prev_word_state = copy(state)
+                # if chars in (' ', '\t', '\n'):
+                #     if not line.append_word(word, container, descender):
+                #         # for first, second in hyphenate(word):
+                #         #     if line_span_send(first):
+                #         #         state.prepend_item(second)
+                #         #         break
+                #         # else:
+                #         #     state.prepend_item(word)
+                #         line = typeset_line(line)
+                #         state = prev_word_state
+                #         continue
+                #     word = Word()
+                # if chars == '\n':
+                #     line.add_current_word()
+                #     line = typeset_line(line, last_line=True, force=True)
+                # else:
+                #     prev_word_state = copy(state)
+                #     word.append((span, chars))
+        if line:
+            typeset_line(line, last_line=True)
 
         return max_line_width, descender
 
