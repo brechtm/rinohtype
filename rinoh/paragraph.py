@@ -195,13 +195,13 @@ class ParagraphStyle(TextStyle, FlowableStyle):
 
 class ParagraphState(FlowableState):
     def __init__(self, spans, nested_flowable_state=None, _current_span=None,
-                 _items=None, _current_word=None, _initial=True):
+                 _items=None, _first_word=None, _initial=True):
         super().__init__(_initial)
         self.spans = spans
         self.current_span = _current_span or None
         self.items = _items or iter([])
-        self.current_word = _current_word or None
         self.nested_flowable_state = nested_flowable_state
+        self._first_word = _first_word
 
     def __copy__(self):
         copy_spans, self.spans = tee(self.spans)
@@ -210,7 +210,7 @@ class ParagraphState(FlowableState):
         return self.__class__(copy_spans, copy_nested_flowable_state,
                               _current_span=self.current_span,
                               _items=copy_items,
-                              _current_word=self.current_word,
+                              _first_word=self._first_word,
                               _initial=self.initial)
 
     def words(self, container):
@@ -243,6 +243,13 @@ class ParagraphState(FlowableState):
             else:
                 word.append((glyphs_span, chars))
 
+    def words2(self, container):
+        for word in self.words(container):
+            if self._first_word:
+                yield self._first_word
+                self._first_word = None
+            yield word
+
     def next_item(self, container):
         try:
             return self.current_span, next(self.items)
@@ -250,6 +257,9 @@ class ParagraphState(FlowableState):
             self.current_span = next(self.spans)
             self.items = self.current_span.split(container)
             return self.next_item(container)
+
+    def prepend_word(self, word):
+        self._first_word = word
 
 
 class ParagraphBase(Flowable):
@@ -296,7 +306,7 @@ class ParagraphBase(Flowable):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        words = state.words(container)
+        words = state.words2(container)
         while True:
             try:
                 word = next(words)
@@ -308,18 +318,17 @@ class ParagraphBase(Flowable):
                 line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
             elif not line.append_word(word, container, descender):
-                # for first, second in hyphenate(word):
-                #     if line_span_send(first):
-                #         state.prepend_item(second)
-                #         break
-                # else:
-                #     state.prepend_item(word)
-                # state.prepend_word(word)
                 state = prev_state
-                words = state.words(container)
+                words = state.words2(container)
+                for first, second in word.hyphenate(document):
+                    if line.append_word(first, container, descender):
+                        next(words)                 # skip word
+                        state.prepend_word(second)  # prepend second part
+                        break
                 line = typeset_line(line)
                 continue
             prev_state = copy(state)
+            prev_words, words = tee(words)
         if line:
             typeset_line(line, last_line=True)
 
@@ -498,8 +507,20 @@ class Word(list):
     def width(self):
         return sum(glyph_span.width for glyph_span, chars in self)
 
-    def hyphenate(self):
-        raise NotImplementedError
+    def hyphenate(self, document):
+        # TODO: hyphenate mixed-styled words (if lang is the same)
+        if len(self) > 1:
+            return
+        first_glyphs_span, first_chars = self[0]
+        span = first_glyphs_span.span
+        w2g = first_glyphs_span.word_to_glyphs
+        hyphenate = create_hyphenate(first_glyphs_span.span, document)
+        for first, second in hyphenate(str(self)):
+            first_gs = GlyphsSpan(span, w2g)
+            first_gs += w2g(first)
+            second_gs = GlyphsSpan(span, w2g)
+            second_gs += w2g(second)
+            yield Word([(first_gs, first)]), Word([(second_gs, second)])
 
 
 class Line(list):
