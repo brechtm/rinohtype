@@ -459,8 +459,8 @@ class GlyphsSpan(list):
     def ends_with_space(self):
         return self[-1] is self.space
 
-    # def append_space(self):
-    #     self.append(self.space)
+    def append_space(self):
+        self.append(self.space)
 
     def _fill_tabs(self):
         for index, glyph_and_width in enumerate(super().__iter__()):
@@ -526,6 +526,7 @@ class Line(list):
         if not self.tab_stops:
             span.warn('No tab stops defined for this paragraph style.',
                       self.container)
+            self.cursor += glyphs_span.space.width
             glyphs_span.append_space()
             return
         self._has_tab = True
@@ -538,6 +539,7 @@ class Line(list):
                     self._has_filled_tab = True
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
+                self.cursor += tab_width
                 self._current_tab_stop = tab_stop
                 if tab_stop.align in (RIGHT, CENTER):
                     self._current_tab = tab
@@ -561,7 +563,9 @@ class Line(list):
                 return True
             first_glyphs_span.space = first_glyphs_span[0]
         elif first_chars == '\t':
-            self._handle_tab(first_glyphs_span, first_glyphs_span.span)
+            empty_glyphs_span = GlyphsSpan(first_glyphs_span.span, first_glyphs_span.word_to_glyphs)
+            self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
+            self.append(empty_glyphs_span)
             return True
         width = word_or_inline.width
         if self._current_tab:
