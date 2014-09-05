@@ -308,9 +308,10 @@ class ParagraphBase(Flowable):
             except StopIteration:
                 break
             if word.is_newline:
+                (glyphs_span, chars), = word
+                gs = GlyphsSpan(glyphs_span.span, glyphs_span.word_to_glyphs)
+                line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
-                # (glyphs_span, chars), = word
-                # line.append(glyphs_span)
             elif not line.append_word(word, container, descender):
                 # for first, second in hyphenate(word):
                 #     if line_span_send(first):
