@@ -18,8 +18,6 @@ class InlineFlowableException(Exception):
 
 
 class InlineFlowable(Flowable):
-    is_newline = False
-
     def font(self, document):
         raise InlineFlowableException
 

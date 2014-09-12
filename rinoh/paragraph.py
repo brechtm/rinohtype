@@ -193,70 +193,55 @@ class ParagraphStyle(TextStyle, FlowableStyle):
         super().__init__(base=base, **attributes)
 
 
+# TODO: shouldn't take a container (but needed by flow_inline)
+# (return InlineFlowableSpan that raises InlineFlowableException later)
+def spans_to_words(spans, container):
+    document = container.document
+    word = Word()
+    for span in spans:
+        try:
+            word_to_glyphs = create_to_glyphs(span, document)
+            for chars in span.split(container):
+                glyphs_span = GlyphsSpan(span, word_to_glyphs)
+                glyphs_span += word_to_glyphs(chars)
+                if chars in (' ', '\t', '\n'):
+                    if word:
+                        yield word
+                    yield Word([(glyphs_span, chars)])
+                    word = Word()
+                else:
+                    word.append((glyphs_span, chars))
+        except InlineFlowableException:
+            # TODO: take descender into account
+            glyphs_span = next(span.split(container)).flow_inline(container, 0)
+            chars = '<inline image>'
+            word.append((glyphs_span, chars))
+    if word:
+        yield word
+
+
 class ParagraphState(FlowableState):
-    def __init__(self, spans, nested_flowable_state=None, _current_span=None,
-                 _items=None, _first_word=None, _initial=True):
+    def __init__(self, words, nested_flowable_state=None, _first_word=None,
+                 _initial=True):
         super().__init__(_initial)
-        self.spans = spans
-        self.current_span = _current_span or None
-        self.items = _items or iter([])
+        self._words = words
         self.nested_flowable_state = nested_flowable_state
         self._first_word = _first_word
 
     def __copy__(self):
-        copy_spans, self.spans = tee(self.spans)
-        copy_items, self.items = tee(self.items)
+        copy_words, self._words = tee(self._words)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_spans, copy_nested_flowable_state,
-                              _current_span=self.current_span,
-                              _items=copy_items,
+        return self.__class__(copy_words, copy_nested_flowable_state,
                               _first_word=self._first_word,
                               _initial=self.initial)
 
-    def words(self, container):
-        document = container.document
-        word = Word()
-        last_span = None
-        while True:
-            try:
-                span, chars = self.next_item(container)  # raises StopIteration
-                try:
-                    if span is not last_span:
-                        word_to_glyphs = create_to_glyphs(span, document)
-                        last_span = span
-                    glyphs_span = GlyphsSpan(span, word_to_glyphs)
-                    glyphs_span += word_to_glyphs(chars)
-                except InlineFlowableException:
-                    # TODO: take descender into account
-                    glyphs_span = chars.flow_inline(container, 0)
-                    chars = '<inline image>'
-                    last_span = None
-            except StopIteration:
-                if word:
-                    yield word
-                break
-            if chars in (' ', '\t', '\n'):
-                if word:
-                    yield word
-                yield Word([(glyphs_span, chars)])
-                word = Word()
-            else:
-                word.append((glyphs_span, chars))
-
-    def words2(self, container):
-        for word in self.words(container):
-            if self._first_word:
-                yield self._first_word
-                self._first_word = None
-            yield word
-
-    def next_item(self, container):
-        try:
-            return self.current_span, next(self.items)
-        except StopIteration:
-            self.current_span = next(self.spans)
-            self.items = self.current_span.split(container)
-            return self.next_item(container)
+    def next_word(self):
+        if self._first_word:
+            word = self._first_word
+            self._first_word = None
+        else:
+            word = next(self._words)
+        return word
 
     def prepend_word(self, word):
         self._first_word = word
@@ -286,7 +271,9 @@ class ParagraphBase(Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        state = state or ParagraphState(self.text(document).spans(document))
+        if not state:
+            spans = self.text(document).spans(document)
+            state = ParagraphState(spans_to_words(spans, container))
         saved_state = copy(state)
         prev_state = copy(state)
         max_line_width = 0
@@ -306,10 +293,9 @@ class ParagraphBase(Flowable):
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)
-        words = state.words2(container)
         while True:
             try:
-                word = next(words)
+                word = state.next_word()
             except StopIteration:
                 break
             if word.is_newline:
@@ -318,17 +304,16 @@ class ParagraphBase(Flowable):
                 line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
             elif not line.append_word(word, container, descender):
-                state = prev_state
-                words = state.words2(container)
                 for first, second in word.hyphenate(document):
                     if line.append_word(first, container, descender):
-                        next(words)                 # skip word
                         state.prepend_word(second)  # prepend second part
                         break
+                else:
+                    state = prev_state
                 line = typeset_line(line)
                 continue
-            prev_state = copy(state)
-            prev_words, words = tee(words)
+            if not word.is_space:
+                prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
 
@@ -500,6 +485,10 @@ class Word(list):
         return ''.join(chars for glyphs_span, chars in self)
 
     @property
+    def is_space(self):
+        return self[0][1] in (' ', '\t')
+
+    @property
     def is_newline(self):
         return self[0][1] == '\n'
 
@@ -627,14 +616,13 @@ class Line(list):
         document = container.document
 
         # drop spaces (and empty spans) at the end of the line
-        while self:
+        while len(self) > 0:
             last_span = self[-1]
-            while last_span and last_span.ends_with_space:
-                last_span.pop()
+            if last_span and last_span.ends_with_space:
                 self.cursor -= last_span.space.width
-            if last_span or (force and len(self) == 1):
+                self.pop()
+            else:
                 break
-            self.pop()
         else:   # abort if the line is empty
             return last_descender
 
