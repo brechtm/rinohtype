@@ -150,8 +150,11 @@ class Compound(GroupingElement):
 class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Section):
-            return rt.Heading(self.process_content(),
-                              custom_label=self.generated.build_styled_text())
+            try:
+                kwargs = dict(custom_label=self.generated.build_styled_text())
+            except AttributeError:
+                kwargs = dict()
+            return rt.Heading(self.process_content(), **kwargs)
         else:
             return rt.Paragraph(self.process_content(), style='title')
 
