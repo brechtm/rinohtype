@@ -659,18 +659,37 @@ class Line(list):
         canvas = container.canvas
         cursor = container.cursor
         current_annotation = AnnotationState(container)
-        for glyph_span in self:
+        for span, glyph_and_widths in group_spans(self):
             try:
-                width = canvas.show_glyphs(left, cursor, glyph_span, document)
+                width = canvas.show_glyphs(left, cursor, span, glyph_and_widths,
+                                           document)
             except InlineFlowableException:
-                top = cursor - glyph_span.height(document)
-                glyph_span.virtual_container.place_at(left, top)
-                width = glyph_span.width
-            current_annotation.update(glyph_span.span, left, width)
+                top = cursor - span.height(document)
+                span.virtual_container.place_at(left, top)
+                width = span.width
+            current_annotation.update(span, left, width)
             left += width
         current_annotation.place_if_any()
         container.advance(- descender)
         return descender
+
+
+def group_spans(line):
+    span = None
+    glyph_and_widths = []
+    for glyph_span in line:
+        if glyph_span.span != span:
+            if span:
+                yield span, glyph_and_widths
+            span = glyph_span.span
+            glyph_and_widths = []
+        try:
+            glyph_and_widths += glyph_span
+        except TypeError:   # InlineFlowable
+            yield glyph_span, None
+            span = None
+    if span:
+        yield span, glyph_and_widths
 
 
 class AnnotationState(object):

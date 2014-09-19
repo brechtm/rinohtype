@@ -216,8 +216,7 @@ class Canvas(StringIO):
             self.fill_color(fill_color)
             print('B', file=self)
 
-    def show_glyphs(self, left, cursor, glyph_span, document):
-        span = glyph_span.span
+    def show_glyphs(self, left, cursor, span, glyph_and_widths, document):
         font = span.font(document)
         size = span.height(document)
         color = span.get_style('font_color', document)
@@ -225,7 +224,7 @@ class Canvas(StringIO):
         string = ''
         current_string = ''
         total_width = 0
-        for glyph_and_width in glyph_span:
+        for glyph_and_width in glyph_and_widths:
             glyph, width = glyph_and_width.glyph, glyph_and_width.width
             total_width += width
             displ = (1000 * width) / size
