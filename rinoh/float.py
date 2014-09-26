@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import Flowable, FlowableStyle, InseparableFlowables
+from .flowable import Flowable, FlowableStyle, InseparableFlowables, StaticGroupedFlowables
 from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .reference import Referenceable, REFERENCE, TITLE
@@ -75,14 +75,8 @@ class Caption(NumberedParagraph):
         return MixedStyledText(label + self.content, parent=self)
 
 
-class Figure(Referenceable, InseparableFlowables):
+class Figure(Referenceable, StaticGroupedFlowables, InseparableFlowables):
     category = 'Figure'
-
-    def __init__(self, filename, caption, scale=1.0, style=None, id=None):
-        self.image = Image(filename, scale=scale, parent=self)
-        self.caption_text = caption
-        InseparableFlowables.__init__(self, style)
-        Referenceable.__init__(self, id)
 
     def prepare(self, document):
         super().prepare(document)
@@ -91,8 +85,4 @@ class Figure(Referenceable, InseparableFlowables):
         document.counters[__class__] += 1
         document.set_reference(element_id, REFERENCE, str(number))
         # TODO: need to store formatted number
-        document.set_reference(element_id, TITLE, self.caption_text)
-
-    def flowables(self, document):
-        caption = Caption(self.caption_text, parent=self)
-        return self.image, caption
+        # document.set_reference(element_id, TITLE, caption text)

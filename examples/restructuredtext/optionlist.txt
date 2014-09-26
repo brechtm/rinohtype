@@ -384,6 +384,17 @@ An image directive (also clickable -- a hyperlink reference):
 .. image:: images/title.png
    :target: directives_
 
+A figure directive:
+
+.. figure:: images/title.png
+   :alt: reStructuredText, the markup syntax
+
+   A figure is an image with a caption and/or a legend:
+
+   .. table removed
+
+   This paragraph is also part of the legend.
+
 
 Target Footnotes
 ````````````````

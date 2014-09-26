@@ -18,7 +18,7 @@ from rinoh.structure import TableOfContents
 from rinoh.reference import Field, Reference, REFERENCE
 from rinoh.reference import Note, NoteMarkerWithNote
 from rinoh.flowable import GroupedFlowables, StaticGroupedFlowables, Float
-from rinoh.float import Figure as RinohFigure
+from rinoh.float import Image, Caption as RinohCaption, Figure as RinohFigure
 from rinoh.table import Tabular as RinohTabular
 from rinoh.table import HTMLTabularData, CSVTabularData
 from rinoh.style import ClassSelector, ContextSelector
@@ -188,15 +188,15 @@ class Acknowledgement(CustomElement):
 
 class Figure(CustomElement):
     def parse(self):
-        caption_text = self.caption.process()
-        scale = float(self.get('scale'))
-        figure = RinohFigure(self.get('path'), caption_text, scale=scale,
+        image = Image(self.get('path'), float(self.get('scale')))
+        figure = RinohFigure([image, self.caption.parse()],
                              id=self.get('id', None))
         return Float(figure)
 
 
 class Caption(NestedElement):
-    pass
+    def parse(self):
+        return RinohCaption(self.process_content())
 
 
 class Tabular(CustomElement):

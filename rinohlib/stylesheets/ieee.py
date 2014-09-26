@@ -335,7 +335,21 @@ styles('figure caption', ContextSelector(ClassSelector(Figure),
        indent_first=0*PT,
        space_above=20*PT,
        space_below=0*PT,
-       justify=BOTH)
+       justify=BOTH,
+       label_suffix='.' + FixedWidthSpace())
+
+styles('figure legend',
+       ContextSelector(ClassSelector(Figure),
+                       ClassSelector(GroupedFlowables, 'legend')),
+       margin_left=30*PT)
+
+styles('figure legend paragraph',
+       ContextSelector(ClassSelector(Figure),
+                       ClassSelector(GroupedFlowables, 'legend'),
+                       ClassSelector(Paragraph)),
+       base='figure caption',
+       space_above=5*PT,
+       justify=LEFT)
 
 styles('table of contents', ClassSelector(TableOfContents),
        base='body',

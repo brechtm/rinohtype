@@ -477,6 +477,19 @@ class Image(BodyElement, InlineElement):
         return rt.InlineImage(self.image_path)
 
 
+class Figure(GroupingElement):
+    grouped_flowables_class = rt.Figure
+
+
+class Caption(BodyElement):
+    def build_flowable(self):
+        return rt.Caption(super().process_content())
+
+
+class Legend(GroupingElement):
+    style = 'legend'
+
+
 class Transition(BodyElement):
     def build_flowable(self):
         return rt.HorizontalRule()

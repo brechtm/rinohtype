@@ -112,11 +112,12 @@ class InlineElement(CustomElement):
 
 class GroupingElement(BodyElement):
     style = None
+    grouped_flowables_class = StaticGroupedFlowables
 
     def build_flowable(self):
-        return StaticGroupedFlowables([item.flowable()
-                                       for item in self.getchildren()],
-                                      style=self.style)
+        return self.grouped_flowables_class([item.flowable()
+                                             for item in self.getchildren()],
+                                            style=self.style)
 
 
 from . import nodes
