@@ -165,26 +165,26 @@ class Tabular(Flowable):
         for r, rendered_row in enumerate(rendered_rows):
             for c, rendered_cell in enumerate(rendered_row):
                 if rendered_cell.rowspan > 1:
-                    row_height = sum(row_heights[r:r + rendered_cell.rowspan])
+                    cell_height = sum(row_heights[r:r + rendered_cell.rowspan])
                 else:
-                    row_height = row_heights[r]
+                    cell_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
-                y_pos = float(y_cursor + row_height)
+                y_pos = float(y_cursor + cell_height)
                 cell_width = rendered_cell.width
                 border_buffer = canvas.new()
                 cell_style = cell_styles[r][c]
-                self.draw_cell_border(border_buffer, cell_width, row_height,
+                self.draw_cell_border(border_buffer, cell_width, cell_height,
                                       cell_style)
                 border_buffer.append(x_cursor, y_pos)
                 if cell_style.vertical_align == MIDDLE:
-                    vertical_offset = (row_height - rendered_cell.height) / 2
+                    vertical_offset = (cell_height - rendered_cell.height) / 2
                 elif cell_style.vertical_align == BOTTOM:
-                    vertical_offset = (row_height - rendered_cell.height)
+                    vertical_offset = (cell_height - rendered_cell.height)
                 else:
                     vertical_offset = 0
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(x_cursor, y_offset)
-            y_cursor += row_height
+            y_cursor += row_heights[r]
         return container.width, 0
 
     def render_cell(self, cell, container, style):
