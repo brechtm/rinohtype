@@ -18,6 +18,7 @@ from .dimension import PT
 
 
 __all__ = ['Tabular', 'TabularStyle', 'HTMLTabularData', 'CSVTabularData',
+           'TabularData', 'TabularRow', 'TabularCell', 'Array',
            'TOP', 'MIDDLE', 'BOTTOM']
 
 
@@ -282,11 +283,11 @@ class HTMLTabularData(TabularData):
             body = self.parse_row_group(element.tbody)
             try:
                 head = self.parse_row_group(element.thead)
-            except AtrributeError:
+            except AttributeError:
                 thead = None
             try:
                 foot = self.parse_row_group(element.tfoot)
-            except AtrributeError:
+            except AttributeError:
                 foot = None
         except AttributeError:
             body = self.parse_row_group(element)

@@ -4,7 +4,8 @@ import unicodedata
 
 import rinoh as rt
 
-from . import BodyElement, BodySubElement, InlineElement, GroupingElement
+from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
+               GroupingElement)
 from ...util import intersperse
 
 
@@ -493,3 +494,91 @@ class Legend(GroupingElement):
 class Transition(BodyElement):
     def build_flowable(self):
         return rt.HorizontalRule()
+
+
+class Table(BodyElement):
+    def build_flowable(self):
+        data = ReStructuredTextTabularData(self)
+        return rt.Tabular(data)
+
+
+class TGroup(CustomElement):
+    pass
+
+
+class TableRowGroup(CustomElement):
+    def get_rows(self):
+        rows = []
+        spanned_cells = []
+        for r, row in enumerate(self.row):
+            row_cells = []
+            cells = row.getchildren()
+            index = c = 0
+            while index < len(cells):
+                if (r, c) in spanned_cells:
+                    cell = None
+                else:
+                    rowspan = int(cells[index].get('rowspan', 1))
+                    colspan = int(cells[index].get('colspan', 1))
+                    cell = rt.TabularCell(cells[index].text, rowspan, colspan)
+                    if rowspan > 1 or colspan > 1:
+                        for j in range(c, c + colspan):
+                            for i in range(r, r + rowspan):
+                                spanned_cells.append((i, j))
+                    index += 1
+                row_cells.append(cell)
+                c += 1
+            rows.append(rt.TabularRow(row_cells))
+        return rt.Array(rows)
+
+
+class THead(TableRowGroup):
+    pass
+
+
+class TBody(TableRowGroup):
+    pass
+
+
+class Row(CustomElement):
+    pass
+
+
+class Entry(GroupingElement):
+    def get_cell(self):
+        rowspan = self.get('morerows', 1)
+        colspan = self.get('morecols', 1)
+        return rt.TabularCell(self.flowable(), rowspan, colspan)
+
+
+class ReStructuredTextTabularData(rt.TabularData):
+    def __init__(self, node):
+        tgroup = node.tgroup
+        try:
+            head = tgroup.thead.get_rows()
+        except AttributeError:
+            head = None
+        body = tgroup.tbody.get_rows()
+        # column_groups, column_options = self.parse_column_options(node)
+        column_groups, column_options = None, None
+        super().__init__(body, head, None, column_options, column_groups)
+
+    # def parse_column_options(self, element):
+    #     try:
+    #         column_groups = []
+    #         column_options = []
+    #         for colgroup in element.colgroup:
+    #             span = int(colgroup.get('span', 1))
+    #             width = colgroup.get('width')
+    #             column_groups.append(span)
+    #             options = [{'width': width} for c in range(span)]
+    #             try:
+    #                 for c, col in enumerate(colgroup.col):
+    #                     if 'width' in col.attrib:
+    #                         options[c]['width'] = col.get('width')
+    #             except AttributeError:
+    #                 pass
+    #             column_options += options
+    #         return column_groups, column_options
+    #     except AttributeError:
+    #         return None, None

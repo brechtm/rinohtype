@@ -391,7 +391,13 @@ A figure directive:
 
    A figure is an image with a caption and/or a legend:
 
-   .. table removed
+   +------------+-----------------------------------------------+
+   | re         | Revised, revisited, based on 're' module.     |
+   +------------+-----------------------------------------------+
+   | Structured | Structure-enhanced text, structuredtext.      |
+   +------------+-----------------------------------------------+
+   | Text       | Well it is, isn't it?                         |
+   +------------+-----------------------------------------------+
 
    This paragraph is also part of the legend.
 
