@@ -221,8 +221,8 @@ class GroupedFlowables(Flowable):
         flowables = self.flowables(container.document)
         item_spacing = self.get_style('flowable_spacing', container.document)
         state = state or GroupedFlowablesState(flowables)
-        flowable = state.next_flowable()
         try:
+            flowable = state.next_flowable()
             while True:
                 width, descender = \
                     flowable.flow(container, descender,
