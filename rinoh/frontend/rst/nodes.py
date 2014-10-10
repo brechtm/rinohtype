@@ -518,9 +518,9 @@ class TableRowGroup(CustomElement):
                 if (r, c) in spanned_cells:
                     cell = None
                 else:
-                    rowspan = int(cells[index].get('rowspan', 1))
-                    colspan = int(cells[index].get('colspan', 1))
-                    cell = rt.TabularCell(cells[index].text, rowspan, colspan)
+                    rowspan = int(cells[index].get('morerows', 0)) + 1
+                    colspan = int(cells[index].get('morecols', 0)) + 1
+                    cell = rt.TabularCell(cells[index].flowable(), rowspan, colspan)
                     if rowspan > 1 or colspan > 1:
                         for j in range(c, c + colspan):
                             for i in range(r, r + rowspan):
@@ -545,10 +545,7 @@ class Row(CustomElement):
 
 
 class Entry(GroupingElement):
-    def get_cell(self):
-        rowspan = self.get('morerows', 1)
-        colspan = self.get('morecols', 1)
-        return rt.TabularCell(self.flowable(), rowspan, colspan)
+    pass
 
 
 class ReStructuredTextTabularData(rt.TabularData):
