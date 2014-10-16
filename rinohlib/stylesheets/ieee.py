@@ -132,6 +132,26 @@ styles('heading level 3', ClassSelector(Heading, level=3),
        space_below=3*PT,
        number_format=None)
 
+styles('heading level 4', ClassSelector(Heading, level=4),
+       base='heading level 2',
+       font_size=9*PT,
+       font_slant=ITALIC,
+       font_weight=BOLD,
+       line_spacing=FixedSpacing(10*PT),
+       space_above=2*PT,
+       space_below=2*PT,
+       number_format=None)
+
+styles('heading level 5', ClassSelector(Heading, level=5),
+       base='heading level 2',
+       font_size=9*PT,
+       font_slant=ITALIC,
+       font_weight=REGULAR,
+       line_spacing=FixedSpacing(10*PT),
+       space_above=2*PT,
+       space_below=2*PT,
+       number_format=None)
+
 styles('topic', ClassSelector(GroupedFlowables, 'topic'),
        margin_left=0.5*CM)
 
