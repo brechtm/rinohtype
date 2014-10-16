@@ -216,6 +216,11 @@ class GroupedFlowables(Flowable):
     def flowables(self, document):
         raise NotImplementedError
 
+    def prepare(self, document):
+        super().prepare(document)
+        for flowable in self.flowables(document):
+            flowable.prepare(document)
+
     def render(self, container, descender, state=None, **kwargs):
         max_flowable_width = 0
         flowables = self.flowables(container.document)
@@ -245,11 +250,6 @@ class StaticGroupedFlowables(GroupedFlowables):
         self.children = flowables
         for flowable in flowables:
             flowable.parent = self
-
-    def prepare(self, document):
-        super().prepare(document)
-        for child in self.children:
-            child.prepare(document)
 
     def flowables(self, document):
         return iter(self.children)
