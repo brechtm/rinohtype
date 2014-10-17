@@ -114,10 +114,10 @@ class GroupingElement(BodyElement):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
 
-    def build_flowable(self):
-        return self.grouped_flowables_class([item.flowable()
-                                             for item in self.getchildren()],
-                                            style=self.style)
+    def build_flowable(self, **kwargs):
+        flowables = [item.flowable() for item in self.getchildren()]
+        return self.grouped_flowables_class(flowables,
+                                            style=self.style, **kwargs)
 
 
 from . import nodes

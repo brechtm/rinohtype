@@ -5,7 +5,7 @@ from rinoh import (
     Paragraph, Heading, ParagraphStyle, FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
-    Header, Footer, Figure, Caption, Tabular, Framed, HorizontalRule,
+    Header, Footer, Figure, Caption, Framed, HorizontalRule,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
@@ -401,20 +401,20 @@ styles('L3 toc level 3', ContextSelector(ClassSelector(TableOfContents, level=2)
        tab_stops=[TabStop(0.6*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-styles('tabular', ClassSelector(Tabular),
-       typeface=ieee_family.serif,
-       font_weight=REGULAR,
-       font_size=10*PT,
-       line_spacing=FixedSpacing(12*PT),
-       indent_first=0*PT,
-       space_above=0*PT,
-       space_below=0*PT,
-       justify=CENTER,
-       vertical_align=MIDDLE,
-       left_border='red line',
-       right_border='red line',
-       bottom_border='red line',
-       top_border='red line')
+# styles('tabular', ClassSelector(Tabular),
+#        typeface=ieee_family.serif,
+#        font_weight=REGULAR,
+#        font_size=10*PT,
+#        line_spacing=FixedSpacing(12*PT),
+#        indent_first=0*PT,
+#        space_above=0*PT,
+#        space_below=0*PT,
+#        justify=CENTER,
+#        vertical_align=MIDDLE,
+#        left_border='red line',
+#        right_border='red line',
+#        bottom_border='red line',
+#        top_border='red line')
 
 styles('red line', ClassSelector(Line),
        stroke_width=0.2*PT,
@@ -423,21 +423,28 @@ styles('red line', ClassSelector(Line),
 styles('thick line', ClassSelector(Line),
        stroke_width=1*PT)
 
-styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
-       font_weight=BOLD,
-       bottom_border='thick line')
+# styles('first row', ContextSelector(ClassSelector(Table),
+#                                     ClassSelector(Head),
+#                                     ClassSelector(Cell, column=1),
+#                                     ClassSelector(Paragraph))
+#        font_weight=BOLD,
+#        bottom_border='thick line')
 
-styles('first column', ClassSelector(Tabular, 'NOMATCH'),
-       font_slant=ITALIC,
-       right_border='thick line')
-
-styles('numbers', ClassSelector(Tabular, 'NOMATCH'),
-       typeface=ieee_family.mono)
-
-styles['tabular'].set_cell_style(styles['first row'], rows=0)
-styles['tabular'].set_cell_style(styles['first column'], cols=0)
-styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
-                                 cols=slice(1,None))
+# styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
+#        font_weight=BOLD,
+#        bottom_border='thick line')
+#
+# styles('first column', ClassSelector(Tabular, 'NOMATCH'),
+#        font_slant=ITALIC,
+#        right_border='thick line')
+#
+# styles('numbers', ClassSelector(Tabular, 'NOMATCH'),
+#        typeface=ieee_family.mono)
+#
+# styles['tabular'].set_cell_style(styles['first row'], rows=0)
+# styles['tabular'].set_cell_style(styles['first column'], cols=0)
+# styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
+#                                  cols=slice(1,None))
 
 styles('horizontal rule', ClassSelector(HorizontalRule),
        space_above=10*PT,

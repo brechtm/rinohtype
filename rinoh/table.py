@@ -6,20 +6,18 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import csv
-
-from copy import copy
+from itertools import chain
 
 from .draw import Line
 from .flowable import Flowable
 from .layout import VirtualContainer
-from .paragraph import Paragraph, ParagraphStyle
 from .dimension import PT
+from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
+from .style import Styled
 
 
-__all__ = ['Tabular', 'TabularStyle', 'HTMLTabularData', 'CSVTabularData',
-           'TabularData', 'TabularRow', 'TabularCell', 'Array',
-           'TOP', 'MIDDLE', 'BOTTOM']
+__all__ = ['Table', 'TableHead', 'TableBody', 'TableRow',
+           'TableCell', 'TableCellStyle', 'TOP', 'MIDDLE', 'BOTTOM']
 
 
 TOP = 'top'
@@ -27,58 +25,13 @@ MIDDLE = 'middle'
 BOTTOM = 'bottom'
 
 
-class CellStyle(ParagraphStyle):
-    attributes = {'top_border': None,
-                  'right_border': None,
-                  'bottom_border': None,
-                  'left_border': None,
-                  'vertical_align': MIDDLE}
-
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
-
-
-class TabularStyle(CellStyle):
-    # TODO: attributes (colgroup line style, header line style, header text style
-
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
-        self.cell_style = []
-
-    def __getitem__(self, attribute):
-        value = super().__getitem__(attribute)
-        return value
-
-    def set_cell_style(self, style, rows=slice(None), cols=slice(None)):
-        self.cell_style.append(((rows, cols), style))
-        style.base = self
-
-
-class RenderedCell(object):
-    def __init__(self, cell, container, x_position):
-        self.cell = cell
-        self.container = container
-        self.x_position = x_position
-
-    @property
-    def width(self):
-        return float(self.container.width)
-
-    @property
-    def height(self):
-        return float(self.container.height)
-
-    @property
-    def rowspan(self):
-        return self.cell.rowspan
-
-
-class Tabular(Flowable):
-    style_class = TabularStyle
-
-    def __init__(self, data, style=None):
-        super().__init__(style=style)
-        self.data = data
+class Table(Flowable):
+    def __init__(self, head, body, column_widths=None,
+                 id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.head = head
+        self.body = body
+        self.column_widths = column_widths
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
@@ -88,61 +41,43 @@ class Tabular(Flowable):
         row_heights = []
         rendered_rows = []
 
-        # set up cell styles
-        if isinstance(self.style, str):
-            style = doc.styles[self.style]
-        else:
-            style = self._style(container.document)
-        cell_styles = Array([[style for c in range(self.data.columns)]
-                             for r in range(self.data.rows)])
-        for (row_slice, col_slice), style in style.cell_style:
-            if isinstance(row_slice, int):
-                row_range = [row_slice]
-            else:
-                row_indices = row_slice.indices(cell_styles.rows)
-                row_range = range(*row_indices)
-            for ri in row_range:
-                if isinstance(col_slice, int):
-                    col_range = [col_slice]
-                else:
-                    col_indices = col_slice.indices(cell_styles.columns)
-                    col_range = range(*col_indices)
-                for ci in col_range:
-                    old_style = cell_styles[ri][ci]
-                    cell_styles[ri][ci] = copy(style)
-                    cell_styles[ri][ci].base = old_style
+        num_columns = self.head.rows[0].num_columns
 
         # calculate column widths (static)
-        column_widths = []
-        total_width = sum(map(lambda x: int(x['width'][:-1]),
-                              self.data.column_options))
-        for c, options in enumerate(self.data.column_options):
-            fraction = int(options['width'][:-1])
-            column_widths.append(table_width * fraction / total_width)
+        total_width = sum(self.column_widths)
+        column_widths = [table_width * width / total_width
+                         for width in self.column_widths]
 
         # render cell content
+        spanned_cells = set()
         row_spanned_cells = {}
-        for r, row in enumerate(self.data):
+        rows = chain(iter(self.head.rows), iter(self.body.rows))
+        for r, row in enumerate(rows):
             rendered_row = []
             x_cursor = 0
             row_height = 0
-            for c, cell in enumerate(row):
-                if (r, c) in row_spanned_cells:
-                    x_cursor += row_spanned_cells[r, c].width
+            cells = iter(row.cells)
+            for c in range(num_columns):
+                if (r, c) in spanned_cells:
+                    if (r, c) in row_spanned_cells:
+                        x_cursor += row_spanned_cells[r, c].width
                     continue
-                elif cell is None:
-                    continue
-                cell_width = column_widths[c] * cell.colspan
+                cell = next(cells)
+                cell_width = sum(column_widths[i]
+                                 for i in range(c, c + cell.colspan))
                 buffer = VirtualContainer(container, cell_width*PT)
-                cell_style = cell_styles[r][c]
-                self.render_cell(cell, buffer, cell_style)
+                width, descender = cell.flow(buffer, None)
                 rendered_cell = RenderedCell(cell, buffer, x_cursor)
                 rendered_row.append(rendered_cell)
                 if cell.rowspan == 1:
                     row_height = max(row_height, rendered_cell.height)
                 x_cursor += cell_width
+                for j in range(c, c + cell.colspan):
+                    spanned_cells.add((r, j))
                 for i in range(r + 1, r + cell.rowspan):
                     row_spanned_cells[i, c] = rendered_cell
+                    for j in range(c, c + cell.colspan):
+                        spanned_cells.add((i, j))
             row_heights.append(row_height)
             rendered_rows.append(rendered_row)
 
@@ -172,13 +107,14 @@ class Tabular(Flowable):
                 y_pos = float(y_cursor + cell_height)
                 cell_width = rendered_cell.width
                 border_buffer = canvas.new()
-                cell_style = cell_styles[r][c]
-                self.draw_cell_border(border_buffer, cell_width, cell_height,
-                                      cell_style)
+                # cell_style = cell_styles[r][c]
+                # self.draw_cell_border(border_buffer, cell_width, cell_height,
+                #                       cell_style)
                 border_buffer.append(x_cursor, y_pos)
-                if cell_style.vertical_align == MIDDLE:
+                vertical_align = cell.get_style('vertical_align', doc)
+                if vertical_align == MIDDLE:
                     vertical_offset = (cell_height - rendered_cell.height) / 2
-                elif cell_style.vertical_align == BOTTOM:
+                elif vertical_align:
                     vertical_offset = (cell_height - rendered_cell.height)
                 else:
                     vertical_offset = 0
@@ -186,12 +122,6 @@ class Tabular(Flowable):
                 rendered_cell.container.place_at(x_cursor, y_offset)
             y_cursor += row_heights[r]
         return container.width, 0
-
-    def render_cell(self, cell, container, style):
-        if cell is not None and cell.content:
-            return cell.content.flow(container, None)
-        else:
-            return 0
 
     def draw_cell_border(self, canvas, width, height, style):
         left, bottom, right, top = 0, 0, width, height
@@ -209,143 +139,70 @@ class Tabular(Flowable):
             line.render(canvas)
 
 
-class Array(list):
-    def __init__(self, rows):
-        super().__init__(rows)
+class TableSection(Styled):
+    def __init__(self, rows, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.rows = rows
+        for row in rows:
+            row.parent = self
+
+    def prepare(self, document):
+        for row in self.rows:
+            row.prepare(document)
+
+
+class TableHead(TableSection):
+    pass
+
+
+class TableBody(TableSection):
+    pass
+
+
+class TableRow(Styled):
+    def __init__(self, cells, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.cells = cells
+        for cell in cells:
+            cell.parent = self
 
     @property
-    def rows(self):
-        return len(self)
+    def num_columns(self):
+        return sum(cell.colspan for cell in self.cells)
 
-    @property
-    def columns(self):
-        return len(self[0])
+    def prepare(self, document):
+        for cells in self.cells:
+            cells.prepare(document)
 
 
-class TabularCell(object):
-    def __init__(self, content, rowspan=1, colspan=1):
-        self.content = content
+class TableCellStyle(GroupedFlowablesStyle):
+    attributes = {'vertical_align': MIDDLE}
+
+
+class TableCell(StaticGroupedFlowables):
+    style_class = TableCellStyle
+
+    def __init__(self, flowables, rowspan=1, colspan=1,
+                 id=None, style=None, parent=None):
+        super().__init__(flowables, id=id, style=style, parent=parent)
         self.rowspan = rowspan
         self.colspan = colspan
 
-    def __repr__(self):
-        if self.content is not None:
-            return self.content
-        else:
-            return '<empty>'
 
-
-class TabularRow(list):
-    def __init__(self, items):
-        super().__init__(items)
-
-
-class TabularData(object):
-    def __init__(self, body, head=None, foot=None,
-                 column_options=None, column_groups=None):
-        self.body = body
-        self.head = head
-        self.foot = foot
-        if column_options is None:
-            column_groups = [body.columns]
-            column_options = [{'width': '1*'} for c in range(body.columns)]
-        self.column_options = column_options
-        self.column_groups = column_groups
+class RenderedCell(object):
+    def __init__(self, cell, container, x_position):
+        self.cell = cell
+        self.container = container
+        self.x_position = x_position
 
     @property
-    def rows(self):
-        total = self.body.rows
-        if self.head:
-            total += self.head.rows
-        if self.foot:
-            total += self.foot.rows
-        return total
+    def width(self):
+        return float(self.container.width)
 
     @property
-    def columns(self):
-        return self.body.columns
+    def height(self):
+        return float(self.container.height)
 
-    def __iter__(self):
-        if self.head:
-            for row in self.head:
-                yield row
-        for row in self.body:
-            yield row
-        if self.foot:
-            for row in self.foot:
-                yield row
-
-
-class HTMLTabularData(TabularData):
-    def __init__(self, element):
-        try:
-            body = self.parse_row_group(element.tbody)
-            try:
-                head = self.parse_row_group(element.thead)
-            except AttributeError:
-                thead = None
-            try:
-                foot = self.parse_row_group(element.tfoot)
-            except AttributeError:
-                foot = None
-        except AttributeError:
-            body = self.parse_row_group(element)
-            head = foot = None
-        column_groups, column_options = self.parse_column_options(element)
-        super().__init__(body, head, foot, column_options, column_groups)
-
-    def parse_column_options(self, element):
-        try:
-            column_groups = []
-            column_options = []
-            for colgroup in element.colgroup:
-                span = int(colgroup.get('span', 1))
-                width = colgroup.get('width')
-                column_groups.append(span)
-                options = [{'width': width} for c in range(span)]
-                try:
-                    for c, col in enumerate(colgroup.col):
-                        if 'width' in col.attrib:
-                            options[c]['width'] = col.get('width')
-                except AttributeError:
-                    pass
-                column_options += options
-            return column_groups, column_options
-        except AttributeError:
-            return None, None
-
-    def parse_row_group(self, element):
-        rows = []
-        spanned_cells = []
-        for r, tr in enumerate(element.tr):
-            row_cells = []
-            cells = tr.getchildren()
-            index = c = 0
-            while index < len(cells):
-                if (r, c) in spanned_cells:
-                    cell = None
-                else:
-                    rowspan = int(cells[index].get('rowspan', 1))
-                    colspan = int(cells[index].get('colspan', 1))
-                    cell = TabularCell(cells[index].text, rowspan, colspan)
-                    if rowspan > 1 or colspan > 1:
-                        for j in range(c, c + colspan):
-                            for i in range(r, r + rowspan):
-                                spanned_cells.append((i, j))
-                    index += 1
-                row_cells.append(cell)
-                c += 1
-            rows.append(TabularRow(row_cells))
-        return Array(rows)
-
-
-class CSVTabularData(TabularData):
-    def __init__(self, filename):
-        rows = []
-        with open(filename, newline='') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                row_cells = [TabularCell(cell) for cell in row]
-                rows.append(TabularRow(row_cells))
-        body = Array(rows)
-        super().__init__(body)
+    @property
+    def rowspan(self):
+        return self.cell.rowspan

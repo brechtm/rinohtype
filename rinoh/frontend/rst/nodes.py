@@ -498,8 +498,12 @@ class Transition(BodyElement):
 
 class Table(BodyElement):
     def build_flowable(self):
-        data = ReStructuredTextTabularData(self)
-        return rt.Tabular(data)
+        tgroup = self.tgroup
+        column_widths = [int(colspec.get('colwidth'))
+                         for colspec in tgroup.colspec]
+        return rt.Table(tgroup.thead.get_table_section(),
+                        tgroup.tbody.get_table_section(),
+                        column_widths=column_widths)
 
 
 class TGroup(CustomElement):
@@ -511,61 +515,29 @@ class ColSpec(CustomElement):
 
 
 class TableRowGroup(CustomElement):
-    def get_rows(self):
-        rows = []
-        spanned_cells = []
-        for r, row in enumerate(self.row):
-            row_cells = []
-            cells = row.getchildren()
-            index = c = 0
-            while index < len(cells):
-                if (r, c) in spanned_cells:
-                    cell = None
-                else:
-                    rowspan = int(cells[index].get('morerows', 0)) + 1
-                    colspan = int(cells[index].get('morecols', 0)) + 1
-                    cell = rt.TabularCell(cells[index].flowable(), rowspan, colspan)
-                    if rowspan > 1 or colspan > 1:
-                        for j in range(c, c + colspan):
-                            for i in range(r, r + rowspan):
-                                spanned_cells.append((i, j))
-                    index += 1
-                row_cells.append(cell)
-                c += 1
-            rows.append(rt.TabularRow(row_cells))
-        return rt.Array(rows)
+    section_cls = None
+
+    def get_table_section(self):
+        return self.section_cls([row.get_row() for row in self.row])
 
 
 class THead(TableRowGroup):
-    pass
+    section_cls = rt.TableHead
 
 
 class TBody(TableRowGroup):
-    pass
+    section_cls = rt.TableBody
 
 
 class Row(CustomElement):
-    pass
+    def get_row(self):
+        return rt.TableRow([entry.flowable() for entry in self.entry])
 
 
 class Entry(GroupingElement):
-    pass
+    grouped_flowables_class = rt.TableCell
 
-
-class ReStructuredTextTabularData(rt.TabularData):
-    def __init__(self, node):
-        tgroup = node.tgroup
-        try:
-            head = tgroup.thead.get_rows()
-        except AttributeError:
-            head = None
-        body = tgroup.tbody.get_rows()
-        column_options = self.parse_column_options(node.tgroup)
-        super().__init__(body, head, None, column_options, None)
-
-    def parse_column_options(self, tgroup):
-        try:
-            return [{'width': '{}*'.format(colspec.get('colwidth'))}
-                    for colspec in tgroup.colspec]
-        except AttributeError:
-            return None
+    def build_flowable(self):
+        rowspan = int(self.get('morerows', 0)) + 1
+        colspan = int(self.get('morecols', 0)) + 1
+        return super().build_flowable(rowspan=rowspan, colspan=colspan)
