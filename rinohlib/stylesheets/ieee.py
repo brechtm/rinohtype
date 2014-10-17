@@ -6,6 +6,7 @@ from rinoh import (
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Framed, HorizontalRule,
+    Table, TableHead, TableRow, TableCell,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
@@ -423,12 +424,15 @@ styles('red line', ClassSelector(Line),
 styles('thick line', ClassSelector(Line),
        stroke_width=1*PT)
 
-# styles('first row', ContextSelector(ClassSelector(Table),
-#                                     ClassSelector(Head),
-#                                     ClassSelector(Cell, column=1),
-#                                     ClassSelector(Paragraph))
-#        font_weight=BOLD,
-#        bottom_border='thick line')
+styles('table head cell', ContextSelector(ClassSelector(Table),
+                                          ClassSelector(TableHead),
+                                          ClassSelector(TableRow),
+                                          ClassSelector(TableCell),
+                                          ClassSelector(Paragraph)),
+       base='body',
+       font_weight=BOLD,
+       indent_first=0,
+       justify=CENTER)
 
 # styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
 #        font_weight=BOLD,

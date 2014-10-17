@@ -31,6 +31,7 @@ class Table(Flowable):
         super().__init__(id=id, style=style, parent=parent)
         self.head = head
         self.body = body
+        head.parent = body.parent = self
         self.column_widths = column_widths
 
     def render(self, container, last_descender, state=None):
