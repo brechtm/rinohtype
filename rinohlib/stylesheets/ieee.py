@@ -6,7 +6,7 @@ from rinoh import (
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Framed, HorizontalRule,
-    Table, TableHead, TableRow, TableCell,
+    Table, TableSection, TableHead, TableBody, TableRow, TableCell, TableCellBorder,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
@@ -424,15 +424,52 @@ styles('red line', ClassSelector(Line),
 styles('thick line', ClassSelector(Line),
        stroke_width=1*PT)
 
-styles('table head cell', ContextSelector(ClassSelector(Table),
-                                          ClassSelector(TableHead),
-                                          ClassSelector(TableRow),
-                                          ClassSelector(TableCell),
-                                          ClassSelector(Paragraph)),
+styles('table cell',
+       ContextSelector(ClassSelector(Table),
+                       ClassSelector(TableSection),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell)),
+       space_above=2*PT,
+       space_below=2*PT,
+       margin_left=2*PT,
+       margin_right=2*PT)
+
+styles('table body cell paragraph',
+       ContextSelector(ClassSelector(Table),
+                       ClassSelector(TableBody),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell),
+                       ClassSelector(Paragraph)),
        base='body',
+       font_size=9*PT,
+       indent_first=0)
+
+styles('table head cell paragraph',
+       ContextSelector(ClassSelector(Table),
+                       ClassSelector(TableHead),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell),
+                       ClassSelector(Paragraph)),
+       base='table body cell paragraph',
        font_weight=BOLD,
-       indent_first=0,
        justify=CENTER)
+
+styles('table head cell border',
+       ContextSelector(ClassSelector(Table),
+                       ClassSelector(TableHead),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell),
+                       ClassSelector(TableCellBorder)),
+       stroke_width=2*PT)
+
+styles('table head cell bottom border',
+       ContextSelector(ClassSelector(Table),
+                       ClassSelector(TableHead),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell),
+                       ClassSelector(TableCellBorder, position='bottom')),
+       stroke_width=2*PT,
+       stroke_color=RED)
 
 # styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
 #        font_weight=BOLD,
