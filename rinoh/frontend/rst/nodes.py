@@ -506,6 +506,10 @@ class TGroup(CustomElement):
     pass
 
 
+class ColSpec(CustomElement):
+    pass
+
+
 class TableRowGroup(CustomElement):
     def get_rows(self):
         rows = []
@@ -556,26 +560,12 @@ class ReStructuredTextTabularData(rt.TabularData):
         except AttributeError:
             head = None
         body = tgroup.tbody.get_rows()
-        # column_groups, column_options = self.parse_column_options(node)
-        column_groups, column_options = None, None
-        super().__init__(body, head, None, column_options, column_groups)
+        column_options = self.parse_column_options(node.tgroup)
+        super().__init__(body, head, None, column_options, None)
 
-    # def parse_column_options(self, element):
-    #     try:
-    #         column_groups = []
-    #         column_options = []
-    #         for colgroup in element.colgroup:
-    #             span = int(colgroup.get('span', 1))
-    #             width = colgroup.get('width')
-    #             column_groups.append(span)
-    #             options = [{'width': width} for c in range(span)]
-    #             try:
-    #                 for c, col in enumerate(colgroup.col):
-    #                     if 'width' in col.attrib:
-    #                         options[c]['width'] = col.get('width')
-    #             except AttributeError:
-    #                 pass
-    #             column_options += options
-    #         return column_groups, column_options
-    #     except AttributeError:
-    #         return None, None
+    def parse_column_options(self, tgroup):
+        try:
+            return [{'width': '{}*'.format(colspec.get('colwidth'))}
+                    for colspec in tgroup.colspec]
+        except AttributeError:
+            return None
