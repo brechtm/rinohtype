@@ -16,8 +16,9 @@ from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 
 
-__all__ = ['Table', 'TableHead', 'TableBody', 'TableRow',
-           'TableCell', 'TableCellStyle', 'TOP', 'MIDDLE', 'BOTTOM']
+__all__ = ['Table', 'TableSection', 'TableHead', 'TableBody', 'TableRow',
+           'TableCell', 'TableCellStyle', 'TableCellBorder',
+           'TOP', 'MIDDLE', 'BOTTOM']
 
 
 TOP = 'top'
@@ -106,11 +107,8 @@ class Table(Flowable):
                     cell_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
-                cell_width = rendered_cell.width
                 border_buffer = canvas.new()
-                # cell_style = cell_styles[r][c]
-                # self.draw_cell_border(border_buffer, cell_width, cell_height,
-                #                       cell_style)
+                self.draw_cell_border(rendered_cell, cell_height, border_buffer)
                 border_buffer.append(x_cursor, y_pos)
                 vertical_align = cell.get_style('vertical_align', doc)
                 if vertical_align == MIDDLE:
@@ -124,20 +122,10 @@ class Table(Flowable):
             y_cursor += row_heights[r]
         return container.width, 0
 
-    def draw_cell_border(self, canvas, width, height, style):
-        left, bottom, right, top = 0, 0, width, height
-        if style.top_border:
-            line = Line((left, top), (right, top), style.top_border)
-            line.render(canvas)
-        if style.right_border:
-            line = Line((right, top), (right, bottom), style.right_border)
-            line.render(canvas)
-        if style.bottom_border:
-            line = Line((left, bottom), (right, bottom), style.bottom_border)
-            line.render(canvas)
-        if style.left_border:
-            line = Line((left, bottom), (left, top), style.left_border)
-            line.render(canvas)
+    def draw_cell_border(self, rendered_cell, cell_height, canvas):
+        for position in ('top', 'right', 'bottom', 'left'):
+            border = TableCellBorder(rendered_cell, cell_height, position)
+            border.render(canvas)
 
 
 class TableSection(Styled):
@@ -207,3 +195,18 @@ class RenderedCell(object):
     @property
     def rowspan(self):
         return self.cell.rowspan
+
+
+class TableCellBorder(Line):
+    def __init__(self, rendered_cell, cell_height, position, style=None):
+        left, bottom, right, top = 0, 0, rendered_cell.width, cell_height
+        if position == 'top':
+            start, end = (left, top), (right, top)
+        if position == 'right':
+            start, end = (right, top), (right, bottom)
+        if position == 'bottom':
+            start, end = (left, bottom), (right, bottom)
+        if position == 'left':
+            start, end = (left, bottom), (left, top)
+        super().__init__(start, end, style=style, parent=rendered_cell.cell)
+        self.position = position
