@@ -27,12 +27,14 @@ BOTTOM = 'bottom'
 
 
 class Table(Flowable):
-    def __init__(self, head, body, column_widths=None,
+    def __init__(self, body, head=None, column_widths=None,
                  id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.head = head
+        if head:
+            head.parent = self
         self.body = body
-        head.parent = body.parent = self
+        body.parent = self
         self.column_widths = column_widths
 
     def render(self, container, last_descender, state=None):
@@ -43,7 +45,7 @@ class Table(Flowable):
         row_heights = []
         rendered_rows = []
 
-        num_columns = self.head.rows[0].num_columns
+        num_columns = self.body.rows[0].num_columns
 
         # calculate column widths (static)
         total_width = sum(self.column_widths)
@@ -53,7 +55,9 @@ class Table(Flowable):
         # render cell content
         spanned_cells = set()
         row_spanned_cells = {}
-        rows = chain(iter(self.head.rows), iter(self.body.rows))
+        rows = iter(self.body.rows)
+        if self.head:
+            rows = chain(iter(self.head.rows), rows)
         for r, row in enumerate(rows):
             rendered_row = []
             x_cursor = 0

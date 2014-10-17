@@ -508,9 +508,12 @@ class Table(BodyElement):
         tgroup = self.tgroup
         column_widths = [int(colspec.get('colwidth'))
                          for colspec in tgroup.colspec]
-        return rt.Table(tgroup.thead.get_table_section(),
-                        tgroup.tbody.get_table_section(),
-                        column_widths=column_widths)
+        try:
+            head = tgroup.thead.get_table_section()
+        except AttributeError:
+            head = None
+        body = tgroup.tbody.get_table_section()
+        return rt.Table(body, head=head, column_widths=column_widths)
 
 
 class TGroup(CustomElement):
