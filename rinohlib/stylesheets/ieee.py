@@ -8,7 +8,7 @@ from rinoh import (
     Header, Footer, Figure, Caption, Framed, HorizontalRule,
     Table, TableSection, TableHead, TableBody, TableRow, TableCell, TableCellBorder,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
-    DEFAULT, LEFT, RIGHT, CENTER, BOTH, MIDDLE,
+    DEFAULT, LEFT, RIGHT, CENTER, BOTH, TOP, MIDDLE, BOTTOM,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
     PT, INCH, CM, RED, BLUE, Color, Gray
 )
@@ -402,21 +402,6 @@ styles('L3 toc level 3', ContextSelector(ClassSelector(TableOfContents, level=2)
        tab_stops=[TabStop(0.6*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-# styles('tabular', ClassSelector(Tabular),
-#        typeface=ieee_family.serif,
-#        font_weight=REGULAR,
-#        font_size=10*PT,
-#        line_spacing=FixedSpacing(12*PT),
-#        indent_first=0*PT,
-#        space_above=0*PT,
-#        space_below=0*PT,
-#        justify=CENTER,
-#        vertical_align=MIDDLE,
-#        left_border='red line',
-#        right_border='red line',
-#        bottom_border='red line',
-#        top_border='red line')
-
 styles('red line', ClassSelector(Line),
        stroke_width=0.2*PT,
        stroke_color=RED)
@@ -432,7 +417,8 @@ styles('table cell',
        space_above=2*PT,
        space_below=2*PT,
        margin_left=2*PT,
-       margin_right=2*PT)
+       margin_right=2*PT,
+       vertical_align=MIDDLE)
 
 styles('table body cell paragraph',
        ContextSelector(ClassSelector(Table),
