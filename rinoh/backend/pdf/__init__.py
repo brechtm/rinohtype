@@ -25,6 +25,11 @@ class Document(object):
         self.cos_document = cos.Document(creator)
         self.pages = []
         self.fonts = {}
+        self._font_number = 0
+
+    def get_unique_font_number(self):
+        self._font_number += 1
+        return self._font_number
 
     def get_metadata(self, field):
         return str(self.cos_document.info[field.capitalize()])
@@ -34,7 +39,7 @@ class Document(object):
 
     def register_font(self, font):
         try:
-            font_rsc = self.fonts[font]
+            font_number, font_rsc = self.fonts[font]
         except KeyError:
             if isinstance(font, Type1Font):
                 font_file = cos.Type1FontFile(font.font_program.header,
@@ -70,8 +75,9 @@ class Document(object):
                 mapping = font['cmap'][(3, 1)].mapping
                 to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
                 font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
-            self.fonts[font] = font_rsc
-        return font_rsc
+            font_number = self.get_unique_font_number()
+            self.fonts[font] = font_number, font_rsc
+        return font_number, font_rsc
 
     def write(self, filename):
         for page in self.pages:
@@ -92,31 +98,22 @@ class Page(object):
         self.height = height
         self.canvas = PageCanvas(self)
         document.pages.append(self)
-        self.font_number = 1
-        self.font_names = {}
 
     @property
     def document(self):
         return self.rinoh_page.document
 
-    def register_font(self, font):
-        try:
-            font_rsc, name = self.font_names[font]
-        except KeyError:
-            font_rsc = self.document.backend_document.register_font(font)
-            name = 'F{}'.format(self.font_number)
-            self.font_number += 1
-            page_rsc = self.cos_page['Resources']
-            fonts_dict = page_rsc.setdefault('Font', cos.Dictionary())
-            fonts_dict[name] = font_rsc
-            self.font_names[font] = font_rsc, name
-        return font_rsc, name
+    def add_font_resource(self, font_name, font_rsc):
+        page_rsc = self.cos_page['Resources']
+        fonts_dict = page_rsc.setdefault('Font', cos.Dictionary())
+        fonts_dict[font_name] = font_rsc
 
 
 class Canvas(StringIO):
     def __init__(self, parent, clip=False):
         super().__init__()
         self.parent = parent
+        self.fonts = {}
         self.annotations = []
         self.destinations = []
         self.offset = None
@@ -141,15 +138,16 @@ class Canvas(StringIO):
         with self.parent.save_state():
             self.parent.translate(left, top)
             self.parent.write(self.getvalue())
-        self.propagate(self.annotations)
+        self.propagate(self.fonts, self.annotations)
 
-    def propagate(self, annotations):
+    def propagate(self, fonts, annotations):
         if self.offset:
             left, top = self.offset
             for annotation_placement in annotations:
                 annotation_placement.translate(left, top)
-            self.parent.propagate(annotations)
+            self.parent.propagate(fonts, annotations)
         else:
+            self.fonts.update(fonts)
             self.annotations += annotations
 
     @contextmanager
@@ -216,11 +214,17 @@ class Canvas(StringIO):
             self.fill_color(fill_color)
             print('B', file=self)
 
+    def register_font(self, document, font):
+        font_number, font_rsc = document.backend_document.register_font(font)
+        font_name = 'F{}'.format(font_number)
+        self.fonts.setdefault(font_name, font_rsc)
+        return font_name, font_rsc
+
     def show_glyphs(self, left, cursor, span, glyph_and_widths, document):
         font = span.font(document)
         size = span.height(document)
         color = span.get_style('font_color', document)
-        font_rsc, font_name = self.cos_page.register_font(font)
+        font_name, font_rsc = self.register_font(document, font)
         string = ''
         current_string = ''
         total_width = 0
@@ -295,7 +299,9 @@ class PageCanvas(Canvas):
     def append(self, left, top):
         pass
 
-    def propagate(self, annotations):
+    def propagate(self, fonts, annotations):
+        for font_name, font_rsc in fonts.items():
+            self._backend_page.add_font_resource(font_name, font_rsc)
         page_height = float(self._backend_page.height)
         cos_document = self.page.document.backend_document.cos_document
         cos_page = self.cos_page.cos_page
