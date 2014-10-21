@@ -622,6 +622,7 @@ class Annotation(Dictionary):
     def __init__(self, rectangle, indirect=False):
         super().__init__(indirect)
         self['Rect'] = rectangle
+        self['Border'] = Array(3 * [Integer(0)])
 
 
 class LinkAnnotation(Annotation):
