@@ -26,10 +26,15 @@ class Document(object):
         self.pages = []
         self.fonts = {}
         self._font_number = 0
+        self._image_number = 0
 
     def get_unique_font_number(self):
         self._font_number += 1
         return self._font_number
+
+    def get_unique_image_number(self):
+        self._image_number += 1
+        return self._image_number
 
     def get_metadata(self, field):
         return str(self.cos_document.info[field.capitalize()])
@@ -114,6 +119,7 @@ class Canvas(StringIO):
         super().__init__()
         self.parent = parent
         self.fonts = {}
+        self.images = {}
         self.annotations = []
         self.destinations = []
         self.offset = None
@@ -138,16 +144,17 @@ class Canvas(StringIO):
         with self.parent.save_state():
             self.parent.translate(left, top)
             self.parent.write(self.getvalue())
-        self.propagate(self.fonts, self.annotations)
+        self.propagate(self.fonts, self.images, self.annotations)
 
-    def propagate(self, fonts, annotations):
+    def propagate(self, fonts, images, annotations):
         if self.offset:
             left, top = self.offset
             for annotation_placement in annotations:
                 annotation_placement.translate(left, top)
-            self.parent.propagate(fonts, annotations)
+            self.parent.propagate(fonts, images, annotations)
         else:
             self.fonts.update(fonts)
+            self.images.update(images)
             self.annotations += annotations
 
     @contextmanager
@@ -269,21 +276,14 @@ class Canvas(StringIO):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)
         self.annotations.append(ann_loc)
 
-    def place_image(self, image, left, top, scale=1.0):
-        resources = self.cos_page.cos_page['Resources']
-        xobjects = resources.setdefault('XObject', cos.Dictionary())
-        try:
-            image_number = self.cos_page.cos_page.image_number
-        except AttributeError:
-            image_number = 0
-        self.cos_page.cos_page.image_number = image_number + 1
-        # TODO: delay adding Image XObject to page until Canvas.append
-        xobjects['Im{:03d}'.format(image_number)] = image.xobject
+    def place_image(self, image, left, top, document, scale=1.0):
+        image_number = document.backend_document.get_unique_image_number()
+        self.images[image_number] = image
         with self.save_state():
             self.translate(left, top)
             self.scale(scale)
             self.translate(0, image.height)
-            print('/Im{:03d} Do'.format(image_number), file=self)
+            print('/Im{} Do'.format(image_number), file=self)
 
 
 class PageCanvas(Canvas):
@@ -299,9 +299,18 @@ class PageCanvas(Canvas):
     def append(self, left, top):
         pass
 
-    def propagate(self, fonts, annotations):
+    def propagate(self, fonts, images, annotations):
+        # fonts
         for font_name, font_rsc in fonts.items():
             self._backend_page.add_font_resource(font_name, font_rsc)
+
+        # images
+        resources = self.cos_page.cos_page['Resources']
+        for image_number, image in images.items():
+            xobjects = resources.setdefault('XObject', cos.Dictionary())
+            xobjects['Im{}'.format(image_number)] = image.xobject
+
+        # annotations
         page_height = float(self._backend_page.height)
         cos_document = self.page.document.backend_document.cos_document
         cos_page = self.cos_page.cos_page

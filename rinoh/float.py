@@ -44,7 +44,8 @@ class ImageBase(Flowable):
             container.advance(- last_descender)
         top = float(container.cursor)
         left = self.left(image, container)
-        container.canvas.place_image(image, left, top, scale=self.scale)
+        container.canvas.place_image(image, left, top, container.document,
+                                     scale=self.scale)
         container.advance(float(image.height * self.scale))
         return image.width * self.scale, 0
 
