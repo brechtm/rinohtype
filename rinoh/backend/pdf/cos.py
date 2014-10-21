@@ -304,9 +304,9 @@ class Dictionary(Container, OrderedDict):
     type = None
     subtype = None
 
-    def __init__(self, indirect=False):
+    def __init__(self, indirect=False, **items):
         Container.__init__(self, indirect)
-        OrderedDict.__init__(self)
+        OrderedDict.__init__(self, **items)
         if self.__class__.type:
             self['Type'] = Name(self.__class__.type)
         if self.__class__.subtype:
