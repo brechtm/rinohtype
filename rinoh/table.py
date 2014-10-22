@@ -9,8 +9,8 @@
 from itertools import chain
 
 from .draw import Line
-from .flowable import Flowable
-from .layout import VirtualContainer
+from .flowable import Flowable, FlowableState
+from .layout import DownExpandingContainer, VirtualContainer, EndOfContainer
 from .dimension import PT
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
@@ -26,6 +26,18 @@ MIDDLE = 'middle'
 BOTTOM = 'bottom'
 
 
+class TableState(FlowableState):
+    def __init__(self, rendered_rows, row_heights, row_index=0):
+        super().__init__(row_index == 0)
+        self.rendered_rows = rendered_rows
+        self.row_heights = row_heights
+        self.row_index = row_index
+
+    def __copy__(self):
+        return self.__class__(self.rendered_rows, self.row_heights,
+                              self.row_index)
+
+
 class Table(Flowable):
     def __init__(self, body, head=None, column_widths=None,
                  id=None, style=None, parent=None):
@@ -39,10 +51,13 @@ class Table(Flowable):
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
-        rendered_rows, row_heights = self._render_cells(container)
-        rendered_rows = self._vertically_size_cells(rendered_rows, row_heights)
-        self._place_cells_and_render_borders(container, rendered_rows,
-                                                     row_heights)
+        if state is None:
+            rendered_rows, row_heights = self._render_cells(container)
+            rendered_rows = self._vertically_size_cells(rendered_rows,
+                                                        row_heights)
+            state = TableState(rendered_rows, row_heights)
+        # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
+        self._place_cells_and_render_borders(container, state)
         return container.width, 0
 
     def _render_cells(self, container):
@@ -112,20 +127,23 @@ class Table(Flowable):
         return rendered_rows
 
     @staticmethod
-    def _place_cells_and_render_borders(container, rendered_rows, row_heights):
+    def _place_cells_and_render_borders(container, state):
         """Place the rendered cells onto the page canvas and draw borders around
         them."""
-        def draw_cell_border(rendered_cell, cell_height, canvas):
+        def draw_cell_border(rendered_cell, cell_height, container):
             for position in ('top', 'right', 'bottom', 'left'):
                 border = TableCellBorder(rendered_cell, cell_height, position)
-                border.render(canvas)
+                border.render(container)
 
         document = container.document
-        canvas = container.canvas
         y_cursor = container.cursor
-        table_height = sum(row_heights)
-        container.advance(table_height)
-        for r, rendered_row in enumerate(rendered_rows):
+        row_index, row_heights = state.row_index, state.row_heights
+        for r, rendered_row in enumerate(state.rendered_rows[row_index:], row_index):
+            try:
+                container.advance(row_heights[r])
+            except EndOfContainer:
+                state.row_index = r
+                raise EndOfContainer(state)
             for c, rendered_cell in enumerate(rendered_row):
                 if rendered_cell.rowspan > 1:
                     cell_height = sum(row_heights[r:r + rendered_cell.rowspan])
@@ -133,9 +151,10 @@ class Table(Flowable):
                     cell_height = row_heights[r]
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
-                border_buffer = canvas.new()
-                draw_cell_border(rendered_cell, cell_height, border_buffer)
-                border_buffer.append(x_cursor, y_pos)
+                border_container = DownExpandingContainer('table cell border',
+                                                          container,
+                                                          x_cursor, y_pos)
+                draw_cell_border(rendered_cell, cell_height, border_container)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
                                                               document)
                 if vertical_align == TOP:
@@ -145,7 +164,7 @@ class Table(Flowable):
                 elif vertical_align == BOTTOM:
                     vertical_offset = (cell_height - rendered_cell.height)
                 y_offset = float(y_cursor + vertical_offset)
-                rendered_cell.container.place_at(x_cursor, y_offset)
+                rendered_cell.container.place_at(container, x_cursor, y_offset)
             y_cursor += row_heights[r]
 
 

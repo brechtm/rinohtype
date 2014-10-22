@@ -39,7 +39,7 @@ class ImageBase(Flowable):
         raise NotImplementedError
 
     def render(self, container, last_descender, state=None):
-        image = container.canvas.document.backend.Image(self.filename)
+        image = container.document.backend.Image(self.filename)
         if last_descender:
             container.advance(- last_descender)
         top = float(container.cursor)

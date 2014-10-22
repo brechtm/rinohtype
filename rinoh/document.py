@@ -54,13 +54,15 @@ class Page(Container):
             width, height = paper.width, paper.height
         elif orientation is LANDSCAPE:
             width, height = paper.height, paper.width
-        FlowableTarget.__init__(self, document)
-        Container.__init__(self, 'PAGE', None, 0, 0, width, height)
-        backend_document = self.document.backend_document
+        backend_document = document.backend_document
         self.backend_page = document.backend.Page(self, backend_document,
-                                                  self.width, self.height)
+                                                  width, height)
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
+        FlowableTarget.__init__(self, document)
+        Container.__init__(self, 'PAGE', None, 0, 0, width, height)
+
+    def empty_canvas(self):
         self.canvas = self.backend_page.canvas
 
     @property

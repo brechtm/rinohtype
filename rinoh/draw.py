@@ -57,11 +57,12 @@ class Line(Styled):
         self.start = start
         self.end = end
 
-    def render(self, canvas, offset=0):
+    def render(self, container, offset=0):
+        canvas, document = container.canvas, container.document
         points = self.start, self.end
         canvas.line_path(points)
-        canvas.stroke(self.get_style('stroke_width', canvas.document),
-                      self.get_style('stroke_color', canvas.document))
+        canvas.stroke(self.get_style('stroke_width', document),
+                      self.get_style('stroke_color', document))
 
 
 class ShapeStyle(LineStyle):
@@ -83,12 +84,13 @@ class Polygon(Shape):
         super().__init__(style=style, parent=parent)
         self.points = points
 
-    def render(self, canvas, offset=0):
+    def render(self, container, offset=0):
+        canvas, document = container.canvas, container.document
         canvas.line_path(self.points)
         canvas.close_path()
-        canvas.stroke_and_fill(self.get_style('stroke_width', canvas.document),
-                               self.get_style('stroke_color', canvas.document),
-                               self.get_style('fill_color', canvas.document))
+        canvas.stroke_and_fill(self.get_style('stroke_width', document),
+                               self.get_style('stroke_color', document),
+                               self.get_style('fill_color', document))
 
 
 class Rectangle(Polygon):

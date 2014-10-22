@@ -126,10 +126,10 @@ class ContainerBase(FlowableTarget):
 
         self.name = name
         self.parent = parent
-        if parent is not None:  # the Page subclass has no parent
+        if parent is not None:
             super().__init__(parent.document)
-            parent.children.append(self)
-            self.empty_canvas()
+            self.parent.children.append(self)
+        self.empty_canvas()
         self.children = []
         self.flowables = []
         self.chain = chain
@@ -206,10 +206,13 @@ class ContainerBase(FlowableTarget):
             if self.chain.render(self, rerender=rerender):
                 yield self.chain
 
-    def place(self):
-        """Place this container's canvas onto the parent container's canvas."""
+    def place_children(self):
         for child in self.children:
             child.place()
+
+    def place(self):
+        """Place this container's canvas onto the parent container's canvas."""
+        self.place_children()
         self.canvas.append(float(self.left), float(self.top))
 
 
@@ -268,7 +271,7 @@ class DownExpandingContainer(ExpandingContainer):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
-        top = top or parent.cursor
+        top = top or (parent.cursor if parent else 0)      # FIXME: fails if top == 0
         super().__init__(name, parent, left, top, width, right, None,
                          max_height)
 
@@ -323,26 +326,23 @@ def discard_state():
 
 
 class VirtualContainer(DownExpandingContainer):
-    """An infinitely down-expanding container who's contents are rendered, but
-    not placed on the parent container's canvas afterwards. It can later be
-    placed manually by using the :meth:`Canvas.append` method of the
-    container's :class:`Canvas`."""
+    """An infinitely down-expanding container whose contents are not
+    automatically placed on the canvas of the parent container's canvas. This
+    container's content needs to be placed explicitly using :meth:`place_at`."""
 
     def __init__(self, parent, width=None):
-        """Initialize this virtual container as a child of the `parent`
-        container.
+        """`width` specifies the width of the container."""
+        super().__init__('VIRTUAL', parent, width=width, max_height=float('+inf'))
 
-        `width` specifies the width of the container."""
-        super().__init__('VIRTUAL', parent, width=width,
-                         max_height=float('+inf'))
+    def empty_canvas(self):
+        self.canvas = self.document.backend.Canvas(None)
 
     def place(self):
         """This method has no effect."""
-        pass
 
-    def place_at(self, left, top):
-        for child in self.children:
-            child.place()
+    def place_at(self, container, left, top):
+        self.place_children()
+        self.canvas.parent = container.canvas
         self.canvas.append(float(left), float(top))
 
 

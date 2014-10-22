@@ -665,7 +665,7 @@ class Line(list):
                                            document)
             except InlineFlowableException:
                 top = cursor - span.height(document)
-                span.virtual_container.place_at(left, top)
+                span.virtual_container.place_at(container, left, top)
                 width = span.width
             current_annotation.update(span, left, width)
             left += width

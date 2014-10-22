@@ -51,4 +51,4 @@ class Framed(Flowable):
     def render_frame(self, container, container_height):
         width, height = float(container.width), - float(container_height)
         rect = Rectangle((0, 0), width, height, style=PARENT_STYLE, parent=self)
-        rect.render(container.canvas)
+        rect.render(container)
