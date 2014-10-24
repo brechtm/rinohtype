@@ -7,7 +7,7 @@ from rinoh import (
     GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Framed, HorizontalRule,
     Table, TableSection, TableHead, TableBody, TableRow, TableCell,
-    TableCellBorder, TableCellBackground, Every,
+    TableCellBorder, TableCellBackground,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, TOP, MIDDLE, BOTTOM,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
@@ -425,7 +425,8 @@ styles('table cell',
 styles('table body cell background on even row',
        ContextSelector(ClassSelector(TableBody),
                        ClassSelector(TableRow),
-                       ClassSelector(TableCell, row_index=Every(2), rowspan=1),
+                       ClassSelector(TableCell, row_index=slice(0, None, 2),
+                                     rowspan=1),
                        ClassSelector(TableCellBackground)),
        fill_color=GRAY90)
 
@@ -454,6 +455,13 @@ styles('table top border',
                        ClassSelector(TableCellBorder, position='top')),
        stroke_width=1*PT,
        stroke_color=Gray(0))
+
+styles('table bottom border',
+       ContextSelector(ClassSelector(TableBody),
+                       ClassSelector(TableRow, index=-1),
+                       ClassSelector(TableCell),
+                       ClassSelector(TableCellBorder, position='bottom')),
+       base='table top border')
 
 styles('table head inner border',
        ContextSelector(ClassSelector(TableHead),

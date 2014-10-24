@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from collections import Iterable
 from functools import partial
 
 from .draw import Line, Rectangle, ShapeStyle
@@ -19,7 +20,7 @@ from .style import Styled
 __all__ = ['Table', 'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle', 'TableCellBorder',
            'TableCellBackground',
-           'TOP', 'MIDDLE', 'BOTTOM', 'Every']
+           'TOP', 'MIDDLE', 'BOTTOM']
 
 
 TOP = 'top'
@@ -227,7 +228,9 @@ class TableRow(Styled):
 
     @property
     def index(self):
-        return self.parent.rows.index(self)
+        for row_index, row in enumerate(self.parent.rows):
+            if row is self:
+                return Index(row_index, len(self.parent.rows))
 
 
 class TableCellStyle(GroupedFlowablesStyle):
@@ -247,6 +250,32 @@ class TableCell(StaticGroupedFlowables):
     @property
     def row_index(self):
         return self.parent.index
+
+    @property
+    def column_index(self):
+        column_index = 0
+        for cell in self.parent.cells:
+            if cell is self:
+                return Index(column_index, self.parent.num_columns)
+            column_index += cell.colspan
+
+
+class Index(object):
+    def __init__(self, index, length):
+        self.index = index
+        self.length = length
+
+    def __eq__(self, indices):
+        if isinstance(indices, slice):
+            return self.index in range(*indices.indices(self.length))
+        elif isinstance(indices, Iterable):
+            return self.index in (index if index > 0 else index + self.length
+                                  for index in indices)
+        else:
+            if indices < 0:
+                indices += self.length
+            return indices == self.index
+
 
 class RenderedCell(object):
     def __init__(self, cell, container, x_position):
@@ -308,11 +337,3 @@ class TableCellBackgroundStyle(ShapeStyle):
 
 class TableCellBackground(Rectangle):
     style_class = TableCellBackgroundStyle
-
-
-class Every(object):
-    def __init__(self, value):
-        self.value = value
-
-    def __eq__(self, other):
-        return (other % self.value) == 0
