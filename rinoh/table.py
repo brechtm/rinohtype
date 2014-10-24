@@ -27,15 +27,13 @@ BOTTOM = 'bottom'
 
 
 class TableState(FlowableState):
-    def __init__(self, rendered_rows, row_heights, row_index=0):
+    def __init__(self, rendered_rows, row_index=0):
         super().__init__(row_index == 0)
         self.rendered_rows = rendered_rows
-        self.row_heights = row_heights
         self.row_index = row_index
 
     def __copy__(self):
-        return self.__class__(self.rendered_rows, self.row_heights,
-                              self.row_index)
+        return self.__class__(self.rendered_rows, self.row_index)
 
 
 class Table(Flowable):
@@ -51,11 +49,7 @@ class Table(Flowable):
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
-        if state is None:
-            rendered_rows, row_heights = self._render_cells(container)
-            rendered_rows = self._vertically_size_cells(rendered_rows,
-                                                        row_heights)
-            state = TableState(rendered_rows, row_heights)
+        state = state or self._render_cells(container)
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
         self._place_cells_and_render_borders(container, state)
         return container.width, 0
@@ -65,28 +59,32 @@ class Table(Flowable):
         total_width = sum(self.column_widths)
         column_widths = [table_width * width / total_width
                          for width in self.column_widths]
-        row_heights = []
-        rendered_rows = []
-        spanned_cells = set()
-        row_spanned_cells = {}
         rows = iter(self.body.rows)
         num_columns = self.body.rows[0].num_columns
         if self.head:
             rows = chain(iter(self.head.rows), rows)
+        rendered_rows = self._render_section(column_widths, container,
+                                             num_columns, rows)
+        rendered_rows = self._vertically_size_cells(rendered_rows)
+        return TableState(rendered_rows)
+
+    @classmethod
+    def _render_section(cls, column_widths, container, num_columns, rows):
+        spanned_cells = set()
+        row_spanned_cells = {}
+        rendered_rows = []
         for r, row in enumerate(rows):
-            rendered_row, row_height = \
-                self._render_row(column_widths, container, num_columns, r, row,
-                                 row_spanned_cells, spanned_cells)
-            row_heights.append(row_height)
+            rendered_row = cls._render_row(column_widths, container,
+                                           num_columns, r, row,
+                                           row_spanned_cells, spanned_cells)
             rendered_rows.append(rendered_row)
-        return rendered_rows, row_heights
+        return rendered_rows
 
     @staticmethod
     def _render_row(column_widths, container, num_columns, row_idx, row,
-                   row_spanned_cells, spanned_cells):
-        rendered_row = []
+                    row_spanned_cells, spanned_cells):
+        rendered_row = RenderedRow()
         x_cursor = 0
-        row_height = 0
         cells = iter(row.cells)
         for col_idx in range(num_columns):
             if (row_idx, col_idx) in spanned_cells:
@@ -94,14 +92,11 @@ class Table(Flowable):
                     x_cursor += row_spanned_cells[row_idx, col_idx].width
                 continue
             cell = next(cells)
-            cell_width = sum(column_widths[i]
-                             for i in range(col_idx, col_idx + cell.colspan))
+            cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
             buffer = VirtualContainer(container, cell_width * PT)
             width, descender = cell.flow(buffer, None)
             rendered_cell = RenderedCell(cell, buffer, x_cursor)
             rendered_row.append(rendered_cell)
-            if cell.rowspan == 1:
-                row_height = max(row_height, rendered_cell.height)
             x_cursor += cell_width
             for j in range(col_idx, col_idx + cell.colspan):
                 spanned_cells.add((row_idx, j))
@@ -109,21 +104,22 @@ class Table(Flowable):
                 row_spanned_cells[i, col_idx] = rendered_cell
                 for j in range(col_idx, col_idx + cell.colspan):
                     spanned_cells.add((i, j))
-        return rendered_row, row_height
+        return rendered_row
 
     @staticmethod
-    def _vertically_size_cells(rendered_rows, row_heights):
+    def _vertically_size_cells(rendered_rows):
         """Grow row heights to cater for vertically spanned cells that do not
         fit in the available space."""
         for r, rendered_row in enumerate(rendered_rows):
             for c, rendered_cell in enumerate(rendered_row):
                 if rendered_cell.rowspan > 1:
-                    row_height = sum(row_heights[r:r + rendered_cell.rowspan])
+                    row_height = sum(row.height for row in
+                                     rendered_rows[r:r + rendered_cell.rowspan])
                     shortage = rendered_cell.height - row_height
                     if shortage > 0:
                         padding = shortage / rendered_cell.rowspan
                         for i in range(r, r + rendered_cell.rowspan):
-                            row_heights[i] += padding
+                            rendered_rows[i].height += padding
         return rendered_rows
 
     @staticmethod
@@ -137,23 +133,21 @@ class Table(Flowable):
 
         document = container.document
         y_cursor = container.cursor
-        row_index, row_heights = state.row_index, state.row_heights
+        row_index = state.row_index
         for r, rendered_row in enumerate(state.rendered_rows[row_index:], row_index):
             try:
-                container.advance(row_heights[r])
+                container.advance(rendered_row.height)
             except EndOfContainer:
                 state.row_index = r
                 raise EndOfContainer(state)
             for c, rendered_cell in enumerate(rendered_row):
-                if rendered_cell.rowspan > 1:
-                    cell_height = sum(row_heights[r:r + rendered_cell.rowspan])
-                else:
-                    cell_height = row_heights[r]
+                cell_height = sum(row.height for row in
+                                  state.rendered_rows[r:r + rendered_cell.rowspan])
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
                 border_container = DownExpandingContainer('table cell border',
-                                                          container,
-                                                          x_cursor, y_pos)
+                                                          container, x_cursor,
+                                                          y_pos)
                 draw_cell_border(rendered_cell, cell_height, border_container)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
                                                               document)
@@ -165,7 +159,7 @@ class Table(Flowable):
                     vertical_offset = (cell_height - rendered_cell.height)
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(container, x_cursor, y_offset)
-            y_cursor += row_heights[r]
+            y_cursor += rendered_row.height
 
 
 class TableSection(Styled):
@@ -235,6 +229,17 @@ class RenderedCell(object):
     @property
     def rowspan(self):
         return self.cell.rowspan
+
+
+class RenderedRow(list):
+    def __init__(self):
+        super().__init__()
+        self.height = 0
+
+    def append(self, rendered_cell):
+        if rendered_cell.cell.rowspan == 1:
+            self.height = max(self.height, rendered_cell.height)
+        super().append(rendered_cell)
 
 
 class TableCellBorder(Line):
