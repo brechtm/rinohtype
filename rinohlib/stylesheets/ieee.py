@@ -434,10 +434,22 @@ styles('table body cell paragraph',
        ContextSelector(ClassSelector(TableBody),
                        ClassSelector(TableRow),
                        ClassSelector(TableCell),
+                       ...,
                        ClassSelector(Paragraph)),
        base='body',
        font_size=9*PT,
        indent_first=0)
+
+styles('table body cell list item number',
+       ContextSelector(ClassSelector(TableBody),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell),
+                       ...,
+                       ClassSelector(ListItem),
+                       ClassSelector(Paragraph)),
+       base='table body cell paragraph',
+       indent_first=0,
+       justify=RIGHT)
 
 styles('table head cell paragraph',
        ContextSelector(ClassSelector(TableHead),

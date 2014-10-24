@@ -311,12 +311,26 @@ class ContextSelector(Selector):
 
     def match(self, styled):
         total_score = Specificity(0, 0, 0)
-        for selector in reversed(self.selectors):
+        selectors = reversed(self.selectors)
+        selector = next(selectors)
+        while True:
             if styled is None:
                 return Specificity(0, 0, 0)
+            if selector is Ellipsis:
+                selector = next(selectors)
+                while True:
+                    if selector.match(styled):
+                        break
+                    styled = styled.parent
+                    if styled is None:
+                        return Specificity(0, 0, 0)
             score = selector.match(styled)
             if not score:
                 return Specificity(0, 0, 0)
             total_score += score
             styled = styled.parent
+            try:
+                selector = next(selectors)
+            except StopIteration:
+                break
         return total_score
