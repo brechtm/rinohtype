@@ -6,11 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from itertools import chain
+from functools import partial
 
 from .draw import Line
 from .flowable import Flowable, FlowableStyle, FlowableState
-from .layout import DownExpandingContainer, VirtualContainer, EndOfContainer
+from .layout import (DownExpandingContainer, MaybeContainer, VirtualContainer,
+                     EndOfContainer)
 from .dimension import PT
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
@@ -38,7 +39,11 @@ class TableState(FlowableState):
 
 
 class TableStyle(FlowableStyle):
-    attributes = {'repeat_head': False}
+    attributes = {'split_minimum_rows': 5,
+                  'repeat_head': False}
+
+
+NEVER_SPLIT = float('+inf')
 
 
 class Table(Flowable):
@@ -58,16 +63,21 @@ class Table(Flowable):
         # TODO: allow data to override style (align)
         state = state or self._render_cells(container)
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
-        repeat_head = self.get_style('repeat_head', container.document)
-        if self.head and (state.initial or repeat_head):
-            self._place_cells_and_render_borders(container, state.head_rows)
-        try:
-            self._place_cells_and_render_borders(container, state.body_rows,
-                                                 state.row_index)
-        except EndOfContainer as e:
-            state.row_index = e.flowable_state
-            state.initial = state.row_index == 0
-            raise EndOfContainer(state)
+        get_style = partial(self.get_style, document=container.document)
+        with MaybeContainer(container) as maybe_container:
+            if self.head and (state.initial or get_style('repeat_head')):
+                self._place_cells_and_render_borders(maybe_container,
+                                                     state.head_rows)
+            try:
+                self._place_cells_and_render_borders(maybe_container,
+                                                     state.body_rows,
+                                                     state.row_index)
+            except EndOfContainer as e:
+                row_index = e.flowable_state
+                if row_index >= get_style('split_minimum_rows'):
+                    state.row_index = row_index
+                    state.initial = row_index == 0
+                raise EndOfContainer(state)
         return container.width, 0
 
     def _render_cells(self, container):

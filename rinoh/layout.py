@@ -166,6 +166,7 @@ class ContainerBase(FlowableTarget):
         exception is raised."""
         self.cursor += height
         if check_overflow and self.cursor > self.height:
+            self.cursor -= height
             raise EndOfContainer
 
     def check_overflow(self):
@@ -304,8 +305,10 @@ class MaybeContainer(DownExpandingContainer):
         return self
 
     def __exit__(self, exc_type, exc_value, _):
-        if (exc_type is None or (issubclass(exc_type, EndOfContainer)
-                                 and exc_value.flowable_state)):
+        if (exc_type is None
+            or (issubclass(exc_type, EndOfContainer)
+                and (exc_value.flowable_state
+                     and not exc_value.flowable_state.initial))):
             self.do_place()
 
     def do_place(self):
