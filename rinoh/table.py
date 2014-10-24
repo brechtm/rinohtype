@@ -27,13 +27,14 @@ BOTTOM = 'bottom'
 
 
 class TableState(FlowableState):
-    def __init__(self, rendered_rows, row_index=0):
+    def __init__(self, head_rows, body_rows, row_index=0):
         super().__init__(row_index == 0)
-        self.rendered_rows = rendered_rows
+        self.head_rows = head_rows
+        self.body_rows = body_rows
         self.row_index = row_index
 
     def __copy__(self):
-        return self.__class__(self.rendered_rows, self.row_index)
+        return self.__class__(self.head_rows, self.body_rows, self.row_index)
 
 
 class Table(Flowable):
@@ -51,7 +52,14 @@ class Table(Flowable):
         # TODO: allow data to override style (align)
         state = state or self._render_cells(container)
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
-        self._place_cells_and_render_borders(container, state)
+        if self.head:
+            self._place_cells_and_render_borders(container, state.head_rows)
+        try:
+            self._place_cells_and_render_borders(container, state.body_rows,
+                                                 state.row_index)
+        except EndOfContainer as e:
+            state.row_index = e.flowable_state
+            raise EndOfContainer(state)
         return container.width, 0
 
     def _render_cells(self, container):
@@ -59,14 +67,13 @@ class Table(Flowable):
         total_width = sum(self.column_widths)
         column_widths = [table_width * width / total_width
                          for width in self.column_widths]
-        rows = iter(self.body.rows)
         num_columns = self.body.rows[0].num_columns
-        if self.head:
-            rows = chain(iter(self.head.rows), rows)
-        rendered_rows = self._render_section(column_widths, container,
-                                             num_columns, rows)
-        rendered_rows = self._vertically_size_cells(rendered_rows)
-        return TableState(rendered_rows)
+        head_rows = (self._render_section(column_widths, container, num_columns,
+                                          self.head.rows)
+                     if self.head else None)
+        body_rows = self._render_section(column_widths, container, num_columns,
+                                         self.body.rows)
+        return TableState(head_rows, body_rows)
 
     @classmethod
     def _render_section(cls, column_widths, container, num_columns, rows):
@@ -78,6 +85,7 @@ class Table(Flowable):
                                            num_columns, r, row,
                                            row_spanned_cells, spanned_cells)
             rendered_rows.append(rendered_row)
+        rendered_rows = cls._vertically_size_cells(rendered_rows)
         return rendered_rows
 
     @staticmethod
@@ -123,7 +131,7 @@ class Table(Flowable):
         return rendered_rows
 
     @staticmethod
-    def _place_cells_and_render_borders(container, state):
+    def _place_cells_and_render_borders(container, rendered_rows, row_index=0):
         """Place the rendered cells onto the page canvas and draw borders around
         them."""
         def draw_cell_border(rendered_cell, cell_height, container):
@@ -133,16 +141,14 @@ class Table(Flowable):
 
         document = container.document
         y_cursor = container.cursor
-        row_index = state.row_index
-        for r, rendered_row in enumerate(state.rendered_rows[row_index:], row_index):
+        for r, rendered_row in enumerate(rendered_rows[row_index:], row_index):
             try:
                 container.advance(rendered_row.height)
             except EndOfContainer:
-                state.row_index = r
-                raise EndOfContainer(state)
+                raise EndOfContainer(r)
             for c, rendered_cell in enumerate(rendered_row):
-                cell_height = sum(row.height for row in
-                                  state.rendered_rows[r:r + rendered_cell.rowspan])
+                cell_height = sum(rendered_row.height for rendered_row in
+                                  rendered_rows[r:r + rendered_cell.rowspan])
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
                 border_container = DownExpandingContainer('table cell border',
