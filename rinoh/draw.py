@@ -59,10 +59,14 @@ class Line(Styled):
 
     def render(self, container, offset=0):
         canvas, document = container.canvas, container.document
-        points = self.start, self.end
-        canvas.line_path(points)
-        canvas.stroke(self.get_style('stroke_width', document),
-                      self.get_style('stroke_color', document))
+        stroke_width = self.get_style('stroke_width', document)
+        stroke_color = self.get_style('stroke_color', document)
+        if not (stroke_width and stroke_color):
+            return
+        with canvas.save_state():
+            points = self.start, self.end
+            canvas.line_path(points)
+            canvas.stroke(stroke_width, stroke_color)
 
 
 class ShapeStyle(LineStyle):
@@ -86,11 +90,21 @@ class Polygon(Shape):
 
     def render(self, container, offset=0):
         canvas, document = container.canvas, container.document
-        canvas.line_path(self.points)
-        canvas.close_path()
-        canvas.stroke_and_fill(self.get_style('stroke_width', document),
-                               self.get_style('stroke_color', document),
-                               self.get_style('fill_color', document))
+        stroke_width = self.get_style('stroke_width', document)
+        stroke_color = self.get_style('stroke_color', document)
+        fill_color = self.get_style('fill_color', document)
+        if not ((stroke_width and stroke_color) or fill_color):
+            return
+        with canvas.save_state():
+            canvas.line_path(self.points)
+            canvas.close_path()
+            if stroke_width and stroke_color and fill_color:
+                canvas.stroke_and_fill(stroke_width, stroke_color,
+                                       fill_color)
+            elif stroke_width and stroke_color:
+                canvas.stroke(stroke_width, stroke_color)
+            elif fill_color:
+                canvas.fill(fill_color)
 
 
 class Rectangle(Polygon):

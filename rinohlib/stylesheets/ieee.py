@@ -6,11 +6,12 @@ from rinoh import (
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
     Header, Footer, Figure, Caption, Framed, HorizontalRule,
-    Table, TableSection, TableHead, TableBody, TableRow, TableCell, TableCellBorder,
+    Table, TableSection, TableHead, TableBody, TableRow, TableCell,
+    TableCellBorder, TableCellBackground, Every,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
     DEFAULT, LEFT, RIGHT, CENTER, BOTH, TOP, MIDDLE, BOTTOM,
     NUMBER, ROMAN_UC, CHARACTER_UC, SYMBOL,
-    PT, INCH, CM, RED, BLUE, Color, Gray
+    PT, INCH, CM, RED, BLUE, GRAY90, Color, Gray
 )
 
 from rinoh.font import TypeFamily
@@ -420,9 +421,16 @@ styles('table cell',
        margin_right=2*PT,
        vertical_align=MIDDLE)
 
+
+styles('table body cell background on even row',
+       ContextSelector(ClassSelector(TableBody),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell, row_index=Every(2), rowspan=1),
+                       ClassSelector(TableCellBackground)),
+       fill_color=GRAY90)
+
 styles('table body cell paragraph',
-       ContextSelector(ClassSelector(Table),
-                       ClassSelector(TableBody),
+       ContextSelector(ClassSelector(TableBody),
                        ClassSelector(TableRow),
                        ClassSelector(TableCell),
                        ClassSelector(Paragraph)),
@@ -431,8 +439,7 @@ styles('table body cell paragraph',
        indent_first=0)
 
 styles('table head cell paragraph',
-       ContextSelector(ClassSelector(Table),
-                       ClassSelector(TableHead),
+       ContextSelector(ClassSelector(TableHead),
                        ClassSelector(TableRow),
                        ClassSelector(TableCell),
                        ClassSelector(Paragraph)),
@@ -440,38 +447,28 @@ styles('table head cell paragraph',
        font_weight=BOLD,
        justify=CENTER)
 
-styles('table head cell border',
-       ContextSelector(ClassSelector(Table),
-                       ClassSelector(TableHead),
-                       ClassSelector(TableRow),
+styles('table top border',
+       ContextSelector(ClassSelector(TableHead),
+                       ClassSelector(TableRow, index=0),
                        ClassSelector(TableCell),
-                       ClassSelector(TableCellBorder)),
-       stroke_width=2*PT)
+                       ClassSelector(TableCellBorder, position='top')),
+       stroke_width=1*PT,
+       stroke_color=Gray(0))
 
-styles('table head cell bottom border',
-       ContextSelector(ClassSelector(Table),
-                       ClassSelector(TableHead),
+styles('table head inner border',
+       ContextSelector(ClassSelector(TableHead),
                        ClassSelector(TableRow),
                        ClassSelector(TableCell),
                        ClassSelector(TableCellBorder, position='bottom')),
-       stroke_width=2*PT,
-       stroke_color=RED)
+       base='table top border',
+       stroke_width=0.5*PT)
 
-# styles('first row', ClassSelector(Tabular, 'NOMATCH'),  # TODO: find proper fix
-#        font_weight=BOLD,
-#        bottom_border='thick line')
-#
-# styles('first column', ClassSelector(Tabular, 'NOMATCH'),
-#        font_slant=ITALIC,
-#        right_border='thick line')
-#
-# styles('numbers', ClassSelector(Tabular, 'NOMATCH'),
-#        typeface=ieee_family.mono)
-#
-# styles['tabular'].set_cell_style(styles['first row'], rows=0)
-# styles['tabular'].set_cell_style(styles['first column'], cols=0)
-# styles['tabular'].set_cell_style(styles['numbers'], rows=slice(1,None),
-#                                  cols=slice(1,None))
+styles('table body top border',
+       ContextSelector(ClassSelector(TableBody),
+                       ClassSelector(TableRow, index=0),
+                       ClassSelector(TableCell),
+                       ClassSelector(TableCellBorder, position='top')),
+       base='table head inner border')
 
 styles('horizontal rule', ClassSelector(HorizontalRule),
        space_above=10*PT,

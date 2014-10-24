@@ -8,10 +8,9 @@
 
 from functools import partial
 
-from .draw import Line
+from .draw import Line, Rectangle, ShapeStyle
 from .flowable import Flowable, FlowableStyle, FlowableState
-from .layout import (DownExpandingContainer, MaybeContainer, VirtualContainer,
-                     EndOfContainer)
+from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .dimension import PT
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
@@ -19,7 +18,8 @@ from .style import Styled
 
 __all__ = ['Table', 'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle', 'TableCellBorder',
-           'TOP', 'MIDDLE', 'BOTTOM']
+           'TableCellBackground',
+           'TOP', 'MIDDLE', 'BOTTOM', 'Every']
 
 
 TOP = 'top'
@@ -108,15 +108,15 @@ class Table(Flowable):
         return rendered_rows
 
     @staticmethod
-    def _render_row(column_widths, container, num_columns, row_idx, row,
+    def _render_row(column_widths, container, num_columns, row_index, row,
                     row_spanned_cells, spanned_cells):
-        rendered_row = RenderedRow()
+        rendered_row = RenderedRow(row_index, row)
         x_cursor = 0
         cells = iter(row.cells)
         for col_idx in range(num_columns):
-            if (row_idx, col_idx) in spanned_cells:
-                if (row_idx, col_idx) in row_spanned_cells:
-                    x_cursor += row_spanned_cells[row_idx, col_idx].width
+            if (row_index, col_idx) in spanned_cells:
+                if (row_index, col_idx) in row_spanned_cells:
+                    x_cursor += row_spanned_cells[row_index, col_idx].width
                 continue
             cell = next(cells)
             cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
@@ -126,8 +126,8 @@ class Table(Flowable):
             rendered_row.append(rendered_cell)
             x_cursor += cell_width
             for j in range(col_idx, col_idx + cell.colspan):
-                spanned_cells.add((row_idx, j))
-            for i in range(row_idx + 1, row_idx + cell.rowspan):
+                spanned_cells.add((row_index, j))
+            for i in range(row_index + 1, row_index + cell.rowspan):
                 row_spanned_cells[i, col_idx] = rendered_cell
                 for j in range(col_idx, col_idx + cell.colspan):
                     spanned_cells.add((i, j))
@@ -154,6 +154,10 @@ class Table(Flowable):
         """Place the rendered cells onto the page canvas and draw borders around
         them."""
         def draw_cell_border(rendered_cell, cell_height, container):
+            cell_width = rendered_cell.width
+            background = TableCellBackground((0, 0), cell_width, cell_height,
+                                             parent=rendered_cell.cell)
+            background.render(container)
             for position in ('top', 'right', 'bottom', 'left'):
                 border = TableCellBorder(rendered_cell, cell_height, position)
                 border.render(container)
@@ -170,10 +174,9 @@ class Table(Flowable):
                                   rendered_rows[r:r + rendered_cell.rowspan])
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
-                border_container = DownExpandingContainer('table cell border',
-                                                          container, x_cursor,
-                                                          y_pos)
-                draw_cell_border(rendered_cell, cell_height, border_container)
+                cell_container = VirtualContainer(container)
+                draw_cell_border(rendered_cell, cell_height, cell_container)
+                cell_container.place_at(container, x_cursor, y_pos)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
                                                               document)
                 if vertical_align == TOP:
@@ -222,9 +225,14 @@ class TableRow(Styled):
         for cells in self.cells:
             cells.prepare(document)
 
+    @property
+    def index(self):
+        return self.parent.rows.index(self)
+
 
 class TableCellStyle(GroupedFlowablesStyle):
-    attributes = {'vertical_align': MIDDLE}
+    attributes = {'vertical_align': MIDDLE,
+                  'background_color': None}
 
 
 class TableCell(StaticGroupedFlowables):
@@ -236,6 +244,9 @@ class TableCell(StaticGroupedFlowables):
         self.rowspan = rowspan
         self.colspan = colspan
 
+    @property
+    def row_index(self):
+        return self.parent.index
 
 class RenderedCell(object):
     def __init__(self, cell, container, x_position):
@@ -257,8 +268,10 @@ class RenderedCell(object):
 
 
 class RenderedRow(list):
-    def __init__(self):
+    def __init__(self, index, row):
         super().__init__()
+        self.index = index
+        self.row = row
         self.height = 0
 
     def append(self, rendered_cell):
@@ -267,7 +280,13 @@ class RenderedRow(list):
         super().append(rendered_cell)
 
 
+class TableCellBorderStyle(ShapeStyle):
+    attributes = {'stroke_width': None}
+
+
 class TableCellBorder(Line):
+    style_class = TableCellBorderStyle
+
     def __init__(self, rendered_cell, cell_height, position, style=None):
         left, bottom, right, top = 0, 0, rendered_cell.width, cell_height
         if position == 'top':
@@ -280,3 +299,20 @@ class TableCellBorder(Line):
             start, end = (left, bottom), (left, top)
         super().__init__(start, end, style=style, parent=rendered_cell.cell)
         self.position = position
+
+
+class TableCellBackgroundStyle(ShapeStyle):
+    attributes = {'fill_color': None,
+                  'stroke_color': None}
+
+
+class TableCellBackground(Rectangle):
+    style_class = TableCellBackgroundStyle
+
+
+class Every(object):
+    def __init__(self, value):
+        self.value = value
+
+    def __eq__(self, other):
+        return (other % self.value) == 0

@@ -233,6 +233,7 @@ class StyleSheet(OrderedDict):
         super().__setitem__(name, style)
 
     def __call__(self, name, selector, **kwargs):
+        assert name not in self
         self[name] = selector.cls.style_class(**kwargs)
         self.selectors[selector] = name
 
