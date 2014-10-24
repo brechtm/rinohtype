@@ -9,7 +9,7 @@
 from itertools import chain
 
 from .draw import Line
-from .flowable import Flowable, FlowableState
+from .flowable import Flowable, FlowableStyle, FlowableState
 from .layout import DownExpandingContainer, VirtualContainer, EndOfContainer
 from .dimension import PT
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
@@ -37,7 +37,13 @@ class TableState(FlowableState):
         return self.__class__(self.head_rows, self.body_rows, self.row_index)
 
 
+class TableStyle(FlowableStyle):
+    attributes = {'repeat_head': False}
+
+
 class Table(Flowable):
+    style_class = TableStyle
+
     def __init__(self, body, head=None, column_widths=None,
                  id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
@@ -52,13 +58,15 @@ class Table(Flowable):
         # TODO: allow data to override style (align)
         state = state or self._render_cells(container)
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
-        if self.head:
+        repeat_head = self.get_style('repeat_head', container.document)
+        if self.head and (state.initial or repeat_head):
             self._place_cells_and_render_borders(container, state.head_rows)
         try:
             self._place_cells_and_render_borders(container, state.body_rows,
                                                  state.row_index)
         except EndOfContainer as e:
             state.row_index = e.flowable_state
+            state.initial = state.row_index == 0
             raise EndOfContainer(state)
         return container.width, 0
 
