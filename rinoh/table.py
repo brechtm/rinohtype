@@ -73,10 +73,11 @@ class Table(Flowable):
                                                      state.body_rows,
                                                      state.row_index)
             except EndOfContainer as e:
-                row_index = e.flowable_state
-                if row_index >= get_style('split_minimum_rows'):
-                    state.row_index = row_index
-                    state.initial = row_index == 0
+                rows_set = e.flowable_state
+                rows_left = len(self.body.rows) - rows_set
+                if min(rows_set, rows_left) >= get_style('split_minimum_rows'):
+                    state.row_index = rows_set
+                    state.initial = rows_set == 0
                 raise EndOfContainer(state)
         return container.width, 0
 
