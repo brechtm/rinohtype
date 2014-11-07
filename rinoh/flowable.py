@@ -285,12 +285,14 @@ class LabeledFlowable(Flowable):
         # TODO: line up baseline of label and first flowable
         label_column_min_width = self.get_style('label_min_width', container.document)
         label_column_max_width = self.get_style('label_max_width', container.document)
+        label_spacing = self.get_style('label_spacing', container.document)
         wrap_label = self.get_style('wrap_label', container.document)
 
         label_width = self.label_width(container)
         max_label_width = max_label_width or label_width
         label_column_width = max(label_column_min_width,
                                  min(max_label_width, label_column_max_width))
+        left = label_column_width + label_spacing
         label_spillover = not wrap_label and label_width > label_column_width
 
         def render_label(container):
@@ -301,14 +303,13 @@ class LabeledFlowable(Flowable):
             return label_container.cursor, descender
 
         def render_content(container, descender):
-            label_spacing = self.get_style('label_spacing', container.document)
-            left = label_column_width + label_spacing
             content_container = DownExpandingContainer('CONTENT', container,
                                                        left=left)
-            _, descender = self.flowable.flow(content_container, descender,
-                                              state=state)
-            return content_container.cursor, descender
+            width, descender = self.flowable.flow(content_container, descender,
+                                                  state=state)
+            return width, content_container.cursor, descender
 
+        max_width = 0
         with MaybeContainer(container) as maybe_container:
             if not state:
                 with discard_state():
@@ -318,8 +319,9 @@ class LabeledFlowable(Flowable):
                         last_descender = label_desc
             else:
                 label_height = label_desc = 0
-            content_height, content_desc = render_content(maybe_container,
-                                                          last_descender)
+            width, content_height, content_desc = \
+                render_content(maybe_container, last_descender)
+            max_width = max(max_width, width)
             if label_spillover:
                 container.advance(content_height)
                 descender = content_desc
@@ -330,7 +332,7 @@ class LabeledFlowable(Flowable):
                 else:
                     container.advance(label_height)
                     descender = label_desc
-        return container.width, descender
+        return left + max_width, descender
 
 
 class GroupedLabeledFlowables(GroupedFlowables):
