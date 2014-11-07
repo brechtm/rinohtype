@@ -7,6 +7,7 @@
 
 
 from collections import Iterable
+from itertools import chain
 from functools import partial
 
 from .draw import Line, Rectangle, ShapeStyle
@@ -62,7 +63,10 @@ class Table(Flowable):
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
-        state = state or self._render_cells(container)
+        if not state:
+            state = self._render_cells(container)
+            col_widths = self.size_columns(state, container)
+            state = self._render_cells(container, col_widths)
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
         get_style = partial(self.get_style, document=container.document)
         with MaybeContainer(container) as maybe_container:
@@ -82,11 +86,53 @@ class Table(Flowable):
                 raise EndOfContainer(state)
         return container.width, 0
 
-    def _render_cells(self, container):
-        table_width = float(container.width)
-        total_width = sum(self.column_widths)
-        column_widths = [table_width * width / total_width
-                         for width in self.column_widths]
+    def size_columns(self, state, container):
+        # TODO: head cells
+        min_column_width = [0] * self.body.rows[0].num_columns
+        max_column_width = [0] * self.body.rows[0].num_columns
+        for i, row in enumerate(chain(state.head_rows or [], state.body_rows)):
+            print('row', i, end=' ')
+            for cell in row:
+                print('{:3.0f}/{:3.0f}'.format(cell.min_width, cell.max_width),
+                      end='   ')
+                if cell.cell.colspan > 1:
+                    continue
+                c = cell.cell.column_index.index
+                min_column_width[c] = max(min_column_width[c], cell.min_width)
+                max_column_width[c] = max(max_column_width[c], cell.max_width)
+            print()
+        for row in chain(state.head_rows or [], state.body_rows):
+            for cell in row:
+                if cell.cell.colspan < 2:
+                    continue
+                c = cell.cell.column_index.index
+                c_end = c + cell.cell.colspan
+                min_extra = cell.min_width - sum(min_column_width[c:c_end])
+                max_extra = cell.max_width - sum(max_column_width[c:c_end])
+                if min_extra > 0:
+                    min_extra_width = min_extra / cell.cell.colspan
+                    for i in range(cell.cell.colspan):
+                        min_column_width[c + i] += min_extra_width
+                if max_extra > 0:
+                    max_extra_width = max_extra / cell.cell.colspan
+                    for i in range(cell.cell.colspan):
+                        max_column_width[c + i] += max_extra_width
+        min_total_width = sum(min_column_width)
+        max_total_width = sum(max_column_width)
+        print('>>>>>>>>>>>>>>>', min_total_width, max_total_width, container.width)
+        if max_total_width < container.width:
+            return max_column_width
+        else:
+            scale = container.width / min_total_width
+            print(sum([width * scale for width in min_column_width]))
+            return [width * scale for width in min_column_width]
+
+    def _render_cells(self, container, column_widths=None):
+        # if column_widths is None:
+        #     table_width = float(container.width)
+        #     total_width = sum(self.column_widths)
+        #     column_widths = [table_width * width / total_width
+        #                      for width in self.column_widths]
         num_columns = self.body.rows[0].num_columns
         head_rows = (self._render_section(column_widths, container, num_columns,
                                           self.head.rows)
@@ -120,10 +166,19 @@ class Table(Flowable):
                     x_cursor += row_spanned_cells[row_index, col_idx].width
                 continue
             cell = next(cells)
-            cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
-            buffer = VirtualContainer(container, cell_width * PT)
+            if column_widths:
+                cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
+                buffer = VirtualContainer(container, cell_width)
+                min_width = max_width = 0
+            else:
+                cell_width = 0
+                buffer = min_buffer = VirtualContainer(container, 0)
+                max_buffer = VirtualContainer(container, float('+inf'))
+                min_width, descender = cell.flow(min_buffer, None)
+                max_width, descender = cell.flow(max_buffer, None)
+            # print('width: {}     height: {}'.format(width, buffer.height))
             width, descender = cell.flow(buffer, None)
-            rendered_cell = RenderedCell(cell, buffer, x_cursor)
+            rendered_cell = RenderedCell(cell, buffer, x_cursor, min_width, max_width)
             rendered_row.append(rendered_cell)
             x_cursor += cell_width
             for j in range(col_idx, col_idx + cell.colspan):
@@ -278,10 +333,12 @@ class Index(object):
 
 
 class RenderedCell(object):
-    def __init__(self, cell, container, x_position):
+    def __init__(self, cell, container, x_position, min_width, max_width):
         self.cell = cell
         self.container = container
         self.x_position = x_position
+        self.min_width = float(min_width)
+        self.max_width = float(max_width)
 
     @property
     def width(self):
