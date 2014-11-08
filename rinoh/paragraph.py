@@ -592,11 +592,11 @@ class Line(list):
                 self._current_tab = None
             self.cursor -= tab_width
         if self.cursor + width > self.width:
-            if not self:
+            if self:
+                return False
+            elif self.width > 0:
                 first_glyphs_span.span.warn('item too long to fit on line',
                                             self.container)
-            else:
-                return False
         self.cursor += width
         for glyphs_span, chars in word_or_inline:
             self.append(glyphs_span)
