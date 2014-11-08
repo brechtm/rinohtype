@@ -9,6 +9,7 @@
 from collections import Iterable
 from itertools import chain
 from functools import partial
+from math import sqrt
 
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import Flowable, FlowableStyle, FlowableState
@@ -87,7 +88,6 @@ class Table(Flowable):
         return container.width, 0
 
     def size_columns(self, state, container):
-        # TODO: head cells
         min_column_width = [0] * self.body.rows[0].num_columns
         max_column_width = [0] * self.body.rows[0].num_columns
         for i, row in enumerate(chain(state.head_rows or [], state.body_rows)):
@@ -121,18 +121,24 @@ class Table(Flowable):
         max_total_width = sum(max_column_width)
         print('>>>>>>>>>>>>>>>', min_total_width, max_total_width, container.width)
         if max_total_width < container.width:
-            return max_column_width
+            if self.column_widths:
+                factors = [req_width / col_width for req_width, col_width
+                           in zip(self.column_widths, max_column_width)]
+                factor = min(factors)
+                new_widths = [width / factor for width in self.column_widths]
+                if sum(new_widths) < container.width:
+                    return new_widths
+            else:
+                return max_column_width
+        elif self.column_widths:
+            new_widths = self.column_widths
         else:
-            scale = container.width / min_total_width
-            print(sum([width * scale for width in min_column_width]))
-            return [width * scale for width in min_column_width]
+            new_widths = [sqrt(min_width * max_width) for min_width, max_width
+                          in zip(min_column_width, max_column_width)]
+        scale = float(container.width) / sum(new_widths)
+        return [width * scale for width in new_widths]
 
     def _render_cells(self, container, column_widths=None):
-        # if column_widths is None:
-        #     table_width = float(container.width)
-        #     total_width = sum(self.column_widths)
-        #     column_widths = [table_width * width / total_width
-        #                      for width in self.column_widths]
         num_columns = self.body.rows[0].num_columns
         head_rows = (self._render_section(column_widths, container, num_columns,
                                           self.head.rows)
@@ -176,7 +182,6 @@ class Table(Flowable):
                 max_buffer = VirtualContainer(container, float('+inf'))
                 min_width, descender = cell.flow(min_buffer, None)
                 max_width, descender = cell.flow(max_buffer, None)
-            # print('width: {}     height: {}'.format(width, buffer.height))
             width, descender = cell.flow(buffer, None)
             rendered_cell = RenderedCell(cell, buffer, x_cursor, min_width, max_width)
             rendered_row.append(rendered_cell)
