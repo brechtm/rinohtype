@@ -61,7 +61,7 @@ class Image(ImageBase, HorizontallyAlignedFlowable):
         if align == LEFT:
             return 0
         elif align == RIGHT:
-            return float(container.width)
+            return float(container.width - image.width * self.scale)
         elif align == CENTER:
             return float(container.width - image.width * self.scale) / 2
 
