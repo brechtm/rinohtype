@@ -14,7 +14,6 @@ from math import sqrt
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .dimension import PT
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 
@@ -72,8 +71,11 @@ class Table(Flowable):
         get_style = partial(self.get_style, document=container.document)
         with MaybeContainer(container) as maybe_container:
             if self.head and (state.initial or get_style('repeat_head')):
-                self._place_cells_and_render_borders(maybe_container,
-                                                     state.head_rows)
+                try:
+                    self._place_cells_and_render_borders(maybe_container,
+                                                         state.head_rows)
+                except EndOfContainer:
+                    raise EndOfContainer(state)
             try:
                 self._place_cells_and_render_borders(maybe_container,
                                                      state.body_rows,
