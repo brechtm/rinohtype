@@ -419,6 +419,11 @@ styles('red line', ClassSelector(Line),
 styles('thick line', ClassSelector(Line),
        stroke_width=1*PT)
 
+styles('table', ClassSelector(Table),
+       space_above=5*PT,
+       space_below=5*PT,
+       horizontal_align=CENTER)
+
 styles('table cell',
        ContextSelector(ClassSelector(Table),
                        ClassSelector(TableSection),

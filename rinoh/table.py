@@ -67,6 +67,7 @@ class Table(Flowable):
             state = self._render_cells(container)
             col_widths = self.size_columns(state, container)
             state = self._render_cells(container, col_widths)
+            state.col_widths = col_widths
         # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
         get_style = partial(self.get_style, document=container.document)
         with MaybeContainer(container) as maybe_container:
@@ -87,7 +88,7 @@ class Table(Flowable):
                     state.row_index = rows_set
                     state.initial = rows_set == 0
                 raise EndOfContainer(state)
-        return container.width, 0
+        return sum(state.col_widths), 0
 
     def size_columns(self, state, container):
         min_column_width = [0] * self.body.rows[0].num_columns
