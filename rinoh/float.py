@@ -21,15 +21,7 @@ CENTER = 'center'
 RIGHT = 'right'
 
 
-class HorizontallyAlignedFlowableStyle(FlowableStyle):
-    attributes = {'horizontal_align': CENTER}
-
-
-class HorizontallyAlignedFlowable(Flowable):
-    style_class = HorizontallyAlignedFlowableStyle
-
-
-class ImageBase(Flowable):
+class Image(Flowable):
     def __init__(self, filename, scale=1.0, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.filename = filename
@@ -42,28 +34,15 @@ class ImageBase(Flowable):
         image = container.document.backend.Image(self.filename)
         if last_descender:
             container.advance(- last_descender)
-        top = float(container.cursor)
-        left = self.left(image, container)
+        left, top = 0, float(container.cursor)
         container.canvas.place_image(image, left, top, container.document,
                                      scale=self.scale)
         container.advance(float(image.height * self.scale))
         return image.width * self.scale, 0
 
 
-class InlineImage(ImageBase, InlineFlowable):
-    def left(self, image, container):
-        return 0
-
-
-class Image(ImageBase, HorizontallyAlignedFlowable):
-    def left(self, image, container):
-        align = self.get_style('horizontal_align', container.document)
-        if align == LEFT:
-            return 0
-        elif align == RIGHT:
-            return float(container.width - image.width * self.scale)
-        elif align == CENTER:
-            return float(container.width - image.width * self.scale) / 2
+class InlineImage(Image, InlineFlowable):
+    pass
 
 
 class Caption(NumberedParagraph):

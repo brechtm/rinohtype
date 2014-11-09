@@ -34,6 +34,11 @@ __all__ = ['Flowable', 'FlowableStyle',
            'Float']
 
 
+LEFT = 'left'
+CENTER = 'center'
+RIGHT = 'right'
+
+
 class FlowableStyle(Style):
     """The :class:`Style` for :class:`Flowable` objects. It has the following
     attributes:
@@ -42,12 +47,15 @@ class FlowableStyle(Style):
     * `space_below`: Vertical space following the flowable (:class:`Dimension`)
     * `margin_left`: Left margin (class:`Dimension`).
     * `margin_right`: Right margin (class:`Dimension`).
+    * `horizontal_align`: Alignment of the rendered flowable between the left
+                          and right margins (`LEFT`, `CENTER` or `RIGHT`).
     """
 
     attributes = {'space_above': 0,
                   'space_below': 0,
                   'margin_left': 0,
-                  'margin_right': 0}
+                  'margin_right': 0,
+                  'horizontal_align': LEFT}
 
 
 class FlowableState(object):
@@ -126,12 +134,19 @@ class Flowable(Styled):
                 margin_container.canvas.annotate(destination, 0, 0,
                                                  margin_container.width, None)
         container.advance(float(self.get_style('space_below', document)), False)
+        align = self.get_style('horizontal_align', document)
+        if align != LEFT:
+            left_extra = float(margin_container.width - width)
+            if align == CENTER:
+                left_extra /= 2
+            print(margin_container.left, left_extra)
+            margin_container.left = float(margin_container.left) + left_extra
         return margin_left + width + margin_right, descender
 
     def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's
         top edge lining up with the container's cursor. `descender` is the
-        descender height of the preceeding line or `None`."""
+        descender height of the preceding line or `None`."""
         raise NotImplementedError
 
 

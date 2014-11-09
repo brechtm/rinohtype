@@ -5,7 +5,7 @@ from rinoh import (
     Paragraph, Heading, ParagraphStyle, FixedSpacing, ProportionalSpacing,
     List, ListItem, DefinitionList, DefinitionTerm,
     GroupedFlowables, StaticGroupedFlowables,
-    Header, Footer, Figure, Caption, Framed, HorizontalRule,
+    Header, Footer, Image, Figure, Caption, Framed, HorizontalRule,
     Table, TableSection, TableHead, TableBody, TableRow, TableCell,
     TableCellBorder, TableCellBackground,
     NoteMarkerBase, Note, TableOfContents, TableOfContentsEntry, Line, TabStop,
@@ -70,9 +70,14 @@ styles('attribution', ClassSelector(Paragraph, 'attribution'),
        base='body',
        justify=RIGHT)
 
-styles('line block', ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
-                                     ClassSelector(GroupedFlowables, 'line block')),
-       margin_left=0.5*CM)
+styles('line block', ClassSelector(GroupedFlowables, 'line block'),
+       horizontal_align=CENTER)
+
+styles('nested line block',
+       ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
+                       ClassSelector(GroupedFlowables, 'line block')),
+       margin_left=0.5*CM,
+       horizontal_align=LEFT)
 
 styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieee_family.serif,
@@ -347,6 +352,10 @@ styles('footnote label', ContextSelector(ClassSelector(Note),
 styles('figure', ClassSelector(Figure),
        space_above=10*PT,
        space_below=12*PT)
+
+
+styles('image', ClassSelector(Image),
+       horizontal_align=CENTER)
 
 styles('figure caption', ContextSelector(ClassSelector(Figure),
                                          ClassSelector(Caption)),
