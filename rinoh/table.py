@@ -83,7 +83,7 @@ class Table(Flowable):
                                                      state.row_index)
             except EndOfContainer as e:
                 rows_set = e.flowable_state
-                rows_left = len(self.body.rows) - rows_set
+                rows_left = len(self.bod) - rows_set
                 if min(rows_set, rows_left) >= get_style('split_minimum_rows'):
                     state.row_index = rows_set
                     state.initial = rows_set == 0
@@ -91,24 +91,16 @@ class Table(Flowable):
         return sum(state.col_widths), 0
 
     def size_columns(self, state, container):
-        min_column_width = [0] * self.body.rows[0].num_columns
-        max_column_width = [0] * self.body.rows[0].num_columns
+        min_column_width = [0] * self.body[0].num_columns
+        max_column_width = [0] * self.body[0].num_columns
         for i, row in enumerate(chain(state.head_rows or [], state.body_rows)):
-            print('row', i, end=' ')
-            for cell in row:
-                print('{:3.0f}/{:3.0f}'.format(cell.min_width, cell.max_width),
-                      end='   ')
-                if cell.cell.colspan > 1:
-                    continue
-                c = cell.cell.column_index.index
+            for cell in (cell for cell in row if cell.cell.colspan == 1):
+                c = int(cell.cell.column_index)
                 min_column_width[c] = max(min_column_width[c], cell.min_width)
                 max_column_width[c] = max(max_column_width[c], cell.max_width)
-            print()
         for row in chain(state.head_rows or [], state.body_rows):
-            for cell in row:
-                if cell.cell.colspan < 2:
-                    continue
-                c = cell.cell.column_index.index
+            for cell in (cell for cell in row if cell.cell.colspan > 1):
+                c = int(cell.cell.column_index)
                 c_end = c + cell.cell.colspan
                 min_extra = cell.min_width - sum(min_column_width[c:c_end])
                 max_extra = cell.max_width - sum(max_column_width[c:c_end])
@@ -120,9 +112,7 @@ class Table(Flowable):
                     max_extra_width = max_extra / cell.cell.colspan
                     for i in range(cell.cell.colspan):
                         max_column_width[c + i] += max_extra_width
-        min_total_width = sum(min_column_width)
         max_total_width = sum(max_column_width)
-        print('>>>>>>>>>>>>>>>', min_total_width, max_total_width, container.width)
         if max_total_width < container.width:
             if self.column_widths:
                 factors = [req_width / col_width for req_width, col_width
@@ -142,12 +132,12 @@ class Table(Flowable):
         return [width * scale for width in new_widths]
 
     def _render_cells(self, container, column_widths=None):
-        num_columns = self.body.rows[0].num_columns
+        num_columns = self.body[0].num_columns
         head_rows = (self._render_section(column_widths, container, num_columns,
-                                          self.head.rows)
+                                          self.head)
                      if self.head else None)
         body_rows = self._render_section(column_widths, container, num_columns,
-                                         self.body.rows)
+                                         self.body)
         return TableState(head_rows, body_rows)
 
     @classmethod
@@ -168,7 +158,7 @@ class Table(Flowable):
                     row_spanned_cells, spanned_cells):
         rendered_row = RenderedRow(row_index, row)
         x_cursor = 0
-        cells = iter(row.cells)
+        cells = iter(row)
         for col_idx in range(num_columns):
             if (row_index, col_idx) in spanned_cells:
                 if (row_index, col_idx) in row_spanned_cells:
@@ -254,15 +244,15 @@ class Table(Flowable):
             y_cursor += rendered_row.height
 
 
-class TableSection(Styled):
+class TableSection(Styled, list):
     def __init__(self, rows, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.rows = rows
+        Styled.__init__(self, style=style, parent=parent)
+        list.__init__(self, rows)
         for row in rows:
             row.parent = self
 
     def prepare(self, document):
-        for row in self.rows:
+        for row in self:
             row.prepare(document)
 
 
@@ -274,26 +264,24 @@ class TableBody(TableSection):
     pass
 
 
-class TableRow(Styled):
+class TableRow(Styled, list):
     def __init__(self, cells, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.cells = cells
+        Styled.__init__(self, style=style, parent=parent)
+        list.__init__(self, cells)
         for cell in cells:
             cell.parent = self
 
     @property
     def num_columns(self):
-        return sum(cell.colspan for cell in self.cells)
+        return sum(cell.colspan for cell in self)
 
     def prepare(self, document):
-        for cells in self.cells:
+        for cells in self:
             cells.prepare(document)
 
     @property
     def index(self):
-        for row_index, row in enumerate(self.parent.rows):
-            if row is self:
-                return Index(row_index, len(self.parent.rows))
+        return RowIndex(self)
 
 
 class TableCellStyle(GroupedFlowablesStyle):
@@ -316,28 +304,44 @@ class TableCell(StaticGroupedFlowables):
 
     @property
     def column_index(self):
-        column_index = 0
-        for cell in self.parent.cells:
-            if cell is self:
-                return Index(column_index, self.parent.num_columns)
-            column_index += cell.colspan
+        return ColumnIndex(self)
 
 
 class Index(object):
-    def __init__(self, index, length):
-        self.index = index
-        self.length = length
+    def __init__(self, element):
+        self.element = element
 
-    def __eq__(self, indices):
-        if isinstance(indices, slice):
-            return self.index in range(*indices.indices(self.length))
-        elif isinstance(indices, Iterable):
-            return self.index in (index if index > 0 else index + self.length
-                                  for index in indices)
+    @property
+    def parent(self):
+        return self.element.parent
+
+    def __int__(self):
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        if isinstance(other, slice):
+            elements = self.parent[other]
+        elif isinstance(other, Iterable):
+            elements = (self.parent[index] for index in other)
         else:
-            if indices < 0:
-                indices += self.length
-            return indices == self.index
+            elements = (self.parent[other], )
+        return any(self.element is elem for elem in elements)
+
+
+class RowIndex(Index):
+    def __int__(self):
+        for row_index, row in enumerate(self.parent):
+            if row is self.element:
+                return row_index
+
+
+class ColumnIndex(Index):
+    def __int__(self):
+        column_index = 0
+        for cell in self.parent:
+            if cell is self.element:
+                return column_index
+            column_index += cell.colspan
 
 
 class RenderedCell(object):
