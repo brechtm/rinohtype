@@ -30,14 +30,22 @@ BOTTOM = 'bottom'
 
 
 class TableState(FlowableState):
-    def __init__(self, head_rows, body_rows, row_index=0):
-        super().__init__(row_index == 0)
-        self.head_rows = head_rows
-        self.body_rows = body_rows
-        self.row_index = row_index
+    def __init__(self, column_widths, body_row_index=0):
+        super().__init__()
+        self.column_widths = column_widths
+        self.body_row_index = body_row_index
+
+    @property
+    def body_row_index(self):
+        return self._body_row_index
+
+    @body_row_index.setter
+    def body_row_index(self, body_row_index):
+        self._body_row_index = body_row_index
+        self.initial = body_row_index == 0
 
     def __copy__(self):
-        return self.__class__(self.head_rows, self.body_rows, self.row_index)
+        return self.__class__(self.column_widths, self.body_row_index)
 
 
 class TableStyle(FlowableStyle):
@@ -63,31 +71,34 @@ class Table(Flowable):
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
-        if not state:
-            column_widths = self._size_columns(container)
-            state = self._render_cells(container, column_widths)
-            state.col_widths = column_widths
-        # TODO: if on new page, rerender rows (needed if PAGE_NUMBER Field used)
         get_style = partial(self.get_style, document=container.document)
+        state = state or TableState(self._size_columns(container))
         with MaybeContainer(container) as maybe_container:
+            def render_rows(section, next_row_index=0):
+                rows = section[next_row_index:]
+                for rendered_rows in self._render_section(container, rows,
+                                                          state.column_widths):
+                    sum_row_heights = sum(row.height for row in rendered_rows)
+                    if sum_row_heights > maybe_container.remaining_height:
+                        break
+                    self._place_rows_and_render_borders(maybe_container,
+                                                        rendered_rows)
+                    next_row_index += len(rendered_rows)
+                return next_row_index
+
+            # head rows
             if self.head and (state.initial or get_style('repeat_head')):
-                try:
-                    self._place_cells_and_render_borders(maybe_container,
-                                                         state.head_rows)
-                except EndOfContainer:
+                if render_rows(self.head) != len(self.head):
                     raise EndOfContainer(state)
-            try:
-                self._place_cells_and_render_borders(maybe_container,
-                                                     state.body_rows,
-                                                     state.row_index)
-            except EndOfContainer as e:
-                rows_set = e.flowable_state
-                rows_left = len(self.bod) - rows_set
-                if min(rows_set, rows_left) >= get_style('split_minimum_rows'):
-                    state.row_index = rows_set
-                    state.initial = rows_set == 0
+            # body rows
+            next_row_index = render_rows(self.body, state.body_row_index)
+            rows_left = len(self.body) - next_row_index
+            if rows_left > 0:
+                split_minimum_rows = get_style('split_minimum_rows')
+                if min(next_row_index, rows_left) >= split_minimum_rows:
+                    state.body_row_index = next_row_index
                 raise EndOfContainer(state)
-        return sum(state.col_widths), 0
+        return sum(state.column_widths), 0
 
     def _size_columns(self, container):
         """Calculate the table's column sizes constrained by:
@@ -140,31 +151,27 @@ class Table(Flowable):
         scale = float(container.width) / sum(rel_column_widths)
         return [width * scale for width in rel_column_widths]
 
-    def _render_cells(self, container, column_widths):
-        num_columns = self.body[0].num_columns
-        head_rows = (self._render_section(column_widths, container, num_columns,
-                                          self.head)
-                     if self.head else None)
-        body_rows = self._render_section(column_widths, container, num_columns,
-                                         self.body)
-        return TableState(head_rows, body_rows)
-
     @classmethod
-    def _render_section(cls, column_widths, container, num_columns, rows):
+    def _render_section(cls, container, rows, column_widths):
         spanned_cells = set()
         row_spanned_cells = {}
         rendered_rows = []
-        for r, row in enumerate(rows):
-            rendered_row = cls._render_row(column_widths, container,
-                                           num_columns, r, row,
+        rows_left_in_span = 0
+        for row in rows:
+            rows_left_in_span = max(row.maximum_rowspan, rows_left_in_span) - 1
+            rendered_row = cls._render_row(column_widths, container, row,
                                            row_spanned_cells, spanned_cells)
             rendered_rows.append(rendered_row)
-        rendered_rows = cls._vertically_size_cells(rendered_rows)
-        return rendered_rows
+            if rows_left_in_span == 0:
+                yield cls._vertically_size_cells(rendered_rows)
+                rendered_rows = []
+        assert not rendered_rows
 
     @staticmethod
-    def _render_row(column_widths, container, num_columns, row_index, row,
+    def _render_row(column_widths, container, row,
                     row_spanned_cells, spanned_cells):
+        num_columns = sum(cell.colspan for cell in row)
+        row_index = int(row.index)
         rendered_row = RenderedRow(row_index, row)
         x_cursor = 0
         cells = iter(row)
@@ -193,19 +200,19 @@ class Table(Flowable):
         """Grow row heights to cater for vertically spanned cells that do not
         fit in the available space."""
         for r, rendered_row in enumerate(rendered_rows):
-            for c, rendered_cell in enumerate(rendered_row):
+            for rendered_cell in rendered_row:
                 if rendered_cell.rowspan > 1:
                     row_height = sum(row.height for row in
                                      rendered_rows[r:r + rendered_cell.rowspan])
-                    shortage = rendered_cell.height - row_height
-                    if shortage > 0:
-                        padding = shortage / rendered_cell.rowspan
+                    extra_height_needed = rendered_cell.height - row_height
+                    if extra_height_needed > 0:
+                        padding = extra_height_needed / rendered_cell.rowspan
                         for i in range(r, r + rendered_cell.rowspan):
                             rendered_rows[i].height += padding
         return rendered_rows
 
     @staticmethod
-    def _place_cells_and_render_borders(container, rendered_rows, row_index=0):
+    def _place_rows_and_render_borders(container, rendered_rows):
         """Place the rendered cells onto the page canvas and draw borders around
         them."""
         def draw_cell_border(rendered_cell, cell_height, container):
@@ -219,11 +226,8 @@ class Table(Flowable):
 
         document = container.document
         y_cursor = container.cursor
-        for r, rendered_row in enumerate(rendered_rows[row_index:], row_index):
-            try:
-                container.advance(rendered_row.height)
-            except EndOfContainer:
-                raise EndOfContainer(r)
+        for r, rendered_row in enumerate(rendered_rows):
+            container.advance(rendered_row.height)
             for c, rendered_cell in enumerate(rendered_row):
                 cell_height = sum(rendered_row.height for rendered_row in
                                   rendered_rows[r:r + rendered_cell.rowspan])
@@ -275,6 +279,10 @@ class TableRow(Styled, list):
     @property
     def num_columns(self):
         return sum(cell.colspan for cell in self)
+
+    @property
+    def maximum_rowspan(self):
+        return max(cell.rowspan for cell in self)
 
     def prepare(self, document):
         for cells in self:
