@@ -16,6 +16,7 @@ from .flowable import Flowable, FlowableStyle, FlowableState
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
+from .util import ReadAliasAttribute
 
 
 __all__ = ['Table', 'TableSection', 'TableHead', 'TableBody', 'TableRow',
@@ -115,7 +116,7 @@ class Table(Flowable):
                 width, _ = cell.flow(buffer, None)
                 return float(width)
 
-            widths = [0] * self.body[0].num_columns
+            widths = [0] * self.body.num_columns
             for row in chain(self.head or [], self.body):
                 for cell in (cell for cell in row if cell.colspan == 1):
                     col = int(cell.column_index)
@@ -153,14 +154,11 @@ class Table(Flowable):
 
     @classmethod
     def _render_section(cls, container, rows, column_widths):
-        spanned_cells = set()
-        row_spanned_cells = {}
         rendered_rows = []
         rows_left_in_span = 0
         for row in rows:
             rows_left_in_span = max(row.maximum_rowspan, rows_left_in_span) - 1
-            rendered_row = cls._render_row(column_widths, container, row,
-                                           row_spanned_cells, spanned_cells)
+            rendered_row = cls._render_row(column_widths, container, row)
             rendered_rows.append(rendered_row)
             if rows_left_in_span == 0:
                 yield cls._vertically_size_cells(rendered_rows)
@@ -168,31 +166,17 @@ class Table(Flowable):
         assert not rendered_rows
 
     @staticmethod
-    def _render_row(column_widths, container, row,
-                    row_spanned_cells, spanned_cells):
-        num_columns = sum(cell.colspan for cell in row)
+    def _render_row(column_widths, container, row):
         row_index = int(row.index)
         rendered_row = RenderedRow(row_index, row)
-        x_cursor = 0
-        cells = iter(row)
-        for col_idx in range(num_columns):
-            if (row_index, col_idx) in spanned_cells:
-                if (row_index, col_idx) in row_spanned_cells:
-                    x_cursor += row_spanned_cells[row_index, col_idx].width
-                continue
-            cell = next(cells)
+        for cell in row:
+            col_idx = int(cell.column_index)
+            left = sum(column_widths[:col_idx])
             cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
             buffer = VirtualContainer(container, cell_width)
             width, descender = cell.flow(buffer, None)
-            rendered_cell = RenderedCell(cell, buffer, x_cursor)
+            rendered_cell = RenderedCell(cell, buffer, left)
             rendered_row.append(rendered_cell)
-            x_cursor += cell_width
-            for j in range(col_idx, col_idx + cell.colspan):
-                spanned_cells.add((row_index, j))
-            for i in range(row_index + 1, row_index + cell.rowspan):
-                row_spanned_cells[i, col_idx] = rendered_cell
-                for j in range(col_idx, col_idx + cell.colspan):
-                    spanned_cells.add((i, j))
         return rendered_row
 
     @staticmethod
@@ -260,6 +244,10 @@ class TableSection(Styled, list):
         for row in self:
             row.prepare(document)
 
+    @property
+    def num_columns(self):
+        return sum(cell.colspan for cell in self[0])
+
 
 class TableHead(TableSection):
     pass
@@ -270,15 +258,13 @@ class TableBody(TableSection):
 
 
 class TableRow(Styled, list):
+    section = ReadAliasAttribute('parent')
+
     def __init__(self, cells, style=None, parent=None):
         Styled.__init__(self, style=style, parent=parent)
         list.__init__(self, cells)
         for cell in cells:
             cell.parent = self
-
-    @property
-    def num_columns(self):
-        return sum(cell.colspan for cell in self)
 
     @property
     def maximum_rowspan(self):
@@ -292,6 +278,24 @@ class TableRow(Styled, list):
     def index(self):
         return RowIndex(self)
 
+    def get_rowspanned_columns(self):
+        """Return a dictionary mapping column indices to the number of columns
+        spanned."""
+        spanned_columns = {}
+        current_row_index = int(self.index)
+        current_row_cols = sum(cell.colspan for cell in self)
+        prev_rows = iter(reversed(self.section[:current_row_index]))
+        while current_row_cols < self.section.num_columns:
+            row = next(prev_rows)
+            min_rowspan = current_row_index - int(row.index)
+            if row.maximum_rowspan > min_rowspan:
+                for cell in row:
+                    if cell.rowspan > min_rowspan:
+                        col_index = int(cell.column_index)
+                        spanned_columns[col_index] = cell.colspan
+                        current_row_cols += cell.colspan
+        return spanned_columns
+
 
 class TableCellStyle(GroupedFlowablesStyle):
     attributes = {'vertical_align': MIDDLE,
@@ -301,6 +305,8 @@ class TableCellStyle(GroupedFlowablesStyle):
 class TableCell(StaticGroupedFlowables):
     style_class = TableCellStyle
 
+    row = ReadAliasAttribute('parent')
+
     def __init__(self, flowables, rowspan=1, colspan=1,
                  id=None, style=None, parent=None):
         super().__init__(flowables, id=id, style=style, parent=parent)
@@ -309,7 +315,7 @@ class TableCell(StaticGroupedFlowables):
 
     @property
     def row_index(self):
-        return self.parent.index
+        return self.row.index
 
     @property
     def column_index(self):
@@ -338,19 +344,31 @@ class Index(object):
 
 
 class RowIndex(Index):
+    section = ReadAliasAttribute('parent')
+    row = ReadAliasAttribute('element')
+
     def __int__(self):
-        for row_index, row in enumerate(self.parent):
-            if row is self.element:
+        for row_index, row in enumerate(self.section):
+            if row is self.row:
                 return row_index
 
 
 class ColumnIndex(Index):
+    row = ReadAliasAttribute('parent')
+    cell = ReadAliasAttribute('element')
+
     def __int__(self):
+        spanned_columns = self.row.get_rowspanned_columns()
         column_index = 0
-        for cell in self.parent:
-            if cell is self.element:
-                return column_index
-            column_index += cell.colspan
+        cells = iter(self.row)
+        for col_index in range(self.cell.row.section.num_columns):
+            if col_index in spanned_columns:
+                column_index += spanned_columns[col_index]
+            else:
+                cell = next(cells)
+                if cell is self.element:
+                    return column_index
+                column_index += cell.colspan
 
 
 class RenderedCell(object):

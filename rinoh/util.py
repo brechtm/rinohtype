@@ -15,6 +15,8 @@ Collection of miscellaneous classes, functions and decorators:
                        of a given iterable
 * :class:`cached_property`: Caching property decorator
 * :func:`timed`: Method decorator printing the time the method call took
+* :class:`ReadAliasAttribute`: Descriptor creates a read-only alias for another
+                               attribute
 """
 
 
@@ -24,7 +26,7 @@ from functools import wraps
 
 
 __all__ = ['Decorator', 'all_subclasses', 'intersperse', 'cached_property',
-           'timed']
+           'timed', 'ReadAliasAttribute']
 
 
 # functions
@@ -161,3 +163,18 @@ class Decorator(object):
         """The `decoratee` is stored in the decorator as the :attr:`_decoratee`
         attribute, where it is available for access by the decorator class."""
         self._decoratee = decoratee
+
+
+# descriptors
+
+# from "Caching and aliasing with descriptors (Python recipe)" by Denis Otkidach
+class ReadAliasAttribute(object):
+    """Descriptor creates a read-only alias for another attribute."""
+
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, inst, cls):
+        if inst is None:
+            return self
+        return getattr(inst, self.name)
