@@ -412,13 +412,6 @@ styles('L3 toc level 3', ContextSelector(ClassSelector(TableOfContents, level=2)
        tab_stops=[TabStop(0.6*CM),
                   TabStop(1.0, RIGHT, '. ')])
 
-styles('red line', ClassSelector(Line),
-       stroke_width=0.2*PT,
-       stroke_color=RED)
-
-styles('thick line', ClassSelector(Line),
-       stroke_width=1*PT)
-
 styles('table', ClassSelector(Table),
        space_above=5*PT,
        space_below=5*PT,
@@ -434,7 +427,6 @@ styles('table cell',
        margin_left=2*PT,
        margin_right=2*PT,
        vertical_align=MIDDLE)
-
 
 styles('table body cell background on even row',
        ContextSelector(ClassSelector(TableBody),

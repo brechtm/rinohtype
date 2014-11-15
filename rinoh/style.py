@@ -207,6 +207,10 @@ class Styled(DocumentElement):
             return document.styles.find_style(self)
 
 
+class AmbiguousStyleSheetException(Exception):
+    pass
+
+
 class StyleSheet(OrderedDict):
     """Dictionary storing a set of related :class:`Style`s by name.
 
@@ -238,13 +242,18 @@ class StyleSheet(OrderedDict):
         self.selectors[selector] = name
 
     def best_match(self, styled):
-        max_score, best_match = Specificity(0, 0, 0), None
+        scores = {}
         for selector, name in self.selectors.items():
             score = selector.match(styled)
-            if score > max_score:
-                best_match = name
-                max_score = score
-        return max_score, best_match
+            if score:
+                if score in scores:
+                    raise AmbiguousStyleSheetException(name, scores[score])
+                scores[score] = name
+        try:
+            max_score = max(scores)
+            return max_score, scores[max_score]
+        except ValueError:
+            return Specificity(0, 0, 0), None
 
     def find_style(self, styled):
         max_score, best_match = self.best_match(styled)
