@@ -167,8 +167,7 @@ class Table(Flowable):
 
     @staticmethod
     def _render_row(column_widths, container, row):
-        row_index = int(row.index)
-        rendered_row = RenderedRow(row_index, row)
+        rendered_row = RenderedRow(int(row._index), row)
         for cell in row:
             col_idx = int(cell.column_index)
             left = sum(column_widths[:col_idx])
@@ -275,25 +274,24 @@ class TableRow(Styled, list):
             cells.prepare(document)
 
     @property
-    def index(self):
-        return RowIndex(self)
+    def _index(self):
+        return next(i for i, item in enumerate(self.section) if item is self)
 
     def get_rowspanned_columns(self):
         """Return a dictionary mapping column indices to the number of columns
         spanned."""
         spanned_columns = {}
-        current_row_index = int(self.index)
+        current_row_index = self._index
         current_row_cols = sum(cell.colspan for cell in self)
         prev_rows = iter(reversed(self.section[:current_row_index]))
         while current_row_cols < self.section.num_columns:
             row = next(prev_rows)
-            min_rowspan = current_row_index - int(row.index)
+            min_rowspan = current_row_index - int(row._index)
             if row.maximum_rowspan > min_rowspan:
-                for cell in row:
-                    if cell.rowspan > min_rowspan:
-                        col_index = int(cell.column_index)
-                        spanned_columns[col_index] = cell.colspan
-                        current_row_cols += cell.colspan
+                for cell in (c for c in row if c.rowspan > min_rowspan):
+                    col_index = int(cell.column_index)
+                    spanned_columns[col_index] = cell.colspan
+                    current_row_cols += cell.colspan
         return spanned_columns
 
 
@@ -315,7 +313,7 @@ class TableCell(StaticGroupedFlowables):
 
     @property
     def row_index(self):
-        return self.row.index
+        return RowIndex(self)
 
     @property
     def column_index(self):
@@ -323,12 +321,16 @@ class TableCell(StaticGroupedFlowables):
 
 
 class Index(object):
-    def __init__(self, element):
-        self.element = element
+    def __init__(self, cell):
+        self.cell = cell
 
     @property
-    def parent(self):
-        return self.element.parent
+    def row(self):
+        return self.cell.parent
+
+    @property
+    def section(self):
+        return self.row.section
 
     def __eq__(self, other):
         if isinstance(other, slice):
@@ -337,8 +339,8 @@ class Index(object):
             indices = other
         else:
             indices = (other, )
-        return int(self) in (self.num_items + index if index < 0 else index
-                             for index in indices)
+        indices = [self.num_items + idx if idx < 0 else idx for idx in indices]
+        return any(index in indices for index in self)
 
     def __int__(self):
         raise NotImplementedError
@@ -348,13 +350,12 @@ class Index(object):
 
 
 class RowIndex(Index):
-    section = ReadAliasAttribute('parent')
-    row = ReadAliasAttribute('element')
-
     def __int__(self):
-        for row_index, row in enumerate(self.section):
-            if row is self.row:
-                return row_index
+        return next(i for i, row in enumerate(self.section) if row is self.row)
+
+    def __iter__(self):
+        index = int(self)
+        return (index + i for i in range(self.cell.rowspan))
 
     @property
     def num_items(self):
@@ -362,9 +363,6 @@ class RowIndex(Index):
 
 
 class ColumnIndex(Index):
-    row = ReadAliasAttribute('parent')
-    cell = ReadAliasAttribute('element')
-
     def __int__(self):
         spanned_columns = self.row.get_rowspanned_columns()
         column_index = 0
@@ -374,9 +372,13 @@ class ColumnIndex(Index):
                 column_index += spanned_columns[col_index]
             else:
                 cell = next(cells)
-                if cell is self.element:
+                if cell is self.cell:
                     return column_index
                 column_index += cell.colspan
+
+    def __iter__(self):
+        index = int(self)
+        return (index + i for i in range(self.cell.colspan))
 
     @property
     def num_items(self):

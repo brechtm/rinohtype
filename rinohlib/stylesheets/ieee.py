@@ -439,8 +439,8 @@ styles('table cell',
 styles('table body cell background on even row',
        ContextSelector(ClassSelector(TableBody),
                        ClassSelector(TableRow),
-                       ClassSelector(TableCell, row_index=slice(0, None, 2),
-                                     rowspan=1),
+                       ClassSelector(TableCell,
+                                     row_index=slice(0, None, 2), rowspan=1),
                        ClassSelector(TableCellBackground)),
        fill_color=GRAY90)
 
@@ -476,16 +476,16 @@ styles('table head cell paragraph',
 
 styles('table top border',
        ContextSelector(ClassSelector(TableHead),
-                       ClassSelector(TableRow, index=0),
-                       ClassSelector(TableCell),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell, row_index=0),
                        ClassSelector(TableCellBorder, position='top')),
        stroke_width=1*PT,
        stroke_color=Gray(0))
 
 styles('table bottom border',
        ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow, index=-1),
-                       ClassSelector(TableCell),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell, row_index=-1),
                        ClassSelector(TableCellBorder, position='bottom')),
        base='table top border')
 
@@ -499,8 +499,8 @@ styles('table head inner border',
 
 styles('table body top border',
        ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow, index=0),
-                       ClassSelector(TableCell),
+                       ClassSelector(TableRow),
+                       ClassSelector(TableCell, row_index=0),
                        ClassSelector(TableCellBorder, position='top')),
        base='table head inner border')
 
