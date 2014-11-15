@@ -330,17 +330,21 @@ class Index(object):
     def parent(self):
         return self.element.parent
 
+    def __eq__(self, other):
+        if isinstance(other, slice):
+            indices = range(*other.indices(self.num_items))
+        elif isinstance(other, Iterable):
+            indices = other
+        else:
+            indices = (other, )
+        return int(self) in (self.num_items + index if index < 0 else index
+                             for index in indices)
+
     def __int__(self):
         raise NotImplementedError
 
-    def __eq__(self, other):
-        if isinstance(other, slice):
-            elements = self.parent[other]
-        elif isinstance(other, Iterable):
-            elements = (self.parent[index] for index in other)
-        else:
-            elements = (self.parent[other], )
-        return any(self.element is elem for elem in elements)
+    def num_items(self):
+        raise NotImplementedError
 
 
 class RowIndex(Index):
@@ -351,6 +355,10 @@ class RowIndex(Index):
         for row_index, row in enumerate(self.section):
             if row is self.row:
                 return row_index
+
+    @property
+    def num_items(self):
+        return len(self.section)
 
 
 class ColumnIndex(Index):
@@ -369,6 +377,10 @@ class ColumnIndex(Index):
                 if cell is self.element:
                     return column_index
                 column_index += cell.colspan
+
+    @property
+    def num_items(self):
+        return self.row.section.num_columns
 
 
 class RenderedCell(object):
