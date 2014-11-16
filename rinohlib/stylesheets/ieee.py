@@ -70,14 +70,10 @@ styles('attribution', ClassSelector(Paragraph, 'attribution'),
        base='body',
        justify=RIGHT)
 
-styles('line block', ClassSelector(GroupedFlowables, 'line block'),
-       horizontal_align=CENTER)
-
 styles('nested line block',
        ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
                        ClassSelector(GroupedFlowables, 'line block')),
-       margin_left=0.5*CM,
-       horizontal_align=LEFT)
+       margin_left=0.5*CM)
 
 styles('title', ClassSelector(Paragraph, 'title'),
        typeface=ieee_family.serif,
@@ -364,7 +360,7 @@ styles('figure caption', ContextSelector(ClassSelector(Figure),
        font_size=9*PT,
        line_spacing=FixedSpacing(10*PT),
        indent_first=0*PT,
-       space_above=20*PT,
+       space_above=4*PT,
        space_below=0*PT,
        justify=BOTH,
        label_suffix='.' + FixedWidthSpace())

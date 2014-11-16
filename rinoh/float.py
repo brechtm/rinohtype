@@ -6,7 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import Flowable, FlowableStyle, InseparableFlowables, StaticGroupedFlowables
+from .flowable import (Flowable, FlowableStyle, InseparableFlowables,
+                       StaticGroupedFlowables, HorizontallyAlignedFlowable)
 from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .reference import Referenceable, REFERENCE, TITLE
@@ -21,14 +22,11 @@ CENTER = 'center'
 RIGHT = 'right'
 
 
-class Image(Flowable):
+class ImageBase(Flowable):
     def __init__(self, filename, scale=1.0, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.filename = filename
         self.scale = scale
-
-    def left(self, image, container):
-        raise NotImplementedError
 
     def render(self, container, last_descender, state=None):
         image = container.document.backend.Image(self.filename)
@@ -41,7 +39,11 @@ class Image(Flowable):
         return image.width * self.scale, 0
 
 
-class InlineImage(Image, InlineFlowable):
+class InlineImage(ImageBase, InlineFlowable):
+    pass
+
+
+class Image(HorizontallyAlignedFlowable, ImageBase):
     pass
 
 

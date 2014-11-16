@@ -12,7 +12,9 @@ from functools import partial
 from math import sqrt
 
 from .draw import Line, Rectangle, ShapeStyle
-from .flowable import Flowable, FlowableStyle, FlowableState
+from .flowable import (HorizontallyAlignedFlowable,
+                       HorizontallyAlignedFlowableStyle,
+                       HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
@@ -30,11 +32,15 @@ MIDDLE = 'middle'
 BOTTOM = 'bottom'
 
 
-class TableState(FlowableState):
+class TableState(HorizontallyAlignedFlowableState):
     def __init__(self, column_widths, body_row_index=0):
         super().__init__()
         self.column_widths = column_widths
         self.body_row_index = body_row_index
+
+    @property
+    def width(self):
+        return sum(self.column_widths)
 
     @property
     def body_row_index(self):
@@ -49,7 +55,7 @@ class TableState(FlowableState):
         return self.__class__(self.column_widths, self.body_row_index)
 
 
-class TableStyle(FlowableStyle):
+class TableStyle(HorizontallyAlignedFlowableStyle):
     attributes = {'split_minimum_rows': 5,
                   'repeat_head': False}
 
@@ -57,7 +63,7 @@ class TableStyle(FlowableStyle):
 NEVER_SPLIT = float('+inf')
 
 
-class Table(Flowable):
+class Table(HorizontallyAlignedFlowable):
     style_class = TableStyle
 
     def __init__(self, body, head=None, column_widths=None,

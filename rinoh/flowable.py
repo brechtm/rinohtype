@@ -31,12 +31,9 @@ __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
+           'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
+           'HorizontallyAlignedFlowableState',
            'Float']
-
-
-LEFT = 'left'
-CENTER = 'center'
-RIGHT = 'right'
 
 
 class FlowableStyle(Style):
@@ -54,8 +51,7 @@ class FlowableStyle(Style):
     attributes = {'space_above': 0,
                   'space_below': 0,
                   'margin_left': 0,
-                  'margin_right': 0,
-                  'horizontal_align': LEFT}
+                  'margin_right': 0}
 
 
 class FlowableState(object):
@@ -134,13 +130,6 @@ class Flowable(Styled):
                 margin_container.canvas.annotate(destination, 0, 0,
                                                  margin_container.width, None)
         container.advance(float(self.get_style('space_below', document)), False)
-        align = self.get_style('horizontal_align', document)
-        if align != LEFT:
-            left_extra = float(margin_container.width - width)
-            if align == CENTER:
-                left_extra /= 2
-            print(margin_container.left, left_extra)
-            margin_container.left = float(margin_container.left) + left_extra
         return margin_left + width + margin_right, descender
 
     def render(self, container, descender, state=None):
@@ -366,6 +355,45 @@ class GroupedLabeledFlowables(GroupedFlowables):
         except EndOfContainer as eoc:
             eoc.flowable_state.max_label_width = max_label_width
             raise
+
+
+LEFT = 'left'
+CENTER = 'center'
+RIGHT = 'right'
+
+
+class HorizontallyAlignedFlowableStyle(FlowableStyle):
+    attributes = {'horizontal_align': LEFT}
+
+
+class HorizontallyAlignedFlowableState(FlowableState):
+    @property
+    def width(self):
+        raise NotImplementedError
+
+
+class HorizontallyAlignedFlowable(Flowable):
+    style_class = HorizontallyAlignedFlowableStyle
+
+    def _left_extra(self, container, width):
+        align = self.get_style('horizontal_align', container.document)
+        left_extra = 0 if align == LEFT else float(container.width - width)
+        if align == CENTER:
+            left_extra /= 2
+        return left_extra
+
+    def flow(self, container, last_descender, state=None):
+        with MaybeContainer(container) as align_container:
+            try:
+                width, descender = super().flow(align_container, last_descender,
+                                                state)
+            except EndOfContainer as eoc:
+                width = eoc.flowable_state.width
+                raise
+            finally:
+                left_extra = self._left_extra(container, width)
+                align_container.left = float(align_container.left) + left_extra
+        return container.width, descender
 
 
 class Float(Flowable):
