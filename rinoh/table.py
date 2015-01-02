@@ -139,7 +139,11 @@ class Table(HorizontallyAlignedFlowable):
                             widths[c + i] += per_column_padding
             return widths
 
-        max_table_width = self.width or container.width
+        try:
+            fixed_width = self.width.to_points(container.width)
+        except AttributeError:
+            fixed_width = self.width if self.width else None
+        max_table_width = fixed_width or container.width
         max_column_widths = calculate_column_widths(float('+inf'))
         # determine relative column widths
         if self.column_widths:
@@ -151,8 +155,8 @@ class Table(HorizontallyAlignedFlowable):
             rel_column_widths = [sqrt(minimum * maximum) for minimum, maximum
                                  in zip(min_column_widths, max_column_widths)]
         # determine the total table width
-        if self.width:
-            table_width = self.width
+        if fixed_width:
+            table_width = fixed_width
         else:
             if self.column_widths:
                 factor = max(maximum / required for maximum, required

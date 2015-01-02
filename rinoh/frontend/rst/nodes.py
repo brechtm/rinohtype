@@ -13,7 +13,7 @@ import rinoh as rt
 
 from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
                GroupingElement)
-from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA
+from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
 
 
@@ -514,13 +514,15 @@ DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
                               'pt': PT,
                               'pc': PICA,
                               'px': DimensionUnit(1 / 100 * INCH),
-                              '%': None,
+                              '%': PERCENT,
                               'em': None,
                               'ex': None}
 
 
-def convert_quantity(quantity):
-    value, unit = RE_LENGTH_PERCENT_UNITLESS.match(quantity).groups()
+def convert_quantity(quantity_string):
+    if quantity_string is None:
+        return None
+    value, unit = RE_LENGTH_PERCENT_UNITLESS.match(quantity_string).groups()
     return float(value) * DOCUTILS_UNIT_TO_DIMENSION[unit]
 
 
@@ -538,8 +540,7 @@ class Table(BodyElement):
             head = None
         body = tgroup.tbody.get_table_section()
         width_string = self.get('width')
-        width = convert_quantity(width_string) if width_string else None
-        return rt.Table(body, head=head, width=float(width) if width else None,
+        return rt.Table(body, head=head, width=convert_quantity(width_string),
                         column_widths=column_widths)
 
 

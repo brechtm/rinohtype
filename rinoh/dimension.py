@@ -108,6 +108,9 @@ class Dimension(DimensionBase):
     def __float__(self):
         return float(self._value)
 
+    def to_points(self, total_dimension):
+        return float(self)
+
 
 class DimensionAddition(DimensionBase):
     def __init__(self, *addends):
@@ -150,3 +153,19 @@ INCH = DimensionUnit(72*PT)
 PICA = DimensionUnit(1 / 6 * INCH)
 MM = DimensionUnit(1 / 25.4 * INCH)
 CM = DimensionUnit(10*MM)
+
+
+class Fraction(object):
+    def __init__(self, percent):
+        self._percent = percent
+
+    def to_points(self, total_dimension):
+        return self._percent / 100 * float(total_dimension)
+
+
+class FractionUnit(object):
+    def __rmul__(self, percent):
+        return Fraction(percent)
+
+
+PERCENT = FractionUnit()
