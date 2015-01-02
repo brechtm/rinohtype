@@ -527,8 +527,11 @@ def convert_quantity(quantity):
 class Table(BodyElement):
     def build_flowable(self):
         tgroup = self.tgroup
-        column_widths = [int(colspec.get('colwidth'))
-                         for colspec in tgroup.colspec]
+        if tgroup.get('colwidths', 'auto') == 'given':
+            column_widths = [int(colspec.get('colwidth'))
+                             for colspec in tgroup.colspec]
+        else:
+            column_widths = None
         try:
             head = tgroup.thead.get_table_section()
         except AttributeError:
