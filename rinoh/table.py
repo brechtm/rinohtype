@@ -66,7 +66,7 @@ NEVER_SPLIT = float('+inf')
 class Table(HorizontallyAlignedFlowable):
     style_class = TableStyle
 
-    def __init__(self, body, head=None, column_widths=None,
+    def __init__(self, body, head=None, width=None, column_widths=None,
                  id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.head = head
@@ -74,6 +74,7 @@ class Table(HorizontallyAlignedFlowable):
             head.parent = self
         self.body = body
         body.parent = self
+        self.width = width
         self.column_widths = column_widths
 
     def render(self, container, last_descender, state=None):
@@ -138,24 +139,30 @@ class Table(HorizontallyAlignedFlowable):
                             widths[c + i] += per_column_padding
             return widths
 
+        max_table_width = self.width or container.width
         max_column_widths = calculate_column_widths(float('+inf'))
-        if sum(max_column_widths) < container.width:
-            if self.column_widths:
-                factor = max(maximum / required for maximum, required
-                             in zip(max_column_widths, self.column_widths))
-                if sum(self.column_widths) * factor < container.width:
-                    return [width * factor for width in self.column_widths]
-            else:
-                return max_column_widths
-        # this point is reached when the table cannot fit the available width
-        # without line-wrapping the cells' contents
+        # determine relative column widths
         if self.column_widths:
             rel_column_widths = self.column_widths
-        else:   # automatically choose the relative column widths
+        elif sum(max_column_widths) <= max_table_width:
+            rel_column_widths = max_column_widths
+        else:
             min_column_widths = calculate_column_widths(0)
             rel_column_widths = [sqrt(minimum * maximum) for minimum, maximum
                                  in zip(min_column_widths, max_column_widths)]
-        scale = float(container.width) / sum(rel_column_widths)
+        # determine the total table width
+        if self.width:
+            table_width = self.width
+        else:
+            if self.column_widths:
+                factor = max(maximum / required for maximum, required
+                             in zip(max_column_widths, self.column_widths))
+                no_wrap_table_width = sum(self.column_widths) * factor
+            else:
+                no_wrap_table_width = sum(max_column_widths)
+            table_width = min(no_wrap_table_width, container.width)
+
+        scale = float(table_width) / sum(rel_column_widths)
         return [width * scale for width in rel_column_widths]
 
     @classmethod

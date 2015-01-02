@@ -13,6 +13,7 @@ import rinoh as rt
 
 from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
                GroupingElement)
+from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA
 from ...util import intersperse
 
 
@@ -503,6 +504,26 @@ class Transition(BodyElement):
         return rt.HorizontalRule()
 
 
+RE_LENGTH_PERCENT_UNITLESS = re.compile(r'^(?P<value>\d+)(?P<unit>[a-z%]+)$')
+
+# TODO: warn on px or when no unit is supplied
+DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
+                              'in': INCH,
+                              'cm': CM,
+                              'mm': MM,
+                              'pt': PT,
+                              'pc': PICA,
+                              'px': DimensionUnit(1 / 100 * INCH),
+                              '%': None,
+                              'em': None,
+                              'ex': None}
+
+
+def convert_quantity(quantity):
+    value, unit = RE_LENGTH_PERCENT_UNITLESS.match(quantity).groups()
+    return float(value) * DOCUTILS_UNIT_TO_DIMENSION[unit]
+
+
 class Table(BodyElement):
     def build_flowable(self):
         tgroup = self.tgroup
@@ -513,7 +534,10 @@ class Table(BodyElement):
         except AttributeError:
             head = None
         body = tgroup.tbody.get_table_section()
-        return rt.Table(body, head=head, column_widths=column_widths)
+        width_string = self.get('width')
+        width = convert_quantity(width_string) if width_string else None
+        return rt.Table(body, head=head, width=float(width) if width else None,
+                        column_widths=column_widths)
 
 
 class TGroup(CustomElement):

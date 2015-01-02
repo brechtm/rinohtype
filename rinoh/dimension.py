@@ -147,5 +147,6 @@ class DimensionUnit(object):
 
 PT = DimensionUnit(1)
 INCH = DimensionUnit(72*PT)
+PICA = DimensionUnit(1 / 6 * INCH)
 MM = DimensionUnit(1 / 25.4 * INCH)
 CM = DimensionUnit(10*MM)
