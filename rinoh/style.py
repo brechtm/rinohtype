@@ -24,7 +24,8 @@ from .document import DocumentElement
 from .util import cached
 
 
-__all__ = ['Style', 'Styled', 'StyleSheet', 'ClassSelector', 'ContextSelector',
+__all__ = ['Style', 'Styled',
+           'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'ParentStyleException']
 
 
@@ -211,39 +212,17 @@ class AmbiguousStyleSheetException(Exception):
     pass
 
 
-class StyleSheet(OrderedDict):
-    """Dictionary storing a set of related :class:`Style`s by name.
+class StyledMatcher(dict):
+    def __call__(self, name, selector):
+        self[name] = selector
 
-    :class:`Style`s stored in a :class:`StyleStore` can refer to their base
-    style by name. See :class:`Style`."""
-
-    def __init__(self, name, base=None):
-        super().__init__()
-        self.name = name
-        self.base = base
-        self.selectors = {}
-
-    def __getitem__(self, name):
-        if name in self:
-            return super().__getitem__(name)
-        elif self.base is not None:
-            return self.base[name]
-        else:
-            raise KeyError
-
-    def __setitem__(self, name, style):
-        style.name = name
-        style.store = self
-        super().__setitem__(name, style)
-
-    def __call__(self, name, selector, **kwargs):
+    def __setitem__(self, name, selector):
         assert name not in self
-        self[name] = selector.cls.style_class(**kwargs)
-        self.selectors[selector] = name
+        super().__setitem__(name, selector)
 
     def best_match(self, styled):
         scores = {}
-        for selector, name in self.selectors.items():
+        for name, selector in self.items():
             score = selector.match(styled)
             if score:
                 if score in scores:
@@ -255,10 +234,45 @@ class StyleSheet(OrderedDict):
         except ValueError:
             return Specificity(0, 0, 0), None
 
+
+class StyleSheet(OrderedDict):
+    """Dictionary storing a set of related :class:`Style`s by name.
+
+    :class:`Style`s stored in a :class:`StyleStore` can refer to their base
+    style by name. See :class:`Style`."""
+
+    def __init__(self, name, matcher=None, base=None):
+        super().__init__()
+        self.name = name
+        self._matcher = matcher
+        self.base = base
+
+    @property
+    def matcher(self):
+        return self._matcher or self.base.matcher
+
+    def __getitem__(self, name):
+        if name in self:
+            return super().__getitem__(name)
+        elif self.base is not None:
+            return self.base[name]
+        else:
+            raise KeyError
+
+    def __setitem__(self, name, style):
+        assert name not in self
+        style.name = name
+        style.store = self
+        super().__setitem__(name, style)
+
+    def __call__(self, name, **kwargs):
+        selector = self.matcher[name]
+        self[name] = selector.cls.style_class(**kwargs)
+
     def find_style(self, styled):
-        max_score, best_match = self.best_match(styled)
+        max_score, best_match = self.matcher.best_match(styled)
         if self.base:
-            base_max_score, base_best_match = self.base.best_match(styled)
+            base_max_score, base_best_match = self.base.matcher.best_match(styled)
             if base_max_score > max_score:
                 max_score, best_match = base_max_score, base_best_match
         if sum(max_score):
