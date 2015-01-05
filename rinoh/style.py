@@ -150,7 +150,92 @@ PARENT_STYLE = ParentStyle()
 :class:`Styled` from which the lookup originates."""
 
 
-class Styled(DocumentElement):
+class Selector(object):
+    cls = None
+
+    def match(self, styled):
+        raise NotImplementedError
+
+
+class ClassSelectorBase(Selector):
+    def match(self, styled):
+        if not isinstance(styled, self.cls):
+            return Specificity(False, False, False)
+        class_match = 2 if type(styled) == self.cls else 1
+        attributes_result = style_name_result = None
+        if self.attributes:
+            for attr, value in self.attributes.items():
+                if not hasattr(styled, attr) or getattr(styled, attr) != value:
+                    attributes_result = False
+                    break
+            else:
+                attributes_result = True
+        if self.style_name is not None:
+            style_name_result = styled.style == self.style_name
+        if False in (attributes_result, style_name_result):
+            return Specificity(False, False, False)
+        else:
+            return Specificity(style_name_result or False,
+                               attributes_result or False, class_match)
+
+
+class ClassSelector(ClassSelectorBase):
+    def __init__(self, cls, style_name=None, **attributes):
+        super().__init__()
+        self.cls = cls
+        self.style_name = style_name
+        self.attributes = attributes
+
+
+class ContextSelector(Selector):
+    def __init__(self, *selectors):
+        super().__init__()
+        self.selectors = selectors
+
+    @property
+    def cls(self):
+        return self.selectors[-1].cls
+
+    def match(self, styled):
+        total_score = Specificity(0, 0, 0)
+        selectors = reversed(self.selectors)
+        selector = next(selectors)
+        while True:
+            if styled is None:
+                return Specificity(0, 0, 0)
+            if selector is Ellipsis:
+                selector = next(selectors)
+                while True:
+                    if selector.match(styled):
+                        break
+                    styled = styled.parent
+                    if styled is None:
+                        return Specificity(0, 0, 0)
+            score = selector.match(styled)
+            if not score:
+                return Specificity(0, 0, 0)
+            total_score += score
+            styled = styled.parent
+            try:
+                selector = next(selectors)
+            except StopIteration:
+                break
+        return total_score
+
+
+class StyledMeta(type, ClassSelectorBase):
+    attributes = None
+    style_name = None
+
+    @property
+    def cls(cls):
+        return cls
+
+    def like(cls, style_name=None, **attributes):
+        return ClassSelector(cls, style_name, **attributes)
+
+
+class Styled(DocumentElement, metaclass=StyledMeta):
     """An element that has a :class:`Style` associated with it."""
 
     style_class = None
@@ -289,71 +374,3 @@ class Specificity(tuple):
 
     def __bool__(self):
         return any(self)
-
-
-class Selector(object):
-    def __init__(self, cls):
-        self.cls = cls
-
-    def match(self, styled):
-        raise NotImplementedError
-
-
-class ClassSelector(Selector):
-    def __init__(self, cls, style_class=None, **attributes):
-        super().__init__(cls)
-        self.style_class = style_class
-        self.attributes = attributes
-
-    def match(self, styled):
-        if not isinstance(styled, self.cls):
-            return Specificity(False, False, False)
-        class_match = 2 if type(styled) == self.cls else 1
-        attributes_result = style_class_result = None
-        if self.attributes:
-            for attr, value in self.attributes.items():
-                if not hasattr(styled, attr) or getattr(styled, attr) != value:
-                    attributes_result = False
-                    break
-            else:
-                attributes_result = True
-        if self.style_class is not None:
-            style_class_result = styled.style == self.style_class
-
-        if False in (attributes_result, style_class_result):
-            return Specificity(False, False, False)
-        else:
-            return Specificity(style_class_result or False,
-                               attributes_result or False, class_match)
-
-
-class ContextSelector(Selector):
-    def __init__(self, *selectors):
-        super().__init__(selectors[-1].cls)
-        self.selectors = selectors
-
-    def match(self, styled):
-        total_score = Specificity(0, 0, 0)
-        selectors = reversed(self.selectors)
-        selector = next(selectors)
-        while True:
-            if styled is None:
-                return Specificity(0, 0, 0)
-            if selector is Ellipsis:
-                selector = next(selectors)
-                while True:
-                    if selector.match(styled):
-                        break
-                    styled = styled.parent
-                    if styled is None:
-                        return Specificity(0, 0, 0)
-            score = selector.match(styled)
-            if not score:
-                return Specificity(0, 0, 0)
-            total_score += score
-            styled = styled.parent
-            try:
-                selector = next(selectors)
-            except StopIteration:
-                break
-        return total_score

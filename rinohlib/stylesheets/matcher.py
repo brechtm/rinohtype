@@ -6,213 +6,211 @@ __all__ = ['matcher']
 
 matcher = StyledMatcher()
 
-matcher('body', ClassSelector(Paragraph))
+matcher('body', Paragraph)
 
-matcher('monospaced', ClassSelector(StyledText, 'monospaced'))
+matcher('monospaced', StyledText.like('monospaced'))
 
-matcher('error', ClassSelector(StyledText, 'error'))
+matcher('error', StyledText.like('error'))
 
-matcher('hyperlink', ClassSelector(StyledText, 'link'))
+matcher('hyperlink', StyledText.like('link'))
 
-matcher('literal', ClassSelector(Paragraph, 'literal'))
+matcher('literal', Paragraph.like('literal'))
 
-matcher('block quote', ClassSelector(GroupedFlowables, 'block quote'))
+matcher('block quote', GroupedFlowables.like('block quote'))
 
-matcher('attribution', ClassSelector(Paragraph, 'attribution'))
+matcher('attribution', Paragraph.like('attribution'))
 
 matcher('nested line block',
-       ContextSelector(ClassSelector(GroupedFlowables, 'line block'),
-                       ClassSelector(GroupedFlowables, 'line block')))
+       ContextSelector(GroupedFlowables.like('line block'),
+                       GroupedFlowables.like('line block')))
 
-matcher('title', ClassSelector(Paragraph, 'title'))
+matcher('title', Paragraph.like('title'))
 
-matcher('subtitle', ClassSelector(Paragraph, 'subtitle'))
+matcher('subtitle', Paragraph.like('subtitle'))
 
-matcher('author', ClassSelector(Paragraph, 'author'))
+matcher('author', Paragraph.like('author'))
 
-matcher('affiliation', ClassSelector(Paragraph, 'affiliation'))
+matcher('affiliation', Paragraph.like('affiliation'))
 
 for i in range(1, 6):
-    matcher('heading level {}'.format(i), ClassSelector(Heading, level=i))
+    matcher('heading level {}'.format(i), Heading.like(level=i))
     matcher('unnumbered heading level {}'.format(i),
-            ClassSelector(Heading, 'unnumbered', level=i))
+            Heading.like('unnumbered', level=i))
 
-matcher('topic', ClassSelector(GroupedFlowables, 'topic'))
+matcher('topic', GroupedFlowables.like('topic'))
 
-matcher('topic title', ContextSelector(ClassSelector(GroupedFlowables, 'topic'),
-                                      ClassSelector(Paragraph, 'title')))
+matcher('topic title', ContextSelector(GroupedFlowables.like('topic'),
+                                      Paragraph.like('title')))
 
-matcher('rubric', ClassSelector(Paragraph, 'rubric'))
+matcher('rubric', Paragraph.like('rubric'))
 
-matcher('sidebar frame', ClassSelector(Framed, 'sidebar'))
+matcher('sidebar frame', Framed.like('sidebar'))
 
-matcher('sidebar title', ContextSelector(ClassSelector(Framed, 'sidebar'),
-                                        ClassSelector(GroupedFlowables),
-                                        ClassSelector(Paragraph, 'title')))
+matcher('sidebar title', ContextSelector(Framed.like('sidebar'),
+                                        GroupedFlowables,
+                                        Paragraph.like('title')))
 
-matcher('sidebar subtitle', ContextSelector(ClassSelector(Framed, 'sidebar'),
-                                           ClassSelector(GroupedFlowables),
-                                           ClassSelector(Paragraph, 'subtitle')))
+matcher('sidebar subtitle', ContextSelector(Framed.like('sidebar'),
+                                           GroupedFlowables,
+                                           Paragraph.like('subtitle')))
 
-matcher('list item number', ContextSelector(ClassSelector(ListItem),
-                                           ClassSelector(Paragraph)))
+matcher('list item number', ContextSelector(ListItem,
+                                           Paragraph))
 
-matcher('enumerated list', ClassSelector(List, 'enumerated'))
+matcher('enumerated list', List.like('enumerated'))
 
-matcher('nested enumerated list', ContextSelector(ClassSelector(ListItem),
-                                                 ClassSelector(List,
-                                                               'enumerated')))
+matcher('nested enumerated list', ContextSelector(ListItem,
+                                                  List.like('enumerated')))
 
-matcher('bulleted list', ClassSelector(List, 'bulleted'))
+matcher('bulleted list', List.like('bulleted'))
 
-matcher('nested bulleted list', ContextSelector(ClassSelector(ListItem),
-                                               ClassSelector(List, 'bulleted')))
+matcher('nested bulleted list', ContextSelector(ListItem,
+                                               List.like('bulleted')))
 
-matcher('list item body', ContextSelector(ClassSelector(ListItem),
-                                         ClassSelector(GroupedFlowables)))
+matcher('list item body', ContextSelector(ListItem,
+                                         GroupedFlowables))
 
-matcher('list item paragraph', ContextSelector(ClassSelector(ListItem),
-                                              ClassSelector(GroupedFlowables),
-                                              ClassSelector(Paragraph)))
+matcher('list item paragraph', ContextSelector(ListItem,
+                                              GroupedFlowables,
+                                              Paragraph))
 
-matcher('definition list', ClassSelector(DefinitionList))
+matcher('definition list', DefinitionList)
 
-matcher('definition term', ClassSelector(DefinitionTerm))
+matcher('definition term', DefinitionTerm)
 
-matcher('definition term classifier', ClassSelector(StyledText, 'classifier'))
+matcher('definition term classifier', StyledText.like('classifier'))
 
-matcher('definition', ContextSelector(ClassSelector(DefinitionList),
-                                     ClassSelector(GroupedFlowables)))
+matcher('definition', ContextSelector(DefinitionList,
+                                     GroupedFlowables))
 
 
 # field lists
 
-matcher('field name', ClassSelector(Paragraph, 'field_name'))
+matcher('field name', Paragraph.like('field_name'))
 
 
 # option lists
 
-matcher('option', ClassSelector(Paragraph, 'option_group'))
+matcher('option', Paragraph.like('option_group'))
 
-matcher('option string', ClassSelector(MixedStyledText, 'option_string'))
+matcher('option string', MixedStyledText.like('option_string'))
 
-matcher('option argument', ClassSelector(MixedStyledText, 'option_arg'))
+matcher('option argument', MixedStyledText.like('option_arg'))
 
-matcher('admonition', ClassSelector(Framed, 'admonition'))
+matcher('admonition', Framed.like('admonition'))
 
-matcher('admonition title', ContextSelector(ClassSelector(Framed, 'admonition'),
-                                           ClassSelector(GroupedFlowables),
-                                           ClassSelector(Paragraph, 'title')))
+matcher('admonition title', ContextSelector(Framed.like('admonition'),
+                                           GroupedFlowables,
+                                           Paragraph.like('title')))
 
 for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
-    selector = ContextSelector(ClassSelector(Framed, 'admonition',
+    selector = ContextSelector(Framed.like('admonition',
                                              admonition_type=admonition_type),
-                               ClassSelector(GroupedFlowables),
-                               ClassSelector(Paragraph, 'title'))
+                               GroupedFlowables,
+                               Paragraph.like('title'))
     matcher(admonition_type + ' admonition title', selector)
 
 
-matcher('header', ClassSelector(Header))
+matcher('header', Header)
 
-matcher('footer', ClassSelector(Footer))
+matcher('footer', Footer)
 
-matcher('footnote marker', ClassSelector(NoteMarkerBase, 'footnote'))
+matcher('footnote marker', NoteMarkerBase.like('footnote'))
 
-matcher('citation marker', ClassSelector(NoteMarkerBase, 'citation'))
+matcher('citation marker', NoteMarkerBase.like('citation'))
 
-matcher('footnote paragraph', ContextSelector(ClassSelector(Note),
-                                             ClassSelector(GroupedFlowables),
-                                             ClassSelector(Paragraph)))
+matcher('footnote paragraph', ContextSelector(Note,
+                                             GroupedFlowables,
+                                             Paragraph))
 
-matcher('footnote label', ContextSelector(ClassSelector(Note),
-                                         ClassSelector(Paragraph)))
+matcher('footnote label', ContextSelector(Note,
+                                         Paragraph))
 
-matcher('figure', ClassSelector(Figure))
+matcher('figure', Figure)
 
 
-matcher('image', ClassSelector(Image))
+matcher('image', Image)
 
-matcher('figure caption', ContextSelector(ClassSelector(Figure),
-                                         ClassSelector(Caption)))
+matcher('figure caption', ContextSelector(Figure,
+                                         Caption))
 
 matcher('figure legend',
-       ContextSelector(ClassSelector(Figure),
-                       ClassSelector(GroupedFlowables, 'legend')))
+       ContextSelector(Figure,
+                       GroupedFlowables.like('legend')))
 
 matcher('figure legend paragraph',
-       ContextSelector(ClassSelector(Figure),
-                       ClassSelector(GroupedFlowables, 'legend'),
-                       ClassSelector(Paragraph)))
+       ContextSelector(Figure,
+                       GroupedFlowables.like('legend'),
+                       Paragraph))
 
-matcher('table of contents', ClassSelector(TableOfContents))
+matcher('table of contents', TableOfContents)
 
-matcher('toc level 1', ClassSelector(TableOfContentsEntry, depth=1))
+matcher('toc level 1', TableOfContentsEntry.like(depth=1))
 
-matcher('toc level 2', ClassSelector(TableOfContentsEntry, depth=2))
+matcher('toc level 2', TableOfContentsEntry.like(depth=2))
 
-matcher('toc level 3', ClassSelector(TableOfContentsEntry, depth=3))
+matcher('toc level 3', TableOfContentsEntry.like(depth=3))
 
-matcher('L3 toc level 3', ContextSelector(ClassSelector(TableOfContents, level=2),
-                                         ClassSelector(TableOfContentsEntry, depth=3)))
+matcher('L3 toc level 3', ContextSelector(TableOfContents.like(level=2),
+                                         TableOfContentsEntry.like(depth=3)))
 
-matcher('table', ClassSelector(Table))
+matcher('table', Table)
 
 matcher('table cell',
-       ContextSelector(ClassSelector(Table),
-                       ClassSelector(TableSection),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell)))
+       ContextSelector(Table,
+                       TableSection,
+                       TableRow,
+                       TableCell))
 
 matcher('table body cell background on even row',
-       ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell,
-                                     row_index=slice(0, None, 2), rowspan=1),
-                       ClassSelector(TableCellBackground)))
+       ContextSelector(TableBody,
+                       TableRow,
+                       TableCell.like(row_index=slice(0, None, 2), rowspan=1),
+                       TableCellBackground))
 
 matcher('table body cell paragraph',
-       ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell),
+       ContextSelector(TableBody,
+                       TableRow,
+                       TableCell,
                        ...,
-                       ClassSelector(Paragraph)))
+                       Paragraph))
 
 matcher('table body cell list item number',
-       ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell),
+       ContextSelector(TableBody,
+                       TableRow,
+                       TableCell,
                        ...,
-                       ClassSelector(ListItem),
-                       ClassSelector(Paragraph)))
+                       ListItem,
+                       Paragraph))
 
 matcher('table head cell paragraph',
-       ContextSelector(ClassSelector(TableHead),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell),
-                       ClassSelector(Paragraph)))
+       ContextSelector(TableHead,
+                       TableRow,
+                       TableCell,
+                       Paragraph))
 
 matcher('table top border',
-       ContextSelector(ClassSelector(TableHead),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell, row_index=0),
-                       ClassSelector(TableCellBorder, position='top')))
+       ContextSelector(TableHead,
+                       TableRow,
+                       TableCell.like(row_index=0),
+                       TableCellBorder.like(position='top')))
 
 matcher('table bottom border',
-       ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell, row_index=-1),
-                       ClassSelector(TableCellBorder, position='bottom')))
+       ContextSelector(TableBody,
+                       TableRow,
+                       TableCell.like(row_index=-1),
+                       TableCellBorder.like(position='bottom')))
 
 matcher('table head inner border',
-       ContextSelector(ClassSelector(TableHead),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell),
-                       ClassSelector(TableCellBorder, position='bottom')))
+       ContextSelector(TableHead,
+                       TableRow,
+                       TableCell,
+                       TableCellBorder.like(position='bottom')))
 
 matcher('table body top border',
-       ContextSelector(ClassSelector(TableBody),
-                       ClassSelector(TableRow),
-                       ClassSelector(TableCell, row_index=0),
-                       ClassSelector(TableCellBorder, position='top')))
+       ContextSelector(TableBody,
+                       TableRow,
+                       TableCell.like(row_index=0),
+                       TableCellBorder.like(position='top')))
 
-matcher('horizontal rule', ClassSelector(HorizontalRule))
+matcher('horizontal rule', HorizontalRule)
