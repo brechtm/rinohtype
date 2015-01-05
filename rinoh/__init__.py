@@ -34,5 +34,6 @@ DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 # create proxies for the core classes/constants at the top level for easy access
 for name in CORE_MODULES:
     module = import_module('.' + name, __name__)
-    for attr in module.__all__:
-        globals()[attr] = getattr(module, attr)
+    module_dict, module_all = module.__dict__, module.__all__
+    globals().update({name: module_dict[name] for name in module_all})
+    __all__ += module_all
