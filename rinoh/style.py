@@ -153,11 +153,23 @@ PARENT_STYLE = ParentStyle()
 class Selector(object):
     cls = None
 
+    def __truediv__(self, other):
+        try:
+            selectors = self.selectors + other.selectors
+        except AttributeError:
+            assert other == Ellipsis
+            selectors = self.selectors + (other, )
+        return ContextSelector(*selectors)
+
     def match(self, styled):
         raise NotImplementedError
 
 
 class ClassSelectorBase(Selector):
+    @property
+    def selectors(self):
+        return (self, )
+
     def match(self, styled):
         if not isinstance(styled, self.cls):
             return Specificity(False, False, False)
