@@ -298,11 +298,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     def _style(self, document):
         if isinstance(self.style, Style):
             if isinstance(self.style, ParentStyle):
-                return document.styles.find_style(self) or self.style
+                return document.stylesheet.find_style(self) or self.style
             else:
                 return self.style
         else:
-            return document.styles.find_style(self)
+            return document.stylesheet.find_style(self)
 
 
 class AmbiguousStyleSheetException(Exception):

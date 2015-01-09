@@ -10,8 +10,8 @@ from rinoh.frontend.rst import ReStructuredTextParser
 from rinohlib.stylesheets.ieee import styles as ieee_styles
 
 
-styles = rt.StyleSheet('IEEE for rST', base=ieee_styles)
-styles['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
+STYLESHEET = rt.StyleSheet('IEEE for rST', base=ieee_styles)
+STYLESHEET['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
                                    indent_first=0,
                                    space_below=6*PT)
 # styles('line block line', rt.ClassSelector(rt.Paragraph, 'line block line'),
@@ -58,11 +58,10 @@ class SimplePage(rt.Page):
 # main document
 # ----------------------------------------------------------------------------
 class ReStructuredTextDocument(rt.Document):
-    def __init__(self, filename):
-        self.styles = styles
+    def __init__(self, filename, stylesheet):
         parser = ReStructuredTextParser()
         self.root = parser.parse(filename)
-        super().__init__(backend=pdf, title=self.root.get('title'))
+        super().__init__(stylesheet, backend=pdf, title=self.root.get('title'))
         self.content = rt.Chain(self)
         self.parse_input()
 
