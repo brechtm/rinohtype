@@ -24,7 +24,7 @@ from .document import DocumentElement
 from .util import cached
 
 
-__all__ = ['Style', 'Styled',
+__all__ = ['Style', 'Styled', 'Var',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'ParentStyleException']
 
@@ -290,7 +290,10 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         if style is None:
             raise DefaultValueException
         try:
-            return style[attribute]
+            value = style[attribute]
+            if isinstance(value, VarBase):
+                value = value.get(document)
+            return value
         except ParentStyleException:
             return self.parent.get_style_recursive(attribute, document)
 
@@ -343,6 +346,7 @@ class StyleSheet(OrderedDict):
         self.name = name
         self._matcher = matcher
         self.base = base
+        self.variables = {}
 
     @property
     def matcher(self):
@@ -366,6 +370,12 @@ class StyleSheet(OrderedDict):
         selector = self.matcher[name]
         self[name] = selector.cls.style_class(**kwargs)
 
+    def get_variable(self, name):
+        try:
+            return self.variables[name]
+        except KeyError:
+            return self.base.get_variable(name)
+
     def find_style(self, styled):
         max_score, best_match = self.matcher.best_match(styled)
         if self.base:
@@ -375,6 +385,33 @@ class StyleSheet(OrderedDict):
         if sum(max_score):
             print("({}) matches '{}'".format(styled.path, best_match))
             return self[best_match]
+
+
+class VarBase(object):
+    def __getattr__(self, name):
+        return VarAttribute(self, name)
+
+    def get(self, document):
+        raise NotImplementedError
+
+
+class Var(VarBase):
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+
+    def get(self, document):
+        return document.get_style_var(self.name)
+
+
+class VarAttribute(VarBase):
+    def __init__(self, parent, attribute_name):
+        super().__init__()
+        self.parent = parent
+        self.attribute_name = attribute_name
+
+    def get(self, document):
+        return getattr(self.parent.get(document), self.attribute_name)
 
 
 class Specificity(tuple):

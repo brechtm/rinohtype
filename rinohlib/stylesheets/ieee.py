@@ -1,5 +1,5 @@
 
-from rinoh import (StyleSheet, ClassSelector, ContextSelector,
+from rinoh import (StyleSheet, Var,
                    PT, CM, INCH, LEFT, RIGHT, CENTER, BOTH,
                    TOP, BOTTOM, MIDDLE,
                    FixedWidthSpace, TabStop,
@@ -14,12 +14,12 @@ from rinohlib.fonts.texgyre.cursor import typeface as courier
 
 from .matcher import matcher
 
-ieee_family = TypeFamily(serif=times, mono=courier)
-
 styles = StyleSheet('IEEE', matcher=matcher)
 
+styles.variables['ieee_family'] = TypeFamily(serif=times, mono=courier)
+
 styles('body',
-       typeface=ieee_family.serif,
+       typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=10*PT,
        line_spacing=FixedSpacing(12*PT),
@@ -34,7 +34,7 @@ styles('body',
 
 styles('monospaced',
        font_size=9*PT,
-       typeface=ieee_family.mono,
+       typeface=Var('ieee_family').mono,
        hyphenate=False,
        ligatures=False)
 
@@ -50,7 +50,7 @@ styles('literal',
        justify=LEFT,
        indent_first=0,
        margin_left=0.5*CM,
-       typeface=ieee_family.mono,
+       typeface=Var('ieee_family').mono,
        ligatures=False,
        hyphenate=False)
        #noWrap=True,   # but warn on overflow
@@ -67,7 +67,7 @@ styles('nested line block',
        margin_left=0.5*CM)
 
 styles('title',
-       typeface=ieee_family.serif,
+       typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=18*PT,
        line_spacing=ProportionalSpacing(1.2),
@@ -89,7 +89,7 @@ styles('affiliation',
        space_below=6*PT + 12*PT)
 
 styles('heading level 1',
-       typeface=ieee_family.serif,
+       typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=10*PT,
        small_caps=True,
@@ -251,7 +251,7 @@ styles('option',
 
 styles('option string',
        base='body',
-       typeface=ieee_family.mono,
+       typeface=Var('ieee_family').mono,
        font_size=8*PT)
 
 styles('option argument',
@@ -320,7 +320,7 @@ styles('image',
        horizontal_align=CENTER)
 
 styles('figure caption',
-       typeface=ieee_family.serif,
+       typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=9*PT,
        line_spacing=FixedSpacing(10*PT),

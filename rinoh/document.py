@@ -174,6 +174,9 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = self.number_of_pages, self.page_references
             pickle.dump(cache, file)
 
+    def get_style_var(self, name):
+        return self.stylesheet.get_variable(name)
+
     def render(self, filename):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
