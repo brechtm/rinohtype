@@ -102,7 +102,7 @@ class TypeFace(dict):
                           OBLIQUE: (ITALIC, UPRIGHT),
                           ITALIC: (OBLIQUE, UPRIGHT)}
 
-    def get(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+    def get_font(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         def find_closest_style(style, styles, alternatives):
             try:
                 return style, styles[style]

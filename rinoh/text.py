@@ -224,7 +224,7 @@ class SingleStyledText(StyledText):
         weight = self.get_style('font_weight', document)
         slant = self.get_style('font_slant', document)
         width = self.get_style('font_width', document)
-        return typeface.get(weight=weight, slant=slant, width=width)
+        return typeface.get_font(weight=weight, slant=slant, width=width)
 
     def ascender(self, document):
         return (self.font(document).ascender_in_pt

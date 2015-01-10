@@ -102,11 +102,11 @@ zapfdingbats = TypeFace('ITC ZapfDingbats',
                         Type1Font(path('ZapfDingbats'), core=True))
 
 
-postscript_mathfonts = MathFonts(newcenturyschlbk.get(),
-                                 newcenturyschlbk.get(slant=ITALIC),
-                                 newcenturyschlbk.get(weight=BOLD),
-                                 helvetica.get(),
-                                 courier.get(),
-                                 zapfchancery.get(slant=ITALIC),
-                                 symbol.get(),
-                                 symbol.get())
+postscript_mathfonts = MathFonts(newcenturyschlbk.get_font(),
+                                 newcenturyschlbk.get_font(slant=ITALIC),
+                                 newcenturyschlbk.get_font(weight=BOLD),
+                                 helvetica.get_font(),
+                                 courier.get_font(),
+                                 zapfchancery.get_font(slant=ITALIC),
+                                 symbol.get_font(),
+                                 symbol.get_font())
