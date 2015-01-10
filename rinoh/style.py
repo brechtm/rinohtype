@@ -61,7 +61,7 @@ class Style(dict):
         the :class:`StyleStore` this style is stored in."""
         self.base = base
         self.name = None
-        self.store = None
+        self.stylesheet = None
         for attribute in attributes:
             if attribute not in self._supported_attributes():
                 raise TypeError('%s is not a supported attribute' % attribute)
@@ -89,7 +89,7 @@ class Style(dict):
         copy = self.__class__(base=self.base, **self)
         if self.name is not None:
             copy.name = self.name + ' (copy)'
-            copy.store = self.store
+            copy.stylesheet = self.stylesheet
         return copy
 
     def __getattr__(self, attribute):
@@ -363,7 +363,7 @@ class StyleSheet(OrderedDict):
     def __setitem__(self, name, style):
         assert name not in self
         style.name = name
-        style.store = self
+        style.stylesheet = self
         super().__setitem__(name, style)
 
     def __call__(self, name, **kwargs):
