@@ -33,6 +33,15 @@ class ParentStyleException(Exception):
     """Style attribute not found. Consult the parent :class:`Styled`."""
 
 
+class BaseStyleException(Exception):
+    """The attribute is not specified in this :class:`Style`. Find the attribute
+    in a base style."""
+
+    def __init__(self, base_name, attribute):
+        self.base_name = base_name
+        self.attribute = attribute
+
+
 class DefaultValueException(Exception):
     """The attribute is not specified in this :class:`Style` or any of its base
     styles. Return the default value for the attribute."""
@@ -67,19 +76,6 @@ class Style(dict):
                 raise TypeError('%s is not a supported attribute' % attribute)
         super().__init__(attributes)
 
-    @property
-    def base(self):
-        """Return the base style for this style."""
-        if isinstance(self._base, str):
-            return self.store[self._base]
-        else:
-            return self._base
-
-    @base.setter
-    def base(self, base):
-        """Set this style's base to `base`"""
-        self._base = base
-
     def __repr__(self):
         """Return a textual representation of this style."""
         return '{0}({1}) > {2}'.format(self.__class__.__name__, self.name or '',
@@ -106,7 +102,10 @@ class Style(dict):
         except KeyError:
             if self.base is None:
                 raise DefaultValueException
-            return self.base[attribute]
+            elif isinstance(self.base, str):
+                raise BaseStyleException(self.base, attribute)
+            else:
+                return self.base[attribute]
 
     @classmethod
     def _get_default(cls, attribute):
@@ -132,6 +131,12 @@ class Style(dict):
                 attributes.update(super_cls.attributes.keys())
         except AttributeError:
             return attributes
+
+    def get_value(self, attribute, document):
+        value = self[attribute]
+        if isinstance(value, VarBase):
+            value = value.get(document)
+        return value
 
 
 class ParentStyle(Style):
@@ -285,17 +290,23 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                       .format(self.path))
             return self.style_class._get_default(attribute)
 
+    def get_base_style_recursive(self, exception, document):
+        try:
+            base_style = document.stylesheet[exception.base_name]
+            return base_style.get_value(exception.attribute, document)
+        except BaseStyleException as e:
+            return self.get_base_style_recursive(e, document)
+
     def get_style_recursive(self, attribute, document=None):
         style = self._style(document)
-        if style is None:
-            raise DefaultValueException
         try:
-            value = style[attribute]
-            if isinstance(value, VarBase):
-                value = value.get(document)
-            return value
+            return style.get_value(attribute, document)
         except ParentStyleException:
             return self.parent.get_style_recursive(attribute, document)
+        except BaseStyleException as exception:
+            return self.get_base_style_recursive(exception, document)
+        except AttributeError:
+            raise DefaultValueException
 
     @cached
     def _style(self, document):

@@ -11,12 +11,10 @@ from rinohlib.stylesheets.ieee import styles as ieee_styles
 
 
 STYLESHEET = rt.StyleSheet('IEEE for rST', base=ieee_styles)
-STYLESHEET['body'] = rt.ParagraphStyle(base=ieee_styles['body'],
-                                   indent_first=0,
-                                   space_below=6*PT)
-# styles('line block line', rt.ClassSelector(rt.Paragraph, 'line block line'),
-#        base='body',
-#        space_below=0*PT)
+
+STYLESHEET['body'] = rt.ParagraphStyle(base=STYLESHEET.base['body'],
+                                       indent_first=0,
+                                       space_below=6*PT)
 
 
 # page definition

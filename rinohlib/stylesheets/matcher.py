@@ -20,6 +20,8 @@ matcher('block quote', GroupedFlowables.like('block quote'))
 
 matcher('attribution', Paragraph.like('attribution'))
 
+matcher('line block line', Paragraph.like('line block line'))
+
 matcher('nested line block', GroupedFlowables.like('line block')
                              / GroupedFlowables.like('line block'))
 

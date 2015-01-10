@@ -1,5 +1,5 @@
 
-from rinoh import (StyleSheet, Var,
+from rinoh import (StyleSheet, Var, ParagraphStyle,
                    PT, CM, INCH, LEFT, RIGHT, CENTER, BOTH,
                    TOP, BOTTOM, MIDDLE,
                    FixedWidthSpace, TabStop,
@@ -18,19 +18,24 @@ styles = StyleSheet('IEEE', matcher=matcher)
 
 styles.variables['ieee_family'] = TypeFamily(serif=times, mono=courier)
 
+styles['default'] = ParagraphStyle(typeface=Var('ieee_family').serif,
+                                   font_weight=REGULAR,
+                                   font_size=10*PT,
+                                   line_spacing=FixedSpacing(12*PT),
+                                   indent_first=0.125*INCH,
+                                   space_above=0*PT,
+                                   space_below=0*PT,
+                                   justify=BOTH,
+                                   kerning=True,
+                                   ligatures=True,
+                                   hyphen_lang='en_US',
+                                   hyphen_chars=4)
+
 styles('body',
-       typeface=Var('ieee_family').serif,
-       font_weight=REGULAR,
-       font_size=10*PT,
-       line_spacing=FixedSpacing(12*PT),
-       indent_first=0.125*INCH,
+       base='default',
        space_above=0*PT,
        space_below=0*PT,
-       justify=BOTH,
-       kerning=True,
-       ligatures=True,
-       hyphen_lang='en_US',
-       hyphen_chars=4)
+       justify=BOTH)
 
 styles('monospaced',
        font_size=9*PT,
@@ -45,7 +50,7 @@ styles('hyperlink',
        font_color=BLUE)
 
 styles('literal',
-       base='body',
+       base='default',
        font_size=9*PT,
        justify=LEFT,
        indent_first=0,
@@ -60,8 +65,12 @@ styles('block quote',
        margin_left=1*CM)
 
 styles('attribution',
-       base='body',
+       base='default',
        justify=RIGHT)
+
+styles('line block line',
+       base='default',
+       space_below=0*PT)
 
 styles('nested line block',
        margin_left=0.5*CM)
@@ -149,7 +158,7 @@ styles('topic',
        margin_left=0.5*CM)
 
 styles('topic title',
-       base='body',
+       base='default',
        font_weight=BOLD,
        indent_first=0,
        space_above=5*PT,
@@ -164,7 +173,7 @@ styles('sidebar frame',
        fill_color=Color(1.0, 1.0, 0.9))
 
 styles('sidebar title',
-       base='body',
+       base='default',
        font_size=12*PT,
        font_weight=BOLD,
        indent_first=0,
@@ -172,14 +181,14 @@ styles('sidebar title',
        space_below=5*PT)
 
 styles('sidebar subtitle',
-       base='body',
+       base='default',
        font_weight=BOLD,
        indent_first=0,
        space_above=2*PT,
        space_below=2*PT)
 
 styles('list item number',
-       base='body',
+       base='default',
        indent_first=0,
        justify=RIGHT)
 
@@ -212,17 +221,17 @@ styles('list item body',
        margin_right=0)
 
 styles('list item paragraph',
-       base='body',
+       base='default',
        space_above=0*PT,
        space_below=0*PT,
        margin_left=0*PT,
        indent_first=0*PT)
 
 styles('definition list',
-       base='body')
+       base='default')
 
 styles('definition term',
-       base='body',
+       base='default',
        indent_first=0,
        font_weight=BOLD)
 
@@ -236,7 +245,7 @@ styles('definition',
 # field lists
 
 styles('field name',
-       base='body',
+       base='default',
        indent_first=0,
        justify=LEFT,
        font_weight=BOLD)
@@ -245,17 +254,17 @@ styles('field name',
 # option lists
 
 styles('option',
-       base='body',
+       base='default',
        indent_first=0,
        justify=LEFT)
 
 styles('option string',
-       base='body',
+       base='default',
        typeface=Var('ieee_family').mono,
        font_size=8*PT)
 
 styles('option argument',
-       base='body',
+       base='default',
        font_slant=ITALIC)
 
 
@@ -271,7 +280,7 @@ styles('admonition',
        stroke_color=Gray(0.4))
 
 styles('admonition title',
-       base='body',
+       base='default',
        font_weight=BOLD,
        indent_first=0,
        space_above=5*PT,
@@ -283,7 +292,7 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
            font_color=RED)
 
 styles('header',
-       base='body',
+       base='default',
        indent_first=0*PT,
        font_size=9*PT)
 
@@ -302,7 +311,7 @@ styles('citation marker',
        custom_label=True)
 
 styles('footnote paragraph',
-       base='body',
+       base='default',
        font_size=9*PT,
        indent_first=0,
        line_spacing=FixedSpacing(10*PT))
@@ -339,7 +348,7 @@ styles('figure legend paragraph',
        justify=LEFT)
 
 styles('table of contents',
-       base='body',
+       base='default',
        indent_first=0,
        depth=3)
 
@@ -383,7 +392,7 @@ styles('table body cell background on even row',
        fill_color=GRAY90)
 
 styles('table body cell paragraph',
-       base='body',
+       base='default',
        font_size=9*PT,
        indent_first=0)
 
