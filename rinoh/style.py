@@ -42,7 +42,7 @@ class BaseStyleException(Exception):
         self.attribute = attribute
 
 
-class DefaultValueException(Exception):
+class DefaultStyleException(Exception):
     """The attribute is not specified in this :class:`Style` or any of its base
     styles. Return the default value for the attribute."""
 
@@ -101,7 +101,7 @@ class Style(dict):
             return super().__getitem__(attribute)
         except KeyError:
             if self.base is None:
-                raise DefaultValueException
+                raise DefaultStyleException
             elif isinstance(self.base, str):
                 raise BaseStyleException(self.base, attribute)
             else:
@@ -285,7 +285,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     def get_style(self, attribute, document=None):
         try:
             return self.get_style_recursive(attribute, document)
-        except DefaultValueException:
+        except DefaultStyleException:
             self.warn('Falling back to default style for ({})'
                       .format(self.path))
             return self.style_class._get_default(attribute)
@@ -306,7 +306,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         except BaseStyleException as exception:
             return self.get_base_style_recursive(exception, document)
         except AttributeError:
-            raise DefaultValueException
+            raise DefaultStyleException
 
     @cached
     def _style(self, document):
