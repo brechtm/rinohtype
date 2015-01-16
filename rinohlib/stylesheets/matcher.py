@@ -8,6 +8,12 @@ matcher = StyledMatcher()
 
 matcher('body', Paragraph)
 
+matcher('emphasis', StyledText.like('emphasis'))
+
+matcher('strong', StyledText.like('strong'))
+
+matcher('title reference', StyledText.like('title reference'))
+
 matcher('monospaced', StyledText.like('monospaced'))
 
 matcher('error', StyledText.like('error'))

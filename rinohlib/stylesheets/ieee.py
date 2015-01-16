@@ -37,6 +37,15 @@ styles('body',
        space_below=0*PT,
        justify=BOTH)
 
+styles('emphasis',
+       font_slant=ITALIC)
+
+styles('strong',
+       font_weight=BOLD)
+
+styles('title reference',
+       font_slant=ITALIC)
+
 styles('monospaced',
        font_size=9*PT,
        typeface=Var('ieee_family').mono,

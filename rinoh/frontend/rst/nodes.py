@@ -235,17 +235,17 @@ class Generated(InlineElement):
 
 class Emphasis(InlineElement):
     def build_styled_text(self):
-        return rt.Emphasized(self.text)
+        return rt.SingleStyledText(self.text, style='emphasis')
 
 
 class Strong(InlineElement):
     def build_styled_text(self):
-        return rt.Bold(self.text)
+        return rt.SingleStyledText(self.text, style='strong')
 
 
 class Title_Reference(InlineElement):
     def build_styled_text(self):
-        return rt.Italic(self.text)
+        return rt.SingleStyledText(self.text, style='title reference')
 
 
 class Literal(InlineElement):
