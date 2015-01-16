@@ -25,7 +25,7 @@ from .style import PARENT_STYLE
 
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
-           'DefinitionListStyle', 'DefinitionList', 'DefinitionTerm',
+           'DefinitionList', 'DefinitionTerm',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -133,17 +133,7 @@ class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
-class DefinitionListStyle(GroupedFlowablesStyle, ParagraphStyle):
-    attributes = {'term_style': PARENT_STYLE,
-                  'indentation': 10*PT}
-
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
-
-
 class DefinitionList(GroupedFlowables):
-    style_class = DefinitionListStyle
-
     def __init__(self, items, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.items = items
