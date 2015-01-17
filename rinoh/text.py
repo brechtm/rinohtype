@@ -98,9 +98,6 @@ class TextStyle(Style):
 
 
 class CharacterLike(Styled):
-    def __init__(self, style=PARENT_STYLE):
-        super().__init__(style)
-
     def __repr__(self):
         return "{0}(style={1})".format(self.__class__.__name__, self.style)
 
@@ -119,12 +116,7 @@ class StyledText(Styled):
     """Base class for text that has a :class:`TextStyle` associated with it."""
 
     style_class = TextStyle
-
-    def __init__(self, style=PARENT_STYLE, parent=None):
-        """Initialize this styled text with the given `style` and `parent` (see
-        :class:`Styled`). The default (`style` = :const:`PARENT_STYLE`) is to
-        inherit the style of the parent of this styled text. """
-        super().__init__(style, parent)
+    default_style = PARENT_STYLE
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
@@ -190,7 +182,7 @@ class StyledText(Styled):
 class SingleStyledText(StyledText):
     """Styled text where all text shares a single :class:`TextStyle`."""
 
-    def __init__(self, text, style=PARENT_STYLE, parent=None):
+    def __init__(self, text, style=None, parent=None):
         """Initialize this single-styled text with `text` (:class:`str`),
         `style`, and `parent` (see :class:`StyledText`).
 
@@ -258,7 +250,7 @@ class SingleStyledText(StyledText):
 class MixedStyledText(StyledText, list):
     """Concatenation of :class:`StyledText` objects."""
 
-    def __init__(self, text_or_items, style=PARENT_STYLE, parent=None):
+    def __init__(self, text_or_items, style=None, parent=None):
         """Initialize this mixed-styled text as the concatenation of
         `text_or_items`, which is either a single text item or an iterable of
         text items. Individual text items can be :class:`StyledText` or
@@ -292,7 +284,7 @@ class MixedStyledText(StyledText, list):
 
         The parent of `item` is set to this mixed-styled text."""
         if isinstance(item, str):
-            item = SingleStyledText(item, style=PARENT_STYLE)
+            item = SingleStyledText(item)
         item.parent = self
         list.append(self, item)
 
@@ -309,7 +301,7 @@ class Character(SingleStyledText):
 class Space(Character):
     """A space character."""
 
-    def __init__(self, fixed_width=False, style=PARENT_STYLE, parent=None):
+    def __init__(self, fixed_width=False, style=None, parent=None):
         """Initialize this space. `fixed_width` specifies whether this space
         can be stretched (`False`) or not (`True`) in justified paragraphs.
         See :class:`StyledText` about `style` and `parent`."""
@@ -320,7 +312,7 @@ class Space(Character):
 class FixedWidthSpace(Space):
     """A fixed-width space character."""
 
-    def __init__(self, style=PARENT_STYLE, parent=None):
+    def __init__(self, style=None, parent=None):
         """Initialize this fixed-width space with `style` and `parent` (see
         :class:`StyledText`)."""
         super().__init__(True, style=style, parent=parent)
@@ -331,7 +323,7 @@ class NoBreakSpace(Character):
 
     Lines cannot wrap at a this type of space."""
 
-    def __init__(self, style=PARENT_STYLE, parent=None):
+    def __init__(self, style=None, parent=None):
         """Initialize this non-breaking space with `style` and `parent` (see
         :class:`StyledText`)."""
         super().__init__(' ', style=style, parent=parent)
@@ -340,7 +332,7 @@ class NoBreakSpace(Character):
 class Spacer(FixedWidthSpace):
     """A space of a specific width."""
 
-    def __init__(self, width, style=PARENT_STYLE, parent=None):
+    def __init__(self, width, style=None, parent=None):
         """Initialize this spacer at `width` with `style` and `parent` (see
         :class:`StyledText`)."""
         super().__init__(style=style, parent=parent)

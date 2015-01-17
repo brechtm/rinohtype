@@ -265,6 +265,8 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     """The :class:`Style` subclass that corresponds to this :class:`Styled`
     subclass."""
 
+    default_style = None
+
     def __init__(self, style=None, parent=None):
         """Associates `style` with this element. If `style` is `None`, an empty
         :class:`Style` is create, effectively using the defaults defined for the
@@ -279,7 +281,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                             .format(self.__class__.__name__,
                                     self.style_class.__name__,
                                     style.__class__.__name__))
-        self.style = style
+        self.style = style or self.default_style
 
     @property
     def path(self):

@@ -318,6 +318,8 @@ class ParagraphBase(Flowable):
 
 
 class Paragraph(ParagraphBase, MixedStyledText):
+    default_style = None
+
     def __init__(self, text_or_items, id=None, style=None, parent=None):
         """See :class:`MixedStyledText`. As a paragraph typically doesn't have
         a parent, `style` should be specified."""

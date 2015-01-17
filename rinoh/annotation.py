@@ -47,8 +47,7 @@ class AnnotatedSpan(Decorator):
 
 
 class AnnotatedText(MixedStyledText):
-    def __init__(self, text_or_items, annotation, style=PARENT_STYLE,
-                 parent=None):
+    def __init__(self, text_or_items, annotation, style=None, parent=None):
         super().__init__(text_or_items, style=style, parent=parent)
         self.annotation = annotation
 
