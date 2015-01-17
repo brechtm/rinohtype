@@ -53,6 +53,8 @@ class FlowableStyle(Style):
                   'margin_left': 0,
                   'margin_right': 0}
 
+    default_base = None
+
 
 class FlowableState(object):
     """Stores a :class:`Flowable`\'s rendering state, which can be copied. This

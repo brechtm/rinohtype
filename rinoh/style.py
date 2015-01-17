@@ -26,14 +26,18 @@ from .util import cached
 
 __all__ = ['Style', 'Styled', 'Var',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
-           'PARENT_STYLE', 'ParentStyleException']
+           'PARENT_STYLE', 'StyleException']
 
 
-class ParentStyleException(Exception):
+class StyleException(Exception):
+    """Style lookup requires special handling."""
+
+
+class ParentStyleException(StyleException):
     """Style attribute not found. Consult the parent :class:`Styled`."""
 
 
-class BaseStyleException(Exception):
+class BaseStyleException(StyleException):
     """The attribute is not specified in this :class:`Style`. Find the attribute
     in a base style."""
 
@@ -42,7 +46,7 @@ class BaseStyleException(Exception):
         self.attribute = attribute
 
 
-class DefaultStyleException(Exception):
+class DefaultStyleException(StyleException):
     """The attribute is not specified in this :class:`Style` or any of its base
     styles. Return the default value for the attribute."""
 
@@ -56,6 +60,8 @@ class Style(dict):
     """Dictionary holding the supported style attributes for this :class:`Style`
     class (keys) and their default values (values)"""
 
+    default_base = None
+
     def __init__(self, base=None, **attributes):
         """Style attributes are as passed as keyword arguments. Supported
         attributes include those defined in the :attr:`attributes` attribute of
@@ -68,7 +74,7 @@ class Style(dict):
         is forwarded to the parent of the element the lookup originates from.
         If `base` is a :class:`str`, it is used to look up the base style in
         the :class:`StyleStore` this style is stored in."""
-        self.base = base
+        self.base = base or self.default_base
         self.name = None
         self.stylesheet = None
         for attribute in attributes:
@@ -298,25 +304,26 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.get_base_style_recursive(e, document)
 
     def get_style_recursive(self, attribute, document=None):
-        style = self._style(document)
         try:
-            return style.get_value(attribute, document)
+            try:
+                style = self._style(document)
+                return style.get_value(attribute, document)
+            except DefaultStyleException:
+                if self.style_class.default_base == PARENT_STYLE:
+                    raise ParentStyleException
+                raise
         except ParentStyleException:
             return self.parent.get_style_recursive(attribute, document)
         except BaseStyleException as exception:
             return self.get_base_style_recursive(exception, document)
-        except AttributeError:
-            raise DefaultStyleException
 
     @cached
     def _style(self, document):
         if isinstance(self.style, Style):
-            if isinstance(self.style, ParentStyle):
-                return document.stylesheet.find_style(self) or self.style
-            else:
-                return self.style
+            return self.style
         else:
             return document.stylesheet.find_style(self)
+        raise DefaultStyleException
 
 
 class AmbiguousStyleSheetException(Exception):
@@ -364,12 +371,13 @@ class StyleSheet(OrderedDict):
         return self._matcher or self.base.matcher
 
     def __getitem__(self, name):
-        if name in self:
+        try:
             return super().__getitem__(name)
-        elif self.base is not None:
-            return self.base[name]
-        else:
-            raise KeyError
+        except KeyError:
+            if self.base is not None:
+                return self.base[name]
+            else:
+                raise
 
     def __setitem__(self, name, style):
         assert name not in self
@@ -395,7 +403,11 @@ class StyleSheet(OrderedDict):
                 max_score, best_match = base_max_score, base_best_match
         if sum(max_score):
             print("({}) matches '{}'".format(styled.path, best_match))
-            return self[best_match]
+            try:
+                return self[best_match]
+            except KeyError:
+                print("No style '{}' found in stylesheet".format(best_match))
+        raise DefaultStyleException
 
 
 class VarBase(object):

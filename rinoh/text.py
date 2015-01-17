@@ -42,7 +42,7 @@ from .draw import BLACK
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14
-from .style import Style, Styled, PARENT_STYLE
+from .style import Style, Styled, PARENT_STYLE, StyleException
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
@@ -94,11 +94,7 @@ class TextStyle(Style):
                   'hyphen_chars': 2,
                   'hyphen_lang': 'en_US'}
 
-    def __init__(self, base=PARENT_STYLE, **attributes):
-        """Initialize this text style with the given style `attributes` and
-        `base` style. The default (`base` = :const:`PARENT_STYLE`) is to inherit
-        the style of the parent of the :class:`Styled` element."""
-        super().__init__(base=base, **attributes)
+    default_base = PARENT_STYLE
 
 
 class CharacterLike(Styled):
@@ -151,10 +147,11 @@ class StyledText(Styled):
 
     def is_script(self, document):
         """Returns `True` if this styled text is super/subscript."""
-        style = self._style(document)
-        if style not in (PARENT_STYLE, None) and 'position' in style:
-            return style.position is not None
-        return False
+        try:
+            style = self._style(document)
+            return style.get_value('position', document) is not None
+        except StyleException:
+            return False
 
     def script_level(self, document):
         """Nesting level of super/subscript."""

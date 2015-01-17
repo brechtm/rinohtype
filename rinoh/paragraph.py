@@ -172,7 +172,7 @@ class TabStop(object):
 
 
 # TODO: look at Word/OpenOffice for more options
-class ParagraphStyle(TextStyle, FlowableStyle):
+class ParagraphStyle(FlowableStyle, TextStyle):
     """The :class:`Style` for :class:`Paragraph` objects. It has the following
     attributes:
 
@@ -188,9 +188,6 @@ class ParagraphStyle(TextStyle, FlowableStyle):
                   'line_spacing': DEFAULT,
                   'justify': BOTH,
                   'tab_stops': []}
-
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
 
 
 # TODO: shouldn't take a container (but needed by flow_inline)
