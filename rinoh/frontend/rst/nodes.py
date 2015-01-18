@@ -139,12 +139,8 @@ class Sidebar(GroupingElement):
         return rt.Framed(grouped_flowables, style='sidebar')
 
 
-class Section(BodyElement):
-    def build_flowable(self):
-        flowables = []
-        for element in self.getchildren():
-            flowables.append(element.flowable())
-        return rt.Section(flowables)
+class Section(GroupingElement):
+    grouped_flowables_class = rt.Section
 
 
 class Paragraph(BodyElement):
