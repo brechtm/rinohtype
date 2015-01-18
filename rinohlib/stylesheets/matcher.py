@@ -1,5 +1,5 @@
-from rinoh import *
-
+from rinoh.style import StyledMatcher
+from rinoh.styleds import *
 
 __all__ = ['matcher']
 
