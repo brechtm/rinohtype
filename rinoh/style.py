@@ -350,9 +350,9 @@ class StyledMatcher(dict):
                 scores[score] = name
         try:
             max_score = max(scores)
-            return max_score, scores[max_score]
+            return Match(scores[max_score], max_score)
         except ValueError:
-            return Specificity(0, 0, 0), None
+            return NO_MATCH
 
 
 class StyleSheet(OrderedDict):
@@ -364,13 +364,9 @@ class StyleSheet(OrderedDict):
     def __init__(self, name, matcher=None, base=None):
         super().__init__()
         self.name = name
-        self._matcher = matcher
+        self.matcher = matcher
         self.base = base
         self.variables = {}
-
-    @property
-    def matcher(self):
-        return self._matcher or self.base.matcher
 
     def __getitem__(self, name):
         try:
@@ -397,18 +393,26 @@ class StyleSheet(OrderedDict):
         except KeyError:
             return self.base.get_variable(name)
 
-    def find_style(self, styled):
-        max_score, best_match = self.matcher.best_match(styled)
+    def find_best_match(self, styled):
+        try:
+            best_match = self.matcher.best_match(styled)
+        except AttributeError:
+            best_match = NO_MATCH
         if self.base:
-            base_max_score, base_best_match = self.base.matcher.best_match(styled)
-            if base_max_score > max_score:
-                max_score, best_match = base_max_score, base_best_match
-        if sum(max_score):
-            print("({}) matches '{}'".format(styled.path, best_match))
+            base_best_match = self.base.find_best_match(styled)
+            if base_best_match > best_match:
+                best_match = base_best_match
+        return best_match
+
+    def find_style(self, styled):
+        match = self.find_best_match(styled)
+        if match:
+            print("({}) matches '{}'".format(styled.path, match.style_name))
             try:
-                return self[best_match]
+                return self[match.style_name]
             except KeyError:
-                print("No style '{}' found in stylesheet".format(best_match))
+                print("No style '{}' found in stylesheet"
+                      .format(match.style_name))
         raise DefaultStyleException
 
 
@@ -448,3 +452,18 @@ class Specificity(tuple):
 
     def __bool__(self):
         return any(self)
+
+
+class Match(object):
+    def __init__(self, style_name, specificity):
+        self.style_name = style_name
+        self.specificity = specificity
+
+    def __gt__(self, other):
+        return self.specificity > other.specificity
+
+    def __bool__(self):
+        return bool(self.specificity)
+
+
+NO_MATCH = Match(None, Specificity(0, 0, 0))
