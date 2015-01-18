@@ -25,7 +25,7 @@ CORE_MODULES = ['annotation', 'decoration', 'dimension', 'document', 'draw',
                 'float', 'flowable', 'inline', 'layout', 'number', 'paper',
                 'paragraph', 'reference', 'structure', 'style', 'table', 'text']
 
-__all__ = CORE_MODULES + ['font', 'frontend', 'backend']
+__all__ = CORE_MODULES + ['font', 'frontend', 'backend', 'styleds', 'styles']
 
 
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
