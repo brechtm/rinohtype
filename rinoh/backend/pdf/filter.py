@@ -71,8 +71,8 @@ class PassThroughEncoder(Encoder):
 
 
 class PassThroughDecoder(Decoder):
-    def read(self, b):
-        return self._destination.read(n)
+    def read(self, n=-1):
+        return self._source.read(n)
 
 
 class ASCIIHexDecode(Filter):
@@ -83,7 +83,7 @@ class ASCIIHexDecode(Filter):
         return ASCIIHexDecoder(source)
 
 
-class ASCIIHexEncoder(Decoder):
+class ASCIIHexEncoder(Encoder):
     def write(self, b):
         self._destination.write(hexlify(b))
 
@@ -96,12 +96,8 @@ class ASCIIHexDecoder(Decoder):
         return unhexlify(self._source.read(n))
 
 
-class ASCII85Decode(Filter):
-    def encode(self, data):
-        raise NotImplementedError
-
-    def decode(self, data):
-        raise NotImplementedError
+class ASCII85Decode(Filter):   # not implemented
+    pass
 
 
 from .cos import Dictionary, Integer
@@ -183,7 +179,7 @@ class LZWDecodeParams(FlateDecodeParams):
                  columns=None, early_change=None):
         super().__init__(predictor, colors, bits_per_component, columns)
         if early_change:
-            self['EarlyChange'] = cos.Integer(early_change)
+            self['EarlyChange'] = Integer(early_change)
 
 
 class PNGReconstructor(FIFOBuffer):
@@ -200,7 +196,7 @@ class PNGReconstructor(FIFOBuffer):
         self._column_struct = struct.Struct('>{}B'.format(bytes_per_column))
         self._last_values = [0] * bytes_per_column
 
-    def read_from_source(self, n):
+    def read_from_source(self, _n_ignored):
         # number of bytes requested `n` is ignored; a single row is fetched
         predictor = struct.unpack('>B', self._source.read(1))[0]
         row = self._source.read(self._column_struct.size)
