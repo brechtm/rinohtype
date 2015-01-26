@@ -182,6 +182,10 @@ class LZWDecodeParams(FlateDecodeParams):
             self['EarlyChange'] = Integer(early_change)
 
 
+class LZWDecode(Filter):   # not implemented
+    params_class = FlateDecodeParams
+
+
 class PNGReconstructor(FIFOBuffer):
     NONE = 0
     SUB = 1
@@ -334,3 +338,23 @@ class RunLengthDecoder(FIFOBuffer, Decoder):
             if len(out_data) >= n:
                 break
         return out_data
+
+
+class CCITTFaxDecode(Filter):   # not implemented
+    pass
+
+
+class JBIG2Decode(Filter):   # not implemented
+    pass
+
+
+class DCTDecode(Filter):   # not implemented
+    pass
+
+
+class JPXDecode(Filter):   # not implemented
+    pass
+
+
+class Crypt(Filter):   # not implemented
+    pass
