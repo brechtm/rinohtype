@@ -10,8 +10,9 @@ import struct, zlib
 
 from binascii import hexlify, unhexlify
 from math import ceil
-from struct import unpack
+from struct import pack, unpack
 
+from ...util import consumer
 from .util import FIFOBuffer
 
 
@@ -257,12 +258,67 @@ class RunLengthDecode(Filter):
         return RunLengthDecoder(source)
 
 
+@consumer
+def run_length_encoder(destination):
+    def to_byte(value):
+       return pack('B', value)
+
+    def write_repeat(byte, count):
+        destination.write(to_byte(257 - count))
+        destination.write(byte)
+        return b'', 1
+
+    def flush(buffer):
+        destination.write(to_byte(len(buffer) - 1))
+        destination.write(buffer)
+        return b''
+
+    last_byte = yield
+    buffer = b''
+    same_count = 1
+    while True:
+        try:
+            byte = yield
+        except GeneratorExit:
+            break
+        if byte == b'':
+            break
+        if byte != last_byte:
+            if same_count > 2:
+                _, same_count = write_repeat(last_byte, same_count)
+            else:
+                if last_byte:
+                    buffer += last_byte * same_count
+                    same_count = 1
+                if len(buffer) >= 127:  # not 128, as buffer can grow by 2
+                    buffer = flush(buffer)
+        else:
+            same_count += 1
+            if buffer and same_count > 2:
+                buffer = flush(buffer)
+            if same_count == 128:
+                byte, same_count = write_repeat(last_byte, same_count)
+        last_byte = byte
+    if same_count > 2:
+        _, same_count = write_repeat(last_byte, same_count)
+    elif last_byte:
+        buffer += last_byte * same_count
+    if buffer:
+        flush(buffer)
+    destination.write(to_byte(128))
+
+
 class RunLengthEncoder(Encoder):
+    def __init__(self, destination):
+        super().__init__(destination)
+        self._encoder = run_length_encoder(destination)
+
     def write(self, b):
-        raise NotImplementedError
+        for i in range(len(b)):
+            self._encoder.send(b[i:i+1])
 
     def close(self):
-        pass
+        self._encoder.close()
 
 
 class RunLengthDecoder(FIFOBuffer, Decoder):
