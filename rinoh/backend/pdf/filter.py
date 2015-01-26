@@ -9,13 +9,19 @@
 import struct, zlib
 
 from binascii import hexlify, unhexlify
-from math import floor, ceil
+from math import ceil
+from struct import unpack
 
 from .util import FIFOBuffer
 
 
 class Filter(object):
     params_class = None
+
+    def __init__(self, params=None):
+        if self.params_class is None:
+            assert params is None
+        self.params = params
 
     @property
     def name(self):
@@ -124,8 +130,7 @@ class FlateDecode(Filter):
     params_class = FlateDecodeParams
 
     def __init__(self, params=None, level=6):
-        super().__init__()
-        self.params = params
+        super().__init__(params)
         self.level = level
 
     def encoder(self, destination):
@@ -242,3 +247,38 @@ def paeth_predictor(a, b, c):
         return b
     else:
         return c
+
+
+class RunLengthDecode(Filter):
+    def encoder(self, destination):
+        return RunLengthEncoder(destination)
+
+    def decoder(self, source):
+        return RunLengthDecoder(source)
+
+
+class RunLengthEncoder(Encoder):
+    def write(self, b):
+        raise NotImplementedError
+
+    def close(self):
+        pass
+
+
+class RunLengthDecoder(FIFOBuffer, Decoder):
+    def read_from_source(self, n):
+        out_data = b''
+        while True:
+            in_byte = self._source.read(1)
+            if not in_byte:
+                break
+            length, = unpack('B', in_byte)
+            if length == 128:
+                break
+            elif length < 128:
+                out_data += self._source.read(length + 1)
+            else:
+                out_data += self._source.read(1) * (257 - length)
+            if len(out_data) >= n:
+                break
+        return out_data
