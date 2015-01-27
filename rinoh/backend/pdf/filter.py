@@ -104,13 +104,14 @@ from .cos import Name, Dictionary, Integer, Array, Null
 class FlateDecodeParams(Dictionary):
     def __init__(self, predictor=None, colors=None, bits_per_component=None,
                  columns=None):
+        super().__init__()
         if predictor:
             self['Predictor'] = Integer(predictor)
         if colors:
             self['Colors'] = Integer(colors)
-        if colors:
+        if bits_per_component:
             self['BitsPerComponent'] = Integer(bits_per_component)
-        if colors:
+        if columns:
             self['Columns'] = Integer(columns)
 
     @property
