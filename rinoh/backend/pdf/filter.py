@@ -43,7 +43,11 @@ class Encoder(object):
         raise NotImplementedError
 
     def close(self):
-        raise NotImplementedError
+        self.flush()
+        self._destination.flush()
+
+    def flush(self):
+        pass
 
 
 class Decoder(object):
@@ -66,9 +70,6 @@ class PassThroughEncoder(Encoder):
     def write(self, b):
         return self._destination.write(b)
 
-    def close(self):
-        pass
-
 
 class PassThroughDecoder(Decoder):
     def read(self, n=-1):
@@ -86,9 +87,6 @@ class ASCIIHexDecode(Filter):
 class ASCIIHexEncoder(Encoder):
     def write(self, b):
         self._destination.write(hexlify(b))
-
-    def close(self):
-        pass
 
 
 class ASCIIHexDecoder(Decoder):
@@ -152,7 +150,7 @@ class FlateEncoder(Encoder):
     def write(self, b):
         self._destination.write(self._compressor.compress(b))
 
-    def close(self):
+    def flush(self):
         self._destination.write(self._compressor.flush())
 
 
@@ -317,7 +315,7 @@ class RunLengthEncoder(Encoder):
         for i in range(len(b)):
             self._encoder.send(b[i:i+1])
 
-    def close(self):
+    def flush(self):
         self._encoder.close()
 
 
