@@ -358,3 +358,10 @@ class JPXDecode(Filter):   # not implemented
 
 class Crypt(Filter):   # not implemented
     pass
+
+
+class FilterPipeline(list):
+    def encoder(self, destination):
+        for filter in self:
+            destination = filter.encoder(destination)
+        return destination

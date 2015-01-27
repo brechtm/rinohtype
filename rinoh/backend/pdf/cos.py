@@ -338,7 +338,7 @@ class Dictionary(Container, OrderedDict):
             yield item.object
 
 
-from .filter import PassThrough
+from .filter import PassThrough, FilterPipeline
 
 
 class Stream(Dictionary):
@@ -356,9 +356,14 @@ class Stream(Dictionary):
         except AttributeError:
             pass
         if not isinstance(self._filter, PassThrough):
-            self['Filter'] = Name(self._filter.name)
-            if self._filter.params:
-                self['DecodeParms'] = self._filter.params
+            try:
+                self['Filter'] = Array([Name(filter.name)
+                                        for filter in self._filter])
+                # TODO: DecodeParms
+            except TypeError:
+                self['Filter'] = Name(self._filter.name)
+                if self._filter.params:
+                    self['DecodeParms'] = self._filter.params
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self._data.tell())
@@ -381,7 +386,10 @@ class Stream(Dictionary):
             return self._coder.write(b)
         except AttributeError:
             self._data.seek(0)
-            self._coder = self._filter.encoder(self._data)
+            try:
+                self._coder = self._filter.encoder(self._data)
+            except AttributeError:
+                self._coder = FilterPipeline(self._filter).encoder(self._data)
             return self.write(b)
 
     def reset(self):
