@@ -69,6 +69,17 @@ class Object(object):
             document.register(self)
 
 
+class Null(Object):
+    def __init__(self, indirect=False):
+        super().__init__(indirect)
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+    def _bytes(self, document):
+        return b'null'
+
+
 class Reference(object):
     def __init__(self, document, identifier, generation):
         self.document = document
@@ -345,25 +356,21 @@ class Stream(Dictionary):
     def __init__(self, filter=None):
         # (Streams are always indirectly referenced)
         self._data = BytesIO()
-        self._filter = filter or PassThrough()
+        try:
+            self.filter = FilterPipeline(filter)
+        except TypeError:
+            self.filter = filter or PassThrough()
         super().__init__(indirect=True)
         self._coder = None
 
     def direct_bytes(self, document):
         out = bytearray()
-        try:
+        if self._coder:
             self._coder.close()
-        except AttributeError:
-            pass
-        if not isinstance(self._filter, PassThrough):
-            try:
-                self['Filter'] = Array([Name(filter.name)
-                                        for filter in self._filter])
-                # TODO: DecodeParms
-            except TypeError:
-                self['Filter'] = Name(self._filter.name)
-                if self._filter.params:
-                    self['DecodeParms'] = self._filter.params
+        if not isinstance(self.filter, PassThrough):
+            self['Filter'] = self.filter.name
+            if self.filter.params:
+                self['DecodeParms'] = self.filter.params
         if 'Length' in self:
             self['Length'].delete(document)
         self['Length'] = Integer(self._data.tell())
@@ -378,7 +385,7 @@ class Stream(Dictionary):
             return self._coder.read(n)
         except AttributeError:
             self._data.seek(0)
-            self._coder = self._filter.decoder(self._data)
+            self._coder = self.filter.decoder(self._data)
             return self.read(n)
 
     def write(self, b):
@@ -386,10 +393,7 @@ class Stream(Dictionary):
             return self._coder.write(b)
         except AttributeError:
             self._data.seek(0)
-            try:
-                self._coder = self._filter.encoder(self._data)
-            except AttributeError:
-                self._coder = FilterPipeline(self._filter).encoder(self._data)
+            self._coder = self.filter.encoder(self._data)
             return self.write(b)
 
     def reset(self):
@@ -428,17 +432,6 @@ class ObjectStream(Stream):
             self._object_reader = object_reader
         object_reader.file.seek(offsets[index])
         return object_reader.next_item(indirect=True)
-
-
-class Null(Object):
-    def __init__(self, indirect=False):
-        super().__init__(indirect)
-
-    def __repr__(self):
-        return self.__class__.__name__
-
-    def _bytes(self, document):
-        return b'null'
 
 
 

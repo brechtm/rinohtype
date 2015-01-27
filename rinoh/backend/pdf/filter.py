@@ -26,7 +26,7 @@ class Filter(object):
 
     @property
     def name(self):
-        return self.__class__.__name__
+        return Name(self.__class__.__name__)
 
     def encoder(self, destination):
         raise NotImplementedError
@@ -98,7 +98,7 @@ class ASCII85Decode(Filter):   # not implemented
     pass
 
 
-from .cos import Dictionary, Integer
+from .cos import Name, Dictionary, Integer, Array, Null
 
 
 class FlateDecodeParams(Dictionary):
@@ -359,6 +359,17 @@ class Crypt(Filter):   # not implemented
 
 
 class FilterPipeline(list):
+    @property
+    def name(self):
+        return Array(Name(filter.name) for filter in self)
+
+    @property
+    def params(self):
+        if not any(filter.params for filter in self):
+            return None
+        else:
+            return Array(filter.params or Null() for filter in self)
+
     def encoder(self, destination):
         for filter in self:
             destination = filter.encoder(destination)
