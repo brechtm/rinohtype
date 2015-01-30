@@ -83,7 +83,7 @@ class ASCIIHexDecode(Filter):
     def encoder(self, destination):
         return ASCIIHexEncoder(destination)
 
-    def decode(self, source):
+    def decoder(self, source):
         return ASCIIHexDecoder(source)
 
 
