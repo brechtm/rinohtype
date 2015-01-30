@@ -335,6 +335,8 @@ class Dictionary(Container, OrderedDict):
 
     __setitem__ = convert_key_to_name(OrderedDict.__setitem__)
 
+    __delitem__ = convert_key_to_name(OrderedDict.__delitem__)
+
     __contains__ = convert_key_to_name(OrderedDict.__contains__)
 
     get = convert_key_to_name(OrderedDict.get)
