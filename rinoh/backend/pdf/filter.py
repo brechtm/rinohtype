@@ -133,6 +133,8 @@ class FlateDecode(Filter):
         self.level = level
 
     def encoder(self, destination):
+        if self.params:
+            raise NotImplementedError
         return FlateEncoder(destination, self.level)
 
     def decoder(self, source):
