@@ -38,8 +38,8 @@ class FIFOBuffer(object):
         self._fifo.seek(self._read_pos)
         out = self._fifo.read(n)
         self._read_pos = self._fifo.tell()
-        if self._read_pos > self._buffer_size:
+        if self._read_pos >= self._buffer_size:
             self._fifo = BytesIO(self._fifo.read())
-            self._write_pos = self._fifo.tell()
+            self._write_pos = self._fifo.getbuffer().nbytes
             self._read_pos = 0
         return out
