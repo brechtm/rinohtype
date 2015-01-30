@@ -11,6 +11,7 @@ import struct, zlib
 from base64 import a85encode, a85decode
 from binascii import hexlify, unhexlify
 from math import ceil
+from string import whitespace
 from struct import pack, unpack
 
 from ...util import consumer, class_property
@@ -102,6 +103,9 @@ class ASCII85Decode(Filter):
     def encoder(self, destination):
         return ASCII85Encoder(destination)
 
+    def decoder(self, source):
+        return ASCII85Decoder(source)
+
 
 @consumer
 def ascii85_encoder(destination):
@@ -131,6 +135,36 @@ class ASCII85Encoder(Encoder):
 
     def flush(self):
         self._encoder.close()
+
+
+ASCII_WHITESPACE = whitespace.encode('ascii')
+
+class ASCII85Decoder(FIFOBuffer, Decoder):
+    def __init__(self, source):
+        super().__init__(source)
+        self.rest = b''
+
+    def read_from_source(self, n):
+        out_data = b''
+        while len(out_data) < n:
+            in_data = self._source.read(n)
+            in_data = self.rest + in_data.translate(None, ASCII_WHITESPACE)
+            if not in_data:
+                self.rest = b''
+                break
+            eod_index = in_data.find(b'~')
+            if eod_index > 0:
+                assert in_data[eod_index:] == b'~>'
+                out_data += a85decode(in_data[:eod_index])
+                self.rest = b''
+                break
+            rest_len = len(in_data) % 5
+            if rest_len:
+                input, self.rest = in_data[:-rest_len], in_data[-rest_len:]
+            else:
+                input, self.rest = in_data, b''
+            out_data += a85decode(input)
+        return out_data
 
 
 from .cos import Name, Dictionary, Integer, Array, Null
