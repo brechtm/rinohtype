@@ -69,7 +69,9 @@ class Object(object):
             document.register(self)
 
 
-class Null(Object):
+NoneType = type(None)
+
+class Null(Object, NoneType):
     def __init__(self, indirect=False):
         super().__init__(indirect)
 

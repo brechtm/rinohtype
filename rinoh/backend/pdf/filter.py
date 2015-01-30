@@ -12,7 +12,7 @@ from binascii import hexlify, unhexlify
 from math import ceil
 from struct import pack, unpack
 
-from ...util import consumer
+from ...util import consumer, class_property
 from .util import FIFOBuffer
 
 
@@ -21,12 +21,12 @@ class Filter(object):
 
     def __init__(self, params=None):
         if self.params_class is None:
-            assert params is None
+            assert not params
         self.params = params
 
-    @property
-    def name(self):
-        return Name(self.__class__.__name__)
+    @class_property
+    def name(cls):
+        return Name(cls.__name__)
 
     def encoder(self, destination):
         raise NotImplementedError
@@ -56,6 +56,9 @@ class Decoder(object):
 
     def read(self, n=-1):
         raise NotImplementedError
+
+    def close(self):
+        pass
 
 
 class PassThrough(Filter):
@@ -375,3 +378,8 @@ class FilterPipeline(list):
         for filter in self:
             destination = filter.encoder(destination)
         return destination
+
+    def decoder(self, source):
+        for filter in self:
+            source = filter.decoder(source)
+        return source

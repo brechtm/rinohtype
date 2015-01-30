@@ -131,6 +131,15 @@ def cached_generator(function):
     return function_wrapper
 
 
+class class_property(object):
+    """A read-only class property"""
+    def __init__(self, function):
+        self.function = function
+
+    def __get__(self, obj, owner):
+        return self.function(owner)
+
+
 def timed(function):
     """Decorator timing the method call and printing the result to `stdout`"""
     @wraps(function)

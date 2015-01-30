@@ -12,10 +12,9 @@ from binascii import unhexlify
 from collections import OrderedDict
 from io import BytesIO, SEEK_CUR, SEEK_END
 
+from ...util import all_subclasses
 from . import cos
 from .filter import Filter
-from .util import FIFOBuffer
-from ...util import all_subclasses
 
 
 DICTIONARY_SUBCLASSES = {}
@@ -23,8 +22,7 @@ for cls in all_subclasses(cos.Dictionary):
     if cls.type is not None:
         DICTIONARY_SUBCLASSES.setdefault((cls.type, cls.subtype), cls)
 
-FILTER_SUBCLASSES = {cls.__name__: cls
-                     for cls in all_subclasses(Filter)}
+FILTER_SUBCLASSES = {cls.name: cls for cls in all_subclasses(Filter)}
 
 
 
@@ -161,13 +159,28 @@ class PDFObjectReader(object):
             self.jump_to_next_line()
             length = int(dictionary['Length'])
             if 'Filter' in dictionary:
-                filter_class = FILTER_SUBCLASSES[str(dictionary['Filter'])]
-                if 'DecodeParms' in dictionary:
-                    decode_params = dictionary['DecodeParms']
-                    decode_params.__class__ = filter_class.params_class
+                filter_or_filters = dictionary['Filter']
+                if isinstance(filter_or_filters, cos.Name):
+                    filter_class = FILTER_SUBCLASSES[filter_or_filters]
+                    try:
+                        decode_params = dictionary['DecodeParms']
+                        decode_params.__class__ = filter_class.params_class
+                    except KeyError:
+                        decode_params = None
+                    stream_filter = filter_class(params=decode_params)
                 else:
-                    decode_params = None
-                stream_filter = filter_class(params=decode_params)
+                    filter_classes = [FILTER_SUBCLASSES[filter_name]
+                                      for filter_name in filter_or_filters]
+                    try:
+                        stream_filter = []
+                        for fltr_cls, params in zip(filter_classes,
+                                                    dictionary['DecodeParms']):
+                            if params:
+                                params.__class__ = fltr_cls.params_class
+                            stream_filter.append(fltr_cls(params=params))
+                    except KeyError:
+                        stream_filter = [filter_class()
+                                         for filter_class in filter_classes]
             else:
                 stream_filter = None
             stream = cos.Stream(stream_filter)
