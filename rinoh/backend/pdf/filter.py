@@ -8,6 +8,7 @@
 
 import struct, zlib
 
+from base64 import a85encode, a85decode
 from binascii import hexlify, unhexlify
 from math import ceil
 from struct import pack, unpack
@@ -97,8 +98,39 @@ class ASCIIHexDecoder(Decoder):
         return unhexlify(self._source.read(n))
 
 
-class ASCII85Decode(Filter):   # not implemented
-    pass
+class ASCII85Decode(Filter):
+    def encoder(self, destination):
+        return ASCII85Encoder(destination)
+
+
+@consumer
+def ascii85_encoder(destination):
+    rest = b''
+    while True:
+        try:
+            in_bytes = rest + (yield)
+        except GeneratorExit:
+            break
+        rest_len = len(in_bytes) % 4
+        if rest_len:
+            input, rest = in_bytes[:-rest_len], in_bytes[-rest_len:]
+        else:
+            input, rest = in_bytes, b''
+        destination.write(a85encode(input))
+    destination.write(a85encode(rest))
+    destination.write(b'~>')  # EOD marker
+
+
+class ASCII85Encoder(Encoder):
+    def __init__(self, destination):
+        super().__init__(destination)
+        self._encoder = ascii85_encoder(destination)
+
+    def write(self, b):
+        self._encoder.send(b)
+
+    def flush(self):
+        self._encoder.close()
 
 
 from .cos import Name, Dictionary, Integer, Array, Null
