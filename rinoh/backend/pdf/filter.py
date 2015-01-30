@@ -394,7 +394,7 @@ class RunLengthEncoder(Encoder):
 class RunLengthDecoder(FIFOBuffer, Decoder):
     def read_from_source(self, n):
         out_data = b''
-        while True:
+        while len(out_data) < n:
             in_byte = self._source.read(1)
             if not in_byte:
                 break
@@ -405,8 +405,6 @@ class RunLengthDecoder(FIFOBuffer, Decoder):
                 out_data += self._source.read(length + 1)
             else:
                 out_data += self._source.read(1) * (257 - length)
-            if len(out_data) >= n:
-                break
         return out_data
 
 
