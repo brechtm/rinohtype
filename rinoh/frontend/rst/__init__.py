@@ -138,4 +138,7 @@ class ReStructuredTextParser(object):
     def parse(self, filename):
         with open(filename) as file:
             doctree = publish_doctree(file.read(), source_path=filename)
+        return self.from_doctree(doctree)
+
+    def from_doctree(self, doctree):
         return CustomElement.map_node(doctree.document)

@@ -32,6 +32,7 @@ help:
 	@echo "  qthelp     to make HTML files and a qthelp project"
 	@echo "  devhelp    to make HTML files and a Devhelp project"
 	@echo "  epub       to make an epub"
+	@echo "  rinoh      to make a PDF using RinohType"
 	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
 	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
 	@echo "  latexpdfja to make LaTeX files and run them through platex/dvipdfmx"
@@ -102,6 +103,11 @@ epub:
 	$(SPHINXBUILD) -b epub $(ALLSPHINXOPTS) $(BUILDDIR)/epub
 	@echo
 	@echo "Build finished. The epub file is in $(BUILDDIR)/epub."
+
+rinoh:
+	$(SPHINXBUILD) -b rinoh $(ALLSPHINXOPTS) $(BUILDDIR)/rinoh
+	@echo
+	@echo "Build finished; the PDF file is in $(BUILDDIR)/rinoh."
 
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
