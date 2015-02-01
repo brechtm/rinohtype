@@ -109,6 +109,10 @@ class BodySubElement(CustomElement):
 
 
 class InlineElement(CustomElement):
+    @property
+    def text(self):
+        return super().text.replace('\n', ' ')
+
     @set_source
     def styled_text(self, preserve_space=False):
         return self.build_styled_text()

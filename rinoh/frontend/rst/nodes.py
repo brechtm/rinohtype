@@ -246,8 +246,7 @@ class Title_Reference(InlineElement):
 
 class Literal(InlineElement):
     def build_styled_text(self):
-        text = self.text.replace('\n', ' ')
-        return rt.SingleStyledText(text, style='monospaced')
+        return rt.SingleStyledText(self.text, style='monospaced')
 
 
 class Superscript(InlineElement):
