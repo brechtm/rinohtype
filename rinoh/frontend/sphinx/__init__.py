@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import os
 from os import path
 
 from sphinx.builders import Builder
@@ -50,6 +51,7 @@ class RinohBuilder(Builder):
         pass
 
     def write_doc(self, docname, doctree):
+        os.chdir(self.srcdir)
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Manual(rinoh_tree, stylesheet, backend=pdf,
