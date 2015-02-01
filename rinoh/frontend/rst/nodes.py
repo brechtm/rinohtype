@@ -368,8 +368,11 @@ class Enumerated_List(BodyElement):
 
 class Bullet_List(BodyElement):
     def build_flowable(self):
-        return rt.List([item.process() for item in self.list_item],
-                       style='bulleted')
+        try:
+            return rt.List([item.process() for item in self.list_item],
+                           style='bulleted')
+        except AttributeError:  # empty list
+            return rt.DummyFlowable()
 
 
 class List_Item(BodySubElement):

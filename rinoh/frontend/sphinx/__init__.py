@@ -12,10 +12,17 @@ from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir, os_path
 
 from ...backend import pdf
-from ..rst import ReStructuredTextParser
+from ..rst import ReStructuredTextParser, CustomElement
 
 from rinohlib.templates.manual import Manual
 from rinohlib.stylesheets.ieee import styles as stylesheet
+
+from . import nodes
+
+
+for cls_name in nodes.__all__:
+    cls = getattr(nodes, cls_name)
+    CustomElement.MAPPING[cls.__name__.lower()] = cls
 
 
 class RinohBuilder(Builder):
