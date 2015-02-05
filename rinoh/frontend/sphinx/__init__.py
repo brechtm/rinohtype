@@ -9,14 +9,21 @@
 import os
 from os import path
 
+import docutils
+
 from sphinx.builders import Builder
+from sphinx.util.console import bold, darkgreen, brown
+from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path
 
 from ...backend import pdf
+from ...dimension import PT
+from ...style import StyleSheet
+from ...styles import ParagraphStyle
 from ..rst import ReStructuredTextParser, CustomElement
 
 from rinohlib.templates.manual import Manual
-from rinohlib.stylesheets.ieee import styles as stylesheet
+from rinohlib.stylesheets.ieee import styles as IEEE_STYLESHEET
 
 from . import nodes
 
@@ -24,6 +31,13 @@ from . import nodes
 for cls_name in nodes.__all__:
     cls = getattr(nodes, cls_name)
     CustomElement.MAPPING[cls.__name__.lower()] = cls
+
+
+STYLESHEET = StyleSheet('IEEE for rST', base=IEEE_STYLESHEET)
+
+STYLESHEET['body'] = ParagraphStyle(base=STYLESHEET.base['body'],
+                                    indent_first=0,
+                                    space_below=6*PT)
 
 
 class RinohBuilder(Builder):
@@ -50,11 +64,52 @@ class RinohBuilder(Builder):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
         pass
 
+    def assemble_doctree(self):
+        master = self.config.master_doc
+        tree = self.env.get_doctree(master)
+        tree = inline_all_toctrees(self, set(), master, tree, darkgreen)
+        tree['docname'] = master
+        self.env.resolve_references(tree, master, self)
+        self.fix_refuris(tree)
+        return tree
+
+    def fix_refuris(self, tree):
+        # fix refuris with double anchor
+        fname = self.config.master_doc #+ self.out_suffix
+        for refnode in tree.traverse(docutils.nodes.reference):
+            if 'refuri' not in refnode:
+                continue
+            refuri = refnode['refuri']
+            hashindex = refuri.find('#')
+            if hashindex < 0:
+                continue
+            refnode['refuri'] = refuri[hashindex+1:]
+            # import pdb; pdb.set_trace()
+            continue
+            hashindex = refuri.find('#', hashindex+1)
+            if hashindex >= 0:
+                refnode['refuri'] = fname + refuri[hashindex:]
+
+    def write(self, *ignored):
+        docnames = self.env.all_docs
+
+        self.info(bold('preparing documents... '), nonl=True)
+        self.prepare_writing(docnames)
+        self.info('done')
+
+        self.info(bold('assembling single document... '), nonl=True)
+        doctree = self.assemble_doctree()
+        self.info()
+        self.info(bold('writing... '))
+        self.write_doc_serialized(self.config.master_doc, doctree)
+        self.write_doc(self.config.master_doc, doctree)
+        self.info('done')
+
     def write_doc(self, docname, doctree):
         os.chdir(self.srcdir)
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
-        rinoh_document = Manual(rinoh_tree, stylesheet, backend=pdf,
+        rinoh_document = Manual(rinoh_tree, STYLESHEET, backend=pdf,
                                 title=rinoh_tree.get('title'))
         outfilename = path.join(self.outdir, os_path(docname))
         ensuredir(path.dirname(outfilename))
