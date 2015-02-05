@@ -44,6 +44,8 @@ for i in range(1, 6):
     matcher('unnumbered heading level {}'.format(i),
             Heading.like('unnumbered', level=i))
 
+matcher('other heading levels', Heading)
+
 matcher('topic', GroupedFlowables.like('topic'))
 
 matcher('topic title', GroupedFlowables.like('topic') / Paragraph.like('title'))

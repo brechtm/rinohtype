@@ -164,6 +164,16 @@ styles('heading level 5',
        space_below=2*PT,
        number_format=None)
 
+styles('other heading levels',
+       base='heading level 5',
+       font_size=9*PT,
+       font_slant=ITALIC,
+       font_weight=REGULAR,
+       line_spacing=FixedSpacing(10*PT),
+       space_above=2*PT,
+       space_below=2*PT,
+       number_format=None)
+
 styles('topic',
        margin_left=0.5*CM)
 
