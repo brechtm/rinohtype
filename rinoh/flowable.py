@@ -377,12 +377,14 @@ class HorizontallyAlignedFlowableState(FlowableState):
 class HorizontallyAlignedFlowable(Flowable):
     style_class = HorizontallyAlignedFlowableStyle
 
-    def _left_extra(self, container, width):
+    def _align(self, container, width):
         align = self.get_style('horizontal_align', container.document)
-        left_extra = 0 if align == LEFT else float(container.width - width)
+        if align == LEFT or width is None:
+            return
+        left_extra = float(container.width - width)
         if align == CENTER:
             left_extra /= 2
-        return left_extra
+        container.left = float(container.left) + left_extra
 
     def flow(self, container, last_descender, state=None):
         with MaybeContainer(container) as align_container:
@@ -390,11 +392,10 @@ class HorizontallyAlignedFlowable(Flowable):
                 width, descender = super().flow(align_container, last_descender,
                                                 state)
             except EndOfContainer as eoc:
-                width = eoc.flowable_state.width
+                width = eoc.flowable_state.width if eoc.flowable_state else None
                 raise
             finally:
-                left_extra = self._left_extra(container, width)
-                align_container.left = float(align_container.left) + left_extra
+                self._align(align_container, width)
         return container.width, descender
 
 
