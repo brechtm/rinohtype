@@ -8,6 +8,7 @@ from rinoh.paper import A4
 from rinoh.style import StyleSheet, StyledMatcher
 from rinoh.backend import pdf
 from rinoh.paragraph import Paragraph
+from rinoh.structure import FieldList, LabeledFlowable
 from rinoh.styles import ParagraphStyle
 from rinoh.annotation import AnnotatedText, HyperLink
 from rinoh.float import Image
@@ -97,19 +98,22 @@ class AscribeCertificate(Document):
         self.text << Paragraph(SAMPLE_INPUT['artist'], style='artist')
         self.text << Paragraph(SAMPLE_INPUT['title'], style='title')
         self.text << Paragraph(str(SAMPLE_INPUT['year']), style='default')
+
+        fields = []
         nr_edition, total_editions = SAMPLE_INPUT['editions']
-        self.text << Paragraph('Editions: {}/{}'.format(nr_edition,
-                                                        total_editions),
-                               style='default')
-        self.text << Paragraph('Status: ' + SAMPLE_INPUT['status'],
-                               style='default')
+        fields.append(LabeledFlowable(Paragraph('Editions:'),
+                                      Paragraph('{}/{}'.format(nr_edition,
+                                                               total_editions))))
+        fields.append(LabeledFlowable(Paragraph('Status:'),
+                                      Paragraph(SAMPLE_INPUT['status'])))
         owner_name, owner_email = SAMPLE_INPUT['owner']
         email_link = AnnotatedText(owner_email,
                                    annotation=HyperLink('mailto:' + owner_email))
-        self.text << Paragraph('Owner: ' + owner_name + ', ' + email_link,
-                               style='default')
-        self.text << Paragraph('Crypto ID: ' +
-                               SAMPLE_INPUT['crypto_id'], style='default')
+        fields.append(LabeledFlowable(Paragraph('Owner:'),
+                                      Paragraph(owner_name + ', ' + email_link)))
+        fields.append(LabeledFlowable(Paragraph('Crypto ID:'),
+                                      Paragraph(SAMPLE_INPUT['crypto_id'])))
+        self.text << FieldList(fields)
 
         self.text << Paragraph('Provenance/Ownership History',
                                style='section title')
