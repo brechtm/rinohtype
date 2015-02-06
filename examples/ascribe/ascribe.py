@@ -1,7 +1,11 @@
 
 from time import strptime, strftime
 
-from rinoh.layout import Container, Chain
+from rinoh.font import TypeFace
+from rinoh.font.opentype import OpenTypeFont
+from rinoh.font.style import REGULAR, MEDIUM
+
+from rinoh.layout import Container, DownExpandingContainer, Chain
 from rinoh.dimension import CM, PT, PERCENT
 from rinoh.document import Document, Page, LANDSCAPE
 from rinoh.paper import A4
@@ -14,7 +18,8 @@ from rinoh.styles import ParagraphStyle
 from rinoh.annotation import AnnotatedText, HyperLink
 from rinoh.float import Image
 
-from rinoh.text import BOLD
+from rinoh.text import BOLD, TextStyle, SingleStyledText, StyledText
+from rinoh.draw import HexColor
 
 from rinohlib.fonts.texgyre.pagella import typeface as pagella
 
@@ -37,16 +42,35 @@ DATETIME_OUT_FMT = '%b. %d, %Y, %I:%M %p'
 
 
 MATCHER = StyledMatcher()
+MATCHER['logo'] = Paragraph.like('logo')
+MATCHER['logotype'] = StyledText.like('logotype')
+
+MATCHER['image'] = Image
+
 MATCHER['default'] = Paragraph
 MATCHER['artist'] = Paragraph.like('artist')
 MATCHER['title'] = Paragraph.like('title')
 MATCHER['year'] = Paragraph.like('year')
 MATCHER['field list'] = FieldList
 MATCHER['section title'] = Paragraph.like('section title')
-MATCHER['image'] = Image
+
+
+MERCURY_TYPEFACE = TypeFace('Mercury', OpenTypeFont('Mercury_Medium.otf',
+                                                    weight=MEDIUM))
+ASCRIBE_TYPEFACE = TypeFace('ascribe', OpenTypeFont('ascribe.ttf',
+                                                    weight=REGULAR))
+ASCRIBE_GREEN = HexColor('48DACB')
 
 
 STYLESHEET = StyleSheet('ascribe', matcher=MATCHER)
+STYLESHEET['logo'] = ParagraphStyle(typeface=MERCURY_TYPEFACE,
+                                    font_size=26*PT,
+                                    font_color=HexColor('222222'),
+                                    space_below=36*PT)
+STYLESHEET['logotype'] = TextStyle(typeface=ASCRIBE_TYPEFACE,
+                                   font_size=23*PT,
+                                   font_color=ASCRIBE_GREEN)
+
 STYLESHEET['default'] = ParagraphStyle(typeface=pagella,
                                        font_size=12*PT,
                                        space_below=6*PT)
@@ -79,11 +103,16 @@ class AscribePage(Page):
         body = Container('body', self, self.leftmargin, self.topmargin,
                          body_width, body_height)
 
-        self.column1 = Container('column1', body, 0*PT, 0*PT,
+        self.header = DownExpandingContainer('header', body, 0*PT, 0*PT)
+        logotype = SingleStyledText('\ue603', style='logotype')
+        self.header << Paragraph('ascribe ' + logotype, style='logo')
+
+        self.column1 = Container('column1', body, 0*PT, self.header.bottom,
                                  width=self.left_column_width,
                                  chain=document.image)
         self.column2 = Container('column2', body,
                                  self.left_column_width + self.column_spacing,
+                                 self.header.bottom,
                                  chain=document.text)
 
 
