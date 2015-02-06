@@ -7,6 +7,7 @@ from rinoh.document import Document, Page, LANDSCAPE
 from rinoh.paper import A4
 from rinoh.style import StyleSheet, StyledMatcher
 from rinoh.backend import pdf
+from rinoh.flowable import GroupedFlowablesStyle
 from rinoh.paragraph import Paragraph
 from rinoh.structure import FieldList, LabeledFlowable
 from rinoh.styles import ParagraphStyle
@@ -39,6 +40,8 @@ MATCHER = StyledMatcher()
 MATCHER['default'] = Paragraph
 MATCHER['artist'] = Paragraph.like('artist')
 MATCHER['title'] = Paragraph.like('title')
+MATCHER['year'] = Paragraph.like('year')
+MATCHER['field list'] = FieldList
 MATCHER['section title'] = Paragraph.like('section title')
 MATCHER['image'] = Image
 
@@ -46,22 +49,21 @@ MATCHER['image'] = Image
 STYLESHEET = StyleSheet('ascribe', matcher=MATCHER)
 STYLESHEET['default'] = ParagraphStyle(typeface=pagella,
                                        font_size=12*PT,
-                                       space_below=6*PT,
-                                       )
+                                       space_below=6*PT)
 STYLESHEET['artist'] = ParagraphStyle(base='default',
-                                      font_size=14*PT,
-                                      )
+                                      font_size=14*PT)
 STYLESHEET['title'] = ParagraphStyle(base='default',
                                      font_weight=BOLD,
                                      font_size=18*PT,
-                                     space_below=10*PT,
-                                     )
-
+                                     space_below=10*PT)
+STYLESHEET['year'] = ParagraphStyle(base='default',
+                                     space_below=10*PT)
+STYLESHEET['field list'] = GroupedFlowablesStyle(space_below=15*PT)
 STYLESHEET['section title'] = ParagraphStyle(base='default',
                                              font_weight=BOLD,
                                              font_size=16*PT,
-                                             space_below=8*PT,
-                                             )
+                                             space_above=6*PT,
+                                             space_below=8*PT)
 
 
 class AscribePage(Page):
@@ -97,7 +99,7 @@ class AscribeCertificate(Document):
         self.text = Chain(self)
         self.text << Paragraph(SAMPLE_INPUT['artist'], style='artist')
         self.text << Paragraph(SAMPLE_INPUT['title'], style='title')
-        self.text << Paragraph(str(SAMPLE_INPUT['year']), style='default')
+        self.text << Paragraph(str(SAMPLE_INPUT['year']), style='year')
 
         fields = []
         nr_edition, total_editions = SAMPLE_INPUT['editions']
