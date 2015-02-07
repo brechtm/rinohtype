@@ -731,6 +731,8 @@ class CIDFont(Font):
 
 
 class CIDFontType0(CIDFont):
+    # for embedding TrueType and OpenType/TTF fonts
+
     subtype = 'CIDFontType0'
 
     def __init__(self, base_font, cid_system_info, font_descriptor,
@@ -746,6 +748,8 @@ class CIDFontType0(CIDFont):
 
 
 class CIDFontType2(CIDFont):
+    # for embedding OpenType/CFF fonts
+
     subtype = 'CIDFontType2'
 
     def __init__(self, base_font, cid_system_info, font_descriptor,
@@ -791,6 +795,14 @@ class Type1FontFile(Stream):
         self['Length3'] = Integer(0)
         self.write(header)
         self.write(body)
+
+
+class TrueTypeFontFile(Stream):
+    key = 'FontFile2'
+
+    def __init__(self, font_data, filter=None):
+        super().__init__(filter)
+        self.write(font_data)
 
 
 class OpenTypeFontFile(Stream):

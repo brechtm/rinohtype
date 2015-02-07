@@ -51,9 +51,10 @@ class Document(object):
                                               font.font_program.body,
                                               filter=FlateDecode())
             elif isinstance(font, OpenTypeFont):
+                ff_cls = (cos.OpenTypeFontFile if 'CFF' in font
+                          else cos.TrueTypeFontFile)
                 with open(font.filename, 'rb') as font_data:
-                    font_file = cos.OpenTypeFontFile(font_data.read(),
-                                                     filter=FlateDecode())
+                    font_file = ff_cls(font_data.read(), filter=FlateDecode())
             font_desc = cos.FontDescriptor(font.name,
                                            4, # TODO: properly determine flags
                                            font.bounding_box,
@@ -71,12 +72,8 @@ class Document(object):
                 widths = font['hmtx']['advanceWidth']
                 w = cos.Array([cos.Integer(0),
                                cos.Array(map(cos.Integer, widths))])
-                if 'CFF' in font:
-                    cid_font = cos.CIDFontType0(font.name, cid_system_info,
-                                                font_desc, w=w)
-                else:
-                    cid_font = cos.CIDFontType2(font.name, cid_system_info,
-                                                font_desc, w=w)
+                cf_cls = cos.CIDFontType0 if 'CFF' in font else cos.CIDFontType2
+                cid_font = cf_cls(font.name, cid_system_info, font_desc, w=w)
                 mapping = font['cmap'][(3, 1)].mapping
                 to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
                 font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
