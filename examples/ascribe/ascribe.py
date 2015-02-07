@@ -1,5 +1,9 @@
 
+from io import BytesIO
 from time import strptime, strftime
+from urllib.request import urlretrieve
+
+from PIL import Image as PILImage
 
 from rinoh.font import TypeFace
 from rinoh.font.opentype import OpenTypeFont
@@ -34,7 +38,11 @@ SAMPLE_INPUT = dict(artist='Terry Artist',
                     ownership_history=[('2014/11/13 07:11',
                                         'John Artist', 'john@artist.com')],
                     loan_history=[('2014/11/13 11:11',
-                                   'John Artist', 'larry@gallery.com')])
+                                   'John Artist', 'larry@gallery.com')],
+                    image_url='https://ascribe0.s3.amazonaws.com/media/thumbnails/14171888825/b55dcae37fa6b9c82330fd5d6800a15ee14ca41cdd0bcb592579cf9eba16c11f.png',
+                    # image_url='https://ascribe0.s3.amazonaws.com/media/thumbnails/ascribe_spiral.png',
+                    # image_url='https://ascribe0.s3.amazonaws.com/media/thumbnails/141657867566/56ff34a8ddd324bcde6310207476fa921b63bb5a6fdb3b9ee7bc305dcce6d03e.jpg',
+)
 
 DATETIME_IN_FMT = '%Y/%m/%d %H:%M'
 
@@ -90,6 +98,17 @@ STYLESHEET['section title'] = ParagraphStyle(base='default',
                                              space_below=8*PT)
 
 
+IMAGE = BytesIO()
+f, _ = urlretrieve(SAMPLE_INPUT['image_url'])
+input_image = PILImage.open(f)
+if 'transparency' in input_image.info:
+    print('TRANSP')
+    foreground = input_image.convert('RGBA')
+    background = PILImage.new('RGBA', foreground.size, (255, 255, 255, 255))
+    input_image = PILImage.alpha_composite(background, foreground)
+input_image.convert('RGB').save(IMAGE, 'PDF') #, **pilim.info) #, Quality=100)
+
+
 class AscribePage(Page):
     topmargin = bottommargin = 2*CM
     leftmargin = rightmargin = 2*CM
@@ -123,7 +142,7 @@ class AscribeCertificate(Document):
         title = ' - '.join((SAMPLE_INPUT['artist'], SAMPLE_INPUT['title']))
         super().__init__(STYLESHEET, backend=pdf, title=title)
         self.image = Chain(self)
-        self.image << Image('image', width=100*PERCENT)
+        self.image << Image(IMAGE, width=100*PERCENT)
 
         self.text = Chain(self)
         self.text << Paragraph(SAMPLE_INPUT['artist'], style='artist')
