@@ -23,17 +23,17 @@ RIGHT = 'right'
 
 
 class ImageBase(Flowable):
-    def __init__(self, filename, scale=1.0, width=None, id=None, style=None,
-                 parent=None):
+    def __init__(self, filename_or_file, scale=1.0, width=None, id=None,
+                 style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
-        self.filename = filename
+        self.filename_or_file = filename_or_file
         if scale != 1.0 and width is not None:
             raise TypeError('You should specify only one of scale and width')
         self.scale = scale
         self.width = width
 
     def render(self, container, last_descender, state=None):
-        image = container.document.backend.Image(self.filename)
+        image = container.document.backend.Image(self.filename_or_file)
         if last_descender:
             container.advance(- last_descender)
         left, top = 0, float(container.cursor)

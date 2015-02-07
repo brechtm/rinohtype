@@ -359,8 +359,11 @@ class AnnotationLocation(object):
 class Image(object):
     extensions = ('.pdf', )
 
-    def __init__(self, filename):
-        image = PDFReader(filename + self.extensions[0])
+    def __init__(self, filename_or_file):
+        try:
+            image = PDFReader(filename_or_file)
+        except FileNotFoundError:
+            image = PDFReader(filename_or_file + self.extensions[0])
         image_page = image.catalog['Pages']['Kids'][0]
         self.width, self.height = image_page['MediaBox'][2:]
         self.xobject = image_page.to_xobject_form()
