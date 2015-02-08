@@ -572,7 +572,8 @@ class Line(list):
                 return True
             first_glyphs_span.space = first_glyphs_span[0]
         elif first_chars == '\t':
-            empty_glyphs_span = GlyphsSpan(first_glyphs_span.span, first_glyphs_span.word_to_glyphs)
+            empty_glyphs_span = GlyphsSpan(first_glyphs_span.span,
+                                           first_glyphs_span.word_to_glyphs)
             self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
             self.append(empty_glyphs_span)
             return True
@@ -589,7 +590,7 @@ class Line(list):
                                             self.container)
                 current_tab.width = 0
                 self._current_tab = None
-            self.cursor -= tab_width
+            self.cursor -= item_width
         if self.cursor + width > self.width:
             if self:
                 return False
