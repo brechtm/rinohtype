@@ -92,6 +92,35 @@ class BackendDocumentMetadata(object):
         return instance.backend_document.set_metadata(self.name, value)
 
 
+class DocumentPart(list):
+    def __init__(self, document):
+        self.document = document
+
+    def render(self, document):
+        self.page_count = 0
+        self.pages = []
+        self.init()
+        for page in self.pages:
+            chains_requiring_new_page = set(chain for chain in page.render())
+            page.place()
+            if chains_requiring_new_page:
+                self.new_page(chains_requiring_new_page) # this grows self.pages
+
+    def add_page(self, page, number):
+        """Add `page` (:class:`Page`) with page `number` (as displayed) to this
+        document."""
+        page.number = number
+        self.pages.append(page)
+
+    # def new_page(self, chains):
+    #     assert len(chains) == 1
+    #     page = SimplePage(chains[0], self.options['page_size'],
+    #                       self.options['page_orientation'])
+    #     self.page_count += 1
+    #     self.document.add_page(page, self.page_count)
+    #     return page.content
+
+
 class Document(object):
     """A document renders the contents described in an input file onto pages.
     This is an abstract base class; subclasses should implement :meth:`setup`
@@ -106,8 +135,8 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, stylesheet, backend=pdf, title=None, author=None, subject=None,
-                 keywords=None):
+    def __init__(self, stylesheet, backend=pdf, title=None, author=None,
+                 subject=None, keywords=None):
         """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
@@ -122,6 +151,7 @@ class Document(object):
         self.subject = subject
         self.keywords = keywords
 
+        self.parts = []
         self.flowable_targets = []
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to Referenceables
@@ -152,6 +182,9 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type):
         return self.references[id][reference_type]
+
+    def add_part(self, part):
+        self.parts.append(part)
 
     def add_page(self, page, number):
         """Add `page` (:class:`Page`) with page `number` (as displayed) to this
@@ -214,16 +247,13 @@ to the terms of the GNU Affero General Public License version 3.''')
     def render_pages(self):
         """Render the complete document once and return the number of pages
         rendered."""
-        self.pages = []
+        # self.pages = []
         self.floats = set()
         self.placed_footnotes = set()
-        self.setup()
-        for page in self.pages:
-            chains_requiring_new_page = set(chain for chain in page.render())
-            page.place()
-            if chains_requiring_new_page:
-                self.new_page(chains_requiring_new_page) # this grows self.pages
-        return len(self.pages)
+        # self.setup()
+        for part in self.parts:
+            part.render(self)
+        return sum(len(part.pages) for part in self.parts)
 
     def setup(self):
         """Called by :meth:`render_pages` before the actual rendering takes

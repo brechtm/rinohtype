@@ -1,9 +1,11 @@
 
 
-from rinoh.document import Document, Page, PORTRAIT
+from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
 from rinoh.layout import Container, FootnoteContainer, Chain
 from rinoh.paper import A4
+
+from rinoh.structure import Section, Heading, TableOfContents
 
 
 # page definition
@@ -13,8 +15,8 @@ class SimplePage(Page):
     topmargin = bottommargin = 2*CM
     leftmargin = rightmargin = 2*CM
 
-    def __init__(self, document, paper, orientation):
-        super().__init__(document, paper, orientation)
+    def __init__(self, chain, paper, orientation):
+        super().__init__(chain.document, paper, orientation)
 
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
@@ -25,9 +27,48 @@ class SimplePage(Page):
                                                 body_height)
         self.content = Container('content', self.body, 0*PT, 0*PT,
                                  bottom=self.footnote_space.top,
-                                 chain=document.content)
+                                 chain=chain)
 
         self.content._footnote_space = self.footnote_space
+
+
+# document parts
+# ----------------------------------------------------------------------------
+
+# class TitlePart(DocumentPart)
+
+
+
+class ManualPart(DocumentPart):
+    def __init__(self, document):
+        super().__init__(document)
+        self.chain = Chain(document)
+
+    def init(self):
+        self.new_page([self.chain])
+
+    def new_page(self, chains):
+        assert (len(chains) == 1)
+        page = SimplePage(next(iter(chains)),
+                          self.document.options['page_size'],
+                          self.document.options['page_orientation'])
+        self.page_count += 1
+        self.add_page(page, self.page_count)
+        return page.content
+
+
+class TableOfContentsPart(ManualPart):
+    def __init__(self, document):
+        super().__init__(document)
+        self.chain << Section([Heading('Table of Contents', style='unnumbered'),
+                               TableOfContents()])
+
+
+class ContentsPart(ManualPart):
+    def __init__(self, document, content_tree):
+        super().__init__(document)
+        for child in content_tree.getchildren():
+            self.chain << child.flowable()
 
 
 # main document
@@ -37,22 +78,8 @@ class Manual(Document):
                  title=None):
         super().__init__(stylesheet, backend=backend, title=title)
         self.options = options or ManualOptions()
-        self.content = Chain(self)
-
-        # TODO: move to superclass
-        for child in rinoh_tree.getchildren():
-            self.content << child.flowable()
-
-    def setup(self):
-        self.page_count = 0
-        self.new_page(set())
-
-    def new_page(self, chains):
-        page = SimplePage(self, self.options['page_size'],
-                          self.options['page_orientation'])
-        self.page_count += 1
-        self.add_page(page, self.page_count)
-        return page.content
+        self.add_part(TableOfContentsPart(self))
+        self.add_part(ContentsPart(self, rinoh_tree))
 
 
 class ManualOptions(dict):
