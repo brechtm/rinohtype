@@ -160,8 +160,8 @@ class HeaderStyle(ParagraphStyle):
 class Header(Paragraph):
     style_class = HeaderStyle
 
-    def __init__(self, id=None, style=None, parent=None):
-        text = Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
+    def __init__(self, text=None, id=None, style=None, parent=None):
+        text = text or Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
         super().__init__(text, id=id, style=style, parent=parent)
 
 
@@ -175,8 +175,8 @@ class FooterStyle(ParagraphStyle):
 class Footer(Paragraph):
     style_class = FooterStyle
 
-    def __init__(self, id=None, style=None, parent=None):
-        text = Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
+    def __init__(self, text=None, id=None, style=None, parent=None):
+        text = text or Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES)
         super().__init__(text, id=id, style=style, parent=parent)
 
 
