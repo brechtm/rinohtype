@@ -22,7 +22,7 @@ from ...style import StyleSheet
 from ...styles import ParagraphStyle
 from ..rst import ReStructuredTextParser, CustomElement
 
-from rinohlib.templates.manual import Manual
+from rinohlib.templates.manual import Manual, ManualOptions
 from rinohlib.stylesheets.ieee import styles as IEEE_STYLESHEET
 
 from . import nodes
@@ -110,6 +110,7 @@ class RinohBuilder(Builder):
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Manual(rinoh_tree, STYLESHEET, backend=pdf,
+                                options=self.config.rinoh_manual_options,
                                 title=rinoh_tree.get('title'))
         outfilename = path.join(self.outdir, os_path(docname))
         ensuredir(path.dirname(outfilename))
@@ -121,3 +122,4 @@ class RinohBuilder(Builder):
 
 def setup(app):
     app.add_builder(RinohBuilder)
+    app.add_config_value('rinoh_manual_options', ManualOptions(), None)

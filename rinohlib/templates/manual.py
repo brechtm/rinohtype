@@ -5,19 +5,18 @@ from rinoh.dimension import PT, CM
 from rinoh.layout import Container, FootnoteContainer, Chain
 from rinoh.paper import A4
 
-from rinoh.structure import Section, Heading, TableOfContents
+from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 
 
 # page definition
 # ----------------------------------------------------------------------------
 
 class SimplePage(Page):
-    topmargin = bottommargin = 2*CM
+    topmargin = bottommargin = 3*CM
     leftmargin = rightmargin = 2*CM
 
-    def __init__(self, chain, paper, orientation):
+    def __init__(self, chain, paper, orientation, header_footer=True):
         super().__init__(chain.document, paper, orientation)
-
         body_width = self.width - (self.leftmargin + self.rightmargin)
         body_height = self.height - (self.topmargin + self.bottommargin)
         self.body = Container('body', self, self.leftmargin, self.topmargin,
@@ -30,6 +29,17 @@ class SimplePage(Page):
                                  chain=chain)
 
         self.content._footnote_space = self.footnote_space
+
+        if header_footer:
+            self.header = Container('header', self, self.leftmargin,
+                                    self.topmargin / 2, body_width, 12*PT)
+            footer_vpos = self.topmargin + body_height + self.bottommargin / 2
+            self.footer = Container('footer', self, self.leftmargin,
+                                    footer_vpos, body_width, 12*PT)
+            header_text = chain.document.options['header_text']
+            footer_text = chain.document.options['footer_text']
+            self.header.append_flowable(Header(header_text))
+            self.footer.append_flowable(Footer(footer_text))
 
 
 # document parts
@@ -51,13 +61,16 @@ class ManualPart(DocumentPart):
         assert (len(chains) == 1)
         page = SimplePage(next(iter(chains)),
                           self.document.options['page_size'],
-                          self.document.options['page_orientation'])
+                          self.document.options['page_orientation'],
+                          header_footer=self.header_footer)
         self.page_count += 1
         self.add_page(page, self.page_count)
         return page.content
 
 
 class TableOfContentsPart(ManualPart):
+    header_footer = False
+
     def __init__(self, document):
         super().__init__(document)
         self.chain << Section([Heading('Table of Contents', style='unnumbered'),
@@ -65,6 +78,8 @@ class TableOfContentsPart(ManualPart):
 
 
 class ContentsPart(ManualPart):
+    header_footer = True
+
     def __init__(self, document, content_tree):
         super().__init__(document)
         for child in content_tree.getchildren():
@@ -84,7 +99,9 @@ class Manual(Document):
 
 class ManualOptions(dict):
     options = {'page_size': A4,
-               'page_orientation': PORTRAIT}
+               'page_orientation': PORTRAIT,
+               'header_text': None,
+               'footer_text': None}
 
     def __init__(self, **options):
         for name, value in options.items():
