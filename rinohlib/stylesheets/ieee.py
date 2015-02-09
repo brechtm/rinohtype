@@ -319,7 +319,8 @@ styles('header',
 styles('footer',
        base='header',
        indent_first=0*PT,
-       justify=CENTER)
+       tab_stops=[TabStop(0.5, CENTER),
+                  TabStop(1.0, RIGHT)])
 
 styles('footnote marker',
        position=SUPERSCRIPT,
