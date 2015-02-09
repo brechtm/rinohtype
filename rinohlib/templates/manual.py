@@ -2,7 +2,8 @@
 
 from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
-from rinoh.layout import Container, FootnoteContainer, Chain
+from rinoh.layout import Container, FootnoteContainer, Chain, \
+    UpExpandingContainer, DownExpandingContainer
 from rinoh.paper import A4
 
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
@@ -14,6 +15,8 @@ from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 class SimplePage(Page):
     topmargin = bottommargin = 3*CM
     leftmargin = rightmargin = 2*CM
+
+    header_footer_distance = 14*PT
 
     def __init__(self, chain, paper, orientation, header_footer=True):
         super().__init__(chain.document, paper, orientation)
@@ -31,11 +34,16 @@ class SimplePage(Page):
         self.content._footnote_space = self.footnote_space
 
         if header_footer:
-            self.header = Container('header', self, self.leftmargin,
-                                    self.topmargin / 2, body_width, 12*PT)
-            footer_vpos = self.topmargin + body_height + self.bottommargin / 2
-            self.footer = Container('footer', self, self.leftmargin,
-                                    footer_vpos, body_width, 12*PT)
+            header_bottom = self.body.top - self.header_footer_distance
+            self.header = UpExpandingContainer('header', self,
+                                               left=self.leftmargin,
+                                               bottom=header_bottom,
+                                               width=body_width)
+            footer_vpos = self.body.bottom + self.header_footer_distance
+            self.footer = DownExpandingContainer('footer', self,
+                                                 left=self.leftmargin,
+                                                 top=footer_vpos,
+                                                 width=body_width)
             header_text = chain.document.options['header_text']
             footer_text = chain.document.options['footer_text']
             self.header.append_flowable(Header(header_text))
