@@ -13,16 +13,15 @@ from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 # ----------------------------------------------------------------------------
 
 class SimplePage(Page):
-    topmargin = bottommargin = 3*CM
-    leftmargin = rightmargin = 2*CM
-
     header_footer_distance = 14*PT
 
     def __init__(self, chain, paper, orientation, header_footer=True):
         super().__init__(chain.document, paper, orientation)
-        body_width = self.width - (self.leftmargin + self.rightmargin)
-        body_height = self.height - (self.topmargin + self.bottommargin)
-        self.body = Container('body', self, self.leftmargin, self.topmargin,
+        h_margin = self.document.options['page_horizontal_margin']
+        v_margin = self.document.options['page_vertical_margin']
+        body_width = self.width - (2 * h_margin)
+        body_height = self.height - (2 * v_margin)
+        self.body = Container('body', self, h_margin, v_margin,
                               body_width, body_height)
 
         self.footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
@@ -36,16 +35,16 @@ class SimplePage(Page):
         if header_footer:
             header_bottom = self.body.top - self.header_footer_distance
             self.header = UpExpandingContainer('header', self,
-                                               left=self.leftmargin,
+                                               left=h_margin,
                                                bottom=header_bottom,
                                                width=body_width)
             footer_vpos = self.body.bottom + self.header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
-                                                 left=self.leftmargin,
+                                                 left=h_margin,
                                                  top=footer_vpos,
                                                  width=body_width)
-            header_text = chain.document.options['header_text']
-            footer_text = chain.document.options['footer_text']
+            header_text = self.document.options['header_text']
+            footer_text = self.document.options['footer_text']
             self.header.append_flowable(Header(header_text))
             self.footer.append_flowable(Footer(footer_text))
 
@@ -108,6 +107,8 @@ class Manual(Document):
 class ManualOptions(dict):
     options = {'page_size': A4,
                'page_orientation': PORTRAIT,
+               'page_horizontal_margin': 2*CM,
+               'page_vertical_margin': 3*CM,
                'header_text': None,
                'footer_text': None}
 
