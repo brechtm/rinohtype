@@ -8,6 +8,8 @@ from rinoh.paper import A4
 
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 
+from rinohlib.stylesheets.ieee import styles as STYLESHEET
+
 
 # page definition
 # ----------------------------------------------------------------------------
@@ -96,8 +98,8 @@ class ContentsPart(ManualPart):
 # main document
 # ----------------------------------------------------------------------------
 class Manual(Document):
-    def __init__(self, rinoh_tree, stylesheet, options=None, backend=None,
-                 title=None):
+    def __init__(self, rinoh_tree, options=None, backend=None, title=None):
+        stylesheet = options['stylesheet']
         super().__init__(stylesheet, backend=backend, title=title)
         self.options = options or ManualOptions()
         self.add_part(TableOfContentsPart(self))
@@ -105,7 +107,8 @@ class Manual(Document):
 
 
 class ManualOptions(dict):
-    options = {'page_size': A4,
+    options = {'stylesheet': STYLESHEET,
+               'page_size': A4,
                'page_orientation': PORTRAIT,
                'page_horizontal_margin': 2*CM,
                'page_vertical_margin': 3*CM,

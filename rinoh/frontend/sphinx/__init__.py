@@ -23,7 +23,6 @@ from ...styles import ParagraphStyle
 from ..rst import ReStructuredTextParser, CustomElement
 
 from rinohlib.templates.manual import Manual, ManualOptions
-from rinohlib.stylesheets.ieee import styles as IEEE_STYLESHEET
 
 from . import nodes
 
@@ -31,13 +30,6 @@ from . import nodes
 for cls_name in nodes.__all__:
     cls = getattr(nodes, cls_name)
     CustomElement.MAPPING[cls.__name__.lower()] = cls
-
-
-STYLESHEET = StyleSheet('IEEE for rST', base=IEEE_STYLESHEET)
-
-STYLESHEET['body'] = ParagraphStyle(base=STYLESHEET.base['body'],
-                                    indent_first=0,
-                                    space_below=6*PT)
 
 
 class RinohBuilder(Builder):
@@ -109,7 +101,7 @@ class RinohBuilder(Builder):
         os.chdir(self.srcdir)
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
-        rinoh_document = Manual(rinoh_tree, STYLESHEET, backend=pdf,
+        rinoh_document = Manual(rinoh_tree, backend=pdf,
                                 options=self.config.rinoh_manual_options,
                                 title=rinoh_tree.get('title'))
         outfilename = path.join(self.outdir, os_path(docname))
