@@ -543,8 +543,13 @@ class Table(BodyElement):
             head = None
         body = tgroup.tbody.get_table_section()
         width_string = self.get('width')
-        return rt.Table(body, head=head, width=convert_quantity(width_string),
-                        column_widths=column_widths)
+        table = rt.Table(body, head=head, width=convert_quantity(width_string),
+                         column_widths=column_widths)
+        try:
+            caption = rt.Caption(self.title.process_content())
+            return rt.TableWithCaption([caption, table])
+        except AttributeError:
+            return table
 
 
 class TGroup(CustomElement):

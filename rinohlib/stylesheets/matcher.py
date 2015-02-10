@@ -134,7 +134,7 @@ matcher('figure', Figure)
 
 matcher('image', Image)
 
-matcher('figure caption', Figure / Caption)
+matcher('caption', Caption)
 
 matcher('figure legend', Figure / GroupedFlowables.like('legend'))
 

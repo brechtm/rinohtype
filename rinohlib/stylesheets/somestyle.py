@@ -30,7 +30,7 @@ stylesheet('heading level 2',
            space_below=6*PT,
            label_suffix='.' + FixedWidthSpace())
 
-stylesheet('figure caption',
+stylesheet('caption',
            typeface=Var('ieee_family').sans,
            font_weight=REGULAR,
            font_size=9*PT,

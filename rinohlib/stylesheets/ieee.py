@@ -350,7 +350,7 @@ styles('figure',
 styles('image',
        horizontal_align=CENTER)
 
-styles('figure caption',
+styles('caption',
        typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=9*PT,
@@ -365,7 +365,7 @@ styles('figure legend',
        margin_left=30*PT)
 
 styles('figure legend paragraph',
-       base='figure caption',
+       base='caption',
        space_above=5*PT,
        justify=LEFT)
 

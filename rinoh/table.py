@@ -16,12 +16,14 @@ from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
+from .reference import Referenceable, REFERENCE
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 from .util import ReadAliasAttribute
 
 
-__all__ = ['Table', 'TableSection', 'TableHead', 'TableBody', 'TableRow',
+__all__ = ['Table', 'TableWithCaption',
+           'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle', 'TableCellBorder',
            'TableCellBackground',
            'TOP', 'MIDDLE', 'BOTTOM']
@@ -247,6 +249,17 @@ class Table(HorizontallyAlignedFlowable):
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(container, x_cursor, y_offset)
             y_cursor += rendered_row.height
+
+
+class TableWithCaption(Referenceable, StaticGroupedFlowables):
+    category = 'Table'
+
+    def prepare(self, document):
+        super().prepare(document)
+        element_id = self.get_id(document)
+        number = document.counters.setdefault(__class__, 1)
+        document.counters[__class__] += 1
+        document.set_reference(element_id, REFERENCE, str(number))
 
 
 class TableSection(Styled, list):
