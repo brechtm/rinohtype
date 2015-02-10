@@ -153,6 +153,22 @@ class DummyFlowable(Flowable):
         return 0, last_descender
 
 
+class PageBreakState(FlowableState):
+    def __init__(self):
+        super().__init__(False)
+
+    def __copy__(self):
+        return self
+
+
+class PageBreak(DummyFlowable):
+   def flow(self, container, last_descender, state=None):
+       if state is None:
+           raise EndOfContainer(flowable_state=PageBreakState())
+       else:
+           return super().flow(container, last_descender)
+
+
 class WarnFlowable(DummyFlowable):
     def __init__(self, message, parent=None):
         super().__init__(parent=parent)

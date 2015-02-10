@@ -7,7 +7,7 @@
 
 
 from ...decoration import Framed
-from ...flowable import DummyFlowable
+from ...flowable import DummyFlowable, PageBreak
 from ...text import SingleStyledText
 from ..rst import BodyElement, BodySubElement, InlineElement, GroupingElement
 from ..rst.nodes import AdmonitionBase
@@ -48,4 +48,7 @@ class Todo_Node(GroupingElement):
 
 class Raw(BodyElement):
     def build_flowable(self):
-        return DummyFlowable()
+        if self.text == 'PageBreak':
+            return PageBreak()
+        else:
+            return DummyFlowable()
