@@ -369,6 +369,9 @@ styles('figure legend paragraph',
        space_above=5*PT,
        justify=LEFT)
 
+styles('table of contents section',
+       show_in_toc=False)
+
 styles('table of contents',
        base='default',
        indent_first=0,

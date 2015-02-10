@@ -83,7 +83,8 @@ class TableOfContentsPart(ManualPart):
     def __init__(self, document):
         super().__init__(document)
         self.chain << Section([Heading('Table of Contents', style='unnumbered'),
-                               TableOfContents()])
+                               TableOfContents()],
+                              style='table of contents')
 
 
 class ContentsPart(ManualPart):

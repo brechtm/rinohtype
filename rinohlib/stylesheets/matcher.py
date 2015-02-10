@@ -136,6 +136,8 @@ matcher('figure legend paragraph', Figure
                                    / GroupedFlowables.like('legend')
                                    / Paragraph)
 
+matcher('table of contents section', Section.like('table of contents'))
+
 matcher('table of contents', TableOfContents)
 
 matcher('toc level 1', TableOfContentsEntry.like(depth=1))

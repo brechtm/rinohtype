@@ -31,7 +31,13 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
            'HorizontalRule', 'HorizontalRuleStyle']
 
 
+class SectionSytyle(GroupedFlowablesStyle):
+    attributes = {'show_in_toc': True}
+
+
 class Section(Referenceable, StaticGroupedFlowables):
+    style_class = SectionSytyle
+
     def __init__(self, flowables, id=None, style=None, parent=None):
         super().__init__(flowables, id=id, style=style, parent=parent)
 
@@ -45,6 +51,14 @@ class Section(Referenceable, StaticGroupedFlowables):
     @property
     def section(self):
         return self
+
+    def show_in_toc(self, document):
+        show_in_toc = self.get_style('show_in_toc', document)
+        try:
+            parent_show_in_toc = self.parent.show_in_toc(document)
+        except AttributeError:
+            parent_show_in_toc = True
+        return show_in_toc and parent_show_in_toc
 
 
 class HeadingStyle(NumberedParagraphStyle):
@@ -213,7 +227,9 @@ class TableOfContents(GroupedFlowables):
         depth = self.get_style('depth', document)
         items = ((flowable_id, flowable)
                  for flowable_id, flowable in document.elements.items()
-                 if isinstance(flowable, Section) and flowable.level <= depth)
+                 if (isinstance(flowable, Section)
+                     and flowable.show_in_toc(document)
+                     and flowable.level <= depth))
         if self.local and self.section:
             items = limit_items(items, self.section)
 
