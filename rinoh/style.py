@@ -364,7 +364,7 @@ class StyleSheet(OrderedDict):
     def __init__(self, name, matcher=None, base=None):
         super().__init__()
         self.name = name
-        self.matcher = matcher
+        self.matcher = matcher or base.matcher
         self.base = base
         self.variables = {}
 

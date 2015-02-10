@@ -8,7 +8,7 @@ from rinoh.paper import A4
 
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 
-from rinohlib.stylesheets.ieee import styles as STYLESHEET
+from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 
 
 # page definition
