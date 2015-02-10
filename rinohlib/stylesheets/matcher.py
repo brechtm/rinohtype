@@ -6,6 +6,12 @@ __all__ = ['matcher']
 
 matcher = StyledMatcher()
 
+matcher('title page title', Paragraph.like('title page title'))
+
+matcher('title page author', Paragraph.like('title page author'))
+
+matcher('title page extra', Paragraph.like('title page extra'))
+
 matcher('body', Paragraph)
 
 matcher('emphasis', StyledText.like('emphasis'))

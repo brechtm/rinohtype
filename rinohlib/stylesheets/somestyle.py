@@ -1,8 +1,8 @@
 
-from rinoh.dimension import PT
+from rinoh.dimension import PT, CM
 from rinoh.font.style import REGULAR, SUPERSCRIPT
 from rinoh.number import NUMBER
-from rinoh.paragraph import CENTER
+from rinoh.paragraph import LEFT, CENTER
 from rinoh.text import FixedWidthSpace
 from rinoh.style import StyleSheet, Var
 
@@ -43,3 +43,19 @@ stylesheet('footnote marker',
            position=SUPERSCRIPT,
            number_format=NUMBER)
 
+stylesheet('title page title',
+           typeface=Var('ieee_family').sans,
+           font_size=26*PT,
+           justify=CENTER,
+           space_below=80*PT)
+
+stylesheet('title page author',
+           typeface=Var('ieee_family').sans,
+           font_size=18*PT,
+           justify=CENTER)
+
+stylesheet('title page extra',
+           typeface=Var('ieee_family').sans,
+           font_size=18*PT,
+           justify=CENTER,
+           space_above=10*CM)

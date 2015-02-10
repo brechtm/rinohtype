@@ -4,6 +4,7 @@ from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
 from rinoh.layout import Container, FootnoteContainer, Chain, \
     UpExpandingContainer, DownExpandingContainer
+from rinoh.paragraph import Paragraph
 from rinoh.paper import A4
 
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
@@ -11,8 +12,27 @@ from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 
 
-# page definition
+# page definitions
 # ----------------------------------------------------------------------------
+
+class TitlePage(Page):
+    def __init__(self, document, paper, orientation):
+        super().__init__(document, paper, orientation)
+        h_margin = self.document.options['page_horizontal_margin']
+        v_margin = self.document.options['page_vertical_margin']
+        body_width = self.width - (2 * h_margin)
+        body_height = self.height - (2 * v_margin)
+        title_top = self.height / 4
+        self.title = Container('title', self, h_margin, title_top,
+                               body_width, body_height)
+        self.title << Paragraph(self.document.options['title'],
+                                style='title page title')
+        self.title << Paragraph(self.document.options['author'],
+                                style='title page author')
+        extra = self.document.options['extra']
+        if extra:
+            self.title << Paragraph(extra, style='title page extra')
+
 
 class SimplePage(Page):
     header_footer_distance = 14*PT
@@ -54,8 +74,19 @@ class SimplePage(Page):
 # document parts
 # ----------------------------------------------------------------------------
 
-# class TitlePart(DocumentPart)
+class TitlePart(DocumentPart):
+    def __init__(self, document):
+        super().__init__(document)
 
+    def init(self):
+        self.new_page(None)
+
+    def new_page(self, chains):
+        assert chains is None
+        page = TitlePage(self.document,
+                         self.document.options['page_size'],
+                         self.document.options['page_orientation'])
+        self.add_page(page, self.page_count)
 
 
 class ManualPart(DocumentPart):
@@ -103,12 +134,16 @@ class Manual(Document):
         stylesheet = options['stylesheet']
         super().__init__(stylesheet, backend=backend, title=title)
         self.options = options or ManualOptions()
+        self.add_part(TitlePart(self))
         self.add_part(TableOfContentsPart(self))
         self.add_part(ContentsPart(self, rinoh_tree))
 
 
 class ManualOptions(dict):
-    options = {'stylesheet': STYLESHEET,
+    options = {'title': 'A Manual',
+               'author': 'A. Uthor',
+               'extra': None,
+               'stylesheet': STYLESHEET,
                'page_size': A4,
                'page_orientation': PORTRAIT,
                'page_horizontal_margin': 2*CM,
