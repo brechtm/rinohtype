@@ -54,6 +54,12 @@ stylesheet('title page author',
            font_size=18*PT,
            justify=CENTER)
 
+stylesheet('title page date',
+           typeface=Var('ieee_family').sans,
+           font_size=14*PT,
+           justify=CENTER,
+           space_above=20*PT)
+
 stylesheet('title page extra',
            typeface=Var('ieee_family').sans,
            font_size=18*PT,

@@ -1,4 +1,5 @@
 
+import datetime
 
 from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
@@ -29,6 +30,9 @@ class TitlePage(Page):
                                 style='title page title')
         self.title << Paragraph(self.document.options['author'],
                                 style='title page author')
+        date = self.document.options['date']
+        self.title << Paragraph(date.strftime('%B %d, %Y'),
+                                style='title page date')
         extra = self.document.options['extra']
         if extra:
             self.title << Paragraph(extra, style='title page extra')
@@ -142,6 +146,7 @@ class Manual(Document):
 class ManualOptions(dict):
     options = {'title': 'A Manual',
                'author': 'A. Uthor',
+               'date': datetime.date.today(),
                'extra': None,
                'stylesheet': STYLESHEET,
                'page_size': A4,
