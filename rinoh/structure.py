@@ -88,10 +88,14 @@ class Heading(NumberedParagraph):
             assert self.custom_label is not None
             label = str(self.custom_label)
         elif numbering_style:
+            try:
+                parent_section_id = self.section.parent.section.get_id(document)
+            except AttributeError:
+                parent_section_id = None
             heading_counters = document.counters.setdefault(__class__, {})
-            level_counter = heading_counters.setdefault(self.level, [])
-            level_counter.append(self)
-            number = len(level_counter)
+            section_counter = heading_counters.setdefault(parent_section_id, [])
+            section_counter.append(self)
+            number = len(section_counter)
             label = format_number(number, numbering_style)
             separator = self.get_style('number_separator', document)
             if separator is not None and self.level > 1:
