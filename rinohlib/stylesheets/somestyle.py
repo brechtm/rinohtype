@@ -59,3 +59,13 @@ stylesheet('title page extra',
            font_size=18*PT,
            justify=CENTER,
            space_above=10*CM)
+
+stylesheet('table body cell paragraph',
+           base='default',
+           font_size=9*PT,
+           indent_first=0,
+           justify=CENTER)
+
+stylesheet('table first column paragraph',
+           base='table body cell paragraph',
+           justify=LEFT)

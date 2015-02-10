@@ -168,6 +168,9 @@ matcher('table body cell background on even row',
 matcher('table body cell paragraph',
         TableBody / TableRow / TableCell / ... / Paragraph)
 
+matcher('table first column paragraph',
+        TableBody / TableRow / TableCell.like(column_index=0) / ... / Paragraph)
+
 matcher('table body cell list item number',
         TableBody / TableRow / TableCell / ... / ListItem / Paragraph)
 
