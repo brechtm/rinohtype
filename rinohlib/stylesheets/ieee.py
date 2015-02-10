@@ -313,14 +313,13 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
 
 styles('header',
        base='default',
-       indent_first=0*PT,
-       font_size=9*PT)
-
-styles('footer',
-       base='header',
+       font_size=9*PT,
        indent_first=0*PT,
        tab_stops=[TabStop(0.5, CENTER),
                   TabStop(1.0, RIGHT)])
+
+styles('footer',
+       base='header')
 
 styles('footnote marker',
        position=SUPERSCRIPT,
