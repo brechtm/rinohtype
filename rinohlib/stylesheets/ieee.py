@@ -11,12 +11,14 @@ from rinoh.font.style import REGULAR, UPRIGHT, ITALIC, BOLD, SUPERSCRIPT
 
 from rinohlib.fonts.texgyre.termes import typeface as times
 from rinohlib.fonts.texgyre.cursor import typeface as courier
+from rinohlib.fonts.texgyre.heros import typeface as helvetica
 
 from .matcher import matcher
 
 styles = StyleSheet('IEEE', matcher=matcher)
 
-styles.variables['ieee_family'] = TypeFamily(serif=times, mono=courier)
+styles.variables['ieee_family'] = TypeFamily(serif=times, sans=helvetica,
+                                             mono=courier)
 
 styles['default'] = ParagraphStyle(typeface=Var('ieee_family').serif,
                                    font_weight=REGULAR,
