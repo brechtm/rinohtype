@@ -59,3 +59,6 @@ class InlineFlowableSpan(object):
 
     def descender(self, document):
         return 0
+
+    def line_gap(self, document):
+        return 0
