@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import math
+
 from io import StringIO
 from contextlib import contextmanager
 
@@ -163,6 +165,12 @@ class Canvas(StringIO):
     def translate(self, x, y):
         print('1 0 0 1 {} {} cm'.format(x, - y), file=self)
 
+    def rotate(self, degrees):
+        rad = math.radians(degrees)
+        sine, cosine = math.sin(rad), math.cos(rad)
+        print('{cos:f} {sin:f} {neg_sin:f} {cos:f} 0 0 cm'
+              .format(cos=cosine, sin=sine, neg_sin=-sine,), file=self)
+
     def scale(self, x, y=None):
         if y is None:
             y = x
@@ -273,14 +281,25 @@ class Canvas(StringIO):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)
         self.annotations.append(ann_loc)
 
-    def place_image(self, image, left, top, document, scale=1.0):
+    def place_image(self, image, left, top, document, scale=1.0, width=None,
+                    rotate=0):
         image_number = document.backend_document.get_unique_image_number()
         self.images[image_number] = image
+        rad = math.radians(rotate)
+        sine, cosine = abs(math.sin(rad)), abs(math.cos(rad))
+        im_width = image.width * cosine + image.height * sine
+        im_height = image.width * sine + image.height * cosine
+        if width is not None:
+            assert scale is None
+            scale = width / im_width
         with self.save_state():
             self.translate(left, top)
+            self.translate(scale * im_width / 2, scale * im_height / 2)
+            self.rotate(rotate)
+            self.translate(- scale * image.width / 2, scale * image.height / 2)
             self.scale(scale)
-            self.translate(0, image.height)
             print('/Im{} Do'.format(image_number), file=self)
+        return im_width * scale, im_height * scale
 
 
 class PageCanvas(Canvas):

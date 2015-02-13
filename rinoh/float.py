@@ -23,14 +23,15 @@ RIGHT = 'right'
 
 
 class ImageBase(Flowable):
-    def __init__(self, filename_or_file, scale=1.0, width=None, id=None,
-                 style=None, parent=None):
+    def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
+                 id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.filename_or_file = filename_or_file
         if scale != 1.0 and width is not None:
             raise TypeError('You should specify only one of scale and width')
         self.scale = scale
         self.width = width
+        self.rotate = rotate
 
     def render(self, container, last_descender, state=None):
         image = container.document.backend.Image(self.filename_or_file)
@@ -39,13 +40,15 @@ class ImageBase(Flowable):
         left, top = 0, float(container.cursor)
         if self.width is not None:
             width = self.width.to_points(container.width)
-            scale = width / image.width
+            scale = None
         else:
+            width = None
             scale = self.scale
-        container.canvas.place_image(image, left, top, container.document,
-                                     scale=scale)
-        container.advance(float(image.height * scale))
-        return image.width * scale, 0
+        w, h = container.canvas.place_image(image, left, top,
+                                            container.document, scale=scale,
+                                            width=width, rotate=self.rotate)
+        container.advance(h)
+        return w, 0
 
 
 class InlineImage(ImageBase, InlineFlowable):
