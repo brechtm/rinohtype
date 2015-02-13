@@ -483,7 +483,8 @@ class Image(BodyElement, InlineElement):
 
     def build_flowable(self):
         width_string = self.get('width')
-        return rt.Image(self.image_path, width=convert_quantity(width_string))
+        return rt.Image(self.image_path, scale=self.get('scale', 100) / 100,
+                        width=convert_quantity(width_string))
 
     def build_styled_text(self):
         return rt.InlineImage(self.image_path)
