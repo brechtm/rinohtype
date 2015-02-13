@@ -17,6 +17,9 @@ __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
 
 class Color(object):
     def __init__(self, red, green, blue, alpha=1):
+        for value in (red, green, blue, alpha):
+            if not 0 <= value <= 1:
+                raise ValueError('Color component values can range from 0 to 1')
         self.r = red
         self.g = green
         self.b = blue
