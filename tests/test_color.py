@@ -43,6 +43,10 @@ class TestColor(unittest.TestCase):
         self.assertEqual(color2.a, 0xD7 / 255)
         self.assertEqual(repr(color2), '#e30bcad7')
 
+    def test_bad_hex_value(self):
+        for hex_string in ['', 'zz0000', '0011223', 'a', '0d6', '0011223344']:
+            self.assertRaises(ValueError, HexColor, hex_string)
+
     def test_gray(self):
         for luminance in (1.0, 0.37, 0.987):
             gray = Gray(luminance)

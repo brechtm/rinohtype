@@ -5,9 +5,8 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import binascii
 import struct
-
-from binascii import hexlify, unhexlify
 
 from .style import Style, Styled
 from .dimension import PT
@@ -31,7 +30,7 @@ class Color(object):
     def __repr__(self):
         rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
                                             for color in self.rgba))
-        return '#' + hexlify(rgba_bytes).decode('ascii')
+        return '#' + binascii.hexlify(rgba_bytes).decode('ascii')
 
     @property
     def rgba(self):
@@ -42,11 +41,15 @@ class HexColor(Color):
     def __init__(self, string):
         if string.startswith('#'):
             string = string[1:]
-        r, g, b = struct.unpack('BBB', unhexlify(string[:6]))
         try:
-            a, = struct.unpack('B', unhexlify(string[6:]))
-        except struct.error:
-            a = 255
+            r, g, b = struct.unpack('BBB', binascii.unhexlify(string[:6]))
+            if string[6:]:
+                a, = struct.unpack('B', binascii.unhexlify(string[6:]))
+            else:
+                a = 255
+        except (struct.error, binascii.Error):
+            raise ValueError('Bad color string passed to ' +
+                             self.__class__.__name__)
         super().__init__(*(value / 255 for value in (r, g, b, a)))
 
 
