@@ -5,6 +5,9 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import struct
+
+from binascii import hexlify
 
 from .style import Style, Styled
 from .dimension import PT
@@ -24,6 +27,11 @@ class Color(object):
         self.g = green
         self.b = blue
         self.a = alpha
+
+    def __repr__(self):
+        rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
+                                            for color in self.rgba))
+        return '#' + hexlify(rgba_bytes).decode('ascii')
 
     @property
     def rgba(self):
