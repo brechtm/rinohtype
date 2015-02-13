@@ -7,7 +7,7 @@
 
 import struct
 
-from binascii import hexlify
+from binascii import hexlify, unhexlify
 
 from .style import Style, Styled
 from .dimension import PT
@@ -39,14 +39,15 @@ class Color(object):
 
 
 class HexColor(Color):
-    def __init__(self, rgb_string):
-        if rgb_string.startswith('#'):
-            rgb_string = rgb_string[1:]
-        r = int(rgb_string[0:2], 16) / 0xFF
-        g = int(rgb_string[2:4], 16) / 0xFF
-        b = int(rgb_string[4:6], 16) / 0xFF
-        a = int(rgb_string[6:8], 16) if len(rgb_string) > 6 else 1
-        super().__init__(r, g, b, a)
+    def __init__(self, string):
+        if string.startswith('#'):
+            string = string[1:]
+        r, g, b = struct.unpack('BBB', unhexlify(string[:6]))
+        try:
+            a, = struct.unpack('B', unhexlify(string[6:]))
+        except struct.error:
+            a = 255
+        super().__init__(*(value / 255 for value in (r, g, b, a)))
 
 
 class Gray(Color):
