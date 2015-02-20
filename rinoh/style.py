@@ -95,7 +95,10 @@ class Style(dict):
         return copy
 
     def __getattr__(self, attribute):
-        return self[attribute]
+        if attribute in self._supported_attributes():
+            return self[attribute]
+        else:
+            return super().__getattr__(attribute)
 
     def __getitem__(self, attribute):
         """Return the value of `attribute`.
