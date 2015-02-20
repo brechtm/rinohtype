@@ -164,20 +164,21 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
-        except IOError:
+        except (IOError, TypeError):
             prev_number_of_pages, prev_page_references = -1, {}
         return prev_number_of_pages, prev_page_references
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
-        with open(filename + self.CACHE_EXTENSION, 'wb') as file:
-            cache = self.number_of_pages, self.page_references
-            pickle.dump(cache, file)
+        if filename:
+            with open(filename + self.CACHE_EXTENSION, 'wb') as file:
+                cache = self.number_of_pages, self.page_references
+                pickle.dump(cache, file)
 
     def get_style_var(self, name):
         return self.stylesheet.get_variable(name)
 
-    def render(self, filename):
+    def render(self, filename=None):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
 
@@ -207,9 +208,10 @@ to the terms of the GNU Affero General Public License version 3.''')
             self.backend_document = self.backend.Document(self, self.CREATOR)
             self.number_of_pages = self.render_pages()
         self._save_cache(filename)
-        print('Writing output: {}'.format(filename +
-                                          self.backend_document.extension))
-        self.backend_document.write(filename)
+        if filename:
+            print('Writing output: {}'.format(filename +
+                                              self.backend_document.extension))
+        return self.backend_document.write(filename)
 
     def render_pages(self):
         """Render the complete document once and return the number of pages

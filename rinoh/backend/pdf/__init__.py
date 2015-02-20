@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from io import StringIO
+from io import StringIO, BytesIO
 from contextlib import contextmanager
 
 from . import cos
@@ -81,14 +81,18 @@ class Document(object):
             self.fonts[font] = font_number, font_rsc
         return font_number, font_rsc
 
-    def write(self, filename):
+    def write(self, filename=None):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue().encode('utf_8'))
             page.cos_page['Contents'] = contents
-        file = open(filename + self.extension, 'wb')
+        file = open(filename + self.extension, 'wb') if filename else BytesIO()
         self.cos_document.write(file)
-        file.close()
+        if filename:
+            file.close()
+        else:
+            file.seek(0)
+            return file
 
 
 class Page(object):
