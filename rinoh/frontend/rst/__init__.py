@@ -70,9 +70,8 @@ class CustomElement(object):
 
     @property
     def location(self):
-        return '{}: <{}> at line {}'.format(self.node.source,
-                                            self.node.tagname,
-                                            self.node.line)
+        return '{}:{} <{}>'.format(self.node.source, self.node.line,
+                                   self.node.tagname)
 
 
 def set_source(method):
