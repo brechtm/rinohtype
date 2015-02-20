@@ -6,9 +6,6 @@ Setup script for RinohType
 
 import sys
 
-print('Not yet supported! See README.rst on how to try out RinohType.')
-sys.exit(1)
-
 from datetime import datetime
 from setuptools import setup, find_packages
 from subprocess import Popen, PIPE
@@ -26,7 +23,7 @@ try:
     if git.wait() != 0:
         raise OSError
     line = git.stdout.readlines()[0]
-    __version__ = line.strip()[1:].decode('ascii')
+    __version__ = line.strip().decode('ascii')
     __release_date__ = datetime.now().strftime('%b %d %Y, %H:%M:%S')
     with open(VERSION_FILE, 'w') as version_file:
         version_file.write("__version__ = '{}'\n".format(__version__))
@@ -52,9 +49,14 @@ setup(
                             'data/fonts/adobe35/MustRead.html',
                             'data/hyphen/*.dic',
                             'data/xml/catalog',
-                            'data/xml/w3c-entities/*.ent']},
+                            'data/xml/w3c-entities/*.ent'],
+                  'rinohlib': ['fonts/texgyre/pagella/TeX-Gyre-Pagella.txt',
+                               'fonts/texgyre/pagella/texgyrepagella-regular.otf',
+                               'fonts/texgyre/pagella/texgyrepagella-italic.otf',
+                               'fonts/texgyre/pagella/texgyrepagella-bold.otf',
+                               'fonts/texgyre/pagella/texgyrepagella-bolditalic.otf']},
     scripts=[],
-    install_requires=['docutils'],
+    install_requires=[],
     provides=[PACKAGE],
     #test_suite='nose.collector',
 
