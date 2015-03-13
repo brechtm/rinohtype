@@ -44,22 +44,24 @@ class Page(Container):
     """A single page in a document. A :class:`Page` is a :class:`Container`, so
     other containers can be added as children."""
 
-    def __init__(self, document, paper, orientation=PORTRAIT):
+    def __init__(self, document_part, paper, orientation=PORTRAIT):
         """Initialize this page as part of `document` (:class:`Document`) with a
         size defined by `paper` (:class:`Paper`). The page's `orientation` can
         be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
+        self.document_part = document_part
         self.paper = paper
         self.orientation = orientation
         if orientation is PORTRAIT:
             width, height = paper.width, paper.height
         elif orientation is LANDSCAPE:
             width, height = paper.height, paper.width
+        document = self.document_part.document
         backend_document = document.backend_document
         self.backend_page = document.backend.Page(self, backend_document,
                                                   width, height)
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
-        FlowableTarget.__init__(self, document)
+        FlowableTarget.__init__(self, document_part)
         Container.__init__(self, 'PAGE', None, 0, 0, width, height)
 
     def empty_canvas(self):
@@ -95,8 +97,18 @@ class BackendDocumentMetadata(object):
 class DocumentPart(list):
     def __init__(self, document):
         self.document = document
+        self.flowable_targets = []
 
-    def render(self, document):
+    @property
+    def number_of_pages(self):
+        return len(self.pages)
+
+    def prepare(self):
+        for flowable in (flowable for target in self.flowable_targets
+                         for flowable in target.flowables):
+            flowable.prepare(self.document)
+
+    def render(self):
         self.page_count = 0
         self.pages = []
         self.init()
@@ -152,7 +164,6 @@ class Document(object):
         self.keywords = keywords
 
         self.parts = []
-        self.flowable_targets = []
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
@@ -228,9 +239,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         self.number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
-        for flowable in (flowable for target in self.flowable_targets
-                         for flowable in target.flowables):
-            flowable.prepare(self)
+        for document_part in self.parts:
+            document_part.prepare()
         self.number_of_pages = self.render_pages()
         while not has_converged():
             prev_number_of_pages = self.number_of_pages
@@ -252,7 +262,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.placed_footnotes = set()
         # self.setup()
         for part in self.parts:
-            part.render(self)
+            part.render()
         return sum(len(part.pages) for part in self.parts)
 
     def setup(self):

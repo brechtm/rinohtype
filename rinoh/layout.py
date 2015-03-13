@@ -56,15 +56,20 @@ class ReflowRequired(Exception):
 class FlowableTarget(object):
     """Something that takes :class:`Flowable`\ s to be rendered."""
 
-    def __init__(self, document):
+    def __init__(self, document_part):
         """Initialize this flowable target.
 
-        `document` is the :class:`Document` this flowable target is part of."""
+        `document_part` is the :class:`Document` this flowable target is part
+        of."""
         self.flowables = []
-        document.flowable_targets.append(self)
+        document_part.flowable_targets.append(self)
 
-        self.document = document
-        """The :class:`Document` this flowable target is part of."""
+        self.document_part = document_part
+        """The :class:`DocumentPart` this flowable target is part of."""
+
+    @property
+    def document(self):
+        return self.document_part.document
 
     def append_flowable(self, flowable):
         """Append a `flowable` to the list of flowables to be rendered."""
@@ -127,7 +132,7 @@ class ContainerBase(FlowableTarget):
         self.name = name
         self.parent = parent
         if parent is not None:
-            super().__init__(parent.document)
+            super().__init__(parent.document_part)
             self.parent.children.append(self)
         self.empty_canvas()
         self.children = []
@@ -414,11 +419,11 @@ class Chain(FlowableTarget):
     containers. Once a container is filled, the chain starts flowing flowables
     into the next container."""
 
-    def __init__(self, document):
+    def __init__(self, document_part):
         """Initialize this chain.
 
         `document` is the :class:`Document` this chain is part of."""
-        super().__init__(document)
+        super().__init__(document_part)
         self._init_state()
 
     def _init_state(self):

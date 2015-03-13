@@ -104,6 +104,10 @@ class Page(object):
         document.pages.append(self)
 
     @property
+    def document_part(self):
+        return self.rinoh_page.document_part
+
+    @property
     def document(self):
         return self.rinoh_page.document
 

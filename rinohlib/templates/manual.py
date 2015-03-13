@@ -17,8 +17,8 @@ from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 # ----------------------------------------------------------------------------
 
 class TitlePage(Page):
-    def __init__(self, document, paper, orientation):
-        super().__init__(document, paper, orientation)
+    def __init__(self, document_part, paper, orientation):
+        super().__init__(document_part, paper, orientation)
         h_margin = self.document.options['page_horizontal_margin']
         v_margin = self.document.options['page_vertical_margin']
         body_width = self.width - (2 * h_margin)
@@ -42,7 +42,7 @@ class SimplePage(Page):
     header_footer_distance = 14*PT
 
     def __init__(self, chain, paper, orientation, header_footer=True):
-        super().__init__(chain.document, paper, orientation)
+        super().__init__(chain.document_part, paper, orientation)
         h_margin = self.document.options['page_horizontal_margin']
         v_margin = self.document.options['page_vertical_margin']
         body_width = self.width - (2 * h_margin)
@@ -87,7 +87,7 @@ class TitlePart(DocumentPart):
 
     def new_page(self, chains):
         assert chains is None
-        page = TitlePage(self.document,
+        page = TitlePage(self,
                          self.document.options['page_size'],
                          self.document.options['page_orientation'])
         self.add_page(page, self.page_count)
@@ -96,7 +96,7 @@ class TitlePart(DocumentPart):
 class ManualPart(DocumentPart):
     def __init__(self, document):
         super().__init__(document)
-        self.chain = Chain(document)
+        self.chain = Chain(self)
 
     def init(self):
         self.new_page([self.chain])
