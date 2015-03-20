@@ -32,9 +32,12 @@ class TitlePage(Page):
                                 style='title page subtitle')
         self.title << Paragraph(self.document.metadata['author'],
                                 style='title page author')
-        date = self.document.options['date']
-        self.title << Paragraph(date.strftime('%B %d, %Y'),
-                                style='title page date')
+        date = self.document.metadata['date']
+        try:
+            self.title << Paragraph(date.strftime('%B %d, %Y'),
+                                    style='title page date')
+        except AttributeError:
+            self.title << Paragraph(date, style='title page date')
         extra = self.document.options['extra']
         if extra:
             self.title << Paragraph(extra, style='title page extra')

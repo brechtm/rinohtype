@@ -9,6 +9,8 @@
 import re
 import unicodedata
 
+from datetime import datetime
+
 import rinoh as rt
 
 from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
@@ -79,7 +81,12 @@ class Contact(DocInfoField):
 
 
 class Date(DocInfoField):
-    pass
+    @property
+    def value(self):
+        try:
+            return datetime.strptime(self.node.astext(), '%Y-%m-%d')
+        except ValueError:
+            return super().value
 
 
 class Version(DocInfoField):
