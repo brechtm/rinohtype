@@ -115,7 +115,10 @@ class Heading(NumberedParagraph):
         result = super().render(container, last_descender, state=state)
         if self.level == 1:
             container.page.section = self.parent
-        self.parent.update_page_reference(container.page)
+        try:
+            self.parent.update_page_reference(container.page)
+        except AttributeError:
+            pass    # parent is not a Referenceable
         return result
 
 
