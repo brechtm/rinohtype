@@ -102,8 +102,7 @@ class RinohBuilder(Builder):
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Manual(rinoh_tree, backend=pdf,
-                                options=self.config.rinoh_manual_options,
-                                title=rinoh_tree.get('title'))
+                                options=self.config.rinoh_manual_options)
         outfilename = path.join(self.outdir, os_path(docname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)

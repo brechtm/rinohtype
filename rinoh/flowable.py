@@ -184,10 +184,8 @@ class SetMetadataFlowable(DummyFlowable):
         super().__init__(parent=parent)
         self.metadata = metadata
 
-    def flow(self, container, last_descender, state=None):
-        for field, value in self.metadata:
-            setattr(container.document, field, value)
-        return super().flow(container, last_descender, state=state)
+    def prepare(self, document):
+        document.metadata.update(self.metadata)
 
 
 # grouping flowables

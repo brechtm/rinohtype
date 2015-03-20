@@ -33,28 +33,31 @@ class Document(BodyElement):
 
 class DocInfo(BodyElement):
     def build_flowable(self):
-        return rt.FieldList([child.flowable() for child in self.getchildren()])
+        doc_info = {field.name: field.value for field in self.getchildren()}
+        return rt.SetMetadataFlowable(**doc_info)
 
 
 # bibliographic elements
 
 class DocInfoField(BodyElement):
-    def build_flowable(self, content=None):
-        field_name = rt.Paragraph(self.__class__.__name__, style='field_name')
-        content = content or rt.Paragraph(self.process_content())
-        return rt.LabeledFlowable(field_name, content)
+    @property
+    def name(self):
+        return self.node.tagname
+
+    @property
+    def value(self):
+        return self.flowable()
+
+    def build_flowable(self):
+        return rt.Paragraph(self.process_content())
 
 
 class Author(DocInfoField):
     pass
 
 
-class Authors(DocInfoField):
-    def build_flowable(self):
-        authors = []
-        for author in self.author:
-            authors.append(rt.Paragraph(author.process_content()))
-        return super().build_flowable(rt.StaticGroupedFlowables(authors))
+class Authors(GroupingElement, DocInfoField):
+    pass
 
 
 class Copyright(DocInfoField):
@@ -117,13 +120,20 @@ class Topic(GroupingElement):
     def build_flowable(self):
         classes = self.get('classes')
         if 'contents' in classes:
-            flowables = [rt.TableOfContents(local='local' in classes)]
-            try:
-                flowables.insert(0, self.title.flowable())
-            except AttributeError:
-                pass
-            return rt.StaticGroupedFlowables(flowables,
-                                             style='table of contents')
+            if 'local' in classes:
+                flowables = [rt.TableOfContents(local=True)]
+                try:
+                    flowables.insert(0, self.title.flowable())
+                except AttributeError:
+                    pass
+                return rt.StaticGroupedFlowables(flowables,
+                                                 style='table of contents')
+            else:
+                return rt.DummyFlowable()
+        elif 'dedication' in classes:
+            return rt.SetMetadataFlowable(dedication=super().build_flowable())
+        elif 'abstract' in classes:
+            return rt.SetMetadataFlowable(abstract=super().build_flowable())
         else:
             return super().build_flowable()
 
@@ -161,12 +171,12 @@ class Title(BodyElement):
                 kwargs = dict()
             return rt.Heading(self.process_content(), **kwargs)
         else:
-            return rt.Paragraph(self.process_content(), style='title')
+            return rt.SetMetadataFlowable(title=self.process_content())
 
 
 class Subtitle(BodyElement):
     def build_flowable(self):
-        return rt.Paragraph(self.text, style='subtitle')
+        return rt.SetMetadataFlowable(subtitle=self.process_content())
 
 
 class Admonition(GroupingElement):
@@ -419,14 +429,22 @@ class Field_List(BodyElement):
 
 
 class Field(BodyElement):
+    @property
+    def name(self):
+        return str(self.field_name.styled_text())
+
+    @property
+    def value(self):
+        return self.field_body.flowable()
+
     def build_flowable(self):
-        return rt.LabeledFlowable(self.field_name.flowable(),
-                                  self.field_body.flowable())
+        label = rt.Paragraph(self.field_name.styled_text(), style='field_name')
+        return rt.LabeledFlowable(label, self.field_body.flowable())
 
 
-class Field_Name(BodyElement):
-    def build_flowable(self):
-        return rt.Paragraph(self.process_content(), style='field_name')
+class Field_Name(InlineElement):
+    def build_styled_text(self):
+        return self.process_content()
 
 
 class Field_Body(GroupingElement):

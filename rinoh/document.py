@@ -158,12 +158,8 @@ class Document(object):
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
-        self.author = author
-        self.title = title
-        self.subject = subject
-        self.keywords = keywords
-
         self.parts = []
+        self.metadata = {}
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
