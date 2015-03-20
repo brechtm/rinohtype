@@ -46,13 +46,18 @@ stylesheet('footnote marker',
 stylesheet('title page title',
            typeface=Var('ieee_family').sans,
            font_size=26*PT,
-           justify=CENTER,
-           space_below=80*PT)
+           justify=CENTER)
+
+stylesheet('title page subtitle',
+           base='title page title',
+           font_size=20*PT,
+           space_above=10*PT)
 
 stylesheet('title page author',
            typeface=Var('ieee_family').sans,
            font_size=18*PT,
-           justify=CENTER)
+           justify=CENTER,
+           space_above=80*PT)
 
 stylesheet('title page date',
            typeface=Var('ieee_family').sans,

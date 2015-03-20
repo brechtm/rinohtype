@@ -26,9 +26,11 @@ class TitlePage(Page):
         title_top = self.height / 4
         self.title = Container('title', self, h_margin, title_top,
                                body_width, body_height)
-        self.title << Paragraph(self.document.options['title'],
+        self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
-        self.title << Paragraph(self.document.options['author'],
+        self.title << Paragraph(self.document.metadata['subtitle'],
+                                style='title page subtitle')
+        self.title << Paragraph(self.document.metadata['author'][0],
                                 style='title page author')
         date = self.document.options['date']
         self.title << Paragraph(date.strftime('%B %d, %Y'),
@@ -144,9 +146,7 @@ class Manual(Document):
 
 
 class ManualOptions(dict):
-    options = {'title': 'A Manual',
-               'author': 'A. Uthor',
-               'date': datetime.date.today(),
+    options = {'date': datetime.date.today(),
                'extra': None,
                'stylesheet': STYLESHEET,
                'page_size': A4,

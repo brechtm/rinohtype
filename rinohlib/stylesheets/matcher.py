@@ -8,6 +8,8 @@ matcher = StyledMatcher()
 
 matcher('title page title', Paragraph.like('title page title'))
 
+matcher('title page subtitle', Paragraph.like('title page subtitle'))
+
 matcher('title page author', Paragraph.like('title page author'))
 
 matcher('title page date', Paragraph.like('title page date'))
