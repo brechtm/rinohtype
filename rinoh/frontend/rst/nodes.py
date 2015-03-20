@@ -39,25 +39,27 @@ class DocInfo(BodyElement):
 
 # bibliographic elements
 
-class DocInfoField(BodyElement):
+class DocInfoField(InlineElement):
     @property
     def name(self):
         return self.node.tagname
 
     @property
     def value(self):
-        return self.flowable()
+        return self.styled_text()
 
-    def build_flowable(self):
-        return rt.Paragraph(self.process_content())
+    def build_styled_text(self):
+        return self.process_content()
 
 
 class Author(DocInfoField):
     pass
 
 
-class Authors(GroupingElement, DocInfoField):
-    pass
+class Authors(DocInfoField):
+    @property
+    def value(self):
+        return [author.styled_text() for author in self.author]
 
 
 class Copyright(DocInfoField):

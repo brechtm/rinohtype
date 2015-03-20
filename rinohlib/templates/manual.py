@@ -30,7 +30,7 @@ class TitlePage(Page):
                                 style='title page title')
         self.title << Paragraph(self.document.metadata['subtitle'],
                                 style='title page subtitle')
-        self.title << Paragraph(self.document.metadata['author'][0],
+        self.title << Paragraph(self.document.metadata['author'],
                                 style='title page author')
         date = self.document.options['date']
         self.title << Paragraph(date.strftime('%B %d, %Y'),
