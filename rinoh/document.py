@@ -192,12 +192,6 @@ to the terms of the GNU Affero General Public License version 3.''')
     def add_part(self, part):
         self.parts.append(part)
 
-    def add_page(self, page, number):
-        """Add `page` (:class:`Page`) with page `number` (as displayed) to this
-        document."""
-        page.number = number
-        self.pages.append(page)
-
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
         try:
