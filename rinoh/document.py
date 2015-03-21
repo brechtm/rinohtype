@@ -109,28 +109,26 @@ class DocumentPart(list):
             flowable.prepare(self.document)
 
     def render(self):
-        self.page_count = 0
         self.pages = []
         self.init()
         for page in self.pages:
             chains_requiring_new_page = set(chain for chain in page.render())
             page.place()
             if chains_requiring_new_page:
-                self.new_page(chains_requiring_new_page) # this grows self.pages
+                page = self.new_page(chains_requiring_new_page) # grows self.pages
+                self.add_page(page)
 
-    def add_page(self, page, number):
+    def add_page(self, page):
         """Add `page` (:class:`Page`) with page `number` (as displayed) to this
         document."""
-        page.number = number
+        page.number = self.number_of_pages + 1
         self.pages.append(page)
 
-    # def new_page(self, chains):
-    #     assert len(chains) == 1
-    #     page = SimplePage(chains[0], self.options['page_size'],
-    #                       self.options['page_orientation'])
-    #     self.page_count += 1
-    #     self.document.add_page(page, self.page_count)
-    #     return page.content
+    def new_page(self, chains):
+        """Called by :meth:`render` with the :class:`Chain`s that need more
+        :class:`Container`s. This method should create a new :class:`Page` which
+        contains a container associated with `chain`."""
+        raise NotImplementedError
 
 
 class Document(object):
@@ -266,13 +264,6 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Called by :meth:`render_pages` before the actual rendering takes
         place. This method should create at least one :class:`Page` and add it
         to this document using :meth:`add_page`."""
-        raise NotImplementedError
-
-    def new_page(self, chains):
-        """Called by :meth:`render_pages` with the :class:`Chain`s that need
-        more :class:`Container`s. This method should create a new :class:`Page`
-        wich contains a container associated with `chain` and pass it to
-        :meth:`add_page`."""
         raise NotImplementedError
 
 

@@ -88,14 +88,12 @@ class TitlePart(DocumentPart):
         super().__init__(document)
 
     def init(self):
-        self.new_page(None)
+        self.add_page(self.new_page(None))
 
     def new_page(self, chains):
         assert chains is None
-        page = TitlePage(self,
-                         self.document.options['page_size'],
+        return TitlePage(self, self.document.options['page_size'],
                          self.document.options['page_orientation'])
-        self.add_page(page, self.page_count)
 
 
 class BookPart(DocumentPart):
@@ -104,17 +102,13 @@ class BookPart(DocumentPart):
         self.chain = Chain(self)
 
     def init(self):
-        self.new_page([self.chain])
+        self.add_page(self.new_page([self.chain]))
 
     def new_page(self, chains):
-        assert (len(chains) == 1)
-        page = SimplePage(next(iter(chains)),
-                          self.document.options['page_size'],
+        chain, = chains
+        return SimplePage(chain, self.document.options['page_size'],
                           self.document.options['page_orientation'],
                           header_footer=self.header_footer)
-        self.page_count += 1
-        self.add_page(page, self.page_count)
-        return page.content
 
 
 class TableOfContentsPart(BookPart):
