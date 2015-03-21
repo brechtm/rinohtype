@@ -98,7 +98,7 @@ class TitlePart(DocumentPart):
         self.add_page(page, self.page_count)
 
 
-class ManualPart(DocumentPart):
+class BookPart(DocumentPart):
     def __init__(self, document):
         super().__init__(document)
         self.chain = Chain(self)
@@ -117,7 +117,7 @@ class ManualPart(DocumentPart):
         return page.content
 
 
-class TableOfContentsPart(ManualPart):
+class TableOfContentsPart(BookPart):
     header_footer = False
 
     def __init__(self, document):
@@ -127,7 +127,7 @@ class TableOfContentsPart(ManualPart):
                               style='table of contents')
 
 
-class ContentsPart(ManualPart):
+class ContentsPart(BookPart):
     header_footer = True
 
     def __init__(self, document, content_tree):
@@ -138,17 +138,17 @@ class ContentsPart(ManualPart):
 
 # main document
 # ----------------------------------------------------------------------------
-class Manual(Document):
+class Book(Document):
     def __init__(self, rinoh_tree, options=None, backend=None, title=None):
         stylesheet = options['stylesheet']
         super().__init__(stylesheet, backend=backend, title=title)
-        self.options = options or ManualOptions()
+        self.options = options or BookOptions()
         self.add_part(TitlePart(self))
         self.add_part(TableOfContentsPart(self))
         self.add_part(ContentsPart(self, rinoh_tree))
 
 
-class ManualOptions(dict):
+class BookOptions(dict):
     options = {'date': datetime.date.today(),
                'extra': None,
                'stylesheet': STYLESHEET,

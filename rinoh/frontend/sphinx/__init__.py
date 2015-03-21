@@ -22,7 +22,7 @@ from ...style import StyleSheet
 from ...styles import ParagraphStyle
 from ..rst import ReStructuredTextParser, CustomElement
 
-from rinohlib.templates.manual import Manual, ManualOptions
+from rinohlib.templates.book import Book, BookOptions
 
 from . import nodes
 
@@ -101,8 +101,8 @@ class RinohBuilder(Builder):
         os.chdir(self.srcdir)
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
-        rinoh_document = Manual(rinoh_tree, backend=pdf,
-                                options=self.config.rinoh_manual_options)
+        rinoh_document = Book(rinoh_tree, backend=pdf,
+                              options=self.config.rinoh_manual_options)
         outfilename = path.join(self.outdir, os_path(docname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
@@ -113,4 +113,4 @@ class RinohBuilder(Builder):
 
 def setup(app):
     app.add_builder(RinohBuilder)
-    app.add_config_value('rinoh_manual_options', ManualOptions(), None)
+    app.add_config_value('rinoh_manual_options', BookOptions(), None)
