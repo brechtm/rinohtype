@@ -26,10 +26,12 @@ class TitlePage(Page):
                                body_width, body_height)
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
-        self.title << Paragraph(self.document.metadata['subtitle'],
-                                style='title page subtitle')
-        self.title << Paragraph(self.document.metadata['author'],
-                                style='title page author')
+        if 'subtitle' in self.document.metadata:
+            self.title << Paragraph(self.document.metadata['subtitle'],
+                                    style='title page subtitle')
+        if 'author' in self.document.metadata:
+            self.title << Paragraph(self.document.metadata['author'],
+                                    style='title page author')
         date = self.document.metadata['date']
         try:
             self.title << Paragraph(date.strftime('%B %d, %Y'),
