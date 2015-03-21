@@ -1,6 +1,4 @@
 
-import datetime
-
 from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
 from rinoh.layout import Container, FootnoteContainer, Chain, \
@@ -149,8 +147,7 @@ class Book(Document):
 
 
 class BookOptions(dict):
-    options = {'date': datetime.date.today(),
-               'extra': None,
+    options = {'extra': None,
                'stylesheet': STYLESHEET,
                'page_size': A4,
                'page_orientation': PORTRAIT,

@@ -21,7 +21,7 @@ Classes representing a document:
 """
 
 
-import time
+import datetime
 import pickle
 
 from collections import OrderedDict
@@ -159,7 +159,8 @@ class Document(object):
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
         self.parts = []
-        self.metadata = {}
+        self.metadata = dict(title='Document Title',
+                             date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
