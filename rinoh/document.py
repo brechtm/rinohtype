@@ -156,7 +156,7 @@ class Document(object):
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
-        self.parts = []
+        self._parts = []
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -190,7 +190,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         return self.references[id][reference_type]
 
     def add_part(self, part):
-        self.parts.append(part)
+        self._parts.append(part)
 
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
@@ -228,7 +228,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         self.number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
-        for document_part in self.parts:
+        for document_part in self._parts:
             document_part.prepare()
         self.number_of_pages = self.render_pages()
         while not has_converged():
@@ -250,9 +250,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.floats = set()
         self.placed_footnotes = set()
         # self.setup()
-        for part in self.parts:
+        for part in self._parts:
             part.render()
-        return sum(len(part.pages) for part in self.parts)
+        return sum(part.number_of_pages for part in self._parts)
 
     def setup(self):
         """Called by :meth:`render_pages` before the actual rendering takes

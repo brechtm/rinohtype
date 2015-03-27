@@ -7,6 +7,7 @@ from rinoh.paragraph import Paragraph
 from rinoh.paper import A4
 
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
+from rinoh.util import NotImplementedAttribute
 
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 
@@ -112,7 +113,7 @@ class BookPart(DocumentPart):
 
 
 class TableOfContentsPart(BookPart):
-    header_footer = False
+    header_footer = True
 
     def __init__(self, document):
         super().__init__(document)
@@ -124,22 +125,52 @@ class TableOfContentsPart(BookPart):
 class ContentsPart(BookPart):
     header_footer = True
 
-    def __init__(self, document, content_tree):
+    def __init__(self, document):
         super().__init__(document)
-        for child in content_tree.getchildren():
+        for child in document.content_tree.getchildren():
             self.chain << child.flowable()
+
+
+class BookMatter(object):
+    parts = NotImplementedAttribute()
+
+    def __init__(self, document):
+        self.document = document
+        self._parts = [part_class(self.document) for part_class in self.parts]
+
+    @property
+    def number_of_pages(self):
+        return sum(part.number_of_pages for part in self._parts)
+
+    def prepare(self):
+        for part in self._parts:
+            part.prepare()
+
+    def render(self):
+        for part in self._parts:
+            part.render()
+
+
+class FrontMatter(BookMatter):
+    parts = [TitlePart, TableOfContentsPart]
+
+
+class BodyMatter(BookMatter):
+    parts = [ContentsPart]
 
 
 # main document
 # ----------------------------------------------------------------------------
 class Book(Document):
+    parts = [FrontMatter, BodyMatter]
+
     def __init__(self, rinoh_tree, options=None, backend=None, title=None):
         stylesheet = options['stylesheet']
         super().__init__(stylesheet, backend=backend, title=title)
         self.options = options or BookOptions()
-        self.add_part(TitlePart(self))
-        self.add_part(TableOfContentsPart(self))
-        self.add_part(ContentsPart(self, rinoh_tree))
+        self.content_tree = rinoh_tree
+        for part_class in self.parts:
+            self.add_part(part_class(self))
 
 
 class BookOptions(dict):
