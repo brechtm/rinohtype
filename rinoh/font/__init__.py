@@ -12,6 +12,7 @@ from warnings import warn
 from .style import WEIGHTS, MEDIUM
 from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
 from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
+from ..util import NotImplementedAttribute
 from ..warnings import RinohWarning
 
 
@@ -25,13 +26,6 @@ class GlyphMetrics(object):
         self.width = width
         self.bounding_box = bounding_box
         self.code = code
-
-
-class NotImplementedAttribute(object):
-    """Descriptor raising :class:`NotImplementedError` on attribute access"""
-    def __get__(self, instance, owner):
-        raise NotImplementedError('Attribute implementation is missing in '
-                                  'subclass')
 
 
 class Font(object):

@@ -26,7 +26,7 @@ from functools import wraps
 
 
 __all__ = ['Decorator', 'all_subclasses', 'intersperse', 'cached_property',
-           'timed', 'ReadAliasAttribute']
+           'timed', 'ReadAliasAttribute', 'NotImplementedAttribute']
 
 
 # functions
@@ -187,3 +187,10 @@ class ReadAliasAttribute(object):
         if inst is None:
             return self
         return getattr(inst, self.name)
+
+
+class NotImplementedAttribute(object):
+    """Descriptor raising :class:`NotImplementedError` on attribute access"""
+    def __get__(self, instance, owner):
+        raise NotImplementedError('Attribute implementation is missing in '
+                                  'subclass')
