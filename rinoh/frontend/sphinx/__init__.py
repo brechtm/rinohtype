@@ -103,6 +103,9 @@ class RinohBuilder(Builder):
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Book(rinoh_tree, backend=pdf,
                               options=self.config.rinoh_manual_options)
+        _, _, title, author = self.config.rinoh_documents[0]
+        rinoh_document.metadata['title'] = title
+        rinoh_document.metadata['author'] = author
         outfilename = path.join(self.outdir, os_path(docname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
@@ -113,4 +116,5 @@ class RinohBuilder(Builder):
 
 def setup(app):
     app.add_builder(RinohBuilder)
+    app.add_config_value('rinoh_documents', [], None)
     app.add_config_value('rinoh_manual_options', BookOptions(), None)
