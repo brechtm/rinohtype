@@ -141,10 +141,8 @@ class BodyMatter(DocumentSection):
 class Book(Document):
     sections = [FrontMatter, BodyMatter]
 
-    def __init__(self, rinoh_tree, options=None, backend=None, title=None):
-        stylesheet = options['stylesheet']
-        self.content_tree = rinoh_tree
-        super().__init__(stylesheet, backend=backend, title=title)
+    def __init__(self, content_tree, options=None, backend=None):
+        super().__init__(content_tree, options['stylesheet'], backend=backend)
         self.options = options or BookOptions()
 
 

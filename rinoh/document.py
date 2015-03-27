@@ -182,18 +182,19 @@ class Document(object):
 
     sections = NotImplementedAttribute()
 
+    # FIXME: get backend document metadata from Document metadata
     title = BackendDocumentMetadata('title')
     author = BackendDocumentMetadata('author')
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, stylesheet, backend=pdf, title=None, author=None,
-                 subject=None, keywords=None):
+    def __init__(self, content_tree, stylesheet, backend=pdf):
         """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
         backend."""
         self._print_version_and_license()
+        self.content_tree = content_tree
         self.stylesheet = stylesheet
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
