@@ -30,6 +30,7 @@ from itertools import count
 from . import __version__, __release_date__
 from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
+from .util import NotImplementedAttribute
 from .warnings import warn
 
 
@@ -95,9 +96,13 @@ class BackendDocumentMetadata(object):
 
 
 class DocumentPart(list):
-    def __init__(self, document):
-        self.document = document
+    def __init__(self, document_section):
+        self.document_section = document_section
         self.flowable_targets = []
+
+    @property
+    def document(self):
+        return self.document_section.document
 
     @property
     def number_of_pages(self):
@@ -131,6 +136,26 @@ class DocumentPart(list):
         raise NotImplementedError
 
 
+class DocumentSection(object):
+    parts = NotImplementedAttribute()
+
+    def __init__(self, document):
+        self.document = document
+        self._parts = [part_class(self) for part_class in self.parts]
+
+    @property
+    def number_of_pages(self):
+        return sum(part.number_of_pages for part in self._parts)
+
+    def prepare(self):
+        for part in self._parts:
+            part.prepare()
+
+    def render(self):
+        for part in self._parts:
+            part.render()
+
+
 class Document(object):
     """A document renders the contents described in an input file onto pages.
     This is an abstract base class; subclasses should implement :meth:`setup`
@@ -139,6 +164,8 @@ class Document(object):
     CREATOR = 'RinohType v{} ({})'.format(__version__, __release_date__)
 
     CACHE_EXTENSION = '.rtc'
+
+    sections = NotImplementedAttribute()
 
     title = BackendDocumentMetadata('title')
     author = BackendDocumentMetadata('author')
@@ -156,7 +183,7 @@ class Document(object):
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
-        self._parts = []
+        self._sections = [section_cls(self) for section_cls in self.sections]
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -188,9 +215,6 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type):
         return self.references[id][reference_type]
-
-    def add_part(self, part):
-        self._parts.append(part)
 
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
@@ -228,7 +252,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         self.number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
-        for document_part in self._parts:
+        for document_part in self._sections:
             document_part.prepare()
         self.number_of_pages = self.render_pages()
         while not has_converged():
@@ -250,9 +274,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.floats = set()
         self.placed_footnotes = set()
         # self.setup()
-        for part in self._parts:
-            part.render()
-        return sum(part.number_of_pages for part in self._parts)
+        for section in self._sections:
+            section.render()
+        return sum(section.number_of_pages for section in self._sections)
 
     def setup(self):
         """Called by :meth:`render_pages` before the actual rendering takes
