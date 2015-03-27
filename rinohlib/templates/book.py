@@ -85,9 +85,6 @@ class SimplePage(Page):
 # ----------------------------------------------------------------------------
 
 class TitlePart(DocumentPart):
-    def __init__(self, document):
-        super().__init__(document)
-
     def init(self):
         self.add_page(self.new_page(None))
 
@@ -115,8 +112,8 @@ class BookPart(DocumentPart):
 class TableOfContentsPart(BookPart):
     header_footer = True
 
-    def __init__(self, document):
-        super().__init__(document)
+    def __init__(self, document_section):
+        super().__init__(document_section)
         self.chain << Section([Heading('Table of Contents', style='unnumbered'),
                                TableOfContents()],
                               style='table of contents')

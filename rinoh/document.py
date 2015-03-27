@@ -153,9 +153,12 @@ class DocumentSection(object):
     def number_of_pages(self):
         return sum(part.number_of_pages for part in self._parts)
 
+    @property
+    def pages(self):
+        return (page for part in self._parts for page in part.pages)
+
     def page_number(self, this_page):
-        pages = (page for part in self._parts for page in part.pages)
-        for i, page in enumerate(pages, start=1):
+        for i, page in enumerate(self.pages, start=1):
             if this_page == page:
                 return i
 
