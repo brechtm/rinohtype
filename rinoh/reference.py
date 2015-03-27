@@ -44,7 +44,7 @@ class Variable(Field):
         if self.type == PAGE_NUMBER:
             text = str(container.page.number)
         elif self.type == NUMBER_OF_PAGES:
-            number = container.document_part.number_of_pages
+            number = container.document_part.document_section.number_of_pages
             text = str(number)
         elif self.type == SECTION_NUMBER and container.page.section:
             section_id = container.page.section.get_id(container.document)

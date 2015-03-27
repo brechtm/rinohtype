@@ -73,6 +73,14 @@ class Page(Container):
         """Returns the page itself."""
         return self
 
+    @property
+    def document_section(self):
+        return self.document_part.document_section
+
+    @property
+    def number(self):
+        return self.document_section.page_number(self)
+
     def render(self):
         for index in count():
             try:
@@ -124,9 +132,7 @@ class DocumentPart(list):
                 self.add_page(page)
 
     def add_page(self, page):
-        """Add `page` (:class:`Page`) with page `number` (as displayed) to this
-        document."""
-        page.number = self.number_of_pages + 1
+        """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
         self.pages.append(page)
 
     def new_page(self, chains):
@@ -146,6 +152,12 @@ class DocumentSection(object):
     @property
     def number_of_pages(self):
         return sum(part.number_of_pages for part in self._parts)
+
+    def page_number(self, this_page):
+        pages = (page for part in self._parts for page in part.pages)
+        for i, page in enumerate(pages, start=1):
+            if this_page == page:
+                return i
 
     def prepare(self):
         for part in self._parts:
