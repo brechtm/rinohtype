@@ -208,8 +208,8 @@ class ContainerBase(FlowableTarget):
         for flowable in self.flowables:
             height, last_descender = flowable.flow(self, last_descender)
         if self.chain:
-            self.cursor = 0
-            if self.chain.render(self, rerender=rerender):
+            if self.chain.render(self, rerender=rerender,
+                                 last_descender=last_descender):
                 yield self.chain
 
     def place_children(self):
@@ -434,7 +434,7 @@ class Chain(FlowableTarget):
         self._fresh_page_state = copy(self._state)
         self._rerendering = False
 
-    def render(self, container, rerender=False):
+    def render(self, container, rerender=False, last_descender=None):
         """Flow the flowables into the containers that have been added to this
         chain.
 
@@ -450,7 +450,6 @@ class Chain(FlowableTarget):
                 # restore saved state on this chain's 1st container on this page
                 self._state = copy(self._fresh_page_state)
                 self._rerendering = True
-        last_descender = None
         try:
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
