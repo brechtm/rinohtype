@@ -53,7 +53,7 @@ setup(
                             'data/hyphen/*.dic',
                             'data/xml/catalog',
                             'data/xml/w3c-entities/*.ent']},
-    scripts=[],
+    scripts=['bin/rinoh'],
     install_requires=['docutils'],
     provides=[PACKAGE],
     #test_suite='nose.collector',
