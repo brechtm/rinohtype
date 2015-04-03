@@ -81,6 +81,10 @@ class FlowableTarget(object):
         self.append_flowable(flowable)
         return self
 
+    def prepare(self):
+        for flowable in self.flowables:
+            flowable.prepare(self.document)
+
     def render(self):
         """Render the flowabless assigned to this flowable target, in the order
         that they have been added."""

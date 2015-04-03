@@ -117,9 +117,8 @@ class DocumentPart(list):
         return len(self.pages)
 
     def prepare(self):
-        for flowable in (flowable for target in self.flowable_targets
-                         for flowable in target.flowables):
-            flowable.prepare(self.document)
+        for flowable_target in self.flowable_targets:
+            flowable_target.prepare()
 
     def render(self):
         self.pages = []
