@@ -15,6 +15,12 @@ class ArticlePart(ContentsPart):
             meta = self.document.metadata
             page.content << Paragraph(meta['title'], style='title')
             page.content << Paragraph(meta['subtitle'], style='subtitle')
+            date = meta['date']
+            try:
+                page.content << Paragraph(date.strftime('%B %d, %Y'),
+                                          style='author')
+            except AttributeError:
+                page.content << Paragraph(date, style='author')
             page.content << Paragraph(meta['author'], style='author')
         return page
 

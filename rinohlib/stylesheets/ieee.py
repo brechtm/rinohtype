@@ -100,6 +100,11 @@ styles('subtitle',
        base='title',
        font_size=14*PT)
 
+styles('date',
+       base='title',
+       font_size=10*PT,
+       line_spacing=ProportionalSpacing(1.2))
+
 styles('author',
        base='title',
        font_size=12*PT,

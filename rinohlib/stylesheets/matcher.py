@@ -45,6 +45,8 @@ matcher('title', Paragraph.like('title'))
 
 matcher('subtitle', Paragraph.like('subtitle'))
 
+matcher('date', Paragraph.like('date'))
+
 matcher('author', Paragraph.like('author'))
 
 matcher('affiliation', Paragraph.like('affiliation'))
