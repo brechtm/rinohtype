@@ -17,9 +17,6 @@ from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path
 
 from ...backend import pdf
-from ...dimension import PT
-from ...style import StyleSheet
-from ...styles import ParagraphStyle
 from ..rst import ReStructuredTextParser, CustomElement
 
 from rinohlib.templates.book import Book, BookOptions
@@ -102,7 +99,7 @@ class RinohBuilder(Builder):
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Book(rinoh_tree, backend=pdf,
-                              options=self.config.rinoh_manual_options)
+                              options=BookOptions(**self.config.rinoh_options))
         _, _, title, author = self.config.rinoh_documents[0]
         rinoh_document.metadata['title'] = title
         rinoh_document.metadata['author'] = author
@@ -117,4 +114,4 @@ class RinohBuilder(Builder):
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', [], None)
-    app.add_config_value('rinoh_manual_options', BookOptions(), None)
+    app.add_config_value('rinoh_options', {}, None)
