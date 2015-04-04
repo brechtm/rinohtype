@@ -1,28 +1,38 @@
 
 from rinoh.document import DocumentSection
 from rinoh.paragraph import Paragraph
+from rinoh.structure import GroupedFlowables, Section, Heading, TableOfContents
 
 from .base import ContentsPart, DocumentBase, DocumentOptions
+
+
+class ArticleFrontMatter(GroupedFlowables):
+    def flowables(self, document):
+        meta = document.metadata
+        yield Paragraph(meta['title'], style='title')
+        if 'subtitle' in meta:
+            yield Paragraph(meta['subtitle'], style='subtitle')
+        if 'date' in meta:
+            date = meta['date']
+            try:
+                yield Paragraph(date.strftime('%B %d, %Y'), style='author')
+            except AttributeError:
+                yield Paragraph(date, style='author')
+        if 'author' in meta:
+            yield Paragraph(meta['author'], style='author')
 
 
 # document parts
 # ----------------------------------------------------------------------------
 
 class ArticlePart(ContentsPart):
-    def new_page(self, chains):
-        page = super().new_page(chains)
-        if self.number_of_pages == 0:
-            meta = self.document.metadata
-            page.content << Paragraph(meta['title'], style='title')
-            page.content << Paragraph(meta['subtitle'], style='subtitle')
-            date = meta['date']
-            try:
-                page.content << Paragraph(date.strftime('%B %d, %Y'),
-                                          style='author')
-            except AttributeError:
-                page.content << Paragraph(date, style='author')
-            page.content << Paragraph(meta['author'], style='author')
-        return page
+    def flowables(self):
+        yield ArticleFrontMatter()
+        yield Section([Heading('Table of Contents', style='unnumbered'),
+                       TableOfContents()],
+                      style='table of contents')
+        for flowable in super().flowables():
+            yield flowable
 
 
 class ArticleSection(DocumentSection):
