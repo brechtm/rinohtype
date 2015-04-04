@@ -43,13 +43,12 @@ class TitlePage(Page):
 # ----------------------------------------------------------------------------
 
 class TitlePart(DocumentPart):
-    def init(self):
-        self.add_page(self.new_page(None))
-
-    def new_page(self, chains):
-        assert chains is None
+    def first_page(self):
         return TitlePage(self, self.document.options['page_size'],
                          self.document.options['page_orientation'])
+
+    def new_page(self, chains):
+        assert False, 'TitlePart can consist of only one page!'
 
 
 class FrontMatter(DocumentSection):

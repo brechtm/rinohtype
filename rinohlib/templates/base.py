@@ -59,8 +59,8 @@ class BookPart(DocumentPart):
         super().__init__(document_section)
         self.chain = Chain(self)
 
-    def init(self):
-        self.add_page(self.new_page([self.chain]))
+    def first_page(self):
+        return self.new_page([self.chain])
 
     def new_page(self, chains):
         chain, = chains

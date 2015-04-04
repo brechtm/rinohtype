@@ -122,7 +122,7 @@ class DocumentPart(list):
 
     def render(self):
         self.pages = []
-        self.init()
+        self.add_page(self.first_page())
         for page in self.pages:
             chains_requiring_new_page = set(chain for chain in page.render())
             page.place()
@@ -133,6 +133,9 @@ class DocumentPart(list):
     def add_page(self, page):
         """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
         self.pages.append(page)
+
+    def first_page(self):
+        raise NotImplementedError
 
     def new_page(self, chains):
         """Called by :meth:`render` with the :class:`Chain`s that need more
@@ -267,8 +270,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         self.number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
-        for document_part in self._sections:
-            document_part.prepare()
+        for section in self._sections:
+            section.prepare()
         self.number_of_pages = self.render_pages()
         while not has_converged():
             prev_number_of_pages = self.number_of_pages
