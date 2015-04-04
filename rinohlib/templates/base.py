@@ -58,6 +58,11 @@ class BookPart(DocumentPart):
     def __init__(self, document_section):
         super().__init__(document_section)
         self.chain = Chain(self)
+        for flowable in self.flowables():
+            self.chain << flowable
+
+    def flowables(self):
+        raise NotImplementedError
 
     def first_page(self):
         return self.new_page([self.chain])
@@ -72,20 +77,18 @@ class BookPart(DocumentPart):
 class TableOfContentsPart(BookPart):
     header_footer = True
 
-    def __init__(self, document_section):
-        super().__init__(document_section)
-        self.chain << Section([Heading('Table of Contents', style='unnumbered'),
-                               TableOfContents()],
-                              style='table of contents')
+    def flowables(self):
+        yield Section([Heading('Table of Contents', style='unnumbered'),
+                       TableOfContents()],
+                      style='table of contents')
 
 
 class ContentsPart(BookPart):
     header_footer = True
 
-    def __init__(self, document_section):
-        super().__init__(document_section)
+    def flowables(self):
         for child in self.document.content_tree.getchildren():
-            self.chain << child.flowable()
+            yield child.flowable()
 
 
 class DocumentOptions(dict):
