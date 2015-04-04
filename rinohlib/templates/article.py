@@ -28,9 +28,10 @@ class ArticleFrontMatter(GroupedFlowables):
 class ArticlePart(ContentsPart):
     def flowables(self):
         yield ArticleFrontMatter()
-        yield Section([Heading('Table of Contents', style='unnumbered'),
-                       TableOfContents()],
-                      style='table of contents')
+        if self.document.options['table_of_contents']:
+            yield Section([Heading('Table of Contents', style='unnumbered'),
+                           TableOfContents()],
+                          style='table of contents')
         for flowable in super().flowables():
             yield flowable
 
@@ -43,7 +44,7 @@ class ArticleSection(DocumentSection):
 # ----------------------------------------------------------------------------
 
 class ArticleOptions(DocumentOptions):
-    pass
+    options = {'table_of_contents': True}
 
 
 class Article(DocumentBase):
