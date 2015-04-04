@@ -21,14 +21,14 @@ stylesheet('heading level 1',
            font_size=14*PT,
            space_above=18*PT,
            space_below=6*PT,
-           label_suffix='.' + FixedWidthSpace())
+           label_suffix=FixedWidthSpace())
 
 stylesheet('heading level 2',
            base='heading level 1',
            font_size=12*PT,
            space_above=6*PT,
            space_below=6*PT,
-           label_suffix='.' + FixedWidthSpace())
+           label_suffix=FixedWidthSpace())
 
 stylesheet('caption',
            typeface=Var('ieee_family').sans,
