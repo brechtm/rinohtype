@@ -37,8 +37,8 @@ Some characters with special properties and are represented by special classes:
 
 from itertools import groupby
 
+from .color import BLACK
 from .dimension import PT
-from .draw import BLACK
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14

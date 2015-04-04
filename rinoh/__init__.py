@@ -21,9 +21,10 @@ except ImportError:
     __release_date__ = 'now'
 
 
-CORE_MODULES = ['annotation', 'decoration', 'dimension', 'document', 'draw',
-                'float', 'flowable', 'inline', 'layout', 'number', 'paper',
-                'paragraph', 'reference', 'structure', 'style', 'table', 'text']
+CORE_MODULES = ['annotation', 'color', 'decoration', 'dimension', 'document',
+                'draw', 'float', 'flowable', 'inline', 'layout', 'number',
+                'paper', 'paragraph', 'reference', 'structure', 'style',
+                'table', 'text']
 
 __all__ = CORE_MODULES + ['font', 'frontend', 'backend', 'styleds', 'styles']
 
