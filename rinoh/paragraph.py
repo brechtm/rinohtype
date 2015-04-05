@@ -45,7 +45,6 @@ from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer
 from .text import TextStyle, MixedStyledText
-from .util import consumer
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',

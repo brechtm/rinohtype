@@ -7,7 +7,6 @@
 
 
 from .util import Decorator
-from .style import PARENT_STYLE
 from .text import MixedStyledText
 
 

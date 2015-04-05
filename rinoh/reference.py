@@ -10,7 +10,6 @@ from .annotation import NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph
-from .style import PARENT_STYLE
 from .text import SingleStyledText, TextStyle
 
 
