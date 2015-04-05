@@ -1,11 +1,12 @@
 
-from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.dimension import PT, CM
+from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.layout import (Container, FootnoteContainer, Chain,
                           UpExpandingContainer, DownExpandingContainer)
 from rinoh.paper import A4
-
+from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
+from rinoh.text import Tab
 from rinoh.util import NotImplementedAttribute
 
 from ..stylesheets.somestyle import stylesheet as STYLESHEET
@@ -17,7 +18,7 @@ from ..stylesheets.somestyle import stylesheet as STYLESHEET
 class SimplePage(Page):
     header_footer_distance = 14*PT
 
-    def __init__(self, chain, paper, orientation, header_footer=True):
+    def __init__(self, chain, paper, orientation):
         super().__init__(chain.document_part, paper, orientation)
         h_margin = self.document.options['page_horizontal_margin']
         v_margin = self.document.options['page_vertical_margin']
@@ -34,27 +35,29 @@ class SimplePage(Page):
 
         self.content._footnote_space = self.footnote_space
 
-        if header_footer:
+        if self.document_part.header:
             header_bottom = self.body.top - self.header_footer_distance
             self.header = UpExpandingContainer('header', self,
                                                left=h_margin,
                                                bottom=header_bottom,
                                                width=body_width)
+            self.header.append_flowable(Header(self.document_part.header))
+        if self.document_part.footer:
             footer_vpos = self.body.bottom + self.header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
                                                  left=h_margin,
                                                  top=footer_vpos,
                                                  width=body_width)
-            header_text = self.document.options['header_text']
-            footer_text = self.document.options['footer_text']
-            self.header.append_flowable(Header(header_text))
-            self.footer.append_flowable(Footer(footer_text))
+            self.footer.append_flowable(Footer(self.document_part.footer))
 
 
 # document sections & parts
 # ----------------------------------------------------------------------------
 
 class BookPart(DocumentPart):
+    header = None
+    footer = None
+
     def __init__(self, document_section):
         super().__init__(document_section)
         self.chain = Chain(self)
@@ -70,12 +73,11 @@ class BookPart(DocumentPart):
     def new_page(self, chains):
         chain, = chains
         return SimplePage(chain, self.document.options['page_size'],
-                          self.document.options['page_orientation'],
-                          header_footer=self.header_footer)
+                          self.document.options['page_orientation'])
 
 
 class TableOfContentsPart(BookPart):
-    header_footer = True
+    footer = Tab() + Variable(PAGE_NUMBER)
 
     def flowables(self):
         yield Section([Heading('Table of Contents', style='unnumbered'),
@@ -84,7 +86,13 @@ class TableOfContentsPart(BookPart):
 
 
 class ContentsPart(BookPart):
-    header_footer = True
+    @property
+    def header(self):
+        return self.document.options['header_text']
+
+    @property
+    def footer(self):
+        return self.document.options['footer_text']
 
     def flowables(self):
         for child in self.document.content_tree.getchildren():
@@ -97,8 +105,9 @@ class DocumentOptions(dict):
                'page_orientation': PORTRAIT,
                'page_horizontal_margin': 2*CM,
                'page_vertical_margin': 3*CM,
-               'header_text': None,
-               'footer_text': None}
+               'header_text': (Variable(SECTION_NUMBER) + ' '
+                               + Variable(SECTION_TITLE)),
+               'footer_text': Tab() + Variable(PAGE_NUMBER)}
 
     def __init__(self, **options):
         for name, value in options.items():
