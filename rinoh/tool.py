@@ -22,7 +22,8 @@ def main():
     input_dir, input_file = os.path.split(args.input)
     input_base, input_ext = os.path.splitext(input_file)
 
-    os.chdir(input_dir)
+    if input_dir:
+        os.chdir(input_dir)
     parser = ReStructuredTextParser()
     document_tree = parser.parse(input_file)
     options = ArticleOptions(page_size=getattr(paper, args.paper.upper()))
