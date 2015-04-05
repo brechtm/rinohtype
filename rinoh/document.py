@@ -28,13 +28,14 @@ from collections import OrderedDict
 from itertools import count
 
 from . import __version__, __release_date__
-from .layout import FlowableTarget, Container, ReflowRequired
 from .backend import pdf
+from .layout import FlowableTarget, Container, ReflowRequired
+from .number import NUMBER
 from .util import NotImplementedAttribute
-from .warnings import warn
 
 
-__all__ = ['Page', 'Document', 'DocumentElement', 'PORTRAIT', 'LANDSCAPE']
+__all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
+           'PORTRAIT', 'LANDSCAPE']
 
 
 PORTRAIT = 'portrait'
@@ -80,6 +81,10 @@ class Page(Container):
     @property
     def number(self):
         return self.document_section.page_number(self)
+
+    @property
+    def number_format(self):
+        return self.document_section.page_number_format
 
     def render(self):
         for index in count():
@@ -145,6 +150,7 @@ class DocumentPart(list):
 
 
 class DocumentSection(object):
+    page_number_format = NUMBER
     parts = NotImplementedAttribute()
 
     def __init__(self, document):
@@ -161,7 +167,7 @@ class DocumentSection(object):
 
     def page_number(self, this_page):
         for i, page in enumerate(self.pages, start=1):
-            if this_page == page:
+            if this_page is page:
                 return i
 
     def prepare(self):
@@ -301,53 +307,3 @@ to the terms of the GNU Affero General Public License version 3.''')
         place. This method should create at least one :class:`Page` and add it
         to this document using :meth:`add_page`."""
         raise NotImplementedError
-
-
-class Location(object):
-    def __init__(self, document_element):
-        self.location = document_element.__class__.__name__
-
-
-class DocumentElement(object):
-    """An element that is directly or indirectly part of a :class:`Document`
-    and is eventually rendered to the output."""
-
-    def __init__(self, parent=None, source=None):
-        """Initialize this document element as as a child of `parent`
-        (:class:`DocumentElement`) if it is not a top-level :class:`Flowable`
-        element. `source` should point to a node in the input's document tree
-        corresponding to this document element. It is used to point to a
-        location in the input file when warnings or errors are generated (see
-        the :meth:`warn` method).
-
-        Both parameters are optional, and can be set at a later point by
-        assigning to the identically named instance attributes."""
-        self.parent = parent
-        self.source = source
-
-    @property
-    def source(self):
-        """The source element this document element was created from."""
-        if self._source is not None:
-            return self._source
-        elif self.parent is not None:
-            return self.parent.source
-        else:
-            return Location(self)
-
-    @source.setter
-    def source(self, source):
-        """Set `source` as the source element of this document element."""
-        self._source = source
-
-    def prepare(self, document):
-        pass
-
-    def warn(self, message, container=None):
-        """Present the warning `message` to the user, adding information on the
-        location of the related element in the input file."""
-        if self.source is not None:
-            message = '[{}] '.format(self.source.location) + message
-        if container is not None:
-            message += ' (page {})'.format(container.page.number)
-        warn(message)

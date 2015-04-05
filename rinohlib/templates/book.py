@@ -1,6 +1,7 @@
 
 from rinoh.document import DocumentPart, Page, DocumentSection
 from rinoh.layout import Container
+from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
 
 from .base import (DocumentBase, DocumentOptions,
@@ -52,6 +53,7 @@ class TitlePart(DocumentPart):
 
 
 class FrontMatter(DocumentSection):
+    page_number_format = ROMAN_LC
     parts = [TitlePart, TableOfContentsPart]
 
 

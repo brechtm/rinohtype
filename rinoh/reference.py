@@ -42,10 +42,11 @@ class Variable(Field):
     def split(self, container):
         text = '?'
         if self.type == PAGE_NUMBER:
-            text = str(container.page.number)
+            text = format_number(container.page.number,
+                                 container.page.number_format)
         elif self.type == NUMBER_OF_PAGES:
             number = container.document_part.document_section.number_of_pages
-            text = str(number)
+            text = format_number(number, container.page.number_format)
         elif self.type == SECTION_NUMBER and container.page.section:
             section_id = container.page.section.get_id(container.document)
             text = container.document.get_reference(section_id, REFERENCE) or ''

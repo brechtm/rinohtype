@@ -20,7 +20,7 @@ Base classes and exceptions for styled document elements.
 
 from collections import OrderedDict
 
-from .document import DocumentElement
+from .element import DocumentElement
 from .util import cached
 
 
