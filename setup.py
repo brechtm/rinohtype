@@ -6,15 +6,13 @@ Setup script for RinohType
 
 import sys
 
-print('Not yet supported! See README.rst on how to try out RinohType.')
-sys.exit(1)
-
 from datetime import datetime
 from setuptools import setup, find_packages
 from subprocess import Popen, PIPE
 
 
 PACKAGE = 'rinoh'
+LIB = PACKAGE + 'lib'
 VERSION_FILE = PACKAGE + '/version.py'
 
 # retrieve the version number from git or VERSION_FILE
@@ -52,10 +50,20 @@ setup(
                             'data/fonts/adobe35/MustRead.html',
                             'data/hyphen/*.dic',
                             'data/xml/catalog',
-                            'data/xml/w3c-entities/*.ent']},
+                            'data/xml/w3c-entities/*.ent',
+                            ],
+                  LIB: ['fonts/texgyre/cursor/TeX-Gyre-*.txt',
+                        'fonts/texgyre/cursor/*.otf',
+                        'fonts/texgyre/heros/TeX-Gyre-*.txt',
+                        'fonts/texgyre/heros/*.otf',
+                        'fonts/texgyre/pagella/TeX-Gyre-*.txt',
+                        'fonts/texgyre/pagella/*.otf',
+                        'fonts/texgyre/termes/TeX-Gyre-*.txt',
+                        'fonts/texgyre/termes/*.otf',
+                        ]},
     scripts=['bin/rinoh'],
     install_requires=['docutils'],
-    provides=[PACKAGE],
+    provides=[PACKAGE, LIB],
     #test_suite='nose.collector',
 
     author='Brecht Machiels',
