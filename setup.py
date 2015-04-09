@@ -84,7 +84,7 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Topic :: Printing',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing :: Fonts',
         'Topic :: Text Processing :: Markup',
         'Topic :: Text Processing :: Markup :: XML'
