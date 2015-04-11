@@ -397,10 +397,15 @@ class PDFReader(PDFObjectReader, cos.Document):
     START_XREF = b'startxref'
 
     def find_xref_offset(self):
-        self.file.seek(- len(self.EOF_MARKER), SEEK_END)
-        if self.file.read(len(self.EOF_MARKER) != self.EOF_MARKER):
+        offset = self.file.seek(- len(self.EOF_MARKER), SEEK_END)
+        for i in range(10):
+            self.file.seek(offset)
+            if self.file.read(len(self.EOF_MARKER)) == self.EOF_MARKER:
+                break
+            offset -= 1
+        else:
             raise ValueError('Not a PDF file: missing %%EOF')
-        offset = self.file.tell() - len(self.EOF_MARKER) - len(self.START_XREF)
+        offset -= len(self.START_XREF)
         while True:
             self.file.seek(offset)
             value = self.file.read(len(self.START_XREF))
