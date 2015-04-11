@@ -8,7 +8,7 @@
 
 import math
 
-from io import StringIO
+from io import StringIO, BytesIO
 from contextlib import contextmanager
 
 from . import cos
@@ -380,16 +380,26 @@ class AnnotationLocation(object):
 
 
 class Image(object):
-    extensions = ('.pdf', )
-
     def __init__(self, filename_or_file):
         try:
             image = PDFReader(filename_or_file)
-        except FileNotFoundError:
-            image = PDFReader(filename_or_file + self.extensions[0])
+        except ValueError:
+            image = PDFReader(self._convert_to_pdf(filename_or_file))
         image_page = image.catalog['Pages']['Kids'][0]
         self.width, self.height = image_page['MediaBox'][2:]
         self.xobject = image_page.to_xobject_form()
+
+    def _convert_to_pdf(self, filename_or_file):
+        import PIL
+        pdf_image = BytesIO()
+        input_image = PIL.Image.open(filename_or_file)
+        if 'transparency' in input_image.info:
+            foreground = input_image.convert('RGBA')
+            background = PIL.Image.new('RGBA', foreground.size,
+                                       (255, 255, 255, 255))
+            input_image = PIL.Image.alpha_composite(background, foreground)
+        input_image.convert('RGB').save(pdf_image, 'PDF')
+        return pdf_image
 
 
 CODE_TO_CHAR = {}

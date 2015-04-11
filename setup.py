@@ -63,6 +63,7 @@ setup(
                         ]},
     scripts=['bin/rinoh'],
     install_requires=['docutils'],
+    extras_require = {'bitmap':  ['Pillow']},
     provides=[PACKAGE, LIB],
     #test_suite='nose.collector',
 

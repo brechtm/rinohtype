@@ -506,7 +506,7 @@ class Description(GroupingElement):
 class Image(BodyElement, InlineElement):
     @property
     def image_path(self):
-        return self.get('uri').rsplit('.png', 1)[0]
+        return self.get('uri')
 
     def build_flowable(self):
         width_string = self.get('width')
