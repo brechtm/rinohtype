@@ -6,12 +6,14 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .flowable import (Flowable, FlowableStyle, InseparableFlowables,
-                       StaticGroupedFlowables, HorizontallyAlignedFlowable)
+from .color import RED
+from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
+                       HorizontallyAlignedFlowable)
 from .inline import InlineFlowable
 from .number import NumberedParagraph
-from .reference import Referenceable, REFERENCE, TITLE
-from .text import MixedStyledText
+from .paragraph import Paragraph
+from .reference import Referenceable, REFERENCE
+from .text import MixedStyledText, SingleStyledText, TextStyle
 
 
 __all__ = ['InlineImage', 'Image', 'Caption', 'Figure']
@@ -34,7 +36,13 @@ class ImageBase(Flowable):
         self.rotate = rotate
 
     def render(self, container, last_descender, state=None):
-        image = container.document.backend.Image(self.filename_or_file)
+        try:
+            image = container.document.backend.Image(self.filename_or_file)
+        except FileNotFoundError:
+            message = "Image file not found: '{}'".format(self.filename_or_file)
+            self.warn(message)
+            text = SingleStyledText(message, style=TextStyle(font_color=RED))
+            return Paragraph(text).render(container, last_descender)
         if last_descender:
             container.advance(- last_descender)
         left, top = 0, float(container.cursor)
