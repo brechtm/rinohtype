@@ -267,8 +267,13 @@ class PDFObjectReader(object):
 
 
 class PDFReader(PDFObjectReader, cos.Document):
+    PDF_SIGNATURE = b'%PDF'
+
     def __init__(self, file_or_filename):
         super().__init__(file_or_filename)
+        self.file.seek(0)
+        if self.file.read(len(self.PDF_SIGNATURE)) != self.PDF_SIGNATURE:
+            raise ValueError('Not a PDF file: missing %PDF signature')
         self.timestamp = time.time()
         self._by_object_id = {}
         xref_offset = self.find_xref_offset()
@@ -388,18 +393,20 @@ class PDFReader(PDFObjectReader, cos.Document):
         assert identifier + 1 == size
         return xref, xref_stream
 
+    EOF_MARKER = b'%%EOF'
+    START_XREF = b'startxref'
+
     def find_xref_offset(self):
-        self.file.seek(0, SEEK_END)
-        offset = self.file.tell() - len('%%EOF')
+        self.file.seek(- len(self.EOF_MARKER), SEEK_END)
+        if self.file.read(len(self.EOF_MARKER) != self.EOF_MARKER):
+            raise ValueError('Not a PDF file: missing %%EOF')
+        offset = self.file.tell() - len(self.EOF_MARKER) - len(self.START_XREF)
         while True:
             self.file.seek(offset)
-            value = self.file.read(len('startxref'))
-            if value == b'startxref':
+            value = self.file.read(len(self.START_XREF))
+            if value == self.START_XREF:
                 self.jump_to_next_line()
                 xref_offset = self.read_number()
-                self.jump_to_next_line()
-                if self.file.read(5) != b'%%EOF':
-                    raise ValueError('Invalid PDF file: missing %%EOF')
                 break
             offset -= 1
         return int(xref_offset)
