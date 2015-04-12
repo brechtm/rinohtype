@@ -297,8 +297,8 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         try:
             return self.get_style_recursive(attribute, document)
         except DefaultStyleException:
-            self.warn('Falling back to default style for ({})'
-                      .format(self.path))
+            # self.warn('Falling back to default style for ({})'
+            #           .format(self.path))
             return self.style_class._get_default(attribute)
 
     def get_base_style_recursive(self, exception, document):
@@ -410,7 +410,7 @@ class StyleSheet(OrderedDict):
     def find_style(self, styled):
         match = self.find_best_match(styled)
         if match:
-            print("({}) matches '{}'".format(styled.path, match.style_name))
+            # print("({}) matches '{}'".format(styled.path, match.style_name))
             try:
                 return self[match.style_name]
             except KeyError:
