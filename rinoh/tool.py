@@ -16,7 +16,7 @@ def main():
     parser.add_argument('input', type=str, nargs='?',
                        help='the reStructuredText document to render')
     parser.add_argument('--paper', type=str, nargs='?', default='A4',
-                       help='the paper size to render to')
+                       help='the paper size to render to (default: A4)')
     args = parser.parse_args()
 
     try:
