@@ -19,6 +19,18 @@ from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
 
 
+# TODO: support for the following nodes is still missing
+# (http://docutils.sourceforge.net/docs/ref/doctree.html)
+# - abbreviation
+# - acronym
+# - container
+# - decoration / header / footer
+# - math / math_block
+# - pending
+# - raw (move from sphinx)
+# - substitution_reference
+
+
 class Text(InlineElement):
     RE_NORMALIZE_SPACE = re.compile('[\t\r\n ]+')
 
