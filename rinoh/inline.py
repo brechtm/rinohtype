@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .element import DocumentElement
 from .flowable import Flowable
 from .layout import VirtualContainer
 
@@ -36,11 +37,12 @@ class InlineFlowable(Flowable):
         return InlineFlowableSpan(width, virtual_container)
 
 
-class InlineFlowableSpan(object):
+class InlineFlowableSpan(DocumentElement):
     number_of_spaces = 0
     ends_with_space = False
 
     def __init__(self, width, virtual_container):
+        super().__init__()
         self.width = width
         self.virtual_container = virtual_container
 
