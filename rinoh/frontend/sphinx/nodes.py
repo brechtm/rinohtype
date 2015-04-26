@@ -16,7 +16,7 @@ from ..rst.nodes import AdmonitionBase, Strong, Inline
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'SeeAlso', 'Glossary', 'Start_of_File',
-           'Todo_Node', 'Raw', 'HighlightLang', 'Literal_Strong',
+           'Todo_Node', 'HighlightLang', 'Literal_Strong',
            'Desc', 'Desc_Signature', 'Desc_Name', 'Desc_ParameterList',
            'Desc_Parameter', 'Desc_Optional', 'Desc_Content',
            'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table']
@@ -53,14 +53,6 @@ class Start_of_File(GroupingElement):
 class Todo_Node(GroupingElement):
     def flowable(self):
         return Framed(super().flowable())
-
-
-class Raw(BodyElement):
-    def build_flowable(self):
-        if self.text == 'PageBreak':
-            return PageBreak()
-        else:
-            return DummyFlowable()
 
 
 class HighlightLang(BodyElement):

@@ -27,7 +27,6 @@ from ...util import intersperse
 # - decoration / header / footer
 # - math / math_block
 # - pending
-# - raw (move from sphinx)
 # - substitution_reference
 
 
@@ -630,3 +629,11 @@ class Entry(GroupingElement):
         rowspan = int(self.get('morerows', 0)) + 1
         colspan = int(self.get('morecols', 0)) + 1
         return super().build_flowable(rowspan=rowspan, colspan=colspan)
+
+
+class Raw(BodyElement):
+    def build_flowable(self):
+        if self.text == 'PageBreak':
+            return rt.PageBreak()
+        else:
+            return rt.DummyFlowable()
