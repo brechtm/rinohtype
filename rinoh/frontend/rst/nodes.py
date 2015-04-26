@@ -29,6 +29,11 @@ class Text(InlineElement):
             return self.RE_NORMALIZE_SPACE.sub(' ', self.node)
 
 
+class Inline(InlineElement):
+    def build_styled_text(self):
+        return self.process_content()
+
+
 class Document(BodyElement):
     pass
 
@@ -418,9 +423,8 @@ class Definition_List_Item(BodySubElement):
         return term, self.definition.flowable()
 
 
-class Term(InlineElement):
-    def build_styled_text(self):
-        return self.process_content()
+class Term(Inline):
+    pass
 
 
 class Classifier(InlineElement):
@@ -451,9 +455,8 @@ class Field(BodyElement):
         return rt.LabeledFlowable(label, self.field_body.flowable())
 
 
-class Field_Name(InlineElement):
-    def build_styled_text(self):
-        return self.process_content()
+class Field_Name(Inline):
+    pass
 
 
 class Field_Body(GroupingElement):
