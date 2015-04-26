@@ -11,11 +11,12 @@ from os import path
 
 import docutils
 
+from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.locale import _
 from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
-from sphinx.util.osutil import ensuredir, os_path
-
+from sphinx.util.osutil import ensuredir, os_path, SEP
 from ...backend import pdf
 from ..rst import ReStructuredTextParser, CustomElement
 
@@ -36,9 +37,6 @@ class RinohBuilder(Builder):
     format = 'pdf'
     supported_image_types = ['application/pdf']
 
-    # def init(self):
-    #     pass
-
     def get_outdated_docs(self):
         return 'all documents'
 
@@ -53,14 +51,44 @@ class RinohBuilder(Builder):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
         pass
 
-    def assemble_doctree(self):
-        master = self.config.master_doc
-        tree = self.env.get_doctree(master)
-        tree = inline_all_toctrees(self, set(), master, tree, darkgreen)
-        tree['docname'] = master
-        self.env.resolve_references(tree, master, self)
-        self.fix_refuris(tree)
-        return tree
+    def assemble_doctree(self, indexfile, toctree_only, appendices):
+        docnames = set([indexfile] + appendices)
+        self.info(darkgreen(indexfile) + " ", nonl=1)
+        tree = self.env.get_doctree(indexfile)
+        tree['docname'] = indexfile
+        if toctree_only:
+            # extract toctree nodes from the tree and put them in a
+            # fresh document
+            new_tree = docutils.utils.new_document('<rinoh output>')
+            for node in tree.traverse(addnodes.toctree):
+                new_tree += node
+            tree = new_tree
+        largetree = inline_all_toctrees(self, docnames, indexfile, tree,
+                                        darkgreen)
+        largetree['docname'] = indexfile
+        for docname in appendices:
+            appendix = self.env.get_doctree(docname)
+            appendix['docname'] = docname
+            largetree.append(appendix)
+        self.info()
+        self.info("resolving references...")
+        self.env.resolve_references(largetree, indexfile, self)
+        # resolve :ref:s to distant tex files -- we can't add a cross-reference,
+        # but append the document name
+        for pendingnode in largetree.traverse(addnodes.pending_xref):
+            docname = pendingnode['refdocname']
+            sectname = pendingnode['refsectname']
+            newnodes = [nodes.emphasis(sectname, sectname)]
+            for subdir, title in self.titles:
+                if docname.startswith(subdir):
+                    newnodes.append(nodes.Text(_(' (in '), _(' (in ')))
+                    newnodes.append(nodes.emphasis(title, title))
+                    newnodes.append(nodes.Text(')', ')'))
+                    break
+            else:
+                pass
+            pendingnode.replace_self(newnodes)
+        return largetree
 
     def fix_refuris(self, tree):
         # fix refuris with double anchor
@@ -79,36 +107,59 @@ class RinohBuilder(Builder):
             if hashindex >= 0:
                 refnode['refuri'] = fname + refuri[hashindex:]
 
+    def init_document_data(self):
+        document_data = []
+        preliminary_document_data = [list(x)
+                                     for x in self.config.rinoh_documents]
+        if not preliminary_document_data:
+            self.warn('no "rinoh_documents" config value found; '
+                      'no documents will be written')
+            return
+        # assign subdirs to titles
+        self.titles = []
+        for entry in preliminary_document_data:
+            docname = entry[0]
+            if docname not in self.env.all_docs:
+                self.warn('"rinoh_documents" config value references unknown '
+                          'document %s' % docname)
+                continue
+            document_data.append(entry)
+            if docname.endswith(SEP + 'index'):
+                docname = docname[:-5]
+            self.titles.append((docname, entry[2]))
+        return document_data
+
     def write(self, *ignored):
-        docnames = self.env.all_docs
+        document_data = self.init_document_data()
+        for entry in document_data:
+            docname, targetname, title, author, docclass = entry[:5]
+            toctree_only = entry[4] if len(entry) > 4 else False
 
-        self.info(bold('preparing documents... '), nonl=True)
-        self.prepare_writing(docnames)
-        self.info('done')
+            self.info("processing " + targetname + "... ", nonl=1)
+            doctree = self.assemble_doctree(
+                docname, toctree_only,
+                appendices=[])
+                # appendices=((docclass != 'howto') and self.config.latex_appendices or []))
 
-        self.info(bold('assembling single document... '), nonl=True)
-        doctree = self.assemble_doctree()
-        self.info()
-        self.info(bold('writing... '))
-        self.write_doc_serialized(self.config.master_doc, doctree)
-        self.write_doc(self.config.master_doc, doctree)
-        self.info('done')
+            self.info("rendering... ")
+            doctree.settings.author = author
+            doctree.settings.title = title
+            doctree.settings.docname = docname
+            # self.write_doc_serialized(self.config.master_doc, doctree)
+            self.write_doc(self.config.master_doc, doctree, targetname)
+            self.info("done")
 
-    def write_doc(self, docname, doctree):
+    def write_doc(self, docname, doctree, targetname):
         os.chdir(self.srcdir)
         parser = ReStructuredTextParser()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Book(rinoh_tree, backend=pdf,
                               options=BookOptions(**self.config.rinoh_options))
-        _, _, title, author = self.config.rinoh_documents[0]
-        rinoh_document.metadata['title'] = title
-        rinoh_document.metadata['author'] = author
-        outfilename = path.join(self.outdir, os_path(docname))
+        rinoh_document.metadata['title'] = doctree.settings.title
+        rinoh_document.metadata['author'] = doctree.settings.author
+        outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
-
-    # def finish(self):
-    #     pass
 
 
 def setup(app):
