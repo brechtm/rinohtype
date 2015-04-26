@@ -33,7 +33,7 @@ __all__ = ['Flowable', 'FlowableStyle',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
            'HorizontallyAlignedFlowableState',
-           'Float']
+           'Float', 'PageBreak']
 
 
 class FlowableStyle(Style):

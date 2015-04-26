@@ -633,7 +633,9 @@ class Entry(GroupingElement):
 
 class Raw(BodyElement):
     def build_flowable(self):
-        if self.text == 'PageBreak':
-            return rt.PageBreak()
-        else:
-            return rt.DummyFlowable()
+        if self['format'] == 'pdf':   # rst2pdf
+            if self.text == 'PageBreak':
+                return rt.PageBreak()
+            return rt.WarnFlowable("Unsupported raw pdf option: '{}'"
+                                   .format(self.text))
+        return rt.DummyFlowable()
