@@ -41,7 +41,7 @@ class RinohBuilder(Builder):
         return 'all documents'
 
     def get_target_uri(self, docname, typ=None):
-        return docname
+        return '%' + docname
 
     # def get_relative_uri(self, from_, to, typ=None):
     #     # ignore source path
@@ -90,22 +90,33 @@ class RinohBuilder(Builder):
             pendingnode.replace_self(newnodes)
         return largetree
 
-    def fix_refuris(self, tree):
-        # fix refuris with double anchor
-        fname = self.config.master_doc #+ self.out_suffix
-        for refnode in tree.traverse(docutils.nodes.reference):
-            if 'refuri' not in refnode:
-                continue
-            refuri = refnode['refuri']
-            hashindex = refuri.find('#')
-            if hashindex < 0:
-                continue
-            refnode['refuri'] = refuri[hashindex+1:]
-            # import pdb; pdb.set_trace()
-            continue
-            hashindex = refuri.find('#', hashindex+1)
-            if hashindex >= 0:
-                refnode['refuri'] = fname + refuri[hashindex:]
+    def transform_refuris(self, tree):
+        def fix_refid(refid):
+            if refid.startswith('%'):
+                return refid[1:]
+            elif '#' not in refid:
+                return current_docname + '#' + refid
+
+        current_docname = None
+        for node in tree.traverse():
+            if node.tagname == 'start_of_file':
+                current_docname = node.attributes['docname']
+            elif ((node.tagname == 'reference' and node.get('internal', False))
+                  or node.tagname == 'footnote_reference'):
+                refid = node.get('refid')
+                if refid:
+                    assert 'refuri' not in node.attributes
+                    node.attributes['refid'] = fix_refid(refid)
+                refuri = node.get('refuri')
+                if refuri:
+                    node.attributes['refid'] = fix_refid(refuri)
+                    del node['refuri']
+            try:
+                node.attributes['ids'] = [current_docname + '#' + id
+                                          for id in node.get('ids')]
+            except (AttributeError, KeyError):
+                pass
+        return tree
 
     def init_document_data(self):
         document_data = []
@@ -140,6 +151,7 @@ class RinohBuilder(Builder):
                 docname, toctree_only,
                 appendices=[])
                 # appendices=((docclass != 'howto') and self.config.latex_appendices or []))
+            doctree = self.transform_refuris(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author
