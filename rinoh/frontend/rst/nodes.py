@@ -336,10 +336,13 @@ class Doctest_Block(BodyElement):
 
 class Reference(BodyElement, InlineElement):
     def build_styled_text(self):
-        if 'refid' in self.attributes:
+        if self.get('refid'):
             link = rt.NamedDestinationLink(self.get('refid'))
-        elif 'refuri' in self.attributes:
+        elif self.get('refuri'):
             link = rt.HyperLink(self.get('refuri'))
+        else:
+            return rt.MixedStyledText(self.process_content(),
+                                      style='broken link')
         return rt.AnnotatedText(self.process_content(), link, style='link')
 
     def build_flowable(self):

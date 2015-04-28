@@ -30,6 +30,8 @@ matcher('error', StyledText.like('error'))
 
 matcher('hyperlink', StyledText.like('link'))
 
+matcher('broken hyperlink', StyledText.like('broken link'))
+
 matcher('literal', Paragraph.like('literal'))
 
 matcher('block quote', GroupedFlowables.like('block quote'))

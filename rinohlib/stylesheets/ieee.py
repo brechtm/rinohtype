@@ -5,7 +5,7 @@ from rinoh import (StyleSheet, Var, ParagraphStyle,
                    FixedWidthSpace, TabStop,
                    FixedSpacing, ProportionalSpacing,
                    ROMAN_UC, CHARACTER_UC, NUMBER, SYMBOL,
-                   Color, Gray, RED, BLUE, GRAY90)
+                   Color, Gray, RED, BLUE, GRAY90, GRAY50)
 from rinoh.font import TypeFamily
 from rinoh.font.style import REGULAR, UPRIGHT, ITALIC, BOLD, SUPERSCRIPT
 
@@ -60,6 +60,9 @@ styles('error',
 
 styles('hyperlink',
        font_color=BLUE)
+
+styles('broken hyperlink',
+       font_color=GRAY50)
 
 styles('literal',
        base='default',
