@@ -431,7 +431,7 @@ class Definition_List_Item(BodySubElement):
             term += ' : ' + self.classifier.styled_text()
         except AttributeError:
             pass
-        return term, self.definition.flowable()
+        return rt.DefinitionTerm(term), self.definition.flowable()
 
 
 class Term(Inline):

@@ -159,11 +159,12 @@ class DefinitionList(GroupedFlowables):
         super().__init__(id=id, style=style, parent=parent)
         self.items = items
         for term, definition in items:
+            term.parent = self
             definition.parent = self
 
     def flowables(self, document):
         for (term, definition) in self.items:
-            yield DefinitionTerm(term, parent=self)
+            yield term
             yield definition
 
 
