@@ -78,7 +78,7 @@ class Heading(NumberedParagraph):
         return self.section
 
     def __repr__(self):
-        return '{}({}) (style={})'.format(self.__class__.__name__, self.title,
+        return '{}({}) (style={})'.format(self.__class__.__name__, self.content,
                                           self.style)
 
     def prepare(self, document):
