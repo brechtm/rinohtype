@@ -1,10 +1,16 @@
 RinohType
 =========
 
-RinohType is a document processor in the style of LaTeX_. This is a preview
-release unsuited for production use, but you can use it to explore RinohType's
-features and bugs. I'd highly appreciate if you could `create a ticket`_ for any
-bugs you encounter.
+RinohType is a document processor in the style of LaTeX_. It can render
+structured text documents to PDF based on a document template and a style sheet.
+An important goal of RinohType is to make it easier to use than LaTeX. This
+includes providing clearer error messages and making it easy for users to adjust
+the document style.
+
+This is a preview release unsuited for production use, but you can use it to
+explore RinohType's features and bugs. I'd highly appreciate if you could
+`create a ticket`_ for any bugs you encounter. You can find articles on my
+`blog`_ discussing RinohType's development progress.
 
 Currently, RinohType only supports reStructuredText_ input. It ships with the
 ``rinoh`` command line tool to render basic reStructuredText documents and
@@ -23,6 +29,7 @@ readers. The following PDF viewers are affected:
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
+.. _blog: http://www.mos6581.org/archives.html
 .. _issue 2: https://github.com/brechtm/rinohtype/issues/2
 .. _poppler: http://poppler.freedesktop.org
 
