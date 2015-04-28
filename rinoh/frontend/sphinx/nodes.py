@@ -47,7 +47,8 @@ class Glossary(GroupingElement):
 
 
 class Start_of_File(GroupingElement):
-    pass
+    def build_flowable(self, **kwargs):
+        return super().build_flowable(id=self.get('docname'), **kwargs)
 
 
 class Todo_Node(GroupingElement):
