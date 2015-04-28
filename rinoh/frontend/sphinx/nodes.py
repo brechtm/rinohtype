@@ -7,10 +7,10 @@
 
 
 from ...decoration import Framed
-from ...flowable import DummyFlowable, PageBreak
-from ...paragraph import Paragraph
+from ...flowable import DummyFlowable, StaticGroupedFlowables
 from ...structure import DefinitionList, DefinitionTerm
 from ...text import SingleStyledText
+
 from ..rst import BodyElement, InlineElement, GroupingElement
 from ..rst.nodes import AdmonitionBase, Strong, Inline
 
@@ -67,7 +67,8 @@ class Literal_Strong(Strong):
 
 class Desc(BodyElement):
     def build_flowable(self):
-        return DefinitionList([(self.desc_signature.flowable(),
+        term = [sig.flowable() for sig in self.desc_signature]
+        return DefinitionList([(StaticGroupedFlowables(term),
                                 self.desc_content.flowable())])
 
 
