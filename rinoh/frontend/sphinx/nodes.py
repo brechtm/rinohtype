@@ -17,9 +17,10 @@ from ..rst.nodes import AdmonitionBase, Strong, Inline
 
 __all__ = ['Compact_Paragraph', 'Index', 'SeeAlso', 'Glossary', 'Start_of_File',
            'Todo_Node', 'HighlightLang', 'Literal_Strong',
-           'Desc', 'Desc_Signature', 'Desc_Name', 'Desc_ParameterList',
-           'Desc_Parameter', 'Desc_Optional', 'Desc_Content',
-           'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table']
+           'Desc', 'Desc_Signature', 'Desc_Name', 'Desc_AddName',
+           'Desc_ParameterList', 'Desc_Parameter', 'Desc_Optional',
+           'Desc_Content', 'VersionModified', 'Tabular_Col_Spec',
+           'AutoSummary_Table']
 
 
 class Compact_Paragraph(GroupingElement):
@@ -73,25 +74,30 @@ class Desc(BodyElement):
 
 class Desc_Signature(BodyElement):
     def build_flowable(self):
-        return DefinitionTerm(self.desc_name.process_content())
-        # TODO: parameter list
+        return DefinitionTerm([child.styled_text()
+                               for child in self.getchildren()])
 
 
 class Desc_Name(Inline):
     pass
 
 
+class Desc_AddName(Inline):
+    pass
+
+
 class Desc_ParameterList(InlineElement):
     def build_styled_text(self):
-        return [parameter.process() for parameter in self.desc_parameter]
+        return '(' + self.process_content() + ')'
 
 
 class Desc_Parameter(Inline):
     pass
 
 
-class Desc_Optional(Desc_ParameterList):
-    pass
+class Desc_Optional(InlineElement):
+    def build_styled_text(self):
+        return '[, ' + self.process_content() + ']'
 
 
 class Desc_Content(GroupingElement):
