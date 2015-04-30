@@ -74,8 +74,7 @@ class Desc(BodyElement):
 
 class Desc_Signature(BodyElement):
     def build_flowable(self):
-        return DefinitionTerm([child.styled_text()
-                               for child in self.getchildren()])
+        return DefinitionTerm(self.process_content())
 
 
 class Desc_Name(Inline):
