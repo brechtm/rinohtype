@@ -441,7 +441,14 @@ class Definition_List_Item(BodySubElement):
 
 
 class Term(Inline):
-    pass
+    def build_styled_text(self):
+        content = self.process_content()
+        ids = self.get('ids')
+        if ids:
+            # TODO: add destination for each id
+            destination = rt.NamedDestination(ids[0])
+            content = rt.AnnotatedText(content, destination)
+        return content
 
 
 class Classifier(InlineElement):
