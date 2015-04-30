@@ -134,7 +134,10 @@ class System_Message(BodyElement):
         return rt.WarnFlowable(self.text)
 
 
-class Comment(BodyElement):
+class Comment(InlineElement, BodyElement):
+    def build_styled_text(self):
+        return None
+
     def build_flowable(self):
         return rt.DummyFlowable()
 
