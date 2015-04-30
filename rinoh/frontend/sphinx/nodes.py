@@ -28,7 +28,7 @@ class Compact_Paragraph(GroupingElement):
 
 class Index(BodyElement, InlineElement):
     def build_styled_text(self):
-        return SingleStyledText('')
+        return None
 
     def build_flowable(self):
         return DummyFlowable()
