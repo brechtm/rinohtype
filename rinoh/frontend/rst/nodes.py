@@ -194,12 +194,14 @@ class Title(BodyElement):
     def build_flowable(self):
         if isinstance(self.parent, Document):
             return rt.SetMetadataFlowable(title=self.process_content())
-        else:
+        elif isinstance(self.parent, Section):
             try:
                 kwargs = dict(custom_label=self.generated.build_styled_text())
             except AttributeError:
                 kwargs = dict()
             return rt.Heading(self.process_content(), **kwargs)
+        else:
+            return rt.Paragraph(self.process_content(), style='title')
 
 
 class Subtitle(BodyElement):
