@@ -143,5 +143,25 @@ class ReStructuredTextParser(object):
             doctree = publish_doctree(file.read(), source_path=filename)
         return self.from_doctree(doctree)
 
+    @staticmethod
+    def replace_secondary_ids(tree):
+        id_aliases = {}
+        for node in tree.traverse():
+            try:
+                primary_id, *alias_ids = node.get('ids')
+                for alias_id in alias_ids:
+                    id_aliases[alias_id] = primary_id
+            except (AttributeError, KeyError, ValueError):
+                pass
+        # replace alias IDs used in references with the corresponding primary ID
+        for node in tree.traverse():
+            try:
+                refid = node.get('refid')
+                if refid in id_aliases:
+                    node.attributes['refid'] = id_aliases[refid]
+            except AttributeError:
+                pass
+
     def from_doctree(self, doctree):
+        self.replace_secondary_ids(doctree)
         return CustomElement.map_node(doctree.document)
