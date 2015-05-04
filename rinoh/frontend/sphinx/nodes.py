@@ -113,5 +113,4 @@ class Tabular_Col_Spec(BodyElement):
 
 
 class AutoSummary_Table(GroupingElement):
-    def build_flowable(self):
-        return DummyFlowable()
+    pass
