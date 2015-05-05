@@ -52,17 +52,14 @@ class RinohBuilder(Builder):
         # ignore source
         return self.get_target_uri(to, typ)
 
-    def fix_refuris(self, tree):
+    def transform_refuris(self, tree):
+        """Transform internal refuri targets in reference nodes to refids."""
         for refnode in tree.traverse(docutils.nodes.reference):
             if 'refuri' not in refnode or not refnode.get('internal', False):
                 continue
             refuri = refnode['refuri']
-            hash_index = refuri.index('#')
-            second_hash_index = refuri.find('#', hash_index + 1)
-            if second_hash_index >= 0:
-                refnode['refid'] = refuri[second_hash_index + 1:]
-            else:
-                refnode['refid'] = refuri[hash_index + 1:]
+            assert 1 <= refuri.count('#') <= 2
+            refnode['refid'] = refuri[refuri.rindex('#') + 1:]
             del refnode['refuri']
 
     def prepare_writing(self, docnames):
@@ -141,7 +138,7 @@ class RinohBuilder(Builder):
                 docname, toctree_only,
                 appendices=[])
                 # appendices=((docclass != 'howto') and self.config.latex_appendices or []))
-            self.fix_refuris(doctree)
+            self.transform_refuris(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author
