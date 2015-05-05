@@ -167,7 +167,7 @@ class Canvas(StringIO):
         print('Q', file=self)
 
     def translate(self, x, y):
-        print('1 0 0 1 {} {} cm'.format(x, - y), file=self)
+        print('1 0 0 1 {:f} {:f} cm'.format(x, - y), file=self)
 
     def rotate(self, degrees):
         rad = math.radians(degrees)
@@ -178,13 +178,13 @@ class Canvas(StringIO):
     def scale(self, x, y=None):
         if y is None:
             y = x
-        print('{} 0 0 {} 0 0 cm'.format(x, y), file=self)
+        print('{:f} 0 0 {:f} 0 0 cm'.format(x, y), file=self)
 
     def move_to(self, x, y):
-        print('{} {} m'.format(x, y), file=self)
+        print('{:f} {:f} m'.format(x, y), file=self)
 
     def line_to(self, x, y):
-        print('{} {} l'.format(x, y), file=self)
+        print('{:f} {:f} l'.format(x, y), file=self)
 
     def new_path(self):
         pass
@@ -275,7 +275,7 @@ class Canvas(StringIO):
             print('BT', file=self)
             print('/{} {} Tf'.format(font_name, size), file=self)
             self.fill_color(color)
-            print('{} {} Td'.format(left, - (cursor - span.y_offset(document))),
+            print('{:f} {:f} Td'.format(left, - (cursor - span.y_offset(document))),
                   file=self)
             print('[{}] TJ'.format(string), file=self)
             print('ET', file=self)
