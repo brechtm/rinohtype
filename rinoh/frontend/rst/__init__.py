@@ -148,7 +148,7 @@ class ReStructuredTextParser(object):
         id_aliases = {}
         for node in tree.traverse():
             try:
-                primary_id, *alias_ids = node.get('ids')
+                primary_id, *alias_ids = node.attributes['ids']
                 for alias_id in alias_ids:
                     id_aliases[alias_id] = primary_id
             except (AttributeError, KeyError, ValueError):
