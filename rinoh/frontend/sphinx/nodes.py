@@ -6,14 +6,13 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ...decoration import Framed
 from ...flowable import DummyFlowable, StaticGroupedFlowables
 from ...structure import DefinitionList, DefinitionTerm
 from ...text import MixedStyledText
 from ...util import intersperse
 
 from ..rst import BodyElement, InlineElement, GroupingElement
-from ..rst.nodes import AdmonitionBase, Strong, Inline
+from ..rst.nodes import Admonition, AdmonitionBase, Strong, Inline
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'SeeAlso', 'Glossary', 'Start_of_File',
@@ -53,9 +52,8 @@ class Start_of_File(GroupingElement):
                                       **kwargs)
 
 
-class Todo_Node(GroupingElement):
-    def flowable(self):
-        return Framed(super().flowable())
+class Todo_Node(Admonition):
+    pass
 
 
 class HighlightLang(BodyElement):
