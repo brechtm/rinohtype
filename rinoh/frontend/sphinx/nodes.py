@@ -9,7 +9,8 @@
 from ...decoration import Framed
 from ...flowable import DummyFlowable, StaticGroupedFlowables
 from ...structure import DefinitionList, DefinitionTerm
-from ...text import SingleStyledText
+from ...text import MixedStyledText
+from ...util import intersperse
 
 from ..rst import BodyElement, InlineElement, GroupingElement
 from ..rst.nodes import AdmonitionBase, Strong, Inline
@@ -88,7 +89,8 @@ class Desc_AddName(Inline):
 
 class Desc_ParameterList(InlineElement):
     def build_styled_text(self):
-        return '(' + self.process_content() + ')'
+        parameter_list = intersperse(self.process_content(), ', ')
+        return '(' + MixedStyledText(parameter_list) + ')'
 
 
 class Desc_Parameter(Inline):
