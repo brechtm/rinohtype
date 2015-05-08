@@ -15,7 +15,8 @@ __all__ = ['NamedDestination', 'NamedDestinationLink', 'HyperLink',
 
 
 class Annotation(object):
-    pass
+    def process(self, container):
+        return self
 
 
 class NamedDestination(Annotation):

@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestinationLink, AnnotatedSpan
+from .annotation import Annotation, NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph
@@ -84,8 +84,12 @@ class ReferenceBase(Field):
         self.type = type
         self.link = link
 
-    def target_id(self):
+    def target_id(self, document):
         raise NotImplementedError
+
+    def get_annotation(self, document):
+        return (NamedDestinationLink(str(self.target_id(document)))
+                if self.link else None)
 
     def split(self, container):
         target_id = self.target_id(container.document)
@@ -112,12 +116,11 @@ class ReferenceBase(Field):
         return self.split_words(text)
 
     def spans(self, document):
-        if self.link:
-            annotation = NamedDestinationLink(str(self.target_id(document)))
-            return (AnnotatedSpan(span, annotation)
-                    for span in super().spans(document))
-        else:
-            return super().spans(document)
+        spans = super().spans(document)
+        annotation = self.get_annotation(document)
+        if annotation:
+            spans = (AnnotatedSpan(span, annotation) for span in spans)
+        return spans
 
 
 class Reference(ReferenceBase):
@@ -183,11 +186,23 @@ class NoteMarkerBase(ReferenceBase, Label):
             label = self.format_label(str(formatted_number), document)
             document.set_reference(target_id, REFERENCE, str(label))
 
-    def split(self, container):
-        note = container.document.elements[self.target_id(container.document)]
-        container._footnote_space.add_footnote(note)
-        return super().split(container)
+    def get_annotation(self, document):
+        note = document.elements[self.target_id(document)]
+        link_annotation = super().get_annotation(document)
+        return PlaceNoteAnnotation(note, link_annotation)
         # TODO: handle overflow in footnote_space
+
+
+class PlaceNoteAnnotation(Annotation):
+    type = 'PlaceNote'
+
+    def __init__(self, note, link_annotation):
+        self.note = note
+        self.link_annotation = link_annotation
+
+    def process(self, container):
+        container._footnote_space.add_footnote(self.note)
+        return self.link_annotation
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
