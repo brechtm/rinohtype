@@ -145,9 +145,13 @@ class ContainerBase(FlowableTarget):
         if chain:
             self.chain.last_container = self
 
-        self.cursor = 0     # initialized at the container's top edge
+        self._cursor = Dimension(0)   # initialized at the container's top edge
+
+    @property
+    def cursor(self):
         """Keeps track of where the next flowable is to be placed. As flowables
         are flowed into the container, the cursor moves down."""
+        return float(self._cursor)
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
@@ -173,9 +177,8 @@ class ContainerBase(FlowableTarget):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
-        self.cursor += height
+        self._cursor.grow(height)
         if check_overflow and self.cursor > self.height:
-            self.cursor -= height
             raise EndOfContainer
 
     def check_overflow(self):
@@ -258,7 +261,7 @@ class ExpandingContainer(Container):
         """Advance the cursor by `height`. If this would expand the container
         to become larger than its maximum height, an :class:`EndOfContainer`
         exception is raised."""
-        self.cursor += height
+        self._cursor.grow(height)
         if check_overflow and self.max_height and self.cursor > self.max_height:
             raise EndOfContainer
         self._expand(height)
