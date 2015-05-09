@@ -250,26 +250,14 @@ class ExpandingContainer(Container):
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
-        height = Dimension(0)
+        height = DimensionAddition(Dimension(0))
         super().__init__(name, parent, left, top, width, height, right, bottom)
+        self.height.addends.append(self._cursor)
         self.max_height = max_height or parent.remaining_height   # FIXME: this assumption is correct for MaybeContainer, but not generally
 
     @property
     def remaining_height(self):
         return self.max_height - self.cursor
-
-    def advance(self, height, check_overflow=True):
-        """Advance the cursor by `height`. If this would expand the container
-        to become larger than its maximum height, an :class:`EndOfContainer`
-        exception is raised."""
-        self._self_cursor.grow(height)
-        if check_overflow and self.max_height and self.remaining_height < 0:
-            raise EndOfContainer
-        self._expand(height)
-
-    def _expand(self, height):
-        """Grow this container by `height`"""
-        self.height.grow(height)
 
 
 class DownExpandingContainer(ExpandingContainer):
