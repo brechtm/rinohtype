@@ -27,13 +27,12 @@ class SimplePage(Page):
         self.body = Container('body', self, h_margin, v_margin,
                               body_width, body_height)
 
-        self.footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
-                                                body_height)
+        footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
+                                           body_height)
         self.content = Container('content', self.body, 0*PT, 0*PT,
-                                 bottom=self.footnote_space.top,
-                                 chain=chain)
-
-        self.content._footnote_space = self.footnote_space
+                                 bottom=footnote_space.top, chain=chain)
+        footnote_space.max_height = body_height - self.content._cursor
+        self.content._footnote_space = footnote_space
 
         if self.document_part.header:
             header_bottom = self.body.top - self.header_footer_distance

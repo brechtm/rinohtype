@@ -382,8 +382,9 @@ class BottomFloatContainer(UpExpandingContainer, FloatContainer):
 
 class FootnoteContainer(UpExpandingContainer):
     def __init__(self, name, parent, left=None, bottom=None, width=None,
-                 right=None):
-        super().__init__(name, parent, left, bottom, width=width, right=right)
+                 right=None, max_height=None):
+        super().__init__(name, parent, left, bottom, width=width, right=right,
+                         max_height=max_height)
         self._footnote_number = 0
         self._footnote_space = self
         self.last_descender = 0
