@@ -114,13 +114,13 @@ class Flowable(Styled):
         right = container.width - margin_right
         margin_container = DownExpandingContainer('MARGIN', container,
                                                   left=margin_left, right=right)
+        container._cursor.addends.append(margin_container._cursor)
         initial_before = True if state is None else state.initial
         initial_after = True
         try:
             width, descender = self.render(margin_container, last_descender,
                                            state=state, **kwargs)
             initial_after = False
-            container.advance(margin_container.cursor, False)
         except EndOfContainer as eoc:
             if eoc.flowable_state:
                 initial_after = eoc.flowable_state.initial

@@ -1,3 +1,4 @@
+from rinoh.paper import A5
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextParser
 
@@ -12,6 +13,6 @@ if __name__ == '__main__':
         document_tree = parser.parse(name + '.txt')
         # manual_options = BookOptions(stylesheet=STYLESHEET)
         # document = Book(document_tree, options=manual_options, backend=pdf)
-        article_options = ArticleOptions(table_of_contents=False)
+        article_options = ArticleOptions(table_of_contents=False, page_size=A5)
         document = Article(document_tree, options=article_options, backend=pdf)
         document.render(name)

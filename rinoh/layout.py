@@ -31,7 +31,7 @@ from collections import deque
 from contextlib import contextmanager
 from copy import copy
 
-from .dimension import Dimension, PT
+from .dimension import Dimension, PT, DimensionAddition
 
 
 __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
@@ -145,7 +145,8 @@ class ContainerBase(FlowableTarget):
         if chain:
             self.chain.last_container = self
 
-        self._cursor = Dimension(0)   # initialized at the container's top edge
+        self._self_cursor = Dimension(0)   # initialized at the container's top edge
+        self._cursor = DimensionAddition(self._self_cursor)
 
     @property
     def cursor(self):
@@ -177,7 +178,7 @@ class ContainerBase(FlowableTarget):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
-        self._cursor.grow(height)
+        self._self_cursor.grow(height)
         if check_overflow and self.cursor > self.height:
             raise EndOfContainer
 
@@ -251,7 +252,7 @@ class ExpandingContainer(Container):
         `max_height` is the maximum height this container can grow to."""
         height = Dimension(0)
         super().__init__(name, parent, left, top, width, height, right, bottom)
-        self.max_height = max_height or parent.remaining_height
+        self.max_height = max_height or parent.remaining_height   # FIXME: this assumption is correct for MaybeContainer, but not generally
 
     @property
     def remaining_height(self):
@@ -261,8 +262,8 @@ class ExpandingContainer(Container):
         """Advance the cursor by `height`. If this would expand the container
         to become larger than its maximum height, an :class:`EndOfContainer`
         exception is raised."""
-        self._cursor.grow(height)
-        if check_overflow and self.max_height and self.cursor > self.max_height:
+        self._self_cursor.grow(height)
+        if check_overflow and self.max_height and self.remaining_height < 0:
             raise EndOfContainer
         self._expand(height)
 
@@ -311,6 +312,7 @@ class MaybeContainer(DownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
         super().__init__('MAYBE', parent, left=left, top=parent.cursor,
                          width=width, right=right)
+        parent._cursor.addends.append(self._cursor)
         self._do_place = False
 
     def __enter__(self):
@@ -324,7 +326,6 @@ class MaybeContainer(DownExpandingContainer):
             self.do_place()
 
     def do_place(self):
-        self.parent.advance(self.cursor)
         self._do_place = True
 
     def place(self):
