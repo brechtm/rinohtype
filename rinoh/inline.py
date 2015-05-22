@@ -64,3 +64,6 @@ class InlineFlowableSpan(DocumentElement):
 
     def line_gap(self, document):
         return 0
+
+    def before_placing(self, container):
+        pass

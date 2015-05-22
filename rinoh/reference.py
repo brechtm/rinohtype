@@ -87,10 +87,6 @@ class ReferenceBase(Field):
     def target_id(self, document):
         raise NotImplementedError
 
-    def get_annotation(self, document):
-        return (NamedDestinationLink(str(self.target_id(document)))
-                if self.link else None)
-
     def split(self, container):
         target_id = self.target_id(container.document)
         try:
@@ -117,8 +113,8 @@ class ReferenceBase(Field):
 
     def spans(self, document):
         spans = super().spans(document)
-        annotation = self.get_annotation(document)
-        if annotation:
+        if self.link:
+            annotation = NamedDestinationLink(str(self.target_id(document)))
             spans = (AnnotatedSpan(span, annotation) for span in spans)
         return spans
 
@@ -186,23 +182,9 @@ class NoteMarkerBase(ReferenceBase, Label):
             label = self.format_label(str(formatted_number), document)
             document.set_reference(target_id, REFERENCE, str(label))
 
-    def get_annotation(self, document):
-        note = document.elements[self.target_id(document)]
-        link_annotation = super().get_annotation(document)
-        return PlaceNoteAnnotation(note, link_annotation)
-        # TODO: handle overflow in footnote_space
-
-
-class PlaceNoteAnnotation(Annotation):
-    type = 'PlaceNote'
-
-    def __init__(self, note, link_annotation):
-        self.note = note
-        self.link_annotation = link_annotation
-
-    def process(self, container):
-        container._footnote_space.add_footnote(self.note)
-        return self.link_annotation
+    def before_placing(self, container):
+        note = container.document.elements[self.target_id(container.document)]
+        container._footnote_space.add_footnote(note)
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):

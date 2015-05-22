@@ -636,6 +636,9 @@ class Line(list):
         if - descender > container.remaining_height:
             raise EndOfContainer
 
+        for glyph_span in self:
+            glyph_span.span.before_placing(container)
+
         # horizontal displacement
         left = self.indent
 
@@ -720,8 +723,6 @@ class AnnotationState(object):
 
     def place_if_any(self):
         if self.annotation:
-            annotation = self.annotation.process(self.container)
-            if annotation:
-                top = self.container.cursor - self.ascender
-                self.container.canvas.annotate(annotation, self.left, top,
-                                               self.width, self.height)
+            top = self.container.cursor - self.ascender
+            self.container.canvas.annotate(self.annotation, self.left, top,
+                                           self.width, self.height)

@@ -246,6 +246,9 @@ class SingleStyledText(StyledText):
         """Yield the words and spaces in this single-styled text."""
         return self.split_words(self.text)
 
+    def before_placing(self, container):
+        pass
+
 
 class MixedStyledText(StyledText, list):
     """Concatenation of :class:`StyledText` objects."""
