@@ -164,4 +164,6 @@ class ReStructuredTextParser(object):
 
     def from_doctree(self, doctree):
         self.replace_secondary_ids(doctree)
-        return CustomElement.map_node(doctree.document)
+        mapped_tree = CustomElement.map_node(doctree.document)
+        flowables = [child.flowable() for child in mapped_tree.getchildren()]
+        return flowables

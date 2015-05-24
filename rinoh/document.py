@@ -196,13 +196,13 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, content_tree, stylesheet, backend=pdf):
+    def __init__(self, content_flowables, stylesheet, backend=pdf):
         """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
         backend."""
         self._print_version_and_license()
-        self.content_tree = content_tree
+        self.content_flowables = content_flowables
         self.stylesheet = stylesheet
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)

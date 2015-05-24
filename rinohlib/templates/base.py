@@ -94,8 +94,7 @@ class ContentsPart(BookPart):
         return self.document.options['footer_text']
 
     def flowables(self):
-        for child in self.document.content_tree.getchildren():
-            yield child.flowable()
+        return self.document.content_flowables
 
 
 class DocumentOptions(dict):
@@ -133,7 +132,7 @@ class DocumentBase(Document):
     sections = NotImplementedAttribute()
     options_class = DocumentOptions
 
-    def __init__(self, content_tree, options=None, backend=None):
+    def __init__(self, content_flowables, options=None, backend=None):
         self.options = options or self.options_class()
-        super().__init__(content_tree, self.options['stylesheet'],
+        super().__init__(content_flowables, self.options['stylesheet'],
                          backend=backend)
