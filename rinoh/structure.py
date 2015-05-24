@@ -243,7 +243,7 @@ class TableOfContents(GroupedFlowables):
             items = limit_items(items, self.section)
 
         for flowable_id, flowable in items:
-            text = [Reference(flowable_id, type=REFERENCE), Tab(),
+            text = [Reference(flowable_id, type=REFERENCE, quiet=True), Tab(),
                     Reference(flowable_id, type=TITLE), Tab(),
                     Reference(flowable_id, type=PAGE)]
             yield TableOfContentsEntry(text, flowable.level, parent=self)

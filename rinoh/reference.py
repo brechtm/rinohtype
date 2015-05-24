@@ -79,10 +79,12 @@ POSITION = 'position'
 
 
 class ReferenceBase(Field):
-    def __init__(self, type=REFERENCE, link=True, style=None, parent=None):
+    def __init__(self, type=REFERENCE, link=True, quiet=False,
+                 style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.type = type
         self.link = link
+        self.quiet = quiet
 
     def target_id(self, document):
         raise NotImplementedError
@@ -93,8 +95,9 @@ class ReferenceBase(Field):
             if self.type == REFERENCE:
                 text = container.document.get_reference(target_id, self.type)
                 if text is None:
-                    self.warn('Cannot reference "{}"'.format(target_id),
-                              container)
+                    if not self.quiet:
+                        self.warn('Cannot reference "{}"'.format(target_id),
+                                  container)
                     text = ''
             elif self.type == PAGE:
                 try:
@@ -121,8 +124,9 @@ class ReferenceBase(Field):
 
 class Reference(ReferenceBase):
     def __init__(self, target_id, type=REFERENCE, link=True, style=None,
-                 **kwargs):
-        super().__init__(type=type, link=link, style=style, **kwargs)
+                 quiet=False, **kwargs):
+        super().__init__(type=type, link=link, style=style, quiet=quiet,
+                         **kwargs)
         self._target_id = target_id
 
     def target_id(self, document):
