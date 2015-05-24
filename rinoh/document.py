@@ -276,6 +276,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         self.number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
+        for flowable in self.content_flowables:
+            flowable.prepare(self)
         for section in self._sections:
             section.prepare()
         self.number_of_pages = self.render_pages()

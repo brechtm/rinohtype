@@ -96,6 +96,9 @@ class ContentsPart(BookPart):
     def flowables(self):
         return self.document.content_flowables
 
+    def prepare(self):
+        pass
+
 
 class DocumentOptions(dict):
     options = {'stylesheet': STYLESHEET,
