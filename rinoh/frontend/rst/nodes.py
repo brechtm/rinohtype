@@ -157,7 +157,8 @@ class Topic(GroupingElement):
                 return rt.StaticGroupedFlowables(flowables,
                                                  style='table of contents')
             else:
-                return rt.DummyFlowable()
+                toc_id, = self.get('ids')
+                return rt.SetMetadataFlowable(toc_id=toc_id)
         elif 'dedication' in classes:
             return rt.SetMetadataFlowable(dedication=super().build_flowable())
         elif 'abstract' in classes:

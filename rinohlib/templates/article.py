@@ -11,6 +11,10 @@ class ArticleFrontMatter(GroupedFlowables):
     def __init__(self):
         self.toc_section = TableOfContentsSection()
         super().__init__()
+
+    def prepare(self, document):
+        self.toc_section.prepare(document)
+
     def flowables(self, document):
         meta = document.metadata
         yield Paragraph(meta['title'], style='title')
@@ -35,6 +39,9 @@ class ArticlePart(ContentsPart):
     def __init__(self, document_section):
         self.front_matter = ArticleFrontMatter()
         super().__init__(document_section)
+
+    def prepare(self):
+        self.front_matter.prepare(self.document)
 
     def flowables(self):
         yield self.front_matter

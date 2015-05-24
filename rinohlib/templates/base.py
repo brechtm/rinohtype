@@ -81,6 +81,10 @@ class TableOfContentsSection(Section):
                           TableOfContents()],
                          style='table of contents')
 
+    def prepare(self, document):
+        self.id = document.metadata.get('toc_id')
+        super().prepare(document)
+
 
 class TableOfContentsPart(BookPart):
     footer = Tab() + Variable(PAGE_NUMBER)
