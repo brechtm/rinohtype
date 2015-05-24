@@ -1,12 +1,16 @@
 
 from rinoh.document import DocumentSection
 from rinoh.paragraph import Paragraph
-from rinoh.structure import GroupedFlowables, Section, Heading, TableOfContents
+from rinoh.structure import GroupedFlowables
 
-from .base import ContentsPart, DocumentBase, DocumentOptions
+from .base import (ContentsPart, DocumentBase, DocumentOptions,
+                   TableOfContentsSection)
 
 
 class ArticleFrontMatter(GroupedFlowables):
+    def __init__(self):
+        self.toc_section = TableOfContentsSection()
+        super().__init__()
     def flowables(self, document):
         meta = document.metadata
         yield Paragraph(meta['title'], style='title')
@@ -20,18 +24,20 @@ class ArticleFrontMatter(GroupedFlowables):
                 yield Paragraph(date, style='author')
         if 'author' in meta:
             yield Paragraph(meta['author'], style='author')
+        if document.options['table_of_contents']:
+            yield self.toc_section
 
 
 # document parts
 # ----------------------------------------------------------------------------
 
 class ArticlePart(ContentsPart):
+    def __init__(self, document_section):
+        self.front_matter = ArticleFrontMatter()
+        super().__init__(document_section)
+
     def flowables(self):
-        yield ArticleFrontMatter()
-        if self.document.options['table_of_contents']:
-            yield Section([Heading('Table of Contents', style='unnumbered'),
-                           TableOfContents()],
-                          style='table of contents')
+        yield self.front_matter
         for flowable in super().flowables():
             yield flowable
 

@@ -75,13 +75,18 @@ class BookPart(DocumentPart):
                           self.document.options['page_orientation'])
 
 
+class TableOfContentsSection(Section):
+    def __init__(self):
+        super().__init__([Heading('Table of Contents', style='unnumbered'),
+                          TableOfContents()],
+                         style='table of contents')
+
+
 class TableOfContentsPart(BookPart):
     footer = Tab() + Variable(PAGE_NUMBER)
 
     def flowables(self):
-        yield Section([Heading('Table of Contents', style='unnumbered'),
-                       TableOfContents()],
-                      style='table of contents')
+        yield TableOfContentsSection()
 
 
 class ContentsPart(BookPart):
