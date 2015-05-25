@@ -41,12 +41,7 @@ class RinohBuilder(Builder):
         return 'all documents'
 
     def get_target_uri(self, docname, typ=None):
-        if docname in self.env.all_docs:
-            # all references are on the same page...
-            return '#document-' + docname
-        else:
-            # chances are this is a html_additional_page
-            return docname
+        return '%' + docname
 
     def get_relative_uri(self, from_, to, typ=None):
         # ignore source
@@ -54,13 +49,21 @@ class RinohBuilder(Builder):
 
     def transform_refuris(self, tree):
         """Transform internal refuri targets in reference nodes to refids."""
-        for refnode in tree.traverse(docutils.nodes.reference):
-            if 'refuri' not in refnode or not refnode.get('internal', False):
+        def transform_id(id):
+            return id if id.startswith('%') else '%' + docname + '#' + id
+
+        for node in tree.traverse():
+            if node.tagname == 'start_of_file':
+                docname = node['docname']
                 continue
-            refuri = refnode['refuri']
-            assert 1 <= refuri.count('#') <= 2
-            refnode['refid'] = refuri[refuri.rindex('#') + 1:]
-            del refnode['refuri']
+            try:
+                if 'refid' in node:
+                    node['refid'] = transform_id(node['refid'])
+                elif 'refuri' in node and node.get('internal', False):
+                    node['refid'] = node.attributes.pop('refuri')
+                node['ids'] = [transform_id(id) for id in node['ids']]
+            except (TypeError, KeyError):
+                pass
 
     def prepare_writing(self, docnames):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
