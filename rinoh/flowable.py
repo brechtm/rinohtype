@@ -163,7 +163,7 @@ class PageBreakState(FlowableState):
 
 class PageBreak(DummyFlowable):
    def flow(self, container, last_descender, state=None):
-       if state is None:
+       if state is None and container.chained_ancestor.cursor > 0:
            raise EndOfContainer(flowable_state=PageBreakState())
        else:
            return super().flow(container, last_descender)

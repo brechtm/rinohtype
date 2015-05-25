@@ -163,6 +163,13 @@ class ContainerBase(FlowableTarget):
         raise AttributeError
 
     @property
+    def chained_ancestor(self):
+        if self.chain:
+            return self
+        else:
+            return self.parent.chained_ancestor
+
+    @property
     def page(self):
         """The :class:`Page` this container is located on."""
         return self.parent.page
