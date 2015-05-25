@@ -117,6 +117,9 @@ styles('affiliation',
        base='author',
        space_below=6*PT + 12*PT)
 
+styles('chapter',
+       new_page=True)
+
 styles('heading level 1',
        typeface=Var('ieee_family').serif,
        font_weight=REGULAR,

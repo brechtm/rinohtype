@@ -53,6 +53,8 @@ matcher('author', Paragraph.like('author'))
 
 matcher('affiliation', Paragraph.like('affiliation'))
 
+matcher('chapter', Section.like(level=1))
+
 for i in range(1, 6):
     matcher('heading level {}'.format(i), Heading.like(level=i))
     matcher('unnumbered heading level {}'.format(i),

@@ -9,7 +9,7 @@
 from itertools import count, repeat
 
 from .draw import Line, LineStyle
-from .flowable import GroupedFlowables, StaticGroupedFlowables
+from .flowable import GroupedFlowables, StaticGroupedFlowables, PageBreak
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .number import NumberStyle, Label, format_number
@@ -20,7 +20,6 @@ from .reference import REFERENCE, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, MixedStyledText, Tab
-from .dimension import PT
 from .style import PARENT_STYLE
 
 
@@ -32,7 +31,8 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
 
 
 class SectionSytyle(GroupedFlowablesStyle):
-    attributes = {'show_in_toc': True}
+    attributes = {'show_in_toc': True,
+                  'new_page': False}    # TODO: EVEN, ODD
 
 
 class Section(Referenceable, StaticGroupedFlowables):
@@ -51,6 +51,12 @@ class Section(Referenceable, StaticGroupedFlowables):
     @property
     def section(self):
         return self
+
+    def flowables(self, document):
+        if self.get_style('new_page', document):
+            yield PageBreak()
+        for flowable in super().flowables(document):
+            yield flowable
 
     def show_in_toc(self, document):
         show_in_toc = self.get_style('show_in_toc', document)
