@@ -155,14 +155,11 @@ class DummyFlowable(Flowable):
 
 class PageBreakState(FlowableState):
     def __init__(self, break_done):
-        super().__init__(_initial=not break_done)
+        super().__init__(_initial=True)
+        self.break_done = break_done
 
     def __copy__(self):
         return self
-
-    @property
-    def break_done(self):
-        return not self.initial
 
 
 class PageBreak(DummyFlowable):
