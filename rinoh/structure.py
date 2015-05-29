@@ -32,7 +32,7 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
 
 class SectionSytyle(GroupedFlowablesStyle):
     attributes = {'show_in_toc': True,
-                  'new_page': False}    # TODO: EVEN, ODD
+                  'new_page': False}    # False, True, LEFT, RIGHT
 
 
 class Section(Referenceable, StaticGroupedFlowables):
@@ -53,8 +53,9 @@ class Section(Referenceable, StaticGroupedFlowables):
         return self
 
     def flowables(self, document):
-        if self.get_style('new_page', document):
-            yield PageBreak()
+        new_page = self.get_style('new_page', document)
+        if new_page:
+            yield PageBreak(new_page)
         for flowable in super().flowables(document):
             yield flowable
 
