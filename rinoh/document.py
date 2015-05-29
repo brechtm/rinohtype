@@ -29,6 +29,7 @@ from itertools import count
 
 from . import __version__, __release_date__
 from .backend import pdf
+from .flowable import RIGHT, LEFT
 from .layout import FlowableTarget, Container, ReflowRequired
 from .number import NUMBER
 from .util import NotImplementedAttribute
@@ -108,10 +109,13 @@ class BackendDocumentMetadata(object):
         return instance.backend_document.set_metadata(self.name, value)
 
 
-class DocumentPart(list):
+class DocumentPart(object):
+    end_at = LEFT
+
     def __init__(self, document_section):
         self.document_section = document_section
         self.flowable_targets = []
+        self.pages = []
 
     @property
     def document(self):
@@ -126,7 +130,7 @@ class DocumentPart(list):
             flowable_target.prepare()
 
     def render(self):
-        self.pages = []
+        self.pages.clear()
         self.add_page(self.first_page())
         for page in self.pages:
             chains_requiring_new_page = set(chain for chain in page.render())
@@ -134,6 +138,9 @@ class DocumentPart(list):
             if chains_requiring_new_page:
                 page = self.new_page(chains_requiring_new_page) # grows self.pages
                 self.add_page(page)
+        next_page_type = LEFT if self.document.number_of_pages % 2 else RIGHT
+        if next_page_type == self.end_at:
+            self.add_page(self.first_page())
 
     def add_page(self, page):
         """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
@@ -214,7 +221,7 @@ class Document(object):
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
         self.references = {}           # mapping id's to reference data
-        self.number_of_pages = 0       # page count
+        self.total_number_of_pages = 0 # page count
         self.page_references = {}      # mapping id's to page numbers
         self._unique_id = 0
 
@@ -252,7 +259,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
         with open(filename + self.CACHE_EXTENSION, 'wb') as file:
-            cache = self.number_of_pages, self.page_references
+            cache = self.total_number_of_pages, self.page_references
             pickle.dump(cache, file)
 
     def get_style_var(self, name):
@@ -270,28 +277,32 @@ to the terms of the GNU Affero General Public License version 3.''')
             references to document elements have changed since the previous
             rendering iteration."""
             nonlocal prev_number_of_pages, prev_page_references
-            return (self.number_of_pages == prev_number_of_pages and
+            return (self.total_number_of_pages == prev_number_of_pages and
                     self.page_references == prev_page_references)
 
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
-        self.number_of_pages = prev_number_of_pages
+        self.total_number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
         for flowable in self.content_flowables:
             flowable.prepare(self)
         for section in self._sections:
             section.prepare()
-        self.number_of_pages = self.render_pages()
+        self.total_number_of_pages = self.render_pages()
         while not has_converged():
-            prev_number_of_pages = self.number_of_pages
+            prev_number_of_pages = self.total_number_of_pages
             prev_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.CREATOR)
-            self.number_of_pages = self.render_pages()
+            self.total_number_of_pages = self.render_pages()
         self._save_cache(filename)
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
         self.backend_document.write(filename)
+
+    @property
+    def number_of_pages(self):
+        return sum(section.number_of_pages for section in self._sections)
 
     def render_pages(self):
         """Render the complete document once and return the number of pages
@@ -302,7 +313,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         # self.setup()
         for section in self._sections:
             section.render()
-        return sum(section.number_of_pages for section in self._sections)
+        return self.number_of_pages
 
     def setup(self):
         """Called by :meth:`render_pages` before the actual rendering takes
