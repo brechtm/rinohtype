@@ -129,7 +129,7 @@ class DocumentPart(object):
         for flowable_target in self.flowable_targets:
             flowable_target.prepare()
 
-    def render(self):
+    def render(self, document_page_count):
         self.pages.clear()
         self.add_page(self.first_page())
         for page in self.pages:
@@ -138,14 +138,11 @@ class DocumentPart(object):
             if chains_requiring_new_page:
                 page = self.new_page(chains_requiring_new_page) # grows self.pages
                 self.add_page(page)
-        document_number_of_pages = self.number_of_pages
-        for section in self.document._sections:
-            if section is self.document_section:
-                break
-            document_number_of_pages += section.number_of_pages
-        next_page_type = LEFT if document_number_of_pages % 2 else RIGHT
+        page_count = document_page_count + self.number_of_pages
+        next_page_type = LEFT if page_count % 2 else RIGHT
         if next_page_type == self.end_at:
             self.add_page(self.first_page())
+        return self.number_of_pages
 
     def add_page(self, page):
         """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
@@ -187,11 +184,13 @@ class DocumentSection(object):
         for part in self._parts:
             part.prepare()
 
-    def render(self):
+    def render(self, doc_page_count):
+        section_page_count = 0
         for part in self._parts:
-            part.render()
-        self.previous_number_of_pages = self.number_of_pages
-        return self.number_of_pages
+            part_page_count = part.render(doc_page_count + section_page_count)
+            section_page_count += part_page_count
+        self.previous_number_of_pages = section_page_count
+        return section_page_count
 
 
 class Document(object):
@@ -308,13 +307,13 @@ to the terms of the GNU Affero General Public License version 3.''')
                                           self.backend_document.extension))
         self.backend_document.write(filename)
 
-    @property
-    def number_of_pages(self):
-        return sum(section.total_number_of_pages for section in self._sections)
-
     def render_pages(self):
         """Render the complete document once and return the number of pages
         rendered."""
         self.floats = set()
         self.placed_footnotes = set()
-        return [section.render() for section in self._sections]
+        section_page_counts = []
+        for section in self._sections:
+            section_page_count = section.render(sum(section_page_counts))
+            section_page_counts.append(section_page_count)
+        return section_page_counts
