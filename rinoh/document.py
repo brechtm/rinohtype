@@ -191,6 +191,7 @@ class DocumentSection(object):
         for part in self._parts:
             part.render()
         self.total_number_of_pages = self.number_of_pages
+        return self.number_of_pages
 
 
 class Document(object):
@@ -228,7 +229,6 @@ class Document(object):
         self.elements = OrderedDict()  # mapping id's to Referenceables
         self.ids_by_element = {}       # mapping elements to id's
         self.references = {}           # mapping id's to reference data
-        self.total_number_of_pages = 0 # page count
         self.page_references = {}      # mapping id's to page numbers
         self._unique_id = 0
 
@@ -260,15 +260,13 @@ to the terms of the GNU Affero General Public License version 3.''')
             with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
         except IOError:
-            prev_number_of_pages, prev_page_references = None, {}
+            prev_number_of_pages, prev_page_references = [], {}
         return prev_number_of_pages, prev_page_references
 
-    def _save_cache(self, filename):
+    def _save_cache(self, filename, section_number_of_pages, page_references):
         """Save the current state of the page references to `<filename>.ptc`"""
         with open(filename + self.CACHE_EXTENSION, 'wb') as file:
-            cache = ([section.total_number_of_pages
-                      for section in self._sections],
-                     self.page_references)
+            cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
     def get_style_var(self, name):
@@ -278,7 +276,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
 
-        def has_converged():
+        def has_converged(section_number_of_pages):
             """Return `True` if the last rendering iteration converged to a
             stable result.
 
@@ -286,46 +284,41 @@ to the terms of the GNU Affero General Public License version 3.''')
             references to document elements have changed since the previous
             rendering iteration."""
             nonlocal prev_number_of_pages, prev_page_references
-            return (self.total_number_of_pages == prev_number_of_pages and
+            return (section_number_of_pages == prev_number_of_pages and
                     self.page_references == prev_page_references)
 
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
-        if prev_number_of_pages:
-            for prev_num, section in zip(prev_number_of_pages, self._sections):
-                section.total_number_of_pages = prev_num
-        self.total_number_of_pages = prev_number_of_pages
+        for prev_num, section in zip(prev_number_of_pages, self._sections):
+            section.total_number_of_pages = prev_num
         self.page_references = prev_page_references.copy()
         for flowable in self.content_flowables:
             flowable.prepare(self)
         for section in self._sections:
             section.prepare()
-        self.total_number_of_pages = self.render_pages()
-        while not has_converged():
-            prev_number_of_pages = self.total_number_of_pages
+        section_num_pages = self.render_pages()
+        while not has_converged(section_num_pages):
+            prev_number_of_pages = section_num_pages
             prev_page_references = self.page_references.copy()
             print('Not yet converged, rendering again...')
             del self.backend_document
             self.backend_document = self.backend.Document(self, self.CREATOR)
-            self.total_number_of_pages = self.render_pages()
-        self._save_cache(filename)
+            section_num_pages = self.render_pages()
+        self._save_cache(filename, section_num_pages, self.page_references)
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
         self.backend_document.write(filename)
 
     @property
     def number_of_pages(self):
-        return sum(section.number_of_pages for section in self._sections)
+        return sum(section.total_number_of_pages for section in self._sections)
 
     def render_pages(self):
         """Render the complete document once and return the number of pages
         rendered."""
-        # self.pages = []
         self.floats = set()
         self.placed_footnotes = set()
         # self.setup()
-        for section in self._sections:
-            section.render()
-        return self.number_of_pages
+        return [section.render() for section in self._sections]
 
     def setup(self):
         """Called by :meth:`render_pages` before the actual rendering takes
