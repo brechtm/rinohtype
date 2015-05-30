@@ -138,7 +138,12 @@ class DocumentPart(object):
             if chains_requiring_new_page:
                 page = self.new_page(chains_requiring_new_page) # grows self.pages
                 self.add_page(page)
-        next_page_type = LEFT if self.document.number_of_pages % 2 else RIGHT
+        document_number_of_pages = self.number_of_pages
+        for section in self.document._sections:
+            if section is self.document_section:
+                break
+            document_number_of_pages += section.total_number_of_pages
+        next_page_type = LEFT if document_number_of_pages % 2 else RIGHT
         if next_page_type == self.end_at:
             self.add_page(self.first_page())
 
