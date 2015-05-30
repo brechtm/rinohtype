@@ -4,7 +4,8 @@ from rinoh.document import Document, DocumentPart, Page, PORTRAIT
 from rinoh.layout import (Container, FootnoteContainer, Chain,
                           UpExpandingContainer, DownExpandingContainer)
 from rinoh.paper import A4
-from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE
+from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE, \
+    NUMBER_OF_PAGES
 from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 from rinoh.text import Tab
 from rinoh.util import NotImplementedAttribute
@@ -117,7 +118,8 @@ class DocumentOptions(dict):
                'page_vertical_margin': 3*CM,
                'header_text': (Variable(SECTION_NUMBER) + ' '
                                + Variable(SECTION_TITLE)),
-               'footer_text': Tab() + Variable(PAGE_NUMBER)}
+               'footer_text': Tab() + Variable(PAGE_NUMBER)
+                              + '/' + Variable(NUMBER_OF_PAGES)}
 
     def __init__(self, **options):
         for name, value in options.items():

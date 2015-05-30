@@ -163,6 +163,7 @@ class DocumentSection(object):
     def __init__(self, document):
         self.document = document
         self._parts = [part_class(self) for part_class in self.parts]
+        self.total_number_of_pages = 0
 
     @property
     def number_of_pages(self):
@@ -184,6 +185,7 @@ class DocumentSection(object):
     def render(self):
         for part in self._parts:
             part.render()
+        self.total_number_of_pages = self.number_of_pages
 
 
 class Document(object):
@@ -253,13 +255,15 @@ to the terms of the GNU Affero General Public License version 3.''')
             with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
         except IOError:
-            prev_number_of_pages, prev_page_references = -1, {}
+            prev_number_of_pages, prev_page_references = None, {}
         return prev_number_of_pages, prev_page_references
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
         with open(filename + self.CACHE_EXTENSION, 'wb') as file:
-            cache = self.total_number_of_pages, self.page_references
+            cache = ([section.total_number_of_pages
+                      for section in self._sections],
+                     self.page_references)
             pickle.dump(cache, file)
 
     def get_style_var(self, name):
@@ -281,6 +285,9 @@ to the terms of the GNU Affero General Public License version 3.''')
                     self.page_references == prev_page_references)
 
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
+        if prev_number_of_pages:
+            for prev_num, section in zip(prev_number_of_pages, self._sections):
+                section.total_number_of_pages = prev_num
         self.total_number_of_pages = prev_number_of_pages
         self.page_references = prev_page_references.copy()
         for flowable in self.content_flowables:
