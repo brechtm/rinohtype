@@ -317,11 +317,4 @@ to the terms of the GNU Affero General Public License version 3.''')
         rendered."""
         self.floats = set()
         self.placed_footnotes = set()
-        # self.setup()
         return [section.render() for section in self._sections]
-
-    def setup(self):
-        """Called by :meth:`render_pages` before the actual rendering takes
-        place. This method should create at least one :class:`Page` and add it
-        to this document using :meth:`add_page`."""
-        raise NotImplementedError
