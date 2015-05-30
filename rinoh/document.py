@@ -142,7 +142,7 @@ class DocumentPart(object):
         for section in self.document._sections:
             if section is self.document_section:
                 break
-            document_number_of_pages += section.total_number_of_pages
+            document_number_of_pages += section.number_of_pages
         next_page_type = LEFT if document_number_of_pages % 2 else RIGHT
         if next_page_type == self.end_at:
             self.add_page(self.first_page())
@@ -168,7 +168,7 @@ class DocumentSection(object):
     def __init__(self, document):
         self.document = document
         self._parts = [part_class(self) for part_class in self.parts]
-        self.total_number_of_pages = 0
+        self.previous_number_of_pages = 0
 
     @property
     def number_of_pages(self):
@@ -190,7 +190,7 @@ class DocumentSection(object):
     def render(self):
         for part in self._parts:
             part.render()
-        self.total_number_of_pages = self.number_of_pages
+        self.previous_number_of_pages = self.number_of_pages
         return self.number_of_pages
 
 
@@ -289,7 +289,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
         prev_number_of_pages, prev_page_references = self._load_cache(filename)
         for prev_num, section in zip(prev_number_of_pages, self._sections):
-            section.total_number_of_pages = prev_num
+            section.previous_number_of_pages = prev_num
         self.page_references = prev_page_references.copy()
         for flowable in self.content_flowables:
             flowable.prepare(self)

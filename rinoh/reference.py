@@ -44,8 +44,8 @@ class Variable(Field):
             text = format_number(container.page.number,
                                  container.page.number_format)
         elif self.type == NUMBER_OF_PAGES:
-            section = container.document_part.document_section
-            number = section.total_number_of_pages
+            document_section = container.document_part.document_section
+            number = document_section.previous_number_of_pages
             text = format_number(number, container.page.number_format)
         elif self.type == SECTION_NUMBER and container.page.section:
             section_id = container.page.section.get_id(container.document)
