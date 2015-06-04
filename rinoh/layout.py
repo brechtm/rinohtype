@@ -42,11 +42,12 @@ __all__ = ['Container', 'DownExpandingContainer', 'UpExpandingContainer',
 class EndOfContainer(Exception):
     """The end of the :class:`FlowableContainer` has been reached."""
 
-    def __init__(self, flowable_state=None):
+    def __init__(self, flowable_state=None, page_break=False):
         """`flowable_state` represents the rendering state of the
         :class:`Flowable` at the time the :class:`FlowableContainer`" overflows.
         """
         self.flowable_state = flowable_state
+        self.page_break = page_break
 
 
 class ReflowRequired(Exception):
@@ -143,7 +144,7 @@ class ContainerBase(FlowableTarget):
         self.flowables = []
         self.chain = chain
         if chain:
-            self.chain.last_container = self
+            self.chain.containers.append(self)
 
         self._self_cursor = Dimension(0)   # initialized at the container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
@@ -429,6 +430,8 @@ class Chain(FlowableTarget):
         `document` is the :class:`Document` this chain is part of."""
         super().__init__(document_part)
         self._init_state()
+        self._page_to_break = None
+        self.containers = []
 
     def _init_state(self):
         """Reset the state of this chain: empty the list of containers, and zero
@@ -437,6 +440,10 @@ class Chain(FlowableTarget):
         self._state = ChainState()
         self._fresh_page_state = copy(self._state)
         self._rerendering = False
+
+    @property
+    def last_container(self):
+        return self.containers[-1]
 
     def render(self, container, rerender=False, last_descender=None):
         """Flow the flowables into the containers that have been added to this
@@ -448,6 +455,8 @@ class Chain(FlowableTarget):
         rendered, this method returns an iterator yielding itself. This signals
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
+        if self._page_to_break == container.page:
+            return True
         if rerender:
             container.empty_canvas()
             if not self._rerendering:
@@ -467,6 +476,10 @@ class Chain(FlowableTarget):
             return False
         except EndOfContainer as e:
             self._state.flowable_state = e.flowable_state
+            if e.page_break:
+                self._page_to_break = container.page
+                self._fresh_page_state = copy(self._state)
+                return True
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
                 self._fresh_page_state = copy(self._state)

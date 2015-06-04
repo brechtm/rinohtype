@@ -25,8 +25,10 @@ import time
 from functools import wraps
 
 
-__all__ = ['Decorator', 'all_subclasses', 'intersperse', 'cached_property',
-           'timed', 'ReadAliasAttribute', 'NotImplementedAttribute']
+__all__ = ['all_subclasses', 'intersperse', 'last', 'consumer',
+           'static_variable', 'cached', 'cached_property', 'cached_generator',
+           'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
+           'NotImplementedAttribute']
 
 
 # functions
@@ -48,6 +50,14 @@ def intersperse(iterable, element):
         next_from_iterable = next(iterable)
         yield element
         yield next_from_iterable
+
+
+def last(iterable):
+    """Return an iterable's last item"""
+    result = None
+    for item in iterable:
+        result = item
+    return result
 
 
 # function decorators

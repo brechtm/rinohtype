@@ -18,12 +18,13 @@ that make up the content of a document and are rendered onto its pages.
 
 
 from copy import copy
-from itertools import chain, tee
+from itertools import chain, takewhile, tee
 
 from .annotation import NamedDestination
 from .dimension import PT
 from .layout import (EndOfContainer, DownExpandingContainer, MaybeContainer,
                      VirtualContainer, discard_state)
+from .util import last
 from .style import Style, Styled
 
 
@@ -154,10 +155,6 @@ class DummyFlowable(Flowable):
 
 
 class PageBreakState(FlowableState):
-    def __init__(self, break_done):
-        super().__init__(_initial=True)
-        self.break_done = break_done
-
     def __copy__(self):
         return self
 
@@ -167,13 +164,19 @@ class PageBreak(DummyFlowable):
         self.break_type = break_type
 
     def flow(self, container, last_descender, state=None):
-        if state is None or not state.break_done:
-            next_page_type = LEFT if container.page.number % 2 else RIGHT
-            if self.break_type == next_page_type:
-                raise EndOfContainer(flowable_state=PageBreakState(True))
-            elif container.chained_ancestor.cursor > 0:
-                raise EndOfContainer(flowable_state=PageBreakState(False))
-        return super().flow(container, last_descender)
+        top_container = container.chained_ancestor
+        rev_page_conts_on_page = takewhile(lambda c: c.page is not container.page,
+                                      reversed(top_container.chain.containers))
+        first_container_on_page = last(rev_page_conts_on_page)
+
+        next_page_type = LEFT if container.page.number % 2 else RIGHT
+        if (next_page_type == self.break_type
+            or (state is None
+                and top_container is not first_container_on_page
+                and top_container.cursor > 0)):
+            raise EndOfContainer(PageBreakState(), page_break=True)
+        else:
+            return super().flow(container, last_descender)
 
 
 class WarnFlowable(DummyFlowable):
@@ -266,7 +269,7 @@ class GroupedFlowables(Flowable):
                 container.advance(item_spacing, False)
         except EndOfContainer as eoc:
             state.prepend(flowable, eoc.flowable_state)
-            raise EndOfContainer(state)
+            raise EndOfContainer(state, eoc.page_break)
         except StopIteration:
             return max_flowable_width, descender
 

@@ -18,6 +18,7 @@ from ..stylesheets.somestyle import stylesheet as STYLESHEET
 
 class SimplePage(Page):
     header_footer_distance = 14*PT
+    column_spacing = 1*CM
 
     def __init__(self, chain, paper, orientation):
         super().__init__(chain.document_part, paper, orientation)
@@ -25,15 +26,26 @@ class SimplePage(Page):
         v_margin = self.document.options['page_vertical_margin']
         body_width = self.width - (2 * h_margin)
         body_height = self.height - (2 * v_margin)
+        column_width = (body_width - self.column_spacing) / 2.0
         self.body = Container('body', self, h_margin, v_margin,
                               body_width, body_height)
 
         footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
                                            body_height)
-        self.content = Container('content', self.body, 0*PT, 0*PT,
-                                 bottom=footnote_space.top, chain=chain)
-        footnote_space.max_height = body_height - self.content._cursor
-        self.content._footnote_space = footnote_space
+        self.column1 = Container('column1', self.body, 0*PT, 0*PT,
+                                 width=column_width,
+                                 bottom=footnote_space.top,
+                                 chain=chain)
+        self.column2 = Container('column2', self.body,
+                                 column_width + self.column_spacing,
+                                 0*PT,
+                                 width=column_width,
+                                 bottom=footnote_space.top,
+                                 chain=chain)
+        footnote_space.max_height = body_height - self.column1._cursor
+
+        self.column1._footnote_space = footnote_space
+        self.column2._footnote_space = footnote_space
 
         if self.document_part.header:
             header_bottom = self.body.top - self.header_footer_distance
