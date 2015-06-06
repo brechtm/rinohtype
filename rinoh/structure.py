@@ -79,7 +79,7 @@ class Section(Referenceable, StaticGroupedFlowables):
             raise eoc
         finally:
             if set_section:
-                container.page.set_current_section(self.section)
+                container.page.set_current_section(self.section, state is None)
 
 
 

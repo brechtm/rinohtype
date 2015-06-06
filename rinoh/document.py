@@ -76,15 +76,20 @@ class Page(Container):
         """Returns the page itself."""
         return self
 
-    def set_current_section(self, section):
-        if section.level not in self._current_section:
-            self._current_section[section.level] = section
+    def set_current_section(self, section, is_new):
+        if (section.level not in self._current_section
+            or not self._current_section[section.level][1]):
+            self._current_section[section.level] = section, is_new
         for level in list(self._current_section.keys()):
             if level < section.level:
                 del self._current_section[level]
 
     def get_current_section(self, level):
-        return self._current_section.get(level)
+        try:
+            section, is_new = self._current_section.get(level)
+            return section
+        except TypeError:
+            return None
 
     @property
     def document_section(self):
