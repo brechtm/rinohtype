@@ -64,6 +64,7 @@ class Page(Container):
                                                   width, height)
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
+        self._current_section = {}
         FlowableTarget.__init__(self, document_part)
         Container.__init__(self, 'PAGE', None, 0, 0, width, height)
 
@@ -74,6 +75,16 @@ class Page(Container):
     def page(self):
         """Returns the page itself."""
         return self
+
+    def set_current_section(self, section):
+        if section.level not in self._current_section:
+            self._current_section[section.level] = section
+        for level in list(self._current_section.keys()):
+            if level < section.level:
+                del self._current_section[level]
+
+    def get_current_section(self, level):
+        return self._current_section.get(level)
 
     @property
     def document_section(self):

@@ -24,39 +24,6 @@ class Field(SingleStyledText):
         super().__init__('', style=style, parent=parent)
 
 
-PAGE_NUMBER = 'page number'
-NUMBER_OF_PAGES = 'number of pages'
-SECTION_NUMBER = 'section number'
-SECTION_TITLE = 'section title'
-
-
-class Variable(Field):
-    def __init__(self, type, style=None):
-        super().__init__(style=style)
-        self.type = type
-
-    def __repr__(self):
-        return "{0}({1})".format(self.__class__.__name__, self.type)
-
-    def split(self, container):
-        text = '?'
-        if self.type == PAGE_NUMBER:
-            text = format_number(container.page.number,
-                                 container.page.number_format)
-        elif self.type == NUMBER_OF_PAGES:
-            document_section = container.document_part.document_section
-            number = document_section.previous_number_of_pages
-            text = format_number(number, container.page.number_format)
-        elif self.type == SECTION_NUMBER and container.page.section:
-            section_id = container.page.section.get_id(container.document)
-            text = container.document.get_reference(section_id, REFERENCE) or ''
-        elif self.type == SECTION_TITLE and container.page.section:
-            section_id = container.page.section.get_id(container.document)
-            text = container.document.get_reference(section_id, TITLE)
-
-        return self.split_words(text)
-
-
 class Referenceable(Flowable):
     def prepare(self, document):
         element_id = self.id or document.unique_id
@@ -200,3 +167,67 @@ class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
     def prepare(self, document):
         self.referenceable.prepare(document)
         super().prepare(document)
+
+
+class FieldType(object):
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return "{}('{}')".format(self.__class__.__name__, self.name)
+
+
+PAGE_NUMBER = FieldType('page number')
+NUMBER_OF_PAGES = FieldType('number of pages')
+
+
+class SectionFieldType(FieldType):
+    ref_type = None
+
+    def __init__(self, name, level):
+        super().__init__(name)
+        self.level = level
+
+    def __repr__(self):
+        return "{}('{}', {})".format(self.__class__.__name__, self.name,
+                                     self.level)
+
+
+class SECTION_NUMBER(SectionFieldType):
+    ref_type = REFERENCE
+
+    def __init__(self, level):
+        super().__init__('section number', level)
+
+
+class SECTION_TITLE(SectionFieldType):
+    ref_type = TITLE
+
+    def __init__(self, level):
+        super().__init__('section title', level)
+
+
+class Variable(Field):
+    def __init__(self, type, style=None):
+        super().__init__(style=style)
+        self.type = type
+
+    def __repr__(self):
+        return "{0}({1})".format(self.__class__.__name__, self.type)
+
+    def split(self, container):
+        if self.type == PAGE_NUMBER:
+            text = format_number(container.page.number,
+                                 container.page.number_format)
+        elif self.type == NUMBER_OF_PAGES:
+            document_section = container.document_part.document_section
+            number = document_section.previous_number_of_pages
+            text = format_number(number, container.page.number_format)
+        elif isinstance(self.type, SectionFieldType):
+            section = container.page.get_current_section(self.type.level)
+            text = (container.document.get_reference(section.get_id(section),
+                                                     self.type.ref_type)
+                    if section else '')
+        else:
+            text = '?'
+        return self.split_words(text)

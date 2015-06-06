@@ -9,9 +9,11 @@
 from itertools import count, repeat
 
 from .draw import Line, LineStyle
-from .flowable import GroupedFlowables, StaticGroupedFlowables, PageBreak
+from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
+from .flowable import PageBreak, PageBreakState
+from .layout import EndOfContainer
 from .number import NumberStyle, Label, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, Paragraph
@@ -67,6 +69,19 @@ class Section(Referenceable, StaticGroupedFlowables):
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
 
+    def render(self, container, descender, state=None, **kwargs):
+        set_section = True
+        try:
+            return super().render(container, descender, state=state, **kwargs)
+        except EndOfContainer as eoc:
+            first_flowable_state = eoc.flowable_state.first_flowable_state
+            set_section = not isinstance(first_flowable_state, PageBreakState)
+            raise eoc
+        finally:
+            if set_section:
+                container.page.set_current_section(self.section)
+
+
 
 class HeadingStyle(NumberedParagraphStyle):
     attributes = {'number_separator': '.'}
@@ -120,8 +135,6 @@ class Heading(NumberedParagraph):
 
     def render(self, container, last_descender, state=None):
         result = super().render(container, last_descender, state=state)
-        if self.level == 1:
-            container.page.section = self.parent
         try:
             self.parent.update_page_reference(container.page)
         except AttributeError:

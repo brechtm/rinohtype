@@ -127,8 +127,8 @@ class DocumentOptions(dict):
                'page_horizontal_margin': 2*CM,
                'page_vertical_margin': 3*CM,
                'columns': 1,
-               'header_text': (Variable(SECTION_NUMBER) + ' '
-                               + Variable(SECTION_TITLE)),
+               'header_text': (Variable(SECTION_NUMBER(1)) + ' '
+                               + Variable(SECTION_TITLE(1))),
                'footer_text': Tab() + Variable(PAGE_NUMBER)
                               + '/' + Variable(NUMBER_OF_PAGES)}
 
