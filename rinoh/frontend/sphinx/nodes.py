@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from ...annotation import NamedDestinationLink, AnnotatedText
 from ...flowable import DummyFlowable, StaticGroupedFlowables
 from ...structure import DefinitionList, DefinitionTerm
 from ...text import MixedStyledText
@@ -19,7 +20,8 @@ __all__ = ['Compact_Paragraph', 'Index', 'SeeAlso', 'Glossary', 'Start_of_File',
            'Todo_Node', 'HighlightLang', 'Literal_Strong', 'Desc',
            'Desc_Signature', 'Desc_Name', 'Desc_AddName', 'Desc_ParameterList',
            'Desc_Parameter', 'Desc_Optional', 'Desc_Annotation', 'Desc_Content',
-           'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table']
+           'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
+           'Number_Reference']
 
 
 class Compact_Paragraph(GroupingElement):
@@ -114,3 +116,10 @@ class Tabular_Col_Spec(BodyElement):
 
 class AutoSummary_Table(GroupingElement):
     pass
+
+
+class Number_Reference(Inline):
+    def build_styled_text(self):
+        link = NamedDestinationLink(self.get('refid'))
+        return AnnotatedText(self.process_content(), link, style='link')
+
