@@ -12,7 +12,7 @@ from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
 from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .paragraph import Paragraph
-from .reference import Referenceable, REFERENCE
+from .reference import Referenceable, NUMBER
 from .text import MixedStyledText, SingleStyledText, TextStyle
 
 
@@ -85,6 +85,6 @@ class Figure(Referenceable, StaticGroupedFlowables, InseparableFlowables):
         element_id = self.get_id(document)
         number = document.counters.setdefault(__class__, 1)
         document.counters[__class__] += 1
-        document.set_reference(element_id, REFERENCE, str(number))
+        document.set_reference(element_id, NUMBER, str(number))
         # TODO: need to store formatted number
         # document.set_reference(element_id, TITLE, caption text)

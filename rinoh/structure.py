@@ -18,7 +18,7 @@ from .number import NumberStyle, Label, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, Paragraph
 from .reference import Referenceable, Reference
-from .reference import REFERENCE, TITLE, PAGE
+from .reference import NUMBER, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import SingleStyledText, MixedStyledText, Tab
@@ -122,11 +122,11 @@ class Heading(NumberedParagraph):
             separator = self.get_style('number_separator', document)
             if separator is not None and self.level > 1:
                 parent_id = self.section.parent.section.get_id(document)
-                parent_ref = document.get_reference(parent_id, REFERENCE)
+                parent_ref = document.get_reference(parent_id, NUMBER)
                 label = parent_ref + separator + label
         else:
             label = None
-        document.set_reference(section_id, REFERENCE, label)
+        document.set_reference(section_id, NUMBER, label)
         document.set_reference(section_id, TITLE, str(self.content))
 
     def text(self, document):
@@ -263,7 +263,7 @@ class TableOfContents(GroupedFlowables):
             items = limit_items(items, self.section)
 
         for flowable_id, flowable in items:
-            text = [Reference(flowable_id, type=REFERENCE, quiet=True), Tab(),
+            text = [Reference(flowable_id, type=NUMBER, quiet=True), Tab(),
                     Reference(flowable_id, type=TITLE), Tab(),
                     Reference(flowable_id, type=PAGE)]
             yield TableOfContentsEntry(text, flowable.level, parent=self)

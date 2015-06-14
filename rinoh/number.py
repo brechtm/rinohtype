@@ -124,7 +124,7 @@ class NumberedParagraph(ParagraphBase, Label):
 
     def number(self, document):
         target_id = self.referenceable.get_id(document)
-        formatted_number = document.get_reference(target_id, REFERENCE)
+        formatted_number = document.get_reference(target_id, NUMBER)
         if formatted_number:
             return self.format_label(formatted_number, document)
         else:
@@ -134,4 +134,4 @@ class NumberedParagraph(ParagraphBase, Label):
         raise NotImplementedError
 
 
-from .reference import REFERENCE
+from .reference import NUMBER

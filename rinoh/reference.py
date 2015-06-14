@@ -40,14 +40,14 @@ class Referenceable(Flowable):
         document.page_references[self.get_id(document)] = page.number
 
 
-REFERENCE = 'reference'
+NUMBER = 'number'
 PAGE = 'page'
 TITLE = 'title'
 POSITION = 'position'
 
 
 class ReferenceBase(Field):
-    def __init__(self, type=REFERENCE, link=True, quiet=False,
+    def __init__(self, type=NUMBER, link=True, quiet=False,
                  style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.type = type
@@ -60,7 +60,7 @@ class ReferenceBase(Field):
     def split(self, container):
         target_id = self.target_id(container.document)
         try:
-            if self.type == REFERENCE:
+            if self.type == NUMBER:
                 text = container.document.get_reference(target_id, self.type)
                 if text is None:
                     if not self.quiet:
@@ -91,7 +91,7 @@ class ReferenceBase(Field):
 
 
 class Reference(ReferenceBase):
-    def __init__(self, target_id, type=REFERENCE, link=True, style=None,
+    def __init__(self, target_id, type=NUMBER, link=True, style=None,
                  quiet=False, **kwargs):
         super().__init__(type=type, link=link, style=style, quiet=quiet,
                          **kwargs)
@@ -102,7 +102,7 @@ class Reference(ReferenceBase):
 
 
 class DirectReference(ReferenceBase):
-    def __init__(self, referenceable, type=REFERENCE, link=False, style=None,
+    def __init__(self, referenceable, type=NUMBER, link=False, style=None,
                  **kwargs):
         super().__init__(type=type, link=link, style=style, **kwargs)
         self.referenceable = referenceable
@@ -134,14 +134,14 @@ class NoteMarkerBase(ReferenceBase, Label):
     style_class = NoteMarkerStyle
 
     def __init__(self, custom_label=None, **kwargs):
-        kwargs.update(type=REFERENCE, link=True)
+        kwargs.update(type=NUMBER, link=True)
         super().__init__(**kwargs)
         Label.__init__(self, custom_label=custom_label)
 
     def prepare(self, document):
         target_id = self.target_id(document)
         try:  # set reference only once (notes can be referenced multiple times)
-            document.get_reference(target_id, REFERENCE)
+            document.get_reference(target_id, NUMBER)
         except KeyError:
             if self.get_style('custom_label', document):
                 assert self.custom_label is not None
@@ -152,7 +152,7 @@ class NoteMarkerBase(ReferenceBase, Label):
                 counter.append(self)
                 formatted_number = format_number(len(counter), number_format)
             label = self.format_label(str(formatted_number), document)
-            document.set_reference(target_id, REFERENCE, str(label))
+            document.set_reference(target_id, NUMBER, str(label))
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
@@ -194,7 +194,7 @@ class SectionFieldType(FieldType):
 
 
 class SECTION_NUMBER(SectionFieldType):
-    ref_type = REFERENCE
+    ref_type = NUMBER
 
     def __init__(self, level):
         super().__init__('section number', level)

@@ -16,7 +16,7 @@ from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .reference import Referenceable, REFERENCE
+from .reference import Referenceable, NUMBER
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 from .util import ReadAliasAttribute
@@ -259,7 +259,7 @@ class TableWithCaption(Referenceable, StaticGroupedFlowables):
         element_id = self.get_id(document)
         number = document.counters.setdefault(__class__, 1)
         document.counters[__class__] += 1
-        document.set_reference(element_id, REFERENCE, str(number))
+        document.set_reference(element_id, NUMBER, str(number))
 
 
 class TableSection(Styled, list):
