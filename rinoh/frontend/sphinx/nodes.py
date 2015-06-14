@@ -8,6 +8,7 @@
 
 from ...annotation import NamedDestinationLink, AnnotatedText
 from ...flowable import DummyFlowable, StaticGroupedFlowables
+from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm
 from ...text import MixedStyledText
 from ...util import intersperse
@@ -120,6 +121,4 @@ class AutoSummary_Table(GroupingElement):
 
 class Number_Reference(Inline):
     def build_styled_text(self):
-        link = NamedDestinationLink(self.get('refid'))
-        return AnnotatedText(self.process_content(), link, style='link')
-
+        return Reference(self.get('refid'), REFERENCE, style='link')
