@@ -375,7 +375,7 @@ class Footnote_Reference(InlineElement):
     style = 'footnote'
 
     def build_styled_text(self):
-        return rt.NoteMarkerByID(self.node['refid'],
+        return rt.NoteMarkerByID(self['refid'],
                                  custom_label=self.process_content(),
                                  style=self.style)
 
@@ -395,8 +395,8 @@ class Substitution_Definition(BodyElement):
 
 class Target(BodyElement, InlineElement):
     def build_styled_text(self):
+        # TODO: what about refid?
         try:
-            # TODO: add destination for each id
             destination = rt.NamedDestination(self.get('ids')[0])
             return rt.AnnotatedText(self.process_content(), destination)
         except IndexError:

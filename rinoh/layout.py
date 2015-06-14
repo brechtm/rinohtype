@@ -161,7 +161,7 @@ class ContainerBase(FlowableTarget):
     def __getattr__(self, name):
         if name in ('_footnote_space', 'float_space'):
             return getattr(self.parent, name)
-        raise AttributeError
+        raise AttributeError(name)
 
     @property
     def chained_ancestor(self):
