@@ -6,11 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import Annotation, NamedDestinationLink, AnnotatedSpan
+from .annotation import NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph
 from .text import SingleStyledText, TextStyle
+from .util import NotImplementedAttribute
 
 
 __all__ = ['Field', 'Variable', 'Referenceable', 'Reference',
@@ -25,6 +26,8 @@ class Field(SingleStyledText):
 
 
 class Referenceable(Flowable):
+    category = NotImplementedAttribute()
+
     def prepare(self, document):
         element_id = self.id or document.unique_id
         if self.id is None:
@@ -40,10 +43,11 @@ class Referenceable(Flowable):
         document.page_references[self.get_id(document)] = page.number
 
 
-NUMBER = 'number'
-PAGE = 'page'
-TITLE = 'title'
-POSITION = 'position'
+                            # examples for section "3.2 Some Title"
+REFERENCE = 'reference'     # Section 3.2
+NUMBER = 'number'           # 3.2
+TITLE = 'title'             # Some Title
+PAGE = 'page'               # <number of the page on which section 3.2 starts>
 
 
 class ReferenceBase(Field):
@@ -60,7 +64,11 @@ class ReferenceBase(Field):
     def split(self, container):
         target_id = self.target_id(container.document)
         try:
-            if self.type == NUMBER:
+            if self.type == REFERENCE:
+                category = container.document.elements[target_id].category
+                number = container.document.get_reference(target_id, NUMBER)
+                text = '{}\N{No-BREAK SPACE}{}'.format(category, number)
+            elif self.type == NUMBER:
                 text = container.document.get_reference(target_id, self.type)
                 if text is None:
                     if not self.quiet:
@@ -75,7 +83,7 @@ class ReferenceBase(Field):
             elif self.type == TITLE:
                 text = container.document.get_reference(target_id, self.type)
             else:
-                raise NotImplementedError
+                raise NotImplementedError(self.type)
         except KeyError:
             self.warn("Unknown label '{}'".format(target_id), container)
             text = "??".format(target_id)

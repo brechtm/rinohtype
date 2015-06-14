@@ -44,6 +44,10 @@ class Section(Referenceable, StaticGroupedFlowables):
         super().__init__(flowables, id=id, style=style, parent=parent)
 
     @property
+    def category(self):
+        return 'Chapter' if self.level == 1 else 'Section'
+
+    @property
     def level(self):
         try:
             return self.parent.level + 1
