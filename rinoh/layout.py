@@ -187,7 +187,7 @@ class ContainerBase(FlowableTarget):
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
         self._self_cursor.grow(height)
-        if check_overflow and self.cursor > self.height:
+        if check_overflow and self.remaining_height < 0:
             raise EndOfContainer
 
     def check_overflow(self):
