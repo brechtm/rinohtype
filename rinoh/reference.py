@@ -235,7 +235,7 @@ class Variable(Field):
             section = container.page.get_current_section(self.type.level)
             text = (container.document.get_reference(section.get_id(section),
                                                      self.type.ref_type)
-                    if section else '')
+                    if section else None) or ''
         else:
             text = '?'
         return self.split_words(text)
