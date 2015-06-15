@@ -77,7 +77,7 @@ class Caption(NumberedParagraph):
         return MixedStyledText(label + self.content, parent=self)
 
 
-class Figure(Referenceable, StaticGroupedFlowables, InseparableFlowables):
+class Figure(Referenceable, InseparableFlowables, StaticGroupedFlowables):
     category = 'Figure'
 
     def prepare(self, document):

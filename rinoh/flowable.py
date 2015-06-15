@@ -201,9 +201,6 @@ class SetMetadataFlowable(DummyFlowable):
 # grouping flowables
 
 class InseparableFlowables(Flowable):
-    def flowables(self, document):
-        raise NotImplementedError
-
     def render(self, container, last_descender, state=None):
         max_flowable_width = 0
         with MaybeContainer(container) as maybe_container, discard_state():
