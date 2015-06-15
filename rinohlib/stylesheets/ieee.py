@@ -118,7 +118,7 @@ styles('affiliation',
        space_below=6*PT + 12*PT)
 
 styles('chapter',
-       new_page=RIGHT)
+       page_break=RIGHT)
 
 styles('heading level 1',
        typeface=Var('ieee_family').serif,
