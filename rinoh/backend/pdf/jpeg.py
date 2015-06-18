@@ -9,6 +9,12 @@
 from io import SEEK_CUR
 from struct import Struct
 
+from .cos import Name, XObjectImage
+from .filter import DCTDecode
+
+
+__all__ = ['JPEGReader']
+
 
 def create_reader(data_format, process_struct=lambda data: data[0]):
     data_struct = Struct('>' + data_format)
@@ -18,7 +24,7 @@ def create_reader(data_format, process_struct=lambda data: data[0]):
     return reader
 
 
-class JPEGReader(object):
+class JPEGReader(XObjectImage):
     def __init__(self, file_or_filename):
         print('opening', file_or_filename)
         try:
@@ -27,6 +33,20 @@ class JPEGReader(object):
         except TypeError:
             self._file = file_or_filename
             self.filename = None
+        width, height, bits_per_component, num_components = self._get_metadata()
+        self.dpi = 144, 144                 # FIXME: read from JFIF or EXIF
+        colorspace = Name('DeviceRGB')      # FIXME: determine from JPEG
+        super().__init__(width, height, colorspace, bits_per_component,
+                         filter=DCTDecode())
+        self._file.seek(0)
+        self._data.write(self._file.read())
+
+    read_uchar = create_reader('B')
+
+    read_ushort = create_reader('H')
+
+    def _get_metadata(self):
+        self._file.seek(0)
         prefix, marker = self.read_uchar(), self.read_uchar()
         if (prefix, marker) != (0xFF, 0xD8):
             raise ValueError('Not a JPEG file')
@@ -46,7 +66,8 @@ class JPEGReader(object):
                 break
             header_length = self.read_ushort()
             if (marker & 0xF0) == 0xC0 and marker not in (0xC4, 0xC8, 0xCC):
-                self._parse_start_of_frame(header_length)
+                v_size, h_size, bits_per_component, num_components = \
+                    self._parse_start_of_frame(header_length)
             elif marker == 0xE0:
                 self._parse_jfif_segment(header_length)
             else:
@@ -64,9 +85,7 @@ class JPEGReader(object):
                                 break
                 else:
                     print('')
-
-    read_uchar = create_reader('B')
-    read_ushort = create_reader('H')
+        return h_size, v_size, bits_per_component, num_components
 
     SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
 
@@ -75,6 +94,7 @@ class JPEGReader(object):
         (sample_precision, v_size, h_size, num_components) = self.SOF_HEADER()
         print('SOF', sample_precision, v_size, h_size, num_components)
         self._file.seek(resume_position)
+        return v_size, h_size, sample_precision, num_components
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 

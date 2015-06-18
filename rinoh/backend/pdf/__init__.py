@@ -15,6 +15,8 @@ from . import cos
 
 from .reader import PDFReader
 from .filter import FlateDecode
+from .jpeg import JPEGReader
+
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
 
@@ -302,6 +304,8 @@ class Canvas(StringIO):
             self.rotate(rotate)
             self.translate(- scale * image.width / 2, scale * image.height / 2)
             self.scale(scale)
+            if image.xobject.subtype == 'Image':
+                self.scale(image.width, image.height)
             print('/Im{} Do'.format(image_number), file=self)
         return im_width * scale, im_height * scale
 
@@ -381,6 +385,14 @@ class AnnotationLocation(object):
 
 class Image(object):
     def __init__(self, filename_or_file):
+        try:
+            self.xobject = JPEGReader(filename_or_file)
+            dpi_x, dpi_y = self.xobject.dpi
+            self.width = self.xobject['Width'] / dpi_x * 72
+            self.height = self.xobject['Height'] / dpi_y * 72
+            return
+        except ValueError:
+            pass
         try:
             image = PDFReader(filename_or_file)
         except ValueError:

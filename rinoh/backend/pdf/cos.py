@@ -408,13 +408,28 @@ class Stream(Dictionary):
         return getattr(self._data, name)
 
 
-class XObjectForm(Stream):
+class XObject(Stream):
     type = 'XObject'
+
+
+class XObjectForm(XObject):
     subtype = 'Form'
 
     def __init__(self, bounding_box):
         super().__init__()
         self['BBox'] = bounding_box
+
+
+class XObjectImage(XObject):
+    subtype = 'Image'
+
+    def __init__(self, width, height, colorspace, bitspercomponent,
+                 filter=None):
+        super().__init__(filter=filter)
+        self['Width'] = Integer(width)
+        self['Height'] = Integer(height)
+        self['ColorSpace'] = colorspace
+        self['BitsPerComponent'] = Integer(bitspercomponent)
 
 
 class ObjectStream(Stream):
