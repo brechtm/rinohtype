@@ -56,23 +56,15 @@ class JPEGReader(XObjectImage):
             if prefix != 0xFF or marker == 0x00:
                 raise ValueError('Invalid or corrupt JPEG file')
             header_length = self.read_ushort()
-            if (marker & 0xF0) == 0xC0 and marker not in (0xC4, 0xC8, 0xCC):
+            if marker == 0xE0:
+                self._parse_jfif_segment(header_length)
+            elif (marker & 0xF0) == 0xC0 and marker not in (0xC4, 0xC8, 0xCC):
                 v_size, h_size, bits_per_component, num_components = \
                     self._parse_start_of_frame(header_length)
                 break
-            elif marker == 0xE0:
-                self._parse_jfif_segment(header_length)
             else:
                 self._file.seek(header_length - 2, SEEK_CUR)
         return h_size, v_size, bits_per_component, num_components
-
-    SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
-
-    def _parse_start_of_frame(self, header_length):
-        resume_position = self._file.tell() + header_length - 2
-        (sample_precision, v_size, h_size, num_components) = self.SOF_HEADER()
-        self._file.seek(resume_position)
-        return v_size, h_size, sample_precision, num_components
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 
@@ -82,3 +74,11 @@ class JPEGReader(XObjectImage):
         assert identifier == b'JFIF\0'
         thumbnail_size = 3 * h_thumbnail * v_thumbnail
         assert header_length == 16 + thumbnail_size
+
+    SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
+
+    def _parse_start_of_frame(self, header_length):
+        resume_position = self._file.tell() + header_length - 2
+        (sample_precision, v_size, h_size, num_components) = self.SOF_HEADER()
+        self._file.seek(resume_position)
+        return v_size, h_size, sample_precision, num_components
