@@ -24,6 +24,13 @@ def create_reader(data_format, process_struct=lambda data: data[0], endian='>'):
     return reader
 
 
+# useful resources
+# * http://fileformats.archiveteam.org/wiki/JPEG
+# * libjpeg.txt from the Independent JPEG Group's reference implementation
+# * http://www.ozhiker.com/electronics/pjmt/jpeg_info/app_segments.html
+# * http://www.w3.org/Graphics/JPEG/
+# * http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf
+
 class JPEGReader(XObjectImage):
     COLOR_SPACE = {1: 'DeviceGray',
                    3: 'DeviceRGB',
