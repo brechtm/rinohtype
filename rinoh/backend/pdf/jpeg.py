@@ -9,8 +9,8 @@
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
 
-from .cos import Name, XObjectImage
-from .filter import DCTDecode
+from .cos import Name, XObjectImage, Array, Stream, Integer
+from .filter import DCTDecode, FlateDecode
 
 
 __all__ = ['JPEGReader']
@@ -44,11 +44,17 @@ class JPEGReader(XObjectImage):
             self._file = file_or_filename
             self.filename = None
         self.dpi = 72, 72
-        width, height, bits_per_component, num_components = self._get_metadata()
+        width, height, bits_per_component, num_components, icc_profile = \
+            self._get_metadata()
         if bits_per_component != 8:
             raise ValueError('PDF only supports JPEG files with 8 bits '
                              'per component')
-        colorspace = Name(self.COLOR_SPACE[num_components])
+        if icc_profile is not None:
+            icc_profile['N'] = Integer(num_components)
+            icc_profile['Alternate'] = Name(self.COLOR_SPACE[num_components])
+            colorspace = Array([Name('ICCBased'), icc_profile])
+        else:
+            colorspace = Name(self.COLOR_SPACE[num_components])
         super().__init__(width, height, colorspace, bits_per_component,
                          filter=DCTDecode())
         self._file.seek(0)
@@ -68,6 +74,9 @@ class JPEGReader(XObjectImage):
             self.dpi = 2.54 * x_density, 2.54 * y_density
 
     def _get_metadata(self):
+        icc_profile = None
+        next_icc_part_number = 1
+        num_icc_parts = 0
         self._file.seek(0)
         prefix, marker = self.read_uchar(), self.read_uchar()
         if (prefix, marker) != (0xFF, 0xD8):
@@ -85,13 +94,23 @@ class JPEGReader(XObjectImage):
             elif marker == 0xE1:
                 density = self._parse_exif_segment(header_length)
                 self._set_density(density)
+            elif marker == 0xE2:
+                icc_part_number, num_icc_parts, icc_part_bytes = \
+                    self._parse_icc_segment(header_length)
+                assert icc_part_number == next_icc_part_number
+                next_icc_part_number += 1
+                if icc_profile is None:
+                    assert icc_part_number == 1
+                    icc_profile = Stream(filter=FlateDecode())
+                icc_profile.write(icc_part_bytes)
             elif (marker & 0xF0) == 0xC0 and marker not in (0xC4, 0xC8, 0xCC):
                 v_size, h_size, bits_per_component, num_components = \
                     self._parse_start_of_frame(header_length)
                 break
             else:
                 self._file.seek(header_length - 2, SEEK_CUR)
-        return h_size, v_size, bits_per_component, num_components
+        assert next_icc_part_number == num_icc_parts + 1
+        return h_size, v_size, bits_per_component, num_components, icc_profile
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 
@@ -177,6 +196,17 @@ class JPEGReader(XObjectImage):
             result[tag] = get_value(type, count, value_or_offset)
         return result
 
+    ICC_HEADER = create_reader('12s B B', lambda tuple: tuple)
+
+    def _parse_icc_segment(self, header_length):
+        resume_position = self._file.tell() + header_length - 2
+        identifier, part_number, num_parts = self.ICC_HEADER()
+        if identifier != b'ICC_PROFILE\0':
+            self._file.seek(resume_position)
+            return None
+        part_bytes = self._file.read(resume_position - self._file.tell())
+        return part_number, num_parts, part_bytes
+
     SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
 
     def _parse_start_of_frame(self, header_length):
@@ -221,4 +251,3 @@ EXIF_RESOLUTION_UNIT = 0x128
 EXIF_IFD_POINTER = 0x8769
 
 EXIF_COLOR_SPACE = 0xA001
-
