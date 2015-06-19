@@ -42,6 +42,9 @@ class JPEGReader(XObjectImage):
             self.filename = None
         self.dpi = 72, 72
         width, height, bits_per_component, num_components = self._get_metadata()
+        if bits_per_component != 8:
+            raise ValueError('PDF only supports JPEG files with 8 bits '
+                             'per component')
         colorspace = Name(self.COLOR_SPACE[num_components])
         super().__init__(width, height, colorspace, bits_per_component,
                          filter=DCTDecode())
