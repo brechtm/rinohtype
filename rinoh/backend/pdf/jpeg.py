@@ -138,7 +138,7 @@ class JPEGReader(XObjectImage):
                 offset, = unpack(endian + 'I', value_or_offset)
                 self._file.seek(tiff_header_offset + offset)
                 data = self._file.read(num_bytes)
-                format = '{}{}{}'.format(endian, count, value_format)
+                format = '{}{}'.format(endian, count * value_format)
                 self._file.seek(saved_offset)
             else:
                 format = endian + value_format
@@ -146,12 +146,19 @@ class JPEGReader(XObjectImage):
 
             raw_value = unpack(format, data)
             if type in (1, 3, 4, 9):
-                value, = raw_value
+                try:
+                    value, = raw_value
+                except ValueError:
+                    value = raw_value
             elif type == 2:
                 value = raw_value[0].decode('ISO-8859-1')
             elif type in (5, 10):
-                numerator, denomenator = raw_value
-                value = numerator / denomenator
+                try:
+                    numerator, denomenator = raw_value
+                    value = numerator / denomenator
+                except ValueError:
+                    pairs = zip(*(iter(raw_value), ) * 2)
+                    value = tuple(num / denom for num, denom in pairs)
             elif type == 7:
                 value = raw_value
             return value
@@ -192,7 +199,7 @@ EXIF_TAG_TYPE = {1: 'B',
                  2: 's',
                  3: 'H',
                  4: 'I',
-                 5: 'II',  # FIXME: becomes '<count>II'
+                 5: 'II',
                  7: 's',
                  9: 'i',
                  10: 'ii'}
