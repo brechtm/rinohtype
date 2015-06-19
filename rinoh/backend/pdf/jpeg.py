@@ -16,10 +16,6 @@ from .filter import DCTDecode
 __all__ = ['JPEGReader']
 
 
-DPCM = 'dpcm'
-DPI = 'dpi'
-
-
 def create_reader(data_format, process_struct=lambda data: data[0], endian='>'):
     data_struct = Struct(endian + data_format)
     def reader(jpeg_reader):
@@ -91,9 +87,6 @@ class JPEGReader(XObjectImage):
         return h_size, v_size, bits_per_component, num_components
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
-    JFIF_UNITS = {0: None,
-                  1: DPI,
-                  2: DPCM}
 
     def _parse_jfif_segment(self, header_length):
         (identifier, version, units,
@@ -101,28 +94,11 @@ class JPEGReader(XObjectImage):
         assert identifier == b'JFIF\0'
         thumbnail_size = 3 * h_thumbnail * v_thumbnail
         assert header_length == 16 + thumbnail_size
-        return h_density, v_density, self.JFIF_UNITS[units]
+        return h_density, v_density, JFIF_UNITS[units]
 
     EXIF_HEADER = create_reader('5s B', lambda tuple: tuple)
     EXIF_TIFF_HEADER = 'H I'
     EXIF_TAG_FORMAT = 'H H I 4s'
-    EXIF_ENDIAN = {0x4949: '<',
-                   0x4D4D: '>'}
-
-    EXIF_X_RESOLUTION = 0x11A
-    EXIF_Y_RESOLUTION = 0x11B
-    EXIF_RESOLUTION_UNIT = 0x128
-
-    EXIF_TAG_TYPE = {1: 'B',
-                     2: 's',
-                     3: 'H',
-                     4: 'I',
-                     5: 'II',  # FIXME: becomes '<count>II'
-                     7: 's',
-                     9: 'i',
-                     10: 'ii'}
-    EXIF_UNITS = {2: DPI,
-                  3: DPCM}
 
     def _parse_exif_segment(self, header_length):
         resume_position = self._file.tell() + header_length - 2
@@ -133,11 +109,26 @@ class JPEGReader(XObjectImage):
         assert null == 0
         tiff_header_offset = self._file.tell()
         byte_order = self.read_ushort()
-        endian = self.EXIF_ENDIAN[byte_order]
+        endian = EXIF_ENDIAN[byte_order]
+
+        tiff_header = create_reader(self.EXIF_TIFF_HEADER,
+                                    lambda tuple: tuple, endian)
+        fortytwo, ifd_offset = tiff_header(self)
+        assert fortytwo == 42
+        self._file.seek(tiff_header_offset + ifd_offset)
+        ifd_0th = self._parse_exif_ifd(endian, tiff_header_offset)
+        self._file.seek(resume_position)
+        return (ifd_0th[EXIF_X_RESOLUTION],
+                ifd_0th[EXIF_Y_RESOLUTION],
+                EXIF_UNITS[ifd_0th[EXIF_RESOLUTION_UNIT]])
+
+    def _parse_exif_ifd(self, endian, tiff_header_offset):
         read_ushort = create_reader('H', endian=endian)
+        tag_format = create_reader(self.EXIF_TAG_FORMAT,
+                                   lambda tuple: tuple, endian)
 
         def get_value(type, count, value_or_offset):
-            value_format = self.EXIF_TAG_TYPE[type]
+            value_format = EXIF_TAG_TYPE[type]
             num_bytes = count * calcsize(value_format)
             if num_bytes > 4:  # offset
                 saved_offset = self._file.tell()
@@ -162,25 +153,12 @@ class JPEGReader(XObjectImage):
                 value = raw_value
             return value
 
-        tiff_header = create_reader(self.EXIF_TIFF_HEADER,
-                                    lambda tuple: tuple, endian)
-        fortytwo, ifd_offset = tiff_header(self)
-        assert fortytwo == 42
-        self._file.seek(tiff_header_offset + ifd_offset)
-        tag_format = create_reader(self.EXIF_TAG_FORMAT,
-                                   lambda tuple: tuple, endian)
         num_tags = read_ushort(self)
+        result = {}
         for i in range(num_tags):
             tag, type, count, value_or_offset = tag_format(self)
-            value = get_value(type, count, value_or_offset)
-            if tag == self.EXIF_X_RESOLUTION:
-                x_resolution = value
-            elif tag == self.EXIF_Y_RESOLUTION:
-                y_resolution = value
-            elif tag == self.EXIF_RESOLUTION_UNIT:
-                resolution_unit = value
-        self._file.seek(resume_position)
-        return x_resolution, y_resolution, self.EXIF_UNITS[resolution_unit]
+            result[tag] = get_value(type, count, value_or_offset)
+        return result
 
     SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
 
@@ -189,3 +167,32 @@ class JPEGReader(XObjectImage):
         sample_precision, v_size, h_size, num_components = self.SOF_HEADER()
         self._file.seek(resume_position)
         return v_size, h_size, sample_precision, num_components
+
+
+DPCM = 'dpcm'
+DPI = 'dpi'
+
+
+
+
+JFIF_UNITS = {0: None,
+              1: DPI,
+              2: DPCM}
+
+EXIF_X_RESOLUTION = 0x11A
+EXIF_Y_RESOLUTION = 0x11B
+EXIF_RESOLUTION_UNIT = 0x128
+EXIF_COLOR_SPACE = 0xA001
+
+EXIF_ENDIAN = {0x4949: '<',
+               0x4D4D: '>'}
+EXIF_TAG_TYPE = {1: 'B',
+                 2: 's',
+                 3: 'H',
+                 4: 'I',
+                 5: 'II',  # FIXME: becomes '<count>II'
+                 7: 's',
+                 9: 'i',
+                 10: 'ii'}
+EXIF_UNITS = {2: DPI,
+              3: DPCM}
