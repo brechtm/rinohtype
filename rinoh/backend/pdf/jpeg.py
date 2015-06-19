@@ -29,6 +29,10 @@ def create_reader(data_format, process_struct=lambda data: data[0], endian='>'):
 
 
 class JPEGReader(XObjectImage):
+    COLOR_SPACE = {1: 'DeviceGray',
+                   3: 'DeviceRGB',
+                   4: 'DeviceCMYK'}
+
     def __init__(self, file_or_filename):
         try:
             self._file = open(file_or_filename, 'rb')
@@ -38,7 +42,7 @@ class JPEGReader(XObjectImage):
             self.filename = None
         self.dpi = 72, 72
         width, height, bits_per_component, num_components = self._get_metadata()
-        colorspace = Name('DeviceRGB')      # FIXME: determine from JPEG
+        colorspace = Name(self.COLOR_SPACE[num_components])
         super().__init__(width, height, colorspace, bits_per_component,
                          filter=DCTDecode())
         self._file.seek(0)
