@@ -117,6 +117,9 @@ class JPEGReader(XObjectImage):
         assert fortytwo == 42
         self._file.seek(tiff_header_offset + ifd_offset)
         ifd_0th = self._parse_exif_ifd(endian, tiff_header_offset)
+        if EXIF_IFD_POINTER in ifd_0th:
+            self._file.seek(tiff_header_offset + ifd_0th[EXIF_IFD_POINTER])
+            idf_exif = self._parse_exif_ifd(endian, tiff_header_offset)
         self._file.seek(resume_position)
         return (ifd_0th[EXIF_X_RESOLUTION],
                 ifd_0th[EXIF_Y_RESOLUTION],
@@ -173,16 +176,15 @@ DPCM = 'dpcm'
 DPI = 'dpi'
 
 
+SRGB = 'sRGB'
+ADOBERGB = 'AdobeRGB'
+UNCALIBRATED = 'uncalibrated'
 
 
 JFIF_UNITS = {0: None,
               1: DPI,
               2: DPCM}
 
-EXIF_X_RESOLUTION = 0x11A
-EXIF_Y_RESOLUTION = 0x11B
-EXIF_RESOLUTION_UNIT = 0x128
-EXIF_COLOR_SPACE = 0xA001
 
 EXIF_ENDIAN = {0x4949: '<',
                0x4D4D: '>'}
@@ -196,3 +198,13 @@ EXIF_TAG_TYPE = {1: 'B',
                  10: 'ii'}
 EXIF_UNITS = {2: DPI,
               3: DPCM}
+EXIF_COLORSPACES = {1: SRGB,
+                    0xFFFF: UNCALIBRATED}
+
+EXIF_X_RESOLUTION = 0x11A
+EXIF_Y_RESOLUTION = 0x11B
+EXIF_RESOLUTION_UNIT = 0x128
+EXIF_IFD_POINTER = 0x8769
+
+EXIF_COLOR_SPACE = 0xA001
+
