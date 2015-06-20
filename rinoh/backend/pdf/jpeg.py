@@ -218,13 +218,14 @@ class JPEGReader(XObjectImage):
     ADOBE_DCT_HEADER = create_reader('5s H H H B', lambda tuple: tuple)
 
     def _parse_adobe_dct_segment(self, header_length):
+        assert header_length >= 14
         resume_position = self._file.tell() + header_length - 2
         identifier, version, flags1, flags2, color_transform = \
             self.ADOBE_DCT_HEADER()
         if identifier != b'Adobe':
             self._file.seek(resume_position)
             return None
-        assert self._file.tell() == resume_position
+        self._file.seek(resume_position)
         return ADOBE_COLOR_TRANSFORM[color_transform]
 
     SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
