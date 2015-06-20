@@ -44,19 +44,22 @@ class JPEGReader(XObjectImage):
             self._file = file_or_filename
             self.filename = None
         self.dpi = 72, 72
-        width, height, bits_per_component, num_components, icc_profile = \
-            self._get_metadata()
+        (width, height, bits_per_component, num_components,
+         icc_profile, adobe_color_transform) = self._get_metadata()
         if bits_per_component != 8:
             raise ValueError('PDF only supports JPEG files with 8 bits '
                              'per component')
+        device_color_space = Name(self.COLOR_SPACE[num_components])
         if icc_profile is not None:
             icc_profile['N'] = Integer(num_components)
-            icc_profile['Alternate'] = Name(self.COLOR_SPACE[num_components])
+            icc_profile['Alternate'] = device_color_space
             colorspace = Array([Name('ICCBased'), icc_profile])
         else:
-            colorspace = Name(self.COLOR_SPACE[num_components])
+            colorspace = device_color_space
         super().__init__(width, height, colorspace, bits_per_component,
                          filter=DCTDecode())
+        if adobe_color_transform and num_components == 4:  # invert CMYK colors
+            self['Decode'] = Array([Integer(1), Integer(0)] * 4)
         self._file.seek(0)
         self._data.write(self._file.read())
 
@@ -77,6 +80,8 @@ class JPEGReader(XObjectImage):
         icc_profile = None
         next_icc_part_number = 1
         num_icc_parts = 0
+        adobe_color_xform = None
+
         self._file.seek(0)
         prefix, marker = self.read_uchar(), self.read_uchar()
         if (prefix, marker) != (0xFF, 0xD8):
@@ -103,6 +108,8 @@ class JPEGReader(XObjectImage):
                     assert icc_part_number == 1
                     icc_profile = Stream(filter=FlateDecode())
                 icc_profile.write(icc_part_bytes)
+            elif marker == 0xEE:
+                adobe_color_xform = self._parse_adobe_dct_segment(header_length)
             elif (marker & 0xF0) == 0xC0 and marker not in (0xC4, 0xC8, 0xCC):
                 v_size, h_size, bits_per_component, num_components = \
                     self._parse_start_of_frame(header_length)
@@ -110,7 +117,8 @@ class JPEGReader(XObjectImage):
             else:
                 self._file.seek(header_length - 2, SEEK_CUR)
         assert next_icc_part_number == num_icc_parts + 1
-        return h_size, v_size, bits_per_component, num_components, icc_profile
+        return (h_size, v_size, bits_per_component, num_components,
+                icc_profile, adobe_color_xform)
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 
@@ -207,6 +215,18 @@ class JPEGReader(XObjectImage):
         part_bytes = self._file.read(resume_position - self._file.tell())
         return part_number, num_parts, part_bytes
 
+    ADOBE_DCT_HEADER = create_reader('5s H H H B', lambda tuple: tuple)
+
+    def _parse_adobe_dct_segment(self, header_length):
+        resume_position = self._file.tell() + header_length - 2
+        identifier, version, flags1, flags2, color_transform = \
+            self.ADOBE_DCT_HEADER()
+        if identifier != b'Adobe':
+            self._file.seek(resume_position)
+            return None
+        assert self._file.tell() == resume_position
+        return ADOBE_COLOR_TRANSFORM[color_transform]
+
     SOF_HEADER = create_reader('B H H B', lambda tuple: tuple)
 
     def _parse_start_of_frame(self, header_length):
@@ -251,3 +271,12 @@ EXIF_RESOLUTION_UNIT = 0x128
 EXIF_IFD_POINTER = 0x8769
 
 EXIF_COLOR_SPACE = 0xA001
+
+
+UNKNOWN = 'RGB or CMYK'
+YCC = 'YCbCr'
+YCCK = 'YCCK'
+
+ADOBE_COLOR_TRANSFORM = {0: UNKNOWN,
+                         1: YCC,
+                         2: YCCK}
