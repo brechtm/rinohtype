@@ -5,6 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import os
 
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
@@ -44,12 +45,14 @@ class JPEGReader(XObjectImage):
             self._file = file_or_filename
             self.filename = None
         self.dpi = 72, 72
-        (width, height, bits_per_component, num_components,
+        (width, height, bits_per_component, num_components, exif_color_space,
          icc_profile, adobe_color_transform) = self._get_metadata()
         if bits_per_component != 8:
             raise ValueError('PDF only supports JPEG files with 8 bits '
                              'per component')
         device_color_space = Name(self.COLOR_SPACE[num_components])
+        if icc_profile is None and exif_color_space is not UNCALIBRATED:
+            icc_profile = get_icc_stream(exif_color_space)
         if icc_profile is not None:
             icc_profile['N'] = Integer(num_components)
             icc_profile['Alternate'] = device_color_space
@@ -78,6 +81,7 @@ class JPEGReader(XObjectImage):
 
     def _get_metadata(self):
         icc_profile = None
+        exif_color_space = UNCALIBRATED
         next_icc_part_number = 1
         num_icc_parts = 0
         adobe_color_xform = None
@@ -97,8 +101,10 @@ class JPEGReader(XObjectImage):
                 density = self._parse_jfif_segment(header_length)
                 self._set_density(density)
             elif marker == 0xE1:
-                density = self._parse_exif_segment(header_length)
-                self._set_density(density)
+                result = self._parse_exif_segment(header_length)
+                if result:
+                    density, exif_color_space = result
+                    self._set_density(density)
             elif marker == 0xE2:
                 icc_part_number, num_icc_parts, icc_part_bytes = \
                     self._parse_icc_segment(header_length)
@@ -118,7 +124,7 @@ class JPEGReader(XObjectImage):
                 self._file.seek(header_length - 2, SEEK_CUR)
         assert next_icc_part_number == num_icc_parts + 1
         return (h_size, v_size, bits_per_component, num_components,
-                icc_profile, adobe_color_xform)
+                exif_color_space, icc_profile, adobe_color_xform)
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 
@@ -153,11 +159,11 @@ class JPEGReader(XObjectImage):
         ifd_0th = self._parse_exif_ifd(endian, tiff_header_offset)
         if EXIF_IFD_POINTER in ifd_0th:
             self._file.seek(tiff_header_offset + ifd_0th[EXIF_IFD_POINTER])
-            idf_exif = self._parse_exif_ifd(endian, tiff_header_offset)
+            ifd_exif = self._parse_exif_ifd(endian, tiff_header_offset)
         self._file.seek(resume_position)
-        return (ifd_0th[EXIF_X_RESOLUTION],
-                ifd_0th[EXIF_Y_RESOLUTION],
-                EXIF_UNITS[ifd_0th[EXIF_RESOLUTION_UNIT]])
+        density = (ifd_0th[EXIF_X_RESOLUTION], ifd_0th[EXIF_Y_RESOLUTION],
+                   EXIF_UNITS[ifd_0th[EXIF_RESOLUTION_UNIT]])
+        return density, EXIF_COLOR_SPACES[ifd_exif[EXIF_COLOR_SPACE]]
 
     def _parse_exif_ifd(self, endian, tiff_header_offset):
         read_ushort = create_reader('H', endian=endian)
@@ -243,7 +249,22 @@ DPI = 'dpi'
 
 SRGB = 'sRGB'
 ADOBERGB = 'AdobeRGB'
-UNCALIBRATED = 'uncalibrated'
+UNCALIBRATED = None
+
+ICC_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'icc')
+ICC_FILENAME = {SRGB: 'sRGB_IEC61966-2-1_black_scaled.icc'}
+ICC_STREAM = {}
+
+def get_icc_stream(color_space):
+    try:
+        return ICC_STREAM[color_space]
+    except KeyError:
+        icc_file_path = os.path.join(ICC_PATH, ICC_FILENAME[color_space])
+        stream = Stream(filter=FlateDecode())
+        with open(icc_file_path, 'rb') as icc:
+            stream.write(icc.read())
+        ICC_STREAM[color_space] = stream
+        return stream
 
 
 JFIF_UNITS = {0: None,
@@ -263,8 +284,8 @@ EXIF_TAG_TYPE = {1: 'B',
                  10: 'ii'}
 EXIF_UNITS = {2: DPI,
               3: DPCM}
-EXIF_COLORSPACES = {1: SRGB,
-                    0xFFFF: UNCALIBRATED}
+EXIF_COLOR_SPACES = {1: SRGB,
+                     0xFFFF: UNCALIBRATED}
 
 EXIF_X_RESOLUTION = 0x11A
 EXIF_Y_RESOLUTION = 0x11B

@@ -1,0 +1,38 @@
+source: http://www.color.org/srgbprofiles.xalter#v2
+
+sRGB v2 profiles
+================
+
+An ICC version 2 (v2) sRGB profiles is provided below, with XYZ black point
+scaling to zero. This 'black scaled' profile has the preferred rendering
+intent in the header set to 'perceptual'.
+
+The profile contains the standard linearized Bradford D65 to D50 chromatic
+adaptation tag (this tag was often not present in older sRGB profiles), and
+the media white point tag is set to D50 (as is required for ICC v4 display
+profiles). This avoids the inappropriate color casts that older sRGB v2 ICC
+profiles sometimes produced when the absolute colorimetric intent was used.
+
+The profile will work correctly when either Black Point Compensation (BPC)
+is on in the CMM/application, or the other profile transform to be used for
+the conversion is also black scaled. Black scaled profiles are needed when
+BPC is desired for the conversion but the CMM to be used does not support
+BPC. Most v2 sRGB profiles in current use are black scaled because they are
+intended to be used as the source profile in conversions where the
+destination profile perceptual intent will be used (v2 perceptual
+transforms typically include black scaling).
+
+NOTE: This profile was revised in February 2015 to bring the black point
+tag into alignment with current ISO and IEC recommendations.
+
+Terms of use
+============
+
+To anyone who acknowledges that the file "sRGB_IEC61966-2-1_black scaled.icc"
+is provided "AS IS" WITH NO EXPRESS OR IMPLIED WARRANTY, permission to use,
+copy and distribute these file for any purpose is hereby granted without fee,
+provided that the file is not changed including the ICC copyright notice tag,
+and that the name of ICC shall not be used in advertising or publicity
+pertaining to distribution of the software without specific, written prior
+permission. ICC makes no representations about the suitability of this
+software for any purpose.
