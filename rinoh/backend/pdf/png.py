@@ -55,23 +55,35 @@ class PNGReader(XObjectImage):
                                          columns=self._png.width)
         super().__init__(self._png.width, self._png.height, colorspace,
                          self._png.bitdepth, filter=FlateDecode())
-        if self._png.color_type == 4:
+        if self._png.color_type in (4, 6):
             idat = BytesIO()
             for idat_chunk in self._png.idatdecomp():
                 idat.write(idat_chunk)
             idat.seek(0)
             self['SMask'] = XObjectImage(self._png.width, self._png.height,
-                                         Name('DeviceGray'), 8, FlateDecode())
+                                         Name('DeviceGray'), self._png.bitdepth,
+                                         filter=FlateDecode())
+            bytedepth = self._png.bitdepth // 8
+            color_index = [i + 1
+                           for i in range(0, 2 * bytedepth * self._png.width)
+                           if i % (2 * bytedepth) < bytedepth]
+            smask_index = [i + 1
+                           for i in range(0, 2 * bytedepth * self._png.width)
+                           if i % (2 * bytedepth) >= bytedepth]
+            i = 1
             while True:
-                row = idat.read(1 + 2 * self._png.width)
+                row = idat.read(1 + 2 * bytedepth * self._png.width)
                 if not row:
                     break
-                self.write(row[0:1] + row[1::2])
-                self['SMask'].write(row[0:1] + row[2::2])
-            soft_mask_filter_params = FlateDecodeParams(predictor=10, colors=1,
-                                                        bits_per_component=8,
-                                                        columns=self._png.width)
-            self['SMask'].filter.params = soft_mask_filter_params
+                print(i, row)
+                i += 1
+                self.write(row[0:1] + bytes(row[i] for i in color_index))
+                self['SMask'].write(row[0:1] + bytes(row[i] for i in smask_index))
+            bitdepth = self._png.bitdepth
+            smask_filter_params = FlateDecodeParams(predictor=10, colors=1,
+                                                    bits_per_component=bitdepth,
+                                                    columns=self._png.width)
+            self['SMask'].filter.params = smask_filter_params
         else:
             for idat_chunk in self._png.idat():
                 self._data.write(idat_chunk)
