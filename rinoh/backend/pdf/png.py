@@ -19,7 +19,8 @@ class PNGReader(XObjectImage):
     COLOR_SPACE = {0: 'DeviceGray',
                    2: 'DeviceRGB',
                    3: 'Indexed',
-                   4: 'DeviceGray'}
+                   4: 'DeviceGray',
+                   6: 'DeviceRGB'}
     NUM_COLOR_COMPONENTS = {0: 1,
                             2: 3,
                             4: 1,
@@ -56,6 +57,9 @@ class PNGReader(XObjectImage):
         super().__init__(self._png.width, self._png.height, colorspace,
                          self._png.bitdepth, filter=FlateDecode())
         if self._png.color_type in (4, 6):
+            num_color_comps = 1 if self._png.color_type == 4 else 3
+            bytedepth = self._png.bitdepth // 8
+            num_color_bytes = num_color_comps * bytedepth
             idat = BytesIO()
             for idat_chunk in self._png.idatdecomp():
                 idat.write(idat_chunk)
@@ -63,22 +67,21 @@ class PNGReader(XObjectImage):
             self['SMask'] = XObjectImage(self._png.width, self._png.height,
                                          Name('DeviceGray'), self._png.bitdepth,
                                          filter=FlateDecode())
-            bytedepth = self._png.bitdepth // 8
-            color_index = [i + 1
-                           for i in range(0, 2 * bytedepth * self._png.width)
-                           if i % (2 * bytedepth) < bytedepth]
-            smask_index = [i + 1
-                           for i in range(0, 2 * bytedepth * self._png.width)
-                           if i % (2 * bytedepth) >= bytedepth]
             i = 1
+            row_num_bytes = 1 + (num_color_comps + 1) * bytedepth * self._png.width
             while True:
-                row = idat.read(1 + 2 * bytedepth * self._png.width)
+                row = idat.read(row_num_bytes)
                 if not row:
                     break
                 print(i, row)
                 i += 1
-                self.write(row[0:1] + bytes(row[i] for i in color_index))
-                self['SMask'].write(row[0:1] + bytes(row[i] for i in smask_index))
+                self.write(row[0:1])
+                self['SMask'].write(row[0:1])
+                for i in range(1, row_num_bytes + 1,
+                               (num_color_comps + 1) * bytedepth):
+                    self.write(row[i:i + num_color_bytes])
+                    self['SMask'].write(row[i + num_color_bytes
+                                            :i + num_color_bytes + bytedepth])
             bitdepth = self._png.bitdepth
             smask_filter_params = FlateDecodeParams(predictor=10, colors=1,
                                                     bits_per_component=bitdepth,
