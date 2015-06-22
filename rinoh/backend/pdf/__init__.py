@@ -16,6 +16,7 @@ from . import cos
 from .reader import PDFReader
 from .filter import FlateDecode
 from .jpeg import JPEGReader
+from .png import PNGReader
 
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
@@ -387,6 +388,14 @@ class Image(object):
     def __init__(self, filename_or_file):
         try:
             self.xobject = JPEGReader(filename_or_file)
+            dpi_x, dpi_y = self.xobject.dpi
+            self.width = self.xobject['Width'] / dpi_x * 72
+            self.height = self.xobject['Height'] / dpi_y * 72
+            return
+        except ValueError:
+            pass
+        try:
+            self.xobject = PNGReader(filename_or_file)
             dpi_x, dpi_y = self.xobject.dpi
             self.width = self.xobject['Width'] / dpi_x * 72
             self.height = self.xobject['Height'] / dpi_y * 72
