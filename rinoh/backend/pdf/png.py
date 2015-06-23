@@ -9,6 +9,8 @@ from io import BytesIO
 
 import png
 
+from struct import Struct
+
 from .cos import Name, XObjectImage, Array, Integer, HexString
 from .filter import FlateDecode, FlateDecodeParams
 
@@ -63,25 +65,23 @@ class PNGReader(XObjectImage):
             idat = BytesIO()
             for idat_chunk in self._png.idatdecomp():
                 idat.write(idat_chunk)
-            idat.seek(0)
             self['SMask'] = XObjectImage(self._png.width, self._png.height,
                                          Name('DeviceGray'), self._png.bitdepth,
                                          filter=FlateDecode())
-            i = 1
             row_num_bytes = 1 + (num_color_comps + 1) * bytedepth * self._png.width
-            while True:
-                row = idat.read(row_num_bytes)
-                if not row:
-                    break
-                print(i, row)
-                i += 1
-                self.write(row[0:1])
-                self['SMask'].write(row[0:1])
-                for i in range(1, row_num_bytes + 1,
-                               (num_color_comps + 1) * bytedepth):
-                    self.write(row[i:i + num_color_bytes])
-                    self['SMask'].write(row[i + num_color_bytes
-                                            :i + num_color_bytes + bytedepth])
+            pixel_color_fmt = '{}B{}x'.format(num_color_bytes, bytedepth)
+            pixel_alpha_fmt = '{}x{}B'.format(num_color_bytes, bytedepth)
+            row_color_struct = Struct('B' + pixel_color_fmt * self._png.width)
+            row_alpha_struct = Struct('B' + pixel_alpha_fmt * self._png.width)
+            idat.seek(0)
+            row_bytes = bytearray(row_num_bytes)
+            for i in range(self._png.height):
+                idat.readinto(row_bytes)
+                color_values = row_color_struct.unpack(row_bytes)
+                alpha_values = row_alpha_struct.unpack(row_bytes)
+                self.write(bytes(color_values))
+                self['SMask'].write(bytes(alpha_values))
+            assert idat.read() == b''
             bitdepth = self._png.bitdepth
             smask_filter_params = FlateDecodeParams(predictor=10, colors=1,
                                                     bits_per_component=bitdepth,
