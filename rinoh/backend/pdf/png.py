@@ -11,7 +11,7 @@ import png
 
 from struct import Struct
 
-from .cos import Name, XObjectImage, Array, Integer, HexString
+from .cos import Name, XObjectImage, Array, Integer, Stream
 from .filter import FlateDecode, FlateDecodeParams
 
 __all__ = ['PNGReader']
@@ -43,13 +43,11 @@ class PNGReader(XObjectImage):
             self.dpi = 72, 72
         colorspace = Name(self.COLOR_SPACE[self._png.color_type])
         if str(colorspace) == 'Indexed':
-            palette = self._png.palette('force')
-            num_entries = len(palette)
-            lookup = bytearray(3 * num_entries)
-            for i, (r, g, b, a) in enumerate(palette):
-                lookup[3 * i:3 * i + 3] = r, g, b
+            num_entries = len(self._png.plte) // 3
+            palette_stream = Stream(filter=FlateDecode())
+            palette_stream.write(self._png.plte)
             colorspace = Array([colorspace, Name('DeviceRGB'),
-                                Integer(num_entries - 1), HexString(lookup)])
+                                Integer(num_entries - 1), palette_stream])
             predictor_colors = 1
         else:
             predictor_colors = self.NUM_COLOR_COMPONENTS[self._png.color_type]
