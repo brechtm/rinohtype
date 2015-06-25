@@ -50,7 +50,7 @@ class PNGReader(XObjectImage):
                 lookup[3 * i:3 * i + 3] = r, g, b
             colorspace = Array([colorspace, Name('DeviceRGB'),
                                 Integer(num_entries - 1), HexString(lookup)])
-            predictor_colors = self._png.bitdepth
+            predictor_colors = 1
         else:
             predictor_colors = self.NUM_COLOR_COMPONENTS[self._png.color_type]
         flate_params = FlateDecodeParams(predictor=10, colors=predictor_colors,
