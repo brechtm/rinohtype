@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from io import BytesIO
+from itertools import chain, repeat
 
 import png
 
@@ -88,4 +89,11 @@ class PNGReader(XObjectImage):
         else:
             for idat_chunk in self._png.idat():
                 self._data.write(idat_chunk)
+        if self._png.trns:
+            if self._png.plte:
+                pass
+            else:
+                values = chain(*(repeat(value, 2)
+                                 for value in self._png.transparent))
+                self['Mask'] = Array(Integer(value) for value in values)
         self.filter.params = flate_params
