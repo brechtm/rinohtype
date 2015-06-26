@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from io import BytesIO
-from itertools import chain, repeat
+from itertools import chain, repeat, cycle, islice
 
 import png
 
@@ -85,8 +85,7 @@ class PNGReader(XObjectImage):
                 self._data.write(idat_chunk)
             trns = self._png.trns
             if trns:
-                if self._png.plte:
-                    pixels_per_byte = 8 // bitdepth
+                if self._png.plte:  # alpha values assigned to palette colors
                     frm = b''.join(pack('B', i) for i in range(num_entries))
                     to = (b''.join(pack('B', alpha) for alpha in trns)
                           + b'\xFF' * (num_entries - len(trns)))
@@ -100,19 +99,26 @@ class PNGReader(XObjectImage):
                                                  self._png.height,
                                                  Name('DeviceGray'), 8,
                                                  filter=FlateDecode())
-                    out_row = bytearray(self._png.width)
+                    if bitdepth < 8:  # transform to 8 bits per pixel
+                        px_per_byte = 8 // bitdepth
+                        mask = 2**bitdepth - 1
+                        shft = [(i - 1) * bitdepth
+                                for i in range(px_per_byte, 0, -1)]
+                        tmp2 = BytesIO()
+                        row_buffer = bytearray(self._png.width)
+                        for i in range(self._png.height):
+                            row_bytes = tmp.read(self._png.row_bytes)
+                            row_buffer[:] = islice(((byte >> shift) & mask
+                                                    for byte in row_bytes
+                                                    for shift in shft),
+                                                   self._png.width)
+                            tmp2.write(row_buffer)
+                        tmp2.seek(0)
+                        tmp = tmp2
                     for i in range(self._png.height):
-                        row_bytes = tmp.read(self._png.row_bytes)
-                        for byte_i, byte in enumerate(row_bytes):
-                            for i in range(pixels_per_byte):
-                                pixel_index = byte_i * pixels_per_byte + i
-                                if pixel_index == self._png.width:
-                                    break
-                                plte_index = ((byte >> (pixels_per_byte - 1 - i) * bitdepth)
-                                              & (2**bitdepth - 1))
-                                out_row[pixel_index] = plte_index
-                        self['SMask'].write(out_row.translate(trans))
-                else:
+                        row_bytes = tmp.read(self._png.width)
+                        self['SMask'].write(row_bytes.translate(trans))
+                else:  # a single color is transparent
                     values = chain(*(repeat(value, 2)
                                      for value in self._png.transparent))
                     self['Mask'] = Array(Integer(value) for value in values)
