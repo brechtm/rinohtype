@@ -104,11 +104,20 @@ class PNGReader(XObjectImage):
                     tmp._data.write(self._data.getvalue())
                     self['SMask'] = XObjectImage(self._png.width,
                                                  self._png.height,
-                                                 Name('DeviceGray'), bitdepth,
+                                                 Name('DeviceGray'), 8,
                                                  filter=FlateDecode())
+                    out_row = bytearray(self._png.width)
                     for i in range(self._png.height):
                         row_bytes = tmp.read(self._png.row_bytes)
-                        self['SMask'].write(row_bytes.translate(trans))
+                        for byte_i, byte in enumerate(row_bytes):
+                            for i in range(pixels_per_byte):
+                                pixel_index = byte_i * pixels_per_byte + i
+                                if pixel_index == self._png.width:
+                                    break
+                                plte_index = ((byte >> (pixels_per_byte - 1 - i) * bitdepth)
+                                              & (2**bitdepth - 1))
+                                out_row[pixel_index] = plte_index
+                        self['SMask'].write(out_row.translate(trans))
                 else:
                     values = chain(*(repeat(value, 2)
                                      for value in self._png.transparent))
