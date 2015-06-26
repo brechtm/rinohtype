@@ -10,7 +10,7 @@ from itertools import chain, repeat
 
 import png
 
-from struct import Struct
+from struct import Struct, pack
 
 from .cos import Name, XObjectImage, Array, Integer, Stream
 from .filter import FlateDecode, FlateDecodeParams
@@ -57,6 +57,7 @@ class PNGReader(XObjectImage):
                                          columns=self._png.width)
         super().__init__(self._png.width, self._png.height, colorspace,
                          self._png.bitdepth, filter=FlateDecode())
+        bitdepth = self._png.bitdepth
         if self._png.color_type in (4, 6):
             num_color_comps = 1 if self._png.color_type == 4 else 3
             bytedepth = self._png.bitdepth // 8
@@ -81,7 +82,6 @@ class PNGReader(XObjectImage):
                 self.write(bytes(color_values))
                 self['SMask'].write(bytes(alpha_values))
             assert idat.read() == b''
-            bitdepth = self._png.bitdepth
             smask_filter_params = FlateDecodeParams(predictor=10, colors=1,
                                                     bits_per_component=bitdepth,
                                                     columns=self._png.width)
@@ -89,11 +89,28 @@ class PNGReader(XObjectImage):
         else:
             for idat_chunk in self._png.idat():
                 self._data.write(idat_chunk)
-        if self._png.trns:
-            if self._png.plte:
-                pass
-            else:
-                values = chain(*(repeat(value, 2)
-                                 for value in self._png.transparent))
-                self['Mask'] = Array(Integer(value) for value in values)
+            trns = self._png.trns
+            if trns:
+                if self._png.plte:
+                    pixels_per_byte = 8 // bitdepth
+                    frm = b''.join(pack('B', i) for i in range(num_entries))
+                    to = (b''.join(pack('B', alpha) for alpha in trns)
+                          + b'\xFF' * (num_entries - len(trns)))
+                    trans = bytearray.maketrans(frm, to)
+                    tmp_params = FlateDecodeParams(predictor=10, colors=1,
+                                                   bits_per_component=bitdepth,
+                                                   columns=self._png.width)
+                    tmp = Stream(filter=FlateDecode(tmp_params))
+                    tmp._data.write(self._data.getvalue())
+                    self['SMask'] = XObjectImage(self._png.width,
+                                                 self._png.height,
+                                                 Name('DeviceGray'), bitdepth,
+                                                 filter=FlateDecode())
+                    for i in range(self._png.height):
+                        row_bytes = tmp.read(self._png.row_bytes)
+                        self['SMask'].write(row_bytes.translate(trans))
+                else:
+                    values = chain(*(repeat(value, 2)
+                                     for value in self._png.transparent))
+                    self['Mask'] = Array(Integer(value) for value in values)
         self.filter.params = flate_params
