@@ -24,10 +24,6 @@ class PNGReader(XObjectImage):
                    3: 'Indexed',
                    4: 'DeviceGray',
                    6: 'DeviceRGB'}
-    NUM_COLOR_COMPONENTS = {0: 1,
-                            2: 3,
-                            4: 1,
-                            6: 3}
 
     def __init__(self, file_or_filename):
         print('PNGReader:', file_or_filename)
@@ -49,9 +45,7 @@ class PNGReader(XObjectImage):
             palette_stream.write(self._png.plte)
             colorspace = Array([colorspace, Name('DeviceRGB'),
                                 Integer(num_entries - 1), palette_stream])
-            predictor_colors = 1
-        else:
-            predictor_colors = self.NUM_COLOR_COMPONENTS[self._png.color_type]
+        predictor_colors = self._png.color_planes
         flate_params = FlateDecodeParams(predictor=10, colors=predictor_colors,
                                          bits_per_component=self._png.bitdepth,
                                          columns=self._png.width)
