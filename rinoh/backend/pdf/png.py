@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from io import BytesIO
-from itertools import chain, repeat, cycle, islice
+from itertools import islice
 
 import png
 
@@ -119,7 +119,7 @@ class PNGReader(XObjectImage):
                         row_bytes = tmp.read(self._png.width)
                         self['SMask'].write(row_bytes.translate(trans))
                 else:  # a single color is transparent
-                    values = chain(*(repeat(value, 2)
-                                     for value in self._png.transparent))
+                    values = (value for value in self._png.transparent
+                              for _ in range(2))
                     self['Mask'] = Array(Integer(value) for value in values)
         self.filter.params = flate_params
