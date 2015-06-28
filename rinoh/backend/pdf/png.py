@@ -8,12 +8,13 @@
 from io import BytesIO
 from itertools import islice
 
-import png
+import png as purepng
 
 from struct import Struct, pack
 
 from .cos import Name, XObjectImage, Array, Integer, Stream
 from .filter import FlateDecode, FlateDecodeParams
+
 
 __all__ = ['PNGReader']
 
@@ -21,105 +22,97 @@ __all__ = ['PNGReader']
 class PNGReader(XObjectImage):
     COLOR_SPACE = {0: 'DeviceGray',
                    2: 'DeviceRGB',
-                   3: 'Indexed',
-                   4: 'DeviceGray',
-                   6: 'DeviceRGB'}
+                   3: 'Indexed'}
 
     def __init__(self, file_or_filename):
         print('PNGReader:', file_or_filename)
-        self._png = png.Reader(file_or_filename)
-        self._png.preamble()
-        assert self._png.compression == 0
-        assert self._png.filter == 0
-        assert self._png.interlace == 0
+        png = purepng.Reader(file_or_filename)
+        png.preamble()
+        assert png.compression == 0
+        assert png.filter == 0
+        assert png.interlace == 0
         try:
-            (x_density, y_density), unit = self._png.resolution
-            assert unit == 1
+            (x_density, y_density), unit = png.resolution
             self.dpi = x_density / 100 * 2.54, y_density / 100 * 2.54
         except AttributeError:
             self.dpi = 72, 72
-        colorspace = Name(self.COLOR_SPACE[self._png.color_type])
-        if str(colorspace) == 'Indexed':
-            num_entries = len(self._png.plte) // 3
+        colorspace = Name(self.COLOR_SPACE[png.color_type & 3])
+        if png.colormap:  # palette
+            num_entries = len(png.plte) // 3
             palette_stream = Stream(filter=FlateDecode())
-            palette_stream.write(self._png.plte)
+            palette_stream.write(png.plte)
             colorspace = Array([colorspace, Name('DeviceRGB'),
                                 Integer(num_entries - 1), palette_stream])
-        predictor_colors = self._png.color_planes
-        flate_params = FlateDecodeParams(predictor=10, colors=predictor_colors,
-                                         bits_per_component=self._png.bitdepth,
-                                         columns=self._png.width)
-        super().__init__(self._png.width, self._png.height, colorspace,
-                         self._png.bitdepth, filter=FlateDecode())
-        bitdepth = self._png.bitdepth
-        if self._png.color_type in (4, 6):
-            num_color_comps = 1 if self._png.color_type == 4 else 3
-            bytedepth = self._png.bitdepth // 8
+        flate_params = FlateDecodeParams(predictor=10, colors=png.color_planes,
+                                         bits_per_component=png.bitdepth,
+                                         columns=png.width)
+        super().__init__(png.width, png.height, colorspace, png.bitdepth,
+                         filter=FlateDecode())
+        if png.alpha:  # grayscale/RGB with alpha channel
+            num_color_comps = 1 if png.color_type == 4 else 3
+            bytedepth = png.bitdepth // 8
             num_color_bytes = num_color_comps * bytedepth
             idat = BytesIO()
-            for idat_chunk in self._png.idatdecomp():
+            for idat_chunk in png.idatdecomp():
                 idat.write(idat_chunk)
-            self['SMask'] = XObjectImage(self._png.width, self._png.height,
-                                         Name('DeviceGray'), self._png.bitdepth,
+            self['SMask'] = XObjectImage(png.width, png.height,
+                                         Name('DeviceGray'), png.bitdepth,
                                          filter=FlateDecode())
-            row_num_bytes = 1 + (num_color_comps + 1) * bytedepth * self._png.width
+            row_num_bytes = 1 + (num_color_comps + 1) * bytedepth * png.width
             pixel_color_fmt = '{}B{}x'.format(num_color_bytes, bytedepth)
             pixel_alpha_fmt = '{}x{}B'.format(num_color_bytes, bytedepth)
-            row_color_struct = Struct('B' + pixel_color_fmt * self._png.width)
-            row_alpha_struct = Struct('B' + pixel_alpha_fmt * self._png.width)
+            row_color_struct = Struct('B' + pixel_color_fmt * png.width)
+            row_alpha_struct = Struct('B' + pixel_alpha_fmt * png.width)
             idat.seek(0)
             row_bytes = bytearray(row_num_bytes)
-            for i in range(self._png.height):
+            for i in range(png.height):
                 idat.readinto(row_bytes)
                 color_values = row_color_struct.unpack(row_bytes)
                 alpha_values = row_alpha_struct.unpack(row_bytes)
                 self.write(bytes(color_values))
                 self['SMask'].write(bytes(alpha_values))
             assert idat.read() == b''
-            smask_filter_params = FlateDecodeParams(predictor=10, colors=1,
-                                                    bits_per_component=bitdepth,
-                                                    columns=self._png.width)
-            self['SMask'].filter.params = smask_filter_params
+            smask_params = FlateDecodeParams(predictor=10, colors=1,
+                                             bits_per_component=png.bitdepth,
+                                             columns=png.width)
+            self['SMask'].filter.params = smask_params
         else:
-            for idat_chunk in self._png.idat():
+            for idat_chunk in png.idat():
                 self._data.write(idat_chunk)
-            trns = self._png.trns
-            if trns:
-                if self._png.plte:  # alpha values assigned to palette colors
+            if png.trns:
+                if png.plte:  # alpha values assigned to palette colors
                     frm = b''.join(pack('B', i) for i in range(num_entries))
-                    to = (b''.join(pack('B', alpha) for alpha in trns)
-                          + b'\xFF' * (num_entries - len(trns)))
+                    to = (b''.join(pack('B', alpha) for alpha in png.trns)
+                          + b'\xFF' * (num_entries - len(png.trns)))
                     trans = bytearray.maketrans(frm, to)
-                    tmp_params = FlateDecodeParams(predictor=10, colors=1,
-                                                   bits_per_component=bitdepth,
-                                                   columns=self._png.width)
-                    tmp = Stream(filter=FlateDecode(tmp_params))
+                    params = FlateDecodeParams(predictor=10, colors=1,
+                                               bits_per_component=png.bitdepth,
+                                               columns=png.width)
+                    tmp = Stream(filter=FlateDecode(params))
                     tmp._data.write(self._data.getvalue())
-                    self['SMask'] = XObjectImage(self._png.width,
-                                                 self._png.height,
+                    self['SMask'] = XObjectImage(png.width, png.height,
                                                  Name('DeviceGray'), 8,
                                                  filter=FlateDecode())
-                    if bitdepth < 8:  # transform to 8 bits per pixel
-                        px_per_byte = 8 // bitdepth
-                        mask = 2**bitdepth - 1
-                        shft = [(i - 1) * bitdepth
-                                for i in range(px_per_byte, 0, -1)]
-                        tmp2 = BytesIO()
-                        row_buffer = bytearray(self._png.width)
-                        for i in range(self._png.height):
-                            row_bytes = tmp.read(self._png.row_bytes)
-                            row_buffer[:] = islice(((byte >> shift) & mask
-                                                    for byte in row_bytes
-                                                    for shift in shft),
-                                                   self._png.width)
-                            tmp2.write(row_buffer)
-                        tmp2.seek(0)
-                        tmp = tmp2
-                    for i in range(self._png.height):
-                        row_bytes = tmp.read(self._png.width)
+                    rows = (tmp.read(png.row_bytes) for _ in range(png.height))
+                    if png.bitdepth < 8:
+                        rows = to_8bit_per_pixel(rows, png.bitdepth, png.width)
+                    for row_bytes in rows:
                         self['SMask'].write(row_bytes.translate(trans))
                 else:  # a single color is transparent
-                    values = (value for value in self._png.transparent
+                    values = (value for value in png.transparent
                               for _ in range(2))
                     self['Mask'] = Array(Integer(value) for value in values)
         self.filter.params = flate_params
+
+
+def to_8bit_per_pixel(rows, bitdepth, width):
+    px_per_byte = 8 // bitdepth
+    mask = 2**bitdepth - 1
+    shft = [(i - 1) * bitdepth for i in range(px_per_byte, 0, -1)]
+
+    row_buffer = bytearray(width)
+    for row_bytes in rows:
+        row_buffer[:] = islice(((byte >> shift) & mask
+                                for byte in row_bytes
+                                for shift in shft), width)
+        yield row_buffer
