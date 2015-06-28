@@ -12,7 +12,8 @@ import png as purepng
 
 from struct import Struct, pack
 
-from .cos import Name, XObjectImage, Array, Integer, Stream
+from .cos import (Name, XObjectImage, Array, Integer, Stream,
+                  DEVICE_GRAY, DEVICE_RGB, INDEXED)
 from .filter import FlateDecode, FlateDecodeParams
 
 
@@ -20,9 +21,9 @@ __all__ = ['PNGReader']
 
 
 class PNGReader(XObjectImage):
-    COLOR_SPACE = {0: 'DeviceGray',
-                   2: 'DeviceRGB',
-                   3: 'Indexed'}
+    COLOR_SPACE = {0: DEVICE_GRAY,
+                   2: DEVICE_RGB,
+                   3: INDEXED}
 
     def __init__(self, file_or_filename):
         print('PNGReader:', file_or_filename)
@@ -36,12 +37,12 @@ class PNGReader(XObjectImage):
             self.dpi = x_density / 100 * 2.54, y_density / 100 * 2.54
         except AttributeError:
             self.dpi = 72, 72
-        colorspace = Name(self.COLOR_SPACE[png.color_type & 3])
+        colorspace = self.COLOR_SPACE[png.color_type & 3]
         if png.colormap:  # palette
             num_entries = len(png.plte) // 3
             palette_stream = Stream(filter=FlateDecode())
             palette_stream.write(png.plte)
-            colorspace = Array([colorspace, Name('DeviceRGB'),
+            colorspace = Array([colorspace, DEVICE_RGB,
                                 Integer(num_entries - 1), palette_stream])
         flate_params = FlateDecodeParams(predictor=10, colors=png.color_planes,
                                          bits_per_component=png.bitdepth,

@@ -10,7 +10,8 @@ import os
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
 
-from .cos import Name, XObjectImage, Array, Stream, Integer
+from .cos import (Name, XObjectImage, Array, Stream, Integer,
+                  DEVICE_GRAY, DEVICE_RGB, DEVICE_CMYK)
 from .filter import DCTDecode, FlateDecode
 
 
@@ -33,9 +34,9 @@ def create_reader(data_format, process_struct=lambda data: data[0], endian='>'):
 # * http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf
 
 class JPEGReader(XObjectImage):
-    COLOR_SPACE = {1: 'DeviceGray',
-                   3: 'DeviceRGB',
-                   4: 'DeviceCMYK'}
+    COLOR_SPACE = {1: DEVICE_GRAY,
+                   3: DEVICE_RGB,
+                   4: DEVICE_CMYK}
 
     def __init__(self, file_or_filename):
         try:
@@ -50,7 +51,7 @@ class JPEGReader(XObjectImage):
         if bits_per_component != 8:
             raise ValueError('PDF only supports JPEG files with 8 bits '
                              'per component')
-        device_color_space = Name(self.COLOR_SPACE[num_components])
+        device_color_space = self.COLOR_SPACE[num_components]
         if icc_profile is None and exif_color_space is not UNCALIBRATED:
             icc_profile = get_icc_stream(exif_color_space)
         if icc_profile is not None:

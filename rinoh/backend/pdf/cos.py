@@ -420,6 +420,12 @@ class XObjectForm(XObject):
         self['BBox'] = bounding_box
 
 
+DEVICE_GRAY = Name('DeviceGray')
+DEVICE_RGB = Name('DeviceRGB')
+DEVICE_CMYK = Name('DeviceCMYK')
+INDEXED = Name('Indexed')
+
+
 class XObjectImage(XObject):
     subtype = 'Image'
 
