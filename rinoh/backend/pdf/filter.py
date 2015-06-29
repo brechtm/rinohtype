@@ -243,7 +243,7 @@ class FlateDecoder(FIFOBuffer, Decoder):
             out_data += self._decompressor.flush()
             self._decompressor = None
         elif len(out_data) == 0:
-            out_data = self.read_from_source(self, n)
+            out_data = self.read_from_source(n)
         return out_data
 
 
