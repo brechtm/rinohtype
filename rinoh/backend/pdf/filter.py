@@ -30,10 +30,10 @@ class Filter(object):
     def name(cls):
         return Name(cls.__name__)
 
-    def encoder(self, destination):
+    def encoder(self, destination, **kwargs):
         raise NotImplementedError
 
-    def decoder(self, source):
+    def decoder(self, source, **kwargs):
         raise NotImplementedError
 
 
@@ -201,8 +201,8 @@ class FlateDecode(Filter):
         super().__init__(params)
         self.level = level
 
-    def encoder(self, destination):
-        if self.params:
+    def encoder(self, destination, bypass_predictor=False):
+        if not bypass_predictor and self.params:
             raise NotImplementedError
         return FlateEncoder(destination, self.level)
 

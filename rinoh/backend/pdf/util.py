@@ -43,3 +43,6 @@ class FIFOBuffer(object):
             self._write_pos = self._fifo.getbuffer().nbytes
             self._read_pos = 0
         return out
+
+    def close(self):
+        self._source.close()

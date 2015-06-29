@@ -392,13 +392,16 @@ class Stream(Dictionary):
             self._coder = self.filter.decoder(self._data)
             return self.read(n)
 
-    def write(self, b):
+    def write(self, b, **kwargs):
         try:
             return self._coder.write(b)
         except AttributeError:
             self._data.seek(0)
-            self._coder = self.filter.encoder(self._data)
+            self._coder = self.filter.encoder(self._data, **kwargs)
             return self.write(b)
+
+    def write_raw(self, b):
+        return self._data.write(b)
 
     def reset(self):
         self._coder = None
