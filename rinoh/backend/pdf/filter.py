@@ -275,7 +275,10 @@ class PNGReconstructor(FIFOBuffer):
 
     def read_from_source(self, _n_ignored):
         # number of bytes requested `n` is ignored; a single row is fetched
-        predictor = struct.unpack('>B', self._source.read(1))[0]
+        try:
+            predictor, = struct.unpack('>B', self._source.read(1))
+        except struct.error:
+            return b''
         row = self._source.read(self._column_struct.size)
         values = list(self._column_struct.unpack(row))
 
