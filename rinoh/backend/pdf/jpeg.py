@@ -65,7 +65,11 @@ class JPEGReader(XObjectImage):
         if adobe_color_transform and num_components == 4:  # invert CMYK colors
             self['Decode'] = Array([Integer(1), Integer(0)] * 4)
         self._file.seek(0)
-        self._data.write(self._file.read())
+        while True:
+            buffer = self._file.read(512 * 1024)  # 512 KB
+            if not buffer:
+                break
+            self._data.write(buffer)
 
     read_uchar = create_reader('B')
 
