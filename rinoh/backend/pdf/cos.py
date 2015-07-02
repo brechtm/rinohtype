@@ -357,14 +357,14 @@ from .filter import PassThrough, FilterPipeline
 
 
 class Stream(Dictionary):
-    def __init__(self, filter=None):
+    def __init__(self, filter=None, **items):
         # (Streams are always indirectly referenced)
         self._data = BytesIO()
         try:
             self.filter = FilterPipeline(filter)
         except TypeError:
             self.filter = filter or PassThrough()
-        super().__init__(indirect=True)
+        super().__init__(indirect=True, **items)
         self._coder = None
 
     def direct_bytes(self, document):
