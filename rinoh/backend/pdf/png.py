@@ -75,21 +75,22 @@ class PNGReader(XObjectImage):
 
     def _colorspace(self, png):
         device_color_space = COLOR_SPACE[png.color_type & 3]
-        if png.colormap:  # palette
-            num_entries = len(png.plte) // 3
-            palette_stream = Stream(filter=FlateDecode())
-            palette_stream.write(png.plte)
-            colorspace = Array([device_color_space, DEVICE_RGB,
-                                Integer(num_entries - 1), palette_stream])
-        else:
-            colorspace = device_color_space
         icc_profile = self._icc_profile(png)
         if icc_profile is None and png.sRGB:
             icc_profile = get_icc_stream(SRGB)
         if icc_profile is not None:
-            icc_profile['N'] = Integer(png.color_planes)
-            icc_profile['Alternate'] = colorspace
+            icc_profile['N'] = Integer(3 if device_color_space == DEVICE_RGB
+                                       else 1)
+            icc_profile['Alternate'] = device_color_space
             colorspace = Array([Name('ICCBased'), icc_profile])
+        else:
+                colorspace = device_color_space
+        if png.colormap:  # palette
+            num_entries = len(png.plte) // 3
+            palette_stream = Stream(filter=FlateDecode())
+            palette_stream.write(png.plte)
+            colorspace = Array([INDEXED, colorspace,
+                                Integer(num_entries - 1), palette_stream])
         return colorspace
 
     def _icc_profile(self, png):
@@ -137,7 +138,7 @@ class PNGReader(XObjectImage):
 
 COLOR_SPACE = {0: DEVICE_GRAY,
                2: DEVICE_RGB,
-               3: INDEXED}
+               3: DEVICE_RGB}
 
 RENDERING_INTENT = {purepng.ABSOLUTE_COLORIMETRIC: ABSOLUTE_COLORIMETRIC,
                     purepng.RELATIVE_COLORIMETRIC: RELATIVE_COLORIMETRIC,
