@@ -90,6 +90,15 @@ class PNGReader(XObjectImage):
                 cal_colorspace['Gamma'] = (gamma
                                            if device_color_space == DEVICE_GRAY
                                            else Array([gamma] * 3))
+            if hasattr(png, 'white_point'):
+                xyz = chromaticity_to_XYZ(png.white_point, *png.rgb_points)
+                white_xyz, a_xyz, b_xyz, c_xyz = xyz
+                cal_colorspace['WhitePoint'] = Array([Real(value) for value
+                                                      in white_xyz])
+                if device_color_space == DEVICE_RGB:
+                    cal_colorspace['Matrix'] = Array([Real(value) for x_y_z
+                                                      in (a_xyz, b_xyz, c_xyz)
+                                                      for value in x_y_z])
             if cal_colorspace:
                 if 'WhitePoint' not in cal_colorspace:
                     # TODO: warn about white point assumption
@@ -174,3 +183,28 @@ def to_8bit_per_pixel(rows, bitdepth, width):
                                 for byte in row_bytes
                                 for shift in shft), width)
         yield row_buffer
+
+
+def chromaticity_to_XYZ(white, red, green, blue):
+    """From the "CalRGB Color Spaces" section of "PDF Reference", 6th ed."""
+    xW, yW = white
+    xR, yR = red
+    xG, yG = green
+    xB, yB = blue
+    R = G = B = 1.0
+
+    z = yW * ((xG - xB) * yR - (xR - xB) * yG + (xR - xG) * yB)
+    YA = yR / R  * ((xG - xB) * yW - (xW - xB) * yG + (xW - xG) * yB) / z
+    XA = YA * xR / yR
+    ZA = YA * ((1 - xR) / yR - 1)
+    YB = - yG / G * ((xR - xB) * yW - (xW - xB) * yR + (xW - xR) * yB) / z
+    XB = YB * xG / yG
+    ZB = YB * ((1 - xG) / yG - 1)
+    YC = yB / B * ((xR - xG) * yW - (xW - xG) * yR + (xW - xR) * yG) / z
+    XC = YC * xB / yB
+    ZC = YC * ((1 - xB) / yB - 1)
+    XW = XA * R + XB * G + XC * B
+    YW = YA * R + YB * G + YC * B
+    ZW = ZA * R + ZB * G + ZC * B
+
+    return (XW, YW, ZW), (XA, YA, ZA), (XB, YB, ZB), (XC, YC, ZC)
