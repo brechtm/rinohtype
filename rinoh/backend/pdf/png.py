@@ -12,7 +12,7 @@ import png as purepng
 
 from struct import Struct, pack
 
-from .cos import (XObjectImage, Array, Integer, Stream, Name,
+from .cos import (XObjectImage, Array, Integer, Stream, Name, Dictionary, Real,
                   DEVICE_GRAY, DEVICE_RGB, INDEXED, ABSOLUTE_COLORIMETRIC,
                   RELATIVE_COLORIMETRIC, SATURATION, PERCEPTUAL)
 from .filter import FlateDecode, FlateDecodeParams
@@ -84,6 +84,20 @@ class PNGReader(XObjectImage):
             icc_profile['Alternate'] = device_color_space
             colorspace = Array([Name('ICCBased'), icc_profile])
         else:
+            cal_colorspace = {}
+            if hasattr(png, 'gamma'):
+                gamma = Real(1 / png.gamma)
+                cal_colorspace['Gamma'] = (gamma
+                                           if device_color_space == DEVICE_GRAY
+                                           else Array([gamma] * 3))
+            if cal_colorspace:
+                if 'WhitePoint' not in cal_colorspace:
+                    # TODO: warn about white point assumption
+                    cal_colorspace['WhitePoint'] = CCIR_XA11_D65_WHITE_POINT
+                cal_type = (Name('CalGray') if device_color_space == DEVICE_GRAY
+                            else Name('CalRGB'))
+                colorspace = Array([cal_type, Dictionary(**cal_colorspace)])
+            else:
                 colorspace = device_color_space
         if png.colormap:  # palette
             num_entries = len(png.plte) // 3
@@ -144,6 +158,9 @@ RENDERING_INTENT = {purepng.ABSOLUTE_COLORIMETRIC: ABSOLUTE_COLORIMETRIC,
                     purepng.RELATIVE_COLORIMETRIC: RELATIVE_COLORIMETRIC,
                     purepng.SATURATION: SATURATION,
                     purepng.PERCEPTUAL: PERCEPTUAL}
+
+# from ITU-R Recommendation BT.709-5
+CCIR_XA11_D65_WHITE_POINT = Array([Real(0.9505), Real(1.0000), Real(1.0890)])
 
 
 def to_8bit_per_pixel(rows, bitdepth, width):
