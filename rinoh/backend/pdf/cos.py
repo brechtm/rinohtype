@@ -423,10 +423,17 @@ class XObjectForm(XObject):
         self['BBox'] = bounding_box
 
 
+# color spaces
 DEVICE_GRAY = Name('DeviceGray')
 DEVICE_RGB = Name('DeviceRGB')
 DEVICE_CMYK = Name('DeviceCMYK')
 INDEXED = Name('Indexed')
+
+# rendering intents
+ABSOLUTE_COLORIMETRIC = Name('AbsoluteColorimetric')
+RELATIVE_COLORIMETRIC = Name('RelativeColorimetric')
+SATURATION = Name('Saturation')
+PERCEPTUAL = Name('Perceptual')
 
 
 class XObjectImage(XObject):

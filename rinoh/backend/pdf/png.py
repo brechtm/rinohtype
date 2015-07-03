@@ -13,7 +13,8 @@ import png as purepng
 from struct import Struct, pack
 
 from .cos import (XObjectImage, Array, Integer, Stream, Name,
-                  DEVICE_GRAY, DEVICE_RGB, INDEXED)
+                  DEVICE_GRAY, DEVICE_RGB, INDEXED, ABSOLUTE_COLORIMETRIC,
+                  RELATIVE_COLORIMETRIC, SATURATION, PERCEPTUAL)
 from .filter import FlateDecode, FlateDecodeParams
 from .icc import get_icc_stream, SRGB
 
@@ -35,6 +36,8 @@ class PNGReader(XObjectImage):
                                          columns=png.width)
         super().__init__(png.width, png.height, self._colorspace(png),
                          png.bitdepth, filter=FlateDecode(color_params))
+        if png.rendering_intent is not None:
+            self['Intent'] = RENDERING_INTENT[png.rendering_intent]
         if png.alpha:  # grayscale/RGB with alpha channel
             smask_params = FlateDecodeParams(predictor=10, colors=1,
                                              bits_per_component=png.bitdepth,
@@ -70,12 +73,8 @@ class PNGReader(XObjectImage):
             dpi = 72, 72
         return dpi
 
-    COLOR_SPACE = {0: DEVICE_GRAY,
-                   2: DEVICE_RGB,
-                   3: INDEXED}
-
     def _colorspace(self, png):
-        device_color_space = self.COLOR_SPACE[png.color_type & 3]
+        device_color_space = COLOR_SPACE[png.color_type & 3]
         if png.colormap:  # palette
             num_entries = len(png.plte) // 3
             palette_stream = Stream(filter=FlateDecode())
@@ -134,6 +133,16 @@ class PNGReader(XObjectImage):
             yield row_bytes.translate(trans)
         assert self.read() == b''
         self.reset()
+
+
+COLOR_SPACE = {0: DEVICE_GRAY,
+               2: DEVICE_RGB,
+               3: INDEXED}
+
+RENDERING_INTENT = {purepng.ABSOLUTE_COLORIMETRIC: ABSOLUTE_COLORIMETRIC,
+                    purepng.RELATIVE_COLORIMETRIC: RELATIVE_COLORIMETRIC,
+                    purepng.SATURATION: SATURATION,
+                    purepng.PERCEPTUAL: PERCEPTUAL}
 
 
 def to_8bit_per_pixel(rows, bitdepth, width):
