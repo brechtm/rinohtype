@@ -5,14 +5,13 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-import os
-
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
 
 from .cos import (Name, XObjectImage, Array, Stream, Integer,
                   DEVICE_GRAY, DEVICE_RGB, DEVICE_CMYK)
 from .filter import DCTDecode, FlateDecode
+from .icc import SRGB, UNCALIBRATED, get_icc_stream
 
 
 __all__ = ['JPEGReader']
@@ -250,27 +249,6 @@ class JPEGReader(XObjectImage):
 
 DPCM = 'dpcm'
 DPI = 'dpi'
-
-
-SRGB = 'sRGB'
-ADOBERGB = 'AdobeRGB'
-UNCALIBRATED = None
-
-ICC_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'icc')
-ICC_FILENAME = {SRGB: 'sRGB_IEC61966-2-1_black_scaled.icc'}
-ICC_STREAM = {}
-
-def get_icc_stream(color_space):
-    try:
-        return ICC_STREAM[color_space]
-    except KeyError:
-        icc_file_path = os.path.join(ICC_PATH, ICC_FILENAME[color_space])
-        stream = Stream(filter=FlateDecode())
-        with open(icc_file_path, 'rb') as icc:
-            stream.write(icc.read())
-        ICC_STREAM[color_space] = stream
-        return stream
-
 
 JFIF_UNITS = {0: None,
               1: DPI,

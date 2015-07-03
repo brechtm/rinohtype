@@ -15,6 +15,7 @@ from struct import Struct, pack
 from .cos import (XObjectImage, Array, Integer, Stream, Name,
                   DEVICE_GRAY, DEVICE_RGB, INDEXED)
 from .filter import FlateDecode, FlateDecodeParams
+from .icc import get_icc_stream, SRGB
 
 
 __all__ = ['PNGReader']
@@ -83,12 +84,22 @@ class PNGReader(XObjectImage):
                                 Integer(num_entries - 1), palette_stream])
         else:
             colorspace = device_color_space
-        if hasattr(png, 'icc_profile'):
-            icc_profile = Stream(N=Integer(png.color_planes),
-                                 Alternate=colorspace, filter=FlateDecode())
-            icc_profile.write(png.icc_profile)
+        icc_profile = self._icc_profile(png)
+        if icc_profile is None and png.sRGB:
+            icc_profile = get_icc_stream(SRGB)
+        if icc_profile is not None:
+            icc_profile['N'] = Integer(png.color_planes)
+            icc_profile['Alternate'] = colorspace
             colorspace = Array([Name('ICCBased'), icc_profile])
         return colorspace
+
+    def _icc_profile(self, png):
+        if hasattr(png, 'icc_profile'):
+            icc_profile = Stream(filter=FlateDecode())
+            icc_profile.write(png.icc_profile)
+            return icc_profile
+        else:
+            return None
 
     def _split_color_alpha(self, png):
         bytedepth = png.bitdepth // 8
