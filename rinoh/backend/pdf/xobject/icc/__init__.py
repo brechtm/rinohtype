@@ -7,8 +7,8 @@
 
 import os
 
-from ..filter import FlateDecode
-from ..cos import Stream
+from ...filter import FlateDecode
+from ...cos import Stream
 
 
 __all__ = ['get_icc_stream', 'SRGB', 'ADOBERGB', 'UNCALIBRATED']

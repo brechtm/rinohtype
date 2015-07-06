@@ -15,10 +15,11 @@ from contextlib import contextmanager
 from collections import OrderedDict
 from datetime import datetime
 from functools import wraps
-from io import BytesIO, SEEK_END
+from io import BytesIO
+
+from ... import __version__, __release_date__
 
 from . import pdfdoccodec
-from ... import __version__, __release_date__
 
 PDF_VERSION = '1.6'
 
@@ -409,43 +410,6 @@ class Stream(Dictionary):
     def __getattr__(self, name):
         # almost as good as inheriting from BytesIO (which is not possible)
         return getattr(self._data, name)
-
-
-class XObject(Stream):
-    type = 'XObject'
-
-
-class XObjectForm(XObject):
-    subtype = 'Form'
-
-    def __init__(self, bounding_box):
-        super().__init__()
-        self['BBox'] = bounding_box
-
-
-# color spaces
-DEVICE_GRAY = Name('DeviceGray')
-DEVICE_RGB = Name('DeviceRGB')
-DEVICE_CMYK = Name('DeviceCMYK')
-INDEXED = Name('Indexed')
-
-# rendering intents
-ABSOLUTE_COLORIMETRIC = Name('AbsoluteColorimetric')
-RELATIVE_COLORIMETRIC = Name('RelativeColorimetric')
-SATURATION = Name('Saturation')
-PERCEPTUAL = Name('Perceptual')
-
-
-class XObjectImage(XObject):
-    subtype = 'Image'
-
-    def __init__(self, width, height, colorspace, bitspercomponent,
-                 filter=None):
-        super().__init__(filter=filter)
-        self['Width'] = Integer(width)
-        self['Height'] = Integer(height)
-        self['ColorSpace'] = colorspace
-        self['BitsPerComponent'] = Integer(bitspercomponent)
 
 
 class ObjectStream(Stream):
@@ -943,3 +907,6 @@ class ToUnicode(Stream):
     def print(self, strng, end='\n'):
         self.write(strng.encode('ascii'))
         self.write(end.encode('ascii'))
+
+
+from .xobject import XObjectForm

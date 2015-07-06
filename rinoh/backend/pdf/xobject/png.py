@@ -7,15 +7,15 @@
 
 from io import BytesIO
 from itertools import islice
+from struct import Struct, pack
 
 import png as purepng
 
-from struct import Struct, pack
+from ..cos import Array, Integer, Stream, Name, Dictionary, Real
+from ..filter import FlateDecode, FlateDecodeParams
 
-from .cos import (XObjectImage, Array, Integer, Stream, Name, Dictionary, Real,
-                  DEVICE_GRAY, DEVICE_RGB, INDEXED, ABSOLUTE_COLORIMETRIC,
-                  RELATIVE_COLORIMETRIC, SATURATION, PERCEPTUAL)
-from .filter import FlateDecode, FlateDecodeParams
+from . import (XObjectImage, DEVICE_GRAY, DEVICE_RGB, INDEXED, PERCEPTUAL,
+               ABSOLUTE_COLORIMETRIC, RELATIVE_COLORIMETRIC, SATURATION)
 from .icc import get_icc_stream, SRGB
 
 

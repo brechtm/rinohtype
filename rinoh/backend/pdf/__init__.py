@@ -12,11 +12,10 @@ from io import StringIO, BytesIO
 from contextlib import contextmanager
 
 from . import cos
-
 from .reader import PDFReader
 from .filter import FlateDecode
-from .jpeg import JPEGReader
-from .png import PNGReader
+from .xobject.jpeg import JPEGReader
+from .xobject.png import PNGReader
 
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont

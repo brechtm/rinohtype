@@ -8,9 +8,10 @@
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
 
-from .cos import (Name, XObjectImage, Array, Stream, Integer,
-                  DEVICE_GRAY, DEVICE_RGB, DEVICE_CMYK)
-from .filter import DCTDecode, FlateDecode
+from ..cos import Name, Array, Stream, Integer
+from ..filter import DCTDecode, FlateDecode
+
+from . import XObjectImage, DEVICE_GRAY, DEVICE_RGB, DEVICE_CMYK
 from .icc import SRGB, UNCALIBRATED, get_icc_stream
 
 
