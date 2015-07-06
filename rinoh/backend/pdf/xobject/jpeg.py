@@ -45,9 +45,8 @@ class JPEGReader(XObjectImage):
         except TypeError:
             self._file = file_or_filename
             self.filename = None
-        self.dpi = 72, 72
         (width, height, bits_per_component, num_components, exif_color_space,
-         icc_profile, adobe_color_transform) = self._get_metadata()
+         icc_profile, adobe_color_transform, dpi) = self._get_metadata()
         if bits_per_component != 8:
             raise ValueError('PDF only supports JPEG files with 8 bits '
                              'per component')
@@ -60,7 +59,7 @@ class JPEGReader(XObjectImage):
             colorspace = Array([Name('ICCBased'), icc_profile])
         else:
             colorspace = device_color_space
-        super().__init__(width, height, colorspace, bits_per_component,
+        super().__init__(width, height, colorspace, bits_per_component, dpi,
                          filter=DCTDecode())
         if adobe_color_transform and num_components == 4:  # invert CMYK colors
             self['Decode'] = Array([Integer(1), Integer(0)] * 4)
@@ -75,16 +74,18 @@ class JPEGReader(XObjectImage):
 
     read_ushort = create_reader('H')
 
-    def _set_density(self, density):
+    def _density(self, density):
         if density is None:
-            return
+            return None
         x_density, y_density, unit = density
         if unit == DPI:
-            self.dpi = x_density, y_density
+            dpi = x_density, y_density
         elif unit == DPCM:
-            self.dpi = 2.54 * x_density, 2.54 * y_density
+            dpi = 2.54 * x_density, 2.54 * y_density
+        return dpi
 
     def _get_metadata(self):
+        dpi = None
         icc_profile = None
         exif_color_space = UNCALIBRATED
         next_icc_part_number = 1
@@ -104,12 +105,12 @@ class JPEGReader(XObjectImage):
             header_length = self.read_ushort()
             if marker == 0xE0:
                 density = self._parse_jfif_segment(header_length)
-                self._set_density(density)
+                dpi = self._density(density)
             elif marker == 0xE1:
                 result = self._parse_exif_segment(header_length)
                 if result:
                     density, exif_color_space = result
-                    self._set_density(density)
+                    dpi = self._density(density)
             elif marker == 0xE2:
                 icc_part_number, num_icc_parts, icc_part_bytes = \
                     self._parse_icc_segment(header_length)
@@ -129,7 +130,7 @@ class JPEGReader(XObjectImage):
                 self._file.seek(header_length - 2, SEEK_CUR)
         assert next_icc_part_number == num_icc_parts + 1
         return (h_size, v_size, bits_per_component, num_components,
-                exif_color_space, icc_profile, adobe_color_xform)
+                exif_color_space, icc_profile, adobe_color_xform, dpi)
 
     JFIF_HEADER = create_reader('5s 2s B H H B B', lambda tuple: tuple)
 

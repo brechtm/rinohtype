@@ -27,13 +27,24 @@ class XObjectForm(XObject):
 class XObjectImage(XObject):
     subtype = 'Image'
 
+    DEFAULT_DPI = 72
+
     def __init__(self, width, height, colorspace, bitspercomponent,
-                 filter=None):
+                 dpi_or_aspect_ratio=None, filter=None):
         super().__init__(filter=filter)
         self['Width'] = Integer(width)
         self['Height'] = Integer(height)
         self['ColorSpace'] = colorspace
         self['BitsPerComponent'] = Integer(bitspercomponent)
+        if dpi_or_aspect_ratio is None:
+            self.dpi = (self.DEFAULT_DPI, self.DEFAULT_DPI)
+        else:
+            try:  # horizontal and vertical DPI
+                self.dpi = _, _ = dpi_or_aspect_ratio
+            except TypeError:  # pixel aspect ratio
+                ar = dpi_or_aspect_ratio
+                self.dpi = ((self.DEFAULT_DPI, self.DEFAULT_DPI / ar) if ar > 1
+                            else (self.DEFAULT_DPI * ar, self.DEFAULT_DPI))
 
     @property
     def width(self):

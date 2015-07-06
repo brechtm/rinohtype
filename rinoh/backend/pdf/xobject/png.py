@@ -30,12 +30,12 @@ class PNGReader(XObjectImage):
         assert png.compression == 0
         assert png.filter == 0
         assert png.interlace == 0
-        self.dpi = self._dpi(png)
         color_params = FlateDecodeParams(predictor=10, colors=png.color_planes,
                                          bits_per_component=png.bitdepth,
                                          columns=png.width)
         super().__init__(png.width, png.height, self._colorspace(png),
-                         png.bitdepth, filter=FlateDecode(color_params))
+                         png.bitdepth, self._dpi(png),
+                         filter=FlateDecode(color_params))
         if png.rendering_intent is not None:
             self['Intent'] = RENDERING_INTENT[png.rendering_intent]
         if png.alpha:  # grayscale/RGB with alpha channel
@@ -55,7 +55,8 @@ class PNGReader(XObjectImage):
                 if png.plte:  # alpha values assigned to palette colors
                     # TODO: if only a single color has trn 0, go to else
                     self['SMask'] = XObjectImage(png.width, png.height,
-                                                 DEVICE_GRAY, 8, FlateDecode())
+                                                 DEVICE_GRAY, 8,
+                                                 filter=FlateDecode())
                     for alpha_row in self._plte_index_to_alpha(png):
                         self['SMask'].write(alpha_row)
                 else:  # a single color is transparent
@@ -66,12 +67,12 @@ class PNGReader(XObjectImage):
     def _dpi(self, png):
         try:
             (x_density, y_density), unit = png.resolution
-            if unit != 1:
-                raise AttributeError
-            dpi = x_density / 100 * 2.54, y_density / 100 * 2.54
+            if unit == 0:
+                return x_density / y_density   # pixel aspect ratio
+            elif unit == 1:
+                return x_density / 100 * 2.54, y_density / 100 * 2.54
         except AttributeError:
-            dpi = 72, 72
-        return dpi
+            return None
 
     def _colorspace(self, png):
         device_color_space = COLOR_SPACE[png.color_type & 3]
