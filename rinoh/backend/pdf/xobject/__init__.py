@@ -35,6 +35,18 @@ class XObjectImage(XObject):
         self['ColorSpace'] = colorspace
         self['BitsPerComponent'] = Integer(bitspercomponent)
 
+    @property
+    def width(self):
+        """Width of this image in postscript points"""
+        dpi_x, dpi_y = self.dpi
+        return self['Width'] / dpi_x * 72
+
+    @property
+    def height(self):
+        """Height of this image in postscript points"""
+        dpi_x, dpi_y = self.dpi
+        return self['Height'] / dpi_y * 72
+
 
 # color spaces
 DEVICE_GRAY = Name('DeviceGray')

@@ -387,17 +387,15 @@ class Image(object):
     def __init__(self, filename_or_file):
         try:
             self.xobject = JPEGReader(filename_or_file)
-            dpi_x, dpi_y = self.xobject.dpi
-            self.width = self.xobject['Width'] / dpi_x * 72
-            self.height = self.xobject['Height'] / dpi_y * 72
+            self.width = self.xobject.width
+            self.height = self.xobject.height
             return
         except ValueError:
             pass
         try:
             self.xobject = PNGReader(filename_or_file)
-            dpi_x, dpi_y = self.xobject.dpi
-            self.width = self.xobject['Width'] / dpi_x * 72
-            self.height = self.xobject['Height'] / dpi_y * 72
+            self.width = self.xobject.width
+            self.height = self.xobject.height
             return
         except ValueError:
             pass
