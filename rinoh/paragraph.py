@@ -209,9 +209,8 @@ def spans_to_words(spans, container):
                     word.append((glyphs_span, chars))
         except InlineFlowableException:
             # TODO: take descender into account
-            glyphs_span = next(span.split(container)).flow_inline(container, 0)
-            chars = '<inline image>'
-            word.append((glyphs_span, chars))
+            glyphs_span = span.flow_inline(container, 0)
+            word.append((glyphs_span, '<inline image>'))
     if word:
         yield word
 
