@@ -387,7 +387,7 @@ def create_to_glyphs(span, document):
     scale = span.height(document) / font.units_per_em
     variant = (SMALL_CAPITAL if span.get_style('small_caps', document)
                else None)
-    kerning = span.get_style('kerning', document),
+    kerning = span.get_style('kerning', document)
     ligatures = span.get_style('ligatures', document)
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders

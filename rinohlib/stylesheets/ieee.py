@@ -91,6 +91,7 @@ styles('nested line block',
        margin_left=0.5*CM)
 
 styles('title',
+       base='default',
        typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=18*PT,
