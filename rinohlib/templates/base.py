@@ -10,7 +10,7 @@ from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
 from rinoh.text import Tab
 from rinoh.util import NotImplementedAttribute
 
-from ..stylesheets.somestyle import stylesheet as STYLESHEET
+from ..stylesheets.sphinx import stylesheet as STYLESHEET
 
 
 # page definitions
@@ -124,7 +124,7 @@ class DocumentOptions(dict):
     options = {'stylesheet': STYLESHEET,
                'page_size': A4,
                'page_orientation': PORTRAIT,
-               'page_horizontal_margin': 2*CM,
+               'page_horizontal_margin': 3*CM,
                'page_vertical_margin': 3*CM,
                'columns': 1,
                'header_text': (Variable(SECTION_NUMBER(1)) + ' '

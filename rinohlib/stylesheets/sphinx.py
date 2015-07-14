@@ -1,0 +1,481 @@
+
+from rinoh import (StyleSheet, Var, ParagraphStyle,
+                   PT, CM, INCH, LEFT, RIGHT, CENTER, BOTH,
+                   TOP, BOTTOM, MIDDLE,
+                   FixedWidthSpace, TabStop,
+                   FixedSpacing, ProportionalSpacing, SINGLE,
+                   ROMAN_UC, CHARACTER_UC, NUMBER, SYMBOL,
+                   Color, Gray, RED, BLUE, GRAY90, GRAY50)
+from rinoh.font import TypeFamily
+from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
+
+from rinohlib.fonts.texgyre.pagella import typeface as palatino
+from rinohlib.fonts.texgyre.cursor import typeface as courier
+from rinohlib.fonts.texgyre.heros import typeface as helvetica
+
+from .matcher import matcher
+
+stylesheet = StyleSheet('base', matcher=matcher)
+
+stylesheet.variables['fonts'] = TypeFamily(serif=palatino,
+                                           sans=helvetica,
+                                           mono=courier)
+
+stylesheet['default'] = ParagraphStyle(typeface=Var('fonts').serif,
+                                       font_weight=REGULAR,
+                                       font_size=10*PT,
+                                       line_spacing=FixedSpacing(12*PT),
+                                       indent_first=0*PT,
+                                       space_above=0*PT,
+                                       space_below=0*PT,
+                                       justify=BOTH,
+                                       kerning=True,
+                                       ligatures=True,
+                                       hyphen_lang='en_US',
+                                       hyphen_chars=4)
+
+stylesheet('body',
+       base='default',
+       space_above=0*PT,
+       space_below=0*PT,
+       justify=BOTH)
+
+stylesheet('emphasis',
+       font_slant=ITALIC)
+
+stylesheet('strong',
+       font_weight=BOLD)
+
+stylesheet('title reference',
+       font_slant=ITALIC)
+
+stylesheet('monospaced',
+       font_size=9*PT,
+       typeface=Var('fonts').mono,
+       hyphenate=False,
+       ligatures=False)
+
+stylesheet('error',
+       font_color=RED)
+
+stylesheet('hyperlink',
+       font_color=BLUE)
+
+stylesheet('broken hyperlink',
+       font_color=GRAY50)
+
+stylesheet('literal',
+           typeface=Var('fonts').mono,
+           font_size=9*PT,
+           justify=LEFT,
+           indent_first=0,
+           space_above=3*PT,
+           space_below=3*PT,
+           ligatures=False,
+           hyphenate=False)
+           #noWrap=True,   # but warn on overflow
+           #literal=True ?)
+
+stylesheet('block quote',
+       margin_left=1*CM)
+
+stylesheet('attribution',
+       base='default',
+       justify=RIGHT)
+
+stylesheet('line block line',
+       base='default',
+       space_below=0*PT)
+
+stylesheet('nested line block',
+       margin_left=0.5*CM)
+
+stylesheet('title',
+       base='default',
+       typeface=Var('fonts').serif,
+       font_weight=REGULAR,
+       font_size=18*PT,
+       line_spacing=ProportionalSpacing(1.2),
+       space_above=6*PT,
+       space_below=6*PT,
+       justify=CENTER)
+
+stylesheet('subtitle',
+       base='title',
+       font_size=14*PT)
+
+stylesheet('date',
+       base='title',
+       font_size=10*PT,
+       line_spacing=ProportionalSpacing(1.2))
+
+stylesheet('author',
+       base='title',
+       font_size=12*PT,
+       line_spacing=ProportionalSpacing(1.2))
+
+stylesheet('affiliation',
+       base='author',
+       space_below=6*PT + 12*PT)
+
+stylesheet('chapter',
+       page_break=RIGHT)
+
+stylesheet('heading level 1',
+           typeface=Var('fonts').sans,
+           font_weight=BOLD,
+           font_size=16*PT,
+           line_spacing=SINGLE,
+           space_above=18*PT,
+           space_below=12*PT,
+           number_format=NUMBER,
+           label_suffix=FixedWidthSpace())
+
+stylesheet('unnumbered heading level 1',
+           base='heading level 1',
+           number_format=None)
+
+stylesheet('heading level 2',
+           base='heading level 1',
+           font_size=14*PT,
+           space_above=16*PT,
+           space_below=10*PT)
+
+stylesheet('heading level 3',
+           base='heading level 2',
+           font_size=12*PT,
+           space_above=10*PT,
+           space_below=6*PT)
+
+stylesheet('heading level 4',
+           base='heading level 3',
+           font_size=9*PT,
+           space_above=8*PT,
+           space_below=4*PT,
+           number_format=None)
+
+stylesheet('heading level 5',
+       base='heading level 2',
+       font_size=9*PT,
+       font_slant=ITALIC,
+       font_weight=REGULAR,
+       line_spacing=FixedSpacing(10*PT),
+       space_above=2*PT,
+       space_below=2*PT,
+       number_format=None)
+
+stylesheet('other heading levels',
+       base='heading level 5',
+       font_size=9*PT,
+       font_slant=ITALIC,
+       font_weight=REGULAR,
+       line_spacing=FixedSpacing(10*PT),
+       space_above=2*PT,
+       space_below=2*PT,
+       number_format=None)
+
+stylesheet('topic',
+       margin_left=0.5*CM)
+
+stylesheet('topic title',
+       base='default',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
+
+stylesheet('rubric',
+       base='topic title',
+       justify=CENTER,
+       font_color=Color(0.5, 0, 0))
+
+stylesheet('sidebar frame',
+       fill_color=Color(1.0, 1.0, 0.9))
+
+stylesheet('sidebar title',
+       base='default',
+       font_size=12*PT,
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
+
+stylesheet('sidebar subtitle',
+       base='default',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=2*PT,
+       space_below=2*PT)
+
+stylesheet('list item number',
+       base='default',
+       indent_first=0,
+       justify=RIGHT)
+
+stylesheet('enumerated list',
+           margin_left=8*PT,
+           space_above=5*PT,
+           space_below=5*PT,
+           ordered=True,
+           flowable_spacing=0*PT,
+           number_format=NUMBER,
+           label_suffix=')')
+
+stylesheet('nested enumerated list',
+           base='enumerated list',
+           margin_left=10*PT)
+
+stylesheet('bulleted list',
+           base='enumerated list',
+           ordered=False,
+           label_suffix=None,
+           flowable_spacing=0*PT)
+
+stylesheet('nested bulleted list',
+       base='bulleted list',
+       margin_left=10*PT)
+
+stylesheet('list item body',
+       space_above=0,
+       space_below=0,
+       margin_left=0,
+       margin_right=0)
+
+stylesheet('list item paragraph',
+       base='default',
+       space_above=0*PT,
+       space_below=0*PT,
+       margin_left=0*PT,
+       indent_first=0*PT)
+
+stylesheet('definition list',
+       base='default')
+
+stylesheet('definition term',
+       base='default',
+       indent_first=0,
+       font_weight=BOLD)
+
+stylesheet('definition term classifier',
+       font_weight=REGULAR)
+
+stylesheet('definition',
+       margin_left=15*PT)
+
+
+# field lists
+
+stylesheet('field name',
+       base='default',
+       indent_first=0,
+       justify=LEFT,
+       font_weight=BOLD)
+
+
+# option lists
+
+stylesheet('option',
+       base='default',
+       indent_first=0,
+       justify=LEFT)
+
+stylesheet('option string',
+       base='default',
+       typeface=Var('fonts').mono,
+       font_size=8*PT)
+
+stylesheet('option argument',
+       base='default',
+       font_slant=ITALIC)
+
+
+stylesheet('admonition',
+       space_above=5*PT,
+       space_below=5*PT,
+       padding_left=10*PT,
+       padding_right=10*PT,
+       padding_top=4*PT,
+       padding_bottom=4*PT,
+       fill_color=Color(0.94, 0.94, 1.0),
+       stroke_width=1*PT,
+       stroke_color=Gray(0.4))
+
+stylesheet('admonition title',
+       base='default',
+       font_weight=BOLD,
+       indent_first=0,
+       space_above=5*PT,
+       space_below=5*PT)
+
+for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
+    stylesheet(admonition_type + ' admonition title',
+           base='admonition title',
+           font_color=RED)
+
+stylesheet('header',
+       base='default',
+       font_size=9*PT,
+       indent_first=0*PT,
+       tab_stops=[TabStop(0.5, CENTER),
+                  TabStop(1.0, RIGHT)])
+
+stylesheet('footer',
+       base='header')
+
+stylesheet('footnote marker',
+       position=SUPERSCRIPT,
+       number_format=SYMBOL)
+
+stylesheet('citation marker',
+       label_prefix='[',
+       label_suffix=']',
+       custom_label=True)
+
+stylesheet('footnote paragraph',
+       base='default',
+       font_size=9*PT,
+       indent_first=0,
+       line_spacing=FixedSpacing(10*PT))
+
+stylesheet('footnote label',
+       base='footnote paragraph',
+       justify=RIGHT)
+
+stylesheet('figure',
+       space_above=10*PT,
+       space_below=12*PT)
+
+
+stylesheet('image',
+       horizontal_align=CENTER)
+
+stylesheet('caption',
+           base='default',
+           typeface=Var('fonts').serif,
+           font_size=9*PT,
+           line_spacing=FixedSpacing(10*PT),
+           indent_first=0*PT,
+           space_above=4*PT,
+           space_below=0*PT,
+           justify=CENTER,
+           label_suffix='.' + FixedWidthSpace())
+
+stylesheet('figure legend',
+       margin_left=30*PT)
+
+stylesheet('figure legend paragraph',
+       base='caption',
+       space_above=5*PT,
+       justify=LEFT)
+
+stylesheet('table of contents section',
+           show_in_toc=False)
+
+stylesheet('table of contents',
+           base='default',
+           indent_first=0,
+           depth=2)
+
+stylesheet('toc level 1',
+           base='table of contents',
+           font_weight=BOLD,
+           space_above=14*PT,
+           tab_stops=[TabStop(0.6*CM),
+                      TabStop(1.0, RIGHT)])
+
+stylesheet('toc level 2',
+           base='table of contents',
+           margin_left=0.6*CM,
+           tab_stops=[TabStop(1.0*CM),
+                      TabStop(1.0, RIGHT, fill='.  ')])
+
+stylesheet('toc level 3',
+           base='table of contents',
+           margin_left=1.6*CM,
+           tab_stops=[TabStop(1.4*CM),
+                      TabStop(1.0, RIGHT, fill='.  ')])
+
+stylesheet('L3 toc level 3',
+           base='table of contents',
+           margin_left=0,
+           tab_stops=[TabStop(0.6*CM),
+                      TabStop(1.0, RIGHT, '. ')])
+
+stylesheet('table',
+       space_above=5*PT,
+       space_below=5*PT,
+       horizontal_align=CENTER)
+
+stylesheet('table cell',
+       space_above=2*PT,
+       space_below=2*PT,
+       margin_left=2*PT,
+       margin_right=2*PT,
+       vertical_align=MIDDLE)
+
+stylesheet('table body cell background on even row',
+       fill_color=GRAY90)
+
+stylesheet('table body cell paragraph',
+       base='default',
+       font_size=9*PT,
+       indent_first=0)
+
+stylesheet('table body cell list item number',
+       base='table body cell paragraph',
+       indent_first=0,
+       justify=RIGHT)
+
+stylesheet('table head cell paragraph',
+       base='table body cell paragraph',
+       font_weight=BOLD,
+       justify=CENTER)
+
+stylesheet('table first column paragraph',
+           base='table body cell paragraph',
+           justify=LEFT)
+
+stylesheet('table top border',
+       stroke_width=1*PT,
+       stroke_color=Gray(0))
+
+stylesheet('table bottom border',
+       base='table top border')
+
+stylesheet('table head inner border',
+       base='table top border',
+       stroke_width=0.5*PT)
+
+stylesheet('table body top border',
+       base='table head inner border')
+
+stylesheet('horizontal rule',
+       space_above=10*PT,
+       space_below=15*PT,
+       margin_left=40*PT,
+       margin_right=40*PT)
+
+
+# title page
+
+stylesheet('title page title',
+           typeface=Var('fonts').sans,
+           font_size=26*PT,
+           justify=CENTER)
+
+stylesheet('title page subtitle',
+           base='title page title',
+           font_size=20*PT,
+           space_above=10*PT)
+
+stylesheet('title page author',
+           typeface=Var('fonts').sans,
+           font_size=18*PT,
+           justify=CENTER,
+           space_above=80*PT)
+
+stylesheet('title page date',
+           typeface=Var('fonts').sans,
+           font_size=14*PT,
+           justify=CENTER,
+           space_above=20*PT)
