@@ -104,6 +104,37 @@ matcher('definition term classifier',
 matcher('definition', DefinitionList / GroupedFlowables)
 
 
+# (Sphinx) object descriptions
+
+desc = DefinitionList.like('object description')
+
+matcher('object description', desc)
+
+matcher('object signature', desc / DefinitionTerm / ... / Paragraph)
+
+matcher('object name', desc / ... / StyledText.like('main object name'))
+
+matcher('additional name part', desc / ... / StyledText.like('additional name part'))
+
+# TODO: return types or object type names
+
+# TODO: returns
+
+matcher('object parentheses', desc / ... / StyledText.like('parentheses'))
+
+matcher('object parameter list', desc / ... / StyledText.like('parameter list'))
+
+matcher('object parameter', desc / ... / StyledText.like('parameter'))
+
+matcher('object brackets', desc / ... / StyledText.like('brackets'))
+
+matcher('object optional parameter', desc / ... / StyledText.like('optional'))
+
+matcher('object annotation', desc / ... / StyledText.like('annotation'))
+
+matcher('object description content', desc / GroupedFlowables)
+
+
 # field lists
 
 matcher('field name', Paragraph.like('field_name'))

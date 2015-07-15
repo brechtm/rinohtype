@@ -6,11 +6,11 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ...annotation import NamedDestinationLink, AnnotatedText
-from ...flowable import DummyFlowable, StaticGroupedFlowables
+from ...flowable import DummyFlowable
+from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm
-from ...text import MixedStyledText
+from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 
 from ..rst import BodyElement, InlineElement, GroupingElement
@@ -69,41 +69,52 @@ class Literal_Strong(Strong):
 
 class Desc(BodyElement):
     def build_flowable(self):
-        term = [sig.flowable() for sig in self.desc_signature]
-        return DefinitionList([(StaticGroupedFlowables(term),
-                                self.desc_content.flowable())])
+        sigs = [sig.flowable() for sig in self.desc_signature]
+        desc = self.desc_content.flowable()
+        return DefinitionList([(DefinitionTerm(sigs), desc)],
+                              style='object description')
 
 
 class Desc_Signature(BodyElement):
     def build_flowable(self):
-        return DefinitionTerm(self.process_content())
+        return Paragraph(self.process_content())
 
 
 class Desc_Name(Inline):
-    pass
+    style = 'main object name'
 
 
 class Desc_AddName(Inline):
-    pass
+    style = 'additional name part'
 
 
 class Desc_ParameterList(InlineElement):
     def build_styled_text(self):
-        parameter_list = intersperse(self.process_content(), ', ')
-        return '(' + MixedStyledText(parameter_list) + ')'
+        params = intersperse((param.styled_text()
+                              for param in self.desc_parameter), ', ')
+        param_list = MixedStyledText(params, style='parameter list')
+        try:
+            param_list += self.desc_optional.styled_text()
+        except AttributeError:
+            pass
+        return (SingleStyledText(' ( ', style='parentheses')
+                + param_list
+                + SingleStyledText(' ) ', style='parentheses'))
 
 
 class Desc_Parameter(Inline):
-    pass
+    style = 'parameter'
 
 
 class Desc_Optional(InlineElement):
     def build_styled_text(self):
-        return '[, ' + self.process_content() + ']'
+        return (SingleStyledText(' [, ', style='brackets')
+                + self.process_content(style='optional')
+                + SingleStyledText(' ] ', style='brackets'))
 
 
 class Desc_Annotation(Inline):
-    pass
+    style = 'annotation'
 
 
 class Desc_Content(GroupingElement):

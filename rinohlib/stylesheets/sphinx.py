@@ -35,10 +35,10 @@ stylesheet['default'] = ParagraphStyle(typeface=Var('fonts').serif,
                                        hyphen_chars=4)
 
 stylesheet('body',
-       base='default',
-       space_above=0*PT,
-       space_below=0*PT,
-       justify=BOTH)
+           base='default',
+           space_above=5*PT,
+           space_below=0*PT,
+           justify=BOTH)
 
 stylesheet('emphasis',
        font_slant=ITALIC)
@@ -50,27 +50,27 @@ stylesheet('title reference',
        font_slant=ITALIC)
 
 stylesheet('monospaced',
-       font_size=9*PT,
-       typeface=Var('fonts').mono,
-       hyphenate=False,
-       ligatures=False)
+           base='default',
+           typeface=Var('fonts').mono,
+           hyphenate=False,
+           ligatures=False)
 
 stylesheet('error',
        font_color=RED)
 
 stylesheet('hyperlink',
-       font_color=BLUE)
+           font_color=Color(0.208, 0.374, 0.486))
 
 stylesheet('broken hyperlink',
        font_color=GRAY50)
 
 stylesheet('literal',
+           base='default',
            typeface=Var('fonts').mono,
-           font_size=9*PT,
            justify=LEFT,
            indent_first=0,
-           space_above=3*PT,
-           space_below=3*PT,
+           space_above=4*PT,
+           space_below=4*PT,
            ligatures=False,
            hyphenate=False)
            #noWrap=True,   # but warn on overflow
@@ -125,6 +125,7 @@ stylesheet('heading level 1',
            typeface=Var('fonts').sans,
            font_weight=BOLD,
            font_size=16*PT,
+           font_color=Color(0.126, 0.263, 0.361),
            line_spacing=SINGLE,
            space_above=18*PT,
            space_below=12*PT,
@@ -217,7 +218,7 @@ stylesheet('enumerated list',
            space_above=5*PT,
            space_below=5*PT,
            ordered=True,
-           flowable_spacing=0*PT,
+           flowable_spacing=5*PT,
            number_format=NUMBER,
            label_suffix=')')
 
@@ -228,8 +229,7 @@ stylesheet('nested enumerated list',
 stylesheet('bulleted list',
            base='enumerated list',
            ordered=False,
-           label_suffix=None,
-           flowable_spacing=0*PT)
+           label_suffix=None)
 
 stylesheet('nested bulleted list',
        base='bulleted list',
@@ -248,19 +248,48 @@ stylesheet('list item paragraph',
        margin_left=0*PT,
        indent_first=0*PT)
 
-stylesheet('definition list',
-       base='default')
+stylesheet('definition list')
 
-stylesheet('definition term',
-       base='default',
-       indent_first=0,
-       font_weight=BOLD)
+stylesheet('definition term')
+
+stylesheet('definition term paragraph',
+           base='default',
+           indent_first=0,
+           font_weight=BOLD)
 
 stylesheet('definition term classifier',
-       font_weight=REGULAR)
+           font_weight=REGULAR)
 
 stylesheet('definition',
-       margin_left=15*PT)
+           margin_left=20*PT)
+
+
+# (Sphinx) object descriptions
+
+stylesheet('object description',
+           space_above=6*PT,
+           space_below=6*PT)
+
+stylesheet('object signature',
+           base='default')
+
+stylesheet('object name', typeface=Var('fonts').mono, font_weight=BOLD)
+
+stylesheet('additional name part', base='monospaced')
+
+stylesheet('object parentheses', font_size=11*PT)
+
+stylesheet('object parameter list', )
+
+stylesheet('object parameter', font_slant=ITALIC)
+
+stylesheet('object brackets', font_size=11*PT, font_weight=BOLD)
+
+stylesheet('object optional parameter', )
+
+stylesheet('object annotation', font_weight=BOLD)
+
+stylesheet('object description content', base='definition')
 
 
 # field lists
