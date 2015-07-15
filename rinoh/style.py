@@ -305,6 +305,9 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         try:
             base_style = document.stylesheet[exception.base_name]
             return base_style.get_value(exception.attribute, document)
+        except ParentStyleException:
+            return self.parent.get_style_recursive(exception.attribute,
+                                                   document)
         except BaseStyleException as e:
             return self.get_base_style_recursive(e, document)
 
