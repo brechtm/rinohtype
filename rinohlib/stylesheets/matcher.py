@@ -96,7 +96,10 @@ matcher('definition list', DefinitionList)
 
 matcher('definition term', DefinitionTerm)
 
-matcher('definition term classifier', StyledText.like('classifier'))
+matcher('definition term paragraph', DefinitionTerm / ... / Paragraph)
+
+matcher('definition term classifier',
+        DefinitionTerm / ... /StyledText.like('classifier'))
 
 matcher('definition', DefinitionList / GroupedFlowables)
 

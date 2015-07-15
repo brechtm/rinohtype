@@ -261,10 +261,11 @@ styles('list item paragraph',
        margin_left=0*PT,
        indent_first=0*PT)
 
-styles('definition list',
-       base='default')
+styles('definition list')
 
-styles('definition term',
+styles('definition term')
+
+styles('definition term paragraph',
        base='default',
        indent_first=0,
        font_weight=BOLD)

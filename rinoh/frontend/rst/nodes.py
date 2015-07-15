@@ -41,8 +41,10 @@ class Text(InlineElement):
 
 
 class Inline(InlineElement):
+    style = None
+
     def build_styled_text(self):
-        return self.process_content()
+        return self.process_content(style=self.style)
 
 
 class Document(BodyElement):
@@ -440,7 +442,8 @@ class Definition_List_Item(BodySubElement):
             term += ' : ' + self.classifier.styled_text()
         except AttributeError:
             pass
-        return rt.DefinitionTerm(term), self.definition.flowable()
+        return (rt.DefinitionTerm([rt.Paragraph(term)]),
+                self.definition.flowable())
 
 
 class Term(Inline):
@@ -460,7 +463,7 @@ class Classifier(InlineElement):
 
 
 class Definition(GroupingElement):
-    pass
+    grouped_flowables_class = rt.Definition
 
 
 class Field_List(BodyElement):

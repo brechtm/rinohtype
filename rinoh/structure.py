@@ -26,7 +26,7 @@ from .style import PARENT_STYLE
 
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
-           'DefinitionList', 'DefinitionTerm',
+           'DefinitionList', 'DefinitionTerm', 'Definition',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -192,7 +192,11 @@ class DefinitionList(GroupedFlowables):
             yield definition
 
 
-class DefinitionTerm(Paragraph):
+class DefinitionTerm(StaticGroupedFlowables):
+    pass
+
+
+class Definition(StaticGroupedFlowables):
     pass
 
 
