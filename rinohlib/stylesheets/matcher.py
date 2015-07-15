@@ -28,7 +28,9 @@ matcher('monospaced', StyledText.like('monospaced'))
 
 matcher('error', StyledText.like('error'))
 
-matcher('hyperlink', StyledText.like('link'))
+matcher('internal hyperlink', StyledText.like('internal link'))
+
+matcher('external hyperlink', StyledText.like('external link'))
 
 matcher('broken hyperlink', StyledText.like('broken link'))
 

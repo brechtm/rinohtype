@@ -58,11 +58,14 @@ stylesheet('monospaced',
 stylesheet('error',
        font_color=RED)
 
-stylesheet('hyperlink',
+stylesheet('internal hyperlink',
            font_color=Color(0.208, 0.374, 0.486))
 
+stylesheet('external hyperlink',
+           font_color=Color(0.216, 0.439, 0.388))
+
 stylesheet('broken hyperlink',
-       font_color=GRAY50)
+           font_color=GRAY50)
 
 stylesheet('literal',
            base='default',

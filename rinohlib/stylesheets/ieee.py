@@ -58,8 +58,11 @@ styles('monospaced',
 styles('error',
        font_color=RED)
 
-styles('hyperlink',
+styles('internal hyperlink',
        font_color=BLUE)
+
+styles('external hyperlink',
+       base='internal hyperlink')
 
 styles('broken hyperlink',
        font_color=GRAY50)
