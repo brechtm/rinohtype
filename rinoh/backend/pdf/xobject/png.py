@@ -77,7 +77,7 @@ class PNGReader(XObjectImage):
     def _colorspace(self, png):
         device_color_space = COLOR_SPACE[png.color_type & 3]
         icc_profile = self._icc_profile(png)
-        if icc_profile is None and png.sRGB:
+        if icc_profile is None and png.rendering_intent is not None:
             icc_profile = get_icc_stream(SRGB)
         if icc_profile is not None:
             icc_profile['N'] = Integer(3 if device_color_space == DEVICE_RGB
