@@ -25,11 +25,19 @@ def main():
         parser.print_help()
         return
 
+    try:
+        page_size = getattr(paper, args.paper.upper())
+    except AttributeError:
+        print("Unknown paper size '{}'. Must be one of:".format(args.paper))
+        print('   A0, A1, ..., A10, letter, legal, junior_legal, ledger, '
+              'tabloid')
+        return
+
     input_base, input_ext = os.path.splitext(input_file)
     if input_dir:
         os.chdir(input_dir)
     parser = ReStructuredTextParser()
     document_tree = parser.parse(input_file)
-    options = ArticleOptions(page_size=getattr(paper, args.paper.upper()))
+    options = ArticleOptions(page_size=page_size)
     document = Article(document_tree, options, backend=pdf)
     document.render(input_base)
