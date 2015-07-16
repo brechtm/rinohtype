@@ -351,8 +351,16 @@ stylesheet('header',
        tab_stops=[TabStop(0.5, CENTER),
                   TabStop(1.0, RIGHT)])
 
+
+stylesheet('line under header',
+           space_above=2*PT,
+           stroke_width=0.4*PT)
+
 stylesheet('footer',
-       base='header')
+           base='header')
+
+stylesheet('line above footer',
+           stroke_color=None)
 
 stylesheet('footnote marker',
        position=SUPERSCRIPT,

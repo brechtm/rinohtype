@@ -165,7 +165,12 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
 
 matcher('header', Header)
 
+matcher('line under header', HorizontalRule.like('header'))
+
 matcher('footer', Footer)
+
+matcher('line above footer', HorizontalRule.like('footer'))
+
 
 matcher('footnote marker', NoteMarkerBase.like('footnote'))
 

@@ -6,7 +6,8 @@ from rinoh.layout import (Container, FootnoteContainer, Chain,
 from rinoh.paper import A4
 from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE, \
     NUMBER_OF_PAGES
-from rinoh.structure import Section, Heading, TableOfContents, Header, Footer
+from rinoh.structure import (Section, Heading, TableOfContents, Header, Footer,
+                             HorizontalRule)
 from rinoh.text import Tab
 from rinoh.util import NotImplementedAttribute
 
@@ -52,12 +53,14 @@ class SimplePage(Page):
                                                bottom=header_bottom,
                                                width=body_width)
             self.header.append_flowable(Header(self.document_part.header))
+            self.header.append_flowable(HorizontalRule(style='header'))
         if self.document_part.footer:
             footer_vpos = self.body.bottom + self.header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
                                                  left=h_margin,
                                                  top=footer_vpos,
                                                  width=body_width)
+            self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(self.document_part.footer))
 
 

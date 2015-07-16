@@ -336,8 +336,14 @@ styles('header',
        tab_stops=[TabStop(0.5, CENTER),
                   TabStop(1.0, RIGHT)])
 
+styles('line under header',
+       stroke_width=0.4*PT)
+
 styles('footer',
        base='header')
+
+styles('line above footer',
+       stroke_color=None)
 
 styles('footnote marker',
        position=SUPERSCRIPT,
