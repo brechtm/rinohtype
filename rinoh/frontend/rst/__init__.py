@@ -96,6 +96,7 @@ class BodyElement(CustomElement):
         if ids:
             # assert len(ids) == 1
             flowable.id = ids[0]
+        flowable.classes = self.get('classes')
         return flowable
 
     def build_flowable(self):
@@ -114,7 +115,12 @@ class InlineElement(CustomElement):
 
     @set_source
     def styled_text(self, preserve_space=False):
-        return self.build_styled_text()
+        styled_text = self.build_styled_text()
+        try:
+            styled_text.classes = self.get('classes')
+        except AttributeError:
+            pass
+        return styled_text
 
     def build_styled_text(self):
         raise NotImplementedError('tag: %s' % self.tag)
