@@ -660,3 +660,7 @@ class Raw(BodyElement):
             return rt.WarnFlowable("Unsupported raw pdf option: '{}'"
                                    .format(self.text))
         return rt.DummyFlowable()
+
+
+class Container(GroupingElement):
+    pass
