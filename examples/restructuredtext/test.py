@@ -7,8 +7,8 @@ from rinohlib.templates.book import Book, BookOptions
 from rinohlib.templates.article import Article, ArticleOptions
 
 if __name__ == '__main__':
-#    for name in ('quickstart', 'FAQ', 'THANKS'):
-    for name in ('demo', ):
+   for name in ('quickstart', 'FAQ', 'THANKS'):
+#     for name in ('demo', ):
         parser = ReStructuredTextParser()
         flowables = parser.parse(name + '.txt')
         # manual_options = BookOptions(stylesheet=STYLESHEET)
