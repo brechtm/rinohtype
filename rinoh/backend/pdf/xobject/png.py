@@ -24,7 +24,6 @@ __all__ = ['PNGReader']
 
 class PNGReader(XObjectImage):
     def __init__(self, file_or_filename):
-        print('PNGReader:', file_or_filename)
         png = purepng.Reader(file_or_filename)
         png.preamble()
         assert png.compression == 0
