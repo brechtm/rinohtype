@@ -62,7 +62,10 @@ setup(
                         'fonts/texgyre/termes/*.otf',
                         ]},
     scripts=['bin/rinoh'],
-    install_requires=['docutils'],
+    install_requires=['docutils', 'purepng>=0.1.0'],
+    dependency_links=[
+        'https://github.com/Scondo/purepng/tarball/0.1.1#egg=purepng-0.1.1'
+    ],
     extras_require = {'bitmap':  ['Pillow']},
     provides=[PACKAGE, LIB],
     #test_suite='nose.collector',
