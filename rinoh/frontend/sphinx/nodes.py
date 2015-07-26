@@ -4,7 +4,7 @@
 #
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
-
+from itertools import chain
 
 from ...flowable import DummyFlowable
 from ...paragraph import Paragraph
@@ -90,15 +90,17 @@ class Desc_AddName(Inline):
 
 class Desc_ParameterList(InlineElement):
     def build_styled_text(self):
-        params = intersperse((param.styled_text()
-                              for param in self.desc_parameter), ', ')
-        param_list = MixedStyledText(params, style='parameter list')
         try:
-            param_list += self.desc_optional.styled_text()
+            params = intersperse((param.styled_text()
+                                  for param in self.desc_parameter), ', ')
+        except AttributeError:
+            params = ()
+        try:
+            params = chain(params, (self.desc_optional.styled_text(), ))
         except AttributeError:
             pass
         return (SingleStyledText(' ( ', style='parentheses')
-                + param_list
+                + MixedStyledText(params, style='parameter list')
                 + SingleStyledText(' ) ', style='parentheses'))
 
 
