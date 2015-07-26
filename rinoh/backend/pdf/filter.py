@@ -8,7 +8,6 @@
 
 import struct, zlib
 
-from base64 import a85encode, a85decode
 from binascii import hexlify, unhexlify
 from math import ceil
 from string import whitespace
@@ -109,65 +108,82 @@ class ASCII85Decode(Filter):
     def decoder(self, source):
         return ASCII85Decoder(source)
 
+try:
+    from base64 import a85encode, a85decode
 
-@consumer
-def ascii85_encoder(destination):
-    rest = b''
-    while True:
-        try:
-            in_bytes = rest + (yield)
-        except GeneratorExit:
-            break
-        rest_len = len(in_bytes) % 4
-        if rest_len:
-            input, rest = in_bytes[:-rest_len], in_bytes[-rest_len:]
-        else:
-            input, rest = in_bytes, b''
-        destination.write(a85encode(input))
-    destination.write(a85encode(rest))
-    destination.write(b'~>')  # EOD marker
-
-
-class ASCII85Encoder(Encoder):
-    def __init__(self, destination):
-        super().__init__(destination)
-        self._encoder = ascii85_encoder(destination)
-
-    def write(self, b):
-        self._encoder.send(b)
-
-    def flush(self):
-        self._encoder.close()
-
-
-ASCII_WHITESPACE = whitespace.encode('ascii')
-
-class ASCII85Decoder(FIFOBuffer, Decoder):
-    def __init__(self, source):
-        super().__init__(source)
-        self.rest = b''
-
-    def read_from_source(self, n):
-        out_data = b''
-        while len(out_data) < n:
-            in_data = self._source.read(n)
-            in_data = self.rest + in_data.translate(None, ASCII_WHITESPACE)
-            if not in_data:
-                self.rest = b''
+    @consumer
+    def ascii85_encoder(destination):
+        rest = b''
+        while True:
+            try:
+                in_bytes = rest + (yield)
+            except GeneratorExit:
                 break
-            eod_index = in_data.find(b'~')
-            if eod_index > 0:
-                assert in_data[eod_index:] == b'~>'
-                out_data += a85decode(in_data[:eod_index])
-                self.rest = b''
-                break
-            rest_len = len(in_data) % 5
+            rest_len = len(in_bytes) % 4
             if rest_len:
-                input, self.rest = in_data[:-rest_len], in_data[-rest_len:]
+                input, rest = in_bytes[:-rest_len], in_bytes[-rest_len:]
             else:
-                input, self.rest = in_data, b''
-            out_data += a85decode(input)
-        return out_data
+                input, rest = in_bytes, b''
+            destination.write(a85encode(input))
+        destination.write(a85encode(rest))
+        destination.write(b'~>')  # EOD marker
+
+
+    class ASCII85Encoder(Encoder):
+        def __init__(self, destination):
+            super().__init__(destination)
+            self._encoder = ascii85_encoder(destination)
+
+        def write(self, b):
+            self._encoder.send(b)
+
+        def flush(self):
+            self._encoder.close()
+
+
+    ASCII_WHITESPACE = whitespace.encode('ascii')
+
+    class ASCII85Decoder(FIFOBuffer, Decoder):
+        def __init__(self, source):
+            super().__init__(source)
+            self.rest = b''
+
+        def read_from_source(self, n):
+            out_data = b''
+            while len(out_data) < n:
+                in_data = self._source.read(n)
+                in_data = self.rest + in_data.translate(None, ASCII_WHITESPACE)
+                if not in_data:
+                    self.rest = b''
+                    break
+                eod_index = in_data.find(b'~')
+                if eod_index > 0:
+                    assert in_data[eod_index:] == b'~>'
+                    out_data += a85decode(in_data[:eod_index])
+                    self.rest = b''
+                    break
+                rest_len = len(in_data) % 5
+                if rest_len:
+                    input, self.rest = in_data[:-rest_len], in_data[-rest_len:]
+                else:
+                    input, self.rest = in_data, b''
+                out_data += a85decode(input)
+            return out_data
+
+except ImportError:
+    class PythonVersionError(Exception):
+        pass
+
+    exc = PythonVersionError('The ASCII85Decode filter requires Python >= 3.4')
+
+    class ASCII85Encoder(Encoder):
+        def __init__(self, destination):
+            raise exc
+
+
+    class ASCII85Decoder(Decoder):
+        def __init__(self, source):
+            raise exc
 
 
 from .cos import Name, Dictionary, Integer, Array, Null
