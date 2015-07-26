@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from io import BytesIO
+from io import BytesIO, SEEK_END
 
 
 class FIFOBuffer(object):
@@ -40,7 +40,7 @@ class FIFOBuffer(object):
         self._read_pos = self._fifo.tell()
         if self._read_pos >= self._buffer_size:
             self._fifo = BytesIO(self._fifo.read())
-            self._write_pos = self._fifo.getbuffer().nbytes
+            self._write_pos = self._fifo.seek(0, SEEK_END)
             self._read_pos = 0
         return out
 
