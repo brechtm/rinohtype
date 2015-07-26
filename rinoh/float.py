@@ -38,7 +38,7 @@ class ImageBase(Flowable):
     def render(self, container, last_descender, state=None):
         try:
             image = container.document.backend.Image(self.filename_or_file)
-        except FileNotFoundError:
+        except OSError:
             message = "Image file not found: '{}'".format(self.filename_or_file)
             self.warn(message)
             text = SingleStyledText(message, style=TextStyle(font_color=RED))
