@@ -116,7 +116,6 @@ class StyledText(Styled):
     """Base class for text that has a :class:`TextStyle` associated with it."""
 
     style_class = TextStyle
-    default_style = PARENT_STYLE
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
