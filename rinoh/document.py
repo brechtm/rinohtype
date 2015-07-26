@@ -146,7 +146,7 @@ class DocumentPart(object):
             flowable_target.prepare()
 
     def render(self, document_page_count):
-        self.pages.clear()
+        del self.pages[:]
         self.add_page(self.first_page())
         for page in self.pages:
             chains_requiring_new_page = set(chain for chain in page.render())
