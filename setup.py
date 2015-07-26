@@ -51,6 +51,8 @@ setup(
                             'data/hyphen/*.dic',
                             'data/xml/catalog',
                             'data/xml/w3c-entities/*.ent',
+                            'backend/pdf/xobject/icc/*.icc',
+                            'backend/pdf/xobject/icc/*.txt',
                             ],
                   LIB: ['fonts/texgyre/cursor/TeX-Gyre-*.txt',
                         'fonts/texgyre/cursor/*.otf',
