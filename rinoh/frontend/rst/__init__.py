@@ -94,7 +94,6 @@ class BodyElement(CustomElement):
         flowable = self.build_flowable()
         ids = self.get('ids')
         if ids:
-            # assert len(ids) == 1
             flowable.id = ids[0]
         flowable.classes = self.get('classes')
         return flowable
