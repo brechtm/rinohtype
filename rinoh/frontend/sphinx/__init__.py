@@ -69,25 +69,18 @@ class RinohBuilder(Builder):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
         pass
 
-    def assemble_doctree(self, indexfile, toctree_only, appendices):
-        docnames = set([indexfile] + appendices)
+    def assemble_doctree(self, indexfile):
+        docnames = set([indexfile])
         self.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
-        if toctree_only:
-            # extract toctree nodes from the tree and put them in a
-            # fresh document
-            new_tree = docutils.utils.new_document('<rinoh output>')
-            for node in tree.traverse(addnodes.toctree):
-                new_tree += node
-            tree = new_tree
-        largetree = inline_all_toctrees(self, docnames, indexfile, tree,
+        # extract toctree nodes from the tree and put them in a fresh document
+        new_tree = docutils.utils.new_document('<rinoh output>')
+        for node in tree.traverse(addnodes.toctree):
+            new_tree += node
+        largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
                                         darkgreen)
         largetree['docname'] = indexfile
-        for docname in appendices:
-            appendix = self.env.get_doctree(docname)
-            appendix['docname'] = docname
-            largetree.append(appendix)
         self.info()
         self.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
@@ -133,21 +126,15 @@ class RinohBuilder(Builder):
     def write(self, *ignored):
         document_data = self.init_document_data()
         for entry in document_data:
-            docname, targetname, title, author, docclass = entry[:5]
-            toctree_only = entry[4] if len(entry) > 4 else False
-
+            docname, targetname, title, author = entry
             self.info("processing " + targetname + "... ", nonl=1)
-            doctree = self.assemble_doctree(
-                docname, toctree_only,
-                appendices=[])
-                # appendices=((docclass != 'howto') and self.config.latex_appendices or []))
+            doctree = self.assemble_doctree(docname)
             self.transform_refuris(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author
             doctree.settings.title = title
             doctree.settings.docname = docname
-            # self.write_doc_serialized(self.config.master_doc, doctree)
             self.write_doc(self.config.master_doc, doctree, targetname)
             self.info("done")
 
