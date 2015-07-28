@@ -44,8 +44,9 @@ class Framed(Flowable):
                               + self.get_style('padding_bottom', document))
             self.render_frame(container, container.height)
             return container.width, descender
-        except EndOfContainer:
-            self.render_frame(container, container.max_height)
+        except EndOfContainer as eoc:
+            if eoc.flowable_state and not eoc.flowable_state.initial:
+                self.render_frame(container, container.max_height)
             raise
 
     def render_frame(self, container, container_height):
