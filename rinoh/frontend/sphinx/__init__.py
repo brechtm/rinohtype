@@ -35,7 +35,7 @@ class RinohBuilder(Builder):
 
     name = 'rinoh'
     format = 'pdf'
-    supported_image_types = ['application/pdf']
+    supported_image_types = ['application/pdf', 'image/png', 'image/jpeg']
 
     def get_outdated_docs(self):
         return 'all documents'
