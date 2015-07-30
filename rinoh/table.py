@@ -58,7 +58,7 @@ class TableState(HorizontallyAlignedFlowableState):
 
 
 class TableStyle(HorizontallyAlignedFlowableStyle):
-    attributes = {'split_minimum_rows': 5,
+    attributes = {'split_minimum_rows': 0,
                   'repeat_head': False}
 
 
