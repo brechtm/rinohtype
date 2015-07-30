@@ -118,9 +118,9 @@ matcher('object name', desc / ... / StyledText.like('main object name'))
 
 matcher('additional name part', desc / ... / StyledText.like('additional name part'))
 
-# TODO: return types or object type names
+matcher('object type', desc / ... / StyledText.like('type'))
 
-# TODO: returns
+matcher('object returns', desc / ... / StyledText.like('returns'))
 
 matcher('object parentheses', desc / ... / StyledText.like('parentheses'))
 
@@ -135,6 +135,20 @@ matcher('object optional parameter', desc / ... / StyledText.like('optional'))
 matcher('object annotation', desc / ... / StyledText.like('annotation'))
 
 matcher('object description content', desc / GroupedFlowables)
+
+
+# (Sphinx) production list
+
+matcher('production list', FieldList.like('production list'))
+
+matcher('production',
+        FieldList.like('production list') / LabeledFlowable.like('production'))
+
+matcher('token name',
+        FieldList.like('production list') / ... / Paragraph.like('token'))
+
+matcher('token definition',
+        FieldList.like('production list') / ... / Paragraph.like('definition'))
 
 
 # field lists

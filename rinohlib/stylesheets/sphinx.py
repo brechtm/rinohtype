@@ -280,6 +280,10 @@ stylesheet('object name', typeface=Var('fonts').mono, font_weight=BOLD)
 
 stylesheet('additional name part', base='monospaced')
 
+stylesheet('object type', )
+
+stylesheet('object returns', )
+
 stylesheet('object parentheses', font_size=11*PT)
 
 stylesheet('object parameter list', )
@@ -293,6 +297,26 @@ stylesheet('object optional parameter', )
 stylesheet('object annotation', font_weight=BOLD)
 
 stylesheet('object description content', base='definition')
+
+
+# (Sphinx) production list
+
+stylesheet('production list',
+           space_above=5*PT,
+           space_below=5*PT)
+
+stylesheet('production')
+
+stylesheet('token name',
+           base='literal',
+           font_weight=BOLD,
+           space_above=0,
+           space_below=0)
+
+stylesheet('token definition',
+           base='literal',
+           space_above=0,
+           space_below=0)
 
 
 # field lists
