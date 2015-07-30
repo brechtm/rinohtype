@@ -253,7 +253,7 @@ class ExpandingContainer(Container):
     """An dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, name, parent, left, top, width, right, bottom,
-                 max_height=None):
+                 max_height=None, extra_space_below=0):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -262,17 +262,18 @@ class ExpandingContainer(Container):
         super().__init__(name, parent, left, top, width, height, right, bottom)
         self.height.addends.append(self._cursor)
         self.max_height = max_height or parent.remaining_height   # FIXME: this assumption is correct for MaybeContainer, but not generally
+        self.extra_space_below = extra_space_below
 
     @property
     def remaining_height(self):
-        return self.max_height - self.cursor
+        return self.max_height - self.cursor - self.extra_space_below
 
 
 class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, name, parent, left=None, top=None, width=None,
-                 right=None, max_height=None):
+                 right=None, max_height=None, extra_space_below=0):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -283,14 +284,14 @@ class DownExpandingContainer(ExpandingContainer):
         `max_height` is the maximum height this container can grow to."""
         top = top or (parent.cursor if parent else 0)      # FIXME: fails if top == 0
         super().__init__(name, parent, left, top, width, right, None,
-                         max_height)
+                         max_height, extra_space_below)
 
 
 class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, name, parent, left=None, bottom=None, width=None,
-                 right=None, max_height=None):
+                 right=None, max_height=None, extra_space_below=0):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -301,7 +302,7 @@ class UpExpandingContainer(ExpandingContainer):
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
         super().__init__(name, parent, left, None, width, right, bottom,
-                         max_height)
+                         max_height, extra_space_below)
 
 
 class MaybeContainer(DownExpandingContainer):
