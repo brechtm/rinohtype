@@ -377,22 +377,24 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
            font_color=RED)
 
 stylesheet('header',
-       base='default',
-       font_size=9*PT,
-       indent_first=0*PT,
-       tab_stops=[TabStop(0.5, CENTER),
-                  TabStop(1.0, RIGHT)])
+           base='default',
+           typeface=Var('fonts').sans,
+           font_size=10*PT,
+           font_weight=BOLD,
+           indent_first=0*PT,
+           tab_stops=[TabStop(0.5, CENTER),
+                      TabStop(1.0, RIGHT)])
 
 
 stylesheet('line under header',
            space_above=2*PT,
-           stroke_width=0.4*PT)
+           stroke_width=0.2*PT)
 
 stylesheet('footer',
            base='header')
 
 stylesheet('line above footer',
-           stroke_color=None)
+           stroke_width=0.2*PT)
 
 stylesheet('footnote marker',
        position=SUPERSCRIPT,
