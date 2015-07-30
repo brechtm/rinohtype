@@ -95,7 +95,7 @@ class VersionModified(GroupingElement):
 # special nodes
 
 class Glossary(GroupingElement):
-    pass
+    style = 'glossary'
 
 
 class Start_of_File(GroupingElement):
@@ -198,8 +198,14 @@ class Desc_ParameterList(InlineElement):
                 + SingleStyledText(' ) ', style='parentheses'))
 
 
-class Desc_Parameter(Inline):
-    style = 'parameter'
+class Desc_Parameter(InlineElement):
+    def build_styled_text(self):
+        style = 'parameter'
+        if self.get('noemph'):
+            style = 'noemph ' + style
+        return self.process_content(style=style)
+
+
 
 
 class Desc_Optional(InlineElement):

@@ -105,6 +105,9 @@ matcher('definition term classifier',
 
 matcher('definition', DefinitionList / GroupedFlowables)
 
+# (Sphinx) version added/changed & deprecated
+
+matcher('versionmodified', StyledText.like(classes=['versionmodified']))
 
 # (Sphinx) object descriptions
 
@@ -127,6 +130,8 @@ matcher('object parentheses', desc / ... / StyledText.like('parentheses'))
 matcher('object parameter list', desc / ... / StyledText.like('parameter list'))
 
 matcher('object parameter', desc / ... / StyledText.like('parameter'))
+
+matcher('object parameter (no emphasis)', desc / ... / StyledText.like('noemph parameter'))
 
 matcher('object brackets', desc / ... / StyledText.like('brackets'))
 

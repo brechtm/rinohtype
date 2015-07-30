@@ -267,6 +267,10 @@ stylesheet('definition',
            margin_left=20*PT)
 
 
+# (Sphinx) version added/changed & deprecated
+
+stylesheet('versionmodified', font_slant=ITALIC)
+
 # (Sphinx) object descriptions
 
 stylesheet('object description',
@@ -288,7 +292,11 @@ stylesheet('object parentheses', font_size=11*PT)
 
 stylesheet('object parameter list', )
 
-stylesheet('object parameter', font_slant=ITALIC)
+stylesheet('object parameter (no emphasis)')
+
+stylesheet('object parameter',
+           base='object parameter (no emphasis)',
+           font_slant=ITALIC)
 
 stylesheet('object brackets', font_size=11*PT, font_weight=BOLD)
 
