@@ -4,6 +4,7 @@
 Setup script for RinohType
 """
 
+import os
 import sys
 
 from datetime import datetime
@@ -13,7 +14,9 @@ from subprocess import Popen, PIPE
 
 PACKAGE = 'rinoh'
 LIB = PACKAGE + 'lib'
-VERSION_FILE = PACKAGE + '/version.py'
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+PACKAGE_ABSPATH = os.path.join(BASE_PATH, PACKAGE)
+VERSION_FILE = os.path.join(PACKAGE_ABSPATH, 'version.py')
 
 # retrieve the version number from git or VERSION_FILE
 # inspired by http://dcreager.net/2010/02/10/setuptools-git-version-numbers/
@@ -36,8 +39,13 @@ except OSError as e:
         code = compile(version_file.read(), VERSION_FILE, 'exec')
         exec(code)
 
-with open('README.rst') as file:
-    README = file.read()
+def long_description():
+    with open(os.path.join(BASE_PATH, 'README.rst')) as readme:
+        result = readme.read()
+    result += '\n\n'
+    with open(os.path.join(BASE_PATH, 'CHANGES.rst')) as changes:
+        result += changes.read()
+    return result
 
 
 setup(
@@ -72,7 +80,7 @@ setup(
     author='Brecht Machiels',
     author_email='brecht@mos6581.org',
     description='The Python document processor',
-    long_description=README,
+    long_description=long_description(),
     url='https://github.com/brechtm/rinohtype',
     keywords='rst xml pdf opentype',
     classifiers = [
