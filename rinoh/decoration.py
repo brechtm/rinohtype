@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .draw import Rectangle, ShapeStyle
+from .draw import Rectangle, Line, ShapeStyle
 from .layout import DownExpandingContainer, EndOfContainer
 from .flowable import Flowable, FlowableStyle
 from .style import PARENT_STYLE
@@ -32,6 +32,7 @@ class Framed(Flowable):
 
     def render(self, container, descender, state=None):
         document = container.document
+        draw_top = state is None or state.initial
         try:
             container.advance(self.get_style('padding_top', document))
             left = self.get_style('padding_left', document)
@@ -42,14 +43,23 @@ class Framed(Flowable):
                                                extra_space_below=padding_bottom)
             _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
             container.advance(pad_cntnr.cursor + padding_bottom, document)
-            self.render_frame(container, container.height)
+            self.render_frame(container, container.height, top=draw_top)
             return container.width, descender
         except EndOfContainer as eoc:
             if eoc.flowable_state and not eoc.flowable_state.initial:
-                self.render_frame(container, container.max_height)
+                self.render_frame(container, container.max_height,
+                                  top=draw_top, bottom=False)
             raise
 
-    def render_frame(self, container, container_height):
+    def render_frame(self, container, container_height, top=True, bottom=True):
         width, height = float(container.width), - float(container_height)
-        rect = Rectangle((0, 0), width, height, style=PARENT_STYLE, parent=self)
+        fill_style = ShapeStyle(base=PARENT_STYLE, stroke_color=None)
+        rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
         rect.render(container)
+        style = dict(style=PARENT_STYLE, parent=self)
+        if top:
+            Line((0, 0), (width, 0), **style).render(container)
+        Line((0, 0), (0, height), **style).render(container)          # left
+        Line((width, 0), (width, height), **style).render(container)  # right
+        if bottom:
+            Line((0, height), (width, height), **style).render(container)
