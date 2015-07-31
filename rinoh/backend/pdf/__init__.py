@@ -392,7 +392,8 @@ class Image(object):
             except ValueError:
                 pass
         else:
-            self.xobject = PDFPageReader(self._convert_to_pdf(filename_or_file))
+            png_file = self._convert_to_png(filename_or_file)
+            self.xobject = PNGReader(png_file)
 
     @property
     def width(self):
@@ -402,17 +403,16 @@ class Image(object):
     def height(self):
         return self.xobject.height
 
-    def _convert_to_pdf(self, filename_or_file):
+    def _convert_to_png(self, filename_or_file):
         import PIL
-        pdf_image = BytesIO()
+        png_image = BytesIO()
         input_image = PIL.Image.open(filename_or_file)
-        if 'transparency' in input_image.info:
-            foreground = input_image.convert('RGBA')
-            background = PIL.Image.new('RGBA', foreground.size,
-                                       (255, 255, 255, 255))
-            input_image = PIL.Image.alpha_composite(background, foreground)
-        input_image.convert('RGB').save(pdf_image, 'PDF')
-        return pdf_image
+        metadata = {}
+        if 'dpi' in input_image.info and 0 not in input_image.info['dpi']:
+            metadata['dpi'] = input_image.info['dpi']
+        input_image.save(png_image, 'PNG', **metadata)
+        png_image.seek(0)
+        return png_image
 
 
 CODE_TO_CHAR = {}
