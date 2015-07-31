@@ -34,10 +34,13 @@ class SimplePage(Page):
                               body_width, body_height)
 
         footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
-                                           body_height)
+                                           self.body.height)
+        float_space = DownExpandingContainer('floats', self.body, 0*PT,
+                                             0*PT, max_height=body_height / 2)
+        self.body.float_space = float_space
         self.columns = [Container('column{}'.format(i + 1), self.body,
                                   left=i * (column_width + self.column_spacing),
-                                  top=0*PT,
+                                  top=float_space.bottom,
                                   width=column_width,
                                   bottom=footnote_space.top,
                                   chain=chain)

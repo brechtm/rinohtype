@@ -555,6 +555,9 @@ class Image(BodyElement, InlineElement):
 class Figure(GroupingElement):
     grouped_flowables_class = rt.Figure
 
+    def build_flowable(self, **kwargs):
+        return rt.Float(super().build_flowable(**kwargs))
+
 
 class Caption(BodyElement):
     def build_flowable(self):
