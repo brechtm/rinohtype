@@ -572,16 +572,6 @@ class Page(Dictionary):
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
 
-    def to_xobject_form(self):
-        content_stream = self['Contents']
-        xobject = XObjectForm(self['MediaBox'])
-        if 'Filter' in content_stream:
-            xobject['Filter'] = content_stream['Filter']
-        if 'Resources' in self:
-            xobject['Resources'] = self['Resources']
-        xobject.write(content_stream.getvalue())
-        return xobject
-
 
 class Rectangle(Array):
     def __init__(self, left, bottom, right, top, indirect=False):

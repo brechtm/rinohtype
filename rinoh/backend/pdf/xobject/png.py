@@ -25,7 +25,10 @@ __all__ = ['PNGReader']
 class PNGReader(XObjectImage):
     def __init__(self, file_or_filename):
         png = purepng.Reader(file_or_filename)
-        png.preamble()
+        try:
+            png.preamble()
+        except purepng.FormatError as format_error:
+            raise ValueError(*format_error.args)
         assert png.compression == 0
         assert png.filter == 0
         assert png.interlace == 0

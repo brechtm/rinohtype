@@ -6,15 +6,15 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import re, struct, time
+import struct, time
 
 from binascii import unhexlify
-from collections import OrderedDict
-from io import BytesIO, SEEK_CUR, SEEK_END
+from io import SEEK_CUR, SEEK_END
 
 from ...util import all_subclasses
 from . import cos
 from .filter import Filter
+from .xobject import XObjectForm
 
 
 DICTIONARY_SUBCLASSES = {}
@@ -471,3 +471,26 @@ class CompressedObjectEntry(XRefEntry):
 FIELD_CLASSES = {0: FreeObjectEntry,
                  1: IndirectObjectEntry,
                  2: CompressedObjectEntry}
+
+
+class PDFPageReader(XObjectForm):
+    def __init__(self, file_or_filename, page_number=1):
+        pdf_file = PDFReader(file_or_filename)
+        page = pdf_file.catalog['Pages']['Kids'][page_number - 1]
+        super().__init__(page['MediaBox'])
+        content_stream = page['Contents']
+        if 'Filter' in content_stream:
+            self['Filter'] = content_stream['Filter']
+        if 'Resources' in page:
+            self['Resources'] = page['Resources']
+        self.write(content_stream.getvalue())
+
+    @property
+    def width(self):
+        _, _, width, _ = self['BBox']
+        return width
+
+    @property
+    def height(self):
+        _, _, _, height = self['BBox']
+        return height

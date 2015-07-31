@@ -12,7 +12,7 @@ from io import StringIO, BytesIO
 from contextlib import contextmanager
 
 from . import cos
-from .reader import PDFReader
+from .reader import PDFReader, PDFPageReader
 from .filter import FlateDecode
 from .xobject.jpeg import JPEGReader
 from .xobject.png import PNGReader
@@ -385,27 +385,22 @@ class AnnotationLocation(object):
 
 class Image(object):
     def __init__(self, filename_or_file):
-        try:
-            self.xobject = JPEGReader(filename_or_file)
-            self.width = self.xobject.width
-            self.height = self.xobject.height
-            return
-        except ValueError:
-            pass
-        try:
-            self.xobject = PNGReader(filename_or_file)
-            self.width = self.xobject.width
-            self.height = self.xobject.height
-            return
-        except ValueError:
-            pass
-        try:
-            image = PDFReader(filename_or_file)
-        except ValueError:
-            image = PDFReader(self._convert_to_pdf(filename_or_file))
-        image_page = image.catalog['Pages']['Kids'][0]
-        self.width, self.height = image_page['MediaBox'][2:]
-        self.xobject = image_page.to_xobject_form()
+        for Reader in (PDFPageReader, PNGReader, JPEGReader):
+            try:
+                self.xobject = Reader(filename_or_file)
+                break
+            except ValueError:
+                pass
+        else:
+            self.xobject = PDFPageReader(self._convert_to_pdf(filename_or_file))
+
+    @property
+    def width(self):
+        return self.xobject.width
+
+    @property
+    def height(self):
+        return self.xobject.height
 
     def _convert_to_pdf(self, filename_or_file):
         import PIL
