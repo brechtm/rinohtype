@@ -338,7 +338,7 @@ class LabeledFlowable(Flowable):
 
         max_width = 0
         with MaybeContainer(container) as maybe_container:
-            if not state:
+            if not state or state.initial:
                 with discard_state():
                     label_height, label_desc = render_label(maybe_container)
                     if label_spillover:
