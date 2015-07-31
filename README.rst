@@ -84,6 +84,10 @@ project's ``conf.py``:
                         'Document Title,  # document title
                         'Author')]        # document author
 
+3. now we can select the `rinoh` builder when building the documentation::
+
+    sphinx-build -b rinoh . _build/rinoh
+
 
 License
 -------
