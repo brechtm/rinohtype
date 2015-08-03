@@ -200,7 +200,7 @@ class ClassSelectorBase(Selector):
         if self.style_name is not None:
             style_name_result = styled.style == self.style_name
         if False in (attributes_result, style_name_result):
-            return NO_MATCH_SPECIFICITY
+            return None
         else:
             return Specificity(style_name_result or False,
                                attributes_result or False, class_match)
@@ -224,12 +224,12 @@ class ContextSelector(Selector):
         return self.selectors[-1].cls
 
     def match(self, styled):
-        total_score = NO_MATCH_SPECIFICITY
+        total_score = ZERO_SPECIFICITY
         selectors = reversed(self.selectors)
         selector = next(selectors)
         while True:
             if styled is None:
-                return NO_MATCH_SPECIFICITY
+                return None
             if selector is Ellipsis:
                 selector = next(selectors)
                 while True:
@@ -237,12 +237,12 @@ class ContextSelector(Selector):
                         break
                     styled = styled.parent
                     if styled is None:
-                        return NO_MATCH_SPECIFICITY
+                        return None
             if not isinstance(styled, selector.cls):
-                return NO_MATCH_SPECIFICITY
+                return None
             score = selector.match(styled)
             if not score:
-                return NO_MATCH_SPECIFICITY
+                return None
             total_score += score
             styled = styled.parent
             try:
@@ -481,6 +481,6 @@ class Match(object):
         return bool(self.specificity)
 
 
-NO_MATCH_SPECIFICITY = Specificity(False, False, False)
+ZERO_SPECIFICITY = Specificity(0, 0, 0)
 
-NO_MATCH = Match(None, NO_MATCH_SPECIFICITY)
+NO_MATCH = Match(None, ZERO_SPECIFICITY)
