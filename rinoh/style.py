@@ -188,8 +188,6 @@ class ClassSelectorBase(Selector):
         return (self, )
 
     def match(self, styled):
-        if not isinstance(styled, self.cls):
-            return NO_MATCH_SPECIFICITY
         class_match = 2 if type(styled) == self.cls else 1
         attributes_result = style_name_result = None
         if self.attributes:
@@ -226,12 +224,12 @@ class ContextSelector(Selector):
         return self.selectors[-1].cls
 
     def match(self, styled):
-        total_score = Specificity(0, 0, 0)
+        total_score = NO_MATCH_SPECIFICITY
         selectors = reversed(self.selectors)
         selector = next(selectors)
         while True:
             if styled is None:
-                return Specificity(0, 0, 0)
+                return NO_MATCH_SPECIFICITY
             if selector is Ellipsis:
                 selector = next(selectors)
                 while True:
@@ -239,10 +237,12 @@ class ContextSelector(Selector):
                         break
                     styled = styled.parent
                     if styled is None:
-                        return Specificity(0, 0, 0)
+                        return NO_MATCH_SPECIFICITY
+            if not isinstance(styled, selector.cls):
+                return NO_MATCH_SPECIFICITY
             score = selector.match(styled)
             if not score:
-                return Specificity(0, 0, 0)
+                return NO_MATCH_SPECIFICITY
             total_score += score
             styled = styled.parent
             try:
@@ -340,21 +340,29 @@ class AmbiguousStyleSheetException(Exception):
 
 
 class StyledMatcher(dict):
+    def __init__(self):
+        self.by_name = {}
+
     def __call__(self, name, selector):
         self[name] = selector
 
     def __setitem__(self, name, selector):
         assert name not in self
-        super().__setitem__(name, selector)
+        cls_selectors = self.setdefault(selector.cls, [])
+        cls_selectors.append((name, selector))
+        self.by_name[name] = selector
 
     def best_match(self, styled):
         scores = {}
-        for name, selector in self.items():
-            score = selector.match(styled)
-            if score:
-                if score in scores:
-                    raise AmbiguousStyleSheetException(name, scores[score])
-                scores[score] = name
+        for cls in type(styled).__mro__:
+            if cls not in self:
+                continue
+            for name, selector in self[cls]:
+                score = selector.match(styled)
+                if score:
+                    if score in scores:
+                        raise AmbiguousStyleSheetException(name, scores[score])
+                    scores[score] = name
         try:
             max_score = max(scores)
             return Match(scores[max_score], max_score)
@@ -391,7 +399,7 @@ class StyleSheet(OrderedDict):
         super().__setitem__(name, style)
 
     def __call__(self, name, **kwargs):
-        selector = self.matcher[name]
+        selector = self.matcher.by_name[name]
         self[name] = selector.cls.style_class(**kwargs)
 
     def get_variable(self, name):
