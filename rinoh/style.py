@@ -189,7 +189,7 @@ class ClassSelectorBase(Selector):
 
     def match(self, styled):
         if not isinstance(styled, self.cls):
-            return Specificity(False, False, False)
+            return NO_MATCH_SPECIFICITY
         class_match = 2 if type(styled) == self.cls else 1
         attributes_result = style_name_result = None
         if self.attributes:
@@ -202,7 +202,7 @@ class ClassSelectorBase(Selector):
         if self.style_name is not None:
             style_name_result = styled.style == self.style_name
         if False in (attributes_result, style_name_result):
-            return Specificity(False, False, False)
+            return NO_MATCH_SPECIFICITY
         else:
             return Specificity(style_name_result or False,
                                attributes_result or False, class_match)
@@ -473,4 +473,6 @@ class Match(object):
         return bool(self.specificity)
 
 
-NO_MATCH = Match(None, Specificity(0, 0, 0))
+NO_MATCH_SPECIFICITY = Specificity(False, False, False)
+
+NO_MATCH = Match(None, NO_MATCH_SPECIFICITY)
