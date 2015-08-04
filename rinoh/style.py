@@ -237,7 +237,8 @@ class ContextSelector(Selector):
             if selector is Ellipsis:
                 selector = next(selectors)
                 while True:
-                    if selector.match(styled):
+                    if (isinstance(styled, selector.cls)
+                        and selector.match(styled)):
                         break
                     styled = styled.parent
                     if styled is None:
