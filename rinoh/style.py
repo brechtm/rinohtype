@@ -230,30 +230,35 @@ class ContextSelector(Selector):
         return self.selectors[-1].style_name
 
     def match(self, styled):
+        def styled_and_parents(element):
+            while element is not None:
+                yield element
+                element = element.parent
+            raise NoMoreParentElement
+
         total_score = ZERO_SPECIFICITY
         selectors = reversed(self.selectors)
-        selector = next(selectors)
-        while True:
-            if styled is None:
+        elements = styled_and_parents(styled)
+        for selector in selectors:
+            try:
+                element = next(elements)                # NoMoreParentElement
+                if selector is Ellipsis:
+                    selector = next(selectors)          # StopIteration
+                    while not selector.match(element):
+                        element = next(elements)        # NoMoreParentElement
+            except NoMoreParentElement:
                 return None
-            if selector is Ellipsis:
-                selector = next(selectors)
-                while True:
-                    if selector.match(styled):
-                        break
-                    styled = styled.parent
-                    if styled is None:
-                        return None
-            score = selector.match(styled)
+            except StopIteration:
+                break
+            score = selector.match(element)
             if not score:
                 return None
             total_score += score
-            styled = styled.parent
-            try:
-                selector = next(selectors)
-            except StopIteration:
-                break
         return total_score
+
+
+class NoMoreParentElement(StopIteration):
+    """The top-level element in the document element tree has been reached"""
 
 
 class StyledMeta(type, ClassSelectorBase):
