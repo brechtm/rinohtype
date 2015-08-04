@@ -1,6 +1,14 @@
 Changelog
 ---------
 
+Release 0.1.3 (2015-08-04)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* recover from the slow rendering speed caused by a bugfix in 0.1.2
+  (thanks to optimized element matching in the style sheets)
+* other improvements and bugfixes related to style sheets
+
+
 Release 0.1.2 (2015-07-31)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
