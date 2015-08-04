@@ -188,6 +188,8 @@ class ClassSelectorBase(Selector):
         return (self, )
 
     def match(self, styled):
+        if not isinstance(styled, self.cls):
+            return None
         class_match = 2 if type(styled) == self.cls else 1
         attributes_result = style_name_result = None
         if self.attributes:
@@ -237,14 +239,11 @@ class ContextSelector(Selector):
             if selector is Ellipsis:
                 selector = next(selectors)
                 while True:
-                    if (isinstance(styled, selector.cls)
-                        and selector.match(styled)):
+                    if selector.match(styled):
                         break
                     styled = styled.parent
                     if styled is None:
                         return None
-            if not isinstance(styled, selector.cls):
-                return None
             score = selector.match(styled)
             if not score:
                 return None
