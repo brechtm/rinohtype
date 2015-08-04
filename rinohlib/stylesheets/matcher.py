@@ -103,7 +103,7 @@ matcher('definition term paragraph', DefinitionTerm / ... / Paragraph)
 matcher('definition term classifier',
         DefinitionTerm / ... /StyledText.like('classifier'))
 
-matcher('definition', DefinitionList / GroupedFlowables)
+matcher('definition', Definition)
 
 # (Sphinx) version added/changed & deprecated
 
