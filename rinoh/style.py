@@ -352,21 +352,18 @@ class StyledMatcher(dict):
 
     def __setitem__(self, name, selector):
         assert name not in self
-        style_selectors, cls_selectors = self.setdefault(selector.cls, ([], []))
-        if selector.style_name:
-            style_selectors.append((name, selector))
-        else:
-            cls_selectors.append((name, selector))
-        self.by_name[name] = selector
+        cls_selectors = self.setdefault(selector.cls, {})
+        style_selectors = cls_selectors.setdefault(selector.style_name, {})
+        self.by_name[name] = style_selectors[name] = selector
 
     def best_match(self, styled):
         scores = {}
         for cls in type(styled).__mro__:
-            if cls not in self:
+            try:
+                style_selectors = self[cls][styled.style]
+            except KeyError:
                 continue
-            style_selectors, cls_selectors = self[cls]
-            selectors = style_selectors if styled.style else cls_selectors
-            for name, selector in selectors:
+            for name, selector in style_selectors.items():
                 score = selector.match(styled)
                 if score:
                     if score in scores:
