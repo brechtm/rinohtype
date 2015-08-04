@@ -191,21 +191,20 @@ class ClassSelectorBase(Selector):
         if not isinstance(styled, self.cls):
             return None
         class_match = 2 if type(styled) == self.cls else 1
-        attributes_result = style_name_result = None
-        if self.attributes:
-            for attr, value in self.attributes.items():
-                if not hasattr(styled, attr) or getattr(styled, attr) != value:
-                    attributes_result = False
-                    break
-            else:
-                attributes_result = True
+
+        style_match = 0
         if self.style_name is not None:
-            style_name_result = styled.style == self.style_name
-        if False in (attributes_result, style_name_result):
-            return None
-        else:
-            return Specificity(style_name_result or False,
-                               attributes_result or False, class_match)
+            if styled.style != self.style_name:
+                return None
+            style_match = 1
+
+        attributes_match = 0
+        for attr, value in self.attributes.items():
+            if not hasattr(styled, attr) or getattr(styled, attr) != value:
+                return None
+            attributes_match += 1
+
+        return Specificity(style_match, attributes_match, class_match)
 
 
 class ClassSelector(ClassSelectorBase):
@@ -262,7 +261,7 @@ class NoMoreParentElement(StopIteration):
 
 
 class StyledMeta(type, ClassSelectorBase):
-    attributes = None
+    attributes = {}
     style_name = None
 
     @property
