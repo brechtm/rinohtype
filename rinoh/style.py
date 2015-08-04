@@ -18,7 +18,7 @@ Base classes and exceptions for styled document elements.
 """
 
 
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 
 from .element import DocumentElement
 from .util import cached
@@ -469,12 +469,9 @@ class VarAttribute(VarBase):
         return getattr(self.parent.get(document), self.attribute_name)
 
 
-class Specificity(tuple):
-    def __new__(cls, *items):
-        return super().__new__(cls, items)
-
+class Specificity(namedtuple('Specificity', ['style', 'attributes', 'klass'])):
     def __add__(self, other):
-        return tuple(a + b for a, b in zip(self, other))
+        return self.__class__(*(a + b for a, b in zip(self, other)))
 
     def __bool__(self):
         return any(self)
