@@ -223,6 +223,10 @@ class ContextSelector(Selector):
     def cls(self):
         return self.selectors[-1].cls
 
+    @property
+    def style_name(self):
+        return self.selectors[-1].style_name
+
     def match(self, styled):
         total_score = ZERO_SPECIFICITY
         selectors = reversed(self.selectors)
@@ -348,8 +352,11 @@ class StyledMatcher(dict):
 
     def __setitem__(self, name, selector):
         assert name not in self
-        cls_selectors = self.setdefault(selector.cls, [])
-        cls_selectors.append((name, selector))
+        style_selectors, cls_selectors = self.setdefault(selector.cls, ([], []))
+        if selector.style_name:
+            style_selectors.append((name, selector))
+        else:
+            cls_selectors.append((name, selector))
         self.by_name[name] = selector
 
     def best_match(self, styled):
@@ -357,7 +364,9 @@ class StyledMatcher(dict):
         for cls in type(styled).__mro__:
             if cls not in self:
                 continue
-            for name, selector in self[cls]:
+            style_selectors, cls_selectors = self[cls]
+            selectors = style_selectors if styled.style else cls_selectors
+            for name, selector in selectors:
                 score = selector.match(styled)
                 if score:
                     if score in scores:
