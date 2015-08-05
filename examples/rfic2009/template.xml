@@ -188,6 +188,26 @@ or
 
 </section><!-- File Submission Formats -->
 
+<section repeat="500">
+<title>Filler</title>
+
+<p>Beginning in 2004, the IEEE has mandated that all published papers comply with certain IEEE conference standards for electronic searchability. Please note that a detailed checklist is available on the submission site to help guide authors through the task of converting their Word documents into PDFs. Going forward, this will ensure compatibility with the new search requirements for the IEEE Xplore database.</p>
+
+<p>Therefore for RFIC2009, we ask all authors to convert their Word documents to Portable Document Format (PDF), prior to submission for verification purposes. A simple and specific guideline is posted on the submission site. This will also avoid some of the pitfalls associated with having the author submit a paper using Word, and then having an automated system convert it to PDF without a through check. As always, with a conversion to PDF, authors should very carefully check a printed copy. Some conversion problems that have been known to occur are:</p>
+
+<ol>
+<li><p>A full 4-page Word document may “spill over” onto a fifth page, upon being converted.</p></li>
+<li><p>A text box that overlays a graph in Word might disappear when converted to PDF. This depends on how the graph was pasted into the Word document (the text box may become covered by the graphic in the PDF).</p></li>
+<li><p>Arrows in a drawing may become slightly discon- nected from their stems, and/or shifted in position.</p></li>
+<li><p>Check all special symbols and equations, especially right-hand brackets.</p></li>
+<li><p>Don’t expect the two bottom lines of a double column to line-up exactly with each other.</p></li>
+</ol>
+
+<p>Authors should perform a careful check to catch minor nuisances and resolve any problems encountered. To ensure compatibility with the new search requirements for the IEEE Xplore database and maintain the quality of the published work, we require you to submit your final manuscript electronically in two formats: 1) pdf file, and 2) the source file. The accepted source file formats are: MS Word, TeX DVI format, Adobe Framemaker interchange format or RTF format, and (La)TEX. All source files must be contained in a single file such as a single MS Word (.doc), rich text (.rtf) or Framemaker (.fm) file. For (La)TeX source files, create a single ZIP- file which contains the DVI-file and the corresponding EPS-files for the graphics. Name the ZIP-file "xxxx_dvi.zip", where the "xxxx" part of the name is whatever you wish.</p>
+
+</section><!-- filler -->
+
+
 <acknowledgement>
 
 <p>The authors wish to acknowledge the assistance and support of the RFIC Steering Committee.</p>

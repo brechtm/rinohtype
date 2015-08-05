@@ -89,18 +89,20 @@ CustomElement, NestedElement = element_factory(xml_frontend)
 
 class Section(CustomElement):
     def parse(self, level=1):
-        for element in self.getchildren():
-            if type(element) == Section:
-                section = element.process(level=level + 1)
-                for flowable in section:
-                    yield flowable
-            else:
-                if isinstance(element, Title):
-                    flowable = element.process(level=level,
-                                               id=self.get('id', None))
+        repeat = int(self.get('repeat', '1'))
+        for i in range(repeat):
+            for element in self.getchildren():
+                if type(element) == Section:
+                    section = element.process(level=level + 1)
+                    for flowable in section:
+                        yield flowable
                 else:
-                    flowable = element.process()
-                yield flowable
+                    if isinstance(element, Title):
+                        flowable = element.process(level=level,
+                                                   id=self.get('id', None))
+                    else:
+                        flowable = element.process()
+                    yield flowable
 
 
 class Title(NestedElement):
@@ -363,10 +365,9 @@ class RFIC2009Paper(Document):
                                 level=1)
         toc = TableOfContents()
         self.content << toc
-        for i in range(5):
-            for section in self.root.body.section:
-                for flowable in section.process():
-                    self.content << flowable
+        for section in self.root.body.section:
+            for flowable in section.process():
+                self.content << flowable
         try:
             for flowable in self.root.body.acknowledgement.process():
                 self.content << flowable
