@@ -70,9 +70,7 @@ class Object(object):
             document.register(self)
 
 
-NoneType = type(None)
-
-class Null(Object, NoneType):
+class Null(Object):
     def __init__(self, indirect=False):
         super().__init__(indirect)
 
