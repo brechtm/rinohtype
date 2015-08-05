@@ -138,6 +138,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
         try:
+            raise IOError   # don't use the cache in the benchmark
             with open(filename + self._cache_extension, 'rb') as file:
                 self.number_of_pages, self.page_references = pickle.load(file)
                 self._previous_number_of_pages = self.number_of_pages
@@ -150,6 +151,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.ptc`"""
+        return   # don't write the cache file in the benchmark
         with open(filename + self._cache_extension, 'wb') as file:
             cache = self.number_of_pages, self.page_references
             pickle.dump(cache, file)
@@ -180,6 +182,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             self.backend_document = self.backend.Document(self, self.title)
             self.number_of_pages = self.render_pages()
         self._save_cache(filename)
+        return   # don't write the output in the benchmark
         print('Writing output: {}'.format(filename +
                                           self.backend_document.extension))
         self.backend_document.write(filename)
