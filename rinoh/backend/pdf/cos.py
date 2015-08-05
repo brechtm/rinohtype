@@ -336,6 +336,7 @@ class Dictionary(Container, OrderedDict):
     def _bytes(self, document):
         out = b''
         for key, value in self.items():
+            key = Name(key)
             out += b' ' + key.bytes(document) + b' ' + value.bytes(document)
         return out
 
