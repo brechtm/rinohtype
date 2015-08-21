@@ -274,7 +274,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
-        except IOError:
+        except (IOError, TypeError):
             prev_number_of_pages, prev_page_references = [], {}
         return prev_number_of_pages, prev_page_references
 
@@ -287,9 +287,17 @@ to the terms of the GNU Affero General Public License version 3.''')
     def get_style_var(self, name):
         return self.stylesheet.get_variable(name)
 
-    def render(self, filename):
+    def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
+        if filename_root and file is None:
+            filename = filename_root + self.backend_document.extension
+            file = open(filename, 'wb')
+        elif file and filename_root is None:
+            filename = getattr(file, 'name', None)
+        else:
+            raise ValueError("You need to specify either 'filename_root' or "
+                             "'file'.")
 
         def has_converged(section_number_of_pages):
             """Return `True` if the last rendering iteration converged to a
@@ -302,26 +310,34 @@ to the terms of the GNU Affero General Public License version 3.''')
             return (section_number_of_pages == prev_number_of_pages and
                     self.page_references == prev_page_references)
 
-        prev_number_of_pages, prev_page_references = self._load_cache(filename)
-        for prev_num, section in zip(prev_number_of_pages, self._sections):
-            section.previous_number_of_pages = prev_num
-        self.page_references = prev_page_references.copy()
-        for flowable in self.content_flowables:
-            flowable.prepare(self)
-        for section in self._sections:
-            section.prepare()
-        section_num_pages = self.render_pages()
-        while not has_converged(section_num_pages):
-            prev_number_of_pages = section_num_pages
-            prev_page_references = self.page_references.copy()
-            print('Not yet converged, rendering again...')
-            del self.backend_document
-            self.backend_document = self.backend.Document(self, self.CREATOR)
+        try:
+            (prev_number_of_pages,
+             prev_page_references) = self._load_cache(filename_root)
+            for prev_num, section in zip(prev_number_of_pages, self._sections):
+                section.previous_number_of_pages = prev_num
+            self.page_references = prev_page_references.copy()
+            for flowable in self.content_flowables:
+                flowable.prepare(self)
+            for section in self._sections:
+                section.prepare()
             section_num_pages = self.render_pages()
-        self._save_cache(filename, section_num_pages, self.page_references)
-        print('Writing output: {}'.format(filename +
-                                          self.backend_document.extension))
-        self.backend_document.write(filename)
+            while not has_converged(section_num_pages):
+                prev_number_of_pages = section_num_pages
+                prev_page_references = self.page_references.copy()
+                print('Not yet converged, rendering again...')
+                del self.backend_document
+                self.backend_document = self.backend.Document(self,
+                                                              self.CREATOR)
+                section_num_pages = self.render_pages()
+            if filename:
+                self._save_cache(filename_root, section_num_pages,
+                                 self.page_references)
+                print('Writing output: {}'.format(filename))
+            self.backend_document.write(file)
+        finally:
+            if filename_root:
+                file.close()
+
 
     def render_pages(self):
         """Render the complete document once and return the number of pages

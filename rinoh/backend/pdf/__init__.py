@@ -85,14 +85,12 @@ class Document(object):
             self.fonts[font] = font_number, font_rsc
         return font_number, font_rsc
 
-    def write(self, filename):
+    def write(self, file):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue().encode('utf_8'))
             page.cos_page['Contents'] = contents
-        file = open(filename + self.extension, 'wb')
         self.cos_document.write(file)
-        file.close()
 
 
 class Page(object):
