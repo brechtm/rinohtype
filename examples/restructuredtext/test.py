@@ -10,7 +10,8 @@ if __name__ == '__main__':
 #    for name in ('quickstart', 'FAQ', 'THANKS'):
     for name in ('demo', ):
         parser = ReStructuredTextParser()
-        flowables = parser.parse(name + '.txt')
+        with open(name + '.txt') as file:
+            flowables = parser.parse(file)
         # manual_options = BookOptions(stylesheet=STYLESHEET)
         # document = Book(document_tree, options=manual_options, backend=pdf)
         article_options = ArticleOptions(table_of_contents=False, page_size=A5)

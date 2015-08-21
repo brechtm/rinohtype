@@ -143,9 +143,9 @@ CustomElement.MAPPING['Text'] = nodes.Text
 
 
 class ReStructuredTextParser(object):
-    def parse(self, filename):
-        with open(filename) as file:
-            doctree = publish_doctree(file.read(), source_path=filename)
+    def parse(self, file):
+        filename = getattr(file, 'name', None)
+        doctree = publish_doctree(file.read(), source_path=filename)
         return self.from_doctree(doctree)
 
     @staticmethod

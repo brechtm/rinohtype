@@ -20,7 +20,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        input_dir, input_file = os.path.split(args.input)
+        input_dir, input_filename = os.path.split(args.input)
     except AttributeError:
         parser.print_help()
         return
@@ -33,11 +33,12 @@ def main():
               'tabloid')
         return
 
-    input_base, input_ext = os.path.splitext(input_file)
+    input_root, input_ext = os.path.splitext(input_filename)
     if input_dir:
         os.chdir(input_dir)
     parser = ReStructuredTextParser()
-    document_tree = parser.parse(input_file)
+    with open(input_filename) as input_file:
+        document_tree = parser.parse(input_file)
     options = ArticleOptions(page_size=page_size)
     document = Article(document_tree, options, backend=pdf)
-    document.render(input_base)
+    document.render(input_root)
