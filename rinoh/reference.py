@@ -232,10 +232,13 @@ class Variable(Field):
             number = document_section.previous_number_of_pages
             text = format_number(number, container.page.number_format)
         elif isinstance(self.type, SectionFieldType):
+            doc = container.document
             section = container.page.get_current_section(self.type.level)
-            text = (container.document.get_reference(section.get_id(section),
-                                                     self.type.ref_type)
-                    if section else None) or ''
+            section_id = section.get_id(doc) if section else None
+            if section_id:
+                text = doc.get_reference(section_id, self.type.ref_type) or ''
+            else:
+                text = ''
         else:
             text = '?'
         return self.split_words(text)
