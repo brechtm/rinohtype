@@ -19,6 +19,7 @@ Base classes and exceptions for styled document elements.
 
 
 from collections import OrderedDict, namedtuple
+from operator import attrgetter
 
 from .element import DocumentElement
 from .util import cached
@@ -356,22 +357,16 @@ class StyledMatcher(dict):
         style_selectors = cls_selectors.setdefault(selector.style_name, {})
         self.by_name[name] = style_selectors[name] = selector
 
-    def best_match(self, styled):
-        scores = {}
+    def match(self, styled):
         for cls in type(styled).__mro__:
             try:
                 style_selectors = self[cls][styled.style]
             except KeyError:
                 continue
             for name, selector in style_selectors.items():
-                score = selector.match(styled)
-                if score:
-                    scores[score] = name
-        try:
-            max_score = max(scores)
-            return Match(scores[max_score], max_score)
-        except ValueError:
-            return NO_MATCH
+                specificity = selector.match(styled)
+                if specificity:
+                    yield Match(name, specificity)
 
 
 class StyleSheet(OrderedDict):
@@ -412,22 +407,20 @@ class StyleSheet(OrderedDict):
         except KeyError:
             return self.base.get_variable(name)
 
-    def find_best_match(self, styled):
-        try:
-            best_match = self.matcher.best_match(styled)
-        except AttributeError:
-            best_match = NO_MATCH
+    def find_matches(self, styled):
+        for match in self.matcher.match(styled):
+            yield match
         if self.base:
-            base_best_match = self.base.find_best_match(styled)
-            if base_best_match > best_match:
-                best_match = base_best_match
-        return best_match
+            for match in self.base.find_matches(styled):
+                yield match
 
     def find_style(self, styled):
-        match = self.find_best_match(styled)
-        if match:
-            # print("({}) matches '{}'".format(styled.path, match.style_name))
+        matches = sorted(self.find_matches(styled),
+                         key=attrgetter('specificity'), reverse=True)
+        for match in matches:
             try:
+                # print("({}) matches '{}'".format(styled.path,
+                #                                  match.style_name))
                 return self[match.style_name]
             except KeyError:
                 print("No style '{}' found in stylesheet"
