@@ -343,10 +343,6 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         raise DefaultStyleException
 
 
-class AmbiguousStyleSheetException(Exception):
-    pass
-
-
 class StyledMatcher(dict):
     def __init__(self):
         self.by_name = {}
@@ -370,8 +366,6 @@ class StyledMatcher(dict):
             for name, selector in style_selectors.items():
                 score = selector.match(styled)
                 if score:
-                    if score in scores:
-                        raise AmbiguousStyleSheetException(name, scores[score])
                     scores[score] = name
         try:
             max_score = max(scores)
