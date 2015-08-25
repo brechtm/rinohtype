@@ -6,6 +6,7 @@ from rinoh import (StyleSheet, Var, ParagraphStyle,
                    FixedSpacing, ProportionalSpacing,
                    ROMAN_UC, CHARACTER_UC, NUMBER, SYMBOL,
                    Color, Gray, RED, BLUE, GRAY90, GRAY50)
+from rinoh.color import BLACK
 from rinoh.font import TypeFamily
 from rinoh.font.style import REGULAR, UPRIGHT, ITALIC, BOLD, SUPERSCRIPT
 
@@ -31,7 +32,7 @@ styles['default'] = ParagraphStyle(typeface=Var('ieee_family').serif,
                                    kerning=True,
                                    ligatures=True,
                                    hyphen_lang='en_US',
-                                   hyphen_chars=4)
+                                   hyphen_chars=3)
 
 styles('body',
        base='default',
@@ -121,9 +122,6 @@ styles('affiliation',
        base='author',
        space_below=6*PT + 12*PT)
 
-styles('chapter',
-       page_break=RIGHT)
-
 styles('heading level 1',
        typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
@@ -149,6 +147,7 @@ styles('heading level 2',
        line_spacing=FixedSpacing(12*PT),
        space_above=6*PT,
        space_below=6*PT,
+       number_separator=None,
        number_format=CHARACTER_UC)
 
 styles('heading level 3',
@@ -435,8 +434,18 @@ styles('table cell',
        margin_right=2*PT,
        vertical_align=MIDDLE)
 
-styles('table body cell background on even row',
-       fill_color=GRAY90)
+styles('table cell left border',
+       stroke_width=0.5*PT,
+       stroke_color=BLACK)
+
+styles('table cell top border',
+       base='table cell left border')
+
+styles('table cell right border',
+       base='table cell left border')
+
+styles('table cell bottom border',
+       base='table cell left border')
 
 styles('table body cell paragraph',
        base='default',
@@ -453,19 +462,22 @@ styles('table head cell paragraph',
        font_weight=BOLD,
        justify=CENTER)
 
+styles('table first column paragraph',
+       base='table body cell paragraph',
+       justify=LEFT)
+
 styles('table top border',
        stroke_width=1*PT,
-       stroke_color=Gray(0))
+       stroke_color=BLACK)
 
 styles('table bottom border',
        base='table top border')
 
-styles('table head inner border',
-       base='table top border',
-       stroke_width=0.5*PT)
+styles('table left border',
+       base='table top border')
 
-styles('table body top border',
-       base='table head inner border')
+styles('table right border',
+       base='table top border')
 
 styles('horizontal rule',
        space_above=10*PT,
