@@ -21,7 +21,7 @@ class SimplePage(Page):
     header_footer_distance = 14*PT
     column_spacing = 1*CM
 
-    def __init__(self, chain, paper, orientation):
+    def __init__(self, chain, paper, orientation, title_flowables=None):
         super().__init__(chain.document_part, paper, orientation)
         h_margin = self.document.options['page_horizontal_margin']
         v_margin = self.document.options['page_vertical_margin']
@@ -38,9 +38,16 @@ class SimplePage(Page):
         float_space = DownExpandingContainer('floats', self.body, 0*PT,
                                              0*PT, max_height=body_height / 2)
         self.body.float_space = float_space
+        if title_flowables:
+            self.title = DownExpandingContainer('title', self.body,
+                                                top=float_space.bottom)
+            self.title.append_flowable(title_flowables)
+            column_top = self.title.bottom + self.column_spacing
+        else:
+            column_top = float_space.bottom
         self.columns = [Container('column{}'.format(i + 1), self.body,
                                   left=i * (column_width + self.column_spacing),
-                                  top=float_space.bottom,
+                                  top=column_top,
                                   width=column_width,
                                   bottom=footnote_space.top,
                                   chain=chain)
@@ -86,10 +93,10 @@ class BookPart(DocumentPart):
     def first_page(self):
         return self.new_page([self.chain])
 
-    def new_page(self, chains):
+    def new_page(self, chains, **kwargs):
         chain, = chains
         return SimplePage(chain, self.document.options['page_size'],
-                          self.document.options['page_orientation'])
+                          self.document.options['page_orientation'], **kwargs)
 
 
 class TableOfContentsSection(Section):
