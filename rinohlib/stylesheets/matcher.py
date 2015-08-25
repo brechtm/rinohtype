@@ -235,6 +235,12 @@ matcher('table body cell background on even row',
         / TableCell.like(row_index=slice(0, None, 2), rowspan=1)
         / TableCellBackground)
 
+matcher('table body cell background on odd row',
+        TableBody
+        / TableRow
+        / TableCell.like(row_index=slice(0, None, 1), rowspan=1)
+        / TableCellBackground)
+
 matcher('table body cell paragraph',
         TableBody / TableRow / TableCell / ... / Paragraph)
 
@@ -247,6 +253,14 @@ matcher('table body cell list item number',
 matcher('table head cell paragraph',
         TableHead / TableRow / TableCell / Paragraph)
 
+matcher('table cell left border', TableCellBorder.like(position='left'))
+
+matcher('table cell top border', TableCellBorder.like(position='top'))
+
+matcher('table cell right border', TableCellBorder.like(position='right'))
+
+matcher('table cell bottom border', TableCellBorder.like(position='bottom'))
+
 matcher('table top border', TableHead
                             / TableRow
                             / TableCell.like(row_index=0)
@@ -256,6 +270,12 @@ matcher('table bottom border', TableBody
                                / TableRow
                                / TableCell.like(row_index=-1)
                                / TableCellBorder.like(position='bottom'))
+
+matcher('table left border', TableCell.like(column_index=0)
+                             / TableCellBorder.like(position='left'))
+
+matcher('table right border', TableCell.like(column_index=-1)
+                              / TableCellBorder.like(position='right'))
 
 matcher('table head inner border', TableHead
                                    / TableRow
