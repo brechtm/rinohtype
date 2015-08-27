@@ -28,7 +28,6 @@ for name in list(sys.modules.keys()):
         del sys.modules[name]
 sys.modules.update(_cached_etree_modules)
 
-from ...util import all_subclasses
 from . import CATALOG_PATH, CATALOG_URL, CATALOG_NS
 
 
@@ -63,10 +62,7 @@ class Parser(ElementTree.XMLParser):
                  'validation. Please use the lxml frontend if you require '
                  'validation.')
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
-        self.element_classes = {self.namespace + cls.__name__.lower(): cls
-                                for cls in all_subclasses(self.element_class)}
-        tree_builder = TreeBuilder(self.namespace, self.get_current_line_number,
-                                   self.lookup)
+        tree_builder = TreeBuilder(self.namespace, self.get_current_line_number)
         super().__init__(target=tree_builder)
         uri_rewrite_map = self.create_uri_rewrite_map()
         self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
@@ -75,12 +71,6 @@ class Parser(ElementTree.XMLParser):
 
     def get_current_line_number(self):
         return self.parser.CurrentLineNumber
-
-    def lookup(self, tag, attrs):
-        try:
-            return self.element_classes[tag](tag, attrs)
-        except KeyError:
-            return self.element_class(tag, attrs)
 
     def create_uri_rewrite_map(self):
         rewrite_map = {}
