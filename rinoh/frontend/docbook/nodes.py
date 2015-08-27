@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from . import BodyElement, BodySubElement, InlineElement, GroupingElement
+from . import CustomElement, BodyElement, InlineElement, GroupingElement
 
 from ... import styleds
 
@@ -21,16 +21,16 @@ class Info(BodyElement):
         return styleds.SetMetadataFlowable(**doc_info)
 
 
-class InfoField(object):
+class InfoField(CustomElement):
     @property
     def key(self):
         return self.node.tag[self.node.tag.find('}') + 1:]
 
 
-class InlineInfoField(InlineElement, InfoField):
+class TextInfoField(InfoField):
     @property
     def value(self):
-        return self.styled_text()
+        return self.process_content()
 
 
 class GroupingInfoField(GroupingElement, InfoField):
@@ -39,7 +39,7 @@ class GroupingInfoField(GroupingElement, InfoField):
         return self.flowable()
 
 
-class Author(InlineInfoField):
+class Author(TextInfoField):
     pass
 
 
@@ -67,16 +67,20 @@ class EMail(InlineElement):
     pass
 
 
-class Copyright(InlineInfoField):
-    name = 'copyright'
+class Copyright(TextInfoField):
+    pass
 
-    def build_styled_text(self):
-        return styleds.SingleStyledText('')
+
+class Year(InlineElement):
+    pass
+
+
+class Holder(InlineElement):
+    pass
 
 
 class Abstract(GroupingInfoField):
-    name = 'abstract'
-
+    pass
 
 
 class Para(BodyElement):
@@ -85,16 +89,14 @@ class Para(BodyElement):
 
 
 class Emphasis(InlineElement):
-    def build_styled_text(self):
-        return self.process_content(style='emphasis')
+    style = 'emphasis'
 
 
 class Acronym(InlineElement):
-    def build_styled_text(self):
-        return self.process_content(style='acronym')
+    style = 'acronym'
 
 
-class Title(BodyElement, InlineInfoField):
+class Title(BodyElement, TextInfoField):
     name = 'title'
 
     def build_flowable(self):

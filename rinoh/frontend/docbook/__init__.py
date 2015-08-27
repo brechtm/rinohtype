@@ -5,37 +5,167 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import re
 
-from rinoh.frontend.xml import element_factory
+from itertools import chain
+
+from ..xml import elementtree
+
+from ...flowable import StaticGroupedFlowables
+from ...util import all_subclasses
+from ...text import MixedStyledText
+
+
+RE_WHITESPACE = re.compile('[\t\r\n ]+')
+
+
+class CustomElement(object):
+    @classmethod
+    def map_node(cls, node):
+        return cls.MAPPING[node.tag](node)
+
+    def __init__(self, doctree_node):
+        self.node = doctree_node
+
+    def __getattr__(self, name):
+        for child in self.node.getchildren():
+            if docbook_tag(child.tag) == name:
+                return self.map_node(child)
+        raise AttributeError('No such element: {}'.format(name))
+
+    def __getitem__(self, name):
+        return self.node[name]
+
+    def __iter__(self):
+        try:
+            for child in self.parent.node.getchildren():
+                if docbook_tag(child.tag) == docbook_tag(self.node.tag):
+                    yield self.map_node(child)
+        except AttributeError:
+            # this is the root element
+            yield self
+
+    @property
+    def attributes(self):
+        return self.node.attrib
+
+    @property
+    def parent(self):
+        if self.node._parent is not None:
+            return self.map_node(self.node._parent)
+
+    @property
+    def text(self):
+        if self.node.text:
+            if self.get('xml:space') == 'preserve':
+                return self.node.text
+            else:
+                return RE_WHITESPACE.sub(' ', self.node.text)
+        else:
+            return None
+
+    @property
+    def tail(self):
+        if self.node.tail:
+            return RE_WHITESPACE.sub(' ', self.node.tail)
+        else:
+            return None
+
+    def get(self, key, default=None):
+        return self.node.get(key, default)
+
+    def getchildren(self):
+        return [self.map_node(child) for child in self.node.getchildren()]
+
+    def process_content(self, strip_leading_whitespace=True, style=None):
+        self_text = self.text
+        if strip_leading_whitespace:
+            self_text = self_text.lstrip()
+        items = []
+        if self_text:
+            items.append(self_text)
+            strip_leading_whitespace = self_text.endswith(' ')
+        for child in self.getchildren():
+            child_text = child.styled_text(strip_leading_whitespace)
+            items.append(child_text)
+            child_tail = child.tail
+            if child_tail:
+                if str(child_text).endswith(' '):
+                    child_tail = child_tail.lstrip()
+                if child_tail:
+                    items.append(child_tail)
+            strip_leading_whitespace = str(items[-1]).endswith(' ')
+
+        return MixedStyledText([item for item in items if item], style=style)
+
+    @property
+    def location(self):
+        tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
+        return '{}: <{}> at line {}'.format(self.filename, tag,
+                                            self.sourceline)
+
+
+
+class BodyElement(CustomElement):
+    def flowable(self):
+        flowable = self.build_flowable()
+        return flowable
+
+    def build_flowable(self):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+
+class BodySubElement(CustomElement):
+    def process(self):
+        raise NotImplementedError('tag: %s' % self.tag)
+
+
+class InlineElement(CustomElement):
+    style = None
+
+    def styled_text(self, strip_leading_whitespace=False):
+        return self.build_styled_text(strip_leading_whitespace)
+
+    def build_styled_text(self, strip_leading_whitespace=False):
+        return self.process_content(strip_leading_whitespace, style=self.style)
+
+
+class GroupingElement(BodyElement):
+    style = None
+    grouped_flowables_class = StaticGroupedFlowables
+
+    def build_flowable(self, **kwargs):
+        flowables = [item.flowable() for item in self.getchildren()]
+        return self.grouped_flowables_class(flowables,
+                                            style=self.style, **kwargs)
+
+
+DOCBOOK_NS = 'http://docbook.org/ns/docbook'
+
+def docbook_tag(tag_name):
+    return '{{{}}}'.format(DOCBOOK_NS) + tag_name
+
+
+from . import nodes
+
+CustomElement.MAPPING = {docbook_tag(cls.__name__.lower()): cls
+                         for cls in all_subclasses(CustomElement)}
+
 
 
 class DocBookReader(object):
+    rngschema = None
+    namespace = DOCBOOK_NS
+
     def parse(self, file):
         filename = getattr(file, 'name', None)
-        doctree =
+        parser = elementtree.Parser(CustomElement, #namespace=self.namespace,
+                                    schema=self.rngschema)
+        xml_tree = parser.parse(filename)
+        doctree = xml_tree.getroot()
         return self.from_doctree(doctree)
 
-    @staticmethod
-    def replace_secondary_ids(tree):
-        id_aliases = {}
-        for node in tree.traverse():
-            try:
-                primary_id, *alias_ids = node.attributes['ids']
-                for alias_id in alias_ids:
-                    id_aliases[alias_id] = primary_id
-            except (AttributeError, KeyError, ValueError):
-                pass
-        # replace alias IDs used in references with the corresponding primary ID
-        for node in tree.traverse():
-            try:
-                refid = node.get('refid')
-                if refid in id_aliases:
-                    node.attributes['refid'] = id_aliases[refid]
-            except AttributeError:
-                pass
-
     def from_doctree(self, doctree):
-        self.replace_secondary_ids(doctree)
-        mapped_tree = CustomElement.map_node(doctree.document)
+        mapped_tree = CustomElement.map_node(doctree)
         flowables = [child.flowable() for child in mapped_tree.getchildren()]
         return flowables
