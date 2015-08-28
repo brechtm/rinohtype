@@ -78,25 +78,23 @@ class CustomElement(object):
         return [self.map_node(child) for child in self.node.getchildren()]
 
     def process_content(self, strip_leading_whitespace=True, style=None):
-        self_text = self.text
-        if strip_leading_whitespace:
-            self_text = self_text.lstrip()
+        def append(text):
+            nonlocal items, strip_leading_whitespace
+            if strip_leading_whitespace:
+                text = text.lstrip()
+            if text:
+                items.append(text)
+                strip_leading_whitespace = text.endswith(' ')
+
         items = []
-        if self_text:
-            items.append(self_text)
-            strip_leading_whitespace = self_text.endswith(' ')
+        append(self.text)
         for child in self.getchildren():
             child_text = child.styled_text(strip_leading_whitespace)
-            items.append(child_text)
-            child_tail = child.tail
-            if child_tail:
-                if str(child_text).endswith(' '):
-                    child_tail = child_tail.lstrip()
-                if child_tail:
-                    items.append(child_tail)
-            strip_leading_whitespace = str(items[-1]).endswith(' ')
-
-        return MixedStyledText([item for item in items if item], style=style)
+            if child_text:
+                items.append(child_text)
+                strip_leading_whitespace = str(child_text).endswith(' ')
+            append(child.tail)
+        return MixedStyledText(items, style=style)
 
     @property
     def location(self):
