@@ -11,7 +11,15 @@ from . import CustomElement, BodyElement, InlineElement, GroupingElement
 from ... import styleds
 
 
-class Article(BodyElement):
+class DocumentRoot(CustomElement):
+    pass
+
+
+class Article(DocumentRoot):
+    pass
+
+
+class Book(DocumentRoot):
     pass
 
 
@@ -19,6 +27,10 @@ class Info(BodyElement):
     def build_flowable(self):
         doc_info = {field.key: field.value for field in self.getchildren()}
         return styleds.SetMetadataFlowable(**doc_info)
+
+
+class ArticleInfo(Info):
+    pass
 
 
 class InfoField(CustomElement):
@@ -83,6 +95,10 @@ class Abstract(GroupingInfoField):
     pass
 
 
+class VolumeNum(TextInfoField):
+    pass
+
+
 class Para(BodyElement):
     def build_flowable(self):
         return styleds.Paragraph(super().process_content())
@@ -100,11 +116,17 @@ class Title(BodyElement, TextInfoField):
     name = 'title'
 
     def build_flowable(self):
+        if isinstance(self.parent, DocumentRoot):
+            return styleds.SetMetadataFlowable(title=self.process_content())
         return styleds.Heading(self.process_content())
 
 
 class Section(GroupingElement):
     grouped_flowables_class = styleds.Section
+
+
+class Chapter(Section):
+    pass
 
 
 class Sect1(Section):
@@ -124,4 +146,26 @@ class Sect4(Section):
 
 
 class Sect5(Section):
+    pass
+
+
+class MediaObject(BodyElement):
+    def build_flowable(self):
+        return self.imageobject.flowable()
+
+
+class ImageObject(BodyElement):
+    def build_flowable(self):
+        return styleds.Image(self.imagedata.get('fileref'))
+
+
+class ImageData(CustomElement):
+    pass
+
+
+class TextObject(CustomElement):
+    pass
+
+
+class Phrase(Para):
     pass

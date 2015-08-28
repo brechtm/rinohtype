@@ -19,17 +19,22 @@ from ...text import MixedStyledText
 RE_WHITESPACE = re.compile('[\t\r\n ]+')
 
 
+def strip_namespace(tag):
+    return tag[tag.find('}') + 1:]
+
+
 class CustomElement(object):
     @classmethod
     def map_node(cls, node):
-        return cls.MAPPING[node.tag](node)
+        tag_without_ns = strip_namespace(node.tag)
+        return cls.MAPPING[tag_without_ns](node)
 
     def __init__(self, doctree_node):
         self.node = doctree_node
 
     def __getattr__(self, name):
         for child in self.node.getchildren():
-            if docbook_tag(child.tag) == name:
+            if strip_namespace(child.tag) == name:
                 return self.map_node(child)
         raise AttributeError('No such element: {}'.format(name))
 
@@ -154,7 +159,7 @@ def docbook_tag(tag_name):
 
 from . import nodes
 
-CustomElement.MAPPING = {docbook_tag(cls.__name__.lower()): cls
+CustomElement.MAPPING = {cls.__name__.lower(): cls
                          for cls in all_subclasses(CustomElement)}
 
 

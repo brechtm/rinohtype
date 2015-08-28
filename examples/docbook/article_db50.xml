@@ -1,6 +1,8 @@
 <!--DOCTYPE article PUBLIC "-//FreeBSD//DTD DocBook XML V5.0-Based Extension//EN"
 	"http://www.FreeBSD.org/XML/share/xml/freebsd50.dtd"-->
 
+<!--source: https://www.freebsd.org/doc/en/books/fdp-primer/examples-docbook-article.html-->
+
 <article xmlns="http://docbook.org/ns/docbook"
   xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
   xml:lang="en">
