@@ -139,14 +139,19 @@ class ContainerBase(FlowableTarget):
         if parent is not None:
             super().__init__(parent.document_part)
             self.parent.children.append(self)
-        self.empty_canvas()
         self.children = []
         self.flowables = []
         self.chain = chain
         if chain:
             self.chain.containers.append(self)
+        self.clear()
 
-        self._self_cursor = Dimension(0)   # initialized at the container's top edge
+    def clear(self):
+        self.empty_canvas()
+        self._zero_cursor()
+
+    def _zero_cursor(self):
+        self._self_cursor = Dimension(0)  # initialized at container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
 
     @property
@@ -459,7 +464,7 @@ class Chain(FlowableTarget):
         if self._page_to_break == container.page:
             return True
         if rerender:
-            container.empty_canvas()
+            container.clear()
             if not self._rerendering:
                 # restore saved state on this chain's 1st container on this page
                 self._state = copy(self._fresh_page_state)
