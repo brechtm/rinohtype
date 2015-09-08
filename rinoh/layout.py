@@ -147,6 +147,7 @@ class ContainerBase(FlowableTarget):
         self.clear()
 
     def clear(self):
+        del self.children[:]
         self.empty_canvas()
         self._zero_cursor()
 
