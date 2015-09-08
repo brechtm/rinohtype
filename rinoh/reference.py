@@ -165,6 +165,7 @@ class NoteMarkerBase(ReferenceBase, Label):
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
         container._footnote_space.add_footnote(note)
+        container.page.check_overflow()
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
