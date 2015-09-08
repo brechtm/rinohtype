@@ -198,10 +198,10 @@ class ContainerBase(FlowableTarget):
             raise EndOfContainer
 
     def check_overflow(self):
-        for child in self.children:
-            child.check_overflow()
         if self.remaining_height < 0:
             raise ReflowRequired
+        for child in self.children:
+            child.check_overflow()
 
     def render(self, rerender=False):
         """Render the contents of this container to its canvas. The contents
