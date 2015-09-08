@@ -188,12 +188,13 @@ class ContainerBase(FlowableTarget):
     def remaining_height(self):
         return self.height - self.cursor
 
-    def advance(self, height, check_overflow=True):
+    def advance(self, height, ignore_overflow=False):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
-        self._self_cursor.grow(height)
-        if check_overflow and self.remaining_height < 0:
+        if height <= self.remaining_height:
+            self._self_cursor.grow(height)
+        elif not ignore_overflow:
             raise EndOfContainer
 
     def check_overflow(self):
