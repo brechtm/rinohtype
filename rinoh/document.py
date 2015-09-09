@@ -51,7 +51,7 @@ class Page(Container):
         """Initialize this page as part of `document` (:class:`Document`) with a
         size defined by `paper` (:class:`Paper`). The page's `orientation` can
         be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
-        self.document_part = document_part
+        self._document_part = document_part
         self.paper = paper
         self.orientation = orientation
         if orientation is PORTRAIT:
@@ -65,8 +65,11 @@ class Page(Container):
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
         self._current_section = {}
-        FlowableTarget.__init__(self, document_part)
-        Container.__init__(self, 'PAGE', None, 0, 0, width, height)
+        super().__init__('PAGE', None, 0, 0, width, height)
+
+    @property
+    def document_part(self):
+        return self._document_part
 
     def empty_canvas(self):
         self.canvas = self.backend_page.canvas
@@ -143,7 +146,7 @@ class DocumentPart(object):
 
     def prepare(self):
         for flowable_target in self.flowable_targets:
-            flowable_target.prepare()
+            flowable_target.prepare(self.document)
 
     def render(self, document_page_count):
         del self.pages[:]

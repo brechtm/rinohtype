@@ -1,7 +1,7 @@
 
 from rinoh.dimension import PT, CM
 from rinoh.document import Document, DocumentPart, Page, PORTRAIT
-from rinoh.layout import (Container, FootnoteContainer, Chain,
+from rinoh.layout import (Container, TargetContainer, FootnoteContainer, Chain,
                           UpExpandingContainer, DownExpandingContainer)
 from rinoh.paper import A4
 from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE, \
@@ -21,11 +21,13 @@ class SimplePage(Page):
     header_footer_distance = 14*PT
     column_spacing = 1*CM
 
-    def __init__(self, chain, paper, orientation, title_flowables=None):
-        super().__init__(chain.document_part, paper, orientation)
-        h_margin = self.document.options['page_horizontal_margin']
-        v_margin = self.document.options['page_vertical_margin']
-        num_cols = self.document.options['columns']
+    def __init__(self, document_part, chain, paper, orientation,
+                 title_flowables=None):
+        super().__init__(document_part, paper, orientation)
+        document = document_part.document
+        h_margin = document.options['page_horizontal_margin']
+        v_margin = document.options['page_vertical_margin']
+        num_cols = document.options['columns']
         body_width = self.width - (2 * h_margin)
         body_height = self.height - (2 * v_margin)
         total_column_spacing = self.column_spacing * (num_cols - 1)
@@ -45,33 +47,33 @@ class SimplePage(Page):
             column_top = self.title.bottom + self.column_spacing
         else:
             column_top = float_space.bottom
-        self.columns = [Container('column{}'.format(i + 1), self.body,
-                                  left=i * (column_width + self.column_spacing),
-                                  top=column_top,
-                                  width=column_width,
-                                  bottom=footnote_space.top,
-                                  chain=chain)
+        self.columns = [TargetContainer('column{}'.format(i + 1), self.body,
+                                        left=i * (column_width
+                                                  + self.column_spacing),
+                                        top=column_top, width=column_width,
+                                        bottom=footnote_space.top,
+                                        chain=chain)
                         for i in range(num_cols)]
         footnote_space.max_height = body_height - self.columns[0]._cursor
         for column in self.columns:
             column._footnote_space = footnote_space
 
-        if self.document_part.header:
+        if document_part.header:
             header_bottom = self.body.top - self.header_footer_distance
             self.header = UpExpandingContainer('header', self,
                                                left=h_margin,
                                                bottom=header_bottom,
                                                width=body_width)
-            self.header.append_flowable(Header(self.document_part.header))
+            self.header.append_flowable(Header(document_part.header))
             self.header.append_flowable(HorizontalRule(style='header'))
-        if self.document_part.footer:
+        if document_part.footer:
             footer_vpos = self.body.bottom + self.header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
                                                  left=h_margin,
                                                  top=footer_vpos,
                                                  width=body_width)
             self.footer.append_flowable(HorizontalRule(style='footer'))
-            self.footer.append_flowable(Footer(self.document_part.footer))
+            self.footer.append_flowable(Footer(document_part.footer))
 
 
 # document sections & parts
@@ -95,7 +97,7 @@ class BookPart(DocumentPart):
 
     def new_page(self, chains, **kwargs):
         chain, = chains
-        return SimplePage(chain, self.document.options['page_size'],
+        return SimplePage(self, chain, self.document.options['page_size'],
                           self.document.options['page_orientation'], **kwargs)
 
 
