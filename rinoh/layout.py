@@ -248,9 +248,10 @@ class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
                          width=width, height=height, right=right, bottom=bottom)
 
     def render(self, rerender=False):
-        last_descender = None
-        for flowable in self.flowables:
-            height, last_descender = flowable.flow(self, last_descender)
+        if not self.cursor:
+            last_descender = None
+            for flowable in self.flowables:
+                height, last_descender = flowable.flow(self, last_descender)
         return iter(())   # no chains to yield
 
 
