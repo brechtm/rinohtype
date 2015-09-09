@@ -43,7 +43,6 @@ class Framed(Flowable):
                                                      extra_space_below=
                                                          padding_bottom)
             _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
-            container.advance(pad_cntnr.cursor + padding_bottom, document)
             self.render_frame(container, container.height, top=draw_top)
             return container.width, descender
         except EndOfContainer as eoc:

@@ -117,7 +117,6 @@ class Flowable(Styled):
                                                         left=margin_left,
                                                         right=right)
         margin_container._flowable = self
-        container._cursor.addends.append(margin_container._cursor)
         initial_before = True if state is None else state.initial
         initial_after = True
         try:
@@ -327,13 +326,15 @@ class LabeledFlowable(Flowable):
         def render_label(container):
             width = None if label_spillover else label_column_width
             label_container = InlineDownExpandingContainer('LABEL', container,
-                                                           width=width)
+                                                           width=width,
+                                                           advance_parent=False)
             _, descender = self.label.flow(label_container, last_descender)
             return label_container.cursor, descender
 
         def render_content(container, descender):
             content_container = InlineDownExpandingContainer('CONTENT', container,
-                                                             left=left)
+                                                             left=left,
+                                                             advance_parent=False)
             width, descender = self.flowable.flow(content_container, descender,
                                                   state=state)
             return width, content_container.cursor, descender

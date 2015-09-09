@@ -312,11 +312,12 @@ class DownExpandingContainer(ExpandingContainer):
 
 class InlineDownExpandingContainer(DownExpandingContainer):
     def __init__(self, name, parent, left=None, width=None, right=None,
-                 extra_space_below=0):
+                 extra_space_below=0, advance_parent=True):
         super().__init__(name, parent, top=parent.cursor, left=left,
                          width=width, right=right,
                          extra_space_below=extra_space_below)
-
+        if advance_parent:
+            parent._cursor.addends.append(self._cursor)
 
 
 class UpExpandingContainer(ExpandingContainer):
@@ -340,7 +341,6 @@ class UpExpandingContainer(ExpandingContainer):
 class MaybeContainer(InlineDownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
         super().__init__('MAYBE', parent, left=left, width=width, right=right)
-        parent._cursor.addends.append(self._cursor)
         self._do_place = False
 
     def __enter__(self):
