@@ -54,7 +54,6 @@ class SimplePage(Page):
                                          top=column_top, width=column_width,
                                          bottom=footnote_space.top)
                         for i in range(num_cols)]
-        footnote_space.max_height = body_height - self.columns[0]._cursor
         for column in self.columns:
             column._footnote_space = footnote_space
 
