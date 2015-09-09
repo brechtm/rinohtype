@@ -1,7 +1,7 @@
 
 from rinoh.dimension import PT, CM
 from rinoh.document import Document, DocumentPart, Page, PORTRAIT
-from rinoh.layout import (Container, TargetContainer, FootnoteContainer, Chain,
+from rinoh.layout import (Container, ChainedContainer, FootnoteContainer, Chain,
                           UpExpandingContainer, DownExpandingContainer)
 from rinoh.paper import A4
 from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE, \
@@ -47,12 +47,12 @@ class SimplePage(Page):
             column_top = self.title.bottom + self.column_spacing
         else:
             column_top = float_space.bottom
-        self.columns = [TargetContainer('column{}'.format(i + 1), self.body,
-                                        left=i * (column_width
-                                                  + self.column_spacing),
-                                        top=column_top, width=column_width,
-                                        bottom=footnote_space.top,
-                                        chain=chain)
+        self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
+                                         chain,
+                                         left=i * (column_width
+                                                   + self.column_spacing),
+                                         top=column_top, width=column_width,
+                                         bottom=footnote_space.top)
                         for i in range(num_cols)]
         footnote_space.max_height = body_height - self.columns[0]._cursor
         for column in self.columns:

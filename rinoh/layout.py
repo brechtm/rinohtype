@@ -34,10 +34,11 @@ from copy import copy
 from .dimension import Dimension, PT, DimensionAddition
 
 
-__all__ = ['Container', 'TargetContainer', 'DownExpandingContainer',
-           'InlineDownExpandingContainer', 'UpExpandingContainer',
-           'VirtualContainer', 'Chain', 'EndOfContainer', 'FootnoteContainer',
-           'MaybeContainer', 'discard_state']
+__all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
+           'DownExpandingContainer', 'InlineDownExpandingContainer',
+           'UpExpandingContainer', 'VirtualContainer', 'Chain',
+           'EndOfContainer', 'FootnoteContainer', 'MaybeContainer',
+           'discard_state']
 
 
 class EndOfContainer(Exception):
@@ -82,19 +83,19 @@ class FlowableTarget(object):
             flowable.prepare(document)
 
     def render(self):
-        """Render the flowabless assigned to this flowable target, in the order
+        """Render the flowables assigned to this flowable target, in the order
         that they have been added."""
         raise NotImplementedError
 
 
 class Container(object):
-    """Base class for containers that render :class:`Flowable`\ s to a
-    rectangular area on a page. :class:`ContainerBase` takes care of the
-    container's horizontal positioning and width. Its subclasses handle the
-    vertical positioning and height."""
+    """Rectangular area that contains elements to be rendered to a
+    :class:`Page`. A :class:`Container` has an origin (the top-left corner), a
+    width and a height. It's contents are rendered relative to the container's
+    position in its parent :class:`Container`."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None, height=None,
-                 right=None, bottom=None):
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 height=None, right=None, bottom=None):
         """Initialize a this container as a child of the `parent` container.
 
         The horizontal position and width of the container are determined from
@@ -105,10 +106,7 @@ class Container(object):
         Similarly, the vertical position and height of the container are
         determined from `top`, `height` and `bottom`. If only one of `top` or
         `bottom` is specified, the container's opposite edge is placed at the
-        corresponding edge of the parent container.
-
-        Finally, `chain` is a :class:`Chain` this container will be appended to.
-        """
+        corresponding edge of the parent container."""
         if left is None:
             left = 0*PT if (right and width) is None else (right - width)
         if width is None:
@@ -171,20 +169,7 @@ class Container(object):
         self.canvas = self.parent.canvas.new()
 
     def render(self, rerender=False):
-        """Render the contents of this container to its canvas. The contents
-        include:
-
-        1. the contents of child containers,
-        2. :class:`Flowable`\ s that have been added to this container, and
-        3. :class:`Flowable`\ s from the :class:`Chain` associated with this
-           container.
-
-        The rendering of the child containers (1) does not affect the rendering
-        of the flowables (2 and 3). Therefore, a container typically has either
-        children or flowables.
-        On the other hand, the flowables from the chain are flowed following
-        those assigned directly to this container, so it is possible to combine
-        both.
+        """Render the contents of this container to its canvas.
 
         Note that the rendered contents need to be :meth:`place`d on the parent
         container's canvas before they become visible.
@@ -209,24 +194,17 @@ class Container(object):
         self.canvas.append(float(self.left), float(self.top))
 
 
-class TargetContainer(FlowableTarget, Container):
-    """A container that renders :class:`Flowable`\ s to a rectangular area on a
-    page. The first flowable is rendered at the top of the container. The next
-    flowable is rendered below the first one, and so on.
+class FlowablesContainerBase(Container):
+    """A :class:`Container` that renders :class:`Flowable`\ s to a rectangular
+    area on a page. The first flowable is rendered at the top of the container.
+    The next flowable is rendered below the first one, and so on."""
 
-    A :class:`Container` has an origin (the top-left corner), and a width and
-    height. It's contents are rendered relative to the container's position in
-    its parent :class:`Container`."""
     def __init__(self, name, parent, left=None, top=None, width=None, height=None,
-                 right=None, bottom=None, chain=None):
+                 right=None, bottom=None):
         self._self_cursor = Dimension(0)  # initialized at container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
-        super().__init__(parent.document_part, name, parent,
-                         left=left, top=top, width=width, height=height,
-                         right=right, bottom=bottom)
-        self.chain = chain
-        if chain:
-            self.chain.containers.append(self)
+        super().__init__(name, parent, left=left, top=top, width=width,
+                         height=height, right=right, bottom=bottom)
 
     def clear(self):
         super().clear()
@@ -245,13 +223,7 @@ class TargetContainer(FlowableTarget, Container):
         return self.height - self.cursor
 
     def render(self, rerender=False):
-        last_descender = None
-        for flowable in self.flowables:
-            height, last_descender = flowable.flow(self, last_descender)
-        if self.chain:
-            if self.chain.render(self, rerender=rerender,
-                                 last_descender=last_descender):
-                yield self.chain
+        raise NotImplementedError
 
     def advance(self, height, ignore_overflow=False):
         """Advance the cursor by `height`. If this would cause the cursor to
@@ -267,8 +239,41 @@ class TargetContainer(FlowableTarget, Container):
             raise ReflowRequired
 
 
-class ExpandingContainer(TargetContainer):
-    """An dynamically, vertically growing :class:`Container`."""
+class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
+    """A container that renders a predefined series of flowables."""
+
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 height=None, right=None, bottom=None):
+        super().__init__(parent.document_part, name, parent, left=left, top=top,
+                         width=width, height=height, right=right, bottom=bottom)
+
+    def render(self, rerender=False):
+        last_descender = None
+        for flowable in self.flowables:
+            height, last_descender = flowable.flow(self, last_descender)
+        return iter(())   # no chains to yield
+
+
+class ChainedContainer(FlowablesContainerBase):
+    """A container that renders flowables from the :class:`Chain` it is part
+    of."""
+
+    def __init__(self, name, parent, chain, left=None, top=None, width=None, height=None,
+                 right=None, bottom=None):
+        super().__init__(name, parent, left=left, top=top, width=width,
+                         height=height, right=right, bottom=bottom)
+        chain.containers.append(self)
+        self.chain = chain
+
+    def render(self, rerender=False):
+        last_descender = None
+        if self.chain.render(self, rerender=rerender,
+                             last_descender=last_descender):
+            yield self.chain
+
+
+class ExpandingContainer(FlowablesContainer):
+    """A dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, name, parent, left, top, width, right, bottom,
                  max_height=None, extra_space_below=0):
