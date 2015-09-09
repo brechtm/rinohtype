@@ -279,13 +279,7 @@ class ExpandingContainer(TargetContainer):
         height = DimensionAddition()
         super().__init__(name, parent, left, top, width, height, right, bottom)
         self.height.addends.append(self._cursor)
-        if max_height:
-            self.max_height = max_height
-        else:
-            try:
-                self.max_height = parent.remaining_height
-            except AttributeError:
-                self.max_height = parent.height - self.top
+        self.max_height = max_height or float('+inf')
         self.extra_space_below = extra_space_below
 
     @property
@@ -313,8 +307,9 @@ class DownExpandingContainer(ExpandingContainer):
 class InlineDownExpandingContainer(DownExpandingContainer):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True):
-        super().__init__(name, parent, top=parent.cursor, left=left,
+        super().__init__(name, parent, left=left, top=parent.cursor,
                          width=width, right=right,
+                         max_height=parent.remaining_height,
                          extra_space_below=extra_space_below)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
