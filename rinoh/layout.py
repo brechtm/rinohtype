@@ -154,13 +154,6 @@ class Container(object):
         raise AttributeError(name)
 
     @property
-    def chained_ancestor(self):
-        if self.chain:
-            return self
-        else:
-            return self.parent.chained_ancestor
-
-    @property
     def page(self):
         """The :class:`Page` this container is located on."""
         return self.parent.page
@@ -205,6 +198,10 @@ class FlowablesContainerBase(Container):
         self._cursor = DimensionAddition(self._self_cursor)
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
+
+    @property
+    def chained_ancestor(self):
+        return self.parent.chained_ancestor
 
     def clear(self):
         super().clear()
@@ -265,6 +262,10 @@ class ChainedContainer(FlowablesContainerBase):
                          height=height, right=right, bottom=bottom)
         chain.containers.append(self)
         self.chain = chain
+
+    @property
+    def chained_ancestor(self):
+        return self
 
     def render(self, rerender=False):
         last_descender = None
