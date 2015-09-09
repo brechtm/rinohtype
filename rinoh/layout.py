@@ -146,17 +146,6 @@ class Container(object):
 
     def clear(self):
         self.empty_canvas()
-        self._zero_cursor()
-
-    def _zero_cursor(self):
-        self._self_cursor = Dimension(0)  # initialized at container's top edge
-        self._cursor = DimensionAddition(self._self_cursor)
-
-    @property
-    def cursor(self):
-        """Keeps track of where the next flowable is to be placed. As flowables
-        are flowed into the container, the cursor moves down."""
-        return float(self._cursor)
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
@@ -180,10 +169,6 @@ class Container(object):
 
     def empty_canvas(self):
         self.canvas = self.parent.canvas.new()
-
-    @property
-    def remaining_height(self):
-        return self.height - self.cursor
 
     def render(self, rerender=False):
         """Render the contents of this container to its canvas. The contents
@@ -234,6 +219,8 @@ class TargetContainer(FlowableTarget, Container):
     its parent :class:`Container`."""
     def __init__(self, name, parent, left=None, top=None, width=None, height=None,
                  right=None, bottom=None, chain=None):
+        self._self_cursor = Dimension(0)  # initialized at container's top edge
+        self._cursor = DimensionAddition(self._self_cursor)
         super().__init__(parent.document_part, name, parent,
                          left=left, top=top, width=width, height=height,
                          right=right, bottom=bottom)
@@ -244,6 +231,18 @@ class TargetContainer(FlowableTarget, Container):
     def clear(self):
         super().clear()
         del self.children[:]
+        self._self_cursor._value = 0  # initialized at container's top edge
+        del self._cursor.addends[1:]
+
+    @property
+    def cursor(self):
+        """Keeps track of where the next flowable is to be placed. As flowables
+        are flowed into the container, the cursor moves down."""
+        return float(self._cursor)
+
+    @property
+    def remaining_height(self):
+        return self.height - self.cursor
 
     def render(self, rerender=False):
         last_descender = None
@@ -277,10 +276,16 @@ class ExpandingContainer(TargetContainer):
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
-        height = DimensionAddition(Dimension(0))
+        height = DimensionAddition()
         super().__init__(name, parent, left, top, width, height, right, bottom)
         self.height.addends.append(self._cursor)
-        self.max_height = max_height or parent.remaining_height   # FIXME: this assumption is correct for MaybeContainer, but not generally
+        if max_height:
+            self.max_height = max_height
+        else:
+            try:
+                self.max_height = parent.remaining_height
+            except AttributeError:
+                self.max_height = parent.height - self.top
         self.extra_space_below = extra_space_below
 
     @property
@@ -301,7 +306,6 @@ class DownExpandingContainer(ExpandingContainer):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
-        top = top or (parent.cursor if parent else 0)      # FIXME: fails if top == 0
         super().__init__(name, parent, left, top, width, right, None,
                          max_height, extra_space_below)
 
