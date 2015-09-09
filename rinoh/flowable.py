@@ -22,8 +22,8 @@ from itertools import chain, takewhile, tee
 
 from .annotation import NamedDestination
 from .dimension import PT
-from .layout import (EndOfContainer, DownExpandingContainer, MaybeContainer,
-                     VirtualContainer, discard_state)
+from .layout import (InlineDownExpandingContainer, VirtualContainer,
+                     MaybeContainer, discard_state, EndOfContainer)
 from .util import last
 from .style import Style, Styled
 
@@ -113,10 +113,10 @@ class Flowable(Styled):
         margin_left = self.get_style('margin_left', document)
         margin_right = self.get_style('margin_right', document)
         right = container.width - margin_right
-        margin_container = DownExpandingContainer('MARGIN', container,
-                                                  top=container.cursor,
-                                                  left=margin_left,
-                                                  right=right)
+        margin_container = InlineDownExpandingContainer('MARGIN', container,
+                                                        left=margin_left,
+                                                        right=right)
+        margin_container._flowable = self
         container._cursor.addends.append(margin_container._cursor)
         initial_before = True if state is None else state.initial
         initial_after = True
@@ -326,16 +326,14 @@ class LabeledFlowable(Flowable):
 
         def render_label(container):
             width = None if label_spillover else label_column_width
-            label_container = DownExpandingContainer('LABEL', container,
-                                                     top=container.cursor,
-                                                     width=width)
+            label_container = InlineDownExpandingContainer('LABEL', container,
+                                                           width=width)
             _, descender = self.label.flow(label_container, last_descender)
             return label_container.cursor, descender
 
         def render_content(container, descender):
-            content_container = DownExpandingContainer('CONTENT', container,
-                                                       top=container.cursor,
-                                                       left=left)
+            content_container = InlineDownExpandingContainer('CONTENT', container,
+                                                             left=left)
             width, descender = self.flowable.flow(content_container, descender,
                                                   state=state)
             return width, content_container.cursor, descender

@@ -7,7 +7,7 @@
 
 
 from .draw import Rectangle, Line, ShapeStyle
-from .layout import DownExpandingContainer, EndOfContainer
+from .layout import EndOfContainer, InlineDownExpandingContainer
 from .flowable import Flowable, FlowableStyle
 from .style import PARENT_STYLE
 
@@ -38,10 +38,10 @@ class Framed(Flowable):
             left = self.get_style('padding_left', document)
             right = container.width - self.get_style('padding_right', document)
             padding_bottom = float(self.get_style('padding_bottom', document))
-            pad_cntnr = DownExpandingContainer('PADDING', container,
-                                               top=container.cursor,
-                                               left=left, right=right,
-                                               extra_space_below=padding_bottom)
+            pad_cntnr = InlineDownExpandingContainer('PADDING', container,
+                                                     left=left, right=right,
+                                                     extra_space_below=
+                                                         padding_bottom)
             _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
             container.advance(pad_cntnr.cursor + padding_bottom, document)
             self.render_frame(container, container.height, top=draw_top)

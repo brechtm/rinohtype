@@ -35,9 +35,9 @@ from .dimension import Dimension, PT, DimensionAddition
 
 
 __all__ = ['Container', 'TargetContainer', 'DownExpandingContainer',
-           'UpExpandingContainer', 'VirtualContainer', 'Chain',
-           'EndOfContainer', 'FootnoteContainer', 'MaybeContainer',
-           'discard_state']
+           'InlineDownExpandingContainer', 'UpExpandingContainer',
+           'VirtualContainer', 'Chain', 'EndOfContainer', 'FootnoteContainer',
+           'MaybeContainer', 'discard_state']
 
 
 class EndOfContainer(Exception):
@@ -310,6 +310,15 @@ class DownExpandingContainer(ExpandingContainer):
                          max_height, extra_space_below)
 
 
+class InlineDownExpandingContainer(DownExpandingContainer):
+    def __init__(self, name, parent, left=None, width=None, right=None,
+                 extra_space_below=0):
+        super().__init__(name, parent, top=parent.cursor, left=left,
+                         width=width, right=right,
+                         extra_space_below=extra_space_below)
+
+
+
 class UpExpandingContainer(ExpandingContainer):
     """A container that is anchored at the bottom and expands upwards."""
 
@@ -328,10 +337,9 @@ class UpExpandingContainer(ExpandingContainer):
                          max_height, extra_space_below)
 
 
-class MaybeContainer(DownExpandingContainer):
+class MaybeContainer(InlineDownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
-        super().__init__('MAYBE', parent, left=left, top=parent.cursor,
-                         width=width, right=right)
+        super().__init__('MAYBE', parent, left=left, width=width, right=right)
         parent._cursor.addends.append(self._cursor)
         self._do_place = False
 
