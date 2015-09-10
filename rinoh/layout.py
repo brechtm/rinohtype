@@ -277,8 +277,8 @@ class ChainedContainer(FlowablesContainerBase):
 class ExpandingContainer(FlowablesContainer):
     """A dynamically, vertically growing :class:`Container`."""
 
-    def __init__(self, name, parent, left, top, width, right, bottom,
-                 max_height=None, extra_space_below=0):
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 right=None, bottom=None, max_height=None):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
@@ -287,28 +287,14 @@ class ExpandingContainer(FlowablesContainer):
         super().__init__(name, parent, left, top, width, height, right, bottom)
         self.height.addends.append(self._cursor)
         self.max_height = max_height or float('+inf')
-        self.extra_space_below = extra_space_below
 
     @property
     def remaining_height(self):
-        return self.max_height - self.cursor - self.extra_space_below
+        return self.max_height - self.cursor
 
 
 class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
-
-    def __init__(self, name, parent, left=None, top=None, width=None,
-                 right=None, max_height=None, extra_space_below=0):
-        """See :class:`ContainerBase` for information on the `parent`, `left`,
-        `width` and `right` parameters.
-
-        `top` specifies the location of the container's top edge with respect to
-        that of the parent container. When `top` is omitted, the top edge is
-        placed at the top edge of the parent container.
-
-        `max_height` is the maximum height this container can grow to."""
-        super().__init__(name, parent, left, top, width, right, None,
-                         max_height, extra_space_below)
 
 
 class InlineDownExpandingContainer(DownExpandingContainer):
@@ -316,10 +302,14 @@ class InlineDownExpandingContainer(DownExpandingContainer):
                  extra_space_below=0, advance_parent=True):
         super().__init__(name, parent, left=left, top=parent.cursor,
                          width=width, right=right,
-                         max_height=parent.remaining_height,
-                         extra_space_below=extra_space_below)
+                         max_height=parent.remaining_height)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
+        self.extra_space_below = extra_space_below
+
+    @property
+    def remaining_height(self):
+        return super().remaining_height - self.extra_space_below
 
     def __enter__(self):
         return self
@@ -343,7 +333,7 @@ class UpExpandingContainer(ExpandingContainer):
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
         super().__init__(name, parent, left, None, width, right, bottom,
-                         max_height, extra_space_below)
+                         max_height)
 
 
 class MaybeContainer(InlineDownExpandingContainer):
