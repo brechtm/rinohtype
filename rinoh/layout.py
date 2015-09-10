@@ -32,6 +32,7 @@ from contextlib import contextmanager
 from copy import copy
 
 from .dimension import Dimension, PT, DimensionAddition
+from .util import ContextManager
 
 
 __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
@@ -297,7 +298,7 @@ class DownExpandingContainer(ExpandingContainer):
     """A container that is anchored at the top and expands downwards."""
 
 
-class InlineDownExpandingContainer(DownExpandingContainer):
+class _InlineDownExpandingContainer(DownExpandingContainer):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True):
         super().__init__(name, parent, left=left, top=parent.cursor,
@@ -311,11 +312,20 @@ class InlineDownExpandingContainer(DownExpandingContainer):
     def remaining_height(self):
         return super().remaining_height - self.extra_space_below
 
+
+class InlineDownExpandingContainer(ContextManager):
+    def __init__(self, name, parent, left=None, width=None, right=None,
+                 extra_space_below=0, advance_parent=True):
+        self._container = _InlineDownExpandingContainer(name, parent, left,
+                                                        width, right,
+                                                        extra_space_below,
+                                                        advance_parent)
+
     def __enter__(self):
-        return self
+        return self._container
 
     def __exit__(self, exc_type, exc_value, _):
-        self.advance(self.extra_space_below)
+        self._container.advance(self._container.extra_space_below)
 
 
 class UpExpandingContainer(ExpandingContainer):
@@ -336,20 +346,10 @@ class UpExpandingContainer(ExpandingContainer):
                          max_height)
 
 
-class MaybeContainer(InlineDownExpandingContainer):
+class _MaybeContainer(_InlineDownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
         super().__init__('MAYBE', parent, left=left, width=width, right=right)
         self._do_place = False
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, _):
-        if (exc_type is None
-            or (issubclass(exc_type, EndOfContainer)
-                and (exc_value.flowable_state
-                     and not exc_value.flowable_state.initial))):
-            self.do_place()
 
     def do_place(self):
         self._do_place = True
@@ -357,6 +357,21 @@ class MaybeContainer(InlineDownExpandingContainer):
     def place(self):
         if self._do_place:
             super().place()
+
+
+class MaybeContainer(ContextManager):
+    def __init__(self, parent, left=None, width=None, right=None):
+        self._container = _MaybeContainer(parent, left, width, right)
+
+    def __enter__(self):
+        return self._container
+
+    def __exit__(self, exc_type, exc_value, _):
+        if (exc_type is None
+            or (issubclass(exc_type, EndOfContainer)
+                and (exc_value.flowable_state
+                     and not exc_value.flowable_state.initial))):
+            self._container.do_place()
 
 
 @contextmanager

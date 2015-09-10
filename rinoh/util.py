@@ -204,3 +204,20 @@ class NotImplementedAttribute(object):
     def __get__(self, instance, owner):
         raise NotImplementedError('Attribute implementation is missing in '
                                   'subclass')
+
+
+# context managers
+
+class ContextManager(object):
+    """Base for classes that can only be used as a context manager. Raises
+    :class:`TypeError` if any other attributes besides :meth:`__enter__` and
+    :meth:`__exit__` are accessed."""
+
+    def __getattr__(self, item):
+        raise TypeError('{} is a context manager'.format(type(self)))
+
+    def __enter__(self):
+        raise NotImplementedError
+
+    def __exit__(self):
+        raise NotImplementedError
