@@ -1,6 +1,6 @@
 
 from rinoh.document import DocumentPart, Page, DocumentSection
-from rinoh.layout import Container
+from rinoh.layout import FlowablesContainer
 from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
 
@@ -19,8 +19,8 @@ class TitlePage(Page):
         body_width = self.width - (2 * h_margin)
         body_height = self.height - (2 * v_margin)
         title_top = self.height / 4
-        self.title = Container('title', self, h_margin, title_top,
-                               body_width, body_height)
+        self.title = FlowablesContainer('title', self, h_margin, title_top,
+                                        body_width, body_height)
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
         if 'subtitle' in self.document.metadata:
