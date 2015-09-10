@@ -38,11 +38,9 @@ class Framed(Flowable):
             left = self.get_style('padding_left', document)
             right = container.width - self.get_style('padding_right', document)
             padding_bottom = float(self.get_style('padding_bottom', document))
-            pad_cntnr = InlineDownExpandingContainer('PADDING', container,
-                                                     left=left, right=right,
-                                                     extra_space_below=
-                                                         padding_bottom)
-            _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
+            with InlineDownExpandingContainer('PADDING', container, left=left,
+                    right=right, extra_space_below=padding_bottom) as pad_cntnr:
+                _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
             self.render_frame(container, container.height, top=draw_top)
             return container.width, descender
         except EndOfContainer as eoc:

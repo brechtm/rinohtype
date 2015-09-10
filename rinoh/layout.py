@@ -256,8 +256,8 @@ class ChainedContainer(FlowablesContainerBase):
     """A container that renders flowables from the :class:`Chain` it is part
     of."""
 
-    def __init__(self, name, parent, chain, left=None, top=None, width=None, height=None,
-                 right=None, bottom=None):
+    def __init__(self, name, parent, chain, left=None, top=None, width=None,
+                 height=None, right=None, bottom=None):
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
         chain.containers.append(self)
@@ -320,6 +320,12 @@ class InlineDownExpandingContainer(DownExpandingContainer):
                          extra_space_below=extra_space_below)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, _):
+        self.advance(self.extra_space_below)
 
 
 class UpExpandingContainer(ExpandingContainer):

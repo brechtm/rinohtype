@@ -113,26 +113,26 @@ class Flowable(Styled):
         margin_left = self.get_style('margin_left', document)
         margin_right = self.get_style('margin_right', document)
         right = container.width - margin_right
-        margin_container = InlineDownExpandingContainer('MARGIN', container,
-                                                        left=margin_left,
-                                                        right=right)
-        margin_container._flowable = self
-        initial_before = True if state is None else state.initial
-        initial_after = True
-        try:
-            width, descender = self.render(margin_container, last_descender,
-                                           state=state, **kwargs)
-            initial_after = False
-        except EndOfContainer as eoc:
-            if eoc.flowable_state:
-                initial_after = eoc.flowable_state.initial
-            raise eoc
-        finally:
-            reference_id = self.get_id(container.document)
-            if reference_id and initial_before and not initial_after:
-                destination = NamedDestination(str(reference_id))
-                margin_container.canvas.annotate(destination, 0, 0,
-                                                 margin_container.width, None)
+        with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
+                                          right=right) as margin_container:
+            margin_container._flowable = self
+            initial_before = True if state is None else state.initial
+            initial_after = True
+            try:
+                width, descender = self.render(margin_container, last_descender,
+                                               state=state, **kwargs)
+                initial_after = False
+            except EndOfContainer as eoc:
+                if eoc.flowable_state:
+                    initial_after = eoc.flowable_state.initial
+                raise eoc
+            finally:
+                reference_id = self.get_id(container.document)
+                if reference_id and initial_before and not initial_after:
+                    destination = NamedDestination(str(reference_id))
+                    margin_container.canvas.annotate(destination, 0, 0,
+                                                     margin_container.width,
+                                                     None)
         container.advance(float(self.get_style('space_below', document)), True)
         return margin_left + width + margin_right, descender
 
@@ -325,18 +325,16 @@ class LabeledFlowable(Flowable):
 
         def render_label(container):
             width = None if label_spillover else label_column_width
-            label_container = InlineDownExpandingContainer('LABEL', container,
-                                                           width=width,
-                                                           advance_parent=False)
-            _, descender = self.label.flow(label_container, last_descender)
+            with InlineDownExpandingContainer('LABEL', container, width=width,
+                    advance_parent=False) as label_container:
+                _, descender = self.label.flow(label_container, last_descender)
             return label_container.cursor, descender
 
         def render_content(container, descender):
-            content_container = InlineDownExpandingContainer('CONTENT', container,
-                                                             left=left,
-                                                             advance_parent=False)
-            width, descender = self.flowable.flow(content_container, descender,
-                                                  state=state)
+            with InlineDownExpandingContainer('CONTENT', container, left=left,
+                    advance_parent=False) as content_container:
+                width, descender = self.flowable.flow(content_container,
+                                                      descender, state=state)
             return width, content_container.cursor, descender
 
         max_width = 0
