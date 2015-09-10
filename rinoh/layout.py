@@ -417,23 +417,35 @@ class FootnoteContainer(UpExpandingContainer):
                          max_height=max_height)
         self._footnote_number = 0
         self._footnote_space = self
-        self.last_descender = 0
         self.footnote_queue = deque()
+        self._flowing_footnotes = False
+        self._reflowed = False
+        self._descenders = [0]
 
     def add_footnote(self, footnote):
         self.footnote_queue.append(footnote)
-        if len(self.footnote_queue) == 1:
-            self.flow_footnotes()
+        if not self._flowing_footnotes:
+            try:
+                self.flow_footnotes()
+            finally:
+                self._flowing_footnotes = False
 
     def flow_footnotes(self):
+        if self._reflowed:
+            self._cursor.addends.pop()
+            self._descenders.pop()
         while self.footnote_queue:
-            footnote = self.footnote_queue[0]
+            footnote = self.footnote_queue.popleft()
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in self.document.placed_footnotes:
-                _, self.last_descender = footnote.flow(self, self.last_descender)
-                self.document.placed_footnotes.add(footnote_id)
-            self.footnote_queue.popleft()
-
+                with MaybeContainer(self) as maybe_container:
+                    _, descender = footnote.flow(maybe_container,
+                                                 self._descenders[-1])
+                    self._descenders.append(descender)
+                    self._reflowed = True
+                    self.page.check_overflow()
+                    self._reflowed = False
+                    self.document.placed_footnotes.add(footnote_id)
     @property
     def next_number(self):
         self._footnote_number += 1
