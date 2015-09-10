@@ -7,6 +7,7 @@
 
 
 from .element import DocumentElement
+from .dimension import PT
 from .flowable import Flowable
 from .layout import VirtualContainer
 
@@ -19,6 +20,10 @@ class InlineFlowableException(Exception):
 
 
 class InlineFlowable(Flowable):
+    def __init__(self, baseline=0*PT, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.baseline = baseline
+
     def font(self, document):
         raise InlineFlowableException
 
@@ -34,16 +39,17 @@ class InlineFlowable(Flowable):
     def flow_inline(self, container, last_descender, state=None):
         virtual_container = VirtualContainer(container)
         width, _ = self.flow(virtual_container, last_descender, state=state)
-        return InlineFlowableSpan(width, virtual_container)
+        return InlineFlowableSpan(width, self.baseline, virtual_container)
 
 
 class InlineFlowableSpan(DocumentElement):
     number_of_spaces = 0
     ends_with_space = False
 
-    def __init__(self, width, virtual_container):
+    def __init__(self, width, baseline, virtual_container):
         super().__init__()
         self.width = width
+        self.baseline = baseline
         self.virtual_container = virtual_container
 
     def font(self, document):
@@ -54,13 +60,13 @@ class InlineFlowableSpan(DocumentElement):
         return self
 
     def height(self, document):
-        return self.virtual_container.cursor
+        return self.virtual_container.height
 
     def ascender(self, document):
-        return self.height(document)
+        return self.height(document) + self.descender(document)
 
     def descender(self, document):
-        return 0
+        return - self.baseline.to_points(self.height(document))
 
     def line_gap(self, document):
         return 0

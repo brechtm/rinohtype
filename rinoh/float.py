@@ -7,6 +7,7 @@
 
 
 from .color import RED
+from .dimension import PT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable)
 from .inline import InlineFlowable
@@ -26,8 +27,8 @@ RIGHT = 'right'
 
 class ImageBase(Flowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
-                 id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
+                 id=None, style=None, parent=None, **kwargs):
+        super().__init__(id=id, style=style, parent=parent, **kwargs)
         self.filename_or_file = filename_or_file
         if scale != 1.0 and width is not None:
             raise TypeError('You should specify only one of scale and width')
@@ -58,7 +59,10 @@ class ImageBase(Flowable):
 
 
 class InlineImage(ImageBase, InlineFlowable):
-    pass
+    def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
+                 baseline=0*PT, id=None, style=None, parent=None):
+        super().__init__(filename_or_file, scale, width, rotate,
+                         id, style, parent, baseline=baseline)
 
 
 class Image(HorizontallyAlignedFlowable, ImageBase):

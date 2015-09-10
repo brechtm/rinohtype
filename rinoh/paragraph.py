@@ -663,7 +663,7 @@ class Line(list):
                 width = canvas.show_glyphs(left, cursor, span, glyph_and_widths,
                                            document)
             except InlineFlowableException:
-                top = cursor - span.height(document)
+                top = cursor - span.ascender(document)
                 span.virtual_container.place_at(container, left, top)
                 width = span.width
             current_annotation.update(span, left, width)
