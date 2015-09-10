@@ -630,11 +630,11 @@ class Line(list):
         else:
             advance = line_spacing.advance(self, last_descender, document)
         container.advance(advance)
-        if - descender > container.remaining_height:
-            raise EndOfContainer
 
+        container.advance(- descender)
         for glyph_span in self:
             glyph_span.span.before_placing(container)
+        container.advance(descender)
 
         # horizontal displacement
         left = self.indent
