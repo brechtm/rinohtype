@@ -275,7 +275,7 @@ class ChainedContainer(FlowablesContainerBase):
             yield self.chain
 
 
-class ExpandingContainer(FlowablesContainer):
+class ExpandingContainerBase(FlowablesContainer):
     """A dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, name, parent, left=None, top=None, width=None,
@@ -294,8 +294,21 @@ class ExpandingContainer(FlowablesContainer):
         return self.max_height - self.cursor
 
 
-class DownExpandingContainer(ExpandingContainer):
+class DownExpandingContainer(ExpandingContainerBase):
     """A container that is anchored at the top and expands downwards."""
+
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 right=None, max_height=None):
+        """See :class:`Container` for information on the `name`, `parent`,
+        `left`, `width` and `right` parameters.
+
+        `top` specifies the location of the container's top edge with respect to
+        that of the parent container. When `top` is omitted, the top edge is
+        placed at the top edge of the parent container.
+
+        `max_height` is the maximum height this container can grow to."""
+        super().__init__(name, parent, left=left, top=top, width=width,
+                         right=right, max_height=max_height)
 
 
 class _InlineDownExpandingContainer(DownExpandingContainer):
@@ -314,8 +327,22 @@ class _InlineDownExpandingContainer(DownExpandingContainer):
 
 
 class InlineDownExpandingContainer(ContextManager):
+    """A :class:`DownExpandingContainer` whose top edge is placed at the
+    parent's current cursor position. As flowables are flowed in this container,
+    the part's cursor also advances (but this behavior can be suppressed).
+
+    This container can only be used as a context manager."""
+
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True):
+        """See :class:`Container` about on the `name`, `parent`, `left`, `width`
+        and `right` parameters.
+
+        `extra_space_below` specifies how much space should be reserved below
+        the flowables.
+
+        Setting `advance_parent` to `False` prevents the parent container's
+        cursor being advanced."""
         self._container = _InlineDownExpandingContainer(name, parent, left,
                                                         width, right,
                                                         extra_space_below,
@@ -328,13 +355,13 @@ class InlineDownExpandingContainer(ContextManager):
         self._container.advance(self._container.extra_space_below)
 
 
-class UpExpandingContainer(ExpandingContainer):
+class UpExpandingContainer(ExpandingContainerBase):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, name, parent, left=None, bottom=None, width=None,
                  right=None, max_height=None, extra_space_below=0):
-        """See :class:`ContainerBase` for information on the `parent`, `left`,
-        `width` and `right` parameters.
+        """See :class:`ContainerBase` for information on the `name`, `parent`,
+        `left`, `width` and `right` parameters.
 
         `bottom` specifies the location of the container's bottom edge with
         respect to that of the parent container. When `bottom` is omitted, the
@@ -389,7 +416,8 @@ class VirtualContainer(DownExpandingContainer):
 
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
-        super().__init__('VIRTUAL', parent, width=width, max_height=float('+inf'))
+        super().__init__('VIRTUAL', parent, width=width,
+                         max_height=float('+inf'))
 
     def empty_canvas(self):
         self.canvas = self.document.backend.Canvas(None)
@@ -404,21 +432,17 @@ class VirtualContainer(DownExpandingContainer):
 
 
 
-class FloatContainer(ExpandingContainer):
+class FloatContainer(ExpandingContainerBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
 
-class TopFloatContainer(FloatContainer, DownExpandingContainer):
-    def __init__(self, name, parent, left=None, top=None, width=None,
-                 right=None, max_height=None):
-        super().__init__(name, parent, left, top, width, right, max_height)
+class TopFloatContainer(DownExpandingContainer, FloatContainer):
+    pass
 
 
 class BottomFloatContainer(UpExpandingContainer, FloatContainer):
-    def __init__(self, name, parent, left=None, bottom=None, width=None,
-                 right=None, max_height=None):
-        super().__init__(name, parent, left, bottom, width, right, max_height)
+    pass
 
 
 class FootnoteContainer(UpExpandingContainer):
