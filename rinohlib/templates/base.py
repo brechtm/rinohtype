@@ -22,7 +22,7 @@ class SimplePage(Page):
     column_spacing = 1*CM
 
     def __init__(self, document_part, chain, paper, orientation,
-                 title_flowables=None):
+                 title_flowables=None, header=True, footer=True):
         super().__init__(document_part, paper, orientation)
         document = document_part.document
         h_margin = document.options['page_horizontal_margin']
@@ -57,7 +57,7 @@ class SimplePage(Page):
         for column in self.columns:
             column._footnote_space = footnote_space
 
-        if document_part.header:
+        if header and document_part.header:
             header_bottom = self.body.top - self.header_footer_distance
             self.header = UpExpandingContainer('header', self,
                                                left=h_margin,
@@ -65,7 +65,7 @@ class SimplePage(Page):
                                                width=body_width)
             self.header.append_flowable(Header(document_part.header))
             self.header.append_flowable(HorizontalRule(style='header'))
-        if document_part.footer:
+        if footer and document_part.footer:
             footer_vpos = self.body.bottom + self.header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
                                                  left=h_margin,

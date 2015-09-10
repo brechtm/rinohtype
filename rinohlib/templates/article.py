@@ -58,7 +58,8 @@ class ArticlePart(ContentsPart):
             yield flowable
 
     def first_page(self):
-        return self.new_page([self.chain], title_flowables=self.title_flowables)
+        return self.new_page([self.chain], title_flowables=self.title_flowables,
+                             header=False)
 
 
 class ArticleSection(DocumentSection):
