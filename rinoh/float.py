@@ -43,8 +43,6 @@ class ImageBase(Flowable):
             self.warn(message)
             text = SingleStyledText(message, style=TextStyle(font_color=RED))
             return Paragraph(text).render(container, last_descender)
-        if last_descender:
-            container.advance(- last_descender)
         left, top = 0, float(container.cursor)
         if self.width is not None:
             width = self.width.to_points(container.width)

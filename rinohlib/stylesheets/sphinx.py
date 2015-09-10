@@ -421,7 +421,8 @@ stylesheet('figure',
 
 
 stylesheet('image',
-       horizontal_align=CENTER)
+           space_above=10*PT,
+           horizontal_align=CENTER)
 
 stylesheet('caption',
            base='default',
