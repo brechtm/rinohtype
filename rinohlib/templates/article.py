@@ -14,7 +14,7 @@ class TitleFlowables(GroupedFlowables):
         yield Paragraph(meta['title'], style='title')
         if 'subtitle' in meta:
             yield Paragraph(meta['subtitle'], style='subtitle')
-        if 'date' in meta:
+        if document.options['show_date'] and 'date' in meta:
             date = meta['date']
             try:
                 yield Paragraph(date.strftime('%B %d, %Y'), style='author')

@@ -141,6 +141,7 @@ class DocumentOptions(dict):
                'page_horizontal_margin': 3*CM,
                'page_vertical_margin': 3*CM,
                'columns': 1,
+               'show_date': True,
                'header_text': (Variable(SECTION_NUMBER(1)) + ' '
                                + Variable(SECTION_TITLE(1))),
                'footer_text': Tab() + Variable(PAGE_NUMBER)
