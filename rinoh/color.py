@@ -35,7 +35,11 @@ class Color(object):
 
 class HexColor(Color):
     def __init__(self, string):
-        if string.startswith('#'):
+        try:
+            string = string.encode('ascii')
+        except AttributeError:
+            pass
+        if string.startswith(b'#'):
             string = string[1:]
         try:
             r, g, b = struct.unpack('BBB', binascii.unhexlify(string[:6]))
