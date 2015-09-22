@@ -523,7 +523,6 @@ class Line(list):
         self.container = container
         self.cursor = indent
         self._has_tab = False
-        self._has_filled_tab = False
         self._current_tab = None
         self._current_tab_stop = None
 
@@ -541,7 +540,6 @@ class Line(list):
                 tab_width = tab_position - self.cursor
                 tab = GlyphAndWidth(glyphs_span.space.glyph, tab_width)
                 if tab_stop.fill:
-                    self._has_filled_tab = True
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
                 self.cursor += tab_width
