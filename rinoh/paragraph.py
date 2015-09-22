@@ -542,7 +542,7 @@ class Line(list):
                 if tab_stop.fill:
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
-                self.cursor += tab_width
+                self.cursor = tab_position
                 self._current_tab_stop = tab_stop
                 if tab_stop.align in (RIGHT, CENTER):
                     self._current_tab = tab
