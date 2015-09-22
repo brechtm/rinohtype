@@ -147,6 +147,11 @@ class Comment(InlineElement, BodyElement):
 class Topic(GroupingElement):
     style = 'topic'
 
+    def _process_topic(self, topic_type):
+        topic = super().build_flowable(style=topic_type)
+        del topic.children[0]
+        return rt.SetMetadataFlowable(**{topic_type: topic})
+
     def build_flowable(self):
         classes = self.get('classes')
         if 'contents' in classes:
@@ -162,9 +167,9 @@ class Topic(GroupingElement):
                 toc_id, = self.get('ids')
                 return rt.SetMetadataFlowable(toc_id=toc_id)
         elif 'dedication' in classes:
-            return rt.SetMetadataFlowable(dedication=super().build_flowable())
+            return self._process_topic('dedication')
         elif 'abstract' in classes:
-            return rt.SetMetadataFlowable(abstract=super().build_flowable())
+            return self._process_topic('abstract')
         else:
             return super().build_flowable()
 

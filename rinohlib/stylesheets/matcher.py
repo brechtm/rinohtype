@@ -66,6 +66,11 @@ matcher('other heading levels', Heading)
 
 matcher('topic', GroupedFlowables.like('topic'))
 
+matcher('abstract', GroupedFlowables.like('abstract'))
+
+matcher('abstract paragraph',
+        GroupedFlowables.like('abstract') / Paragraph)
+
 matcher('topic title', GroupedFlowables.like('topic') / Paragraph.like('title'))
 
 matcher('rubric', Paragraph.like('rubric'))
