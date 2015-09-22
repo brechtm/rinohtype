@@ -16,7 +16,7 @@ from .flowable import PageBreak, PageBreakState
 from .layout import EndOfContainer
 from .number import NumberStyle, Label, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
-from .paragraph import ParagraphStyle, Paragraph
+from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
 from .reference import Referenceable, Reference
 from .reference import NUMBER, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
@@ -271,16 +271,31 @@ class TableOfContents(GroupedFlowables):
             items = limit_items(items, self.section)
 
         for flowable_id, flowable in items:
-            text = [Reference(flowable_id, type=NUMBER, quiet=True), Tab(),
-                    Reference(flowable_id, type=TITLE), Tab(),
-                    Reference(flowable_id, type=PAGE)]
-            yield TableOfContentsEntry(text, flowable.level, parent=self)
+            yield TableOfContentsEntry(flowable, parent=self)
 
 
-class TableOfContentsEntry(Paragraph):
-    def __init__(self, text_or_items, depth, id=None, style=None, parent=None):
-        super().__init__(text_or_items, id=id, style=style, parent=parent)
-        self.depth = depth
+class TableOfContentsEntryStyle(ParagraphStyle):
+    attributes = {'show_number': True}
+
+
+class TableOfContentsEntry(ParagraphBase):
+    style_class = TableOfContentsEntryStyle
+
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.flowable = flowable
+
+    @property
+    def depth(self):
+        return  self.flowable.level
+
+    def text(self, document):
+        text = [Reference(self.flowable.id, type=TITLE), Tab(),
+                Reference(self.flowable.id, type=PAGE)]
+        if self.get_style('show_number', document):
+            number_ref = Reference(self.flowable.id, type=NUMBER, quiet=True)
+            text = [number_ref, Tab()] + text
+        return MixedStyledText(text, parent=self)
 
 
 class HorizontalRuleStyle(FlowableStyle, LineStyle):
