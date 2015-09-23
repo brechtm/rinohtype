@@ -15,7 +15,7 @@ from rinohlib.fonts.texgyre.heros import typeface as helvetica
 
 from .matcher import matcher
 
-stylesheet = StyleSheet('base', matcher=matcher)
+stylesheet = StyleSheet('Sphinx', matcher=matcher)
 
 stylesheet.variables['fonts'] = TypeFamily(serif=palatino,
                                            sans=helvetica,
