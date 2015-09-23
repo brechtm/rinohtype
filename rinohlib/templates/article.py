@@ -47,6 +47,8 @@ class ArticleFrontMatter(GroupedFlowables):
 # ----------------------------------------------------------------------------
 
 class ArticlePart(ContentsPart):
+    end_at = None
+
     def __init__(self, document_section):
         self.front_matter = ArticleFrontMatter()
         super().__init__(document_section)
