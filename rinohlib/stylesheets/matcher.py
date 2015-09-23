@@ -233,6 +233,8 @@ matcher('toc level 3', TableOfContentsEntry.like(depth=3))
 matcher('L3 toc level 3', TableOfContents.like(level=2)
                           / TableOfContentsEntry.like(depth=3))
 
+matcher('table with caption', TableWithCaption)
+
 matcher('table', Table)
 
 matcher('table cell', Table / TableSection / TableRow / TableCell)
@@ -285,14 +287,44 @@ matcher('table left border', TableCell.like(column_index=0)
 matcher('table right border', TableCell.like(column_index=-1)
                               / TableCellBorder.like(position='right'))
 
-matcher('table head inner border', TableHead
+matcher('table head cell left border', TableHead
+                                       / TableRow
+                                       / TableCell
+                                       / TableCellBorder.like(position='left'))
+
+matcher('table head cell right border', TableHead
+                                        / TableRow
+                                        / TableCell
+                                        / TableCellBorder.like(position='right'))
+
+matcher('table head bottom border', TableHead
+                                    / TableRow
+                                    / TableCell.like(row_index=-1)
+                                    / TableCellBorder.like(position='bottom'))
+
+matcher('table head left border', TableHead
+                                  / TableRow
+                                  / TableCell.like(column_index=0)
+                                  / TableCellBorder.like(position='left'))
+
+matcher('table head right border', TableHead
                                    / TableRow
-                                   / TableCell
-                                   / TableCellBorder.like(position='bottom'))
+                                   / TableCell.like(column_index=-1)
+                                   / TableCellBorder.like(position='right'))
 
 matcher('table body top border', TableBody
                                  / TableRow
                                  / TableCell.like(row_index=0)
                                  / TableCellBorder.like(position='top'))
+
+matcher('table body left border', TableBody
+                                  / TableRow
+                                  / TableCell.like(column_index=0)
+                                  / TableCellBorder.like(position='left'))
+
+matcher('table body right border', TableBody
+                                   / TableRow
+                                   / TableCell.like(column_index=-1)
+                                   / TableCellBorder.like(position='right'))
 
 matcher('horizontal rule', HorizontalRule)

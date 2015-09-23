@@ -517,12 +517,12 @@ stylesheet('table top border',
 stylesheet('table bottom border',
        base='table top border')
 
-stylesheet('table head inner border',
+stylesheet('table head bottom border',
        base='table top border',
        stroke_width=0.5*PT)
 
 stylesheet('table body top border',
-       base='table head inner border')
+       base='table head bottom border')
 
 stylesheet('horizontal rule',
        space_above=10*PT,
