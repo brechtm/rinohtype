@@ -359,14 +359,13 @@ class StyledMatcher(dict):
 
     def match(self, styled):
         for cls in type(styled).__mro__:
-            try:
-                style_selectors = self[cls][styled.style]
-            except KeyError:
+            if cls not in self:
                 continue
-            for name, selector in style_selectors.items():
-                specificity = selector.match(styled)
-                if specificity:
-                    yield Match(name, specificity)
+            for style in set((styled.style, None)):
+                for name, selector in self[cls].get(style, {}).items():
+                    specificity = selector.match(styled)
+                    if specificity:
+                        yield Match(name, specificity)
 
 
 class StyleSheet(OrderedDict):
