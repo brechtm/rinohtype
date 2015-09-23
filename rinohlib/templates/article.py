@@ -19,7 +19,7 @@ class TitleFlowables(GroupedFlowables):
                 yield Paragraph(date.strftime('%B %d, %Y'), style='author')
             except AttributeError:
                 yield Paragraph(date, style='author')
-        if 'author' in meta:
+        if 'author' in meta and document.options['show_author']:
             yield Paragraph(meta['author'], style='author')
         abstract_location = document.options['abstract_location']
         if 'abstract' in meta and abstract_location == TITLE:

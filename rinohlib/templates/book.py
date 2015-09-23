@@ -27,7 +27,7 @@ class TitlePage(Page):
         if 'subtitle' in self.document.metadata:
             self.title << Paragraph(self.document.metadata['subtitle'],
                                     style='title page subtitle')
-        if 'author' in self.document.metadata:
+        if 'author' in self.document.metadata and options['show_author']:
             self.title << Paragraph(self.document.metadata['author'],
                                     style='title page author')
         if options['show_date']:
