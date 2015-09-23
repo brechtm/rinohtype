@@ -14,8 +14,9 @@ from .base import (DocumentBase, DocumentOptions,
 class TitlePage(Page):
     def __init__(self, document_part, paper, orientation):
         super().__init__(document_part, paper, orientation)
-        h_margin = self.document.options['page_horizontal_margin']
-        v_margin = self.document.options['page_vertical_margin']
+        options = self.document.options
+        h_margin = options['page_horizontal_margin']
+        v_margin = options['page_vertical_margin']
         body_width = self.width - (2 * h_margin)
         body_height = self.height - (2 * v_margin)
         title_top = self.height / 4
@@ -29,13 +30,14 @@ class TitlePage(Page):
         if 'author' in self.document.metadata:
             self.title << Paragraph(self.document.metadata['author'],
                                     style='title page author')
-        date = self.document.metadata['date']
-        try:
-            self.title << Paragraph(date.strftime('%B %d, %Y'),
-                                    style='title page date')
-        except AttributeError:
-            self.title << Paragraph(date, style='title page date')
-        extra = self.document.options['extra']
+        if options['show_date']:
+            date = self.document.metadata['date']
+            try:
+                self.title << Paragraph(date.strftime('%B %d, %Y'),
+                                        style='title page date')
+            except AttributeError:
+                self.title << Paragraph(date, style='title page date')
+        extra = options['extra']
         if extra:
             self.title << Paragraph(extra, style='title page extra')
 
