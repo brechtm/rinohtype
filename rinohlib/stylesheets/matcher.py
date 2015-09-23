@@ -219,6 +219,9 @@ matcher('figure legend paragraph', Figure
 
 matcher('table of contents section', Section.like('table of contents'))
 
+matcher('table of contents title',
+        Section.like('table of contents', level=1) / Heading)
+
 matcher('table of contents', TableOfContents)
 
 matcher('toc level 1', TableOfContentsEntry.like(depth=1))
