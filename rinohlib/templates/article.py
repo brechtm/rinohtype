@@ -1,6 +1,5 @@
 
 from rinoh.document import DocumentSection
-from rinoh.layout import Chain
 from rinoh.paragraph import Paragraph
 from rinoh.structure import GroupedFlowables
 
@@ -22,6 +21,9 @@ class TitleFlowables(GroupedFlowables):
                 yield Paragraph(date, style='author')
         if 'author' in meta:
             yield Paragraph(meta['author'], style='author')
+        abstract_location = document.options['abstract_location']
+        if 'abstract' in meta and abstract_location == TITLE:
+            yield meta['abstract']
 
 
 class ArticleFrontMatter(GroupedFlowables):
@@ -34,7 +36,8 @@ class ArticleFrontMatter(GroupedFlowables):
 
     def flowables(self, document):
         meta = document.metadata
-        if 'abstract' in meta:
+        abstract_location = document.options['abstract_location']
+        if 'abstract' in meta and abstract_location == FRONT_MATTER:
             yield meta['abstract']
         if document.options['table_of_contents']:
             yield self.toc_section
@@ -69,8 +72,13 @@ class ArticleSection(DocumentSection):
 # main document
 # ----------------------------------------------------------------------------
 
+TITLE = 'title'
+FRONT_MATTER = 'front_matter'
+
+
 class ArticleOptions(DocumentOptions):
-    options = {'table_of_contents': True}
+    options = {'table_of_contents': True,
+               'abstract_location': FRONT_MATTER}
 
 
 class Article(DocumentBase):
