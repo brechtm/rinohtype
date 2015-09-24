@@ -1,3 +1,3 @@
 [submodule "citeproc-py"]
 	path = citeproc-py
-	url = git@github.com:brechtm/citeproc-py.git
+	url = https://github.com/brechtm/citeproc-py.git
