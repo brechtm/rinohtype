@@ -370,6 +370,7 @@ class Stream(Dictionary):
         out = bytearray()
         if self._coder:
             self._coder.close()
+            self.reset()
         if not isinstance(self.filter, PassThrough):
             self['Filter'] = self.filter.name
             if self.filter.params:
