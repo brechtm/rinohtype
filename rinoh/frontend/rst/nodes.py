@@ -371,8 +371,7 @@ class Footnote(BodyElement):
         return rt.RegisterNote(super().flowable())
 
     def build_flowable(self):
-        content = [node.flowable() for node in self.getchildren()[1:]]
-        return rt.Note(rt.StaticGroupedFlowables(content))
+        return rt.Note(rt.StaticGroupedFlowables(self.children_flowables(1)))
 
 
 class Label(BodyElement):
@@ -433,7 +432,7 @@ class Bullet_List(BodyElement):
 
 class List_Item(BodySubElement):
     def process(self):
-        return [item.flowable() for item in self.getchildren()]
+        return self.children_flowables()
 
 
 class Definition_List(BodyElement):

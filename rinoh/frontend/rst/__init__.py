@@ -7,12 +7,12 @@
 
 
 from functools import wraps
+from itertools import chain
 
 from docutils.core import publish_doctree
 
 from rinoh.text import MixedStyledText
 from rinoh.flowable import StaticGroupedFlowables
-from rinoh.style import PARENT_STYLE
 from rinoh.util import all_subclasses
 
 
@@ -74,35 +74,31 @@ class CustomElement(object):
                                    self.node.tagname)
 
 
-def set_source(method):
-    """Decorator that sets the `source` attribute of the returned object to
-    `self`"""
-    @wraps(method)
-    def method_wrapper(obj, *args, **kwargs):
-        result = method(obj, *args, **kwargs)
-        try:
-            result.source = obj
-        except AttributeError:
-            pass
-        return result
-    return method_wrapper
+class BodyElementBase(CustomElement):
+    def children_flowables(self, skip_first=0):
+        children = self.getchildren()[skip_first:]
+        return list(chain(*(item.flowables() for item in children)))
 
 
-class BodyElement(CustomElement):
-    @set_source
-    def flowable(self):
-        flowable = self.build_flowable()
+class BodyElement(BodyElementBase):
+    def flowables(self):
         ids = self.get('ids')
-        if ids:
-            flowable.id = ids[0]
-        flowable.classes = self.get('classes')
-        return flowable
+        classes = self.get('classes')
+        for i, flowable in enumerate(self.build_flowables()):
+            if i == 0 and ids:
+                flowable.id = ids[0]
+            flowable.classes = classes
+            flowable.source = self
+            yield flowable
+
+    def build_flowables(self):
+        yield self.build_flowable()
 
     def build_flowable(self):
         raise NotImplementedError('tag: %s' % self.tag)
 
 
-class BodySubElement(CustomElement):
+class BodySubElement(BodyElementBase):
     def process(self):
         raise NotImplementedError('tag: %s' % self.tag)
 
@@ -112,11 +108,11 @@ class InlineElement(CustomElement):
     def text(self):
         return super().text.replace('\n', ' ')
 
-    @set_source
     def styled_text(self, preserve_space=False):
         styled_text = self.build_styled_text()
         try:
             styled_text.classes = self.get('classes')
+            styled_text.source = self
         except AttributeError:
             pass
         return styled_text
@@ -129,10 +125,22 @@ class GroupingElement(BodyElement):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
 
+    def flowable(self):
+        flowable, = self.flowables()
+        return flowable
+
     def build_flowable(self, style=None, **kwargs):
-        flowables = [item.flowable() for item in self.getchildren()]
-        return self.grouped_flowables_class(flowables,
+        return self.grouped_flowables_class(self.children_flowables(),
                                             style=style or self.style, **kwargs)
+
+
+class DummyElement(BodyElement, InlineElement):
+    def flowables(self):    # empty generator
+        return
+        yield
+
+    def styled_text(self, preserve_space=False):
+        return None
 
 
 from . import nodes
@@ -170,5 +178,4 @@ class ReStructuredTextParser(object):
     def from_doctree(self, doctree):
         self.replace_secondary_ids(doctree)
         mapped_tree = CustomElement.map_node(doctree.document)
-        flowables = [child.flowable() for child in mapped_tree.getchildren()]
-        return flowables
+        return mapped_tree.children_flowables()
