@@ -110,9 +110,12 @@ class CustomElement(object):
                 yield item
 
     @property
+    def tag_name(self):
+        return self.node.tag.split('}', 1)[-1]
+
+    @property
     def location(self):
-        tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
-        return '{}: <{}> at line {}'.format(self.filename, tag,
+        return '{}: <{}> at line {}'.format(self.filename, self.tag_name,
                                             self.sourceline)
 
 
@@ -123,12 +126,12 @@ class BodyElement(CustomElement):
         return flowable
 
     def build_flowable(self):
-        raise NotImplementedError('tag: %s' % self.tag)
+        raise NotImplementedError('tag: %s' % self.tag_name)
 
 
 class BodySubElement(CustomElement):
     def process(self):
-        raise NotImplementedError('tag: %s' % self.tag)
+        raise NotImplementedError('tag: %s' % self.tag_name)
 
 
 class InlineElement(CustomElement):

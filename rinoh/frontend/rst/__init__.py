@@ -6,7 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from functools import wraps
 from itertools import chain
 
 from docutils.core import publish_doctree
@@ -95,12 +94,12 @@ class BodyElement(BodyElementBase):
         yield self.build_flowable()
 
     def build_flowable(self):
-        raise NotImplementedError('tag: %s' % self.tag)
+        raise NotImplementedError('tag: %s' % self.node.tag_name)
 
 
 class BodySubElement(BodyElementBase):
     def process(self):
-        raise NotImplementedError('tag: %s' % self.tag)
+        raise NotImplementedError('tag: %s' % self.node.tag_name)
 
 
 class InlineElement(CustomElement):
