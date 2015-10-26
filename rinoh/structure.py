@@ -290,10 +290,11 @@ class TableOfContentsEntry(ParagraphBase):
         return  self.flowable.level
 
     def text(self, document):
-        text = [Reference(self.flowable.id, type=TITLE), Tab(),
-                Reference(self.flowable.id, type=PAGE)]
+        flowable_id = self.flowable.get_id(document)
+        text = [Reference(flowable_id, type=TITLE), Tab(),
+                Reference(flowable_id, type=PAGE)]
         if self.get_style('show_number', document):
-            number_ref = Reference(self.flowable.id, type=NUMBER, quiet=True)
+            number_ref = Reference(flowable_id, type=NUMBER, quiet=True)
             text = [number_ref, Tab()] + text
         return MixedStyledText(text, parent=self)
 
