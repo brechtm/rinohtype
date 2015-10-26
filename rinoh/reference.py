@@ -120,6 +120,8 @@ class DirectReference(ReferenceBase):
 
 
 class Note(Referenceable, LabeledFlowable):
+    category = 'Note'
+
     def __init__(self, flowable, id=None, style=None, parent=None):
         label = Paragraph(DirectReference(self))
         super().__init__(label, flowable, id=id, style=style, parent=parent)
@@ -156,7 +158,7 @@ class NoteMarkerBase(ReferenceBase, Label):
                 formatted_number = str(self.custom_label)
             else:
                 number_format = self.get_style('number_format', document)
-                counter = document.counters.setdefault(__class__, [])
+                counter = document.counters.setdefault(Note.category, [])
                 counter.append(self)
                 formatted_number = format_number(len(counter), number_format)
             label = self.format_label(str(formatted_number), document)

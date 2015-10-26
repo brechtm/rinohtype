@@ -38,6 +38,7 @@ class SectionSytyle(GroupedFlowablesStyle):
 
 
 class Section(Referenceable, StaticGroupedFlowables):
+    category = 'Section'
     style_class = SectionSytyle
 
     def __init__(self, flowables, id=None, style=None, parent=None):
@@ -118,8 +119,9 @@ class Heading(NumberedParagraph):
                 parent_section_id = self.section.parent.section.get_id(document)
             except AttributeError:
                 parent_section_id = None
-            heading_counters = document.counters.setdefault(__class__, {})
-            section_counter = heading_counters.setdefault(parent_section_id, [])
+            ref_category = self.referenceable.category
+            section_counters = document.counters.setdefault(ref_category, {})
+            section_counter = section_counters.setdefault(parent_section_id, [])
             section_counter.append(self)
             number = len(section_counter)
             label = format_number(number, numbering_style)

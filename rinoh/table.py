@@ -257,8 +257,8 @@ class TableWithCaption(Referenceable, StaticGroupedFlowables):
     def prepare(self, document):
         super().prepare(document)
         element_id = self.get_id(document)
-        number = document.counters.setdefault(__class__, 1)
-        document.counters[__class__] += 1
+        number = document.counters.setdefault(self.category, 1)
+        document.counters[self.category] += 1
         document.set_reference(element_id, NUMBER, str(number))
 
 
