@@ -11,7 +11,7 @@ from . import CustomElement, BodyElement, InlineElement, GroupingElement
 from ... import styleds
 
 
-class DocumentRoot(CustomElement):
+class DocumentRoot(BodyElement):
     pass
 
 
@@ -150,8 +150,9 @@ class Sect5(Section):
 
 
 class MediaObject(BodyElement):
-    def build_flowable(self):
-        return self.imageobject.flowable()
+    def build_flowables(self):
+        for flowable in self.imageobject.flowables():
+            yield flowable
 
 
 class ImageObject(BodyElement):

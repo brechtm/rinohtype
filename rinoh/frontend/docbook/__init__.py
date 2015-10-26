@@ -120,16 +120,25 @@ class CustomElement(object):
 
 
 
-class BodyElement(CustomElement):
-    def flowable(self):
-        flowable = self.build_flowable()
-        return flowable
+class BodyElementBase(CustomElement):
+    def children_flowables(self, skip_first=0):
+        children = self.getchildren()[skip_first:]
+        return list(chain(*(item.flowables() for item in children)))
+
+
+class BodyElement(BodyElementBase):
+    def flowables(self):
+        for flowable in self.build_flowables():
+            yield flowable
+
+    def build_flowables(self):
+        yield self.build_flowable()
 
     def build_flowable(self):
         raise NotImplementedError('tag: %s' % self.tag_name)
 
 
-class BodySubElement(CustomElement):
+class BodySubElement(BodyElementBase):
     def process(self):
         raise NotImplementedError('tag: %s' % self.tag_name)
 
@@ -148,10 +157,13 @@ class GroupingElement(BodyElement):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
 
-    def build_flowable(self, **kwargs):
-        flowables = [item.flowable() for item in self.getchildren()]
-        return self.grouped_flowables_class(flowables,
-                                            style=self.style, **kwargs)
+    def flowable(self):
+        flowable, = self.flowables()
+        return flowable
+
+    def build_flowables(self, **kwargs):
+        yield self.grouped_flowables_class(self.children_flowables(),
+                                           style=self.style, **kwargs)
 
 
 DOCBOOK_NS = 'http://docbook.org/ns/docbook'
@@ -181,5 +193,4 @@ class DocBookReader(object):
 
     def from_doctree(self, doctree):
         mapped_tree = CustomElement.map_node(doctree)
-        flowables = [child.flowable() for child in mapped_tree.getchildren()]
-        return flowables
+        return mapped_tree.children_flowables()
