@@ -80,6 +80,10 @@ class BodyElementBase(CustomElement):
 
 
 class BodyElement(BodyElementBase):
+    def flowable(self):
+        flowable, = self.flowables()
+        return flowable
+
     def flowables(self):
         ids = self.get('ids')
         classes = self.get('classes')
@@ -123,10 +127,6 @@ class InlineElement(CustomElement):
 class GroupingElement(BodyElement):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
-
-    def flowable(self):
-        flowable, = self.flowables()
-        return flowable
 
     def build_flowable(self, style=None, **kwargs):
         return self.grouped_flowables_class(self.children_flowables(),

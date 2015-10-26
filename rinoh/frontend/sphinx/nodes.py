@@ -10,14 +10,14 @@ import unicodedata
 from itertools import chain
 
 from ...annotation import HyperLink, AnnotatedText
-from ...flowable import DummyFlowable, LabeledFlowable
+from ...flowable import LabeledFlowable
 from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm, FieldList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 
-from ..rst import BodyElement, InlineElement, GroupingElement
+from ..rst import BodyElement, InlineElement, GroupingElement, DummyElement
 from ..rst.nodes import Admonition, AdmonitionBase, Strong, Inline, Emphasis
 
 
@@ -39,15 +39,12 @@ class Compact_Paragraph(GroupingElement):
 
 # inline nodes
 
-class Index(BodyElement, InlineElement):
+class Index(DummyElement):
     def build_styled_text(self):
         for entrytype, entryname, target, ignored in self.get('entries'):
             # TODO: generate index
             pass
         return None
-
-    def build_flowable(self):
-        return DummyFlowable()
 
 
 class Pending_XRef(InlineElement):
@@ -107,9 +104,8 @@ class Todo_Node(Admonition):
     pass
 
 
-class HighlightLang(BodyElement):
-    def build_flowable(self):
-        return DummyFlowable()
+class HighlightLang(DummyElement):
+    pass
 
 
 class Literal_Strong(Strong):
@@ -206,8 +202,6 @@ class Desc_Parameter(InlineElement):
         return self.process_content(style=style)
 
 
-
-
 class Desc_Optional(InlineElement):
     def build_styled_text(self):
         return (SingleStyledText(' [, ', style='brackets')
@@ -235,9 +229,8 @@ class Desc_Returns(Inline):
 
 # not listed in "Doctree node classes added by Sphinx"
 
-class Tabular_Col_Spec(BodyElement):
-    def build_flowable(self):
-        return DummyFlowable()
+class Tabular_Col_Spec(DummyElement):
+    pass
 
 
 class AutoSummary_Table(GroupingElement):
