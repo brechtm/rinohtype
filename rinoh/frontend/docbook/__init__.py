@@ -67,7 +67,7 @@ class CustomElement(object):
             else:
                 return RE_WHITESPACE.sub(' ', self.node.text)
         else:
-            return None
+            return ''
 
     @property
     def tail(self):
@@ -127,6 +127,10 @@ class BodyElementBase(CustomElement):
 
 
 class BodyElement(BodyElementBase):
+    def flowable(self):
+        flowable, = self.flowables()
+        return flowable
+
     def flowables(self):
         for flowable in self.build_flowables():
             yield flowable
@@ -156,10 +160,6 @@ class InlineElement(CustomElement):
 class GroupingElement(BodyElement):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
-
-    def flowable(self):
-        flowable, = self.flowables()
-        return flowable
 
     def build_flowables(self, **kwargs):
         yield self.grouped_flowables_class(self.children_flowables(),
