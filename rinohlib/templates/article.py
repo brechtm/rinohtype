@@ -83,8 +83,9 @@ FRONT_MATTER = AbstractLocation('front_matter')
 
 
 class ArticleOptions(DocumentOptions):
-    table_of_contents = Option(bool, True)
-    abstract_location = Option(AbstractLocation, FRONT_MATTER)
+    table_of_contents = Option(bool, True, 'Show or hide the table of contents')
+    abstract_location = Option(AbstractLocation, FRONT_MATTER, 'Where to place '
+                               'the abstract')
 
 
 class Article(DocumentTemplate):

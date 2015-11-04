@@ -210,7 +210,22 @@ These will be enhanced and others will be added as time goes on.
 
 The :class:`Article` and :class:`Book` templates can be customized by passing an
 :class:`ArticleOptions` or :class:`BookOptions` instance as `options` on
-template instantiation respectively.
+template instantiation respectively. Both these classes derive from
+:class:`DocumentOptions` and thus accept the options offered by it:
+
+.. autoclass:: rinohlib.templates.base.DocumentOptions
+    :members:
+
+
+The :class:`Article` and :class:`Book` templates also have some specific
+options:
+
+.. autoclass:: rinohlib.templates.article.ArticleOptions
+    :members:
+
+
+.. autoclass:: rinohlib.templates.book.BookOptions
+    :members:
 
 
 .. [1] This will be configurable in the future.

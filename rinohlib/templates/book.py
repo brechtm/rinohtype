@@ -3,8 +3,9 @@ from rinoh.document import DocumentPart, Page, DocumentSection
 from rinoh.layout import FlowablesContainer
 from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
+from rinoh.text import MixedStyledText
 
-from .base import (DocumentTemplate, DocumentOptions,
+from .base import (DocumentTemplate, DocumentOptions, Option,
                    TableOfContentsPart, ContentsPart)
 
 
@@ -67,7 +68,8 @@ class BodyMatter(DocumentSection):
 # ----------------------------------------------------------------------------
 
 class BookOptions(DocumentOptions):
-    options = {'extra': None}
+    extra = Option(MixedStyledText, None, 'Extra text to include on the title '
+                   'page below the title')
 
 
 class Book(DocumentTemplate):

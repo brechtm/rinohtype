@@ -139,9 +139,10 @@ class ContentsPart(BookPart):
 
 class Option(NamedDescriptor):
     """Descriptor used to describe a document option"""
-    def __init__(self, accepted_type, default_value):
+    def __init__(self, accepted_type, default_value, description):
         self.accepted_type = accepted_type
         self.default_value = default_value
+        self.description = description
 
     def __get__(self, document_options, type=None):
         try:
@@ -155,24 +156,41 @@ class Option(NamedDescriptor):
                             .format(self.name, self.accepted_type))
         document_options[self.name] = value
 
+    @property
+    def __doc__(self):
+        return (':description: {} (:class:`{}`)\n'
+                ':default: {}'
+                .format(self.description, self.accepted_type.__name__,
+                        self.default_value))
+
 
 class PageOrientationPORTRAIT(object):
     pass
 
 
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):
-    stylesheet = Option(StyleSheet, sphinx.stylesheet)
-    page_size = Option(Paper, A4)
-    page_orientation = Option(PageOrientation, PORTRAIT)
-    page_horizontal_margin = Option(DimensionBase, 3*CM)
-    page_vertical_margin = Option(DimensionBase, 3*CM)
-    columns = Option(int, 1)
-    show_date = Option(bool, True)
-    show_author = Option(bool, True)
+    """Collects options to customize a :class:`DocumentTemplate`. Options are
+    specified as keyword arguments (`options`) matching the class's
+    attributes."""
+
+    stylesheet = Option(StyleSheet, sphinx.stylesheet,
+                        'The stylesheet to use for styling document elements')
+    page_size = Option(Paper, A4, 'The format of the pages in the document')
+    page_orientation = Option(PageOrientation, PORTRAIT,
+                              'The orientation of pages in the document')
+    page_horizontal_margin = Option(DimensionBase, 3*CM, 'The margin size on '
+                                    'the left and the right of the page')
+    page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
+                                  'top and bottom of the page')
+    columns = Option(int, 1, 'The number of columns for the body text')
+    show_date = Option(bool, True, "Show or hide the document's date")
+    show_author = Option(bool, True, "Show or hide the document's author")
     header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
-                                          + ' ' + Variable(SECTION_TITLE(1)))
+                                          + ' ' + Variable(SECTION_TITLE(1)),
+                         'The text to place in the page header')
     footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
-                                          + '/' + Variable(NUMBER_OF_PAGES))
+                                          + '/' + Variable(NUMBER_OF_PAGES),
+                         'The text to place in the page footer')
 
     def __init__(self, **options):
         for name, value in options.items():

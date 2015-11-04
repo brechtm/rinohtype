@@ -400,6 +400,9 @@ class StyleSheet(OrderedDict):
         selector = self.matcher.by_name[name]
         self[name] = selector.cls.style_class(**kwargs)
 
+    def __str__(self):
+        return '{}({})'.format(type(self).__name__, self.name)
+
     def get_variable(self, name):
         try:
             return self.variables[name]
