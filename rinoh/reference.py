@@ -186,6 +186,9 @@ class FieldType(object):
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
 
+    def __str__(self):
+        return self.name.upper().replace(' ', '_')
+
 
 PAGE_NUMBER = FieldType('page number')
 NUMBER_OF_PAGES = FieldType('number of pages')
@@ -201,6 +204,9 @@ class SectionFieldType(FieldType):
     def __repr__(self):
         return "{}('{}', {})".format(self.__class__.__name__, self.name,
                                      self.level)
+
+    def __str__(self):
+        return '{}({})'.format(super().__str__(), self.level)
 
 
 class SECTION_NUMBER(SectionFieldType):
@@ -224,6 +230,9 @@ class Variable(Field):
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
+
+    def __str__(self):
+        return '${}'.format(self.type)
 
     def split(self, container):
         if self.type == PAGE_NUMBER:
