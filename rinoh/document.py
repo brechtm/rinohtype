@@ -36,11 +36,15 @@ from .util import NotImplementedAttribute
 
 
 __all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
-           'PORTRAIT', 'LANDSCAPE']
+           'PageOrientation', 'PORTRAIT', 'LANDSCAPE']
 
 
-PORTRAIT = 'portrait'
-LANDSCAPE = 'landscape'
+class PageOrientation(str):
+    pass
+
+
+PORTRAIT = PageOrientation('portrait')
+LANDSCAPE = PageOrientation('landscape')
 
 
 class Page(Container):

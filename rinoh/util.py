@@ -28,7 +28,8 @@ from functools import wraps
 __all__ = ['all_subclasses', 'intersperse', 'last', 'consumer',
            'static_variable', 'cached', 'cached_property', 'cached_generator',
            'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
-           'NotImplementedAttribute']
+           'NotImplementedAttribute', 'NamedDescriptor', 'WithNamedDescriptors',
+           'ContextManager']
 
 
 # functions
@@ -204,6 +205,22 @@ class NotImplementedAttribute(object):
     def __get__(self, instance, owner):
         raise NotImplementedError('Attribute implementation is missing in '
                                   'subclass')
+
+
+# from http://code.activestate.com/recipes/577426-auto-named-decriptors/
+class NamedDescriptor(object):
+    """Base class for descriptor's whose name will be derived from the attribute
+    name the descriptor instance is assigned to. The `name` attribute will hold
+    the desciptor name."""
+
+
+class WithNamedDescriptors(type):
+    """Set the names of the descriptors"""
+    def __new__(cls, classname, bases, cls_dict):
+        for name, attr in cls_dict.items():
+            if isinstance(attr, NamedDescriptor):
+                attr.name = name
+        return type.__new__(cls, classname, bases, cls_dict)
 
 
 # context managers

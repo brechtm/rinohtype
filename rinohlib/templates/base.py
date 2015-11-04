@@ -1,17 +1,20 @@
 
-from rinoh.dimension import PT, CM
-from rinoh.document import Document, DocumentPart, Page, PORTRAIT
+from rinoh.dimension import DimensionBase, PT, CM
+from rinoh.document import (Document, DocumentPart, Page, PageOrientation,
+                            PORTRAIT)
 from rinoh.layout import (Container, ChainedContainer, FootnoteContainer, Chain,
                           UpExpandingContainer, DownExpandingContainer)
-from rinoh.paper import A4
-from rinoh.reference import Variable, PAGE_NUMBER, SECTION_NUMBER, SECTION_TITLE, \
-    NUMBER_OF_PAGES
+from rinoh.paper import Paper, A4
+from rinoh.reference import (Variable, PAGE_NUMBER, SECTION_NUMBER,
+                             SECTION_TITLE, NUMBER_OF_PAGES)
 from rinoh.structure import (Section, Heading, TableOfContents, Header, Footer,
                              HorizontalRule)
-from rinoh.text import Tab
-from rinoh.util import NotImplementedAttribute
+from rinoh.style import StyleSheet
+from rinoh.text import Tab, MixedStyledText
+from rinoh.util import (NotImplementedAttribute, NamedDescriptor,
+                        WithNamedDescriptors)
 
-from ..stylesheets.sphinx import stylesheet as STYLESHEET
+from ..stylesheets import sphinx
 
 
 # page definitions
@@ -134,39 +137,52 @@ class ContentsPart(BookPart):
         pass
 
 
-class DocumentOptions(dict):
-    options = {'stylesheet': STYLESHEET,
-               'page_size': A4,
-               'page_orientation': PORTRAIT,
-               'page_horizontal_margin': 3*CM,
-               'page_vertical_margin': 3*CM,
-               'columns': 1,
-               'show_date': True,
-               'show_author': True,
-               'header_text': (Variable(SECTION_NUMBER(1)) + ' '
-                               + Variable(SECTION_TITLE(1))),
-               'footer_text': Tab() + Variable(PAGE_NUMBER)
-                              + '/' + Variable(NUMBER_OF_PAGES)}
+class Option(NamedDescriptor):
+    """Descriptor used to describe a document option"""
+    def __init__(self, accepted_type, default_value):
+        self.accepted_type = accepted_type
+        self.default_value = default_value
+
+    def __get__(self, document_options, type=None):
+        try:
+            return document_options.get(self.name, self.default_value)
+        except AttributeError:
+            return self
+
+    def __set__(self, document_options, value):
+        if not isinstance(value, self.accepted_type):
+            raise TypeError('The {} document option only accepts {} instances'
+                            .format(self.name, self.accepted_type))
+        document_options[self.name] = value
+
+
+class PageOrientationPORTRAIT(object):
+    pass
+
+
+class DocumentOptions(dict, metaclass=WithNamedDescriptors):
+    stylesheet = Option(StyleSheet, sphinx.stylesheet)
+    page_size = Option(Paper, A4)
+    page_orientation = Option(PageOrientation, PORTRAIT)
+    page_horizontal_margin = Option(DimensionBase, 3*CM)
+    page_vertical_margin = Option(DimensionBase, 3*CM)
+    columns = Option(int, 1)
+    show_date = Option(bool, True)
+    show_author = Option(bool, True)
+    header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
+                                          + ' ' + Variable(SECTION_TITLE(1)))
+    footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
+                                          + '/' + Variable(NUMBER_OF_PAGES))
 
     def __init__(self, **options):
         for name, value in options.items():
-            self._get_default(name)
-            self[name] = value
+            option_descriptor = getattr(type(self), name, None)
+            if not isinstance(option_descriptor, Option):
+                raise AttributeError('No such document option: {}'.format(name))
+            setattr(self, name, value)
 
-    def _get_default(self, name):
-        for cls in type(self).__mro__:
-            try:
-                return cls.options[name]
-            except KeyError:
-                continue
-            except AttributeError:
-                raise ValueError("Unknown option '{}'".format(name))
-
-    def __getitem__(self, key):
-        try:
-            return super().__getitem__(key)
-        except KeyError:
-            return self._get_default(key)
+    def __getitem__(self, name):
+        return getattr(self, name)
 
 
 class DocumentTemplate(Document):

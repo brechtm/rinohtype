@@ -4,7 +4,7 @@ from rinoh.paragraph import Paragraph
 from rinoh.structure import GroupedFlowables
 
 from .base import (ContentsPart, DocumentTemplate, DocumentOptions,
-                   TableOfContentsSection)
+                   TableOfContentsSection, Option)
 
 
 class TitleFlowables(GroupedFlowables):
@@ -74,13 +74,17 @@ class ArticleSection(DocumentSection):
 # main document
 # ----------------------------------------------------------------------------
 
-TITLE = 'title'
-FRONT_MATTER = 'front_matter'
+class AbstractLocation(str):
+    pass
+
+
+TITLE = AbstractLocation('title')
+FRONT_MATTER = AbstractLocation('front_matter')
 
 
 class ArticleOptions(DocumentOptions):
-    options = {'table_of_contents': True,
-               'abstract_location': FRONT_MATTER}
+    table_of_contents = Option(bool, True)
+    abstract_location = Option(AbstractLocation, FRONT_MATTER)
 
 
 class Article(DocumentTemplate):
