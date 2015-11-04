@@ -4,7 +4,7 @@ from rinoh.layout import FlowablesContainer
 from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
 
-from .base import (DocumentBase, DocumentOptions,
+from .base import (DocumentTemplate, DocumentOptions,
                    TableOfContentsPart, ContentsPart)
 
 
@@ -70,6 +70,6 @@ class BookOptions(DocumentOptions):
     options = {'extra': None}
 
 
-class Book(DocumentBase):
+class Book(DocumentTemplate):
     sections = [FrontMatter, BodyMatter]
     options_class = BookOptions

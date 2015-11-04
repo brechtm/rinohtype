@@ -169,7 +169,7 @@ class DocumentOptions(dict):
             return self._get_default(key)
 
 
-class DocumentBase(Document):
+class DocumentTemplate(Document):
     sections = NotImplementedAttribute()
     options_class = DocumentOptions
 

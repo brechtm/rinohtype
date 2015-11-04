@@ -3,7 +3,7 @@ from rinoh.document import DocumentSection
 from rinoh.paragraph import Paragraph
 from rinoh.structure import GroupedFlowables
 
-from .base import (ContentsPart, DocumentBase, DocumentOptions,
+from .base import (ContentsPart, DocumentTemplate, DocumentOptions,
                    TableOfContentsSection)
 
 
@@ -83,6 +83,6 @@ class ArticleOptions(DocumentOptions):
                'abstract_location': FRONT_MATTER}
 
 
-class Article(DocumentBase):
+class Article(DocumentTemplate):
     sections = [ArticleSection]
     options_class = ArticleOptions
