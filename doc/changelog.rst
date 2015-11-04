@@ -1,0 +1,5 @@
+.. _changelog:
+
+Release History
+===============
+
