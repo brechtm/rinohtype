@@ -138,6 +138,14 @@ class DimensionMultiplication(DimensionBase):
         return float(self.multiplicand) * self.multiplier
 
 
+class DimensionMaximum(DimensionBase):
+    def __init__(self, *dimensions):
+        self.dimensions = dimensions
+
+    def __float__(self):
+        return max(*(float(dimension) for dimension in self.dimensions))
+
+
 class DimensionUnit(object):
     def __init__(self, points_per_unit):
         self.points_per_unit = float(points_per_unit)
