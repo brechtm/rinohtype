@@ -397,11 +397,20 @@ class StyleSheet(OrderedDict):
         super().__setitem__(name, style)
 
     def __call__(self, name, **kwargs):
-        selector = self.matcher.by_name[name]
-        self[name] = selector.cls.style_class(**kwargs)
+        self[name] = self.get_style_class(name)(**kwargs)
 
     def __str__(self):
         return '{}({})'.format(type(self).__name__, self.name)
+
+    def get_style_class(self, name):
+        style_sheet = self
+        while style_sheet is not None:
+            try:
+                selector = style_sheet.matcher.by_name[name]
+                break
+            except KeyError:
+                style_sheet = self.base
+        return selector.cls.style_class
 
     def get_variable(self, name):
         try:
