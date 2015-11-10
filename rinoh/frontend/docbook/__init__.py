@@ -132,7 +132,10 @@ class BodyElement(BodyElementBase):
         return flowable
 
     def flowables(self):
-        for flowable in self.build_flowables():
+        id = self.get('id')
+        for i, flowable in enumerate(self.build_flowables()):
+            if i == 0 and id:
+                flowable.id = id
             yield flowable
 
     def build_flowables(self):

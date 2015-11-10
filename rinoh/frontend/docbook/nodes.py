@@ -6,9 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from . import CustomElement, BodyElement, InlineElement, GroupingElement
+from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
+               GroupingElement)
 
 from ... import styleds
+from ...annotation import NamedDestinationLink
+from rinoh.reference import TITLE, PAGE
 
 
 class DocumentRoot(BodyElement):
@@ -100,8 +103,19 @@ class VolumeNum(TextInfoField):
 
 
 class Para(BodyElement):
-    def build_flowable(self):
-        return styleds.Paragraph(super().process_content())
+    def build_flowables(self):
+        paragraph = [self.text]
+        for child in self.getchildren():
+            try:
+                paragraph.append(child.styled_text())
+            except AttributeError:
+                if paragraph and paragraph[0]:
+                    yield styleds.Paragraph(paragraph)
+                paragraph = []
+                for flowable in child.flowables():
+                    yield flowable
+        if paragraph and paragraph[0]:
+            yield styleds.Paragraph(paragraph)
 
 
 class Emphasis(InlineElement):
@@ -164,9 +178,37 @@ class ImageData(CustomElement):
     pass
 
 
-class TextObject(CustomElement):
+class TextObject(Para):
     pass
 
 
-class Phrase(Para):
+class Phrase(InlineElement):
     pass
+
+
+class OrderedList(BodyElement):
+    def build_flowable(self):
+        return styleds.List([item.process() for item in self.listitem],
+                            style='enumerated')
+
+
+class ItemizedList(BodyElement):
+    def build_flowable(self):
+        return styleds.List([item.process() for item in self.listitem],
+                            style='bulleted')
+
+
+class ListItem(BodySubElement):
+    def process(self):
+        return self.children_flowables()
+
+
+class XRef(BodyElement):
+    def build_flowable(self):
+        section_ref = styleds.Reference(self.get('linkend'), type=TITLE)
+        page_ref = styleds.Reference(self.get('linkend'), type=PAGE)
+        return styleds.Paragraph(section_ref + ' on page ' + page_ref)
+
+        link = NamedDestinationLink(self.get('linkend'))
+        return styleds.Paragraph(styleds.AnnotatedText('test', link,
+                                                       style='internal link'))

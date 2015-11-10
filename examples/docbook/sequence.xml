@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article
+  PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>Working in the garage<para/>
+   <section remap="task" id="changeoil">
+      <title id="ttld9e9" remap="title">Changing the oil in your car</title>
+      <para id="parad9e12" remap="shortdesc">Once every 6000 kilometers or three months, change the oil in
+your car.</para>
+      <para id="parad9e18" remap="p">Changing the oil regularly 
+will help keep the engine in good condition. </para>
+      <orderedlist id="old9e21" remap="steps">
+         <listitem id="lid9e23" remap="stepsection">
+            <para remap="#PCDATA">To change the oil:</para>
+         </listitem>
+         <listitem id="lid9e26" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e27" remap="cmd">Remove the old oil filter.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid9e30" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e31" remap="cmd">Drain the old oil.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid9e34" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e35" remap="cmd">Install a new oil filter and gasket.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid9e38" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e39" remap="cmd">Add new oil to the engine.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid9e43" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e44" remap="cmd">Check the air filter and replace or clean it.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid9e47" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd9e48" remap="cmd">Top up the windshield washer fluid.</phrase>
+            </para>
+         </listitem>
+      </orderedlist>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="oilconcept" id="xrefd9e55" remap="link"/>
+            </para>
+         </listitem>
+         <listitem>
+            <para>
+               <xref linkend="wwfluidconcept" id="xrefd9e63" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="task" id="organize">
+      <title id="ttld30e9" remap="title">Organizing the workbench and tools</title>
+      <para id="parad30e12" remap="shortdesc">Keep your garage neat by organizing the things you keep in the
+garage.</para>
+   </section>
+   <section remap="task" id="shovellingsnow">
+      <title id="ttld31e9" remap="title">Shovelling snow</title>
+      <para id="parad31e12" remap="shortdesc">Keep your driveway and sidewalks clear of snow and ice by shovelling after 
+any snowfall.</para>
+
+      <orderedlist id="old31e19" remap="steps">
+         <listitem id="lid31e21" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd31e22" remap="cmd">Get the shovel out of the garage</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid31e25" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd31e26" remap="cmd">Shovel the driveway, starting at the garage door and working out to the 
+street.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid31e29" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd31e30" remap="cmd">Shovel the sidewalk in front of your house.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid31e33" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd31e34" remap="cmd">Shovel the walk to your front door.</phrase>
+            </para>
+         </listitem>
+      </orderedlist>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="snowshovelconcept" id="xrefd31e41" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="task" id="spraypaint">
+      <title id="ttld42e9" remap="title">Spray painting</title>
+      <para id="parad42e12" remap="shortdesc">When paint is applied using a spray nozzle, it is referred to as spray painting.</para>
+      <para id="parad42e17" remap="p">The garage is a good place to spray paint.</para>
+      <orderedlist id="old42e20" remap="steps">
+         <listitem id="lid42e22" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd42e23" remap="cmd">Move the car out of the garage to avoid getting paint on it.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid42e26" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd42e27" remap="cmd">Place newspaper, cardboard, or a drop-cloth on the garage floor.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid42e30" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd42e31" remap="cmd">Place the object to be painted on the covered area.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid42e34" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd42e35" remap="cmd">Follow the directions on the paint can to paint the object.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid42e38" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd42e39" remap="cmd">Let the paint dry thoroughly before you move the object.</phrase>
+            </para>
+         </listitem>
+      </orderedlist>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="paintconcept" id="xrefd42e46" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="task" id="takinggarbage">
+      <title id="ttld57e9" remap="title">Taking out the garbage</title>
+      <para id="parad57e12" remap="shortdesc">Regular garbage removal is necessary for the proper functioning of a home.</para>
+      <para id="parad57e18" remap="p">Your municipality collects garbage from homes once a week, usually early in 
+the morning.</para>
+      <orderedlist id="old57e21" remap="steps">
+         <listitem id="lid57e23" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd57e24" remap="cmd">Find out from the town what day of the week garbage is collected in your neighborhood.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid57e27" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd57e28" remap="cmd">The night before collection, place the garbage cans on the curb.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid57e31" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd57e32" remap="cmd">After the garbage has been collected, move the cans back into your garage.</phrase>
+            </para>
+         </listitem>
+      </orderedlist>
+   </section>
+   <section remap="task" id="washcar">
+      <title id="ttld66e9" remap="title">Washing the car</title>
+      <para id="parad66e12" remap="shortdesc">Keep your car looking great by washing it regularly.</para>
+
+      <orderedlist id="old66e19" remap="steps">
+         <listitem id="lid66e21" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e22" remap="cmd">Move the car onto the driveway.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid66e26" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e27" remap="cmd">Attach the water hose to a spout and pull the free end over to
+the car.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid66e30" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e31" remap="cmd">Fill a bucket with soapy water.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid66e34" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e35" remap="cmd">Use a sponge to apply the soapy water to the car and
+scrub off the dirt.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid66e38" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e39" remap="cmd">Rinse the car by spraying clean water
+from the hose.</phrase>
+            </para>
+         </listitem>
+         <listitem id="lid66e43" remap="step">
+            <para remap="#PCDATA">
+               <phrase id="phrsd66e44" remap="cmd">Dry the car using a dampened chamois.</phrase>
+            </para>
+         </listitem>
+      </orderedlist>
+      <para id="parad66e50" remap="p">
+         <mediaobject id="imgd66e51" remap="image">
+            <imageobject>
+               <imagedata fileref="../image/carwash.jpg" depth="171" width="249"/>
+            </imageobject>
+            <textobject remap="alt_attribute">
+               <phrase remap="#PCDATA">washing the car</phrase>
+            </textobject>
+         </mediaobject>
+      </para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="waterhoseconcept" id="xrefd66e56" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="lawnmowerconcept">
+      <title id="ttld87e9" remap="title">Lawnmower</title>
+      <para id="parad87e12" remap="shortdesc">The lawnmower is a machine used to cut grass in the yard.</para>
+      <para id="parad87e16" remap="p">Lawnmowers can be 
+electric, gas-powered, or manual.</para>
+   </section>
+   <section remap="concept" id="oilconcept">
+      <title id="ttld27e9" remap="title">Oil</title>
+      <para id="parad27e12" remap="shortdesc">Motor oil keeps your car's engine running smoothly.</para>
+      <para id="parad27e16" remap="p">Oil should be changed 
+every 6000 kilometers.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="changeoil" id="xrefd27e21" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="paintconcept">
+      <title id="ttld56e9" remap="title">Paint</title>
+      <para id="parad56e12" remap="shortdesc">Paint is useful for refreshing the look of rooms and furniture.</para>
+      <para id="parad56e16" remap="p">Store unused 
+paint in the garage.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="spraypaint" id="xrefd56e21" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="shelvingconcept">
+      <title id="ttld90e9" remap="title">Shelving</title>
+      <para id="parad90e12" remap="shortdesc">Wooden or metal shelving is useful for storing things in the garage.</para>
+      <para id="parad90e16" remap="p">Shelving also keeps 
+things neat and organized.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="organize" id="xrefd90e21" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="snowshovelconcept">
+      <title id="ttld41e9" remap="title">Snow shovel</title>
+      <para id="parad41e12" remap="shortdesc">Use the snow shovel to clear the drive way and side walk of snow in the 
+winter.</para>
+      <para id="parad41e16" remap="p">A good snow shovel has a straight, wide scoop and a strong handle. To 
+help snow come off the scoop, spray the scoop with cooking spray.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="shovellingsnow" id="xrefd41e21" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="toolboxconcept">
+      <title id="ttld93e9" remap="title">Tool box</title>
+      <para id="parad93e12" remap="shortdesc">A tool box contains many compartments for organizing tools and hardware.</para>
+      <para id="parad93e16" remap="p">Keep 
+the tool box handy for all sorts of jobs around the house.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="toolsconcept" id="xrefd93e21" remap="link"/>
+            </para>
+         </listitem>
+         <listitem>
+            <para>
+               <xref linkend="organize" id="xrefd93e29" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="toolsconcept">
+      <title id="ttld95e9" remap="title">Tools</title>
+      <para id="parad95e12" remap="shortdesc">Invest in a good set of tools for doing all kinds of tasks around the house.</para>
+      <para id="parad95e16" remap="p">Useful tools include the following items:</para>
+      <itemizedlist id="uld95e19" remap="ul">
+         <listitem id="lid95e21" remap="li">
+            <para remap="#PCDATA">Hammer</para>
+         </listitem>
+         <listitem id="lid95e24" remap="li">
+            <para remap="#PCDATA">Screw driver set</para>
+         </listitem>
+         <listitem id="lid95e27" remap="li">
+            <para remap="#PCDATA">Wrench set</para>
+         </listitem>
+         <listitem id="lid95e30" remap="li">
+            <para remap="#PCDATA">Nails and screws</para>
+         </listitem>
+         <listitem id="lid95e33" remap="li">
+            <para remap="#PCDATA">Level</para>
+         </listitem>
+         <listitem id="lid95e37" remap="li">
+            <para remap="#PCDATA">Saws</para>
+         </listitem>
+         <listitem id="lid95e40" remap="li">
+            <para remap="#PCDATA">Drill</para>
+         </listitem>
+         <listitem id="lid95e43" remap="li">
+            <para remap="#PCDATA">Air pressure guage</para>
+         </listitem>
+         <listitem id="lid95e46" remap="li">
+            <para remap="#PCDATA">Spade</para>
+         </listitem>
+         <listitem id="lid95e49" remap="li">
+            <para remap="#PCDATA">Rake</para>
+         </listitem>
+      </itemizedlist>
+      <para id="parad95e53" remap="p">Keep your tools organized in a tool box.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="toolboxconcept" id="xrefd95e58" remap="link"/>
+            </para>
+         </listitem>
+         <listitem>
+            <para>
+               <xref linkend="organize" id="xrefd95e66" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="waterhoseconcept">
+      <title id="ttld86e9" remap="title">Water hose</title>
+      <para id="parad86e12" remap="shortdesc">A water hose is useful for cleaning and gardening projects around the yard.</para>
+      <para id="parad86e16" remap="p">Keep the hose coiled on a large hook near a water spout.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="washcar" id="xrefd86e21" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="wheelbarrow">
+      <title id="ttld120e9" remap="title">Wheel barrow</title>
+      <para id="parad120e12" remap="shortdesc">A good wheel barrow will save your back from extensive trauma when you 
+garden.</para>
+   </section>
+   <section remap="concept" id="workbenchconcept">
+      <title id="ttld121e9" remap="title">Workbench</title>
+      <para id="parad121e12" remap="shortdesc">Use the workbench for storing tools and hardware, and for doing small 
+projects.</para>
+      <itemizedlist>
+         <title>Related links</title>
+         <listitem>
+            <para>
+               <xref linkend="organize" id="xrefd121e19" remap="link"/>
+            </para>
+         </listitem>
+      </itemizedlist>
+   </section>
+   <section remap="concept" id="wwfluidconcept">
+      <title id="ttld29e9" remap="title">Windshield washer fluid</title>
+      <para id="parad29e12" remap="shortdesc">Windshield washer fluid is required to keep your windshield
+wipers functioning properly.</para>
+      <para id="parad29e16" remap="p">Keep your car's windshield washer fluid topped up so you will have a clean 
+windshield whatever the weather or insect population.</para>
+   </section>
+</article>
