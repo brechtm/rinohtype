@@ -186,16 +186,26 @@ class Phrase(InlineElement):
     pass
 
 
-class OrderedList(BodyElement):
-    def build_flowable(self):
-        return styleds.List([item.process() for item in self.listitem],
-                            style='enumerated')
+
+class ListBase(BodyElement):
+    style = None
+
+    def build_flowables(self):
+        for child in self.getchildren():
+            if isinstance(child, ListItem):
+                break
+            for flowable in child.flowables():
+                yield flowable
+        yield styleds.List([item.process() for item in self.listitem],
+                           style=self.style)
 
 
-class ItemizedList(BodyElement):
-    def build_flowable(self):
-        return styleds.List([item.process() for item in self.listitem],
-                            style='bulleted')
+class OrderedList(ListBase):
+    style = 'enumerated'
+
+
+class ItemizedList(ListBase):
+    style = 'bulleted'
 
 
 class ListItem(BodySubElement):
@@ -208,7 +218,3 @@ class XRef(BodyElement):
         section_ref = styleds.Reference(self.get('linkend'), type=TITLE)
         page_ref = styleds.Reference(self.get('linkend'), type=PAGE)
         return styleds.Paragraph(section_ref + ' on page ' + page_ref)
-
-        link = NamedDestinationLink(self.get('linkend'))
-        return styleds.Paragraph(styleds.AnnotatedText('test', link,
-                                                       style='internal link'))
