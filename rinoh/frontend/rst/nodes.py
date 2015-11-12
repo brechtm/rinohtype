@@ -577,7 +577,7 @@ class Transition(BodyElement):
         return rt.HorizontalRule()
 
 
-RE_LENGTH_PERCENT_UNITLESS = re.compile(r'^(?P<value>\d+)(?P<unit>[a-z%]+)$')
+RE_LENGTH_PERCENT_UNITLESS = re.compile(r'^(?P<value>\d+)(?P<unit>[a-z%]*)$')
 
 # TODO: warn on px or when no unit is supplied
 DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
