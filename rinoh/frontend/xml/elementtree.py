@@ -64,10 +64,10 @@ class Parser(ElementTree.XMLParser):
         self.namespace = '{{{}}}'.format(namespace) if namespace else ''
         tree_builder = TreeBuilder(self.namespace, self.get_current_line_number)
         super().__init__(target=tree_builder)
-        uri_rewrite_map = self.create_uri_rewrite_map()
-        self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
-        self.parser.ExternalEntityRefHandler \
-            = ExternalEntityRefHandler(self.parser, uri_rewrite_map)
+        # uri_rewrite_map = self.create_uri_rewrite_map()
+        # self.parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
+        # self.parser.ExternalEntityRefHandler \
+        #     = ExternalEntityRefHandler(self.parser, uri_rewrite_map)
 
     def get_current_line_number(self):
         return self.parser.CurrentLineNumber
