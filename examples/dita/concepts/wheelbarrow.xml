@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+     Sourceforge.net. See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (C) Copyright IBM Corporation 2001, 2005. All Rights Reserved.
+ *-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "../../dtd/technicalContent/dtd/concept.dtd">
+<concept id="wheelbarrow" xml:lang="en-us">
+<title>Wheel barrow</title>
+<shortdesc>A good wheel barrow will save your back from extensive trauma when you 
+garden.</shortdesc>
+<conbody>
+</conbody>
+</concept>

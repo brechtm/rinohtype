@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+     Sourceforge.net. See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (C) Copyright IBM Corporation 2001, 2005. All Rights Reserved.
+ *-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "../../dtd/technicalContent/dtd/concept.dtd">
+<concept id="workbenchconcept" xml:lang="en-us">
+<title>Workbench</title>
+<shortdesc>Use the workbench for storing tools and hardware, and for doing small 
+projects.</shortdesc>
+<conbody></conbody>
+<related-links>
+<link href="../tasks/organizing.xml" format="dita" type="task"></link>
+</related-links>
+</concept>

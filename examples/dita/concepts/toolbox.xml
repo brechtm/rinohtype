@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+     Sourceforge.net. See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (C) Copyright IBM Corporation 2001, 2005. All Rights Reserved.
+ *-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "../../dtd/technicalContent/dtd/concept.dtd">
+<concept id="toolboxconcept" xml:lang="en-us">
+<title>Tool box</title>
+<shortdesc>A tool box contains many compartments for organizing tools and hardware.</shortdesc>
+<conbody><p>Keep 
+the tool box handy for all sorts of jobs around the house.</p></conbody>
+<related-links>
+<link href="tools.xml" format="dita" type="concept"></link>
+<link href="../tasks/organizing.xml" format="dita" type="task"></link>
+</related-links>
+</concept>

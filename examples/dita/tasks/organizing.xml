@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "../../dtd/technicalContent/dtd/task.dtd">
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+     Sourceforge.net. See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (C) Copyright IBM Corporation 2001, 2005. All Rights Reserved.
+ *-->
+<task id="organize" xml:lang="en-us">
+<title>Organizing the workbench and tools</title>
+<shortdesc>Keep your garage neat by organizing the things you keep in the
+garage.</shortdesc>
+<taskbody>
+</taskbody>
+</task>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+     Sourceforge.net. See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (C) Copyright IBM Corporation 2001, 2005. All Rights Reserved.
+ *-->
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN"
+ "../../dtd/technicalContent/dtd/concept.dtd">
+<concept id="waterhoseconcept" xml:lang="en-us">
+<title>Water hose</title>
+<shortdesc>A water hose is useful for cleaning and gardening projects around the yard.</shortdesc>
+<conbody><p>Keep the hose coiled on a large hook near a water spout.</p></conbody>
+<related-links>
+<link href="../tasks/washingthecar.xml" format="dita" type="task"></link>
+</related-links>
+</concept>
