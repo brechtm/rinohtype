@@ -6,7 +6,7 @@ from rinohlib.templates.article import Article, ArticleOptions
 
 if __name__ == '__main__':
     reader = DITAReader()
-    for name in ('sequence', ):
+    for name in ('sequence', 'hierarchy'):
         with open(name + '.ditamap') as file:
             flowables = reader.parse(file)
         article_options = ArticleOptions(page_size=A4, table_of_contents=True)
