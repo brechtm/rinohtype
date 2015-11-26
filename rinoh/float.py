@@ -24,6 +24,8 @@ LEFT = 'left'
 CENTER = 'center'
 RIGHT = 'right'
 
+FIT = 'fit'
+
 
 class ImageBase(Flowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
@@ -50,7 +52,11 @@ class ImageBase(Flowable):
             scale = None
         else:
             width = None
-            scale = self.scale
+            if self.scale == FIT:
+                scale = min(float(container.width) / image.width,
+                            float(container.remaining_height) / image.height)
+            else:
+                scale = self.scale
         w, h = container.canvas.place_image(image, left, top,
                                             container.document, scale=scale,
                                             width=width, rotate=self.rotate)
