@@ -383,12 +383,19 @@ class AnnotationLocation(object):
 
 class Image(object):
     def __init__(self, filename_or_file):
+        try:
+            file_position = filename_or_file.tell()
+        except AttributeError:
+            file_position = None
         for Reader in (PDFPageReader, PNGReader, JPEGReader):
             try:
                 self.xobject = Reader(filename_or_file)
                 break
             except ValueError:
                 pass
+            finally:
+                if file_position is not None:
+                    filename_or_file.seek(file_position)
         else:
             png_file = self._convert_to_png(filename_or_file)
             self.xobject = PNGReader(png_file)
