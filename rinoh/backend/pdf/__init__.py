@@ -402,9 +402,9 @@ class Image(object):
         return self.xobject.height
 
     def _convert_to_png(self, filename_or_file):
-        import PIL
+        from PIL import Image as PILImage
         png_image = BytesIO()
-        input_image = PIL.Image.open(filename_or_file)
+        input_image = PILImage.open(filename_or_file)
         metadata = {}
         if 'dpi' in input_image.info and 0 not in input_image.info['dpi']:
             metadata['dpi'] = input_image.info['dpi']
