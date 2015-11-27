@@ -60,7 +60,7 @@ class ImageBase(Flowable):
         w, h = container.canvas.place_image(image, left, top,
                                             container.document, scale=scale,
                                             width=width, rotate=self.rotate)
-        container.advance(h)
+        container.advance(h, ignore_overflow=self.scale == FIT)
         return w, 0
 
 
