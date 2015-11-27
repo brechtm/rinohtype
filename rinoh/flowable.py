@@ -247,6 +247,7 @@ class GroupedFlowables(Flowable):
     def prepare(self, document):
         super().prepare(document)
         for flowable in self.flowables(document):
+            flowable.parent = self
             flowable.prepare(document)
 
     def render(self, container, descender, state=None, **kwargs):
@@ -257,6 +258,7 @@ class GroupedFlowables(Flowable):
         try:
             flowable = state.next_flowable()
             while True:
+                flowable.parent = self
                 width, descender = \
                     flowable.flow(container, descender,
                                   state=state.first_flowable_state, **kwargs)
