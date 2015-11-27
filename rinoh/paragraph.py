@@ -200,10 +200,11 @@ def spans_to_words(spans, container):
             for chars in span.split(container):
                 glyphs_span = GlyphsSpan(span, word_to_glyphs)
                 glyphs_span += word_to_glyphs(chars)
-                if chars in (' ', '\t', '\n'):
+                if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
                     if word:
                         yield word
-                    yield Word([(glyphs_span, chars)])
+                    if chars != '\N{ZERO WIDTH SPACE}':
+                        yield Word([(glyphs_span, chars)])
                     word = Word()
                 else:
                     word.append((glyphs_span, chars))
