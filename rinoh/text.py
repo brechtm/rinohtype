@@ -232,7 +232,7 @@ class SingleStyledText(StyledText):
     @staticmethod
     def split_words(text):
         def is_special_character(char):
-            return char in ' \t\n'
+            return char in ' \t\n\N{ZERO WIDTH SPACE}'
 
         for is_special, characters in groupby(text, is_special_character):
             if is_special:
