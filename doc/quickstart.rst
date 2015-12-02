@@ -142,8 +142,8 @@ This is similar to how HTML's cascading style sheets work. In RinohType however,
 style properties are assigned to document elements by means of a descriptive
 label for the latter instead of a selector. RinohType also makes use of
 selectors, but these are collected in a :class:`StyledMatcher`. Unless you are
-use RinohType as a PDF library to creating custom documents, the default matcher
-should cover your needs.
+using RinohType as a PDF library to creating custom documents, the default
+matcher should cover your needs.
 
 
 Building on an existing style sheet
@@ -180,7 +180,7 @@ left margin and the item numbering format) remain unchanged.
 
 
 
-Starting from a clean slate
+Starting with a clean slate
 ...........................
 
 Instantiating a new style sheet without passing it a base style sheet creates
@@ -205,13 +205,16 @@ values for its style properties are used.
 Documument Templates
 ~~~~~~~~~~~~~~~~~~~~
 
-RinohType includes two document templates; :class:`Article` and :class:`Book`.
-These will be enhanced and others will be added as time goes on.
+As with style sheets, you can choose to make use of the templates provided by
+RinohType or you can create a custom template from scratch. This section only
+covers the former. For an example of how to create a custom template, see the
+invoice example.
 
-The :class:`Article` and :class:`Book` templates can be customized by passing an
-:class:`ArticleOptions` or :class:`BookOptions` instance as `options` on
-template instantiation respectively. Both these classes derive from
-:class:`DocumentOptions` and thus accept the options offered by it:
+RinohType includes two document templates; :class:`Article` and :class:`Book`.
+Theese templates can be customized by passing an :class:`ArticleOptions` or
+:class:`BookOptions` instance as `options` on template instantiation
+respectively. Both these classes derive from :class:`DocumentOptions` and thus
+accept the options offered by it:
 
 .. autoclass:: rinohlib.templates.base.DocumentOptions
     :members:
