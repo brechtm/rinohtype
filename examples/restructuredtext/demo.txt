@@ -58,6 +58,22 @@
 .. section-numbering::
 
 
+Structural Elements
+===================
+
+Section Title
+-------------
+
+That's it, the text just above this line.
+
+Transitions
+-----------
+
+Here's a transition:
+
+---------
+
+It divides the section.
 
 Body Elements
 =============
@@ -151,83 +167,31 @@ Enumerated Lists
 
 #. List items may also be auto-enumerated.
 
-Targets
--------
-
-.. _example:
-
-This paragraph is pointed to by the explicit "example" target. A
-reference can be found under `Inline Markup`_, above. `Inline
-hyperlink targets`_ are also possible.
-
-Section headers are implicit targets, referred to by name. See
-Targets_, which is a subsection of `Body Elements`_.
-
-Explicit external targets are interpolated into references such as
-"Python_".
-
-.. _Python: http://www.python.org/
-
-Targets may be indirect and anonymous.  Thus `this phrase`__ may also
-refer to the Targets_ section.
-
-__ Targets_
-
-Here's a `hyperlink reference without a target`_, which generates an
-error.
-
-Duplicate Target Names
-``````````````````````
-
-Duplicate names in section headers or other implicit targets will
-generate "info" (level-1) system messages.  Duplicate names in
-explicit targets will generate "warning" (level-2) system messages.
-
-Duplicate Target Names
-``````````````````````
-
-Since there are two "Duplicate Target Names" section headers, we
-cannot uniquely refer to either of them by name.  If we try to (like
-this: `Duplicate Target Names`_), an error is generated.
-
 Definition Lists
 ----------------
 
 Term
     Definition
-*Term* : **classifier**
+Term : classifier
     Definition paragraph 1.
 
     Definition paragraph 2.
-Term : classifier
+Term
     Definition
 
 Field Lists
 -----------
 
-:what balekjfez: Field lists map field names to field bodies, like database
-       records.  They are often part of an extension syntax.  They are
-       an unambiguous variant of RFC 2822 fields.
-
-:how arg1 arg2 very very very long how arg1 arg2 very very very long how arg1 arg2 very very very long:
-
-    The field marker is a colon, the field name, and a colon.
-
-    The field body may contain one or more body elements, indented
-    relative to the field marker.
-
-Paragraph one two three [#label]_.
-
 :what: Field lists map field names to field bodies, like database
        records.  They are often part of an extension syntax.  They are
        an unambiguous variant of RFC 2822 fields.
 
-:how:
+:how arg1 arg2:
+
     The field marker is a colon, the field name, and a colon.
 
     The field body may contain one or more body elements, indented
     relative to the field marker.
-
 
 Option Lists
 ------------
@@ -346,8 +310,6 @@ Here's a grid table followed by a simple table:
 |                        | empty: ``-->``        |          |
 +------------------------+-----------------------+----------+
 
-Bla.
-
 =====  =====  ======
    Inputs     Output
 ------------  ------
@@ -393,6 +355,45 @@ Citations
 Here's a reference to the above, [CIT2002]_, and a [nonexistent]_
 citation.
 
+Targets
+-------
+
+.. _example:
+
+This paragraph is pointed to by the explicit "example" target. A
+reference can be found under `Inline Markup`_, above. `Inline
+hyperlink targets`_ are also possible.
+
+Section headers are implicit targets, referred to by name. See
+Targets_, which is a subsection of `Body Elements`_.
+
+Explicit external targets are interpolated into references such as
+"Python_".
+
+.. _Python: http://www.python.org/
+
+Targets may be indirect and anonymous.  Thus `this phrase`__ may also
+refer to the Targets_ section.
+
+__ Targets_
+
+Here's a `hyperlink reference without a target`_, which generates an
+error.
+
+Duplicate Target Names
+``````````````````````
+
+Duplicate names in section headers or other implicit targets will
+generate "info" (level-1) system messages.  Duplicate names in
+explicit targets will generate "warning" (level-2) system messages.
+
+Duplicate Target Names
+``````````````````````
+
+Since there are two "Duplicate Target Names" section headers, we
+cannot uniquely refer to either of them by name.  If we try to (like
+this: `Duplicate Target Names`_), an error is generated.
+
 Directives
 ----------
 
@@ -434,57 +435,6 @@ A figure directive:
 
    This paragraph is also part of the legend.
 
-
-Target Footnotes
-````````````````
-
-.. target-notes::
-
-Replacement Text
-````````````````
-
-I recommend you try |Python|_.
-
-.. |Python| replace:: Python, *the* best language around
-
-Compound Paragraph
-``````````````````
-
-.. compound::
-
-   This paragraph contains a literal block::
-
-       Connecting... OK
-       Transmitting data... OK
-       Disconnecting... OK
-
-   and thus consists of a simple paragraph, a literal block, and
-   another simple paragraph.  Nonetheless it is semantically *one*
-   paragraph.
-
-This construct is called a *compound paragraph* and can be produced
-with the "compound" directive.
-
-Topics, Sidebars, and Rubrics
-`````````````````````````````
-
-.. sidebar:: Sidebar Title
-   :subtitle: Optional Subtitle
-
-   This is a sidebar.  It is for text outside the flow of the main
-   text.
-
-   .. rubric:: This is a rubric inside a sidebar
-
-   Sidebars often appears beside the main text with a border and
-   background color.
-
-.. topic:: Topic Title
-
-   This is a topic.
-
-.. rubric:: This is a rubric
-
 Admonitions
 ```````````
 
@@ -516,6 +466,56 @@ Admonitions
 .. admonition:: And, by the way...
 
    You can make up your own admonition too.
+
+Topics, Sidebars, and Rubrics
+`````````````````````````````
+
+.. sidebar:: Sidebar Title
+   :subtitle: Optional Subtitle
+
+   This is a sidebar.  It is for text outside the flow of the main
+   text.  
+
+   .. rubric:: This is a rubric inside a sidebar
+
+   Sidebars often appears beside the main text with a border and
+   background color.
+
+.. topic:: Topic Title
+
+   This is a topic.
+
+.. rubric:: This is a rubric
+
+Target Footnotes
+````````````````
+
+.. target-notes::
+
+Replacement Text
+````````````````
+
+I recommend you try |Python|_.
+
+.. |Python| replace:: Python, *the* best language around
+
+Compound Paragraph
+``````````````````
+
+.. compound::
+
+   This paragraph contains a literal block::
+
+       Connecting... OK
+       Transmitting data... OK
+       Disconnecting... OK
+      
+   and thus consists of a simple paragraph, a literal block, and
+   another simple paragraph.  Nonetheless it is semantically *one*
+   paragraph.
+
+This construct is called a *compound paragraph* and can be produced
+with the "compound" directive.
 
 Substitution Definitions
 ------------------------
