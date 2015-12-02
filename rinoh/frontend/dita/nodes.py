@@ -16,13 +16,60 @@ from ...reference import PAGE
 
 from ..xml.elementtree import Parser
 
-from . import DITABodyNode, DITABodySubNode, DITAInlineNode, DITAGroupingNode
+from . import (DITABodyNode, DITABodySubNode, DITAInlineNode, DITAGroupingNode,
+               DITADummyNode)
 
 
 class Map(DITABodyNode):
     def tree(self):
-        return ([styleds.SetMetadataFlowable(title=self.get('title'))]
-                + self.children_flowables())
+        meta = []
+        if 'title' in self.attributes:
+            meta.append(styleds.SetMetadataFlowable(title=self.get('title')))
+        return meta + self.children_flowables()
+
+
+class BookMap(Map):
+    pass
+
+
+class BookTitle(DITAGroupingNode):
+    pass
+
+
+class DITASetMetadataNode(DITABodyNode):
+    key = None
+
+    def build_flowable(self):
+        key = self.key or self.tag_name
+        return styleds.SetMetadataFlowable(**{key: self.text})
+
+
+class BookLibrary(DITASetMetadataNode):
+    pass
+
+
+class MainBookTitle(DITASetMetadataNode):
+    key = 'title'
+
+
+class BookTitleAlt(DITASetMetadataNode):
+    pass
+
+
+class BookMeta(DITAGroupingNode):
+    pass
+
+
+class Author(DITASetMetadataNode):
+    pass
+
+
+class BookID(DITADummyNode):
+    pass
+
+
+class BookRights(DITADummyNode):
+    pass
 
 
 class TopicRef(DITABodyNode):
@@ -35,6 +82,38 @@ class TopicRef(DITABodyNode):
             for flowable in child.flowables():
                 section.append(flowable)
         return section
+
+
+class FrontMatter(DITAGroupingNode):
+    pass
+
+
+class BackMatter(DITAGroupingNode):
+    pass
+
+
+class BookLists(DITADummyNode):
+    pass
+
+
+class BookAbstract(TopicRef):
+    pass
+
+
+class Notices(TopicRef):
+    pass
+
+
+class Preface(TopicRef):
+    pass
+
+
+class Chapter(TopicRef):
+    pass
+
+
+class Appendix(TopicRef):
+    pass
 
 
 class Concept(DITAGroupingNode):
@@ -57,6 +136,14 @@ class Task(DITAGroupingNode):
         return section
 
 
+class Topic(Task):
+    pass
+
+
+class Body(DITAGroupingNode):
+    pass
+
+
 class ShortDesc(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content(), style='shortdesc')
@@ -70,6 +157,10 @@ class Context(DITAGroupingNode):
     pass
 
 
+class Section(DITAGroupingNode):
+    grouped_flowables_class = styleds.Section
+
+
 class P(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content())
@@ -81,7 +172,7 @@ class Title(DITABodyNode):
 
 
 class Steps(DITABodyNode):
-    style = None
+    style = 'steps'
 
     def build_flowables(self):
         try:
@@ -91,6 +182,10 @@ class Steps(DITABodyNode):
             pass
         yield styleds.List([step.process() for step in self.step],
                            style=self.style)
+
+
+class Steps_Unordered(Steps):
+    style = 'unordered steps'
 
 
 class StepSection(DITABodyNode):
@@ -103,9 +198,40 @@ class Step(DITABodySubNode):
         return self.children_flowables()
 
 
+class SubSteps(DITABodyNode):
+    style = 'substeps'
+
+    def build_flowables(self):
+        try:
+            for flowable in self.stepsection.flowables():
+                yield flowable
+        except AttributeError:
+            pass
+        yield styleds.List([step.process() for step in self.substep],
+                           style=self.style)
+
+
+class SubStep(Step):
+    pass
+
+
 class Cmd(DITABodyNode):
     def build_flowable(self):
-        return styleds.Paragraph(self.process_content())
+        return styleds.Paragraph(self.process_content(), style='command')
+
+
+class CmdName(DITAInlineNode):
+    style = 'command name'
+
+
+class StepResult(DITABodyNode):
+    def build_flowable(self):
+        return styleds.Paragraph(self.process_content(), style='step result')
+
+
+class Info(DITABodyNode):
+    def build_flowable(self):
+        return styleds.Paragraph(self.process_content(), style='info')
 
 
 class Result(DITAGroupingNode):
@@ -203,3 +329,41 @@ class LI(DITAGroupingNode):
             yield styleds.Paragraph(self.process_content())
         for flowable in self.children_flowables():
             yield flowable
+
+
+class SL(DITABodyNode):
+    def build_flowable(self):
+        return styleds.List([list(item.flowables()) for item in self.sli],
+                            style='sl')
+
+
+class SLI(DITAGroupingNode):
+    def build_flowables(self, **kwargs):
+        if self.text:
+            yield styleds.Paragraph(self.process_content())
+        for flowable in self.children_flowables():
+            yield flowable
+
+
+class TM(P):
+    pass
+
+
+class Prolog(DITADummyNode):
+    pass
+
+
+class Prereq(DITAGroupingNode):
+    style = 'prerequisites'
+
+
+class Note(DITAGroupingNode):
+    def build_flowable(self):
+        grouped_flowables = super().build_flowable()
+        note_type = self.get('type', 'note')
+        return styleds.Framed(grouped_flowables, style=note_type)
+
+
+class TutorialInfo(DITABodyNode):
+    def build_flowable(self):
+        return styleds.Paragraph(self.process_content())
