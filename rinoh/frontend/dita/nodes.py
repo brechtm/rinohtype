@@ -30,7 +30,11 @@ class TopicRef(DITABodyNode):
         from . import DITAReader
         reader = DITAReader()
         with open(self.get('href')) as file:
-            return reader.parse(file)
+            section = reader.parse(file)
+        for child in self.getchildren():
+            for flowable in child.flowables():
+                section.append(flowable)
+        return section
 
 
 class Concept(DITAGroupingNode):
