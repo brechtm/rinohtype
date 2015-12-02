@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file is part of the DITA Open Toolkit project hosted on 
+ Sourceforge.net. See the accompanying license.txt file for 
+ applicable licenses.-->
+<!-- (c) Copyright IBM Corp. 2004, 2005 All Rights Reserved. -->
+
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN"
+ "../../dtd/task.dtd">
+<task id="installwebserver" xml:lang="en-us">
+<title>Installing your own Web Server</title>
+<shortdesc>Installing a Web Server may sound tricky, but it is quite simple
+if you follow our instructions.</shortdesc>
+<prolog><metadata>
+<keywords><indexterm>Overview</indexterm><indexterm>web server</indexterm>
+<indexterm>install</indexterm></keywords>
+</metadata></prolog>
+<taskbody></taskbody>
+</task>
