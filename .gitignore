@@ -1,6 +1,7 @@
 .idea/
 *.pyc
 *~
+*.rtc
 /citeproc-test
 /build
 /dist
