@@ -113,7 +113,28 @@ class Result(DITAGroupingNode):
 
 
 class Related_Links(DITAGroupingNode):
-    pass
+    def build_flowables(self, **kwargs):
+        concepts = []
+        tasks = []
+        for link in self.link:
+            if link.get('type') == 'concept':
+                for flowable in link.flowables():
+                    concepts.append(flowable)
+            elif link.get('type') == 'task':
+                for flowable in link.flowables():
+                    tasks.append(flowable)
+            else:
+                raise NotImplementedError
+        items = []
+        if concepts:
+            label = styleds.Paragraph('Related concepts')
+            items.append((styleds.DefinitionTerm([label]),
+                          styleds.Definition(concepts)))
+        if tasks:
+            label = styleds.Paragraph('Related tasks')
+            items.append((styleds.DefinitionTerm([label]),
+                          styleds.Definition(tasks)))
+        yield styleds.DefinitionList(items)
 
 
 class Link(DITABodyNode):
