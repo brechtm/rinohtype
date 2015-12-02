@@ -277,9 +277,13 @@ class GroupedFlowables(Flowable):
 class StaticGroupedFlowables(GroupedFlowables):
     def __init__(self, flowables, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
-        self.children = flowables
+        self.children = []
         for flowable in flowables:
-            flowable.parent = self
+            self.append(flowable)
+
+    def append(self, flowable):
+        flowable.parent = self
+        self.children.append(flowable)
 
     def flowables(self, document):
         return iter(self.children)
