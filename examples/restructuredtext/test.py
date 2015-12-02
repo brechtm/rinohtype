@@ -7,8 +7,7 @@ from rinohlib.templates.book import Book, BookOptions
 from rinohlib.templates.article import Article, ArticleOptions
 
 if __name__ == '__main__':
-#    for name in ('quickstart', 'FAQ', 'THANKS'):
-    for name in ('demo', ):
+    for name in ('quickstart', 'demo', 'FAQ', 'THANKS'):
         parser = ReStructuredTextParser()
         with open(name + '.txt') as file:
             flowables = parser.parse(file)
