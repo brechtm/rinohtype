@@ -206,7 +206,7 @@ Variables
 ,,,,,,,,,
 
 Variables can be used for values that are used in multiple style definitions.
-This example declares a variable `font_family` to allow easily changing the
+This example declares a variable ``fonts`` to allow easily changing the
 fonts in a style sheet::
 
     from rinoh.font import TypeFamily
@@ -215,9 +215,9 @@ fonts in a style sheet::
     from rinohlib.fonts.texgyre.cursor import typeface as courier
     from rinohlib.fonts.texgyre.heros import typeface as helvetica
 
-    styles.variables['font_family'] = TypeFamily(serif=times,
-                                                 sans=helvetica,
-                                                 mono=courier)
+    styles.variables['font'] = TypeFamily(serif=times,
+                                          sans=helvetica,
+                                          mono=courier)
     ...
     styles('monospaced',
            typeface=Var('font_family').mono,
@@ -227,7 +227,7 @@ fonts in a style sheet::
     ...
 
 Another stylesheet can inherit (see below) from this one and easily replace all
-fonts in the document by overriding the ``font_family`` variable.
+fonts in the document by overriding the ``fonts`` variable.
 
 Style Property Resolution
 ,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -245,7 +245,7 @@ the lookup proceeds recursively, moving up in the document tree.
 
 For **flowables**, there is no fall-back to the parent's style by default.
 A base style can be explicitly specified however. If a style property is not
-defined in a particular style definition, it is looked up in the base style.
+present in a particular style definition, it is looked up in the base style.
 
 This can also help avoid duplication of style information and the resulting
 maintenance difficulties. In the following example, the ``unnumbered heading
@@ -270,7 +270,7 @@ only the ``number_format`` property::
 
 When a value for a particular style property is set nowhere in the style
 definition lookup hierarchy its default value is returned. The default values
-for all style properties are defined in the class definition of the
+for all style properties are defined in the class definition for each of the
 :class:`Style` subclasses.
 
 For both text elements and flowables, it is possible to override the default
@@ -280,3 +280,47 @@ fallback to the parent element's style. For flowables, ``base`` can be set to
 ``PARENT_STYLE`` to enable fallback, but this requires that the current
 element type is the same or a subclass of the parent type, so it is not
 recommended.
+
+
+Extending a Style Sheet
+,,,,,,,,,,,,,,,,,,,,,,,
+
+A style sheet can be extended by defining a new style sheet that references it
+as a base::
+
+    from rinohlib.stylesheets.sphinx import stylesheet
+
+    my_style_sheet = StyleSheet('my style', base=stylesheet)
+
+The new stylesheet can override styles defined in the base style sheet. The
+following redefines the ``emphasis`` style to display emphasized text in a bold
+font::
+
+     my_style_sheet('emphasis', font_weight=BOLD) 
+
+Variables can also be overridden. This overrides the ``fonts`` variable in order
+to replace the serif font defined in the Sphinx style sheet (Palatino) with
+Times::
+
+    from rinohlib.fonts.texgyre.termes import typeface as times
+    from rinohlib.fonts.texgyre.cursor import typeface as courier
+    from rinohlib.fonts.texgyre.heros import typeface as helvetica
+
+    my_style_sheet.variables['fonts'] = TypeFamily(serif=times,
+                                                   sans=helvetica,
+                                                   mono=courier)
+
+The variable's new value also affects styles defined in the base style sheet.
+
+The new style sheet can optionally be passed a :class:`StyledMatcher` to define
+new styles. This is useful when you want to have custom markup in your document,
+such as custom roles or directives are used in a reStructuredText document. For
+example, the following defines a custom style to apply to text that is tagged
+with the ``acronym`` role::
+
+    my_matcher = StyledMatcher()
+    my_matcher['acronym'] = StyledText.like(classes=['acronym'])
+
+    my_style_sheet = StyleSheet('my style', base=stylesheet,
+                                matcher=my_matcher)
+    my_style_sheet('acronym', small_caps=True) 
