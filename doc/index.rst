@@ -55,6 +55,7 @@ Contents:
     intro
     install
     quickstart
+    advanced
     changelog
 
 
