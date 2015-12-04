@@ -8,14 +8,14 @@ RinohType: The Python Document Processor
 
 Release v\ |version|. (:ref:`Release History <changelog>`)
 
-RinohType can be most easily described as a high-level PDF library for Python.
-The term *high-level* refers to the fact that RinohType also handles page and
-document layout for you.
+RinohType is the heavy-duty PDF library for Python. It helps automating the
+creation of any type of document, ranging from invoices to long, complex
+technical documents.
 
 Additionally, RinohType offers a modern alternative to LaTeX_ when paired with
-Sphinx_. Sphinx helps writing documents and supports a multitude of different
-output formats including searchable HTML. RinohType includes a Sphinx backend
-that allows generating beautiful PDF documents.
+Sphinx_. Sphinx helps writing large documents and supports a multitude of
+different output formats including searchable HTML. RinohType includes a Sphinx
+backend that allows generating beautiful PDF documents.
 
 .. _Sphinx: http://sphinx-doc.org
 .. _LaTeX: http://en.wikipedia.org/wiki/LaTeX
@@ -27,13 +27,13 @@ Here is a list of RinohType's most important features:
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
 * figures, large tables and automatically generated table of contents
-* autmatic numbering of headings, figures and tables and cross-references
+* cross-references and automatic numbering of headings, figures and tables
 * use one of the included document templates or create your own
 * an intuitive style sheet system inspired by CSS
 * modular design allowing for multiple frontends (such as reStructuredText,
   Markdown, DocBook, ...) and backends (PDF, SVG, bitmap, ...)
 * handles OpenType, TrueType and Type1 fonts with support for advanced
-  typographic features such as kerning and ligatures
+  typographic features such as kerning, ligatures and small capitals
 * embeds PDF, PNG and JPEG images, preserving transparency and color profiles
 * easy to deploy; pure-Python with few dependencies
 
