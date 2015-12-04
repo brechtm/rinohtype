@@ -41,10 +41,13 @@ Here is a list of RinohType's most important features:
 RinohType is currently in a beta phase. We are working toward a first stable
 release.
 
-RinohType is free for non-commercial use. For commercial use you need a
-commercial license. You can evaluate RinohType free of charge, however. As soon
-as you are running RinohType in production, you need a commercial license.
+RinohType is open source software licensed under the `GNU AGPL 3.0`_.
+Practically, this means you are free to use it in open-source software, but not
+in (commercial) closed-source software. For this purpose, you need a commercial
+license (see http://www.opqode.com/). We are also available for consultancy
+projects involving RinohType, so please don't hesitate to contact us.
 
+.. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
 
 
 Contents:
