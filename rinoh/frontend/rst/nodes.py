@@ -31,6 +31,8 @@ from ...util import intersperse
 
 
 class Text(InlineElement):
+    node_name = '#text'
+
     RE_NORMALIZE_SPACE = re.compile('[\t\r\n ]+')
 
     def styled_text(self, preserve_space=False):

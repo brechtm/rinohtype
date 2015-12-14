@@ -12,13 +12,29 @@ from docutils.core import publish_doctree
 
 from rinoh.text import MixedStyledText
 from rinoh.flowable import StaticGroupedFlowables
-from rinoh.util import all_subclasses
 
 
-class CustomElement(object):
+__all__ = ['CustomElement', 'BodyElementBase', 'BodyElement', 'BodySubElement',
+           'InlineElement', 'GroupingElement', 'DummyElement']
+
+
+class CustomElementMeta(type):
+    def __new__(metaclass, name, bases, namespace):
+        cls = super().__new__(metaclass, name, bases, namespace)
+        node_name = cls.node_name or name.lower()
+        if name not in __all__:
+            CustomElement.MAPPING[node_name] = cls
+        return cls
+
+
+class CustomElement(object, metaclass=CustomElementMeta):
+    node_name = None
+
+    MAPPING = {}
+
     @classmethod
     def map_node(cls, node):
-        return cls.MAPPING[node.__class__.__name__](node)
+        return cls.MAPPING[node.tagname](node)
 
     def __init__(self, doctree_node):
         self.node = doctree_node
@@ -143,10 +159,6 @@ class DummyElement(BodyElement, InlineElement):
 
 
 from . import nodes
-
-CustomElement.MAPPING = {cls.__name__.lower(): cls
-                         for cls in all_subclasses(CustomElement)}
-CustomElement.MAPPING['Text'] = nodes.Text
 
 
 class ReStructuredTextParser(object):
