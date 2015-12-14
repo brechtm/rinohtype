@@ -7,6 +7,7 @@
 
 from io import SEEK_CUR
 from struct import Struct, unpack, calcsize
+from warnings import warn
 
 from ..cos import Name, Array, Stream, Integer
 from ..filter import DCTDecode, FlateDecode
@@ -171,7 +172,14 @@ class JPEGReader(XObjectImage):
         self._file.seek(resume_position)
         density = (ifd_0th[EXIF_X_RESOLUTION], ifd_0th[EXIF_Y_RESOLUTION],
                    EXIF_UNITS[ifd_0th[EXIF_RESOLUTION_UNIT]])
-        return density, EXIF_COLOR_SPACES[ifd_exif[EXIF_COLOR_SPACE]]
+        try:
+            exif_color_space = ifd_exif[EXIF_COLOR_SPACE]
+            color_space = EXIF_COLOR_SPACES[exif_color_space]
+        except KeyError:
+            warn('The EXIF table in "{}" is missing color space information'
+                 .format(self.filename))
+            color_space = UNCALIBRATED
+        return density, color_space
 
     def _parse_exif_ifd(self, endian, tiff_header_offset):
         read_ushort = create_reader('H', endian=endian)
