@@ -82,6 +82,8 @@ class JPEGReader(XObjectImage):
             dpi = x_density, y_density
         elif unit == DPCM:
             dpi = 2.54 * x_density, 2.54 * y_density
+        else:  # unit is None
+            dpi = None
         return dpi
 
     def _get_metadata(self):
