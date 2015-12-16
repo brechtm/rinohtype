@@ -1,5 +1,3 @@
 .. _changelog:
 
-Release History
-===============
-
+.. include:: ../CHANGES.rst
