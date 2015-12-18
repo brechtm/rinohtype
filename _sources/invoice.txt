@@ -1,0 +1,31 @@
+.. _invoice:
+
+Tutorial: Invoice
+=================
+
+This section walks you through the creation of a custom document. The example
+used is an invoice. This is a fairly simple document for which we'll define
+a document template and a custom style sheet.
+
+
+.. testcode::
+    from rinoh.document import DocumentSection, DocumentPart
+    from rinohlib.template.base import DocumentTemplate
+
+    class InvoicePart(DocumentPart):
+        def first_page(self):
+            raise NotImplementedError
+
+        def new_page(self, chains):
+            """Called by :meth:`render` with the :class:`Chain`s that need more
+            :class:`Container`s. This method should create a new :class:`Page` which
+            contains a container associated with `chain`."""
+            raise NotImplementedError
+
+
+    class InvoiceSection(DocumentSection):
+        parts = [ArticlePart]
+
+    class Invoice(DocumentTemplate):
+        sections = []
+        options_class = DocumentOptions

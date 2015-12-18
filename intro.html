@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; RinohType 0.1.3-92-g7ec59-dirty documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.3-92-g7ec59-dirty',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="RinohType 0.1.3-92-g7ec59-dirty documentation" href="index.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="RinohType: The Python Document Processor" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<span id="id1"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="design-concepts">
+<h2>Design Concepts<a class="headerlink" href="#design-concepts" title="Permalink to this headline">¶</a></h2>
+<p>RinohType was initially conceived as a modern replacement for LaTeX. An
+important goal in the design of RinohType is for documents to be much easier to
+customize than in LaTeX. By today&#8217;s standards, the arcane TeX macro language
+upon which LaTeX is built makes customization unnecessarily difficult for one.
+Simply being built with Python makes RinohType already much easier to approach
+than TeX. Additionally, RinohType is built around the following core concepts to
+ensure customizability:</p>
+<dl class="docutils">
+<dt>Document templates</dt>
+<dd>These determine the page layout and (for longer documents) the different
+parts of your document.</dd>
+<dt>Style sheets</dt>
+<dd>The CSS-inspired style sheets determine the look of individual document
+elements.</dd>
+<dt>Structured Input</dt>
+<dd>RinohType renders a document from a document tree that does not describe any
+style aspects but only describes semantics. The style sheet maps specific
+style properties to the elements in this document tree. The document tree
+can be generated from a structured document format such as reStructuredText
+and DocBook using one of the included parsers, or it can be built manually.</dd>
+</dl>
+<p>As RinohType is implemented as a Python package, it doubles as a high-level
+PDF library. It&#8217;s modular design makes it easy to to customize and extend for
+specific applications. Because RinohType&#8217;s source code is open, all of its
+internals can be inspected and even modified, making it extremely customizable.</p>
+<p>One RinohType&#8217;s key design concepts is to limit the core&#8217;s size to keep things
+simple but make it easy to build extensions. Currently the core of RinohType
+(excluding frontends, backends and font parsers) consists of less than 4000
+lines.</p>
+</div>
+<div class="section" id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<p>RinohType supports three modes of operation. These are discussed in more detail
+in <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a> guide.</p>
+<div class="section" id="restructuredtext-renderer">
+<h3>reStructuredText Renderer<a class="headerlink" href="#restructuredtext-renderer" title="Permalink to this headline">¶</a></h3>
+<p>RinohType comes with a command-line tool <code class="docutils literal"><span class="pre">rinoh</span></code> that can render
+reStructuredText documents. Rendering the reStructuredText demonstration article
+<a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a> (using the standard article template and style sheet) generates
+<code class="xref download docutils literal"><span class="pre">demo.pdf</span></code>.</p>
+</div>
+<div class="section" id="sphinx-builder">
+<h3>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h3>
+<p>Configuring RinohType as a builder for Sphinx allows
+rendering a Sphinx project to PDF without the need for a
+LaTeX installation. This documentation was rendered by RinohType to
+<a class="reference download internal" href="_downloads/rinohtype.pdf"><code class="xref download docutils literal"><span class="pre">rinohtype.pdf</span></code></a>.</p>
+</div>
+<div class="section" id="high-level-pdf-library">
+<h3>High-level PDF library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h3>
+<p>RinohType can be used in a Python application to generate PDF documents. This
+basically involves three choices:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">You can use one of the <strong>document templates</strong> included with RinohType and
+optionally customize it to your needs. Or you can create a custom
+template from scratch.</p>
+</li>
+<li><p class="first">Choose to start from one of included <strong>style sheets</strong> or roll your own.</p>
+</li>
+<li><p class="first">The <strong>document tree</strong> can be parsed from a structured document format
+such as reStructuredText or built manually using building blocks provided
+by RinohType.</p>
+<p>Both approaches allow for parts of the content to be fetched from a
+database or other data sources. When parsing the document tree from a
+structured document format, a templating engine like <a class="reference external" href="http://jinja.pocoo.org">Jinja2</a> can be used.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#design-concepts">Design Concepts</a></li>
+<li><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
+<li><a class="reference internal" href="#restructuredtext-renderer">reStructuredText Renderer</a></li>
+<li><a class="reference internal" href="#sphinx-builder">Sphinx Builder</a></li>
+<li><a class="reference internal" href="#high-level-pdf-library">High-level PDF library</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">RinohType: The Python Document Processor</a></li>
+      <li>Next: <a href="install.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/intro.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Brecht Machiels.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/intro.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

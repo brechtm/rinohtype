@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Paragraph &mdash; RinohType 0.1.3-92-g7ec59-dirty documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.3-92-g7ec59-dirty',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="RinohType 0.1.3-92-g7ec59-dirty documentation" href="../index.html" />
+    <link rel="up" title="API Documentation" href="index.html" />
+    <link rel="next" title="Release History" href="../changelog.html" />
+    <link rel="prev" title="Flowables" href="flowables.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="paragraph">
+<span id="id1"></span><h1>Paragraph<a class="headerlink" href="#paragraph" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-rinoh.paragraph"></span><dl class="class">
+<dt id="rinoh.paragraph.ParagraphBase">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">ParagraphBase</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>A paragraph of mixed-styled text that can be flowed into a
+<code class="xref py py-class docutils literal"><span class="pre">Container</span></code>.</p>
+<dl class="method">
+<dt id="rinoh.paragraph.ParagraphBase.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>container</em>, <em>descender</em>, <em>state=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphBase.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Typeset the paragraph onto <cite>container</cite>, starting below the current
+cursor position of the container. <cite>descender</cite> is the descender height of
+the preceeding line or <cite>None</cite>.
+When the end of the container is reached, the rendering state is
+preserved to continue setting the rest of the paragraph when this method
+is called with a new container.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.paragraph.ParagraphBase.style_class">
+<code class="descname">style_class</code><a class="headerlink" href="#rinoh.paragraph.ParagraphBase.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.Paragraph">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">Paragraph</code><span class="sig-paren">(</span><em>text_or_items</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Paragraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.ParagraphStyle">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">ParagraphStyle</code><span class="sig-paren">(</span><em>base=None</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal"><span class="pre">Style</span></code> for <a class="reference internal" href="#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a> objects. It has the following
+attributes:</p>
+<ul>
+<li><p class="first"><cite>indent_first</cite>: Indentation of the first line of text (class:<cite>Dimension</cite>).</p>
+</li>
+<li><dl class="first docutils">
+<dt><cite>line_spacing</cite>: Spacing between the baselines of two successive lines of</dt>
+<dd><p class="first last">text (<a class="reference internal" href="#rinoh.paragraph.LineSpacing" title="rinoh.paragraph.LineSpacing"><code class="xref py py-class docutils literal"><span class="pre">LineSpacing</span></code></a>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>justify</cite>: Alignment of the text to the margins (<code class="xref py py-const docutils literal"><span class="pre">LEFT</span></code>,</dt>
+<dd><p class="first last"><code class="xref py py-const docutils literal"><span class="pre">RIGHT</span></code>, <code class="xref py py-const docutils literal"><span class="pre">CENTER</span></code> or <code class="xref py py-const docutils literal"><span class="pre">BOTH</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>tab_stops</cite>: The tab stops for this paragraph (list of <a class="reference internal" href="#rinoh.paragraph.TabStop" title="rinoh.paragraph.TabStop"><code class="xref py py-class docutils literal"><span class="pre">TabStop</span></code></a>).</p>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.ParagraphState">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">ParagraphState</code><span class="sig-paren">(</span><em>words</em>, <em>nested_flowable_state=None</em>, <em>_first_word=None</em>, <em>_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphState" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="module-rinoh.text">
+<span id="inline-elements"></span><h2>Inline Elements<a class="headerlink" href="#module-rinoh.text" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rinoh.text.StyledText">
+<em class="property">class </em><code class="descclassname">rinoh.text.</code><code class="descname">StyledText</code><span class="sig-paren">(</span><em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for text that has a <code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code> associated with it.</p>
+<dl class="method">
+<dt id="rinoh.text.StyledText.height">
+<code class="descname">height</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Font size after super/subscript size adjustment.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.StyledText.is_script">
+<code class="descname">is_script</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.is_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <cite>True</cite> if this styled text is super/subscript.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.StyledText.script_level">
+<code class="descname">script_level</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.script_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nesting level of super/subscript.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.StyledText.spans">
+<code class="descname">spans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.spans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator yielding all spans in this styled text, one
+item at a time (used in typesetting).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.text.StyledText.style_class">
+<code class="descname">style_class</code><a class="headerlink" href="#rinoh.text.StyledText.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.StyledText.y_offset">
+<code class="descname">y_offset</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.y_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vertical baseline offset (up is positive).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.text.SingleStyledText">
+<em class="property">class </em><code class="descclassname">rinoh.text.</code><code class="descname">SingleStyledText</code><span class="sig-paren">(</span><em>text</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.SingleStyledText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Styled text where all text shares a single <code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code>.</p>
+<dl class="method">
+<dt id="rinoh.text.SingleStyledText.font">
+<code class="descname">font</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.SingleStyledText.font" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal"><span class="pre">Font</span></code> described by this single-styled text&#8217;s style.</p>
+<p>If the exact font style as described by the <cite>font_weight</cite>,
+<cite>font_slant</cite> and <cite>font_width</cite> style attributes is not present in the
+<cite>typeface</cite>, the closest font available is returned instead, and a
+warning is printed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.SingleStyledText.split">
+<code class="descname">split</code><span class="sig-paren">(</span><em>container</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.SingleStyledText.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield the words and spaces in this single-styled text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.text.MixedStyledText">
+<em class="property">class </em><code class="descclassname">rinoh.text.</code><code class="descname">MixedStyledText</code><span class="sig-paren">(</span><em>text_or_items</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.MixedStyledText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenation of <a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> objects.</p>
+<dl class="method">
+<dt id="rinoh.text.MixedStyledText.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.MixedStyledText.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append <cite>item</cite> (<a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> or <code class="xref py py-class docutils literal"><span class="pre">str</span></code>) to the end of
+this mixed-styled text.</p>
+<p>The parent of <cite>item</cite> is set to this mixed-styled text.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.text.MixedStyledText.spans">
+<code class="descname">spans</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.MixedStyledText.spans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively yield all the <a class="reference internal" href="#rinoh.text.SingleStyledText" title="rinoh.text.SingleStyledText"><code class="xref py py-class docutils literal"><span class="pre">SingleStyledText</span></code></a> items in this
+mixed-styled text.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="styling-properties">
+<h2>Styling Properties<a class="headerlink" href="#styling-properties" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-rinoh.paragraph">
+<span id="line-spacing"></span><h3>Line Spacing<a class="headerlink" href="#module-rinoh.paragraph" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="rinoh.paragraph.LineSpacing">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">LineSpacing</code><a class="headerlink" href="#rinoh.paragraph.LineSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for line spacing types. Line spacing is defined as the
+distance between the baselines of two consecutive lines.</p>
+<dl class="method">
+<dt id="rinoh.paragraph.LineSpacing.advance">
+<code class="descname">advance</code><span class="sig-paren">(</span><em>line</em>, <em>last_descender</em>, <em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.LineSpacing.advance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the distance between the descender of the previous line and
+the baseline of the current line.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.DefaultSpacing">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">DefaultSpacing</code><a class="headerlink" href="#rinoh.paragraph.DefaultSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default line spacing as specified by the font.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.ProportionalSpacing">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">ProportionalSpacing</code><span class="sig-paren">(</span><em>factor</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ProportionalSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line spacing proportional to the line height.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.FixedSpacing">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">FixedSpacing</code><span class="sig-paren">(</span><em>pitch</em>, <em>minimum=&lt;rinoh.paragraph.ProportionalSpacing object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.FixedSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fixed line spacing, with optional minimum spacing.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.Leading">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">Leading</code><span class="sig-paren">(</span><em>leading</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Leading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line spacing determined by the space in between two lines.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="tabulation">
+<h3>Tabulation<a class="headerlink" href="#tabulation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="rinoh.paragraph.TabStop">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">TabStop</code><span class="sig-paren">(</span><em>position</em>, <em>align='left'</em>, <em>fill=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.TabStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Horizontal position for aligning text of successive lines.</p>
+<dl class="method">
+<dt id="rinoh.paragraph.TabStop.get_position">
+<code class="descname">get_position</code><span class="sig-paren">(</span><em>line_width</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.TabStop.get_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the absolute position of this tab stop.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">Paragraph</code><span class="sig-paren">(</span><em>text_or_items</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">Paragraph</code><span class="sig-paren">(</span><em>text_or_items</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="rendering-internals">
+<h2>Rendering Internals<a class="headerlink" href="#rendering-internals" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rinoh.paragraph.GlyphAndWidth">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">GlyphAndWidth</code><span class="sig-paren">(</span><em>glyph</em>, <em>width</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.GlyphAndWidth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="rinoh.paragraph.GlyphsSpan">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">GlyphsSpan</code><span class="sig-paren">(</span><em>span</em>, <em>word_to_glyphs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.GlyphsSpan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="miscellaneous-internals">
+<h2>Miscellaneous Internals<a class="headerlink" href="#miscellaneous-internals" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rinoh.paragraph.HyphenatorStore">
+<em class="property">class </em><code class="descclassname">rinoh.paragraph.</code><code class="descname">HyphenatorStore</code><a class="headerlink" href="#rinoh.paragraph.HyphenatorStore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Paragraph</a><ul>
+<li><a class="reference internal" href="#module-rinoh.text">Inline Elements</a></li>
+<li><a class="reference internal" href="#styling-properties">Styling Properties</a><ul>
+<li><a class="reference internal" href="#module-rinoh.paragraph">Line Spacing</a></li>
+<li><a class="reference internal" href="#tabulation">Tabulation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rendering-internals">Rendering Internals</a></li>
+<li><a class="reference internal" href="#miscellaneous-internals">Miscellaneous Internals</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Documentation</a><ul>
+      <li>Previous: <a href="flowables.html" title="previous chapter">Flowables</a></li>
+      <li>Next: <a href="../changelog.html" title="next chapter">Release History</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/paragraph.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Brecht Machiels.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/api/paragraph.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
