@@ -8,7 +8,18 @@ back-ported to Python 2.7, however\ [1]_.
 
 Use pip_ to install the latest version of RinohType and its dependencies::
 
-    pip install RinohType
+    pip install rinohtype
+
+
+If you plan on using RinohType as an alternative to LaTeX, you will want to
+install Sphinx_ as well::
+
+    pip install Sphinx
+
+See :ref:`sphinx_quickstart` in the :ref:`quickstart` guide on how to render
+Sphinx documents with RinohType.
+
+.. _Sphinx: http://sphinx-doc.org
 
 
 Dependencies
