@@ -334,3 +334,8 @@ epub_exclude_files = ['search.html']
 
 # If false, no index is generated.
 #epub_use_index = True
+
+# -- Options for rinohtype PDF output -------------------------------------
+
+rinoh_documents = [('index', 'rinohtype', 'RinohType',
+                    'Brecht Machiels')]
