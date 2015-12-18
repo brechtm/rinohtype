@@ -59,6 +59,7 @@ Contents:
     install
     quickstart
     advanced
+    api/index
     changelog
 
 
