@@ -14,7 +14,7 @@ technical documents.
 
 Additionally, RinohType offers a modern alternative to LaTeX_ when paired with
 Sphinx_. Sphinx helps writing large documents and supports a multitude of
-different output formats including searchable HTML. RinohType includes a Sphinx
+different output formats including searchable HTML. RinohType provides a Sphinx
 backend that allows generating beautiful PDF documents.
 
 .. _Sphinx: http://sphinx-doc.org
@@ -27,7 +27,7 @@ Here is a list of RinohType's most important features:
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
 * figures, large tables and automatically generated table of contents
-* cross-references and automatic numbering of headings, figures and tables
+* automatic numbering and cross-referencing of headings, figures and tables
 * use one of the included document templates or create your own
 * an intuitive style sheet system inspired by CSS
 * modular design allowing for multiple frontends (such as reStructuredText,

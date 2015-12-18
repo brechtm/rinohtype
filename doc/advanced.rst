@@ -5,8 +5,8 @@ Advanced Topics
 
 This sections serves as a reference for various building blocks making up
 RinohType. The information presented here is useful for those who want to learn
-how document templates and styling work in RinohType, which is helpful when
-creating custom style sheets and document templates.
+how element styling works in RinohType, which is helpful when creating custom
+style sheets.
 
 
 Flowables and Inline Elements
@@ -181,6 +181,11 @@ descriptions to selectors::
     matcher['nested line block'] = (GroupedFlowables.like('line block')
                                     / GroupedFlowables.like('line block'))
     ...
+
+RinohType currently includes one styled matcher which defines labels for all
+common elements in documents::
+
+    from rinohlib.stylesheets.matcher import matcher
 
 
 Style Sheets
