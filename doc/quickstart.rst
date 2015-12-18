@@ -26,6 +26,8 @@ however specify the paper size using the ``--paper`` command line argument.
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
 
+.. _sphinx_quickstart:
+
 Sphinx Builder
 ~~~~~~~~~~~~~~
 
