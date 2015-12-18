@@ -70,7 +70,7 @@ Sphinx Builder
 .. only:: not rinoh
 
     |common| This documentation was rendered by RinohType to
-    :download:`rinoh.pdf`.
+    :download:`rinohtype.pdf`.
 
 .. only:: rinoh
 
