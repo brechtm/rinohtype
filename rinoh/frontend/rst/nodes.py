@@ -13,7 +13,7 @@ from datetime import datetime
 
 import rinoh as rt
 
-from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
+from . import (TreeNode, BodyElement, BodySubElement, InlineElement,
                GroupingElement)
 from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
@@ -624,15 +624,15 @@ class Table(BodyElement):
             return table
 
 
-class TGroup(CustomElement):
+class TGroup(TreeNode):
     pass
 
 
-class ColSpec(CustomElement):
+class ColSpec(TreeNode):
     pass
 
 
-class TableRowGroup(CustomElement):
+class TableRowGroup(TreeNode):
     section_cls = None
 
     def get_table_section(self):
@@ -647,7 +647,7 @@ class TBody(TableRowGroup):
     section_cls = rt.TableBody
 
 
-class Row(CustomElement):
+class Row(TreeNode):
     def get_row(self):
         return rt.TableRow([entry.flowable() for entry in self.entry])
 

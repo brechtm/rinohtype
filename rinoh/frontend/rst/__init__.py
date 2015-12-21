@@ -10,86 +10,44 @@ from itertools import chain
 
 from docutils.core import publish_doctree
 
-from rinoh.text import MixedStyledText
 from rinoh.flowable import StaticGroupedFlowables
 
+from .. import TreeNode
 
-__all__ = ['CustomElement', 'BodyElementBase', 'BodyElement', 'BodySubElement',
+
+__all__ = ['TreeNode', 'BodyElementBase', 'BodyElement', 'BodySubElement',
            'InlineElement', 'GroupingElement', 'DummyElement']
 
 
-class CustomElementMeta(type):
-    def __new__(metaclass, name, bases, namespace):
-        cls = super().__new__(metaclass, name, bases, namespace)
-        node_name = cls.node_name or name.lower()
-        if name not in __all__:
-            CustomElement.MAPPING[node_name] = cls
-        return cls
+class ReStructuredTextNode(TreeNode):
+    @staticmethod
+    def node_tag_name(node):
+        return node.tagname
 
-
-class CustomElement(object, metaclass=CustomElementMeta):
-    node_name = None
-
-    MAPPING = {}
-
-    @classmethod
-    def map_node(cls, node):
-        return cls.MAPPING[node.tagname](node)
-
-    def __init__(self, doctree_node):
-        self.node = doctree_node
-
-    def __getattr__(self, name):
-        for child in self.node.children:
-            if child.tagname == name:
-                return self.map_node(child)
-        raise AttributeError('No such element: {}'.format(name))
-
-    def __getitem__(self, name):
-        return self.node[name]
-
-    def __iter__(self):
-        try:
-            for child in self.parent.node.children:
-                if child.tagname == self.node.tagname:
-                    yield self.map_node(child)
-        except AttributeError:
-            # this is the root element
-            yield self
+    @staticmethod
+    def node_parent(node):
+        return node.parent
 
     @property
-    def attributes(self):
-        return self.node.attributes
-
-    @property
-    def parent(self):
-        if self.node.parent is not None:
-            return self.map_node(self.node.parent)
+    def _location(self):
+        return self.node.source, self.node.line, self.tag_name
 
     @property
     def text(self):
         return self.node.astext()
 
+    @property
+    def attributes(self):
+        return self.node.attributes
+
     def get(self, key, default=None):
         return self.node.get(key, default)
 
-    def getchildren(self):
-        return [self.map_node(child) for child in self.node.children]
-
-    def process_content(self, style=None):
-        preserve_space = self.get('xml:space', None) == 'preserve'
-        return MixedStyledText([text
-                                for text in (child.styled_text(preserve_space)
-                                             for child in self.getchildren())
-                                if text], style=style)
-
-    @property
-    def location(self):
-        return '{}:{} <{}>'.format(self.node.source, self.node.line,
-                                   self.node.tagname)
+    def __getitem__(self, name):
+        return self.node[name]
 
 
-class BodyElementBase(CustomElement):
+class BodyElementBase(ReStructuredTextNode):
     def children_flowables(self, skip_first=0):
         children = self.getchildren()[skip_first:]
         return list(chain(*(item.flowables() for item in children)))
@@ -122,7 +80,7 @@ class BodySubElement(BodyElementBase):
         raise NotImplementedError('tag: %s' % self.node.tag_name)
 
 
-class InlineElement(CustomElement):
+class InlineElement(ReStructuredTextNode):
     @property
     def text(self):
         return super().text.replace('\n', ' ')
@@ -188,5 +146,5 @@ class ReStructuredTextParser(object):
 
     def from_doctree(self, doctree):
         self.replace_secondary_ids(doctree)
-        mapped_tree = CustomElement.map_node(doctree.document)
+        mapped_tree = ReStructuredTextNode.map_node(doctree.document)
         return mapped_tree.children_flowables()
