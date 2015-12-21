@@ -6,11 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from . import (CustomElement, BodyElement, BodySubElement, InlineElement,
-               GroupingElement)
+from . import (DocBookNode, BodyElement, BodySubElement, InlineElement,
+               GroupingElement, filter, strip_and_filter)
 
 from ... import styleds
-from ...annotation import NamedDestinationLink
 from rinoh.reference import TITLE, PAGE
 
 
@@ -36,7 +35,7 @@ class ArticleInfo(Info):
     pass
 
 
-class InfoField(CustomElement):
+class InfoField(DocBookNode):
     @property
     def key(self):
         return self.node.tag[self.node.tag.find('}') + 1:]
@@ -174,7 +173,7 @@ class ImageObject(BodyElement):
         return styleds.Image(self.imagedata.get('fileref'))
 
 
-class ImageData(CustomElement):
+class ImageData(DocBookNode):
     pass
 
 
