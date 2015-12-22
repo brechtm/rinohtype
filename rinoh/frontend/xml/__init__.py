@@ -76,7 +76,8 @@ class ElementTreeNode(TreeNode):
 
     @property
     def _location(self):
-        return self.node.filename, self.node.sourceline, self.tag_name
+        filename = self.node._root._roottree._filename
+        return filename, self.node.sourceline, self.tag_name
 
     @property
     def text(self):
