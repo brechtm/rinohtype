@@ -58,11 +58,9 @@ class ReStructuredTextNode(TreeNode):
         return self.node[name]
 
     def process_content(self, style=None):
-        preserve_space = self.get('xml:space', None) == 'preserve'
-        return MixedStyledText([text
-                                for text in (child.styled_text(preserve_space)
-                                             for child in self.getchildren())
-                                if text], style=style)
+        children_text = (child.styled_text() for child in self.getchildren())
+        return MixedStyledText([text for text in children_text if text],
+                               style=style)
 
 
 class ReStructuredTextInlineNode(ReStructuredTextNode, InlineNode):
@@ -70,8 +68,8 @@ class ReStructuredTextInlineNode(ReStructuredTextNode, InlineNode):
     def text(self):
         return super().text.replace('\n', ' ')
 
-    def styled_text(self, preserve_space=False):
-        styled_text = super().styled_text(preserve_space=preserve_space)
+    def styled_text(self):
+        styled_text = super().styled_text()
         try:
             styled_text.classes = self.get('classes')
         except AttributeError:
