@@ -9,7 +9,7 @@
 from ..xml.elementtree import Parser
 from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
                    ElementTreeBodySubNode, ElementTreeGroupingNode,
-                   ElementTreeDummyNode)
+                   ElementTreeDummyNode, ElementTreeNodeMeta)
 
 
 __all__ = ['DocBookNode', 'DocBookInlineNode', 'DocBookBodyNode',
@@ -17,7 +17,7 @@ __all__ = ['DocBookNode', 'DocBookInlineNode', 'DocBookBodyNode',
            'DocBookReader']
 
 
-class DocBookNode(ElementTreeNode):
+class DocBookNode(ElementTreeNode, metaclass=ElementTreeNodeMeta):
     NAMESPACE = 'http://docbook.org/ns/docbook'
 
 

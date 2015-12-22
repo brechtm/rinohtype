@@ -9,10 +9,10 @@
 from ..xml.elementtree import Parser
 from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
                    ElementTreeBodySubNode, ElementTreeGroupingNode,
-                   ElementTreeDummyNode)
+                   ElementTreeDummyNode, ElementTreeNodeMeta)
 
 
-class DITANode(ElementTreeNode):
+class DITANode(ElementTreeNode, metaclass=ElementTreeNodeMeta):
     pass
 
 

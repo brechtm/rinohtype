@@ -10,8 +10,9 @@ from docutils.core import publish_doctree
 
 from ...text import MixedStyledText
 
-from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
-                DummyNode)
+from .. import (TreeNode, TreeNodeMeta, InlineNode, BodyNode, BodySubNode,
+                GroupingNode, DummyNode)
+
 
 __all__ = ['ReStructuredTextNode', 'ReStructuredTextInlineNode',
            'ReStructuredTextBodyNode', 'ReStructuredTextBodySubNode',
@@ -19,7 +20,7 @@ __all__ = ['ReStructuredTextNode', 'ReStructuredTextInlineNode',
            'ReStructuredTextParser']
 
 
-class ReStructuredTextNode(TreeNode):
+class ReStructuredTextNode(TreeNode, metaclass=TreeNodeMeta):
     @staticmethod
     def node_tag_name(node):
         return node.tagname
