@@ -6,8 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from . import (DocBookNode, BodyElement, BodySubElement, InlineElement,
-               GroupingElement)
+from . import (DocBookNode, DocBookInlineNode, DocBookBodyNode,
+               DocBookBodySubNode, DocBookGroupingNode)
 
 from ...reference import TITLE, PAGE
 
@@ -16,7 +16,7 @@ from ... import styleds
 from ..xml import filter, strip_and_filter
 
 
-class DocumentRoot(BodyElement):
+class DocumentRoot(DocBookBodyNode):
     pass
 
 
@@ -28,7 +28,7 @@ class Book(DocumentRoot):
     pass
 
 
-class Info(BodyElement):
+class Info(DocBookBodyNode):
     def build_flowable(self):
         doc_info = {field.key: field.value for field in self.getchildren()}
         return styleds.SetMetadataFlowable(**doc_info)
@@ -50,7 +50,7 @@ class TextInfoField(InfoField):
         return self.process_content()
 
 
-class GroupingInfoField(GroupingElement, InfoField):
+class GroupingInfoField(DocBookGroupingNode, InfoField):
     @property
     def value(self):
         return self.flowable()
@@ -60,27 +60,27 @@ class Author(TextInfoField):
     pass
 
 
-class PersonName(InlineElement):
+class PersonName(DocBookInlineNode):
     pass
 
 
-class FirstName(InlineElement):
+class FirstName(DocBookInlineNode):
     pass
 
 
-class Surname(InlineElement):
+class Surname(DocBookInlineNode):
     pass
 
 
-class Affiliation(InlineElement):
+class Affiliation(DocBookInlineNode):
     pass
 
 
-class Address(InlineElement):
+class Address(DocBookInlineNode):
     pass
 
 
-class EMail(InlineElement):
+class EMail(DocBookInlineNode):
     pass
 
 
@@ -88,11 +88,11 @@ class Copyright(TextInfoField):
     pass
 
 
-class Year(InlineElement):
+class Year(DocBookInlineNode):
     pass
 
 
-class Holder(InlineElement):
+class Holder(DocBookInlineNode):
     pass
 
 
@@ -104,7 +104,7 @@ class VolumeNum(TextInfoField):
     pass
 
 
-class Para(BodyElement):
+class Para(DocBookBodyNode):
     def build_flowables(self):
         strip_leading_whitespace = True
         paragraph = []
@@ -130,15 +130,15 @@ class Para(BodyElement):
             yield styleds.Paragraph(paragraph)
 
 
-class Emphasis(InlineElement):
+class Emphasis(DocBookInlineNode):
     style = 'emphasis'
 
 
-class Acronym(InlineElement):
+class Acronym(DocBookInlineNode):
     style = 'acronym'
 
 
-class Title(BodyElement, TextInfoField):
+class Title(DocBookBodyNode, TextInfoField):
     name = 'title'
 
     def build_flowable(self):
@@ -149,7 +149,7 @@ class Title(BodyElement, TextInfoField):
         return styleds.Heading(self.process_content())
 
 
-class Section(GroupingElement):
+class Section(DocBookGroupingNode):
     grouped_flowables_class = styleds.Section
 
 
@@ -177,13 +177,13 @@ class Sect5(Section):
     pass
 
 
-class MediaObject(BodyElement):
+class MediaObject(DocBookBodyNode):
     def build_flowables(self):
         for flowable in self.imageobject.flowables():
             yield flowable
 
 
-class ImageObject(BodyElement):
+class ImageObject(DocBookBodyNode):
     def build_flowable(self):
         return styleds.Image(self.imagedata.get('fileref'))
 
@@ -196,12 +196,12 @@ class TextObject(Para):
     pass
 
 
-class Phrase(InlineElement):
+class Phrase(DocBookInlineNode):
     pass
 
 
 
-class ListBase(BodyElement):
+class ListBase(DocBookBodyNode):
     style = None
 
     def build_flowables(self):
@@ -222,12 +222,12 @@ class ItemizedList(ListBase):
     style = 'bulleted'
 
 
-class ListItem(BodySubElement):
+class ListItem(DocBookBodySubNode):
     def process(self):
         return self.children_flowables()
 
 
-class XRef(BodyElement):
+class XRef(DocBookBodyNode):
     def build_flowable(self):
         section_ref = styleds.Reference(self.get('linkend'), type=TITLE)
         page_ref = styleds.Reference(self.get('linkend'), type=PAGE)
