@@ -149,35 +149,3 @@ class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
 
 class ElementTreeDummyNode(ElementTreeNode, DummyNode):
     pass
-
-
-def element_factory(xml_frontend):
-    class CustomElement(xml_frontend.BaseElement):
-        def process(self, *args, **kwargs):
-            result = self.parse(*args, **kwargs)
-            try:
-                result.source = self
-            except AttributeError:
-                pass
-            return result
-
-        def parse(self, *args, **kwargs):
-            raise NotImplementedError('tag: %s' % self.tag)
-
-        @property
-        def location(self):
-            tag = self.tag.split('}', 1)[1] if '}' in self.tag else self.tag
-            return '{}: <{}> at line {}'.format(self.filename, tag,
-                                                self.sourceline)
-
-    class NestedElement(CustomElement):
-        def parse(self, *args, **kwargs):
-            return self.process_content()
-
-        def process_content(self):
-            content = re.sub('[\t\r\n ]+', ' ', self.text)
-            for child in self.getchildren():
-                content += child.process() + child.tail
-            return content
-
-    return CustomElement, NestedElement
