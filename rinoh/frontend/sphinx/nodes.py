@@ -17,8 +17,9 @@ from ...structure import DefinitionList, DefinitionTerm, FieldList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 
-from ..rst import BodyElement, InlineElement, GroupingElement, DummyElement
-from ..rst.nodes import Admonition, AdmonitionBase, Strong, Inline, Emphasis
+from ..rst import (ReStructuredTextInlineNode, ReStructuredTextBodyNode,
+                   ReStructuredTextGroupingNode, ReStructuredTextDummyNode)
+from ..rst.nodes import Admonition, AdmonitionBase, Strong, Emphasis
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
@@ -33,13 +34,13 @@ __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
 
 # other paragraph-level nodes
 
-class Compact_Paragraph(GroupingElement):
+class Compact_Paragraph(ReStructuredTextGroupingNode):
     pass
 
 
 # inline nodes
 
-class Index(DummyElement):
+class Index(ReStructuredTextDummyNode):
     def build_styled_text(self):
         for entrytype, entryname, target, ignored in self.get('entries'):
             # TODO: generate index
@@ -47,7 +48,7 @@ class Index(DummyElement):
         return None
 
 
-class Pending_XRef(InlineElement):
+class Pending_XRef(ReStructuredTextInlineNode):
     def build_styled_text(self):
         raise NotImplementedError
 
@@ -56,7 +57,7 @@ class Literal_Emphasis(Emphasis):
     pass
 
 
-class Abbreviation(InlineElement):
+class Abbreviation(ReStructuredTextInlineNode):
     def build_styled_text(self):
         result = self.process_content(style='abbreviation')
         # TODO: only show the explanation the first time
@@ -68,7 +69,7 @@ class Abbreviation(InlineElement):
         return result
 
 
-class Download_Reference(Inline):
+class Download_Reference(ReStructuredTextInlineNode):
     def build_styled_text(self):
         try:
             # TODO: (optionally) embed the file in the PDF
@@ -85,17 +86,17 @@ class SeeAlso(AdmonitionBase):
     title = 'See also'
 
 
-class VersionModified(GroupingElement):
+class VersionModified(ReStructuredTextGroupingNode):
     pass
 
 
 # special nodes
 
-class Glossary(GroupingElement):
+class Glossary(ReStructuredTextGroupingNode):
     style = 'glossary'
 
 
-class Start_of_File(GroupingElement):
+class Start_of_File(ReStructuredTextGroupingNode):
     def build_flowable(self, **kwargs):
         return super().build_flowable(id='%' + self.get('docname'), **kwargs)
 
@@ -104,7 +105,7 @@ class Todo_Node(Admonition):
     pass
 
 
-class HighlightLang(DummyElement):
+class HighlightLang(ReStructuredTextDummyNode):
     pass
 
 
@@ -116,7 +117,7 @@ class Literal_Strong(Strong):
 
 NO_BREAK_SPACE = unicodedata.lookup('NO-BREAK SPACE')
 
-class ProductionList(BodyElement):
+class ProductionList(ReStructuredTextBodyNode):
     def build_flowable(self):
         items = []
         productions = iter(self.production)
@@ -141,19 +142,19 @@ class ProductionList(BodyElement):
         return FieldList(items, style='production list')
 
 
-class Production(BodyElement):
+class Production(ReStructuredTextBodyNode):
     def build_flowable(self):
         return Paragraph(self.get('tokenname'), style='token')
 
 
-class TermSep(Inline):
+class TermSep(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return SingleStyledText(', ', style='term separator')
 
 
 # domain-specific object descriptions
 
-class Desc(BodyElement):
+class Desc(ReStructuredTextBodyNode):
     def build_flowable(self):
         sigs = [sig.flowable() for sig in self.desc_signature]
         desc = self.desc_content.flowable()
@@ -161,24 +162,24 @@ class Desc(BodyElement):
                               style='object description')
 
 
-class Desc_Signature(BodyElement):
+class Desc_Signature(ReStructuredTextBodyNode):
     def build_flowable(self):
         return Paragraph(self.process_content())
 
 
-class Desc_Name(Inline):
+class Desc_Name(ReStructuredTextInlineNode):
     style = 'main object name'
 
 
-class Desc_AddName(Inline):
+class Desc_AddName(ReStructuredTextInlineNode):
     style = 'additional name part'
 
 
-class Desc_Type(Inline):
+class Desc_Type(ReStructuredTextInlineNode):
     style = 'type'
 
 
-class Desc_ParameterList(InlineElement):
+class Desc_ParameterList(ReStructuredTextInlineNode):
     def build_styled_text(self):
         try:
             params = intersperse((param.styled_text()
@@ -194,7 +195,7 @@ class Desc_ParameterList(InlineElement):
                 + SingleStyledText(' ) ', style='parentheses'))
 
 
-class Desc_Parameter(InlineElement):
+class Desc_Parameter(ReStructuredTextInlineNode):
     def build_styled_text(self):
         style = 'parameter'
         if self.get('noemph'):
@@ -202,22 +203,22 @@ class Desc_Parameter(InlineElement):
         return self.process_content(style=style)
 
 
-class Desc_Optional(InlineElement):
+class Desc_Optional(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return (SingleStyledText(' [, ', style='brackets')
                 + self.process_content(style='optional')
                 + SingleStyledText(' ] ', style='brackets'))
 
 
-class Desc_Annotation(Inline):
+class Desc_Annotation(ReStructuredTextInlineNode):
     style = 'annotation'
 
 
-class Desc_Content(GroupingElement):
+class Desc_Content(ReStructuredTextGroupingNode):
     pass
 
 
-class Desc_Returns(Inline):
+class Desc_Returns(ReStructuredTextInlineNode):
     style = 'returns'
 
     def build_styled_text(self):
@@ -229,14 +230,14 @@ class Desc_Returns(Inline):
 
 # not listed in "Doctree node classes added by Sphinx"
 
-class Tabular_Col_Spec(DummyElement):
+class Tabular_Col_Spec(ReStructuredTextDummyNode):
     pass
 
 
-class AutoSummary_Table(GroupingElement):
+class AutoSummary_Table(ReStructuredTextGroupingNode):
     pass
 
 
-class Number_Reference(Inline):
+class Number_Reference(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return Reference(self.get('refid'), REFERENCE, style='link')
