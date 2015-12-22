@@ -13,8 +13,9 @@ from datetime import datetime
 
 import rinoh as rt
 
-from . import (TreeNode, BodyElement, BodySubElement, InlineElement,
-               GroupingElement)
+from . import (ReStructuredTextInlineNode, ReStructuredTextNode,
+               ReStructuredTextBodyNode, ReStructuredTextBodySubNode,
+               ReStructuredTextGroupingNode)
 from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
 
@@ -30,7 +31,7 @@ from ...util import intersperse
 # - substitution_reference
 
 
-class Text(InlineElement):
+class Text(ReStructuredTextInlineNode):
     node_name = '#text'
 
     RE_NORMALIZE_SPACE = re.compile('[\t\r\n ]+')
@@ -42,18 +43,15 @@ class Text(InlineElement):
             return self.RE_NORMALIZE_SPACE.sub(' ', self.node)
 
 
-class Inline(InlineElement):
-    style = None
-
-    def build_styled_text(self):
-        return self.process_content(style=self.style)
-
-
-class Document(BodyElement):
+class Inline(ReStructuredTextInlineNode):
     pass
 
 
-class DocInfo(BodyElement):
+class Document(ReStructuredTextBodyNode):
+    pass
+
+
+class DocInfo(ReStructuredTextBodyNode):
     def build_flowable(self):
         doc_info = {field.name: field.value for field in self.getchildren()}
         return rt.SetMetadataFlowable(**doc_info)
@@ -61,17 +59,14 @@ class DocInfo(BodyElement):
 
 # bibliographic elements
 
-class DocInfoField(InlineElement):
+class DocInfoField(ReStructuredTextInlineNode):
     @property
     def name(self):
-        return self.node.tagname
+        return self.tag_name
 
     @property
     def value(self):
         return self.styled_text()
-
-    def build_styled_text(self):
-        return self.process_content()
 
 
 class Author(DocInfoField):
@@ -122,7 +117,7 @@ class Status(DocInfoField):
 
 
 # FIXME: the meta elements are removed from the docutils doctree
-class Meta(BodyElement):
+class Meta(ReStructuredTextBodyNode):
     MAP = {'keywords': 'keywords',
            'description': 'subject'}
 
@@ -133,12 +128,12 @@ class Meta(BodyElement):
 
 # body elements
 
-class System_Message(BodyElement):
+class System_Message(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.WarnFlowable(self.text)
 
 
-class Comment(InlineElement, BodyElement):
+class Comment(ReStructuredTextInlineNode, ReStructuredTextBodyNode):
     def build_styled_text(self):
         return None
 
@@ -146,7 +141,7 @@ class Comment(InlineElement, BodyElement):
         return rt.DummyFlowable()
 
 
-class Topic(GroupingElement):
+class Topic(ReStructuredTextGroupingNode):
     style = 'topic'
 
     def _process_topic(self, topic_type):
@@ -176,31 +171,31 @@ class Topic(GroupingElement):
             return super().build_flowable()
 
 
-class Rubric(BodyElement):
+class Rubric(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.Paragraph(self.process_content(), style='rubric')
 
 
-class Sidebar(GroupingElement):
+class Sidebar(ReStructuredTextGroupingNode):
     def flowable(self):
         grouped_flowables = super().flowable()
         return rt.Framed(grouped_flowables, style='sidebar')
 
 
-class Section(GroupingElement):
+class Section(ReStructuredTextGroupingNode):
     grouped_flowables_class = rt.Section
 
 
-class Paragraph(BodyElement):
+class Paragraph(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.Paragraph(super().process_content())
 
 
-class Compound(GroupingElement):
+class Compound(ReStructuredTextGroupingNode):
     pass
 
 
-class Title(BodyElement):
+class Title(ReStructuredTextBodyNode):
     def build_flowable(self):
         if isinstance(self.parent, Document):
             return rt.SetMetadataFlowable(title=self.process_content())
@@ -214,17 +209,17 @@ class Title(BodyElement):
             return rt.Paragraph(self.process_content(), style='title')
 
 
-class Subtitle(BodyElement):
+class Subtitle(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.SetMetadataFlowable(subtitle=self.process_content())
 
 
-class Admonition(GroupingElement):
+class Admonition(ReStructuredTextGroupingNode):
     def flowable(self):
         return rt.Framed(super().flowable(), style='admonition')
 
 
-class AdmonitionBase(GroupingElement):
+class AdmonitionBase(ReStructuredTextGroupingNode):
     title = None
 
     def flowable(self):
@@ -271,7 +266,7 @@ class Warning(AdmonitionBase):
     title = 'Warning'
 
 
-class Generated(InlineElement):
+class Generated(ReStructuredTextInlineNode):
     def styled_text(self, preserve_space=False):
         return None
 
@@ -279,37 +274,37 @@ class Generated(InlineElement):
         return self.process_content()
 
 
-class Emphasis(InlineElement):
+class Emphasis(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.SingleStyledText(self.text, style='emphasis')
 
 
-class Strong(InlineElement):
+class Strong(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.SingleStyledText(self.text, style='strong')
 
 
-class Title_Reference(InlineElement):
+class Title_Reference(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.SingleStyledText(self.text, style='title reference')
 
 
-class Literal(InlineElement):
+class Literal(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.SingleStyledText(self.text, style='monospaced')
 
 
-class Superscript(InlineElement):
+class Superscript(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.Superscript(self.process_content())
 
 
-class Subscript(InlineElement):
+class Subscript(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.Subscript(self.process_content())
 
 
-class Problematic(BodyElement, InlineElement):
+class Problematic(ReStructuredTextBodyNode, ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.SingleStyledText(self.text, style='error')
 
@@ -317,13 +312,13 @@ class Problematic(BodyElement, InlineElement):
         return rt.DummyFlowable()
 
 
-class Literal_Block(BodyElement):
+class Literal_Block(ReStructuredTextBodyNode):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
         return rt.Paragraph(text, style='literal')
 
 
-class Block_Quote(GroupingElement):
+class Block_Quote(ReStructuredTextGroupingNode):
     style = 'block quote'
 
 
@@ -333,23 +328,23 @@ class Attribution(Paragraph):
                             style='attribution')
 
 
-class Line_Block(GroupingElement):
+class Line_Block(ReStructuredTextGroupingNode):
     style = 'line block'
 
 
-class Line(BodyElement):
+class Line(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.Paragraph(self.process_content() or '\n',
                             style='line block line')
 
 
-class Doctest_Block(BodyElement):
+class Doctest_Block(ReStructuredTextBodyNode):
     def build_flowable(self):
         text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
         return rt.Paragraph(text, style='literal')
 
 
-class Reference(BodyElement, InlineElement):
+class Reference(ReStructuredTextBodyNode, ReStructuredTextInlineNode):
     def build_styled_text(self):
         if self.get('refid'):
             link = rt.NamedDestinationLink(self.get('refid'))
@@ -368,7 +363,7 @@ class Reference(BodyElement, InlineElement):
         return self.image.flowable()
 
 
-class Footnote(BodyElement):
+class Footnote(ReStructuredTextBodyNode):
     def flowable(self):
         return rt.RegisterNote(super().flowable())
 
@@ -376,12 +371,12 @@ class Footnote(BodyElement):
         return rt.Note(rt.StaticGroupedFlowables(self.children_flowables(1)))
 
 
-class Label(BodyElement):
+class Label(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.DummyFlowable()
 
 
-class Footnote_Reference(InlineElement):
+class Footnote_Reference(ReStructuredTextInlineNode):
     style = 'footnote'
 
     def build_styled_text(self):
@@ -398,12 +393,12 @@ class Citation_Reference(Footnote_Reference):
     style = 'citation'
 
 
-class Substitution_Definition(BodyElement):
+class Substitution_Definition(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.DummyFlowable()
 
 
-class Target(BodyElement, InlineElement):
+class Target(ReStructuredTextBodyNode, ReStructuredTextInlineNode):
     def build_styled_text(self):
         # TODO: what about refid?
         try:
@@ -416,14 +411,14 @@ class Target(BodyElement, InlineElement):
         return rt.DummyFlowable()   # TODO: body targets
 
 
-class Enumerated_List(BodyElement):
+class Enumerated_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         # TODO: handle different numbering styles
         return rt.List([item.process() for item in self.list_item],
                        style='enumerated')
 
 
-class Bullet_List(BodyElement):
+class Bullet_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         try:
             return rt.List([item.process() for item in self.list_item],
@@ -432,18 +427,18 @@ class Bullet_List(BodyElement):
             return rt.DummyFlowable()
 
 
-class List_Item(BodySubElement):
+class List_Item(ReStructuredTextBodySubNode):
     def process(self):
         return self.children_flowables()
 
 
-class Definition_List(BodyElement):
+class Definition_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.DefinitionList([item.process()
                                   for item in self.definition_list_item])
 
 
-class Definition_List_Item(BodySubElement):
+class Definition_List_Item(ReStructuredTextBodySubNode):
     def process(self):
         term = self.term.styled_text()
         try:
@@ -454,7 +449,7 @@ class Definition_List_Item(BodySubElement):
                 self.definition.flowable())
 
 
-class Term(Inline):
+class Term(ReStructuredTextInlineNode):
     def build_styled_text(self):
         content = self.process_content()
         ids = self.get('ids')
@@ -465,21 +460,21 @@ class Term(Inline):
         return content
 
 
-class Classifier(InlineElement):
+class Classifier(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return self.process_content('classifier')
 
 
-class Definition(GroupingElement):
+class Definition(ReStructuredTextGroupingNode):
     grouped_flowables_class = rt.Definition
 
 
-class Field_List(BodyElement):
+class Field_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.FieldList([field.flowable() for field in self.field])
 
 
-class Field(BodyElement):
+class Field(ReStructuredTextBodyNode):
     @property
     def name(self):
         return str(self.field_name.styled_text())
@@ -493,32 +488,32 @@ class Field(BodyElement):
         return rt.LabeledFlowable(label, self.field_body.flowable())
 
 
-class Field_Name(Inline):
+class Field_Name(ReStructuredTextInlineNode):
     pass
 
 
-class Field_Body(GroupingElement):
+class Field_Body(ReStructuredTextGroupingNode):
     pass
 
 
-class Option_List(BodyElement):
+class Option_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.FieldList([item.flowable() for item in self.option_list_item])
 
 
-class Option_List_Item(BodyElement):
+class Option_List_Item(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.LabeledFlowable(self.option_group.flowable(),
                                   self.description.flowable(), style='option')
 
 
-class Option_Group(BodyElement):
+class Option_Group(ReStructuredTextBodyNode):
     def build_flowable(self):
         options = (option.styled_text() for option in self.option)
         return rt.Paragraph(intersperse(options, ', '), style='option_group')
 
 
-class Option(InlineElement):
+class Option(ReStructuredTextInlineNode):
     def build_styled_text(self):
         text = self.option_string.styled_text()
         try:
@@ -530,21 +525,21 @@ class Option(InlineElement):
         return rt.MixedStyledText(text)
 
 
-class Option_String(InlineElement):
+class Option_String(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.MixedStyledText(self.process_content(), style='option_string')
 
 
-class Option_Argument(InlineElement):
+class Option_Argument(ReStructuredTextInlineNode):
     def build_styled_text(self):
         return rt.MixedStyledText(self.process_content(), style='option_arg')
 
 
-class Description(GroupingElement):
+class Description(ReStructuredTextGroupingNode):
     pass
 
 
-class Image(BodyElement, InlineElement):
+class Image(ReStructuredTextBodyNode, ReStructuredTextInlineNode):
     @property
     def image_path(self):
         return self.get('uri')
@@ -558,23 +553,23 @@ class Image(BodyElement, InlineElement):
         return rt.InlineImage(self.image_path)
 
 
-class Figure(GroupingElement):
+class Figure(ReStructuredTextGroupingNode):
     grouped_flowables_class = rt.Figure
 
     def build_flowable(self, **kwargs):
         return rt.Float(super().build_flowable(**kwargs))
 
 
-class Caption(BodyElement):
+class Caption(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.Caption(super().process_content())
 
 
-class Legend(GroupingElement):
+class Legend(ReStructuredTextGroupingNode):
     style = 'legend'
 
 
-class Transition(BodyElement):
+class Transition(ReStructuredTextBodyNode):
     def build_flowable(self):
         return rt.HorizontalRule()
 
@@ -601,7 +596,7 @@ def convert_quantity(quantity_string):
     return float(value) * DOCUTILS_UNIT_TO_DIMENSION[unit]
 
 
-class Table(BodyElement):
+class Table(ReStructuredTextBodyNode):
     def build_flowable(self):
         tgroup = self.tgroup
         if tgroup.get('colwidths', 'auto') == 'given':
@@ -624,15 +619,15 @@ class Table(BodyElement):
             return table
 
 
-class TGroup(TreeNode):
+class TGroup(ReStructuredTextNode):
     pass
 
 
-class ColSpec(TreeNode):
+class ColSpec(ReStructuredTextNode):
     pass
 
 
-class TableRowGroup(TreeNode):
+class TableRowGroup(ReStructuredTextNode):
     section_cls = None
 
     def get_table_section(self):
@@ -647,12 +642,12 @@ class TBody(TableRowGroup):
     section_cls = rt.TableBody
 
 
-class Row(TreeNode):
+class Row(ReStructuredTextNode):
     def get_row(self):
         return rt.TableRow([entry.flowable() for entry in self.entry])
 
 
-class Entry(GroupingElement):
+class Entry(ReStructuredTextGroupingNode):
     grouped_flowables_class = rt.TableCell
 
     def build_flowable(self):
@@ -661,7 +656,7 @@ class Entry(GroupingElement):
         return super().build_flowable(rowspan=rowspan, colspan=colspan)
 
 
-class Raw(BodyElement):
+class Raw(ReStructuredTextBodyNode):
     def build_flowable(self):
         if self['format'] == 'pdf':   # rst2pdf
             if self.text == 'PageBreak':
@@ -671,5 +666,5 @@ class Raw(BodyElement):
         return rt.DummyFlowable()
 
 
-class Container(GroupingElement):
+class Container(ReStructuredTextGroupingNode):
     pass

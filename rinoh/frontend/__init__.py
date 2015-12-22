@@ -6,10 +6,13 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from rinoh.text import MixedStyledText
+from itertools import chain
+
+from ..flowable import StaticGroupedFlowables
 
 
-__all__ = ['TreeNode']
+__all__ = ['TreeNode', 'InlineNode', 'BodyNode', 'BodySubNode', 'GroupingNode',
+           'DummyNode']
 
 
 class TreeNodeMeta(type):
@@ -61,13 +64,6 @@ class TreeNode(object, metaclass=TreeNodeMeta):
     def getchildren(self):
         return [self.map_node(child) for child in self.node_children(self.node)]
 
-    def process_content(self, style=None):
-        preserve_space = self.get('xml:space', None) == 'preserve'
-        return MixedStyledText([text
-                                for text in (child.styled_text(preserve_space)
-                                             for child in self.getchildren())
-                                if text], style=style)
-
     @property
     def location(self):
         source_file, line, tag_name = self._location
@@ -103,3 +99,67 @@ class TreeNode(object, metaclass=TreeNodeMeta):
     def __getitem__(self, name):
         raise NotImplementedError
 
+    def process_content(self, style=None):
+        raise NotImplementedError
+
+
+class InlineNode(TreeNode):
+    style = None
+
+    def styled_text(self, **kwargs):
+        styled_text = self.build_styled_text(**kwargs)
+        styled_text.source = self
+        return styled_text
+
+    def build_styled_text(self):
+        return self.process_content(style=self.style)
+
+
+class BodyNodeBase(TreeNode):
+    def children_flowables(self, skip_first=0):
+        children = self.getchildren()[skip_first:]
+        return list(chain(*(item.flowables() for item in children)))
+
+
+class BodyNode(BodyNodeBase):
+    def flowable(self):
+        flowable, = self.flowables()
+        return flowable
+
+    def flowables(self):
+        id = self._id
+        for i, flowable in enumerate(self.build_flowables()):
+            if i == 0 and id:
+                flowable.id = id
+            flowable.source = self
+            yield flowable
+
+    def build_flowables(self):
+        yield self.build_flowable()
+
+    def build_flowable(self):
+        raise NotImplementedError('tag: %s' % self.tag_name)
+
+
+class BodySubNode(BodyNodeBase):
+    def process(self):
+        raise NotImplementedError('tag: %s' % self.tag_name)
+
+
+class GroupingNode(BodyNode):
+    style = None
+    grouped_flowables_class = StaticGroupedFlowables
+
+    def build_flowables(self, **kwargs):
+        yield self.grouped_flowables_class(self.children_flowables(),
+                                           style=self.style or self.style,
+                                           **kwargs)
+
+
+class DummyNode(BodyNode, InlineNode):
+    def flowables(self):    # empty generator
+        return
+        yield
+
+    def styled_text(self, preserve_space=False):
+        return None
