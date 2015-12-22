@@ -6,17 +6,17 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from itertools import chain
-
 from docutils.core import publish_doctree
 
-from rinoh.flowable import StaticGroupedFlowables
+from ...text import MixedStyledText
 
-from .. import TreeNode
+from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
+                DummyNode)
 
-
-__all__ = ['TreeNode', 'BodyElementBase', 'BodyElement', 'BodySubElement',
-           'InlineElement', 'GroupingElement', 'DummyElement']
+__all__ = ['ReStructuredTextNode', 'ReStructuredTextInlineNode',
+           'ReStructuredTextBodyNode', 'ReStructuredTextBodySubNode',
+           'ReStructuredTextGroupingNode', 'ReStructuredTextDummyNode',
+           'ReStructuredTextParser']
 
 
 class ReStructuredTextNode(TreeNode):
@@ -27,6 +27,17 @@ class ReStructuredTextNode(TreeNode):
     @staticmethod
     def node_parent(node):
         return node.parent
+
+    @staticmethod
+    def node_children(node):
+        return node.children
+
+    @property
+    def _id(self):
+        try:
+            return self.get('ids')[0]
+        except IndexError:
+            return None
 
     @property
     def _location(self):
@@ -46,74 +57,46 @@ class ReStructuredTextNode(TreeNode):
     def __getitem__(self, name):
         return self.node[name]
 
-
-class BodyElementBase(ReStructuredTextNode):
-    def children_flowables(self, skip_first=0):
-        children = self.getchildren()[skip_first:]
-        return list(chain(*(item.flowables() for item in children)))
-
-
-class BodyElement(BodyElementBase):
-    def flowable(self):
-        flowable, = self.flowables()
-        return flowable
-
-    def flowables(self):
-        ids = self.get('ids')
-        classes = self.get('classes')
-        for i, flowable in enumerate(self.build_flowables()):
-            if i == 0 and ids:
-                flowable.id = ids[0]
-            flowable.classes = classes
-            flowable.source = self
-            yield flowable
-
-    def build_flowables(self):
-        yield self.build_flowable()
-
-    def build_flowable(self):
-        raise NotImplementedError('tag: %s' % self.node.tag_name)
+    def process_content(self, style=None):
+        preserve_space = self.get('xml:space', None) == 'preserve'
+        return MixedStyledText([text
+                                for text in (child.styled_text(preserve_space)
+                                             for child in self.getchildren())
+                                if text], style=style)
 
 
-class BodySubElement(BodyElementBase):
-    def process(self):
-        raise NotImplementedError('tag: %s' % self.node.tag_name)
-
-
-class InlineElement(ReStructuredTextNode):
+class ReStructuredTextInlineNode(ReStructuredTextNode, InlineNode):
     @property
     def text(self):
         return super().text.replace('\n', ' ')
 
     def styled_text(self, preserve_space=False):
-        styled_text = self.build_styled_text()
+        styled_text = super().styled_text(preserve_space=preserve_space)
         try:
             styled_text.classes = self.get('classes')
-            styled_text.source = self
         except AttributeError:
             pass
         return styled_text
 
-    def build_styled_text(self):
-        raise NotImplementedError('tag: %s' % self.tag)
+
+class ReStructuredTextBodyNode(ReStructuredTextNode, BodyNode):
+    def flowables(self):
+        classes = self.get('classes')
+        for flowable in super().flowables():
+            flowable.classes = classes
+            yield flowable
 
 
-class GroupingElement(BodyElement):
-    style = None
-    grouped_flowables_class = StaticGroupedFlowables
-
-    def build_flowable(self, style=None, **kwargs):
-        return self.grouped_flowables_class(self.children_flowables(),
-                                            style=style or self.style, **kwargs)
+class ReStructuredTextBodySubNode(ReStructuredTextNode, BodySubNode):
+    pass
 
 
-class DummyElement(BodyElement, InlineElement):
-    def flowables(self):    # empty generator
-        return
-        yield
+class ReStructuredTextGroupingNode(ReStructuredTextBodyNode, GroupingNode):
+    pass
 
-    def styled_text(self, preserve_space=False):
-        return None
+
+class ReStructuredTextDummyNode(ReStructuredTextNode, DummyNode):
+    pass
 
 
 from . import nodes
