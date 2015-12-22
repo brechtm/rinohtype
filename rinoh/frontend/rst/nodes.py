@@ -34,13 +34,8 @@ from ...util import intersperse
 class Text(ReStructuredTextInlineNode):
     node_name = '#text'
 
-    RE_NORMALIZE_SPACE = re.compile('[\t\r\n ]+')
-
-    def styled_text(self, preserve_space=False):
-        if preserve_space:
-            return self.node
-        else:
-            return self.RE_NORMALIZE_SPACE.sub(' ', self.node)
+    def styled_text(self):
+        return self.text
 
 
 class Inline(ReStructuredTextInlineNode):
@@ -267,7 +262,7 @@ class Warning(AdmonitionBase):
 
 
 class Generated(ReStructuredTextInlineNode):
-    def styled_text(self, preserve_space=False):
+    def styled_text(self):
         return None
 
     def build_styled_text(self):
