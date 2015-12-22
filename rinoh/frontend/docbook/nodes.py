@@ -7,10 +7,13 @@
 
 
 from . import (DocBookNode, BodyElement, BodySubElement, InlineElement,
-               GroupingElement, filter, strip_and_filter)
+               GroupingElement)
+
+from ...reference import TITLE, PAGE
 
 from ... import styleds
-from rinoh.reference import TITLE, PAGE
+
+from ..xml import filter, strip_and_filter
 
 
 class DocumentRoot(BodyElement):
