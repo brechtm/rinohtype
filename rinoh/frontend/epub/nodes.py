@@ -8,21 +8,21 @@
 
 import re
 
-from . import BodyElement, BodySubElement, InlineElement, GroupingElement
-
 from ... import styleds
 from ...annotation import HyperLink, NamedDestination
 
+from . import EPubInlineNode, EPubBodyNode, EPubBodySubNode, EPubGroupingNode
 
-class Body(BodyElement):
+
+class Body(EPubBodyNode):
     pass
 
 
-class Section(GroupingElement):
+class Section(EPubGroupingNode):
     grouped_flowables_class = styleds.Section
 
 
-class Div(GroupingElement):
+class Div(EPubGroupingNode):
     grouped_flowables_class = styleds.Section
 
     RE_SECTION = re.compile(r'sect\d+')
@@ -35,7 +35,7 @@ class Div(GroupingElement):
             return self.children_flowables()
 
 
-class Img(BodyElement, InlineElement):
+class Img(EPubBodyNode, EPubInlineNode):
     @property
     def image_path(self):
         return self.get('src')
@@ -47,12 +47,12 @@ class Img(BodyElement, InlineElement):
         return styleds.InlineImage(self.image_path)
 
 
-class P(BodyElement):
+class P(EPubBodyNode):
     def build_flowable(self):
         return styleds.Paragraph(super().process_content())
 
 
-class H(BodyElement):
+class H(EPubBodyNode):
     @property
     def in_section(self):
         parent = self.parent
@@ -89,34 +89,34 @@ class H4(H):
     pass
 
 
-class Span(InlineElement):
+class Span(EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         text = styleds.MixedStyledText(self.process_content())
         text.classes = self.get('class').split(' ')
         return text
 
 
-class Em(InlineElement):
+class Em(EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         return styleds.MixedStyledText(self.process_content(), style='emphasis')
 
 
-class Strong(InlineElement):
+class Strong(EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         return styleds.MixedStyledText(self.process_content(), style='strong')
 
 
-class Sup(InlineElement):
+class Sup(EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         return styleds.Superscript(self.process_content())
 
 
-class Sub(InlineElement):
+class Sub(EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         return styleds.Subscript(self.process_content())
 
 
-class Br(BodyElement, InlineElement):
+class Br(EPubBodyNode, EPubInlineNode):
     def build_flowables(self):
         return
         yield
@@ -126,16 +126,16 @@ class Br(BodyElement, InlineElement):
 
 
 
-class Blockquote(GroupingElement):
+class Blockquote(EPubGroupingNode):
     style = 'block quote'
 
 
-class HR(BodyElement):
+class HR(EPubBodyNode):
     def build_flowable(self):
         return styleds.HorizontalRule()
 
 
-class A(BodyElement, InlineElement):
+class A(EPubBodyNode, EPubInlineNode):
     def build_styled_text(self, strip_leading_whitespace):
         if self.get('href'):
             annotation = HyperLink(self.get('href'))
@@ -156,35 +156,35 @@ class A(BodyElement, InlineElement):
         yield
 
 
-class OL(BodyElement):
+class OL(EPubBodyNode):
     def build_flowable(self):
         return styleds.List([item.process() for item in self.li],
                             style='enumerated')
 
 
-class UL(BodyElement):
+class UL(EPubBodyNode):
     def build_flowable(self):
         return styleds.List([item.process() for item in self.li],
                             style='bulleted')
 
 
-class LI(BodySubElement):
+class LI(EPubBodySubNode):
     def process(self):
         return self.children_flowables()
 
 
-class DL(BodyElement):
+class DL(EPubBodyNode):
     def build_flowable(self):
         items = [(dt.flowable(), dd.flowable())
                  for dt, dd in zip(self.dt, self.dd)]
         return styleds.DefinitionList(items)
 
 
-class DT(BodyElement):
+class DT(EPubBodyNode):
     def build_flowable(self):
         term = styleds.Paragraph(self.process_content())
         return styleds.DefinitionTerm([term])
 
 
-class DD(GroupingElement):
+class DD(EPubGroupingNode):
     grouped_flowables_class = styleds.Definition

@@ -11,26 +11,15 @@ import xml.etree.ElementTree as etree
 
 from zipfile import ZipFile
 
-from ...util import all_subclasses
-
-from ..docbook import (CustomElement, BodyElement, BodySubElement,
-                       InlineElement, GroupingElement)
-from ..xml import elementtree
-
-
-def xhtml_tag(tag_name):
-    return '{{{}}}'.format(NS_MAP['xhtml']) + tag_name
+from ..xml.elementtree import Parser
+from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
+                   ElementTreeBodySubNode, ElementTreeGroupingNode,
+                   ElementTreeDummyNode)
 
 
-from . import nodes
-
-CustomElement.MAPPING = {cls.__name__.lower(): cls
-                         for cls in all_subclasses(CustomElement)}
-
-
-class BadEPub(Exception):
-    def __init__(self):
-        super().__init__('File is not an ePUB file')
+__all__ = ['EPubNode', 'EPubInlineNode', 'EPubBodyNode', 'EPubBodySubNode',
+           'EPubGroupingNode', 'EPubDummyNode',
+           'EPubReader', 'BadEPub']
 
 
 NS_MAP = dict(cnt='urn:oasis:names:tc:opendocument:xmlns:container',
@@ -39,6 +28,38 @@ NS_MAP = dict(cnt='urn:oasis:names:tc:opendocument:xmlns:container',
               dcterms='http://purl.org/dc/terms/',
               xhtml='http://www.w3.org/1999/xhtml',
               epub='http://www.idpf.org/2007/ops')
+
+
+class EPubNode(ElementTreeNode):
+    NAMESPACE = NS_MAP['xhtml']
+
+
+class EPubInlineNode(EPubNode, ElementTreeInlineNode):
+    pass
+
+
+class EPubBodyNode(EPubNode, ElementTreeBodyNode):
+    pass
+
+
+class EPubBodySubNode(EPubNode, ElementTreeBodySubNode):
+    pass
+
+
+class EPubGroupingNode(EPubNode, ElementTreeGroupingNode):
+    pass
+
+
+class EPubDummyNode(EPubNode, ElementTreeDummyNode):
+    pass
+
+
+from . import nodes
+
+
+class BadEPub(Exception):
+    def __init__(self):
+        super().__init__('File is not an ePUB file')
 
 
 class EPubReader(object):
@@ -72,7 +93,7 @@ class EPubReader(object):
                     break
                 print(filename)
                 with epub.open(filename) as xhtml_file:
-                    xhtml_parser = elementtree.Parser(CustomElement)
+                    xhtml_parser = Parser(EPubNode)
                     xhtml_tree = xhtml_parser.parse(xhtml_file)
                 for flowable in self.from_doctree(xhtml_tree.getroot()):
                     flowables.append(flowable)
@@ -81,5 +102,5 @@ class EPubReader(object):
     def from_doctree(self, xhtml_root):
         xhtml_body = xhtml_root.find('./xhtml:body', NS_MAP)
         #self.replace_secondary_ids(doctree)
-        mapped_tree = CustomElement.map_node(xhtml_body)
+        mapped_tree = EPubNode.map_node(xhtml_body)
         return mapped_tree.children_flowables()
