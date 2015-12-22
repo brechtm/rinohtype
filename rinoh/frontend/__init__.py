@@ -31,7 +31,7 @@ class TreeNode(object, metaclass=TreeNodeMeta):
 
     @classmethod
     def map_node(cls, node):
-        return cls.MAPPING[cls.node_tag_name(node)](node)
+        return cls.MAPPING[cls.node_tag_name(node).replace('-', '_')](node)
 
     def __init__(self, doctree_node):
         self.node = doctree_node
