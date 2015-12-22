@@ -18,12 +18,12 @@ from ...util import NotImplementedAttribute
 from ... import DATA_PATH
 
 from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
-                DummyNode)
+                DummyNode, TreeNodeMeta)
 
 __all__ = ['filter', 'strip_and_filter',
            'ElementTreeNode', 'ElementTreeInlineNode', 'ElementTreeBodyNode',
            'ElementTreeBodySubNode', 'ElementTreeGroupingNode',
-           'ElementTreeDummyNode']
+           'ElementTreeDummyNode', 'ElementTreeNodeMeta']
 
 
 CATALOG_PATH = os.path.join(DATA_PATH, 'xml', 'catalog')
@@ -149,3 +149,9 @@ class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
 
 class ElementTreeDummyNode(ElementTreeNode, DummyNode):
     pass
+
+
+class ElementTreeNodeMeta(TreeNodeMeta):
+    root = ElementTreeNode
+    bases = (ElementTreeInlineNode, ElementTreeBodyNode, ElementTreeBodySubNode,
+             ElementTreeGroupingNode, ElementTreeDummyNode)

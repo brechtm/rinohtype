@@ -12,26 +12,15 @@ from ..flowable import StaticGroupedFlowables
 
 
 __all__ = ['TreeNode', 'InlineNode', 'BodyNode', 'BodySubNode', 'GroupingNode',
-           'DummyNode']
+           'DummyNode', 'TreeNodeMeta']
 
 
-class TreeNodeMeta(type):
-    def __new__(metaclass, name, bases, namespace):
-        cls = super().__new__(metaclass, name, bases, namespace)
-        node_name = cls.node_name or name.lower()
-        if name not in __all__:
-            TreeNode.MAPPING[node_name] = cls
-        return cls
-
-
-class TreeNode(object, metaclass=TreeNodeMeta):
+class TreeNode(object):
     node_name = None
-
-    MAPPING = {}
 
     @classmethod
     def map_node(cls, node):
-        return cls.MAPPING[cls.node_tag_name(node).replace('-', '_')](node)
+        return cls._mapping[cls.node_tag_name(node).replace('-', '_')](node)
 
     def __init__(self, doctree_node):
         self.node = doctree_node
@@ -163,3 +152,18 @@ class DummyNode(BodyNode, InlineNode):
 
     def styled_text(self, preserve_space=False):
         return None
+
+
+class TreeNodeMeta(type):
+    root = TreeNode
+    bases = InlineNode, BodyNode, BodySubNode, GroupingNode, DummyNode
+
+    def __new__(metaclass, name, bases, namespace):
+        cls = super().__new__(metaclass, name, bases, namespace)
+        node_name = cls.node_name or name.lower()
+        if metaclass.root in bases:
+            cls._mapping = {}
+            cls._base_class = cls
+        elif set(bases).isdisjoint(set(metaclass.bases)):
+            cls._mapping[node_name] = cls
+        return cls

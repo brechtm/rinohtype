@@ -14,7 +14,7 @@ from zipfile import ZipFile
 from ..xml.elementtree import Parser
 from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
                    ElementTreeBodySubNode, ElementTreeGroupingNode,
-                   ElementTreeDummyNode)
+                   ElementTreeDummyNode, ElementTreeNodeMeta)
 
 
 __all__ = ['EPubNode', 'EPubInlineNode', 'EPubBodyNode', 'EPubBodySubNode',
@@ -30,7 +30,7 @@ NS_MAP = dict(cnt='urn:oasis:names:tc:opendocument:xmlns:container',
               epub='http://www.idpf.org/2007/ops')
 
 
-class EPubNode(ElementTreeNode):
+class EPubNode(ElementTreeNode, metaclass=ElementTreeNodeMeta):
     NAMESPACE = NS_MAP['xhtml']
 
 
