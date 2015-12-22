@@ -112,29 +112,3 @@ class ExternalEntityRefHandler(object):
         with urlopen(system_id) as file:
             external_parser.ParseFile(file)
         return 1
-
-
-class ObjectifiedElement(ElementTree.Element):
-    """Simulation of lxml's ObjectifiedElement for xml.etree"""
-    def __getattr__(self, name):
-        # the following depends on ElementPath internals, but should be fine
-        result = ElementPath.find(self.getchildren(), self._namespace + name)
-        if result is None:
-            raise AttributeError('No such element: {}'.format(name))
-        return result
-
-    def __iter__(self):
-        try:
-            # same hack as above
-            for child in ElementPath.findall(self._parent.getchildren(),
-                                             self.tag):
-                yield child
-        except AttributeError:
-            # this is the root element
-            yield self
-
-
-class BaseElement(ObjectifiedElement):
-    @property
-    def filename(self):
-        return self._root._roottree._filename
