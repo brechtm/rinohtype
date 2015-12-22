@@ -17,7 +17,13 @@ from ...util import NotImplementedAttribute
 
 from ... import DATA_PATH
 
-from .. import TreeNode
+from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
+                DummyNode)
+
+__all__ = ['filter', 'strip_and_filter',
+           'ElementTreeNode', 'ElementTreeInlineNode', 'ElementTreeBodyNode',
+           'ElementTreeBodySubNode', 'ElementTreeGroupingNode',
+           'ElementTreeDummyNode']
 
 
 CATALOG_PATH = os.path.join(DATA_PATH, 'xml', 'catalog')
@@ -65,6 +71,10 @@ class ElementTreeNode(TreeNode):
         return node.getchildren()
 
     @property
+    def _id(self):
+        return self.get('id')
+
+    @property
     def _location(self):
         return self.node.filename, self.node.sourceline, self.tag_name
 
@@ -110,6 +120,34 @@ class ElementTreeNode(TreeNode):
             for item, strip_leading_ws in strip_and_filter(child.tail,
                                                            strip_leading_ws):
                 yield item
+
+
+class ElementTreeInlineNode(ElementTreeNode, InlineNode):
+    def styled_text(self, strip_leading_whitespace=False):
+        return self.build_styled_text(strip_leading_whitespace)
+
+    def build_styled_text(self, strip_leading_whitespace=False):
+        return self.process_content(strip_leading_whitespace, style=self.style)
+
+
+class ElementTreeBodyNode(ElementTreeNode, BodyNode):
+    def flowables(self):
+        classes = self.get('classes')
+        for flowable in super().flowables():
+            flowable.classes = classes
+            yield flowable
+
+
+class ElementTreeBodySubNode(ElementTreeNode, BodySubNode):
+    pass
+
+
+class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
+    pass
+
+
+class ElementTreeDummyNode(ElementTreeNode, DummyNode):
+    pass
 
 
 def element_factory(xml_frontend):
