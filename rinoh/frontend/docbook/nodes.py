@@ -141,6 +141,8 @@ class Title(BodyElement, TextInfoField):
     def build_flowable(self):
         if isinstance(self.parent, DocumentRoot):
             return styleds.SetMetadataFlowable(title=self.process_content())
+        elif isinstance(self.parent, ListBase):
+            return styleds.Paragraph(self.process_content())
         return styleds.Heading(self.process_content())
 
 
