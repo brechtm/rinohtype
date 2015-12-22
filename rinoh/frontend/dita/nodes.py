@@ -75,6 +75,11 @@ class P(DITABodyNode):
         return styleds.Paragraph(self.process_content())
 
 
+class Title(DITABodyNode):
+    def build_flowable(self):
+        return styleds.Heading(self.process_content())
+
+
 class Steps(DITABodyNode):
     style = None
 
