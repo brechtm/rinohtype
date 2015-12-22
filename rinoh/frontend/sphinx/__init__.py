@@ -17,17 +17,14 @@ from sphinx.locale import _
 from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
+
 from ...backend import pdf
-from ..rst import ReStructuredTextParser, CustomElement
+
+from ..rst import ReStructuredTextParser
 
 from rinohlib.templates.book import Book, BookOptions
 
 from . import nodes
-
-
-for cls_name in nodes.__all__:
-    cls = getattr(nodes, cls_name)
-    CustomElement.MAPPING[cls.__name__.lower()] = cls
 
 
 class RinohBuilder(Builder):
