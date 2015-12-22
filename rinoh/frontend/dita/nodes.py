@@ -16,16 +16,16 @@ from ...reference import PAGE
 
 from ..xml.elementtree import Parser
 
-from . import BodyElement, BodySubElement, InlineElement, GroupingElement
+from . import DITABodyNode, DITABodySubNode, DITAInlineNode, DITAGroupingNode
 
 
-class Map(BodyElement):
+class Map(DITABodyNode):
     def tree(self):
         return ([styleds.SetMetadataFlowable(title=self.get('title'))]
                 + self.children_flowables())
 
 
-class TopicRef(BodyElement):
+class TopicRef(DITABodyNode):
     def build_flowable(self):
         from . import DITAReader
         reader = DITAReader()
@@ -33,7 +33,7 @@ class TopicRef(BodyElement):
             return reader.parse(file)
 
 
-class Concept(GroupingElement):
+class Concept(DITAGroupingNode):
     grouped_flowables_class = styleds.Section
 
     def tree(self):
@@ -41,11 +41,11 @@ class Concept(GroupingElement):
         return section
 
 
-class ConBody(GroupingElement):
+class ConBody(DITAGroupingNode):
     pass
 
 
-class Task(GroupingElement):
+class Task(DITAGroupingNode):
     grouped_flowables_class = styleds.Section
 
     def tree(self):
@@ -53,25 +53,25 @@ class Task(GroupingElement):
         return section
 
 
-class ShortDesc(BodyElement):
+class ShortDesc(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content(), style='shortdesc')
 
 
-class TaskBody(GroupingElement):
+class TaskBody(DITAGroupingNode):
     pass
 
 
-class Context(GroupingElement):
+class Context(DITAGroupingNode):
     pass
 
 
-class P(BodyElement):
+class P(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content())
 
 
-class Steps(BodyElement):
+class Steps(DITABodyNode):
     style = None
 
     def build_flowables(self):
@@ -84,30 +84,30 @@ class Steps(BodyElement):
                            style=self.style)
 
 
-class StepSection(BodyElement):
+class StepSection(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content())
 
 
-class Step(BodySubElement):
+class Step(DITABodySubNode):
     def process(self):
         return self.children_flowables()
 
 
-class Cmd(BodyElement):
+class Cmd(DITABodyNode):
     def build_flowable(self):
         return styleds.Paragraph(self.process_content())
 
 
-class Result(GroupingElement):
+class Result(DITAGroupingNode):
     pass
 
 
-class Related_Links(GroupingElement):
+class Related_Links(DITAGroupingNode):
     pass
 
 
-class Link(BodyElement):
+class Link(DITABodyNode):
     def build_flowable(self):
         xml_path = self.node._root._roottree._filename
         target_path = os.path.join(os.path.dirname(xml_path), self.get('href'))
@@ -140,7 +140,7 @@ def convert_quantity(quantity_string):
     return float(value) * DOCUTILS_UNIT_TO_DIMENSION[unit]
 
 
-class Image(BodyElement, InlineElement):
+class Image(DITABodyNode, DITAInlineNode):
     @property
     def image_path(self):
         href = self.get('href')
@@ -161,13 +161,13 @@ class Image(BodyElement, InlineElement):
         return styleds.InlineImage(self.image_path, **self.arguments)
 
 
-class UL(BodyElement):
+class UL(DITABodyNode):
     def build_flowable(self):
         return styleds.List([list(item.flowables()) for item in self.li],
                             style='enumerated')
 
 
-class LI(GroupingElement):
+class LI(DITAGroupingNode):
     def build_flowables(self, **kwargs):
         if self.text:
             yield styleds.Paragraph(self.process_content())

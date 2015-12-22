@@ -28,6 +28,7 @@ class DocBookInlineNode(DocBookNode, ElementTreeInlineNode):
 class DocBookBodyNode(DocBookNode, ElementTreeBodyNode):
     pass
 
+
 class DocBookBodySubNode(DocBookNode, ElementTreeBodySubNode):
     pass
 

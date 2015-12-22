@@ -6,26 +6,47 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ...util import all_subclasses
+from ..xml.elementtree import Parser
+from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
+                   ElementTreeBodySubNode, ElementTreeGroupingNode,
+                   ElementTreeDummyNode)
 
-from ..docbook import (CustomElement, BodyElement, BodySubElement,
-                       InlineElement, GroupingElement)
-from ..xml import elementtree
+
+class DITANode(ElementTreeNode):
+    pass
+
+
+class DITAInlineNode(DITANode, ElementTreeInlineNode):
+    pass
+
+
+class DITABodyNode(DITANode, ElementTreeBodyNode):
+    pass
+
+
+class DITABodySubNode(DITANode, ElementTreeBodySubNode):
+    pass
+
+
+class DITAGroupingNode(DITANode, ElementTreeGroupingNode):
+    pass
+
+
+class DITADummyNode(DITANode, ElementTreeDummyNode):
+    pass
+
 
 from . import nodes
-
-CustomElement.MAPPING = {cls.__name__.lower().replace('_', '-'): cls
-                         for cls in all_subclasses(CustomElement)}
 
 
 class DITAReader(object):
     def parse(self, file):
         filename = getattr(file, 'name', None)
-        parser = elementtree.Parser(CustomElement)
+        parser = Parser(DITANode)
         xml_tree = parser.parse(filename)
         doctree = xml_tree.getroot()
         return self.from_doctree(doctree)
 
     def from_doctree(self, doctree):
-        mapped_tree = CustomElement.map_node(doctree)
+        mapped_tree = DITANode.map_node(doctree)
         return mapped_tree.tree()
