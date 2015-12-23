@@ -172,8 +172,8 @@ class Rubric(ReStructuredTextBodyNode):
 
 
 class Sidebar(ReStructuredTextGroupingNode):
-    def flowable(self):
-        grouped_flowables = super().flowable()
+    def build_flowable(self):
+        grouped_flowables = super().build_flowable()
         return rt.Framed(grouped_flowables, style='sidebar')
 
 

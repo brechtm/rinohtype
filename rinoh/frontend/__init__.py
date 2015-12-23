@@ -139,10 +139,10 @@ class GroupingNode(BodyNode):
     style = None
     grouped_flowables_class = StaticGroupedFlowables
 
-    def build_flowables(self, **kwargs):
-        yield self.grouped_flowables_class(self.children_flowables(),
-                                           style=self.style or self.style,
-                                           **kwargs)
+    def build_flowable(self, style=None, **kwargs):
+        return self.grouped_flowables_class(self.children_flowables(),
+                                            style=style or self.style,
+                                            **kwargs)
 
 
 class DummyNode(BodyNode, InlineNode):
