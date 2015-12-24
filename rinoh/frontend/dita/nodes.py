@@ -159,7 +159,7 @@ class Context(DITAGroupingNode):
 
 
 class Section(DITAGroupingNode):
-    grouped_flowables_class = styleds.Section
+    style = 'section'
 
 
 class P(DITABodyNode):
@@ -169,7 +169,11 @@ class P(DITABodyNode):
 
 class Title(DITABodyNode):
     def build_flowable(self):
-        return styleds.Heading(self.process_content())
+        content = self.process_content()
+        if isinstance(self.parent, Section):
+            return styleds.Paragraph(content, style='section title')
+        else:
+            return styleds.Heading(content)
 
 
 class Steps(DITABodyNode):
