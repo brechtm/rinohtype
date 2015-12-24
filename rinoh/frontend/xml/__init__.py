@@ -12,6 +12,7 @@ import re
 from urllib.parse import urljoin
 from urllib.request import pathname2url
 
+from ...styleds import Paragraph
 from ...text import MixedStyledText
 from ...util import NotImplementedAttribute
 
@@ -19,6 +20,7 @@ from ... import DATA_PATH
 
 from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
                 DummyNode, TreeNodeMeta)
+
 
 __all__ = ['filter', 'strip_and_filter',
            'ElementTreeNode', 'ElementTreeInlineNode', 'ElementTreeBodyNode',
@@ -40,6 +42,8 @@ def filter(text, strip_leading_whitespace):
 
 
 def strip_and_filter(text, strip_leading_whitespace):
+    if not text:
+        return
     if strip_leading_whitespace:
         text = text.lstrip()
     for item, strip_leading_whitespace in filter(text,
@@ -144,7 +148,29 @@ class ElementTreeBodySubNode(ElementTreeNode, BodySubNode):
 
 
 class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
-    pass
+    def children_flowables(self):
+        strip_leading_whitespace = True
+        paragraph = []
+        for item, strip_leading_whitespace \
+                in strip_and_filter(self.text, strip_leading_whitespace):
+            paragraph.append(item)
+        for child in self.getchildren():
+            try:
+                child_text = child.styled_text(strip_leading_whitespace)
+                for item, strip_leading_whitespace \
+                        in filter(child_text, strip_leading_whitespace):
+                    paragraph.append(child_text)
+            except AttributeError:
+                if paragraph and paragraph[0]:
+                    yield Paragraph(paragraph)
+                paragraph = []
+                for flowable in child.flowables():
+                    yield flowable
+            for item, strip_leading_whitespace \
+                    in strip_and_filter(child.tail, strip_leading_whitespace):
+                paragraph.append(item)
+        if paragraph and paragraph[0]:
+            yield Paragraph(paragraph)
 
 
 class ElementTreeDummyNode(ElementTreeNode, DummyNode):
