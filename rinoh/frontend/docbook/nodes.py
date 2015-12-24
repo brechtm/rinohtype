@@ -13,8 +13,6 @@ from ...reference import TITLE, PAGE
 
 from ... import styleds
 
-from ..xml import filter, strip_and_filter
-
 
 class DocumentRoot(DocBookBodyNode):
     pass
@@ -104,30 +102,8 @@ class VolumeNum(TextInfoField):
     pass
 
 
-class Para(DocBookBodyNode):
-    def build_flowables(self):
-        strip_leading_whitespace = True
-        paragraph = []
-        for item, strip_leading_whitespace \
-                in strip_and_filter(self.text, strip_leading_whitespace):
-            paragraph.append(item)
-        for child in self.getchildren():
-            try:
-                child_text = child.styled_text(strip_leading_whitespace)
-                for item, strip_leading_whitespace \
-                        in filter(child_text, strip_leading_whitespace):
-                    paragraph.append(child_text)
-            except AttributeError:
-                if paragraph and paragraph[0]:
-                    yield styleds.Paragraph(paragraph)
-                paragraph = []
-                for flowable in child.flowables():
-                    yield flowable
-            for item, strip_leading_whitespace \
-                    in strip_and_filter(child.tail, strip_leading_whitespace):
-                paragraph.append(item)
-        if paragraph and paragraph[0]:
-            yield styleds.Paragraph(paragraph)
+class Para(DocBookGroupingNode):
+    pass
 
 
 class Emphasis(DocBookInlineNode):
