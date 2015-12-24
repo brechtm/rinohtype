@@ -88,7 +88,11 @@ class TopicRef(DITABodyNode):
 
 
 class FrontMatter(DITAGroupingNode):
-    pass
+    def flowables(self):
+        for child in self.getchildren():
+            child_flowables = list(child.flowables())
+            yield styleds.AddToFrontMatter(child_flowables)
+
 
 
 class BackMatter(DITAGroupingNode):
@@ -99,9 +103,9 @@ class BookLists(DITAGroupingNode):
     pass
 
 
-class ToC(DITANode):
-    def flowables(self):
-        yield styleds.AddToFrontMatter((TableOfContentsSection(), ))
+class ToC(DITABodyNode):
+    def build_flowable(self):
+        return TableOfContentsSection()
 
 
 class IndexList(DITADummyNode):
@@ -109,18 +113,15 @@ class IndexList(DITADummyNode):
 
 
 class BookAbstract(TopicRef):
-    def flowables(self):
-        yield styleds.AddToFrontMatter(super().flowables())
+    pass
 
 
 class Notices(TopicRef):
-    def flowables(self):
-        yield styleds.AddToFrontMatter(super().flowables())
+    pass
 
 
 class Preface(TopicRef):
-    def flowables(self):
-        yield styleds.AddToFrontMatter(super().flowables())
+    pass
 
 
 class Chapter(TopicRef):
