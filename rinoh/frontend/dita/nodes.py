@@ -17,8 +17,10 @@ from ...text import Superscript
 
 from ..xml.elementtree import Parser
 
-from . import (DITABodyNode, DITABodySubNode, DITAInlineNode, DITAGroupingNode,
-               DITADummyNode)
+from . import (DITANode, DITABodyNode, DITABodySubNode, DITAInlineNode,
+               DITAGroupingNode, DITADummyNode)
+
+from rinohlib.templates.base import TableOfContentsSection
 
 
 class Map(DITABodyNode):
@@ -93,7 +95,16 @@ class BackMatter(DITAGroupingNode):
     pass
 
 
-class BookLists(DITADummyNode):
+class BookLists(DITAGroupingNode):
+    pass
+
+
+class ToC(DITANode):
+    def flowables(self):
+        yield styleds.AddToFrontMatter((TableOfContentsSection(), ))
+
+
+class IndexList(DITADummyNode):
     pass
 
 
@@ -103,11 +114,13 @@ class BookAbstract(TopicRef):
 
 
 class Notices(TopicRef):
-    pass
+    def flowables(self):
+        yield styleds.AddToFrontMatter(super().flowables())
 
 
 class Preface(TopicRef):
-    pass
+    def flowables(self):
+        yield styleds.AddToFrontMatter(super().flowables())
 
 
 class Chapter(TopicRef):
