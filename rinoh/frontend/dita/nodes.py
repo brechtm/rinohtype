@@ -8,11 +8,12 @@
 
 import os
 import re
+import unicodedata
 
 from ... import styleds
 from ...dimension import DimensionUnit, PT, INCH, CM, MM, PICA
-from ...reference import TITLE
-from ...reference import PAGE
+from ...reference import TITLE, PAGE
+from ...text import Superscript
 
 from ..xml.elementtree import Parser
 
@@ -343,6 +344,15 @@ class SLI(P):
 
 class TM(DITAInlineNode):
     style = 'trademark'
+
+    SYMBOLS = {'tm': unicodedata.lookup('TRADE MARK SIGN'),
+               'reg': Superscript(unicodedata.lookup('REGISTERED SIGN')),
+               'service': unicodedata.lookup('SERVICE MARK')}
+
+    def build_styled_text(self, strip_leading_whitespace=False):
+        tmtype = self.get('tmtype')
+        text = super().build_styled_text(strip_leading_whitespace)
+        return text + self.SYMBOLS[tmtype]
 
 
 class Prolog(DITADummyNode):
