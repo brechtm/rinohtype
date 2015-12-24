@@ -30,6 +30,7 @@ from .style import Style, Styled
 
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
+           'AddToFrontMatter',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
@@ -197,6 +198,15 @@ class SetMetadataFlowable(DummyFlowable):
 
     def prepare(self, document):
         document.metadata.update(self.metadata)
+
+
+class AddToFrontMatter(DummyFlowable):
+    def __init__(self, flowables, parent=None):
+        super().__init__(parent=parent)
+        self.flowables = flowables
+
+    def prepare(self, document):
+        document.front_matter.append(self.flowables)
 
 
 # grouping flowables

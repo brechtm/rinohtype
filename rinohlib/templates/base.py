@@ -114,13 +114,6 @@ class TableOfContentsSection(Section):
         super().prepare(document)
 
 
-class TableOfContentsPart(BookPart):
-    footer = Tab() + Variable(PAGE_NUMBER)
-
-    def flowables(self):
-        yield TableOfContentsSection()
-
-
 class ContentsPart(BookPart):
     @property
     def header(self):

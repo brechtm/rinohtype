@@ -10,6 +10,7 @@ from .flowable import HorizontallyAlignedFlowable
 from .flowable import InseparableFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import DummyFlowable, SetMetadataFlowable, WarnFlowable
+from .flowable import AddToFrontMatter
 from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .paragraph import ParagraphBase, Paragraph
