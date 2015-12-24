@@ -43,7 +43,7 @@ class Img(EPubBodyNode, EPubInlineNode):
     def build_flowable(self):
         return styleds.Image(self.image_path)
 
-    def build_styled_text(self):
+    def build_styled_text(self, strip_leading_whitespace=False):
         return styleds.InlineImage(self.image_path)
 
 
