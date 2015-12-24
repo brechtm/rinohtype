@@ -334,19 +334,15 @@ class LI(DITAGroupingNode):
 class SL(DITABodyNode):
     def build_flowable(self):
         return styleds.List([list(item.flowables()) for item in self.sli],
-                            style='sl')
+                            style='simple')
 
 
-class SLI(DITAGroupingNode):
-    def build_flowables(self, **kwargs):
-        if self.text:
-            yield styleds.Paragraph(self.process_content())
-        for flowable in self.children_flowables():
-            yield flowable
-
-
-class TM(P):
+class SLI(P):
     pass
+
+
+class TM(DITAInlineNode):
+    style = 'trademark'
 
 
 class Prolog(DITADummyNode):
