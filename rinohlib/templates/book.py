@@ -3,10 +3,11 @@ from rinoh.document import DocumentPart, Page, DocumentSection
 from rinoh.layout import FlowablesContainer
 from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
-from rinoh.text import MixedStyledText
+from rinoh.reference import Variable, PAGE_NUMBER
+from rinoh.text import MixedStyledText, Tab
 
-from .base import (DocumentTemplate, DocumentOptions, Option,
-                   TableOfContentsPart, ContentsPart)
+from .base import (DocumentTemplate, DocumentOptions, Option, BookPart,
+                   ContentsPart)
 
 
 # page definitions
@@ -55,9 +56,25 @@ class TitlePart(DocumentPart):
         assert False, 'TitlePart can consist of only one page!'
 
 
+class FrontMatterPart(BookPart):
+    footer = Tab() + Variable(PAGE_NUMBER)
+
+    def __init__(self, document_section, flowables):
+        self._flowables = flowables
+        super().__init__(document_section)
+
+    def flowables(self):
+        return self._flowables
+
+
 class FrontMatter(DocumentSection):
     page_number_format = ROMAN_LC
-    parts = [TitlePart, TableOfContentsPart]
+    parts = [TitlePart]
+
+    def __init__(self, document):
+        super().__init__(document)
+        for flowables in document.front_matter:
+            self._parts.append(FrontMatterPart(self, flowables))
 
 
 class BodyMatter(DocumentSection):

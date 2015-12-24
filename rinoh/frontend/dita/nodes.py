@@ -98,7 +98,8 @@ class BookLists(DITADummyNode):
 
 
 class BookAbstract(TopicRef):
-    pass
+    def flowables(self):
+        yield styleds.AddToFrontMatter(super().flowables())
 
 
 class Notices(TopicRef):

@@ -239,12 +239,12 @@ class Document(object):
         describing the document. These will be written to the output by the
         backend."""
         self._print_version_and_license()
+        self.front_matter = []
         self.content_flowables = content_flowables
         self.stylesheet = stylesheet
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
-        self._sections = [section_cls(self) for section_cls in self.sections]
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -320,14 +320,15 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
-            for prev_num, section in zip(prev_number_of_pages, self._sections):
-                section.previous_number_of_pages = prev_num
-            self.page_references = prev_page_references.copy()
             for flowable in self.content_flowables:
                 flowable.prepare(self)
-            for section in self._sections:
+            _sections = [section_cls(self) for section_cls in self.sections]
+            for prev_num, section in zip(prev_number_of_pages, _sections):
+                section.previous_number_of_pages = prev_num
+            self.page_references = prev_page_references.copy()
+            for section in _sections:
                 section.prepare()
-            section_num_pages = self.render_pages()
+            section_num_pages = self.render_pages(_sections)
             while not has_converged(section_num_pages):
                 prev_number_of_pages = section_num_pages
                 prev_page_references = self.page_references.copy()
@@ -335,7 +336,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                 del self.backend_document
                 self.backend_document = self.backend.Document(self,
                                                               self.CREATOR)
-                section_num_pages = self.render_pages()
+                section_num_pages = self.render_pages(_sections)
             if filename:
                 self._save_cache(filename_root, section_num_pages,
                                  self.page_references)
@@ -346,13 +347,13 @@ to the terms of the GNU Affero General Public License version 3.''')
                 file.close()
 
 
-    def render_pages(self):
+    def render_pages(self, _sections):
         """Render the complete document once and return the number of pages
         rendered."""
         self.floats = set()
         self.placed_footnotes = set()
         section_page_counts = []
-        for section in self._sections:
+        for section in _sections:
             section_page_count = section.render(sum(section_page_counts))
             section_page_counts.append(section_page_count)
         return section_page_counts
