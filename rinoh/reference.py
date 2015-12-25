@@ -28,12 +28,13 @@ class Field(SingleStyledText):
 class Referenceable(Flowable):
     category = NotImplementedAttribute()
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
+        document = flowable_target.document
         element_id = self.id or document.unique_id
         if self.id is None:
             document.ids_by_element[self] = element_id
         document.elements[element_id] = self
-        super().prepare(document)
+        super().prepare(flowable_target)
 
     def get_id(self, document):
         return self.id or document.ids_by_element[self]
@@ -132,8 +133,8 @@ class RegisterNote(DummyFlowable):
         super().__init__(parent=parent)
         self.note = note
 
-    def prepare(self, document):
-        self.note.prepare(document)
+    def prepare(self, flowable_target):
+        self.note.prepare(flowable_target)
 
 
 class NoteMarkerStyle(TextStyle, NumberStyle):
@@ -148,7 +149,8 @@ class NoteMarkerBase(ReferenceBase, Label):
         super().__init__(**kwargs)
         Label.__init__(self, custom_label=custom_label)
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
+        document = flowable_target.document
         target_id = self.target_id(document)
         try:  # set reference only once (notes can be referenced multiple times)
             document.get_reference(target_id, NUMBER)
@@ -174,9 +176,9 @@ class NoteMarkerByID(Reference, NoteMarkerBase):
 
 
 class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
-    def prepare(self, document):
-        self.referenceable.prepare(document)
-        super().prepare(document)
+    def prepare(self, flowable_target):
+        self.referenceable.prepare(flowable_target)
+        super().prepare(flowable_target)
 
 
 class FieldType(object):

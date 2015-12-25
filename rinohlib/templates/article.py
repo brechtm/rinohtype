@@ -31,8 +31,8 @@ class ArticleFrontMatter(GroupedFlowables):
         self.toc_section = TableOfContentsSection()
         super().__init__()
 
-    def prepare(self, document):
-        self.toc_section.prepare(document)
+    def prepare(self, flowable_target):
+        self.toc_section.prepare(flowable_target)
 
     def flowables(self, document):
         meta = document.metadata

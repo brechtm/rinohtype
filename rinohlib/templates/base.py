@@ -109,9 +109,9 @@ class TableOfContentsSection(Section):
                           TableOfContents()],
                          style='table of contents')
 
-    def prepare(self, document):
-        self.id = document.metadata.get('toc_id')
-        super().prepare(document)
+    def prepare(self, flowable_target):
+        self.id = flowable_target.document.metadata.get('toc_id')
+        super().prepare(flowable_target)
 
 
 class ContentsPart(BookPart):

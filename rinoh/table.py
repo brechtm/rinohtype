@@ -254,8 +254,9 @@ class Table(HorizontallyAlignedFlowable):
 class TableWithCaption(Referenceable, StaticGroupedFlowables):
     category = 'Table'
 
-    def prepare(self, document):
-        super().prepare(document)
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        document = flowable_target.document
         element_id = self.get_id(document)
         number = document.counters.setdefault(self.category, 1)
         document.counters[self.category] += 1
@@ -269,9 +270,9 @@ class TableSection(Styled, list):
         for row in rows:
             row.parent = self
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
         for row in self:
-            row.prepare(document)
+            row.prepare(flowable_target)
 
     @property
     def num_columns(self):
@@ -299,9 +300,9 @@ class TableRow(Styled, list):
     def maximum_rowspan(self):
         return max(cell.rowspan for cell in self)
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
         for cells in self:
-            cells.prepare(document)
+            cells.prepare(flowable_target)
 
     @property
     def _index(self):
