@@ -126,9 +126,6 @@ class ContentsPart(BookPart):
     def flowables(self):
         return self.document.content_flowables
 
-    def prepare(self):
-        pass
-
 
 class Option(NamedDescriptor):
     """Descriptor used to describe a document option"""

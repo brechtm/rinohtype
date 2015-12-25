@@ -196,7 +196,7 @@ class SetMetadataFlowable(DummyFlowable):
         super().__init__(parent=parent)
         self.metadata = metadata
 
-    def prepare(self, document):
+    def build_document(self, document):
         document.metadata.update(self.metadata)
 
 
@@ -205,7 +205,7 @@ class AddToFrontMatter(DummyFlowable):
         super().__init__(parent=parent)
         self.flowables = flowables
 
-    def prepare(self, document):
+    def build_document(self, document):
         document.front_matter.append(self.flowables)
 
 
@@ -253,6 +253,11 @@ class GroupedFlowables(Flowable):
 
     def flowables(self, document):
         raise NotImplementedError
+
+    def build_document(self, document):
+        super().build_document(document)
+        for flowable in self.flowables(document):
+            flowable.build_document(document)
 
     def prepare(self, document):
         super().prepare(document)

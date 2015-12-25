@@ -49,7 +49,12 @@ class DocumentElement(object):
         """Set `source` as the source element of this document element."""
         self._source = source
 
+    def build_document(self, document):
+        """Set document metadata and populate front and back matter"""
+        pass
+
     def prepare(self, document):
+        """Determine number labels and register references with the document"""
         pass
 
     def warn(self, message, container=None):
