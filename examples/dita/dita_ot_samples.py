@@ -7,6 +7,7 @@ from rinoh.reference import Variable, SECTION_TITLE, PAGE_NUMBER
 from rinoh.text import Tab
 
 from rinohlib.templates.article import Article, ArticleOptions, TITLE
+from rinohlib.templates.book import Book, BookOptions
 from rinohlib.stylesheets.sphinx import stylesheet
 
 
@@ -30,3 +31,8 @@ if __name__ == '__main__':
             flowables = reader.parse(file)
         document = Article(flowables, options=OPTIONS, backend=pdf)
         document.render(name)
+
+    with open('taskbook.ditamap') as file:
+        flowables = reader.parse(file)
+    document = Book(flowables, backend=pdf)
+    document.render('taskbook')
