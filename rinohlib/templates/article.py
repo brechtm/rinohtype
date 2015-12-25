@@ -56,6 +56,7 @@ class ArticlePart(ContentsPart):
 
     def prepare(self):
         self.front_matter.prepare(self.document)
+        super().prepare()
 
     def flowables(self):
         yield self.front_matter

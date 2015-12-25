@@ -318,10 +318,10 @@ to the terms of the GNU Affero General Public License version 3.''')
                     self.page_references == prev_page_references)
 
         try:
+            for flowable in self.content_flowables:
+                flowable.build_document(self)
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
-            for flowable in self.content_flowables:
-                flowable.prepare(self)
             _sections = [section_cls(self) for section_cls in self.sections]
             for prev_num, section in zip(prev_number_of_pages, _sections):
                 section.previous_number_of_pages = prev_num
