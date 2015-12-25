@@ -150,7 +150,7 @@ class DocumentPart(object):
 
     def prepare(self):
         for flowable_target in self.flowable_targets:
-            flowable_target.prepare(self.document)
+            flowable_target.prepare(flowable_target)
 
     def render(self, document_page_count):
         del self.pages[:]

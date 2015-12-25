@@ -53,7 +53,7 @@ class DocumentElement(object):
         """Set document metadata and populate front and back matter"""
         pass
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
         """Determine number labels and register references with the document"""
         pass
 

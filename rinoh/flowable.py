@@ -273,11 +273,11 @@ class StaticGroupedFlowables(GroupedFlowables):
         for flowable in self.flowables(document):
             flowable.build_document(document)
 
-    def prepare(self, document):
-        super().prepare(document)
-        for flowable in self.flowables(document):
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        for flowable in self.flowables(flowable_target.document):
             flowable.parent = self
-            flowable.prepare(document)
+            flowable.prepare(flowable_target)
 
 
 class LabeledFlowableStyle(FlowableStyle):
@@ -296,9 +296,9 @@ class LabeledFlowable(Flowable):
         self.flowable = flowable
         label.parent = flowable.parent = self
 
-    def prepare(self, document):
-        self.label.prepare(document)
-        self.flowable.prepare(document)
+    def prepare(self, flowable_target):
+        self.label.prepare(flowable_target)
+        self.flowable.prepare(flowable_target)
 
     def label_width(self, container):
         virtual_container = VirtualContainer(container)
@@ -432,8 +432,8 @@ class Float(Flowable):
         self.flowable = flowable
         flowable.parent = self
 
-    def prepare(self, document):
-        self.flowable.prepare(document)
+    def prepare(self, flowable_target):
+        self.flowable.prepare(flowable_target)
 
     def flow(self, container, last_descender, state=None):
         """Flow contents into the float space associated with `container`."""

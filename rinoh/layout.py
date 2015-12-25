@@ -69,6 +69,10 @@ class FlowableTarget(object):
         document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
+    @property
+    def document(self):
+        return self.document_part.document
+
     def append_flowable(self, flowable):
         """Append a `flowable` to the list of flowables to be rendered."""
         self.flowables.append(flowable)
@@ -81,7 +85,7 @@ class FlowableTarget(object):
 
     def prepare(self, document):
         for flowable in self.flowables:
-            flowable.prepare(document)
+            flowable.prepare(self)
 
     def render(self):
         """Render the flowables assigned to this flowable target, in the order
@@ -510,6 +514,7 @@ class Chain(FlowableTarget):
 
         `document` is the :class:`Document` this chain is part of."""
         super().__init__(document_part)
+        self.document_part = document_part
         self._init_state()
         self._page_to_break = None
         self.containers = []

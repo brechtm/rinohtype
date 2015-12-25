@@ -88,8 +88,9 @@ class Caption(NumberedParagraph):
 class Figure(Referenceable, InseparableFlowables, StaticGroupedFlowables):
     category = 'Figure'
 
-    def prepare(self, document):
-        super().prepare(document)
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        document = flowable_target.document
         element_id = self.get_id(document)
         number = document.counters.setdefault(self.category, 1)
         document.counters[self.category] += 1

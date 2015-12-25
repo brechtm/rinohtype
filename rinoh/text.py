@@ -276,9 +276,9 @@ class MixedStyledText(StyledText, list):
         """Return the text content of this mixed-styled text."""
         return ''.join(str(item) for item in self)
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
         for item in self:
-            item.prepare(document)
+            item.prepare(flowable_target)
 
     def append(self, item):
         """Append `item` (:class:`StyledText` or :class:`str`) to the end of

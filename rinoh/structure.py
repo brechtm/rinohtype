@@ -85,7 +85,8 @@ class Heading(NumberedParagraph):
         return '{}({}) (style={})'.format(self.__class__.__name__, self.content,
                                           self.style)
 
-    def prepare(self, document):
+    def prepare(self, flowable_target):
+        document = flowable_target.document
         section_id = self.section.get_id(document)
         numbering_style = self.get_style('number_format', document)
         if self.get_style('custom_label', document):
