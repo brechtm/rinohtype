@@ -136,37 +136,38 @@ class StyledText(Styled):
                 SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
 
-    def is_script(self, document):
+    def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
         try:
-            style = self._style(document)
-            return style.get_value('position', document) is not None
+            style = self._style(container.document)
+            return style.get_value('position', container) is not None
         except StyleException:
             return False
 
-    def script_level(self, document):
+    def script_level(self, container):
         """Nesting level of super/subscript."""
         try:
-            level = self.parent.script_level(document)
+            level = self.parent.script_level(container)
         except AttributeError:
             level = -1
-        return level + 1 if self.is_script(document) else level
+        return level + 1 if self.is_script(container) else level
 
-    def height(self, document):
+    def height(self, container):
         """Font size after super/subscript size adjustment."""
-        height = float(self.get_style('font_size', document))
-        script_level = self.script_level(document)
+        height = float(self.get_style('font_size', container))
+        script_level = self.script_level(container)
         if script_level > -1:
             height *= self.position_size * (5 / 6)**script_level
         return height
 
-    def y_offset(self, document):
+    def y_offset(self, container):
         """Vertical baseline offset (up is positive)."""
-        offset = (self.parent.y_offset(document)\
+        offset = (self.parent.y_offset(container)\
                   if hasattr(self.parent, 'y_offset') else 0)
-        if self.is_script(document):
-            offset += (self.parent.height(document) *
-                       self.position[self._style(document).position])
+        if self.is_script(container):
+            style = self._style(container.document)
+            offset += (self.parent.height(container) *
+                       self.position[style.position])
             # The Y offset should only change once for the nesting level
             # where the position style is set, hence we don't recursively
             # get the position style using self.get_style('position')
@@ -201,30 +202,30 @@ class SingleStyledText(StyledText):
         """Return the text content of this single-styled text."""
         return self.text
 
-    def font(self, document):
+    def font(self, container):
         """The :class:`Font` described by this single-styled text's style.
 
         If the exact font style as described by the `font_weight`,
         `font_slant` and `font_width` style attributes is not present in the
         `typeface`, the closest font available is returned instead, and a
         warning is printed."""
-        typeface = self.get_style('typeface', document)
-        weight = self.get_style('font_weight', document)
-        slant = self.get_style('font_slant', document)
-        width = self.get_style('font_width', document)
+        typeface = self.get_style('typeface', container)
+        weight = self.get_style('font_weight', container)
+        slant = self.get_style('font_slant', container)
+        width = self.get_style('font_width', container)
         return typeface.get_font(weight=weight, slant=slant, width=width)
 
-    def ascender(self, document):
-        return (self.font(document).ascender_in_pt
-                * float(self.get_style('font_size', document)))
+    def ascender(self, container):
+        return (self.font(container).ascender_in_pt
+                * float(self.get_style('font_size', container)))
 
-    def descender(self, document):
-        return (self.font(document).descender_in_pt
-                * float(self.get_style('font_size', document)))
+    def descender(self, container):
+        return (self.font(container).descender_in_pt
+                * float(self.get_style('font_size', container)))
 
-    def line_gap(self, document):
-        return (self.font(document).line_gap_in_pt
-                * float(self.get_style('font_size', document)))
+    def line_gap(self, container):
+        return (self.font(container).line_gap_in_pt
+                * float(self.get_style('font_size', container)))
 
     def spans(self, document):
         yield self

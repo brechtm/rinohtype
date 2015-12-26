@@ -155,15 +155,15 @@ class NoteMarkerBase(ReferenceBase, Label):
         try:  # set reference only once (notes can be referenced multiple times)
             document.get_reference(target_id, NUMBER)
         except KeyError:
-            if self.get_style('custom_label', document):
+            if self.get_style('custom_label', flowable_target):
                 assert self.custom_label is not None
                 formatted_number = str(self.custom_label)
             else:
-                number_format = self.get_style('number_format', document)
+                number_format = self.get_style('number_format', flowable_target)
                 counter = document.counters.setdefault(Note.category, [])
                 counter.append(self)
                 formatted_number = format_number(len(counter), number_format)
-            label = self.format_label(str(formatted_number), document)
+            label = self.format_label(str(formatted_number), flowable_target)
             document.set_reference(target_id, NUMBER, str(label))
 
     def before_placing(self, container):

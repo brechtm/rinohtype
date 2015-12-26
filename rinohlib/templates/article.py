@@ -8,7 +8,8 @@ from .base import (ContentsPart, DocumentTemplate, DocumentOptions,
 
 
 class TitleFlowables(GroupedFlowables):
-    def flowables(self, document):
+    def flowables(self, container):
+        document = container.document
         meta = document.metadata
         yield Paragraph(meta['title'], style='title')
         if 'subtitle' in meta:
@@ -34,7 +35,8 @@ class ArticleFrontMatter(GroupedFlowables):
     def prepare(self, flowable_target):
         self.toc_section.prepare(flowable_target)
 
-    def flowables(self, document):
+    def flowables(self, container):
+        document = container.document
         meta = document.metadata
         abstract_location = document.options['abstract_location']
         if 'abstract' in meta and abstract_location == FRONT_MATTER:

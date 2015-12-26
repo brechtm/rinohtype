@@ -236,11 +236,11 @@ class Canvas(StringIO):
         self.fonts.setdefault(font_name, font_rsc)
         return font_name, font_rsc
 
-    def show_glyphs(self, left, cursor, span, glyph_and_widths, document):
-        font = span.font(document)
-        size = span.height(document)
-        color = span.get_style('font_color', document)
-        font_name, font_rsc = self.register_font(document, font)
+    def show_glyphs(self, left, cursor, span, glyph_and_widths, container):
+        font = span.font(container)
+        size = span.height(container)
+        color = span.get_style('font_color', container)
+        font_name, font_rsc = self.register_font(container.document, font)
         string = ''
         current_string = ''
         total_width = 0
@@ -275,8 +275,8 @@ class Canvas(StringIO):
             print('BT', file=self)
             print('/{} {} Tf'.format(font_name, size), file=self)
             self.fill_color(color)
-            print('{:f} {:f} Td'.format(left, - (cursor - span.y_offset(document))),
-                  file=self)
+            y_offset = span.y_offset(container)
+            print('{:f} {:f} Td'.format(left, - (cursor - y_offset)), file=self)
             print('[{}] TJ'.format(string), file=self)
             print('ET', file=self)
         return total_width

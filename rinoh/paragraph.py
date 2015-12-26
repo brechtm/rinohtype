@@ -67,7 +67,7 @@ class LineSpacing(object):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
-    def advance(self, line, last_descender, document):
+    def advance(self, line, last_descender, container):
         """Return the distance between the descender of the previous line and
         the baseline of the current line."""
         raise NotImplementedError
@@ -76,10 +76,10 @@ class LineSpacing(object):
 class DefaultSpacing(LineSpacing):
     """The default line spacing as specified by the font."""
 
-    def advance(self, line, last_descender, document):
-        max_line_gap = max(float(glyph_span.span.line_gap(document))
+    def advance(self, line, last_descender, container):
+        max_line_gap = max(float(glyph_span.span.line_gap(container))
                            for glyph_span in line)
-        ascender = max(float(glyph_span.span.ascender(document))
+        ascender = max(float(glyph_span.span.ascender(container))
                        for glyph_span in line)
         return ascender + max_line_gap
 
@@ -96,8 +96,8 @@ class ProportionalSpacing(LineSpacing):
         to obtain the line spacing."""
         self.factor = factor
 
-    def advance(self, line, last_descender, document):
-        max_font_size = max(float(glyph_span.span.height(document))
+    def advance(self, line, last_descender, container):
+        max_font_size = max(float(glyph_span.span.height(container))
                             for glyph_span in line)
         return self.factor * max_font_size + last_descender
 
@@ -126,10 +126,10 @@ class FixedSpacing(LineSpacing):
         self.pitch = float(pitch)
         self.minimum = minimum
 
-    def advance(self, line, last_descender, document):
+    def advance(self, line, last_descender, container):
         advance = self.pitch + last_descender
         if self.minimum is not None:
-            minimum = self.minimum.advance(line, last_descender, document)
+            minimum = self.minimum.advance(line, last_descender, container)
             return max(advance, minimum)
         else:
             return advance
@@ -192,11 +192,10 @@ class ParagraphStyle(FlowableStyle, TextStyle):
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
-    document = container.document
     word = Word()
     for span in spans:
         try:
-            word_to_glyphs = create_to_glyphs(span, document)
+            word_to_glyphs = create_to_glyphs(span, container)
             for chars in span.split(container):
                 glyphs_span = GlyphsSpan(span, word_to_glyphs)
                 glyphs_span += word_to_glyphs(chars)
@@ -256,19 +255,18 @@ class ParagraphBase(Flowable):
         When the end of the container is reached, the rendering state is
         preserved to continue setting the rest of the paragraph when this method
         is called with a new container."""
-        document = container.document
-        indent_first = 0 if state else float(self.get_style('indent_first',
-                                                            document))
+        indent_first = (0 if state
+                        else float(self.get_style('indent_first', container)))
         line_width = float(container.width)
-        line_spacing = self.get_style('line_spacing', document)
-        justification = self.get_style('justify', document)
-        tab_stops = self.get_style('tab_stops', document)
+        line_spacing = self.get_style('line_spacing', container)
+        justification = self.get_style('justify', container)
+        tab_stops = self.get_style('tab_stops', container)
 
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
         if not state:
-            spans = self.text(document).spans(document)
+            spans = self.text(container).spans(container.document)
             state = ParagraphState(spans_to_words(spans, container))
         saved_state = copy(state)
         prev_state = copy(state)
@@ -300,7 +298,7 @@ class ParagraphBase(Flowable):
                 line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
             elif not line.append_word(word, container, descender):
-                for first, second in word.hyphenate(document):
+                for first, second in word.hyphenate(container):
                     if line.append_word(first, container, descender):
                         state.prepend_word(second)  # prepend second part
                         break
@@ -345,15 +343,15 @@ class HyphenatorStore(dict):
 HYPHENATORS = HyphenatorStore()
 
 
-def create_hyphenate(span, document):
-    if not span.get_style('hyphenate', document):
+def create_hyphenate(span, container):
+    if not span.get_style('hyphenate', container):
         def dont_hyphenate(word):
             return
             yield
         return dont_hyphenate
 
-    hyphenator = HYPHENATORS[span.get_style('hyphen_lang', document),
-                             span.get_style('hyphen_chars', document)]
+    hyphenator = HYPHENATORS[span.get_style('hyphen_lang', container),
+                             span.get_style('hyphen_chars', container)]
     def hyphenate(word):
         """Generator yielding possible options for splitting this single-styled
         text (assuming it is a word) across two lines. Items yielded are tuples
@@ -380,13 +378,13 @@ class GlyphAndWidth(object):
 
 
 @lru_cache()
-def create_to_glyphs(span, document):
-    font = span.font(document)
-    scale = span.height(document) / font.units_per_em
-    variant = (SMALL_CAPITAL if span.get_style('small_caps', document)
+def create_to_glyphs(span, flowable_target):
+    font = span.font(flowable_target)
+    scale = span.height(flowable_target) / font.units_per_em
+    variant = (SMALL_CAPITAL if span.get_style('small_caps', flowable_target)
                else None)
-    kerning = span.get_style('kerning', document)
-    ligatures = span.get_style('ligatures', document)
+    kerning = span.get_style('kerning', flowable_target)
+    ligatures = span.get_style('ligatures', flowable_target)
     get_glyph = partial(font.get_glyph, variant=variant)
     # TODO: handle ligatures at span borders
     def word_to_glyphs(word):
@@ -492,14 +490,14 @@ class Word(list):
     def width(self):
         return sum(glyph_span.width for glyph_span, chars in self)
 
-    def hyphenate(self, document):
+    def hyphenate(self, container):
         # TODO: hyphenate mixed-styled words (if lang is the same)
         if len(self) > 1:
             return
         first_glyphs_span, first_chars = self[0]
         span = first_glyphs_span.span
         w2g = first_glyphs_span.word_to_glyphs
-        hyphenate = create_hyphenate(first_glyphs_span.span, document)
+        hyphenate = create_hyphenate(first_glyphs_span.span, container)
         for first, second in hyphenate(str(self)):
             first_gs = GlyphsSpan(span, w2g)
             first_gs += w2g(first)
@@ -621,13 +619,13 @@ class Line(list):
         else:   # abort if the line is empty
             return last_descender
 
-        descender = min(glyph_span.span.descender(document)
+        descender = min(glyph_span.span.descender(container)
                         for glyph_span in self)
         if last_descender is None:
-            advance = max(glyph_span.span.ascender(document)
+            advance = max(glyph_span.span.ascender(container)
                           for glyph_span in self)
         else:
-            advance = line_spacing.advance(self, last_descender, document)
+            advance = line_spacing.advance(self, last_descender, container)
         container.advance(advance)
 
         container.advance(- descender)
@@ -660,7 +658,7 @@ class Line(list):
         for span, glyph_and_widths in group_spans(self):
             try:
                 width = canvas.show_glyphs(left, cursor, span, glyph_and_widths,
-                                           document)
+                                           container)
             except InlineFlowableException:
                 top = cursor - span.ascender(document)
                 span.virtual_container.place_at(container, left, top)
@@ -705,16 +703,16 @@ class AnnotationState(object):
         if annotation is not self.annotation:
             self.place_if_any()
         if annotation:
-            document = self.container.document
+            container = self.container
             if annotation is self.annotation:
                 self.width += width
-                self.ascender = max(self.ascender, span.ascender(document))
-                self.height = max(self.height, span.height(document))
+                self.ascender = max(self.ascender, span.ascender(container))
+                self.height = max(self.height, span.height(container))
             else:
                 self.left = left
                 self.width = width
-                self.ascender = span.ascender(document)
-                self.height = span.height(document)
+                self.ascender = span.ascender(container)
+                self.height = span.height(container)
         self.annotation = annotation
 
     def place_if_any(self):
