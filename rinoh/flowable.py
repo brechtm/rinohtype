@@ -111,9 +111,9 @@ class Flowable(Styled):
         by the `space_below` style attribute."""
         document = container.document
         if not state:
-            container.advance(float(self.get_style('space_above', document)))
-        margin_left = self.get_style('margin_left', document)
-        margin_right = self.get_style('margin_right', document)
+            container.advance(float(self.get_style('space_above', container)))
+        margin_left = self.get_style('margin_left', container)
+        margin_right = self.get_style('margin_right', container)
         right = container.width - margin_right
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
@@ -135,7 +135,7 @@ class Flowable(Styled):
                     margin_container.canvas.annotate(destination, 0, 0,
                                                      margin_container.width,
                                                      None)
-        container.advance(float(self.get_style('space_below', document)), True)
+        container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 
     def render(self, container, descender, state=None):
@@ -227,13 +227,13 @@ class GroupedFlowablesStyle(FlowableStyle):
 class GroupedFlowables(Flowable):
     style_class = GroupedFlowablesStyle
 
-    def flowables(self, document):
+    def flowables(self, container):
         raise NotImplementedError
 
     def render(self, container, descender, state=None, **kwargs):
         max_flowable_width = 0
-        flowables = self.flowables(container.document)
-        item_spacing = self.get_style('flowable_spacing', container.document)
+        flowables = self.flowables(container)
+        item_spacing = self.get_style('flowable_spacing', container)
         state = state or GroupedFlowablesState(flowables)
         try:
             flowable = state.next_flowable()
@@ -265,7 +265,7 @@ class StaticGroupedFlowables(GroupedFlowables):
         flowable.parent = self
         self.children.append(flowable)
 
-    def flowables(self, document):
+    def flowables(self, container):
         return iter(self.children)
 
     def build_document(self, document):
@@ -308,10 +308,10 @@ class LabeledFlowable(Flowable):
     def render(self, container, last_descender, state=None,
                max_label_width=None):
         # TODO: line up baseline of label and first flowable
-        label_column_min_width = self.get_style('label_min_width', container.document)
-        label_column_max_width = self.get_style('label_max_width', container.document)
-        label_spacing = self.get_style('label_spacing', container.document)
-        wrap_label = self.get_style('wrap_label', container.document)
+        label_column_min_width = self.get_style('label_min_width', container)
+        label_column_max_width = self.get_style('label_max_width', container)
+        label_spacing = self.get_style('label_spacing', container)
+        wrap_label = self.get_style('wrap_label', container)
 
         label_width = self.label_width(container)
         max_label_width = max_label_width or label_width
@@ -363,7 +363,7 @@ class LabeledFlowable(Flowable):
 class GroupedLabeledFlowables(GroupedFlowables):
     def _calculate_label_width(self, container):
         return max(flowable.label_width(container)
-                   for flowable in self.flowables(container.document))
+                   for flowable in self.flowables(container))
 
     def render(self, container, descender, state=None):
         if state is None:
@@ -397,7 +397,7 @@ class HorizontallyAlignedFlowable(Flowable):
     style_class = HorizontallyAlignedFlowableStyle
 
     def _align(self, container, width):
-        align = self.get_style('horizontal_align', container.document)
+        align = self.get_style('horizontal_align', container)
         if align == LEFT or width is None:
             return
         left_extra = float(container.width - width)
@@ -452,7 +452,7 @@ class PageBreak(Flowable):
     style_class = PageBreakStyle
 
     def flow(self, container, last_descender, state=None):
-        page_break = self.get_style('page_break', container.document)
+        page_break = self.get_style('page_break', container)
         if page_break and not state:
             top_container = container.chained_ancestor
             rev_page_conts_on_page = \

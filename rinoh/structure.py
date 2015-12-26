@@ -56,10 +56,10 @@ class Section(Referenceable, StaticGroupedFlowables, PageBreak):
     def section(self):
         return self
 
-    def show_in_toc(self, document):
-        show_in_toc = self.get_style('show_in_toc', document)
+    def show_in_toc(self, container):
+        show_in_toc = self.get_style('show_in_toc', container)
         try:
-            parent_show_in_toc = self.parent.show_in_toc(document)
+            parent_show_in_toc = self.parent.show_in_toc(container)
         except AttributeError:
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
@@ -88,8 +88,8 @@ class Heading(NumberedParagraph):
     def prepare(self, flowable_target):
         document = flowable_target.document
         section_id = self.section.get_id(document)
-        numbering_style = self.get_style('number_format', document)
-        if self.get_style('custom_label', document):
+        numbering_style = self.get_style('number_format', flowable_target)
+        if self.get_style('custom_label', flowable_target):
             assert self.custom_label is not None
             label = str(self.custom_label)
         elif numbering_style:
@@ -103,7 +103,7 @@ class Heading(NumberedParagraph):
             section_counter.append(self)
             number = len(section_counter)
             label = format_number(number, numbering_style)
-            separator = self.get_style('number_separator', document)
+            separator = self.get_style('number_separator', flowable_target)
             if separator is not None and self.level > 1:
                 parent_id = self.section.parent.section.get_id(document)
                 parent_ref = document.get_reference(parent_id, NUMBER)
@@ -113,8 +113,8 @@ class Heading(NumberedParagraph):
         document.set_reference(section_id, NUMBER, label)
         document.set_reference(section_id, TITLE, str(self.content))
 
-    def text(self, document):
-        number = self.number(document)
+    def text(self, container):
+        number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
 
     def render(self, container, last_descender, state=None):
@@ -234,9 +234,9 @@ class TableOfContents(GroupedFlowables):
         self.local = local
         self.source = self
 
-    def flowables(self, document):
+    def flowables(self, container):
         def limit_items(items, section):
-            section_id = section.get_id(document)
+            section_id = section.get_id(container.document)
             section_level = section.level
 
             # fast-forward `items` to the first sub-section of `section`
@@ -248,11 +248,12 @@ class TableOfContents(GroupedFlowables):
                     break
                 yield flowable_id, flowable
 
-        depth = self.get_style('depth', document)
+        depth = self.get_style('depth', container)
         items = ((flowable_id, flowable)
-                 for flowable_id, flowable in document.elements.items()
+                 for flowable_id, flowable
+                     in container.document.elements.items()
                  if (isinstance(flowable, Section)
-                     and flowable.show_in_toc(document)
+                     and flowable.show_in_toc(container)
                      and flowable.level <= depth))
         if self.local and self.section:
             items = limit_items(items, self.section)
@@ -276,11 +277,11 @@ class TableOfContentsEntry(ParagraphBase):
     def depth(self):
         return  self.flowable.level
 
-    def text(self, document):
-        flowable_id = self.flowable.get_id(document)
+    def text(self, container):
+        flowable_id = self.flowable.get_id(container.document)
         text = [Reference(flowable_id, type=TITLE), Tab(),
                 Reference(flowable_id, type=PAGE)]
-        if self.get_style('show_number', document):
+        if self.get_style('show_number', container):
             number_ref = Reference(flowable_id, type=NUMBER, quiet=True)
             text = [number_ref, Tab()] + text
         return MixedStyledText(text, parent=self)

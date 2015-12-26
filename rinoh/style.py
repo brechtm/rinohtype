@@ -303,37 +303,38 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         return parent + self.__class__.__name__ + style
 
     @cached
-    def get_style(self, attribute, document=None):
+    def get_style(self, attribute, flowable_target):
         try:
-            return self.get_style_recursive(attribute, document)
+            return self.get_style_recursive(attribute, flowable_target)
         except DefaultStyleException:
             # self.warn('Falling back to default style for ({})'
             #           .format(self.path))
             return self.style_class._get_default(attribute)
 
-    def get_base_style_recursive(self, exception, document):
+    def get_base_style_recursive(self, exception, flowable_target):
+        document = flowable_target.document
         try:
             base_style = document.stylesheet[exception.base_name]
             return base_style.get_value(exception.attribute, document)
         except ParentStyleException:
             return self.parent.get_style_recursive(exception.attribute,
-                                                   document)
+                                                   flowable_target)
         except BaseStyleException as e:
-            return self.get_base_style_recursive(e, document)
+            return self.get_base_style_recursive(e, flowable_target)
 
-    def get_style_recursive(self, attribute, document=None):
+    def get_style_recursive(self, attribute, flowable_target):
         try:
             try:
-                style = self._style(document)
-                return style.get_value(attribute, document)
+                style = self._style(flowable_target.document)
+                return style.get_value(attribute, flowable_target.document)
             except DefaultStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
                     raise ParentStyleException
                 raise
         except ParentStyleException:
-            return self.parent.get_style_recursive(attribute, document)
+            return self.parent.get_style_recursive(attribute, flowable_target)
         except BaseStyleException as exception:
-            return self.get_base_style_recursive(exception, document)
+            return self.get_base_style_recursive(exception, flowable_target)
 
     @cached
     def _style(self, document):

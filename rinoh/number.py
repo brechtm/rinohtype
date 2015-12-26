@@ -95,9 +95,9 @@ class Label(object):
     def __init__(self, custom_label=None):
         self.custom_label = custom_label
 
-    def format_label(self, label, document):
-        prefix = self.get_style('label_prefix', document) or ''
-        suffix = self.get_style('label_suffix', document) or ''
+    def format_label(self, label, container):
+        prefix = self.get_style('label_prefix', container) or ''
+        suffix = self.get_style('label_suffix', container) or ''
         return prefix + label + suffix
 
 
@@ -122,11 +122,12 @@ class NumberedParagraph(ParagraphBase, Label):
     def referenceable(self):
         raise NotImplementedError
 
-    def number(self, document):
+    def number(self, container):
+        document = container.document
         target_id = self.referenceable.get_id(document)
         formatted_number = document.get_reference(target_id, NUMBER)
         if formatted_number:
-            return self.format_label(formatted_number, document)
+            return self.format_label(formatted_number, container)
         else:
             return ''
 

@@ -28,8 +28,8 @@ class Line(Styled):
 
     def render(self, container, offset=0):
         canvas, document = container.canvas, container.document
-        stroke_width = self.get_style('stroke_width', document)
-        stroke_color = self.get_style('stroke_color', document)
+        stroke_width = self.get_style('stroke_width', container)
+        stroke_color = self.get_style('stroke_color', container)
         if not (stroke_width and stroke_color):
             return
         with canvas.save_state():
@@ -59,9 +59,9 @@ class Polygon(Shape):
 
     def render(self, container, offset=0):
         canvas, document = container.canvas, container.document
-        stroke_width = self.get_style('stroke_width', document)
-        stroke_color = self.get_style('stroke_color', document)
-        fill_color = self.get_style('fill_color', document)
+        stroke_width = self.get_style('stroke_width', container)
+        stroke_color = self.get_style('stroke_color', container)
+        fill_color = self.get_style('fill_color', container)
         if not ((stroke_width and stroke_color) or fill_color):
             return
         with canvas.save_state():

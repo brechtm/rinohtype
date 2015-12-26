@@ -34,10 +34,10 @@ class Framed(Flowable):
         document = container.document
         draw_top = state is None or state.initial
         try:
-            container.advance(self.get_style('padding_top', document))
-            left = self.get_style('padding_left', document)
-            right = container.width - self.get_style('padding_right', document)
-            padding_bottom = float(self.get_style('padding_bottom', document))
+            container.advance(self.get_style('padding_top', container))
+            left = self.get_style('padding_left', container)
+            right = container.width - self.get_style('padding_right', container)
+            padding_bottom = float(self.get_style('padding_bottom', container))
             with InlineDownExpandingContainer('PADDING', container, left=left,
                     right=right, extra_space_below=padding_bottom) as pad_cntnr:
                 _, descender = self.flowable.flow(pad_cntnr, descender, state=state)
