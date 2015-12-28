@@ -10,10 +10,9 @@ from itertools import count, repeat
 
 from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
+from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .flowable import PageBreak, PageBreakState
-from .layout import EndOfContainer
 from .number import NumberStyle, Label, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
@@ -32,14 +31,13 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
            'HorizontalRule', 'HorizontalRuleStyle']
 
 
-class SectionSytyle(GroupedFlowablesStyle):
-    attributes = {'show_in_toc': True,
-                  'page_break': False}    # False, True, LEFT, RIGHT
+class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
+    attributes = {'show_in_toc': True}
 
 
-class Section(Referenceable, StaticGroupedFlowables):
+class Section(Referenceable, StaticGroupedFlowables, PageBreak):
     category = 'Section'
-    style_class = SectionSytyle
+    style_class = SectionStyle
 
     def __init__(self, flowables, id=None, style=None, parent=None):
         super().__init__(flowables, id=id, style=style, parent=parent)
@@ -59,13 +57,6 @@ class Section(Referenceable, StaticGroupedFlowables):
     def section(self):
         return self
 
-    def flowables(self, document):
-        new_page = self.get_style('page_break', document)
-        if new_page:
-            yield PageBreak(new_page)
-        for flowable in super().flowables(document):
-            yield flowable
-
     def show_in_toc(self, document):
         show_in_toc = self.get_style('show_in_toc', document)
         try:
@@ -73,19 +64,6 @@ class Section(Referenceable, StaticGroupedFlowables):
         except AttributeError:
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
-
-    def render(self, container, descender, state=None, **kwargs):
-        set_section = True
-        try:
-            return super().render(container, descender, state=state, **kwargs)
-        except EndOfContainer as eoc:
-            first_flowable_state = eoc.flowable_state.first_flowable_state
-            set_section = not isinstance(first_flowable_state, PageBreakState)
-            raise eoc
-        finally:
-            if set_section:
-                container.page.set_current_section(self.section, state is None)
-
 
 
 class HeadingStyle(NumberedParagraphStyle):
