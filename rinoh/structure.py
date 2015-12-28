@@ -170,18 +170,12 @@ class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
-class DefinitionList(GroupedFlowables):
-    def __init__(self, items, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        self.items = items
-        for term, definition in items:
-            term.parent = self
-            definition.parent = self
-
-    def flowables(self, document):
-        for (term, definition) in self.items:
-            yield term
-            yield definition
+class DefinitionList(StaticGroupedFlowables):
+    def __init__(self, term_and_definition_pairs, id=None, style=None,
+                 parent=None):
+        flowables = [item for term, definition in term_and_definition_pairs
+                     for item in (term, definition)]
+        super().__init__(flowables, id=id, style=style, parent=parent)
 
 
 class DefinitionTerm(StaticGroupedFlowables):
