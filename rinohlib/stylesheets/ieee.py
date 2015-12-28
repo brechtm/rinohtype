@@ -223,10 +223,14 @@ styles('sidebar subtitle',
        space_above=2*PT,
        space_below=2*PT)
 
-styles('list item number',
+styles('bulleted list item label',
        base='default',
        indent_first=0,
        justify=RIGHT)
+
+styles('enumerated list item label',
+       base='bulleted list item label',
+       label_suffix='.')
 
 styles('enumerated list',
        space_above=5*PT,

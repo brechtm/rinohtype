@@ -6,14 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from itertools import count, repeat
-
 from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .number import NumberStyle, Label, format_number
+from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
 from .reference import Referenceable, Reference
@@ -24,8 +22,9 @@ from .text import SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
 
 
-__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem', 'FieldList',
-           'DefinitionList', 'DefinitionTerm', 'Definition',
+__all__ = ['Section', 'Heading',
+           'ListStyle', 'List', 'ListItem', 'ListItemLabel',
+           'FieldList', 'DefinitionList', 'DefinitionTerm', 'Definition',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -131,27 +130,40 @@ class ListStyle(GroupedFlowablesStyle, NumberStyle):
                   'bullet': SingleStyledText('\N{BULLET}')}
 
 
-class List(GroupedLabeledFlowables, Label):
+class List(StaticGroupedFlowables, Label):
     style_class = ListStyle
 
-    def __init__(self, items, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        self.items = items
-
-    def flowables(self, document):
-        if self.get_style('ordered', document):
-            number_format = self.get_style('number_format', document)
-            numbers = (format_number(i, number_format) for i in count(1))
-        else:
-            numbers = repeat(self.get_style('bullet', document))
-        for number, item in zip(numbers, self.items):
-            label = Paragraph(self.format_label(number, document))
-            flowable = StaticGroupedFlowables(item)
-            yield ListItem(label, flowable, parent=self)
+    def __init__(self, flowables, id=None, style=None, parent=None):
+        items = [ListItem(i + 1, StaticGroupedFlowables(flowable), parent=self)
+                 for i, flowable in enumerate(flowables)]
+        super().__init__(items, id=id, style=style, parent=parent)
 
 
 class ListItem(LabeledFlowable):
+    def __init__(self, index, flowable, id=None, style=None, parent=None):
+        label = ListItemLabel(index)
+        super().__init__(label, flowable, id=id, style=style, parent=parent)
+
+
+class ListItemLabelStyle(ParagraphStyle, LabelStyle):
     pass
+
+
+class ListItemLabel(ParagraphBase, Label):
+    style_class = ListItemLabelStyle
+
+    def __init__(self, index, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.index = index
+
+    def text(self, document):
+        list = self.parent.parent
+        if list.get_style('ordered', document):
+            number_format = list.get_style('number_format', document)
+            label = format_number(self.index, number_format)
+        else:
+            label = list.get_style('bullet', document)
+        return MixedStyledText(self.format_label(label, document), parent=self)
 
 
 class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):
