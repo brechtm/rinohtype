@@ -655,7 +655,7 @@ class Raw(ReStructuredTextBodyNode):
     def build_flowable(self):
         if self['format'] == 'pdf':   # rst2pdf
             if self.text == 'PageBreak':
-                return rt.PageBreak()
+                return rt.PageBreak(style=rt.PageBreakStyle(page_break=True))
             return rt.WarnFlowable("Unsupported raw pdf option: '{}'"
                                    .format(self.text))
         return rt.DummyFlowable()

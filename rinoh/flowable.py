@@ -35,7 +35,8 @@ __all__ = ['Flowable', 'FlowableStyle',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
            'HorizontallyAlignedFlowableState',
-           'Float', 'PageBreak']
+           'Float',
+           'PageBreak', 'PageBreakStyle']
 
 
 class FlowableStyle(Style):
@@ -154,31 +155,6 @@ class DummyFlowable(Flowable):
 
     def flow(self, container, last_descender, state=None):
         return 0, last_descender
-
-
-class PageBreakState(FlowableState):
-    def __copy__(self):
-        return self
-
-
-class PageBreak(DummyFlowable):
-    def __init__(self, break_type):
-        self.break_type = break_type
-
-    def flow(self, container, last_descender, state=None):
-        top_container = container.chained_ancestor
-        rev_page_conts_on_page = takewhile(lambda c: c.page is not container.page,
-                                      reversed(top_container.chain.containers))
-        first_container_on_page = last(rev_page_conts_on_page)
-
-        next_page_type = LEFT if container.page.number % 2 else RIGHT
-        if (next_page_type == self.break_type
-            or (state is None
-                and top_container is not first_container_on_page
-                and top_container.cursor > 0)):
-            raise EndOfContainer(PageBreakState(), page_break=True)
-        else:
-            return super().flow(container, last_descender)
 
 
 class WarnFlowable(DummyFlowable):
@@ -466,3 +442,30 @@ class Float(Flowable):
             container.document.floats.add(self)
             container.page.check_overflow()
         return 0, last_descender
+
+
+class PageBreakStyle(FlowableStyle):
+    attributes = {'page_break': False}    # False, True (any), LEFT, RIGHT
+
+
+class PageBreak(Flowable):
+    style_class = PageBreakStyle
+
+    def flow(self, container, last_descender, state=None):
+        page_break = self.get_style('page_break', container.document)
+        if page_break and not state:
+            top_container = container.chained_ancestor
+            rev_page_conts_on_page = \
+                takewhile(lambda c: c.page is not container.page,
+                          reversed(top_container.chain.containers))
+            first_container_on_page = last(rev_page_conts_on_page)
+
+            next_page_type = LEFT if container.page.number % 2 else RIGHT
+            if (next_page_type == page_break
+                or (top_container is not first_container_on_page
+                    and top_container.cursor > 0)):
+                raise EndOfContainer(page_break=True)
+        return super().flow(container, last_descender, state)
+
+    def render(self, container, descender, state=None):
+        return 0, descender
