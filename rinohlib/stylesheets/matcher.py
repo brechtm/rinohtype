@@ -85,6 +85,8 @@ matcher('sidebar subtitle', Framed.like('sidebar')
                             / GroupedFlowables
                             / Paragraph.like('subtitle'))
 
+matcher('list item label', ListItemLabel)
+
 matcher('enumerated list', List.like('enumerated'))
 
 matcher('enumerated list item label', List.like('enumerated')
@@ -101,7 +103,7 @@ matcher('nested bulleted list', ListItem / List.like('bulleted'))
 
 matcher('list item body', ListItem / GroupedFlowables)
 
-matcher('list item paragraph', ListItem / GroupedFlowables / Paragraph)
+matcher('list item paragraph', ListItem / ... / Paragraph)
 
 matcher('definition list', DefinitionList)
 

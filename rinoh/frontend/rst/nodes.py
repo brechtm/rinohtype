@@ -409,22 +409,21 @@ class Target(ReStructuredTextBodyNode, ReStructuredTextInlineNode):
 class Enumerated_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         # TODO: handle different numbering styles
-        return rt.List([item.process() for item in self.list_item],
+        return rt.List([item.flowable() for item in self.list_item],
                        style='enumerated')
 
 
 class Bullet_List(ReStructuredTextBodyNode):
     def build_flowable(self):
         try:
-            return rt.List([item.process() for item in self.list_item],
+            return rt.List([item.flowable() for item in self.list_item],
                            style='bulleted')
         except AttributeError:  # empty list
             return rt.DummyFlowable()
 
 
-class List_Item(ReStructuredTextBodySubNode):
-    def process(self):
-        return self.children_flowables()
+class List_Item(ReStructuredTextGroupingNode):
+    pass
 
 
 class Definition_List(ReStructuredTextBodyNode):

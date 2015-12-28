@@ -17,8 +17,7 @@ from ...text import Superscript
 
 from ..xml.elementtree import Parser
 
-from . import (DITANode, DITABodyNode, DITABodySubNode, DITAInlineNode,
-               DITAGroupingNode, DITADummyNode)
+from . import DITABodyNode, DITAInlineNode, DITAGroupingNode, DITADummyNode
 
 from rinohlib.templates.base import TableOfContentsSection
 
@@ -200,7 +199,7 @@ class Steps(DITABodyNode):
                 yield flowable
         except AttributeError:
             pass
-        yield styleds.List([step.process() for step in self.step],
+        yield styleds.List([step.flowable() for step in self.step],
                            style=self.style)
 
 
@@ -213,9 +212,8 @@ class StepSection(DITABodyNode):
         return styleds.Paragraph(self.process_content())
 
 
-class Step(DITABodySubNode):
-    def process(self):
-        return self.children_flowables()
+class Step(DITAGroupingNode):
+    pass
 
 
 class SubSteps(DITABodyNode):
@@ -227,7 +225,7 @@ class SubSteps(DITABodyNode):
                 yield flowable
         except AttributeError:
             pass
-        yield styleds.List([step.process() for step in self.substep],
+        yield styleds.List([step.flowable() for step in self.substep],
                            style=self.style)
 
 
@@ -339,7 +337,7 @@ class Image(DITABodyNode, DITAInlineNode):
 
 class UL(DITABodyNode):
     def build_flowable(self):
-        return styleds.List([list(item.flowables()) for item in self.li],
+        return styleds.List([item.flowable() for item in self.li],
                             style='enumerated')
 
 
@@ -353,7 +351,7 @@ class LI(DITAGroupingNode):
 
 class SL(DITABodyNode):
     def build_flowable(self):
-        return styleds.List([list(item.flowables()) for item in self.sli],
+        return styleds.List([item.flowable() for item in self.sli],
                             style='simple')
 
 
