@@ -11,7 +11,7 @@ import re
 from ... import styleds
 from ...annotation import HyperLink, NamedDestination
 
-from . import EPubInlineNode, EPubBodyNode, EPubBodySubNode, EPubGroupingNode
+from . import EPubInlineNode, EPubBodyNode, EPubGroupingNode
 
 
 class Body(EPubBodyNode):
@@ -158,19 +158,18 @@ class A(EPubBodyNode, EPubInlineNode):
 
 class OL(EPubBodyNode):
     def build_flowable(self):
-        return styleds.List([item.process() for item in self.li],
+        return styleds.List([item.flowable() for item in self.li],
                             style='enumerated')
 
 
 class UL(EPubBodyNode):
     def build_flowable(self):
-        return styleds.List([item.process() for item in self.li],
+        return styleds.List([item.flowable() for item in self.li],
                             style='bulleted')
 
 
-class LI(EPubBodySubNode):
-    def process(self):
-        return self.children_flowables()
+class LI(EPubGroupingNode):
+    pass
 
 
 class DL(EPubBodyNode):

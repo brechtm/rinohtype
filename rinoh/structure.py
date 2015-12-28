@@ -134,7 +134,7 @@ class List(StaticGroupedFlowables, Label):
     style_class = ListStyle
 
     def __init__(self, flowables, id=None, style=None, parent=None):
-        items = [ListItem(i + 1, StaticGroupedFlowables(flowable), parent=self)
+        items = [ListItem(i + 1, flowable, parent=self)
                  for i, flowable in enumerate(flowables)]
         super().__init__(items, id=id, style=style, parent=parent)
 

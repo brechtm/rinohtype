@@ -211,13 +211,16 @@ stylesheet('sidebar subtitle',
        space_above=2*PT,
        space_below=2*PT)
 
-stylesheet('bulleted list item label',
+stylesheet('list item label',
        base='default',
        indent_first=0,
        justify=RIGHT)
 
+stylesheet('bulleted list item label',
+       base='list item label')
+
 stylesheet('enumerated list item label',
-       base='bulleted list item label',
+       base='list item label',
        label_suffix='.')
 
 stylesheet('enumerated list',

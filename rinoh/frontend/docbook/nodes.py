@@ -7,7 +7,7 @@
 
 
 from . import (DocBookNode, DocBookInlineNode, DocBookBodyNode,
-               DocBookBodySubNode, DocBookGroupingNode)
+               DocBookGroupingNode)
 
 from ...reference import TITLE, PAGE
 
@@ -186,7 +186,7 @@ class ListBase(DocBookBodyNode):
                 break
             for flowable in child.flowables():
                 yield flowable
-        yield styleds.List([item.process() for item in self.listitem],
+        yield styleds.List([item.flowable() for item in self.listitem],
                            style=self.style)
 
 
@@ -198,9 +198,8 @@ class ItemizedList(ListBase):
     style = 'bulleted'
 
 
-class ListItem(DocBookBodySubNode):
-    def process(self):
-        return self.children_flowables()
+class ListItem(DocBookGroupingNode):
+    pass
 
 
 class XRef(DocBookBodyNode):
