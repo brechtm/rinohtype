@@ -54,10 +54,6 @@ class ArticlePart(ContentsPart):
         super().__init__(document_section)
         self.title_flowables = TitleFlowables()
 
-    def prepare(self):
-        self.front_matter.prepare(self.document)
-        super().prepare()
-
     def flowables(self):
         yield self.front_matter
         for flowable in super().flowables():
