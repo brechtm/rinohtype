@@ -205,7 +205,7 @@ class ClassSelectorBase(Selector):
                 return None
             attributes_match += 1
 
-        return Specificity(style_match, attributes_match, class_match)
+        return Specificity(0, style_match, attributes_match, class_match)
 
 
 class ClassSelector(ClassSelectorBase):
@@ -467,7 +467,8 @@ class VarAttribute(VarBase):
         return getattr(self.parent.get(document), self.attribute_name)
 
 
-class Specificity(namedtuple('Specificity', ['style', 'attributes', 'klass'])):
+class Specificity(namedtuple('Specificity',
+                             ['location', 'style', 'attributes', 'klass'])):
     def __add__(self, other):
         return self.__class__(*(a + b for a, b in zip(self, other)))
 
@@ -487,6 +488,6 @@ class Match(object):
         return bool(self.specificity)
 
 
-ZERO_SPECIFICITY = Specificity(0, 0, 0)
+ZERO_SPECIFICITY = Specificity(0, 0, 0, 0)
 
 NO_MATCH = Match(None, ZERO_SPECIFICITY)
