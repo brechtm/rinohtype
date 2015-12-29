@@ -230,17 +230,6 @@ class GroupedFlowables(Flowable):
     def flowables(self, document):
         raise NotImplementedError
 
-    def build_document(self, document):
-        super().build_document(document)
-        for flowable in self.flowables(document):
-            flowable.build_document(document)
-
-    def prepare(self, document):
-        super().prepare(document)
-        for flowable in self.flowables(document):
-            flowable.parent = self
-            flowable.prepare(document)
-
     def render(self, container, descender, state=None, **kwargs):
         max_flowable_width = 0
         flowables = self.flowables(container.document)
@@ -278,6 +267,17 @@ class StaticGroupedFlowables(GroupedFlowables):
 
     def flowables(self, document):
         return iter(self.children)
+
+    def build_document(self, document):
+        super().build_document(document)
+        for flowable in self.flowables(document):
+            flowable.build_document(document)
+
+    def prepare(self, document):
+        super().prepare(document)
+        for flowable in self.flowables(document):
+            flowable.parent = self
+            flowable.prepare(document)
 
 
 class LabeledFlowableStyle(FlowableStyle):
