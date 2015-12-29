@@ -179,7 +179,7 @@ class Selector(object):
             selectors = self.selectors + (other, )
         return ContextSelector(*selectors)
 
-    def match(self, styled):
+    def match(self, styled, container):
         raise NotImplementedError
 
 
@@ -188,7 +188,7 @@ class ClassSelectorBase(Selector):
     def selectors(self):
         return (self, )
 
-    def match(self, styled):
+    def match(self, styled, container):
         if not isinstance(styled, self.cls):
             return None
         class_match = 2 if type(styled) == self.cls else 1
@@ -229,7 +229,7 @@ class ContextSelector(Selector):
     def style_name(self):
         return self.selectors[-1].style_name
 
-    def match(self, styled):
+    def match(self, styled, container):
         def styled_and_parents(element):
             while element is not None:
                 yield element
@@ -244,13 +244,13 @@ class ContextSelector(Selector):
                 element = next(elements)                # NoMoreParentElement
                 if selector is Ellipsis:
                     selector = next(selectors)          # StopIteration
-                    while not selector.match(element):
+                    while not selector.match(element, container):
                         element = next(elements)        # NoMoreParentElement
             except NoMoreParentElement:
                 return None
             except StopIteration:
                 break
-            score = selector.match(element)
+            score = selector.match(element, container)
             if not score:
                 return None
             total_score += score
@@ -325,7 +325,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     def get_style_recursive(self, attribute, flowable_target):
         try:
             try:
-                style = self._style(flowable_target.document)
+                style = self._style(flowable_target)
                 return style.get_value(attribute, flowable_target.document)
             except DefaultStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
@@ -337,11 +337,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.get_base_style_recursive(exception, flowable_target)
 
     @cached
-    def _style(self, document):
+    def _style(self, container):
         if isinstance(self.style, Style):
             return self.style
         else:
-            return document.stylesheet.find_style(self)
+            return container.document.stylesheet.find_style(self, container)
         raise DefaultStyleException
 
 
@@ -358,13 +358,13 @@ class StyledMatcher(dict):
         style_selectors = cls_selectors.setdefault(selector.style_name, {})
         self.by_name[name] = style_selectors[name] = selector
 
-    def match(self, styled):
+    def match(self, styled, container):
         for cls in type(styled).__mro__:
             if cls not in self:
                 continue
             for style in set((styled.style, None)):
                 for name, selector in self[cls].get(style, {}).items():
-                    specificity = selector.match(styled)
+                    specificity = selector.match(styled, container)
                     if specificity:
                         yield Match(name, specificity)
 
@@ -419,15 +419,15 @@ class StyleSheet(OrderedDict):
         except KeyError:
             return self.base.get_variable(name)
 
-    def find_matches(self, styled):
-        for match in self.matcher.match(styled):
+    def find_matches(self, styled, container):
+        for match in self.matcher.match(styled, container):
             yield match
         if self.base is not None:
             for match in self.base.find_matches(styled):
                 yield match
 
-    def find_style(self, styled):
-        matches = sorted(self.find_matches(styled),
+    def find_style(self, styled, container):
+        matches = sorted(self.find_matches(styled, container),
                          key=attrgetter('specificity'), reverse=True)
         for match in matches:
             try:
