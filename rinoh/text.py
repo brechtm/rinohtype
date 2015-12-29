@@ -139,7 +139,7 @@ class StyledText(Styled):
     def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
         try:
-            style = self._style(container.document)
+            style = self._style(container)
             return style.get_value('position', container) is not None
         except StyleException:
             return False
@@ -165,7 +165,7 @@ class StyledText(Styled):
         offset = (self.parent.y_offset(container)\
                   if hasattr(self.parent, 'y_offset') else 0)
         if self.is_script(container):
-            style = self._style(container.document)
+            style = self._style(container)
             offset += (self.parent.height(container) *
                        self.position[style.position])
             # The Y offset should only change once for the nesting level
