@@ -30,8 +30,9 @@ from itertools import count
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT
-from .layout import FlowableTarget, Container, ReflowRequired
+from .layout import Container, ReflowRequired
 from .number import NUMBER
+from .style import DocumentLocationType, Specificity
 from .util import NotImplementedAttribute
 
 
@@ -132,7 +133,7 @@ class BackendDocumentMetadata(object):
         return instance.backend_document.set_metadata(self.name, value)
 
 
-class DocumentPart(object):
+class DocumentPart(object, metaclass=DocumentLocationType):
     end_at = LEFT
 
     def __init__(self, document_section):
@@ -180,8 +181,15 @@ class DocumentPart(object):
         contains a container associated with `chain`."""
         raise NotImplementedError
 
+    @classmethod
+    def match(cls, styled, container):
+        if isinstance(container.document_part, cls):
+            return Specificity(1, 0, 0, 0)
+        else:
+            return None
 
-class DocumentSection(object):
+
+class DocumentSection(object, metaclass=DocumentLocationType):
     page_number_format = NUMBER
     parts = NotImplementedAttribute()
 
@@ -214,6 +222,13 @@ class DocumentSection(object):
             section_page_count += part_page_count
         self.previous_number_of_pages = section_page_count
         return section_page_count
+
+    @classmethod
+    def match(cls, styled, container):
+        if isinstance(container.document_part.document_section, cls):
+            return Specificity(1, 0, 0, 0)
+        else:
+            return None
 
 
 class Document(object):
