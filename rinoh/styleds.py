@@ -22,7 +22,7 @@ from .structure import Header, Footer
 from .structure import HorizontalRule
 from .structure import List, ListItem, ListItemLabel, FieldList
 from .structure import DefinitionList, DefinitionTerm, Definition
-from .structure import Section, Heading
+from .structure import Section, TableOfContentsSection, Heading
 from .structure import TableOfContents, TableOfContentsEntry
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody
 from .table import TableRow, TableCell, TableCellBackground, TableCellBorder
