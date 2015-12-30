@@ -261,6 +261,36 @@ class NoMoreParentElement(StopIteration):
     """The top-level element in the document element tree has been reached"""
 
 
+class DocumentLocationType(type):
+    def __gt__(cls, selector):
+        return DocumentLocationSelector(cls, selector)
+
+    def match(self, styled, container):
+        raise NotImplementedError
+
+
+class DocumentLocationSelector(object):
+    def __init__(self, location_class, selector):
+        self.location_class = location_class
+        self.selector = selector
+
+    @property
+    def cls(self):
+        return self.selector.cls
+
+    @property
+    def style_name(self):
+        return self.selector.style_name
+
+    def match(self, styled, container):
+        location_match = self.location_class.match(styled, container)
+        if location_match:
+            match = self.selector.match(styled, container)
+            if match:
+                return location_match + match
+        return None
+
+
 class StyledMeta(type, ClassSelectorBase):
     attributes = {}
     style_name = None
