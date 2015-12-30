@@ -26,7 +26,7 @@ __all__ = ['Section', 'Heading',
            'ListStyle', 'List', 'ListItem', 'ListItemLabel',
            'FieldList', 'DefinitionList', 'DefinitionTerm', 'Definition',
            'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
-           'TableOfContentsStyle', 'TableOfContents', 'TableOfContentsEntry',
+           'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents','TableOfContentsEntry',
            'HorizontalRule', 'HorizontalRuleStyle']
 
 
@@ -223,6 +223,17 @@ class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
+
+
+class TableOfContentsSection(Section):
+    def __init__(self):
+        super().__init__([Heading('Table of Contents', style='unnumbered'),
+                          TableOfContents()],
+                         style='table of contents')
+
+    def prepare(self, flowable_target):
+        self.id = flowable_target.document.metadata.get('toc_id')
+        super().prepare(flowable_target)
 
 
 class TableOfContents(GroupedFlowables):

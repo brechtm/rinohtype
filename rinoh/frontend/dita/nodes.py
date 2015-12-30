@@ -13,13 +13,12 @@ import unicodedata
 from ... import styleds
 from ...dimension import DimensionUnit, PT, INCH, CM, MM, PICA
 from ...reference import TITLE, PAGE
+from ...structure import TableOfContentsSection
 from ...text import Superscript
 
 from ..xml.elementtree import Parser
 
 from . import DITABodyNode, DITAInlineNode, DITAGroupingNode, DITADummyNode
-
-from rinohlib.templates.base import TableOfContentsSection
 
 
 class Map(DITABodyNode):
