@@ -30,7 +30,7 @@ from itertools import count
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT
-from .layout import Container, ReflowRequired
+from .layout import Container, ReflowRequired, Chain
 from .number import NUMBER
 from .style import DocumentLocationType, Specificity
 from .util import NotImplementedAttribute
@@ -134,12 +134,20 @@ class BackendDocumentMetadata(object):
 
 
 class DocumentPart(object, metaclass=DocumentLocationType):
+    """Part of a :class:`DocumentSection` that has a specific page template."""
+
+    page_template = None
+    header = None
+    footer = None
     end_at = LEFT
 
     def __init__(self, document_section):
         self.document_section = document_section
         self.flowable_targets = []
         self.pages = []
+        self.chain = Chain(self)
+        for flowable in self.flowables():
+            self.chain << flowable
 
     @property
     def document(self):
@@ -148,6 +156,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     @property
     def number_of_pages(self):
         return len(self.pages)
+
+    def flowables(self):
+        raise NotImplementedError
 
     def prepare(self):
         for flowable_target in self.flowable_targets:
@@ -173,13 +184,14 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.pages.append(page)
 
     def first_page(self):
-        raise NotImplementedError
+        return self.new_page([self.chain])
 
-    def new_page(self, chains):
+    def new_page(self, chains, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        raise NotImplementedError
+        chain, = chains
+        return self.page_template(self, chain, **kwargs)
 
     @classmethod
     def match(cls, styled, container):
@@ -190,6 +202,8 @@ class DocumentPart(object, metaclass=DocumentLocationType):
 
 
 class DocumentSection(object, metaclass=DocumentLocationType):
+    """A section of a :class:`Document` that has its own page numbering."""
+
     page_number_format = NUMBER
     parts = NotImplementedAttribute()
 
