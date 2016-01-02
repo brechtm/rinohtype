@@ -7,8 +7,7 @@ from rinoh.layout import (Container, ChainedContainer, FootnoteContainer, Chain,
 from rinoh.paper import Paper, A4
 from rinoh.reference import (Variable, PAGE_NUMBER, SECTION_NUMBER,
                              SECTION_TITLE, NUMBER_OF_PAGES)
-from rinoh.structure import (Section, Heading, TableOfContents, Header, Footer,
-                             HorizontalRule)
+from rinoh.structure import Header, Footer, HorizontalRule
 from rinoh.style import StyleSheet
 from rinoh.text import Tab, MixedStyledText
 from rinoh.util import (NotImplementedAttribute, NamedDescriptor,
@@ -24,8 +23,10 @@ class SimplePage(Page):
     header_footer_distance = 14*PT
     column_spacing = 1*CM
 
-    def __init__(self, document_part, chain, paper, orientation,
-                 title_flowables=None, header=True, footer=True):
+    def __init__(self, document_part, chain, title_flowables=None,
+                 header=True, footer=True):
+        paper = document_part.document.options['page_size']
+        orientation = document_part.document.options['page_orientation']
         super().__init__(document_part, paper, orientation)
         document = document_part.document
         h_margin = document.options['page_horizontal_margin']
@@ -81,29 +82,9 @@ class SimplePage(Page):
 # document sections & parts
 # ----------------------------------------------------------------------------
 
-class BookPart(DocumentPart):
-    header = None
-    footer = None
+class ContentsPart(DocumentPart):
+    page_template = SimplePage
 
-    def __init__(self, document_section):
-        super().__init__(document_section)
-        self.chain = Chain(self)
-        for flowable in self.flowables():
-            self.chain << flowable
-
-    def flowables(self):
-        raise NotImplementedError
-
-    def first_page(self):
-        return self.new_page([self.chain])
-
-    def new_page(self, chains, **kwargs):
-        chain, = chains
-        return SimplePage(self, chain, self.document.options['page_size'],
-                          self.document.options['page_orientation'], **kwargs)
-
-
-class ContentsPart(BookPart):
     @property
     def header(self):
         return self.document.options['header_text']

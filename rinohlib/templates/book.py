@@ -6,7 +6,7 @@ from rinoh.paragraph import Paragraph
 from rinoh.reference import Variable, PAGE_NUMBER
 from rinoh.text import MixedStyledText, Tab
 
-from .base import (DocumentTemplate, DocumentOptions, Option, BookPart,
+from .base import (SimplePage, DocumentTemplate, DocumentOptions, Option,
                    ContentsPart)
 
 
@@ -14,7 +14,9 @@ from .base import (DocumentTemplate, DocumentOptions, Option, BookPart,
 # ----------------------------------------------------------------------------
 
 class TitlePage(Page):
-    def __init__(self, document_part, paper, orientation):
+    def __init__(self, document_part):
+        paper = document_part.document.options['page_size']
+        orientation = document_part.document.options['page_orientation']
         super().__init__(document_part, paper, orientation)
         options = self.document.options
         h_margin = options['page_horizontal_margin']
@@ -48,15 +50,20 @@ class TitlePage(Page):
 # ----------------------------------------------------------------------------
 
 class TitlePart(DocumentPart):
+    page_template = TitlePage
+
+    def flowables(self):
+        return []
+
     def first_page(self):
-        return TitlePage(self, self.document.options['page_size'],
-                         self.document.options['page_orientation'])
+        return self.page_template(self)
 
     def new_page(self, chains):
         assert False, 'TitlePart can consist of only one page!'
 
 
-class FrontMatterPart(BookPart):
+class FrontMatterPart(DocumentPart):
+    page_template = SimplePage
     footer = Tab() + Variable(PAGE_NUMBER)
 
     def __init__(self, document_section, flowables):
