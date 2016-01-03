@@ -7,6 +7,7 @@
 
 
 from docutils.core import publish_doctree
+from docutils.parsers.rst import Parser as ReStructuredTextParser
 
 from ...text import MixedStyledText
 
@@ -14,13 +15,13 @@ from .. import (TreeNode, TreeNodeMeta, InlineNode, BodyNode, BodySubNode,
                 GroupingNode, DummyNode)
 
 
-__all__ = ['ReStructuredTextNode', 'ReStructuredTextInlineNode',
-           'ReStructuredTextBodyNode', 'ReStructuredTextBodySubNode',
-           'ReStructuredTextGroupingNode', 'ReStructuredTextDummyNode',
-           'ReStructuredTextParser']
+__all__ = ['DocutilsNode', 'DocutilsInlineNode',
+           'DocutilsBodyNode', 'DocutilsBodySubNode',
+           'DocutilsGroupingNode', 'DocutilsDummyNode',
+           'ReStructuredTextReader']
 
 
-class ReStructuredTextNode(TreeNode, metaclass=TreeNodeMeta):
+class DocutilsNode(TreeNode, metaclass=TreeNodeMeta):
     @staticmethod
     def node_tag_name(node):
         return node.tagname
@@ -64,7 +65,7 @@ class ReStructuredTextNode(TreeNode, metaclass=TreeNodeMeta):
                                style=style)
 
 
-class ReStructuredTextInlineNode(ReStructuredTextNode, InlineNode):
+class DocutilsInlineNode(DocutilsNode, InlineNode):
     @property
     def text(self):
         return super().text.replace('\n', ' ')
@@ -78,7 +79,7 @@ class ReStructuredTextInlineNode(ReStructuredTextNode, InlineNode):
         return styled_text
 
 
-class ReStructuredTextBodyNode(ReStructuredTextNode, BodyNode):
+class DocutilsBodyNode(DocutilsNode, BodyNode):
     def flowables(self):
         classes = self.get('classes')
         for flowable in super().flowables():
@@ -86,25 +87,28 @@ class ReStructuredTextBodyNode(ReStructuredTextNode, BodyNode):
             yield flowable
 
 
-class ReStructuredTextBodySubNode(ReStructuredTextNode, BodySubNode):
+class DocutilsBodySubNode(DocutilsNode, BodySubNode):
     pass
 
 
-class ReStructuredTextGroupingNode(ReStructuredTextBodyNode, GroupingNode):
+class DocutilsGroupingNode(DocutilsBodyNode, GroupingNode):
     pass
 
 
-class ReStructuredTextDummyNode(ReStructuredTextNode, DummyNode):
+class DocutilsDummyNode(DocutilsNode, DummyNode):
     pass
 
 
 from . import nodes
 
 
-class ReStructuredTextParser(object):
+class DocutilsReader(object):
+    parser_class = None
+
     def parse(self, file):
         filename = getattr(file, 'name', None)
-        doctree = publish_doctree(file.read(), source_path=filename)
+        doctree = publish_doctree(file.read(), source_path=filename,
+                                  parser=self.parser_class())
         return self.from_doctree(doctree)
 
     @staticmethod
@@ -128,5 +132,9 @@ class ReStructuredTextParser(object):
 
     def from_doctree(self, doctree):
         self.replace_secondary_ids(doctree)
-        mapped_tree = ReStructuredTextNode.map_node(doctree.document)
+        mapped_tree = DocutilsNode.map_node(doctree.document)
         return mapped_tree.children_flowables()
+
+
+class ReStructuredTextReader(DocutilsReader):
+    parser_class = ReStructuredTextParser

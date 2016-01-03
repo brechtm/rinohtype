@@ -1,6 +1,6 @@
 from rinoh.paper import A5
 from rinoh.backend import pdf
-from rinoh.frontend.rst import ReStructuredTextParser
+from rinoh.frontend.rst import ReStructuredTextReader
 
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 from rinohlib.templates.book import Book, BookOptions
@@ -8,7 +8,7 @@ from rinohlib.templates.article import Article, ArticleOptions
 
 if __name__ == '__main__':
     for name in ('quickstart', 'demo', 'FAQ', 'THANKS'):
-        parser = ReStructuredTextParser()
+        parser = ReStructuredTextReader()
         with open(name + '.txt') as file:
             flowables = parser.parse(file)
         # manual_options = BookOptions(stylesheet=STYLESHEET)
