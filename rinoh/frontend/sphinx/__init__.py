@@ -20,7 +20,7 @@ from sphinx.util.osutil import ensuredir, os_path, SEP
 
 from ...backend import pdf
 
-from ..rst import ReStructuredTextParser
+from ..rst import ReStructuredTextReader
 
 from rinohlib.templates.book import Book, BookOptions
 
@@ -137,7 +137,7 @@ class RinohBuilder(Builder):
 
     def write_doc(self, docname, doctree, targetname):
         os.chdir(self.srcdir)
-        parser = ReStructuredTextParser()
+        parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree)
         rinoh_document = Book(rinoh_tree, backend=pdf,
                               options=BookOptions(**self.config.rinoh_options))

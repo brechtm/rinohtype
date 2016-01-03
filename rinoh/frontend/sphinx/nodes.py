@@ -17,8 +17,8 @@ from ...structure import DefinitionList, DefinitionTerm, FieldList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 
-from ..rst import (ReStructuredTextInlineNode, ReStructuredTextBodyNode,
-                   ReStructuredTextGroupingNode, ReStructuredTextDummyNode)
+from ..rst import (DocutilsInlineNode, DocutilsBodyNode,
+                   DocutilsGroupingNode, DocutilsDummyNode)
 from ..rst.nodes import Admonition, AdmonitionBase, Strong, Emphasis
 
 
@@ -34,13 +34,13 @@ __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
 
 # other paragraph-level nodes
 
-class Compact_Paragraph(ReStructuredTextGroupingNode):
+class Compact_Paragraph(DocutilsGroupingNode):
     pass
 
 
 # inline nodes
 
-class Index(ReStructuredTextDummyNode):
+class Index(DocutilsDummyNode):
     def build_styled_text(self):
         for entrytype, entryname, target, ignored in self.get('entries'):
             # TODO: generate index
@@ -48,7 +48,7 @@ class Index(ReStructuredTextDummyNode):
         return None
 
 
-class Pending_XRef(ReStructuredTextInlineNode):
+class Pending_XRef(DocutilsInlineNode):
     def build_styled_text(self):
         raise NotImplementedError
 
@@ -57,7 +57,7 @@ class Literal_Emphasis(Emphasis):
     pass
 
 
-class Abbreviation(ReStructuredTextInlineNode):
+class Abbreviation(DocutilsInlineNode):
     def build_styled_text(self):
         result = self.process_content(style='abbreviation')
         # TODO: only show the explanation the first time
@@ -69,7 +69,7 @@ class Abbreviation(ReStructuredTextInlineNode):
         return result
 
 
-class Download_Reference(ReStructuredTextInlineNode):
+class Download_Reference(DocutilsInlineNode):
     def build_styled_text(self):
         try:
             # TODO: (optionally) embed the file in the PDF
@@ -86,17 +86,17 @@ class SeeAlso(AdmonitionBase):
     title = 'See also'
 
 
-class VersionModified(ReStructuredTextGroupingNode):
+class VersionModified(DocutilsGroupingNode):
     pass
 
 
 # special nodes
 
-class Glossary(ReStructuredTextGroupingNode):
+class Glossary(DocutilsGroupingNode):
     style = 'glossary'
 
 
-class Start_of_File(ReStructuredTextGroupingNode):
+class Start_of_File(DocutilsGroupingNode):
     def build_flowable(self, **kwargs):
         return super().build_flowable(id='%' + self.get('docname'), **kwargs)
 
@@ -105,7 +105,7 @@ class Todo_Node(Admonition):
     pass
 
 
-class HighlightLang(ReStructuredTextDummyNode):
+class HighlightLang(DocutilsDummyNode):
     pass
 
 
@@ -117,7 +117,7 @@ class Literal_Strong(Strong):
 
 NO_BREAK_SPACE = unicodedata.lookup('NO-BREAK SPACE')
 
-class ProductionList(ReStructuredTextBodyNode):
+class ProductionList(DocutilsBodyNode):
     def build_flowable(self):
         items = []
         productions = iter(self.production)
@@ -142,19 +142,19 @@ class ProductionList(ReStructuredTextBodyNode):
         return FieldList(items, style='production list')
 
 
-class Production(ReStructuredTextBodyNode):
+class Production(DocutilsBodyNode):
     def build_flowable(self):
         return Paragraph(self.get('tokenname'), style='token')
 
 
-class TermSep(ReStructuredTextInlineNode):
+class TermSep(DocutilsInlineNode):
     def build_styled_text(self):
         return SingleStyledText(', ', style='term separator')
 
 
 # domain-specific object descriptions
 
-class Desc(ReStructuredTextBodyNode):
+class Desc(DocutilsBodyNode):
     def build_flowable(self):
         sigs = [sig.flowable() for sig in self.desc_signature]
         desc = self.desc_content.flowable()
@@ -162,24 +162,24 @@ class Desc(ReStructuredTextBodyNode):
                               style='object description')
 
 
-class Desc_Signature(ReStructuredTextBodyNode):
+class Desc_Signature(DocutilsBodyNode):
     def build_flowable(self):
         return Paragraph(self.process_content())
 
 
-class Desc_Name(ReStructuredTextInlineNode):
+class Desc_Name(DocutilsInlineNode):
     style = 'main object name'
 
 
-class Desc_AddName(ReStructuredTextInlineNode):
+class Desc_AddName(DocutilsInlineNode):
     style = 'additional name part'
 
 
-class Desc_Type(ReStructuredTextInlineNode):
+class Desc_Type(DocutilsInlineNode):
     style = 'type'
 
 
-class Desc_ParameterList(ReStructuredTextInlineNode):
+class Desc_ParameterList(DocutilsInlineNode):
     def build_styled_text(self):
         try:
             params = intersperse((param.styled_text()
@@ -195,7 +195,7 @@ class Desc_ParameterList(ReStructuredTextInlineNode):
                 + SingleStyledText(' ) ', style='parentheses'))
 
 
-class Desc_Parameter(ReStructuredTextInlineNode):
+class Desc_Parameter(DocutilsInlineNode):
     def build_styled_text(self):
         style = 'parameter'
         if self.get('noemph'):
@@ -203,22 +203,22 @@ class Desc_Parameter(ReStructuredTextInlineNode):
         return self.process_content(style=style)
 
 
-class Desc_Optional(ReStructuredTextInlineNode):
+class Desc_Optional(DocutilsInlineNode):
     def build_styled_text(self):
         return (SingleStyledText(' [, ', style='brackets')
                 + self.process_content(style='optional')
                 + SingleStyledText(' ] ', style='brackets'))
 
 
-class Desc_Annotation(ReStructuredTextInlineNode):
+class Desc_Annotation(DocutilsInlineNode):
     style = 'annotation'
 
 
-class Desc_Content(ReStructuredTextGroupingNode):
+class Desc_Content(DocutilsGroupingNode):
     pass
 
 
-class Desc_Returns(ReStructuredTextInlineNode):
+class Desc_Returns(DocutilsInlineNode):
     style = 'returns'
 
     def build_styled_text(self):
@@ -230,14 +230,14 @@ class Desc_Returns(ReStructuredTextInlineNode):
 
 # not listed in "Doctree node classes added by Sphinx"
 
-class Tabular_Col_Spec(ReStructuredTextDummyNode):
+class Tabular_Col_Spec(DocutilsDummyNode):
     pass
 
 
-class AutoSummary_Table(ReStructuredTextGroupingNode):
+class AutoSummary_Table(DocutilsGroupingNode):
     pass
 
 
-class Number_Reference(ReStructuredTextInlineNode):
+class Number_Reference(DocutilsInlineNode):
     def build_styled_text(self):
         return Reference(self.get('refid'), REFERENCE, style='link')

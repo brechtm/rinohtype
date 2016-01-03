@@ -5,7 +5,7 @@ import os
 from rinoh import paper
 
 from rinoh.backend import pdf
-from rinoh.frontend.rst import ReStructuredTextParser
+from rinoh.frontend.rst import ReStructuredTextReader
 
 from rinohlib.templates.article import Article, ArticleOptions
 
@@ -36,7 +36,7 @@ def main():
     input_root, input_ext = os.path.splitext(input_filename)
     if input_dir:
         os.chdir(input_dir)
-    parser = ReStructuredTextParser()
+    parser = ReStructuredTextReader()
     with open(input_filename) as input_file:
         document_tree = parser.parse(input_file)
     options = ArticleOptions(page_size=page_size)
