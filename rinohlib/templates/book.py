@@ -4,10 +4,10 @@ from rinoh.layout import FlowablesContainer
 from rinoh.number import ROMAN_LC
 from rinoh.paragraph import Paragraph
 from rinoh.reference import Variable, PAGE_NUMBER
+from rinoh.template import DocumentTemplate, DocumentOptions, Option
 from rinoh.text import MixedStyledText, Tab
 
-from .base import (SimplePage, DocumentTemplate, DocumentOptions, Option,
-                   ContentsPart)
+from .base import SimplePage, ContentsPart
 
 
 # page definitions
