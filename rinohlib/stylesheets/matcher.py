@@ -1,6 +1,9 @@
 from rinoh.style import StyledMatcher
 from rinoh.styleds import *
 
+from rinohlib.templates.base import FrontMatter
+
+
 __all__ = ['matcher']
 
 
@@ -222,6 +225,10 @@ matcher('figure legend', Figure / GroupedFlowables.like('legend'))
 matcher('figure legend paragraph', Figure
                                    / GroupedFlowables.like('legend')
                                    / Paragraph)
+
+matcher('front matter section', FrontMatter > Section.like(level=1))
+
+matcher('front matter section heading', FrontMatter > Section.like(level=1) / Heading)
 
 matcher('table of contents section', Section.like('table of contents'))
 
