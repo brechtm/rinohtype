@@ -107,7 +107,8 @@ class Heading(NumberedParagraph):
             if separator is not None and self.level > 1:
                 parent_id = self.section.parent.section.get_id(document)
                 parent_ref = document.get_reference(parent_id, NUMBER)
-                label = parent_ref + separator + label
+                if parent_ref:
+                    label = parent_ref + separator + label
         else:
             label = None
         document.set_reference(section_id, NUMBER, label)
