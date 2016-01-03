@@ -1,11 +1,12 @@
 
-from rinoh import (StyleSheet, Var, ParagraphStyle,
-                   PT, CM, INCH, LEFT, RIGHT, CENTER, BOTH,
-                   TOP, BOTTOM, MIDDLE,
-                   FixedWidthSpace, TabStop,
-                   FixedSpacing, ProportionalSpacing, SINGLE,
-                   ROMAN_UC, CHARACTER_UC, NUMBER, SYMBOL,
-                   Color, Gray, RED, BLUE, GRAY90, GRAY50)
+from rinoh.style import StyleSheet, Var
+from rinoh.paragraph import (ParagraphStyle, TabStop, LEFT, RIGHT, CENTER, BOTH,
+                             FixedSpacing, ProportionalSpacing, SINGLE)
+from rinoh.dimension import PT, CM
+from rinoh.table import MIDDLE
+from rinoh.text import FixedWidthSpace
+from rinoh.number import NUMBER, SYMBOL
+from rinoh.color import Color, Gray, RED, GRAY90, GRAY50
 from rinoh.font import TypeFamily
 from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
 
@@ -138,6 +139,9 @@ stylesheet('heading level 1',
 stylesheet('unnumbered heading level 1',
            base='heading level 1',
            number_format=None)
+
+stylesheet('front matter section heading',
+           base='unnumbered heading level 1')
 
 stylesheet('heading level 2',
            base='heading level 1',

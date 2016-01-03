@@ -2,8 +2,9 @@
 from rinoh.document import DocumentSection
 from rinoh.paragraph import Paragraph
 from rinoh.structure import GroupedFlowables, TableOfContentsSection
+from rinoh.template import DocumentTemplate, DocumentOptions, Option
 
-from .base import ContentsPart, DocumentTemplate, DocumentOptions, Option
+from .base import ContentsPart
 
 
 class TitleFlowables(GroupedFlowables):
