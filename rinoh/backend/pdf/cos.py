@@ -77,6 +77,9 @@ class Null(Object):
     def __repr__(self):
         return self.__class__.__name__
 
+    def __bool__(self):
+        return False
+
     def _bytes(self, document):
         return b'null'
 
