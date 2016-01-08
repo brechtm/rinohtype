@@ -22,11 +22,11 @@ from itertools import chain, takewhile, tee
 
 from .annotation import NamedDestination
 from .dimension import PT
+from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer)
 from .util import last
-from .style import Style, Styled
-
+from .style import Styled, PARENT_STYLE
 
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
@@ -39,7 +39,7 @@ __all__ = ['Flowable', 'FlowableStyle',
            'PageBreak', 'PageBreakStyle']
 
 
-class FlowableStyle(Style):
+class FlowableStyle(ShapeStyle):
     """The :class:`Style` for :class:`Flowable` objects. It has the following
     attributes:
 
@@ -54,7 +54,15 @@ class FlowableStyle(Style):
     attributes = {'space_above': 0,
                   'space_below': 0,
                   'margin_left': 0,
-                  'margin_right': 0}
+                  'margin_right': 0,
+                  'padding_left': 0,
+                  'padding_right': 0,
+                  'padding_top': 0,
+                  'padding_bottom': 0,
+
+                  # override LineStyle/ShapeStyle defaults
+                  'stroke_color': None,
+                  'fill_color': None}
 
     default_base = None
 
@@ -121,8 +129,9 @@ class Flowable(Styled):
             initial_before = True if state is None else state.initial
             initial_after = True
             try:
-                width, descender = self.render(margin_container, last_descender,
-                                               state=state, **kwargs)
+                width, descender = self.flow_inner(margin_container,
+                                                   last_descender, state=state,
+                                                   **kwargs)
                 initial_after = False
             except EndOfContainer as eoc:
                 if eoc.flowable_state:
@@ -137,6 +146,46 @@ class Flowable(Styled):
                                                      None)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
+
+    def flow_inner(self, container, descender, state=None, **kwargs):
+        draw_top = state is None or state.initial
+        padding_top = self.get_style('padding_top', container)
+        padding_left = self.get_style('padding_left', container)
+        padding_right = self.get_style('padding_right', container)
+        padding_bottom = float(self.get_style('padding_bottom', container))
+        pad_kwargs = dict(left=padding_left,
+                          right=container.width - padding_right,
+                          extra_space_below=padding_bottom)
+        try:
+            container.advance(padding_top)
+            with InlineDownExpandingContainer('PADDING', container,
+                                              **pad_kwargs) as pad_cntnr:
+                width, descender = self.render(pad_cntnr, descender,
+                                               state=state, **kwargs)
+            self.render_frame(container, container.height, top=draw_top)
+            return width, descender
+        except EndOfContainer as eoc:
+            if eoc.flowable_state and not eoc.flowable_state.initial:
+                self.render_frame(container, container.max_height,
+                                  top=draw_top, bottom=False)
+            raise
+
+    def render_frame(self, container, container_height, top=True, bottom=True):
+        width, height = float(container.width), - float(container_height)
+        stroke_width = self.get_style('stroke_width', container)
+        stroke_color = self.get_style('stroke_color', container)
+        fill_color = self.get_style('fill_color', container)
+        fill_style = ShapeStyle(stroke_color=None, fill_color=fill_color)
+        rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
+        rect.render(container)
+        style = dict(style=LineStyle(stroke_width=stroke_width,
+                                     stroke_color=stroke_color))
+        if top:
+            Line((0, 0), (width, 0), **style).render(container)
+        Line((0, 0), (0, height), **style).render(container)          # left
+        Line((width, 0), (width, height), **style).render(container)  # right
+        if bottom:
+            Line((0, height), (width, height), **style).render(container)
 
     def render(self, container, descender, state=None):
         """Renders the flowable's content to `container`, with the flowable's

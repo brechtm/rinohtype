@@ -172,9 +172,7 @@ class Rubric(DocutilsBodyNode):
 
 
 class Sidebar(DocutilsGroupingNode):
-    def build_flowable(self):
-        grouped_flowables = super().build_flowable()
-        return rt.Framed(grouped_flowables, style='sidebar')
+    style = 'sidebar'
 
 
 class Section(DocutilsGroupingNode):
@@ -210,19 +208,21 @@ class Subtitle(DocutilsBodyNode):
 
 
 class Admonition(DocutilsGroupingNode):
-    def flowable(self):
-        return rt.Framed(super().flowable(), style='admonition')
+    style='admonition'
 
 
-class AdmonitionBase(DocutilsGroupingNode):
+class AdmonitionBase(Admonition):
     title = None
 
-    def flowable(self):
-        title_par = rt.Paragraph(self.title, style='title')
-        content = rt.StaticGroupedFlowables([title_par, super().flowable()])
-        framed = rt.Framed(content, style='admonition')
-        framed.admonition_type = self.__class__.__name__.lower()
-        return framed
+    def children_flowables(self, skip_first=0):
+        yield rt.Paragraph(self.title, style='title')
+        for flowable in super().children_flowables(skip_first):
+            yield flowable
+
+    def build_flowable(self):
+        group = super().build_flowable()
+        group.admonition_type = self.__class__.__name__.lower()
+        return group
 
 
 class Attention(AdmonitionBase):

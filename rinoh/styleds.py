@@ -1,6 +1,5 @@
 
 from .annotation import AnnotatedText
-from .decoration import Framed
 from .draw import Line, Shape, Polygon, Rectangle
 from .float import Figure, Caption
 from .float import Image, InlineImage

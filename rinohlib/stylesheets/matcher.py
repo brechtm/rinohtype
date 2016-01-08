@@ -78,14 +78,12 @@ matcher('topic title', GroupedFlowables.like('topic') / Paragraph.like('title'))
 
 matcher('rubric', Paragraph.like('rubric'))
 
-matcher('sidebar frame', Framed.like('sidebar'))
+matcher('sidebar frame', GroupedFlowables.like('sidebar'))
 
-matcher('sidebar title', Framed.like('sidebar')
-                         / GroupedFlowables
+matcher('sidebar title', GroupedFlowables.like('sidebar')
                          / Paragraph.like('title'))
 
-matcher('sidebar subtitle', Framed.like('sidebar')
-                            / GroupedFlowables
+matcher('sidebar subtitle', GroupedFlowables.like('sidebar')
                             / Paragraph.like('subtitle'))
 
 matcher('list item label', ListItemLabel)
@@ -183,15 +181,14 @@ matcher('option string', MixedStyledText.like('option_string'))
 
 matcher('option argument', MixedStyledText.like('option_arg'))
 
-matcher('admonition', Framed.like('admonition'))
+matcher('admonition', GroupedFlowables.like('admonition'))
 
-matcher('admonition title', Framed.like('admonition')
-                            / GroupedFlowables
+matcher('admonition title', GroupedFlowables.like('admonition')
                             / Paragraph.like('title'))
 
 for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
-    selector = (Framed.like('admonition', admonition_type=admonition_type)
-                / GroupedFlowables
+    selector = (GroupedFlowables.like('admonition',
+                                      admonition_type=admonition_type)
                 / Paragraph.like('title'))
     matcher(admonition_type + ' admonition title', selector)
 

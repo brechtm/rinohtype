@@ -198,7 +198,15 @@ stylesheet('rubric',
        font_color=Color(0.5, 0, 0))
 
 stylesheet('sidebar frame',
-       fill_color=Color(1.0, 1.0, 0.9))
+       space_above=5*PT,
+       space_below=5*PT,
+       padding_left=10*PT,
+       padding_right=10*PT,
+       padding_top=4*PT,
+       padding_bottom=4*PT,
+       fill_color=Color(1.0, 1.0, 0.9),
+       stroke_width=1*PT,
+       stroke_color=Gray(0.4))
 
 stylesheet('sidebar title',
        base='default',

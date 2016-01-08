@@ -58,7 +58,7 @@ class Polygon(Shape):
         self.points = points
 
     def render(self, container, offset=0):
-        canvas, document = container.canvas, container.document
+        canvas = container.canvas
         stroke_width = self.get_style('stroke_width', container)
         stroke_color = self.get_style('stroke_color', container)
         fill_color = self.get_style('fill_color', container)
