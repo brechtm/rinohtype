@@ -226,7 +226,6 @@ class Table(HorizontallyAlignedFlowable):
                 border = TableCellBorder(rendered_cell, cell_height, position)
                 border.render(container)
 
-        document = container.document
         y_cursor = container.cursor
         for r, rendered_row in enumerate(rendered_rows):
             container.advance(rendered_row.height)
@@ -239,7 +238,7 @@ class Table(HorizontallyAlignedFlowable):
                 draw_cell_border(rendered_cell, cell_height, cell_container)
                 cell_container.place_at(container, x_cursor, y_pos)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
-                                                              document)
+                                                              container)
                 if vertical_align == TOP:
                     vertical_offset = 0
                 elif vertical_align == MIDDLE:

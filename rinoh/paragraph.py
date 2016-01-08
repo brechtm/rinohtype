@@ -322,7 +322,7 @@ class Paragraph(ParagraphBase, MixedStyledText):
                                  parent=parent)
         self.id = id
 
-    def text(self, document):
+    def text(self, container):
         return self
 
 

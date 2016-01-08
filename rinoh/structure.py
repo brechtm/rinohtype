@@ -158,14 +158,14 @@ class ListItemLabel(ParagraphBase, Label):
         super().__init__(id=id, style=style, parent=parent)
         self.index = index
 
-    def text(self, document):
+    def text(self, container):
         list = self.parent.parent
-        if list.get_style('ordered', document):
-            number_format = list.get_style('number_format', document)
+        if list.get_style('ordered', container):
+            number_format = list.get_style('number_format', container)
             label = format_number(self.index, number_format)
         else:
-            label = list.get_style('bullet', document)
-        return MixedStyledText(self.format_label(label, document), parent=self)
+            label = list.get_style('bullet', container)
+        return MixedStyledText(self.format_label(label, container), parent=self)
 
 
 class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):

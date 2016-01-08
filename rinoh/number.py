@@ -131,7 +131,7 @@ class NumberedParagraph(ParagraphBase, Label):
         else:
             return ''
 
-    def text(self, document):
+    def text(self, container):
         raise NotImplementedError
 
 

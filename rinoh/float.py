@@ -80,8 +80,8 @@ class Caption(NumberedParagraph):
     def referenceable(self):
         return self.parent
 
-    def text(self, document):
-        label = self.parent.category + ' ' + self.number(document)
+    def text(self, container):
+        label = self.parent.category + ' ' + self.number(container)
         return MixedStyledText(label + self.content, parent=self)
 
 
