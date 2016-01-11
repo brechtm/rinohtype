@@ -20,6 +20,8 @@ It also exports a number of pre-defined units:
 
 """
 
+from .style import AttributeType
+
 
 __all__ = ['Dimension', 'PT', 'INCH', 'MM', 'CM']
 
@@ -46,7 +48,7 @@ class DimensionType(type):
         return operator
 
 
-class DimensionBase(object, metaclass=DimensionType):
+class DimensionBase(AttributeType, metaclass=DimensionType):
     """Late-evaluated dimension. The result of mathematical operations on
     dimension objects is not a statically evaluated version, but rather stores
     references to the operator arguments. The result is only evaluated to a
@@ -94,6 +96,10 @@ class DimensionBase(object, metaclass=DimensionType):
         """Evaluate the value of this dimension in points."""
         raise NotImplementedError
 
+    @classmethod
+    def check_type(cls, value):
+        return super().check_type(value) or isinstance(value, (int, float))
+
 
 class Dimension(DimensionBase):
     # TODO: em, ex? (depends on context)
@@ -110,10 +116,6 @@ class Dimension(DimensionBase):
 
     def to_points(self, total_dimension):
         return float(self)
-
-    @classmethod
-    def check_type(cls, value):
-        return isinstance(value, (DimensionBase, int, float))
 
 
 class DimensionAddition(DimensionBase):

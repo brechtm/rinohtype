@@ -21,7 +21,7 @@ from copy import copy
 from itertools import chain, takewhile, tee
 
 from .annotation import NamedDestination
-from .dimension import Dimension, PT
+from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer)
@@ -43,14 +43,14 @@ __all__ = ['Flowable', 'FlowableStyle',
 class FlowableStyle(ShapeStyle):
     """The :class:`Style` for :class:`Flowable` objects."""
 
-    space_above = Attribute(Dimension, 0, 'Vertical space preceding the flowable')
-    space_below = Attribute(Dimension, 0, 'Vertical space following the flowable')
-    margin_left = Attribute(Dimension, 0, 'Left margin')
-    margin_right = Attribute(Dimension, 0, 'Right margin')
-    padding_left = Attribute(Dimension, 0, 'Left padding')
-    padding_right = Attribute(Dimension, 0, 'Right padding')
-    padding_top = Attribute(Dimension, 0, 'Top padding')
-    padding_bottom = Attribute(Dimension, 0, 'Bottom padding')
+    space_above = Attribute(DimensionBase, 0, 'Vertical space preceding the flowable')
+    space_below = Attribute(DimensionBase, 0, 'Vertical space following the flowable')
+    margin_left = Attribute(DimensionBase, 0, 'Left margin')
+    margin_right = Attribute(DimensionBase, 0, 'Right margin')
+    padding_left = Attribute(DimensionBase, 0, 'Left padding')
+    padding_right = Attribute(DimensionBase, 0, 'Right padding')
+    padding_top = Attribute(DimensionBase, 0, 'Top padding')
+    padding_bottom = Attribute(DimensionBase, 0, 'Bottom padding')
     stroke_color = OverrideDefault(None)
     fill_color = OverrideDefault(None)
 
@@ -260,7 +260,7 @@ class GroupedFlowablesState(FlowableState):
 
 
 class GroupedFlowablesStyle(FlowableStyle):
-    attributes = {'flowable_spacing': 0}
+    flowable_spacing = Attribute(DimensionBase, 0, 'Spacing between flowables')
 
 
 class GroupedFlowables(Flowable):

@@ -24,7 +24,9 @@ from operator import attrgetter
 from .element import DocumentElement
 from .util import cached, NamedDescriptor, WithNamedDescriptors
 
-__all__ = ['Style', 'Styled', 'Var', 'Attribute', 'OverrideDefault',
+
+__all__ = ['Style', 'Styled', 'Var',
+           'AttributeType', 'Attribute', 'OverrideDefault',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'StyleException']
 
@@ -49,6 +51,12 @@ class BaseStyleException(StyleException):
 class DefaultStyleException(StyleException):
     """The attribute is not specified in this :class:`Style` or any of its base
     styles. Return the default value for the attribute."""
+
+
+class AttributeType(object):
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, cls)
 
 
 class Attribute(NamedDescriptor):

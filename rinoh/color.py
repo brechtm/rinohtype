@@ -8,12 +8,14 @@
 import binascii
 import struct
 
+from .style import AttributeType
+
 
 __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
            'Gray', 'GRAY10', 'GRAY25', 'GRAY50', 'GRAY75', 'GRAY90']
 
 
-class Color(object):
+class Color(AttributeType):
     def __init__(self, red, green, blue, alpha=1):
         for value in (red, green, blue, alpha):
             if not 0 <= value <= 1:
@@ -30,7 +32,7 @@ class Color(object):
 
     @classmethod
     def check_type(cls, value):
-        return isinstance(value, (cls, type(None)))
+        return super().check_type(value) or isinstance(value, type(None))
 
     @property
     def rgba(self):
