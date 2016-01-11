@@ -53,10 +53,11 @@ class DefaultStyleException(StyleException):
 
 class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
-    def __init__(self, accepted_type, default_value, description):
+    def __init__(self, accepted_type, default_value, description, name=None):
         self.accepted_type = accepted_type
         self.default_value = default_value
         self.description = description
+        self.name = name
 
     def __get__(self, style, type=None):
         try:
@@ -81,9 +82,11 @@ class Attribute(NamedDescriptor):
 class StyleMeta(WithNamedDescriptors):
     def __new__(cls, classname, bases, cls_dict):
         attributes = cls_dict.setdefault('attributes', {})
+        for name, default in attributes.items():
+            attributes[name] = Attribute(None, default, None, name=name)
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
-                attributes[name] = attr.default_value
+                attributes[name] = attr
         return super().__new__(cls, classname, bases, cls_dict)
 
 
@@ -161,7 +164,7 @@ class Style(dict, metaclass=StyleMeta):
         try:
             for super_cls in cls.__mro__:
                 if attribute in super_cls.attributes:
-                    return super_cls.attributes[attribute]
+                    return super_cls.attributes[attribute].default_value
         except AttributeError:
             raise KeyError("No attribute '{}' in {}".format(attribute, cls))
 
