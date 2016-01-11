@@ -26,7 +26,7 @@ from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer)
 from .util import last
-from .style import Styled, Attribute
+from .style import Styled, Attribute, OverrideDefault
 
 
 __all__ = ['Flowable', 'FlowableStyle',
@@ -51,10 +51,8 @@ class FlowableStyle(ShapeStyle):
     padding_right = Attribute(Dimension, 0, 'Right padding')
     padding_top = Attribute(Dimension, 0, 'Top padding')
     padding_bottom = Attribute(Dimension, 0, 'Bottom padding')
-
-    # override LineStyle/ShapeStyle defaults
-    attributes = {'stroke_color': None,
-                  'fill_color': None}
+    stroke_color = OverrideDefault(None)
+    fill_color = OverrideDefault(None)
 
     default_base = None
 

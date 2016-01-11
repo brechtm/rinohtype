@@ -24,7 +24,7 @@ from operator import attrgetter
 from .element import DocumentElement
 from .util import cached, NamedDescriptor, WithNamedDescriptors
 
-__all__ = ['Style', 'Styled', 'Var',
+__all__ = ['Style', 'Styled', 'Var', 'Attribute', 'OverrideDefault',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'StyleException']
 
@@ -79,6 +79,21 @@ class Attribute(NamedDescriptor):
                         self.default_value))
 
 
+class OverrideDefault(Attribute):
+    """Overrides the default value of an attribute defined in a superclass"""
+    def __init__(self, default_value):
+        self.default_value = default_value
+        self.overrides = None
+
+    @property
+    def accepted_type(self):
+        return self.overrides.accepted_type
+
+    @property
+    def description(self):
+        return self.overrides.description
+
+
 class StyleMeta(WithNamedDescriptors):
     def __new__(cls, classname, bases, cls_dict):
         attributes = cls_dict.setdefault('attributes', {})
@@ -87,6 +102,15 @@ class StyleMeta(WithNamedDescriptors):
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
                 attributes[name] = attr
+            if isinstance(attr, OverrideDefault):
+                for base_cls in bases:
+                    try:
+                        attr.overrides = base_cls.attribute_definition(name)
+                        break
+                    except KeyError:
+                        pass
+                else:
+                    raise NotImplementedError
         return super().__new__(cls, classname, bases, cls_dict)
 
 
