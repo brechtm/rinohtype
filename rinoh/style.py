@@ -94,11 +94,17 @@ class OverrideDefault(Attribute):
         return self.overrides.description
 
 
+class AnyType(object):
+    @classmethod
+    def check_type(cls, value):
+        return True
+
+
 class StyleMeta(WithNamedDescriptors):
     def __new__(cls, classname, bases, cls_dict):
         attributes = cls_dict.setdefault('attributes', {})
         for name, default in attributes.items():
-            attributes[name] = Attribute(None, default, None, name=name)
+            attributes[name] = Attribute(AnyType, default, None, name=name)
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
                 attributes[name] = attr
@@ -139,9 +145,15 @@ class Style(dict, metaclass=StyleMeta):
         self.base = base or self.default_base
         self.name = None
         self.stylesheet = None
-        for attribute in attributes:
-            if attribute not in self._supported_attributes():
-                raise TypeError('%s is not a supported attribute' % attribute)
+        for name, value in attributes.items():
+            try:
+                attribute = self.attribute_definition(name)
+                if not attribute.accepted_type.check_type(value):
+                    raise TypeError('{} is not of the correct type for the '
+                                    '{} style attribute'.format(value, name))
+            except KeyError:
+                raise TypeError('{} is not a supported attribute'.format(name))
+
         super().__init__(attributes)
 
     def __repr__(self):
@@ -191,6 +203,13 @@ class Style(dict, metaclass=StyleMeta):
                     return super_cls.attributes[attribute].default_value
         except AttributeError:
             raise KeyError("No attribute '{}' in {}".format(attribute, cls))
+
+    @classmethod
+    def attribute_definition(cls, name):
+        for klass in cls.__mro__:
+            if name in klass.attributes:
+                return klass.attributes[name]
+        raise KeyError
 
     @classmethod
     def _supported_attributes(cls):

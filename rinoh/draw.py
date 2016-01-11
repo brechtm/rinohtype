@@ -5,17 +5,17 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from .color import BLACK, GRAY90
-from .style import Style, Styled
-from .dimension import PT
+from .color import Color, BLACK, GRAY90
+from .style import Style, Styled, Attribute
+from .dimension import Dimension, PT
 
 
 __all__ = ['LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
 
 
 class LineStyle(Style):
-    attributes = {'stroke_width': 1*PT,
-                  'stroke_color': BLACK}
+    stroke_width = Attribute(Dimension, 1*PT, 'Width of the line')
+    stroke_color = Attribute(Color, BLACK, 'Color of the line')
 
 
 class Line(Styled):
@@ -39,7 +39,7 @@ class Line(Styled):
 
 
 class ShapeStyle(LineStyle):
-    attributes = {'fill_color': GRAY90}
+    fill_color = Attribute(Color, GRAY90, 'Color to fill the shape')
 
 
 class Shape(Styled):

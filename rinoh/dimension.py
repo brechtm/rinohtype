@@ -111,6 +111,10 @@ class Dimension(DimensionBase):
     def to_points(self, total_dimension):
         return float(self)
 
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, (DimensionBase, int, float))
+
 
 class DimensionAddition(DimensionBase):
     def __init__(self, *addends):

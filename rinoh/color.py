@@ -28,6 +28,10 @@ class Color(object):
                                             for color in self.rgba))
         return '#' + binascii.hexlify(rgba_bytes).decode('ascii')
 
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, (cls, type(None)))
+
     @property
     def rgba(self):
         return self.r, self.g, self.b, self.a
