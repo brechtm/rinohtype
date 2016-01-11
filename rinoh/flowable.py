@@ -21,12 +21,13 @@ from copy import copy
 from itertools import chain, takewhile, tee
 
 from .annotation import NamedDestination
-from .dimension import PT
+from .dimension import Dimension, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer)
 from .util import last
-from .style import Styled, PARENT_STYLE
+from .style import Styled, Attribute
+
 
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
@@ -40,28 +41,19 @@ __all__ = ['Flowable', 'FlowableStyle',
 
 
 class FlowableStyle(ShapeStyle):
-    """The :class:`Style` for :class:`Flowable` objects. It has the following
-    attributes:
+    """The :class:`Style` for :class:`Flowable` objects."""
 
-    * `space_above`: Vertical space preceding the flowable (:class:`Dimension`)
-    * `space_below`: Vertical space following the flowable (:class:`Dimension`)
-    * `margin_left`: Left margin (class:`Dimension`).
-    * `margin_right`: Right margin (class:`Dimension`).
-    * `horizontal_align`: Alignment of the rendered flowable between the left
-                          and right margins (`LEFT`, `CENTER` or `RIGHT`).
-    """
+    space_above = Attribute(Dimension, 0, 'Vertical space preceding the flowable')
+    space_below = Attribute(Dimension, 0, 'Vertical space following the flowable')
+    margin_left = Attribute(Dimension, 0, 'Left margin')
+    margin_right = Attribute(Dimension, 0, 'Right margin')
+    padding_left = Attribute(Dimension, 0, 'Left padding')
+    padding_right = Attribute(Dimension, 0, 'Right padding')
+    padding_top = Attribute(Dimension, 0, 'Top padding')
+    padding_bottom = Attribute(Dimension, 0, 'Bottom padding')
 
-    attributes = {'space_above': 0,
-                  'space_below': 0,
-                  'margin_left': 0,
-                  'margin_right': 0,
-                  'padding_left': 0,
-                  'padding_right': 0,
-                  'padding_top': 0,
-                  'padding_bottom': 0,
-
-                  # override LineStyle/ShapeStyle defaults
-                  'stroke_color': None,
+    # override LineStyle/ShapeStyle defaults
+    attributes = {'stroke_color': None,
                   'fill_color': None}
 
     default_base = None

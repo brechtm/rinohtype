@@ -22,8 +22,7 @@ from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
 from .element import DocumentElement
-from .util import cached
-
+from .util import cached, NamedDescriptor, WithNamedDescriptors
 
 __all__ = ['Style', 'Styled', 'Var',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
@@ -52,14 +51,49 @@ class DefaultStyleException(StyleException):
     styles. Return the default value for the attribute."""
 
 
-class Style(dict):
+class Attribute(NamedDescriptor):
+    """Descriptor used to describe a style attribute"""
+    def __init__(self, accepted_type, default_value, description):
+        self.accepted_type = accepted_type
+        self.default_value = default_value
+        self.description = description
+
+    def __get__(self, style, type=None):
+        try:
+            return style.get(self.name, self.default_value)
+        except AttributeError:
+            return self
+
+    def __set__(self, style, value):
+        if not isinstance(value, self.accepted_type):
+            raise TypeError('The {} style attribute only accepts {} instances'
+                            .format(self.name, self.accepted_type))
+        style[self.name] = value
+
+    @property
+    def __doc__(self):
+        return (':description: {} (:class:`{}`)\n'
+                ':default: {}'
+                .format(self.description, self.accepted_type.__name__,
+                        self.default_value))
+
+
+class StyleMeta(WithNamedDescriptors):
+    def __new__(cls, classname, bases, cls_dict):
+        attributes = cls_dict.setdefault('attributes', {})
+        for name, attr in cls_dict.items():
+            if isinstance(attr, Attribute):
+                attributes[name] = attr.default_value
+        return super().__new__(cls, classname, bases, cls_dict)
+
+
+class Style(dict, metaclass=StyleMeta):
     """"Dictionary storing style attributes.
 
-    Attrributes can also be accessed as attributes."""
+    The style attributes associated with this :class:`Style` are specified as
+    class attributes of type :class:`Attribute`.
 
-    attributes = {}
-    """Dictionary holding the supported style attributes for this :class:`Style`
-    class (keys) and their default values (values)"""
+    Style attributes can also be accessed as object attributes."""
 
     default_base = None
 
