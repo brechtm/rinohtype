@@ -98,7 +98,7 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
 
     @classmethod
     def check_type(cls, value):
-        return super().check_type(value) or isinstance(value, (int, float))
+        return super().check_type(value) or value == 0
 
 
 class Dimension(DimensionBase):
