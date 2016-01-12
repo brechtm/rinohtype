@@ -40,28 +40,32 @@ from itertools import tee
 from . import DATA_PATH
 from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
-from .font.style import SMALL_CAPITAL
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer
+from .style import Attribute, AttributeType, OptionSet
 from .text import TextStyle, MixedStyledText
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
            'ProportionalSpacing', 'FixedSpacing', 'Leading',
            'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE',
-           'LEFT', 'RIGHT', 'CENTER', 'BOTH']
+           'LEFT', 'RIGHT', 'CENTER', 'JUSTIFY']
 
 
 # Text justification
 
 from .flowable import LEFT, RIGHT, CENTER
-BOTH = 'justify'
+JUSTIFY = 'justify'
+
+
+class TextAlign(OptionSet):
+    values = LEFT, RIGHT, CENTER, JUSTIFY
 
 
 # Line spacing
 
-class LineSpacing(object):
+class LineSpacing(AttributeType):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
@@ -168,23 +172,23 @@ class TabStop(object):
             return line_width * self._position
 
 
+class TabStopList(AttributeType):
+    @classmethod
+    def check_type(cls, value):
+        return (isinstance(value, (list, tuple))
+                and all(isinstance(item, TabStop) for item in value))
+
+
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(FlowableStyle, TextStyle):
-    """The :class:`Style` for :class:`Paragraph` objects. It has the following
-    attributes:
+    """The :class:`Style` for :class:`Paragraph` objects"""
 
-    * `indent_first`: Indentation of the first line of text (class:`Dimension`).
-    * `line_spacing`: Spacing between the baselines of two successive lines of
-                      text (:class:`LineSpacing`).
-    * `justify`: Alignment of the text to the margins (:const:`LEFT`,
-                 :const:`RIGHT`, :const:`CENTER` or :const:`BOTH`).
-    * `tab_stops`: The tab stops for this paragraph (list of :class:`TabStop`).
-    """
-
-    attributes = {'indent_first': 0*PT,
-                  'line_spacing': DEFAULT,
-                  'justify': BOTH,
-                  'tab_stops': []}
+    indent_first = Attribute(DimensionBase, 0*PT, 'Indentation of the first '
+                                                  'line of text')
+    line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '
+                             'baselines of two successive lines of text')
+    justify = Attribute(TextAlign, JUSTIFY, 'Alignment of text to the margins')
+    tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
 # TODO: shouldn't take a container (but needed by flow_inline)
@@ -633,10 +637,10 @@ class Line(list):
         # horizontal displacement
         left = self.indent
 
-        if self._has_tab or justification == BOTH and last_line:
+        if self._has_tab or justification == JUSTIFY and last_line:
             justification = LEFT
         extra_space = self.width - self.cursor
-        if justification == BOTH:
+        if justification == JUSTIFY:
             # TODO: padding added to spaces should be prop. to font size
             nr_spaces = sum(glyph_span.number_of_spaces for glyph_span in self)
             if nr_spaces > 0:

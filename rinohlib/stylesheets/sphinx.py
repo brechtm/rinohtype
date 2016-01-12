@@ -4,7 +4,7 @@ from rinoh.number import NUMBER, SYMBOL
 from rinoh.flowable import LEFT, RIGHT, CENTER
 from rinoh.font import TypeFamily
 from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
-from rinoh.paragraph import (ParagraphStyle, TabStop, BOTH,
+from rinoh.paragraph import (ParagraphStyle, TabStop, JUSTIFY,
                              FixedSpacing, ProportionalSpacing, SINGLE)
 from rinoh.style import StyleSheet, Var
 from rinoh.table import MIDDLE
@@ -29,7 +29,7 @@ stylesheet['default'] = ParagraphStyle(typeface=Var('fonts').serif,
                                        indent_first=0*PT,
                                        space_above=0*PT,
                                        space_below=0*PT,
-                                       justify=BOTH,
+                                       justify=JUSTIFY,
                                        kerning=True,
                                        ligatures=True,
                                        hyphen_lang='en_US',
@@ -39,7 +39,7 @@ stylesheet('body',
            base='default',
            space_above=5*PT,
            space_below=0*PT,
-           justify=BOTH)
+           justify=JUSTIFY)
 
 stylesheet('emphasis',
        font_slant=ITALIC)

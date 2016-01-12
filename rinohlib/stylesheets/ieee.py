@@ -1,6 +1,6 @@
 
 from rinoh import (StyleSheet, Var, ParagraphStyle,
-                   PT, CM, INCH, LEFT, RIGHT, CENTER, BOTH,
+                   PT, CM, INCH, LEFT, RIGHT, CENTER, JUSTIFY,
                    TOP, BOTTOM, MIDDLE,
                    FixedWidthSpace, TabStop,
                    FixedSpacing, ProportionalSpacing,
@@ -29,7 +29,7 @@ styles['default'] = ParagraphStyle(typeface=Var('ieee_family').serif,
                                    indent_first=0*PT,
                                    space_above=0*PT,
                                    space_below=0*PT,
-                                   justify=BOTH,
+                                   justify=JUSTIFY,
                                    kerning=True,
                                    ligatures=True,
                                    hyphen_lang='en_US',
@@ -40,7 +40,7 @@ styles('body',
        indent_first=0.125*INCH,
        space_above=0*PT,
        space_below=0*PT,
-       justify=BOTH)
+       justify=JUSTIFY)
 
 styles('emphasis',
        font_slant=ITALIC)
@@ -384,7 +384,7 @@ styles('caption',
        indent_first=0*PT,
        space_above=4*PT,
        space_below=0*PT,
-       justify=BOTH,
+       justify=JUSTIFY,
        label_suffix='.' + FixedWidthSpace())
 
 styles('figure legend',
