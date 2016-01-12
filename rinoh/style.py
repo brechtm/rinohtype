@@ -160,7 +160,8 @@ class Style(dict, metaclass=StyleMeta):
                     raise TypeError('{} is not of the correct type for the '
                                     '{} style attribute'.format(value, name))
             except KeyError:
-                raise TypeError('{} is not a supported attribute'.format(name))
+                raise TypeError('{} is not a supported attribute for '
+                                '{}'.format(name, type(self).__name__))
 
         super().__init__(attributes)
 
@@ -214,9 +215,12 @@ class Style(dict, metaclass=StyleMeta):
 
     @classmethod
     def attribute_definition(cls, name):
-        for klass in cls.__mro__:
-            if name in klass.attributes:
-                return klass.attributes[name]
+        try:
+            for klass in cls.__mro__:
+                if name in klass.attributes:
+                    return klass.attributes[name]
+        except AttributeError:
+            pass
         raise KeyError
 
     @classmethod
