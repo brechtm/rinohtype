@@ -131,6 +131,13 @@ class StyleMeta(WithNamedDescriptors):
                         pass
                 else:
                     raise NotImplementedError
+        supported_attributes = set(name for name in attributes)
+        for base_class in bases:
+            try:
+                supported_attributes.update(base_class._supported_attributes)
+            except AttributeError:
+                pass
+        cls_dict['_supported_attributes'] = supported_attributes
         return super().__new__(cls, classname, bases, cls_dict)
 
 
@@ -195,7 +202,7 @@ class Style(dict, metaclass=StyleMeta):
         return copy
 
     def __getattr__(self, attribute):
-        if attribute in self._supported_attributes():
+        if attribute in self._supported_attributes:
             return self[attribute]
         else:
             return super().__getattr__(attribute)
@@ -239,17 +246,6 @@ class Style(dict, metaclass=StyleMeta):
         except AttributeError:
             pass
         raise KeyError
-
-    @classmethod
-    def _supported_attributes(cls):
-        """Return a :class:`set` of the attributes supported by this style
-        class."""
-        attributes = set()
-        try:
-            for klass in cls.__mro__:
-                attributes.update(klass._attributes.keys())
-        except AttributeError:
-            return attributes
 
     def get_value(self, attribute, document):
         value = self[attribute]
