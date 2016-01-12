@@ -9,9 +9,9 @@
 import os
 from warnings import warn
 
-from .style import WEIGHTS, MEDIUM
-from .style import SLANTS, UPRIGHT, OBLIQUE, ITALIC
-from .style import WIDTHS, NORMAL, CONDENSED, EXTENDED
+from .style import FontWeight, MEDIUM
+from .style import FontSlant, UPRIGHT, OBLIQUE, ITALIC
+from .style import FontWidth, NORMAL, CONDENSED, EXTENDED
 from ..util import NotImplementedAttribute
 from ..warnings import RinohWarning
 
@@ -49,15 +49,15 @@ class Font(object):
 
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.filename = filename
-        if weight not in WEIGHTS:
+        if weight not in FontWeight.values:
             raise ValueError('Unknown font weight. Must be one of {}'
-                             .format(', '.join(WEIGHTS)))
-        if slant not in SLANTS:
+                             .format(', '.join(FontWeight.values)))
+        if slant not in FontSlant.values:
             raise ValueError('Unknown font slant. Must be one of {}'
-                             .format(', '.join(SLANTS)))
-        if width not in WIDTHS:
+                             .format(', '.join(FontSlant.values)))
+        if width not in FontWidth.values:
             raise ValueError('Unknown font width. Must be one of {}'
-                             .format(', '.join(WIDTHS)))
+                             .format(', '.join(FontWidth.values)))
         self.weight = weight
         self.slant = slant
         self.width = width
@@ -69,7 +69,7 @@ class Font(object):
     def __hash__(self):
         return hash((self.name, self.filename))
 
-    def get_glyph(self, char, variant=None):
+    def get_glyph(self, char, variant):
         raise NotImplementedError
 
     def get_ligature(self, glyph, successor_glyph):
@@ -80,21 +80,13 @@ class Font(object):
 
 
 class TypeFace(dict):
-    def __init__(self, name, *fonts, weight_order=WEIGHTS):
+    def __init__(self, name, *fonts, weight_order=FontWeight.values):
         self.name = name
         self.weight_order = weight_order
         for font in fonts:
             slants = self.setdefault(font.width, {})
             weights = slants.setdefault(font.slant, {})
             weights[font.weight] = font
-
-    width_alternatives = {NORMAL: (CONDENSED, EXTENDED),
-                          CONDENSED: (NORMAL, EXTENDED),
-                          EXTENDED: (NORMAL, CONDENSED)}
-
-    slant_alternatives = {UPRIGHT: (OBLIQUE, ITALIC),
-                          OBLIQUE: (ITALIC, UPRIGHT),
-                          ITALIC: (OBLIQUE, UPRIGHT)}
 
     def get_font(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         def find_closest_style(style, styles, alternatives):
@@ -108,19 +100,19 @@ class TypeFace(dict):
                         continue
 
         def find_closest_weight(weight, weights):
-            index = WEIGHTS.index(weight)
-            min_distance = len(WEIGHTS)
+            index = FontWeight.values.index(weight)
+            min_distance = len(FontWeight.values)
             closest = None
-            for i, option in enumerate(WEIGHTS):
+            for i, option in enumerate(FontWeight.values):
                 if option in weights and abs(index - i) < min_distance:
                     min_distance = abs(index - i)
                     closest = option
             return closest, weights[closest]
 
         available_width, slants = find_closest_style(width, self,
-                                                     self.width_alternatives)
+                                                     FontWidth.alternatives)
         available_slant, weights = find_closest_style(slant, slants,
-                                                      self.slant_alternatives)
+                                                      FontSlant.alternatives)
         available_weight, font = find_closest_weight(weight, weights)
 
         if (available_width != width or available_slant != slant or

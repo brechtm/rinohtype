@@ -37,12 +37,16 @@ Some characters with special properties and are represented by special classes:
 
 from itertools import groupby
 
-from .color import BLACK
-from .dimension import PT
-from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
-from .font.style import SUPERSCRIPT, SUBSCRIPT
+from .color import Color, BLACK
+from .dimension import DimensionBase, PT
+from .font import TypeFace
 from .fonts import adobe14
-from .style import Style, Styled, PARENT_STYLE, StyleException, AttributeType
+from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
+                         TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
+                         SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
+from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
+                    Attribute)
+
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
            'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
@@ -52,46 +56,26 @@ __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
 
 
 class TextStyle(Style):
-    """The :class:`Style` for :class:`StyledText` objects. It has the following
-    attributes:
+    """The :class:`Style` for :class:`StyledText` objects"""
 
-    * `typeface`: :class:`TypeFace` to set the text in.
-    * `font_weight`: Thickness of the character outlines relative to their
-                     height.
-    * `font_slant`: Slope of the characters.
-    * `font_width`: Stretch of the characters.
-    * `font_size`: Height of characters expressed in PostScript points or
-                   :class:`Dimension`.
-    * `small_caps`: Use small capital glyphs or not (:class:`bool`).
-    * `position`: Vertical text position; normal, super- or subscript.
-    * `kerning`: Improve inter-letter spacing (:class:`bool`).
-    * `ligatures`: Run letters together, where possible (:class:`bool`).
-    * `hyphenate`: Allow words to be broken over two lines (:class:`bool`).
-    * `hyphen_chars`: Minimum number of characters in either part of a
-                      hyphenated word (:class:`int`).
-    * `hyphen_lang`: Language to use for hyphenation. Accepts language locale
-                     codes, such as 'en_US' (:class:`str`).
-
-    `font_weight`, `font_slant`, `font_width` and `position` accept the values
-    defined in the :mod:`font.style` module.
-
-    The default value for each of the style attributes are defined in the
-    :attr:`attributes` attribute."""
-
-    attributes = {'typeface': adobe14.times,
-                  'font_weight': MEDIUM,
-                  'font_slant': UPRIGHT,
-                  'font_width': NORMAL,
-                  'font_size': 10*PT,
-                  'font_color': BLACK,
-                  'small_caps': False,
-                  'position': None,
-                  'kerning': True,
-                  'ligatures': True,
-                  # TODO: character spacing
-                  'hyphenate': True,
-                  'hyphen_chars': 2,
-                  'hyphen_lang': 'en_US'}
+    typeface = Attribute(TypeFace, adobe14.times, 'Typeface to set the text in')
+    font_weight = Attribute(FontWeight, MEDIUM, 'Thickness of character '
+                                                'outlines relative to their '
+                                                'height')
+    font_slant = Attribute(FontSlant, UPRIGHT, 'Slope style of the font')
+    font_width = Attribute(FontWidth, NORMAL, 'Stretch of the characters')
+    font_size = Attribute(DimensionBase, 10*PT, 'Height of characters')
+    font_color = Attribute(Color, BLACK, 'Color of the font')
+    font_variant = Attribute(FontVariant, NORMAL, 'Variant of the font')
+    position = Attribute(TextPosition, NORMAL, 'Vertical text position')
+    kerning = Attribute(bool, True, 'Improve inter-letter spacing')
+    ligatures = Attribute(bool, True, 'Run letters together where possible')
+    # TODO: character spacing
+    hyphenate = Attribute(bool, True, 'Allow words to be broken over two lines')
+    hyphen_chars = Attribute(int, 2, 'Minimum number of characters in a '
+                                     'hyphenated part of a word')
+    hyphen_lang = Attribute(str, 'en_US', 'Language to use for hyphenation. '
+                                          'Accepts locale codes such as en_US')
 
     default_base = PARENT_STYLE
 
@@ -143,7 +127,7 @@ class StyledText(Styled, AttributeType):
         """Returns `True` if this styled text is super/subscript."""
         try:
             style = self._style(container)
-            return style.get_value('position', container) is not None
+            return style.get_value('position', container) != NORMAL
         except StyleException:
             return False
 
@@ -421,7 +405,7 @@ class Tab(ControlCharacter):
 ITALIC_STYLE = EMPHASIZED_STYLE = TextStyle(font_slant=ITALIC)
 BOLD_STYLE = TextStyle(font_weight=BOLD)
 BOLD_ITALIC_STYLE = TextStyle(font_weight=BOLD, font_slant=ITALIC)
-SMALL_CAPITALS_STYLE = TextStyle(small_caps=True)
+SMALL_CAPITALS_STYLE = TextStyle(font_variant=SMALL_CAPITAL)
 SUPERSCRIPT_STYLE = TextStyle(position=SUPERSCRIPT)
 SUBSCRIPT_STYLE = TextStyle(position=SUBSCRIPT)
 

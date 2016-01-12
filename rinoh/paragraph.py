@@ -379,8 +379,7 @@ class GlyphAndWidth(object):
 def create_to_glyphs(span, flowable_target):
     font = span.font(flowable_target)
     scale = span.height(flowable_target) / font.units_per_em
-    variant = (SMALL_CAPITAL if span.get_style('small_caps', flowable_target)
-               else None)
+    variant = span.get_style('font_variant', flowable_target)
     kerning = span.get_style('kerning', flowable_target)
     ligatures = span.get_style('ligatures', flowable_target)
     get_glyph = partial(font.get_glyph, variant=variant)

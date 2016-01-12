@@ -11,7 +11,7 @@ from warnings import warn
 from ...util import cached
 from ...warnings import RinohWarning
 from .. import Font, GlyphMetrics, LeafGetter
-from ..style import MEDIUM, UPRIGHT, NORMAL
+from ..style import MEDIUM, UPRIGHT, NORMAL, OLD_STYLE
 from ..style import SMALL_CAPITAL
 
 from .parse import OpenTypeParser
@@ -82,7 +82,10 @@ class OpenTypeFont(Font, OpenTypeParser):
             raise Exception
         return glyphs_by_char
 
-    def get_glyph(self, char, variant=None):
+    _VARIANTS = {SMALL_CAPITAL: 'smcp',
+                 OLD_STYLE: 'onum'}
+
+    def get_glyph(self, char, variant):
         try:
             glyph = self._glyphs[char]
         except KeyError:
@@ -90,8 +93,9 @@ class OpenTypeFont(Font, OpenTypeParser):
                  .format(self.name, ord(char), char), RinohWarning)
             return self._glyphs['?']
 
-        if variant == SMALL_CAPITAL and 'GSUB' in self:
-            lookup_tables = self._get_lookup_tables('GSUB', 'smcp', 'latn')
+        if variant in self._VARIANTS and 'GSUB' in self:
+            feature = self._VARIANTS[variant]
+            lookup_tables = self._get_lookup_tables('GSUB', feature, 'latn')
             for lookup_table in lookup_tables:
                 try:
                     code = lookup_table.lookup(glyph.code)

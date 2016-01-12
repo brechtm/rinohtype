@@ -5,10 +5,17 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from ..style import OptionSet
 
 
-# TODO: split up into weight.py, slant.py and width.py?
-# provide aliases (normal, regular, plain, roman)?
+__all__ = ['FontWeight', 'HAIRLINE', 'THIN', 'ULTRA_LIGHT', 'EXTRA_LIGHT',
+           'LIGHT', 'BOOK', 'REGULAR', 'MEDIUM', 'DEMI_BOLD', 'BOLD',
+           'EXTRA_BOLD', 'HEAVY', 'BLACK', 'EXTRA_BLACK', 'ULTRA_BLACK',
+           'FontSlant', 'UPRIGHT', 'OBLIQUE', 'ITALIC',
+           'FontWidth', 'NORMAL', 'CONDENSED', 'EXTENDED',
+           'FontVariant', 'SMALL_CAPITAL', 'OLD_STYLE',
+           'TextPosition', 'SUPERSCRIPT', 'SUBSCRIPT']
+
 
 # weight
 HAIRLINE = 'Hairline'
@@ -27,28 +34,47 @@ BLACK = 'Black'
 EXTRA_BLACK = 'Extra-Black'
 ULTRA_BLACK = 'Ultra-Black'
 
+class FontWeight(OptionSet):
+    values = (HAIRLINE, THIN, ULTRA_LIGHT, EXTRA_LIGHT, LIGHT, BOOK, REGULAR,
+              MEDIUM, DEMI_BOLD, BOLD, EXTRA_BOLD, HEAVY, BLACK, EXTRA_BLACK,
+              ULTRA_BLACK)
+
+
 # slant
 UPRIGHT = 'Upright'
 OBLIQUE = 'Oblique'
 ITALIC = 'Italic'
+
+class FontSlant(OptionSet):
+    values = UPRIGHT, OBLIQUE, ITALIC
+    alternatives = {UPRIGHT: (OBLIQUE, ITALIC),
+                    OBLIQUE: (ITALIC, UPRIGHT),
+                    ITALIC: (OBLIQUE, UPRIGHT)}
+
 
 # width
 NORMAL = 'Normal'
 CONDENSED = 'Condensed'
 EXTENDED = 'Extended'
 
+class FontWidth(OptionSet):
+    values = NORMAL, CONDENSED, EXTENDED
+    alternatives = {NORMAL: (CONDENSED, EXTENDED),
+                    CONDENSED: (NORMAL, EXTENDED),
+                    EXTENDED: (NORMAL, CONDENSED)}
+
+
+# variant
+SMALL_CAPITAL = 'Small Capital'
+OLD_STYLE = 'Oldstyle Figures'
+
+class FontVariant(OptionSet):
+    values = NORMAL, SMALL_CAPITAL, OLD_STYLE
+
+
 # position
 SUPERSCRIPT = 'Superscript'
 SUBSCRIPT = 'Subscript'
 
-# variant
-SMALL_CAPITAL = 'Small Capital'
-OLD_STYLE = 'Old Style Figure'
-
-WEIGHTS = (HAIRLINE, THIN, ULTRA_LIGHT, EXTRA_LIGHT, LIGHT, BOOK, REGULAR,
-           MEDIUM, DEMI_BOLD, BOLD, EXTRA_BOLD, HEAVY, BLACK, EXTRA_BLACK,
-           ULTRA_BLACK)
-SLANTS = (UPRIGHT, OBLIQUE, ITALIC)
-WIDTHS = (NORMAL, CONDENSED, EXTENDED)
-POSITIONS = (NORMAL, SUPERSCRIPT, SUBSCRIPT)
-VARIANTS = (SMALL_CAPITAL, OLD_STYLE)
+class TextPosition(OptionSet):
+    values = NORMAL, SUPERSCRIPT, SUBSCRIPT

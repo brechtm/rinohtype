@@ -8,7 +8,8 @@ from rinoh import (StyleSheet, Var, ParagraphStyle,
                    Color, Gray, RED, BLUE, GRAY90, GRAY50)
 from rinoh.color import BLACK
 from rinoh.font import TypeFamily
-from rinoh.font.style import REGULAR, UPRIGHT, ITALIC, BOLD, SUPERSCRIPT
+from rinoh.font.style import (NORMAL, REGULAR, UPRIGHT, ITALIC, BOLD,
+                              SMALL_CAPITAL, SUPERSCRIPT)
 
 from rinohlib.fonts.texgyre.termes import typeface as times
 from rinohlib.fonts.texgyre.cursor import typeface as courier
@@ -126,7 +127,7 @@ styles('heading level 1',
        typeface=Var('ieee_family').serif,
        font_weight=REGULAR,
        font_size=10*PT,
-       small_caps=True,
+       font_variant=SMALL_CAPITAL,
        justify=CENTER,
        line_spacing=FixedSpacing(12*PT),
        space_above=18*PT,
@@ -142,7 +143,7 @@ styles('heading level 2',
        base='heading level 1',
        font_slant=ITALIC,
        font_size=10*PT,
-       small_caps=False,
+       font_variant=NORMAL,
        justify=LEFT,
        line_spacing=FixedSpacing(12*PT),
        space_above=6*PT,

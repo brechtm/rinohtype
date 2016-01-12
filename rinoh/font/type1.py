@@ -206,11 +206,11 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
 ##                return self._find_suffix(self.char_to_name(char.upper()),
 ##                                         possible_suffixes, True)
 
-    def _char_to_name(self, char, variant=None):
+    def _char_to_name(self, char, variant):
         try:
             # TODO: first search character using the font's encoding
             name_or_names = UNICODE_TO_GLYPH_NAME[ord(char)]
-            if variant and char != ' ':
+            if variant in self._SUFFIXES and char != ' ':
                 suffix = self._find_suffix(char, variant)
             else:
                 suffix = ''
@@ -227,7 +227,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             yield 'question'
 
     @cached
-    def get_glyph(self, char, variant=None):
+    def get_glyph(self, char, variant):
         for name in self._char_to_name(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
