@@ -81,7 +81,7 @@ class Table(HorizontallyAlignedFlowable):
 
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
-        get_style = partial(self.get_style, container)
+        get_style = partial(self.get_style, flowable_target=container)
         state = state or TableState(self._size_columns(container))
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
