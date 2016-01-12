@@ -167,7 +167,8 @@ class Style(dict, metaclass=StyleMeta):
                 try:
                     type_ok = attribute.accepted_type.check_type(value)
                 except AttributeError:
-                    type_ok = isinstance(value, attribute.accepted_type)
+                    type_ok = isinstance(value, (attribute.accepted_type,
+                                                 VarBase))
                 if not type_ok:
                     raise TypeError('{} is not of the correct type for the '
                                     '{} style attribute'.format(value, name))
