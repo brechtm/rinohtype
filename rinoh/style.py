@@ -118,9 +118,7 @@ class AnyType(object):
 
 class StyleMeta(WithNamedDescriptors):
     def __new__(cls, classname, bases, cls_dict):
-        attributes = cls_dict.setdefault('attributes', {})
-        for name, default in attributes.items():
-            attributes[name] = Attribute(AnyType, default, None, name=name)
+        attributes = cls_dict['_attributes'] = {}
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
                 attributes[name] = attr
@@ -226,9 +224,9 @@ class Style(dict, metaclass=StyleMeta):
         nearest superclass.
         If `attribute` is not supported, raise a :class:`KeyError`."""
         try:
-            for super_cls in cls.__mro__:
-                if attribute in super_cls.attributes:
-                    return super_cls.attributes[attribute].default_value
+            for klass in cls.__mro__:
+                if attribute in klass._attributes:
+                    return klass._attributes[attribute].default_value
         except AttributeError:
             raise KeyError("No attribute '{}' in {}".format(attribute, cls))
 
@@ -236,8 +234,8 @@ class Style(dict, metaclass=StyleMeta):
     def attribute_definition(cls, name):
         try:
             for klass in cls.__mro__:
-                if name in klass.attributes:
-                    return klass.attributes[name]
+                if name in klass._attributes:
+                    return klass._attributes[name]
         except AttributeError:
             pass
         raise KeyError
@@ -248,8 +246,8 @@ class Style(dict, metaclass=StyleMeta):
         class."""
         attributes = set()
         try:
-            for super_cls in cls.__mro__:
-                attributes.update(super_cls.attributes.keys())
+            for klass in cls.__mro__:
+                attributes.update(klass._attributes.keys())
         except AttributeError:
             return attributes
 
