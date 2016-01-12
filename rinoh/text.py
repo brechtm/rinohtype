@@ -42,8 +42,7 @@ from .dimension import PT
 from .font.style import MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC
 from .font.style import SUPERSCRIPT, SUBSCRIPT
 from .fonts import adobe14
-from .style import Style, Styled, PARENT_STYLE, StyleException
-
+from .style import Style, Styled, PARENT_STYLE, StyleException, AttributeType
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
            'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
@@ -112,7 +111,7 @@ class CharacterLike(Styled):
         raise NotImplementedError
 
 
-class StyledText(Styled):
+class StyledText(Styled, AttributeType):
     """Base class for text that has a :class:`TextStyle` associated with it."""
 
     style_class = TextStyle
@@ -131,6 +130,10 @@ class StyledText(Styled):
         """Return the concatenation of this styled text and `other`. If `other`
         is `None`, this styled text itself is returned."""
         return self + other
+
+    @classmethod
+    def check_type(cls, value):
+        return super().check_type(value) or isinstance(value, str)
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}

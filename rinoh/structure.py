@@ -18,8 +18,8 @@ from .reference import Referenceable, Reference
 from .reference import NUMBER, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
-from .text import SingleStyledText, MixedStyledText, Tab
-from .style import PARENT_STYLE
+from .text import StyledText, SingleStyledText, MixedStyledText, Tab
+from .style import PARENT_STYLE, Attribute
 
 
 __all__ = ['Section', 'Heading',
@@ -31,7 +31,8 @@ __all__ = ['Section', 'Heading',
 
 
 class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
-    attributes = {'show_in_toc': True}
+    show_in_toc = Attribute(bool, True, 'List this section in the table of '
+                                        'contents')
 
 
 class Section(Referenceable, StaticGroupedFlowables, PageBreak):
@@ -66,7 +67,11 @@ class Section(Referenceable, StaticGroupedFlowables, PageBreak):
 
 
 class HeadingStyle(NumberedParagraphStyle):
-    attributes = {'number_separator': '.'}
+    number_separator = Attribute(StyledText, '.',
+                                 "Characters inserted between the number "
+                                 "labels of the parent section and this "
+                                 "section. If `None`, only show this section's "
+                                 "number label.")
 
 
 class Heading(NumberedParagraph):
@@ -128,8 +133,9 @@ class Heading(NumberedParagraph):
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
-    attributes = {'ordered': False,
-                  'bullet': SingleStyledText('\N{BULLET}')}
+    ordered = Attribute(bool, False, 'This list is ordered or unordered')
+    bullet = Attribute(StyledText, SingleStyledText('\N{BULLET}'),
+                       'Bullet to use in unordered lists')
 
 
 class List(StaticGroupedFlowables, Label):
@@ -189,8 +195,6 @@ class Definition(StaticGroupedFlowables):
 
 
 class HeaderStyle(ParagraphStyle):
-    attributes = {}
-
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
 
@@ -204,8 +208,6 @@ class Header(Paragraph):
 
 
 class FooterStyle(ParagraphStyle):
-    attributes = {}
-
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
 
@@ -220,7 +222,8 @@ class Footer(Paragraph):
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
-    attributes = {'depth': 3}
+    depth = Attribute(int, 3, 'The number of section levels to include in the '
+                              'table of contents')
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
@@ -275,7 +278,7 @@ class TableOfContents(GroupedFlowables):
 
 
 class TableOfContentsEntryStyle(ParagraphStyle):
-    attributes = {'show_number': True}
+    show_number = Attribute(bool, True, 'Show the section number label')
 
 
 class TableOfContentsEntry(ParagraphBase):
