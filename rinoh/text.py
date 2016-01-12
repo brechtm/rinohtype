@@ -117,7 +117,7 @@ class StyledText(Styled, AttributeType):
 
     @classmethod
     def check_type(cls, value):
-        return super().check_type(value) or isinstance(value, str)
+        return super().check_type(value) or isinstance(value, (str, type(None)))
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
