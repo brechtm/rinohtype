@@ -164,7 +164,11 @@ class Style(dict, metaclass=StyleMeta):
         for name, value in attributes.items():
             try:
                 attribute = self.attribute_definition(name)
-                if not attribute.accepted_type.check_type(value):
+                try:
+                    type_ok = attribute.accepted_type.check_type(value)
+                except AttributeError:
+                    type_ok = isinstance(value, attribute.accepted_type)
+                if not type_ok:
                     raise TypeError('{} is not of the correct type for the '
                                     '{} style attribute'.format(value, name))
             except KeyError:

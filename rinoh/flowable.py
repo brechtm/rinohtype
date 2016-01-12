@@ -320,10 +320,11 @@ class StaticGroupedFlowables(GroupedFlowables):
 
 
 class LabeledFlowableStyle(FlowableStyle):
-    attributes = {'label_min_width': 12*PT,
-                  'label_max_width': 80*PT,
-                  'label_spacing': 3*PT,
-                  'wrap_label': False}
+    label_min_width = Attribute(DimensionBase, 12*PT, 'Minimum label width')
+    label_max_width = Attribute(DimensionBase, 80*PT, 'Maximum label width')
+    label_spacing = Attribute(DimensionBase, 3*PT, 'Spacing between a label and'
+                                                   'the labeled flowable')
+    wrap_label = Attribute(bool, False, 'Wrap the label at `label_max_width`')
 
 
 class LabeledFlowable(Flowable):
