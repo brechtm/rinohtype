@@ -187,7 +187,8 @@ class ParagraphStyle(FlowableStyle, TextStyle):
                                                   'line of text')
     line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '
                              'baselines of two successive lines of text')
-    justify = Attribute(TextAlign, JUSTIFY, 'Alignment of text to the margins')
+    text_align = Attribute(TextAlign, JUSTIFY, 'Alignment of text to the '
+                                               'margins')
     tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
@@ -261,7 +262,7 @@ class ParagraphBase(Flowable):
                         else float(self.get_style('indent_first', container)))
         line_width = float(container.width)
         line_spacing = self.get_style('line_spacing', container)
-        justification = self.get_style('justify', container)
+        text_align = self.get_style('text_align', container)
         tab_stops = self.get_style('tab_stops', container)
 
         # `saved_state` is updated after successfully rendering each line, so
@@ -280,7 +281,7 @@ class ParagraphBase(Flowable):
             nonlocal state, saved_state, max_line_width, descender
             try:
                 max_line_width = max(max_line_width, line.cursor)
-                descender = line.typeset(container, justification, line_spacing,
+                descender = line.typeset(container, text_align, line_spacing,
                                          descender, last_line, force)
                 state.initial = False
                 saved_state = copy(state)
@@ -596,7 +597,7 @@ class Line(list):
             self.append(glyphs_span)
         return True
 
-    def typeset(self, container, justification, line_spacing, last_descender,
+    def typeset(self, container, text_align, line_spacing, last_descender,
                 last_line=False, force=False):
         """Typeset the line in `container` below its current cursor position.
         Advances the container's cursor to below the descender of this line.
@@ -637,10 +638,10 @@ class Line(list):
         # horizontal displacement
         left = self.indent
 
-        if self._has_tab or justification == JUSTIFY and last_line:
-            justification = LEFT
+        if self._has_tab or text_align == JUSTIFY and last_line:
+            text_align = LEFT
         extra_space = self.width - self.cursor
-        if justification == JUSTIFY:
+        if text_align == JUSTIFY:
             # TODO: padding added to spaces should be prop. to font size
             nr_spaces = sum(glyph_span.number_of_spaces for glyph_span in self)
             if nr_spaces > 0:
@@ -648,9 +649,9 @@ class Line(list):
                 for glyph_span in self:
                     if glyph_span.number_of_spaces > 0:
                         glyph_span.space.width += add_to_spaces
-        elif justification == CENTER:
+        elif text_align == CENTER:
             left += extra_space / 2.0
-        elif justification == RIGHT:
+        elif text_align == RIGHT:
             left += extra_space
 
         canvas = container.canvas

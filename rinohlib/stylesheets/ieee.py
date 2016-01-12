@@ -29,7 +29,7 @@ styles['default'] = ParagraphStyle(typeface=Var('ieee_family').serif,
                                    indent_first=0*PT,
                                    space_above=0*PT,
                                    space_below=0*PT,
-                                   justify=JUSTIFY,
+                                   text_align=JUSTIFY,
                                    kerning=True,
                                    ligatures=True,
                                    hyphen_lang='en_US',
@@ -40,7 +40,7 @@ styles('body',
        indent_first=0.125*INCH,
        space_above=0*PT,
        space_below=0*PT,
-       justify=JUSTIFY)
+       text_align=JUSTIFY)
 
 styles('emphasis',
        font_slant=ITALIC)
@@ -72,7 +72,7 @@ styles('broken hyperlink',
 styles('literal',
        base='default',
        font_size=9*PT,
-       justify=LEFT,
+       text_align=LEFT,
        indent_first=0,
        margin_left=0.5*CM,
        typeface=Var('ieee_family').mono,
@@ -86,7 +86,7 @@ styles('block quote',
 
 styles('attribution',
        base='default',
-       justify=RIGHT)
+       text_align=RIGHT)
 
 styles('line block line',
        base='default',
@@ -103,7 +103,7 @@ styles('title',
        line_spacing=ProportionalSpacing(1.2),
        space_above=6*PT,
        space_below=6*PT,
-       justify=CENTER)
+       text_align=CENTER)
 
 styles('subtitle',
        base='title',
@@ -128,7 +128,7 @@ styles('heading level 1',
        font_weight=REGULAR,
        font_size=10*PT,
        font_variant=SMALL_CAPITAL,
-       justify=CENTER,
+       text_align=CENTER,
        line_spacing=FixedSpacing(12*PT),
        space_above=18*PT,
        space_below=6*PT,
@@ -144,7 +144,7 @@ styles('heading level 2',
        font_slant=ITALIC,
        font_size=10*PT,
        font_variant=NORMAL,
-       justify=LEFT,
+       text_align=LEFT,
        line_spacing=FixedSpacing(12*PT),
        space_above=6*PT,
        space_below=6*PT,
@@ -203,7 +203,7 @@ styles('topic title',
 
 styles('rubric',
        base='topic title',
-       justify=CENTER,
+       text_align=CENTER,
        font_color=Color(0.5, 0, 0))
 
 styles('sidebar frame',
@@ -227,7 +227,7 @@ styles('sidebar subtitle',
 styles('bulleted list item label',
        base='default',
        indent_first=0,
-       justify=RIGHT)
+       text_align=RIGHT)
 
 styles('enumerated list item label',
        base='bulleted list item label',
@@ -289,7 +289,7 @@ styles('definition',
 styles('field name',
        base='default',
        indent_first=0,
-       justify=LEFT,
+       text_align=LEFT,
        font_weight=BOLD)
 
 
@@ -298,7 +298,7 @@ styles('field name',
 styles('option',
        base='default',
        indent_first=0,
-       justify=LEFT)
+       text_align=LEFT)
 
 styles('option string',
        base='default',
@@ -366,7 +366,7 @@ styles('footnote paragraph',
 
 styles('footnote label',
        base='footnote paragraph',
-       justify=RIGHT)
+       text_align=RIGHT)
 
 styles('figure',
        space_above=10*PT,
@@ -384,7 +384,7 @@ styles('caption',
        indent_first=0*PT,
        space_above=4*PT,
        space_below=0*PT,
-       justify=JUSTIFY,
+       text_align=JUSTIFY,
        label_suffix='.' + FixedWidthSpace())
 
 styles('figure legend',
@@ -393,7 +393,7 @@ styles('figure legend',
 styles('figure legend paragraph',
        base='caption',
        space_above=5*PT,
-       justify=LEFT)
+       text_align=LEFT)
 
 styles('table of contents section',
        show_in_toc=False)
@@ -460,16 +460,16 @@ styles('table body cell paragraph',
 styles('table body cell list item number',
        base='table body cell paragraph',
        indent_first=0,
-       justify=RIGHT)
+       text_align=RIGHT)
 
 styles('table head cell paragraph',
        base='table body cell paragraph',
        font_weight=BOLD,
-       justify=CENTER)
+       text_align=CENTER)
 
 styles('table first column paragraph',
        base='table body cell paragraph',
-       justify=LEFT)
+       text_align=LEFT)
 
 styles('table top border',
        stroke_width=1*PT,

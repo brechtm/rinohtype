@@ -262,7 +262,7 @@ only the ``number_format`` property::
            font_weight=REGULAR,
            font_size=10*PT,
            small_caps=True,
-           justify=CENTER,
+           text_align=CENTER,
            line_spacing=FixedSpacing(12*PT),
            space_above=18*PT,
            space_below=6*PT,

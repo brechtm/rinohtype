@@ -29,7 +29,7 @@ stylesheet['default'] = ParagraphStyle(typeface=Var('fonts').serif,
                                        indent_first=0*PT,
                                        space_above=0*PT,
                                        space_below=0*PT,
-                                       justify=JUSTIFY,
+                                       text_align=JUSTIFY,
                                        kerning=True,
                                        ligatures=True,
                                        hyphen_lang='en_US',
@@ -39,7 +39,7 @@ stylesheet('body',
            base='default',
            space_above=5*PT,
            space_below=0*PT,
-           justify=JUSTIFY)
+           text_align=JUSTIFY)
 
 stylesheet('emphasis',
        font_slant=ITALIC)
@@ -71,7 +71,7 @@ stylesheet('broken hyperlink',
 stylesheet('literal',
            base='default',
            typeface=Var('fonts').mono,
-           justify=LEFT,
+           text_align=LEFT,
            indent_first=0,
            space_above=4*PT,
            space_below=4*PT,
@@ -85,7 +85,7 @@ stylesheet('block quote',
 
 stylesheet('attribution',
        base='default',
-       justify=RIGHT)
+       text_align=RIGHT)
 
 stylesheet('line block line',
        base='default',
@@ -102,7 +102,7 @@ stylesheet('title',
        line_spacing=ProportionalSpacing(1.2),
        space_above=6*PT,
        space_below=6*PT,
-       justify=CENTER)
+       text_align=CENTER)
 
 stylesheet('subtitle',
        base='title',
@@ -194,7 +194,7 @@ stylesheet('topic title',
 
 stylesheet('rubric',
        base='topic title',
-       justify=CENTER,
+       text_align=CENTER,
        font_color=Color(0.5, 0, 0))
 
 stylesheet('sidebar frame',
@@ -226,7 +226,7 @@ stylesheet('sidebar subtitle',
 stylesheet('list item label',
        base='default',
        indent_first=0,
-       justify=RIGHT)
+       text_align=RIGHT)
 
 stylesheet('bulleted list item label',
        base='list item label')
@@ -351,7 +351,7 @@ stylesheet('token definition',
 stylesheet('field name',
        base='default',
        indent_first=0,
-       justify=LEFT,
+       text_align=LEFT,
        font_weight=BOLD)
 
 
@@ -360,7 +360,7 @@ stylesheet('field name',
 stylesheet('option',
        base='default',
        indent_first=0,
-       justify=LEFT)
+       text_align=LEFT)
 
 stylesheet('option string',
        base='default',
@@ -432,7 +432,7 @@ stylesheet('footnote paragraph',
 
 stylesheet('footnote label',
        base='footnote paragraph',
-       justify=RIGHT)
+       text_align=RIGHT)
 
 stylesheet('figure',
        space_above=10*PT,
@@ -451,7 +451,7 @@ stylesheet('caption',
            indent_first=0*PT,
            space_above=4*PT,
            space_below=0*PT,
-           justify=CENTER,
+           text_align=CENTER,
            label_suffix='.' + FixedWidthSpace())
 
 stylesheet('figure legend',
@@ -460,7 +460,7 @@ stylesheet('figure legend',
 stylesheet('figure legend paragraph',
        base='caption',
        space_above=5*PT,
-       justify=LEFT)
+       text_align=LEFT)
 
 stylesheet('table of contents section',
            show_in_toc=False)
@@ -518,16 +518,16 @@ stylesheet('table body cell paragraph',
 stylesheet('table body cell list item number',
        base='table body cell paragraph',
        indent_first=0,
-       justify=RIGHT)
+       text_align=RIGHT)
 
 stylesheet('table head cell paragraph',
        base='table body cell paragraph',
        font_weight=BOLD,
-       justify=CENTER)
+       text_align=CENTER)
 
 stylesheet('table first column paragraph',
            base='table body cell paragraph',
-           justify=LEFT)
+           text_align=LEFT)
 
 stylesheet('table top border',
        stroke_width=1*PT,
@@ -555,7 +555,7 @@ stylesheet('horizontal rule',
 stylesheet('title page title',
            typeface=Var('fonts').sans,
            font_size=26*PT,
-           justify=CENTER)
+           text_align=CENTER)
 
 stylesheet('title page subtitle',
            base='title page title',
@@ -565,11 +565,11 @@ stylesheet('title page subtitle',
 stylesheet('title page author',
            typeface=Var('fonts').sans,
            font_size=18*PT,
-           justify=CENTER,
+           text_align=CENTER,
            space_above=80*PT)
 
 stylesheet('title page date',
            typeface=Var('fonts').sans,
            font_size=14*PT,
-           justify=CENTER,
+           text_align=CENTER,
            space_above=20*PT)
