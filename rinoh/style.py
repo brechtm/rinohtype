@@ -557,7 +557,7 @@ class StyleSheet(OrderedDict):
         for match in self.matcher.match(styled, container):
             yield match
         if self.base is not None:
-            for match in self.base.find_matches(styled):
+            for match in self.base.find_matches(styled, container):
                 yield match
 
     def find_style(self, styled, container):
