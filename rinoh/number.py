@@ -13,7 +13,7 @@ Functions for formatting numbers:
 """
 
 from .paragraph import ParagraphBase, ParagraphStyle
-from .style import Style, Attribute
+from .style import Style, OptionSet, Attribute
 from .text import StyledText
 
 
@@ -28,6 +28,11 @@ CHARACTER_UC = 'CHARACTER'
 ROMAN_LC = 'roman'
 ROMAN_UC = 'ROMAN'
 SYMBOL = 'symbol'
+
+
+class NumberFormat(OptionSet):
+    values = (NUMBER, CHARACTER_LC, CHARACTER_UC, ROMAN_LC, ROMAN_UC, SYMBOL,
+              None)
 
 
 def format_number(number, format):
@@ -103,7 +108,7 @@ class Label(object):
 
 
 class NumberStyle(LabelStyle):
-    attributes = {'number_format': NUMBER}
+    number_format = Attribute(NumberFormat, NUMBER, 'How numbers are formatted')
 
 
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
