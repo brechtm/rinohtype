@@ -11,6 +11,7 @@ from itertools import chain
 from functools import partial
 from math import sqrt
 
+from .color import Color
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
@@ -18,7 +19,7 @@ from .flowable import (HorizontallyAlignedFlowable,
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .reference import Referenceable, NUMBER
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
-from .style import Styled
+from .style import Styled, OptionSet, Attribute, OverrideDefault
 from .util import ReadAliasAttribute
 
 
@@ -27,11 +28,6 @@ __all__ = ['Table', 'TableWithCaption',
            'TableCell', 'TableCellStyle', 'TableCellBorder',
            'TableCellBackground',
            'TOP', 'MIDDLE', 'BOTTOM']
-
-
-TOP = 'top'
-MIDDLE = 'middle'
-BOTTOM = 'bottom'
 
 
 class TableState(HorizontallyAlignedFlowableState):
@@ -58,8 +54,11 @@ class TableState(HorizontallyAlignedFlowableState):
 
 
 class TableStyle(HorizontallyAlignedFlowableStyle):
-    attributes = {'split_minimum_rows': 0,
-                  'repeat_head': False}
+    split_minimum_rows = Attribute(int, 0, 'The minimum number of rows to '
+                                           'display when the table is split '
+                                           'across pages')
+    repeat_head = Attribute(bool, False, 'Repeat the head when the table is '
+                                         'split across pages')
 
 
 NEVER_SPLIT = float('+inf')
@@ -325,9 +324,18 @@ class TableRow(Styled, list):
         return spanned_columns
 
 
+TOP = 'top'
+MIDDLE = 'middle'
+BOTTOM = 'bottom'
+
+
+class VerticalAlign(OptionSet):
+    values = TOP, MIDDLE, BOTTOM
+
+
 class TableCellStyle(GroupedFlowablesStyle):
-    attributes = {'vertical_align': MIDDLE,
-                  'background_color': None}
+    vertical_align = Attribute(VerticalAlign, MIDDLE, 'Vertical alignment of '
+                               'the cell contents within the available space')
 
 
 class TableCell(StaticGroupedFlowables):
@@ -448,7 +456,7 @@ class RenderedRow(list):
 
 
 class TableCellBorderStyle(ShapeStyle):
-    attributes = {'stroke_width': None}
+    stroke_width = OverrideDefault(None)
 
 
 class TableCellBorder(Line):
@@ -469,8 +477,8 @@ class TableCellBorder(Line):
 
 
 class TableCellBackgroundStyle(ShapeStyle):
-    attributes = {'fill_color': None,
-                  'stroke_color': None}
+    fill_color = OverrideDefault(None)
+    stroke_color = OverrideDefault(None)
 
 
 class TableCellBackground(Rectangle):
