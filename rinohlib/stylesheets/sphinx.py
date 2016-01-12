@@ -1,14 +1,14 @@
-
-from rinoh.style import StyleSheet, Var
-from rinoh.paragraph import (ParagraphStyle, TabStop, LEFT, RIGHT, CENTER, BOTH,
-                             FixedSpacing, ProportionalSpacing, SINGLE)
-from rinoh.dimension import PT, CM
-from rinoh.table import MIDDLE
-from rinoh.text import FixedWidthSpace
-from rinoh.number import NUMBER, SYMBOL
 from rinoh.color import Color, Gray, RED, GRAY90, GRAY50
+from rinoh.dimension import PT, CM
+from rinoh.number import NUMBER, SYMBOL
+from rinoh.flowable import LEFT, RIGHT, CENTER
 from rinoh.font import TypeFamily
 from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
+from rinoh.paragraph import (ParagraphStyle, TabStop, BOTH,
+                             FixedSpacing, ProportionalSpacing, SINGLE)
+from rinoh.style import StyleSheet, Var
+from rinoh.table import MIDDLE
+from rinoh.text import FixedWidthSpace
 
 from rinohlib.fonts.texgyre.pagella import typeface as palatino
 from rinohlib.fonts.texgyre.cursor import typeface as courier

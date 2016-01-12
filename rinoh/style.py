@@ -26,7 +26,7 @@ from .util import cached, NamedDescriptor, WithNamedDescriptors
 
 
 __all__ = ['Style', 'Styled', 'Var',
-           'AttributeType', 'Attribute', 'OverrideDefault',
+           'AttributeType', 'OptionSet', 'Attribute', 'OverrideDefault',
            'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
            'PARENT_STYLE', 'StyleException']
 
@@ -57,6 +57,14 @@ class AttributeType(object):
     @classmethod
     def check_type(cls, value):
         return isinstance(value, cls)
+
+
+class OptionSet(AttributeType):
+    values = ()
+
+    @classmethod
+    def check_type(cls, value):
+        return value in cls.values
 
 
 class Attribute(NamedDescriptor):

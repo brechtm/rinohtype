@@ -26,7 +26,7 @@ from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer)
 from .util import last
-from .style import Styled, Attribute, OverrideDefault
+from .style import Styled, OptionSet, Attribute, OverrideDefault
 
 
 __all__ = ['Flowable', 'FlowableStyle',
@@ -418,12 +418,17 @@ class GroupedLabeledFlowables(GroupedFlowables):
 
 
 LEFT = 'left'
-CENTER = 'center'
 RIGHT = 'right'
+CENTER = 'center'
+
+
+class HorizontalAlignment(OptionSet):
+    values = LEFT, RIGHT, CENTER
 
 
 class HorizontallyAlignedFlowableStyle(FlowableStyle):
-    attributes = {'horizontal_align': LEFT}
+    horizontal_align = Attribute(HorizontalAlignment, LEFT,
+                                 'Horizontal alignment of the flowable')
 
 
 class HorizontallyAlignedFlowableState(FlowableState):
@@ -483,8 +488,16 @@ class Float(Flowable):
         return 0, last_descender
 
 
+ANY = 'any'
+
+
+class Break(OptionSet):
+    values = None, ANY, LEFT, RIGHT
+
+
 class PageBreakStyle(FlowableStyle):
-    attributes = {'page_break': False}    # False, True (any), LEFT, RIGHT
+    page_break = Attribute(Break, None, 'Type of page break to insert '
+                                        'before rendering this flowable')
 
 
 class PageBreak(Flowable):
@@ -499,8 +512,8 @@ class PageBreak(Flowable):
                           reversed(top_container.chain.containers))
             first_container_on_page = last(rev_page_conts_on_page)
 
-            next_page_type = LEFT if container.page.number % 2 else RIGHT
-            if (next_page_type == page_break
+            next_break_type = LEFT if container.page.number % 2 else RIGHT
+            if (next_break_type == page_break
                 or (top_container is not first_container_on_page
                     and top_container.cursor > 0)):
                 raise EndOfContainer(page_break=True)

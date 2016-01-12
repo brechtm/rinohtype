@@ -55,9 +55,7 @@ __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
 
 # Text justification
 
-LEFT = 'left'
-RIGHT = 'right'
-CENTER = 'center'
+from .flowable import LEFT, RIGHT, CENTER
 BOTH = 'justify'
 
 
