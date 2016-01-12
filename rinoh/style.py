@@ -163,20 +163,26 @@ class Style(dict, metaclass=StyleMeta):
         self.stylesheet = None
         for name, value in attributes.items():
             try:
-                attribute = self.attribute_definition(name)
-                try:
-                    type_ok = attribute.accepted_type.check_type(value)
-                except AttributeError:
-                    type_ok = isinstance(value, (attribute.accepted_type,
-                                                 VarBase))
-                if not type_ok:
-                    raise TypeError('{} is not of the correct type for the '
-                                    '{} style attribute'.format(value, name))
+                self._check_attribute_type(name, value, accept_variables=True)
             except KeyError:
                 raise TypeError('{} is not a supported attribute for '
                                 '{}'.format(name, type(self).__name__))
 
         super().__init__(attributes)
+
+    def _check_attribute_type(self, name, value, accept_variables):
+        attribute = self.attribute_definition(name)
+        try:
+            type_ok = attribute.accepted_type.check_type(value)
+        except AttributeError:
+            if accept_variables:
+                accepted_types = (attribute.accepted_type, VarBase)
+            else:
+                accepted_types = attribute.accepted_type
+            type_ok = isinstance(value, accepted_types)
+        if not type_ok:
+            raise TypeError('{} is not of the correct type for the '
+                            '{} style attribute'.format(value, name))
 
     def __repr__(self):
         """Return a textual representation of this style."""
@@ -251,6 +257,7 @@ class Style(dict, metaclass=StyleMeta):
         value = self[attribute]
         if isinstance(value, VarBase):
             value = value.get(document)
+            self._check_attribute_type(attribute, value, accept_variables=False)
         return value
 
 
