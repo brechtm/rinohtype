@@ -48,14 +48,14 @@ class TestColor(unittest.TestCase):
         self.assertEqual(color3.r, 0xAA / 255)
         self.assertEqual(color3.g, 0x44 / 255)
         self.assertEqual(color3.b, 0x99 / 255)
-        self.assertEqual(repr(color3), '#aa4499ff')
+        self.assertEqual(repr(color3), '#a49f')
 
         color4 = HexColor('#2c6e')
         self.assertEqual(color4.r, 0x22 / 255)
         self.assertEqual(color4.g, 0xCC / 255)
         self.assertEqual(color4.b, 0x66 / 255)
         self.assertEqual(color4.a, 0xEE / 255)
-        self.assertEqual(repr(color4), '#22cc66ee')
+        self.assertEqual(repr(color4), '#2c6e')
 
     def test_bad_hex_value(self):
         for hex_string in ['', 'zz0000', '0011223', 'a', '0011223344']:

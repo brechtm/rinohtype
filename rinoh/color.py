@@ -30,7 +30,10 @@ class Color(AttributeType):
     def __repr__(self):
         rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
                                             for color in self.rgba))
-        return '#' + binascii.hexlify(rgba_bytes).decode('ascii')
+        string = binascii.hexlify(rgba_bytes).decode('ascii')
+        if string[::2] == string[1::2]:
+            string = string[::2]
+        return '#' + string
 
     @classmethod
     def check_type(cls, value):
