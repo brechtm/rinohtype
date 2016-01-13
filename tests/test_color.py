@@ -34,7 +34,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(color.g, 0x23 / 255)
         self.assertEqual(color.b, 0xF6 / 255)
         self.assertEqual(color.a, 1.0)
-        self.assertEqual(repr(color), '#1023f6ff')
+        self.assertEqual(repr(color), '#1023f6')
 
         color2 = HexColor('E30BCAD7')
         self.assertEqual(color2.r, 0xE3 / 255)
@@ -48,7 +48,7 @@ class TestColor(unittest.TestCase):
         self.assertEqual(color3.r, 0xAA / 255)
         self.assertEqual(color3.g, 0x44 / 255)
         self.assertEqual(color3.b, 0x99 / 255)
-        self.assertEqual(repr(color3), '#a49f')
+        self.assertEqual(repr(color3), '#a49')
 
         color4 = HexColor('#2c6e')
         self.assertEqual(color4.r, 0x22 / 255)

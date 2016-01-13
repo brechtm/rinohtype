@@ -31,6 +31,8 @@ class Color(AttributeType):
         rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
                                             for color in self.rgba))
         string = binascii.hexlify(rgba_bytes).decode('ascii')
+        if string.endswith('ff'):
+            string = string[:-2]
         if string[::2] == string[1::2]:
             string = string[::2]
         return '#' + string
