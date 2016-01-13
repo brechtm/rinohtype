@@ -3,7 +3,7 @@
 import unittest
 
 
-from rinoh.draw import Color, HexColor, Gray
+from rinoh.color import Color, HexColor, Gray
 
 
 class TestColor(unittest.TestCase):
@@ -43,8 +43,22 @@ class TestColor(unittest.TestCase):
         self.assertEqual(color2.a, 0xD7 / 255)
         self.assertEqual(repr(color2), '#e30bcad7')
 
+    def test_short_hex_color(self):
+        color3 = HexColor('#A49')
+        self.assertEqual(color3.r, 0xAA / 255)
+        self.assertEqual(color3.g, 0x44 / 255)
+        self.assertEqual(color3.b, 0x99 / 255)
+        self.assertEqual(repr(color3), '#aa4499ff')
+
+        color4 = HexColor('#2c6e')
+        self.assertEqual(color4.r, 0x22 / 255)
+        self.assertEqual(color4.g, 0xCC / 255)
+        self.assertEqual(color4.b, 0x66 / 255)
+        self.assertEqual(color4.a, 0xEE / 255)
+        self.assertEqual(repr(color4), '#22cc66ee')
+
     def test_bad_hex_value(self):
-        for hex_string in ['', 'zz0000', '0011223', 'a', '0d6', '0011223344']:
+        for hex_string in ['', 'zz0000', '0011223', 'a', '0011223344']:
             self.assertRaises(ValueError, HexColor, hex_string)
 
     def test_gray(self):

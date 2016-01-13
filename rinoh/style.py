@@ -186,8 +186,9 @@ class Style(dict, metaclass=StyleMeta):
                 accepted_types = attribute.accepted_type
             type_ok = isinstance(value, accepted_types)
         if not type_ok:
-            raise TypeError('{} is not of the correct type for the '
-                            '{} style attribute'.format(value, name))
+            type_name = type(value).__name__
+            raise TypeError('{} ({}) is not of the correct type for the {} '
+                            'style attribute'.format(value, type_name, name))
 
     def __repr__(self):
         """Return a textual representation of this style."""

@@ -8,6 +8,8 @@
 import binascii
 import struct
 
+from itertools import repeat
+
 from .style import AttributeType
 
 
@@ -41,12 +43,12 @@ class Color(AttributeType):
 
 class HexColor(Color):
     def __init__(self, string):
-        try:
-            string = string.encode('ascii')
-        except AttributeError:
-            pass
-        if string.startswith(b'#'):
+        if string.startswith('#'):
             string = string[1:]
+        if len(string) in (3, 4):
+            string = ''.join(repeated for char in string
+                             for repeated in repeat(char, 2))
+        string = string.encode('ascii')
         try:
             r, g, b = struct.unpack('BBB', binascii.unhexlify(string[:6]))
             if string[6:]:
