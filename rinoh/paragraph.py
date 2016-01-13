@@ -155,8 +155,8 @@ class TabStop(object):
 
     def __init__(self, position, align=LEFT, fill=None):
         """`position` can be an absolute position (:class:`Dimension`) or can
-        be relative to the line width (:class:`float`, between 0 and 1).
-        The alingment of text with respect to the tab stop is determined by
+        be relative to the line width (:class:`Fraction`).
+        The alignment of text with respect to the tab stop is determined by
         `align`, which can be :const:`LEFT`, :const:`RIGHT` or :const:`CENTER`.
         Optionally, `fill` specifies a string pattern to fill the empty tab
         space with."""
@@ -166,10 +166,7 @@ class TabStop(object):
 
     def get_position(self, line_width):
         """Return the absolute position of this tab stop."""
-        if isinstance(self._position, DimensionBase):
-            return float(self._position)
-        else:
-            return line_width * self._position
+        return self._position.to_points(line_width)
 
 
 class TabStopList(AttributeType):

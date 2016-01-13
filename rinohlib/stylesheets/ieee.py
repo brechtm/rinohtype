@@ -1,6 +1,6 @@
 
 from rinoh import (StyleSheet, Var, ParagraphStyle,
-                   PT, CM, INCH, LEFT, RIGHT, CENTER, JUSTIFY,
+                   PT, CM, INCH, PERCENT, LEFT, RIGHT, CENTER, JUSTIFY,
                    TOP, BOTTOM, MIDDLE,
                    FixedWidthSpace, TabStop,
                    FixedSpacing, ProportionalSpacing,
@@ -337,8 +337,8 @@ styles('header',
        base='default',
        font_size=9*PT,
        indent_first=0*PT,
-       tab_stops=[TabStop(0.5, CENTER),
-                  TabStop(1.0, RIGHT)])
+       tab_stops=[TabStop(50*PERCENT, CENTER),
+                  TabStop(100*PERCENT, RIGHT)])
 
 styles('line under header',
        stroke_width=0.4*PT)
@@ -407,25 +407,25 @@ styles('toc level 1',
        base='table of contents',
        font_weight=BOLD,
        tab_stops=[TabStop(0.6*CM),
-                  TabStop(1.0, RIGHT, '. ')])
+                  TabStop(100*PERCENT, RIGHT, '. ')])
 
 styles('toc level 2',
        base='table of contents',
        margin_left=0.6*CM,
        tab_stops=[TabStop(1.2*CM),
-                  TabStop(1.0, RIGHT, '. ')])
+                  TabStop(100*PERCENT, RIGHT, '. ')])
 
 styles('toc level 3',
        base='table of contents',
        margin_left=1.2*CM,
        tab_stops=[TabStop(1.8*CM),
-                  TabStop(1.0, RIGHT, '. ')])
+                  TabStop(100*PERCENT, RIGHT, '. ')])
 
 styles('L3 toc level 3',
        base='table of contents',
        margin_left=0,
        tab_stops=[TabStop(0.6*CM),
-                  TabStop(1.0, RIGHT, '. ')])
+                  TabStop(100*PERCENT, RIGHT, '. ')])
 
 styles('table',
        space_above=5*PT,

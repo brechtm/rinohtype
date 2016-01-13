@@ -1,5 +1,5 @@
 from rinoh.color import Color, Gray, RED, GRAY90, GRAY50
-from rinoh.dimension import PT, CM
+from rinoh.dimension import PT, CM, PERCENT
 from rinoh.number import NUMBER, SYMBOL
 from rinoh.flowable import LEFT, RIGHT, CENTER
 from rinoh.font import TypeFamily
@@ -401,8 +401,8 @@ stylesheet('header',
            font_size=10*PT,
            font_weight=BOLD,
            indent_first=0*PT,
-           tab_stops=[TabStop(0.5, CENTER),
-                      TabStop(1.0, RIGHT)])
+           tab_stops=[TabStop(50*PERCENT, CENTER),
+                      TabStop(100*PERCENT, RIGHT)])
 
 
 stylesheet('line under header',
@@ -475,25 +475,25 @@ stylesheet('toc level 1',
            font_weight=BOLD,
            space_above=14*PT,
            tab_stops=[TabStop(0.6*CM),
-                      TabStop(1.0, RIGHT)])
+                      TabStop(100*PERCENT, RIGHT)])
 
 stylesheet('toc level 2',
            base='table of contents',
            margin_left=0.6*CM,
            tab_stops=[TabStop(1.0*CM),
-                      TabStop(1.0, RIGHT, fill='.  ')])
+                      TabStop(100*PERCENT, RIGHT, fill='.  ')])
 
 stylesheet('toc level 3',
            base='table of contents',
            margin_left=1.6*CM,
            tab_stops=[TabStop(1.4*CM),
-                      TabStop(1.0, RIGHT, fill='.  ')])
+                      TabStop(100*PERCENT, RIGHT, fill='.  ')])
 
 stylesheet('L3 toc level 3',
            base='table of contents',
            margin_left=0,
            tab_stops=[TabStop(0.6*CM),
-                      TabStop(1.0, RIGHT, '. ')])
+                      TabStop(100*PERCENT, RIGHT, '. ')])
 
 stylesheet('table',
        space_above=5*PT,
