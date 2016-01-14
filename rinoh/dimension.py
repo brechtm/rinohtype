@@ -207,6 +207,9 @@ class Fraction(object):
         """Return a textual representation of the evaluated value."""
         return '{:.2f}%'.format(self._percent)
 
+    def __eq__(self, other):
+        return self._percent == other._percent
+
     def to_points(self, total_dimension):
         return self._percent / 100 * float(total_dimension)
 
