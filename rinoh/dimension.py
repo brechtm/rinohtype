@@ -102,7 +102,13 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
     def check_type(cls, value):
         return super().check_type(value) or value == 0
 
-    REGEX = re.compile(r'^(?P<value>\d*.?\d+)(?P<unit>[a-z%]*)$', re.I)
+    REGEX = re.compile(r"""(?P<value>
+                             \d*.?\d+       # integer or float value
+                           )
+                           (?P<unit>
+                             [a-z%]*        # unit (can be an empty string)
+                           )
+                       """, re.IGNORECASE | re.VERBOSE)
 
     @classmethod
     def from_string(cls, string):
@@ -113,6 +119,10 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
                 assert value == '0'
                 return 0
             dimension_unit = UNIT_TO_DIMENSION[unit.lower()]
+            _, end = m.span()
+            if string[end:].strip():
+                raise ValueError("{}: trailing characters after dimension"
+                                 .format(string))
             try:
                 return int(value) * dimension_unit
             except ValueError:

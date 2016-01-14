@@ -259,7 +259,7 @@ class TabStopList(AttributeType):
                              ,                     # separating comma
                              \s*                   # whitespace
                            )?
-                       """.format(pos=DimensionBase.REGEX.pattern[1:-1],
+                       """.format(pos=DimensionBase.REGEX.pattern,
                                   align='|'.join(TabAlign.values),
                                   fill=StyledText.REGEX.pattern),
                        re.IGNORECASE | re.VERBOSE)
