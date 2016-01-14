@@ -103,10 +103,12 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
         return super().check_type(value) or value == 0
 
     REGEX = re.compile(r"""(?P<value>
-                             \d*.?\d+       # integer or float value
+                             [+-]?         # optional sign
+                             \d*.?\d+      # integer or float value
                            )
+                           \s*             # optional space between value & unit
                            (?P<unit>
-                             [a-z%]*        # unit (can be an empty string)
+                             [a-z%]*       # unit (can be an empty string)
                            )
                        """, re.IGNORECASE | re.VERBOSE)
 
