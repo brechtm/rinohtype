@@ -130,6 +130,9 @@ class ProportionalSpacing(LineSpacing):
         to obtain the line spacing."""
         self.factor = factor
 
+    def __eq__(self, other):
+        return self.factor == other.factor
+
     @classmethod
     def parse_arguments(cls, factor):
         try:
@@ -168,6 +171,9 @@ class FixedSpacing(LineSpacing):
         self.pitch = float(pitch)
         self.minimum = minimum
 
+    def __eq__(self, other):
+        return (self.pitch, self.minimum) == (other.pitch, other.minimum)
+
     @classmethod
     def parse_arguments(cls, pitch_str, minimum_str=None):
         pitch = DimensionBase.from_string(pitch_str)
@@ -192,6 +198,9 @@ class Leading(LineSpacing):
         """`leading` specifies the space between the bottom of a line and the
         top of the following line."""
         self.leading = float(leading)
+
+    def __eq__(self, other):
+        return self.leading == other.leading
 
     @classmethod
     def parse_arguments(cls, leading_str):

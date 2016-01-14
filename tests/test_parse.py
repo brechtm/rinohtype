@@ -5,7 +5,9 @@ from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
                           ROMAN_LC, ROMAN_UC, SYMBOL)
 from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
-from rinoh.paragraph import TextAlign, JUSTIFY, TabAlign
+from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
+                             LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
+                             ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.style import OptionSet, Bool, Integer
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
 
@@ -87,6 +89,34 @@ def test_tabalign_from_string():
         assert TabAlign.from_string('none')
     with pytest.raises(ValueError):
         assert TabAlign.from_string('any')
+
+
+def test_linespacing_from_string():
+    assert LineSpacing.from_string('default') == DEFAULT
+    assert LineSpacing.from_string('StandarD') == STANDARD
+    assert LineSpacing.from_string('SINGLE') == SINGLE
+    assert LineSpacing.from_string('Double') == DOUBLE
+    assert LineSpacing.from_string('proportional(2)') == ProportionalSpacing(2)
+    assert LineSpacing.from_string('fixed(2pt)') == FixedSpacing(2*PT)
+    assert LineSpacing.from_string('fixed(1.4 cm)') == FixedSpacing(1.4*CM)
+    assert LineSpacing.from_string('fixed(1pT,single)') == FixedSpacing(1*PT)
+    assert LineSpacing.from_string('fixed(1pT ,DOUBLE)') == FixedSpacing(1*PT,
+                                                                         DOUBLE)
+    assert LineSpacing.from_string('leading(3    PT)') == Leading(3*PT)
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('5 pt')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('proportional')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('proportional(1 cm)')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('fixed')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('fixed(2)')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('fixed(2pt, badvalue)')
+    with pytest.raises(ValueError):
+        assert LineSpacing.from_string('leading')
 
 
 def test_verticalalign_from_string():
