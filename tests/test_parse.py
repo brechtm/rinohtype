@@ -2,6 +2,10 @@
 import pytest
 
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
+from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
+                          ROMAN_LC, ROMAN_UC, SYMBOL)
+from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
+from rinoh.paragraph import TabAlign
 from rinoh.style import OptionSet, Bool, Integer
 
 
@@ -32,6 +36,46 @@ def test_optionset_from_string():
         TestSet2.from_string('one')
     with pytest.raises(ValueError):
         TestSet2.from_string('False')
+
+
+def test_numberformat_from_string():
+    assert NumberFormat.from_string('number') == NUMBER
+    assert NumberFormat.from_string('character') == CHARACTER_LC
+    assert NumberFormat.from_string('CHARACTER') == CHARACTER_UC
+    assert NumberFormat.from_string('roman') == ROMAN_LC
+    assert NumberFormat.from_string('ROMAN') == ROMAN_UC
+    assert NumberFormat.from_string('symbol') == SYMBOL
+    with pytest.raises(ValueError):
+        NumberFormat.from_string('none')
+    with pytest.raises(ValueError):
+        NumberFormat.from_string('Character')
+    with pytest.raises(ValueError):
+        NumberFormat.from_string('roMAN')
+
+
+def test_horizontalalignment_from_string():
+    assert HorizontalAlignment.from_string('left') == LEFT
+    assert HorizontalAlignment.from_string('Right') == RIGHT
+    assert HorizontalAlignment.from_string('CENTER') == CENTER
+    with pytest.raises(ValueError):
+        HorizontalAlignment.from_string('none')
+
+
+def test_break_from_string():
+    assert Break.from_string('none') == None
+    assert Break.from_string('aNY') == ANY
+    with pytest.raises(ValueError):
+        assert Break.from_string('center')
+
+
+def test_tabalign_from_string():
+    assert TabAlign.from_string('left') == LEFT
+    assert TabAlign.from_string('right') == RIGHT
+    assert TabAlign.from_string('center') == CENTER
+    with pytest.raises(ValueError):
+        assert TabAlign.from_string('none')
+    with pytest.raises(ValueError):
+        assert TabAlign.from_string('any')
 
 
 def test_bool_from_string():
