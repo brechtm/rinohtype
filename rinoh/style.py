@@ -18,6 +18,7 @@ Base classes and exceptions for styled document elements.
 """
 
 
+from configparser import ConfigParser, ExtendedInterpolation
 from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
@@ -25,10 +26,10 @@ from .element import DocumentElement
 from .util import cached, NamedDescriptor, WithNamedDescriptors
 
 
-__all__ = ['Style', 'Styled', 'Var',
-           'AttributeType', 'OptionSet', 'Attribute', 'OverrideDefault',
-           'StyledMatcher', 'StyleSheet', 'ClassSelector', 'ContextSelector',
-           'PARENT_STYLE', 'StyleException']
+__all__ = ['Style', 'Styled', 'Var', 'AttributeType', 'OptionSet', 'Attribute',
+           'OverrideDefault', 'Bool', 'Integer', 'StyledMatcher', 'StyleSheet',
+           'StyleSheetFile', 'ClassSelector', 'ContextSelector', 'PARENT_STYLE',
+           'StyleException']
 
 
 class StyleException(Exception):
@@ -58,6 +59,10 @@ class AttributeType(object):
     def check_type(cls, value):
         return isinstance(value, cls)
 
+    @classmethod
+    def from_string(cls, string):
+        raise NotImplementedError
+
 
 class OptionSet(AttributeType):
     values = ()
@@ -65,6 +70,17 @@ class OptionSet(AttributeType):
     @classmethod
     def check_type(cls, value):
         return value in cls.values
+
+    @classmethod
+    def from_string(cls, string):
+        try:
+            index = ['none' if val is None else val.lower()
+                     for val in cls.values].index(string.lower())
+        except ValueError:
+            raise ValueError("'{}' is not a valid {}. Must be one of: '{}'"
+                             .format(string, cls.__name__,
+                                     "', '".join(cls.values)))
+        return cls.values[index]
 
 
 class Attribute(NamedDescriptor):
@@ -110,10 +126,32 @@ class OverrideDefault(Attribute):
         return self.overrides.description
 
 
-class AnyType(object):
+class Bool(AttributeType):
     @classmethod
     def check_type(cls, value):
-        return True
+        return isinstance(value, bool)
+
+    @classmethod
+    def from_string(cls, string):
+        lower_string = string.lower()
+        if lower_string not in ('true', 'false'):
+            raise ValueError("'{}' is not a valid {}. Must be one of 'true' or "
+                             "'false'".format(string, cls.__name__))
+        return lower_string == 'true'
+
+
+class Integer(AttributeType):
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, int)
+
+    @classmethod
+    def from_string(cls, string):
+        try:
+            return int(string)
+        except ValueError:
+            raise ValueError("'{}' is not a valid {}"
+                             .format(string, cls.__name__))
 
 
 class StyleMeta(WithNamedDescriptors):
@@ -172,7 +210,6 @@ class Style(dict, metaclass=StyleMeta):
             except KeyError:
                 raise TypeError('{} is not a supported attribute for '
                                 '{}'.format(name, type(self).__name__))
-
         super().__init__(attributes)
 
     def _check_attribute_type(self, name, value, accept_variables):
@@ -575,6 +612,33 @@ class StyleSheet(OrderedDict):
                 print("No style '{}' found in stylesheet"
                       .format(match.style_name))
         raise DefaultStyleException
+
+
+class StyleSheetFile(StyleSheet):
+    def __init__(self, filename, matcher, base=None):
+        config = ConfigParser(interpolation=ExtendedInterpolation())
+        with open(filename) as file:
+            config.read_file(file)
+        super().__init__(filename, matcher, base)
+        for style_name in config:
+            if style_name == 'DEFAULT':
+                continue
+            style_cls = self.get_style_class(style_name)
+            attribute_values = {}
+            for name, value in config[style_name].items():
+                if name == 'base':
+                    attribute_values[name] = value
+                else:
+                    try:
+                        attribute = style_cls.attribute_definition(name)
+                    except KeyError:
+                        raise TypeError("'{}' is not a supported attribute for "
+                                        "'{}' ({})".format(name, style_name,
+                                                           style_cls.__name__))
+                    stripped = value.strip()
+                    accepted_type = attribute.accepted_type
+                    attribute_values[name] = accepted_type.from_string(stripped)
+            self[style_name] = style_cls(**attribute_values)
 
 
 class VarBase(object):

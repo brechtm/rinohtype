@@ -35,6 +35,8 @@ Some characters with special properties and are represented by special classes:
 
 """
 
+import re
+
 from itertools import groupby
 
 from .color import Color, BLACK
@@ -45,7 +47,7 @@ from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
                          SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
 from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
-                    Attribute)
+                    Attribute, Bool)
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
@@ -68,10 +70,10 @@ class TextStyle(Style):
     font_color = Attribute(Color, BLACK, 'Color of the font')
     font_variant = Attribute(FontVariant, NORMAL, 'Variant of the font')
     position = Attribute(TextPosition, NORMAL, 'Vertical text position')
-    kerning = Attribute(bool, True, 'Improve inter-letter spacing')
-    ligatures = Attribute(bool, True, 'Run letters together where possible')
+    kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
+    ligatures = Attribute(Bool, True, 'Run letters together where possible')
     # TODO: character spacing
-    hyphenate = Attribute(bool, True, 'Allow words to be broken over two lines')
+    hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
     hyphen_chars = Attribute(int, 2, 'Minimum number of characters in a '
                                      'hyphenated part of a word')
     hyphen_lang = Attribute(str, 'en_US', 'Language to use for hyphenation. '
@@ -118,6 +120,22 @@ class StyledText(Styled, AttributeType):
     @classmethod
     def check_type(cls, value):
         return super().check_type(value) or isinstance(value, (str, type(None)))
+
+    REGEX = re.compile(r"'(?P<text>.+)'")
+
+    @classmethod
+    def from_string(cls, string):
+        if string.strip().lower() == 'none':
+            return None
+        m = cls.REGEX.match(string)
+        if not m:
+            raise ValueError("{} is not a valid {}" .format(string,
+                                                            cls.__name__))
+        _, end = m.span()
+        if string[end:].strip():
+            raise ValueError("{}: trailing characters after string"
+                             .format(string))
+        return m.group('text')
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}

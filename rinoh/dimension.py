@@ -20,10 +20,12 @@ It also exports a number of pre-defined units:
 
 """
 
+import re
+
 from .style import AttributeType
 
 
-__all__ = ['Dimension', 'PT', 'INCH', 'MM', 'CM']
+__all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM', 'PERCENT']
 
 
 class DimensionType(type):
@@ -99,6 +101,24 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
     @classmethod
     def check_type(cls, value):
         return super().check_type(value) or value == 0
+
+    REGEX = re.compile(r'^(?P<value>\d*.?\d+)(?P<unit>[a-z%]*)$', re.I)
+
+    @classmethod
+    def from_string(cls, string):
+        m = cls.REGEX.match(string)
+        try:
+            value, unit = m.groups()
+            if unit == '':
+                assert value == '0'
+                return 0
+            dimension_unit = UNIT_TO_DIMENSION[unit.lower()]
+            try:
+                return int(value) * dimension_unit
+            except ValueError:
+                return float(value) * dimension_unit
+        except (AttributeError, KeyError, AssertionError):
+            raise ValueError("'{}' is not a valid dimension".format(string))
 
 
 class Dimension(DimensionBase):
@@ -183,3 +203,11 @@ class FractionUnit(object):
 
 
 PERCENT = FractionUnit()
+
+
+UNIT_TO_DIMENSION = {'pt': PT,
+                     'in': INCH,
+                     'cm': CM,
+                     'mm': MM,
+                     'pc': PICA,
+                     '%': PERCENT}

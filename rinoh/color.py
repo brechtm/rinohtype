@@ -45,6 +45,14 @@ class Color(AttributeType):
     def rgba(self):
         return self.r, self.g, self.b, self.a
 
+    @classmethod
+    def from_string(cls, string):
+        try:
+            return HexColor(string)
+        except ValueError:
+            raise ValueError("'{}' is not a valid {}. Must be a HEX string."
+                             .format(string, cls.__name__))
+
 
 class HexColor(Color):
     def __init__(self, string):

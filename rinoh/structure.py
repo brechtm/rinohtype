@@ -19,19 +19,18 @@ from .reference import NUMBER, TITLE, PAGE
 from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
 from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
-from .style import PARENT_STYLE, Attribute
+from .style import PARENT_STYLE, Attribute, Bool, Integer
 
 
-__all__ = ['Section', 'Heading',
-           'ListStyle', 'List', 'ListItem', 'ListItemLabel',
-           'FieldList', 'DefinitionList', 'DefinitionTerm', 'Definition',
-           'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
-           'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents','TableOfContentsEntry',
-           'HorizontalRule', 'HorizontalRuleStyle']
+__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
+           'ListItemLabel', 'FieldList', 'DefinitionList', 'DefinitionTerm',
+           'Definition', 'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
+           'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
+           'TableOfContentsEntry', 'HorizontalRule', 'HorizontalRuleStyle']
 
 
 class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
-    show_in_toc = Attribute(bool, True, 'List this section in the table of '
+    show_in_toc = Attribute(Bool, True, 'List this section in the table of '
                                         'contents')
 
 
@@ -133,7 +132,7 @@ class Heading(NumberedParagraph):
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
-    ordered = Attribute(bool, False, 'This list is ordered or unordered')
+    ordered = Attribute(Bool, False, 'This list is ordered or unordered')
     bullet = Attribute(StyledText, SingleStyledText('\N{BULLET}'),
                        'Bullet to use in unordered lists')
 
@@ -222,8 +221,8 @@ class Footer(Paragraph):
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
-    depth = Attribute(int, 3, 'The number of section levels to include in the '
-                              'table of contents')
+    depth = Attribute(Integer, 3, 'The number of section levels to include in '
+                                  'the table of contents')
 
     def __init__(self, base=None, **attributes):
         super().__init__(base=base, **attributes)
@@ -278,7 +277,7 @@ class TableOfContents(GroupedFlowables):
 
 
 class TableOfContentsEntryStyle(ParagraphStyle):
-    show_number = Attribute(bool, True, 'Show the section number label')
+    show_number = Attribute(Bool, True, 'Show the section number label')
 
 
 class TableOfContentsEntry(ParagraphBase):

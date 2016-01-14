@@ -13,7 +13,7 @@ Functions for formatting numbers:
 """
 
 from .paragraph import ParagraphBase, ParagraphStyle
-from .style import Style, OptionSet, Attribute
+from .style import Style, OptionSet, Attribute, Bool
 from .text import StyledText
 
 
@@ -94,7 +94,7 @@ def symbolize(number):
 class LabelStyle(Style):
     label_prefix = Attribute(StyledText, None, 'Text to prepend to the label')
     label_suffix = Attribute(StyledText, None, 'Text to append to the label')
-    custom_label = Attribute(bool, False, 'Use a cutom label if specified')
+    custom_label = Attribute(Bool, False, 'Use a cutom label if specified')
 
 
 class Label(object):

@@ -32,6 +32,7 @@ Horizontal justification of lines can be one of:
 """
 
 import os
+import re
 
 from copy import copy
 from functools import lru_cache, partial
@@ -44,7 +45,8 @@ from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer
 from .style import Attribute, AttributeType, OptionSet
-from .text import TextStyle, MixedStyledText
+from .text import TextStyle, MixedStyledText, StyledText
+from .util import all_subclasses
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -68,6 +70,36 @@ class TextAlign(OptionSet):
 class LineSpacing(AttributeType):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
+
+    REGEX = re.compile(r'^(?P<type>[a-z]+)(\((?P<arg>.*)\))?$', re.I)
+
+    @classmethod
+    def from_string(cls, string):
+        m = cls.REGEX.match(string)
+        if not m:
+            raise ValueError("'{}' is not a valid {} type"
+                             .format(string, cls.__name__))
+        spacing_type = m.group('type').lower()
+        arg_strings = m.group('arg').split(',') if m.group('arg') else ()
+        if spacing_type in PREDEFINED_SPACINGS:
+            if arg_strings:
+                raise ValueError("'{}' takes no arguments"
+                                 .format(spacing_type))
+            return PREDEFINED_SPACINGS[spacing_type]
+        for subcls in all_subclasses(cls):
+            if subcls.__name__.lower().replace('spacing', '') == spacing_type:
+                stripped_args = (arg.strip() for arg in arg_strings)
+                try:
+                    args = subcls.parse_arguments(*stripped_args)
+                except TypeError as error:
+                    raise ValueError("Incorrect number or type of arguments "
+                                     "passed to '{}'".format(spacing_type))
+                return subcls(*args)
+        raise ValueError("'{}' is not a valid {}".format(string, cls.__name__))
+
+    @classmethod
+    def parse_arguments(cls, arg_strings):
+        raise NotImplementedError
 
     def advance(self, line, last_descender, container):
         """Return the distance between the descender of the previous line and
@@ -97,6 +129,14 @@ class ProportionalSpacing(LineSpacing):
         """`factor` specifies the amount by which the line height is multiplied
         to obtain the line spacing."""
         self.factor = factor
+
+    @classmethod
+    def parse_arguments(cls, factor):
+        try:
+            return float(factor),
+        except ValueError:
+            raise ValueError("'factor' parameter of 'proportional' should be "
+                             "a floating point number")
 
     def advance(self, line, last_descender, container):
         max_font_size = max(float(glyph_span.span.height(container))
@@ -128,6 +168,14 @@ class FixedSpacing(LineSpacing):
         self.pitch = float(pitch)
         self.minimum = minimum
 
+    @classmethod
+    def parse_arguments(cls, pitch_str, minimum_str=None):
+        pitch = DimensionBase.from_string(pitch_str)
+        if minimum_str:
+            minimum = LineSpacing.from_string(minimum_str)
+            return pitch, minimum
+        return pitch,
+
     def advance(self, line, last_descender, container):
         advance = self.pitch + last_descender
         if self.minimum is not None:
@@ -145,9 +193,24 @@ class Leading(LineSpacing):
         top of the following line."""
         self.leading = float(leading)
 
+    @classmethod
+    def parse_arguments(cls, leading_str):
+        leading = DimensionBase.from_string(leading_str)
+        return leading,
+
     def advance(self, line, last_descender):
         ascender = max(float(item.ascender) for item in line)
         return ascender + self.leading
+
+
+PREDEFINED_SPACINGS = dict(default=DEFAULT,
+                           standard=STANDARD,
+                           single=SINGLE,
+                           double=DOUBLE)
+
+
+class TabAlign(OptionSet):
+    values = LEFT, RIGHT, CENTER
 
 
 class TabStop(object):
@@ -174,6 +237,43 @@ class TabStopList(AttributeType):
     def check_type(cls, value):
         return (isinstance(value, (list, tuple))
                 and all(isinstance(item, TabStop) for item in value))
+
+    REGEX = re.compile(r"""\s*                     # leading whitespace
+                           (?P<position>{pos})     # tab stop position
+
+                           (?:                     ## optional: tab alignment
+                             \s+                   # whitespace
+                             (?P<align>{align})    # tab alignment
+                           )?
+                           (?:                     ## optional: fill string
+                             \s+                   # whitespace
+                             {fill}                # fill string
+                           )?
+                           (?:                     ## optional: separator
+                             \s*                   # whitespace
+                             ,                     # separating comma
+                             \s*                   # whitespace
+                           )?
+                       """.format(pos=DimensionBase.REGEX.pattern[1:-1],
+                                  align='|'.join(TabAlign.values),
+                                  fill=StyledText.REGEX.pattern),
+                       re.IGNORECASE | re.VERBOSE)
+
+    @classmethod
+    def from_string(cls, string):
+        tabstops = []
+        i = 0
+        while string[i:]:
+            m = cls.REGEX.match(string, pos=i)
+            if not m:
+                raise ValueError("'{}' is not a valid tab stop definition"
+                                 .format(string, cls.__name__))
+            _, i = m.span()
+            position, align, fill = m.group('position', 'align', 'text')
+            tabstop = TabStop(DimensionBase.from_string(position),
+                              align or LEFT, fill)
+            tabstops.append(tabstop)
+        return tabstops
 
 
 # TODO: look at Word/OpenOffice for more options
