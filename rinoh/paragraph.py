@@ -227,6 +227,11 @@ class TabStop(object):
         self.align = align
         self.fill = fill
 
+    def __repr__(self):
+        fill_repr = None if self.fill is None else "'{}'".format(self.fill)
+        return "{}({}, {}, {})".format(type(self).__name__, self._position,
+                                       self.align.upper(), fill_repr)
+
     def get_position(self, line_width):
         """Return the absolute position of this tab stop."""
         return self._position.to_points(line_width)

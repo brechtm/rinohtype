@@ -193,6 +193,10 @@ class Fraction(object):
     def __init__(self, percent):
         self._percent = percent
 
+    def __repr__(self):
+        """Return a textual representation of the evaluated value."""
+        return '{:.2f}%'.format(self._percent)
+
     def to_points(self, total_dimension):
         return self._percent / 100 * float(total_dimension)
 
