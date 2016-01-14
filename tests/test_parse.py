@@ -5,8 +5,9 @@ from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
                           ROMAN_LC, ROMAN_UC, SYMBOL)
 from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
-from rinoh.paragraph import TabAlign
+from rinoh.paragraph import TextAlign, JUSTIFY, TabAlign
 from rinoh.style import OptionSet, Bool, Integer
+from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
 
 
 def test_optionset_from_string():
@@ -52,6 +53,17 @@ def test_numberformat_from_string():
         NumberFormat.from_string('roMAN')
 
 
+def test_textalign_from_string():
+    assert TextAlign.from_string('left') == LEFT
+    assert TextAlign.from_string('cenTER') == CENTER
+    assert TextAlign.from_string('RighT') == RIGHT
+    assert TextAlign.from_string('justify') == JUSTIFY
+    with pytest.raises(ValueError):
+        assert TextAlign.from_string('none')
+    with pytest.raises(ValueError):
+        assert TextAlign.from_string('full')
+
+
 def test_horizontalalignment_from_string():
     assert HorizontalAlignment.from_string('left') == LEFT
     assert HorizontalAlignment.from_string('Right') == RIGHT
@@ -75,6 +87,16 @@ def test_tabalign_from_string():
         assert TabAlign.from_string('none')
     with pytest.raises(ValueError):
         assert TabAlign.from_string('any')
+
+
+def test_verticalalign_from_string():
+    assert VerticalAlign.from_string('top') == TOP
+    assert VerticalAlign.from_string('miDDLE') == MIDDLE
+    assert VerticalAlign.from_string('BOTTOM') == BOTTOM
+    with pytest.raises(ValueError):
+        assert VerticalAlign.from_string('none')
+    with pytest.raises(ValueError):
+        assert VerticalAlign.from_string('center')
 
 
 def test_bool_from_string():
