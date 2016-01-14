@@ -73,13 +73,14 @@ class OptionSet(AttributeType):
 
     @classmethod
     def from_string(cls, string):
+        value_strings = ['none' if value is None else value.lower()
+                         for value in cls.values]
         try:
-            index = ['none' if val is None else val.lower()
-                     for val in cls.values].index(string.lower())
+            index = value_strings.index(string.lower())
         except ValueError:
             raise ValueError("'{}' is not a valid {}. Must be one of: '{}'"
                              .format(string, cls.__name__,
-                                     "', '".join(cls.values)))
+                                     "', '".join(value_strings)))
         return cls.values[index]
 
 
