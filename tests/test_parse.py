@@ -39,14 +39,13 @@ def test_optionset_from_string():
 
 
 def test_numberformat_from_string():
+    assert NumberFormat.from_string('none') == None
     assert NumberFormat.from_string('number') == NUMBER
-    assert NumberFormat.from_string('character') == CHARACTER_LC
-    assert NumberFormat.from_string('CHARACTER') == CHARACTER_UC
-    assert NumberFormat.from_string('roman') == ROMAN_LC
-    assert NumberFormat.from_string('ROMAN') == ROMAN_UC
-    assert NumberFormat.from_string('symbol') == SYMBOL
-    with pytest.raises(ValueError):
-        NumberFormat.from_string('none')
+    assert NumberFormat.from_string('lowercase character') == CHARACTER_LC
+    assert NumberFormat.from_string('uppercase CHARACTER') == CHARACTER_UC
+    assert NumberFormat.from_string('LOWERCASE ROMAN') == ROMAN_LC
+    assert NumberFormat.from_string('uppercase roman') == ROMAN_UC
+    assert NumberFormat.from_string('sYMBOl') == SYMBOL
     with pytest.raises(ValueError):
         NumberFormat.from_string('Character')
     with pytest.raises(ValueError):

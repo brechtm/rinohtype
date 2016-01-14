@@ -23,10 +23,10 @@ __all__ = ['NumberStyle', 'Label', 'NumberedParagraph',
 
 
 NUMBER = 'number'
-CHARACTER_LC = 'character'
-CHARACTER_UC = 'CHARACTER'
-ROMAN_LC = 'roman'
-ROMAN_UC = 'ROMAN'
+CHARACTER_LC = 'lowercase character'
+CHARACTER_UC = 'uppercase character'
+ROMAN_LC = 'lowercase roman'
+ROMAN_UC = 'uppercase roman'
 SYMBOL = 'symbol'
 
 
