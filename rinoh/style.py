@@ -192,16 +192,15 @@ class Style(dict, metaclass=StyleMeta):
 
     def __init__(self, base=None, **attributes):
         """Style attributes are as passed as keyword arguments. Supported
-        attributes include those defined in the :attr:`attributes` attribute of
-        this style class and those defined in style classes this one inherits
-        from.
+        attributes are the :class:`Attribute` class attributes of this style
+        class and those defined in style classes this one inherits from.
 
         Optionally, a `base` (:class:`Style`) is passed, where attributes are
         looked up when they have not been specified in this style.
         Alternatively, if `base` is :class:`PARENT_STYLE`, the attribute lookup
         is forwarded to the parent of the element the lookup originates from.
         If `base` is a :class:`str`, it is used to look up the base style in
-        the :class:`StyleStore` this style is stored in."""
+        the :class:`StyleSheet` this style is defined in."""
         self.base = base or self.default_base
         self.name = None
         self.stylesheet = None
@@ -215,15 +214,8 @@ class Style(dict, metaclass=StyleMeta):
 
     def _check_attribute_type(self, name, value, accept_variables):
         attribute = self.attribute_definition(name)
-        try:
-            type_ok = attribute.accepted_type.check_type(value)
-        except AttributeError:
-            if accept_variables:
-                accepted_types = (attribute.accepted_type, VarBase)
-            else:
-                accepted_types = attribute.accepted_type
-            type_ok = isinstance(value, accepted_types)
-        if not type_ok:
+        if not (attribute.accepted_type.check_type(value)
+                or accept_variables and isinstance(value, VarBase)):
             type_name = type(value).__name__
             raise TypeError('{} ({}) is not of the correct type for the {} '
                             'style attribute'.format(value, type_name, name))
