@@ -6,12 +6,14 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import os
 from warnings import warn
+
+from pkg_resources import iter_entry_points
 
 from .style import FontWeight, MEDIUM
 from .style import FontSlant, UPRIGHT, OBLIQUE, ITALIC
 from .style import FontWidth, NORMAL, CONDENSED, EXTENDED
+from ..style import AttributeType
 from ..util import NotImplementedAttribute
 from ..warnings import RinohWarning
 
@@ -79,7 +81,13 @@ class Font(object):
         raise NotImplementedError
 
 
-class Typeface(dict):
+class TypefaceNotInstalled(Exception):
+    def __init__(self, typeface_id, typeface_name):
+        self.typeface_id = typeface_id
+        self.typeface_name = typeface_name
+
+
+class Typeface(AttributeType, dict):
     def __init__(self, name, *fonts, weight_order=FontWeight.values):
         self.name = name
         self.weight_order = weight_order
@@ -87,6 +95,27 @@ class Typeface(dict):
             slants = self.setdefault(font.width, {})
             weights = slants.setdefault(font.slant, {})
             weights[font.weight] = font
+
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, cls)
+
+    @classmethod
+    def from_string(cls, typeface_name):
+        typeface_id = ''.join(char for char in typeface_name
+                                   if char.isalnum()).lower()
+        entry_points = iter_entry_points('rinoh_typefaces', typeface_id)
+        try:
+            entry_point = next(entry_points)
+        except StopIteration:
+            raise TypefaceNotInstalled(typeface_id, typeface_name)
+        other_distributions = [repr(ep.dist) for ep in entry_points]
+        if other_distributions:
+            warn("'{}' is also provided by:\n".format(typeface_name)
+                 + ''.join('* {}\n'.format(dist)
+                           for dist in other_distributions)
+                 + 'Using ' + repr(entry_point.dist))
+        return entry_point.load()
 
     def get_font(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         def find_closest_style(style, styles, alternatives):

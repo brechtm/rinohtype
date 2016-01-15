@@ -72,7 +72,7 @@ setup(
                         'fonts/texgyre/termes/*.otf',
                         ]},
     scripts=['bin/rinoh'],
-    install_requires=['docutils', 'purepng>=0.1.1'],
+    install_requires=['setuptools', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
     provides=[PACKAGE, LIB],
     #test_suite='nose.collector',
