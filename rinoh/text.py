@@ -41,7 +41,7 @@ from itertools import groupby
 
 from .color import Color, BLACK
 from .dimension import DimensionBase, PT
-from .font import TypeFace
+from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
@@ -75,7 +75,7 @@ class Locale(AttributeType):
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects"""
 
-    typeface = Attribute(TypeFace, adobe14.times, 'Typeface to set the text in')
+    typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
     font_weight = Attribute(FontWeight, MEDIUM, 'Thickness of character '
                                                 'outlines relative to their '
                                                 'height')

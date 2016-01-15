@@ -10,7 +10,7 @@
 import os
 
 from . import FONTS_PATH
-from ..font import TypeFace, TypeFamily
+from ..font import Typeface, TypeFamily
 from ..font.type1 import Type1Font
 from ..font.style import LIGHT, BOOK, REGULAR, MEDIUM, DEMI_BOLD, BOLD
 from ..font.style import OBLIQUE, ITALIC, CONDENSED
@@ -25,7 +25,7 @@ def path(name):
     return os.path.join(FONTS_PATH, 'adobe35', name)
 
 
-avantgarde = TypeFace('ITC Avant Garde Gothic',
+avantgarde = Typeface('ITC Avant Garde Gothic',
                       Type1Font(path('ITCAvantGarde-Book'), weight=BOOK,
                                 core=True),
                       Type1Font(path('ITCAvantGarde-BookOblique'), weight=BOOK,
@@ -35,7 +35,7 @@ avantgarde = TypeFace('ITC Avant Garde Gothic',
                       Type1Font(path('ITCAvantGarde-DemiOblique'),
                                 weight=DEMI_BOLD, slant=OBLIQUE, core=True))
 
-bookman = TypeFace('ITC Bookman',
+bookman = Typeface('ITC Bookman',
                    Type1Font(path('ITCBookman-Light'), weight=LIGHT, core=True),
                    Type1Font(path('ITCBookman-LightItalic'), weight=LIGHT,
                              slant=ITALIC, core=True),
@@ -44,14 +44,14 @@ bookman = TypeFace('ITC Bookman',
                    Type1Font(path('ITCBookman-DemiItalic'), weight=DEMI_BOLD,
                              slant=ITALIC, core=True))
 
-courier = TypeFace('Courier',
+courier = Typeface('Courier',
                    Type1Font(path('Courier'), core=True),
                    Type1Font(path('Courier-Oblique'), slant=OBLIQUE, core=True),
                    Type1Font(path('Courier-Bold'), weight=BOLD, core=True),
                    Type1Font(path('Courier-BoldOblique'), weight=BOLD,
                              slant=OBLIQUE, core=True))
 
-helvetica = TypeFace('Helvetica',
+helvetica = Typeface('Helvetica',
                      Type1Font(path('Helvetica'), core=True),
                      Type1Font(path('Helvetica-Oblique'), slant=OBLIQUE,
                                core=True),
@@ -68,7 +68,7 @@ helvetica = TypeFace('Helvetica',
                                width=CONDENSED, weight=BOLD, slant=OBLIQUE,
                                core=True))
 
-newcenturyschlbk = TypeFace('New Century Schoolbook',
+newcenturyschlbk = Typeface('New Century Schoolbook',
                             Type1Font(path('NewCenturySchlbk-Roman'),
                                       core=True),
                             Type1Font(path('NewCenturySchlbk-Italic'),
@@ -78,27 +78,27 @@ newcenturyschlbk = TypeFace('New Century Schoolbook',
                             Type1Font(path('NewCenturySchlbk-BoldItalic'),
                                       weight=BOLD, slant=ITALIC, core=True))
 
-palatino = TypeFace('Palatino',
+palatino = Typeface('Palatino',
                     Type1Font(path('Palatino-Roman'), core=True),
                     Type1Font(path('Palatino-Italic'), slant=ITALIC, core=True),
                     Type1Font(path('Palatino-Bold'), weight=BOLD, core=True),
                     Type1Font(path('Palatino-BoldItalic'), weight=BOLD,
                               slant=ITALIC, core=True))
 
-symbol = TypeFace('Symbol', Type1Font(path('Symbol'), core=True))
+symbol = Typeface('Symbol', Type1Font(path('Symbol'), core=True))
 
-times = TypeFace('Times',
+times = Typeface('Times',
                  Type1Font(path('Times-Roman'), weight=REGULAR, core=True),
                  Type1Font(path('Times-Italic'), slant=ITALIC, core=True),
                  Type1Font(path('Times-Bold'), weight=BOLD, core=True),
                  Type1Font(path('Times-BoldItalic'), weight=BOLD, slant=ITALIC,
                            core=True))
 
-zapfchancery = TypeFace('ITC Zapf Chancery',
+zapfchancery = Typeface('ITC Zapf Chancery',
                         Type1Font(path('ITCZapfChancery-MediumItalic'),
                                   slant=ITALIC, core=True))
 
-zapfdingbats = TypeFace('ITC ZapfDingbats',
+zapfdingbats = Typeface('ITC ZapfDingbats',
                         Type1Font(path('ZapfDingbats'), core=True))
 
 

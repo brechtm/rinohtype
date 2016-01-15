@@ -79,7 +79,7 @@ class Font(object):
         raise NotImplementedError
 
 
-class TypeFace(dict):
+class Typeface(dict):
     def __init__(self, name, *fonts, weight_order=FontWeight.values):
         self.name = name
         self.weight_order = weight_order

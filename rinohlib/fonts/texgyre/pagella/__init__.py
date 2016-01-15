@@ -1,7 +1,7 @@
 
 from os import path
 
-from rinoh.font import TypeFace
+from rinoh.font import Typeface
 from rinoh.font.style import REGULAR, ITALIC, BOLD
 from rinoh.font.opentype import OpenTypeFont
 
@@ -16,4 +16,4 @@ italic = OpenTypeFont(filename('italic'), weight=REGULAR, slant=ITALIC)
 bold = OpenTypeFont(filename('bold'), weight=BOLD)
 bold_italic = OpenTypeFont(filename('bolditalic'), weight=BOLD, slant=ITALIC)
 
-typeface = TypeFace('TeXGyrePagella', regular, italic, bold, bold_italic)
+typeface = Typeface('TeXGyrePagella', regular, italic, bold, bold_italic)
