@@ -2,8 +2,10 @@
 *.pyc
 *~
 *.rtc
-/citeproc-test
+/.python-version
+/.cache
 /build
 /dist
+/RinohType.egg-info
 /MANIFEST
 /rinoh/version.py
