@@ -47,7 +47,7 @@ from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
                          SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
 from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
-                    Attribute, Bool)
+                    Attribute, Bool, Integer)
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
@@ -74,10 +74,10 @@ class TextStyle(Style):
     ligatures = Attribute(Bool, True, 'Run letters together where possible')
     # TODO: character spacing
     hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
-    hyphen_chars = Attribute(int, 2, 'Minimum number of characters in a '
-                                     'hyphenated part of a word')
     hyphen_lang = Attribute(str, 'en_US', 'Language to use for hyphenation. '
                                           'Accepts locale codes such as en_US')
+    hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
+                                         'hyphenated part of a word')
 
     default_base = PARENT_STYLE
 
