@@ -57,6 +57,21 @@ __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
            'Subscript']
 
 
+class Locale(AttributeType):
+    REGEX = re.compile(r'^[a-z]{2}_[A-Z]{2}$')
+
+    @classmethod
+    def check_type(cls, value):
+        return cls.REGEX.match(value) is not None
+
+    @classmethod
+    def from_string(cls, string):
+        if not cls.check_type(string):
+            raise ValueError("'{}' is not a valid locale. Needs to be of the "
+                             "form 'en_US'.".format(string))
+        return string
+
+
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects"""
 
@@ -74,10 +89,11 @@ class TextStyle(Style):
     ligatures = Attribute(Bool, True, 'Run letters together where possible')
     # TODO: character spacing
     hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
-    hyphen_lang = Attribute(str, 'en_US', 'Language to use for hyphenation. '
-                                          'Accepts locale codes such as en_US')
     hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
                                          'hyphenated part of a word')
+    hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
+                                             'Accepts locale codes such as '
+                                             "'en_US'")
 
     default_base = PARENT_STYLE
 
