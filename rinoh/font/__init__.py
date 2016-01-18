@@ -88,6 +88,12 @@ class TypefaceNotInstalled(Exception):
 
 
 class Typeface(AttributeType, dict):
+    def __new__(cls, name, *fonts, weight_order=FontWeight.values):
+        if not fonts:
+            return cls.from_string(name)
+        else:
+            return super().__new__(cls, name, *fonts, weight_order=weight_order)
+
     def __init__(self, name, *fonts, weight_order=FontWeight.values):
         self.name = name
         self.weight_order = weight_order

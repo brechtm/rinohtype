@@ -7,15 +7,17 @@ from rinoh import (StyleSheet, Var, ParagraphStyle,
                    ROMAN_UC, CHARACTER_UC, NUMBER, SYMBOL,
                    Color, Gray, RED, BLUE, GRAY90, GRAY50)
 from rinoh.color import BLACK
-from rinoh.font import TypeFamily
+from rinoh.font import TypeFamily, Typeface
 from rinoh.font.style import (NORMAL, REGULAR, UPRIGHT, ITALIC, BOLD,
                               SMALL_CAPITAL, SUPERSCRIPT)
 
-from rinohlib.fonts.texgyre.termes import typeface as times
-from rinohlib.fonts.texgyre.cursor import typeface as courier
-from rinohlib.fonts.texgyre.heros import typeface as helvetica
-
 from .matcher import matcher
+
+
+times = Typeface('TeX Gyre Termes')
+courier = Typeface('TeX Gyre Cursor')
+helvetica = Typeface('TeX Gyre Heros')
+
 
 styles = StyleSheet('IEEE', matcher=matcher)
 

@@ -2,7 +2,7 @@ from rinoh.color import Color, Gray, RED, GRAY90, GRAY50
 from rinoh.dimension import PT, CM, PERCENT
 from rinoh.number import NUMBER, SYMBOL
 from rinoh.flowable import LEFT, RIGHT, CENTER
-from rinoh.font import TypeFamily
+from rinoh.font import TypeFamily, Typeface
 from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
 from rinoh.paragraph import (ParagraphStyle, TabStop, JUSTIFY,
                              FixedSpacing, ProportionalSpacing, SINGLE)
@@ -10,11 +10,13 @@ from rinoh.style import StyleSheet, Var
 from rinoh.table import MIDDLE
 from rinoh.text import FixedWidthSpace
 
-from rinohlib.fonts.texgyre.pagella import typeface as palatino
-from rinohlib.fonts.texgyre.cursor import typeface as courier
-from rinohlib.fonts.texgyre.heros import typeface as helvetica
-
 from .matcher import matcher
+
+
+palatino = Typeface('TeX Gyre Pagella')
+courier = Typeface('TeX Gyre Cursor')
+helvetica = Typeface('TeX Gyre Heros')
+
 
 stylesheet = StyleSheet('Sphinx', matcher=matcher)
 
