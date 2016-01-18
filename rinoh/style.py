@@ -570,15 +570,18 @@ class StyleSheet(OrderedDict):
     def __str__(self):
         return '{}({})'.format(type(self).__name__, self.name)
 
-    def get_style_class(self, name):
+    def get_styled(self, name):
         style_sheet = self
         while style_sheet is not None:
             try:
                 selector = style_sheet.matcher.by_name[name]
-                break
+                return selector.cls
             except KeyError:
                 style_sheet = self.base
-        return selector.cls.style_class
+        raise KeyError("No selector found for style '{}'".format(name))
+
+    def get_style_class(self, name):
+        return self.get_styled(name).style_class
 
     def get_variable(self, name):
         try:
