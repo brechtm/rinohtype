@@ -23,8 +23,7 @@ from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
 from .element import DocumentElement
-from .util import cached, NamedDescriptor, WithNamedDescriptors
-
+from .util import cached, NamedDescriptor, WithNamedDescriptors, all_subclasses
 
 __all__ = ['Style', 'Styled', 'Var', 'AttributeType', 'OptionSet', 'Attribute',
            'OverrideDefault', 'Bool', 'Integer', 'StyledMatcher', 'StyleSheet',
@@ -612,16 +611,42 @@ class StyleSheet(OrderedDict):
 
 class StyleSheetFile(StyleSheet):
     def __init__(self, filename, matcher, base=None):
-        config = ConfigParser(interpolation=ExtendedInterpolation())
+        config = ConfigParser(default_section='',
+                              delimiters=('=',), comment_prefixes=('#', ),
+                              interpolation=ExtendedInterpolation())
         with open(filename) as file:
             config.read_file(file)
         super().__init__(filename, matcher, base)
-        for style_name in config:
-            if style_name == 'DEFAULT':
+        for section_name, section_body in config.items():
+            if section_name == '':    # the default section
                 continue
-            style_cls = self.get_style_class(style_name)
+            try:
+                style_name, styled_name  = section_name.split(':')
+                for styled_class in all_subclasses(Styled):
+                    if styled_class.__name__ == styled_name:
+                        style_cls = styled_class.style_class
+                        break
+                else:
+                    raise TypeError("Invalid type '{}' given for style '{}'"
+                                    .format(styled_name, style_name))
+                try:
+                    matcher_styled = self.get_styled(style_name)
+                    if styled_class is not matcher_styled:
+                        raise TypeError("The type '{}' specified for style "
+                                        "'{}' does not match the type '{}' "
+                                        "returned by the matcher. Note that "
+                                        "you do not have to specify the type "
+                                        "in this case!"
+                                        .format(styled_class.__name__,
+                                                style_name,
+                                                matcher_styled.__name__))
+                except KeyError:
+                    pass
+            except ValueError:
+                style_name = section_name
+                style_cls = self.get_style_class(style_name)
             attribute_values = {}
-            for name, value in config[style_name].items():
+            for name, value in section_body.items():
                 if name == 'base':
                     attribute_values[name] = value
                 else:
