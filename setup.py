@@ -13,7 +13,6 @@ from subprocess import Popen, PIPE
 
 
 PACKAGE = 'rinoh'
-LIB = PACKAGE + 'lib'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_ABSPATH = os.path.join(BASE_PATH, PACKAGE)
 VERSION_FILE = os.path.join(PACKAGE_ABSPATH, 'version.py')
@@ -65,7 +64,6 @@ setup(
     scripts=['bin/rinoh'],
     install_requires=['setuptools', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
-    provides=[PACKAGE, LIB],
     #test_suite='nose.collector',
 
     author='Brecht Machiels',
