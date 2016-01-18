@@ -108,13 +108,12 @@ class Typeface(AttributeType, dict):
 
     @classmethod
     def from_string(cls, typeface_name):
-        typeface_id = ''.join(char for char in typeface_name
-                                   if char.isalnum()).lower()
-        entry_points = iter_entry_points('rinoh_typefaces', typeface_id)
+        entry_point_name = typeface_name.lower()
+        entry_points = iter_entry_points('rinoh_typefaces', entry_point_name)
         try:
             entry_point = next(entry_points)
         except StopIteration:
-            raise TypefaceNotInstalled(typeface_id, typeface_name)
+            raise TypefaceNotInstalled(entry_point_name, typeface_name)
         other_distributions = [repr(ep.dist) for ep in entry_points]
         if other_distributions:
             warn("'{}' is also provided by:\n".format(typeface_name)
