@@ -217,7 +217,7 @@ class Style(dict, metaclass=StyleMeta):
         if not (attribute.accepted_type.check_type(value)
                 or accept_variables and isinstance(value, VarBase)):
             type_name = type(value).__name__
-            raise TypeError('{} ({}) is not of the correct type for the {} '
+            raise TypeError("{} ({}) is not of the correct type for the '{}' "
                             'style attribute'.format(value, type_name, name))
 
     def __repr__(self):
