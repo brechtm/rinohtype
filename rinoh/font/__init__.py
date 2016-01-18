@@ -51,13 +51,13 @@ class Font(object):
 
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         self.filename = filename
-        if weight not in FontWeight.values:
+        if not FontWeight.check_type(weight):
             raise ValueError('Unknown font weight. Must be one of {}'
                              .format(', '.join(FontWeight.values)))
-        if slant not in FontSlant.values:
+        if not FontSlant.check_type(slant):
             raise ValueError('Unknown font slant. Must be one of {}'
                              .format(', '.join(FontSlant.values)))
-        if width not in FontWidth.values:
+        if not FontWidth.check_type(width):
             raise ValueError('Unknown font width. Must be one of {}'
                              .format(', '.join(FontWidth.values)))
         self.weight = weight
