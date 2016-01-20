@@ -166,19 +166,20 @@ class JPEGReader(XObjectImage):
         assert fortytwo == 42
         self._file.seek(tiff_header_offset + ifd_offset)
         ifd_0th = self._parse_exif_ifd(endian, tiff_header_offset)
+        color_space = UNCALIBRATED
         if EXIF_IFD_POINTER in ifd_0th:
             self._file.seek(tiff_header_offset + ifd_0th[EXIF_IFD_POINTER])
             ifd_exif = self._parse_exif_ifd(endian, tiff_header_offset)
+            try:
+                exif_color_space = ifd_exif[EXIF_COLOR_SPACE]
+                color_space = EXIF_COLOR_SPACES[exif_color_space]
+            except KeyError:
+                warn('The EXIF table in "{}" is missing color space information'
+                     .format(self.filename))
+        density = (ifd_0th.get(EXIF_X_RESOLUTION, 72),
+                   ifd_0th.get(EXIF_Y_RESOLUTION, 72),
+                   EXIF_UNITS[ifd_0th.get(EXIF_RESOLUTION_UNIT, 2)])
         self._file.seek(resume_position)
-        density = (ifd_0th[EXIF_X_RESOLUTION], ifd_0th[EXIF_Y_RESOLUTION],
-                   EXIF_UNITS[ifd_0th[EXIF_RESOLUTION_UNIT]])
-        try:
-            exif_color_space = ifd_exif[EXIF_COLOR_SPACE]
-            color_space = EXIF_COLOR_SPACES[exif_color_space]
-        except KeyError:
-            warn('The EXIF table in "{}" is missing color space information'
-                 .format(self.filename))
-            color_space = UNCALIBRATED
         return density, color_space
 
     def _parse_exif_ifd(self, endian, tiff_header_offset):
