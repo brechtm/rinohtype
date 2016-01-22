@@ -261,7 +261,7 @@ class TabStopList(AttributeType):
                            )?
                            (?:                     ## optional: fill string
                              \s+                   # whitespace
-                             {fill}                # fill string
+                             (?P<fill>{fill})      # fill string
                            )?
                            (?:                     ## optional: separator
                              \s*                   # whitespace
@@ -283,9 +283,10 @@ class TabStopList(AttributeType):
                 raise ValueError("'{}' is not a valid tab stop definition"
                                  .format(string, cls.__name__))
             _, i = m.span()
-            position, align, fill = m.group('position', 'align', 'text')
+            position, align, fill = m.group('position', 'align', 'fill')
             tabstop = TabStop(DimensionBase.from_string(position),
-                              align or LEFT, fill)
+                              TabAlign.from_string(align) if align else LEFT,
+                              StyledText.from_string(fill) if fill else None)
             tabstops.append(tabstop)
         return tabstops
 
