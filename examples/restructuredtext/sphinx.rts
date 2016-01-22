@@ -1,0 +1,571 @@
+[VARIABLES]
+mono_typeface=TeX Gyre Cursor
+serif_typeface=TeX Gyre Pagella
+sans_typeface=Tex Gyre Heros
+
+[default:Paragraph]
+typeface=$(serif_typeface)
+font_weight=REGULAR
+font_size=10pt
+line_spacing=fixed(12pt)
+indent_first=0
+space_above=0
+space_below=0
+text_align=JUSTIFY
+kerning=True
+ligatures=True
+hyphen_lang=en_US
+hyphen_chars=4
+
+[body]
+base=default
+space_above=5pt
+space_below=0
+text_align=justify
+
+[emphasis]
+font_slant=italic
+
+[strong]
+font_weight=BOLD
+
+[title reference]
+font_slant=ITALIC
+
+[monospaced]
+base=default
+typeface=$(mono_typeface)
+hyphenate=False
+ligatures=False
+
+[error]
+font_color=#f00
+
+[internal hyperlink]
+font_color=#355f7b
+
+[external hyperlink]
+font_color=#376f62
+
+[broken hyperlink]
+font_color=#7f7f7f
+
+[literal]
+base=default
+typeface=$(mono_typeface)
+text_align=LEFT
+indent_first=0
+space_above=4pt
+space_below=4pt
+ligatures=False
+hyphenate=False
+
+[block quote]
+margin_left=1cm
+
+[attribution]
+base=default
+text_align=RIGHT
+
+[line block line]
+base=default
+space_below=0pt
+
+[nested line block]
+margin_left=0.5cm
+
+[title]
+base=default
+typeface=$(serif_typeface)
+font_weight=REGULAR
+font_size=18pt
+line_spacing=Proportional(1.2)
+space_above=6pt
+space_below=6pt
+text_align=CENTER
+
+[subtitle]
+base=title
+font_size=14pt
+
+[date]
+base=title
+font_size=10pt
+line_spacing=Proportional(1.2)
+
+[author]
+base=title
+font_size=12pt
+line_spacing=Proportional(1.2)
+
+[affiliation]
+base=author
+space_below=18pt
+
+[chapter]
+page_break=RIGHT
+
+[heading level 1]
+typeface=$(sans_typeface)
+font_weight=BOLD
+font_size=16pt
+font_color=#20435c
+line_spacing=SINGLE
+space_above=18pt
+space_below=12pt
+number_format=NUMBER
+label_suffix=' '
+
+[unnumbered heading level 1]
+base=heading level 1
+number_format=None
+
+[front matter section heading]
+base=unnumbered heading level 1
+
+[heading level 2]
+base=heading level 1
+font_size=14pt
+space_above=16pt
+space_below=10pt
+
+[heading level 3]
+base=heading level 2
+font_size=12pt
+space_above=10pt
+space_below=6pt
+
+[heading level 4]
+base=heading level 3
+font_size=9pt
+space_above=8pt
+space_below=4pt
+number_format=None
+
+[heading level 5]
+base=heading level 2
+font_size=9pt
+font_slant=ITALIC
+font_weight=REGULAR
+line_spacing=Fixed(10pt)
+space_above=2pt
+space_below=2pt
+number_format=None
+
+[other heading levels]
+base=heading level 5
+font_size=9pt
+font_slant=ITALIC
+font_weight=REGULAR
+line_spacing=Fixed(10pt)
+space_above=2pt
+space_below=2pt
+number_format=None
+
+[topic]
+margin_left=0.5cm
+
+[topic title]
+base=default
+font_weight=BOLD
+indent_first=0
+space_above=5pt
+space_below=5pt
+
+[rubric]
+base=topic title
+text_align=CENTER
+font_color=#7f0000
+
+[sidebar frame]
+space_above=5pt
+space_below=5pt
+padding_left=10pt
+padding_right=10pt
+padding_top=4pt
+padding_bottom=4pt
+fill_color=#ffffe5
+stroke_width=1pt
+stroke_color=#666
+
+[sidebar title]
+base=default
+font_size=12pt
+font_weight=BOLD
+indent_first=0
+space_above=5pt
+space_below=5pt
+
+[sidebar subtitle]
+base=default
+font_weight=BOLD
+indent_first=0
+space_above=2pt
+space_below=2pt
+
+[list item label]
+base=default
+indent_first=0
+text_align=RIGHT
+
+[bulleted list item label]
+base=list item label
+
+[enumerated list item label]
+base=list item label
+label_suffix='.'
+
+[enumerated list]
+margin_left=8pt
+space_above=5pt
+space_below=5pt
+ordered=True
+flowable_spacing=5pt
+number_format=NUMBER
+label_suffix=')'
+
+[nested enumerated list]
+base=enumerated list
+margin_left=10pt
+
+[bulleted list]
+base=enumerated list
+ordered=False
+label_suffix=None
+
+[nested bulleted list]
+base=bulleted list
+margin_left=10pt
+
+[list item body]
+space_above=0
+space_below=0
+margin_left=0
+margin_right=0
+
+[list item paragraph]
+base=default
+space_above=0pt
+space_below=0pt
+margin_left=0pt
+indent_first=0pt
+
+[definition list]
+
+[definition term]
+
+[definition term paragraph]
+base=default
+indent_first=0
+font_weight=BOLD
+
+[definition term classifier]
+font_weight=REGULAR
+
+[definition]
+margin_left=20pt
+
+
+# (Sphinx) version added/changed & deprecated
+
+[versionmodified]
+font_slant=ITALIC
+
+# (Sphinx) object descriptions
+
+[object description]
+space_above=6pt
+space_below=6pt
+
+[object signature]
+base=default
+
+[object name]
+typeface=$(mono_typeface)
+font_weight=BOLD
+
+[additional name part]
+base=monospaced
+
+[object type] 
+
+[object returns] 
+
+[object parentheses]
+font_size=11pt
+
+[object parameter list] 
+
+[object parameter (no emphasis)]
+
+[object parameter]
+base=object parameter (no emphasis)
+font_slant=ITALIC
+
+[object brackets]
+font_size=11pt
+font_weight=BOLD
+
+[object optional parameter] 
+
+[object annotation]
+font_weight=BOLD
+
+[object description content]
+base=definition
+
+
+# (Sphinx) production list
+
+[production list]
+space_above=5pt
+space_below=5pt
+
+[production]
+
+[token name]
+base=literal
+font_weight=BOLD
+space_above=0
+space_below=0
+
+[token definition]
+base=literal
+space_above=0
+space_below=0
+
+
+# field lists
+
+[field name]
+base=default
+indent_first=0
+text_align=LEFT
+font_weight=BOLD
+
+
+# option lists
+
+[option]
+base=default
+indent_first=0
+text_align=LEFT
+
+[option string]
+base=default
+typeface=$(mono_typeface)
+font_size=8pt
+
+[option argument]
+base=default
+font_slant=ITALIC
+
+
+[admonition]
+space_above=5pt
+space_below=5pt
+padding_left=10pt
+padding_right=10pt
+padding_top=4pt
+padding_bottom=4pt
+fill_color=#efefff
+stroke_width=1pt
+stroke_color=#666
+
+[admonition title]
+base=default
+font_weight=BOLD
+indent_first=0
+space_above=5pt
+space_below=5pt
+
+[red adminition title:Paragraph]
+base=admonition title
+font_color=#f00
+
+[attention admonition title]
+base=red adminition title
+
+[caution admonition title]
+base=red adminition title
+
+[danger admonition title]
+base=red adminition title
+
+[error admonition title]
+base=red adminition title
+
+[warning admonition title]
+base=red adminition title
+
+[header]
+base=default
+typeface=$(sans_typeface)
+font_size=10pt
+font_weight=BOLD
+indent_first=0pt
+tab_stops=50% CENTER, 100% RIGHT
+
+[line under header]
+space_above=2pt
+stroke_width=0.2pt
+
+[footer]
+base=header
+
+[line above footer]
+stroke_width=0.2pt
+
+[footnote marker]
+position=SUPERSCRIPT
+number_format=SYMBOL
+
+[citation marker]
+label_prefix='['
+label_suffix=']'
+custom_label=True
+
+[footnote paragraph]
+base=default
+font_size=9pt
+indent_first=0
+line_spacing=Fixed(10pt)
+
+[footnote label]
+base=footnote paragraph
+text_align=RIGHT
+
+[figure]
+space_above=10pt
+space_below=12pt
+
+
+[image]
+space_above=10pt
+horizontal_align=CENTER
+
+[caption]
+base=default
+font_size=9pt
+line_spacing=Fixed(10pt)
+indent_first=0pt
+space_above=4pt
+space_below=0pt
+text_align=CENTER
+label_suffix='. '
+
+[figure legend]
+margin_left=30pt
+
+[figure legend paragraph]
+base=caption
+space_above=5pt
+text_align=LEFT
+
+[table of contents section]
+show_in_toc=False
+
+[table of contents]
+base=default
+indent_first=0
+depth=2
+
+[toc level 1]
+base=table of contents
+font_weight=BOLD
+space_above=14pt
+tab_stops=0.6cm, 100% RIGHT
+
+[toc level 2]
+base=table of contents
+margin_left=0.6cm
+tab_stops=1.0cm, 100% RIGHT '.  '
+
+[toc level 3]
+base=table of contents
+margin_left=1.6cm
+tab_stops=1.4cm, 100% RIGHT '.  '
+
+[L3 toc level 3]
+base=table of contents
+margin_left=0
+tab_stops=0.6cm, 100% RIGHT '. '
+
+[table]
+space_above=5pt
+space_below=5pt
+horizontal_align=CENTER
+
+[table cell]
+space_above=2pt
+space_below=2pt
+margin_left=2pt
+margin_right=2pt
+vertical_align=MIDDLE
+
+[table body cell background on even row]
+fill_color=#e5e5e5
+
+[table body cell paragraph]
+base=default
+font_size=9pt
+indent_first=0
+
+[table body cell list item number]
+base=table body cell paragraph
+indent_first=0
+text_align=RIGHT
+
+[table head cell paragraph]
+base=table body cell paragraph
+font_weight=BOLD
+text_align=CENTER
+
+[table first column paragraph]
+base=table body cell paragraph
+text_align=LEFT
+
+[table top border]
+stroke_width=1pt
+stroke_color=#000
+
+[table bottom border]
+base=table top border
+
+[table head bottom border]
+base=table top border
+stroke_width=0.5pt
+
+[table body top border]
+base=table head bottom border
+
+[horizontal rule]
+space_above=10pt
+space_below=15pt
+margin_left=40pt
+margin_right=40pt
+
+
+# title page
+
+[title page title]
+typeface=$(sans_typeface)
+font_size=26pt
+text_align=CENTER
+
+[title page subtitle]
+base=title page title
+font_size=20pt
+space_above=10pt
+
+[title page author]
+typeface=$(sans_typeface)
+font_size=18pt
+text_align=CENTER
+space_above=80pt
+
+[title page date]
+typeface=$(sans_typeface)
+font_size=14pt
+text_align=CENTER
+space_above=20pt
