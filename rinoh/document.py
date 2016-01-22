@@ -320,8 +320,8 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
-    def get_style_var(self, name):
-        return self.stylesheet.get_variable(name)
+    def get_style_var(self, name, accepted_type):
+        return self.stylesheet.get_variable(name, accepted_type)
 
     def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due
@@ -374,7 +374,6 @@ to the terms of the GNU Affero General Public License version 3.''')
         finally:
             if filename_root:
                 file.close()
-
 
     def render_pages(self, _sections):
         """Render the complete document once and return the number of pages

@@ -17,8 +17,8 @@ Base classes and exceptions for styled document elements.
                                delegated to the parent :class:`Styled`
 """
 
-
-from configparser import ConfigParser, ExtendedInterpolation
+import re
+from configparser import ConfigParser
 from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
@@ -280,7 +280,8 @@ class Style(dict, metaclass=StyleMeta):
     def get_value(self, attribute, document):
         value = self[attribute]
         if isinstance(value, VarBase):
-            value = value.get(document)
+            accepted_type = self.attribute_definition(attribute).accepted_type
+            value = value.get(accepted_type, document)
             self._check_attribute_type(attribute, value, accept_variables=False)
         return value
 
@@ -582,11 +583,14 @@ class StyleSheet(OrderedDict):
     def get_style_class(self, name):
         return self.get_styled(name).style_class
 
-    def get_variable(self, name):
+    def get_variable(self, name, accepted_type):
         try:
-            return self.variables[name]
+            return self._get_variable(name, accepted_type)
         except KeyError:
-            return self.base.get_variable(name)
+            return self.base.get_variable(name, accepted_type)
+
+    def _get_variable(self, name, accepted_type):
+        return self.variables[name]
 
     def find_matches(self, styled, container):
         for match in self.matcher.match(styled, container):
@@ -610,15 +614,20 @@ class StyleSheet(OrderedDict):
 
 
 class StyleSheetFile(StyleSheet):
+    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
+
     def __init__(self, filename, matcher, base=None):
-        config = ConfigParser(default_section='',
-                              delimiters=('=',), comment_prefixes=('#', ),
-                              interpolation=ExtendedInterpolation())
+        config = ConfigParser(default_section=None, delimiters=('=',),
+                              comment_prefixes=('#', ), interpolation=None)
         with open(filename) as file:
             config.read_file(file)
         super().__init__(filename, matcher, base)
         for section_name, section_body in config.items():
-            if section_name == '':    # the default section
+            if section_name is None:    # default section
+                continue
+            if section_name == 'VARIABLES':
+                for name, value in section_body.items():
+                    self.variables[name] = value
                 continue
             try:
                 style_name, styled_name  = section_name.split(':')
@@ -657,16 +666,25 @@ class StyleSheetFile(StyleSheet):
                                         "'{}' ({})".format(name, style_name,
                                                            style_cls.__name__))
                     stripped = value.strip()
-                    accepted_type = attribute.accepted_type
-                    attribute_values[name] = accepted_type.from_string(stripped)
+                    m = self.RE_VARIABLE.match(stripped)
+                    if m:
+                        variable_name, = m.groups()
+                        value = Var(variable_name)
+                    else:
+                        accepted_type = attribute.accepted_type
+                        value = accepted_type.from_string(stripped)
+                    attribute_values[name] = value
             self[style_name] = style_cls(**attribute_values)
+
+    def _get_variable(self, name, accepted_type):
+        return accepted_type.from_string(self.variables[name])
 
 
 class VarBase(object):
     def __getattr__(self, name):
         return VarAttribute(self, name)
 
-    def get(self, document):
+    def get(self, style, attribute, document):
         raise NotImplementedError
 
 
@@ -675,8 +693,8 @@ class Var(VarBase):
         super().__init__()
         self.name = name
 
-    def get(self, document):
-        return document.get_style_var(self.name)
+    def get(self, accepted_type, document):
+        return document.get_style_var(self.name, accepted_type)
 
 
 class VarAttribute(VarBase):
@@ -685,8 +703,9 @@ class VarAttribute(VarBase):
         self.parent = parent
         self.attribute_name = attribute_name
 
-    def get(self, document):
-        return getattr(self.parent.get(document), self.attribute_name)
+    def get(self, accepted_type, document):
+        return getattr(self.parent.get(accepted_type, document),
+                       self.attribute_name)
 
 
 class Specificity(namedtuple('Specificity',
