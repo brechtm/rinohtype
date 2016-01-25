@@ -62,7 +62,7 @@ setup(
                             'backend/pdf/xobject/icc/*.txt',
                             ]},
     scripts=['bin/rinoh'],
-    install_requires=['setuptools', 'docutils', 'purepng>=0.1.1'],
+    install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
     #test_suite='nose.collector',
 
