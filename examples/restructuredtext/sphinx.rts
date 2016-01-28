@@ -23,11 +23,23 @@ space_above=5pt
 space_below=0
 text_align=justify
 
+[italic]
+font_slant=italic
+
+[bold]
+font_weight=BOLD
+
 [emphasis]
 font_slant=italic
 
 [strong]
 font_weight=BOLD
+
+[quote]
+font_slant=italic
+
+[file path]
+typeface=$(mono_typeface)
 
 [title reference]
 font_slant=ITALIC

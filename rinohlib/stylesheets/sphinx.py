@@ -43,11 +43,23 @@ stylesheet('body',
            space_below=0*PT,
            text_align=JUSTIFY)
 
+stylesheet('italic',
+       font_slant=ITALIC)
+
+stylesheet('bold',
+       font_weight=BOLD)
+
 stylesheet('emphasis',
        font_slant=ITALIC)
 
 stylesheet('strong',
        font_weight=BOLD)
+
+stylesheet('quote',
+       font_slant=ITALIC)
+
+stylesheet('file path',
+       typeface=Var('fonts').mono)
 
 stylesheet('title reference',
        font_slant=ITALIC)

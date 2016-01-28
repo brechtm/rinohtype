@@ -21,9 +21,17 @@ matcher('title page extra', Paragraph.like('title page extra'))
 
 matcher('body', Paragraph)
 
+matcher('italic', StyledText.like('italic'))
+
+matcher('bold', StyledText.like('bold'))
+
 matcher('emphasis', StyledText.like('emphasis'))
 
 matcher('strong', StyledText.like('strong'))
+
+matcher('quote', StyledText.like('quote'))
+
+matcher('file path', StyledText.like('file path'))
 
 matcher('title reference', StyledText.like('title reference'))
 
