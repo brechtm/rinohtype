@@ -285,6 +285,18 @@ stylesheet('nested bulleted list',
        base='bulleted list',
        margin_left=10*PT)
 
+stylesheet('steps list',
+           base='enumerated list')
+
+stylesheet('steps list item label',
+           base='enumerated list item label')
+
+stylesheet('choices list',
+           base='bulleted list')
+
+stylesheet('choices list item label',
+           base='bulleted list item label')
+
 stylesheet('list item body',
        space_above=0,
        space_below=0,

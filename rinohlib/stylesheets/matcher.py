@@ -120,6 +120,16 @@ matcher('bulleted list item label', List.like('bulleted')
 
 matcher('nested bulleted list', ListItem / List.like('bulleted'))
 
+matcher('steps list', List.like('steps'))
+
+matcher('steps list item label', List.like('steps')
+                                 / ListItem / ListItemLabel)
+
+matcher('choices list', List.like('choices'))
+
+matcher('choices list item label', List.like('choices')
+                                   / ListItem / ListItemLabel)
+
 matcher('list item body', ListItem / GroupedFlowables)
 
 matcher('list item paragraph', ListItem / ... / Paragraph)

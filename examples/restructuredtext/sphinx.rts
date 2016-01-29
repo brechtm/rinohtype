@@ -263,6 +263,18 @@ label_suffix=None
 base=bulleted list
 margin_left=10pt
 
+[steps list]
+base=enumerated list
+
+[steps list item label]
+base=enumerated list item label
+
+[choices list]
+base=bulleted list
+
+[choices list item label]
+base=bulleted list item label
+
 [list item body]
 space_above=0
 space_below=0
