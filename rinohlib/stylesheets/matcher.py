@@ -275,6 +275,8 @@ matcher('table with caption', TableWithCaption)
 
 matcher('table', Table)
 
+matcher('choices table', Table.like('choice'))
+
 matcher('table cell', Table / TableSection / TableRow / TableCell)
 
 matcher('table body cell background on even row',
