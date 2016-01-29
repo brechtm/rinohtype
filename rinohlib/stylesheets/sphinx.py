@@ -64,6 +64,9 @@ stylesheet('file path',
 stylesheet('window title',
        font_weight=BOLD)
 
+stylesheet('UI control',
+       font_weight=BOLD)
+
 stylesheet('title reference',
        font_slant=ITALIC)
 

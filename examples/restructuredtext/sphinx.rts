@@ -44,6 +44,9 @@ typeface=$(mono_typeface)
 [window title]
 font_weight=BOLD
 
+[UI control]
+font_weight=BOLD
+
 [title reference]
 font_slant=ITALIC
 

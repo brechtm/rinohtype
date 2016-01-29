@@ -35,6 +35,8 @@ matcher('file path', StyledText.like('file path'))
 
 matcher('window title', StyledText.like('window title'))
 
+matcher('UI control', StyledText.like('UI control'))
+
 matcher('title reference', StyledText.like('title reference'))
 
 matcher('monospaced', StyledText.like('monospaced'))
