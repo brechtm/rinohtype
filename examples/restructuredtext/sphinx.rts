@@ -47,6 +47,9 @@ font_weight=BOLD
 [UI control]
 font_weight=BOLD
 
+[menu cascade]
+font_weight=BOLD
+
 [title reference]
 font_slant=ITALIC
 

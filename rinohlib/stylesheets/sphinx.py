@@ -67,6 +67,9 @@ stylesheet('window title',
 stylesheet('UI control',
        font_weight=BOLD)
 
+stylesheet('menu cascade',
+       font_weight=BOLD)
+
 stylesheet('title reference',
        font_slant=ITALIC)
 
