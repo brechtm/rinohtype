@@ -50,6 +50,9 @@ font_weight=BOLD
 [menu cascade]
 font_weight=BOLD
 
+[draft comment]
+font_color=#f00
+
 [title reference]
 font_slant=ITALIC
 

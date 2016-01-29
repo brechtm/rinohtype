@@ -39,6 +39,8 @@ matcher('UI control', StyledText.like('UI control'))
 
 matcher('menu cascade', StyledText.like('menu cascade'))
 
+matcher('draft comment', StyledText.like('draft comment'))
+
 matcher('title reference', StyledText.like('title reference'))
 
 matcher('monospaced', StyledText.like('monospaced'))

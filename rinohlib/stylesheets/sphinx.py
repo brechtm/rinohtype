@@ -70,6 +70,9 @@ stylesheet('UI control',
 stylesheet('menu cascade',
        font_weight=BOLD)
 
+stylesheet('draft comment',
+       font_color=RED)
+
 stylesheet('title reference',
        font_slant=ITALIC)
 
