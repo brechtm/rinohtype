@@ -61,6 +61,9 @@ stylesheet('quote',
 stylesheet('file path',
        typeface=Var('fonts').mono)
 
+stylesheet('window title',
+       font_weight=BOLD)
+
 stylesheet('title reference',
        font_slant=ITALIC)
 

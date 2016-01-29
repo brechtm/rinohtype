@@ -41,6 +41,9 @@ font_slant=italic
 [file path]
 typeface=$(mono_typeface)
 
+[window title]
+font_weight=BOLD
+
 [title reference]
 font_slant=ITALIC
 

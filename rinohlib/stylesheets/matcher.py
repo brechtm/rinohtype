@@ -33,6 +33,8 @@ matcher('quote', StyledText.like('quote'))
 
 matcher('file path', StyledText.like('file path'))
 
+matcher('window title', StyledText.like('window title'))
+
 matcher('title reference', StyledText.like('title reference'))
 
 matcher('monospaced', StyledText.like('monospaced'))
