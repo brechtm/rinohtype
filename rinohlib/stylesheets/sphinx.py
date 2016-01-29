@@ -218,6 +218,8 @@ stylesheet('topic title',
        space_above=5*PT,
        space_below=5*PT)
 
+stylesheet('post requirement')
+
 stylesheet('rubric',
        base='topic title',
        text_align=CENTER,

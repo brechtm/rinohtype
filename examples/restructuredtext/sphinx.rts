@@ -196,6 +196,8 @@ indent_first=0
 space_above=5pt
 space_below=5pt
 
+[post requirement]
+
 [rubric]
 base=topic title
 text_align=CENTER

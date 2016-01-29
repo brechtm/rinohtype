@@ -85,6 +85,8 @@ matcher('other heading levels', Heading)
 
 matcher('topic', GroupedFlowables.like('topic'))
 
+matcher('post requirement', GroupedFlowables.like('post requirement'))
+
 matcher('abstract', GroupedFlowables.like('abstract'))
 
 matcher('abstract paragraph',
