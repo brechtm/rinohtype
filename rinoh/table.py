@@ -11,7 +11,7 @@ from itertools import chain
 from functools import partial
 from math import sqrt
 
-from .color import Color
+from .dimension import PT, DimensionBase as DimBase
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
@@ -69,6 +69,17 @@ class Table(HorizontallyAlignedFlowable):
 
     def __init__(self, body, head=None, width=None, column_widths=None,
                  id=None, style=None, parent=None):
+        """
+
+        Args:
+          width (:class:`DimensionBase` or `None`): the width of the table. If
+              `None`, the with of the table is automatically determined.
+          column_widths (list or `None`): a list of relative (:class:`Number`)
+              and absolute (:class:`DimensionBase`) column widths. A value of
+              `None` auto-sizes the column. Passing `None` instead of a list
+              auto-sizes all columns.
+
+        """
         super().__init__(id=id, style=style, parent=parent)
         self.head = head
         if head:
@@ -112,7 +123,7 @@ class Table(HorizontallyAlignedFlowable):
     def _size_columns(self, container):
         """Calculate the table's column sizes constrained by:
 
-        - requested relative widths
+        - requested (absolute, relative and automatic) column widths
         - container width (= available width)
         - cell contents
 
@@ -145,30 +156,62 @@ class Table(HorizontallyAlignedFlowable):
         except AttributeError:
             fixed_width = self.width if self.width else None
         max_table_width = fixed_width or container.width
+        min_column_widths = calculate_column_widths(0)
         max_column_widths = calculate_column_widths(float('+inf'))
-        # determine relative column widths
-        if self.column_widths:
-            rel_column_widths = self.column_widths
-        elif sum(max_column_widths) <= max_table_width:
-            rel_column_widths = max_column_widths
-        else:
-            min_column_widths = calculate_column_widths(0)
-            rel_column_widths = [sqrt(minimum * maximum) for minimum, maximum
-                                 in zip(min_column_widths, max_column_widths)]
-        # determine the total table width
+
+        # calculate relative column widths for auto-sized columns
+        auto_relative_colwidths = [sqrt(minimum * maximum) for minimum, maximum
+                                   in zip(min_column_widths, max_column_widths)]
+        column_widths = self.column_widths or [None for _ in max_column_widths]
+        try:          # TODO: max() instead of min()?
+            relative_factor = min(auto_relative_width / width
+                                 for width, auto_relative_width
+                                 in zip(column_widths, auto_relative_colwidths)
+                                 if not isinstance(width, DimBase))
+        except ValueError:
+            relative_factor = 1
+        column_widths = [auto_relative_width * relative_factor
+                         if width is None else width
+                         for width, auto_relative_width
+                         in zip(column_widths, auto_relative_colwidths)]
+
+        # TODO: if table fits in width without wrapping cells, set with of
+        #       auto-sized columns to max_width
+
+        # set min = max for columns with a fixed width
+        total_fixed_cols_width = 0
+        total_portions = 0
+        for i, column_width in enumerate(column_widths):
+            if isinstance(column_width, DimBase):
+                width_in_pt = column_width.to_points(container.width)
+                min_column_widths[i] = max_column_widths[i] = width_in_pt
+                total_fixed_cols_width += width_in_pt
+            else:
+                total_portions += column_width
+
+        # determine table width
         if fixed_width:
             table_width = fixed_width
+        elif total_portions:
+            max_factor = max(maximum / width for width, maximum,
+                             in zip(column_widths, max_column_widths)
+                             if not isinstance(width, DimBase))
+            no_wrap_rel_cols_width = total_portions * max_factor
+            table_width = min(total_fixed_cols_width + no_wrap_rel_cols_width,
+                              container.width)
         else:
-            if self.column_widths:
-                factor = max(maximum / required for maximum, required
-                             in zip(max_column_widths, self.column_widths))
-                no_wrap_table_width = sum(self.column_widths) * factor
-            else:
-                no_wrap_table_width = sum(max_column_widths)
-            table_width = min(no_wrap_table_width, container.width)
+            table_width = total_fixed_cols_width
 
-        scale = float(table_width) / sum(rel_column_widths)
-        return [width * scale for width in rel_column_widths]
+        # determine absolute width of columns with relative widths
+        if total_portions:
+            total_relative_cols_width = table_width - total_fixed_cols_width
+            portion_width = total_relative_cols_width / total_portions
+            return [width.to_points(container.width)
+                    if isinstance(width, DimBase) else width * portion_width
+                    for width in column_widths]
+        else:
+            return [width.to_points(container.width) for width in column_widths]
+
 
     @classmethod
     def _render_section(cls, container, rows, column_widths):
