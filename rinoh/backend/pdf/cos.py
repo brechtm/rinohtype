@@ -95,8 +95,13 @@ class Reference(object):
         return self.document[self.identifier]
 
     def bytes(self, document):
-        return '{} {} R'.format(self.identifier,
-                                self.generation).encode('utf_8')
+        if document is self.document:
+            identifier, generation = self.identifier, self.generation
+        else:
+            obj = self.document[self.identifier]
+            reference = document.register(obj)
+            identifier, generation = reference.identifier, reference.generation
+        return '{} {} R'.format(identifier, generation).encode('utf_8')
 
     def delete(self, document=None):
         if document == self.document:
@@ -451,11 +456,14 @@ class Document(dict):
         self._by_object_id = {}
 
     def register(self, obj):
-        if id(obj) not in self._by_object_id:
+        try:
+            reference = self._by_object_id[id(obj)]
+        except KeyError:
             identifier, generation = self.max_identifier + 1, 0
             reference = Reference(self, identifier, generation)
             self._by_object_id[id(obj)] = reference
             self[identifier] = obj
+        return reference
 
     @property
     def max_identifier(self):
