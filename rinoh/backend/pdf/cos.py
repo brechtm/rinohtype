@@ -148,7 +148,7 @@ class Real(Object, float):
         return float.__repr__(self)
 
     def _bytes(self, document):
-        return float.__repr__(self).encode('utf_8')
+        return '{:.8f}'.format(self).rstrip('0').rstrip('.').encode('utf_8')
 
 
 class String(Object, bytes):
