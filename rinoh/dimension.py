@@ -132,6 +132,9 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
         except (AttributeError, KeyError, AssertionError):
             raise ValueError("'{}' is not a valid dimension".format(string))
 
+    def to_points(self, total_dimension):
+        return float(self)
+
 
 class Dimension(DimensionBase):
     # TODO: em, ex? (depends on context)
@@ -145,9 +148,6 @@ class Dimension(DimensionBase):
 
     def __float__(self):
         return float(self._value)
-
-    def to_points(self, total_dimension):
-        return float(self)
 
 
 class DimensionAddition(DimensionBase):
