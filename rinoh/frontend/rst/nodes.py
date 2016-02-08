@@ -15,7 +15,7 @@ import rinoh as rt
 
 from . import (DocutilsInlineNode, DocutilsNode,
                DocutilsBodyNode, DocutilsBodySubNode,
-               DocutilsGroupingNode)
+               DocutilsGroupingNode, DocutilsDummyNode)
 from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
 
@@ -128,12 +128,8 @@ class System_Message(DocutilsBodyNode):
         return rt.WarnFlowable(self.text)
 
 
-class Comment(DocutilsInlineNode, DocutilsBodyNode):
-    def build_styled_text(self):
-        return None
-
-    def build_flowable(self):
-        return rt.DummyFlowable()
+class Comment(DocutilsDummyNode):
+    pass
 
 
 class Topic(DocutilsGroupingNode):

@@ -97,7 +97,10 @@ class InlineNode(TreeNode):
 
     def styled_text(self, **kwargs):
         styled_text = self.build_styled_text(**kwargs)
-        styled_text.source = self
+        try:
+            styled_text.source = self
+        except AttributeError:   # styled_text is None
+            pass
         return styled_text
 
     def build_styled_text(self):
