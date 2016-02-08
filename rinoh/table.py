@@ -167,7 +167,7 @@ class Table(HorizontallyAlignedFlowable):
             relative_factor = min(auto_relative_width / width
                                  for width, auto_relative_width
                                  in zip(column_widths, auto_relative_colwidths)
-                                 if not isinstance(width, DimBase))
+                                 if width and not isinstance(width, DimBase))
         except ValueError:
             relative_factor = 1
         column_widths = [auto_relative_width * relative_factor
