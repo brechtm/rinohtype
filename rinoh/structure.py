@@ -157,7 +157,7 @@ class ListItemLabel(ParagraphBase, Label):
     style_class = ListItemLabelStyle
 
     def __init__(self, index, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
+        super().__init__(style=style, parent=parent)
         self.index = index
 
     def text(self, container):
