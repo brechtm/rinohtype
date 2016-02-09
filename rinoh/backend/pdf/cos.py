@@ -453,6 +453,7 @@ class Document(dict):
         self.set_info('Producer', self.PRODUCER)
         self.info['CreationDate'] = Date(self.timestamp)
         self.id = None
+        self.dests = {}
         self._by_object_id = {}
 
     def register(self, obj):
@@ -495,6 +496,16 @@ class Document(dict):
                 self.info[field].delete(self)
             self.info[field] = String(string)
 
+    def build_dests_names_array(self):
+        if 'Names' in self.catalog:
+            self.catalog['Names'].delete(self)
+        names = self.catalog['Names'] = Dictionary(True)
+        dests = names['Dests'] = Dictionary(True)
+        dests_names = dests['Names'] = Array()
+        for name in sorted(self.dests):
+            dests_names.append(name)
+            dests_names.append(self.dests[name])
+
     def write(self, file_or_filename):
         def out(string):
             file.write(string + b'\n')
@@ -506,6 +517,7 @@ class Document(dict):
             file = file_or_filename
             close_file = False
 
+        self.build_dests_names_array()
         self.catalog.register_indirect(self)
         self.info.register_indirect(self)
         if 'ModDate' in self.info:

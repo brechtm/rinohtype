@@ -336,10 +336,6 @@ class PageCanvas(Canvas):
         page_height = float(self._backend_page.height)
         cos_document = self.page.document.backend_document.cos_document
         cos_page = self.cos_page.cos_page
-        names = cos_document.catalog.setdefault('Names', cos.Dictionary(True))
-        dests = names.setdefault('Dests', cos.Dictionary(True))
-        # TODO: dest_names should be sorted by name
-        dests_names = dests.setdefault('Names', cos.Array())
         annots = cos_page.setdefault('Annots', cos.Array())
         for annotation_location in annotations:
             annotation = annotation_location.annotation
@@ -347,12 +343,11 @@ class PageCanvas(Canvas):
             top = page_height - annotation_location.top
             if annotation.type == 'NamedDestination':
                 key = cos.String(annotation.name)
-                if key not in dests_names:  # avoid dupes
-                    dests_names.append(key)
+                if key not in cos_document.dests:
                     dest = cos.Array([cos_page, cos.Name('XYZ'),
                                       cos.Real(left), cos.Real(top),
                                       cos.Real(0)], indirect=True)
-                    dests_names.append(dest)
+                    cos_document.dests[key] = dest
                 continue
             right = left + annotation_location.width
             bottom = top - annotation_location.height
