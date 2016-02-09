@@ -285,6 +285,14 @@ class PDFReader(PDFObjectReader, cos.Document):
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
+        self.dests = {}
+        try:
+            dests_names = iter(self.catalog['Names']['Dests']['Names'])
+            for name in dests_names:
+                dest = next(dests_names)
+                self.dests[name] = dest
+        except KeyError:
+            pass
 
     @property
     def max_identifier(self):
