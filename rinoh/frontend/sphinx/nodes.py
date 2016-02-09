@@ -44,19 +44,25 @@ class Compact_Paragraph(DocutilsGroupingNode):
 class Index(DocutilsBodyNode, DocutilsInlineNode):
     def build_flowables(self):
         index_terms = []
+        prev_target = None
         for type, entry_name, target, ignored in self.get('entries'):
+            if prev_target:
+                assert target == prev_target     # seems to always be the case
             if type == 'single':
                 try:
-                    name, sub_name = entry_name.split(';')
-                    name, sub_name = name.strip(), sub_name.strip()
+                    name, sub_name = (n.strip() for n in entry_name.split(';'))
                 except ValueError:
                     name, sub_name = entry_name, None
                 index_terms.append(IndexTerm(target, name, sub_name))
             elif type == 'pair':
-                name, other_name = entry_name.split(';')
-                name, other_name = name.strip(), other_name.strip()
+                name, other_name = (n.strip() for n in entry_name.split(';'))
                 index_terms.append(IndexTerm(target, name, other_name))
                 index_terms.append(IndexTerm(target, other_name, name))
+            elif type == 'triple':
+                one, two, three = (n.strip() for n in entry_name.split(';'))
+                index_terms.append(IndexTerm(target, one, two + ' ' + three))
+                index_terms.append(IndexTerm(target, two, three + ', ' + one))
+                index_terms.append(IndexTerm(target, three, one + ' ' + two))
         yield IndexTarget(index_terms)
 
     def build_styled_text(self):
