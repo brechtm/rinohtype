@@ -368,3 +368,7 @@ matcher('table body right border', TableBody
                                    / TableCellBorder.like(position='right'))
 
 matcher('horizontal rule', HorizontalRule)
+
+matcher('index entry', Paragraph.like('index entry'))
+
+matcher('index subentry', Paragraph.like('index subentry'))

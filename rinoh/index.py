@@ -6,14 +6,14 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestination
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Referenceable, Reference, PAGE
+from .text import SingleStyledText, MixedStyledText
 from .util import intersperse
 
 
-__all__ = ['Index', 'IndexStyle', 'IndexTerm', 'SingleIndexTerm', 'IndexTarget']
+__all__ = ['Index', 'IndexStyle', 'IndexTerm', 'IndexTarget']
 
 
 class IndexStyle(GroupedFlowablesStyle):
@@ -30,12 +30,27 @@ class Index(GroupedFlowables):
 
     def flowables(self, container):
         document = container.document
+        def page_refs(index_terms):
+            return intersperse((Reference(target.get_id(document), PAGE)
+                                for term, target in index_terms), ', ')
+
         index_entries = container.document.index_entries
         entries = sorted(index_entries)
         for entry in entries:
-            pages = intersperse((Reference(index_target.get_id(document), PAGE)
-                                 for index_target in index_entries[entry]), ', ')
-            yield Paragraph([entry.name, ', '] + list(pages))
+            try:
+                subentries = index_entries[entry]
+                page_refs_list = ', ' + MixedStyledText(page_refs(subentries[None]))
+            except KeyError:
+                page_refs_list = None
+            yield Paragraph(SingleStyledText(entry) + page_refs_list,
+                            style='index entry')
+            for subentry in sorted(subentries):
+                links = subentries[subentry]
+                if subentry is None:
+                    continue
+                page_refs_list = ', ' + MixedStyledText(page_refs(links))
+                yield Paragraph(SingleStyledText(subentry) + page_refs_list,
+                                style='index subentry')
 
 
 class IndexTerm(object):
@@ -58,9 +73,6 @@ class IndexTerm(object):
         return hash(self.name_tuple)
 
 
-class SingleIndexTerm(IndexTerm):
-    def __init__(self, target, name, subentry_name=None):
-        super().__init__(target, name, subentry_name)
 
 
 class IndexTarget(DummyFlowable, Referenceable):
@@ -72,8 +84,11 @@ class IndexTarget(DummyFlowable, Referenceable):
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
-        document = flowable_target.document
-        document.index_entries.setdefault(self.index_term, []).append(self)
+        index_entries = flowable_target.document.index_entries
+        pair = self.index_term, self
+        entries = index_entries.setdefault(self.index_term.name, {})
+        subentries = entries.setdefault(self.index_term.subentry_name, [])
+        subentries.append(pair)
 
     def flow(self, container, last_descender, state=None):
         self.create_destination(container, container.cursor)

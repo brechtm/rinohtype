@@ -613,3 +613,12 @@ stylesheet('title page date',
            font_size=14*PT,
            text_align=CENTER,
            space_above=20*PT)
+
+# index
+
+stylesheet('index entry',
+           base='default')
+
+stylesheet('index subentry',
+           base='index entry',
+           indent_first=20*PT)

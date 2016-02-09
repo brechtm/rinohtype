@@ -607,3 +607,10 @@ typeface=$(sans_typeface)
 font_size=14pt
 text_align=CENTER
 space_above=20pt
+
+[index entry]
+base=default
+
+[index subentry]
+base=index entry
+indent_first=20pt

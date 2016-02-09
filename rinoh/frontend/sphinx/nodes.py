@@ -11,6 +11,7 @@ from itertools import chain
 
 from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable
+from ...index import IndexTerm, IndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm, FieldList
@@ -40,18 +41,23 @@ class Compact_Paragraph(DocutilsGroupingNode):
 
 # inline nodes
 
-from ...index import SingleIndexTerm, IndexTarget
-
 class Index(DocutilsBodyNode, DocutilsInlineNode):
     def build_flowables(self):
         for type, entry_name, target, ignored in self.get('entries'):
             if type == 'single':
                 try:
                     name, sub_name = entry_name.split(';')
+                    name, sub_name = name.strip(), sub_name.strip()
                 except ValueError:
                     name, sub_name = entry_name, None
-                index_term = SingleIndexTerm(target, name, sub_name)
+                index_term = IndexTerm(target, name, sub_name)
                 yield IndexTarget(index_term)
+            elif type == 'pair':
+                name, other_name = entry_name.split(';')
+                index_term = IndexTerm(target, name, other_name)
+                yield IndexTarget(index_term)
+                alt_index_term = IndexTerm(target, other_name, name)
+                yield IndexTarget(alt_index_term)
 
     def build_styled_text(self):
         for entrytype, entryname, target, ignored in self.get('entries'):
