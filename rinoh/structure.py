@@ -38,9 +38,6 @@ class Section(Referenceable, StaticGroupedFlowables, PageBreak):
     category = 'Section'
     style_class = SectionStyle
 
-    def __init__(self, flowables, id=None, style=None, parent=None):
-        super().__init__(flowables, id=id, style=style, parent=parent)
-
     @property
     def category(self):
         return 'Chapter' if self.level == 1 else 'Section'
