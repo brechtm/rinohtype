@@ -346,12 +346,12 @@ class PageCanvas(Canvas):
             left = annotation_location.left
             top = page_height - annotation_location.top
             if annotation.type == 'NamedDestination':
-                dest = cos.Array([cos_page, cos.Name('XYZ'),
-                                  cos.Real(left), cos.Real(top), cos.Real(0)],
-                                 indirect=True)
                 key = cos.String(annotation.name)
                 if key not in dests_names:  # avoid dupes
                     dests_names.append(key)
+                    dest = cos.Array([cos_page, cos.Name('XYZ'),
+                                      cos.Real(left), cos.Real(top),
+                                      cos.Real(0)], indirect=True)
                     dests_names.append(dest)
                 continue
             right = left + annotation_location.width

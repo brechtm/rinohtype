@@ -40,7 +40,19 @@ class Compact_Paragraph(DocutilsGroupingNode):
 
 # inline nodes
 
-class Index(DocutilsDummyNode):
+from ...index import SingleIndexTerm, IndexTarget
+
+class Index(DocutilsBodyNode, DocutilsInlineNode):
+    def build_flowables(self):
+        for type, entry_name, target, ignored in self.get('entries'):
+            if type == 'single':
+                try:
+                    name, sub_name = entry_name.split(';')
+                except ValueError:
+                    name, sub_name = entry_name, None
+                index_term = SingleIndexTerm(target, name, sub_name)
+                yield IndexTarget(index_term)
+
     def build_styled_text(self):
         for entrytype, entryname, target, ignored in self.get('entries'):
             # TODO: generate index

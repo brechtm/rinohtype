@@ -8,7 +8,7 @@
 from rinoh.template import DocumentTemplate, DocumentOptions, Option
 from rinoh.text import MixedStyledText
 
-from .base import FrontMatter, BodyMatter
+from .base import FrontMatter, BodyMatter, BackMatter
 
 
 __all__ = ['Book', 'BookOptions']
@@ -20,5 +20,5 @@ class BookOptions(DocumentOptions):
 
 
 class Book(DocumentTemplate):
-    sections = [FrontMatter, BodyMatter]
+    sections = [FrontMatter, BodyMatter, BackMatter]
     options_class = BookOptions

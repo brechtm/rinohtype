@@ -22,8 +22,8 @@ except ImportError:
 
 
 CORE_MODULES = ['annotation', 'color', 'dimension', 'document', 'draw', 'float',
-                'flowable', 'inline', 'layout', 'number', 'paper', 'paragraph',
-                'reference', 'structure', 'style', 'table', 'text']
+                'flowable', 'index', 'inline', 'layout', 'number', 'paper',
+                'paragraph', 'reference', 'structure', 'style', 'table', 'text']
 
 __all__ = CORE_MODULES + ['font', 'frontend', 'backend', 'styleds', 'styles']
 

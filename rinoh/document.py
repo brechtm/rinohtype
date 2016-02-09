@@ -281,6 +281,7 @@ class Document(object):
         self.ids_by_element = {}       # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_references = {}      # mapping id's to page numbers
+        self.index_entries = {}
         self._unique_id = 0
 
     def _print_version_and_license(self):

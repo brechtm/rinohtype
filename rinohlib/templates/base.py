@@ -7,6 +7,7 @@
 
 from rinoh.dimension import PT, CM
 from rinoh.document import DocumentPart, Page, DocumentSection
+from rinoh.index import Index
 from rinoh.layout import (Container, ChainedContainer, FootnoteContainer,
                           UpExpandingContainer, DownExpandingContainer,
                           FlowablesContainer)
@@ -173,3 +174,14 @@ class ContentsPart(DocumentPart):
 
 class BodyMatter(DocumentSection):
     parts = [ContentsPart]
+
+
+class IndexPart(DocumentPart):
+    page_template = SimplePage
+
+    def flowables(self):
+        yield Index()
+
+
+class BackMatter(DocumentSection):
+    parts = [IndexPart]
