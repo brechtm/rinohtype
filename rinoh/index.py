@@ -35,19 +35,19 @@ class Index(GroupedFlowables):
                                 for term, target in index_terms), ', ')
 
         index_entries = container.document.index_entries
-        entries = sorted(index_entries)
+        entries = sorted(index_entries, key=lambda s: s.lower())
         for entry in entries:
+            subentries = index_entries[entry]
             try:
-                subentries = index_entries[entry]
-                page_refs_list = ', ' + MixedStyledText(page_refs(subentries[None]))
+                top_refs = subentries[None]
+                page_refs_list = ', ' + MixedStyledText(page_refs(top_refs))
             except KeyError:
                 page_refs_list = None
             yield Paragraph(SingleStyledText(entry) + page_refs_list,
                             style='index entry')
-            for subentry in sorted(subentries):
+            for subentry in sorted((name for name in subentries if name),
+                                   key=lambda s: s.lower()):
                 links = subentries[subentry]
-                if subentry is None:
-                    continue
                 page_refs_list = ', ' + MixedStyledText(page_refs(links))
                 yield Paragraph(SingleStyledText(subentry) + page_refs_list,
                                 style='index subentry')
