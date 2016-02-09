@@ -99,9 +99,10 @@ class Flowable(Styled):
         except AttributeError:
             return None
 
-    def create_destination(self,container):
+    def create_destination(self,container, vertical_position):
         destination = NamedDestination(str(self.get_id(container.document)))
-        container.canvas.annotate(destination, 0, 0, container.width, None)
+        container.canvas.annotate(destination, 0, vertical_position,
+                                  container.width, None)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
@@ -133,7 +134,7 @@ class Flowable(Styled):
             finally:
                 reference_id = self.get_id(container.document)
                 if reference_id and initial_before and not initial_after:
-                    self.create_destination(margin_container)
+                    self.create_destination(margin_container, 0)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 

@@ -76,9 +76,8 @@ class IndexTarget(DummyFlowable, Referenceable):
         document.index_entries.setdefault(self.index_term, []).append(self)
 
     def flow(self, container, last_descender, state=None):
-        result = super().flow(container, last_descender, state=state)
-        self.create_destination(container)
+        self.create_destination(container, container.cursor)
         self.update_page_reference(container.page)
-        return result
+        return super().flow(container, last_descender, state=state)
 
 
