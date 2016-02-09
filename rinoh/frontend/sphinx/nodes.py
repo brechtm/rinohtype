@@ -11,7 +11,7 @@ from itertools import chain
 
 from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable
-from ...index import IndexTerm, IndexTarget
+from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm, FieldList
@@ -42,8 +42,8 @@ class Compact_Paragraph(DocutilsGroupingNode):
 # inline nodes
 
 class Index(DocutilsBodyNode, DocutilsInlineNode):
-    def build_flowables(self):
-        index_terms = []
+    @property
+    def _index_terms(self):
         prev_target = None
         for type, entry_name, target, ignored in self.get('entries'):
             if prev_target:
@@ -53,23 +53,24 @@ class Index(DocutilsBodyNode, DocutilsInlineNode):
                     name, sub_name = (n.strip() for n in entry_name.split(';'))
                 except ValueError:
                     name, sub_name = entry_name, None
-                index_terms.append(IndexTerm(target, name, sub_name))
+                yield IndexTerm(target, name, sub_name)
             elif type == 'pair':
                 name, other_name = (n.strip() for n in entry_name.split(';'))
-                index_terms.append(IndexTerm(target, name, other_name))
-                index_terms.append(IndexTerm(target, other_name, name))
+                yield IndexTerm(target, name, other_name)
+                yield IndexTerm(target, other_name, name)
             elif type == 'triple':
                 one, two, three = (n.strip() for n in entry_name.split(';'))
-                index_terms.append(IndexTerm(target, one, two + ' ' + three))
-                index_terms.append(IndexTerm(target, two, three + ', ' + one))
-                index_terms.append(IndexTerm(target, three, one + ' ' + two))
-        yield IndexTarget(index_terms)
+                yield IndexTerm(target, one, two + ' ' + three)
+                yield IndexTerm(target, two, three + ', ' + one)
+                yield IndexTerm(target, three, one + ' ' + two)
+            else:
+                raise NotImplementedError
+
+    def build_flowable(self):
+        return IndexTarget(list(self._index_terms))
 
     def build_styled_text(self):
-        for entrytype, entryname, target, ignored in self.get('entries'):
-            # TODO: generate index
-            pass
-        return None
+        return InlineIndexTarget(self._index_terms, self.get('entries')[0][2])
 
 
 class Pending_XRef(DocutilsInlineNode):

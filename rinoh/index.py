@@ -6,14 +6,17 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .annotation import NamedDestination, AnnotatedText
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Referenceable, Reference, PAGE
-from .text import SingleStyledText, MixedStyledText
+from .style import Styled
+from .text import SingleStyledText, MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['Index', 'IndexStyle', 'IndexTerm', 'IndexTarget']
+__all__ = ['Index', 'IndexStyle', 'IndexTerm',
+           'TextWithIndexTarget', 'InlineIndexTarget', 'IndexTarget']
 
 
 class IndexStyle(GroupedFlowablesStyle):
@@ -73,13 +76,9 @@ class IndexTerm(object):
         return hash(self.name_tuple)
 
 
-
-
-class IndexTarget(DummyFlowable, Referenceable):
-    category = 'Index'
-
-    def __init__(self, index_terms, parent=None):
-        super().__init__(parent=parent)
+class IndexTargetBase(Styled):
+    def __init__(self, index_terms, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.index_terms = index_terms
 
     def prepare(self, flowable_target):
@@ -91,9 +90,46 @@ class IndexTarget(DummyFlowable, Referenceable):
             subentries = entries.setdefault(index_term.subentry_name, [])
             subentries.append(pair)
 
+
+class InlineIndexTargetBase(IndexTargetBase):
+    def __init__(self, index_terms, id, *args, **kwargs):
+        super().__init__(index_terms, *args, **kwargs)
+        self._id = id
+
+    def get_id(self, document):
+        return self._id
+
+
+class TextWithIndexTarget(InlineIndexTargetBase, AnnotatedText):
+    def __init__(self, index_terms, text_or_items, id, style=None, parent=None):
+        super().__init__(index_terms, text_or_items, NamedDestination(str(id)),
+                         style=style, parent=parent)
+
+    def spans(self, container):
+        document, page = container.document, container.page
+        document.page_references[self.get_id(document)] = page.number
+        return super().spans(container)
+
+
+class InlineIndexTarget(InlineIndexTargetBase, StyledText):
+    def __init__(self, index_terms, id, style=None, parent=None):
+        super().__init__(index_terms, id, style=style, parent=parent)
+
+    def spans(self, container):
+        container.canvas.annotate(NamedDestination(str(self._id)), 0,
+                                  container.cursor, container.width, None)
+        document, page = container.document, container.page
+        document.page_references[self._id] = page.number
+        return iter([])
+
+
+class IndexTarget(IndexTargetBase, DummyFlowable, Referenceable):
+    category = 'Index'
+
+    def __init__(self, index_terms, parent=None):
+        super().__init__(index_terms, parent=parent)
+
     def flow(self, container, last_descender, state=None):
         self.create_destination(container, container.cursor)
         self.update_page_reference(container.page)
         return super().flow(container, last_descender, state=state)
-
-
