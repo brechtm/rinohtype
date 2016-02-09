@@ -77,9 +77,7 @@ class IndexTarget(DummyFlowable, Referenceable):
 
     def flow(self, container, last_descender, state=None):
         result = super().flow(container, last_descender, state=state)
-        reference_id = self.get_id(container.document)
-        destination = NamedDestination(str(reference_id))
-        container.canvas.annotate(destination, 0, 0, container.width, None)
+        self.create_destination(container)
         self.update_page_reference(container.page)
         return result
 

@@ -99,6 +99,10 @@ class Flowable(Styled):
         except AttributeError:
             return None
 
+    def create_destination(self,container):
+        destination = NamedDestination(str(self.get_id(container.document)))
+        container.canvas.annotate(destination, 0, 0, container.width, None)
+
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -107,7 +111,6 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        document = container.document
         if not state:
             container.advance(float(self.get_style('space_above', container)))
         margin_left = self.get_style('margin_left', container)
@@ -130,10 +133,7 @@ class Flowable(Styled):
             finally:
                 reference_id = self.get_id(container.document)
                 if reference_id and initial_before and not initial_after:
-                    destination = NamedDestination(str(reference_id))
-                    margin_container.canvas.annotate(destination, 0, 0,
-                                                     margin_container.width,
-                                                     None)
+                    self.create_destination(margin_container)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 
