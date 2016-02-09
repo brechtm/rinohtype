@@ -78,17 +78,18 @@ class IndexTerm(object):
 class IndexTarget(DummyFlowable, Referenceable):
     category = 'Index'
 
-    def __init__(self, index_term, parent=None):
+    def __init__(self, index_terms, parent=None):
         super().__init__(parent=parent)
-        self.index_term = index_term
+        self.index_terms = index_terms
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         index_entries = flowable_target.document.index_entries
-        pair = self.index_term, self
-        entries = index_entries.setdefault(self.index_term.name, {})
-        subentries = entries.setdefault(self.index_term.subentry_name, [])
-        subentries.append(pair)
+        for index_term in self.index_terms:
+            pair = index_term, self
+            entries = index_entries.setdefault(index_term.name, {})
+            subentries = entries.setdefault(index_term.subentry_name, [])
+            subentries.append(pair)
 
     def flow(self, container, last_descender, state=None):
         self.create_destination(container, container.cursor)
