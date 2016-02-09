@@ -442,10 +442,8 @@ class Definition_List_Item(DocutilsBodySubNode):
 class Term(DocutilsInlineNode):
     def build_styled_text(self):
         content = self.process_content()
-        ids = self.get('ids')
-        if ids:
-            # TODO: add destination for each id
-            destination = rt.NamedDestination(ids[0])
+        if self._id:
+            destination = rt.NamedDestination(self._id)
             content = rt.AnnotatedText(content, destination)
         return content
 
