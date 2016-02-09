@@ -91,10 +91,11 @@ class ReferenceBase(Field):
 
         return self.split_words(text)
 
-    def spans(self, document):
-        spans = super().spans(document)
+    def spans(self, container):
+        spans = super().spans(container)
         if self.link:
-            annotation = NamedDestinationLink(str(self.target_id(document)))
+            target_id = self.target_id(container.document)
+            annotation = NamedDestinationLink(str(target_id))
             spans = (AnnotatedSpan(span, annotation) for span in spans)
         return spans
 

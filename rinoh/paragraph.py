@@ -381,7 +381,7 @@ class ParagraphBase(Flowable):
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
         if not state:
-            spans = self.text(container).spans(container.document)
+            spans = self.text(container).spans(container)
             state = ParagraphState(spans_to_words(spans, container))
         saved_state = copy(state)
         prev_state = copy(state)

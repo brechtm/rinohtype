@@ -194,7 +194,7 @@ class StyledText(Styled, AttributeType):
             # get the position style using self.get_style('position')
         return offset
 
-    def spans(self):
+    def spans(self, container):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
         raise NotImplementedError
@@ -312,10 +312,10 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self, document):
+    def spans(self, container):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        return (span for item in self for span in item.spans(document))
+        return (span for item in self for span in item.spans(container))
 
 
 class Character(SingleStyledText):
