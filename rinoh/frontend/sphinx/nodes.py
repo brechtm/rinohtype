@@ -67,8 +67,7 @@ class Index(DocutilsBodyNode, DocutilsInlineNode):
         return IndexTarget(list(self._index_terms))
 
     def build_styled_text(self):
-        return InlineIndexTarget(list(self._index_terms),
-                                 self.get('entries')[0][2])
+        return InlineIndexTarget(list(self._index_terms))
 
 
 class Pending_XRef(DocutilsInlineNode):

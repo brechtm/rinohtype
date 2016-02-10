@@ -93,17 +93,9 @@ class IndexTargetBase(Styled):
             level_entries.setdefault(None, []).append((index_term, self))
 
 
-class InlineIndexTargetBase(IndexTargetBase):
-    def __init__(self, index_terms, id, *args, **kwargs):
-        super().__init__(index_terms, *args, **kwargs)
-        self._id = id
-
-    def get_id(self, document):
-        return self._id
-
-
-class TextWithIndexTarget(InlineIndexTargetBase, AnnotatedText):
-    def __init__(self, index_terms, text_or_items, id, style=None, parent=None):
+class TextWithIndexTarget(IndexTargetBase, AnnotatedText):
+    def __init__(self, index_terms, text_or_items,
+                 id=None, style=None, parent=None):
         super().__init__(index_terms, text_or_items, NamedDestination(str(id)),
                          style=style, parent=parent)
 
@@ -113,15 +105,13 @@ class TextWithIndexTarget(InlineIndexTargetBase, AnnotatedText):
         return super().spans(container)
 
 
-class InlineIndexTarget(InlineIndexTargetBase, StyledText):
-    def __init__(self, index_terms, id, style=None, parent=None):
-        super().__init__(index_terms, id, style=style, parent=parent)
-
+class InlineIndexTarget(IndexTargetBase, StyledText):
     def spans(self, container):
-        container.canvas.annotate(NamedDestination(str(self._id)), 0,
+        id = self.get_id(container.document)
+        container.canvas.annotate(NamedDestination(str(id)), 0,
                                   container.cursor, container.width, None)
         document, page = container.document, container.page
-        document.page_references[self._id] = page.number
+        document.page_references[id] = page.number
         return iter([])
 
 
