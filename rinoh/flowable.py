@@ -128,12 +128,9 @@ class Flowable(Styled):
                     initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
-                try:
-                    reference_id = self.get_id(container.document)
-                    if reference_id and initial_before and not initial_after:
-                        self.create_destination(margin_container, 0)
-                except KeyError:
-                    pass
+                reference_id = self.get_id(container.document, create=False)
+                if reference_id and initial_before and not initial_after:
+                    self.create_destination(margin_container, 0)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 

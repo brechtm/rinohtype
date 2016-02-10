@@ -35,8 +35,14 @@ class DocumentElement(object):
         self.parent = parent
         self.source = source
 
-    def get_id(self, document):
-        return self.id or document.ids_by_element[self]
+    def get_id(self, document, create=True):
+        try:
+            return self.id or document.ids_by_element[self]
+        except KeyError:
+            if create:
+                id = document.unique_id
+                document.register_element(id, self)
+                return id
 
     @property
     def source(self):
@@ -59,11 +65,8 @@ class DocumentElement(object):
 
     def prepare(self, flowable_target):
         """Determine number labels and register references with the document"""
-        document = flowable_target.document
-        element_id = self.id or document.unique_id
-        if self.id is None:
-            document.ids_by_element[self] = element_id
-        document.elements[element_id] = self
+        if self.id:
+            flowable_target.document.register_element(self.id, self)
 
     def warn(self, message, container=None):
         """Present the warning `message` to the user, adding information on the

@@ -299,6 +299,10 @@ to the terms of the GNU Affero General Public License version 3.''')
         self._unique_id += 1
         return self._unique_id
 
+    def register_element(self, id, element):
+        self.ids_by_element[element] = id
+        self.elements[id] = element
+
     def set_reference(self, id, reference_type, value):
         id_references = self.references.setdefault(id, {})
         id_references[reference_type] = value
