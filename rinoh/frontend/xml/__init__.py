@@ -51,6 +51,23 @@ def strip_and_filter(text, strip_leading_whitespace):
         yield item, strip_leading_whitespace
 
 
+def filter_whitespace(text, children, strip_leading_ws):
+    for item, strip_leading_ws in strip_and_filter(text, strip_leading_ws):
+        yield item
+    for child in children:
+        child_text = child.styled_text(strip_leading_ws)
+        for item, strip_leading_ws in filter(child_text, strip_leading_ws):
+            yield item
+        for item, strip_leading_ws in strip_and_filter(child.tail,
+                                                       strip_leading_ws):
+            yield item
+
+
+def process_content(text, children, strip_leading_whitespace=True, style=None):
+    text_items = filter_whitespace(text, children, strip_leading_whitespace)
+    return MixedStyledText([item for item in text_items], style=style)
+
+
 class ElementTreeNode(TreeNode):
     NAMESPACE = NotImplementedAttribute()
 
@@ -111,20 +128,8 @@ class ElementTreeNode(TreeNode):
         return self.node[name]
 
     def process_content(self, strip_leading_whitespace=True, style=None):
-        text_items = self._filter_whitespace(strip_leading_whitespace)
-        return MixedStyledText([item for item in text_items], style=style)
-
-    def _filter_whitespace(self, strip_leading_ws):
-        for item, strip_leading_ws in strip_and_filter(self.text,
-                                                       strip_leading_ws):
-            yield item
-        for child in self.getchildren():
-            child_text = child.styled_text(strip_leading_ws)
-            for item, strip_leading_ws in filter(child_text, strip_leading_ws):
-                yield item
-            for item, strip_leading_ws in strip_and_filter(child.tail,
-                                                           strip_leading_ws):
-                yield item
+        return process_content(self.text, self.getchildren(),
+                               strip_leading_whitespace, style=style)
 
 
 class ElementTreeInlineNode(ElementTreeNode, InlineNode):

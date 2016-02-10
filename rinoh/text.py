@@ -37,7 +37,7 @@ Some characters with special properties and are represented by special classes:
 
 import re
 
-from itertools import groupby
+from itertools import groupby, zip_longest
 
 from .color import Color, BLACK
 from .dimension import DimensionBase, PT
@@ -223,6 +223,15 @@ class SingleStyledText(StyledText):
         """Return the text content of this single-styled text."""
         return self.text
 
+    def __eq__(self, other):
+        try:
+            return (self.text, self.style) == (other.text, other.style)
+        except AttributeError:
+            return False
+
+    def __hash__(self):
+        return hash((self.text, self.style))
+
     def font(self, container):
         """The :class:`Font` described by this single-styled text's style.
 
@@ -297,6 +306,13 @@ class MixedStyledText(StyledText, list):
     def __str__(self):
         """Return the text content of this mixed-styled text."""
         return ''.join(str(item) for item in self)
+
+    def __eq__(self, other):
+        return all(child == other_child
+                   for child, other_child in zip_longest(self, other))
+
+    def __hash__(self):
+        return hash((tuple(self), self.style))
 
     def prepare(self, flowable_target):
         for item in self:

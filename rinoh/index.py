@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestination, AnnotatedText
+from .annotation import NamedDestination
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Referenceable, Reference, PAGE
@@ -15,7 +15,7 @@ from .text import SingleStyledText, MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['Index', 'IndexStyle', 'IndexEntry', 'IndexTerm',
+__all__ = ['Index', 'IndexStyle', 'IndexTerm',
            'InlineIndexTarget', 'IndexTarget']
 
 
@@ -32,22 +32,18 @@ class Index(GroupedFlowables):
         self.source = self
 
     def flowables(self, container):
-        def page_refs(index_terms):
-            return intersperse((Reference(target.get_id(document), PAGE)
-                                for term, target in index_terms), ', ')
-
         def hande_level(index_entries, level=1):
             entries = sorted((name for name in index_entries if name),
-                             key=lambda s: s.lower())
+                             key=lambda s: str(s).lower())
             for entry in entries:
                 subentries = index_entries[entry]
                 try:
-                    refs = subentries[None]
-                    page_refs_list = ', ' + MixedStyledText(page_refs(refs))
+                    refs = intersperse((Reference(tgt.get_id(document), PAGE)
+                                       for term, tgt in subentries[None]), ', ')
+                    entry_line = entry + ', ' + MixedStyledText(refs)
                 except KeyError:
-                    page_refs_list = None
-                yield IndexEntry(SingleStyledText(entry) + page_refs_list,
-                                 level, style='index entry')
+                    entry_line = entry
+                yield IndexEntry(entry_line, level, style='index entry')
                 for paragraph in hande_level(subentries, level=level + 1):
                     yield paragraph
 
@@ -81,8 +77,8 @@ class IndexTargetBase(Styled):
         index_entries = flowable_target.document.index_entries
         for index_term in self.index_terms:
             level_entries = index_entries
-            for level in index_term:
-                level_entries = level_entries.setdefault(level, {})
+            for term in index_term:
+                level_entries = level_entries.setdefault(term, {})
             level_entries.setdefault(None, []).append((index_term, self))
 
 

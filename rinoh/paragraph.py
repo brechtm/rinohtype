@@ -788,7 +788,7 @@ def group_spans(line):
     span = None
     glyph_and_widths = []
     for glyph_span in line:
-        if glyph_span.span != span:
+        if glyph_span.span is not span:
             if span:
                 yield span, glyph_and_widths
             span = glyph_span.span
