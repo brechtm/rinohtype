@@ -616,9 +616,17 @@ stylesheet('title page date',
 
 # index
 
-stylesheet('index entry',
+stylesheet('level 1 index entry',
            base='default')
 
-stylesheet('index subentry',
-           base='index entry',
+stylesheet('level 2 index entry',
+           base='level 1 index entry',
            indent_first=20*PT)
+
+stylesheet('level 3 index entry',
+           base='level 1 index entry',
+           indent_first=40*PT)
+
+stylesheet('level 4 index entry',
+           base='level 1 index entry',
+           indent_first=60*PT)

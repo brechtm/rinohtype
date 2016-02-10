@@ -49,20 +49,17 @@ class Index(DocutilsBodyNode, DocutilsInlineNode):
             if prev_target:
                 assert target == prev_target     # seems to always be the case
             if type == 'single':
-                try:
-                    name, sub_name = (n.strip() for n in entry_name.split(';'))
-                except ValueError:
-                    name, sub_name = entry_name, None
-                yield IndexTerm(target, name, sub_name)
+                levels = tuple(n.strip() for n in entry_name.split(';'))
+                yield IndexTerm(levels, target)
             elif type == 'pair':
                 name, other_name = (n.strip() for n in entry_name.split(';'))
-                yield IndexTerm(target, name, other_name)
-                yield IndexTerm(target, other_name, name)
+                yield IndexTerm((name, other_name), target)
+                yield IndexTerm((other_name, name), target)
             elif type == 'triple':
                 one, two, three = (n.strip() for n in entry_name.split(';'))
-                yield IndexTerm(target, one, two + ' ' + three)
-                yield IndexTerm(target, two, three + ', ' + one)
-                yield IndexTerm(target, three, one + ' ' + two)
+                yield IndexTerm((one, two + ' ' + three), target)
+                yield IndexTerm((two, three + ', ' + one), target)
+                yield IndexTerm((three, one + ' ' + two), target)
             else:
                 raise NotImplementedError
 
@@ -70,7 +67,8 @@ class Index(DocutilsBodyNode, DocutilsInlineNode):
         return IndexTarget(list(self._index_terms))
 
     def build_styled_text(self):
-        return InlineIndexTarget(self._index_terms, self.get('entries')[0][2])
+        return InlineIndexTarget(list(self._index_terms),
+                                 self.get('entries')[0][2])
 
 
 class Pending_XRef(DocutilsInlineNode):

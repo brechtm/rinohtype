@@ -608,9 +608,17 @@ font_size=14pt
 text_align=CENTER
 space_above=20pt
 
-[index entry]
+[level 1 index entry]
 base=default
 
-[index subentry]
-base=index entry
+[level 2 index entry]
+base=level 1 index entry
 indent_first=20pt
+
+[level 3 index entry]
+base=level 1 index entry
+indent_first=40pt
+
+[level 4 index entry]
+base=level 1 index entry
+indent_first=60pt

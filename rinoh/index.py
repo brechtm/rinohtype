@@ -15,7 +15,7 @@ from .text import SingleStyledText, MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['Index', 'IndexStyle', 'IndexTerm',
+__all__ = ['Index', 'IndexStyle', 'IndexEntry', 'IndexTerm',
            'TextWithIndexTarget', 'InlineIndexTarget', 'IndexTarget']
 
 
@@ -32,48 +32,50 @@ class Index(GroupedFlowables):
         self.source = self
 
     def flowables(self, container):
-        document = container.document
         def page_refs(index_terms):
             return intersperse((Reference(target.get_id(document), PAGE)
                                 for term, target in index_terms), ', ')
 
+        def hande_level(index_entries, level=1):
+            entries = sorted((name for name in index_entries if name),
+                             key=lambda s: s.lower())
+            for entry in entries:
+                subentries = index_entries[entry]
+                try:
+                    refs = subentries[None]
+                    page_refs_list = ', ' + MixedStyledText(page_refs(refs))
+                except KeyError:
+                    page_refs_list = None
+                yield IndexEntry(SingleStyledText(entry) + page_refs_list,
+                                 level, style='index entry')
+                for paragraph in hande_level(subentries, level=level + 1):
+                    yield paragraph
+
+        document = container.document
         index_entries = container.document.index_entries
-        entries = sorted(index_entries, key=lambda s: s.lower())
-        for entry in entries:
-            subentries = index_entries[entry]
-            try:
-                top_refs = subentries[None]
-                page_refs_list = ', ' + MixedStyledText(page_refs(top_refs))
-            except KeyError:
-                page_refs_list = None
-            yield Paragraph(SingleStyledText(entry) + page_refs_list,
-                            style='index entry')
-            for subentry in sorted((name for name in subentries if name),
-                                   key=lambda s: s.lower()):
-                links = subentries[subentry]
-                page_refs_list = ', ' + MixedStyledText(page_refs(links))
-                yield Paragraph(SingleStyledText(subentry) + page_refs_list,
-                                style='index subentry')
+        for paragraph in hande_level(index_entries):
+            yield paragraph
+
+
+class IndexEntry(Paragraph):
+    def __init__(self, text_or_items, level, id=None, style=None, parent=None):
+        super().__init__(text_or_items, id=id, style=style, parent=parent)
+        self.index_level = level
 
 
 class IndexTerm(object):
-    def __init__(self, target, name, subentry_name=None):
-        self.name = name
-        self.subentry_name = subentry_name
+    def __init__(self, levels, target):
+        self.levels = levels
         self.target = target
 
-    @property
-    def name_tuple(self):
-        return self.name, self.subentry_name
-
     def __eq__(self, other):
-        return self.name_tuple == other.name_tuple
+        return self.levels == other.terms
 
     def __lt__(self, other):
-        return self.name_tuple < other.name_tuple
+        return self.levels < other.terms
 
     def __hash__(self):
-        return hash(self.name_tuple)
+        return hash(self.levels)
 
 
 class IndexTargetBase(Styled):
@@ -85,10 +87,10 @@ class IndexTargetBase(Styled):
         super().prepare(flowable_target)
         index_entries = flowable_target.document.index_entries
         for index_term in self.index_terms:
-            pair = index_term, self
-            entries = index_entries.setdefault(index_term.name, {})
-            subentries = entries.setdefault(index_term.subentry_name, [])
-            subentries.append(pair)
+            level_entries = index_entries
+            for level in index_term.levels:
+                level_entries = level_entries.setdefault(level, {})
+            level_entries.setdefault(None, []).append((index_term, self))
 
 
 class InlineIndexTargetBase(IndexTargetBase):

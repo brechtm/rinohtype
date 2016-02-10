@@ -369,6 +369,10 @@ matcher('table body right border', TableBody
 
 matcher('horizontal rule', HorizontalRule)
 
-matcher('index entry', Paragraph.like('index entry'))
+matcher('level 1 index entry', IndexEntry.like('index entry', index_level=1))
 
-matcher('index subentry', Paragraph.like('index subentry'))
+matcher('level 2 index entry', IndexEntry.like('index entry', index_level=2))
+
+matcher('level 3 index entry', IndexEntry.like('index entry', index_level=3))
+
+matcher('level 4 index entry', IndexEntry.like('index entry', index_level=4))
