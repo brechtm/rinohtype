@@ -16,7 +16,7 @@ from .util import intersperse
 
 
 __all__ = ['Index', 'IndexStyle', 'IndexEntry', 'IndexTerm',
-           'TextWithIndexTarget', 'InlineIndexTarget', 'IndexTarget']
+           'InlineIndexTarget', 'IndexTarget']
 
 
 class IndexStyle(GroupedFlowablesStyle):
@@ -91,18 +91,6 @@ class IndexTargetBase(Styled):
             for level in index_term.levels:
                 level_entries = level_entries.setdefault(level, {})
             level_entries.setdefault(None, []).append((index_term, self))
-
-
-class TextWithIndexTarget(IndexTargetBase, AnnotatedText):
-    def __init__(self, index_terms, text_or_items,
-                 id=None, style=None, parent=None):
-        super().__init__(index_terms, text_or_items, NamedDestination(str(id)),
-                         style=style, parent=parent)
-
-    def spans(self, container):
-        document, page = container.document, container.page
-        document.page_references[self.get_id(document)] = page.number
-        return super().spans(container)
 
 
 class InlineIndexTarget(IndexTargetBase, StyledText):
