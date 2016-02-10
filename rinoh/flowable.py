@@ -337,6 +337,7 @@ class LabeledFlowable(Flowable):
         label.parent = flowable.parent = self
 
     def prepare(self, flowable_target):
+        super().prepare(flowable_target)
         self.label.prepare(flowable_target)
         self.flowable.prepare(flowable_target)
 
