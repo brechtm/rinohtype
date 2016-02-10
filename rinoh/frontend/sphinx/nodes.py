@@ -44,22 +44,18 @@ class Compact_Paragraph(DocutilsGroupingNode):
 class Index(DocutilsBodyNode, DocutilsInlineNode):
     @property
     def _index_terms(self):
-        prev_target = None
         for type, entry_name, target, ignored in self.get('entries'):
-            if prev_target:
-                assert target == prev_target     # seems to always be the case
             if type == 'single':
-                levels = tuple(n.strip() for n in entry_name.split(';'))
-                yield IndexTerm(levels, target)
+                yield IndexTerm(*(n.strip() for n in entry_name.split(';')))
             elif type == 'pair':
                 name, other_name = (n.strip() for n in entry_name.split(';'))
-                yield IndexTerm((name, other_name), target)
-                yield IndexTerm((other_name, name), target)
+                yield IndexTerm(name, other_name)
+                yield IndexTerm(other_name, name)
             elif type == 'triple':
                 one, two, three = (n.strip() for n in entry_name.split(';'))
-                yield IndexTerm((one, two + ' ' + three), target)
-                yield IndexTerm((two, three + ', ' + one), target)
-                yield IndexTerm((three, one + ' ' + two), target)
+                yield IndexTerm(one, two + ' ' + three)
+                yield IndexTerm(two, three + ', ' + one)
+                yield IndexTerm(three, one + ' ' + two)
             else:
                 raise NotImplementedError
 

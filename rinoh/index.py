@@ -63,19 +63,12 @@ class IndexEntry(Paragraph):
         self.index_level = level
 
 
-class IndexTerm(object):
-    def __init__(self, levels, target):
-        self.levels = levels
-        self.target = target
+class IndexTerm(tuple):
+    def __new__(cls, *levels):
+        return super().__new__(cls, levels)
 
-    def __eq__(self, other):
-        return self.levels == other.terms
-
-    def __lt__(self, other):
-        return self.levels < other.terms
-
-    def __hash__(self):
-        return hash(self.levels)
+    def __repr__(self):
+        return type(self).__name__ + super().__repr__()
 
 
 class IndexTargetBase(Styled):
@@ -88,7 +81,7 @@ class IndexTargetBase(Styled):
         index_entries = flowable_target.document.index_entries
         for index_term in self.index_terms:
             level_entries = index_entries
-            for level in index_term.levels:
+            for level in index_term:
                 level_entries = level_entries.setdefault(level, {})
             level_entries.setdefault(None, []).append((index_term, self))
 
