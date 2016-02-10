@@ -21,7 +21,7 @@ class DocumentElement(object):
     """An element that is directly or indirectly part of a :class:`Document`
     and is eventually rendered to the output."""
 
-    def __init__(self, parent=None, source=None):
+    def __init__(self, id=None, parent=None, source=None):
         """Initialize this document element as as a child of `parent`
         (:class:`DocumentElement`) if it is not a top-level :class:`Flowable`
         element. `source` should point to a node in the input's document tree
@@ -31,8 +31,12 @@ class DocumentElement(object):
 
         Both parameters are optional, and can be set at a later point by
         assigning to the identically named instance attributes."""
+        self.id = id
         self.parent = parent
         self.source = source
+
+    def get_id(self, document):
+        return self.id or document.ids_by_element[self]
 
     @property
     def source(self):
@@ -55,7 +59,11 @@ class DocumentElement(object):
 
     def prepare(self, flowable_target):
         """Determine number labels and register references with the document"""
-        pass
+        document = flowable_target.document
+        element_id = self.id or document.unique_id
+        if self.id is None:
+            document.ids_by_element[self] = element_id
+        document.elements[element_id] = self
 
     def warn(self, message, container=None):
         """Present the warning `message` to the user, adding information on the

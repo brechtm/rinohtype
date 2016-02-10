@@ -28,17 +28,6 @@ class Field(SingleStyledText):
 class Referenceable(Flowable):
     category = NotImplementedAttribute()
 
-    def prepare(self, flowable_target):
-        document = flowable_target.document
-        element_id = self.id or document.unique_id
-        if self.id is None:
-            document.ids_by_element[self] = element_id
-        document.elements[element_id] = self
-        super().prepare(flowable_target)
-
-    def get_id(self, document):
-        return self.id or document.ids_by_element[self]
-
     def update_page_reference(self, page):
         document = page.document
         document.page_references[self.get_id(document)] = page.number

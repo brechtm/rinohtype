@@ -33,7 +33,7 @@ from .flowable import RIGHT, LEFT
 from .layout import Container, ReflowRequired, Chain
 from .number import NUMBER
 from .style import DocumentLocationType, Specificity
-from .util import NotImplementedAttribute
+from .util import NotImplementedAttribute, RefKeyDictionary
 
 
 __all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
@@ -278,7 +278,7 @@ class Document(object):
                              date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to Referenceables
-        self.ids_by_element = {}       # mapping elements to id's
+        self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_references = {}      # mapping id's to page numbers
         self.index_entries = {}

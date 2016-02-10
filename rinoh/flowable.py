@@ -79,11 +79,7 @@ class Flowable(Styled):
     def __init__(self, id=None, style=None, parent=None):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
-        super().__init__(style=style, parent=parent)
-        self.id = id
-
-    def get_id(self, document):
-        return self.id
+        super().__init__(id=id, style=style, parent=parent)
 
     @property
     def level(self):
@@ -132,9 +128,12 @@ class Flowable(Styled):
                     initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
-                reference_id = self.get_id(container.document)
-                if reference_id and initial_before and not initial_after:
-                    self.create_destination(margin_container, 0)
+                try:
+                    reference_id = self.get_id(container.document)
+                    if reference_id and initial_before and not initial_after:
+                        self.create_destination(margin_container, 0)
+                except KeyError:
+                    pass
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 
