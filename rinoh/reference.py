@@ -28,10 +28,6 @@ class Field(SingleStyledText):
 class Referenceable(Flowable):
     category = NotImplementedAttribute()
 
-    def update_page_reference(self, page):
-        document = page.document
-        document.page_references[self.get_id(document)] = page.number
-
 
                             # examples for section "3.2 Some Title"
 REFERENCE = 'reference'     # Section 3.2

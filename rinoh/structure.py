@@ -119,14 +119,6 @@ class Heading(NumberedParagraph):
         number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
 
-    def render(self, container, last_descender, state=None):
-        result = super().render(container, last_descender, state=state)
-        try:
-            self.parent.update_page_reference(container.page)
-        except AttributeError:
-            pass    # parent is not a Referenceable
-        return result
-
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
     ordered = Attribute(Bool, False, 'This list is ordered or unordered')

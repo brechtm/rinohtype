@@ -7,7 +7,6 @@
 
 
 from .util import Decorator
-from .text import MixedStyledText
 
 
 __all__ = ['NamedDestination', 'NamedDestinationLink', 'HyperLink',
@@ -45,6 +44,9 @@ class AnnotatedSpan(Decorator):
         self.annotation = annotation
 
 
+from .text import MixedStyledText
+
+
 class AnnotatedText(MixedStyledText):
     def __init__(self, text_or_items, annotation, style=None, parent=None):
         super().__init__(text_or_items, style=style, parent=parent)
@@ -53,5 +55,3 @@ class AnnotatedText(MixedStyledText):
     def spans(self, container):
         return (AnnotatedSpan(span, self.annotation)
                 for item in self for span in item.spans(container))
-
-

@@ -84,21 +84,16 @@ class IndexTargetBase(Styled):
 
 class InlineIndexTarget(IndexTargetBase, StyledText):
     def spans(self, container):
-        id = self.get_id(container.document)
-        container.canvas.annotate(NamedDestination(str(id)), 0,
-                                  container.cursor, container.width, None)
-        document, page = container.document, container.page
-        document.page_references[id] = page.number
+        self.create_destination(container)
         return iter([])
 
 
-class IndexTarget(IndexTargetBase, DummyFlowable, Referenceable):
+class IndexTarget(IndexTargetBase, DummyFlowable):
     category = 'Index'
 
     def __init__(self, index_terms, parent=None):
         super().__init__(index_terms, parent=parent)
 
     def flow(self, container, last_descender, state=None):
-        self.create_destination(container, container.cursor)
-        self.update_page_reference(container.page)
+        self.create_destination(container)
         return super().flow(container, last_descender, state=state)

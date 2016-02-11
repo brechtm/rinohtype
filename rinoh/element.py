@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .annotation import NamedDestination
 from .warnings import warn
 
 
@@ -67,6 +68,13 @@ class DocumentElement(object):
         """Determine number labels and register references with the document"""
         if self.id:
             flowable_target.document.register_element(self.id, self)
+
+    def create_destination(self, container, at_top_of_container=False):
+        vertical_position = 0 if at_top_of_container else container.cursor
+        destination = NamedDestination(str(self.get_id(container.document)))
+        container.canvas.annotate(destination, 0, vertical_position,
+                                  container.width, None)
+        container.document.register_page_reference(container.page, self)
 
     def warn(self, message, container=None):
         """Present the warning `message` to the user, adding information on the

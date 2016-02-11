@@ -20,7 +20,6 @@ that make up the content of a document and are rendered onto its pages.
 from copy import copy
 from itertools import chain, takewhile, tee
 
-from .annotation import NamedDestination
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
@@ -95,11 +94,6 @@ class Flowable(Styled):
         except AttributeError:
             return None
 
-    def create_destination(self,container, vertical_position):
-        destination = NamedDestination(str(self.get_id(container.document)))
-        container.canvas.annotate(destination, 0, vertical_position,
-                                  container.width, None)
-
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -130,7 +124,7 @@ class Flowable(Styled):
             finally:
                 reference_id = self.get_id(container.document, create=False)
                 if reference_id and initial_before and not initial_after:
-                    self.create_destination(margin_container, 0)
+                    self.create_destination(margin_container, True)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 

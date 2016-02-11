@@ -303,6 +303,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.ids_by_element[element] = id
         self.elements[id] = element
 
+    def register_page_reference(self, page, element):
+        self.page_references[element.get_id(self)] = page.number
+
     def set_reference(self, id, reference_type, value):
         id_references = self.references.setdefault(id, {})
         id_references[reference_type] = value
