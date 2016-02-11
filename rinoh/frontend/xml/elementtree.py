@@ -11,7 +11,6 @@ import sys
 from urllib.parse import urlparse, urljoin
 from urllib.request import urlopen
 from warnings import warn
-from xml.parsers import expat
 
 # this module depends on internals of the Python ElementTree implementation, so
 # we can't use the C accelerated versions (which are the default in Python 3.3+)
@@ -21,7 +20,8 @@ for name in list(sys.modules.keys()):
         _cached_etree_modules[name] = sys.modules.pop(name)
 sys.modules['_elementtree'] = None
 
-from xml.etree import ElementTree, ElementPath
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element, SubElement
 
 for name in list(sys.modules.keys()):
     if name.startswith('xml.etree'):
@@ -29,6 +29,9 @@ for name in list(sys.modules.keys()):
 sys.modules.update(_cached_etree_modules)
 
 from . import CATALOG_PATH, CATALOG_URL, CATALOG_NS
+
+
+__all__ = ['Parser', 'ElementTree', 'Element', 'SubElement']
 
 
 class TreeBuilder(ElementTree.TreeBuilder):
