@@ -9,8 +9,10 @@
 from .color import RED
 from .dimension import PT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
-                       HorizontallyAlignedFlowable)
+                       HorizontallyAlignedFlowable,
+                       HorizontallyAlignedFlowableState)
 from .inline import InlineFlowable
+from .layout import EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import Referenceable, NUMBER
@@ -25,6 +27,19 @@ CENTER = 'center'
 RIGHT = 'right'
 
 FIT = 'fit'
+
+
+class ImageState(HorizontallyAlignedFlowableState):
+    def __init__(self, width):
+        super().__init__(width is None)
+        self._width = width
+
+    @property
+    def width(self):
+        return self._width
+
+    def __copy__(self):
+        return self.__class__(self._width)
 
 
 class ImageBase(Flowable):
@@ -50,13 +65,11 @@ class ImageBase(Flowable):
             return Paragraph(text).render(container, last_descender)
         left, top = 0, float(container.cursor)
         if self.width is not None:
-            width = self.width.to_points(container.width)
-            scale_width = width / image.width
+            scale_width = self.width.to_points(container.width) / image.width
         else:
             scale_width = None
         if self.height is not None:
-            height = self.height.to_points(container.width)
-            scale_height = height / image.height
+            scale_height = self.height.to_points(container.width) / image.height
             if scale_width is None:
                 scale_width = scale_height
         else:
@@ -72,7 +85,12 @@ class ImageBase(Flowable):
         w, h = container.canvas.place_image(image, left, top,
                                             container.document, scale_width,
                                             scale_height, self.rotate)
-        container.advance(h, ignore_overflow=self.scale == FIT)
+        ignore_overflow = (self.scale == FIT) or (state is not None)
+        try:
+            container.advance(h, ignore_overflow)
+        except EndOfContainer:
+            state = ImageState(w if state else None)
+            raise EndOfContainer(state)
         return w, 0
 
 

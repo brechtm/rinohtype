@@ -233,7 +233,9 @@ class FlowablesContainerBase(Container):
         exception is raised."""
         if height <= self.remaining_height:
             self._self_cursor.grow(height)
-        elif not ignore_overflow:
+        elif ignore_overflow:
+            self._self_cursor.grow(float(self.remaining_height))
+        else:
             raise EndOfContainer
 
     def check_overflow(self):
