@@ -355,8 +355,9 @@ class InlineDownExpandingContainer(ContextManager):
     def __enter__(self):
         return self._container
 
-    def __exit__(self, exc_type, exc_value, _):
-        self._container.advance(self._container.extra_space_below)
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_value is None:
+            self._container.advance(self._container.extra_space_below)
 
 
 class UpExpandingContainer(ExpandingContainerBase):
