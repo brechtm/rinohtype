@@ -433,8 +433,12 @@ class HorizontallyAlignedFlowableState(FlowableState):
 class HorizontallyAlignedFlowable(Flowable):
     style_class = HorizontallyAlignedFlowableStyle
 
+    def __init__(self, *args, align=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.align = align
+
     def _align(self, container, width):
-        align = self.get_style('horizontal_align', container)
+        align = self.align or self.get_style('horizontal_align', container)
         if align == LEFT or width is None:
             return
         left_extra = float(container.width - width)

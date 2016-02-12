@@ -28,13 +28,15 @@ FIT = 'fit'
 
 
 class ImageBase(Flowable):
-    def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
-                 id=None, style=None, parent=None, **kwargs):
+    def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
+                 rotate=0, id=None, style=None, parent=None, **kwargs):
         super().__init__(id=id, style=style, parent=parent, **kwargs)
         self.filename_or_file = filename_or_file
-        if scale != 1.0 and width is not None:
-            raise TypeError('You should specify only one of scale and width')
+        if width is not None and height is not None and scale != 1.0:
+            raise TypeError('Scale may not be specified when either width or '
+                            'height are given.')
         self.scale = scale
+        self.height = height
         self.width = width
         self.rotate = rotate
 
@@ -49,30 +51,45 @@ class ImageBase(Flowable):
         left, top = 0, float(container.cursor)
         if self.width is not None:
             width = self.width.to_points(container.width)
-            scale = None
+            scale_width = width / image.width
         else:
-            width = None
+            scale_width = None
+        if self.height is not None:
+            height = self.height.to_points(container.width)
+            scale_height = height / image.height
+            if scale_width is None:
+                scale_width = scale_height
+        else:
+            scale_height = scale_width
+        if scale_width is None:
             if self.scale == FIT:
                 scale = min(float(container.width) / image.width,
                             float(container.remaining_height) / image.height)
+                scale_width = scale_height = scale
+
             else:
-                scale = self.scale
+                scale_width = scale_height = self.scale
         w, h = container.canvas.place_image(image, left, top,
-                                            container.document, scale=scale,
-                                            width=width, rotate=self.rotate)
+                                            container.document, scale_width,
+                                            scale_height, self.rotate)
         container.advance(h, ignore_overflow=self.scale == FIT)
         return w, 0
 
 
 class InlineImage(ImageBase, InlineFlowable):
-    def __init__(self, filename_or_file, scale=1.0, width=None, rotate=0,
-                 baseline=0*PT, id=None, style=None, parent=None):
-        super().__init__(filename_or_file, scale, width, rotate,
-                         id, style, parent, baseline=baseline)
+    def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
+                 rotate=0, baseline=0*PT, id=None, style=None, parent=None):
+        super().__init__(filename_or_file=filename_or_file, scale=scale,
+                         width=width, height=height, rotate=rotate,
+                         id=id, style=style, parent=parent, baseline=baseline)
 
 
 class Image(HorizontallyAlignedFlowable, ImageBase):
-    pass
+    def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
+                 rotate=0, align=None, id=None, style=None, parent=None):
+        super().__init__(filename_or_file=filename_or_file, scale=scale,
+                         width=width, height=height, rotate=rotate, align=align,
+                         id=id, style=style, parent=parent)
 
 
 class Caption(NumberedParagraph):

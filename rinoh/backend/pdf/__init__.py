@@ -285,27 +285,27 @@ class Canvas(StringIO):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)
         self.annotations.append(ann_loc)
 
-    def place_image(self, image, left, top, document, scale=1.0, width=None,
-                    rotate=0):
+    def place_image(self, image, left, top, document,
+                    scale_width=1, scale_height=1, rotate=0):
         image_number = document.backend_document.get_unique_image_number()
         self.images[image_number] = image
         rad = math.radians(rotate)
         sine, cosine = abs(math.sin(rad)), abs(math.cos(rad))
         im_width = image.width * cosine + image.height * sine
         im_height = image.width * sine + image.height * cosine
-        if width is not None:
-            assert scale is None
-            scale = width / im_width
+        scaled_width = scale_width * im_width
+        scaled_height = scale_height * im_height
         with self.save_state():
             self.translate(left, top)
-            self.translate(scale * im_width / 2, scale * im_height / 2)
+            self.translate(scaled_width / 2, scaled_height / 2)
             self.rotate(rotate)
-            self.translate(- scale * image.width / 2, scale * image.height / 2)
-            self.scale(scale)
+            self.translate(- scale_width * image.width / 2,
+                           scale_height * image.height / 2)
+            self.scale(scale_width, scale_height)
             if image.xobject.subtype == 'Image':
                 self.scale(image.width, image.height)
             print('/Im{} Do'.format(image_number), file=self)
-        return im_width * scale, im_height * scale
+        return scaled_width, scaled_height
 
 
 class PageCanvas(Canvas):
