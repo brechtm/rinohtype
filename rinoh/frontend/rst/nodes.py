@@ -393,7 +393,7 @@ class Target(DocutilsBodyNode, DocutilsInlineNode):
     def build_styled_text(self):
         # TODO: what about refid?
         try:
-            destination = rt.NamedDestination(self.get('ids')[0])
+            destination = rt.NamedDestination(self._id)
             return rt.AnnotatedText(self.process_content(), destination)
         except IndexError:
             return self.process_content()   # TODO: use refname?
