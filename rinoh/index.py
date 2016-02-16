@@ -6,17 +6,24 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .annotation import NamedDestination
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
-from .reference import Referenceable, Reference, PAGE
+from .reference import Reference, PAGE
+from .structure import Section, Heading
 from .style import Styled
-from .text import SingleStyledText, MixedStyledText, StyledText
+from .text import MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['Index', 'IndexStyle', 'IndexTerm',
+__all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexTerm',
            'InlineIndexTarget', 'IndexTarget']
+
+
+class IndexSection(Section):
+    def __init__(self):
+        super().__init__([Heading('Index', style='unnumbered'),
+                          Index()],
+                         style='index')
 
 
 class IndexStyle(GroupedFlowablesStyle):
