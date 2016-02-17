@@ -83,6 +83,12 @@ for i in range(1, 6):
 
 matcher('other heading levels', Heading)
 
+matcher('appendix', Section.like('appendix'))
+
+for i in range(1, 6):
+    matcher('appendix heading level {}'.format(i),
+            Section.like('appendix') / Heading.like(level=i))
+
 matcher('topic', GroupedFlowables.like('topic'))
 
 matcher('post requirement', GroupedFlowables.like('post requirement'))

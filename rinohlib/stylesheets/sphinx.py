@@ -1,6 +1,6 @@
 from rinoh.color import Color, Gray, RED, GRAY90, GRAY50
 from rinoh.dimension import PT, CM, PERCENT
-from rinoh.number import NUMBER, SYMBOL
+from rinoh.number import NUMBER, SYMBOL, CHARACTER_UC
 from rinoh.flowable import LEFT, RIGHT, CENTER
 from rinoh.font import TypeFamily, Typeface
 from rinoh.font.style import REGULAR, ITALIC, BOLD, SUPERSCRIPT
@@ -207,6 +207,10 @@ stylesheet('other heading levels',
        space_above=2*PT,
        space_below=2*PT,
        number_format=None)
+
+stylesheet('appendix heading level 1',
+           base='heading level 1',
+           number_format=CHARACTER_UC)
 
 stylesheet('topic',
        margin_left=0.5*CM)
