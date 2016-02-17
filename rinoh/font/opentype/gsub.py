@@ -7,13 +7,13 @@
 
 
 from .parse import OpenTypeTable, MultiFormatTable
-from .parse import fixed, int16, uint16, tag, glyph_id, offset, array, indirect
-from .parse import context_array, indirect_array, Packed
-from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
-from .layout import Coverage, ClassDefinition
+from .parse import uint16, ushort, ulong, glyph_id, array, indirect
+from .parse import context_array, indirect_array
+from .layout import LayoutTable
+from .layout import Coverage
 
 
-# Single subsitution (subtable format 1)
+# Single substitution (subtable format 1)
 class SingleSubTable(MultiFormatTable):
     entries = [('SubstFormat', uint16),
                ('Coverage', indirect(Coverage))]
@@ -32,12 +32,12 @@ class SingleSubTable(MultiFormatTable):
             return self['Substitute'][index]
 
 
-# Alternate subtitition (subtable format 3)
+# Alternate subtitution (subtable format 3)
 class AlternateSubTable(OpenTypeTable):
     pass
 
 
-# Ligature subsitution (subtable format 4)
+# Ligature substitution (subtable format 4)
 class Ligature(OpenTypeTable):
     entries = [('LigGlyph', glyph_id),
                ('CompCount', uint16)]
@@ -70,7 +70,7 @@ class LigatureSubTable(OpenTypeTable):
         raise KeyError
 
 
-# Chaining contextual subsitution (subtable format 6)
+# Chaining contextual substitution (subtable format 6)
 class ChainSubRule(OpenTypeTable):
     pass
 ##    entries = [('BacktrackGlyphCount', uint16),
@@ -97,10 +97,27 @@ class ChainingContextSubtable(MultiFormatTable):
                                                       'ChainSubRuleSetCount'))]}
 
 
+# Extension substitution (subtable format 7)
+class ExtensionSubstitution(OpenTypeTable):
+    entries = [('SubstFormat', ushort),
+               ('ExtensionLookupType', ushort),
+               ('ExtensionOffset', ulong)]
+
+    def __init__(self, file, file_offset=None):
+        super().__init__(file, file_offset=file_offset)
+        subtable_class = GsubTable.lookup_types[self['ExtensionLookupType']]
+        table_offset = file_offset + self['ExtensionOffset']
+        self.subtable = subtable_class(file, table_offset)
+
+    def lookup(self, *args, **kwargs):
+        return self.subtable.lookup(*args, **kwargs)
+
+
 class GsubTable(LayoutTable):
     """Glyph substitution table"""
     tag = 'GSUB'
     lookup_types = {1: SingleSubTable,
                     3: AlternateSubTable,
-                    4: LigatureSubTable}#,
+                    4: LigatureSubTable,
                     #6: ChainingContextSubtable}
+                    7: ExtensionSubstitution}
