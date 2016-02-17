@@ -9,10 +9,9 @@
 import struct
 
 from .parse import OpenTypeTable, MultiFormatTable, Record
-from .parse import fixed, int16, uint16, tag, glyph_id, offset, Packed
+from .parse import int16, uint16, ushort, ulong, Packed
 from .parse import array, context, context_array, indirect, indirect_array
-from .layout import LayoutTable, ScriptListTable, FeatureListTable, LookupTable
-from .layout import Coverage, ClassDefinition, Device
+from .layout import LayoutTable, Coverage, ClassDefinition, Device
 from ...util import cached_property
 
 
@@ -241,6 +240,21 @@ class MarkToMarkAttachmentSubtable(OpenTypeTable):
                ('Mark1Array', indirect(Mark2Array))]
 
 
+class ExtensionPositioning(OpenTypeTable):
+    entries = [('PosFormat', ushort),
+               ('ExtensionLookupType', ushort),
+               ('ExtensionOffset', ulong)]
+
+    def __init__(self, file, file_offset=None):
+        super().__init__(file, file_offset=file_offset)
+        subtable_class = GposTable.lookup_types[self['ExtensionLookupType']]
+        table_offset = file_offset + self['ExtensionOffset']
+        self.subtable = subtable_class(file, table_offset)
+
+    def lookup(self, *args, **kwargs):
+        return self.subtable.lookup(*args, **kwargs)
+
+
 class GposTable(LayoutTable):
     """Glyph positioning table"""
     tag = 'GPOS'
@@ -248,4 +262,5 @@ class GposTable(LayoutTable):
                     2: PairAdjustmentSubtable,
                     3: CursiveAttachmentSubtable,
                     4: MarkToBaseAttachmentSubtable,
-                    6: MarkToMarkAttachmentSubtable}
+                    6: MarkToMarkAttachmentSubtable,
+                    9: ExtensionPositioning}
