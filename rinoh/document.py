@@ -136,17 +136,17 @@ class BackendDocumentMetadata(object):
 class DocumentPart(object, metaclass=DocumentLocationType):
     """Part of a :class:`DocumentSection` that has a specific page template."""
 
-    page_template = None
     header = None
     footer = None
     end_at = LEFT
 
-    def __init__(self, document_section):
+    def __init__(self, document_section, page_template, flowables):
         self.document_section = document_section
+        self.page_template = page_template
         self.flowable_targets = []
         self.pages = []
         self.chain = Chain(self)
-        for flowable in self.flowables():
+        for flowable in flowables:
             self.chain << flowable
 
     @property
@@ -156,9 +156,6 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     @property
     def number_of_pages(self):
         return len(self.pages)
-
-    def flowables(self):
-        raise NotImplementedError
 
     def prepare(self):
         for flowable_target in self.flowable_targets:

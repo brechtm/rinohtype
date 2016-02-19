@@ -99,12 +99,11 @@ class DocumentTemplate(Document):
     @property
     def sections(self):
         current_section = None
-        for part_cls, page_template, restart_numbering in self.document_parts:
-            if not current_section or restart_numbering:
+        for document_part_tmpl in self.document_parts:
+            if not current_section or document_part_tmpl.restart_numbering:
                 if current_section:
                     yield current_section
                 current_section = DocumentTemplateSection(self)
-            document_part = part_cls(current_section)
-            document_part.page_template = page_template
-            current_section._parts.append(document_part)
+            part = document_part_tmpl.document_part(current_section)
+            current_section._parts.append(part)
         yield current_section

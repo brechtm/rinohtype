@@ -1,11 +1,13 @@
 from rinoh.paper import A5
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.structure import TableOfContentsSection
 from rinoh.style import StyleSheetFile
 from rinoh.template import DocumentOptions, DocumentTemplate
 
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
-from rinohlib.templates.base import SimplePage, ContentsPart
+from rinohlib.templates.base import (SimplePage, ContentsPartTemplate,
+                                     FixedDocumentPartTemplate)
 from rinohlib.templates.book import Book, BookOptions
 from rinohlib.templates.article import Article, ArticleOptions
 from rinohlib.stylesheets.matcher import matcher
@@ -15,8 +17,9 @@ if __name__ == '__main__':
 
     page_template = SimplePage
     document_parts = [#(TitlePart, page_template, True),
-                      #(FrontMatterPart, page_template, [TableOfContentsSection()]),
-                      (ContentsPart, page_template, False)]
+                      FixedDocumentPartTemplate(page_template,
+                                                [TableOfContentsSection()]),
+                      ContentsPartTemplate(page_template, False)]
 
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
