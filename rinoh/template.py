@@ -5,14 +5,14 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from rinoh.document import Document, PageOrientation, PORTRAIT
+from rinoh.document import Document, DocumentSection, PageOrientation, PORTRAIT
 from .dimension import DimensionBase, CM
 from .paper import Paper, A4
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES)
 from .text import MixedStyledText, Tab
 from .style import StyleSheet
-from .util import NamedDescriptor, WithNamedDescriptors, NotImplementedAttribute
+from .util import NamedDescriptor, WithNamedDescriptors
 
 
 from rinohlib.stylesheets import sphinx
@@ -83,11 +83,28 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
+
+class DocumentTemplateSection(DocumentSection):
+    parts = []
+
+
 class DocumentTemplate(Document):
-    sections = NotImplementedAttribute()
     options_class = DocumentOptions
 
-    def __init__(self, content_flowables, options=None, backend=None):
+    def __init__(self, flowables, document_parts, options=None, backend=None):
         self.options = options or self.options_class()
-        super().__init__(content_flowables, self.options['stylesheet'],
-                         backend=backend)
+        self.document_parts = document_parts
+        super().__init__(flowables, self.options['stylesheet'], backend=backend)
+
+    @property
+    def sections(self):
+        current_section = None
+        for part_cls, page_template, restart_numbering in self.document_parts:
+            if not current_section or restart_numbering:
+                if current_section:
+                    yield current_section
+                current_section = DocumentTemplateSection(self)
+            document_part = part_cls(current_section)
+            document_part.page_template = page_template
+            current_section._parts.append(document_part)
+        yield current_section

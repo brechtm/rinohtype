@@ -359,7 +359,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                 flowable.build_document(self)
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
-            _sections = [section_cls(self) for section_cls in self.sections]
+            _sections = [section for section in self.sections]
             for prev_num, section in zip(prev_number_of_pages, _sections):
                 section.previous_number_of_pages = prev_num
             self.page_references = prev_page_references.copy()
