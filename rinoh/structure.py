@@ -16,8 +16,6 @@ from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
 from .reference import Referenceable, Reference
 from .reference import NUMBER, TITLE, PAGE
-from .reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
-from .reference import SECTION_NUMBER, SECTION_TITLE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
 
@@ -183,30 +181,19 @@ class Definition(StaticGroupedFlowables):
 
 
 class HeaderStyle(ParagraphStyle):
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+    pass
 
 
 class Header(Paragraph):
     style_class = HeaderStyle
 
-    def __init__(self, text=None, id=None, style=None, parent=None):
-        text = text or Variable(SECTION_NUMBER) + ' ' + Variable(SECTION_TITLE)
-        super().__init__(text, id=id, style=style, parent=parent)
-
 
 class FooterStyle(ParagraphStyle):
-    def __init__(self, base=None, **attributes):
-        super().__init__(base=base, **attributes)
+    pass
 
 
 class Footer(Paragraph):
     style_class = FooterStyle
-
-    def __init__(self, text=None, id=None, style=None, parent=None):
-        text = text or (Tab() + Variable(PAGE_NUMBER) + ' / '
-                        + Variable(NUMBER_OF_PAGES))
-        super().__init__(text, id=id, style=style, parent=parent)
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
