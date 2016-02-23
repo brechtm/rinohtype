@@ -59,6 +59,10 @@ class Section(Referenceable, StaticGroupedFlowables, PageBreak):
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
 
+    def render(self, container, descender, state=None, **kwargs):
+        container.page.set_current_section(self, state is None)
+        return super().render(container, descender, state=state, **kwargs)
+
 
 class HeadingStyle(NumberedParagraphStyle):
     number_separator = Attribute(StyledText, '.',
