@@ -3,7 +3,7 @@ from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import TableOfContentsSection
 from rinoh.style import StyleSheetFile
-from rinoh.template import DocumentOptions, DocumentTemplate
+from rinoh.template import DocumentOptions, DocumentTemplate, PageTemplate
 
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 from rinohlib.templates.base import (SimplePage, ContentsPartTemplate,
@@ -15,7 +15,7 @@ from rinohlib.stylesheets.matcher import matcher
 if __name__ == '__main__':
     sphinx_stylesheet = StyleSheetFile('sphinx.rts', matcher)
 
-    page_template = SimplePage
+    page_template = PageTemplate()
     document_parts = [#(TitlePart, page_template, True),
                       FixedDocumentPartTemplate(page_template,
                                                 [TableOfContentsSection()]),

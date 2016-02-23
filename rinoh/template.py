@@ -5,8 +5,13 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from rinoh.document import Document, DocumentSection, PageOrientation, PORTRAIT
-from .dimension import DimensionBase, CM
+
+from rinoh.document import (Document, DocumentSection, Page, PageOrientation,
+                            PORTRAIT)
+from rinoh.layout import (FootnoteContainer, DownExpandingContainer,
+                          ChainedContainer, UpExpandingContainer, Container)
+from rinoh.structure import Header, HorizontalRule, Footer
+from .dimension import DimensionBase, CM, PT
 from .paper import Paper, A4
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES)
@@ -48,13 +53,8 @@ class Option(NamedDescriptor):
                         self.default_value))
 
 
-class DocumentOptions(dict, metaclass=WithNamedDescriptors):
-    """Collects options to customize a :class:`DocumentTemplate`. Options are
-    specified as keyword arguments (`options`) matching the class's
-    attributes."""
+class PageTemplate(dict, metaclass=WithNamedDescriptors):
 
-    stylesheet = Option(StyleSheet, sphinx.stylesheet,
-                        'The stylesheet to use for styling document elements')
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, PORTRAIT,
                               'The orientation of pages in the document')
@@ -62,15 +62,104 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
                                     'the left and the right of the page')
     page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
                                   'top and bottom of the page')
+    header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
+                                    'header and footer to the content area')
     columns = Option(int, 1, 'The number of columns for the body text')
-    show_date = Option(bool, True, "Show or hide the document's date")
-    show_author = Option(bool, True, "Show or hide the document's author")
+    column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
     header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
                                           + ' ' + Variable(SECTION_TITLE(1)),
                          'The text to place in the page header')
     footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
                                           + '/' + Variable(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
+
+    def __init__(self, **options):
+        for name, value in options.items():
+            option_descriptor = getattr(type(self), name, None)
+            if not isinstance(option_descriptor, Option):
+                raise AttributeError('Unsupported page template option: {}'
+                                     .format(name))
+            if not isinstance(value, option_descriptor.accepted_type):
+                raise TypeError('Page template option has wrong type: {}'
+                                .format(name))
+            setattr(self, name, value)
+
+    def __getitem__(self, name):
+        return getattr(self, name)
+
+    def page(self, document_part, chain, **kwargs):
+        return SimplePage(document_part, chain, self, **kwargs)
+
+
+class SimplePage(Page):
+    header_footer_distance = 14*PT
+    column_spacing = 1*CM
+
+    def __init__(self, document_part, chain, options, title_flowables=None):
+        paper = options['page_size']
+        orientation = options['page_orientation']
+        super().__init__(document_part, paper, orientation)
+        h_margin = options['page_horizontal_margin']
+        v_margin = options['page_vertical_margin']
+        num_cols = options['columns']
+        header = options['header_text']
+        footer = options['footer_text']
+        body_width = self.width - (2 * h_margin)
+        body_height = self.height - (2 * v_margin)
+        total_column_spacing = self.column_spacing * (num_cols - 1)
+        column_width = (body_width - total_column_spacing) / num_cols
+        self.body = Container('body', self, h_margin, v_margin,
+                              body_width, body_height)
+
+        footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
+                                           self.body.height)
+        float_space = DownExpandingContainer('floats', self.body, 0*PT,
+                                             0*PT, max_height=body_height / 2)
+        self.body.float_space = float_space
+        if title_flowables:
+            self.title = DownExpandingContainer('title', self.body,
+                                                top=float_space.bottom)
+            self.title.append_flowable(title_flowables)
+            column_top = self.title.bottom + self.column_spacing
+        else:
+            column_top = float_space.bottom
+        self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
+                                         chain,
+                                         left=i * (column_width
+                                                   + self.column_spacing),
+                                         top=column_top, width=column_width,
+                                         bottom=footnote_space.top)
+                        for i in range(num_cols)]
+        for column in self.columns:
+            column._footnote_space = footnote_space
+
+        if header:
+            header_bottom = self.body.top - self.header_footer_distance
+            self.header = UpExpandingContainer('header', self,
+                                               left=h_margin,
+                                               bottom=header_bottom,
+                                               width=body_width)
+            self.header.append_flowable(Header(header))
+            self.header.append_flowable(HorizontalRule(style='header'))
+        if footer:
+            footer_vpos = self.body.bottom + self.header_footer_distance
+            self.footer = DownExpandingContainer('footer', self,
+                                                 left=h_margin,
+                                                 top=footer_vpos,
+                                                 width=body_width)
+            self.footer.append_flowable(HorizontalRule(style='footer'))
+            self.footer.append_flowable(Footer(footer))
+
+
+class DocumentOptions(dict, metaclass=WithNamedDescriptors):
+    """Collects options to customize a :class:`DocumentTemplate`. Options are
+    specified as keyword arguments (`options`) matching the class's
+    attributes."""
+
+    stylesheet = Option(StyleSheet, sphinx.stylesheet,
+                        'The stylesheet to use for styling document elements')
+    show_date = Option(bool, True, "Show or hide the document's date")
+    show_author = Option(bool, True, "Show or hide the document's author")
 
     def __init__(self, **options):
         for name, value in options.items():

@@ -188,7 +188,7 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
         chain, = chains
-        return self.page_template(self, chain, **kwargs)
+        return self.page_template.page(self, chain, **kwargs)
 
     @classmethod
     def match(cls, styled, container):
