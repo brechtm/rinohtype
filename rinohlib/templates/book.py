@@ -15,8 +15,7 @@ __all__ = ['Book', 'BookOptions']
 
 
 class BookOptions(DocumentOptions):
-    extra = Option(MixedStyledText, None, 'Extra text to include on the title '
-                   'page below the title')
+    pass
 
 
 class Book(DocumentTemplate):

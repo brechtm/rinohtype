@@ -9,7 +9,9 @@
 from rinoh.document import (Document, DocumentSection, Page, PageOrientation,
                             PORTRAIT)
 from rinoh.layout import (FootnoteContainer, DownExpandingContainer,
-                          ChainedContainer, UpExpandingContainer, Container)
+                          ChainedContainer, UpExpandingContainer, Container,
+                          FlowablesContainer)
+from rinoh.paragraph import Paragraph
 from rinoh.structure import Header, HorizontalRule, Footer
 from .dimension import DimensionBase, CM, PT
 from .paper import Paper, A4
@@ -53,8 +55,7 @@ class Option(NamedDescriptor):
                         self.default_value))
 
 
-class PageTemplate(dict, metaclass=WithNamedDescriptors):
-
+class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, PORTRAIT,
                               'The orientation of pages in the document')
@@ -62,16 +63,6 @@ class PageTemplate(dict, metaclass=WithNamedDescriptors):
                                     'the left and the right of the page')
     page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
                                   'top and bottom of the page')
-    header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
-                                    'header and footer to the content area')
-    columns = Option(int, 1, 'The number of columns for the body text')
-    column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
-    header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
-                                          + ' ' + Variable(SECTION_TITLE(1)),
-                         'The text to place in the page header')
-    footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
-                                          + '/' + Variable(NUMBER_OF_PAGES),
-                         'The text to place in the page footer')
 
     def __init__(self, **options):
         for name, value in options.items():
@@ -86,6 +77,22 @@ class PageTemplate(dict, metaclass=WithNamedDescriptors):
 
     def __getitem__(self, name):
         return getattr(self, name)
+
+    def page(self, document_part, chain, **kwargs):
+        raise NotImplementedError
+
+
+class PageTemplate(PageTemplateBase):
+    header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
+                                    'header and footer to the content area')
+    columns = Option(int, 1, 'The number of columns for the body text')
+    column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
+    header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
+                                          + ' ' + Variable(SECTION_TITLE(1)),
+                         'The text to place in the page header')
+    footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
+                                          + '/' + Variable(NUMBER_OF_PAGES),
+                         'The text to place in the page footer')
 
     def page(self, document_part, chain, **kwargs):
         return SimplePage(document_part, chain, self, **kwargs)
@@ -151,6 +158,46 @@ class SimplePage(Page):
             self.footer.append_flowable(Footer(footer))
 
 
+class TitlePageTemplate(PageTemplateBase):
+    show_date = Option(bool, True, "Show or hide the document's date")
+    show_author = Option(bool, True, "Show or hide the document's author")
+    extra = Option(MixedStyledText, None, 'Extra text to include on the title '
+                   'page below the title')
+
+    def page(self, document_part, chain, **kwargs):
+        return TitlePage(document_part, self)
+
+
+class TitlePage(Page):
+    def __init__(self, document_part, options):
+        paper = options['page_size']
+        orientation = options['page_orientation']
+        super().__init__(document_part, paper, orientation)
+        h_margin = options['page_horizontal_margin']
+        v_margin = options['page_vertical_margin']
+        body_width = self.width - (2 * h_margin)
+        self.title = DownExpandingContainer('title', self, h_margin, v_margin,
+                                            body_width)
+        self.title << Paragraph(self.document.metadata['title'],
+                                style='title page title')
+        if 'subtitle' in self.document.metadata:
+            self.title << Paragraph(self.document.metadata['subtitle'],
+                                    style='title page subtitle')
+        if 'author' in self.document.metadata and options['show_author']:
+            self.title << Paragraph(self.document.metadata['author'],
+                                    style='title page author')
+        if options['show_date']:
+            date = self.document.metadata['date']
+            try:
+                self.title << Paragraph(date.strftime('%B %d, %Y'),
+                                        style='title page date')
+            except AttributeError:
+                self.title << Paragraph(date, style='title page date')
+        extra = options['extra']
+        if extra:
+            self.title << Paragraph(extra, style='title page extra')
+
+
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):
     """Collects options to customize a :class:`DocumentTemplate`. Options are
     specified as keyword arguments (`options`) matching the class's
@@ -158,8 +205,6 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
 
     stylesheet = Option(StyleSheet, sphinx.stylesheet,
                         'The stylesheet to use for styling document elements')
-    show_date = Option(bool, True, "Show or hide the document's date")
-    show_author = Option(bool, True, "Show or hide the document's author")
 
     def __init__(self, **options):
         for name, value in options.items():

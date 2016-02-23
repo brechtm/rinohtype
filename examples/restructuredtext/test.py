@@ -1,9 +1,11 @@
+from rinoh.dimension import CM
 from rinoh.paper import A5
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import TableOfContentsSection
 from rinoh.style import StyleSheetFile
-from rinoh.template import DocumentOptions, DocumentTemplate, PageTemplate
+from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
+                            TitlePageTemplate)
 
 from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
 from rinohlib.templates.base import (SimplePage, ContentsPartTemplate,
@@ -15,8 +17,9 @@ from rinohlib.stylesheets.matcher import matcher
 if __name__ == '__main__':
     sphinx_stylesheet = StyleSheetFile('sphinx.rts', matcher)
 
+    title_page_template = TitlePageTemplate(page_vertical_margin=8*CM)
     page_template = PageTemplate()
-    document_parts = [#(TitlePart, page_template, True),
+    document_parts = [FixedDocumentPartTemplate(title_page_template, []),
                       FixedDocumentPartTemplate(page_template,
                                                 [TableOfContentsSection()]),
                       ContentsPartTemplate(page_template, False)]
