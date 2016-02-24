@@ -102,12 +102,21 @@ class InlineImage(ImageBase, InlineFlowable):
                          id=id, style=style, parent=parent, baseline=baseline)
 
 
-class Image(HorizontallyAlignedFlowable, ImageBase):
+class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  rotate=0, align=None, id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, rotate=rotate, align=align,
                          id=id, style=style, parent=parent)
+
+
+
+class Image(_Image):
+    pass
+
+
+class BackgroundImage(_Image):
+    pass
 
 
 class Caption(NumberedParagraph):

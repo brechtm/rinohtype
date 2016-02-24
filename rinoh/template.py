@@ -8,6 +8,7 @@
 
 from rinoh.document import (Document, DocumentSection, Page, PageOrientation,
                             PORTRAIT)
+from rinoh.float import BackgroundImage
 from rinoh.layout import (FootnoteContainer, DownExpandingContainer,
                           ChainedContainer, UpExpandingContainer, Container,
                           FlowablesContainer)
@@ -63,6 +64,8 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
                                     'the left and the right of the page')
     page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
                                   'top and bottom of the page')
+    background = Option(BackgroundImage, None, 'An image to place in the '
+                                               'background of the page')
 
     def __init__(self, **options):
         for name, value in options.items():
@@ -176,6 +179,10 @@ class TitlePage(Page):
         h_margin = options['page_horizontal_margin']
         v_margin = options['page_vertical_margin']
         body_width = self.width - (2 * h_margin)
+        background = options['background']
+        if background:
+            self.background = FlowablesContainer('background', self)
+            self.background << background
         self.title = DownExpandingContainer('title', self, h_margin, v_margin,
                                             body_width)
         self.title << Paragraph(self.document.metadata['title'],
