@@ -513,7 +513,7 @@ class PageBreak(Flowable):
             if (next_break_type == page_break
                 or (top_container is not first_container_on_page
                     and top_container.cursor > 0)):
-                raise EndOfContainer(page_break=True)
+                raise EndOfContainer(page_break=page_break)
         return super().flow(container, last_descender, state)
 
     def render(self, container, descender, state=None):

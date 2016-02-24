@@ -30,7 +30,7 @@ from itertools import count
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT
-from .layout import Container, ReflowRequired, Chain
+from .layout import Container, ReflowRequired, Chain, PageBreakException
 from .number import NUMBER
 from .style import DocumentLocationType, Specificity
 from .util import NotImplementedAttribute, RefKeyDictionary
@@ -162,10 +162,18 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         del self.pages[:]
         self.add_page(self.first_page())
         for page in self.pages:
-            chains_requiring_new_page = set(chain for chain in page.render())
+            try:
+                chains_requiring_new_page = set(chain for chain in page.render())
+                break_to = None
+            except PageBreakException as pbe:
+                chains_requiring_new_page = set((pbe.chain, ))
+                break_to = pbe.break_to
             page.place()
             if chains_requiring_new_page:
-                page = self.new_page(chains_requiring_new_page) # grows self.pages
+                # the following grows self.pages
+                next_page_type = LEFT if page.number % 2 else RIGHT
+                page = self.new_page(chains_requiring_new_page,
+                                     next_page_type == break_to)
                 self.add_page(page)
         page_count = document_page_count + self.number_of_pages
         next_page_type = LEFT if page_count % 2 else RIGHT
@@ -178,14 +186,14 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.pages.append(page)
 
     def first_page(self):
-        return self.new_page([self.chain])
+        return self.new_page([self.chain], after_break=True)
 
-    def new_page(self, chains, **kwargs):
+    def new_page(self, chains, after_break, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
         chain, = chains
-        return self.page_template.page(self, chain, **kwargs)
+        return self.page_template.page(self, chain, after_break, **kwargs)
 
     @classmethod
     def match(cls, styled, container):

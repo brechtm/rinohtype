@@ -544,8 +544,6 @@ class Chain(FlowableTarget):
         rendered, this method returns an iterator yielding itself. This signals
         the :class:`Document` to generate a new page and register new containers
         with this chain."""
-        if self._page_to_break == container.page:
-            return True
         if rerender:
             container.clear()
             if not self._rerendering:
@@ -568,7 +566,7 @@ class Chain(FlowableTarget):
             if e.page_break:
                 self._page_to_break = container.page
                 self._fresh_page_state = copy(self._state)
-                return True
+                raise PageBreakException(e.page_break, self)
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
                 self._fresh_page_state = copy(self._state)
@@ -576,3 +574,11 @@ class Chain(FlowableTarget):
         except ReflowRequired:
             self._rerendering = False
             raise
+
+
+
+class PageBreakException(EndOfContainer):
+    def __init__(self, break_to, chain):
+        super().__init__()
+        self.break_to = break_to
+        self.chain = chain

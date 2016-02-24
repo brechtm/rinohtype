@@ -64,8 +64,10 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
                                     'the left and the right of the page')
     page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
                                   'top and bottom of the page')
-    background = Option(BackgroundImage, None, 'An image to place in the '
-                                               'background of the page')
+    background = Option(BackgroundImage, (), 'An image to place in the '
+                                             'background of the page')
+    after_break_background = Option(BackgroundImage, (), 'An image to place in '
+                                    'the background after a page break')
 
     def __init__(self, **options):
         for name, value in options.items():
@@ -81,7 +83,7 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     def __getitem__(self, name):
         return getattr(self, name)
 
-    def page(self, document_part, chain, **kwargs):
+    def page(self, document_part, chain, after_break, **kwargs):
         raise NotImplementedError
 
 
@@ -97,13 +99,13 @@ class PageTemplate(PageTemplateBase):
                                           + '/' + Variable(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
 
-    def page(self, document_part, chain, **kwargs):
-        return SimplePage(document_part, chain, self, **kwargs)
+    def page(self, document_part, chain, after_break, **kwargs):
+        return SimplePage(document_part, chain, self, after_break, **kwargs)
 
 
 
 class PageBase(Page):
-    def __init__(self, document_part, options):
+    def __init__(self, document_part, options, after_break):
         paper = options['page_size']
         orientation = options['page_orientation']
         super().__init__(document_part, paper, orientation)
@@ -112,14 +114,20 @@ class PageBase(Page):
         self.body_width = self.width - (2 * self.h_margin)
         self.body_height = self.height - (2 * self.v_margin)
         background = options['background']
-        if background:
+        after_break_background = options['after_break_background']
+        if after_break:
+            bg = after_break_background or background
+            self.background = FlowablesContainer('background', self)
+            self.background << bg
+        elif background:
             self.background = FlowablesContainer('background', self)
             self.background << background
 
 
 class SimplePage(PageBase):
-    def __init__(self, document_part, chain, options, title_flowables=None):
-        super().__init__(document_part, options)
+    def __init__(self, document_part, chain, options, after_break,
+                 title_flowables=None):
+        super().__init__(document_part, options, after_break)
         num_cols = options['columns']
         header = options['header_text']
         footer = options['footer_text']
@@ -175,13 +183,13 @@ class TitlePageTemplate(PageTemplateBase):
     extra = Option(MixedStyledText, None, 'Extra text to include on the title '
                    'page below the title')
 
-    def page(self, document_part, chain, **kwargs):
-        return TitlePage(document_part, self)
+    def page(self, document_part, chain, after_break, **kwargs):
+        return TitlePage(document_part, self, after_break)
 
 
 class TitlePage(PageBase):
-    def __init__(self, document_part, options):
-        super().__init__(document_part, options)
+    def __init__(self, document_part, options, after_break):
+        super().__init__(document_part, options, after_break)
         self.title = DownExpandingContainer('title', self, self.h_margin,
                                             self.v_margin, self.body_width)
         self.title << Paragraph(self.document.metadata['title'],
