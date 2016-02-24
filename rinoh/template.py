@@ -101,42 +101,50 @@ class PageTemplate(PageTemplateBase):
         return SimplePage(document_part, chain, self, **kwargs)
 
 
-class SimplePage(Page):
-    header_footer_distance = 14*PT
-    column_spacing = 1*CM
 
-    def __init__(self, document_part, chain, options, title_flowables=None):
+class PageBase(Page):
+    def __init__(self, document_part, options):
         paper = options['page_size']
         orientation = options['page_orientation']
         super().__init__(document_part, paper, orientation)
-        h_margin = options['page_horizontal_margin']
-        v_margin = options['page_vertical_margin']
+        self.h_margin = options['page_horizontal_margin']
+        self.v_margin = options['page_vertical_margin']
+        self.body_width = self.width - (2 * self.h_margin)
+        self.body_height = self.height - (2 * self.v_margin)
+        background = options['background']
+        if background:
+            self.background = FlowablesContainer('background', self)
+            self.background << background
+
+
+class SimplePage(PageBase):
+    def __init__(self, document_part, chain, options, title_flowables=None):
+        super().__init__(document_part, options)
         num_cols = options['columns']
         header = options['header_text']
         footer = options['footer_text']
-        body_width = self.width - (2 * h_margin)
-        body_height = self.height - (2 * v_margin)
-        total_column_spacing = self.column_spacing * (num_cols - 1)
-        column_width = (body_width - total_column_spacing) / num_cols
-        self.body = Container('body', self, h_margin, v_margin,
-                              body_width, body_height)
-
+        header_footer_distance = options['header_footer_distance']
+        column_spacing = options['column_spacing']
+        total_column_spacing = column_spacing * (num_cols - 1)
+        column_width = (self.body_width - total_column_spacing) / num_cols
+        self.body = Container('body', self, self.h_margin, self.v_margin,
+                              self.body_width, self.body_height)
         footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
                                            self.body.height)
-        float_space = DownExpandingContainer('floats', self.body, 0*PT,
-                                             0*PT, max_height=body_height / 2)
+        float_space = DownExpandingContainer('floats', self.body, 0*PT, 0*PT,
+                                             max_height=self.body_height / 2)
         self.body.float_space = float_space
         if title_flowables:
             self.title = DownExpandingContainer('title', self.body,
                                                 top=float_space.bottom)
             self.title.append_flowable(title_flowables)
-            column_top = self.title.bottom + self.column_spacing
+            column_top = self.title.bottom + column_spacing
         else:
             column_top = float_space.bottom
         self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
                                          chain,
                                          left=i * (column_width
-                                                   + self.column_spacing),
+                                                   + column_spacing),
                                          top=column_top, width=column_width,
                                          bottom=footnote_space.top)
                         for i in range(num_cols)]
@@ -144,19 +152,19 @@ class SimplePage(Page):
             column._footnote_space = footnote_space
 
         if header:
-            header_bottom = self.body.top - self.header_footer_distance
+            header_bottom = self.body.top - header_footer_distance
             self.header = UpExpandingContainer('header', self,
-                                               left=h_margin,
+                                               left=self.h_margin,
                                                bottom=header_bottom,
-                                               width=body_width)
+                                               width=self.body_width)
             self.header.append_flowable(Header(header))
             self.header.append_flowable(HorizontalRule(style='header'))
         if footer:
-            footer_vpos = self.body.bottom + self.header_footer_distance
+            footer_vpos = self.body.bottom + header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
-                                                 left=h_margin,
+                                                 left=self.h_margin,
                                                  top=footer_vpos,
-                                                 width=body_width)
+                                                 width=self.body_width)
             self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(footer))
 
@@ -171,20 +179,11 @@ class TitlePageTemplate(PageTemplateBase):
         return TitlePage(document_part, self)
 
 
-class TitlePage(Page):
+class TitlePage(PageBase):
     def __init__(self, document_part, options):
-        paper = options['page_size']
-        orientation = options['page_orientation']
-        super().__init__(document_part, paper, orientation)
-        h_margin = options['page_horizontal_margin']
-        v_margin = options['page_vertical_margin']
-        body_width = self.width - (2 * h_margin)
-        background = options['background']
-        if background:
-            self.background = FlowablesContainer('background', self)
-            self.background << background
-        self.title = DownExpandingContainer('title', self, h_margin, v_margin,
-                                            body_width)
+        super().__init__(document_part, options)
+        self.title = DownExpandingContainer('title', self, self.h_margin,
+                                            self.v_margin, self.body_width)
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
         if 'subtitle' in self.document.metadata:
