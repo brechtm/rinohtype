@@ -33,7 +33,6 @@ class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
 
 
 class Section(Referenceable, StaticGroupedFlowables, PageBreak):
-    category = 'Section'
     style_class = SectionStyle
 
     @property
@@ -120,6 +119,14 @@ class Heading(NumberedParagraph):
     def text(self, container):
         number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
+
+    def render(self, container, descender, state=None):
+        if self.level == 1 and container.page.chapter_title:
+            section_id = self.section.get_id(container.document)
+            container.page.create_chapter_title(section_id)
+            return 0, None
+        else:
+            return super().render(container, descender, state=state)
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):

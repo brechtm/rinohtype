@@ -14,11 +14,11 @@ from rinoh.layout import (FootnoteContainer, DownExpandingContainer,
                           FlowablesContainer)
 from rinoh.paragraph import Paragraph
 from rinoh.structure import Header, HorizontalRule, Footer
-from .dimension import DimensionBase, CM, PT
+from .dimension import DimensionBase, CM, PT, Dimension
 from .paper import Paper, A4
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
-                        NUMBER_OF_PAGES)
-from .text import MixedStyledText, Tab
+                        NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
+from .text import MixedStyledText, Tab, SingleStyledText
 from .style import StyleSheet
 from .util import NamedDescriptor, WithNamedDescriptors
 
@@ -102,6 +102,10 @@ class PageTemplate(PageTemplateBase):
     def page(self, document_part, chain, after_break, **kwargs):
         return SimplePage(document_part, chain, self, after_break, **kwargs)
 
+    def chapter_title_flowables(self, section_id):
+        yield Paragraph(SingleStyledText('Chapter'))
+        yield Paragraph(Reference(section_id, NUMBER))
+        yield Paragraph(Reference(section_id, TITLE))
 
 
 class PageBase(Page):
@@ -109,6 +113,7 @@ class PageBase(Page):
         paper = options['page_size']
         orientation = options['page_orientation']
         super().__init__(document_part, paper, orientation)
+        self.template = options
         self.h_margin = options['page_horizontal_margin']
         self.v_margin = options['page_vertical_margin']
         self.body_width = self.width - (2 * self.h_margin)
@@ -125,8 +130,7 @@ class PageBase(Page):
 
 
 class SimplePage(PageBase):
-    def __init__(self, document_part, chain, options, after_break,
-                 title_flowables=None):
+    def __init__(self, document_part, chain, options, after_break):
         super().__init__(document_part, options, after_break)
         num_cols = options['columns']
         header = options['header_text']
@@ -142,11 +146,11 @@ class SimplePage(PageBase):
         float_space = DownExpandingContainer('floats', self.body, 0*PT, 0*PT,
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
-        if title_flowables:
-            self.title = DownExpandingContainer('title', self.body,
-                                                top=float_space.bottom)
-            self.title.append_flowable(title_flowables)
-            column_top = self.title.bottom + column_spacing
+        if new_chapter:
+            height = Dimension(200)
+            self.chapter_title = FlowablesContainer('chapter title', self.body,
+                                                    0, 0, height=height)
+            column_top = self.chapter_title.bottom
         else:
             column_top = float_space.bottom
         self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
@@ -175,6 +179,11 @@ class SimplePage(PageBase):
                                                  width=self.body_width)
             self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(footer))
+
+    def create_chapter_title(self, section_id):
+        descender = None
+        for flowable in self.template.chapter_title_flowables(section_id):
+            width, descender = flowable.flow(self.chapter_title, descender)
 
 
 class TitlePageTemplate(PageTemplateBase):
