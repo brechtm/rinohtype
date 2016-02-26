@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from types import FunctionType
+
 from rinoh.document import (Document, DocumentSection, Page, PageOrientation,
                             PORTRAIT)
 from rinoh.float import BackgroundImage
@@ -87,6 +89,12 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
         raise NotImplementedError
 
 
+def chapter_title_flowables(section_id):
+    yield Paragraph(SingleStyledText('Chapter'))
+    yield Paragraph(Reference(section_id, NUMBER))
+    yield Paragraph(Reference(section_id, TITLE))
+
+
 class PageTemplate(PageTemplateBase):
     header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
@@ -98,14 +106,12 @@ class PageTemplate(PageTemplateBase):
     footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
                                           + '/' + Variable(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
+    chapter_title_flowables = Option(FunctionType, chapter_title_flowables,
+                                     'Generator that yields the flowables to '
+                                     'represent the chapter title')
 
     def page(self, document_part, chain, after_break, **kwargs):
         return SimplePage(document_part, chain, self, after_break, **kwargs)
-
-    def chapter_title_flowables(self, section_id):
-        yield Paragraph(SingleStyledText('Chapter'))
-        yield Paragraph(Reference(section_id, NUMBER))
-        yield Paragraph(Reference(section_id, TITLE))
 
 
 class PageBase(Page):
@@ -182,7 +188,7 @@ class SimplePage(PageBase):
 
     def create_chapter_title(self, section_id):
         descender = None
-        for flowable in self.template.chapter_title_flowables(section_id):
+        for flowable in self.template['chapter_title_flowables'](section_id):
             width, descender = flowable.flow(self.chapter_title, descender)
 
 
