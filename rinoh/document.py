@@ -32,6 +32,7 @@ from .backend import pdf
 from .flowable import RIGHT, LEFT
 from .layout import Container, ReflowRequired, Chain, PageBreakException
 from .number import NUMBER
+from .structure import NewChapterException
 from .style import DocumentLocationType, Specificity
 from .util import NotImplementedAttribute, RefKeyDictionary
 
@@ -165,9 +166,12 @@ class DocumentPart(object, metaclass=DocumentLocationType):
             try:
                 chains_requiring_new_page = set(chain for chain in page.render())
                 break_type = None
+            except NewChapterException as nce:
+                chains_requiring_new_page = set((nce.chain, ))
+                break_type = nce.break_type
             except PageBreakException as pbe:
                 chains_requiring_new_page = set((pbe.chain, ))
-                break_type = pbe.break_type
+                break_type = None
             page.place()
             if chains_requiring_new_page:
                 # the following grows self.pages

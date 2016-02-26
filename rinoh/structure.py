@@ -11,6 +11,7 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
+from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
@@ -32,8 +33,13 @@ class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
                                         'contents')
 
 
+class NewChapterException(PageBreakException):
+    pass
+
+
 class Section(Referenceable, StaticGroupedFlowables, PageBreak):
     style_class = SectionStyle
+    exception_class = NewChapterException
 
     @property
     def category(self):

@@ -500,6 +500,7 @@ class PageBreakStyle(FlowableStyle):
 
 class PageBreak(Flowable):
     style_class = PageBreakStyle
+    exception_class = PageBreakException
 
     def flow(self, container, last_descender, state=None):
         page_break = self.get_style('page_break', container)
@@ -515,7 +516,7 @@ class PageBreak(Flowable):
                 or (top_container is not first_container_on_page
                     and top_container.cursor > 0)):
                 chain = container.chained_ancestor.chain
-                raise PageBreakException(page_break, chain)
+                raise self.exception_class(page_break, chain)
         return super().flow(container, last_descender, state)
 
     def render(self, container, descender, state=None):
