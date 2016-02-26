@@ -53,6 +53,13 @@ class EndOfContainer(Exception):
         self.page_break = page_break
 
 
+class PageBreakException(EndOfContainer):
+    def __init__(self, break_type, chain):
+        super().__init__()
+        self.break_type = break_type
+        self.chain = chain
+
+
 class ReflowRequired(Exception):
     """Reflow of the current page is required due to insertion of a float."""
 
@@ -519,7 +526,6 @@ class Chain(FlowableTarget):
         super().__init__(document_part)
         self.document_part = document_part
         self._init_state()
-        self._page_to_break = None
         self.containers = []
 
     def _init_state(self):
@@ -561,12 +567,12 @@ class Chain(FlowableTarget):
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             return False
+        except PageBreakException as e:
+            self._state.flowable_state = e.flowable_state
+            self._fresh_page_state = copy(self._state)
+            raise
         except EndOfContainer as e:
             self._state.flowable_state = e.flowable_state
-            if e.page_break:
-                self._page_to_break = container.page
-                self._fresh_page_state = copy(self._state)
-                raise PageBreakException(e.page_break, self)
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
                 self._fresh_page_state = copy(self._state)
@@ -574,11 +580,3 @@ class Chain(FlowableTarget):
         except ReflowRequired:
             self._rerendering = False
             raise
-
-
-
-class PageBreakException(EndOfContainer):
-    def __init__(self, break_to, chain):
-        super().__init__()
-        self.break_to = break_to
-        self.chain = chain

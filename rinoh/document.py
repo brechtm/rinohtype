@@ -164,16 +164,16 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         for page in self.pages:
             try:
                 chains_requiring_new_page = set(chain for chain in page.render())
-                break_to = None
+                break_type = None
             except PageBreakException as pbe:
                 chains_requiring_new_page = set((pbe.chain, ))
-                break_to = pbe.break_to
+                break_type = pbe.break_type
             page.place()
             if chains_requiring_new_page:
                 # the following grows self.pages
                 next_page_type = LEFT if page.number % 2 else RIGHT
                 page = self.new_page(chains_requiring_new_page,
-                                     next_page_type == break_to)
+                                     next_page_type == break_type)
                 self.add_page(page)
         page_count = document_page_count + self.number_of_pages
         next_page_type = LEFT if page_count % 2 else RIGHT
@@ -186,14 +186,14 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.pages.append(page)
 
     def first_page(self):
-        return self.new_page([self.chain], after_break=True)
+        return self.new_page([self.chain], new_chapter=True)
 
-    def new_page(self, chains, after_break, **kwargs):
+    def new_page(self, chains, new_chapter, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
         chain, = chains
-        return self.page_template.page(self, chain, after_break, **kwargs)
+        return self.page_template.page(self, chain, new_chapter, **kwargs)
 
     @classmethod
     def match(cls, styled, container):

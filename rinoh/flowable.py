@@ -23,7 +23,8 @@ from itertools import chain, takewhile, tee
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
-                     MaybeContainer, discard_state, EndOfContainer)
+                     MaybeContainer, discard_state, EndOfContainer,
+                     PageBreakException)
 from .util import last
 from .style import Styled, OptionSet, Attribute, OverrideDefault
 
@@ -513,7 +514,8 @@ class PageBreak(Flowable):
             if (next_break_type == page_break
                 or (top_container is not first_container_on_page
                     and top_container.cursor > 0)):
-                raise EndOfContainer(page_break=page_break)
+                chain = container.chained_ancestor.chain
+                raise PageBreakException(page_break, chain)
         return super().flow(container, last_descender, state)
 
     def render(self, container, descender, state=None):

@@ -130,8 +130,8 @@ class PageBase(Page):
 
 
 class SimplePage(PageBase):
-    def __init__(self, document_part, chain, options, after_break):
-        super().__init__(document_part, options, after_break)
+    def __init__(self, document_part, chain, options, new_chapter):
+        super().__init__(document_part, options, new_chapter)
         num_cols = options['columns']
         header = options['header_text']
         footer = options['footer_text']
