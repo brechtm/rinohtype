@@ -62,10 +62,14 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, PORTRAIT,
                               'The orientation of pages in the document')
-    page_horizontal_margin = Option(DimensionBase, 3*CM, 'The margin size on '
-                                    'the left and the right of the page')
-    page_vertical_margin = Option(DimensionBase, 3*CM, 'The margin size on the '
-                                  'top and bottom of the page')
+    left_margin = Option(DimensionBase, 3*CM, 'The margin size on the left of '
+                                              'the page')
+    right_margin = Option(DimensionBase, 3*CM, 'The margin size on the right '
+                                               'of the page')
+    top_margin = Option(DimensionBase, 3*CM, 'The margin size at the top of '
+                                              'the page')
+    bottom_margin = Option(DimensionBase, 3*CM, 'The margin size at the bottom '
+                                                'of the page')
     background = Option(BackgroundImage, (), 'An image to place in the '
                                              'background of the page')
     after_break_background = Option(BackgroundImage, (), 'An image to place in '
@@ -120,10 +124,12 @@ class PageBase(Page):
         orientation = options['page_orientation']
         super().__init__(document_part, paper, orientation)
         self.template = options
-        self.h_margin = options['page_horizontal_margin']
-        self.v_margin = options['page_vertical_margin']
-        self.body_width = self.width - (2 * self.h_margin)
-        self.body_height = self.height - (2 * self.v_margin)
+        self.left_margin = options['left_margin']
+        self.right_margin = options['right_margin']
+        self.top_margin = options['top_margin']
+        self.bottom_margin = options['bottom_margin']
+        self.body_width = self.width - (self.left_margin + self.right_margin)
+        self.body_height = self.height - (self.top_margin + self.bottom_margin)
         background = options['background']
         after_break_background = options['after_break_background']
         if after_break:
@@ -145,7 +151,7 @@ class SimplePage(PageBase):
         column_spacing = options['column_spacing']
         total_column_spacing = column_spacing * (num_cols - 1)
         column_width = (self.body_width - total_column_spacing) / num_cols
-        self.body = Container('body', self, self.h_margin, self.v_margin,
+        self.body = Container('body', self, self.left_margin, self.top_margin,
                               self.body_width, self.body_height)
         footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
                                            self.body.height)
@@ -172,7 +178,7 @@ class SimplePage(PageBase):
         if header:
             header_bottom = self.body.top - header_footer_distance
             self.header = UpExpandingContainer('header', self,
-                                               left=self.h_margin,
+                                               left=self.left_margin,
                                                bottom=header_bottom,
                                                width=self.body_width)
             self.header.append_flowable(Header(header))
@@ -180,7 +186,7 @@ class SimplePage(PageBase):
         if footer:
             footer_vpos = self.body.bottom + header_footer_distance
             self.footer = DownExpandingContainer('footer', self,
-                                                 left=self.h_margin,
+                                                 left=self.left_margin,
                                                  top=footer_vpos,
                                                  width=self.body_width)
             self.footer.append_flowable(HorizontalRule(style='footer'))
@@ -205,8 +211,8 @@ class TitlePageTemplate(PageTemplateBase):
 class TitlePage(PageBase):
     def __init__(self, document_part, options, after_break):
         super().__init__(document_part, options, after_break)
-        self.title = DownExpandingContainer('title', self, self.h_margin,
-                                            self.v_margin, self.body_width)
+        self.title = DownExpandingContainer('title', self, self.left_margin,
+                                            self.top_margin, self.body_width)
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
         if 'subtitle' in self.document.metadata:

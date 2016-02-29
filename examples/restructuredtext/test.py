@@ -17,7 +17,7 @@ from rinohlib.stylesheets.matcher import matcher
 if __name__ == '__main__':
     sphinx_stylesheet = StyleSheetFile('sphinx.rts', matcher)
 
-    title_page_template = TitlePageTemplate(page_vertical_margin=8*CM)
+    title_page_template = TitlePageTemplate(top_margin=8*CM)
     page_template = PageTemplate()
     document_parts = [FixedDocumentPartTemplate(title_page_template, []),
                       FixedDocumentPartTemplate(page_template,
