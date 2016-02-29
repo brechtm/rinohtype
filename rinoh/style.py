@@ -577,7 +577,7 @@ class StyleSheet(OrderedDict):
                 selector = style_sheet.matcher.by_name[name]
                 return selector.cls
             except KeyError:
-                style_sheet = self.base
+                style_sheet = style_sheet.base
         raise KeyError("No selector found for style '{}'".format(name))
 
     def get_style_class(self, name):
