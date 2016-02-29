@@ -70,10 +70,10 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
                                               'the page')
     bottom_margin = Option(DimensionBase, 3*CM, 'The margin size at the bottom '
                                                 'of the page')
-    background = Option(BackgroundImage, (), 'An image to place in the '
+    background = Option(BackgroundImage, None, 'An image to place in the '
                                              'background of the page')
-    after_break_background = Option(BackgroundImage, (), 'An image to place in '
-                                    'the background after a page break')
+    after_break_background = Option(BackgroundImage, None, 'An image to place '
+                                    'in the background after a page break')
 
     def __init__(self, **options):
         for name, value in options.items():
@@ -132,8 +132,8 @@ class PageBase(Page):
         self.body_height = self.height - (self.top_margin + self.bottom_margin)
         background = options['background']
         after_break_background = options['after_break_background']
-        if after_break:
-            bg = after_break_background or background
+        bg = after_break_background or background
+        if after_break and bg:
             self.background = FlowablesContainer('background', self)
             self.background << bg
         elif background:
