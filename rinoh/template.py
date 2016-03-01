@@ -113,6 +113,8 @@ class PageTemplate(PageTemplateBase):
     chapter_title_flowables = Option(FunctionType, chapter_title_flowables,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
+    chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
+                                  'container holding the chapter title')
 
     def page(self, document_part, chain, after_break, **kwargs):
         return SimplePage(document_part, chain, self, after_break, **kwargs)
@@ -159,7 +161,7 @@ class SimplePage(PageBase):
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
         if new_chapter:
-            height = Dimension(200)
+            height = options['chapter_title_height']
             self.chapter_title = FlowablesContainer('chapter title', self.body,
                                                     0, 0, height=height)
             column_top = self.chapter_title.bottom
