@@ -114,12 +114,16 @@ matcher('list item label', ListItemLabel)
 
 matcher('enumerated list', List.like('enumerated'))
 
+matcher('enumerated list item', List.like('enumerated') / ListItem)
+
 matcher('enumerated list item label', List.like('enumerated')
                                       / ListItem / ListItemLabel)
 
 matcher('nested enumerated list', ListItem / List.like('enumerated'))
 
 matcher('bulleted list', List.like('bulleted'))
+
+matcher('bulleted list item', List.like('bulleted') / ListItem)
 
 matcher('bulleted list item label', List.like('bulleted')
                                     / ListItem / ListItemLabel)
