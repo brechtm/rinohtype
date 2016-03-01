@@ -235,7 +235,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
                  'back to the standard glyph.'.format(variant, ord(char), char),
                  RinohWarning)
-            return self.get_glyph(char)
+            return self.get_glyph(char, variant)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), RinohWarning)
