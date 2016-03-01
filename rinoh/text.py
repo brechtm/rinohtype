@@ -37,6 +37,7 @@ Some characters with special properties and are represented by special classes:
 
 import re
 
+from ast import literal_eval
 from itertools import groupby, zip_longest
 
 from .color import Color, BLACK
@@ -151,7 +152,7 @@ class StyledText(Styled, AttributeType):
         if string[end:].strip():
             raise ValueError("{}: trailing characters after string"
                              .format(string))
-        return m.group('text')
+        return literal_eval(string)
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
