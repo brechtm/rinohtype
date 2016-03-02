@@ -166,7 +166,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
     stem_v = LeafGetter('FontMetrics', 'StdVW', default=50)
 
     def __init__(self, file_or_filename, weight=MEDIUM, slant=UPRIGHT,
-                 width=NORMAL):
+                 width=NORMAL, unicode_mapping=None):
         try:
             filename = file_or_filename
             file = open(file_or_filename, 'rt', encoding='ascii')
@@ -175,7 +175,8 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             filename = None
             file = file_or_filename
             close_file = False
-        self._suffixes = {}
+        self._suffixes = {NORMAL: ''}
+        self._unicode_mapping = unicode_mapping
         AdobeFontMetricsParser.__init__(self, file)
         if close_file:
             file.close()
@@ -206,36 +207,38 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
 ##                return self._find_suffix(self.char_to_name(char.upper()),
 ##                                         possible_suffixes, True)
 
-    def _char_to_name(self, char, variant):
+    def _lookup_glyph_names(self, char, unicode_mapping):
         try:
-            # TODO: first search character using the font's encoding
-            name_or_names = UNICODE_TO_GLYPH_NAME[ord(char)]
-            if variant in self._SUFFIXES and char != ' ':
-                suffix = self._find_suffix(char, variant)
-            else:
-                suffix = ''
-            try:
-                yield name_or_names + suffix
-            except TypeError:
-                for name in name_or_names:
-                    yield name + suffix
-        except KeyError:
-            # TODO: map to uniXXXX or uXXXX names
-            warn('Don\'t know how to map unicode index 0x{:04x} ({}) '
-                 'to a PostScript glyph name.'.format(ord(char), char),
-                 RinohWarning)
-            yield 'question'
+            name_or_names = unicode_mapping[ord(char)]
+        except (KeyError, TypeError):
+            return
+        if isinstance(name_or_names, str):
+            yield name_or_names
+        else:
+            for name in name_or_names:
+                yield name
+
+    def _char_to_name(self, char, variant):
+        # TODO: first search character using the font's encoding
+        suffix = self._find_suffix(char, variant) if char != ' ' else ''
+        for name in self._lookup_glyph_names(char, self._unicode_mapping):
+            yield name + suffix
+        for name in self._lookup_glyph_names(char, UNICODE_TO_GLYPH_NAME):
+            yield name + suffix
+        # TODO: map to uniXXXX or uXXXX names
+        warn('Don\'t know how to map unicode index 0x{:04x} ({}) to a '
+             'PostScript glyph name.'.format(ord(char), char), RinohWarning)
 
     @cached
     def get_glyph(self, char, variant):
         for name in self._char_to_name(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
-        if variant:
+        if variant != NORMAL:
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
                  'back to the standard glyph.'.format(variant, ord(char), char),
                  RinohWarning)
-            return self.get_glyph(char, variant)
+            return self.get_glyph(char, NORMAL)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), RinohWarning)
@@ -331,8 +334,9 @@ class PrinterFontBinary(PrinterFont):
 
 class Type1Font(AdobeFontMetrics):
     def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
-                 core=False):
-        AdobeFontMetrics.__init__(self, filename + '.afm',  weight, slant, width)
+                 unicode_mapping=None, core=False):
+        super().__init__(filename + '.afm', weight, slant, width,
+                         unicode_mapping)
         self.core = core
         if not core:
             if os.path.exists(filename + '.pfb'):

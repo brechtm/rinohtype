@@ -1,5 +1,9 @@
 
 # from the Adobe Glyph List 2.0 (September 20, 2002)
+import csv
+
+from os import path
+
 UNICODE_TO_GLYPH_NAME = {
     0x0001: 'controlSTX',
     0x0002: 'controlSOT',
@@ -3789,6 +3793,21 @@ UNICODE_TO_GLYPH_NAME = {
     0xFFE1: 'sterlingmonospace',
     0xFFE3: 'macronmonospace',
     0xFFE5: 'yenmonospace'}
+
+
+def parse_glyph_list(filename):
+    unicode_to_glyph_name = {}
+    with open(filename) as csvfile:
+        d = csv.reader((row for row in csvfile if not row.startswith('#')),
+                       delimiter=';')
+        for glyph_name, unicode_hex in d:
+            assert int(unicode_hex, 16) not in unicode_to_glyph_name
+            unicode_to_glyph_name[int(unicode_hex, 16)] = glyph_name
+    return unicode_to_glyph_name
+
+
+UNICODE_TO_DINGBATS_NAME = parse_glyph_list(path.join(path.dirname(__file__),
+                                                      'zapfdingbats.txt'))
 
 
 # from the Adobe Standard Encoding to Unicode table 1.0 (2011 July 12)
