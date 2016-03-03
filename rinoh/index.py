@@ -90,7 +90,7 @@ class IndexTargetBase(Styled):
 
 
 class InlineIndexTarget(IndexTargetBase, StyledText):
-    def spans(self, container):
+    def spans(self, container, **kwargs):
         self.create_destination(container)
         return iter([])
 

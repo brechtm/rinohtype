@@ -306,12 +306,12 @@ class ParagraphStyle(FlowableStyle, TextStyle):
 
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
-def spans_to_words(spans, container):
+def spans_to_words(spans, container, **kwargs):
     word = Word()
     for span in spans:
         try:
             word_to_glyphs = create_to_glyphs(span, container)
-            for chars in span.split(container):
+            for chars in span.split(container, **kwargs):
                 glyphs_span = GlyphsSpan(span, word_to_glyphs)
                 glyphs_span += word_to_glyphs(chars)
                 if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
@@ -363,6 +363,10 @@ class ParagraphBase(Flowable):
 
     style_class = ParagraphStyle
 
+    @property
+    def spans_kwargs(self):
+        return {}
+
     def render(self, container, descender, state=None):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
@@ -381,8 +385,9 @@ class ParagraphBase(Flowable):
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
         if not state:
-            spans = self.text(container).spans(container)
-            state = ParagraphState(spans_to_words(spans, container))
+            spans = self.text(container).spans(container, **self.spans_kwargs)
+            state = ParagraphState(spans_to_words(spans, container,
+                                                  **self.spans_kwargs))
         saved_state = copy(state)
         prev_state = copy(state)
         max_line_width = 0

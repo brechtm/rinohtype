@@ -195,7 +195,7 @@ class StyledText(Styled, AttributeType):
             # get the position style using self.get_style('position')
         return offset
 
-    def spans(self, container):
+    def spans(self, container, **kwargs):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
         raise NotImplementedError
@@ -258,7 +258,7 @@ class SingleStyledText(StyledText):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
 
-    def spans(self, document):
+    def spans(self, document, **kwargs):
         yield self
 
     @staticmethod
@@ -273,7 +273,7 @@ class SingleStyledText(StyledText):
             else:
                 yield ''.join(characters)
 
-    def split(self, container):
+    def split(self, container, **kwargs):
         """Yield the words and spaces in this single-styled text."""
         return self.split_words(self.text)
 
@@ -329,10 +329,11 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self, container):
+    def spans(self, container, **kwargs):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        return (span for item in self for span in item.spans(container))
+        return (span for item in self
+                for span in item.spans(container, **kwargs))
 
 
 class Character(SingleStyledText):

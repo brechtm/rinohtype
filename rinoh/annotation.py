@@ -52,6 +52,6 @@ class AnnotatedText(MixedStyledText):
         super().__init__(text_or_items, style=style, parent=parent)
         self.annotation = annotation
 
-    def spans(self, container):
+    def spans(self, container, **kwargs):
         return (AnnotatedSpan(span, self.annotation)
-                for item in self for span in item.spans(container))
+                for item in self for span in item.spans(container, **kwargs))

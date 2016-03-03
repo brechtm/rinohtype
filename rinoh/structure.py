@@ -15,7 +15,7 @@ from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
-from .reference import Referenceable, Reference
+from .reference import Referenceable, ReferenceBase
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
@@ -269,8 +269,16 @@ class TableOfContents(GroupedFlowables):
             yield TableOfContentsEntry(flowable, parent=self)
 
 
+class TableOfContentsEntryField(ReferenceBase):
+    def target_id(self, document, toc_entry, **kwargs):
+        return toc_entry.flowable.get_id(document)
+
+
 class TableOfContentsEntryStyle(ParagraphStyle):
-    show_number = Attribute(Bool, True, 'Show the section number label')
+    text = Attribute(StyledText, TableOfContentsEntryField(NUMBER)
+                                 + Tab() + TableOfContentsEntryField(TITLE)
+                                 + Tab() + TableOfContentsEntryField(PAGE),
+                     'The text content of a table of contents entry')
 
 
 class TableOfContentsEntry(ParagraphBase):
@@ -281,17 +289,15 @@ class TableOfContentsEntry(ParagraphBase):
         self.flowable = flowable
 
     @property
+    def spans_kwargs(self):
+        return dict(toc_entry=self)
+
+    @property
     def depth(self):
-        return  self.flowable.level
+        return self.flowable.level
 
     def text(self, container):
-        flowable_id = self.flowable.get_id(container.document)
-        text = [Reference(flowable_id, type=TITLE), Tab(),
-                Reference(flowable_id, type=PAGE)]
-        if self.get_style('show_number', container):
-            number_ref = Reference(flowable_id, type=NUMBER, quiet=True)
-            text = [number_ref, Tab()] + text
-        return MixedStyledText(text, parent=self)
+        return MixedStyledText(self.get_style('text', container), parent=self)
 
 
 class HorizontalRuleStyle(FlowableStyle, LineStyle):

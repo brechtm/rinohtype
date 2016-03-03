@@ -44,11 +44,11 @@ class ReferenceBase(Field):
         self.link = link
         self.quiet = quiet
 
-    def target_id(self, document):
+    def target_id(self, document, **kwargs):
         raise NotImplementedError
 
-    def split(self, container):
-        target_id = self.target_id(container.document)
+    def split(self, container, **kwargs):
+        target_id = self.target_id(container.document, **kwargs)
         try:
             if self.type == REFERENCE:
                 category = container.document.elements[target_id].category
@@ -76,10 +76,10 @@ class ReferenceBase(Field):
 
         return self.split_words(text)
 
-    def spans(self, container):
-        spans = super().spans(container)
+    def spans(self, container, **kwargs):
+        spans = super().spans(container, **kwargs)
         if self.link:
-            target_id = self.target_id(container.document)
+            target_id = self.target_id(container.document, **kwargs)
             annotation = NamedDestinationLink(str(target_id))
             spans = (AnnotatedSpan(span, annotation) for span in spans)
         return spans
@@ -222,7 +222,7 @@ class Variable(Field):
     def __str__(self):
         return '${}'.format(self.type)
 
-    def split(self, container):
+    def split(self, container, **kwargs):
         if self.type == PAGE_NUMBER:
             text = format_number(container.page.number,
                                  container.page.number_format)
