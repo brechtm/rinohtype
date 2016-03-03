@@ -118,6 +118,10 @@ class PageTemplate(PageTemplateBase):
     footer_text = Option(StyledText, Tab() + Variable(PAGE_NUMBER)
                                      + '/' + Variable(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
+    chapter_header_text = Option(StyledText, None, 'The text to place in the '
+                                 'header on a page that starts a new chapter')
+    chapter_footer_text = Option(StyledText, None, 'The text to place in the '
+                                 'footer on a page that starts a new chapter')
     chapter_title_flowables = Option(Function, chapter_title_flowables,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
@@ -155,8 +159,6 @@ class SimplePage(PageBase):
     def __init__(self, document_part, chain, options, new_chapter):
         super().__init__(document_part, options, new_chapter)
         num_cols = options['columns']
-        header = options['header_text']
-        footer = options['footer_text']
         header_footer_distance = options['header_footer_distance']
         column_spacing = options['column_spacing']
         total_column_spacing = column_spacing * (num_cols - 1)
@@ -173,8 +175,12 @@ class SimplePage(PageBase):
             self.chapter_title = FlowablesContainer('chapter title', self.body,
                                                     0, 0, height=height)
             column_top = self.chapter_title.bottom
+            header = options['chapter_header_text']
+            footer = options['chapter_footer_text']
         else:
             column_top = float_space.bottom
+            header = options['header_text']
+            footer = options['footer_text']
         self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
                                          chain,
                                          left=i * (column_width
