@@ -536,7 +536,7 @@ class StyledMatcher(dict):
                         yield Match(name, specificity)
 
 
-class StyleSheet(OrderedDict):
+class StyleSheet(OrderedDict, AttributeType):
     """Dictionary storing a set of related :class:`Style`s by name.
 
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base

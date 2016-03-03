@@ -8,20 +8,20 @@
 
 from types import FunctionType
 
-from rinoh.document import (Document, DocumentSection, Page, PageOrientation,
-                            PORTRAIT)
-from rinoh.float import BackgroundImage
-from rinoh.layout import (FootnoteContainer, DownExpandingContainer,
-                          ChainedContainer, UpExpandingContainer, Container,
-                          FlowablesContainer)
-from rinoh.paragraph import Paragraph
-from rinoh.structure import Header, HorizontalRule, Footer
-from .dimension import DimensionBase, CM, PT, Dimension
+from .dimension import DimensionBase, CM, PT
+from .document import (Document, DocumentSection, Page, PageOrientation,
+                       PORTRAIT)
+from .float import BackgroundImage
+from .layout import (FootnoteContainer, DownExpandingContainer,
+                     ChainedContainer, UpExpandingContainer, Container,
+                     FlowablesContainer)
 from .paper import Paper, A4
+from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
-from .text import MixedStyledText, Tab, SingleStyledText
-from .style import StyleSheet
+from .text import StyledText, Tab, SingleStyledText
+from .structure import Header, HorizontalRule, Footer
+from .style import StyleSheet, Bool, AttributeType
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
@@ -45,9 +45,9 @@ class Option(NamedDescriptor):
             return self
 
     def __set__(self, document_options, value):
-        if not isinstance(value, self.accepted_type):
-            raise TypeError('The {} document option only accepts {} instances'
-                            .format(self.name, self.accepted_type))
+        if not self.accepted_type.check_type(value):
+            raise TypeError('Page template option has wrong type: {}'
+                            .format(self.name))
         document_options[self.name] = value
 
     @property
@@ -81,7 +81,7 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
             if not isinstance(option_descriptor, Option):
                 raise AttributeError('Unsupported page template option: {}'
                                      .format(name))
-            if not isinstance(value, option_descriptor.accepted_type):
+            if not option_descriptor.accepted_type.check_type(value):
                 raise TypeError('Page template option has wrong type: {}'
                                 .format(name))
             setattr(self, name, value)
@@ -99,18 +99,26 @@ def chapter_title_flowables(section_id):
     yield Paragraph(Reference(section_id, TITLE))
 
 
+
+class Function(AttributeType):
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, FunctionType)
+
+
+
 class PageTemplate(PageTemplateBase):
     header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
     columns = Option(int, 1, 'The number of columns for the body text')
     column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
-    header_text = Option(MixedStyledText, Variable(SECTION_NUMBER(1))
-                                          + ' ' + Variable(SECTION_TITLE(1)),
+    header_text = Option(StyledText, Variable(SECTION_NUMBER(1))
+                                     + ' ' + Variable(SECTION_TITLE(1)),
                          'The text to place in the page header')
-    footer_text = Option(MixedStyledText, Tab() + Variable(PAGE_NUMBER)
-                                          + '/' + Variable(NUMBER_OF_PAGES),
+    footer_text = Option(StyledText, Tab() + Variable(PAGE_NUMBER)
+                                     + '/' + Variable(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
-    chapter_title_flowables = Option(FunctionType, chapter_title_flowables,
+    chapter_title_flowables = Option(Function, chapter_title_flowables,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
@@ -201,10 +209,10 @@ class SimplePage(PageBase):
 
 
 class TitlePageTemplate(PageTemplateBase):
-    show_date = Option(bool, True, "Show or hide the document's date")
-    show_author = Option(bool, True, "Show or hide the document's author")
-    extra = Option(MixedStyledText, None, 'Extra text to include on the title '
-                   'page below the title')
+    show_date = Option(Bool, True, "Show or hide the document's date")
+    show_author = Option(Bool, True, "Show or hide the document's author")
+    extra = Option(StyledText, None, 'Extra text to include on the title '
+                                     'page below the title')
 
     def page(self, document_part, chain, after_break, **kwargs):
         return TitlePage(document_part, self, after_break)

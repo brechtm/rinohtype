@@ -16,6 +16,7 @@ from .layout import EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import Referenceable, NUMBER
+from .style import AttributeType
 from .text import MixedStyledText, SingleStyledText, TextStyle
 
 
@@ -115,7 +116,7 @@ class Image(_Image):
     pass
 
 
-class BackgroundImage(_Image):
+class BackgroundImage(_Image, AttributeType):
     pass
 
 

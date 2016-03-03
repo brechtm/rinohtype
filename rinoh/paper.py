@@ -15,6 +15,7 @@ The :class:`Paper` class and a number of predefined paper sizes:
 
 
 from .dimension import INCH, MM
+from .style import AttributeType
 
 
 __all__ = ['Paper',
@@ -22,7 +23,7 @@ __all__ = ['Paper',
            'LETTER', 'LEGAL', 'JUNIOR_LEGAL', 'LEDGER', 'TABLOID']
 
 
-class Paper(object):
+class Paper(AttributeType):
     """Defines a paper size."""
 
     def __init__(self, name, width, height):
