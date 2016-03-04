@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import re
+
 from .draw import Line, LineStyle
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import PageBreak, PageBreakStyle
@@ -15,7 +17,7 @@ from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
-from .reference import Referenceable, ReferenceBase
+from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
@@ -274,10 +276,33 @@ class TableOfContentsEntryField(ReferenceBase):
         return toc_entry.flowable.get_id(document)
 
 
+class TableOfContentsEntryText(StyledText):
+    RE_TYPES = re.compile('({(?:' + '|'.join(ReferenceType.values) + ')})',
+                          re.IGNORECASE)
+
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, (str, type(None), StyledText))
+
+    @classmethod
+    def _substitute_variables(cls, text, style):
+        items = []
+        for part in (prt for prt in cls.RE_TYPES.split(text) if prt):
+            if part.lower() in ('{' + type + '}'
+                                for type in (REFERENCE, NUMBER, TITLE, PAGE)):
+                field_type = part[1:-1].lower()
+                item = TableOfContentsEntryField(field_type)
+            else:
+                item = super()._substitute_variables(part, style).text
+            items.append(item)
+        return MixedStyledText(items, style=style)
+
+
 class TableOfContentsEntryStyle(ParagraphStyle):
-    text = Attribute(StyledText, TableOfContentsEntryField(NUMBER)
-                                 + Tab() + TableOfContentsEntryField(TITLE)
-                                 + Tab() + TableOfContentsEntryField(PAGE),
+    text = Attribute(TableOfContentsEntryText,
+                     TableOfContentsEntryField(NUMBER)
+                     + Tab() + TableOfContentsEntryField(TITLE)
+                     + Tab() + TableOfContentsEntryField(PAGE),
                      'The text content of a table of contents entry')
 
 

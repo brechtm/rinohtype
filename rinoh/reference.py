@@ -10,6 +10,7 @@ from .annotation import NamedDestinationLink, AnnotatedSpan
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph
+from .style import OptionSet
 from .text import SingleStyledText, TextStyle
 from .util import NotImplementedAttribute
 
@@ -34,6 +35,10 @@ REFERENCE = 'reference'     # Section 3.2
 NUMBER = 'number'           # 3.2
 TITLE = 'title'             # Some Title
 PAGE = 'page'               # <number of the page on which section 3.2 starts>
+
+
+class ReferenceType(OptionSet):
+    values = REFERENCE, NUMBER, TITLE, PAGE
 
 
 class ReferenceBase(Field):

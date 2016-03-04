@@ -8,9 +8,11 @@ from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
 from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
+from rinoh.reference import TITLE, PAGE
+from rinoh.structure import TableOfContentsEntryText, TableOfContentsEntryField
 from rinoh.style import OptionSet, Bool, Integer
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
-from rinoh.text import StyledText, SingleStyledText, MixedStyledText
+from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
 
 def test_optionset_from_string():
@@ -195,3 +197,20 @@ def test_styledtext_from_string():
     assert StyledText.from_string("'one' '{gt}two'(style2)") \
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('>two', style='style2')])
+
+
+def test_tableofcontentsentrytext_from_string():
+    assert TableOfContentsEntryText.from_string("'Chapter {NUMBER}\t{title}'") \
+           == MixedStyledText(
+                  [MixedStyledText([SingleStyledText('Chapter '),
+                                    TableOfContentsEntryField(NUMBER), Tab(),
+                                    TableOfContentsEntryField(TITLE)])])
+    assert TableOfContentsEntryText.from_string("'{bull} '(style1) '{nbsp}"
+                                                "{TITLE}\t{PaGE}'(style2)") \
+           == MixedStyledText(
+                  [MixedStyledText([SingleStyledText('\N{BULLET} ')],
+                                   style='style1'),
+                   MixedStyledText([SingleStyledText('\N{NO-BREAK SPACE}'),
+                                    TableOfContentsEntryField(TITLE), Tab(),
+                                    TableOfContentsEntryField(PAGE)],
+                                   style='style2')])
