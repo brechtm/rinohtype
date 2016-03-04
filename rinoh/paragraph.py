@@ -261,7 +261,7 @@ class TabStopList(AttributeType):
                            )?
                            (?:                     ## optional: fill string
                              \s+                   # whitespace
-                             (?P<fill>{fill})      # fill string
+                             (?P<fill>.+)          # fill string
                            )?
                            (?:                     ## optional: separator
                              \s*                   # whitespace
@@ -269,8 +269,7 @@ class TabStopList(AttributeType):
                              \s*                   # whitespace
                            )?
                        """.format(pos=DimensionBase.REGEX.pattern,
-                                  align='|'.join(TabAlign.values),
-                                  fill=StyledText.REGEX.pattern),
+                                  align='|'.join(TabAlign.values)),
                        re.IGNORECASE | re.VERBOSE)
 
     @classmethod

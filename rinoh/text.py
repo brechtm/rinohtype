@@ -38,7 +38,7 @@ Some characters with special properties and are represented by special classes:
 import re
 
 from ast import literal_eval
-from itertools import groupby, zip_longest
+from itertools import groupby, zip_longest, tee
 
 from .color import Color, BLACK
 from .dimension import DimensionBase, PT
@@ -138,21 +138,54 @@ class StyledText(Styled, AttributeType):
     def check_type(cls, value):
         return super().check_type(value) or isinstance(value, (str, type(None)))
 
-    REGEX = re.compile(r"'(?P<text>.+)'")
-
     @classmethod
     def from_string(cls, string):
+        def parse_text(chars):
+            text = quote = skip_whitespace(chars)
+            if not quote in ("'", '"'):
+                raise StyledTextParseError
+            escape = False
+            for char in chars:
+                text += char
+                if not escape and char == quote:
+                    return text
+                escape = char == '\\'
+            raise StyledTextParseError('Missing closing quote')
+
+        def parse_style(saved_chars):
+            chars, saved_chars = tee(saved_chars)
+            try:
+                next_char = skip_whitespace(chars)
+            except StopIteration:
+                return saved_chars, None
+            if next_char != '(':
+                return saved_chars, None
+            style = ''
+            for char in chars:
+                if char == ')':
+                    return chars, style
+                else:
+                    style += char
+            raise StyledTextParseError('Missing closing brace')
+
+        def skip_whitespace(chars):
+            for char in chars:
+                if char not in ' \t':
+                    return char
+            raise StopIteration
+
         if string.strip().lower() == 'none':
             return None
-        m = cls.REGEX.match(string)
-        if not m:
-            raise ValueError("{} is not a valid {}" .format(string,
-                                                            cls.__name__))
-        _, end = m.span()
-        if string[end:].strip():
-            raise ValueError("{}: trailing characters after string"
-                             .format(string))
-        return literal_eval(string)
+        texts = []
+        chars = iter(string.strip())
+        while True:
+            try:
+                text = literal_eval(parse_text(chars))
+                chars, style = parse_style(chars)
+                texts.append(SingleStyledText(text, style=style))
+            except StopIteration:
+                break
+        return MixedStyledText(texts)
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
@@ -199,6 +232,10 @@ class StyledText(Styled, AttributeType):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
         raise NotImplementedError
+
+
+class StyledTextParseError(Exception):
+    pass
 
 
 class SingleStyledText(StyledText):

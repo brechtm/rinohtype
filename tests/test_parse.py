@@ -10,6 +10,7 @@ from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.style import OptionSet, Bool, Integer
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
+from rinoh.text import StyledText, SingleStyledText, MixedStyledText
 
 
 def test_optionset_from_string():
@@ -169,3 +170,23 @@ def test_dimensionbase_from_string():
     assert DimensionBase.from_string('-16.12%') == -16.12*PERCENT
     with pytest.raises(ValueError):
         assert DimensionBase.from_string('20inch')
+
+
+def test_styledtext_from_string():
+    assert StyledText.from_string("'one'") \
+           == MixedStyledText([SingleStyledText('one')])
+    assert StyledText.from_string("'on\\'e'") \
+           == MixedStyledText([SingleStyledText("on'e")])
+    assert StyledText.from_string("'one' 'two'") \
+           == MixedStyledText([SingleStyledText('one'),
+                               SingleStyledText('two')])
+    assert StyledText.from_string("'one'(style1)") \
+           == MixedStyledText([SingleStyledText('one', style='style1')])
+    assert StyledText.from_string("'one' (style1)") \
+           == MixedStyledText([SingleStyledText('one', style='style1')])
+    assert StyledText.from_string("'one'(style1) 'two'") \
+           == MixedStyledText([SingleStyledText('one', style='style1'),
+                               SingleStyledText('two')])
+    assert StyledText.from_string("'one'\t(style1) 'two'(style2)") \
+           == MixedStyledText([SingleStyledText('one', style='style1'),
+                               SingleStyledText('two', style='style2')])
