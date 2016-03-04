@@ -354,8 +354,9 @@ class MixedStyledText(StyledText, list):
         return ''.join(str(item) for item in self)
 
     def __eq__(self, other):
-        return all(child == other_child
-                   for child, other_child in zip_longest(self, other))
+        return (all(child == other_child
+                    for child, other_child in zip_longest(self, other))
+                and self.style == other.style)
 
     def __hash__(self):
         return hash((tuple(self), self.style))
