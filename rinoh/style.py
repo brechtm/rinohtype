@@ -656,6 +656,7 @@ class StyleSheetFile(StyleSheet):
                 style_cls = self.get_style_class(style_name)
             attribute_values = {}
             for name, value in section_body.items():
+                value = value.replace('\n', ' ')
                 if name == 'base':
                     attribute_values[name] = value
                 else:
