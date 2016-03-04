@@ -38,6 +38,7 @@ Some characters with special properties and are represented by special classes:
 import re
 
 from ast import literal_eval
+from html.entities import name2codepoint
 from itertools import groupby, zip_longest, tee
 
 from .color import Color, BLACK
@@ -114,6 +115,9 @@ class CharacterLike(Styled):
         raise NotImplementedError
 
 
+NAME2CHAR = {name: chr(codepoint) for name, codepoint in name2codepoint.items()}
+
+
 class StyledText(Styled, AttributeType):
     """Base class for text that has a :class:`TextStyle` associated with it."""
 
@@ -182,10 +186,14 @@ class StyledText(Styled, AttributeType):
             try:
                 text = literal_eval(parse_text(chars))
                 chars, style = parse_style(chars)
-                texts.append(SingleStyledText(text, style=style))
+                texts.append(cls._substitute_variables(text, style))
             except StopIteration:
                 break
         return MixedStyledText(texts)
+
+    @classmethod
+    def _substitute_variables(cls, text, style):
+        return SingleStyledText(text.format(**NAME2CHAR), style=style)
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}

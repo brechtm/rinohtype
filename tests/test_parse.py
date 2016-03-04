@@ -190,3 +190,8 @@ def test_styledtext_from_string():
     assert StyledText.from_string("'one'\t(style1) 'two'(style2)") \
            == MixedStyledText([SingleStyledText('one', style='style1'),
                                SingleStyledText('two', style='style2')])
+    assert StyledText.from_string("'one{nbsp}two'") \
+           == MixedStyledText([SingleStyledText('one\N{NO-BREAK SPACE}two')])
+    assert StyledText.from_string("'one' '{gt}two'(style2)") \
+           == MixedStyledText([SingleStyledText('one'),
+                               SingleStyledText('>two', style='style2')])
