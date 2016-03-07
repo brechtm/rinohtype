@@ -29,7 +29,7 @@ from itertools import count
 
 from . import __version__, __release_date__
 from .backend import pdf
-from .flowable import RIGHT, LEFT
+from .flowable import RIGHT, LEFT, ANY
 from .layout import Container, ReflowRequired, Chain, PageBreakException
 from .number import NUMBER
 from .structure import NewChapterException
@@ -71,6 +71,7 @@ class Page(Container):
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
         self._current_section = {}
+        self._empty = True
         super().__init__('PAGE', None, 0, 0, width, height)
 
     @property
@@ -86,6 +87,7 @@ class Page(Container):
         return self
 
     def set_current_section(self, section, is_new):
+        self._empty = False
         if (section.level not in self._current_section
                 or not self._current_section[section.level][1]):
             self._current_section[section.level] = section, is_new

@@ -503,18 +503,13 @@ class PageBreak(Flowable):
     exception_class = PageBreakException
 
     def flow(self, container, last_descender, state=None):
+        this_page_type = LEFT if container.page.number % 2 == 0 else RIGHT
         page_break = self.get_style('page_break', container)
-        if page_break and not state:
-            top_container = container.chained_ancestor
-            rev_page_conts_on_page = \
-                takewhile(lambda c: c.page is not container.page,
-                          reversed(top_container.chain.containers))
-            first_container_on_page = last(rev_page_conts_on_page)
-
-            next_break_type = LEFT if container.page.number % 2 else RIGHT
-            if (next_break_type == page_break
-                or (top_container is not first_container_on_page
-                    and top_container.cursor > 0)):
+        if not state and page_break:
+            if not (container.page._empty
+                    and page_break in (ANY, this_page_type)):
+                if page_break == ANY:
+                    page_break = LEFT if container.page.number % 2 else RIGHT
                 chain = container.chained_ancestor.chain
                 raise self.exception_class(page_break, chain)
         return super().flow(container, last_descender, state)
