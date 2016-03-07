@@ -103,7 +103,7 @@ def chapter_title_flowables(section_id):
 class Function(AttributeType):
     @classmethod
     def check_type(cls, value):
-        return isinstance(value, FunctionType)
+        return isinstance(value, (FunctionType, type(None)))
 
 
 
@@ -170,7 +170,7 @@ class SimplePage(PageBase):
         float_space = DownExpandingContainer('floats', self.body, 0*PT, 0*PT,
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
-        if new_chapter:
+        if options['chapter_title_flowables'] and new_chapter:
             height = options['chapter_title_height']
             self.chapter_title = FlowablesContainer('chapter title', self.body,
                                                     0, 0, height=height)
@@ -178,6 +178,7 @@ class SimplePage(PageBase):
             header = options['chapter_header_text']
             footer = options['chapter_footer_text']
         else:
+            self.chapter_title = None
             column_top = float_space.bottom
             header = options['header_text']
             footer = options['footer_text']
