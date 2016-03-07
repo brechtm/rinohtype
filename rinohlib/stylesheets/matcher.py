@@ -98,6 +98,11 @@ matcher('abstract', GroupedFlowables.like('abstract'))
 matcher('abstract paragraph',
         GroupedFlowables.like('abstract') / Paragraph)
 
+matcher('example', GroupedFlowables.like('topic'))
+
+matcher('example title', GroupedFlowables.like('example')
+                         / Paragraph.like('title'))
+
 matcher('topic title', GroupedFlowables.like('topic') / Paragraph.like('title'))
 
 matcher('rubric', Paragraph.like('rubric'))
