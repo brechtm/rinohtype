@@ -21,7 +21,7 @@ from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
-from .util import Decorator
+from .strings import Strings, String
 
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
@@ -331,6 +331,20 @@ class AdmonitionStyle(GroupedFlowablesStyle):
     inline_title = Attribute(Bool, True, "Show the admonition's title inline "
                                          "with the body text, if possible")
 
+
+class AdmonitionTitles(Strings):
+    attention = String('Attention!', 'Title for attention admonitions')
+    caution = String('Caution!', 'Title for caution admonitions')
+    danger = String('!DANGER!', 'Title for danger admonitions')
+    error = String('Error', 'Title for error admonitions')
+    hint = String('Hint', 'Title for hint admonitions')
+    important = String('Important', 'Title for important admonitions')
+    note = String('Note', 'Title for note admonitions')
+    tip = String('Tip', 'Title for tip admonitions')
+    warning = String('Warning', 'Title for warning admonitions')
+    seealso = String('See also', 'Title for see-also admonitions')
+
+
 class Admonition(GroupedFlowables):
     style_class = AdmonitionStyle
 
@@ -341,31 +355,21 @@ class Admonition(GroupedFlowables):
         self.custom_title = title
         self.admonition_type = type
 
-    TITLES = {'attention': 'Attention!',
-              'caution': 'Caution!',
-              'danger': '!DANGER!',
-              'error': 'Error',
-              'hint': 'Hint',
-              'important': 'Important',
-              'note': 'Note',
-              'tip': 'Tip',
-              'warning': 'Warning',
-              'seealso': 'See also'}
-
-    @property
-    def title(self):
-        return self.custom_title or self.TITLES[self.admonition_type]
+    def title(self, document):
+        titles = document.strings(AdmonitionTitles)
+        return self.custom_title or titles[self.admonition_type]
 
     def flowables(self, container):
+        title = self.title(container.document)
         flowables = iter(self._flowables)
         first_flowable = next(flowables)
         inline_title = self.get_style('inline_title', container)
         if inline_title and isinstance(first_flowable, Paragraph):
-            title = MixedStyledText(self.title, style='inline title')
+            title = MixedStyledText(title, style='inline title')
             yield Paragraph(title + ' ' + first_flowable, id=first_flowable.id,
                             style=first_flowable.style)
         else:
-            yield Paragraph(self.title, style='title')
+            yield Paragraph(title, style='title')
             yield first_flowable
         for flowable in flowables:
             yield flowable

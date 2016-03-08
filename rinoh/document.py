@@ -270,7 +270,8 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, content_flowables, stylesheet, backend=pdf):
+    def __init__(self, content_flowables, stylesheet, strings=None,
+                 backend=pdf):
         """`backend` specifies the backend to use for rendering the document.
         `title`, `author` and `keywords` (iterable of strings) are metadata
         describing the document. These will be written to the output by the
@@ -279,6 +280,7 @@ class Document(object):
         self.front_matter = []
         self.content_flowables = content_flowables
         self.stylesheet = stylesheet
+        self._strings = strings or ()
         self.backend = backend
         self.backend_document = self.backend.Document(self, self.CREATOR)
 
@@ -338,6 +340,12 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_style_var(self, name, accepted_type):
         return self.stylesheet.get_variable(name, accepted_type)
+
+    def strings(self, strings_class):
+        for strings in self._strings:
+            if isinstance(strings, strings_class):
+                return strings
+        return strings_class()
 
     def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due

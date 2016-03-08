@@ -2,7 +2,7 @@ from rinoh.dimension import CM
 from rinoh.paper import A5
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
-from rinoh.structure import TableOfContentsSection
+from rinoh.structure import TableOfContentsSection, AdmonitionTitles
 from rinoh.style import StyleSheetFile
 from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
                             TitlePageTemplate)
@@ -24,6 +24,9 @@ if __name__ == '__main__':
                                                 [TableOfContentsSection()]),
                       ContentsPartTemplate(page_template, False)]
 
+    strings = (AdmonitionTitles(important='IMPORTANT:',
+                                tip='TIP:'),
+               )
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
@@ -32,6 +35,6 @@ if __name__ == '__main__':
         # manual_options = BookOptions(stylesheet=STYLESHEET)
         # document = Book(document_tree, options=manual_options, backend=pdf)
         doc_options = DocumentOptions(stylesheet=sphinx_stylesheet)
-        document = DocumentTemplate(flowables, document_parts,
+        document = DocumentTemplate(flowables, document_parts, strings=strings,
                                     options=doc_options, backend=pdf)
         document.render(name)
