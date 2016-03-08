@@ -184,7 +184,7 @@ class Compound(DocutilsGroupingNode):
     pass
 
 
-class Title(DocutilsBodyNode):
+class Title(DocutilsBodyNode, DocutilsInlineNode):
     def build_flowable(self):
         if isinstance(self.parent, Document):
             return rt.SetMetadataFlowable(title=self.process_content())
@@ -204,57 +204,58 @@ class Subtitle(DocutilsBodyNode):
 
 
 class Admonition(DocutilsGroupingNode):
-    style='admonition'
-
-
-class AdmonitionBase(Admonition):
-    title = None
+    grouped_flowables_class = rt.Admonition
 
     def children_flowables(self, skip_first=0):
-        yield rt.Paragraph(self.title, style='title')
-        for flowable in super().children_flowables(skip_first):
-            yield flowable
+        try:
+            self.title
+            return super().children_flowables(skip_first=1)
+        except AttributeError:
+            return super().children_flowables()
 
     def build_flowable(self):
-        group = super().build_flowable()
-        group.admonition_type = self.__class__.__name__.lower()
-        return group
+        admonition_type = self.__class__.__name__.lower()
+        try:
+            custom_title = self.title.styled_text()
+        except AttributeError:
+            custom_title = None
+        return super().build_flowable(type=admonition_type, title=custom_title)
 
 
-class Attention(AdmonitionBase):
-    title = 'Attention!'
+class Attention(Admonition):
+    pass
 
 
-class Caution(AdmonitionBase):
-    title = 'Caution!'
+class Caution(Admonition):
+    pass
 
 
-class Danger(AdmonitionBase):
-    title = '!DANGER!'
+class Danger(Admonition):
+    pass
 
 
-class Error(AdmonitionBase):
-    title = 'Error'
+class Error(Admonition):
+    pass
 
 
-class Hint(AdmonitionBase):
-    title = 'Hint'
+class Hint(Admonition):
+    pass
 
 
-class Important(AdmonitionBase):
-    title = 'Important'
+class Important(Admonition):
+    pass
 
 
-class Note(AdmonitionBase):
-    title = 'Note'
+class Note(Admonition):
+    pass
 
 
-class Tip(AdmonitionBase):
-    title = 'Tip'
+class Tip(Admonition):
+    pass
 
 
-class Warning(AdmonitionBase):
-    title = 'Warning'
+class Warning(Admonition):
+    pass
 
 
 class Generated(DocutilsInlineNode):

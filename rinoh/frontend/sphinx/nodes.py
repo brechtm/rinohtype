@@ -20,7 +20,7 @@ from ...util import intersperse
 
 from ..rst import (DocutilsInlineNode, DocutilsBodyNode,
                    DocutilsGroupingNode, DocutilsDummyNode)
-from ..rst.nodes import Admonition, AdmonitionBase, Strong, Emphasis
+from ..rst.nodes import Admonition, Admonition, Strong, Emphasis
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
@@ -100,8 +100,8 @@ class Download_Reference(DocutilsInlineNode):
 
 # admonitions
 
-class SeeAlso(AdmonitionBase):
-    title = 'See also'
+class SeeAlso(Admonition):
+    pass
 
 
 class VersionModified(DocutilsGroupingNode):

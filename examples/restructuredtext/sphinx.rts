@@ -398,8 +398,8 @@ font_size=8pt
 base=default
 font_slant=ITALIC
 
-
 [admonition]
+inline_title=true
 space_above=5pt
 space_below=5pt
 padding_left=10pt
@@ -413,9 +413,13 @@ stroke_color=#666
 [admonition title]
 base=default
 font_weight=BOLD
+font_variant=small capital
 indent_first=0
 space_above=5pt
 space_below=5pt
+
+[admonition inline title]
+base=admonition title
 
 [red adminition title:Paragraph]
 base=admonition title
@@ -424,17 +428,32 @@ font_color=#f00
 [attention admonition title]
 base=red adminition title
 
+[attention admonition inline title]
+base=attention admonition title
+
 [caution admonition title]
 base=red adminition title
+
+[caution admonition inline title]
+base=caution admonition title
 
 [danger admonition title]
 base=red adminition title
 
+[danger admonition inline title]
+base=danger admonition title
+
 [error admonition title]
 base=red adminition title
 
+[error admonition inline title]
+base=error admonition title
+
 [warning admonition title]
 base=red adminition title
+
+[warning admonition inline title]
+base=warning admonition title
 
 [header]
 base=default

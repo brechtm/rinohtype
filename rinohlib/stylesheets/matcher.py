@@ -224,17 +224,19 @@ matcher('option string', MixedStyledText.like('option_string'))
 
 matcher('option argument', MixedStyledText.like('option_arg'))
 
-matcher('admonition', GroupedFlowables.like('admonition'))
+matcher('admonition', Admonition)
 
-matcher('admonition title', GroupedFlowables.like('admonition')
-                            / Paragraph.like('title'))
+matcher('admonition title', Admonition / Paragraph.like('title'))
+
+matcher('admonition inline title', Admonition / ...
+                                   / StyledText.like('inline title'))
 
 for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
-    selector = (GroupedFlowables.like('admonition',
-                                      admonition_type=admonition_type)
-                / Paragraph.like('title'))
+    admonition_selector = Admonition.like(admonition_type=admonition_type)
+    selector = admonition_selector / Paragraph.like('title')
     matcher(admonition_type + ' admonition title', selector)
-
+    matcher(admonition_type + ' admonition inline title',
+            admonition_selector / ... / StyledText.like('inline title'))
 
 matcher('header', Header)
 

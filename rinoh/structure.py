@@ -21,13 +21,15 @@ from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
+from .util import Decorator
 
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
            'ListItemLabel', 'FieldList', 'DefinitionList', 'DefinitionTerm',
            'Definition', 'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
-           'TableOfContentsEntry', 'HorizontalRule', 'HorizontalRuleStyle']
+           'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
+           'HorizontalRule', 'HorizontalRuleStyle']
 
 
 class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
@@ -323,6 +325,50 @@ class TableOfContentsEntry(ParagraphBase):
 
     def text(self, container):
         return MixedStyledText(self.get_style('text', container), parent=self)
+
+
+class AdmonitionStyle(GroupedFlowablesStyle):
+    inline_title = Attribute(Bool, True, "Show the admonition's title inline "
+                                         "with the body text, if possible")
+
+class Admonition(GroupedFlowables):
+    style_class = AdmonitionStyle
+
+    def __init__(self, flowables, title=None, type=None,
+                 id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self._flowables = list(flowables)
+        self.custom_title = title
+        self.admonition_type = type
+
+    TITLES = {'attention': 'Attention!',
+              'caution': 'Caution!',
+              'danger': '!DANGER!',
+              'error': 'Error',
+              'hint': 'Hint',
+              'important': 'Important',
+              'note': 'Note',
+              'tip': 'Tip',
+              'warning': 'Warning',
+              'seealso': 'See also'}
+
+    @property
+    def title(self):
+        return self.custom_title or self.TITLES[self.admonition_type]
+
+    def flowables(self, container):
+        flowables = iter(self._flowables)
+        first_flowable = next(flowables)
+        inline_title = self.get_style('inline_title', container)
+        if inline_title and isinstance(first_flowable, Paragraph):
+            title = MixedStyledText(self.title, style='inline title')
+            yield Paragraph(title + ' ' + first_flowable, id=first_flowable.id,
+                            style=first_flowable.style)
+        else:
+            yield Paragraph(self.title, style='title')
+            yield first_flowable
+        for flowable in flowables:
+            yield flowable
 
 
 class HorizontalRuleStyle(FlowableStyle, LineStyle):
