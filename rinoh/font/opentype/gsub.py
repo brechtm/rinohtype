@@ -32,6 +32,26 @@ class SingleSubTable(MultiFormatTable):
             return self['Substitute'][index]
 
 
+# Multiple subtitution (subtable format 2)
+class Sequence(OpenTypeTable):
+    entries = [('GlyphCount', uint16),
+               ('Substitute', context_array(glyph_id, 'GlyphCount'))]
+
+
+class MultipleSubTable(OpenTypeTable):
+    entries = [('SubstFormat', uint16),
+               ('Coverage', indirect(Coverage)),
+               ('SequenceCount', uint16),
+               ('Sequence', context_array(Sequence, 'SequenceCount'))]
+
+    def lookup(self, glyph_id):
+        try:
+            index = self['Coverage'].index(glyph_id)
+        except ValueError:
+            raise KeyError
+        raise NotImplementedError
+
+
 # Alternate subtitution (subtable format 3)
 class AlternateSubTable(OpenTypeTable):
     pass
@@ -117,6 +137,7 @@ class GsubTable(LayoutTable):
     """Glyph substitution table"""
     tag = 'GSUB'
     lookup_types = {1: SingleSubTable,
+                    2: MultipleSubTable,
                     3: AlternateSubTable,
                     4: LigatureSubTable,
                     #6: ChainingContextSubtable}
