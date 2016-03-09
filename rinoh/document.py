@@ -414,7 +414,8 @@ to the terms of the GNU Affero General Public License version 3.''')
                 stack.append(parent)
                 parent = current
             elif section.level < current_level:
-                parent = stack.pop()
+                for i in range(current_level - section.level):
+                    parent = stack.pop()
             current = []
             parent.append((section_id, section_number, section_title, current))
             current_level = section.level
