@@ -85,6 +85,27 @@ class Document(object):
             self.fonts[font] = font_number, font_rsc
         return font_number, font_rsc
 
+    def create_outlines(self, sections_tree):
+        outlines = self.cos_document.catalog['Outlines'] = cos.Outlines()
+        self._create_outline_level(sections_tree, outlines)
+
+    def _create_outline_level(self, sections_tree, parent):
+        count = 0
+        for count, section_item in enumerate(sections_tree, start=1):
+            section_id, section_title, subsections_tree = section_item
+            current = cos.OutlineEntry(section_title, section_id, parent)
+            if subsections_tree:
+                self._create_outline_level(subsections_tree, current)
+            if count == 1:
+                parent['First'] = current
+            else:
+                previous['Next'] = current
+                current['Prev'] = previous
+            previous = current
+        if count:
+            parent['Last'] = current
+        parent['Count'] = cos.Integer(count)
+
     def write(self, file):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())

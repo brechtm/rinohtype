@@ -595,6 +595,21 @@ class Page(Dictionary):
                                   Real(width), Real(height)])
 
 
+class Outlines(Dictionary):
+    type = 'Outlines'
+
+    def __init__(self):
+        super().__init__(indirect=True)
+
+
+class OutlineEntry(Dictionary):
+    def __init__(self, title, destination, parent):
+        super().__init__(indirect=True)
+        self['Title'] = String(title)
+        self['Dest'] = String(destination)
+        self['Parent'] = parent
+
+
 class Rectangle(Array):
     def __init__(self, left, bottom, right, top, indirect=False):
         super().__init__([Real(value) for value in (left, bottom, right, top)],

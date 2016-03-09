@@ -32,7 +32,8 @@ from .backend import pdf
 from .flowable import RIGHT, LEFT, ANY
 from .layout import Container, ReflowRequired, Chain, PageBreakException
 from .number import NUMBER
-from .structure import NewChapterException
+from .reference import TITLE
+from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity
 from .util import NotImplementedAttribute, RefKeyDictionary
 
@@ -390,6 +391,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                 self.backend_document = self.backend.Document(self,
                                                               self.CREATOR)
                 section_num_pages = self.render_pages(_sections)
+            self.create_outlines()
             if filename:
                 self._save_cache(filename_root, section_num_pages,
                                  self.page_references)
@@ -398,6 +400,24 @@ to the terms of the GNU Affero General Public License version 3.''')
         finally:
             if filename_root:
                 file.close()
+
+    def create_outlines(self):
+        sections = parent = []
+        current_level = 1
+        stack = []
+        for section_id, section in ((id, flowable)
+                                    for id, flowable in self.elements.items()
+                                    if isinstance(flowable, Section)):
+            section_title = self.get_reference(section_id, TITLE)
+            if section.level > current_level:
+                stack.append(parent)
+                parent = current
+            elif section.level < current_level:
+                parent = stack.pop()
+            current = []
+            parent.append((section_id, section_title, current))
+            current_level = section.level
+        self.backend_document.create_outlines(sections)
 
     def render_pages(self, _sections):
         """Render the complete document once and return the number of pages
