@@ -60,6 +60,15 @@ class StringField(Field):
         self.strings_class = strings_class
         self.key = key
 
+    def string(self, document):
+        return document.strings(self.strings_class)[self.key]
+
+    def to_string(self, flowable_target):
+        string = self.string(flowable_target.document)
+        try:
+            return string.to_string(flowable_target)
+        except AttributeError:
+            return string
+
     def spans(self, container, **kwargs):
-        string = container.document.strings(self.strings_class)[self.key]
-        yield SingleStyledText(string, parent=self)
+        yield SingleStyledText(self.string(container.document), parent=self)

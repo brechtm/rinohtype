@@ -129,8 +129,9 @@ class Heading(NumberedParagraph):
                     label = parent_ref + separator + label
         else:
             label = None
+        title_string = self.content.to_string(flowable_target)
         document.set_reference(section_id, NUMBER, label)
-        document.set_reference(section_id, TITLE, str(self.content))
+        document.set_reference(section_id, TITLE, title_string)
 
     def text(self, container):
         number = self.number(container)

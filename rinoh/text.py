@@ -195,6 +195,9 @@ class StyledText(Styled, AttributeType):
     def _substitute_variables(cls, text, style):
         return SingleStyledText(text.format(**NAME2CHAR), style=style)
 
+    def to_string(self, flowable_target):
+        return str(self)
+
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
