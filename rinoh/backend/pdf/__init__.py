@@ -87,15 +87,15 @@ class Document(object):
 
     def create_outlines(self, sections_tree):
         outlines = self.cos_document.catalog['Outlines'] = cos.Outlines()
-        self._create_outline_level(sections_tree, outlines)
+        self._create_outline_level(sections_tree, outlines, True)
 
-    def _create_outline_level(self, sections_tree, parent):
+    def _create_outline_level(self, sections_tree, parent, top_level):
         count = 0
         for count, section_item in enumerate(sections_tree, start=1):
             section_id, section_title, subsections_tree = section_item
             current = cos.OutlineEntry(section_title, section_id, parent)
             if subsections_tree:
-                self._create_outline_level(subsections_tree, current)
+                self._create_outline_level(subsections_tree, current, False)
             if count == 1:
                 parent['First'] = current
             else:
@@ -104,7 +104,7 @@ class Document(object):
             previous = current
         if count:
             parent['Last'] = current
-        parent['Count'] = cos.Integer(count)
+        parent['Count'] = cos.Integer(count if top_level else - count)
 
     def write(self, file):
         for page in self.pages:
