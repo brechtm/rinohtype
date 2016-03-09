@@ -1,5 +1,4 @@
 from rinoh.dimension import CM
-from rinoh.paper import A5
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import TableOfContentsSection, AdmonitionTitles
@@ -7,11 +6,8 @@ from rinoh.style import StyleSheetFile
 from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
                             TitlePageTemplate)
 
-from rinohlib.stylesheets.somestyle import stylesheet as STYLESHEET
-from rinohlib.templates.base import (SimplePage, ContentsPartTemplate,
+from rinohlib.templates.base import (ContentsPartTemplate,
                                      FixedDocumentPartTemplate)
-from rinohlib.templates.book import Book, BookOptions
-from rinohlib.templates.article import Article, ArticleOptions
 from rinohlib.stylesheets.matcher import matcher
 
 if __name__ == '__main__':
