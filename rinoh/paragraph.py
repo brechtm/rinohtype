@@ -34,6 +34,7 @@ Horizontal justification of lines can be one of:
 import os
 import re
 
+from ast import literal_eval
 from copy import copy
 from functools import lru_cache, partial
 from itertools import tee
@@ -285,7 +286,7 @@ class TabStopList(AttributeType):
             position, align, fill = m.group('position', 'align', 'fill')
             tabstop = TabStop(DimensionBase.from_string(position),
                               TabAlign.from_string(align) if align else LEFT,
-                              StyledText.from_string(fill) if fill else None)
+                              literal_eval(fill) if fill else None)
             tabstops.append(tabstop)
         return tabstops
 
@@ -551,7 +552,7 @@ class GlyphsSpan(list):
         self.span = span
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
-        self.space = word_to_glyphs(' ')[0]
+        self.space, = word_to_glyphs(' ')
 
     @property
     def width(self):
