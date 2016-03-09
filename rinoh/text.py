@@ -303,7 +303,7 @@ class SingleStyledText(StyledText):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
 
-    def spans(self, document, **kwargs):
+    def spans(self, container, **kwargs):
         yield self
 
     @staticmethod

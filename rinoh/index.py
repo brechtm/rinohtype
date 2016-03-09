@@ -9,7 +9,8 @@
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Reference, PAGE
-from .structure import Section, Heading
+from .strings import StringField
+from .structure import Section, Heading, SectionTitles
 from .style import Styled
 from .text import MixedStyledText, StyledText
 from .util import intersperse
@@ -21,7 +22,8 @@ __all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexTerm',
 
 class IndexSection(Section):
     def __init__(self):
-        super().__init__([Heading('Index', style='unnumbered'),
+        section_title = StringField(SectionTitles, 'index')
+        super().__init__([Heading(section_title, style='unnumbered'),
                           Index()],
                          style='index')
 

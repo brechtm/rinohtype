@@ -19,8 +19,9 @@ from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
-from .text import StyledText, Tab, SingleStyledText
-from .structure import Header, HorizontalRule, Footer
+from .text import StyledText, Tab
+from .strings import StringField
+from .structure import Header, HorizontalRule, Footer, SectionTitles
 from .style import StyleSheet, Bool, AttributeType
 from .util import NamedDescriptor, WithNamedDescriptors
 
@@ -94,7 +95,7 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
 
 
 def chapter_title_flowables(section_id):
-    yield Paragraph(SingleStyledText('Chapter'))
+    yield Paragraph(StringField(SectionTitles, 'chapter'))
     yield Paragraph(Reference(section_id, NUMBER))
     yield Paragraph(Reference(section_id, TITLE))
 

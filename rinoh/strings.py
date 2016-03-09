@@ -6,15 +6,16 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .text import StyledText
+from .reference import Field
+from .text import StyledText, SingleStyledText
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
-__all__ = ['String', 'Strings']
+__all__ = ['String', 'Strings', 'StringField']
 
 
 class String(NamedDescriptor):
-    """Descriptor used to describe a style attribute"""
+    """Descriptor used to describe a configurable string"""
     def __init__(self, default_value, description):
         self.default_value = default_value
         self.description = description
@@ -51,3 +52,14 @@ class Strings(dict, metaclass=WithNamedDescriptors):
 
     def __getitem__(self, name):
         return getattr(self, name)
+
+
+class StringField(Field):
+    def __init__(self, strings_class, key, style=None, parent=None):
+        super().__init__(style=style, parent=parent)
+        self.strings_class = strings_class
+        self.key = key
+
+    def spans(self, container, **kwargs):
+        string = container.document.strings(self.strings_class)[self.key]
+        yield SingleStyledText(string, parent=self)

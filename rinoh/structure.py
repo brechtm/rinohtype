@@ -21,8 +21,7 @@ from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer
-from .strings import Strings, String
-
+from .strings import Strings, String, StringField
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
            'ListItemLabel', 'FieldList', 'DefinitionList', 'DefinitionTerm',
@@ -30,6 +29,13 @@ __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'HorizontalRule', 'HorizontalRuleStyle']
+
+
+class SectionTitles(Strings):
+    contents = String('Table of Contents', 'Title for the table of contents'
+                                           ' section')
+    chapter = String('Chapter', 'Label for top-level sections')
+    index = String('Index', 'Title for the index section')
 
 
 class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
@@ -227,7 +233,8 @@ class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
 
 class TableOfContentsSection(Section):
     def __init__(self):
-        super().__init__([Heading('Table of Contents', style='unnumbered'),
+        section_title = StringField(SectionTitles, 'contents')
+        super().__init__([Heading(section_title, style='unnumbered'),
                           TableOfContents()],
                          style='table of contents')
 
