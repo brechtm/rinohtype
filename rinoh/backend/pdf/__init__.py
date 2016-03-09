@@ -92,8 +92,13 @@ class Document(object):
     def _create_outline_level(self, sections_tree, parent, top_level):
         count = 0
         for count, section_item in enumerate(sections_tree, start=1):
-            section_id, section_title, subsections_tree = section_item
-            current = cos.OutlineEntry(section_title, section_id, parent)
+            (section_id, section_number,
+             section_title, subsections_tree) = section_item
+            if section_number:
+                section_label = section_number + ' ' + section_title
+            else:
+                section_label = section_title
+            current = cos.OutlineEntry(section_label, section_id, parent)
             if subsections_tree:
                 self._create_outline_level(subsections_tree, current, False)
             if count == 1:

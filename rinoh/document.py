@@ -29,7 +29,7 @@ from itertools import count
 
 from . import __version__, __release_date__
 from .backend import pdf
-from .flowable import RIGHT, LEFT, ANY
+from .flowable import RIGHT, LEFT
 from .layout import Container, ReflowRequired, Chain, PageBreakException
 from .number import NUMBER
 from .reference import TITLE
@@ -408,6 +408,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         for section_id, section in ((id, flowable)
                                     for id, flowable in self.elements.items()
                                     if isinstance(flowable, Section)):
+            section_number = self.get_reference(section_id, NUMBER)
             section_title = self.get_reference(section_id, TITLE)
             if section.level > current_level:
                 stack.append(parent)
@@ -415,7 +416,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             elif section.level < current_level:
                 parent = stack.pop()
             current = []
-            parent.append((section_id, section_title, current))
+            parent.append((section_id, section_number, section_title, current))
             current_level = section.level
         self.backend_document.create_outlines(sections)
 
