@@ -14,7 +14,7 @@ from .document import (Document, DocumentSection, Page, PageOrientation,
 from .float import BackgroundImage
 from .layout import (FootnoteContainer, DownExpandingContainer,
                      ChainedContainer, UpExpandingContainer, Container,
-                     FlowablesContainer)
+                     FlowablesContainer, BACKGROUND, CONTENT, HEADER_FOOTER)
 from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
@@ -149,10 +149,10 @@ class PageBase(Page):
         after_break_background = options['after_break_background']
         bg = after_break_background or background
         if after_break and bg:
-            self.background = FlowablesContainer('background', self)
+            self.background = FlowablesContainer('background', BACKGROUND, self)
             self.background << bg
         elif background:
-            self.background = FlowablesContainer('background', self)
+            self.background = FlowablesContainer('background', BACKGROUND, self)
             self.background << background
 
 
@@ -168,13 +168,14 @@ class SimplePage(PageBase):
                               self.body_width, self.body_height)
         footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
                                            self.body.height)
-        float_space = DownExpandingContainer('floats', self.body, 0*PT, 0*PT,
+        float_space = DownExpandingContainer('floats', CONTENT, self.body, 0, 0,
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
         if options['chapter_title_flowables'] and new_chapter:
             height = options['chapter_title_height']
-            self.chapter_title = FlowablesContainer('chapter title', self.body,
-                                                    0, 0, height=height)
+            self.chapter_title = FlowablesContainer('chapter title', CONTENT,
+                                                    self.body, 0, 0,
+                                                    height=height)
             column_top = self.chapter_title.bottom
             header = options['chapter_header_text']
             footer = options['chapter_footer_text']
@@ -183,8 +184,8 @@ class SimplePage(PageBase):
             column_top = float_space.bottom
             header = options['header_text']
             footer = options['footer_text']
-        self.columns = [ChainedContainer('column{}'.format(i + 1), self.body,
-                                         chain,
+        self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
+                                         self.body, chain,
                                          left=i * (column_width
                                                    + column_spacing),
                                          top=column_top, width=column_width,
@@ -195,7 +196,7 @@ class SimplePage(PageBase):
 
         if header:
             header_bottom = self.body.top - header_footer_distance
-            self.header = UpExpandingContainer('header', self,
+            self.header = UpExpandingContainer('header', HEADER_FOOTER, self,
                                                left=self.left_margin,
                                                bottom=header_bottom,
                                                width=self.body_width)
@@ -203,7 +204,7 @@ class SimplePage(PageBase):
             self.header.append_flowable(HorizontalRule(style='header'))
         if footer:
             footer_vpos = self.body.bottom + header_footer_distance
-            self.footer = DownExpandingContainer('footer', self,
+            self.footer = DownExpandingContainer('footer', HEADER_FOOTER, self,
                                                  left=self.left_margin,
                                                  top=footer_vpos,
                                                  width=self.body_width)
@@ -229,8 +230,9 @@ class TitlePageTemplate(PageTemplateBase):
 class TitlePage(PageBase):
     def __init__(self, document_part, options, after_break):
         super().__init__(document_part, options, after_break)
-        self.title = DownExpandingContainer('title', self, self.left_margin,
-                                            self.top_margin, self.body_width)
+        self.title = DownExpandingContainer('title', CONTENT, self,
+                                            self.left_margin, self.top_margin,
+                                            self.body_width)
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
         if 'subtitle' in self.document.metadata:

@@ -173,7 +173,7 @@ class Container(object):
     def empty_canvas(self):
         self.canvas = self.parent.canvas.new()
 
-    def render(self, rerender=False):
+    def render(self, type, rerender=False):
         """Render the contents of this container to its canvas.
 
         Note that the rendered contents need to be :meth:`place`d on the parent
@@ -182,7 +182,7 @@ class Container(object):
         This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
         for child in self.children:
-            child.render(rerender)
+            child.render(type, rerender)
 
     def check_overflow(self):
         for child in self.children:
@@ -198,17 +198,23 @@ class Container(object):
         self.canvas.append(float(self.left), float(self.top))
 
 
+BACKGROUND = 'background'
+CONTENT = 'content'
+HEADER_FOOTER = 'header_footer'
+
+
 class FlowablesContainerBase(Container):
     """A :class:`Container` that renders :class:`Flowable`\ s to a rectangular
     area on a page. The first flowable is rendered at the top of the container.
     The next flowable is rendered below the first one, and so on."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None, height=None,
-                 right=None, bottom=None):
+    def __init__(self, name, type, parent, left=None, top=None,
+                 width=None, height=None, right=None, bottom=None):
         self._self_cursor = Dimension(0)  # initialized at container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
+        self.type = type
 
     @property
     def chained_ancestor(self):
@@ -230,7 +236,7 @@ class FlowablesContainerBase(Container):
     def remaining_height(self):
         return self.height - self.cursor
 
-    def render(self, rerender=False):
+    def render(self, type, rerender=False):
         raise NotImplementedError
 
     def advance(self, height, ignore_overflow=False):
@@ -252,26 +258,26 @@ class FlowablesContainerBase(Container):
 class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
     """A container that renders a predefined series of flowables."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None,
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
                  height=None, right=None, bottom=None):
-        super().__init__(parent.document_part, name, parent, left=left, top=top,
-                         width=width, height=height, right=right, bottom=bottom)
+        super().__init__(parent.document_part, name, type, parent, left=left,
+                         top=top, width=width, height=height, right=right,
+                         bottom=bottom)
 
-    def render(self, rerender=False):
-        if not self.cursor:
+    def render(self, type, rerender=False):
+        if type in (self.type, None) and not self.cursor:
             last_descender = None
             for flowable in self.flowables:
                 height, last_descender = flowable.flow(self, last_descender)
-        return iter(())   # no chains to yield
 
 
 class ChainedContainer(FlowablesContainerBase):
     """A container that renders flowables from the :class:`Chain` it is part
     of."""
 
-    def __init__(self, name, parent, chain, left=None, top=None, width=None,
-                 height=None, right=None, bottom=None):
-        super().__init__(name, parent, left=left, top=top, width=width,
+    def __init__(self, name, type, parent, chain, left=None, top=None,
+                 width=None, height=None, right=None, bottom=None):
+        super().__init__(name, type, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
         chain.containers.append(self)
         self.chain = chain
@@ -280,23 +286,23 @@ class ChainedContainer(FlowablesContainerBase):
     def chained_ancestor(self):
         return self
 
-    def render(self, rerender=False):
-        last_descender = None
-        self.chain.render(self, rerender=rerender,
-                          last_descender=last_descender)
+    def render(self, type, rerender=False):
+        if type in (self.type, None):
+            self.chain.render(self, rerender=rerender)
 
 
 class ExpandingContainerBase(FlowablesContainer):
     """A dynamically, vertically growing :class:`Container`."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None,
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
                  right=None, bottom=None, max_height=None):
         """See :class:`ContainerBase` for information on the `parent`, `left`,
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
         height = DimensionAddition()
-        super().__init__(name, parent, left, top, width, height, right, bottom)
+        super().__init__(name, type, parent, left, top,
+                         width, height, right, bottom)
         self.height.addends.append(self._cursor)
         self.max_height = max_height or float('+inf')
 
@@ -308,7 +314,7 @@ class ExpandingContainerBase(FlowablesContainer):
 class DownExpandingContainer(ExpandingContainerBase):
     """A container that is anchored at the top and expands downwards."""
 
-    def __init__(self, name, parent, left=None, top=None, width=None,
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
                  right=None, max_height=None):
         """See :class:`Container` for information on the `name`, `parent`,
         `left`, `width` and `right` parameters.
@@ -318,14 +324,14 @@ class DownExpandingContainer(ExpandingContainerBase):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
-        super().__init__(name, parent, left=left, top=top, width=width,
+        super().__init__(name, type, parent, left=left, top=top, width=width,
                          right=right, max_height=max_height)
 
 
 class _InlineDownExpandingContainer(DownExpandingContainer):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True):
-        super().__init__(name, parent, left=left, top=parent.cursor,
+        super().__init__(name, None, parent, left=left, top=parent.cursor,
                          width=width, right=right,
                          max_height=parent.remaining_height)
         if advance_parent:
@@ -354,8 +360,8 @@ class InlineDownExpandingContainer(ContextManager):
 
         Setting `advance_parent` to `False` prevents the parent container's
         cursor being advanced."""
-        self._container = _InlineDownExpandingContainer(name, parent, left,
-                                                        width, right,
+        self._container = _InlineDownExpandingContainer(name, parent,
+                                                        left, width, right,
                                                         extra_space_below,
                                                         advance_parent)
 
@@ -370,7 +376,7 @@ class InlineDownExpandingContainer(ContextManager):
 class UpExpandingContainer(ExpandingContainerBase):
     """A container that is anchored at the bottom and expands upwards."""
 
-    def __init__(self, name, parent, left=None, bottom=None, width=None,
+    def __init__(self, name, type, parent, left=None, bottom=None, width=None,
                  right=None, max_height=None, extra_space_below=0):
         """See :class:`ContainerBase` for information on the `name`, `parent`,
         `left`, `width` and `right` parameters.
@@ -381,7 +387,7 @@ class UpExpandingContainer(ExpandingContainerBase):
 
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
-        super().__init__(name, parent, left, None, width, right, bottom,
+        super().__init__(name, type, parent, left, None, width, right, bottom,
                          max_height)
 
 
@@ -428,7 +434,7 @@ class VirtualContainer(DownExpandingContainer):
 
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
-        super().__init__('VIRTUAL', parent, width=width,
+        super().__init__('VIRTUAL', None, parent, width=width,
                          max_height=float('+inf'))
 
     def empty_canvas(self):
@@ -460,8 +466,8 @@ class BottomFloatContainer(UpExpandingContainer, FloatContainer):
 class FootnoteContainer(UpExpandingContainer):
     def __init__(self, name, parent, left=None, bottom=None, width=None,
                  right=None, max_height=None):
-        super().__init__(name, parent, left, bottom, width=width, right=right,
-                         max_height=max_height)
+        super().__init__(name, CONTENT, parent, left, bottom,
+                         width=width, right=right, max_height=max_height)
         self._footnote_number = 0
         self._footnote_space = self
         self.footnote_queue = deque()

@@ -30,7 +30,8 @@ from itertools import count
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT
-from .layout import Container, ReflowRequired, Chain, PageBreakException
+from .layout import (Container, ReflowRequired, Chain, PageBreakException,
+                     BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NUMBER
 from .reference import TITLE
 from .structure import NewChapterException, Section
@@ -113,13 +114,17 @@ class Page(Container):
         return self.document_section.page_number_format
 
     def render(self):
-        for index in count():
-            try:
-                super().render(rerender=index > 0)
-                break
-            except ReflowRequired:
-                print('Overflow on page {}, reflowing ({})...'
-                      .format(self.number, index + 1))
+        super().render(BACKGROUND)
+        try:
+            for index in count():
+                try:
+                    super().render(CONTENT, rerender=index > 0)
+                    break
+                except ReflowRequired:
+                    print('Overflow on page {}, reflowing ({})...'
+                          .format(self.number, index + 1))
+        finally:
+            super().render(HEADER_FOOTER)
 
 
 class BackendDocumentMetadata(object):
