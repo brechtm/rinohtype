@@ -115,8 +115,7 @@ class Page(Container):
     def render(self):
         for index in count():
             try:
-                for chain in super().render(rerender=index > 0):
-                    yield chain
+                super().render(rerender=index > 0)
                 break
             except ReflowRequired:
                 print('Overflow on page {}, reflowing ({})...'
@@ -146,9 +145,12 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.page_template = page_template
         self.flowable_targets = []
         self.pages = []
-        self.chain = Chain(self)
-        for flowable in flowables:
-            self.chain << flowable
+        if flowables:
+            self.chain = Chain(self)
+            for flowable in flowables:
+                self.chain << flowable
+        else:
+            self.chain = None
 
     @property
     def document(self):
@@ -167,21 +169,17 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.add_page(self.first_page())
         for page in self.pages:
             try:
-                chains_requiring_new_page = set(chain for chain in page.render())
+                page.render()
                 break_type = None
             except NewChapterException as nce:
-                chains_requiring_new_page = set((nce.chain, ))
                 break_type = nce.break_type
             except PageBreakException as pbe:
-                chains_requiring_new_page = set((pbe.chain, ))
                 break_type = None
             page.place()
-            if chains_requiring_new_page:
-                # the following grows self.pages
+            if self.chain and not self.chain.done:
                 next_page_type = LEFT if page.number % 2 else RIGHT
-                page = self.new_page(chains_requiring_new_page,
-                                     next_page_type == break_type)
-                self.add_page(page)
+                page = self.new_page(next_page_type == break_type)
+                self.add_page(page)     # this grows self.pages!
         page_count = document_page_count + self.number_of_pages
         next_page_type = LEFT if page_count % 2 else RIGHT
         if next_page_type == self.end_at:
@@ -193,14 +191,13 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.pages.append(page)
 
     def first_page(self):
-        return self.new_page([self.chain], new_chapter=True)
+        return self.new_page(new_chapter=True)
 
-    def new_page(self, chains, new_chapter, **kwargs):
+    def new_page(self, new_chapter, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        chain, = chains
-        return self.page_template.page(self, chain, new_chapter, **kwargs)
+        return self.page_template.page(self, self.chain, new_chapter, **kwargs)
 
     @classmethod
     def match(cls, styled, container):

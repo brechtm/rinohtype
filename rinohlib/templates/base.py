@@ -188,9 +188,9 @@ class ContentsPartTemplate(DocumentPartTemplate):
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
-    def __init__(self, page_template, flowables, restart_numbering=False):
+    def __init__(self, page_template, flowables=None, restart_numbering=False):
         super().__init__(page_template, restart_numbering)
-        self.flowables = flowables
+        self.flowables = flowables or []
 
     def document_part(self, document_section):
         return DocumentPart(document_section, self.page_template,

@@ -182,8 +182,7 @@ class Container(object):
         This method returns an iterator yielding all the :class:`Chain`\ s that
         have run out of containers."""
         for child in self.children:
-            for chain in child.render(rerender):
-                yield chain
+            child.render(rerender)
 
     def check_overflow(self):
         for child in self.children:
@@ -283,9 +282,8 @@ class ChainedContainer(FlowablesContainerBase):
 
     def render(self, rerender=False):
         last_descender = None
-        if self.chain.render(self, rerender=rerender,
-                             last_descender=last_descender):
-            yield self.chain
+        self.chain.render(self, rerender=rerender,
+                          last_descender=last_descender)
 
 
 class ExpandingContainerBase(FlowablesContainer):
@@ -557,6 +555,7 @@ class Chain(FlowableTarget):
                 self._state = copy(self._fresh_page_state)
                 self._rerendering = True
         try:
+            self.done = False
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
                 height, last_descender \
@@ -566,7 +565,7 @@ class Chain(FlowableTarget):
             # all flowables have been rendered
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
-            return False
+            self.done = True
         except PageBreakException as e:
             self._state.flowable_state = e.flowable_state
             self._fresh_page_state = copy(self._state)
@@ -576,7 +575,6 @@ class Chain(FlowableTarget):
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
                 self._fresh_page_state = copy(self._state)
-            return container == self.last_container
         except ReflowRequired:
             self._rerendering = False
             raise

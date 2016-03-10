@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     title_page_template = TitlePageTemplate(top_margin=8*CM)
     page_template = PageTemplate()
-    document_parts = [FixedDocumentPartTemplate(title_page_template, []),
+    document_parts = [FixedDocumentPartTemplate(title_page_template),
                       FixedDocumentPartTemplate(page_template,
                                                 [TableOfContentsSection()]),
                       ContentsPartTemplate(page_template, False)]
