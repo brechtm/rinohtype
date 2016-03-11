@@ -13,7 +13,7 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .layout import PageBreakException
+from .layout import PageBreakException, EndOfContainer
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
@@ -75,7 +75,7 @@ class Section(Referenceable, StaticGroupedFlowables, PageBreak):
         return show_in_toc and parent_show_in_toc
 
     def render(self, container, descender, state=None, **kwargs):
-        container.page.set_current_section(self, state is None)
+        container.page.set_current_section(self, heading=False)
         return super().render(container, descender, state=state, **kwargs)
 
 
@@ -141,9 +141,11 @@ class Heading(NumberedParagraph):
         if self.level == 1 and container.page.chapter_title:
             section_id = self.section.get_id(container.document)
             container.page.create_chapter_title(section_id)
-            return 0, None
+            result = 0, None
         else:
-            return super().render(container, descender, state=state)
+            result = super().render(container, descender, state=state)
+        container.page.set_current_section(self.section, heading=True)
+        return result
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
