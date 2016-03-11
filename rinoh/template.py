@@ -22,7 +22,7 @@ from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
 from .text import StyledText, Tab
 from .strings import StringField
 from .structure import Header, HorizontalRule, Footer, SectionTitles
-from .style import StyleSheet, Bool, AttributeType
+from .style import StyleSheet, Bool, Integer, AttributeType
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
@@ -111,7 +111,7 @@ class Function(AttributeType):
 class PageTemplate(PageTemplateBase):
     header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
-    columns = Option(int, 1, 'The number of columns for the body text')
+    columns = Option(Integer, 1, 'The number of columns for the body text')
     column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
     header_text = Option(StyledText, Variable(SECTION_NUMBER(1))
                                      + ' ' + Variable(SECTION_TITLE(1)),
