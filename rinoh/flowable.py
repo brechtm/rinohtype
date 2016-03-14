@@ -286,16 +286,19 @@ class GroupedFlowables(Flowable):
 
     def _render_keep_with_next(self, flowable, state, saved_state, container,
                                descender, **kwargs):
-        item_spacing = self.get_style('flowable_spacing', container)
-        keep_with_next = flowable.get_style('keep_with_next', container)
-        if keep_with_next:
+        try:
+            with MaybeContainer(container) as maybe_container:
+                width, descender = \
+                    flowable.flow(maybe_container, descender,
+                                  state=state.first_flowable_state, **kwargs)
+        except EndOfContainer as eoc:
+            state.prepend(flowable, eoc.flowable_state)
+            raise EndOfContainer(state, eoc.page_break)
+        if flowable.get_style('keep_with_next', container):
+            item_spacing = self.get_style('flowable_spacing', container)
+            maybe_container.advance(item_spacing, True)
+            next_flowable = state.next_flowable()
             try:
-                with MaybeContainer(container) as maybe_container:
-                    width, descender = \
-                        flowable.flow(maybe_container, descender,
-                                      state=state.first_flowable_state, **kwargs)
-                    maybe_container.advance(item_spacing, True)
-                next_flowable = state.next_flowable()
                 try:
                     width, descender = \
                         next_flowable.flow(container, descender,
@@ -308,23 +311,12 @@ class GroupedFlowables(Flowable):
                         state.prepend(next_flowable, e.flowable_state)
                         eoc = EndOfContainer(state, e.page_break)
                         raise HideException(eoc)
-            except EndOfContainer as eoc:
-                state.prepend(flowable, eoc.flowable_state)
-                raise EndOfContainer(state, eoc.page_break)
             except HideException as e:
                 if e.exception is None:
                     maybe_container._do_place = False
                     raise EndOfContainer(saved_state, None)
                 else:
                     raise e.exception
-        else:
-            try:
-                width, descender = \
-                    flowable.flow(container, descender,
-                                  state=state.first_flowable_state, **kwargs)
-            except EndOfContainer as eoc:
-                state.prepend(flowable, eoc.flowable_state)
-                raise EndOfContainer(state, eoc.page_break)
         return width, descender
 
 
