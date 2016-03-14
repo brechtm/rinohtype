@@ -299,30 +299,18 @@ class GroupedFlowables(Flowable):
             maybe_container.advance(item_spacing, True)
             next_flowable = state.next_flowable()
             try:
-                try:
-                    width, descender = \
-                        next_flowable.flow(container, descender,
-                                           state=state.first_flowable_state,
-                                           **kwargs)
-                except EndOfContainer as e:
-                    if not e.flowable_state or e.flowable_state.initial:
-                        raise HideException(None)
-                    else:
-                        state.prepend(next_flowable, e.flowable_state)
-                        eoc = EndOfContainer(state, e.page_break)
-                        raise HideException(eoc)
-            except HideException as e:
-                if e.exception is None:
+                width, descender = \
+                    next_flowable.flow(container, descender,
+                                       state=state.first_flowable_state,
+                                       **kwargs)
+            except EndOfContainer as e:
+                if not e.flowable_state or e.flowable_state.initial:
                     maybe_container._do_place = False
                     raise EndOfContainer(saved_state, None)
                 else:
-                    raise e.exception
+                    state.prepend(next_flowable, e.flowable_state)
+                    raise EndOfContainer(state, e.page_break)
         return width, descender
-
-
-class HideException(Exception):
-    def __init__(self, exception):
-        self.exception = exception
 
 
 class StaticGroupedFlowables(GroupedFlowables):
