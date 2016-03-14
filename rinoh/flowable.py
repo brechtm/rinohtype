@@ -18,7 +18,7 @@ that make up the content of a document and are rendered onto its pages.
 
 
 from copy import copy
-from itertools import chain, tee
+from itertools import chain, tee, count
 
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
@@ -271,47 +271,46 @@ class GroupedFlowables(Flowable):
         state = state or GroupedFlowablesState(flowables)
         try:
             saved_state = copy(state)
-            flowable = state.next_flowable(first=True)
-            while True:
-                flowable.parent = self
+            for i in count():
                 width, descender = \
-                    self._render_keep_with_next(flowable, state, container,
-                                                descender, **kwargs)
+                    self._render_keep_with_next(state, container, descender,
+                                                first=(i == 0), **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
                 saved_state = copy(state)
-                flowable = state.next_flowable()
                 container.advance(item_spacing, True)
         except AbortException:
             raise EndOfContainer(saved_state, None)
         except StopIteration:
             return max_flowable_width, descender
 
-    def _render_keep_with_next(self, flowable, state, container, descender,
-                               nested=False, **kwargs):
+    def _render_keep_with_next(self, state, container, descender,
+                               nested=False, first=False, **kwargs):
+        flowable = state.next_flowable(first=first)
+        flowable.parent = self
         try:
             with MaybeContainer(container) as maybe_container:
                 width, descender = \
                     flowable.flow(maybe_container, descender,
                                   state=state.first_flowable_state, **kwargs)
         except EndOfContainer as eoc:
-            if nested:
-                raise
-            state.prepend(flowable, eoc.flowable_state)
-            raise EndOfContainer(state, eoc.page_break)
+            if not nested:
+                state.prepend(flowable, eoc.flowable_state)
+                eoc = EndOfContainer(state, eoc.page_break)
+            eoc._flowable = flowable
+            raise eoc
         if flowable.get_style('keep_with_next', container):
             item_spacing = self.get_style('flowable_spacing', container)
             maybe_container.advance(item_spacing)
-            next_flowable = state.next_flowable()
             try:
                 width, descender = \
-                    self._render_keep_with_next(next_flowable, state, container,
-                                                descender, True, **kwargs)
+                    self._render_keep_with_next(state, container, descender,
+                                                nested=True, **kwargs)
             except EndOfContainer as e:
                 if not e.flowable_state or e.flowable_state.initial:
                     maybe_container._do_place = False
                     raise AbortException
                 else:
-                    state.prepend(next_flowable, e.flowable_state)
+                    state.prepend(e._flowable, e.flowable_state)
                     raise EndOfContainer(state, e.page_break)
         return width, descender
 
