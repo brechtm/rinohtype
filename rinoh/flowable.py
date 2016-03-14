@@ -300,7 +300,7 @@ class GroupedFlowables(Flowable):
             raise EndOfContainer(state, eoc.page_break)
         if flowable.get_style('keep_with_next', container):
             item_spacing = self.get_style('flowable_spacing', container)
-            maybe_container.advance(item_spacing, True)
+            maybe_container.advance(item_spacing)
             next_flowable = state.next_flowable()
             try:
                 width, descender = \
