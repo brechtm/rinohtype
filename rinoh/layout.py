@@ -564,6 +564,7 @@ class Chain(FlowableTarget):
             self.done = False
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
+                # TODO: keep_with_next
                 height, last_descender \
                     = flowable.flow(container, last_descender,
                                     self._state.flowable_state)

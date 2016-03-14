@@ -18,16 +18,14 @@ that make up the content of a document and are rendered onto its pages.
 
 
 from copy import copy
-from itertools import chain, takewhile, tee
+from itertools import chain, tee
 
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer,
                      PageBreakException)
-from .util import last
-from .style import Styled, OptionSet, Attribute, OverrideDefault
-
+from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
 
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
@@ -51,6 +49,8 @@ class FlowableStyle(ShapeStyle):
     padding_right = Attribute(DimensionBase, 0, 'Right padding')
     padding_top = Attribute(DimensionBase, 0, 'Top padding')
     padding_bottom = Attribute(DimensionBase, 0, 'Bottom padding')
+    keep_with_next = Attribute(Bool, False, 'Keep this flowable and the next '
+                                            'on the same page')
     stroke_color = OverrideDefault(None)
     fill_color = OverrideDefault(None)
 
@@ -241,7 +241,10 @@ class GroupedFlowablesState(FlowableState):
         return self.__class__(copy_list_items, copy_first_flowable_state,
                               _initial=self.initial)
 
-    def next_flowable(self):
+    def next_flowable(self, first=False):
+        if not first:
+            self.initial = False
+            self.first_flowable_state = None
         return next(self.flowables)
 
     def prepend(self, flowable, first_flowable_state):
@@ -267,22 +270,67 @@ class GroupedFlowables(Flowable):
         item_spacing = self.get_style('flowable_spacing', container)
         state = state or GroupedFlowablesState(flowables)
         try:
-            flowable = state.next_flowable()
+            saved_state = copy(state)
+            flowable = state.next_flowable(first=True)
             while True:
                 flowable.parent = self
                 width, descender = \
-                    flowable.flow(container, descender,
-                                  state=state.first_flowable_state, **kwargs)
+                    self._render_keep_with_next(flowable, state, saved_state,
+                                                container, descender, **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
-                state.initial = False
-                state.first_flowable_state = None
+                saved_state = copy(state)
                 flowable = state.next_flowable()
                 container.advance(item_spacing, True)
-        except EndOfContainer as eoc:
-            state.prepend(flowable, eoc.flowable_state)
-            raise EndOfContainer(state, eoc.page_break)
         except StopIteration:
             return max_flowable_width, descender
+
+    def _render_keep_with_next(self, flowable, state, saved_state, container,
+                               descender, **kwargs):
+        item_spacing = self.get_style('flowable_spacing', container)
+        keep_with_next = flowable.get_style('keep_with_next', container)
+        if keep_with_next:
+            try:
+                with MaybeContainer(container) as maybe_container:
+                    width, descender = \
+                        flowable.flow(maybe_container, descender,
+                                      state=state.first_flowable_state, **kwargs)
+                    maybe_container.advance(item_spacing, True)
+                next_flowable = state.next_flowable()
+                try:
+                    width, descender = \
+                        next_flowable.flow(container, descender,
+                                           state=state.first_flowable_state,
+                                           **kwargs)
+                except EndOfContainer as e:
+                    if not e.flowable_state or e.flowable_state.initial:
+                        raise HideException(None)
+                    else:
+                        state.prepend(next_flowable, e.flowable_state)
+                        eoc = EndOfContainer(state, e.page_break)
+                        raise HideException(eoc)
+            except EndOfContainer as eoc:
+                state.prepend(flowable, eoc.flowable_state)
+                raise EndOfContainer(state, eoc.page_break)
+            except HideException as e:
+                if e.exception is None:
+                    maybe_container._do_place = False
+                    raise EndOfContainer(saved_state, None)
+                else:
+                    raise e.exception
+        else:
+            try:
+                width, descender = \
+                    flowable.flow(container, descender,
+                                  state=state.first_flowable_state, **kwargs)
+            except EndOfContainer as eoc:
+                state.prepend(flowable, eoc.flowable_state)
+                raise EndOfContainer(state, eoc.page_break)
+        return width, descender
+
+
+class HideException(Exception):
+    def __init__(self, exception):
+        self.exception = exception
 
 
 class StaticGroupedFlowables(GroupedFlowables):

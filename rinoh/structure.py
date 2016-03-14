@@ -20,7 +20,7 @@ from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
 from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
-from .style import PARENT_STYLE, Attribute, Bool, Integer
+from .style import PARENT_STYLE, Attribute, Bool, Integer, OverrideDefault
 from .strings import Strings, String, StringField
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
@@ -85,6 +85,7 @@ class HeadingStyle(NumberedParagraphStyle):
                                  "labels of the parent section and this "
                                  "section. If `None`, only show this section's "
                                  "number label.")
+    keep_with_next = OverrideDefault(True)
 
 
 class Heading(NumberedParagraph):
