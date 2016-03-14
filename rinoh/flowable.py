@@ -287,13 +287,15 @@ class GroupedFlowables(Flowable):
             return max_flowable_width, descender
 
     def _render_keep_with_next(self, flowable, state, container, descender,
-                               **kwargs):
+                               nested=False, **kwargs):
         try:
             with MaybeContainer(container) as maybe_container:
                 width, descender = \
                     flowable.flow(maybe_container, descender,
                                   state=state.first_flowable_state, **kwargs)
         except EndOfContainer as eoc:
+            if nested:
+                raise
             state.prepend(flowable, eoc.flowable_state)
             raise EndOfContainer(state, eoc.page_break)
         if flowable.get_style('keep_with_next', container):
@@ -302,9 +304,8 @@ class GroupedFlowables(Flowable):
             next_flowable = state.next_flowable()
             try:
                 width, descender = \
-                    next_flowable.flow(container, descender,
-                                       state=state.first_flowable_state,
-                                       **kwargs)
+                    self._render_keep_with_next(next_flowable, state, container,
+                                                descender, True, **kwargs)
             except EndOfContainer as e:
                 if not e.flowable_state or e.flowable_state.initial:
                     maybe_container._do_place = False
