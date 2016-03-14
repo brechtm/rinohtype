@@ -275,17 +275,19 @@ class GroupedFlowables(Flowable):
             while True:
                 flowable.parent = self
                 width, descender = \
-                    self._render_keep_with_next(flowable, state, saved_state,
-                                                container, descender, **kwargs)
+                    self._render_keep_with_next(flowable, state, container,
+                                                descender, **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
                 saved_state = copy(state)
                 flowable = state.next_flowable()
                 container.advance(item_spacing, True)
+        except AbortException:
+            raise EndOfContainer(saved_state, None)
         except StopIteration:
             return max_flowable_width, descender
 
-    def _render_keep_with_next(self, flowable, state, saved_state, container,
-                               descender, **kwargs):
+    def _render_keep_with_next(self, flowable, state, container, descender,
+                               **kwargs):
         try:
             with MaybeContainer(container) as maybe_container:
                 width, descender = \
@@ -306,11 +308,15 @@ class GroupedFlowables(Flowable):
             except EndOfContainer as e:
                 if not e.flowable_state or e.flowable_state.initial:
                     maybe_container._do_place = False
-                    raise EndOfContainer(saved_state, None)
+                    raise AbortException
                 else:
                     state.prepend(next_flowable, e.flowable_state)
                     raise EndOfContainer(state, e.page_break)
         return width, descender
+
+
+class AbortException(Exception):
+    pass
 
 
 class StaticGroupedFlowables(GroupedFlowables):
