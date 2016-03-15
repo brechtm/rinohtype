@@ -269,19 +269,18 @@ class GroupedFlowables(Flowable):
         try:
             saved_state = copy(state)
             while True:
-                width, descender = \
-                    self._render_keep_with_next(state, container, descender,
-                                                **kwargs)
+                width, descender = self._flow_with_next(state, container,
+                                                        descender, **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
                 saved_state = copy(state)
                 container.advance(item_spacing, True)
-        except AbortException:
+        except KeepWithNextException:
             raise EndOfContainer(saved_state, None)
         except StopIteration:
             return max_flowable_width, descender
 
-    def _render_keep_with_next(self, state, container, descender, nested=False,
-                               **kwargs):
+    def _flow_with_next(self, state, container, descender, nested=False,
+                        **kwargs):
         flowable = state.next_flowable()
         flowable.parent = self
         try:
@@ -301,20 +300,20 @@ class GroupedFlowables(Flowable):
             item_spacing = self.get_style('flowable_spacing', container)
             maybe_container.advance(item_spacing)
             try:
-                width, descender = \
-                    self._render_keep_with_next(state, container, descender,
-                                                nested=True, **kwargs)
+                width, descender = self._flow_with_next(state, container,
+                                                        descender, nested=True,
+                                                        **kwargs)
             except EndOfContainer as e:
                 if not e.flowable_state or e.flowable_state.initial:
                     maybe_container._do_place = False
-                    raise AbortException
+                    raise KeepWithNextException
                 else:
                     state.prepend(e._flowable, e.flowable_state)
                     raise EndOfContainer(state, e.page_break)
         return width, descender
 
 
-class AbortException(Exception):
+class KeepWithNextException(Exception):
     pass
 
 
