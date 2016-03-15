@@ -18,7 +18,7 @@ that make up the content of a document and are rendered onto its pages.
 
 
 from copy import copy
-from itertools import chain, tee, count
+from itertools import chain, tee
 
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
@@ -241,10 +241,7 @@ class GroupedFlowablesState(FlowableState):
         return self.__class__(copy_list_items, copy_first_flowable_state,
                               _initial=self.initial)
 
-    def next_flowable(self, first=False):
-        if not first:
-            self.initial = False
-            self.first_flowable_state = None
+    def next_flowable(self):
         return next(self.flowables)
 
     def prepend(self, flowable, first_flowable_state):
@@ -271,10 +268,10 @@ class GroupedFlowables(Flowable):
         state = state or GroupedFlowablesState(flowables)
         try:
             saved_state = copy(state)
-            for i in count():
+            while True:
                 width, descender = \
                     self._render_keep_with_next(state, container, descender,
-                                                first=(i == 0), **kwargs)
+                                                **kwargs)
                 max_flowable_width = max(max_flowable_width, width)
                 saved_state = copy(state)
                 container.advance(item_spacing, True)
@@ -283,9 +280,9 @@ class GroupedFlowables(Flowable):
         except StopIteration:
             return max_flowable_width, descender
 
-    def _render_keep_with_next(self, state, container, descender,
-                               nested=False, first=False, **kwargs):
-        flowable = state.next_flowable(first=first)
+    def _render_keep_with_next(self, state, container, descender, nested=False,
+                               **kwargs):
+        flowable = state.next_flowable()
         flowable.parent = self
         try:
             with MaybeContainer(container) as maybe_container:
@@ -298,6 +295,8 @@ class GroupedFlowables(Flowable):
                 eoc = EndOfContainer(state, eoc.page_break)
             eoc._flowable = flowable
             raise eoc
+        state.initial = False
+        state.first_flowable_state = None
         if flowable.get_style('keep_with_next', container):
             item_spacing = self.get_style('flowable_spacing', container)
             maybe_container.advance(item_spacing)
