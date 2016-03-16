@@ -68,7 +68,7 @@ class FlowableState(object):
         self.initial = _initial
 
     def __copy__(self):
-        raise NotImplementedError
+        return self.__class__(self.flowable, _initial=self.initial)
 
 
 class Flowable(Styled):
@@ -98,7 +98,7 @@ class Flowable(Styled):
             return None
 
     def initial_state(self, container):
-        raise NotImplementedError
+        return FlowableState(self)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
@@ -110,18 +110,14 @@ class Flowable(Styled):
         by the `space_below` style attribute."""
         if not state:
             container.advance(float(self.get_style('space_above', container)))
-            try:
-                state = self.initial_state(container)
-            except NotImplementedError:
-                pass
+            state = self.initial_state(container)
         margin_left = self.get_style('margin_left', container)
         margin_right = self.get_style('margin_right', container)
         right = container.width - margin_right
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
             margin_container._flowable = self
-            initial_before = True if state is None else state.initial
-            initial_after = True
+            initial_before, initial_after = state.initial, True
             try:
                 width, descender = self.flow_inner(margin_container,
                                                    last_descender, state=state,
@@ -139,7 +135,7 @@ class Flowable(Styled):
         return margin_left + width + margin_right, descender
 
     def flow_inner(self, container, descender, state=None, **kwargs):
-        draw_top = state is None or state.initial
+        draw_top = state.initial
         padding_top = self.get_style('padding_top', container)
         padding_left = self.get_style('padding_left', container)
         padding_right = self.get_style('padding_right', container)
@@ -386,8 +382,10 @@ class LabeledFlowable(Flowable):
         label_width, _ = self.label.flow(virtual_container, 0)
         return label_width
 
-    def render(self, container, last_descender, state=None,
-               max_label_width=None):
+    def initial_state(self, container):
+        return self.flowable.initial_state(container)
+
+    def render(self, container, last_descender, state, max_label_width=None):
         # TODO: line up baseline of label and first flowable
         label_column_min_width = self.get_style('label_min_width', container)
         label_column_max_width = self.get_style('label_max_width', container)
