@@ -26,7 +26,7 @@ from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer,
                      PageBreakException)
 from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
-from .util import ReadAliasAttribute
+from .util import ReadAliasAttribute, NotImplementedAttribute
 
 
 __all__ = ['Flowable', 'FlowableStyle',
@@ -35,7 +35,6 @@ __all__ = ['Flowable', 'FlowableStyle',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
-           'HorizontallyAlignedFlowableState',
            'Float',
            'PageBreak', 'PageBreakStyle']
 
@@ -473,9 +472,7 @@ class HorizontallyAlignedFlowableStyle(FlowableStyle):
 
 
 class HorizontallyAlignedFlowableState(FlowableState):
-    @property
-    def width(self):
-        raise NotImplementedError
+    width = NotImplementedAttribute()
 
 
 class HorizontallyAlignedFlowable(Flowable):

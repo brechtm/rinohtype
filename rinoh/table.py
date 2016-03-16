@@ -11,7 +11,7 @@ from itertools import chain
 from functools import partial
 from math import sqrt
 
-from .dimension import PT, DimensionBase as DimBase
+from .dimension import DimensionBase as DimBase
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
@@ -92,10 +92,12 @@ class Table(HorizontallyAlignedFlowable):
         self.width = width
         self.column_widths = column_widths
 
-    def render(self, container, last_descender, state=None):
+    def initial_state(self, container):
+        return TableState(self, self._size_columns(container))
+
+    def render(self, container, last_descender, state):
         # TODO: allow data to override style (align)
         get_style = partial(self.get_style, flowable_target=container)
-        state = state or TableState(self, self._size_columns(container))
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
                 rows = section[next_row_index:]

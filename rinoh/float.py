@@ -32,18 +32,8 @@ FIT = 'fit'
 
 
 class ImageState(HorizontallyAlignedFlowableState):
-    def __init__(self, image, width):
-        super().__init__(image, width is None)
-        self._width = width
-
     image = ReadAliasAttribute('flowable')
-
-    @property
-    def width(self):
-        return self._width
-
-    def __copy__(self):
-        return self.__class__(self.image, self._width)
+    width = None
 
 
 class ImageBase(Flowable):
@@ -59,7 +49,10 @@ class ImageBase(Flowable):
         self.width = width
         self.rotate = rotate
 
-    def render(self, container, last_descender, state=None):
+    def initial_state(self, container):
+         return ImageState(self)
+
+    def render(self, container, last_descender, state):
         try:
             image = container.document.backend.Image(self.filename_or_file)
         except OSError as err:
@@ -89,11 +82,11 @@ class ImageBase(Flowable):
         w, h = container.canvas.place_image(image, left, top,
                                             container.document, scale_width,
                                             scale_height, self.rotate)
-        ignore_overflow = (self.scale == FIT) or (state is not None)
+        ignore_overflow = (self.scale == FIT) or (not state.initial)
         try:
             container.advance(h, ignore_overflow)
         except EndOfContainer:
-            state = ImageState(self, w if state else None)
+            state.initial = False
             raise EndOfContainer(state)
         return w, 0
 
