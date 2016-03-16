@@ -278,11 +278,13 @@ class GroupedFlowables(Flowable):
     def flowables(self, container):
         raise NotImplementedError
 
-    def render(self, container, descender, state=None, **kwargs):
+    def initial_state(self, container):
+        flowables_iter = self.flowables(container)
+        return GroupedFlowablesState(self, flowables_iter)
+
+    def render(self, container, descender, state, **kwargs):
         max_flowable_width = 0
-        flowables = self.flowables(container)
         item_spacing = self.get_style('flowable_spacing', container)
-        state = state or GroupedFlowablesState(self, flowables)
         try:
             saved_state = copy(state)
             while True:
@@ -445,7 +447,7 @@ class GroupedLabeledFlowables(GroupedFlowables):
                    for flowable in self.flowables(container))
 
     def render(self, container, descender, state=None):
-        if state is None:
+        if state.initial:
             max_label_width = self._calculate_label_width(container)
         else:
             max_label_width = state.max_label_width
