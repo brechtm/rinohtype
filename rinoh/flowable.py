@@ -187,6 +187,11 @@ class DummyFlowable(Flowable):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
+    def get_style(self, attribute, flowable_target):
+        if attribute == 'keep_with_next':
+            return False
+        raise TypeError
+
     def flow(self, container, last_descender, state=None):
         return 0, last_descender
 
