@@ -98,6 +98,9 @@ class Flowable(Styled):
         except AttributeError:
             return None
 
+    def initial_state(self, container):
+        raise NotImplementedError
+
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -108,6 +111,10 @@ class Flowable(Styled):
         by the `space_below` style attribute."""
         if not state:
             container.advance(float(self.get_style('space_above', container)))
+            try:
+                state = self.initial_state(container)
+            except NotImplementedError:
+                pass
         margin_left = self.get_style('margin_left', container)
         margin_right = self.get_style('margin_right', container)
         right = container.width - margin_right

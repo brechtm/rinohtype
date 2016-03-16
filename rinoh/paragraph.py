@@ -370,15 +370,20 @@ class ParagraphBase(Flowable):
     def spans_kwargs(self):
         return {}
 
-    def render(self, container, descender, state=None):
+    def initial_state(self, container):
+        spans = self.text(container).spans(container, **self.spans_kwargs)
+        return ParagraphState(self, spans_to_words(spans, container,
+                                                   **self.spans_kwargs))
+
+    def render(self, container, descender, state):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
         the preceeding line or `None`.
         When the end of the container is reached, the rendering state is
         preserved to continue setting the rest of the paragraph when this method
         is called with a new container."""
-        indent_first = (0 if state
-                        else float(self.get_style('indent_first', container)))
+        indent_first = (float(self.get_style('indent_first', container))
+                        if state.initial else 0)
         line_width = float(container.width)
         line_spacing = self.get_style('line_spacing', container)
         text_align = self.get_style('text_align', container)
@@ -387,10 +392,6 @@ class ParagraphBase(Flowable):
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
-        if not state:
-            spans = self.text(container).spans(container, **self.spans_kwargs)
-            state = ParagraphState(self, spans_to_words(spans, container,
-                                                        **self.spans_kwargs))
         saved_state = copy(state)
         prev_state = copy(state)
         max_line_width = 0
