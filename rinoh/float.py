@@ -15,7 +15,7 @@ from .inline import InlineFlowable
 from .layout import EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
-from .reference import Referenceable, NUMBER
+from .reference import NUMBER
 from .style import AttributeType
 from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import ReadAliasAttribute
@@ -126,7 +126,7 @@ class Caption(NumberedParagraph):
         return MixedStyledText(label + self.content, parent=self)
 
 
-class Figure(Referenceable, InseparableFlowables, StaticGroupedFlowables):
+class Figure(InseparableFlowables, StaticGroupedFlowables):
     category = 'Figure'
 
     def prepare(self, flowable_target):

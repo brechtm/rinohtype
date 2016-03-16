@@ -17,7 +17,7 @@ from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .reference import Referenceable, NUMBER
+from .reference import NUMBER
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled, OptionSet, Attribute, OverrideDefault
 from .util import ReadAliasAttribute
@@ -297,7 +297,7 @@ class Table(HorizontallyAlignedFlowable):
             y_cursor += rendered_row.height
 
 
-class TableWithCaption(Referenceable, StaticGroupedFlowables):
+class TableWithCaption(StaticGroupedFlowables):
     category = 'Table'
 
     def prepare(self, flowable_target):

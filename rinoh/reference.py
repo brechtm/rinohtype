@@ -15,7 +15,7 @@ from .text import SingleStyledText, TextStyle
 from .util import NotImplementedAttribute
 
 
-__all__ = ['Field', 'Variable', 'Referenceable', 'Reference',
+__all__ = ['Field', 'Variable', 'Reference',
            'Note', 'RegisterNote',
            'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
@@ -24,10 +24,6 @@ __all__ = ['Field', 'Variable', 'Referenceable', 'Reference',
 class Field(SingleStyledText):
     def __init__(self, style=None, parent=None):
         super().__init__('', style=style, parent=parent)
-
-
-class Referenceable(Flowable):
-    category = NotImplementedAttribute()
 
 
                             # examples for section "3.2 Some Title"
@@ -111,7 +107,7 @@ class DirectReference(ReferenceBase):
         return self.referenceable.get_id(document)
 
 
-class Note(Referenceable, LabeledFlowable):
+class Note(LabeledFlowable):
     category = 'Note'
 
     def __init__(self, flowable, id=None, style=None, parent=None):

@@ -17,7 +17,7 @@ from .layout import PageBreakException, EndOfContainer
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
-from .reference import Referenceable, ReferenceBase, REFERENCE, ReferenceType
+from .reference import ReferenceBase, REFERENCE, ReferenceType
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer, OverrideDefault
@@ -47,7 +47,7 @@ class NewChapterException(PageBreakException):
     pass
 
 
-class Section(Referenceable, StaticGroupedFlowables, PageBreak):
+class Section(StaticGroupedFlowables, PageBreak):
     style_class = SectionStyle
     exception_class = NewChapterException
 

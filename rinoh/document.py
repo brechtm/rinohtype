@@ -293,7 +293,7 @@ class Document(object):
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
-        self.elements = OrderedDict()  # mapping id's to Referenceables
+        self.elements = OrderedDict()  # mapping id's to flowables
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_references = {}      # mapping id's to page numbers
@@ -310,7 +310,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     @property
     def unique_id(self):
         """Yields a different integer value on each access, used to uniquely
-        identify :class:`Referenceable`s for which no identifier was
+        identify :class:`Flowable`s for which no identifier was
         specified."""
         self._unique_id += 1
         return self._unique_id
