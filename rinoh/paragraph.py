@@ -46,8 +46,8 @@ from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer
 from .style import Attribute, AttributeType, OptionSet
-from .text import TextStyle, MixedStyledText, StyledText
-from .util import all_subclasses
+from .text import TextStyle, MixedStyledText
+from .util import all_subclasses, ReadAliasAttribute
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -331,17 +331,20 @@ def spans_to_words(spans, container, **kwargs):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, words, nested_flowable_state=None, _first_word=None,
-                 _initial=True):
-        super().__init__(_initial)
+    def __init__(self, paragraph, words, nested_flowable_state=None,
+                 _first_word=None, _initial=True):
+        super().__init__(paragraph, _initial)
         self._words = words
         self.nested_flowable_state = nested_flowable_state
         self._first_word = _first_word
 
+    paragraph = ReadAliasAttribute('flowable')
+
     def __copy__(self):
         copy_words, self._words = tee(self._words)
         copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(copy_words, copy_nested_flowable_state,
+        return self.__class__(self.paragraph, copy_words,
+                              copy_nested_flowable_state,
                               _first_word=self._first_word,
                               _initial=self.initial)
 
@@ -386,8 +389,8 @@ class ParagraphBase(Flowable):
         # line are yielded again on the next typeset() call.
         if not state:
             spans = self.text(container).spans(container, **self.spans_kwargs)
-            state = ParagraphState(spans_to_words(spans, container,
-                                                  **self.spans_kwargs))
+            state = ParagraphState(self, spans_to_words(spans, container,
+                                                        **self.spans_kwargs))
         saved_state = copy(state)
         prev_state = copy(state)
         max_line_width = 0

@@ -26,6 +26,8 @@ from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, EndOfContainer,
                      PageBreakException)
 from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
+from .util import ReadAliasAttribute
+
 
 __all__ = ['Flowable', 'FlowableStyle',
            'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
@@ -62,7 +64,8 @@ class FlowableState(object):
     enables saving the rendering state at certain points in the rendering
     process, so rendering can later be resumed at those points, if needed."""
 
-    def __init__(self, _initial=True):
+    def __init__(self, flowable, _initial=True):
+        self.flowable = flowable
         self.initial = _initial
 
     def __copy__(self):
@@ -230,16 +233,19 @@ class InseparableFlowables(Flowable):
 
 
 class GroupedFlowablesState(FlowableState):
-    def __init__(self, flowables, first_flowable_state=None, _initial=True):
-        super().__init__(_initial)
+    def __init__(self, groupedflowables, flowables, first_flowable_state=None,
+                 _initial=True):
+        super().__init__(groupedflowables, _initial)
         self.flowables = flowables
         self.first_flowable_state = first_flowable_state
+
+    groupedflowables = ReadAliasAttribute('flowable')
 
     def __copy__(self):
         copy_list_items, self.flowables = tee(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(copy_list_items, copy_first_flowable_state,
-                              _initial=self.initial)
+        return self.__class__(self.groupedflowables, copy_list_items,
+                              copy_first_flowable_state, _initial=self.initial)
 
     def next_flowable(self):
         return next(self.flowables)
@@ -265,7 +271,7 @@ class GroupedFlowables(Flowable):
         max_flowable_width = 0
         flowables = self.flowables(container)
         item_spacing = self.get_style('flowable_spacing', container)
-        state = state or GroupedFlowablesState(flowables)
+        state = state or GroupedFlowablesState(self, flowables)
         try:
             saved_state = copy(state)
             while True:

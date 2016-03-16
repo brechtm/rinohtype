@@ -18,6 +18,7 @@ from .paragraph import Paragraph
 from .reference import Referenceable, NUMBER
 from .style import AttributeType
 from .text import MixedStyledText, SingleStyledText, TextStyle
+from .util import ReadAliasAttribute
 
 
 __all__ = ['InlineImage', 'Image', 'Caption', 'Figure']
@@ -31,16 +32,18 @@ FIT = 'fit'
 
 
 class ImageState(HorizontallyAlignedFlowableState):
-    def __init__(self, width):
-        super().__init__(width is None)
+    def __init__(self, image, width):
+        super().__init__(image, width is None)
         self._width = width
+
+    image = ReadAliasAttribute('flowable')
 
     @property
     def width(self):
         return self._width
 
     def __copy__(self):
-        return self.__class__(self._width)
+        return self.__class__(self.image, self._width)
 
 
 class ImageBase(Flowable):
@@ -90,7 +93,7 @@ class ImageBase(Flowable):
         try:
             container.advance(h, ignore_overflow)
         except EndOfContainer:
-            state = ImageState(w if state else None)
+            state = ImageState(self, w if state else None)
             raise EndOfContainer(state)
         return w, 0
 

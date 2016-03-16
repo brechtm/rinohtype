@@ -31,10 +31,12 @@ __all__ = ['Table', 'TableWithCaption',
 
 
 class TableState(HorizontallyAlignedFlowableState):
-    def __init__(self, column_widths, body_row_index=0):
-        super().__init__()
+    def __init__(self, table, column_widths, body_row_index=0):
+        super().__init__(table)
         self.column_widths = column_widths
         self.body_row_index = body_row_index
+
+    table = ReadAliasAttribute('flowable')
 
     @property
     def width(self):
@@ -50,7 +52,8 @@ class TableState(HorizontallyAlignedFlowableState):
         self.initial = body_row_index == 0
 
     def __copy__(self):
-        return self.__class__(self.column_widths, self.body_row_index)
+        return self.__class__(self.table, self.column_widths,
+                              self.body_row_index)
 
 
 class TableStyle(HorizontallyAlignedFlowableStyle):
@@ -92,7 +95,7 @@ class Table(HorizontallyAlignedFlowable):
     def render(self, container, last_descender, state=None):
         # TODO: allow data to override style (align)
         get_style = partial(self.get_style, flowable_target=container)
-        state = state or TableState(self._size_columns(container))
+        state = state or TableState(self, self._size_columns(container))
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
                 rows = section[next_row_index:]
