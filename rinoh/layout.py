@@ -545,14 +545,7 @@ class Chain(FlowableTarget):
 
     def render(self, container, rerender=False, last_descender=None):
         """Flow the flowables into the containers that have been added to this
-        chain.
-
-        Returns an empty iterator when all flowables have been sucessfully
-        rendered.
-        When the chain runs out of containers before all flowables have been
-        rendered, this method returns an iterator yielding itself. This signals
-        the :class:`Document` to generate a new page and register new containers
-        with this chain."""
+        chain."""
         if rerender:
             container.clear()
             if not self._rerendering:
