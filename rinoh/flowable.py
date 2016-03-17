@@ -109,8 +109,12 @@ class Flowable(Styled):
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
         if not state:
-            container.advance(float(self.get_style('space_above', container)))
             state = self.initial_state(container)
+            try:
+                container.advance(float(self.get_style('space_above',
+                                                       container)))
+            except EndOfContainer:
+                raise EndOfContainer(state)
         margin_left = self.get_style('margin_left', container)
         margin_right = self.get_style('margin_right', container)
         right = container.width - margin_right
@@ -231,11 +235,14 @@ class AddToFrontMatter(DummyFlowable):
 class InseparableFlowables(Flowable):
     def render(self, container, last_descender, state=None):
         max_flowable_width = 0
-        with MaybeContainer(container) as maybe_container, discard_state():
-            for flowable in self.flowables(container.document):
-                width, last_descender = flowable.flow(maybe_container,
-                                                      last_descender)
-                max_flowable_width = max(max_flowable_width, width)
+        try:
+            with MaybeContainer(container) as maybe_container, discard_state():
+                for flowable in self.flowables(container.document):
+                    width, last_descender = flowable.flow(maybe_container,
+                                                          last_descender)
+                    max_flowable_width = max(max_flowable_width, width)
+        except EndOfContainer:
+            raise EndOfContainer(state)
         return max_flowable_width, last_descender
 
 
@@ -249,9 +256,9 @@ class GroupedFlowablesState(FlowableState):
     groupedflowables = ReadAliasAttribute('flowable')
 
     def __copy__(self):
-        copy_list_items, self.flowables = tee(self.flowables)
+        copy_flowables, self.flowables = tee(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(self.groupedflowables, copy_list_items,
+        return self.__class__(self.groupedflowables, copy_flowables,
                               copy_first_flowable_state, _initial=self.initial)
 
     def next_flowable(self):
@@ -292,7 +299,7 @@ class GroupedFlowables(Flowable):
         except KeepWithNextException:
             raise EndOfContainer(saved_state, None)
         except EndOfContainer as eoc:
-            state.prepend(eoc._flowable, eoc.flowable_state)
+            state.prepend(eoc.flowable_state.flowable, eoc.flowable_state)
             raise EndOfContainer(state, eoc.page_break)
         except StopIteration:
             return max_flowable_width, descender
@@ -300,14 +307,10 @@ class GroupedFlowables(Flowable):
     def _flow_with_next(self, state, container, descender, **kwargs):
         flowable = state.next_flowable()
         flowable.parent = self
-        try:
-            with MaybeContainer(container) as maybe_container:
-                width, descender = \
-                    flowable.flow(maybe_container, descender,
-                                  state=state.first_flowable_state, **kwargs)
-        except EndOfContainer as eoc:
-            eoc._flowable = flowable
-            raise eoc
+        with MaybeContainer(container) as maybe_container:
+            width, descender = \
+                flowable.flow(maybe_container, descender,
+                              state=state.first_flowable_state, **kwargs)
         state.initial = False
         state.first_flowable_state = None
         if flowable.get_style('keep_with_next', container):
@@ -415,16 +418,22 @@ class LabeledFlowable(Flowable):
 
         max_width = 0
         with MaybeContainer(container) as maybe_container:
-            if not state or state.initial:
-                with discard_state():
+            if state.initial:
+                try:
                     label_height, label_desc = render_label(maybe_container)
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_desc
+                except EndOfContainer:
+                    raise EndOfContainer(state)
             else:
                 label_height = label_desc = 0
-            width, content_height, content_desc = \
-                render_content(maybe_container, last_descender)
+            try:
+                width, content_height, content_desc = \
+                    render_content(maybe_container, last_descender)
+            except EndOfContainer as eoc:
+                eoc.flowable_state.flowable = self
+                raise eoc
             max_width = max(max_width, width)
             if label_spillover:
                 container.advance(content_height)
