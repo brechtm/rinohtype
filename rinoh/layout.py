@@ -412,19 +412,18 @@ class MaybeContainer(ContextManager):
         return self._container
 
     def __exit__(self, exc_type, exc_value, _):
-        if (exc_type is None
-            or (issubclass(exc_type, EndOfContainer)
-                and (exc_value.flowable_state
-                     and not exc_value.flowable_state.initial))):
+        if (exc_type is None or (issubclass(exc_type, EndOfContainer)
+                                 and not exc_value.flowable_state.initial)):
             self._container.do_place()
 
 
 @contextmanager
-def discard_state():
+def discard_state(initial_state):
+    saved_state = copy(initial_state)
     try:
         yield
     except EndOfContainer:
-        raise EndOfContainer
+        raise EndOfContainer(saved_state)
 
 
 class VirtualContainer(DownExpandingContainer):

@@ -128,8 +128,7 @@ class Flowable(Styled):
                                                    **kwargs)
                 initial_after = False
             except EndOfContainer as eoc:
-                if eoc.flowable_state:
-                    initial_after = eoc.flowable_state.initial
+                initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
                 reference_id = self.get_id(container.document, create=False)
@@ -156,7 +155,7 @@ class Flowable(Styled):
             self.render_frame(container, container.height, top=draw_top)
             return width, descender
         except EndOfContainer as eoc:
-            if eoc.flowable_state and not eoc.flowable_state.initial:
+            if not eoc.flowable_state.initial:
                 self.render_frame(container, container.max_height,
                                   top=draw_top, bottom=False)
             raise
@@ -235,14 +234,12 @@ class AddToFrontMatter(DummyFlowable):
 class InseparableFlowables(Flowable):
     def render(self, container, last_descender, state):
         max_flowable_width = 0
-        try:
-            with MaybeContainer(container) as maybe_container, discard_state():
-                for flowable in self.flowables(container.document):
-                    width, last_descender = flowable.flow(maybe_container,
-                                                          last_descender)
-                    max_flowable_width = max(max_flowable_width, width)
-        except EndOfContainer:
-            raise EndOfContainer(state)
+        with MaybeContainer(container) as maybe_container, \
+                discard_state(state):
+            for flowable in self.flowables(container.document):
+                width, last_descender = flowable.flow(maybe_container,
+                                                      last_descender)
+                max_flowable_width = max(max_flowable_width, width)
         return max_flowable_width, last_descender
 
 
@@ -320,7 +317,7 @@ class GroupedFlowables(Flowable):
                 width, descender = self._flow_with_next(state, container,
                                                         descender, **kwargs)
             except EndOfContainer as e:
-                if not e.flowable_state or e.flowable_state.initial:
+                if e.flowable_state.initial:
                     maybe_container._do_place = False
                     raise KeepWithNextException
                 else:
@@ -506,7 +503,7 @@ class HorizontallyAlignedFlowable(Flowable):
                 width, descender = super().flow(align_container, last_descender,
                                                 state)
             except EndOfContainer as eoc:
-                width = eoc.flowable_state.width if eoc.flowable_state else None
+                width = eoc.flowable_state.width
                 raise
             finally:
                 self._align(align_container, width)
