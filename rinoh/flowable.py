@@ -178,7 +178,7 @@ class Flowable(Styled):
         if bottom:
             Line((0, height), (width, height), **style).render(container)
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state):
         """Renders the flowable's content to `container`, with the flowable's
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceding line or `None`."""
@@ -233,7 +233,7 @@ class AddToFrontMatter(DummyFlowable):
 # grouping flowables
 
 class InseparableFlowables(Flowable):
-    def render(self, container, last_descender, state=None):
+    def render(self, container, last_descender, state):
         max_flowable_width = 0
         try:
             with MaybeContainer(container) as maybe_container, discard_state():
@@ -453,7 +453,7 @@ class GroupedLabeledFlowables(GroupedFlowables):
         return max(flowable.label_width(container)
                    for flowable in self.flowables(container))
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state):
         if state.initial:
             max_label_width = self._calculate_label_width(container)
         else:
@@ -567,5 +567,5 @@ class PageBreak(Flowable):
                 raise self.exception_class(page_break, chain)
         return super().flow(container, last_descender, state)
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state):
         return 0, descender

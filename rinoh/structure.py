@@ -74,9 +74,9 @@ class Section(StaticGroupedFlowables, PageBreak):
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
 
-    def render(self, container, descender, state=None, **kwargs):
+    def render(self, container, descender, state, **kwargs):
         container.page.set_current_section(self, heading=False)
-        return super().render(container, descender, state=state, **kwargs)
+        return super().render(container, descender, state, **kwargs)
 
 
 class HeadingStyle(NumberedParagraphStyle):
@@ -138,13 +138,13 @@ class Heading(NumberedParagraph):
         number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state):
         if self.level == 1 and container.page.chapter_title:
             section_id = self.section.get_id(container.document)
             container.page.create_chapter_title(section_id)
             result = 0, None
         else:
-            result = super().render(container, descender, state=state)
+            result = super().render(container, descender, state)
         container.page.set_current_section(self.section, heading=True)
         return result
 
@@ -393,7 +393,7 @@ class HorizontalRuleStyle(FlowableStyle, LineStyle):
 class HorizontalRule(Flowable):
     style_class = HorizontalRuleStyle
 
-    def render(self, container, descender, state=None):
+    def render(self, container, descender, state):
         width = float(container.width)
         line = Line((0, 0), (width, 0), style=PARENT_STYLE, parent=self)
         line.render(container)
