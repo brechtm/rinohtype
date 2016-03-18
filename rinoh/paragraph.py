@@ -44,7 +44,7 @@ from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
-from .layout import EndOfContainer
+from .layout import ContainerOverflow, EndOfContainer
 from .style import Attribute, AttributeType, OptionSet
 from .text import TextStyle, MixedStyledText
 from .util import all_subclasses, ReadAliasAttribute
@@ -407,7 +407,7 @@ class ParagraphBase(Flowable):
                 state.initial = False
                 saved_state = copy(state)
                 return Line(tab_stops, line_width, container)
-            except EndOfContainer:
+            except ContainerOverflow:
                 raise EndOfContainer(saved_state)
 
         line = Line(tab_stops, line_width, container, indent_first)

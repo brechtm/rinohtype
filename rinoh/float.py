@@ -12,7 +12,7 @@ from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState)
 from .inline import InlineFlowable
-from .layout import EndOfContainer
+from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import NUMBER
@@ -85,7 +85,7 @@ class ImageBase(Flowable):
         ignore_overflow = (self.scale == FIT) or (not state.initial)
         try:
             container.advance(h, ignore_overflow)
-        except EndOfContainer:
+        except ContainerOverflow:
             state.initial = False
             raise EndOfContainer(state)
         return w, 0

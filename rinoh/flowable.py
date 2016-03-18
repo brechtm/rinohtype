@@ -23,8 +23,8 @@ from itertools import chain, tee
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
-                     MaybeContainer, discard_state, EndOfContainer,
-                     PageBreakException)
+                     MaybeContainer, discard_state, ContainerOverflow,
+                     EndOfContainer, PageBreakException)
 from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
 from .util import ReadAliasAttribute, NotImplementedAttribute
 
@@ -113,7 +113,7 @@ class Flowable(Styled):
             try:
                 container.advance(float(self.get_style('space_above',
                                                        container)))
-            except EndOfContainer:
+            except ContainerOverflow:
                 raise EndOfContainer(state)
         margin_left = self.get_style('margin_left', container)
         margin_right = self.get_style('margin_right', container)
@@ -421,7 +421,8 @@ class LabeledFlowable(Flowable):
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_desc
-                except EndOfContainer:
+                except (ContainerOverflow, EndOfContainer):
+                    state.flowable = self
                     raise EndOfContainer(state)
             else:
                 label_height = label_desc = 0

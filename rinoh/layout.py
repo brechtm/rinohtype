@@ -38,14 +38,18 @@ from .util import ContextManager
 __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'DownExpandingContainer', 'InlineDownExpandingContainer',
            'UpExpandingContainer', 'VirtualContainer', 'Chain',
-           'EndOfContainer', 'FootnoteContainer', 'MaybeContainer',
-           'discard_state']
+           'FootnoteContainer', 'MaybeContainer', 'discard_state',
+           'ContainerOverflow', 'EndOfContainer']
+
+
+class ContainerOverflow(Exception):
+    """The end of the :class:`FlowableContainer` has been reached."""
 
 
 class EndOfContainer(Exception):
-    """The end of the :class:`FlowableContainer` has been reached."""
+    """TODO"""
 
-    def __init__(self, flowable_state=None, page_break=False):
+    def __init__(self, flowable_state, page_break=False):
         """`flowable_state` represents the rendering state of the
         :class:`Flowable` at the time the :class:`FlowableContainer`" overflows.
         """
@@ -53,7 +57,7 @@ class EndOfContainer(Exception):
         self.page_break = page_break
 
 
-class PageBreakException(EndOfContainer):
+class PageBreakException(ContainerOverflow):
     def __init__(self, break_type, chain):
         super().__init__()
         self.break_type = break_type
@@ -248,7 +252,7 @@ class FlowablesContainerBase(Container):
         elif ignore_overflow:
             self._self_cursor.grow(float(self.remaining_height))
         else:
-            raise EndOfContainer
+            raise ContainerOverflow
 
     def check_overflow(self):
         if self.remaining_height < 0:
@@ -565,8 +569,7 @@ class Chain(FlowableTarget):
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             self.done = True
-        except PageBreakException as e:
-            self._state.flowable_state = e.flowable_state
+        except PageBreakException:
             self._fresh_page_state = copy(self._state)
             raise
         except EndOfContainer as e:
