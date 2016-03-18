@@ -122,7 +122,6 @@ class Flowable(Styled):
         right = container.width - margin_right
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
-            margin_container._flowable = self
             initial_before, initial_after = state.initial, True
             try:
                 width, descender = self.flow_inner(margin_container,
