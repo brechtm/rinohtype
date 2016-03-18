@@ -145,8 +145,10 @@ class Heading(NumberedParagraph):
             result = 0, None
         else:
             result = super().render(container, descender, state)
-        container.page.set_current_section(self.section, heading=True)
         return result
+
+    def after_rendering(self, container):
+        container.page.set_current_section(self.section, heading=True)
 
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):

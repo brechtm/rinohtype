@@ -215,6 +215,7 @@ class FlowablesContainerBase(Container):
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
         self.type = type
+        self.flowed_flowables = []
 
     @property
     def chained_ancestor(self):
@@ -253,10 +254,20 @@ class FlowablesContainerBase(Container):
 
     def render(self, type, rerender=False):
         if type in (self.type, None) and not self.cursor:
-            self._render(type, rerender)
+            try:
+                self._render(type, rerender)
+            finally:
+                self.after_rendering()
 
     def _render(self, type, rerender):
         raise NotImplementedError
+
+    def after_rendering(self):
+        for child in self.children:
+            child.after_rendering()
+        for flowable in self.flowed_flowables:
+            flowable.after_rendering(self)
+
 
 class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
     """A container that renders a predefined series of flowables."""
@@ -403,6 +414,10 @@ class _MaybeContainer(_InlineDownExpandingContainer):
     def place(self):
         if self._do_place:
             super().place()
+
+    def after_rendering(self):
+        if self._do_place:
+            super().after_rendering()
 
 
 class MaybeContainer(ContextManager):

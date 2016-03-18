@@ -133,8 +133,10 @@ class Flowable(Styled):
                 raise eoc
             finally:
                 reference_id = self.get_id(container.document, create=False)
-                if reference_id and initial_before and not initial_after:
-                    self.create_destination(margin_container, True)
+                if initial_before and not initial_after:
+                    container.flowed_flowables.append(self)
+                    if reference_id:
+                        self.create_destination(margin_container, True)
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, descender
 
@@ -183,6 +185,9 @@ class Flowable(Styled):
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceding line or `None`."""
         raise NotImplementedError
+
+    def after_rendering(self, container):
+        pass
 
 
 # flowables that do not render anything (but with optional side-effects)
