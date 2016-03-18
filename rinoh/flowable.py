@@ -110,8 +110,8 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        if not state:
-            state = self.initial_state(container)
+        state = state or self.initial_state(container)
+        if state.initial:
             try:
                 container.advance(float(self.get_style('space_above',
                                                        container)))
