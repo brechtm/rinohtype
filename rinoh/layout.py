@@ -98,10 +98,6 @@ class FlowableTarget(object):
         for flowable in self.flowables:
             flowable.prepare(self)
 
-    def render(self):
-        """Render the flowables assigned to this flowable target, in the order
-        that they have been added."""
-        raise NotImplementedError
 
 
 class Container(object):
@@ -240,9 +236,6 @@ class FlowablesContainerBase(Container):
     def remaining_height(self):
         return self.height - self.cursor
 
-    def render(self, type, rerender=False):
-        raise NotImplementedError
-
     def advance(self, height, ignore_overflow=False):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
@@ -258,6 +251,12 @@ class FlowablesContainerBase(Container):
         if self.remaining_height < 0:
             raise ReflowRequired
 
+    def render(self, type, rerender=False):
+        if type in (self.type, None) and not self.cursor:
+            self._render(type, rerender)
+
+    def _render(self, type, rerender):
+        raise NotImplementedError
 
 class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
     """A container that renders a predefined series of flowables."""
@@ -268,11 +267,10 @@ class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
                          top=top, width=width, height=height, right=right,
                          bottom=bottom)
 
-    def render(self, type, rerender=False):
-        if type in (self.type, None) and not self.cursor:
-            last_descender = None
-            for flowable in self.flowables:
-                height, last_descender = flowable.flow(self, last_descender)
+    def _render(self, type, rerender):
+        last_descender = None
+        for flowable in self.flowables:
+            height, last_descender = flowable.flow(self, last_descender)
 
 
 class ChainedContainer(FlowablesContainerBase):
@@ -290,9 +288,8 @@ class ChainedContainer(FlowablesContainerBase):
     def chained_ancestor(self):
         return self
 
-    def render(self, type, rerender=False):
-        if type in (self.type, None):
-            self.chain.render(self, rerender=rerender)
+    def _render(self, type, rerender):
+        self.chain.render(self, rerender=rerender)
 
 
 class ExpandingContainerBase(FlowablesContainer):
