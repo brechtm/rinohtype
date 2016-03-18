@@ -559,7 +559,7 @@ class Chain(FlowableTarget):
     def last_container(self):
         return self.containers[-1]
 
-    def render(self, container, rerender=False, last_descender=None):
+    def render(self, container, rerender=False):
         """Flow the flowables into the containers that have been added to this
         chain."""
         if rerender:
@@ -570,6 +570,7 @@ class Chain(FlowableTarget):
                 self._rerendering = True
         try:
             self.done = False
+            last_descender=None
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
                 # TODO: keep_with_next
