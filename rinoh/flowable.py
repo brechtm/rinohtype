@@ -42,8 +42,10 @@ __all__ = ['Flowable', 'FlowableStyle',
 class FlowableStyle(ShapeStyle):
     """The :class:`Style` for :class:`Flowable` objects."""
 
-    space_above = Attribute(DimensionBase, 0, 'Vertical space preceding the flowable')
-    space_below = Attribute(DimensionBase, 0, 'Vertical space following the flowable')
+    space_above = Attribute(DimensionBase, 0, 'Vertical space preceding the '
+                                              'flowable')
+    space_below = Attribute(DimensionBase, 0, 'Vertical space following the '
+                                              'flowable')
     margin_left = Attribute(DimensionBase, 0, 'Left margin')
     margin_right = Attribute(DimensionBase, 0, 'Right margin')
     padding_left = Attribute(DimensionBase, 0, 'Left padding')
@@ -261,8 +263,9 @@ class GroupedFlowablesState(FlowableState):
     def next_flowable(self):
         return next(self.flowables)
 
-    def prepend(self, flowable, first_flowable_state):
-        self.flowables = chain((flowable, ), self.flowables)
+    def prepend(self, first_flowable_state):
+        first_flowable = first_flowable_state.flowable
+        self.flowables = chain((first_flowable, ), self.flowables)
         if first_flowable_state:
             self.first_flowable_state = first_flowable_state
             self.initial = self.initial and first_flowable_state.initial
@@ -294,9 +297,9 @@ class GroupedFlowables(Flowable):
                 saved_state = copy(state)
                 container.advance(item_spacing, True)
         except KeepWithNextException:
-            raise EndOfContainer(saved_state, None)
+            raise EndOfContainer(saved_state)
         except EndOfContainer as eoc:
-            state.prepend(eoc.flowable_state.flowable, eoc.flowable_state)
+            state.prepend(eoc.flowable_state)
             raise EndOfContainer(state, eoc.page_break)
         except StopIteration:
             return max_flowable_width, descender
@@ -305,9 +308,9 @@ class GroupedFlowables(Flowable):
         flowable = state.next_flowable()
         flowable.parent = self
         with MaybeContainer(container) as maybe_container:
-            width, descender = \
-                flowable.flow(maybe_container, descender,
-                              state=state.first_flowable_state, **kwargs)
+            width, descender = flowable.flow(maybe_container, descender,
+                                             state=state.first_flowable_state,
+                                             **kwargs)
         state.initial = False
         state.first_flowable_state = None
         if flowable.get_style('keep_with_next', container):
@@ -316,9 +319,9 @@ class GroupedFlowables(Flowable):
             try:
                 width, descender = self._flow_with_next(state, container,
                                                         descender, **kwargs)
-            except EndOfContainer as e:
-                if e.flowable_state.initial:
-                    maybe_container._do_place = False
+            except EndOfContainer as eoc:
+                if eoc.flowable_state.initial:
+                    maybe_container.do_place(False)
                     raise KeepWithNextException
                 else:
                     raise

@@ -400,8 +400,8 @@ class _MaybeContainer(_InlineDownExpandingContainer):
         super().__init__('MAYBE', parent, left=left, width=width, right=right)
         self._do_place = False
 
-    def do_place(self):
-        self._do_place = True
+    def do_place(self, place=True):
+        self._do_place = place
 
     def place(self):
         if self._do_place:
