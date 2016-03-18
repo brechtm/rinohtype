@@ -363,6 +363,19 @@ class LabeledFlowableStyle(FlowableStyle):
     wrap_label = Attribute(bool, False, 'Wrap the label at `label_max_width`')
 
 
+class LabeledFlowableState(FlowableState):
+    def __init__(self, flowable, content_flowable_state, _initial=True):
+        super().__init__(flowable, _initial=_initial)
+        self.content_flowable_state = content_flowable_state
+
+    def update(self):
+        self.initial = self.initial and self.content_flowable_state.initial
+
+    def __copy__(self):
+        return self.__class__(self.flowable, copy(self.content_flowable_state),
+                              _initial=self.initial)
+
+
 class LabeledFlowable(Flowable):
     style_class = LabeledFlowableStyle
 
@@ -383,7 +396,8 @@ class LabeledFlowable(Flowable):
         return label_width
 
     def initial_state(self, container):
-        return self.flowable.initial_state(container)
+        initial_content_state = self.flowable.initial_state(container)
+        return LabeledFlowableState(self, initial_content_state)
 
     def render(self, container, last_descender, state, max_label_width=None):
         # TODO: line up baseline of label and first flowable
@@ -406,7 +420,7 @@ class LabeledFlowable(Flowable):
                 _, descender = self.label.flow(label_container, last_descender)
             return label_container.cursor, descender
 
-        def render_content(container, descender):
+        def render_content(container, descender, state):
             with InlineDownExpandingContainer('CONTENT', container, left=left,
                     advance_parent=False) as content_container:
                 width, descender = self.flowable.flow(content_container,
@@ -414,35 +428,32 @@ class LabeledFlowable(Flowable):
             return width, content_container.cursor, descender
 
         max_width = 0
-        with MaybeContainer(container) as maybe_container:
-            if state.initial:
-                try:
+        try:
+            with MaybeContainer(container) as maybe_container:
+                if state.initial:
                     label_height, label_desc = render_label(maybe_container)
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_desc
-                except (ContainerOverflow, EndOfContainer):
-                    state.flowable = self
-                    raise EndOfContainer(state)
-            else:
-                label_height = label_desc = 0
-            try:
+                else:
+                    label_height = label_desc = 0
                 width, content_height, content_desc = \
-                    render_content(maybe_container, last_descender)
-            except EndOfContainer as eoc:
-                eoc.flowable_state.flowable = self
-                raise eoc
-            max_width = max(max_width, width)
-            if label_spillover:
+                    render_content(maybe_container, last_descender,
+                                   state.content_flowable_state)
+        except (ContainerOverflow, EndOfContainer):
+            state.update()
+            raise EndOfContainer(state)
+        max_width = max(max_width, width)
+        if label_spillover:
+            container.advance(content_height)
+            descender = content_desc
+        else:
+            if content_height > label_height:
                 container.advance(content_height)
                 descender = content_desc
             else:
-                if content_height > label_height:
-                    container.advance(content_height)
-                    descender = content_desc
-                else:
-                    container.advance(label_height)
-                    descender = label_desc
+                container.advance(label_height)
+                descender = label_desc
         return left + max_width, descender
 
 
