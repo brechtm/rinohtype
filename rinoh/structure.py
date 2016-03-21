@@ -249,9 +249,13 @@ class TableOfContentsSection(Section):
                           TableOfContents()],
                          style='table of contents')
 
-    def prepare(self, flowable_target):
-        self.id = flowable_target.document.metadata.get('toc_id')
-        super().prepare(flowable_target)
+    def get_id(self, document, create=True):
+        try:
+            id = document.metadata['toc_id']
+            document.register_element(id, self)
+            return id
+        except KeyError:
+            return super().get_id(document, create)
 
 
 class TableOfContents(GroupedFlowables):
