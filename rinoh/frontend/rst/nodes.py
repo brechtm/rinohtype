@@ -140,6 +140,11 @@ class Topic(DocutilsGroupingNode):
         del topic.children[0]
         return rt.SetMetadataFlowable(**{topic_type: topic})
 
+    @property
+    def set_id(self):
+        classes = self.get('classes')
+        return not ('contents' in classes and 'local' not in classes)
+
     def build_flowable(self):
         classes = self.get('classes')
         if 'contents' in classes:

@@ -114,6 +114,8 @@ class BodyNodeBase(TreeNode):
 
 
 class BodyNode(BodyNodeBase):
+    set_id = True
+
     def flowable(self):
         flowable, = self.flowables()
         return flowable
@@ -121,7 +123,7 @@ class BodyNode(BodyNodeBase):
     def flowables(self):
         id = self._id
         for i, flowable in enumerate(self.build_flowables()):
-            if i == 0 and id:
+            if self.set_id and i == 0 and id:
                 flowable.id = id
             flowable.source = self
             yield flowable
