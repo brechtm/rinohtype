@@ -174,7 +174,7 @@ class String(Object, bytes):
         except UnicodeEncodeError:
             value = BOM_UTF16_BE + value.encode('utf_16')
         except AttributeError:
-            pass
+            assert isinstance(value, bytes)
         return bytes.__new__(cls, value)
 
     def __init__(self, value, indirect=False):
