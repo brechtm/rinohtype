@@ -9,11 +9,12 @@
 import re
 
 from .draw import Line, LineStyle
+from .element import create_destination
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
-from .layout import PageBreakException, EndOfContainer
+from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
@@ -22,6 +23,7 @@ from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer, OverrideDefault
 from .strings import Strings, String, StringField
+
 
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
            'ListItemLabel', 'FieldList', 'DefinitionList', 'DefinitionTerm',
@@ -73,6 +75,9 @@ class Section(StaticGroupedFlowables, PageBreak):
         except AttributeError:
             parent_show_in_toc = True
         return show_in_toc and parent_show_in_toc
+
+    def create_destination(self, container, at_top_of_container=False):
+        pass    # destination is set by the section's Heading
 
     def render(self, container, descender, state, **kwargs):
         container.page.set_current_section(self, heading=False)
@@ -140,11 +145,11 @@ class Heading(NumberedParagraph):
 
     def render(self, container, descender, state):
         if self.level == 1 and container.page.chapter_title:
-            section_id = self.section.get_id(container.document)
-            container.page.create_chapter_title(section_id)
+            container.page.create_chapter_title(self.section)
             result = 0, None
         else:
             result = super().render(container, descender, state)
+            create_destination(self.section, container, True)
         return result
 
     def after_rendering(self, container):

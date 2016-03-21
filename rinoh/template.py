@@ -11,6 +11,7 @@ from types import FunctionType
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, Page, PageOrientation,
                        PORTRAIT)
+from .element import create_destination
 from .float import BackgroundImage
 from .layout import (FootnoteContainer, DownExpandingContainer,
                      ChainedContainer, UpExpandingContainer, Container,
@@ -211,8 +212,10 @@ class SimplePage(PageBase):
             self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(footer))
 
-    def create_chapter_title(self, section_id):
+    def create_chapter_title(self, section):
         descender = None
+        section_id = section.get_id(self.document)
+        create_destination(section, self.chapter_title, False)
         for flowable in self.template['chapter_title_flowables'](section_id):
             width, descender = flowable.flow(self.chapter_title, descender)
 

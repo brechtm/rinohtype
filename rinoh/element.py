@@ -70,11 +70,9 @@ class DocumentElement(object):
             flowable_target.document.register_element(self.id, self)
 
     def create_destination(self, container, at_top_of_container=False):
-        vertical_position = 0 if at_top_of_container else container.cursor
-        destination = NamedDestination(str(self.get_id(container.document)))
-        container.canvas.annotate(destination, 0, vertical_position,
-                                  container.width, None)
-        container.document.register_page_reference(container.page, self)
+        """Create a destination anchor in the `container` to direct links to
+        this :class:`DocumentElement` to."""
+        create_destination(self, container, at_top_of_container)
 
     def warn(self, message, container=None):
         """Present the warning `message` to the user, adding information on the
@@ -84,3 +82,13 @@ class DocumentElement(object):
         if container is not None:
             message += ' (page {})'.format(container.page.number)
         warn(message)
+
+
+def create_destination(flowable, container, at_top_of_container=False):
+    """Create a destination anchor in the `container` to direct links to
+    `flowable` to."""
+    vertical_position = 0 if at_top_of_container else container.cursor
+    destination = NamedDestination(str(flowable.get_id(container.document)))
+    container.canvas.annotate(destination, 0, vertical_position,
+                              container.width, None)
+    container.document.register_page_reference(container.page, flowable)
