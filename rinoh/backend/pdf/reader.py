@@ -502,3 +502,7 @@ class PDFPageReader(XObjectForm):
     def height(self):
         _, _, _, height = self['BBox']
         return height
+
+    @property
+    def dpi(self):
+        return None, None

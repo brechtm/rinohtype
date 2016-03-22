@@ -38,15 +38,20 @@ class ImageState(HorizontallyAlignedFlowableState):
 
 class ImageBase(Flowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 rotate=0, id=None, style=None, parent=None, **kwargs):
+                 dpi=None, rotate=0, id=None, style=None, parent=None,
+                 **kwargs):
         super().__init__(id=id, style=style, parent=parent, **kwargs)
         self.filename_or_file = filename_or_file
-        if width is not None and height is not None and scale != 1.0:
-            raise TypeError('Scale may not be specified when either width or '
-                            'height are given.')
+        if scale != 1.0 and (width, height, dpi) != (None, None, None):
+            raise TypeError('Scale may not be specified when either width, '
+                            'height or dpi are given.')
+        if dpi is not None and (width, height, scale) != (None, None, 1.0):
+            raise TypeError('DPI may not be specified when either width, '
+                            'height or scale are given.')
         self.scale = scale
-        self.height = height
         self.width = width
+        self.height = height
+        self.dpi = dpi
         self.rotate = rotate
 
     def initial_state(self, container):
@@ -79,9 +84,14 @@ class ImageBase(Flowable):
 
             else:
                 scale_width = scale_height = self.scale
+        dpi_x, dpi_y = image.dpi
+        dpi_scale_x = dpi_x / self.dpi if self.dpi and dpi_x else 1
+        dpi_scale_y = dpi_y / self.dpi if self.dpi and dpi_y else 1
         w, h = container.canvas.place_image(image, left, top,
-                                            container.document, scale_width,
-                                            scale_height, self.rotate)
+                                            container.document,
+                                            scale_width * dpi_scale_x,
+                                            scale_height * dpi_scale_y,
+                                            self.rotate)
         ignore_overflow = (self.scale == FIT) or (not state.initial)
         try:
             container.advance(h, ignore_overflow)
@@ -93,18 +103,20 @@ class ImageBase(Flowable):
 
 class InlineImage(ImageBase, InlineFlowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 rotate=0, baseline=0*PT, id=None, style=None, parent=None):
+                 dpi=None, rotate=0, baseline=0*PT,
+                 id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
-                         width=width, height=height, rotate=rotate,
+                         width=width, height=height, dpi=dpi, rotate=rotate,
                          id=id, style=style, parent=parent, baseline=baseline)
 
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 rotate=0, align=None, id=None, style=None, parent=None):
+                 dpi=None, rotate=0, align=None,
+                 id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
-                         width=width, height=height, rotate=rotate, align=align,
-                         id=id, style=style, parent=parent)
+                         width=width, height=height, dpi=dpi, rotate=rotate,
+                         align=align, id=id, style=style, parent=parent)
 
 
 

@@ -429,6 +429,10 @@ class Image(object):
     def height(self):
         return self.xobject.height
 
+    @property
+    def dpi(self):
+        return self.xobject.dpi
+
     def _convert_to_png(self, filename_or_file):
         from PIL import Image as PILImage
         png_image = BytesIO()
