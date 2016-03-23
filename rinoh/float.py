@@ -29,6 +29,7 @@ CENTER = 'center'
 RIGHT = 'right'
 
 FIT = 'fit'
+FILL = 'fill'
 
 
 class ImageState(HorizontallyAlignedFlowableState):
@@ -77,13 +78,14 @@ class ImageBase(Flowable):
         else:
             scale_height = scale_width
         if scale_width is None:
-            if self.scale == FIT:
-                scale = min(float(container.width) / image.width,
-                            float(container.remaining_height) / image.height)
-                scale_width = scale_height = scale
-
+            if self.scale in (FIT, FILL):
+                w_scale = float(container.width) / image.width
+                h_scale = float(container.remaining_height) / image.height
+                min_or_max = min if self.scale == FIT else max
+                scale = min_or_max(w_scale, h_scale)
             else:
-                scale_width = scale_height = self.scale
+                scale = self.scale
+            scale_width = scale_height = scale
         dpi_x, dpi_y = image.dpi
         dpi_scale_x = dpi_x / self.dpi if self.dpi and dpi_x else 1
         dpi_scale_y = dpi_y / self.dpi if self.dpi and dpi_y else 1
