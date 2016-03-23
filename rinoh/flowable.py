@@ -112,9 +112,9 @@ class Flowable(Styled):
         by the `space_below` style attribute."""
         state = state or self.initial_state(container)
         if state.initial:
+            space_above = self.get_style('space_above', container)
             try:
-                container.advance(float(self.get_style('space_above',
-                                                       container)))
+                container.advance(float(space_above))
             except ContainerOverflow:
                 raise EndOfContainer(state)
         margin_left = self.get_style('margin_left', container)
@@ -151,6 +151,9 @@ class Flowable(Styled):
                           extra_space_below=padding_bottom)
         try:
             container.advance(padding_top)
+        except ContainerOverflow:
+            raise EndOfContainer(state)
+        try:
             with InlineDownExpandingContainer('PADDING', container,
                                               **pad_kwargs) as pad_cntnr:
                 width, descender = self.render(pad_cntnr, descender,
