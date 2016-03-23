@@ -253,7 +253,7 @@ class FlowablesContainerBase(Container):
             raise ReflowRequired
 
     def render(self, type, rerender=False):
-        if type in (self.type, None) and not self.cursor:
+        if type in (self.type, None):
             try:
                 self._render(type, rerender)
             finally:
