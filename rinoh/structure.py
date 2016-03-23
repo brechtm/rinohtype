@@ -143,12 +143,12 @@ class Heading(NumberedParagraph):
         number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
 
-    def render(self, container, descender, state):
+    def flow(self, container, last_descender, state=None):
         if self.level == 1 and container.page.chapter_title:
             container.page.create_chapter_title(self.section)
             result = 0, None
         else:
-            result = super().render(container, descender, state)
+            result = super().flow(container, last_descender, state)
             create_destination(self.section, container, True)
         return result
 
