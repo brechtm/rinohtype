@@ -6,10 +6,11 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .dimension import DimensionBase, PT
 from .element import DocumentElement
-from .dimension import PT
-from .flowable import Flowable
+from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
+from .style import Attribute
 
 
 __all__ = ['InlineFlowableException', 'InlineFlowable']
@@ -19,8 +20,16 @@ class InlineFlowableException(Exception):
     pass
 
 
+class InlineFlowableStyle(FlowableStyle):
+    baseline = Attribute(DimensionBase, 0, 'The offset of the inline flowable '
+                                           'relative to the baseline of '
+                                           'surrounding text')
+
+
 class InlineFlowable(Flowable):
-    def __init__(self, baseline=0*PT, id=None, style=None, parent=None):
+    style_class = InlineFlowableStyle
+
+    def __init__(self, baseline=None, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.baseline = baseline
 
@@ -37,9 +46,10 @@ class InlineFlowable(Flowable):
         yield self
 
     def flow_inline(self, container, last_descender, state=None):
+        baseline = self.baseline or self.get_style('baseline', container)
         virtual_container = VirtualContainer(container)
         width, _ = self.flow(virtual_container, last_descender, state=state)
-        return InlineFlowableSpan(width, self.baseline, virtual_container)
+        return InlineFlowableSpan(width, baseline, virtual_container)
 
 
 class InlineFlowableSpan(DocumentElement):

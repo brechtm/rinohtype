@@ -105,7 +105,7 @@ class ImageBase(Flowable):
 
 class InlineImage(ImageBase, InlineFlowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, baseline=0*PT,
+                 dpi=None, rotate=0, baseline=None,
                  id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, dpi=dpi, rotate=rotate,

@@ -260,6 +260,8 @@ matcher('figure', Figure)
 
 matcher('image', Image)
 
+matcher('inline image', InlineImage)
+
 matcher('caption', Caption)
 
 matcher('figure legend', Figure / GroupedFlowables.like('legend'))
