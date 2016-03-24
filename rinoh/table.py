@@ -19,7 +19,7 @@ from .flowable import (HorizontallyAlignedFlowable,
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .reference import NUMBER
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
-from .style import Styled, OptionSet, Attribute, OverrideDefault
+from .style import Styled, OptionSet, Attribute, OverrideDefault, Integer, Bool
 from .util import ReadAliasAttribute
 
 
@@ -57,10 +57,10 @@ class TableState(HorizontallyAlignedFlowableState):
 
 
 class TableStyle(HorizontallyAlignedFlowableStyle):
-    split_minimum_rows = Attribute(int, 0, 'The minimum number of rows to '
-                                           'display when the table is split '
-                                           'across pages')
-    repeat_head = Attribute(bool, False, 'Repeat the head when the table is '
+    split_minimum_rows = Attribute(Integer, 0, 'The minimum number of rows to '
+                                               'display when the table is '
+                                               'split across pages')
+    repeat_head = Attribute(Bool, False, 'Repeat the head when the table is '
                                          'split across pages')
 
 
