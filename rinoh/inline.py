@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .dimension import DimensionBase, PT
+from .dimension import DimensionBase
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
@@ -70,13 +70,17 @@ class InlineFlowableSpan(DocumentElement):
         return self
 
     def height(self, document):
-        return self.virtual_container.height
+        return self.ascender(document) - self.descender(document)
 
     def ascender(self, document):
-        return self.height(document) + self.descender(document)
+        baseline = self.baseline.to_points(self.virtual_container.height)
+        if baseline > self.virtual_container.height:
+            return 0
+        else:
+            return self.virtual_container.height - baseline
 
     def descender(self, document):
-        return - self.baseline.to_points(self.height(document))
+        return min(0, - self.baseline.to_points(self.virtual_container.height))
 
     def line_gap(self, document):
         return 0

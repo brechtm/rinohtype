@@ -323,7 +323,6 @@ def spans_to_words(spans, container, **kwargs):
                 else:
                     word.append((glyphs_span, chars))
         except InlineFlowableException:
-            # TODO: take descender into account
             glyphs_span = span.flow_inline(container, 0)
             word.append((glyphs_span, '<inline image>'))
     if word:
@@ -783,7 +782,12 @@ class Line(list):
                 width = canvas.show_glyphs(left, cursor, span, glyph_and_widths,
                                            container)
             except InlineFlowableException:
-                top = cursor - span.ascender(document)
+                ascender = span.ascender(document)
+                if ascender > 0:
+                    top = cursor - ascender
+                else:
+                    inline_height = span.virtual_container.height
+                    top = cursor - span.descender(document) - inline_height
                 span.virtual_container.place_at(container, left, top)
                 width = span.width
             current_annotation.update(span, left, width)
