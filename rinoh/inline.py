@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .dimension import DimensionBase
+from .dimension import DimensionBase, PT
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
@@ -21,9 +21,9 @@ class InlineFlowableException(Exception):
 
 
 class InlineFlowableStyle(FlowableStyle):
-    baseline = Attribute(DimensionBase, 0, 'The offset of the inline flowable '
-                                           'relative to the baseline of '
-                                           'surrounding text')
+    baseline = Attribute(DimensionBase, 0*PT, "The location of the flowable's "
+                                              "baseline relative to the bottom "
+                                              "edge")
 
 
 class InlineFlowable(Flowable):
