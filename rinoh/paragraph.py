@@ -114,9 +114,9 @@ class DefaultSpacing(LineSpacing):
     def advance(self, line, last_descender, container):
         max_line_gap = max(float(glyph_span.span.line_gap(container))
                            for glyph_span in line)
-        ascender = max(float(glyph_span.span.ascender(container))
+        max_ascender = max(float(glyph_span.span.ascender(container))
                        for glyph_span in line)
-        return ascender + max_line_gap
+        return max_ascender + max_line_gap
 
 
 DEFAULT = DefaultSpacing()
@@ -209,8 +209,8 @@ class Leading(LineSpacing):
         return leading,
 
     def advance(self, line, last_descender):
-        ascender = max(float(item.ascender) for item in line)
-        return ascender + self.leading
+        max_ascender = max(float(item.ascender) for item in line)
+        return max_ascender + self.leading
 
 
 PREDEFINED_SPACINGS = dict(default=DEFAULT,
