@@ -100,7 +100,8 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
 
     @classmethod
     def check_type(cls, value):
-        return super().check_type(value) or value == 0
+        return (super().check_type(value) or isinstance(value, Fraction)
+                or value == 0)
 
     REGEX = re.compile(r"""(?P<value>
                              [+-]?         # optional sign
