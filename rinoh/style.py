@@ -707,15 +707,14 @@ def parse_selector_args(selector_args):
         char = eat_whitespace(chars)
         if char is None:
             break
-        elif char in ("'", '"'):
+        argument = parse_value(char, chars)
+        if argument is not None:
             assert not kwargs
-            argument = parse_string(char, chars)
             args.append(argument)
         else:
             keyword = parse_keyword(char, chars)
             char = eat_whitespace(chars)
-            value = parse_string(char, chars)
-            kwargs[keyword] = value
+            kwargs[keyword] = parse_value(char, chars)
         comma = eat_whitespace(chars)
         if comma:
             assert comma == ','
@@ -753,6 +752,16 @@ def parse_keyword(first_char, chars):
     return ''.join(keyword_chars)
 
 
+def parse_value(first_char, chars):
+    if first_char in ("'", '"'):
+        argument = parse_string(first_char, chars)
+    elif first_char.isnumeric() or first_char in '+-':
+        argument = parse_number(first_char, chars)
+    else:
+        argument = None
+    return argument
+
+
 def parse_string(open_quote, chars):
     string_chars = [open_quote]
     escape_next = False
@@ -770,6 +779,8 @@ def parse_string(open_quote, chars):
     return literal_eval(''.join(string_chars))
 
 
+def parse_number(first_char, chars):
+    raise NotImplementedError
 def eat_whitespace(chars):
     for char in chars:
         if char not in ' \t':
