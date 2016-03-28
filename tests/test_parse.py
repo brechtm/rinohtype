@@ -222,7 +222,7 @@ def test_tableofcontentsentrytext_from_string():
 def test_parse_keyword():
     def helper(string):
         chars = iter(string)
-        return parse_keyword(next(chars), chars), ''.join(chars)
+        return parse_keyword(chars), ''.join(chars)
 
     assert helper('style=') == ('style', '')
     assert helper('row =') == ('row', '')

@@ -703,22 +703,29 @@ class StyleParseError(Exception):
 def parse_selector_args(selector_args):
     args, kwargs = [], {}
     chars = CharIterator(selector_args)
-    while True:
-        char = eat_whitespace(chars)
-        if char is None:
-            break
-        argument = parse_value(char, chars)
-        if argument is not None:
-            assert not kwargs
-            args.append(argument)
-        else:
-            keyword = parse_keyword(char, chars)
-            char = eat_whitespace(chars)
-            kwargs[keyword] = parse_value(char, chars)
-        comma = eat_whitespace(chars)
-        if comma:
-            assert comma == ','
+    try:
+        while True:
+            eat_whitespace(chars)
+            argument = parse_value(chars)
+            if argument is not None:
+                assert not kwargs
+                args.append(argument)
+            else:
+                keyword = parse_keyword(chars)
+                eat_whitespace(chars)
+                kwargs[keyword] = parse_value(chars)
+            eat_whitespace(chars)
+            assert next(chars) == ','
+    except StopIteration:
+        pass
     return args, kwargs
+
+
+def eat_whitespace(chars):
+    for char in chars:
+        if char not in ' \t':
+            chars.push_back(char)
+            break
 
 
 class CharIterator(str):
@@ -736,28 +743,32 @@ class CharIterator(str):
         return next(self._iter)
 
     def push_back(self, char):
-        self._pushed_back.insert(char, 0)
+        self._pushed_back.insert(0, char)
 
 
-def parse_keyword(first_char, chars):
-    keyword_chars = [first_char]
-    for first_char in chars:
-        if not (first_char.isalnum() or first_char == '_'):
+def parse_keyword(chars):
+    keyword_chars = []
+    for char in chars:
+        if not (char.isalnum() or char == '_'):
             break
-        keyword_chars.append(first_char)
-    if first_char != '=':
-        if eat_whitespace(chars) != '=':
-            raise StyleParseError('Expecting an equals sign to follow a '
-                                  'keyword')
+        keyword_chars.append(char)
+    try:
+        while char != '=':
+            assert char in ' \t'
+            char = next(chars)
+    except (StopIteration, AssertionError):
+        raise StyleParseError('Expecting an equals sign to follow a keyword')
     return ''.join(keyword_chars)
 
 
-def parse_value(first_char, chars):
+def parse_value(chars):
+    first_char = next(chars)
     if first_char in ("'", '"'):
         argument = parse_string(first_char, chars)
     elif first_char.isnumeric() or first_char in '+-':
-        argument = parse_number(first_char, chars)
+        argument = parse_number(chars)
     else:
+        chars.push_back(first_char)
         argument = None
     return argument
 
@@ -774,17 +785,13 @@ def parse_string(open_quote, chars):
             break
         escape_next = False
     else:
-        raise StyleParseError('Did not encounter a closing quote while parsing '
-                              'string')
+        raise StyleParseError('Did not encounter a closing '
+                              'quote while parsing string')
     return literal_eval(''.join(string_chars))
 
 
 def parse_number(first_char, chars):
     raise NotImplementedError
-def eat_whitespace(chars):
-    for char in chars:
-        if char not in ' \t':
-            return char
 
 
 class VarBase(object):
