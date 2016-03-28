@@ -10,8 +10,9 @@ from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import TITLE, PAGE
 from rinoh.structure import TableOfContentsEntryText, TableOfContentsEntryField
-from rinoh.style import (OptionSet, Bool, Integer, StyleParseError,
-                         parse_keyword, parse_string, parse_selector_args)
+from rinoh.style import (OptionSet, Bool, Integer, parse_keyword, parse_string,
+                         parse_number, parse_selector_args, StyleParseError,
+                         CharIterator)
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
@@ -247,11 +248,36 @@ def test_parse_string():
     assert helper(r"'Unicode \N{COLON} lookup'") == ('Unicode : lookup', '')
 
 
+def test_parse_number():
+    def helper(string):
+        chars = CharIterator(string)
+        return parse_number(next(chars), chars), ''.join(chars)
+
+    assert helper('1') == (1, '')
+    assert helper('+1') == (1, '')
+    assert helper('-1') == (-1, '')
+    assert helper('12497   ') == (12497, '   ')
+    assert helper('1.05') == (1.05, '')
+    assert helper('-1.05') == (-1.05, '')
+    assert helper('+1.05') == (1.05, '')
+    assert helper('0.2478  zzz ') == (0.2478, '  zzz ')
+    assert helper('1.45e10') == (1.45e10, '')
+    assert helper('1.45e+10') == (1.45e+10, '')
+    assert helper('1.45e-10') == (1.45e-10, '')
+
+
 def test_parse_selector_args():
     assert parse_selector_args("'style name'") == (['style name'], {})
+    assert parse_selector_args("666") == ([666], {})
+    assert parse_selector_args("'style name', 666") == (['style name', 666], {})
+    assert parse_selector_args("'style name' ,666") == (['style name', 666], {})
+    assert parse_selector_args("'style name',666") == (['style name', 666], {})
     assert parse_selector_args("'arg1', 'arg2'") == (['arg1', 'arg2'], {})
     assert parse_selector_args("key='value'") == ([], dict(key='value'))
+    assert parse_selector_args("key=123") == ([], dict(key=123))
+    assert parse_selector_args("k1=13,k2='meh'") == ([], dict(k1=13, k2='meh'))
     assert parse_selector_args("key9='value'") == ([], dict(key9='value'))
     assert parse_selector_args("key_9='value'") == ([], dict(key_9='value'))
     assert parse_selector_args("'arg', key='value'") == (['arg'],
                                                           dict(key='value'))
+    assert parse_selector_args("22, key='value'") == ([22], dict(key='value'))

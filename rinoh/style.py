@@ -766,7 +766,7 @@ def parse_value(chars):
     if first_char in ("'", '"'):
         argument = parse_string(first_char, chars)
     elif first_char.isnumeric() or first_char in '+-':
-        argument = parse_number(chars)
+        argument = parse_number(first_char, chars)
     else:
         chars.push_back(first_char)
         argument = None
@@ -791,7 +791,13 @@ def parse_string(open_quote, chars):
 
 
 def parse_number(first_char, chars):
-    raise NotImplementedError
+    number_chars = [first_char]
+    for char in chars:
+        if char not in '0123456789.e+-':
+            chars.push_back(char)
+            break
+        number_chars.append(char)
+    return literal_eval(''.join(number_chars))
 
 
 class VarBase(object):
