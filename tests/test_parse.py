@@ -10,7 +10,8 @@ from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import TITLE, PAGE
 from rinoh.structure import TableOfContentsEntryText, TableOfContentsEntryField
-from rinoh.style import OptionSet, Bool, Integer
+from rinoh.style import (OptionSet, Bool, Integer, StyleParseError,
+                         parse_keyword, parse_string, parse_selector_args)
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
@@ -214,3 +215,33 @@ def test_tableofcontentsentrytext_from_string():
                                     TableOfContentsEntryField(TITLE), Tab(),
                                     TableOfContentsEntryField(PAGE)],
                                    style='style2')])
+
+
+# selectors
+
+def test_parse_keyword():
+    def helper(string):
+        chars = iter(string)
+        return parse_keyword(next(chars), chars), ''.join(chars)
+
+    assert helper('style=') == ('style', '')
+    assert helper('row =') == ('row', '')
+    assert helper('UPPERCASE=') == ('UPPERCASE', '')
+    assert helper('miXeDCaSE=') == ('miXeDCaSE', '')
+    assert helper('key =  efzef') == ('key', '  efzef')
+    with pytest.raises(StyleParseError):
+        helper('bad key =')
+
+
+def test_parse_string():
+    def helper(string):
+        chars = iter(string)
+        return parse_string(next(chars), chars), ''.join(chars)
+
+    assert helper('"test"') == ('test', '')
+    assert helper("'test'") == ('test', '')
+    assert helper("'test' trailing text") == ('test', ' trailing text')
+    assert helper("'A string with spaces'") == ('A string with spaces', '')
+    assert helper("""'Quotes ahead: " '""") == ('Quotes ahead: " ', '')
+    assert helper(r"'Escaped quote: \' '") == ("Escaped quote: ' ", '')
+    assert helper(r"'Unicode \N{COLON} lookup'") == ('Unicode : lookup', '')

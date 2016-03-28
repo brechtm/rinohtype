@@ -20,6 +20,7 @@ Base classes and exceptions for styled document elements.
 import re
 import string
 
+from ast import literal_eval
 from configparser import ConfigParser
 from collections import OrderedDict, namedtuple
 from operator import attrgetter
@@ -649,7 +650,7 @@ class StyleSheetFile(StyleSheet):
                     raise TypeError("Invalid type '{}' given for style '{}'"
                                     .format(styled_name, style_name))
                 if selector_args:
-                    args, kwargs = self._parse_selector_args(selector_args)
+                    args, kwargs = parse_selector_args(selector_args)
                     selector = styled_class.like(*args, **kwargs)
                     self.matcher[style_name] = selector
                 try:
@@ -691,53 +692,70 @@ class StyleSheetFile(StyleSheet):
                     attribute_values[name] = value
             self[style_name] = style_cls(**attribute_values)
 
-    def _parse_selector_args(self, selector_args):
-        def parse_keyword(char, chars):
-            keyword_chars = [char]
-            for char in chars:
-                if char not in string.ascii_letters + '_':
-                    break
-                keyword_chars.append(char)
-            if char != '=':
-                equals = eat_whitespace(chars)
-                assert equals == '='
-            return ''.join(keyword_chars)
-
-        def parse_string(chars, open_quote):
-            string_chars = []
-            for char in chars:
-                if char == open_quote:
-                    break
-                string_chars.append(char)
-            return ''.join(string_chars)
-
-        def eat_whitespace(chars):
-            for char in chars:
-                if char not in ' \t':
-                    return char
-
-        args, kwargs = [], {}
-        chars = iter(selector_args)
-        for char in chars:
-            if char == ' ':
-                continue
-            elif char in ("'", '"'):
-                assert not kwargs
-                argument = parse_string(chars, char)
-                args.append(argument)
-            else:
-                keyword = parse_keyword(char, chars)
-                char = eat_whitespace(chars)
-                value = parse_string(chars, char)
-                kwargs[keyword] = value
-            comma = eat_whitespace(chars)
-            if comma:
-                assert comma == ','
-                eat_whitespace(chars)
-        return args, kwargs
-
     def _get_variable(self, name, accepted_type):
         return accepted_type.from_string(self.variables[name])
+
+
+class StyleParseError(Exception):
+    pass
+
+
+def parse_selector_args(selector_args):
+    args, kwargs = [], {}
+    chars = iter(selector_args)
+    for char in chars:
+        if char == ' ':
+            continue
+        elif char in ("'", '"'):
+            assert not kwargs
+            argument = parse_string(char, chars)
+            args.append(argument)
+        else:
+            keyword = parse_keyword(char, chars)
+            char = eat_whitespace(chars)
+            value = parse_string(char, chars)
+            kwargs[keyword] = value
+        comma = eat_whitespace(chars)
+        if comma:
+            assert comma == ','
+            eat_whitespace(chars)
+    return args, kwargs
+
+
+def parse_keyword(first_char, chars):
+    keyword_chars = [first_char]
+    for first_char in chars:
+        if first_char not in string.ascii_letters + '_':
+            break
+        keyword_chars.append(first_char)
+    if first_char != '=':
+        if eat_whitespace(chars) != '=':
+            raise StyleParseError('Expecting an equals sign to follow a '
+                                  'keyword')
+    return ''.join(keyword_chars)
+
+
+def parse_string(open_quote, chars):
+    string_chars = [open_quote]
+    escape_next = False
+    for char in chars:
+        string_chars.append(char)
+        if char == '\\':
+            escape_next = True
+            continue
+        elif not escape_next and char == open_quote:
+            break
+        escape_next = False
+    else:
+        raise StyleParseError('Did not encounter a closing quote while parsing '
+                              'string')
+    return literal_eval(''.join(string_chars))
+
+
+def eat_whitespace(chars):
+    for char in chars:
+        if char not in ' \t':
+            return char
 
 
 class VarBase(object):
