@@ -55,6 +55,11 @@ class ImageBase(Flowable):
         self.dpi = dpi
         self.rotate = rotate
 
+    @property
+    def filename(self):
+        if isinstance(self.filename_or_file, str):
+            return self.filename_or_file
+
     def initial_state(self, container):
          return ImageState(self)
 
