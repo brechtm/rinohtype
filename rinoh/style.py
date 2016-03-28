@@ -703,9 +703,10 @@ class StyleParseError(Exception):
 def parse_selector_args(selector_args):
     args, kwargs = [], {}
     chars = iter(selector_args)
-    for char in chars:
-        if char == ' ':
-            continue
+    while True:
+        char = eat_whitespace(chars)
+        if char is None:
+            break
         elif char in ("'", '"'):
             assert not kwargs
             argument = parse_string(char, chars)
@@ -718,14 +719,13 @@ def parse_selector_args(selector_args):
         comma = eat_whitespace(chars)
         if comma:
             assert comma == ','
-            eat_whitespace(chars)
     return args, kwargs
 
 
 def parse_keyword(first_char, chars):
     keyword_chars = [first_char]
     for first_char in chars:
-        if first_char not in string.ascii_letters + '_':
+        if not (first_char.isalnum() or first_char == '_'):
             break
         keyword_chars.append(first_char)
     if first_char != '=':

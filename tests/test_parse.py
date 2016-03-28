@@ -245,3 +245,13 @@ def test_parse_string():
     assert helper("""'Quotes ahead: " '""") == ('Quotes ahead: " ', '')
     assert helper(r"'Escaped quote: \' '") == ("Escaped quote: ' ", '')
     assert helper(r"'Unicode \N{COLON} lookup'") == ('Unicode : lookup', '')
+
+
+def test_parse_selector_args():
+    assert parse_selector_args("'style name'") == (['style name'], {})
+    assert parse_selector_args("'arg1', 'arg2'") == (['arg1', 'arg2'], {})
+    assert parse_selector_args("key='value'") == ([], dict(key='value'))
+    assert parse_selector_args("key9='value'") == ([], dict(key9='value'))
+    assert parse_selector_args("key_9='value'") == ([], dict(key_9='value'))
+    assert parse_selector_args("'arg', key='value'") == (['arg'],
+                                                          dict(key='value'))
