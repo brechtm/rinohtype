@@ -18,6 +18,8 @@ Base classes and exceptions for styled document elements.
 """
 
 import re
+import string
+
 from configparser import ConfigParser
 from collections import OrderedDict, namedtuple
 from operator import attrgetter
@@ -615,6 +617,7 @@ class StyleSheet(OrderedDict, AttributeType):
 
 class StyleSheetFile(StyleSheet):
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
+    RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
 
     def __init__(self, filename, matcher, base=None):
         config = ConfigParser(default_section=None, delimiters=('=',),
@@ -630,7 +633,14 @@ class StyleSheetFile(StyleSheet):
                     self.variables[name] = value
                 continue
             try:
-                style_name, styled_name  = section_name.split(':')
+                style_name, selector  = section_name.split(':')
+                m = self.RE_SELECTOR.match(selector)
+                if m:
+                    styled_name = m.group('name')
+                    selector_args = m.group('args')
+                else:
+                    styled_name = selector
+                    selector_args = None
                 for styled_class in all_subclasses(Styled):
                     if styled_class.__name__ == styled_name:
                         style_cls = styled_class.style_class
@@ -638,6 +648,10 @@ class StyleSheetFile(StyleSheet):
                 else:
                     raise TypeError("Invalid type '{}' given for style '{}'"
                                     .format(styled_name, style_name))
+                if selector_args:
+                    args, kwargs = self._parse_selector_args(selector_args)
+                    selector = styled_class.like(*args, **kwargs)
+                    self.matcher[style_name] = selector
                 try:
                     matcher_styled = self.get_styled(style_name)
                     if styled_class is not matcher_styled:
@@ -676,6 +690,51 @@ class StyleSheetFile(StyleSheet):
                         value = accepted_type.from_string(stripped)
                     attribute_values[name] = value
             self[style_name] = style_cls(**attribute_values)
+
+    def _parse_selector_args(self, selector_args):
+        def parse_keyword(char, chars):
+            keyword_chars = [char]
+            for char in chars:
+                if char not in string.ascii_letters + '_':
+                    break
+                keyword_chars.append(char)
+            if char != '=':
+                equals = eat_whitespace(chars)
+                assert equals == '='
+            return ''.join(keyword_chars)
+
+        def parse_string(chars, open_quote):
+            string_chars = []
+            for char in chars:
+                if char == open_quote:
+                    break
+                string_chars.append(char)
+            return ''.join(string_chars)
+
+        def eat_whitespace(chars):
+            for char in chars:
+                if char not in ' \t':
+                    return char
+
+        args, kwargs = [], {}
+        chars = iter(selector_args)
+        for char in chars:
+            if char == ' ':
+                continue
+            elif char in ("'", '"'):
+                assert not kwargs
+                argument = parse_string(chars, char)
+                args.append(argument)
+            else:
+                keyword = parse_keyword(char, chars)
+                char = eat_whitespace(chars)
+                value = parse_string(chars, char)
+                kwargs[keyword] = value
+            comma = eat_whitespace(chars)
+            if comma:
+                assert comma == ','
+                eat_whitespace(chars)
+        return args, kwargs
 
     def _get_variable(self, name, accepted_type):
         return accepted_type.from_string(self.variables[name])
