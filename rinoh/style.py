@@ -702,7 +702,7 @@ class StyleParseError(Exception):
 
 def parse_selector_args(selector_args):
     args, kwargs = [], {}
-    chars = iter(selector_args)
+    chars = CharIterator(selector_args)
     while True:
         char = eat_whitespace(chars)
         if char is None:
@@ -720,6 +720,24 @@ def parse_selector_args(selector_args):
         if comma:
             assert comma == ','
     return args, kwargs
+
+
+class CharIterator(str):
+    def __init__(self, string):
+        super().__init__(string)
+        self._iter = iter(string)
+        self._pushed_back = []
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._pushed_back:
+            return self._pushed_back.pop(0)
+        return next(self._iter)
+
+    def push_back(self, char):
+        self._pushed_back.insert(char, 0)
 
 
 def parse_keyword(first_char, chars):
