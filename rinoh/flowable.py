@@ -26,6 +26,7 @@ from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
                      EndOfContainer, PageBreakException)
 from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
+from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
 
 
@@ -279,6 +280,7 @@ class GroupedFlowablesState(FlowableState):
 
 
 class GroupedFlowablesStyle(FlowableStyle):
+    title = Attribute(StyledText, None, 'Title to precede the flowables')
     flowable_spacing = Attribute(DimensionBase, 0, 'Spacing between flowables')
 
 
@@ -290,6 +292,10 @@ class GroupedFlowables(Flowable):
 
     def initial_state(self, container):
         flowables_iter = self.flowables(container)
+        title_text = self.get_style('title', container)
+        if title_text:
+            title = Paragraph(title_text, style='title')
+            flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
 
     def render(self, container, descender, state, **kwargs):
@@ -588,3 +594,6 @@ class PageBreak(Flowable):
 
     def render(self, container, descender, state):
         return 0, descender
+
+
+from .paragraph import Paragraph

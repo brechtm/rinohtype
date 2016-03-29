@@ -91,6 +91,11 @@ for i in range(1, 6):
 
 matcher('topic', GroupedFlowables.like('topic'))
 
+matcher('prerequisites', GroupedFlowables.like('prerequisites'))
+
+matcher('prerequisites title', GroupedFlowables.like('prerequisites')
+                               / Paragraph.like('title'))
+
 matcher('post requirement', GroupedFlowables.like('post requirement'))
 
 matcher('abstract', GroupedFlowables.like('abstract'))
@@ -136,6 +141,8 @@ matcher('bulleted list item label', List.like('bulleted')
 matcher('nested bulleted list', ListItem / List.like('bulleted'))
 
 matcher('steps list', List.like('steps'))
+
+matcher('steps list title', List.like('steps') / Paragraph.like('title'))
 
 matcher('steps list item label', List.like('steps')
                                  / ListItem / ListItemLabel)
