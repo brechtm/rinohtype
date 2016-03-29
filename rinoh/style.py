@@ -728,9 +728,8 @@ def eat_whitespace(chars):
             break
 
 
-class CharIterator(str):
+class CharIterator(object):
     def __init__(self, string):
-        super().__init__(string)
         self._iter = iter(string)
         self._pushed_back = []
 
