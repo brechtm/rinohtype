@@ -167,6 +167,11 @@ matcher('definition term classifier',
 
 matcher('definition', Definition)
 
+related_links = GroupedFlowables.like('related links')
+matcher('related links', related_links)
+matcher('related links section title', related_links / ... / DefinitionTerm
+                                       / ... / Paragraph)
+
 # (Sphinx) version added/changed & deprecated
 
 matcher('versionmodified', StyledText.like(classes=['versionmodified']))
