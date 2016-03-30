@@ -2,6 +2,7 @@
 from rinoh.document import DocumentSection
 from rinoh.paragraph import Paragraph
 from rinoh.structure import GroupedFlowables, TableOfContentsSection
+from rinoh.style import Bool
 from rinoh.template import DocumentTemplate, DocumentOptions, Option
 
 from .base import ContentsPart
@@ -82,7 +83,7 @@ FRONT_MATTER = AbstractLocation('front_matter')
 
 
 class ArticleOptions(DocumentOptions):
-    table_of_contents = Option(bool, True, 'Show or hide the table of contents')
+    table_of_contents = Option(Bool, True, 'Show or hide the table of contents')
     abstract_location = Option(AbstractLocation, FRONT_MATTER, 'Where to place '
                                'the abstract')
 
