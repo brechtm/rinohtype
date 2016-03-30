@@ -35,5 +35,6 @@ from .text import Character
 from .text import CharacterLike
 from .text import ControlCharacter, Newline, Tab
 from .text import StyledText, SingleStyledText, MixedStyledText
+from .text import ConditionalMixedStyledText
 from .text import Space, FixedWidthSpace, NoBreakSpace, Spacer
 from .text import Subscript, Superscript

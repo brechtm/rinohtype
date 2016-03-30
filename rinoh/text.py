@@ -53,10 +53,9 @@ from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
-           'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer',
-           'Tab', 'Newline',
-           'Bold', 'Italic', 'Emphasized', 'SmallCaps', 'Superscript',
-           'Subscript']
+           'ConditionalMixedStyledText', 'Space', 'FixedWidthSpace',
+           'NoBreakSpace', 'Spacer', 'Tab', 'Newline', 'Bold', 'Italic',
+           'Emphasized', 'SmallCaps', 'Superscript', 'Subscript']
 
 
 class Locale(AttributeType):
@@ -383,6 +382,17 @@ class MixedStyledText(StyledText, list):
         mixed-styled text."""
         return (span for item in self
                 for span in item.spans(container, **kwargs))
+
+
+class ConditionalMixedStyledText(MixedStyledText):
+    def __init__(self, text_or_items, document_option, style=None, parent=None):
+        super().__init__(text_or_items, style=style, parent=parent)
+        self.document_option = document_option
+
+    def spans(self, container, **kwargs):
+        if container.document.options[self.document_option]:
+            for span in super().spans(container, **kwargs):
+                yield span
 
 
 class Character(SingleStyledText):
