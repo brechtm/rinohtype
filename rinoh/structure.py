@@ -6,8 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import re
-
 from .draw import Line, LineStyle
 from .element import create_destination
 from .flowable import GroupedFlowables, StaticGroupedFlowables
@@ -18,7 +16,8 @@ from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
 from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
-from .reference import ReferenceBase, REFERENCE, ReferenceType
+from .reference import (ReferenceField, ReferencingParagraph,
+                        ReferencingParagraphStyle)
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE, Attribute, Bool, Integer, OverrideDefault
@@ -295,58 +294,14 @@ class TableOfContents(GroupedFlowables):
             yield TableOfContentsEntry(flowable, parent=self)
 
 
-class TableOfContentsEntryField(ReferenceBase):
-    def target_id(self, document, toc_entry, **kwargs):
-        return toc_entry.flowable.get_id(document)
+class TableOfContentsEntryStyle(ReferencingParagraphStyle):
+    text = OverrideDefault(ReferenceField(NUMBER)
+                           + Tab() + ReferenceField(TITLE)
+                           + Tab() + ReferenceField(PAGE))
 
 
-class TableOfContentsEntryText(StyledText):
-    RE_TYPES = re.compile('({(?:' + '|'.join(ReferenceType.values) + ')})',
-                          re.IGNORECASE)
-
-    @classmethod
-    def check_type(cls, value):
-        return isinstance(value, (str, type(None), StyledText))
-
-    @classmethod
-    def _substitute_variables(cls, text, style):
-        items = []
-        for part in (prt for prt in cls.RE_TYPES.split(text) if prt):
-            if part.lower() in ('{' + type + '}'
-                                for type in (REFERENCE, NUMBER, TITLE, PAGE)):
-                field_type = part[1:-1].lower()
-                item = TableOfContentsEntryField(field_type)
-            else:
-                item = super()._substitute_variables(part, style).text
-            items.append(item)
-        return MixedStyledText(items, style=style)
-
-
-class TableOfContentsEntryStyle(ParagraphStyle):
-    text = Attribute(TableOfContentsEntryText,
-                     TableOfContentsEntryField(NUMBER)
-                     + Tab() + TableOfContentsEntryField(TITLE)
-                     + Tab() + TableOfContentsEntryField(PAGE),
-                     'The text content of a table of contents entry')
-
-
-class TableOfContentsEntry(ParagraphBase):
+class TableOfContentsEntry(ReferencingParagraph):
     style_class = TableOfContentsEntryStyle
-
-    def __init__(self, flowable, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        self.flowable = flowable
-
-    @property
-    def spans_kwargs(self):
-        return dict(toc_entry=self)
-
-    @property
-    def depth(self):
-        return self.flowable.level
-
-    def text(self, container):
-        return MixedStyledText(self.get_style('text', container), parent=self)
 
 
 class AdmonitionStyle(GroupedFlowablesStyle):

@@ -6,18 +6,20 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import re
+
 from .annotation import NamedDestinationLink, AnnotatedSpan
-from .flowable import Flowable, LabeledFlowable, DummyFlowable
+from .flowable import LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
-from .paragraph import Paragraph
-from .style import OptionSet
-from .text import SingleStyledText, TextStyle
-from .util import NotImplementedAttribute
+from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
+from .style import OptionSet, Attribute
+from .text import SingleStyledText, TextStyle, StyledText, MixedStyledText
 
 
-__all__ = ['Field', 'Variable', 'Reference',
-           'Note', 'RegisterNote',
-           'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
+__all__ = ['Field', 'Variable', 'Reference', 'ReferenceField', 'ReferenceText',
+           'ReferenceType', 'ReferencingParagraph', 'ReferencingParagraphStyle',
+           'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
+           'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
 
 
@@ -105,6 +107,58 @@ class DirectReference(ReferenceBase):
 
     def target_id(self, document):
         return self.referenceable.get_id(document)
+
+
+class ReferenceField(ReferenceBase):
+    def target_id(self, document, flowable, **kwargs):
+        return flowable.get_id(document)
+
+
+class ReferenceText(StyledText):
+    RE_TYPES = re.compile('({(?:' + '|'.join(ReferenceType.values) + ')})',
+                          re.IGNORECASE)
+
+    @classmethod
+    def check_type(cls, value):
+        return isinstance(value, (str, type(None), StyledText))
+
+    @classmethod
+    def _substitute_variables(cls, text, style):
+        items = []
+        for part in (prt for prt in cls.RE_TYPES.split(text) if prt):
+            if part.lower() in ('{' + ref_type + '}'
+                                for ref_type in ReferenceType.values):
+                field_type = part[1:-1].lower()
+                item = ReferenceField(field_type)
+            else:
+                item = super()._substitute_variables(part, style).text
+            items.append(item)
+        return MixedStyledText(items, style=style)
+
+
+class ReferencingParagraphStyle(ParagraphStyle):
+    text = Attribute(ReferenceText, ReferenceField(TITLE), 'The text content '
+                                                           'of this paragraph')
+
+
+class ReferencingParagraph(ParagraphBase):
+    style_class = ReferencingParagraphStyle
+
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.flowable = flowable
+
+    @property
+    def spans_kwargs(self):
+        return dict(flowable=self.flowable)
+
+    @property
+    def depth(self):
+        return self.flowable.level
+
+    def text(self, container):
+        return MixedStyledText(self.get_style('text', container), parent=self)
+
 
 
 class Note(LabeledFlowable):
