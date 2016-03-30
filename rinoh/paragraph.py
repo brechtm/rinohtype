@@ -365,14 +365,14 @@ class ParagraphBase(Flowable):
 
     style_class = ParagraphStyle
 
-    @property
-    def spans_kwargs(self):
+    def spans_kwargs(self, container):
         return {}
 
     def initial_state(self, container):
-        spans = self.text(container).spans(container, **self.spans_kwargs)
+        spans_kwargs = self.spans_kwargs(container)
+        spans = self.text(container).spans(container, **spans_kwargs)
         return ParagraphState(self, spans_to_words(spans, container,
-                                                   **self.spans_kwargs))
+                                                   **spans_kwargs))
 
     def render(self, container, descender, state):
         """Typeset the paragraph onto `container`, starting below the current

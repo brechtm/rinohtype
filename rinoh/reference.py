@@ -9,7 +9,7 @@
 import re
 
 from .annotation import NamedDestinationLink, AnnotatedSpan
-from .flowable import LabeledFlowable, DummyFlowable
+from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .style import OptionSet, Attribute
@@ -110,8 +110,8 @@ class DirectReference(ReferenceBase):
 
 
 class ReferenceField(ReferenceBase):
-    def target_id(self, document, flowable, **kwargs):
-        return flowable.get_id(document)
+    def target_id(self, document, target_id, **kwargs):
+        return target_id
 
 
 class ReferenceText(StyledText):
@@ -144,17 +144,15 @@ class ReferencingParagraphStyle(ParagraphStyle):
 class ReferencingParagraph(ParagraphBase):
     style_class = ReferencingParagraphStyle
 
-    def __init__(self, flowable, id=None, style=None, parent=None):
+    def __init__(self, target_id_or_flowable, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
-        self.flowable = flowable
+        self.target_id_or_flowable = target_id_or_flowable
 
-    @property
-    def spans_kwargs(self):
-        return dict(flowable=self.flowable)
-
-    @property
-    def depth(self):
-        return self.flowable.level
+    def spans_kwargs(self, container):
+        target_id = (self.target_id_or_flowable.get_id(container.document)
+                     if isinstance(self.target_id_or_flowable, Flowable)
+                     else self.target_id_or_flowable)
+        return dict(target_id=target_id)
 
     def text(self, container):
         return MixedStyledText(self.get_style('text', container), parent=self)

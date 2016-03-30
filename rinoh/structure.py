@@ -303,6 +303,13 @@ class TableOfContentsEntryStyle(ReferencingParagraphStyle):
 class TableOfContentsEntry(ReferencingParagraph):
     style_class = TableOfContentsEntryStyle
 
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        super().__init__(flowable, id=id, style=style, parent=parent)
+
+    @property
+    def depth(self):
+        return self.target_id_or_flowable.level
+
 
 class AdmonitionStyle(GroupedFlowablesStyle):
     inline_title = Attribute(Bool, True, "Show the admonition's title inline "
