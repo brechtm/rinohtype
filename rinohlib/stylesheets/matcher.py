@@ -1,3 +1,4 @@
+from rinoh.reference import TITLE, PAGE, NUMBER, REFERENCE
 from rinoh.style import StyledMatcher
 from rinoh.styleds import *
 
@@ -170,11 +171,22 @@ matcher('definition', Definition)
 related_links = GroupedFlowables.like('related links')
 related_links_list = related_links / List
 related_links_list_item = related_links_list / ListItem
+related_links_list_item_paragraph = (related_links_list_item / ...
+                                     / ReferencingParagraph)
 matcher('related links', related_links)
 matcher('related links section title', related_links / Paragraph.like('title'))
 matcher('related links list', related_links_list)
 matcher('related links list item', related_links_list_item)
 matcher('related links list item label', related_links_list_item / ListItemLabel)
+matcher('related links list item paragraph', related_links_list_item_paragraph)
+matcher('related link title reference', related_links_list_item_paragraph / ...
+                                        / ReferenceField.like(type=TITLE))
+matcher('related link page reference', related_links_list_item_paragraph / ...
+                                       / ReferenceField.like(type=PAGE))
+matcher('related link number reference', related_links_list_item_paragraph / ...
+                                         / ReferenceField.like(type=NUMBER))
+matcher('related link reference', related_links_list_item_paragraph / ...
+                                  / ReferenceField.like(type=REFERENCE))
 
 # (Sphinx) version added/changed & deprecated
 
