@@ -168,9 +168,13 @@ matcher('definition term classifier',
 matcher('definition', Definition)
 
 related_links = GroupedFlowables.like('related links')
+related_links_list = related_links / List
+related_links_list_item = related_links_list / ListItem
 matcher('related links', related_links)
-matcher('related links section title', related_links / ... / DefinitionTerm
-                                       / ... / Paragraph)
+matcher('related links section title', related_links / Paragraph.like('title'))
+matcher('related links list', related_links_list)
+matcher('related links list item', related_links_list_item)
+matcher('related links list item label', related_links_list_item / ListItemLabel)
 
 # (Sphinx) version added/changed & deprecated
 
