@@ -144,7 +144,7 @@ class Heading(NumberedParagraph):
 
     def flow(self, container, last_descender, state=None):
         if self.level == 1 and container.page.chapter_title:
-            container.page.create_chapter_title(self.section)
+            container.page.create_chapter_title(self)
             result = 0, None
         else:
             result = super().flow(container, last_descender, state)

@@ -212,10 +212,11 @@ class SimplePage(PageBase):
             self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(footer))
 
-    def create_chapter_title(self, section):
+    def create_chapter_title(self, heading):
         descender = None
-        section_id = section.get_id(self.document)
-        create_destination(section, self.chapter_title, False)
+        section_id = heading.section.get_id(self.document)
+        create_destination(heading.section, self.chapter_title, False)
+        create_destination(heading, self.chapter_title, False)
         for flowable in self.template['chapter_title_flowables'](section_id):
             width, descender = flowable.flow(self.chapter_title, descender)
 
