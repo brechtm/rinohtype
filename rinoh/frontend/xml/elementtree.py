@@ -52,7 +52,7 @@ class TreeBuilder(ElementTree.TreeBuilder):
             last._root = self._elem[0]
         except IndexError:
             last._parent = None
-            last._root = self
+            last._root = last
         last._namespace = self._namespace
         return last
 
