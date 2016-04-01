@@ -48,7 +48,7 @@ class InlineFlowable(Flowable):
     def flow_inline(self, container, last_descender, state=None):
         baseline = self.baseline or self.get_style('baseline', container)
         virtual_container = VirtualContainer(container)
-        width, _ = self.flow(virtual_container, last_descender, state=state)
+        width, _, _ = self.flow(virtual_container, last_descender, state=state)
         return InlineFlowableSpan(width, baseline, virtual_container)
 
 

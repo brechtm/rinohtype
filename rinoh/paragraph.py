@@ -409,7 +409,7 @@ class ParagraphBase(Flowable):
             except ContainerOverflow:
                 raise EndOfContainer(saved_state)
 
-        line = Line(tab_stops, line_width, container, indent_first)
+        first_line = line = Line(tab_stops, line_width, container, indent_first)
         while True:
             try:
                 word = state.next_word()
@@ -434,7 +434,7 @@ class ParagraphBase(Flowable):
         if line:
             typeset_line(line, last_line=True)
 
-        return max_line_width, descender
+        return max_line_width, first_line.advance, descender
 
 
 class Paragraph(ParagraphBase, MixedStyledText):
@@ -643,6 +643,7 @@ class Line(list):
         self.indent = indent
         self.container = container
         self.cursor = indent
+        self.advance = 0
         self._has_tab = False
         self._current_tab = None
         self._current_tab_stop = None
@@ -749,6 +750,7 @@ class Line(list):
         else:
             advance = line_spacing.advance(self, last_descender, container)
         container.advance(advance)
+        self.advance = advance
 
         container.advance(- descender)
         for glyph_span in self:

@@ -281,7 +281,7 @@ class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
     def _render(self, type, rerender):
         last_descender = None
         for flowable in self.flowables:
-            height, last_descender = flowable.flow(self, last_descender)
+            _, _, last_descender = flowable.flow(self, last_descender)
 
 
 class ChainedContainer(FlowablesContainerBase):
@@ -507,8 +507,8 @@ class FootnoteContainer(UpExpandingContainer):
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in self.document.placed_footnotes:
                 with MaybeContainer(self) as maybe_container:
-                    _, descender = footnote.flow(maybe_container,
-                                                 self._descenders[-1])
+                    _, _, descender = footnote.flow(maybe_container,
+                                                    self._descenders[-1])
                     self._descenders.append(descender)
                     self._reflowed = True
                     self.page.check_overflow()
@@ -574,9 +574,8 @@ class Chain(FlowableTarget):
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
                 # TODO: keep_with_next
-                height, last_descender \
-                    = flowable.flow(container, last_descender,
-                                    self._state.flowable_state)
+                _, _, last_descender = flowable.flow(container, last_descender,
+                                                     self._state.flowable_state)
                 self._state.next_flowable()
             # all flowables have been rendered
             if container == self.last_container:

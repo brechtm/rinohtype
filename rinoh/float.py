@@ -105,7 +105,7 @@ class ImageBase(Flowable):
         except ContainerOverflow:
             state.initial = False
             raise EndOfContainer(state)
-        return w, 0
+        return w, h, 0
 
 
 class InlineImage(ImageBase, InlineFlowable):

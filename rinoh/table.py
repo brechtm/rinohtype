@@ -123,7 +123,7 @@ class Table(HorizontallyAlignedFlowable):
                 if min(next_row_index, rows_left) >= split_minimum_rows:
                     state.body_row_index = next_row_index
                 raise EndOfContainer(state)
-        return sum(state.column_widths), 0
+        return sum(state.column_widths), 0, 0
 
     def _size_columns(self, container):
         """Calculate the table's column sizes constrained by:
@@ -137,7 +137,7 @@ class Table(HorizontallyAlignedFlowable):
             """Calculate required column widths given a maximum cell width"""
             def cell_content_width(cell):
                 buffer = VirtualContainer(container, width=max_cell_width)
-                width, _ = cell.flow(buffer, None)
+                width, _, _ = cell.flow(buffer, None)
                 return float(width)
 
             widths = [0] * self.body.num_columns
@@ -239,7 +239,7 @@ class Table(HorizontallyAlignedFlowable):
             left = sum(column_widths[:col_idx])
             cell_width = sum(column_widths[col_idx:col_idx + cell.colspan])
             buffer = VirtualContainer(container, cell_width)
-            width, descender = cell.flow(buffer, None)
+            cell.flow(buffer, None)
             rendered_cell = RenderedCell(cell, buffer, left)
             rendered_row.append(rendered_cell)
         return rendered_row
