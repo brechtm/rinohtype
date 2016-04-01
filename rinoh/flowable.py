@@ -426,7 +426,6 @@ class LabeledFlowable(Flowable):
         return LabeledFlowableState(self, initial_content_state)
 
     def render(self, container, last_descender, state, max_label_width=None):
-        # TODO: line up baseline of label and first flowable
         label_column_min_width = self.get_style('label_min_width', container)
         label_column_max_width = self.get_style('label_max_width', container)
         label_spacing = self.get_style('label_spacing', container)
@@ -439,10 +438,11 @@ class LabeledFlowable(Flowable):
         left = label_column_width + label_spacing
         label_spillover = not wrap_label and label_width > label_column_width
 
-        def render_label(container):
+        def render_label(container, baseline_offset_label=0):
             width = None if label_spillover else label_column_width
             with InlineDownExpandingContainer('LABEL', container, width=width,
                     advance_parent=False) as label_container:
+                label_container.advance(baseline_offset_label)
                 _, top_to_baseline, descender = \
                     self.label.flow(label_container, last_descender)
             return label_container.cursor, top_to_baseline, descender
@@ -455,17 +455,38 @@ class LabeledFlowable(Flowable):
                                        state=state)
             return width, content_container.cursor, top_to_baseline, descender
 
+        if not label_spillover:
+            try:
+                with MaybeContainer(container) as maybe_container:
+                    _, label_top_to_baseline, _ = render_label(maybe_container)
+            except EndOfContainer:
+                label_top_to_baseline = 0
+            maybe_container._do_place = False
+            copy_of_content_state = copy(state.content_flowable_state)
+            try:
+                with MaybeContainer(container) as maybe_container:
+                    _, _, content_top_to_baseline, _ = \
+                        render_content(maybe_container, last_descender,
+                                       copy_of_content_state)
+            except EndOfContainer:
+                content_top_to_baseline = 0
+            maybe_container._do_place = False
+        top_to_baseline = max(label_top_to_baseline, content_top_to_baseline)
+        offset_label = top_to_baseline - label_top_to_baseline
+        offset_content = top_to_baseline - content_top_to_baseline
+
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
-                    label_height, label_top_to_baseline, label_desc = \
-                        render_label(maybe_container)
+                    label_height, _, label_desc = render_label(maybe_container,
+                                                               offset_label)
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_desc
                 else:
-                    label_height = label_top_to_baseline = label_desc = 0
-                width, content_height, content_top_to_baseline, content_desc = \
+                    label_height = label_desc = 0
+                maybe_container.advance(offset_content)
+                width, content_height, _, content_desc = \
                     render_content(maybe_container, last_descender,
                                    state.content_flowable_state)
         except (ContainerOverflow, EndOfContainer):
