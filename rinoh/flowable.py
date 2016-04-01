@@ -17,6 +17,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
+from contextlib import contextmanager
 from copy import copy
 from itertools import chain, tee
 
@@ -445,68 +446,70 @@ class LabeledFlowable(Flowable):
                                  min(max_label_width, label_column_max_width))
         left = label_column_width + label_spacing
         label_spillover = not wrap_label and label_width > label_column_width
-
-        def render_label(container, baseline_offset_label=0, test=False):
-            width = None if label_spillover else label_column_width
-            with InlineDownExpandingContainer('LABEL', container, width=width,
-                    advance_parent=False) as label_container:
-                label_container.advance(baseline_offset_label)
-                _, top_to_baseline, descender = \
-                    self.label.flow(label_container, last_descender,
-                                    first_line_only=test)
-            return label_container.cursor, top_to_baseline, descender
-
-        def render_content(container, descender, state, test=False):
-            with InlineDownExpandingContainer('CONTENT', container, left=left,
-                    advance_parent=False) as content_container:
-                width, top_to_baseline, descender = \
-                    self.flowable.flow(content_container, descender,
-                                       state=state, first_line_only=test)
-            return width, content_container.cursor, top_to_baseline, descender
+        label_cntnr_width = None if label_spillover else label_column_width
 
         if state.initial and not label_spillover:
-            virtual_container = VirtualContainer(container)
-            _, _, label_top_to_baseline, _ = render_label(virtual_container,
-                                                          True)
+            label_baseline = find_baseline(self.label, container,
+                                           last_descender,
+                                           width=label_cntnr_width)
             content_state_copy = copy(state.content_flowable_state)
-            virtual_container = VirtualContainer(container)
-            _, _, content_top_to_baseline, _ = \
-                render_content(virtual_container, last_descender,
-                               content_state_copy, True)
-            top_to_baseline = max(label_top_to_baseline, content_top_to_baseline)
-            offset_label = top_to_baseline - label_top_to_baseline
-            offset_content = top_to_baseline - content_top_to_baseline
+            content_baseline = find_baseline(self.flowable, container,
+                                             last_descender, left=left,
+                                             state=content_state_copy)
         else:
-            label_top_to_baseline = offset_label = offset_content = 0
-
+            label_baseline = content_baseline = 0
+        top_to_baseline = max(label_baseline, content_baseline)
+        offset_label = top_to_baseline - label_baseline
+        offset_content = top_to_baseline - content_baseline
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
-                    label_height, _, label_desc = render_label(maybe_container,
-                                                               offset_label)
+                    with inline_container('LABEL', maybe_container,
+                                          width=label_cntnr_width) as label_container:
+                        label_container.advance(offset_label)
+                        label_height, _, label_descender \
+                            = self.label.flow(label_container, last_descender)
                     if label_spillover:
                         maybe_container.advance(label_height)
-                        last_descender = label_desc
+                        last_descender = label_descender
                 else:
-                    label_height = label_desc = 0
+                    label_height = label_descender = 0
                 maybe_container.advance(offset_content)
-                width, content_height, _, content_desc = \
-                    render_content(maybe_container, last_descender,
-                                   state.content_flowable_state)
+                with inline_container('CONTENT', maybe_container,
+                                      left=left) as content_container:
+                    width, _, content_descender \
+                        = self.flowable.flow(content_container, last_descender,
+                                             state=state.content_flowable_state)
+                content_height = content_container.cursor
         except (ContainerOverflow, EndOfContainer):
             state.update()
             raise EndOfContainer(state)
         if label_spillover:
             container.advance(content_height)
-            descender = content_desc
+            descender = content_descender
         else:
             if content_height > label_height:
                 container.advance(content_height)
-                descender = content_desc
+                descender = content_descender
             else:
                 container.advance(label_height)
-                descender = label_desc
-        return left + width, label_top_to_baseline, descender
+                descender = label_descender
+        return left + width, label_baseline, descender
+
+
+def find_baseline(flowable, container, last_descender, state=None, **kwargs):
+    virtual_container = VirtualContainer(container)
+    with inline_container('DUMMY', virtual_container, **kwargs) as inline_ctnr:
+        _, baseline, _ = flowable.flow(inline_ctnr, last_descender,
+                                       state=state, first_line_only=True)
+    return baseline
+
+
+@contextmanager
+def inline_container(name, container, **kwargs):
+    with InlineDownExpandingContainer(name, container, advance_parent=False,
+                                      **kwargs) as container:
+        yield container
 
 
 class GroupedLabeledFlowables(GroupedFlowables):
