@@ -95,7 +95,7 @@ class Table(HorizontallyAlignedFlowable):
     def initial_state(self, container):
         return TableState(self, self._size_columns(container))
 
-    def render(self, container, last_descender, state):
+    def render(self, container, last_descender, state, **kwargs):
         # TODO: allow data to override style (align)
         get_style = partial(self.get_style, flowable_target=container)
         with MaybeContainer(container) as maybe_container:

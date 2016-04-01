@@ -63,7 +63,7 @@ class ImageBase(Flowable):
     def initial_state(self, container):
          return ImageState(self)
 
-    def render(self, container, last_descender, state):
+    def render(self, container, last_descender, state, **kwargs):
         try:
             image = container.document.backend.Image(self.filename_or_file)
         except OSError as err:

@@ -142,12 +142,12 @@ class Heading(NumberedParagraph):
         number = self.number(container)
         return MixedStyledText(number + self.content, parent=self)
 
-    def flow(self, container, last_descender, state=None):
+    def flow(self, container, last_descender, state=None, **kwargs):
         if self.level == 1 and container.page.chapter_title:
             container.page.create_chapter_title(self)
             result = 0, 0, None
         else:
-            result = super().flow(container, last_descender, state)
+            result = super().flow(container, last_descender, state, **kwargs)
             create_destination(self.section, container, True)
         return result
 
@@ -366,7 +366,7 @@ class HorizontalRuleStyle(FlowableStyle, LineStyle):
 class HorizontalRule(Flowable):
     style_class = HorizontalRuleStyle
 
-    def render(self, container, descender, state):
+    def render(self, container, descender, state, **kwargs):
         width = float(container.width)
         line = Line((0, 0), (width, 0), style=PARENT_STYLE, parent=self)
         line.render(container)

@@ -103,6 +103,6 @@ class IndexTarget(IndexTargetBase, DummyFlowable):
     def __init__(self, index_terms, parent=None):
         super().__init__(index_terms, parent=parent)
 
-    def flow(self, container, last_descender, state=None):
+    def flow(self, container, last_descender, state=None, **kwargs):
         self.create_destination(container)
         return super().flow(container, last_descender, state=state)

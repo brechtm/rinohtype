@@ -374,7 +374,7 @@ class ParagraphBase(Flowable):
         return ParagraphState(self, spans_to_words(spans, container,
                                                    **spans_kwargs))
 
-    def render(self, container, descender, state):
+    def render(self, container, descender, state, first_line_only=False):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
         the preceeding line or `None`.
@@ -420,6 +420,8 @@ class ParagraphBase(Flowable):
                 gs = GlyphsSpan(glyphs_span.span, glyphs_span.word_to_glyphs)
                 line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
+                if first_line_only:
+                    break
             elif not line.append_word(word, container, descender):
                 for first, second in word.hyphenate(container):
                     if line.append_word(first, container, descender):
@@ -428,6 +430,8 @@ class ParagraphBase(Flowable):
                 else:
                     state = prev_state
                 line = typeset_line(line)
+                if first_line_only:
+                    break
                 continue
             if not word.is_space:
                 prev_state = copy(state)
