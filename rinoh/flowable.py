@@ -455,7 +455,6 @@ class LabeledFlowable(Flowable):
                                        state=state)
             return width, content_container.cursor, top_to_baseline, descender
 
-        max_width = 0
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
@@ -472,7 +471,6 @@ class LabeledFlowable(Flowable):
         except (ContainerOverflow, EndOfContainer):
             state.update()
             raise EndOfContainer(state)
-        max_width = max(max_width, width)
         if label_spillover:
             container.advance(content_height)
             descender = content_desc
@@ -483,7 +481,7 @@ class LabeledFlowable(Flowable):
             else:
                 container.advance(label_height)
                 descender = label_desc
-        return left + max_width, label_top_to_baseline, descender
+        return left + width, label_top_to_baseline, descender
 
 
 class GroupedLabeledFlowables(GroupedFlowables):
