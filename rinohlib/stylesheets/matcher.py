@@ -176,6 +176,9 @@ matcher('definition term classifier',
 
 matcher('definition', Definition)
 
+matcher('linked reference', Reference.like(link=True))
+matcher('unlinked reference', Reference.like(link=False))
+
 related_links = GroupedFlowables.like('related links')
 related_links_list = related_links / List
 related_links_list_item = related_links_list / ListItem
