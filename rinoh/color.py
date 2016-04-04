@@ -27,6 +27,10 @@ class Color(AttributeType):
         self.b = blue
         self.a = alpha
 
+    def __eq__(self, other):
+        return all((getattr(self, comp) == getattr(other, comp)
+                    for comp in 'rgba'))
+
     def __repr__(self):
         rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
                                             for color in self.rgba))

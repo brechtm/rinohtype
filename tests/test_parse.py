@@ -1,6 +1,7 @@
 
 import pytest
 
+from rinoh.color import Color, HexColor
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
                           ROMAN_LC, ROMAN_UC, SYMBOL)
@@ -173,6 +174,14 @@ def test_dimensionbase_from_string():
     assert DimensionBase.from_string('-16.12%') == -16.12*PERCENT
     with pytest.raises(ValueError):
         assert DimensionBase.from_string('20inch')
+
+
+def test_color_from_string():
+    assert Color.from_string('#ffffff') == HexColor('#FFFFFF')
+    assert Color.from_string('#aBc123') == HexColor('#Abc123')
+    assert Color.from_string('#123456aa') == HexColor('#123456aa')
+    assert Color.from_string('#5e1') == HexColor('#5e1')
+    assert Color.from_string('#5e10') == HexColor('#5e10')
 
 
 def test_styledtext_from_string():
