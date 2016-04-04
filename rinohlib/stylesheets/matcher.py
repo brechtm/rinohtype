@@ -123,23 +123,31 @@ matcher('sidebar subtitle', GroupedFlowables.like('sidebar')
 
 matcher('list item label', ListItemLabel)
 
-matcher('enumerated list', List.like('enumerated'))
+enum_list = List.like('enumerated')
+matcher('enumerated list', enum_list)
+matcher('enumerated list item', enum_list / ListItem)
+matcher('enumerated list item label', enum_list / ListItem / ListItemLabel)
 
-matcher('enumerated list item', List.like('enumerated') / ListItem)
+matcher('nested enumerated list', ListItem / enum_list)
 
-matcher('enumerated list item label', List.like('enumerated')
-                                      / ListItem / ListItemLabel)
+tbl_enum_list = TableCell / ... / enum_list
+matcher('(table) enumerated list', tbl_enum_list)
+matcher('(table) enumerated list item', tbl_enum_list / ListItem)
+matcher('(table) enumerated list item label', tbl_enum_list
+                                             / ListItem / ListItemLabel)
 
-matcher('nested enumerated list', ListItem / List.like('enumerated'))
+bul_list = List.like('bulleted')
+matcher('bulleted list', bul_list)
+matcher('bulleted list item', bul_list / ListItem)
+matcher('bulleted list item label', bul_list / ListItem / ListItemLabel)
 
-matcher('bulleted list', List.like('bulleted'))
+matcher('nested bulleted list', ListItem / bul_list)
 
-matcher('bulleted list item', List.like('bulleted') / ListItem)
-
-matcher('bulleted list item label', List.like('bulleted')
-                                    / ListItem / ListItemLabel)
-
-matcher('nested bulleted list', ListItem / List.like('bulleted'))
+tbl_bul_list = TableCell / ... / bul_list
+matcher('(table) bulleted list', tbl_bul_list)
+matcher('(table) bulleted list item', tbl_bul_list / ListItem)
+matcher('(table) bulleted list item label', tbl_bul_list
+                                            / ListItem / ListItemLabel)
 
 matcher('steps list', List.like('steps'))
 
