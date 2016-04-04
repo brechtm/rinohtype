@@ -358,6 +358,8 @@ matcher('table first column paragraph',
 matcher('table body cell list item number',
         TableBody / TableRow / TableCell / ... / ListItem / Paragraph)
 
+matcher('table head cell', Table / TableHead / TableRow / TableCell)
+
 matcher('table head cell paragraph',
         TableHead / TableRow / TableCell / Paragraph)
 
