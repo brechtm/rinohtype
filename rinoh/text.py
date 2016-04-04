@@ -49,7 +49,7 @@ from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
                          SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
 from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
-                    Attribute, Bool, Integer)
+                    Attribute, Bool, Integer, AcceptNoneAttributeType)
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
@@ -66,7 +66,7 @@ class Locale(AttributeType):
         return cls.REGEX.match(value) is not None
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         if not cls.check_type(string):
             raise ValueError("'{}' is not a valid locale. Needs to be of the "
                              "form 'en_US'.".format(string))
@@ -117,7 +117,7 @@ class CharacterLike(Styled):
 NAME2CHAR = {name: chr(codepoint) for name, codepoint in name2codepoint.items()}
 
 
-class StyledText(Styled, AttributeType):
+class StyledText(Styled, AcceptNoneAttributeType):
     """Base class for text that has a :class:`TextStyle` associated with it."""
 
     style_class = TextStyle
@@ -139,10 +139,10 @@ class StyledText(Styled, AttributeType):
 
     @classmethod
     def check_type(cls, value):
-        return super().check_type(value) or isinstance(value, (str, type(None)))
+        return super().check_type(value) or isinstance(value, str)
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         def parse_text(chars):
             text = quote = skip_whitespace(chars)
             if not quote in ("'", '"'):
@@ -177,8 +177,6 @@ class StyledText(Styled, AttributeType):
                     return char
             raise StopIteration
 
-        if string.strip().lower() == 'none':
-            return None
         texts = []
         chars = iter(string.strip())
         while True:

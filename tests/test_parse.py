@@ -163,6 +163,7 @@ def test_integer_from_string():
 
 
 def test_dimensionbase_from_string():
+    assert DimensionBase.from_string('none') == None
     assert DimensionBase.from_string('0') == 0
     assert DimensionBase.from_string('1pt') == 1*PT
     assert DimensionBase.from_string('10 pt') == 10*PT
@@ -177,6 +178,7 @@ def test_dimensionbase_from_string():
 
 
 def test_color_from_string():
+    assert Color.from_string('none') == None
     assert Color.from_string('#ffffff') == HexColor('#FFFFFF')
     assert Color.from_string('#aBc123') == HexColor('#Abc123')
     assert Color.from_string('#123456aa') == HexColor('#123456aa')

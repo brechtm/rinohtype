@@ -10,14 +10,14 @@ import struct
 
 from itertools import repeat
 
-from .style import AttributeType
+from .style import AcceptNoneAttributeType
 
 
 __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
            'Gray', 'GRAY10', 'GRAY25', 'GRAY50', 'GRAY75', 'GRAY90']
 
 
-class Color(AttributeType):
+class Color(AcceptNoneAttributeType):
     def __init__(self, red, green, blue, alpha=1):
         for value in (red, green, blue, alpha):
             if not 0 <= value <= 1:
@@ -41,16 +41,12 @@ class Color(AttributeType):
             string = string[::2]
         return '#' + string
 
-    @classmethod
-    def check_type(cls, value):
-        return super().check_type(value) or isinstance(value, type(None))
-
     @property
     def rgba(self):
         return self.r, self.g, self.b, self.a
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         try:
             return HexColor(string)
         except ValueError:

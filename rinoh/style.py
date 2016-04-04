@@ -63,7 +63,24 @@ class AttributeType(object):
 
     @classmethod
     def from_string(cls, string):
+        return cls.parse_string(string)
+
+    @classmethod
+    def parse_string(cls, string):
         raise NotImplementedError
+
+
+class AcceptNoneAttributeType(AttributeType):
+    @classmethod
+    def check_type(cls, value):
+        return (isinstance(value, type(None))
+                or super(__class__, cls).check_type(value))
+
+    @classmethod
+    def from_string(cls, string):
+        if string.strip().lower() == 'none':
+            return None
+        return super(__class__, cls).from_string(string)
 
 
 class OptionSet(AttributeType):
@@ -74,7 +91,7 @@ class OptionSet(AttributeType):
         return value in cls.values
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         value_strings = ['none' if value is None else value.lower()
                          for value in cls.values]
         try:
@@ -135,7 +152,7 @@ class Bool(AttributeType):
         return isinstance(value, bool)
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         lower_string = string.lower()
         if lower_string not in ('true', 'false'):
             raise ValueError("'{}' is not a valid {}. Must be one of 'true' or "
@@ -149,7 +166,7 @@ class Integer(AttributeType):
         return isinstance(value, int)
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         try:
             return int(string)
         except ValueError:

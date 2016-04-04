@@ -107,7 +107,7 @@ class Typeface(AttributeType, dict):
         return isinstance(value, cls)
 
     @classmethod
-    def from_string(cls, typeface_name):
+    def parse_string(cls, typeface_name):
         entry_point_name = typeface_name.lower()
         entry_points = iter_entry_points('rinoh_typefaces', entry_point_name)
         try:

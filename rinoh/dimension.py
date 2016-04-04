@@ -22,7 +22,7 @@ It also exports a number of pre-defined units:
 
 import re
 
-from .style import AttributeType
+from .style import AcceptNoneAttributeType
 
 
 __all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM', 'PERCENT']
@@ -50,7 +50,7 @@ class DimensionType(type):
         return operator
 
 
-class DimensionBase(AttributeType, metaclass=DimensionType):
+class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
     """Late-evaluated dimension. The result of mathematical operations on
     dimension objects is not a statically evaluated version, but rather stores
     references to the operator arguments. The result is only evaluated to a
@@ -114,7 +114,7 @@ class DimensionBase(AttributeType, metaclass=DimensionType):
                        """, re.IGNORECASE | re.VERBOSE)
 
     @classmethod
-    def from_string(cls, string):
+    def parse_string(cls, string):
         m = cls.REGEX.match(string)
         try:
             value, unit = m.groups()
