@@ -148,7 +148,11 @@ class Heading(NumberedParagraph):
             result = 0, 0, None
         else:
             result = super().flow(container, last_descender, state, **kwargs)
-            create_destination(self.section, container, True)
+        return result
+
+    def flow_inner(self, container, descender, state=None, **kwargs):
+        result = super().flow_inner(container, descender, state=state, **kwargs)
+        create_destination(self.section, container, True)
         return result
 
     def after_rendering(self, container):
