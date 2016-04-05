@@ -488,16 +488,12 @@ class LabeledFlowable(Flowable):
         except (ContainerOverflow, EndOfContainer):
             state.update()
             raise EndOfContainer(state)
-        if label_spillover:
+        if label_spillover or content_height > label_height:
             container.advance(content_height)
             descender = content_descender
         else:
-            if content_height > label_height:
-                container.advance(content_height)
-                descender = content_descender
-            else:
-                container.advance(label_height)
-                descender = label_descender
+            container.advance(label_height)
+            descender = label_descender
         return left + width, label_baseline, descender
 
 
