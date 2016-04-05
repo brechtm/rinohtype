@@ -385,7 +385,7 @@ font_weight=BOLD
 # option lists
 
 [option]
-base=default
+base=body
 indent_first=0
 text_align=LEFT
 
