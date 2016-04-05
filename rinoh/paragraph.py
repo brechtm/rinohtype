@@ -208,8 +208,9 @@ class Leading(LineSpacing):
         leading = DimensionBase.from_string(leading_str)
         return leading,
 
-    def advance(self, line, last_descender):
-        max_ascender = max(float(item.ascender) for item in line)
+    def advance(self, line, last_descender, container):
+        document = container
+        max_ascender = max(float(item.span.ascender(document)) for item in line)
         return max_ascender + self.leading
 
 
