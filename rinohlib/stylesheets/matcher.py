@@ -1,5 +1,5 @@
 from rinoh.reference import TITLE, PAGE, NUMBER, REFERENCE
-from rinoh.style import StyledMatcher
+from rinoh.style import StyledMatcher, SelectorByName
 from rinoh.styleds import *
 
 from rinohlib.templates.base import FrontMatter
@@ -11,13 +11,9 @@ __all__ = ['matcher']
 matcher = StyledMatcher()
 
 matcher('title page title', Paragraph.like('title page title'))
-
 matcher('title page subtitle', Paragraph.like('title page subtitle'))
-
 matcher('title page author', Paragraph.like('title page author'))
-
 matcher('title page date', Paragraph.like('title page date'))
-
 matcher('title page extra', Paragraph.like('title page extra'))
 
 matcher('body', Paragraph)
@@ -49,9 +45,7 @@ matcher('monospaced', StyledText.like('monospaced'))
 matcher('error', StyledText.like('error'))
 
 matcher('internal hyperlink', StyledText.like('internal link'))
-
 matcher('external hyperlink', StyledText.like('external link'))
-
 matcher('broken hyperlink', StyledText.like('broken link'))
 
 matcher('literal', Paragraph.like('literal'))
@@ -60,19 +54,14 @@ matcher('block quote', GroupedFlowables.like('block quote'))
 
 matcher('attribution', Paragraph.like('attribution'))
 
+matcher('line block', GroupedFlowables.like('line block'))
+matcher('nested line block', 'line block' / SelectorByName('line block'))
 matcher('line block line', Paragraph.like('line block line'))
 
-matcher('nested line block', GroupedFlowables.like('line block')
-                             / GroupedFlowables.like('line block'))
-
 matcher('title', Paragraph.like('title'))
-
 matcher('subtitle', Paragraph.like('subtitle'))
-
 matcher('date', Paragraph.like('date'))
-
 matcher('author', Paragraph.like('author'))
-
 matcher('affiliation', Paragraph.like('affiliation'))
 
 matcher('chapter', Section.like(level=1))
@@ -88,38 +77,32 @@ matcher('appendix', Section.like('appendix'))
 
 for i in range(1, 6):
     matcher('appendix heading level {}'.format(i),
-            Section.like('appendix') / Heading.like(level=i))
+            'appendix' / Heading.like(level=i))
 
 matcher('topic', GroupedFlowables.like('topic'))
 
 matcher('prerequisites', GroupedFlowables.like('prerequisites'))
 
-matcher('prerequisites title', GroupedFlowables.like('prerequisites')
-                               / Paragraph.like('title'))
+matcher('prerequisites title', 'prerequisites' / Paragraph.like('title'))
 
 matcher('post requirement', GroupedFlowables.like('post requirement'))
 
 matcher('abstract', GroupedFlowables.like('abstract'))
 
-matcher('abstract paragraph',
-        GroupedFlowables.like('abstract') / Paragraph)
+matcher('abstract paragraph', 'abstract' / Paragraph)
 
-matcher('example', GroupedFlowables.like('topic'))
+matcher('example', GroupedFlowables.like('example'))
+matcher('example title', 'example' / Paragraph.like('title'))
 
-matcher('example title', GroupedFlowables.like('example')
-                         / Paragraph.like('title'))
-
-matcher('topic title', GroupedFlowables.like('topic') / Paragraph.like('title'))
+matcher('topic', GroupedFlowables.like('topic'))
+matcher('topic title', 'topic' / Paragraph.like('title'))
 
 matcher('rubric', Paragraph.like('rubric'))
 
+matcher('sidebar', GroupedFlowables.like('sidebar'))
 matcher('sidebar frame', GroupedFlowables.like('sidebar'))
-
-matcher('sidebar title', GroupedFlowables.like('sidebar')
-                         / Paragraph.like('title'))
-
-matcher('sidebar subtitle', GroupedFlowables.like('sidebar')
-                            / Paragraph.like('subtitle'))
+matcher('sidebar title', 'sidebar' / Paragraph.like('title'))
+matcher('sidebar subtitle', 'sidebar' / Paragraph.like('subtitle'))
 
 matcher('list item label', ListItemLabel)
 
@@ -150,9 +133,7 @@ matcher('(table) bulleted list item label', tbl_bul_list
                                             / ListItem / ListItemLabel)
 
 matcher('steps list', List.like('steps'))
-
 matcher('steps list title', List.like('steps') / Paragraph.like('title'))
-
 matcher('steps list item label', List.like('steps')
                                  / ListItem / ListItemLabel)
 

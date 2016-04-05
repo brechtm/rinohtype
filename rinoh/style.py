@@ -26,7 +26,8 @@ from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
 from .element import DocumentElement
-from .util import cached, NamedDescriptor, WithNamedDescriptors, all_subclasses
+from .util import cached, NamedDescriptor, WithNamedDescriptors, all_subclasses, \
+    NotImplementedAttribute
 
 __all__ = ['Style', 'Styled', 'Var', 'AttributeType', 'OptionSet', 'Attribute',
            'OverrideDefault', 'Bool', 'Integer', 'StyledMatcher', 'StyleSheet',
@@ -326,24 +327,56 @@ PARENT_STYLE = ParentStyle()
 
 
 class Selector(object):
-    cls = None
+    cls = NotImplementedAttribute
 
     def __truediv__(self, other):
         try:
             selectors = self.selectors + other.selectors
         except AttributeError:
-            assert other == Ellipsis
-            selectors = self.selectors + (other, )
+            if isinstance(other, str):
+                selectors = self.selectors + (SelectorByName(other), )
+            else:
+                assert other == Ellipsis
+                selectors = self.selectors + (other, )
         return ContextSelector(*selectors)
+
+    def __rtruediv__(self, other):
+        assert isinstance(other, str)
+        return SelectorByName(other) / self
 
     def match(self, styled, container):
         raise NotImplementedError
 
 
-class ClassSelectorBase(Selector):
+class SingleSelector(Selector):
     @property
     def selectors(self):
-        return (self, )
+        return (self,)
+
+
+class SelectorByName(SingleSelector):
+    def __init__(self, name):
+        self.name = name
+
+    def get_styled_class(self, matcher):
+        selector = matcher.by_name[self.name]
+        return selector.get_styled_class(matcher)
+
+    def get_style_name(self, matcher):
+        selector = matcher.by_name[self.name]
+        return selector.get_style_name(matcher)
+
+    def match(self, styled, container):
+        selector = container.document.stylesheet.get_selector(self.name)
+        return selector.match(styled, container)
+
+
+class ClassSelectorBase(SingleSelector):
+    def get_styled_class(self, matcher):
+        return self.cls
+
+    def get_style_name(self, matcher):
+        return self.style_name
 
     def match(self, styled, container):
         if not isinstance(styled, self.cls):
@@ -378,13 +411,11 @@ class ContextSelector(Selector):
         super().__init__()
         self.selectors = selectors
 
-    @property
-    def cls(self):
-        return self.selectors[-1].cls
+    def get_styled_class(self, matcher):
+        return self.selectors[-1].get_styled_class(matcher)
 
-    @property
-    def style_name(self):
-        return self.selectors[-1].style_name
+    def get_style_name(self, matcher):
+        return self.selectors[-1].get_style_name(matcher)
 
     def match(self, styled, container):
         def styled_and_parents(element):
@@ -431,13 +462,11 @@ class DocumentLocationSelector(object):
         self.location_class = location_class
         self.selector = selector
 
-    @property
-    def cls(self):
-        return self.selector.cls
+    def get_styled_class(self, matcher):
+        return self.selector.get_styled_class(matcher)
 
-    @property
-    def style_name(self):
-        return self.selector.style_name
+    def get_style_name(self, matcher):
+        return self.selector.get_style_name(matcher)
 
     def match(self, styled, container):
         location_match = self.location_class.match(styled, container)
@@ -541,8 +570,9 @@ class StyledMatcher(dict):
 
     def __setitem__(self, name, selector):
         assert name not in self
-        cls_selectors = self.setdefault(selector.cls, {})
-        style_selectors = cls_selectors.setdefault(selector.style_name, {})
+        cls_selectors = self.setdefault(selector.get_styled_class(self), {})
+        style_name = selector.get_style_name(self)
+        style_selectors = cls_selectors.setdefault(style_name, {})
         self.by_name[name] = style_selectors[name] = selector
 
     def match(self, styled, container):
@@ -595,7 +625,7 @@ class StyleSheet(OrderedDict, AttributeType):
         while style_sheet is not None:
             try:
                 selector = style_sheet.matcher.by_name[name]
-                return selector.cls
+                return selector.get_styled_class(style_sheet.matcher)
             except KeyError:
                 style_sheet = style_sheet.base
         raise KeyError("No selector found for style '{}'".format(name))
@@ -611,6 +641,15 @@ class StyleSheet(OrderedDict, AttributeType):
 
     def _get_variable(self, name, accepted_type):
         return self.variables[name]
+
+    def get_selector(self, name):
+        try:
+            return self.matcher.by_name[name]
+        except KeyError:
+            if self.base is not None:
+                return self.base.get_selector(name)
+            else:
+                raise
 
     def find_matches(self, styled, container):
         for match in self.matcher.match(styled, container):
