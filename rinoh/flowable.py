@@ -468,10 +468,11 @@ class LabeledFlowable(Flowable):
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
                     with inline_container('LABEL', maybe_container,
-                                          width=label_cntnr_width) as label_container:
+                                  width=label_cntnr_width) as label_container:
                         label_container.advance(offset_label)
-                        label_height, _, label_descender \
-                            = self.label.flow(label_container, last_descender)
+                        _, _, label_descender = self.label.flow(label_container,
+                                                                last_descender)
+                        label_height = label_container.height
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_descender
