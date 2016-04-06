@@ -152,13 +152,14 @@ matcher('related links list', 'related links' / List)
 matcher('related links list item', 'related links list' / ListItem)
 matcher('related links list item label', 'related links list item'
                                          / ListItemLabel)
-matcher('related links list item paragraph',
-        SelectorByName('related links list item') / ... / ReferencingParagraph)
-_ = SelectorByName('related links list item paragraph') / ...
-matcher('related link title reference', _ / ReferenceField.like(type=TITLE))
-matcher('related link page reference', _ / ReferenceField.like(type=PAGE))
-matcher('related link number reference', _ /ReferenceField.like(type=NUMBER))
-matcher('related link reference', _ / ReferenceField.like(type=REFERENCE))
+rlp = matcher('related links list item paragraph',
+                  SelectorByName('related links list item')
+                  / ... / ReferencingParagraph)
+rlpe = rlp / ...
+matcher('related link title reference', rlpe / ReferenceField.like(type=TITLE))
+matcher('related link page reference', rlpe / ReferenceField.like(type=PAGE))
+matcher('related link number reference', rlpe /ReferenceField.like(type=NUMBER))
+matcher('related link reference', rlpe / ReferenceField.like(type=REFERENCE))
 
 
 # (Sphinx) version added/changed & deprecated

@@ -567,6 +567,7 @@ class StyledMatcher(dict):
 
     def __call__(self, name, selector):
         self[name] = selector
+        return SelectorByName(name)
 
     def __setitem__(self, name, selector):
         assert name not in self
