@@ -8,35 +8,33 @@ from rinohlib.templates.base import FrontMatter
 __all__ = ['matcher']
 
 
-matcher = StyledMatcher()
+matcher = StyledMatcher({
 
+    # title page items
 
-# title page items
+    'title page title': Paragraph.like('title page title'),
+    'title page subtitle': Paragraph.like('title page subtitle'),
+    'title page author': Paragraph.like('title page author'),
+    'title page date': Paragraph.like('title page date'),
+    'title page extra': Paragraph.like('title page extra'),
 
-matcher('title page title', Paragraph.like('title page title'))
-matcher('title page subtitle', Paragraph.like('title page subtitle'))
-matcher('title page author', Paragraph.like('title page author'))
-matcher('title page date', Paragraph.like('title page date'))
-matcher('title page extra', Paragraph.like('title page extra'))
+    # inline text
 
-matcher('body', Paragraph)
+    'italic': StyledText.like('italic'),
+    'bold': StyledText.like('bold'),
+    'emphasis': StyledText.like('emphasis'),
+    'strong': StyledText.like('strong'),
+    'quote': StyledText.like('quote'),
+    'file path': StyledText.like('file path'),
+    'window title': StyledText.like('window title'),
+    'UI control': StyledText.like('UI control'),
+    'menu cascade': StyledText.like('menu cascade'),
+    'draft comment': StyledText.like('draft comment'),
+    'title reference': StyledText.like('title reference'),
+    'monospaced': StyledText.like('monospaced'),
+    'error': StyledText.like('error'),
 
-
-# inline text
-
-matcher('italic', StyledText.like('italic'))
-matcher('bold', StyledText.like('bold'))
-matcher('emphasis', StyledText.like('emphasis'))
-matcher('strong', StyledText.like('strong'))
-matcher('quote', StyledText.like('quote'))
-matcher('file path', StyledText.like('file path'))
-matcher('window title', StyledText.like('window title'))
-matcher('UI control', StyledText.like('UI control'))
-matcher('menu cascade', StyledText.like('menu cascade'))
-matcher('draft comment', StyledText.like('draft comment'))
-matcher('title reference', StyledText.like('title reference'))
-matcher('monospaced', StyledText.like('monospaced'))
-matcher('error', StyledText.like('error'))
+})
 
 matcher('linked reference', Reference.like(link=True))
 matcher('unlinked reference', Reference.like(link=False))
@@ -48,8 +46,8 @@ matcher('broken hyperlink', StyledText.like('broken link'))
 
 # paragraphs
 
+matcher('body', Paragraph)
 matcher('literal', Paragraph.like('literal'))
-
 matcher('attribution', Paragraph.like('attribution'))
 
 matcher('block quote', GroupedFlowables.like('block quote'))

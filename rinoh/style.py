@@ -562,8 +562,10 @@ class Styled(DocumentElement, metaclass=StyledMeta):
 
 
 class StyledMatcher(dict):
-    def __init__(self):
+    def __init__(self, iterable=None, **kwargs):
+        super().__init__()
         self.by_name = {}
+        self.update(iterable, **kwargs)
 
     def __call__(self, name, selector):
         self[name] = selector
@@ -575,6 +577,10 @@ class StyledMatcher(dict):
         style_name = selector.get_style_name(self)
         style_selectors = cls_selectors.setdefault(style_name, {})
         self.by_name[name] = style_selectors[name] = selector
+
+    def update(self, iterable=None, **kwargs):
+        for name, selector in dict(iterable, **kwargs).items():
+            self[name] = selector
 
     def match(self, styled, container):
         for cls in type(styled).__mro__:
