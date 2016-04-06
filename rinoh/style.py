@@ -561,10 +561,19 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         raise DefaultStyleException
 
 
+class InvalidStyledMatcher(Exception):
+    """The :class:`StyledMatcher` includes selectors which reference selectors
+    which are not defined."""
+
+    def __init__(self, missing_selectors):
+        self.missing_selectors = missing_selectors
+
+
 class StyledMatcher(dict):
     def __init__(self, iterable=None, **kwargs):
         super().__init__()
         self.by_name = {}
+        self._pending = {}
         self.update(iterable, **kwargs)
 
     def __call__(self, name, selector):
@@ -573,13 +582,28 @@ class StyledMatcher(dict):
 
     def __setitem__(self, name, selector):
         assert name not in self
-        cls_selectors = self.setdefault(selector.get_styled_class(self), {})
+        try:
+            cls_selectors = self.setdefault(selector.get_styled_class(self), {})
+        except KeyError as err:
+            undefined_name, =  err.args
+            pending_selectors = self._pending.setdefault(undefined_name, {})
+            pending_selectors[name] = selector
+            return
         style_name = selector.get_style_name(self)
         style_selectors = cls_selectors.setdefault(style_name, {})
         self.by_name[name] = style_selectors[name] = selector
+        self._process_pending(name)
+
+    def _process_pending(self, newly_defined_name):
+        if newly_defined_name in self._pending:
+            self.update(self._pending.pop(newly_defined_name))
+
+    def check_validity(self):
+        if self._pending:
+            raise InvalidStyledMatcher(list(self._pending.keys()))
 
     def update(self, iterable=None, **kwargs):
-        for name, selector in dict(iterable, **kwargs).items():
+        for name, selector in dict(iterable or (), **kwargs).items():
             self[name] = selector
 
     def match(self, styled, container):
@@ -603,6 +627,7 @@ class StyleSheet(OrderedDict, AttributeType):
         super().__init__()
         self.name = name
         self.matcher = matcher or base.matcher
+        self.matcher.check_validity()
         self.base = base
         self.variables = {}
 
