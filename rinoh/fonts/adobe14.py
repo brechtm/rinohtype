@@ -11,8 +11,9 @@ import os
 
 from . import FONTS_PATH
 from ..font import Typeface, TypeFamily
+from ..font.mapping import UNICODE_TO_DINGBATS_NAME
 from ..font.type1 import Type1Font
-from ..font.style import REGULAR, MEDIUM, BOLD, OBLIQUE, ITALIC, CONDENSED
+from ..font.style import REGULAR, BOLD, OBLIQUE, ITALIC
 
 
 
@@ -44,8 +45,9 @@ times = Typeface('Times',
                  Type1Font(path('Times-BoldItalic'), weight=BOLD, slant=ITALIC,
                            core=True))
 
-zapfdingbats = Typeface('ITC ZapfDingbats', Type1Font(path('ZapfDingbats'),
-                                                      core=True))
+zapfdingbats = Typeface('ITC ZapfDingbats',
+                        Type1Font(path('ZapfDingbats'), core=True,
+                                  unicode_mapping=UNICODE_TO_DINGBATS_NAME))
 
 # 'Adobe PDF Core Font Set'
 pdf_family = TypeFamily(serif=times, sans=helvetica, mono=courier,
