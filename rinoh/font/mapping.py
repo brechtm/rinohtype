@@ -3810,9 +3810,10 @@ UNICODE_TO_DINGBATS_NAME = parse_glyph_list(path.join(path.dirname(__file__),
                                                       'zapfdingbats.txt'))
 
 
+# Adobe Standard Encoding (glyph name to glyph code)
 # from the Adobe Standard Encoding to Unicode table 1.0 (2011 July 12)
 # by the Unicode Consortium
-ADOBE_STANDARD_TO_UNICODE = {
+ADOBE_STANDARD_ENCODING = {
     'space': 0x20,
     'exclam': 0x21,
     'quotedbl': 0x22,
@@ -3964,4 +3965,4 @@ ADOBE_STANDARD_TO_UNICODE = {
     'germandbls': 0xFB} # LATIN SMALL LETTER SHARP S
 
 
-ENCODINGS = {'AdobeStandardEncoding': ADOBE_STANDARD_TO_UNICODE}
+ENCODINGS = {'AdobeStandardEncoding': ADOBE_STANDARD_ENCODING}
