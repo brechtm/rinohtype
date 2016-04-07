@@ -249,7 +249,8 @@ matcher('front matter section', FrontMatter > Section.like(level=1))
 matcher('front matter section heading', 'front matter section' / Heading)
 
 matcher('table of contents section', Section.like('table of contents'))
-matcher('table of contents title', 'table of contents section' / Heading)
+matcher('table of contents title', 'table of contents section'
+                                   / Heading.like(level=1))
 matcher('table of contents', TableOfContents)
 matcher('toc level 1', TableOfContentsEntry.like(depth=1))
 matcher('toc level 2', TableOfContentsEntry.like(depth=2))
