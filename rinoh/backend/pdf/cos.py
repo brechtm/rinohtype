@@ -687,7 +687,7 @@ class Type1Font(Font):
         self['FontDescriptor'] = font_descriptor
 
     def _bytes(self, document):
-        if not 'Widths' in self:
+        if 'Widths' not in self:
             widths = []
             by_code = {glyph.code: glyph
                        for glyph in self.font._glyphs.values()
@@ -838,9 +838,11 @@ class OpenTypeFontFile(Stream):
 
 
 class FontEncoding(Dictionary):
-    def __init__(self, indirect=True):
+    def __init__(self, base_encoding=None, indirect=True):
         super().__init__(indirect)
         self['Type'] = Name('Encoding')
+        if base_encoding:
+            self['BaseEncoding'] = Name(base_encoding)
 
 
 class EncodingDifferences(Object):

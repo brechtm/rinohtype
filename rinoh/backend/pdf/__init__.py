@@ -21,6 +21,17 @@ from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
 
 
+FIXED_PITCH = 0x01
+SERIF = 0x02
+SYMBOLIC = 0x04
+SCRIPT = 0x08
+NONSYMBOLIC = 0x20
+ITALIC = 0x40
+ALL_CAP = 0x10000
+SMALL_CAP = 0x20000
+FORCE_BOLD = 0x40000
+
+
 class Document(object):
     extension = '.pdf'
 
@@ -50,18 +61,25 @@ class Document(object):
         try:
             font_number, font_rsc = self.fonts[font]
         except KeyError:
+            flags = 0
             if isinstance(font, Type1Font):
                 font_file = (None if font.core else
                              cos.Type1FontFile(font.font_program.header,
                                                font.font_program.body,
                                                filter=FlateDecode()))
+                if font.encoding_scheme == 'AdobeStandardEncoding':
+                    flags |= NONSYMBOLIC
+                else:
+                    flags |= SYMBOLIC
             elif isinstance(font, OpenTypeFont):
                 ff_cls = (cos.OpenTypeFontFile if 'CFF' in font
                           else cos.TrueTypeFontFile)
                 with open(font.filename, 'rb') as font_data:
                     font_file = ff_cls(font_data.read(), filter=FlateDecode())
+                flags = SYMBOLIC
+            # TODO: properly determine flags
             font_desc = cos.FontDescriptor(font.name,
-                                           4, # TODO: properly determine flags
+                                           flags,
                                            font.bounding_box,
                                            font.italic_angle,
                                            font.ascender,
@@ -71,7 +89,8 @@ class Document(object):
                                            font_file,
                                            font.x_height)
             if isinstance(font, Type1Font):
-                font_rsc = cos.Type1Font(font, cos.FontEncoding(), font_desc)
+                encoding = cos.FontEncoding('StandardEncoding')
+                font_rsc = cos.Type1Font(font, encoding, font_desc)
             elif isinstance(font, OpenTypeFont):
                 cid_system_info = cos.CIDSystemInfo('Identity', 'Adobe', 0)
                 widths = font['hmtx']['advanceWidth']

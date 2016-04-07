@@ -180,14 +180,15 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
         AdobeFontMetricsParser.__init__(self, file)
         if close_file:
             file.close()
-        encoding_name = self['FontMetrics']['EncodingScheme']
-        if encoding_name == 'FontSpecific':
+        if self.encoding_scheme == 'FontSpecific':
             self.encoding = {glyph.name: glyph.code
                              for glyph in self._glyphs.values()
                              if glyph.code > -1}
         else:
-            self.encoding = ENCODINGS[encoding_name]
+            self.encoding = ENCODINGS[self.encoding_scheme]
         super().__init__(filename,  weight, slant, width)
+
+    encoding_scheme = LeafGetter('FontMetrics', 'EncodingScheme')
 
     _SUFFIXES = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
                  OLD_STYLE: ('.oldstyle', )}
