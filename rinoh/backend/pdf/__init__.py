@@ -78,16 +78,7 @@ class Document(object):
                     font_file = ff_cls(font_data.read(), filter=FlateDecode())
                 flags = SYMBOLIC
             # TODO: properly determine flags
-            font_desc = cos.FontDescriptor(font.name,
-                                           flags,
-                                           font.bounding_box,
-                                           font.italic_angle,
-                                           font.ascender,
-                                           font.descender,
-                                           font.cap_height,
-                                           font.stem_v,
-                                           font_file,
-                                           font.x_height)
+            font_desc = cos.FontDescriptor(font, flags, font_file)
             if isinstance(font, Type1Font):
                 encoding = cos.FontEncoding('StandardEncoding')
                 font_rsc = cos.Type1Font(font, encoding, font_desc)

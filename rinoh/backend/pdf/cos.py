@@ -787,18 +787,17 @@ class CIDFontType2(CIDFont):
 class FontDescriptor(Dictionary):
     type = 'FontDescriptor'
 
-    def __init__(self, font_name, flags, font_bbox, italic_angle, ascent,
-                 descent, cap_height, stem_v, font_file, x_height=0):
+    def __init__(self, font, flags, font_file):
         super().__init__(True)
-        self['FontName'] = Name(font_name)
+        self['FontName'] = Name(font.name)
         self['Flags'] = Integer(flags)
-        self['FontBBox'] = Array([Integer(item) for item in font_bbox])
-        self['ItalicAngle'] = Integer(italic_angle)
-        self['Ascent'] = Integer(ascent)
-        self['Descent'] = Integer(descent)
-        self['CapHeight'] = Integer(cap_height)
-        self['XHeight'] = Integer(x_height)
-        self['StemV'] = Integer(stem_v)
+        self['FontBBox'] = Array([Integer(item) for item in font.bounding_box])
+        self['ItalicAngle'] = Integer(font.italic_angle)
+        self['Ascent'] = Integer(font.ascender)
+        self['Descent'] = Integer(font.descender)
+        self['CapHeight'] = Integer(font.cap_height)
+        self['XHeight'] = Integer(font.x_height)
+        self['StemV'] = Integer(font.stem_v)
         if font_file:
             self[font_file.key] = font_file
 
