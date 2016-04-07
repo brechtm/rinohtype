@@ -64,6 +64,14 @@ setup(
     scripts=['bin/rinoh'],
     install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
+    entry_points={
+        'rinoh_typefaces':
+            ['courier = rinoh.fonts.adobe14:courier',
+             'helvetica = rinoh.fonts.adobe14:helvetica',
+             'symbol = rinoh.fonts.adobe14:symbol',
+             'times = rinoh.fonts.adobe14:times',
+             'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats']
+    },
     #test_suite='nose.collector',
 
     author='Brecht Machiels',
