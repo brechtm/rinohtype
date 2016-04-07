@@ -197,7 +197,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             return self._suffixes[variant]
         except KeyError:
             for suffix in self._SUFFIXES[variant]:
-                for name in self._char_to_name(char):
+                for name in self._char_to_name(char, NORMAL):
                     if name + suffix in self._glyphs:
                         self._suffixes[variant] = suffix
                         return suffix
