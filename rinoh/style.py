@@ -18,7 +18,6 @@ Base classes and exceptions for styled document elements.
 """
 
 import re
-import string
 
 from ast import literal_eval
 from configparser import ConfigParser
@@ -26,8 +25,9 @@ from collections import OrderedDict, namedtuple
 from operator import attrgetter
 
 from .element import DocumentElement
-from .util import cached, NamedDescriptor, WithNamedDescriptors, all_subclasses, \
-    NotImplementedAttribute
+from .util import (cached, unique, all_subclasses, NamedDescriptor,
+                   WithNamedDescriptors, NotImplementedAttribute)
+
 
 __all__ = ['Style', 'Styled', 'Var', 'AttributeType', 'OptionSet', 'Attribute',
            'OverrideDefault', 'Bool', 'Integer', 'StyledMatcher', 'StyleSheet',
@@ -337,26 +337,47 @@ class Selector(object):
                 selectors = self.selectors + (SelectorByName(other), )
             else:
                 assert other == Ellipsis
-                selectors = self.selectors + (other, )
+                selectors = self.selectors + (EllipsisSelector(), )
         return ContextSelector(*selectors)
 
     def __rtruediv__(self, other):
         assert isinstance(other, str)
         return SelectorByName(other) / self
 
+    def get_styled_class(self, matcher):
+        raise NotImplementedError
+
+    def get_style_name(self, matcher):
+        raise NotImplementedError
+
+    @property
+    def referenced_selectors(self):
+        raise NotImplementedError
+
     def match(self, styled, container):
         raise NotImplementedError
+
+
+class EllipsisSelector(Selector):
+    @property
+    def referenced_selectors(self):
+        return
+        yield
 
 
 class SingleSelector(Selector):
     @property
     def selectors(self):
-        return (self,)
+        return (self, )
 
 
 class SelectorByName(SingleSelector):
     def __init__(self, name):
         self.name = name
+
+    @property
+    def referenced_selectors(self):
+        yield self.name
 
     def get_styled_class(self, matcher):
         selector = matcher.by_name[self.name]
@@ -374,6 +395,11 @@ class SelectorByName(SingleSelector):
 class ClassSelectorBase(SingleSelector):
     def get_styled_class(self, matcher):
         return self.cls
+
+    @property
+    def referenced_selectors(self):
+        return
+        yield
 
     def get_style_name(self, matcher):
         return self.style_name
@@ -411,6 +437,12 @@ class ContextSelector(Selector):
         super().__init__()
         self.selectors = selectors
 
+    @property
+    def referenced_selectors(self):
+        for selector in self.selectors:
+            for name in selector.referenced_selectors:
+                yield name
+
     def get_styled_class(self, matcher):
         return self.selectors[-1].get_styled_class(matcher)
 
@@ -430,7 +462,7 @@ class ContextSelector(Selector):
         for selector in selectors:
             try:
                 element = next(elements)                # NoMoreParentElement
-                if selector is Ellipsis:
+                if isinstance(selector, EllipsisSelector):
                     selector = next(selectors)          # StopIteration
                     while not selector.match(element, container):
                         element = next(elements)        # NoMoreParentElement
@@ -461,6 +493,11 @@ class DocumentLocationSelector(object):
     def __init__(self, location_class, selector):
         self.location_class = location_class
         self.selector = selector
+
+    @property
+    def referenced_selectors(self):
+        return
+        yield
 
     def get_styled_class(self, matcher):
         return self.selector.get_styled_class(matcher)
@@ -582,17 +619,18 @@ class StyledMatcher(dict):
 
     def __setitem__(self, name, selector):
         assert name not in self
-        try:
+        is_pending = False
+        for referenced_name in unique(selector.referenced_selectors):
+            if referenced_name not in self.by_name:
+                pending_selectors = self._pending.setdefault(referenced_name, {})
+                pending_selectors[name] = selector
+                is_pending = True
+        if not is_pending:
             cls_selectors = self.setdefault(selector.get_styled_class(self), {})
-        except KeyError as err:
-            undefined_name, =  err.args
-            pending_selectors = self._pending.setdefault(undefined_name, {})
-            pending_selectors[name] = selector
-            return
-        style_name = selector.get_style_name(self)
-        style_selectors = cls_selectors.setdefault(style_name, {})
-        self.by_name[name] = style_selectors[name] = selector
-        self._process_pending(name)
+            style_name = selector.get_style_name(self)
+            style_selectors = cls_selectors.setdefault(style_name, {})
+            self.by_name[name] = style_selectors[name] = selector
+            self._process_pending(name)
 
     def _process_pending(self, newly_defined_name):
         if newly_defined_name in self._pending:

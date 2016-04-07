@@ -63,6 +63,15 @@ def last(iterable):
     return result
 
 
+def unique(iterable):
+    """Filter out duplicate items from an iterable"""
+    seen = set()
+    for item in iterable:
+        if item not in seen:
+            seen.add(item)
+            yield item
+
+
 # function decorators
 
 def consumer(function):
