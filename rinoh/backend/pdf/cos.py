@@ -799,7 +799,8 @@ class FontDescriptor(Dictionary):
         self['CapHeight'] = Integer(cap_height)
         self['XHeight'] = Integer(x_height)
         self['StemV'] = Integer(stem_v)
-        self[font_file.key] = font_file
+        if font_file:
+            self[font_file.key] = font_file
 
 
 class Type3FontDescriptor(FontDescriptor):

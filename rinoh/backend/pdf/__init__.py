@@ -51,9 +51,10 @@ class Document(object):
             font_number, font_rsc = self.fonts[font]
         except KeyError:
             if isinstance(font, Type1Font):
-                font_file = cos.Type1FontFile(font.font_program.header,
-                                              font.font_program.body,
-                                              filter=FlateDecode())
+                font_file = (None if font.core else
+                             cos.Type1FontFile(font.font_program.header,
+                                               font.font_program.body,
+                                               filter=FlateDecode()))
             elif isinstance(font, OpenTypeFont):
                 ff_cls = (cos.OpenTypeFontFile if 'CFF' in font
                           else cos.TrueTypeFontFile)
