@@ -784,13 +784,24 @@ class CIDFontType2(CIDFont):
         return self['BaseFont']
 
 
+FIXED_PITCH = 0x01
+SERIF = 0x02
+SYMBOLIC = 0x04
+SCRIPT = 0x08
+NONSYMBOLIC = 0x20
+ITALIC = 0x40
+ALL_CAP = 0x10000
+SMALL_CAP = 0x20000
+FORCE_BOLD = 0x40000
+
+
 class FontDescriptor(Dictionary):
     type = 'FontDescriptor'
 
-    def __init__(self, font, flags, font_file):
+    def __init__(self, font, symbolic, font_file=None):
         super().__init__(True)
         self['FontName'] = Name(font.name)
-        self['Flags'] = Integer(flags)
+        self['Flags'] = Integer(self.determine_flags(font, symbolic))
         self['FontBBox'] = Array([Integer(item) for item in font.bounding_box])
         self['ItalicAngle'] = Integer(font.italic_angle)
         self['Ascent'] = Integer(font.ascender)
@@ -800,6 +811,14 @@ class FontDescriptor(Dictionary):
         self['StemV'] = Integer(font.stem_v)
         if font_file:
             self[font_file.key] = font_file
+
+    def determine_flags(self, font, symbolic):
+        flags = SYMBOLIC if symbolic else NONSYMBOLIC
+        if font.fixed_pitch:
+            flags |= FIXED_PITCH
+        if font.italic:
+            flags |= ITALIC
+        return flags
 
 
 class Type3FontDescriptor(FontDescriptor):

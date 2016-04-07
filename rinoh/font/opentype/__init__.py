@@ -31,6 +31,7 @@ class OpenTypeFont(Font, OpenTypeParser):
     def bounding_box(self):
         return self['head'].bounding_box
 
+    fixed_pitch = LeafGetter('post', 'isFixedPitch')
     italic_angle = LeafGetter('post', 'italicAngle')
     ascender = LeafGetter('OS/2', 'sTypoAscender')
     descender = LeafGetter('OS/2', 'sTypoDescender')

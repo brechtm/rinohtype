@@ -40,6 +40,13 @@ class Font(object):
     name = NotImplementedAttribute()
     bounding_box = NotImplementedAttribute()
 
+    # font type
+    fixed_pitch = NotImplementedAttribute()
+
+    @property
+    def italic(self):
+        return self.slant != UPRIGHT
+
     # font metrics in font coordinates
     italic_angle = NotImplementedAttribute()
     ascender = NotImplementedAttribute()

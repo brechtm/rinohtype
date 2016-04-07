@@ -157,6 +157,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
 
     name = LeafGetter('FontMetrics', 'FontName')
     bounding_box = LeafGetter('FontMetrics', 'FontBBox')
+    fixed_pitch = LeafGetter('FontMetrics', 'IsFixedPitch')
     italic_angle = LeafGetter('FontMetrics', 'ItalicAngle')
     ascender = LeafGetter('FontMetrics', 'Ascender', default=750)
     descender = LeafGetter('FontMetrics', 'Descender', default=-250)
