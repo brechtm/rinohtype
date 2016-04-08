@@ -313,8 +313,7 @@ def spans_to_words(spans, container, **kwargs):
         try:
             word_to_glyphs = create_to_glyphs(span, container)
             for chars in span.split(container, **kwargs):
-                glyphs_span = GlyphsSpan(span, word_to_glyphs)
-                glyphs_span += word_to_glyphs(chars)
+                glyphs_span = GlyphsSpan(span, word_to_glyphs, chars)
                 if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
                     if word:
                         yield word
@@ -555,12 +554,21 @@ def kern(glyphs, get_kerning):
 
 
 class GlyphsSpan(list):
-    def __init__(self, span, word_to_glyphs):
+    def __init__(self, span, word_to_glyphs, chars=None):
         super().__init__()
         self.span = span
         self.filled_tabs = {}
         self.word_to_glyphs = word_to_glyphs
         self.space, = word_to_glyphs(' ')
+        if chars:
+            self.append_chars(chars)
+
+    def append_chars(self, chars):
+        if chars in '\t\n':
+            self.append_space()
+        else:
+            chars = chars.replace('\N{NO-BREAK SPACE}', ' ')
+            super().extend(self.word_to_glyphs(chars))
 
     @property
     def width(self):
@@ -626,10 +634,8 @@ class Word(list):
         w2g = first_glyphs_span.word_to_glyphs
         hyphenate = create_hyphenate(first_glyphs_span.span, container)
         for first, second in hyphenate(str(self)):
-            first_gs = GlyphsSpan(span, w2g)
-            first_gs += w2g(first)
-            second_gs = GlyphsSpan(span, w2g)
-            second_gs += w2g(second)
+            first_gs = GlyphsSpan(span, w2g, first)
+            second_gs = GlyphsSpan(span, w2g, second)
             yield Word([(first_gs, first)]), Word([(second_gs, second)])
 
 
