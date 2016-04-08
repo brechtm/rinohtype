@@ -693,7 +693,6 @@ class Type1Font(Font):
         self['FontDescriptor'] = font_descriptor
 
     def get_code(self, glyph):
-        assert 'Widths' not in self
         try:
             try:
                 return self.font.encoding[glyph.name]
@@ -707,19 +706,24 @@ class Type1Font(Font):
             return code
 
     def register_indirect(self, document, visited=None):
-        if 'Widths' not in self:
-            widths = {}
-            for name, code in chain(self.font.encoding.items(),
-                                    self.differences.items()):
-                glyph = self.font._glyphs[name]
-                widths[code] = glyph.width
-            first, last = min(widths), max(widths)
-            self['FirstChar'] = Integer(first)
-            self['LastChar'] = Integer(last)
-            self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
-                                    for c in range(first, last + 1)), True)
-            if self.differences:
-                self['Encoding'] = FontEncoding(differences=self.differences)
+        if id(self) in visited:
+            return
+        for key in ('FirstChar', 'LastChar', 'Widths', 'Encoding'):
+            if key in self:
+                self[key].delete(document)
+                del self[key]
+        widths = {}
+        for name, code in chain(self.font.encoding.items(),
+                                self.differences.items()):
+            glyph = self.font._glyphs[name]
+            widths[code] = glyph.width
+        first, last = min(widths), max(widths)
+        self['FirstChar'] = Integer(first)
+        self['LastChar'] = Integer(last)
+        self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
+                                for c in range(first, last + 1)), True)
+        if self.differences:
+            self['Encoding'] = FontEncoding(differences=self.differences)
         return super().register_indirect(document, visited=visited)
 
 
