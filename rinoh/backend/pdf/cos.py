@@ -16,6 +16,7 @@ from collections import OrderedDict
 from datetime import datetime
 from functools import wraps
 from io import BytesIO
+from itertools import chain
 
 from ... import __version__, __release_date__
 
@@ -54,6 +55,9 @@ class Object(object):
 
     def direct_bytes(self, document):
         return self.PREFIX + self._bytes(document) + self.POSTFIX
+
+    def _bytes(self, document):
+        raise NotImplementedError
 
     def delete(self, document):
         try:
@@ -679,39 +683,44 @@ class SimpleFont(Font):
 class Type1Font(Font):
     subtype = 'Type1'
 
-    def __init__(self, font, encoding, font_descriptor):
+    def __init__(self, font, font_descriptor):
         super().__init__(True)
         self.font = font
+        self.differences = {}
+        self._free_codes = iter(i for i in chain(range(32, 255), range(0, 32))
+                                if i not in self.font.encoding.values())
         self['BaseFont'] = Name(font.name)
-        self['Encoding'] = encoding
         self['FontDescriptor'] = font_descriptor
 
-    def _bytes(self, document):
-        if 'Widths' not in self:
-            widths = []
-            by_code = {glyph.code: glyph
-                       for glyph in self.font._glyphs.values()
-                       if glyph.code >= 0}
+    def get_code(self, glyph):
+        assert 'Widths' not in self
+        try:
             try:
-                differences = self['Encoding']['Differences']
-                first, last = min(differences.taken), max(differences.taken)
+                return self.font.encoding[glyph.name]
             except KeyError:
-                first, last = min(by_code.keys()), max(by_code.keys())
+                return self.differences[glyph.name]
+        except KeyError:
+            try:
+                code = self.differences[glyph.name] = next(self._free_codes)
+            except StopIteration:
+                raise NotImplementedError('Encoding vector is full')
+            return code
+
+    def register_indirect(self, document, visited=None):
+        if 'Widths' not in self:
+            widths = {}
+            for name, code in chain(self.font.encoding.items(),
+                                    self.differences.items()):
+                glyph = self.font._glyphs[name]
+                widths[code] = glyph.width
+            first, last = min(widths), max(widths)
             self['FirstChar'] = Integer(first)
             self['LastChar'] = Integer(last)
-            for code in range(first, last + 1):
-                try:
-                    glyph = by_code[code]
-                    width = glyph.width
-                except KeyError:
-                    try:
-                        glyph = differences.by_code[code]
-                        width = glyph.width
-                    except (KeyError, NameError):
-                        width = 0
-                widths.append(width)
-            self['Widths'] = Array(map(Real, widths))
-        return super()._bytes(document)
+            self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
+                                    for c in range(first, last + 1)), True)
+            if self.differences:
+                self['Encoding'] = FontEncoding(differences=self.differences)
+        return super().register_indirect(document, visited=visited)
 
 
 class CompositeFont(Font):
@@ -856,46 +865,26 @@ class OpenTypeFontFile(Stream):
 
 
 class FontEncoding(Dictionary):
-    def __init__(self, base_encoding=None, indirect=True):
+    def __init__(self, base_encoding=None, differences=None, indirect=True):
         super().__init__(indirect)
         self['Type'] = Name('Encoding')
         if base_encoding:
             self['BaseEncoding'] = Name(base_encoding)
+        if differences:
+            self['Differences'] = EncodingDifferences(differences)
 
 
-class EncodingDifferences(Object):
-    def __init__(self, taken):
-        super().__init__(False)
-        self.taken = taken
-        self.previous_free = 1
-        self.by_glyph = {}
-        self.by_code = {}
-
-    def register(self, glyph):
-        try:
-            code = self.by_glyph[glyph]
-        except KeyError:
-            while self.previous_free in self.taken:
-                self.previous_free += 1
-                if self.previous_free > 255:
-                    raise NotImplementedError('Encoding vector is full')
-            code = self.previous_free
-            self.taken.append(code)
-            self.by_glyph[glyph] = code
-            self.by_code[code] = glyph
-        return code
-
-    def _bytes(self, document):
-        # TODO: subclass Array
-        output = b'['
-        previous = 256
-        for code in sorted(self.by_code.keys()):
-            if code != previous + 1:
-                output += b' ' + Integer(code).bytes(document)
-            output += b' ' + Name(self.by_code[code].name).bytes(document)
-            previous = code
-        output += b' ]'
-        return output
+class EncodingDifferences(Array):
+    def __init__(self, differences):
+        code_to_name = {code: name for name, code in differences.items()}
+        last_code = float('+inf')
+        array = []
+        for code in sorted(code_to_name):
+            if code != last_code + 1:
+                array.append(Integer(code))
+            array.append(Name(code_to_name[code]))
+            last_code = code
+        super().__init__(array)
 
 
 class ToUnicode(Stream):

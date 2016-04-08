@@ -66,8 +66,7 @@ class Document(object):
             # TODO: properly determine flags
             font_desc = cos.FontDescriptor(font, symbolic, font_file)
             if isinstance(font, Type1Font):
-                encoding = cos.FontEncoding('StandardEncoding')
-                font_rsc = cos.Type1Font(font, encoding, font_desc)
+                font_rsc = cos.Type1Font(font, font_desc)
             elif isinstance(font, OpenTypeFont):
                 cid_system_info = cos.CIDSystemInfo('Identity', 'Adobe', 0)
                 widths = font['hmtx']['advanceWidth']
@@ -271,18 +270,11 @@ class Canvas(StringIO):
             glyph, width = glyph_and_width.glyph, glyph_and_width.width
             total_width += width
             displ = (1000 * width) / size
-            code = glyph.code
             if font.encoding:
-                if code < 0:
-                    try:
-                        differences = font_rsc['Encoding']['Differences']
-                    except KeyError:
-                        occupied = list(font.encoding.values())
-                        differences = cos.EncodingDifferences(occupied)
-                        font_rsc['Encoding']['Differences'] = differences
-                    code = differences.register(glyph)
+                code = font_rsc.get_code(glyph)
                 char = CODE_TO_CHAR[code]
             else:
+                code = glyph.code
                 high, low = code >> 8, code & 0xFF
                 char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
             adjust = int(glyph.width - displ)
