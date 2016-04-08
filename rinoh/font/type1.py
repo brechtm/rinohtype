@@ -199,7 +199,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             return self._suffixes[variant]
         except KeyError:
             for suffix in self._SUFFIXES[variant]:
-                for name in self._char_to_name(char, NORMAL):
+                for name in self._char_to_glyph_names(char, NORMAL):
                     if name + suffix in self._glyphs:
                         self._suffixes[variant] = suffix
                         return suffix
@@ -209,31 +209,27 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
 ##                return self._find_suffix(self.char_to_name(char.upper()),
 ##                                         possible_suffixes, True)
 
-    def _lookup_glyph_names(self, char, unicode_mapping):
-        try:
-            name_or_names = unicode_mapping[ord(char)]
-        except (KeyError, TypeError):
-            return
-        if isinstance(name_or_names, str):
-            yield name_or_names
-        else:
-            for name in name_or_names:
+    def _unicode_to_glyph_names(self, unicode):
+        if self._unicode_mapping:
+            for name in self._unicode_mapping.get(unicode, []):
                 yield name
+        try:
+            for name in UNICODE_TO_GLYPH_NAME[unicode]:
+                yield name
+            # TODO: map to uniXXXX or uXXXX names
+        except KeyError:
+            warn('Don\'t know how to map unicode index 0x{:04x} ({}) to a '
+                 'PostScript glyph name.'.format(unicode, chr(unicode),
+                                                 RinohWarning))
 
-    def _char_to_name(self, char, variant):
-        # TODO: first search character using the font's encoding
+    def _char_to_glyph_names(self, char, variant):
         suffix = self._find_suffix(char, variant) if char != ' ' else ''
-        for name in self._lookup_glyph_names(char, self._unicode_mapping):
+        for name in self._unicode_to_glyph_names(ord(char)):
             yield name + suffix
-        for name in self._lookup_glyph_names(char, UNICODE_TO_GLYPH_NAME):
-            yield name + suffix
-        # TODO: map to uniXXXX or uXXXX names
-        warn('Don\'t know how to map unicode index 0x{:04x} ({}) to a '
-             'PostScript glyph name.'.format(ord(char), char), RinohWarning)
 
     @cached
     def get_glyph(self, char, variant):
-        for name in self._char_to_name(char, variant):
+        for name in self._char_to_glyph_names(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
         if variant != NORMAL:
