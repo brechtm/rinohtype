@@ -728,43 +728,6 @@ class StyleSheet(OrderedDict, AttributeType):
             for match in self.base.find_matches(styled, container):
                 yield match
 
-    def print_style(self, styled, container):
-        log = container.document.style_log
-        try:
-            page_number = container.page.number
-        except AttributeError:
-            page_number = 0
-        level = styled.path.count('>')
-        _, name = (' > ' + styled.path).rsplit('> ', 1)
-        log.write('{}{} on page {} ({})'
-                  .format('  ' * level, name, page_number,
-                          styled.source.location))
-        matches = sorted(self.find_matches(styled, container),
-                         key=attrgetter('specificity'), reverse=True)
-        first = True
-        style = None
-        for match in matches:
-            try:
-                _ = self[match.style_name]
-                if first:
-                    style = _
-                    label = '>'
-                    first = False
-                else:
-                    label = ' '
-            except KeyError:
-                label = 'x'
-            specificity = ','.join(str(score) for score in match.specificity)
-            log.write('\n    {} {} ({}) {}'
-                      .format('  ' * level, label, specificity,
-                              match.style_name))
-        if not matches:
-            log.write(' - default style')
-        elif style is None:
-            log.write('\n    {} > fallback to default style'
-                      .format('  ' * level))
-        log.write('\n')
-
     def find_style(self, styled, container):
         matches = sorted(self.find_matches(styled, container),
                          key=attrgetter('specificity'), reverse=True)
@@ -1014,3 +977,59 @@ class Match(object):
 ZERO_SPECIFICITY = Specificity(0, 0, 0, 0)
 
 NO_MATCH = Match(None, ZERO_SPECIFICITY)
+
+
+class StyleLogEntry(object):
+    def __init__(self, styled, page_number, matches):
+        self.styled = styled
+        self.page_number = page_number
+        self.matches = matches
+
+
+class StyleLog(object):
+    def __init__(self, stylesheet):
+        self.stylesheet = stylesheet
+        self.entries = []
+
+    def log_styled(self, styled, container):
+        page_number = container.page.number
+        matches = self.stylesheet.find_matches(styled, container)
+        log_entry = StyleLogEntry(styled, page_number, matches)
+        self.entries.append(log_entry)
+
+    def log_out_of_line(self):
+        raise NotImplementedError
+
+    def write_log(self, filename_root):
+        with open(filename_root + '.stylelog', 'w') as log:
+            for entry in self.entries:
+                level = entry.styled.path.count('>')
+                _, name = (' > ' + entry.styled.path).rsplit('> ', 1)
+                log.write('{}{} on page {} ({})'
+                          .format('  ' * level, name, entry.page_number,
+                                  entry.styled.source.location))
+                matches = sorted(entry.matches, key=attrgetter('specificity'),
+                                 reverse=True)
+                first = True
+                style = None
+                for match in matches:
+                    try:
+                        _ = self.stylesheet[match.style_name]
+                        if first:
+                            style = _
+                            label = '>'
+                            first = False
+                        else:
+                            label = ' '
+                    except KeyError:
+                        label = 'x'
+                    specificity = ','.join(str(score) for score in match.specificity)
+                    log.write('\n    {} {} ({}) {}'
+                              .format('  ' * level, label, specificity,
+                                      match.style_name))
+                if not matches:
+                    log.write(' - default style')
+                elif style is None:
+                    log.write('\n    {} > fallback to default style'
+                              .format('  ' * level))
+                log.write('\n')

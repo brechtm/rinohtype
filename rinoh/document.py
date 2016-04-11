@@ -36,7 +36,7 @@ from .layout import (Container, ReflowRequired, Chain, PageBreakException,
 from .number import NUMBER
 from .reference import TITLE
 from .structure import NewChapterException, Section
-from .style import DocumentLocationType, Specificity
+from .style import DocumentLocationType, Specificity, StyleLog
 from .util import NotImplementedAttribute, RefKeyDictionary
 
 
@@ -360,10 +360,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         if filename_root and file is None:
             filename = filename_root + self.backend_document.extension
             file = open(filename, 'wb')
-            self.style_log = open(filename_root + '.stylelog', 'w')
         elif file and filename_root is None:
             filename = getattr(file, 'name', None)
-            self.style_log = StringIO()
         else:
             raise ValueError("You need to specify either 'filename_root' or "
                              "'file'.")
@@ -403,12 +401,12 @@ to the terms of the GNU Affero General Public License version 3.''')
             if filename:
                 self._save_cache(filename_root, section_num_pages,
                                  self.page_references)
+                self.style_log.write_log(filename_root)
                 print('Writing output: {}'.format(filename))
             self.backend_document.write(file)
         finally:
             if filename_root:
                 file.close()
-            self.style_log.close()
 
     def create_outlines(self):
         sections = parent = []
@@ -434,6 +432,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     def render_pages(self, _sections):
         """Render the complete document once and return the number of pages
         rendered."""
+        self.style_log = StyleLog(self.stylesheet)
         self.floats = set()
         self.placed_footnotes = set()
         section_page_counts = []
