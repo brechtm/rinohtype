@@ -729,17 +729,44 @@ class StyleSheet(OrderedDict, AttributeType):
                 yield match
 
     def find_style(self, styled, container):
+        log = container.document.style_log
+        try:
+            page_number = container.page.number
+        except AttributeError:
+            page_number = 0
+        styled_cls = type(styled).__name__
+        log.write('{:4d} {} [{}]'.format(page_number, styled_cls,
+                                         styled.source.location))
         matches = sorted(self.find_matches(styled, container),
                          key=attrgetter('specificity'), reverse=True)
+        first = True
+        for match in matches:
+            try:
+                self[match.style_name]
+                label = '>' if first else ' '
+                first = False
+            except KeyError:
+                label = 'X'
+            specificity = ','.join(str(score) for score in match.specificity)
+            log.write('\n      {}  ({})  {}'.format(label, specificity,
+                                                    match.style_name))
         for match in matches:
             try:
                 # print("({}) matches '{}'".format(styled.path,
                 #                                  match.style_name))
-                return self[match.style_name]
+                style = self[match.style_name]
+                break
             except KeyError:
-                print("No style '{}' found in stylesheet"
-                      .format(match.style_name))
-        raise DefaultStyleException
+                styled.warn("No style '{}' found in stylesheet"
+                            .format(match.style_name), container)
+        else:
+            if not matches:
+                log.write(' - default style\n')
+            else:
+                log.write('\n      > fallback to default style\n')
+            raise DefaultStyleException
+        log.write('\n')
+        return style
 
 
 class StyleSheetFile(StyleSheet):

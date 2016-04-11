@@ -26,6 +26,7 @@ import pickle
 
 from collections import OrderedDict
 from itertools import count
+from io import StringIO
 
 from . import __version__, __release_date__
 from .backend import pdf
@@ -359,8 +360,10 @@ to the terms of the GNU Affero General Public License version 3.''')
         if filename_root and file is None:
             filename = filename_root + self.backend_document.extension
             file = open(filename, 'wb')
+            self.style_log = open(filename_root + '.stylelog', 'w')
         elif file and filename_root is None:
             filename = getattr(file, 'name', None)
+            self.style_log = StringIO()
         else:
             raise ValueError("You need to specify either 'filename_root' or "
                              "'file'.")
@@ -405,6 +408,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         finally:
             if filename_root:
                 file.close()
+            self.style_log.close()
 
     def create_outlines(self):
         sections = parent = []

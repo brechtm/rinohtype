@@ -80,7 +80,10 @@ class DocumentElement(object):
         if self.source is not None:
             message = '[{}] '.format(self.source.location) + message
         if container is not None:
-            message += ' (page {})'.format(container.page.number)
+            try:
+                message += ' (page {})'.format(container.page.number)
+            except AttributeError:
+                pass
         warn(message)
 
 
