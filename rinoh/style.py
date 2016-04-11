@@ -728,45 +728,55 @@ class StyleSheet(OrderedDict, AttributeType):
             for match in self.base.find_matches(styled, container):
                 yield match
 
-    def find_style(self, styled, container):
+    def print_style(self, styled, container):
         log = container.document.style_log
         try:
             page_number = container.page.number
         except AttributeError:
             page_number = 0
-        styled_cls = type(styled).__name__
-        log.write('{:4d} {} [{}]'.format(page_number, styled_cls,
-                                         styled.source.location))
+        level = styled.path.count('>')
+        _, name = (' > ' + styled.path).rsplit('> ', 1)
+        log.write('{}{} on page {} ({})'
+                  .format('  ' * level, name, page_number,
+                          styled.source.location))
         matches = sorted(self.find_matches(styled, container),
                          key=attrgetter('specificity'), reverse=True)
         first = True
+        style = None
         for match in matches:
             try:
-                self[match.style_name]
-                label = '>' if first else ' '
-                first = False
+                _ = self[match.style_name]
+                if first:
+                    style = _
+                    label = '>'
+                    first = False
+                else:
+                    label = ' '
             except KeyError:
-                label = 'X'
+                label = 'x'
             specificity = ','.join(str(score) for score in match.specificity)
-            log.write('\n      {}  ({})  {}'.format(label, specificity,
-                                                    match.style_name))
+            log.write('\n    {} {} ({}) {}'
+                      .format('  ' * level, label, specificity,
+                              match.style_name))
+        if not matches:
+            log.write(' - default style')
+        elif style is None:
+            log.write('\n    {} > fallback to default style'
+                      .format('  ' * level))
+        log.write('\n')
+
+    def find_style(self, styled, container):
+        matches = sorted(self.find_matches(styled, container),
+                         key=attrgetter('specificity'), reverse=True)
         for match in matches:
             try:
                 # print("({}) matches '{}'".format(styled.path,
                 #                                  match.style_name))
-                style = self[match.style_name]
-                break
+                return self[match.style_name]
             except KeyError:
                 styled.warn("No style '{}' found in stylesheet"
                             .format(match.style_name), container)
-        else:
-            if not matches:
-                log.write(' - default style\n')
-            else:
-                log.write('\n      > fallback to default style\n')
-            raise DefaultStyleException
-        log.write('\n')
-        return style
+        raise DefaultStyleException
 
 
 class StyleSheetFile(StyleSheet):

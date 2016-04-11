@@ -112,6 +112,7 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
+        container.document.stylesheet.print_style(self, container)
         top_to_baseline = 0
         state = state or self.initial_state(container)
         if state.initial:
