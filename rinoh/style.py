@@ -553,6 +553,13 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         style = '[{}]'.format(self.style) if self.style else ''
         return parent + self.__class__.__name__ + style
 
+    @property
+    def nesting_level(self):
+        try:
+            return self.parent.nesting_level + 1
+        except AttributeError:
+            return 0
+
     @cached
     def get_style(self, attribute, flowable_target):
         try:
@@ -1006,7 +1013,7 @@ class StyleLog(object):
                     log.write('{line} page {} {line}\n'.format(current_page,
                                                                line='-' * 34))
                 styled = entry.styled
-                level = styled.path.count('>')
+                level = styled.nesting_level
                 name = type(styled).__name__
                 attrs = OrderedDict()
                 if styled.id:
