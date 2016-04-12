@@ -999,7 +999,12 @@ class StyleLog(object):
 
     def write_log(self, filename_root):
         with open(filename_root + '.stylelog', 'w') as log:
+            current_page = None
             for entry in self.entries:
+                if entry.page_number != current_page:
+                    current_page = entry.page_number
+                    log.write('{line} page {} {line}\n'.format(current_page,
+                                                               line='-' * 34))
                 styled = entry.styled
                 level = styled.path.count('>')
                 name = type(styled).__name__
@@ -1010,9 +1015,9 @@ class StyleLog(object):
                     attrs['style'] = "'{}'".format(styled.style)
                 attr_repr = ', '.join(key + '=' + value
                                       for key, value in attrs.items())
-                log.write('{}{}({}) on page {} ({})'
+                log.write('{}{}({}) {}'
                           .format('  ' * level, name, attr_repr,
-                                  entry.page_number, styled.source.location))
+                                  styled.source.location))
                 matches = sorted(entry.matches, key=attrgetter('specificity'),
                                  reverse=True)
                 first = True
