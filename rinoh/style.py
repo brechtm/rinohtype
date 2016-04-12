@@ -984,10 +984,11 @@ NO_MATCH = Match(None, ZERO_SPECIFICITY)
 
 
 class StyleLogEntry(object):
-    def __init__(self, styled, page_number, matches):
+    def __init__(self, styled, page_number, matches, custom_message=None):
         self.styled = styled
         self.page_number = page_number
         self.matches = matches
+        self.custom_message = custom_message
 
 
 class StyleLog(object):
@@ -995,10 +996,10 @@ class StyleLog(object):
         self.stylesheet = stylesheet
         self.entries = []
 
-    def log_styled(self, styled, container):
+    def log_styled(self, styled, container, custom_message=None):
         page_number = container.page.number
         matches = self.stylesheet.find_matches(styled, container)
-        log_entry = StyleLogEntry(styled, page_number, matches)
+        log_entry = StyleLogEntry(styled, page_number, matches, custom_message)
         self.entries.append(log_entry)
 
     def log_out_of_line(self):
@@ -1022,31 +1023,36 @@ class StyleLog(object):
                     attrs['style'] = "'{}'".format(styled.style)
                 attr_repr = ', '.join(key + '=' + value
                                       for key, value in attrs.items())
-                log.write('{}{}({}) {}'
-                          .format('  ' * level, name, attr_repr,
-                                  styled.source.location))
-                matches = sorted(entry.matches, key=attrgetter('specificity'),
-                                 reverse=True)
-                first = True
-                style = None
-                for match in matches:
-                    try:
-                        _ = self.stylesheet[match.style_name]
-                        if first:
-                            style = _
-                            label = '>'
-                            first = False
-                        else:
-                            label = ' '
-                    except KeyError:
-                        label = 'x'
-                    specificity = ','.join(str(score) for score in match.specificity)
-                    log.write('\n    {} {} ({}) {}'
-                              .format('  ' * level, label, specificity,
-                                      match.style_name))
-                if not matches:
-                    log.write(' - default style')
-                elif style is None:
-                    log.write('\n    {} > fallback to default style'
-                              .format('  ' * level))
+                indent = '  ' * level
+                log.write('{}{}({}) {}' .format(indent, name, attr_repr,
+                                                styled.source.location))
+                if entry.custom_message:
+                    log.write('\n    {} ! {}'.format(indent,
+                                                     entry.custom_message))
+                else:
+                    matches = sorted(entry.matches, reverse=True,
+                                     key=attrgetter('specificity'))
+                    first = True
+                    style = None
+                    for match in matches:
+                        try:
+                            _ = self.stylesheet[match.style_name]
+                            if first:
+                                style = _
+                                label = '>'
+                                first = False
+                            else:
+                                label = ' '
+                        except KeyError:
+                            label = 'x'
+                        specificity = ','.join(str(score)
+                                               for score in match.specificity)
+                        log.write('\n    {} {} ({}) {}'
+                                  .format(indent, label, specificity,
+                                          match.style_name))
+                    if not matches:
+                        log.write(' - default style')
+                    elif style is None:
+                        log.write('\n    {} > fallback to default style'
+                                  .format(indent))
                 log.write('\n')

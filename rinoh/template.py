@@ -218,6 +218,7 @@ class SimplePage(PageBase):
         create_destination(heading.section, self.chapter_title, False)
         create_destination(heading, self.chapter_title, False)
         for flowable in self.template['chapter_title_flowables'](section_id):
+            flowable.parent = heading
             _, _, descender = flowable.flow(self.chapter_title, descender)
 
 
