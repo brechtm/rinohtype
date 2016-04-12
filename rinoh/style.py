@@ -653,7 +653,8 @@ class StyledMatcher(dict):
         for cls in type(styled).__mro__:
             if cls not in self:
                 continue
-            for style in set((styled.style, None)):
+            style_str = styled.style if isinstance(styled.style, str) else None
+            for style in set((style_str, None)):
                 for name, selector in self[cls].get(style, {}).items():
                     specificity = selector.match(styled, container)
                     if specificity:
