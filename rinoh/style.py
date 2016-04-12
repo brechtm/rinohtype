@@ -223,7 +223,6 @@ class Style(dict, metaclass=StyleMeta):
         the :class:`StyleSheet` this style is defined in."""
         self.base = base or self.default_base
         self.name = None
-        self.stylesheet = None
         for name, value in attributes.items():
             try:
                 self._check_attribute_type(name, value, accept_variables=True)
@@ -249,7 +248,6 @@ class Style(dict, metaclass=StyleMeta):
         copy = self.__class__(base=self.base, **self)
         if self.name is not None:
             copy.name = self.name + ' (copy)'
-            copy.stylesheet = self.stylesheet
         return copy
 
     def __getattr__(self, attribute):
@@ -681,7 +679,6 @@ class StyleSheet(OrderedDict, AttributeType):
     def __setitem__(self, name, style):
         assert name not in self
         style.name = name
-        style.stylesheet = self
         super().__setitem__(name, style)
 
     def __call__(self, name, **kwargs):
