@@ -1018,23 +1018,38 @@ class StyleLog(object):
                 level = styled.nesting_level
                 name = type(styled).__name__
                 attrs = OrderedDict()
+                style = None
                 if styled.id:
                     attrs['id'] = "'{}'".format(styled.id)
-                if styled.style:
+                if isinstance(styled.style, str):
                     attrs['style'] = "'{}'".format(styled.style)
+                elif isinstance(styled.style, Style):
+                    style = styled.style
+                    attrs['style'] = type(style).__name__
                 attr_repr = ', '.join(key + '=' + value
                                       for key, value in attrs.items())
                 indent = '  ' * level
-                log.write('{}{}({}) {}' .format(indent, name, attr_repr,
-                                                styled.source.location))
-                if entry.custom_message:
-                    log.write('\n    {} ! {}'.format(indent,
-                                                     entry.custom_message))
+                if styled.parent and (styled.source.location
+                                      != styled.parent.source.location):
+                    location = '   ' + styled.source.location
                 else:
-                    matches = sorted(entry.matches, reverse=True,
-                                     key=attrgetter('specificity'))
-                    first = True
-                    style = None
+                    location = ''
+                log.write('{}{}({}){}' .format(indent, name, attr_repr,
+                                                location))
+                if entry.custom_message:
+                    log.write('\n    {} ! {}\n'.format(indent,
+                                                       entry.custom_message))
+                    continue
+                first = True
+                if style is not None:
+                    first = False
+                    style_attrs = ', '.join(key + '=' + value
+                                            for key, value in style.items())
+                    log.write('\n    {} > {}({})'
+                              .format(indent, attrs['style'], style_attrs))
+                matches = sorted(entry.matches, reverse=True,
+                                 key=attrgetter('specificity'))
+                if matches:
                     for match in matches:
                         try:
                             _ = self.stylesheet[match.style_name]
@@ -1051,9 +1066,7 @@ class StyleLog(object):
                         log.write('\n    {} {} ({}) {}'
                                   .format(indent, label, specificity,
                                           match.style_name))
-                    if not matches:
-                        log.write(' - default style')
-                    elif style is None:
+                    if style is None:
                         log.write('\n    {} > fallback to default style'
                                   .format(indent))
                 log.write('\n')
