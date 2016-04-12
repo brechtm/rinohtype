@@ -304,6 +304,7 @@ class SingleStyledText(StyledText):
                 * float(self.get_style('font_size', container)))
 
     def spans(self, container, **kwargs):
+        container.document.style_log.log_styled(self, container)
         yield self
 
     @staticmethod
@@ -378,6 +379,10 @@ class MixedStyledText(StyledText, list):
     def spans(self, container, **kwargs):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
+        container.document.style_log.log_styled(self, container)
+        return self._spans(container, **kwargs)
+
+    def _spans(self, container, **kwargs):
         return (span for item in self
                 for span in item.spans(container, **kwargs))
 

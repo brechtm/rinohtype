@@ -452,6 +452,9 @@ class Paragraph(ParagraphBase, MixedStyledText):
     def text(self, container):
         return self
 
+    def spans(self, container, **kwargs):
+        return self._spans(container, **kwargs)
+
 
 class HyphenatorStore(dict):
     def __missing__(self, key):
