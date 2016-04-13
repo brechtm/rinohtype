@@ -564,6 +564,14 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         elif isinstance(self.style, Style):
             yield 'style={}'.format(type(self.style).__name__)
 
+    SHORT_REPR_STRING_LENGTH = 32
+
+    def _short_repr_string(self, flowable_target):
+        text = self.to_string(flowable_target)
+        if len(text) > self.SHORT_REPR_STRING_LENGTH:
+            text = text[:self.SHORT_REPR_STRING_LENGTH] + '...'
+        return "'{}'".format(text)
+
     @property
     def path(self):
         parent = self.parent.path + ' > ' if self.parent else ''

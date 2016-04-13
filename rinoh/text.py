@@ -363,13 +363,8 @@ class MixedStyledText(StyledText, list):
     def to_string(self, flowable_target):
         return ''.join(item.to_string(flowable_target) for item in self)
 
-    SHORT_REPR_STRING_LENGTH = 32
-
     def _short_repr_args(self, flowable_target):
-        text = self.to_string(flowable_target)
-        if len(text) > self.SHORT_REPR_STRING_LENGTH:
-            text = text[:self.SHORT_REPR_STRING_LENGTH] + '...'
-        yield "'{}'".format(text)
+        yield self._short_repr_string(flowable_target)
 
     def __eq__(self, other):
         return (all(child == other_child

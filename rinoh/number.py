@@ -16,7 +16,6 @@ from .paragraph import ParagraphBase, ParagraphStyle
 from .style import Style, OptionSet, Attribute, Bool
 from .text import StyledText
 
-
 __all__ = ['NumberStyle', 'Label', 'NumberedParagraph',
            'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
            'SYMBOL', 'format_number']
@@ -123,6 +122,13 @@ class NumberedParagraph(ParagraphBase, Label):
         super().__init__(id=id, style=style, parent=parent)
         Label.__init__(self, custom_label=custom_label)
         self.content = content
+
+    def to_string(self, flowable_target):
+        text = self.text(flowable_target)
+        return ''.join(item.to_string(flowable_target) for item in text)
+
+    def _short_repr_args(self, flowable_target):
+        yield self._short_repr_string(flowable_target)
 
     @property
     def referenceable(self):
