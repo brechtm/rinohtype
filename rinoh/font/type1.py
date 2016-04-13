@@ -240,7 +240,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), RinohWarning)
-            return self._glyphs['.notdef']
+            return self._glyphs.get('.notdef', self._glyphs['space'])
 
     def get_ligature(self, glyph, successor_glyph):
         try:
