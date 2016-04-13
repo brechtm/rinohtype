@@ -60,6 +60,9 @@ class ImageBase(Flowable):
         if isinstance(self.filename_or_file, str):
             return self.filename_or_file
 
+    def _short_repr_args(self, flowable_target):
+        yield "'{}'".format(self.filename)
+
     def initial_state(self, container):
          return ImageState(self)
 

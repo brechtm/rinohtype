@@ -22,6 +22,7 @@ import re
 from ast import literal_eval
 from configparser import ConfigParser
 from collections import OrderedDict, namedtuple
+from itertools import chain
 from operator import attrgetter
 
 from .element import DocumentElement
@@ -547,6 +548,22 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                                     style.__class__.__name__))
         self.style = style
 
+    def short_repr(self, flowable_target):
+        args = ', '.join(chain(self._short_repr_args(flowable_target),
+                               self._short_repr_kwargs(flowable_target)))
+        return '{}({})'.format(type(self).__name__, args)
+
+    def _short_repr_args(self, flowable_target):
+        return ()
+
+    def _short_repr_kwargs(self, flowable_target):
+        if self.id:
+            yield "id='{}'".format(self.id)
+        if isinstance(self.style, str):
+            yield "style='{}'".format(self.style)
+        elif isinstance(self.style, Style):
+            yield 'style={}'.format(type(self.style).__name__)
+
     @property
     def path(self):
         parent = self.parent.path + ' > ' if self.parent else ''
@@ -1026,29 +1043,20 @@ class StyleLog(object):
                                       current_container.name))
                 styled = entry.styled
                 level = styled.nesting_level
-                name = type(styled).__name__
                 attrs = OrderedDict()
                 style = None
-                if styled.id:
-                    attrs['id'] = "'{}'".format(styled.id)
-                if isinstance(styled.style, str):
-                    attrs['style'] = "'{}'".format(styled.style)
-                elif isinstance(styled.style, Style):
-                    style = styled.style
-                    attrs['style'] = type(style).__name__
-                attr_repr = ', '.join(key + '=' + value
-                                      for key, value in attrs.items())
                 indent = '  ' * level
                 if styled.parent and (styled.source.location
                                       != styled.parent.source.location):
                     location = '   ' + styled.source.location
                 else:
                     location = ''
-                log.write('  {}{}({}){}' .format(indent, name, attr_repr,
-                                                location))
+                log.write('  {}{}{}'
+                          .format(indent, styled.short_repr(container),
+                                  location))
                 if entry.custom_message:
                     log.write('\n      {} ! {}\n'.format(indent,
-                                                       entry.custom_message))
+                                                         entry.custom_message))
                     continue
                 first = True
                 if style is not None:

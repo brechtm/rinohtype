@@ -192,8 +192,12 @@ class StyledText(Styled, AcceptNoneAttributeType):
     def _substitute_variables(cls, text, style):
         return SingleStyledText(text.format(**NAME2CHAR), style=style)
 
+    def __str__(self):
+        return self.to_string(None)
+
     def to_string(self, flowable_target):
-        return str(self)
+        """Return the text content of this styled text."""
+        raise NotImplementedError
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
@@ -265,8 +269,7 @@ class SingleStyledText(StyledText):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
-    def __str__(self):
-        """Return the text content of this single-styled text."""
+    def to_string(self, flowable_target):
         return self.text
 
     def __eq__(self, other):
@@ -349,9 +352,16 @@ class MixedStyledText(StyledText, list):
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
 
-    def __str__(self):
-        """Return the text content of this mixed-styled text."""
-        return ''.join(str(item) for item in self)
+    def to_string(self, flowable_target):
+        return ''.join(item.to_string(flowable_target) for item in self)
+
+    SHORT_REPR_STRING_LENGTH = 32
+
+    def _short_repr_args(self, flowable_target):
+        text = self.to_string(flowable_target)
+        if len(text) > self.SHORT_REPR_STRING_LENGTH:
+            text = text[:self.SHORT_REPR_STRING_LENGTH] + '...'
+        yield "'{}'".format(text)
 
     def __eq__(self, other):
         return (all(child == other_child

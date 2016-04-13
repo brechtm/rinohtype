@@ -33,6 +33,9 @@ class InlineFlowable(Flowable):
         super().__init__(id=id, style=style, parent=parent)
         self.baseline = baseline
 
+    def to_string(self, flowable_target):
+        return type(self).__name__
+
     def font(self, document):
         raise InlineFlowableException
 
