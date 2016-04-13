@@ -199,6 +199,8 @@ class Container(object):
 
     def after_rendering(self):
         for child in self.children:
+            if isinstance(child, VirtualContainer) and not child.placed:
+                continue
             child.after_rendering()
 
 
@@ -452,6 +454,7 @@ class VirtualContainer(DownExpandingContainer):
         """`width` specifies the width of the container."""
         super().__init__('VIRTUAL', None, parent, width=width,
                          max_height=float('+inf'))
+        self.placed = False
 
     def empty_canvas(self):
         self.canvas = self.document.backend.Canvas(None)
@@ -463,6 +466,7 @@ class VirtualContainer(DownExpandingContainer):
         self.place_children()
         self.canvas.parent = container.canvas
         self.canvas.append(float(left), float(top))
+        self.placed = True
 
 
 
