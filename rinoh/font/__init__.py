@@ -75,6 +75,9 @@ class Font(object):
         self.descender_in_pt = self.descender / self.units_per_em
         self.line_gap_in_pt = self.line_gap / self.units_per_em
 
+    def __repr__(self):
+        return "{}('{}')".format(type(self).__name__, self.name)
+
     def __hash__(self):
         return hash((self.name, self.filename))
 
