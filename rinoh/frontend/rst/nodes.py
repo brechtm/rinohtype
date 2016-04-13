@@ -361,8 +361,9 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
 
 
 class Footnote(DocutilsBodyNode):
-    def flowable(self):
-        return rt.RegisterNote(super().flowable())
+    def flowables(self):
+        note, = super().flowables()
+        yield rt.RegisterNote(note)
 
     def build_flowable(self):
         return rt.Note(rt.StaticGroupedFlowables(self.children_flowables(1)))
