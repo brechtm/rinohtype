@@ -250,18 +250,8 @@ class StyledTextParseError(Exception):
     pass
 
 
-class SingleStyledText(StyledText):
+class SingleStyledTextBase(StyledText):
     """Styled text where all text shares a single :class:`TextStyle`."""
-
-    def __init__(self, text, style=None, parent=None):
-        """Initialize this single-styled text with `text` (:class:`str`),
-        `style`, and `parent` (see :class:`StyledText`).
-
-        In `text`, tab, line-feed and newline characters are all considered
-        whitespace. Consecutive whitespace characters are reduced to a single
-        space."""
-        super().__init__(style=style, parent=parent)
-        self.text = text
 
     def __repr__(self):
         """Return a representation of this single-styled text; the text string
@@ -269,17 +259,11 @@ class SingleStyledText(StyledText):
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
                                               self.text, self.style)
 
+    def text(self, flowable_target, **kwargs):
+        raise NotImplementedError
+
     def to_string(self, flowable_target):
-        return self.text
-
-    def __eq__(self, other):
-        try:
-            return (self.text, self.style) == (other.text, other.style)
-        except AttributeError:
-            return False
-
-    def __hash__(self):
-        return hash((self.text, self.style))
+        return self.text(flowable_target)
 
     def font(self, container):
         """The :class:`Font` described by this single-styled text's style.
@@ -323,10 +307,34 @@ class SingleStyledText(StyledText):
 
     def split(self, container, **kwargs):
         """Yield the words and spaces in this single-styled text."""
-        return self.split_words(self.text)
+        return self.split_words(self.text(container, **kwargs))
 
     def before_placing(self, container):
         pass
+
+
+class SingleStyledText(SingleStyledTextBase):
+    def __init__(self, text, style=None, parent=None):
+        """Initialize this single-styled text with `text` (:class:`str`),
+        `style`, and `parent` (see :class:`StyledText`).
+
+        In `text`, tab, line-feed and newline characters are all considered
+        whitespace. Consecutive whitespace characters are reduced to a single
+        space."""
+        super().__init__(style=style, parent=parent)
+        self._text = text
+
+    def __eq__(self, other):
+        try:
+            return (self._text, self.style) == (other._text, other.style)
+        except AttributeError:
+            return False
+
+    def __hash__(self):
+        return hash((self._text, self.style))
+
+    def text(self, container, **kwargs):
+        return self._text
 
 
 class MixedStyledText(StyledText, list):

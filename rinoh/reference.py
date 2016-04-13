@@ -13,19 +13,14 @@ from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .style import OptionSet, Attribute
-from .text import SingleStyledText, TextStyle, StyledText, MixedStyledText
+from .text import SingleStyledTextBase, TextStyle, StyledText, MixedStyledText
 
 
-__all__ = ['Field', 'Variable', 'Reference', 'ReferenceField', 'ReferenceText',
+__all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
            'ReferenceType', 'ReferencingParagraph', 'ReferencingParagraphStyle',
            'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
            'NoteMarkerWithNote',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
-
-
-class Field(SingleStyledText):
-    def __init__(self, style=None, parent=None):
-        super().__init__('', style=style, parent=parent)
 
 
                             # examples for section "3.2 Some Title"
@@ -39,7 +34,7 @@ class ReferenceType(OptionSet):
     values = REFERENCE, NUMBER, TITLE, PAGE
 
 
-class ReferenceBase(Field):
+class ReferenceBase(SingleStyledTextBase):
     def __init__(self, type=NUMBER, link=True, quiet=False,
                  style=None, parent=None):
         super().__init__(style=style, parent=parent)
@@ -50,7 +45,7 @@ class ReferenceBase(Field):
     def target_id(self, document, **kwargs):
         raise NotImplementedError
 
-    def split(self, container, **kwargs):
+    def text(self, container, **kwargs):
         target_id = self.target_id(container.document, **kwargs)
         try:
             if self.type == REFERENCE:
@@ -76,8 +71,7 @@ class ReferenceBase(Field):
         except KeyError:
             self.warn("Unknown label '{}'".format(target_id), container)
             text = "??".format(target_id)
-
-        return self.split_words(text)
+        return text
 
     def spans(self, container, **kwargs):
         spans = super().spans(container, **kwargs)
@@ -264,7 +258,7 @@ class SECTION_TITLE(SectionFieldType):
         super().__init__('section title', level)
 
 
-class Variable(Field):
+class Variable(SingleStyledTextBase):
     def __init__(self, type, style=None):
         super().__init__(style=style)
         self.type = type
@@ -272,10 +266,7 @@ class Variable(Field):
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
-    def __str__(self):
-        return '${}'.format(self.type)
-
-    def split(self, container, **kwargs):
+    def text(self, container, **kwargs):
         if self.type == PAGE_NUMBER:
             text = format_number(container.page.number,
                                  container.page.number_format)
@@ -293,4 +284,4 @@ class Variable(Field):
                 text = ''
         else:
             text = '?'
-        return self.split_words(text)
+        return text

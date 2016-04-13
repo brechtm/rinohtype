@@ -6,8 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .reference import Field
-from .text import StyledText, SingleStyledText
+from .text import StyledText, SingleStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
@@ -54,7 +53,7 @@ class Strings(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
-class StringField(Field):
+class StringField(SingleStyledTextBase):
     def __init__(self, strings_class, key, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class
@@ -63,12 +62,9 @@ class StringField(Field):
     def string(self, document):
         return document.strings(self.strings_class)[self.key]
 
-    def to_string(self, flowable_target):
+    def text(self, flowable_target):
         string = self.string(flowable_target.document)
         try:
             return string.to_string(flowable_target)
         except AttributeError:
             return string
-
-    def spans(self, container, **kwargs):
-        yield SingleStyledText(self.string(container.document), parent=self)
