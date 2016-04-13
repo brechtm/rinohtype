@@ -144,8 +144,6 @@ class Heading(NumberedParagraph):
 
     def flow(self, container, last_descender, state=None, **kwargs):
         if self.level == 1 and container.page.chapter_title:
-            container.document.style_log.log_styled(self, container,
-                                                    'custom chapter title')
             container.page.create_chapter_title(self)
             result = 0, 0, None
         else:

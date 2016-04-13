@@ -130,6 +130,10 @@ class Page(Container):
         finally:
             super().render(HEADER_FOOTER)
 
+    def place(self):
+        self.after_rendering()
+        super().place()
+
 
 class BackendDocumentMetadata(object):
     def __init__(self, name):

@@ -197,6 +197,10 @@ class Container(object):
         self.place_children()
         self.canvas.append(float(self.left), float(self.top))
 
+    def after_rendering(self):
+        for child in self.children:
+            child.after_rendering()
+
 
 BACKGROUND = 'background'
 CONTENT = 'content'
@@ -254,19 +258,16 @@ class FlowablesContainerBase(Container):
 
     def render(self, type, rerender=False):
         if type in (self.type, None):
-            try:
-                self._render(type, rerender)
-            finally:
-                self.after_rendering()
+            self._render(type, rerender)
 
     def _render(self, type, rerender):
         raise NotImplementedError
 
     def after_rendering(self):
-        for child in self.children:
-            child.after_rendering()
         for flowable in self.flowed_flowables:
             flowable.after_rendering(self)
+            self.document.style_log.log_styled(flowable, self)
+        super().after_rendering()
 
 
 class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
