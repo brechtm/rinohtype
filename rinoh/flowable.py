@@ -627,7 +627,7 @@ class PageBreak(Flowable):
                     and page_break in (ANY, this_page_type)):
                 if page_break == ANY:
                     page_break = LEFT if container.page.number % 2 else RIGHT
-                chain = container.chained_ancestor.chain
+                chain = container.top_level_container.chain
                 raise self.exception_class(page_break, chain)
         return super().flow(container, last_descender, state)
 

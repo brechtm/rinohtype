@@ -985,11 +985,15 @@ NO_MATCH = Match(None, ZERO_SPECIFICITY)
 
 
 class StyleLogEntry(object):
-    def __init__(self, styled, page_number, matches, custom_message=None):
+    def __init__(self, styled, container, matches, custom_message=None):
         self.styled = styled
-        self.page_number = page_number
+        self.container = container
         self.matches = matches
         self.custom_message = custom_message
+
+    @property
+    def page_number(self):
+        return self.container.page.number
 
 
 class StyleLog(object):
@@ -998,9 +1002,8 @@ class StyleLog(object):
         self.entries = []
 
     def log_styled(self, styled, container, custom_message=None):
-        page_number = container.page.number
         matches = self.stylesheet.find_matches(styled, container)
-        log_entry = StyleLogEntry(styled, page_number, matches, custom_message)
+        log_entry = StyleLogEntry(styled, container, matches, custom_message)
         self.entries.append(log_entry)
 
     def log_out_of_line(self):
@@ -1009,11 +1012,18 @@ class StyleLog(object):
     def write_log(self, filename_root):
         with open(filename_root + '.stylelog', 'w') as log:
             current_page = None
+            current_container = None
             for entry in self.entries:
                 if entry.page_number != current_page:
                     current_page = entry.page_number
                     log.write('{line} page {} {line}\n'.format(current_page,
                                                                line='-' * 34))
+                container = entry.container
+                if container.top_level_container is not current_container:
+                    current_container = container.top_level_container
+                    log.write("#### {}('{}')\n"
+                              .format(type(current_container).__name__,
+                                      current_container.name))
                 styled = entry.styled
                 level = styled.nesting_level
                 name = type(styled).__name__
@@ -1034,10 +1044,10 @@ class StyleLog(object):
                     location = '   ' + styled.source.location
                 else:
                     location = ''
-                log.write('{}{}({}){}' .format(indent, name, attr_repr,
+                log.write('  {}{}({}){}' .format(indent, name, attr_repr,
                                                 location))
                 if entry.custom_message:
-                    log.write('\n    {} ! {}\n'.format(indent,
+                    log.write('\n      {} ! {}\n'.format(indent,
                                                        entry.custom_message))
                     continue
                 first = True
@@ -1045,7 +1055,7 @@ class StyleLog(object):
                     first = False
                     style_attrs = ', '.join(key + '=' + value
                                             for key, value in style.items())
-                    log.write('\n    {} > {}({})'
+                    log.write('\n      {} > {}({})'
                               .format(indent, attrs['style'], style_attrs))
                 matches = sorted(entry.matches, reverse=True,
                                  key=attrgetter('specificity'))
@@ -1063,10 +1073,10 @@ class StyleLog(object):
                             label = 'x'
                         specificity = ','.join(str(score)
                                                for score in match.specificity)
-                        log.write('\n    {} {} ({}) {}'
+                        log.write('\n      {} {} ({}) {}'
                                   .format(indent, label, specificity,
                                           match.style_name))
                     if style is None:
-                        log.write('\n    {} > fallback to default style'
+                        log.write('\n      {} > fallback to default style'
                                   .format(indent))
                 log.write('\n')

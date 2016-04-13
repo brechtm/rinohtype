@@ -224,8 +224,11 @@ class FlowablesContainerBase(Container):
         self.flowed_flowables = []
 
     @property
-    def chained_ancestor(self):
-        return self.parent.chained_ancestor
+    def top_level_container(self):
+        try:
+            return self.parent.top_level_container
+        except AttributeError:
+            return self
 
     def clear(self):
         super().clear()
@@ -297,10 +300,6 @@ class ChainedContainer(FlowablesContainerBase):
                          height=height, right=right, bottom=bottom)
         chain.containers.append(self)
         self.chain = chain
-
-    @property
-    def chained_ancestor(self):
-        return self
 
     def _render(self, type, rerender):
         self.chain.render(self, rerender=rerender)
