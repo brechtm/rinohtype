@@ -131,7 +131,7 @@ class Page(Container):
             super().render(HEADER_FOOTER)
 
     def place(self):
-        self.after_rendering()
+        self.before_placing()
         super().place()
 
 

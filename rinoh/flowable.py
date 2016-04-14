@@ -198,6 +198,9 @@ class Flowable(Styled):
     def after_rendering(self, container):
         pass
 
+    def before_placing(self, container):
+        pass
+
 
 # flowables that do not render anything (but with optional side-effects)
 

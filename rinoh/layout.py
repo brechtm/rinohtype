@@ -197,11 +197,11 @@ class Container(object):
         self.place_children()
         self.canvas.append(float(self.left), float(self.top))
 
-    def after_rendering(self):
+    def before_placing(self):
         for child in self.children:
             if isinstance(child, VirtualContainer) and not child.placed:
                 continue
-            child.after_rendering()
+            child.before_placing()
 
 
 BACKGROUND = 'background'
@@ -263,7 +263,10 @@ class FlowablesContainerBase(Container):
 
     def render(self, type, rerender=False):
         if type in (self.type, None):
-            self._render(type, rerender)
+            try:
+                self._render(type, rerender)
+            finally:
+                self.after_rendering()
 
     def _render(self, type, rerender):
         raise NotImplementedError
@@ -271,8 +274,14 @@ class FlowablesContainerBase(Container):
     def after_rendering(self):
         for flowable in self.flowed_flowables:
             flowable.after_rendering(self)
+        for child in self.children:
+            child.after_rendering()
+
+    def before_placing(self):
+        for flowable in self.flowed_flowables:
+            flowable.before_placing(self)
             self.document.style_log.log_styled(flowable, self)
-        super().after_rendering()
+        super().before_placing()
 
 
 class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
@@ -417,9 +426,9 @@ class _MaybeContainer(_InlineDownExpandingContainer):
         if self._do_place:
             super().place()
 
-    def after_rendering(self):
+    def before_placing(self):
         if self._do_place:
-            super().after_rendering()
+            super().before_placing()
 
 
 class MaybeContainer(ContextManager):
