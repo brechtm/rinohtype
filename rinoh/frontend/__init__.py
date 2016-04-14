@@ -29,7 +29,7 @@ class TreeNode(object):
         for child in self.getchildren():
             if child.tag_name == name:
                 return child
-        raise AttributeError('No such element: {}'.format(name))
+        raise AttributeError('No such element: {} in {}'.format(name, self))
 
     def __iter__(self):
         try:

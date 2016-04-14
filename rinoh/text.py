@@ -197,7 +197,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     def to_string(self, flowable_target):
         """Return the text content of this styled text."""
-        raise NotImplementedError
+        raise NotImplementedError('{}.to_string'.format(type(self).__name__))
 
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
