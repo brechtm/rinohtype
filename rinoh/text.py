@@ -257,7 +257,7 @@ class SingleStyledTextBase(StyledText):
         """Return a representation of this single-styled text; the text string
         along with a representation of its :class:`TextStyle`."""
         return "{0}('{1}', style={2})".format(self.__class__.__name__,
-                                              self.text, self.style)
+                                              self.text(None), self.style)
 
     def text(self, flowable_target, **kwargs):
         raise NotImplementedError
