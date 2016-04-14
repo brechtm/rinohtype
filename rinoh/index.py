@@ -92,6 +92,9 @@ class IndexTargetBase(Styled):
 
 
 class InlineIndexTarget(IndexTargetBase, StyledText):
+    def to_string(self, flowable_target):
+        return ''
+
     def spans(self, container, **kwargs):
         self.create_destination(container)
         return iter([])
