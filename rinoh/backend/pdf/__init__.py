@@ -24,8 +24,7 @@ from ...font.opentype import OpenTypeFont
 class Document(object):
     extension = '.pdf'
 
-    def __init__(self, rinoh_document, creator):
-        self.rinoh_document = rinoh_document
+    def __init__(self, creator):
         self.cos_document = cos.Document(creator)
         self.pages = []
         self.fonts = {}
@@ -116,22 +115,14 @@ class Document(object):
 
 
 class Page(object):
-    def __init__(self, rinoh_page, document, width, height):
-        self.rinoh_page = rinoh_page
-        cos_pages = document.cos_document.catalog['Pages']
+    def __init__(self, backend_document, width, height):
+        self.backend_document = backend_document
+        cos_pages = backend_document.cos_document.catalog['Pages']
         self.cos_page = cos_pages.new_page(float(width), float(height))
         self.width = width
         self.height = height
         self.canvas = PageCanvas(self)
-        document.pages.append(self)
-
-    @property
-    def document_part(self):
-        return self.rinoh_page.document_part
-
-    @property
-    def document(self):
-        return self.rinoh_page.document
+        self.backend_document.pages.append(self)
 
     def add_font_resource(self, font_name, font_rsc):
         page_rsc = self.cos_page['Resources']
@@ -148,18 +139,6 @@ class Canvas(StringIO):
         self.annotations = []
         self.destinations = []
         self.offset = None
-
-    @property
-    def page(self):
-        return self.parent.page
-
-    @property
-    def cos_page(self):
-        return self.page.backend_page
-
-    @property
-    def document(self):
-        return self.page.document
 
     def new(self, clip=False):
         return Canvas(self, clip)
@@ -326,12 +305,8 @@ class Canvas(StringIO):
 class PageCanvas(Canvas):
     def __init__(self, backend_page):
         super().__init__(None)
-        self._backend_page = backend_page
+        self.backend_page = backend_page
         self.translate(0, - float(backend_page.height))
-
-    @property
-    def page(self):
-        return self._backend_page.rinoh_page
 
     def append(self, left, top):
         pass
@@ -339,18 +314,18 @@ class PageCanvas(Canvas):
     def propagate(self, fonts, images, annotations):
         # fonts
         for font_name, font_rsc in fonts.items():
-            self._backend_page.add_font_resource(font_name, font_rsc)
+            self.backend_page.add_font_resource(font_name, font_rsc)
 
         # images
-        resources = self.cos_page.cos_page['Resources']
+        resources = self.backend_page.cos_page['Resources']
         for image_number, image in images.items():
             xobjects = resources.setdefault('XObject', cos.Dictionary())
             xobjects['Im{}'.format(image_number)] = image.xobject
 
         # annotations
-        page_height = float(self._backend_page.height)
-        cos_document = self.page.document.backend_document.cos_document
-        cos_page = self.cos_page.cos_page
+        page_height = float(self.backend_page.height)
+        cos_document = self.backend_page.backend_document.cos_document
+        cos_page = self.backend_page.cos_page
         annots = cos_page.setdefault('Annots', cos.Array())
         for annotation_location in annotations:
             annotation = annotation_location.annotation

@@ -69,7 +69,7 @@ class Page(Container):
             width, height = paper.height, paper.width
         document = self.document_part.document
         backend_document = document.backend_document
-        self.backend_page = document.backend.Page(self, backend_document,
+        self.backend_page = document.backend.Page(backend_document,
                                                   width, height)
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
@@ -302,7 +302,7 @@ class Document(object):
         self.stylesheet = stylesheet
         self._strings = strings or ()
         self.backend = backend
-        self.backend_document = self.backend.Document(self, self.CREATOR)
+        self.backend_document = self.backend.Document(self.CREATOR)
 
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
@@ -408,8 +408,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                 prev_page_references = self.page_references.copy()
                 print('Not yet converged, rendering again...')
                 del self.backend_document
-                self.backend_document = self.backend.Document(self,
-                                                              self.CREATOR)
+                self.backend_document = self.backend.Document(self.CREATOR)
                 section_num_pages = self.render_pages(_sections)
             self.create_outlines()
             if filename:
