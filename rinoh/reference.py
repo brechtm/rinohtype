@@ -125,7 +125,7 @@ class ReferenceText(StyledText):
                 field_type = part[1:-1].lower()
                 item = ReferenceField(field_type)
             else:
-                item = super()._substitute_variables(part, style).text
+                item = super()._substitute_variables(part, style=None)
             items.append(item)
         return MixedStyledText(items, style=style)
 
