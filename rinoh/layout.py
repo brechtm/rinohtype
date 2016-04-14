@@ -199,8 +199,6 @@ class Container(object):
 
     def before_placing(self):
         for child in self.children:
-            if isinstance(child, VirtualContainer) and not child.placed:
-                continue
             child.before_placing()
 
 
@@ -467,6 +465,9 @@ class VirtualContainer(DownExpandingContainer):
         self.canvas.append(float(left), float(top))
         self.placed = True
 
+    def before_placing(self):
+        if self.placed:
+            super().before_placing()
 
 
 class FloatContainer(ExpandingContainerBase):
