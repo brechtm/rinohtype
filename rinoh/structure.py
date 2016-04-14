@@ -155,9 +155,6 @@ class Heading(NumberedParagraph):
         create_destination(self.section, container, True)
         return result
 
-    def after_rendering(self, container):
-        container.page.set_current_section(self.section, heading=True)
-
 
 class ListStyle(GroupedFlowablesStyle, NumberStyle):
     ordered = Attribute(Bool, False, 'This list is ordered or unordered')

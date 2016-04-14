@@ -99,11 +99,20 @@ class Page(Container):
             self._current_section[section.level] = section, False
 
     def get_current_section(self, level):
-        try:
-            section, is_new = self._current_section.get(level)
-            return section
-        except TypeError:
-            return None
+        current_section = None
+        for id, section in ((id, element)
+                            for id, element in self.document.elements.items()
+                            if (isinstance(element, Section)
+                                and element.level == level)):
+            first_page = self.document.page_references[id]
+            last_page = self.document.last_page_references.get(id, float('inf'))
+            if first_page == self.number:
+                return section
+            elif first_page > self.number:
+                break
+            elif first_page <= self.number <= last_page:
+                current_section = section
+        return current_section
 
     @property
     def document_section(self):
@@ -302,6 +311,7 @@ class Document(object):
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_references = {}      # mapping id's to page numbers
+        self.last_page_references = {}
         self.index_entries = {}
         self._unique_id = 0
 

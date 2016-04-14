@@ -123,6 +123,7 @@ class Flowable(Styled):
             top_to_baseline += float(space_above)
         margin_left = self.get_style('margin_left', container)
         margin_right = self.get_style('margin_right', container)
+        reference_id = self.get_id(container.document, create=False)
         right = container.width - margin_right
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
@@ -137,11 +138,13 @@ class Flowable(Styled):
                 initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
-                reference_id = self.get_id(container.document, create=False)
                 if initial_before and not initial_after:
                     container.flowed_flowables.append(self)
                     if reference_id:
                         self.create_destination(margin_container, True)
+        document = container.document
+        if reference_id:
+             document.last_page_references[reference_id] = container.page.number
         container.advance(float(self.get_style('space_below', container)), True)
         return margin_left + width + margin_right, top_to_baseline, descender
 
@@ -194,9 +197,6 @@ class Flowable(Styled):
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceding line or `None`."""
         raise NotImplementedError
-
-    def after_rendering(self, container):
-        pass
 
     def before_placing(self, container):
         pass
