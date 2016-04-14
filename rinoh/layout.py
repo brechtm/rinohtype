@@ -445,8 +445,8 @@ def discard_state(initial_state):
 
 class VirtualContainer(DownExpandingContainer):
     """An infinitely down-expanding container whose contents are not
-    automatically placed on the canvas of the parent container's canvas. This
-    container's content needs to be placed explicitly using :meth:`place_at`."""
+    automatically placed on the parent container's canvas. This container's
+    content needs to be placed explicitly using :meth:`place_at`."""
 
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
@@ -455,11 +455,14 @@ class VirtualContainer(DownExpandingContainer):
         self.placed = False
 
     def place(self):
-        """This method has no effect."""
+        if self.placed:
+            super().place()
 
-    def place_at(self, container, left, top):
-        self.place_children()
-        self.canvas.append(container.canvas, float(left), float(top))
+    def place_at(self, parent_container, left, top):
+        self.parent = parent_container
+        parent_container.children.append(self)
+        self.left = left
+        self.top = top
         self.placed = True
 
     def before_placing(self):
