@@ -36,9 +36,21 @@ CATALOG_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
 RE_WHITESPACE = re.compile('[\t\r\n ]+')
 
 
-def filter(text, strip_leading_whitespace):
-    if text:
-        yield text, str(text).endswith(' ')
+def ends_with_space(node):
+    while node.getchildren():
+        node = node.getchildren()[-1]
+        if node.tail:
+            text = node.tail
+            break
+    else:
+        text = node.text or ''
+    return text.endswith(' ')
+
+
+def filter_styled_text_node(node, strip_leading_ws):
+    styled_text = node.styled_text(strip_leading_ws)
+    if styled_text:
+        yield styled_text, ends_with_space(node)
 
 
 def strip_and_filter(text, strip_leading_whitespace):
@@ -46,18 +58,17 @@ def strip_and_filter(text, strip_leading_whitespace):
         return
     if strip_leading_whitespace:
         text = text.lstrip()
-    for item, strip_leading_whitespace in filter(text,
-                                                 strip_leading_whitespace):
-        yield item, strip_leading_whitespace
+    if text:
+        yield text, text.endswith(' ')
 
 
 def filter_whitespace(text, children, strip_leading_ws):
     for item, strip_leading_ws in strip_and_filter(text, strip_leading_ws):
         yield item
     for child in children:
-        child_text = child.styled_text(strip_leading_ws)
-        for item, strip_leading_ws in filter(child_text, strip_leading_ws):
-            yield item
+        for result in filter_styled_text_node(child, strip_leading_ws):
+            styled_text, strip_leading_ws = result
+            yield styled_text
         for item, strip_leading_ws in strip_and_filter(child.tail,
                                                        strip_leading_ws):
             yield item
@@ -157,25 +168,24 @@ class ElementTreeBodySubNode(ElementTreeNode, BodySubNode):
 
 class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
     def children_flowables(self):
-        strip_leading_whitespace = True
+        strip_leading_ws = True
         paragraph = []
-        for item, strip_leading_whitespace \
-                in strip_and_filter(self.text, strip_leading_whitespace):
+        for item, strip_leading_ws in strip_and_filter(self.text,
+                                                       strip_leading_ws):
             paragraph.append(item)
         for child in self.getchildren():
             try:
-                child_text = child.styled_text(strip_leading_whitespace)
-                for item, strip_leading_whitespace \
-                        in filter(child_text, strip_leading_whitespace):
-                    paragraph.append(child_text)
+                for result in filter_styled_text_node(child, strip_leading_ws):
+                    styled_text, strip_leading_ws = result
+                    paragraph.append(styled_text)
             except AttributeError:
                 if paragraph and paragraph[0]:
                     yield Paragraph(paragraph)
                 paragraph = []
                 for flowable in child.flowables():
                     yield flowable
-            for item, strip_leading_whitespace \
-                    in strip_and_filter(child.tail, strip_leading_whitespace):
+            for item, strip_leading_ws \
+                    in strip_and_filter(child.tail, strip_leading_ws):
                 paragraph.append(item)
         if paragraph and paragraph[0]:
             yield Paragraph(paragraph)
