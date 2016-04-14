@@ -171,7 +171,7 @@ class Container(object):
         return self.parent.page
 
     def empty_canvas(self):
-        self.canvas = self.parent.canvas.new()
+        self.canvas = self.document.backend.Canvas()
 
     def render(self, type, rerender=False):
         """Render the contents of this container to its canvas.
@@ -195,7 +195,8 @@ class Container(object):
     def place(self):
         """Place this container's canvas onto the parent container's canvas."""
         self.place_children()
-        self.canvas.append(float(self.left), float(self.top))
+        self.canvas.append(self.parent.canvas,
+                           float(self.left), float(self.top))
 
     def before_placing(self):
         for child in self.children:
@@ -453,16 +454,12 @@ class VirtualContainer(DownExpandingContainer):
                          max_height=float('+inf'))
         self.placed = False
 
-    def empty_canvas(self):
-        self.canvas = self.document.backend.Canvas(None)
-
     def place(self):
         """This method has no effect."""
 
     def place_at(self, container, left, top):
         self.place_children()
-        self.canvas.parent = container.canvas
-        self.canvas.append(float(left), float(top))
+        self.canvas.append(container.canvas, float(left), float(top))
         self.placed = True
 
     def before_placing(self):

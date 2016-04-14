@@ -131,35 +131,24 @@ class Page(object):
 
 
 class Canvas(StringIO):
-    def __init__(self, parent, clip=False):
+    def __init__(self, clip=False):
         super().__init__()
-        self.parent = parent
         self.fonts = {}
         self.images = {}
         self.annotations = []
-        self.destinations = []
-        self.offset = None
 
-    def new(self, clip=False):
-        return Canvas(self, clip)
+    def append(self, parent_canvas, left, top):
+        with parent_canvas.save_state():
+            parent_canvas.translate(left, top)
+            parent_canvas.write(self.getvalue())
+        self.propagate_annotations(parent_canvas, left, top)
 
-    def append(self, left, top):
-        self.offset = left, top
-        with self.parent.save_state():
-            self.parent.translate(left, top)
-            self.parent.write(self.getvalue())
-        self.propagate(self.fonts, self.images, self.annotations)
-
-    def propagate(self, fonts, images, annotations):
-        if self.offset:
-            left, top = self.offset
-            for annotation_placement in annotations:
-                annotation_placement.translate(left, top)
-            self.parent.propagate(fonts, images, annotations)
-        else:
-            self.fonts.update(fonts)
-            self.images.update(images)
-            self.annotations += annotations
+    def propagate_annotations(self, parent_canvas, left, top):
+        translated_annotations = (annotation_location + (left, top)
+                                  for annotation_location in self.annotations)
+        parent_canvas.fonts.update(self.fonts)
+        parent_canvas.images.update(self.images)
+        parent_canvas.annotations.extend(translated_annotations)
 
     @contextmanager
     def save_state(self):
@@ -174,7 +163,7 @@ class Canvas(StringIO):
         rad = math.radians(degrees)
         sine, cosine = math.sin(rad), math.cos(rad)
         print('{cos:f} {sin:f} {neg_sin:f} {cos:f} 0 0 cm'
-              .format(cos=cosine, sin=sine, neg_sin=-sine,), file=self)
+              .format(cos=cosine, sin=sine, neg_sin=-sine), file=self)
 
     def scale(self, x, y=None):
         if y is None:
@@ -308,17 +297,14 @@ class PageCanvas(Canvas):
         self.backend_page = backend_page
         self.translate(0, - float(backend_page.height))
 
-    def append(self, left, top):
-        pass
-
-    def propagate(self, fonts, images, annotations):
+    def place_annotations(self):
         # fonts
-        for font_name, font_rsc in fonts.items():
+        for font_name, font_rsc in self.fonts.items():
             self.backend_page.add_font_resource(font_name, font_rsc)
 
         # images
         resources = self.backend_page.cos_page['Resources']
-        for image_number, image in images.items():
+        for image_number, image in self.images.items():
             xobjects = resources.setdefault('XObject', cos.Dictionary())
             xobjects['Im{}'.format(image_number)] = image.xobject
 
@@ -327,7 +313,7 @@ class PageCanvas(Canvas):
         cos_document = self.backend_page.backend_document.cos_document
         cos_page = self.backend_page.cos_page
         annots = cos_page.setdefault('Annots', cos.Array())
-        for annotation_location in annotations:
+        for annotation_location in self.annotations:
             annotation = annotation_location.annotation
             left = annotation_location.left
             top = page_height - annotation_location.top
@@ -361,9 +347,10 @@ class AnnotationLocation(object):
         self.width = width
         self.height = height
 
-    def translate(self, offset_left, offset_top):
-        self.left += offset_left
-        self.top += offset_top
+    def __add__(self, offset):
+        offset_left, offset_top = offset
+        return self.__class__(self.annotation, self.left + offset_left,
+                              self.top + offset_top, self.width, self.height)
 
 
 class Image(object):

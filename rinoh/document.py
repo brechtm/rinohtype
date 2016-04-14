@@ -141,7 +141,8 @@ class Page(Container):
 
     def place(self):
         self.before_placing()
-        super().place()
+        self.place_children()
+        self.canvas.place_annotations()
 
 
 class BackendDocumentMetadata(object):
