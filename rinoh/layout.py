@@ -328,7 +328,7 @@ class DownExpandingContainer(ExpandingContainerBase):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
-                 right=None, max_height=None):
+                 right=None, max_height=None, place=True):
         """See :class:`Container` for information on the `name`, `parent`,
         `left`, `width` and `right` parameters.
 
@@ -339,14 +339,26 @@ class DownExpandingContainer(ExpandingContainerBase):
         `max_height` is the maximum height this container can grow to."""
         super().__init__(name, type, parent, left=left, top=top, width=width,
                          right=right, max_height=max_height)
+        self._do_place = place
+
+    def do_place(self, place=True):
+        self._do_place = place
+
+    def place(self):
+        if self._do_place:
+            super().place()
+
+    def before_placing(self):
+        if self._do_place:
+            super().before_placing()
 
 
 class _InlineDownExpandingContainer(DownExpandingContainer):
     def __init__(self, name, parent, left=None, width=None, right=None,
-                 extra_space_below=0, advance_parent=True):
+                 extra_space_below=0, advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
                          width=width, right=right,
-                         max_height=parent.remaining_height)
+                         max_height=parent.remaining_height, place=place)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
         self.extra_space_below = extra_space_below
@@ -406,19 +418,8 @@ class UpExpandingContainer(ExpandingContainerBase):
 
 class _MaybeContainer(_InlineDownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
-        super().__init__('MAYBE', parent, left=left, width=width, right=right)
-        self._do_place = False
-
-    def do_place(self, place=True):
-        self._do_place = place
-
-    def place(self):
-        if self._do_place:
-            super().place()
-
-    def before_placing(self):
-        if self._do_place:
-            super().before_placing()
+        super().__init__('MAYBE', parent, left=left, width=width, right=right,
+                         place=False)
 
 
 class MaybeContainer(ContextManager):
@@ -451,23 +452,14 @@ class VirtualContainer(DownExpandingContainer):
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
         super().__init__('VIRTUAL', None, parent, width=width,
-                         max_height=float('+inf'))
-        self.placed = False
-
-    def place(self):
-        if self.placed:
-            super().place()
+                         max_height=float('+inf'), place=False)
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container
         parent_container.children.append(self)
         self.left = left
         self.top = top
-        self.placed = True
-
-    def before_placing(self):
-        if self.placed:
-            super().before_placing()
+        self.do_place()
 
 
 class FloatContainer(ExpandingContainerBase):
