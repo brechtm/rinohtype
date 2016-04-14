@@ -6,5 +6,4 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-
-__all__ = ['psg', 'pdf']
+__all__ = ['pdf']
