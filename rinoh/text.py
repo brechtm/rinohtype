@@ -199,6 +199,10 @@ class StyledText(Styled, AcceptNoneAttributeType):
         """Return the text content of this styled text."""
         raise NotImplementedError('{}.to_string'.format(type(self).__name__))
 
+    @property
+    def paragraph(self):
+        return self.parent.paragraph
+
     position = {SUPERSCRIPT: 1 / 3,
                 SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
@@ -391,9 +395,6 @@ class MixedStyledText(StyledText, list):
     def spans(self, container, **kwargs):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        return self._spans(container, **kwargs)
-
-    def _spans(self, container, **kwargs):
         return (span for item in self
                 for span in item.spans(container, **kwargs))
 

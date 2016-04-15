@@ -307,12 +307,12 @@ class ParagraphStyle(FlowableStyle, TextStyle):
 
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
-def spans_to_words(spans, container, **kwargs):
+def spans_to_words(spans, container):
     word = Word()
     for span in spans:
         try:
             word_to_glyphs = create_to_glyphs(span, container)
-            for chars in span.split(container, **kwargs):
+            for chars in span.split(container):
                 glyphs_span = GlyphsSpan(span, word_to_glyphs, chars)
                 if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
                     if word:
@@ -365,14 +365,13 @@ class ParagraphBase(Flowable):
 
     style_class = ParagraphStyle
 
-    def spans_kwargs(self, container):
-        return {}
+    @property
+    def paragraph(self):
+        return self
 
     def initial_state(self, container):
-        spans_kwargs = self.spans_kwargs(container)
-        spans = self.text(container).spans(container, **spans_kwargs)
-        return ParagraphState(self, spans_to_words(spans, container,
-                                                   **spans_kwargs))
+        spans = self.text(container).spans(container)
+        return ParagraphState(self, spans_to_words(spans, container))
 
     def render(self, container, descender, state, first_line_only=False):
         """Typeset the paragraph onto `container`, starting below the current
@@ -451,9 +450,6 @@ class Paragraph(ParagraphBase, MixedStyledText):
 
     def text(self, container):
         return self
-
-    def spans(self, container, **kwargs):
-        return self._spans(container, **kwargs)
 
 
 class HyphenatorStore(dict):

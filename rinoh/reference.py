@@ -42,11 +42,11 @@ class ReferenceBase(SingleStyledTextBase):
         self.link = link
         self.quiet = quiet
 
-    def target_id(self, document, **kwargs):
+    def target_id(self, document):
         raise NotImplementedError
 
-    def text(self, container, **kwargs):
-        target_id = self.target_id(container.document, **kwargs)
+    def text(self, container):
+        target_id = self.target_id(container.document)
         try:
             if self.type == REFERENCE:
                 category = container.document.elements[target_id].category
@@ -73,10 +73,10 @@ class ReferenceBase(SingleStyledTextBase):
             text = "??".format(target_id)
         return text
 
-    def spans(self, container, **kwargs):
-        spans = super().spans(container, **kwargs)
+    def spans(self, container):
+        spans = super().spans(container)
         if self.link:
-            target_id = self.target_id(container.document, **kwargs)
+            target_id = self.target_id(container.document)
             annotation = NamedDestinationLink(str(target_id))
             spans = (AnnotatedSpan(span, annotation) for span in spans)
         return spans
@@ -104,8 +104,11 @@ class DirectReference(ReferenceBase):
 
 
 class ReferenceField(ReferenceBase):
-    def target_id(self, document, target_id, **kwargs):
-        return target_id
+    def target_id(self, document):
+        target_id_or_flowable = self.paragraph.target_id_or_flowable
+        return (target_id_or_flowable.get_id(document)
+                if isinstance(target_id_or_flowable, Flowable)
+                else target_id_or_flowable)
 
 
 class ReferenceText(StyledText):
@@ -141,12 +144,6 @@ class ReferencingParagraph(ParagraphBase):
     def __init__(self, target_id_or_flowable, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.target_id_or_flowable = target_id_or_flowable
-
-    def spans_kwargs(self, container):
-        target_id = (self.target_id_or_flowable.get_id(container.document)
-                     if isinstance(self.target_id_or_flowable, Flowable)
-                     else self.target_id_or_flowable)
-        return dict(target_id=target_id)
 
     def text(self, container):
         return MixedStyledText(self.get_style('text', container), parent=self)
