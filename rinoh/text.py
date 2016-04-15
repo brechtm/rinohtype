@@ -361,6 +361,17 @@ class MixedStyledText(StyledText, list):
         for item in text_or_items:
             self.append(item)
 
+    def __add__(self, other):
+        if isinstance(other, str) or self.style == other.style:
+            try:
+                other_list = list(other)
+            except TypeError:
+                other_list = [other]
+            return MixedStyledText(list(self) + other_list,
+                                   style=self.style, parent=self.parent)
+        else:
+            return super().__add__(other)
+
     def __repr__(self):
         """Return a representation of this mixed-styled text; its children
         along with a representation of its :class:`TextStyle`."""
