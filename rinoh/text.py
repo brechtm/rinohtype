@@ -195,6 +195,9 @@ class StyledText(Styled, AcceptNoneAttributeType):
     def __str__(self):
         return self.to_string(None)
 
+    def _short_repr_args(self, flowable_target):
+        yield self._short_repr_string(flowable_target)
+
     def to_string(self, flowable_target):
         """Return the text content of this styled text."""
         raise NotImplementedError('{}.to_string'.format(type(self).__name__))
@@ -366,9 +369,6 @@ class MixedStyledText(StyledText, list):
 
     def to_string(self, flowable_target):
         return ''.join(item.to_string(flowable_target) for item in self)
-
-    def _short_repr_args(self, flowable_target):
-        yield self._short_repr_string(flowable_target)
 
     def __eq__(self, other):
         return (all(child == other_child

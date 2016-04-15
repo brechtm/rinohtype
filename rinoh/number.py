@@ -127,9 +127,6 @@ class NumberedParagraph(ParagraphBase, Label):
         text = self.text(flowable_target)
         return ''.join(item.to_string(flowable_target) for item in text)
 
-    def _short_repr_args(self, flowable_target):
-        yield self._short_repr_string(flowable_target)
-
     @property
     def referenceable(self):
         raise NotImplementedError
