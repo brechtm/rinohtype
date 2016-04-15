@@ -125,7 +125,7 @@ class Flowable(Styled):
         margin_right = self.get_style('margin_right', container)
         reference_id = self.get_id(container.document, create=False)
         right = container.width - margin_right
-        container.register_styled(self)
+        container.register_styled(self, continued=not state.initial)
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
             initial_before, initial_after = state.initial, True

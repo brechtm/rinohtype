@@ -1013,10 +1013,12 @@ NO_MATCH = Match(None, ZERO_SPECIFICITY)
 
 
 class StyleLogEntry(object):
-    def __init__(self, styled, container, matches, custom_message=None):
+    def __init__(self, styled, container, matches, continued,
+                 custom_message=None):
         self.styled = styled
         self.container = container
         self.matches = matches
+        self.continued = continued
         self.custom_message = custom_message
 
     @property
@@ -1029,9 +1031,10 @@ class StyleLog(object):
         self.stylesheet = stylesheet
         self.entries = []
 
-    def log_styled(self, styled, container, custom_message=None):
+    def log_styled(self, styled, container, continued, custom_message=None):
         matches = self.stylesheet.find_matches(styled, container)
-        log_entry = StyleLogEntry(styled, container, matches, custom_message)
+        log_entry = StyleLogEntry(styled, container, matches, continued,
+                                  custom_message)
         self.entries.append(log_entry)
 
     def log_out_of_line(self):
@@ -1062,9 +1065,10 @@ class StyleLog(object):
                     location = '   ' + styled.source.location
                 else:
                     location = ''
-                log.write('  {}{}{}'
-                          .format(indent, styled.short_repr(container),
-                                  location))
+                continued_text = '(continued) ' if entry.continued else ''
+                log.write('  {}{}{}{}'
+                          .format(indent, continued_text,
+                                  styled.short_repr(container), location))
                 if entry.custom_message:
                     log.write('\n      {} ! {}\n'.format(indent,
                                                          entry.custom_message))

@@ -272,7 +272,7 @@ class FlowablesContainerBase(Container):
 
     def register_styled(self, styled, continued=False):
         styleds = self._placed_styleds.setdefault(len(self.children), [])
-        styleds.append(styled)
+        styleds.append((styled, continued))
 
     def before_placing(self):
         def log_styleds(index):
