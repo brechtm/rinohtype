@@ -77,7 +77,8 @@ class FlowableTarget(object):
         `document_part` is the :class:`Document` this flowable target is part
         of."""
         self.flowables = []
-        document_part.flowable_targets.append(self)
+        if document_part:
+            document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
     @property
@@ -279,7 +280,8 @@ class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
                  height=None, right=None, bottom=None):
-        super().__init__(parent.document_part, name, type, parent, left=left,
+        document_part = parent.document_part if parent else None
+        super().__init__(document_part, name, type, parent, left=left,
                          top=top, width=width, height=height, right=right,
                          bottom=bottom)
 
@@ -314,8 +316,8 @@ class ExpandingContainerBase(FlowablesContainer):
 
         `max_height` is the maximum height this container can grow to."""
         height = DimensionAddition()
-        super().__init__(name, type, parent, left, top,
-                         width, height, right, bottom)
+        super().__init__(name, type, parent, left=left, top=top,
+                         width=width, height=height, right=right, bottom=bottom)
         self.height.addends.append(self._cursor)
         self.max_height = max_height or float('+inf')
 
@@ -451,8 +453,23 @@ class VirtualContainer(DownExpandingContainer):
 
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
-        super().__init__('VIRTUAL', None, parent, width=width,
+        self._parent = parent
+        super().__init__('VIRTUAL', None, None,
+                         width=parent.width if width is None else width,
                          max_height=float('+inf'), place=False)
+
+    @property
+    def document_part(self):
+        return self._parent.document_part
+
+    @property
+    def page(self):
+        return self._parent.page
+
+    def __getattr__(self, name):
+        if name in ('_footnote_space', 'float_space'):
+            return getattr(self._parent, name)
+        raise AttributeError(name)
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container
