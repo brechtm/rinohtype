@@ -77,8 +77,7 @@ class FlowableTarget(object):
         `document_part` is the :class:`Document` this flowable target is part
         of."""
         self.flowables = []
-        if document_part:
-            document_part.flowable_targets.append(self)
+        document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
     @property
@@ -164,7 +163,7 @@ class Container(object):
     def __getattr__(self, name):
         if name in ('_footnote_space', 'float_space'):
             return getattr(self.parent, name)
-        raise AttributeError(name)
+        raise AttributeError('{}.{}'.format(self.__class__.__name__, name))
 
     @property
     def page(self):
@@ -266,7 +265,7 @@ class FlowablesContainerBase(Container):
             self._render(type, rerender)
 
     def _render(self, type, rerender):
-        raise NotImplementedError
+        raise NotImplementedError('{}.render()'.format(self.__class__.__name__))
 
     def before_placing(self):
         for flowable in self.flowed_flowables:
@@ -275,20 +274,25 @@ class FlowablesContainerBase(Container):
         super().before_placing()
 
 
-class FlowablesContainer(FlowableTarget, FlowablesContainerBase):
-    """A container that renders a predefined series of flowables."""
-
-    def __init__(self, name, type, parent, left=None, top=None, width=None,
-                 height=None, right=None, bottom=None):
-        document_part = parent.document_part if parent else None
-        super().__init__(document_part, name, type, parent, left=left,
-                         top=top, width=width, height=height, right=right,
-                         bottom=bottom)
+class _FlowablesContainer(FlowableTarget, FlowablesContainerBase):
+    def __init__(self, name, type, parent, *args, **kwargs):
+        super().__init__(parent.document_part, name, type, parent,
+                         *args, **kwargs)
 
     def _render(self, type, rerender):
         last_descender = None
         for flowable in self.flowables:
             _, _, last_descender = flowable.flow(self, last_descender)
+
+
+class FlowablesContainer(_FlowablesContainer):
+    """A container that renders a predefined series of flowables."""
+
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
+                 height=None, right=None, bottom=None):
+        super().__init__(name, type, parent, left=left, top=top,
+                         width=width, height=height, right=right, bottom=bottom)
+
 
 
 class ChainedContainer(FlowablesContainerBase):
@@ -306,7 +310,7 @@ class ChainedContainer(FlowablesContainerBase):
         self.chain.render(self, rerender=rerender)
 
 
-class ExpandingContainerBase(FlowablesContainer):
+class ExpandingContainerBase(FlowablesContainerBase):
     """A dynamically, vertically growing :class:`Container`."""
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
@@ -326,7 +330,7 @@ class ExpandingContainerBase(FlowablesContainer):
         return self.max_height - self.cursor
 
 
-class DownExpandingContainer(ExpandingContainerBase):
+class DownExpandingContainerBase(ExpandingContainerBase):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
@@ -355,7 +359,15 @@ class DownExpandingContainer(ExpandingContainerBase):
             super().before_placing()
 
 
-class _InlineDownExpandingContainer(DownExpandingContainer):
+class DownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
+                 right=None, max_height=None):
+        super().__init__(name, type, parent, left=left,
+                         top=top, width=width, right=right,
+                         max_height=max_height)
+
+
+class _InlineDownExpandingContainer(DownExpandingContainerBase):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
@@ -400,11 +412,11 @@ class InlineDownExpandingContainer(ContextManager):
             self._container.advance(self._container.extra_space_below, True)
 
 
-class UpExpandingContainer(ExpandingContainerBase):
+class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
     """A container that is anchored at the bottom and expands upwards."""
 
     def __init__(self, name, type, parent, left=None, bottom=None, width=None,
-                 right=None, max_height=None, extra_space_below=0):
+                 right=None, max_height=None):
         """See :class:`ContainerBase` for information on the `name`, `parent`,
         `left`, `width` and `right` parameters.
 
@@ -414,8 +426,8 @@ class UpExpandingContainer(ExpandingContainerBase):
 
         `max_height` is the maximum height this container can grow to."""
         bottom = bottom or parent.height
-        super().__init__(name, type, parent, left, None, width, right, bottom,
-                         max_height)
+        super().__init__(name, type, parent, left=left, top=None, width=width,
+                         right=right, bottom=bottom, max_height=max_height)
 
 
 class _MaybeContainer(_InlineDownExpandingContainer):
@@ -446,7 +458,7 @@ def discard_state(initial_state):
         raise EndOfContainer(saved_state)
 
 
-class VirtualContainer(DownExpandingContainer):
+class VirtualContainer(DownExpandingContainerBase):
     """An infinitely down-expanding container whose contents are not
     automatically placed on the parent container's canvas. This container's
     content needs to be placed explicitly using :meth:`place_at`."""
