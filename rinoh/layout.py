@@ -219,10 +219,10 @@ class FlowablesContainerBase(Container):
                  width=None, height=None, right=None, bottom=None):
         self._self_cursor = Dimension(0)  # initialized at container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
+        self.flowed_flowables = {}
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
         self.type = type
-        self.flowed_flowables = []
 
     @property
     def top_level_container(self):
@@ -234,6 +234,7 @@ class FlowablesContainerBase(Container):
     def clear(self):
         super().clear()
         del self.children[:]
+        self.flowed_flowables.clear()
         self._self_cursor._value = 0  # initialized at container's top edge
         del self._cursor.addends[1:]
 
@@ -269,11 +270,20 @@ class FlowablesContainerBase(Container):
     def _render(self, type, rerender):
         raise NotImplementedError('{}.render()'.format(self.__class__.__name__))
 
+    def register_styled(self, styled, continued=False):
+        flowables = self.flowed_flowables.setdefault(len(self.children), [])
+        flowables.append(styled)
+
     def before_placing(self):
-        for flowable in self.flowed_flowables:
-            flowable.before_placing(self)
-            self.document.style_log.log_styled(flowable, self)
-        super().before_placing()
+        def log_styleds(index):
+            for styled, continued in self.flowed_flowables.get(index, ()):
+                self.document.style_log.log_styled(styled, self, continued)
+                styled.before_placing(self)
+
+        log_styleds(0)
+        for i, child in enumerate(self.children, start=1):
+            child.before_placing()
+            log_styleds(i)
 
 
 class _FlowablesContainer(FlowableTarget, FlowablesContainerBase):

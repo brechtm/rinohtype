@@ -125,6 +125,7 @@ class Flowable(Styled):
         margin_right = self.get_style('margin_right', container)
         reference_id = self.get_id(container.document, create=False)
         right = container.width - margin_right
+        container.register_styled(self)
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
             initial_before, initial_after = state.initial, True
@@ -139,7 +140,6 @@ class Flowable(Styled):
                 raise eoc
             finally:
                 if initial_before and not initial_after:
-                    container.flowed_flowables.append(self)
                     if reference_id:
                         self.create_destination(margin_container, True)
         document = container.document
