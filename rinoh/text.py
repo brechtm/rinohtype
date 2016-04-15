@@ -247,7 +247,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
             # get the position style using self.get_style('position')
         return offset
 
-    def spans(self, container, **kwargs):
+    def spans(self, container):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
         raise NotImplementedError
@@ -297,7 +297,7 @@ class SingleStyledTextBase(StyledText):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
 
-    def spans(self, container, **kwargs):
+    def spans(self, container):
         yield self
 
     @staticmethod
@@ -417,9 +417,9 @@ class ConditionalMixedStyledText(MixedStyledText):
         super().__init__(text_or_items, style=style, parent=parent)
         self.document_option = document_option
 
-    def spans(self, container, **kwargs):
+    def spans(self, container):
         if container.document.options[self.document_option]:
-            for span in super().spans(container, **kwargs):
+            for span in super().spans(container):
                 yield span
 
 

@@ -42,10 +42,10 @@ class InlineFlowable(Flowable):
     def y_offset(self, document):
         return 0
 
-    def spans(self, document, **kwargs):
+    def spans(self, document):
         yield self
 
-    def split(self, container, **kwargs):
+    def split(self, container):
         yield self
 
     def flow_inline(self, container, last_descender, state=None):
