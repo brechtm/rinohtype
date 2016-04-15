@@ -570,7 +570,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         text = self.to_string(flowable_target)
         if len(text) > self.SHORT_REPR_STRING_LENGTH:
             text = text[:self.SHORT_REPR_STRING_LENGTH] + '...'
-        return "'{}'".format(text)
+        return "'{}'".format(text).replace('\n', '\\n')
 
     @property
     def path(self):
