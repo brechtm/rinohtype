@@ -198,9 +198,6 @@ class Flowable(Styled):
         descender height of the preceding line or `None`."""
         raise NotImplementedError
 
-    def before_placing(self, container):
-        pass
-
 
 # flowables that do not render anything (but with optional side-effects)
 

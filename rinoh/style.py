@@ -627,6 +627,9 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return container.document.stylesheet.find_style(self, container)
         raise DefaultStyleException
 
+    def before_placing(self, container):
+        pass
+
 
 class InvalidStyledMatcher(Exception):
     """The :class:`StyledMatcher` includes selectors which reference selectors
