@@ -276,6 +276,9 @@ class Table(HorizontallyAlignedFlowable):
         y_cursor = container.cursor
         for r, rendered_row in enumerate(rendered_rows):
             container.advance(rendered_row.height)
+            if rendered_row.index == 0:
+                container.register_styled(rendered_row.row.section)
+            container.register_styled(rendered_row.row)
             for c, rendered_cell in enumerate(rendered_row):
                 cell_height = sum(rendered_row.height for rendered_row in
                                   rendered_rows[r:r + rendered_cell.rowspan])
