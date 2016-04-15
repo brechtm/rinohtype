@@ -373,6 +373,16 @@ class ParagraphBase(Flowable):
         spans = self.text(container).spans(container)
         return ParagraphState(self, spans_to_words(spans, container))
 
+    def _short_repr_args(self, flowable_target):
+        yield self._short_repr_string(flowable_target)
+
+    def to_string(self, flowable_target):
+        return ''.join(item.to_string(flowable_target) for
+                       item in self.text(flowable_target))
+
+    def text(self, container):
+        raise NotImplementedError('{}.text()'.format(self.__class__.__name__))
+
     def render(self, container, descender, state, first_line_only=False):
         """Typeset the paragraph onto `container`, starting below the current
         cursor position of the container. `descender` is the descender height of
