@@ -56,6 +56,8 @@ class Page(Container):
     """A single page in a document. A :class:`Page` is a :class:`Container`, so
     other containers can be added as children."""
 
+    register_with_parent = False
+
     def __init__(self, document_part, paper, orientation=PORTRAIT):
         """Initialize this page as part of `document` (:class:`Document`) with a
         size defined by `paper` (:class:`Paper`). The page's `orientation` can

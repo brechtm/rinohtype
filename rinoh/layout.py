@@ -106,6 +106,8 @@ class Container(object):
     width and a height. It's contents are rendered relative to the container's
     position in its parent :class:`Container`."""
 
+    register_with_parent = True
+
     def __init__(self, name, parent, left=None, top=None, width=None,
                  height=None, right=None, bottom=None):
         """Initialize a this container as a child of the `parent` container.
@@ -141,7 +143,7 @@ class Container(object):
 
         self.name = name
         self.parent = parent
-        if parent is not None:
+        if self.register_with_parent:
             self.parent.children.append(self)
         self.children = []
         self.clear()
@@ -154,6 +156,11 @@ class Container(object):
     def document(self):
         return self.document_part.document
 
+    @property
+    def page(self):
+        """The :class:`Page` this container is located on."""
+        return self.parent.page
+
     def clear(self):
         self.empty_canvas()
 
@@ -164,11 +171,6 @@ class Container(object):
         if name in ('_footnote_space', 'float_space'):
             return getattr(self.parent, name)
         raise AttributeError('{}.{}'.format(self.__class__.__name__, name))
-
-    @property
-    def page(self):
-        """The :class:`Page` this container is located on."""
-        return self.parent.page
 
     def empty_canvas(self):
         self.canvas = self.document.backend.Canvas()
@@ -469,25 +471,12 @@ class VirtualContainer(ConditionalDownExpandingContainerBase):
     automatically placed on the parent container's canvas. This container's
     content needs to be placed explicitly using :meth:`place_at`."""
 
+    register_with_parent = False
+
     def __init__(self, parent, width=None):
         """`width` specifies the width of the container."""
-        self._parent = parent
-        super().__init__('VIRTUAL', None, None,
-                         width=parent.width if width is None else width,
+        super().__init__('VIRTUAL', None, parent, width=width,
                          max_height=float('+inf'), place=False)
-
-    @property
-    def document_part(self):
-        return self._parent.document_part
-
-    @property
-    def page(self):
-        return self._parent.page
-
-    def __getattr__(self, name):
-        if name in ('_footnote_space', 'float_space'):
-            return getattr(self._parent, name)
-        raise AttributeError(name)
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container
