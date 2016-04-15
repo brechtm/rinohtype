@@ -392,11 +392,13 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self, container, **kwargs):
+    def spans(self, container):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        return (span for item in self
-                for span in item.spans(container, **kwargs))
+        for item in self:
+            container.register_styled(item)
+            for span in item.spans(container):
+                yield span
 
 
 class ConditionalMixedStyledText(MixedStyledText):
