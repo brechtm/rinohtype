@@ -334,7 +334,7 @@ class DownExpandingContainerBase(ExpandingContainerBase):
     """A container that is anchored at the top and expands downwards."""
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
-                 right=None, max_height=None, place=True):
+                 right=None, max_height=None):
         """See :class:`Container` for information on the `name`, `parent`,
         `left`, `width` and `right` parameters.
 
@@ -343,6 +343,20 @@ class DownExpandingContainerBase(ExpandingContainerBase):
         placed at the top edge of the parent container.
 
         `max_height` is the maximum height this container can grow to."""
+        super().__init__(name, type, parent, left=left, top=top, width=width,
+                         right=right, max_height=max_height)
+
+
+class DownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
+                 right=None, max_height=None):
+        super().__init__(name, type, parent, left=left, top=top,
+                         width=width, right=right, max_height=max_height)
+
+
+class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
+    def __init__(self, name, type, parent, left=None, top=None, width=None,
+                 right=None, max_height=None, place=True):
         super().__init__(name, type, parent, left=left, top=top, width=width,
                          right=right, max_height=max_height)
         self._do_place = place
@@ -359,15 +373,7 @@ class DownExpandingContainerBase(ExpandingContainerBase):
             super().before_placing()
 
 
-class DownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
-    def __init__(self, name, type, parent, left=None, top=None, width=None,
-                 right=None, max_height=None):
-        super().__init__(name, type, parent, left=left,
-                         top=top, width=width, right=right,
-                         max_height=max_height)
-
-
-class _InlineDownExpandingContainer(DownExpandingContainerBase):
+class _InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
@@ -458,7 +464,7 @@ def discard_state(initial_state):
         raise EndOfContainer(saved_state)
 
 
-class VirtualContainer(DownExpandingContainerBase):
+class VirtualContainer(ConditionalDownExpandingContainerBase):
     """An infinitely down-expanding container whose contents are not
     automatically placed on the parent container's canvas. This container's
     content needs to be placed explicitly using :meth:`place_at`."""
