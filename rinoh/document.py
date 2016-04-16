@@ -434,6 +434,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             section_number = self.get_reference(section_id, NUMBER)
             section_title = self.get_reference(section_id, TITLE)
             if section.level > current_level:
+                assert section.level == current_level + 1
                 stack.append(parent)
                 parent = current
             elif section.level < current_level:
