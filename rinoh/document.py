@@ -106,7 +106,10 @@ class Page(Container):
                             for id, element in self.document.elements.items()
                             if (isinstance(element, Section)
                                 and element.level == level)):
-            first_page = self.document.page_references[id]
+            try:
+                first_page = self.document.page_references[id]
+            except KeyError:
+                break
             last_page = self.document.last_page_references.get(id, float('inf'))
             if first_page == self.number:
                 return section
