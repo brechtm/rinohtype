@@ -40,7 +40,7 @@ Styling Properties
 Line Spacing
 ............
 
-.. module:: rinoh.paragraph
+.. currentmodule:: rinoh.paragraph
 
 .. autoclass:: LineSpacing
     :members:
