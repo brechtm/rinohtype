@@ -272,6 +272,7 @@ class Table(HorizontallyAlignedFlowable):
             for position in ('top', 'right', 'bottom', 'left'):
                 border = TableCellBorder(rendered_cell, cell_height, position)
                 border.render(container)
+            return background
 
         y_cursor = container.cursor
         for r, rendered_row in enumerate(rendered_rows):
@@ -285,7 +286,8 @@ class Table(HorizontallyAlignedFlowable):
                 x_cursor = rendered_cell.x_position
                 y_pos = float(y_cursor + cell_height)
                 cell_container = VirtualContainer(container)
-                draw_cell_border(rendered_cell, cell_height, cell_container)
+                background = draw_cell_border(rendered_cell, cell_height,
+                                              cell_container)
                 cell_container.place_at(container, x_cursor, y_pos)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
                                                               container)
@@ -297,6 +299,7 @@ class Table(HorizontallyAlignedFlowable):
                     vertical_offset = (cell_height - rendered_cell.height)
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(container, x_cursor, y_offset)
+                container.register_styled(background)
             y_cursor += rendered_row.height
 
 
