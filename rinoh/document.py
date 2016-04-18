@@ -26,14 +26,13 @@ import pickle
 
 from collections import OrderedDict
 from itertools import count
-from io import StringIO
 
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT
 from .layout import (Container, ReflowRequired, Chain, PageBreakException,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
-from .number import NUMBER
+from .number import NUMBER, format_number
 from .reference import TITLE
 from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity, StyleLog
@@ -130,6 +129,10 @@ class Page(Container):
     @property
     def number_format(self):
         return self.document_section.page_number_format
+
+    @property
+    def formatted_number(self):
+        return format_number(self.number, self.number_format)
 
     def render(self):
         super().render(BACKGROUND)

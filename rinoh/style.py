@@ -1023,7 +1023,7 @@ class StyleLogEntry(object):
 
     @property
     def page_number(self):
-        return self.container.page.number
+        return self.container.page.formatted_number
 
 
 class StyleLog(object):

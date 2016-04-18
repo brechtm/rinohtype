@@ -265,8 +265,7 @@ class Variable(SingleStyledTextBase):
 
     def text(self, container, **kwargs):
         if self.type == PAGE_NUMBER:
-            text = format_number(container.page.number,
-                                 container.page.number_format)
+            text = container.page.formatted_number
         elif self.type == NUMBER_OF_PAGES:
             document_section = container.document_part.document_section
             number = document_section.previous_number_of_pages
