@@ -22,7 +22,7 @@ from rinoh.dimension import CM
 from rinoh.index import IndexSection
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.structure import TableOfContentsSection
-from rinoh.style import StyleSheetFile
+from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
                             DocumentTemplate, FixedDocumentPartTemplate,
                             ContentsPartTemplate)
@@ -30,8 +30,6 @@ from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
 from ...backend import pdf
 
 from ..rst import ReStructuredTextReader
-
-from rinohlib.stylesheets.sphinx import stylesheet as sphinx_stylesheet
 
 from . import nodes
 
@@ -165,8 +163,6 @@ class RinohBuilder(Builder):
         rinoh_document.render(outfilename)
 
 
-DEFAULT_STYLESHEET = sphinx_stylesheet
-
 title_page_template = TitlePageTemplate(top_margin=8 * CM)
 page_template = PageTemplate()
 DEFAULT_DOCUMENT_PARTS = [FixedDocumentPartTemplate(title_page_template),
@@ -182,6 +178,6 @@ DEFAULT_DOCUMENT_PARTS = [FixedDocumentPartTemplate(title_page_template),
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', [], 'env')
-    app.add_config_value('rinoh_stylesheet', lambda config: DEFAULT_STYLESHEET,
+    app.add_config_value('rinoh_stylesheet', lambda config: sphinx_stylesheet,
                          'html')
     app.add_config_value('rinoh_document_parts', DEFAULT_DOCUMENT_PARTS, 'html')

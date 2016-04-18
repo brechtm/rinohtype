@@ -54,6 +54,7 @@ setup(
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',
                             'data/fonts/adobe14/MustRead.html',
                             'data/hyphen/*.dic',
+                            'data/stylesheets/*.rts',
                             'data/xml/catalog',
                             'data/xml/w3c-entities/*.ent',
                             'backend/pdf/xobject/icc/*.icc',

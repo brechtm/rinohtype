@@ -24,10 +24,8 @@ from .text import StyledText, Tab
 from .strings import StringField
 from .structure import Header, HorizontalRule, Footer, SectionTitles
 from .style import StyleSheet, Bool, Integer, AttributeType
+from .stylesheets import sphinx
 from .util import NamedDescriptor, WithNamedDescriptors
-
-
-from rinohlib.stylesheets import sphinx
 
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
@@ -290,8 +288,8 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
     specified as keyword arguments (`options`) matching the class's
     attributes."""
 
-    stylesheet = Option(StyleSheet, sphinx.stylesheet,
-                        'The stylesheet to use for styling document elements')
+    stylesheet = Option(StyleSheet, sphinx, 'The stylesheet to use for '
+                                            'styling document elements')
 
     def __init__(self, **options):
         for name, value in options.items():

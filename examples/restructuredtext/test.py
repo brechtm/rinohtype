@@ -2,7 +2,7 @@ from rinoh.dimension import CM
 from rinoh.backend import pdf
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import TableOfContentsSection, AdmonitionTitles
-from rinoh.style import StyleSheetFile
+from rinoh.stylesheets import sphinx
 from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
                             TitlePageTemplate, ContentsPartTemplate,
                             FixedDocumentPartTemplate)
@@ -10,8 +10,6 @@ from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
 from rinohlib.stylesheets.matcher import matcher
 
 if __name__ == '__main__':
-    sphinx_stylesheet = StyleSheetFile('sphinx.rts', matcher)
-
     title_page_template = TitlePageTemplate(top_margin=8*CM)
     page_template = PageTemplate()
     document_parts = [FixedDocumentPartTemplate(title_page_template),
@@ -29,7 +27,7 @@ if __name__ == '__main__':
             flowables = parser.parse(file)
         # manual_options = BookOptions(stylesheet=STYLESHEET)
         # document = Book(document_tree, options=manual_options, backend=pdf)
-        doc_options = DocumentOptions(stylesheet=sphinx_stylesheet)
+        doc_options = DocumentOptions(stylesheet=sphinx)
         document = DocumentTemplate(flowables, document_parts, strings=strings,
                                     options=doc_options, backend=pdf)
         document.render(name)
