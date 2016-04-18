@@ -9,8 +9,8 @@
 from types import FunctionType
 
 from .dimension import DimensionBase, CM, PT
-from .document import (Document, DocumentSection, Page, PageOrientation,
-                       PORTRAIT)
+from .document import (Document, DocumentSection, DocumentPart,
+                       Page, PageOrientation, PORTRAIT)
 from .element import create_destination
 from .float import BackgroundImage
 from .layout import (FootnoteContainer, DownExpandingContainer,
@@ -30,7 +30,9 @@ from .util import NamedDescriptor, WithNamedDescriptors
 from rinohlib.stylesheets import sphinx
 
 
-__all__ = ['DocumentTemplate', 'DocumentOptions', 'Option']
+__all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
+           'ContentsPartTemplate', 'FixedDocumentPartTemplate',
+           'DocumentTemplate', 'DocumentOptions', 'Option']
 
 
 class Option(NamedDescriptor):
@@ -255,6 +257,31 @@ class TitlePage(PageBase):
         extra = options['extra']
         if extra:
             self.title << Paragraph(extra, style='title page extra')
+
+
+class DocumentPartTemplate(object):
+    def __init__(self, page_template, restart_numbering=False):
+        self.page_template = page_template
+        self.restart_numbering = restart_numbering
+
+    def document_part(self, document_section):
+        raise NotImplementedError
+
+
+class ContentsPartTemplate(DocumentPartTemplate):
+    def document_part(self, document_section):
+        return DocumentPart(document_section, self.page_template,
+                            document_section.document.content_flowables)
+
+
+class FixedDocumentPartTemplate(DocumentPartTemplate):
+    def __init__(self, page_template, flowables=None, restart_numbering=False):
+        super().__init__(page_template, restart_numbering)
+        self.flowables = flowables or []
+
+    def document_part(self, document_section):
+        return DocumentPart(document_section, self.page_template,
+                            self.flowables)
 
 
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):

@@ -218,7 +218,7 @@ Theese templates can be customized by passing an :class:`ArticleOptions` or
 respectively. Both these classes derive from :class:`DocumentOptions` and thus
 accept the options offered by it:
 
-.. autoclass:: rinohlib.templates.base.DocumentOptions
+.. autoclass:: rinoh.template.DocumentOptions
     :members:
 
 

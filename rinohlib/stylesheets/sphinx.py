@@ -166,9 +166,6 @@ stylesheet('unnumbered heading level 1',
            base='heading level 1',
            number_format=None)
 
-stylesheet('front matter section heading',
-           base='unnumbered heading level 1')
-
 stylesheet('heading level 2',
            base='heading level 1',
            font_size=14*PT,

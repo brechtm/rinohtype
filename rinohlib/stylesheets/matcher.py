@@ -2,8 +2,6 @@ from rinoh.reference import TITLE, PAGE, NUMBER, REFERENCE
 from rinoh.style import StyledMatcher, SelectorByName
 from rinoh.styleds import *
 
-from rinohlib.templates.base import FrontMatter
-
 
 __all__ = ['matcher']
 
@@ -244,9 +242,6 @@ matcher('figure legend paragraph', 'figure legend' / Paragraph)
 
 
 # front matter
-
-matcher('front matter section', FrontMatter > Section.like(level=1))
-matcher('front matter section heading', 'front matter section' / Heading)
 
 matcher('table of contents section', Section.like('table of contents'))
 matcher('table of contents title', 'table of contents section'

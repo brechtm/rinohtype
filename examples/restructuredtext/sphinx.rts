@@ -144,9 +144,6 @@ label_suffix=' '
 base=heading level 1
 number_format=None
 
-[front matter section heading]
-base=unnumbered heading level 1
-
 [heading level 2]
 base=heading level 1
 font_size=14pt

@@ -4,10 +4,9 @@ from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import TableOfContentsSection, AdmonitionTitles
 from rinoh.style import StyleSheetFile
 from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
-                            TitlePageTemplate)
+                            TitlePageTemplate, ContentsPartTemplate,
+                            FixedDocumentPartTemplate)
 
-from rinohlib.templates.base import (ContentsPartTemplate,
-                                     FixedDocumentPartTemplate)
 from rinohlib.stylesheets.matcher import matcher
 
 if __name__ == '__main__':
