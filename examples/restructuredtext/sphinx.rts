@@ -183,6 +183,10 @@ space_above=2pt
 space_below=2pt
 number_format=None
 
+[appendix heading level 1]
+base=heading level 1
+number_format=uppercase character
+
 [topic]
 margin_left=0.5cm
 
