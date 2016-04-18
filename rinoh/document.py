@@ -238,11 +238,11 @@ class DocumentPart(object, metaclass=DocumentLocationType):
 class DocumentSection(object, metaclass=DocumentLocationType):
     """A section of a :class:`Document` that has its own page numbering."""
 
-    page_number_format = NUMBER
     parts = NotImplementedAttribute()
 
-    def __init__(self, document):
+    def __init__(self, document, page_number_format=NUMBER):
         self.document = document
+        self.page_number_format = page_number_format
         self._parts = [part_class(self) for part_class in self.parts]
         self.previous_number_of_pages = 0
 

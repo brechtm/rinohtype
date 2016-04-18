@@ -17,7 +17,7 @@ if __name__ == '__main__':
     document_parts = [FixedDocumentPartTemplate(title_page_template),
                       FixedDocumentPartTemplate(page_template,
                                                 [TableOfContentsSection()]),
-                      ContentsPartTemplate(page_template, False)]
+                      ContentsPartTemplate(page_template)]
 
     strings = (AdmonitionTitles(important='IMPORTANT:',
                                 tip='TIP:'),

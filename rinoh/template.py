@@ -260,9 +260,9 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(object):
-    def __init__(self, page_template, restart_numbering=False):
+    def __init__(self, page_template, page_number_format=NUMBER):
         self.page_template = page_template
-        self.restart_numbering = restart_numbering
+        self.page_number_format = page_number_format
 
     def document_part(self, document_section):
         raise NotImplementedError
@@ -275,8 +275,9 @@ class ContentsPartTemplate(DocumentPartTemplate):
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
-    def __init__(self, page_template, flowables=None, restart_numbering=False):
-        super().__init__(page_template, restart_numbering)
+    def __init__(self, page_template, flowables=None,
+                 page_number_format=NUMBER):
+        super().__init__(page_template, page_number_format)
         self.flowables = flowables or []
 
     def document_part(self, document_section):
@@ -320,12 +321,14 @@ class DocumentTemplate(Document):
 
     @property
     def sections(self):
-        current_section = None
-        for document_part_tmpl in self.document_parts:
-            if not current_section or document_part_tmpl.restart_numbering:
-                if current_section:
+        last_section_number_format = None
+        for i, document_part_tmpl in enumerate(self.document_parts):
+            number_format = document_part_tmpl.page_number_format
+            if i == 0 or number_format != last_section_number_format:
+                if i > 0:
                     yield current_section
-                current_section = DocumentTemplateSection(self)
+                current_section = DocumentTemplateSection(self, number_format)
             part = document_part_tmpl.document_part(current_section)
             current_section._parts.append(part)
+            last_section_number_format = document_part_tmpl.page_number_format
         yield current_section

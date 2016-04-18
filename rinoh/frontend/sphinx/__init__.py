@@ -20,6 +20,7 @@ from sphinx.util.osutil import ensuredir, os_path, SEP
 
 from rinoh.dimension import CM
 from rinoh.index import IndexSection
+from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.structure import TableOfContentsSection
 from rinoh.style import StyleSheetFile
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
@@ -169,12 +170,13 @@ DEFAULT_STYLESHEET = sphinx_stylesheet
 title_page_template = TitlePageTemplate(top_margin=8 * CM)
 page_template = PageTemplate()
 DEFAULT_DOCUMENT_PARTS = [FixedDocumentPartTemplate(title_page_template),
-                          FixedDocumentPartTemplate(page_template,
-                                                    [TableOfContentsSection()]),
-                          ContentsPartTemplate(page_template,
-                                               restart_numbering=True),
-                          FixedDocumentPartTemplate(page_template,
-                                                    [IndexSection()])]
+                          FixedDocumentPartTemplate(
+                              page_template, [TableOfContentsSection()],
+                              page_number_format=ROMAN_LC),
+                          ContentsPartTemplate(
+                              page_template, page_number_format=NUMBER),
+                          FixedDocumentPartTemplate(
+                              page_template, [IndexSection()])]
 
 
 def setup(app):
