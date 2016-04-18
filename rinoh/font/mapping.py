@@ -1,9 +1,12 @@
 
-# from the Adobe Glyph List 2.0 (September 20, 2002)
 import csv
 
 from os import path
 
+from .. import DATA_PATH
+
+
+# from the Adobe Glyph List 2.0 (September 20, 2002)
 UNICODE_TO_GLYPH_NAME = {
     0x0001: ('controlSTX', ),
     0x0002: ('controlSOT', ),
@@ -3806,7 +3809,7 @@ def parse_glyph_list(filename):
     return unicode_to_glyph_name
 
 
-UNICODE_TO_DINGBATS_NAME = parse_glyph_list(path.join(path.dirname(__file__),
+UNICODE_TO_DINGBATS_NAME = parse_glyph_list(path.join(DATA_PATH, 'fonts',
                                                       'zapfdingbats.txt'))
 
 

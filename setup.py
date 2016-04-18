@@ -53,6 +53,7 @@ setup(
     packages=find_packages(),
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',
                             'data/fonts/adobe14/MustRead.html',
+                            'data/fonts/zapfdingbats.txt',
                             'data/hyphen/*.dic',
                             'data/stylesheets/*.rts',
                             'data/xml/catalog',
