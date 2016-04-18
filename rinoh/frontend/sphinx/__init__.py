@@ -58,7 +58,13 @@ class RinohBuilder(Builder):
                     node['refid'] = transform_id(node['refid'])
                 elif 'refuri' in node and node.get('internal', False):
                     node['refid'] = node.attributes.pop('refuri')
-                node['ids'] = [transform_id(id) for id in node['ids']]
+                ids, module_ids = [], []
+                for id in node['ids']:
+                    if id.startswith('module-'):
+                        module_ids.append(id)
+                    else:
+                        ids.append(transform_id(id))
+                node['ids'] = ids + module_ids
             except (TypeError, KeyError):
                 pass
 
