@@ -18,11 +18,19 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
+from rinoh.dimension import CM
+from rinoh.index import IndexSection
+from rinoh.structure import TableOfContentsSection
+from rinoh.style import StyleSheetFile
+from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
+                            DocumentTemplate, FixedDocumentPartTemplate,
+                            ContentsPartTemplate)
+
 from ...backend import pdf
 
 from ..rst import ReStructuredTextReader
 
-from rinohlib.templates.book import Book, BookOptions
+from rinohlib.stylesheets.sphinx import stylesheet as sphinx_stylesheet
 
 from . import nodes
 
@@ -145,8 +153,10 @@ class RinohBuilder(Builder):
         os.chdir(self.srcdir)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree)
-        rinoh_document = Book(rinoh_tree, backend=pdf,
-                              options=BookOptions(**self.config.rinoh_options))
+        options = DocumentOptions(stylesheet=self.config.rinoh_stylesheet)
+        document_parts = self.config.rinoh_document_parts
+        rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
+                                          options=options, backend=pdf)
         rinoh_document.metadata['title'] = doctree.settings.title
         rinoh_document.metadata['author'] = doctree.settings.author
         outfilename = path.join(self.outdir, os_path(targetname))
@@ -154,7 +164,22 @@ class RinohBuilder(Builder):
         rinoh_document.render(outfilename)
 
 
+DEFAULT_STYLESHEET = sphinx_stylesheet
+
+title_page_template = TitlePageTemplate(top_margin=8 * CM)
+page_template = PageTemplate()
+DEFAULT_DOCUMENT_PARTS = [FixedDocumentPartTemplate(title_page_template),
+                          FixedDocumentPartTemplate(page_template,
+                                                    [TableOfContentsSection()]),
+                          ContentsPartTemplate(page_template,
+                                               restart_numbering=True),
+                          FixedDocumentPartTemplate(page_template,
+                                                    [IndexSection()])]
+
+
 def setup(app):
     app.add_builder(RinohBuilder)
-    app.add_config_value('rinoh_documents', [], None)
-    app.add_config_value('rinoh_options', {}, None)
+    app.add_config_value('rinoh_documents', [], 'env')
+    app.add_config_value('rinoh_stylesheet', lambda config: DEFAULT_STYLESHEET,
+                         'html')
+    app.add_config_value('rinoh_document_parts', DEFAULT_DOCUMENT_PARTS, 'html')
