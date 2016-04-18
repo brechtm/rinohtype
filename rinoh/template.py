@@ -48,11 +48,11 @@ class Option(NamedDescriptor):
         except AttributeError:
             return self
 
-    def __set__(self, document_options, value):
+    def __set__(self, options, value):
         if not self.accepted_type.check_type(value):
-            raise TypeError('Page template option has wrong type: {}'
-                            .format(self.name))
-        document_options[self.name] = value
+            raise TypeError('{} option has wrong type: {}'
+                            .format(type(options).__name__, self.name))
+        options[self.name] = value
 
     @property
     def __doc__(self):
