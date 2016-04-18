@@ -7,8 +7,6 @@ from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
                             TitlePageTemplate, ContentsPartTemplate,
                             FixedDocumentPartTemplate)
 
-from rinohlib.stylesheets.matcher import matcher
-
 if __name__ == '__main__':
     title_page_template = TitlePageTemplate(top_margin=8*CM)
     page_template = PageTemplate()

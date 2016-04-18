@@ -11,7 +11,7 @@ from rinoh.font import TypeFamily, Typeface
 from rinoh.font.style import (NORMAL, REGULAR, UPRIGHT, ITALIC, BOLD,
                               SMALL_CAPITAL, SUPERSCRIPT)
 
-from .matcher import matcher
+from rinoh.stylesheets.matcher import matcher
 
 
 times = Typeface('TeX Gyre Termes')

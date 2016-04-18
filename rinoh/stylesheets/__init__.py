@@ -11,10 +11,10 @@ import os
 from .. import DATA_PATH
 from ..style import StyleSheetFile
 
-from rinohlib.stylesheets.matcher import matcher
+from .matcher import matcher
 
 
-__all__ = ['sphinx']
+__all__ = ['matcher', 'sphinx']
 
 
 STYLESHEETS_PATH = os.path.join(DATA_PATH, 'stylesheets')
