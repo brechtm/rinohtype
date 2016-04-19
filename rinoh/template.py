@@ -12,7 +12,7 @@ from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
 from .element import create_destination
-from .float import BackgroundImage
+from .float import BackgroundImage, Image
 from .layout import (FootnoteContainer, DownExpandingContainer,
                      ChainedContainer, UpExpandingContainer, Container,
                      FlowablesContainer, BACKGROUND, CONTENT, HEADER_FOOTER)
@@ -237,6 +237,9 @@ class TitlePage(PageBase):
         self.title = DownExpandingContainer('title', CONTENT, self,
                                             self.left_margin, self.top_margin,
                                             self.body_width)
+        if 'logo' in self.document.metadata:
+            self.title << Image(self.document.metadata['logo'],
+                                style='title page logo')
         self.title << Paragraph(self.document.metadata['title'],
                                 style='title page title')
         if 'subtitle' in self.document.metadata:

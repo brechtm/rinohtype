@@ -10,6 +10,7 @@ matcher = StyledMatcher({
 
     # title page items
 
+    'title page logo': Image.like('title page logo'),
     'title page title': Paragraph.like('title page title'),
     'title page subtitle': Paragraph.like('title page subtitle'),
     'title page author': Paragraph.like('title page author'),

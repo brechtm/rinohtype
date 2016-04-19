@@ -157,6 +157,8 @@ class RinohBuilder(Builder):
         document_parts = self.config.rinoh_document_parts
         rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
                                           options=options, backend=pdf)
+        if self.config.rinoh_logo:
+            rinoh_document.metadata['logo'] = self.config.rinoh_logo
         rinoh_document.metadata['title'] = doctree.settings.title
         rinoh_document.metadata['subtitle'] = ('Release {}'
                                                .format(self.config.release))
@@ -168,7 +170,7 @@ class RinohBuilder(Builder):
 
 def default_document_parts(config):
     page_kwargs = dict(page_size=config.rinoh_paper_size)
-    title_page_template = TitlePageTemplate(top_margin=8*CM, **page_kwargs)
+    title_page_template = TitlePageTemplate(**page_kwargs)
     page_template = PageTemplate(**page_kwargs)
     return [FixedDocumentPartTemplate(title_page_template),
             FixedDocumentPartTemplate(page_template, [TableOfContentsSection()],
@@ -184,3 +186,4 @@ def setup(app):
                          'html')
     app.add_config_value('rinoh_paper_size', LETTER, 'html')
     app.add_config_value('rinoh_document_parts', default_document_parts, 'html')
+    app.add_config_value('rinoh_logo', None, 'html')
