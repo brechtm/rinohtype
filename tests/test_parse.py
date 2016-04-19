@@ -3,6 +3,7 @@ import pytest
 
 from rinoh.color import Color, HexColor
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
+from rinoh.draw import Stroke
 from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
                           ROMAN_LC, ROMAN_UC, SYMBOL)
 from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
@@ -184,6 +185,18 @@ def test_color_from_string():
     assert Color.from_string('#123456aa') == HexColor('#123456aa')
     assert Color.from_string('#5e1') == HexColor('#5e1')
     assert Color.from_string('#5e10') == HexColor('#5e10')
+
+
+def test_stroke_from_string():
+    assert Stroke.from_string('1pt,#fff') == Stroke(1*PT, HexColor('#FFF'))
+    assert Stroke.from_string('99cm,#123456aa') == Stroke(99*CM,
+                                                         HexColor('#123456aa'))
+    with pytest.raises(ValueError):
+        assert Stroke.from_string('8,#fff')
+    with pytest.raises(ValueError):
+        assert Stroke.from_string('1pt,1')
+    with pytest.raises(ValueError):
+        assert Stroke.from_string('xyz')
 
 
 def test_styledtext_from_string():
