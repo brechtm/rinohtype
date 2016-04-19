@@ -158,6 +158,8 @@ class RinohBuilder(Builder):
         rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
                                           options=options, backend=pdf)
         rinoh_document.metadata['title'] = doctree.settings.title
+        rinoh_document.metadata['subtitle'] = ('Release {}'
+                                               .format(self.config.release))
         rinoh_document.metadata['author'] = doctree.settings.author
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
