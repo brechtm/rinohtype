@@ -18,7 +18,7 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
-from rinoh.dimension import CM
+from rinoh.dimension import INCH
 from rinoh.index import IndexSection
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
@@ -169,7 +169,8 @@ class RinohBuilder(Builder):
 
 
 def default_document_parts(config):
-    page_kwargs = dict(page_size=config.rinoh_paper_size)
+    page_kwargs = dict(page_size=config.rinoh_paper_size,
+                       left_margin=1*INCH, right_margin=1*INCH)
     title_page_template = TitlePageTemplate(**page_kwargs)
     page_template = PageTemplate(**page_kwargs)
     return [FixedDocumentPartTemplate(title_page_template),

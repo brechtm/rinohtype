@@ -614,6 +614,7 @@ typeface=$(sans_typeface)
 font_weight=bold
 font_size=25pt
 text_align=right
+space_above=12pt
 
 [title page subtitle]
 base=title page title
