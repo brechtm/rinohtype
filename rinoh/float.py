@@ -75,8 +75,9 @@ class ImageBase(Flowable):
             text = SingleStyledText(message, style=TextStyle(font_color=RED))
             return Paragraph(text).render(container, last_descender)
         left, top = 0, float(container.cursor)
-        if self.width is not None:
-            scale_width = self.width.to_points(container.width) / image.width
+        width = self._width(container)
+        if width is not None:
+            scale_width = width.to_points(container.width) / image.width
         else:
             scale_width = None
         if self.height is not None:
@@ -116,8 +117,12 @@ class InlineImage(ImageBase, InlineFlowable):
                  dpi=None, rotate=0, baseline=None,
                  id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
-                         width=width, height=height, dpi=dpi, rotate=rotate,
-                         id=id, style=style, parent=parent, baseline=baseline)
+                         height=height, dpi=dpi, rotate=rotate,
+                         baseline=baseline, id=id, style=style, parent=parent)
+        self.width = width
+
+    def _width(self, container):
+        return self.width
 
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):

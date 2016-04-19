@@ -540,6 +540,7 @@ class HorizontalAlignment(OptionSet):
 
 
 class HorizontallyAlignedFlowableStyle(FlowableStyle):
+    width = Attribute(DimensionBase, None, 'The width of the flowable')
     horizontal_align = Attribute(HorizontalAlignment, LEFT,
                                  'Horizontal alignment of the flowable')
 
@@ -551,9 +552,10 @@ class HorizontallyAlignedFlowableState(FlowableState):
 class HorizontallyAlignedFlowable(Flowable):
     style_class = HorizontallyAlignedFlowableStyle
 
-    def __init__(self, *args, align=None, **kwargs):
+    def __init__(self, *args, align=None, width=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.align = align
+        self.width = width
 
     def _align(self, container, width):
         align = self.align or self.get_style('horizontal_align', container)
@@ -563,6 +565,9 @@ class HorizontallyAlignedFlowable(Flowable):
         if align == CENTER:
             left_extra /= 2
         container.left = float(container.left) + left_extra
+
+    def _width(self, container):
+        return self.width or self.get_style('width', container)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         with MaybeContainer(container) as align_container:

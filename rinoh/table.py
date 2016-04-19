@@ -83,13 +83,12 @@ class Table(HorizontallyAlignedFlowable):
               auto-sizes all columns.
 
         """
-        super().__init__(id=id, style=style, parent=parent)
+        super().__init__(width=width, id=id, style=style, parent=parent)
         self.head = head
         if head:
             head.parent = self
         self.body = body
         body.parent = self
-        self.width = width
         self.column_widths = column_widths
 
     def initial_state(self, container):
@@ -156,11 +155,11 @@ class Table(HorizontallyAlignedFlowable):
                             widths[c + i] += per_column_padding
             return widths
 
+        width = self._width(container)
         try:
-            fixed_width = self.width.to_points(container.width)
+            fixed_width = width.to_points(container.width)
         except AttributeError:
-            fixed_width = self.width if self.width else None
-        max_table_width = fixed_width or container.width
+            fixed_width = width or None
         min_column_widths = calculate_column_widths(0)
         max_column_widths = calculate_column_widths(float('+inf'))
 

@@ -606,6 +606,9 @@ margin_right=40pt
 
 # title page
 
+[title page logo]
+width=100%
+
 [title page title]
 typeface=$(sans_typeface)
 font_weight=bold
