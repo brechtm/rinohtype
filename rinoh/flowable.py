@@ -21,12 +21,13 @@ from contextlib import contextmanager
 from copy import copy
 from itertools import chain, tee
 
+from .color import Color
 from .dimension import DimensionBase, PT
-from .draw import ShapeStyle, Rectangle, Line, LineStyle
+from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
                      EndOfContainer, PageBreakException)
-from .style import Styled, OptionSet, Attribute, OverrideDefault, Bool
+from .style import Styled, Style, OptionSet, Attribute, Bool
 from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
 
@@ -41,7 +42,7 @@ __all__ = ['Flowable', 'FlowableStyle',
            'PageBreak', 'PageBreakStyle']
 
 
-class FlowableStyle(ShapeStyle):
+class FlowableStyle(Style):
     """The :class:`Style` for :class:`Flowable` objects."""
 
     space_above = Attribute(DimensionBase, 0, 'Vertical space preceding the '
@@ -56,8 +57,9 @@ class FlowableStyle(ShapeStyle):
     padding_bottom = Attribute(DimensionBase, 0, 'Bottom padding')
     keep_with_next = Attribute(Bool, False, 'Keep this flowable and the next '
                                             'on the same page')
-    stroke_color = OverrideDefault(None)
-    fill_color = OverrideDefault(None)
+    border = Attribute(Stroke, None, 'Border surrounding the flowable')
+    background_color = Attribute(Color, None, "Color of the area within the "
+                                              "flowable's borders")
 
     default_base = None
 
@@ -177,14 +179,12 @@ class Flowable(Styled):
 
     def render_frame(self, container, container_height, top=True, bottom=True):
         width, height = float(container.width), - float(container_height)
-        stroke_width = self.get_style('stroke_width', container)
-        stroke_color = self.get_style('stroke_color', container)
-        fill_color = self.get_style('fill_color', container)
-        fill_style = ShapeStyle(stroke_color=None, fill_color=fill_color)
+        border = self.get_style('border', container)
+        background_color = self.get_style('background_color', container)
+        fill_style = ShapeStyle(stroke=None, fill_color=background_color)
         rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
         rect.render(container)
-        style = dict(style=LineStyle(stroke_width=stroke_width,
-                                     stroke_color=stroke_color))
+        style = dict(style=LineStyle(stroke=border))
         if top:
             Line((0, 0), (width, 0), **style).render(container)
         Line((0, 0), (0, height), **style).render(container)          # left

@@ -509,7 +509,7 @@ class RenderedRow(list):
 
 
 class TableCellBorderStyle(ShapeStyle):
-    stroke_width = OverrideDefault(None)
+    stroke = OverrideDefault(None)
 
 
 class TableCellBorder(Line):
@@ -531,7 +531,7 @@ class TableCellBorder(Line):
 
 class TableCellBackgroundStyle(ShapeStyle):
     fill_color = OverrideDefault(None)
-    stroke_color = OverrideDefault(None)
+    stroke = OverrideDefault(None)
 
 
 class TableCellBackground(Rectangle):

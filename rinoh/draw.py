@@ -6,16 +6,36 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from .color import Color, BLACK, GRAY90
-from .style import Style, Styled, Attribute
+from .style import Style, Styled, Attribute, AcceptNoneAttributeType
 from .dimension import Dimension, PT
 
 
 __all__ = ['LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
 
 
+class Stroke(AcceptNoneAttributeType):
+    def __init__(self, width, color):
+        self.width = width
+        self.color = color
+
+    @classmethod
+    def check_type(cls, value):
+        if value and not (Dimension.check_type(value.width)
+                          and Color.check_type(value.color)):
+            return False
+        return super().check_type(value)
+
+    @classmethod
+    def parse_string(cls, string):
+        width_str, color_str = (part.strip() for part in string.split(','))
+        width = Dimension.from_string(width_str)
+        color = Color.from_string(color_str)
+        return cls(width, color)
+
+
 class LineStyle(Style):
-    stroke_width = Attribute(Dimension, 1*PT, 'Width of the line')
-    stroke_color = Attribute(Color, BLACK, 'Color of the line')
+    stroke = Attribute(Stroke, Stroke(1*PT, BLACK), 'Width and color used to '
+                                                    'draw the line')
 
 
 class Line(Styled):
@@ -28,14 +48,13 @@ class Line(Styled):
 
     def render(self, container, offset=0):
         canvas, document = container.canvas, container.document
-        stroke_width = self.get_style('stroke_width', container)
-        stroke_color = self.get_style('stroke_color', container)
-        if not (stroke_width and stroke_color):
+        stroke = self.get_style('stroke', container)
+        if not stroke:
             return
         with canvas.save_state():
             points = self.start, self.end
             canvas.line_path(points)
-            canvas.stroke(stroke_width, stroke_color)
+            canvas.stroke(stroke.width, stroke.color)
 
 
 class ShapeStyle(LineStyle):
@@ -59,19 +78,18 @@ class Polygon(Shape):
 
     def render(self, container, offset=0):
         canvas = container.canvas
-        stroke_width = self.get_style('stroke_width', container)
-        stroke_color = self.get_style('stroke_color', container)
+        stroke = self.get_style('stroke', container)
         fill_color = self.get_style('fill_color', container)
-        if not ((stroke_width and stroke_color) or fill_color):
+        if not (stroke or fill_color):
             return
         with canvas.save_state():
             canvas.line_path(self.points)
             canvas.close_path()
-            if stroke_width and stroke_color and fill_color:
-                canvas.stroke_and_fill(stroke_width, stroke_color,
+            if stroke and fill_color:
+                canvas.stroke_and_fill(stroke.width, stroke.color,
                                        fill_color)
-            elif stroke_width and stroke_color:
-                canvas.stroke(stroke_width, stroke_color)
+            elif stroke:
+                canvas.stroke(stroke.width, stroke.color)
             elif fill_color:
                 canvas.fill(fill_color)
 

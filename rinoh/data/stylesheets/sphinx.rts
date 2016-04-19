@@ -211,9 +211,8 @@ padding_left=10pt
 padding_right=10pt
 padding_top=4pt
 padding_bottom=4pt
-fill_color=#ffffe5
-stroke_width=1pt
-stroke_color=#666
+background_color=#ffffe5
+border=1pt,#666
 
 [sidebar title]
 base=default
@@ -407,9 +406,8 @@ padding_left=10pt
 padding_right=10pt
 padding_top=4pt
 padding_bottom=4pt
-fill_color=#efefff
-stroke_width=1pt
-stroke_color=#666
+background_color=#efefff
+border=1pt,#666
 
 [admonition title]
 base=default
@@ -466,13 +464,13 @@ tab_stops=50% CENTER, 100% RIGHT
 
 [line under header]
 space_above=2pt
-stroke_width=0.2pt
+stroke=0.2pt,#000
 
 [footer]
 base=header
 
 [line above footer]
-stroke_width=0.2pt
+stroke=0.2pt,#000
 
 [footnote marker]
 position=SUPERSCRIPT
@@ -584,15 +582,14 @@ base=table body cell paragraph
 text_align=LEFT
 
 [table top border]
-stroke_width=1pt
-stroke_color=#000
+stroke=1pt,#000
 
 [table bottom border]
 base=table top border
 
 [table head bottom border]
 base=table top border
-stroke_width=0.5pt
+stroke=0.5pt,#000
 
 [table body top border]
 base=table head bottom border
