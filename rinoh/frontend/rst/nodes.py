@@ -541,11 +541,17 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
 
     def build_flowable(self):
         width_string = self.get('width')
+        align = self.get('align')
         return rt.Image(self.image_path, scale=self.get('scale', 100) / 100,
-                        width=convert_quantity(width_string))
+                        width=convert_quantity(width_string), align=align)
+
+    ALIGN_TO_BASELINE = {'bottom': 0,
+                         'middle': 50*PERCENT,
+                         'top': 100*PERCENT}
 
     def build_styled_text(self):
-        return rt.InlineImage(self.image_path)
+        baseline = self.ALIGN_TO_BASELINE.get(self.get('align'))
+        return rt.InlineImage(self.image_path, baseline=baseline)
 
 
 class Figure(DocutilsGroupingNode):
