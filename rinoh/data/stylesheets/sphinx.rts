@@ -608,25 +608,28 @@ margin_right=40pt
 
 [title page title]
 typeface=$(sans_typeface)
-font_size=26pt
-text_align=CENTER
+font_weight=bold
+font_size=25pt
+text_align=right
 
 [title page subtitle]
 base=title page title
-font_size=20pt
-space_above=10pt
+font_slant=italic
+font_size=17pt
+space_above=6pt
 
 [title page author]
 typeface=$(sans_typeface)
-font_size=18pt
-text_align=CENTER
-space_above=80pt
+font_weight=bold
+font_size=17pt
+text_align=right
+space_above=110pt
 
 [title page date]
-typeface=$(sans_typeface)
-font_size=14pt
-text_align=CENTER
-space_above=20pt
+typeface=$(serif_typeface)
+font_size=12pt
+text_align=right
+space_above=220pt
 
 [level 1 index entry]
 base=default
