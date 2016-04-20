@@ -200,12 +200,11 @@ class Canvas(StringIO):
         print('{0} {1} {2} rg'.format(r, g, b), file=self)
 
     def stroke(self, line_width=None, color=None):
-        with self.save_state():
-            if color:
-                self.stroke_color(color)
-            if line_width:
-                self.line_width(line_width)
-            print('s', file=self)
+        if color:
+            self.stroke_color(color)
+        if line_width:
+            self.line_width(line_width)
+        print('S', file=self)
 
     def fill(self, color=None):
         with self.save_state():
