@@ -17,8 +17,13 @@ matcher = StyledMatcher({
     'title page date': Paragraph.like('title page date'),
     'title page extra': Paragraph.like('title page extra'),
 
-    # front matter
+    # chapter titles
+
     'front matter section title': Paragraph.like('front matter section title'),
+    'body matter chapter label': Paragraph.like('body matter chapter label'),
+    'body matter chapter number': SelectorByName('body matter chapter label')
+                                      / ... / StyledText.like('number'),
+    'body matter chapter title': Paragraph.like('body matter chapter title'),
 
     # inline text
 

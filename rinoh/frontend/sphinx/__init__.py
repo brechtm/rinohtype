@@ -18,14 +18,13 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
-from rinoh.dimension import INCH, PT
+from rinoh.dimension import INCH
 from rinoh.index import IndexSection
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
 from rinoh.paragraph import Paragraph
 from rinoh.reference import Variable, PAGE_NUMBER, Reference, TITLE
-from rinoh.structure import TableOfContentsSection, HorizontalRule, \
-    HorizontalRuleStyle
+from rinoh.structure import TableOfContentsSection
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
                             DocumentTemplate, FixedDocumentPartTemplate,
@@ -177,6 +176,13 @@ def front_matter_section_title_flowables(section_id):
                     style='front matter section title')
 
 
+def body_matter_chapter_title_flowables(section_id):
+    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER, style='number'),
+                    style='body matter chapter label')
+    yield Paragraph(Reference(section_id, TITLE),
+                    style='body matter chapter title')
+
+
 def default_document_parts(config):
     page_kwargs = dict(page_size=config.rinoh_paper_size,
                        left_margin=1*INCH, right_margin=1*INCH,
@@ -191,7 +197,10 @@ def default_document_parts(config):
                                      chapter_title_flowables=
                                         front_matter_section_title_flowables,
                                      **page_kwargs)
-    content_page = PageTemplate(**page_kwargs)
+    content_page = PageTemplate(chapter_title_height=2.4*INCH,
+                                chapter_title_flowables=
+                                    body_matter_chapter_title_flowables,
+                                **page_kwargs)
     return [FixedDocumentPartTemplate(title_page_template),
             FixedDocumentPartTemplate(front_matter_page,
                                       [TableOfContentsSection()],
