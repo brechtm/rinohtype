@@ -476,11 +476,13 @@ tab_stops=50% CENTER, 100% RIGHT
 base=header_footer
 padding_bottom=2pt
 border_bottom=$(thin_black_stroke)
+space_below=24pt
 
 [footer]
 base=header_footer
 padding_top=4pt
 border_top=$(thin_black_stroke)
+space_above=18pt
 
 [footnote marker]
 position=SUPERSCRIPT

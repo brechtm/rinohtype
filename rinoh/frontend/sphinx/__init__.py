@@ -190,7 +190,8 @@ def default_document_parts(config):
                        top_margin=1*INCH, bottom_margin=1*INCH)
     title_page_template = TitlePageTemplate(**page_kwargs)
     front_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
-    front_matter_page = PageTemplate(header_text=None,
+    front_matter_page = PageTemplate(header_footer_distance=0,
+                                     header_text=None,
                                      footer_text=front_matter_footer,
                                      chapter_header_text=None,
                                      chapter_footer_text=front_matter_footer,
@@ -201,7 +202,8 @@ def default_document_parts(config):
     body_matter_header = (Tab() + Tab() + Variable(DOCUMENT_TITLE)
                           + ', ' + Variable(DOCUMENT_SUBTITLE))
     body_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
-    content_page = PageTemplate(header_text=body_matter_header,
+    content_page = PageTemplate(header_footer_distance=0,
+                                header_text=body_matter_header,
                                 footer_text=body_matter_footer,
                                 chapter_header_text=None,
                                 chapter_footer_text=body_matter_footer,
