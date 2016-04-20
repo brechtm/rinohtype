@@ -20,7 +20,8 @@ __all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
            'ReferenceType', 'ReferencingParagraph', 'ReferencingParagraphStyle',
            'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
            'NoteMarkerWithNote',
-           'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE']
+           'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE',
+           'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 
 
                             # examples for section "3.2 Some Title"
@@ -224,6 +225,8 @@ class FieldType(object):
 
 PAGE_NUMBER = FieldType('page number')
 NUMBER_OF_PAGES = FieldType('number of pages')
+DOCUMENT_TITLE = FieldType('document title')
+DOCUMENT_SUBTITLE = FieldType('document subtitle')
 
 
 class SectionFieldType(FieldType):
@@ -270,6 +273,10 @@ class Variable(SingleStyledTextBase):
             document_section = container.document_part.document_section
             number = document_section.previous_number_of_pages
             text = format_number(number, container.page.number_format)
+        elif self.type == DOCUMENT_TITLE:
+            text = container.document.metadata['title']
+        elif self.type == DOCUMENT_SUBTITLE:
+            text = container.document.metadata['subtitle']
         elif isinstance(self.type, SectionFieldType):
             doc = container.document
             section = container.page.get_current_section(self.type.level)
