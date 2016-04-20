@@ -22,7 +22,7 @@ from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
 from .text import StyledText, Tab
 from .strings import StringField
-from .structure import Header, HorizontalRule, Footer, SectionTitles
+from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet, Bool, Integer, AttributeType
 from .stylesheets import sphinx
 from .util import NamedDescriptor, WithNamedDescriptors
@@ -202,14 +202,12 @@ class SimplePage(PageBase):
                                                bottom=header_bottom,
                                                width=self.body_width)
             self.header.append_flowable(Header(header))
-            self.header.append_flowable(HorizontalRule(style='header'))
         if footer:
             footer_vpos = self.body.bottom + header_footer_distance
             self.footer = DownExpandingContainer('footer', HEADER_FOOTER, self,
                                                  left=self.left_margin,
                                                  top=footer_vpos,
                                                  width=self.body_width)
-            self.footer.append_flowable(HorizontalRule(style='footer'))
             self.footer.append_flowable(Footer(footer))
 
     def create_chapter_title(self, heading):

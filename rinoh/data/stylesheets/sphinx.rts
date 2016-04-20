@@ -464,7 +464,7 @@ base=red adminition title
 [warning admonition inline title]
 base=warning admonition title
 
-[header]
+[header_footer:Paragraph]
 base=default
 typeface=$(sans_typeface)
 font_size=10pt
@@ -472,15 +472,15 @@ font_weight=BOLD
 indent_first=0pt
 tab_stops=50% CENTER, 100% RIGHT
 
-[line under header]
-space_above=2pt
-stroke=$(thin_black_stroke)
+[header]
+base=header_footer
+padding_bottom=2pt
+border_bottom=$(thin_black_stroke)
 
 [footer]
-base=header
-
-[line above footer]
-stroke=$(thin_black_stroke)
+base=header_footer
+padding_top=4pt
+border_top=$(thin_black_stroke)
 
 [footnote marker]
 position=SUPERSCRIPT

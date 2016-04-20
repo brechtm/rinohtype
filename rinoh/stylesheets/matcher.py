@@ -228,9 +228,7 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
 # page header and footer
 
 matcher('header', Header)
-matcher('line under header', HorizontalRule.like('header'))
 matcher('footer', Footer)
-matcher('line above footer', HorizontalRule.like('footer'))
 
 
 # footnotes & citations
