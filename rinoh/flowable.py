@@ -601,9 +601,10 @@ class Float(Flowable):
 
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow contents into the float space associated with `container`."""
-        if self not in container.document.floats:
+        id = self.get_id(container.document)
+        if id not in container.document.floats:
             self.flowable.flow(container.float_space, None)
-            container.document.floats.add(self)
+            container.document.floats.add(id)
             container.page.check_overflow()
         return 0, 0, last_descender
 

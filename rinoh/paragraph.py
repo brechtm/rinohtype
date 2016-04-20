@@ -36,7 +36,7 @@ import re
 
 from ast import literal_eval
 from copy import copy
-from functools import lru_cache, partial
+from functools import partial
 from itertools import tee
 
 from . import DATA_PATH
@@ -504,7 +504,6 @@ class GlyphAndWidth(object):
         self.width = width
 
 
-@lru_cache()
 def create_to_glyphs(span, flowable_target):
     font = span.font(flowable_target)
     scale = span.height(flowable_target) / font.units_per_em

@@ -331,9 +331,6 @@ class SingleStyledText(SingleStyledTextBase):
         super().__init__(style=style, parent=parent)
         self._text = text
 
-    def __hash__(self):
-        return hash((self._text, self.style))
-
     def text(self, container, **kwargs):
         return self._text
 
@@ -388,9 +385,6 @@ class MixedStyledText(StyledText, list):
             return super().__eq__(other) and list.__eq__(self, other)
         finally:
             assumed_equal.remove(other_id)
-
-    def __hash__(self):
-        return hash((tuple(self), self.style))
 
     def prepare(self, flowable_target):
         for item in self:
