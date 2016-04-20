@@ -331,12 +331,6 @@ class SingleStyledText(SingleStyledTextBase):
         super().__init__(style=style, parent=parent)
         self._text = text
 
-    def __eq__(self, other):
-        try:
-            return (self._text, self.style) == (other._text, other.style)
-        except AttributeError:
-            return False
-
     def __hash__(self):
         return hash((self._text, self.style))
 
@@ -346,6 +340,8 @@ class SingleStyledText(SingleStyledTextBase):
 
 class MixedStyledText(StyledText, list):
     """Concatenation of :class:`StyledText` objects."""
+
+    _assumed_equal = {}
 
     def __init__(self, text_or_items, style=None, parent=None):
         """Initialize this mixed-styled text as the concatenation of
@@ -382,9 +378,16 @@ class MixedStyledText(StyledText, list):
         return ''.join(item.to_string(flowable_target) for item in self)
 
     def __eq__(self, other):
-        return (all(child == other_child
-                    for child, other_child in zip_longest(self, other))
-                and self.style == other.style)
+        # avoid infinite recursion due to the 'parent' attribute
+        assumed_equal = type(self)._assumed_equal.setdefault(id(self), set())
+        other_id = id(other)
+        if other_id in assumed_equal:
+            return True
+        try:
+            assumed_equal.add(other_id)
+            return super().__eq__(other) and list.__eq__(self, other)
+        finally:
+            assumed_equal.remove(other_id)
 
     def __hash__(self):
         return hash((tuple(self), self.style))

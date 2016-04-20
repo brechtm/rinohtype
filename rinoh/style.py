@@ -554,6 +554,12 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                                     style.__class__.__name__))
         self.style = style
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
     def short_repr(self, flowable_target):
         args = ', '.join(chain(self._short_repr_args(flowable_target),
                                self._short_repr_kwargs(flowable_target)))
