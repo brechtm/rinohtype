@@ -58,6 +58,10 @@ class FlowableStyle(Style):
     keep_with_next = Attribute(Bool, False, 'Keep this flowable and the next '
                                             'on the same page')
     border = Attribute(Stroke, None, 'Border surrounding the flowable')
+    border_left = Attribute(Stroke, None, 'Border left of the flowable')
+    border_right = Attribute(Stroke, None, 'Border right of the flowable')
+    border_top = Attribute(Stroke, None, 'Border above the flowable')
+    border_bottom = Attribute(Stroke, None, 'Border below the flowable')
     background_color = Attribute(Color, None, "Color of the area within the "
                                               "flowable's borders")
 
@@ -180,17 +184,24 @@ class Flowable(Styled):
     def render_frame(self, container, container_height, top=True, bottom=True):
         width, height = float(container.width), - float(container_height)
         border = self.get_style('border', container)
+        border_left = self.get_style('border_left', container) or border
+        border_right = self.get_style('border_right', container) or border
+        border_top = self.get_style('border_top', container) or border
+        border_bottom = self.get_style('border_bottom', container) or border
         background_color = self.get_style('background_color', container)
         fill_style = ShapeStyle(stroke=None, fill_color=background_color)
         rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
         rect.render(container)
-        style = dict(style=LineStyle(stroke=border))
+
+        def render_border(start, end, stroke):
+            Line(start, end, style=LineStyle(stroke=stroke)).render(container)
+
         if top:
-            Line((0, 0), (width, 0), **style).render(container)
-        Line((0, 0), (0, height), **style).render(container)          # left
-        Line((width, 0), (width, height), **style).render(container)  # right
+            render_border((0, 0), (width, 0), border_top)
+        render_border((0, 0), (0, height), border_left)
+        render_border((width, 0), (width, height), border_right)
         if bottom:
-            Line((0, height), (width, height), **style).render(container)
+            render_border((0, height), (width, height), border_bottom)
 
     def render(self, container, descender, state, **kwargs):
         """Renders the flowable's content to `container`, with the flowable's

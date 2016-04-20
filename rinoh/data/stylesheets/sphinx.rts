@@ -605,6 +605,9 @@ margin_right=40pt
 
 [title page logo]
 width=100%
+border_top=0.4pt,#000
+padding_top=14pt
+space_above=10pt
 
 [title page title]
 typeface=$(sans_typeface)
