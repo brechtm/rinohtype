@@ -18,15 +18,19 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
-from rinoh.dimension import INCH
+from rinoh.dimension import INCH, PT
 from rinoh.index import IndexSection
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
-from rinoh.structure import TableOfContentsSection
+from rinoh.paragraph import Paragraph
+from rinoh.reference import Variable, PAGE_NUMBER, Reference, TITLE
+from rinoh.structure import TableOfContentsSection, HorizontalRule, \
+    HorizontalRuleStyle
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
                             DocumentTemplate, FixedDocumentPartTemplate,
                             ContentsPartTemplate)
+from rinoh.text import Tab
 
 from ...backend import pdf
 
@@ -168,16 +172,32 @@ class RinohBuilder(Builder):
         rinoh_document.render(outfilename)
 
 
+def front_matter_section_title_flowables(section_id):
+    yield Paragraph(Reference(section_id, TITLE),
+                    style='front matter section title')
+
+
 def default_document_parts(config):
     page_kwargs = dict(page_size=config.rinoh_paper_size,
-                       left_margin=1*INCH, right_margin=1*INCH)
+                       left_margin=1*INCH, right_margin=1*INCH,
+                       top_margin=1*INCH, bottom_margin=1*INCH)
     title_page_template = TitlePageTemplate(**page_kwargs)
-    page_template = PageTemplate(**page_kwargs)
+    front_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
+    front_matter_page = PageTemplate(header_text=None,
+                                     footer_text=front_matter_footer,
+                                     chapter_header_text=None,
+                                     chapter_footer_text=front_matter_footer,
+                                     chapter_title_height=2.5*INCH,
+                                     chapter_title_flowables=
+                                        front_matter_section_title_flowables,
+                                     **page_kwargs)
+    content_page = PageTemplate(**page_kwargs)
     return [FixedDocumentPartTemplate(title_page_template),
-            FixedDocumentPartTemplate(page_template, [TableOfContentsSection()],
+            FixedDocumentPartTemplate(front_matter_page,
+                                      [TableOfContentsSection()],
                                       page_number_format=ROMAN_LC),
-            ContentsPartTemplate(page_template, page_number_format=NUMBER),
-            FixedDocumentPartTemplate(page_template, [IndexSection()])]
+            ContentsPartTemplate(content_page, page_number_format=NUMBER),
+            FixedDocumentPartTemplate(content_page, [IndexSection()])]
 
 
 def setup(app):

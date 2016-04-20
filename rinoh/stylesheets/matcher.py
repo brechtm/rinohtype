@@ -17,6 +17,9 @@ matcher = StyledMatcher({
     'title page date': Paragraph.like('title page date'),
     'title page extra': Paragraph.like('title page extra'),
 
+    # front matter
+    'front matter section title': Paragraph.like('front matter section title'),
+
     # inline text
 
     'italic': StyledText.like('italic'),
