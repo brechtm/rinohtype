@@ -2,6 +2,7 @@
 mono_typeface=TeX Gyre Cursor
 serif_typeface=TeX Gyre Pagella
 sans_typeface=Tex Gyre Heros
+thin_black_stroke=0.5pt,#000
 
 [default:Paragraph]
 typeface=$(serif_typeface)
@@ -35,6 +36,10 @@ font_slant=italic
 [strong]
 font_weight=BOLD
 
+[literal strong]
+base=strong
+typeface=$(mono_typeface)
+
 [quote]
 font_slant=italic
 
@@ -66,6 +71,7 @@ ligatures=False
 font_color=#f00
 
 [internal hyperlink]
+font_slant=italic
 font_color=#355f7b
 
 [external hyperlink]
@@ -81,6 +87,10 @@ text_align=LEFT
 indent_first=0
 space_above=4pt
 space_below=4pt
+border=$(thin_black_stroke)
+padding_left=3pt
+padding_top=1pt
+padding_bottom=3pt
 ligatures=False
 hyphenate=False
 
@@ -147,7 +157,7 @@ number_format=None
 [heading level 2]
 base=heading level 1
 font_size=14pt
-space_above=16pt
+space_above=26pt
 space_below=10pt
 
 [heading level 3]
@@ -464,13 +474,13 @@ tab_stops=50% CENTER, 100% RIGHT
 
 [line under header]
 space_above=2pt
-stroke=0.2pt,#000
+stroke=$(thin_black_stroke)
 
 [footer]
 base=header
 
 [line above footer]
-stroke=0.2pt,#000
+stroke=$(thin_black_stroke)
 
 [footnote marker]
 position=SUPERSCRIPT
@@ -483,7 +493,7 @@ custom_label=True
 
 [footnote paragraph]
 base=default
-font_size=9pt
+font_size=8pt
 indent_first=0
 line_spacing=Fixed(10pt)
 
@@ -605,7 +615,7 @@ margin_right=40pt
 
 [title page logo]
 width=100%
-border_top=0.4pt,#000
+border_top=$(thin_black_stroke)
 padding_top=14pt
 space_above=10pt
 
@@ -658,8 +668,8 @@ typeface=$(serif_typeface)
 font_size=10pt
 text_align=right
 space_above=1in
-border_top=0.4pt,#000
-border_bottom=0.4pt,#000
+border_top=$(thin_black_stroke)
+border_bottom=$(thin_black_stroke)
 padding_top=8pt
 padding_bottom=9pt
 
@@ -678,7 +688,7 @@ font_size=14pt
 font_weight=bold
 text_align=right
 space_above=0.83in
-border_top=0.4pt,#000
-border_bottom=0.4pt,#000
+border_top=$(thin_black_stroke)
+border_bottom=$(thin_black_stroke)
 padding_top=16pt
 padding_bottom=20pt

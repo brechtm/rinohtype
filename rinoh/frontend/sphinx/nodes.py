@@ -128,7 +128,8 @@ class HighlightLang(DocutilsDummyNode):
 
 
 class Literal_Strong(Strong):
-    pass
+    def build_styled_text(self):
+        return SingleStyledText(self.text, style='literal strong')
 
 
 # toctree nodes are processed by the Sphinx builder

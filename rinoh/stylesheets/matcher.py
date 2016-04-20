@@ -31,6 +31,7 @@ matcher = StyledMatcher({
     'bold': StyledText.like('bold'),
     'emphasis': StyledText.like('emphasis'),
     'strong': StyledText.like('strong'),
+    'literal strong': StyledText.like('literal strong'),
     'quote': StyledText.like('quote'),
     'file path': StyledText.like('file path'),
     'window title': StyledText.like('window title'),
