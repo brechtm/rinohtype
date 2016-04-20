@@ -651,7 +651,7 @@ base=level 1 index entry
 indent_first=60pt
 
 
-# front matter
+# chapter titles
 
 [front matter section title]
 typeface=$(serif_typeface)
@@ -662,3 +662,23 @@ border_top=0.4pt,#000
 border_bottom=0.4pt,#000
 padding_top=8pt
 padding_bottom=9pt
+
+[body matter chapter label]
+typeface=$(sans_typeface)
+font_size=10pt
+font_weight=bold
+text_align=right
+
+[body matter chapter number]
+font_size=14pt
+
+[body matter chapter title]
+typeface=$(sans_typeface)
+font_size=14pt
+font_weight=bold
+text_align=right
+space_above=0.83in
+border_top=0.4pt,#000
+border_bottom=0.4pt,#000
+padding_top=16pt
+padding_bottom=20pt

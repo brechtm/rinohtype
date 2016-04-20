@@ -23,7 +23,8 @@ from rinoh.index import IndexSection
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
 from rinoh.paragraph import Paragraph
-from rinoh.reference import Variable, PAGE_NUMBER, Reference, TITLE
+from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
+                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE)
 from rinoh.structure import TableOfContentsSection
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
@@ -197,7 +198,14 @@ def default_document_parts(config):
                                      chapter_title_flowables=
                                         front_matter_section_title_flowables,
                                      **page_kwargs)
-    content_page = PageTemplate(chapter_title_height=2.4*INCH,
+    body_matter_header = (Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                          + ', ' + Variable(DOCUMENT_SUBTITLE))
+    body_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
+    content_page = PageTemplate(header_text=body_matter_header,
+                                footer_text=body_matter_footer,
+                                chapter_header_text=None,
+                                chapter_footer_text=body_matter_footer,
+                                chapter_title_height=2.4*INCH,
                                 chapter_title_flowables=
                                     body_matter_chapter_title_flowables,
                                 **page_kwargs)
