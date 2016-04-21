@@ -171,9 +171,11 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     footer = None
     end_at = LEFT
 
-    def __init__(self, document_section, page_template, flowables):
+    def __init__(self, document_section,
+                 right_page_template, left_page_template, flowables):
         self.document_section = document_section
-        self.page_template = page_template
+        self.right_page_template = right_page_template
+        self.left_page_template = left_page_template or right_page_template
         self.flowable_targets = []
         self.pages = []
         if flowables:
@@ -228,7 +230,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        return self.page_template.page(self, self.chain, new_chapter, **kwargs)
+        page_template = (self.left_page_template if len(self.pages) % 2
+                         else self.right_page_template)
+        return page_template.page(self, self.chain, new_chapter, **kwargs)
 
     @classmethod
     def match(cls, styled, container):

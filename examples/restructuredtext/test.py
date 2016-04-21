@@ -10,9 +10,9 @@ from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
 if __name__ == '__main__':
     title_page_template = TitlePageTemplate(top_margin=8*CM)
     page_template = PageTemplate()
-    document_parts = [FixedDocumentPartTemplate(title_page_template),
-                      FixedDocumentPartTemplate(page_template,
-                                                [TableOfContentsSection()]),
+    document_parts = [FixedDocumentPartTemplate([], title_page_template),
+                      FixedDocumentPartTemplate([TableOfContentsSection()],
+                                                page_template),
                       ContentsPartTemplate(page_template)]
 
     strings = (AdmonitionTitles(important='IMPORTANT:',

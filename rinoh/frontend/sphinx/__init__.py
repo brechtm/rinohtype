@@ -24,7 +24,8 @@ from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
 from rinoh.paragraph import Paragraph
 from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
-                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE)
+                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE, REFERENCE,
+                             SECTION_NUMBER, SECTION_TITLE)
 from rinoh.structure import TableOfContentsSection
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
@@ -189,34 +190,71 @@ def default_document_parts(config):
                        left_margin=1*INCH, right_margin=1*INCH,
                        top_margin=1*INCH, bottom_margin=1*INCH)
     title_page_template = TitlePageTemplate(**page_kwargs)
-    front_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
-    front_matter_page = PageTemplate(header_footer_distance=0,
-                                     header_text=None,
-                                     footer_text=front_matter_footer,
-                                     chapter_header_text=None,
-                                     chapter_footer_text=front_matter_footer,
-                                     chapter_title_height=2.5*INCH,
-                                     chapter_title_flowables=
-                                        front_matter_section_title_flowables,
-                                     **page_kwargs)
-    body_matter_header = (Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                          + ', ' + Variable(DOCUMENT_SUBTITLE))
-    body_matter_footer = Tab() + Tab() + Variable(PAGE_NUMBER)
-    content_page = PageTemplate(header_footer_distance=0,
-                                header_text=body_matter_header,
-                                footer_text=body_matter_footer,
-                                chapter_header_text=None,
-                                chapter_footer_text=body_matter_footer,
-                                chapter_title_height=2.4*INCH,
-                                chapter_title_flowables=
-                                    body_matter_chapter_title_flowables,
-                                **page_kwargs)
-    return [FixedDocumentPartTemplate(title_page_template),
-            FixedDocumentPartTemplate(front_matter_page,
-                                      [TableOfContentsSection()],
+    front_matter_right_page =\
+        PageTemplate(header_footer_distance=0,
+                     header_text=None,
+                     footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.5 * INCH,
+                     chapter_title_flowables=
+                        front_matter_section_title_flowables,
+                     **page_kwargs)
+    front_matter_left_page =\
+        PageTemplate(header_footer_distance=0,
+                     header_text=None,
+                     footer_text=Variable(PAGE_NUMBER),
+                     **page_kwargs)
+    content_right_page = \
+        PageTemplate(header_footer_distance=0,
+                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(SECTION_NUMBER(2))
+                                  + '.  ' + Variable(SECTION_TITLE(2))
+                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.4*INCH,
+                     chapter_title_flowables=
+                         body_matter_chapter_title_flowables,
+                     **page_kwargs)
+    content_left_page = \
+        PageTemplate(header_footer_distance=0,
+                     header_text=(Variable(DOCUMENT_TITLE) + ', '
+                                  + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
+                                  'Chapter ' + Variable(SECTION_NUMBER(1))
+                                  + '.  ' + Variable(SECTION_TITLE(1))),
+                     **page_kwargs)
+    back_matter_right_page =\
+        PageTemplate(header_footer_distance=0,
+                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(SECTION_TITLE(1))
+                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.5 * INCH,
+                     chapter_title_flowables=
+                        front_matter_section_title_flowables,
+                     **page_kwargs)
+    back_matter_left_page =\
+        PageTemplate(header_footer_distance=0,
+                     header_text=(Variable(DOCUMENT_TITLE) + ', '
+                                  + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
+                                  + Variable(SECTION_TITLE(1))),
+                     **page_kwargs)
+    return [FixedDocumentPartTemplate([], title_page_template),
+            FixedDocumentPartTemplate([TableOfContentsSection()],
+                                      front_matter_right_page,
+                                      front_matter_left_page,
                                       page_number_format=ROMAN_LC),
-            ContentsPartTemplate(content_page, page_number_format=NUMBER),
-            FixedDocumentPartTemplate(content_page, [IndexSection()])]
+            ContentsPartTemplate(content_right_page, content_left_page,
+                                 page_number_format=NUMBER),
+            FixedDocumentPartTemplate([IndexSection()],
+                                      back_matter_right_page,
+                                      back_matter_left_page)]
 
 
 def setup(app):

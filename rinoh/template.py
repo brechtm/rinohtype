@@ -259,8 +259,10 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(object):
-    def __init__(self, page_template, page_number_format=NUMBER):
-        self.page_template = page_template
+    def __init__(self, right_page_template, left_page_template=None,
+                 page_number_format=NUMBER):
+        self.page_template = right_page_template
+        self.left_page_template = left_page_template
         self.page_number_format = page_number_format
 
     def document_part(self, document_section):
@@ -269,18 +271,21 @@ class DocumentPartTemplate(object):
 
 class ContentsPartTemplate(DocumentPartTemplate):
     def document_part(self, document_section):
-        return DocumentPart(document_section, self.page_template,
+        return DocumentPart(document_section,
+                            self.page_template, self.left_page_template,
                             document_section.document.content_flowables)
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
-    def __init__(self, page_template, flowables=None,
+    def __init__(self, flowables, right_page_template, left_page_template=None,
                  page_number_format=NUMBER):
-        super().__init__(page_template, page_number_format)
-        self.flowables = flowables or []
+        super().__init__(right_page_template, left_page_template,
+                         page_number_format=page_number_format)
+        self.flowables = flowables
 
     def document_part(self, document_section):
-        return DocumentPart(document_section, self.page_template,
+        return DocumentPart(document_section,
+                            self.page_template, self.left_page_template,
                             self.flowables)
 
 
