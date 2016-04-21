@@ -227,7 +227,8 @@ def default_document_parts(config):
                                   + '.  ' + Variable(SECTION_TITLE(1))),
                      **page_kwargs)
     back_matter_right_page =\
-        PageTemplate(header_footer_distance=0,
+        PageTemplate(columns=2,
+                     header_footer_distance=0,
                      header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
                                   + ', ' + Variable(DOCUMENT_SUBTITLE)),
                      footer_text=(Variable(SECTION_TITLE(1))
@@ -239,7 +240,8 @@ def default_document_parts(config):
                         front_matter_section_title_flowables,
                      **page_kwargs)
     back_matter_left_page =\
-        PageTemplate(header_footer_distance=0,
+        PageTemplate(columns=2,
+                     header_footer_distance=0,
                      header_text=(Variable(DOCUMENT_TITLE) + ', '
                                   + Variable(DOCUMENT_SUBTITLE)),
                      footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
