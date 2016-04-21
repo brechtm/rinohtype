@@ -109,12 +109,11 @@ class Page(Container):
                 first_page = self.document.page_references[id]
             except KeyError:
                 break
-            last_page = self.document.last_page_references.get(id, float('inf'))
             if first_page == self.number:
                 return section
             elif first_page > self.number:
                 break
-            elif first_page <= self.number <= last_page:
+            elif first_page <= self.number:
                 current_section = section
         return current_section
 
