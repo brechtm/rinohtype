@@ -341,9 +341,10 @@ class GroupedFlowables(Flowable):
                 container.advance(item_spacing, True)
         except KeepWithNextException:
             raise EndOfContainer(saved_state)
-        except EndOfContainer as eoc:
-            state.prepend(eoc.flowable_state)
-            raise EndOfContainer(state, eoc.page_break)
+        except (EndOfContainer, PageBreakException) as exc:
+            state.prepend(exc.flowable_state)
+            exc.flowable_state = state
+            raise exc
         return max_flowable_width, first_top_to_baseline or 0, descender
 
     def _flow_with_next(self, state, container, descender, **kwargs):
@@ -637,15 +638,16 @@ class PageBreak(Flowable):
     exception_class = PageBreakException
 
     def flow(self, container, last_descender, state=None, **kwargs):
+        state = state or self.initial_state(container)
         this_page_type = LEFT if container.page.number % 2 == 0 else RIGHT
         page_break = self.get_style('page_break', container)
-        if not state and page_break:
+        if state.initial and page_break:
             if not (container.page._empty
                     and page_break in (ANY, this_page_type)):
                 if page_break == ANY:
                     page_break = LEFT if container.page.number % 2 else RIGHT
                 chain = container.top_level_container.chain
-                raise self.exception_class(page_break, chain)
+                raise self.exception_class(page_break, chain, state)
         return super().flow(container, last_descender, state)
 
     def render(self, container, descender, state, **kwargs):

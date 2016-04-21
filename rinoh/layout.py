@@ -58,10 +58,11 @@ class EndOfContainer(Exception):
 
 
 class PageBreakException(ContainerOverflow):
-    def __init__(self, break_type, chain):
+    def __init__(self, break_type, chain, flowable_state):
         super().__init__()
         self.break_type = break_type
         self.chain = chain
+        self.flowable_state = flowable_state
 
 
 class ReflowRequired(Exception):
