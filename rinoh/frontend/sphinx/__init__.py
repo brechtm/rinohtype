@@ -57,8 +57,9 @@ class RinohBuilder(Builder):
         # ignore source
         return self.get_target_uri(to, typ)
 
-    def transform_refuris(self, tree):
-        """Transform internal refuri targets in reference nodes to refids."""
+    def preprocess_tree(self, tree):
+        """Transform internal refuri targets in reference nodes to refids and
+        transform footnote rubrics so that they do not end up in the output"""
         def transform_id(id):
             return id if id.startswith('%') else '%' + docname + '#' + id
 
@@ -66,6 +67,9 @@ class RinohBuilder(Builder):
             if node.tagname == 'start_of_file':
                 docname = node['docname']
                 continue
+            if (node.tagname == 'rubric'
+                and node.children[0].astext() in ('Footnotes', _('Footnotes'))):
+                node.tagname = 'footnotes-rubric'   # mapped to a DummyFlowable
             try:
                 if 'refid' in node:
                     node['refid'] = transform_id(node['refid'])
@@ -145,7 +149,7 @@ class RinohBuilder(Builder):
             docname, targetname, title, author = entry
             self.info("processing " + targetname + "... ", nonl=1)
             doctree = self.assemble_doctree(docname)
-            self.transform_refuris(doctree)
+            self.preprocess_tree(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author

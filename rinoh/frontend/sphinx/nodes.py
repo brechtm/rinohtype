@@ -260,3 +260,8 @@ class AutoSummary_Table(DocutilsGroupingNode):
 class Number_Reference(DocutilsInlineNode):
     def build_styled_text(self):
         return Reference(self.get('refid'), REFERENCE, style='link')
+
+
+class Footnotes_Rubric(DocutilsDummyNode):
+    """A custom rinohtype-specific node that allows easily excluding footnote
+    rubrics from the output"""
