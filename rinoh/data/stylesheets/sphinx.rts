@@ -83,12 +83,13 @@ font_color=#7f7f7f
 [literal]
 base=default
 typeface=$(mono_typeface)
+font_size=9pt
 text_align=LEFT
 indent_first=0
-space_above=4pt
+space_above=6pt
 space_below=4pt
 border=$(thin_black_stroke)
-padding_left=3pt
+padding_left=5pt
 padding_top=1pt
 padding_bottom=3pt
 ligatures=False
@@ -301,6 +302,7 @@ indent_first=0pt
 [definition list]
 
 [definition term]
+keep_with_next=true
 
 [definition term paragraph]
 base=default
@@ -322,8 +324,11 @@ font_slant=ITALIC
 # (Sphinx) object descriptions
 
 [object description]
-space_above=6pt
-space_below=6pt
+space_above=3pt
+space_below=3pt
+
+[object definition term]
+base=definition term
 
 [object signature]
 base=default
@@ -331,6 +336,8 @@ base=default
 [object name]
 typeface=$(mono_typeface)
 font_weight=BOLD
+ligatures=False
+hyphenate=False
 
 [additional name part]
 base=monospaced
@@ -361,6 +368,10 @@ font_weight=BOLD
 
 [object description content]
 base=definition
+
+[object description content paragraph]
+base=body
+space_above=1pt
 
 
 # (Sphinx) production list
@@ -409,60 +420,54 @@ base=default
 font_slant=ITALIC
 
 [admonition]
-inline_title=true
-space_above=5pt
+inline_title=false
+space_above=9pt
 space_below=5pt
-padding_left=10pt
-padding_right=10pt
-padding_top=4pt
-padding_bottom=4pt
-background_color=#efefff
-border=1pt,#666
+padding_top=0
+padding_bottom=6pt
+border_top=$(thin_black_stroke)
+border_bottom=$(thin_black_stroke)
 
 [admonition title]
 base=default
 font_weight=BOLD
-font_variant=small capital
 indent_first=0
 space_above=5pt
-space_below=5pt
+space_below=2pt
 
 [admonition inline title]
 base=admonition title
+
+[builtin admonition:Admonition]
+base=admonition
+inline_title=true
+border=$(thin_black_stroke)
+padding_left=8pt
+padding_right=8pt
 
 [red adminition title:Paragraph]
 base=admonition title
 font_color=#f00
 
-[attention admonition title]
-base=red adminition title
+[attention admonition]
+base=builtin admonition
 
-[attention admonition inline title]
-base=attention admonition title
+[caution admonition]
+base=builtin admonition
 
-[caution admonition title]
-base=red adminition title
+[danger admonition]
+base=builtin admonition
 
-[caution admonition inline title]
-base=caution admonition title
+[error admonition]
+base=builtin admonition
 
-[danger admonition title]
-base=red adminition title
+[warning admonition]
+base=builtin admonition
 
-[danger admonition inline title]
-base=danger admonition title
-
-[error admonition title]
-base=red adminition title
-
-[error admonition inline title]
-base=error admonition title
-
-[warning admonition title]
-base=red adminition title
-
-[warning admonition inline title]
-base=warning admonition title
+[seealso admonition]
+base=admonition
+border_top=none
+border_bottom=none
 
 [header_footer:Paragraph]
 base=default
@@ -486,7 +491,7 @@ space_above=18pt
 
 [footnote marker]
 position=SUPERSCRIPT
-number_format=SYMBOL
+number_format=number
 
 [citation marker]
 label_prefix='['

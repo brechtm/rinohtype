@@ -14,13 +14,13 @@ from ...flowable import LabeledFlowable
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
-from ...structure import DefinitionList, DefinitionTerm, FieldList
+from ...structure import DefinitionList, DefinitionTerm, Definition, FieldList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 
 from ..rst import (DocutilsInlineNode, DocutilsBodyNode,
                    DocutilsGroupingNode, DocutilsDummyNode)
-from ..rst.nodes import Admonition, Admonition, Strong, Emphasis
+from ..rst.nodes import Admonition, Strong, Emphasis
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
@@ -234,7 +234,7 @@ class Desc_Annotation(DocutilsInlineNode):
 
 
 class Desc_Content(DocutilsGroupingNode):
-    pass
+    grouped_flowables_class = Definition
 
 
 class Desc_Returns(DocutilsInlineNode):

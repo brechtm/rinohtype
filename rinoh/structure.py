@@ -321,13 +321,13 @@ class AdmonitionTitles(Strings):
     attention = String('Attention!', 'Title for attention admonitions')
     caution = String('Caution!', 'Title for caution admonitions')
     danger = String('!DANGER!', 'Title for danger admonitions')
-    error = String('Error', 'Title for error admonitions')
-    hint = String('Hint', 'Title for hint admonitions')
+    error = String('Error:', 'Title for error admonitions')
+    hint = String('Hint:', 'Title for hint admonitions')
     important = String('Important', 'Title for important admonitions')
-    note = String('Note', 'Title for note admonitions')
-    tip = String('Tip', 'Title for tip admonitions')
-    warning = String('Warning', 'Title for warning admonitions')
-    seealso = String('See also', 'Title for see-also admonitions')
+    note = String('Note:', 'Title for note admonitions')
+    tip = String('Tip:', 'Title for tip admonitions')
+    warning = String('Warning:', 'Title for warning admonitions')
+    seealso = String('See also:', 'Title for see-also admonitions')
 
 
 class Admonition(GroupedFlowables):

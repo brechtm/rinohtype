@@ -177,7 +177,9 @@ matcher('versionmodified', StyledText.like(classes=['versionmodified']))
 desc = DefinitionList.like('object description')
 
 matcher('object description', desc)
-matcher('object signature', desc / DefinitionTerm / ... / Paragraph)
+matcher('object definition term', desc / DefinitionTerm)
+matcher('object signature', SelectorByName('object definition term')
+                                / ... / Paragraph)
 matcher('object name', desc / ... / StyledText.like('main object name'))
 matcher('additional name part', desc / ... / StyledText.like('additional name part'))
 matcher('object type', desc / ... / StyledText.like('type'))
@@ -189,7 +191,9 @@ matcher('object parameter (no emphasis)', desc / ... / StyledText.like('noemph p
 matcher('object brackets', desc / ... / StyledText.like('brackets'))
 matcher('object optional parameter', desc / ... / StyledText.like('optional'))
 matcher('object annotation', desc / ... / StyledText.like('annotation'))
-matcher('object description content', desc / GroupedFlowables)
+matcher('object description content', desc / Definition)
+matcher('object description content paragraph',
+            SelectorByName('object description content') / ... / Paragraph)
 
 
 # (Sphinx) production list
@@ -218,8 +222,10 @@ matcher('admonition title', 'admonition' / Paragraph.like('title'))
 matcher('admonition inline title', SelectorByName('admonition')
                                    / ... / StyledText.like('inline title'))
 
-for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning'):
+for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning',
+                        'seealso'):
     admonition_selector = Admonition.like(admonition_type=admonition_type)
+    matcher(admonition_type + ' admonition', admonition_selector)
     selector = admonition_selector / Paragraph.like('title')
     matcher(admonition_type + ' admonition title', selector)
     matcher(admonition_type + ' admonition inline title',
