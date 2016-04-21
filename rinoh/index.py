@@ -11,7 +11,7 @@ from .paragraph import Paragraph
 from .reference import Reference, PAGE
 from .strings import StringField
 from .structure import Section, Heading, SectionTitles
-from .style import Styled
+from .style import Styled, Attribute, Bool
 from .text import MixedStyledText, StyledText
 from .util import intersperse
 
@@ -29,7 +29,8 @@ class IndexSection(Section):
 
 
 class IndexStyle(GroupedFlowablesStyle):
-    pass
+    initials = Attribute(Bool, True, 'Group index entries based on their'
+                                     'first letter')
 
 
 class Index(GroupedFlowables):
@@ -41,11 +42,19 @@ class Index(GroupedFlowables):
         self.source = self
 
     def flowables(self, container):
+        initials = self.get_style('initials', container)
         def hande_level(index_entries, level=1):
+            top_level = level == 1
             entries = sorted((name for name in index_entries if name),
                              key=lambda s: str(s).lower())
+            last_section = None
             for entry in entries:
+                first = entry[0]
+                section = first.upper() if first.isalpha() else 'Symbols'
                 subentries = index_entries[entry]
+                if initials and top_level and section != last_section:
+                    yield Paragraph(section, style='section label')
+                    last_section = section
                 try:
                     refs = intersperse((Reference(tgt.get_id(document), PAGE)
                                        for term, tgt in subentries[None]), ', ')

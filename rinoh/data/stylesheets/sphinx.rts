@@ -652,6 +652,14 @@ font_size=12pt
 text_align=right
 space_above=220pt
 
+[index]
+
+[index section label]
+typeface=$(sans_typeface)
+font_size=14pt
+space_above=10pt
+space_below=2pt
+
 [level 1 index entry]
 base=default
 

@@ -336,6 +336,8 @@ matcher('horizontal rule', HorizontalRule)
 
 # index
 
+matcher('index', Index)
+matcher('index section label', Index / Paragraph.like('section label'))
 matcher('level 1 index entry', IndexEntry.like('index entry', index_level=1))
 matcher('level 2 index entry', IndexEntry.like('index entry', index_level=2))
 matcher('level 3 index entry', IndexEntry.like('index entry', index_level=3))
