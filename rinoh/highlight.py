@@ -5,14 +5,47 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import unicodedata
 
-from pygments import lex
-from pygments.lexers.agile import PythonLexer
+from rinoh.warnings import warn
+
+try:
+    from pygments import lex
+    from pygments.lexers.agile import PythonLexer
+    PYGMENTS_AVAILABLE = True
+except ImportError:
+    PYGMENTS_AVAILABLE = False
+
 
 from .color import HexColor
 from .font.style import BOLD, ITALIC
-from .style import StyledMatcher, StyleSheet
+from .paragraph import Paragraph, ParagraphStyle
+from .style import StyledMatcher, StyleSheet, OverrideDefault
 from .text import SingleStyledText, TextStyle
+
+
+__all__ = ['CodeBlock', 'CodeBlockStyle', 'Token',
+           'pygments_style_to_stylesheet']
+
+
+class CodeBlockStyle(ParagraphStyle):
+    hyphenate = OverrideDefault(False)
+    ligatures = OverrideDefault(False)
+
+
+class CodeBlock(Paragraph):
+    """Paragraph with syntax highlighting"""
+
+    style_class = CodeBlockStyle
+
+    def __init__(self, text, language=None, id=None, style=None, parent=None):
+        text = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
+        if PYGMENTS_AVAILABLE:
+            text = highlight(text, language)
+        else:
+            warn("The 'pygments' package is not available; cannot perform "
+                 "syntax highlighting of {}s.".format(type(self).__name__))
+        super().__init__(text, id=id, style=style, parent=parent)
 
 
 def highlight(code, lexer=None):

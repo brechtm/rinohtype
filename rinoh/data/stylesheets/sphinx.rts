@@ -80,7 +80,7 @@ font_color=#376f62
 [broken hyperlink]
 font_color=#7f7f7f
 
-[literal]
+[code block]
 base=default
 typeface=$(mono_typeface)
 font_size=9pt
@@ -92,8 +92,6 @@ border=$(thin_black_stroke)
 padding_left=5pt
 padding_top=1pt
 padding_bottom=3pt
-ligatures=False
-hyphenate=False
 
 [block quote]
 margin_left=1cm

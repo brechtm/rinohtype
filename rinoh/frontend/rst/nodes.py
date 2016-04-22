@@ -311,8 +311,7 @@ class Problematic(DocutilsBodyNode, DocutilsInlineNode):
 
 class Literal_Block(DocutilsBodyNode):
     def build_flowable(self):
-        text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, style='literal')
+        return rt.CodeBlock(self.text)
 
 
 class Block_Quote(DocutilsGroupingNode):
@@ -337,8 +336,7 @@ class Line(DocutilsBodyNode):
 
 class Doctest_Block(DocutilsBodyNode):
     def build_flowable(self):
-        text = self.text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
-        return rt.Paragraph(text, style='literal')
+        return rt.CodeBlock(self.text)
 
 
 class Reference(DocutilsBodyNode, DocutilsInlineNode):
