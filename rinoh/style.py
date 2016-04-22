@@ -710,7 +710,7 @@ class StyleSheet(OrderedDict, AttributeType):
     def __init__(self, name, matcher=None, base=None):
         super().__init__()
         self.name = name
-        self.matcher = matcher or base.matcher
+        self.matcher = matcher if matcher is not None else base.matcher
         self.matcher.check_validity()
         self.base = base
         self.variables = {}
