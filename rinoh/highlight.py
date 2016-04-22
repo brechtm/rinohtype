@@ -17,8 +17,17 @@ from .text import SingleStyledText, TextStyle
 
 def highlight(code, lexer=None):
     lexer = lexer or PythonLexer()
-    for ttype, value in lex(code, lexer):
-        yield Token(value, ttype)
+    current_value = ''
+    current_token_type = None
+    for token_type, value in lex(code, lexer):
+        if token_type == current_token_type:
+            current_value += value
+        else:
+            if current_token_type:
+                yield Token(current_value, current_token_type)
+            current_value = value
+            current_token_type = token_type
+    yield Token(current_value, current_token_type)
 
 
 class Token(SingleStyledText):
