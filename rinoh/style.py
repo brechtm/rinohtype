@@ -708,7 +708,8 @@ class StyleSheet(OrderedDict, AttributeType):
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
 
-    def __init__(self, name, matcher=None, base=None, description=None):
+    def __init__(self, name, matcher=None, base=None, description=None,
+                 **user_options):
         super().__init__()
         self.name = name
         self.description = description
@@ -716,6 +717,10 @@ class StyleSheet(OrderedDict, AttributeType):
         self.matcher.check_validity()
         self.base = base
         self.variables = {}
+        if user_options:
+            warn('Unsupported options passed to stylesheet: {}'
+                 .format(', '.join(user_options.keys())))
+        self.user_options = user_options
 
     def __getitem__(self, name):
         try:
@@ -798,24 +803,16 @@ class StyleSheetFile(StyleSheet):
                               comment_prefixes=('#', ), interpolation=None)
         with open(filename) as file:
             config.read_file(file)
-        super().__init__(filename, matcher, base)
+        options = dict(config['STYLESHEET']
+                       if config.has_section('STYLESHEET') else {})
+        name = options.pop('name', filename)
+        super().__init__(name, matcher, base, **options)
         self.filename = filename
+        if config.has_section('VARIABLES'):
+            for name, value in config.items('VARIABLES'):
+                self.variables[name] = value
         for section_name, section_body in config.items():
-            if section_name is None:    # default section
-                continue
-            if section_name == 'STYLESHEET':
-                for name, value in section_body.items():
-                    if name == 'name':
-                        self.name = value
-                    elif name == 'description':
-                        self.description = value
-                    else:
-                        warn("Unknown key '{}' in [STYLESHEET] section of "
-                             "{}".format(name, self.filename))
-                continue
-            if section_name == 'VARIABLES':
-                for name, value in section_body.items():
-                    self.variables[name] = value
+            if section_name in (None, 'STYLESHEET', 'VARIABLES'):
                 continue
             try:
                 style_name, selector  = section_name.split(':')
