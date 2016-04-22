@@ -1,3 +1,7 @@
+[STYLESHEET]
+name=Sphinx
+description=Mostly a copy of the LaTeX style included with Sphinx
+
 [VARIABLES]
 mono_typeface=TeX Gyre Cursor
 serif_typeface=TeX Gyre Pagella

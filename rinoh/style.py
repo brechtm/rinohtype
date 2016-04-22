@@ -28,6 +28,7 @@ from operator import attrgetter
 from .element import DocumentElement
 from .util import (cached, unique, all_subclasses, NamedDescriptor,
                    WithNamedDescriptors, NotImplementedAttribute)
+from .warnings import warn
 
 
 __all__ = ['Style', 'Styled', 'Var', 'AttributeType', 'OptionSet', 'Attribute',
@@ -707,9 +708,10 @@ class StyleSheet(OrderedDict, AttributeType):
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
 
-    def __init__(self, name, matcher=None, base=None):
+    def __init__(self, name, matcher=None, base=None, description=None):
         super().__init__()
         self.name = name
+        self.description = description
         self.matcher = matcher if matcher is not None else base.matcher
         self.matcher.check_validity()
         self.base = base
@@ -797,8 +799,19 @@ class StyleSheetFile(StyleSheet):
         with open(filename) as file:
             config.read_file(file)
         super().__init__(filename, matcher, base)
+        self.filename = filename
         for section_name, section_body in config.items():
             if section_name is None:    # default section
+                continue
+            if section_name == 'STYLESHEET':
+                for name, value in section_body.items():
+                    if name == 'name':
+                        self.name = value
+                    elif name == 'description':
+                        self.description = value
+                    else:
+                        warn("Unknown key '{}' in [STYLESHEET] section of "
+                             "{}".format(name, self.filename))
                 continue
             if section_name == 'VARIABLES':
                 for name, value in section_body.items():
