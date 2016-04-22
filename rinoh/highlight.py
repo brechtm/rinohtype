@@ -12,6 +12,8 @@ from rinoh.warnings import warn
 try:
     from pygments import lex
     from pygments.lexers.agile import PythonLexer
+    from pygments.style import StyleMeta
+    from pygments.styles import get_style_by_name
     PYGMENTS_AVAILABLE = True
 except ImportError:
     PYGMENTS_AVAILABLE = False
@@ -80,7 +82,30 @@ class Token(SingleStyledText):
             yield kwarg
 
 
-def pygments_style_to_stylesheet(pygments_style):
+def get_pygments_style(style):
+    """Retrieve a Pygments style by name, by import path or, if `style` is
+    already Pygments style, simply return it."""
+    if isinstance(style, StyleMeta):
+        return style
+    if '.' in style:  # by python package/module
+        module, name = style.rsplit('.', 1)
+        return getattr(__import__(module, None, None, ['__name__']), name)
+    else:             # by name
+        if style == 'sphinx':
+            from sphinx.pygments_styles import SphinxStyle
+            return SphinxStyle
+        elif style == 'pyramid':
+            from sphinx.pygments_styles import PyramidStyle
+            return PyramidStyle
+        elif style == 'none':
+            from sphinx.pygments_styles import NoneStyle
+            return NoneStyle
+        else:
+            return get_style_by_name(style)
+
+
+def pygments_style_to_stylesheet(style):
+    pygments_style = get_pygments_style(style)
     matcher = StyledMatcher()
     style_sheet_name = '{} (pygments)'.format(pygments_style.__name__)
     style_sheet = StyleSheet(style_sheet_name, matcher=matcher)

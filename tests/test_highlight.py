@@ -1,6 +1,9 @@
 
 import pytest
 
+import pygments
+import sphinx
+
 from pygments.lexers.agile import PythonLexer
 from pygments.style import Style
 from pygments.token import (Comment, Keyword, Number, Text, Name, Punctuation,
@@ -9,7 +12,9 @@ from pygments.token import (Comment, Keyword, Number, Text, Name, Punctuation,
 from rinoh.color import HexColor
 from rinoh.font import ITALIC
 from rinoh.font.style import BOLD
-from rinoh.highlight import highlight, pygments_style_to_stylesheet, Token
+from rinoh.highlight import (highlight, get_pygments_style, Token,
+                             pygments_style_to_stylesheet)
+
 
 
 def test_highlight():
@@ -40,6 +45,18 @@ def test_highlight():
            Token("'cheese'", Literal.String), Token(')', Punctuation),
          Token('\n' + indent + '    ', Text), Token('return', Keyword),
            Token(' ', Text), Token('result', Name), Token('\n', Text)]
+
+
+def test_get_pygments_style():
+    assert get_pygments_style('default') == pygments.styles.default.DefaultStyle
+    assert get_pygments_style('vim') == pygments.styles.vim.VimStyle
+    assert get_pygments_style('none') == sphinx.pygments_styles.NoneStyle
+    assert get_pygments_style('sphinx') == sphinx.pygments_styles.SphinxStyle
+    assert get_pygments_style('pyramid') == sphinx.pygments_styles.PyramidStyle
+    assert (get_pygments_style('sphinx.pygments_styles.SphinxStyle')
+                == sphinx.pygments_styles.SphinxStyle)
+    assert (get_pygments_style(sphinx.pygments_styles.SphinxStyle)
+                == sphinx.pygments_styles.SphinxStyle)
 
 
 def test_pygments_style_to_stylesheet():
