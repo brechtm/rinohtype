@@ -632,7 +632,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                 else:
                     raise DefaultStyleException
         except ParentStyleException:
-            return self.parent.get_style_recursive(attribute, flowable_target)
+            parent = self.parent
+            try:
+                return parent.get_style(attribute, flowable_target)
+            except KeyError:  # 'attribute' is not supported by the parent
+                return parent.get_style_recursive(attribute, flowable_target)
         except BaseStyleException as exception:
             return self.get_base_style_recursive(exception, flowable_target)
 

@@ -86,7 +86,6 @@ font_color=#376f62
 font_color=#7f7f7f
 
 [code block]
-base=default
 typeface=$(mono_typeface)
 font_size=9pt
 text_align=LEFT
