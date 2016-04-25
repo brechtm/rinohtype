@@ -27,6 +27,7 @@ from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
                              DOCUMENT_TITLE, DOCUMENT_SUBTITLE, REFERENCE,
                              SECTION_NUMBER, SECTION_TITLE)
 from rinoh.structure import TableOfContentsSection
+from rinoh.style import StyleSheetFile
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
                             DocumentTemplate, FixedDocumentPartTemplate,
@@ -189,6 +190,11 @@ def body_matter_chapter_title_flowables(section_id):
                     style='body matter chapter title')
 
 
+def default_stylesheet(config):
+    return StyleSheetFile(sphinx_stylesheet.filename, sphinx_stylesheet.matcher,
+                          pygments_style=config.pygments_style)
+
+
 def default_document_parts(config):
     page_kwargs = dict(page_size=config.rinoh_paper_size,
                        left_margin=1*INCH, right_margin=1*INCH,
@@ -266,8 +272,7 @@ def default_document_parts(config):
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', [], 'env')
-    app.add_config_value('rinoh_stylesheet', lambda config: sphinx_stylesheet,
-                         'html')
+    app.add_config_value('rinoh_stylesheet', default_stylesheet, 'html')
     app.add_config_value('rinoh_paper_size', LETTER, 'html')
     app.add_config_value('rinoh_document_parts', default_document_parts, 'html')
     app.add_config_value('rinoh_logo', None, 'html')

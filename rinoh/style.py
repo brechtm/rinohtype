@@ -803,7 +803,7 @@ class StyleSheetFile(StyleSheet):
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
     RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
 
-    def __init__(self, filename, matcher, base=None):
+    def __init__(self, filename, matcher, base=None, **kwargs):
         config = ConfigParser(default_section=None, delimiters=('=',),
                               comment_prefixes=('#', ), interpolation=None)
         with open(filename) as file:
@@ -811,6 +811,7 @@ class StyleSheetFile(StyleSheet):
         options = dict(config['STYLESHEET']
                        if config.has_section('STYLESHEET') else {})
         name = options.pop('name', filename)
+        options.update(kwargs)    # optionally override options
         super().__init__(name, matcher, base, **options)
         self.filename = filename
         if config.has_section('VARIABLES'):
