@@ -1,7 +1,7 @@
 [STYLESHEET]
 name=Sphinx
 description=Mostly a copy of the LaTeX style included with Sphinx
-pygments_style=sphinx
+pygments_style=friendly
 
 [VARIABLES]
 mono_typeface=TeX Gyre Cursor
