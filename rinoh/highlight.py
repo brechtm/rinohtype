@@ -7,8 +7,6 @@
 
 import unicodedata
 
-from rinoh.warnings import warn
-
 try:
     from pygments import lex
     from pygments.lexers.agile import PythonLexer
@@ -24,6 +22,7 @@ from .font.style import BOLD, ITALIC
 from .paragraph import Paragraph, ParagraphStyle
 from .style import StyledMatcher, StyleSheet, OverrideDefault
 from .text import SingleStyledText, TextStyle
+from .warnings import warn
 
 
 __all__ = ['CodeBlock', 'CodeBlockStyle', 'Token',
@@ -105,6 +104,8 @@ def get_pygments_style(style):
 
 
 def pygments_style_to_stylesheet(style):
+    if not PYGMENTS_AVAILABLE:
+        return None
     pygments_style = get_pygments_style(style)
     matcher = StyledMatcher()
     style_sheet_name = '{} (pygments)'.format(pygments_style.__name__)

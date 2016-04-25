@@ -709,7 +709,7 @@ class StyleSheet(OrderedDict, AttributeType):
     style by name. See :class:`Style`."""
 
     def __init__(self, name, matcher=None, base=None, description=None,
-                 **user_options):
+                 pygments_style=None, **user_options):
         super().__init__()
         self.name = name
         self.description = description
@@ -717,6 +717,9 @@ class StyleSheet(OrderedDict, AttributeType):
         self.matcher.check_validity()
         self.base = base
         self.variables = {}
+        from .highlight import pygments_style_to_stylesheet
+        self.highlight = (pygments_style_to_stylesheet(pygments_style)
+                          if pygments_style else None)
         if user_options:
             warn('Unsupported options passed to stylesheet: {}'
                  .format(', '.join(user_options.keys())))
@@ -726,10 +729,11 @@ class StyleSheet(OrderedDict, AttributeType):
         try:
             return super().__getitem__(name)
         except KeyError:
+            if self.highlight is not None:
+                return self.highlight[name]
             if self.base is not None:
                 return self.base[name]
-            else:
-                raise
+            raise
 
     def __setitem__(self, name, style):
         assert name not in self
@@ -776,6 +780,9 @@ class StyleSheet(OrderedDict, AttributeType):
     def find_matches(self, styled, container):
         for match in self.matcher.match(styled, container):
             yield match
+        if self.highlight is not None:
+            for match in self.highlight.find_matches(styled, container):
+                yield match
         if self.base is not None:
             for match in self.base.find_matches(styled, container):
                 yield match
@@ -785,8 +792,6 @@ class StyleSheet(OrderedDict, AttributeType):
                          key=attrgetter('specificity'), reverse=True)
         for match in matches:
             try:
-                # print("({}) matches '{}'".format(styled.path,
-                #                                  match.style_name))
                 return self[match.style_name]
             except KeyError:
                 styled.warn("No style '{}' found in stylesheet"
