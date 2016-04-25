@@ -59,6 +59,11 @@ class DefaultStyleException(StyleException):
     styles. Return the default value for the attribute."""
 
 
+class NoStyleException(StyleException):
+    """No style matching the given :class:`Styled` was found in the
+    :class:`StyleSheet`."""
+
+
 class AttributeType(object):
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
@@ -603,8 +608,6 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         try:
             return self.get_style_recursive(attribute, flowable_target)
         except DefaultStyleException:
-            # self.warn('Falling back to default style for ({})'
-            #           .format(self.path))
             return self.style_class._get_default(attribute)
 
     def get_base_style_recursive(self, exception, flowable_target):
@@ -623,10 +626,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             try:
                 style = self._style(flowable_target)
                 return style.get_value(attribute, flowable_target.document)
-            except DefaultStyleException:
+            except NoStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
                     raise ParentStyleException
-                raise
+                else:
+                    raise DefaultStyleException
         except ParentStyleException:
             return self.parent.get_style_recursive(attribute, flowable_target)
         except BaseStyleException as exception:
@@ -638,7 +642,6 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.style
         else:
             return container.document.stylesheet.find_style(self, container)
-        raise DefaultStyleException
 
     def before_placing(self, container):
         pass
@@ -796,7 +799,7 @@ class StyleSheet(OrderedDict, AttributeType):
             except KeyError:
                 styled.warn("No style '{}' found in stylesheet"
                             .format(match.style_name), container)
-        raise DefaultStyleException
+        raise NoStyleException
 
 
 class StyleSheetFile(StyleSheet):
