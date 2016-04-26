@@ -9,6 +9,7 @@ import unicodedata
 
 try:
     from pygments import lex
+    from pygments.lexers import get_lexer_by_name
     from pygments.lexers.agile import PythonLexer
     from pygments.style import StyleMeta
     from pygments.styles import get_style_by_name
@@ -42,15 +43,15 @@ class CodeBlock(Paragraph):
     def __init__(self, text, language=None, id=None, style=None, parent=None):
         text = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
         if PYGMENTS_AVAILABLE:
-            text = highlight(text, language)
+            if language:
+                text = highlight(text, get_lexer_by_name(language))
         else:
             warn("The 'pygments' package is not available; cannot perform "
                  "syntax highlighting of {}s.".format(type(self).__name__))
         super().__init__(text, id=id, style=style, parent=parent)
 
 
-def highlight(code, lexer=None):
-    lexer = lexer or PythonLexer()
+def highlight(code, lexer):
     current_value = ''
     current_token_type = None
     for token_type, value in lex(code, lexer):

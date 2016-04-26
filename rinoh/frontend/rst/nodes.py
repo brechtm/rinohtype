@@ -311,7 +311,12 @@ class Problematic(DocutilsBodyNode, DocutilsInlineNode):
 
 class Literal_Block(DocutilsBodyNode):
     def build_flowable(self):
-        return rt.CodeBlock(self.text)
+        classes = self.get('classes')
+        if classes and classes[0] == 'code':
+            language = classes[1]
+        else:
+            language = None
+        return rt.CodeBlock(self.text, language=language)
 
 
 class Block_Quote(DocutilsGroupingNode):
