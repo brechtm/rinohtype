@@ -192,7 +192,7 @@ def body_matter_chapter_title_flowables(section_id):
 
 def default_stylesheet(config):
     return StyleSheetFile(sphinx_stylesheet.filename, sphinx_stylesheet.matcher,
-                          pygments_style=config.pygments_style)
+                          pygments_style=config.pygments_style or 'sphinx')
 
 
 def default_document_parts(config):
