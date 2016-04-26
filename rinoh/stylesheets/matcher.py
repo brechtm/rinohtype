@@ -102,7 +102,6 @@ matcher('topic title', 'topic' / Paragraph.like('title'))
 matcher('rubric', Paragraph.like('rubric'))
 
 matcher('sidebar', GroupedFlowables.like('sidebar'))
-matcher('sidebar frame', GroupedFlowables.like('sidebar'))
 matcher('sidebar title', 'sidebar' / Paragraph.like('title'))
 matcher('sidebar subtitle', 'sidebar' / Paragraph.like('subtitle'))
 

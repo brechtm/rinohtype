@@ -217,7 +217,7 @@ base=topic title
 text_align=CENTER
 font_color=#7f0000
 
-[sidebar frame]
+[sidebar]
 space_above=5pt
 space_below=5pt
 padding_left=10pt
