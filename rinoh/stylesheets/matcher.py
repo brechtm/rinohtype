@@ -275,11 +275,11 @@ matcher('choices table', Table.like('choice'))
 matcher('table cell', Table / TableSection / TableRow / TableCell)
 matcher('table body cell background on even row',
         TableBody / TableRow
-        / TableCell.like(row_index=slice(0, None, 2), rowspan=1)
+        / TableCell.like(row_index=slice(1, None, 2), rowspan=1)
         / TableCellBackground)
 matcher('table body cell background on odd row',
         TableBody / TableRow
-        / TableCell.like(row_index=slice(0, None, 1), rowspan=1)
+        / TableCell.like(row_index=slice(0, None, 2), rowspan=1)
         / TableCellBackground)
 matcher('table body cell paragraph', SelectorByName('table cell')
                                      / ... / Paragraph)
