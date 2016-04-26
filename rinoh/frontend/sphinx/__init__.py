@@ -24,7 +24,7 @@ from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
 from rinoh.paragraph import Paragraph
 from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
-                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE, REFERENCE,
+                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                              SECTION_NUMBER, SECTION_TITLE)
 from rinoh.structure import TableOfContentsSection
 from rinoh.style import StyleSheetFile
@@ -61,6 +61,8 @@ class RinohBuilder(Builder):
     def preprocess_tree(self, tree):
         """Transform internal refuri targets in reference nodes to refids and
         transform footnote rubrics so that they do not end up in the output"""
+        highlight_language = self.config.highlight_language
+
         def transform_id(id):
             return id if id.startswith('%') else '%' + docname + '#' + id
 
@@ -71,6 +73,11 @@ class RinohBuilder(Builder):
             if (node.tagname == 'rubric'
                 and node.children[0].astext() in ('Footnotes', _('Footnotes'))):
                 node.tagname = 'footnotes-rubric'   # mapped to a DummyFlowable
+            elif node.tagname == 'highlightlang':
+                highlight_language = node.get('lang')
+            elif (node.tagname == 'literal_block'
+                  and 'language' not in node.attributes):
+                node.attributes['language'] = highlight_language
             try:
                 if 'refid' in node:
                     node['refid'] = transform_id(node['refid'])

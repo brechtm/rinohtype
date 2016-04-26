@@ -123,7 +123,7 @@ class Todo_Node(Admonition):
     pass
 
 
-class HighlightLang(DocutilsDummyNode):
+class HighlightLang(DocutilsDummyNode):  # these are handled by RinohBuilder
     pass
 
 
