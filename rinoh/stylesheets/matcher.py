@@ -177,8 +177,7 @@ desc = DefinitionList.like('object description')
 
 matcher('object description', desc)
 matcher('object definition term', desc / DefinitionTerm)
-matcher('object signature', SelectorByName('object definition term')
-                                / ... / Paragraph)
+matcher('object signature', SelectorByName('object definition term') / Paragraph)
 matcher('object name', desc / ... / StyledText.like('main object name'))
 matcher('additional name part', desc / ... / StyledText.like('additional name part'))
 matcher('object type', desc / ... / StyledText.like('type'))
@@ -192,7 +191,7 @@ matcher('object optional parameter', desc / ... / StyledText.like('optional'))
 matcher('object annotation', desc / ... / StyledText.like('annotation'))
 matcher('object description content', desc / Definition)
 matcher('object description content paragraph',
-            SelectorByName('object description content') / ... / Paragraph)
+            SelectorByName('object description content') / Paragraph)
 
 
 # (Sphinx) production list
