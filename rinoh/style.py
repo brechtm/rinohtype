@@ -371,9 +371,16 @@ class Selector(object):
 
 class EllipsisSelector(Selector):
     @property
+    def selectors(self):
+        return (self, )
+
+    @property
     def referenced_selectors(self):
         return
         yield
+
+    def flatten(self, container):
+        return self
 
 
 class SingleSelector(Selector):
@@ -389,6 +396,9 @@ class SelectorByName(SingleSelector):
     @property
     def referenced_selectors(self):
         yield self.name
+
+    def flatten(self, container):
+        return container.document.stylesheet.get_selector(self.name)
 
     def get_styled_class(self, matcher):
         selector = matcher.by_name[self.name]
@@ -411,6 +421,9 @@ class ClassSelectorBase(SingleSelector):
     def referenced_selectors(self):
         return
         yield
+
+    def flatten(self, container):
+        return self
 
     def get_style_name(self, matcher):
         return self.style_name
@@ -453,6 +466,11 @@ class ContextSelector(Selector):
         for selector in self.selectors:
             for name in selector.referenced_selectors:
                 yield name
+
+    def flatten(self, container):
+        return type(self)(*(child_selector for selector in self.selectors
+                            for child_selector
+                            in selector.flatten(container).selectors))
 
     def get_styled_class(self, matcher):
         return self.selectors[-1].get_styled_class(matcher)
@@ -704,6 +722,7 @@ class StyledMatcher(dict):
             style_str = styled.style if isinstance(styled.style, str) else None
             for style in set((style_str, None)):
                 for name, selector in self[cls].get(style, {}).items():
+                    selector = selector.flatten(container)
                     specificity = selector.match(styled, container)
                     if specificity:
                         yield Match(name, specificity)
