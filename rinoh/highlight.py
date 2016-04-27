@@ -44,7 +44,9 @@ class CodeBlock(Paragraph):
         text = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
         if PYGMENTS_AVAILABLE:
             if language:
-                text = highlight(text, get_lexer_by_name(language))
+                lexer = get_lexer_by_name(language)
+                lexer.add_filter('tokenmerge')
+                text = highlight(text, lexer)
         else:
             warn("The 'pygments' package is not available; cannot perform "
                  "syntax highlighting of {}s.".format(type(self).__name__))
@@ -52,17 +54,8 @@ class CodeBlock(Paragraph):
 
 
 def highlight(code, lexer):
-    current_value = ''
-    current_token_type = None
     for token_type, value in lex(code, lexer):
-        if token_type == current_token_type:
-            current_value += value
-        else:
-            if current_token_type:
-                yield Token(current_value, current_token_type)
-            current_value = value
-            current_token_type = token_type
-    yield Token(current_value, current_token_type)
+        yield Token(value, token_type)
 
 
 class Token(SingleStyledText):
