@@ -858,8 +858,7 @@ class StyleSheet(OrderedDict, AttributeType):
             try:
                 return self[match.style_name]
             except KeyError:
-                styled.warn("No style '{}' found in stylesheet"
-                            .format(match.style_name), container)
+                pass
         raise NoStyleException
 
 
