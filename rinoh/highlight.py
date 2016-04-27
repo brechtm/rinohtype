@@ -39,9 +39,9 @@ class CodeBlock(Paragraph):
     """Paragraph with syntax highlighting"""
 
     style_class = CodeBlockStyle
+    significant_whitespace = True
 
     def __init__(self, text, language=None, id=None, style=None, parent=None):
-        text = text.replace(' ', unicodedata.lookup('NO-BREAK SPACE'))
         if PYGMENTS_AVAILABLE:
             if language:
                 lexer = get_lexer_by_name(language)

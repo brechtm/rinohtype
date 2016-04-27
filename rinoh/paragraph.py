@@ -355,6 +355,7 @@ class ParagraphBase(Flowable):
     :class:`Container`."""
 
     style_class = ParagraphStyle
+    significant_whitespace = False
 
     @property
     def paragraph(self):
@@ -405,11 +406,13 @@ class ParagraphBase(Flowable):
                                          descender, last_line, force)
                 state.initial = False
                 saved_state = copy(state)
-                return Line(tab_stops, line_width, container)
+                return Line(tab_stops, line_width, container,
+                            significant_whitespace=self.significant_whitespace)
             except ContainerOverflow:
                 raise EndOfContainer(saved_state)
 
-        first_line = line = Line(tab_stops, line_width, container, indent_first)
+        first_line = line = Line(tab_stops, line_width, container, indent_first,
+                                 self.significant_whitespace)
         while True:
             try:
                 word = state.next_word()
@@ -642,7 +645,8 @@ class Line(list):
     """Helper class for building and typesetting a single line of text within
     a :class:`Paragraph`."""
 
-    def __init__(self, tab_stops, width, container, indent=0):
+    def __init__(self, tab_stops, width, container, indent=0,
+                 significant_whitespace=False):
         """`tab_stops` is a list of tab stops, as given in the paragraph style.
         `width` is the available line width.
         `indent` specifies the left indent width.
@@ -654,6 +658,7 @@ class Line(list):
         self.container = container
         self.cursor = indent
         self.advance = 0
+        self.significant_whitespace = significant_whitespace
         self._has_tab = False
         self._current_tab = None
         self._current_tab_stop = None
@@ -694,7 +699,7 @@ class Line(list):
             return self.add_flowable(word_or_inline, container, descender)
 
         if first_chars == ' ':
-            if not self:
+            if not self and not self.significant_whitespace:
                 return True
             first_glyphs_span.space = first_glyphs_span[0]
         elif first_chars == '\t':
