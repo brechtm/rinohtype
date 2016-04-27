@@ -236,7 +236,7 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     @classmethod
     def match(cls, styled, container):
         if isinstance(container.document_part, cls):
-            return Specificity(1, 0, 0, 0)
+            return Specificity(0, 1, 0, 0, 0)
         else:
             return None
 
@@ -280,7 +280,7 @@ class DocumentSection(object, metaclass=DocumentLocationType):
     @classmethod
     def match(cls, styled, container):
         if isinstance(container.document_part.document_section, cls):
-            return Specificity(1, 0, 0, 0)
+            return Specificity(0, 1, 0, 0, 0)
         else:
             return None
 

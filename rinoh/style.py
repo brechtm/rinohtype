@@ -355,6 +355,15 @@ class Selector(object):
         assert isinstance(other, str)
         return SelectorByName(other) / self
 
+    def __pos__(self):
+        return self.pri(1)
+
+    def __neg__(self):
+        return self.pri(-1)
+
+    def pri(self, priority):
+        return SelectorWithPriority(self, priority)
+
     def get_styled_class(self, matcher):
         raise NotImplementedError
 
@@ -367,6 +376,35 @@ class Selector(object):
 
     def match(self, styled, container):
         raise NotImplementedError
+
+
+class SelectorWithPriority(Selector):
+    def __init__(self, selector, priority):
+        self.selector = selector
+        self.priority = priority
+
+    def pri(self, priority):
+        return SelectorWithPriority(self.selector, self.priority + priority)
+
+    def get_styled_class(self, matcher):
+        return self.selector.get_styled_class(matcher)
+
+    def get_style_name(self, matcher):
+        return self.selector.get_style_name(matcher)
+
+    @property
+    def referenced_selectors(self):
+        return self.selector.referenced_selectors
+
+    def flatten(self, container):
+        flattened_selector = self.selector.flatten(container)
+        return flattened_selector.pri(self.priority)
+
+    def match(self, styled, container):
+        score = self.selector.match(styled, container)
+        if score:
+            score = Specificity(self.priority, 0, 0, 0, 0) + score
+        return score
 
 
 class EllipsisSelector(Selector):
@@ -445,7 +483,7 @@ class ClassSelectorBase(SingleSelector):
                 return None
             attributes_match += 1
 
-        return Specificity(0, style_match, attributes_match, class_match)
+        return Specificity(0, 0, style_match, attributes_match, class_match)
 
 
 class ClassSelector(ClassSelectorBase):
@@ -1041,7 +1079,8 @@ class VarAttribute(VarBase):
 
 
 class Specificity(namedtuple('Specificity',
-                             ['location', 'style', 'attributes', 'klass'])):
+                             ['priority', 'location', 'style', 'attributes',
+                              'klass'])):
     def __add__(self, other):
         return self.__class__(*(a + b for a, b in zip(self, other)))
 
@@ -1061,7 +1100,7 @@ class Match(object):
         return bool(self.specificity)
 
 
-ZERO_SPECIFICITY = Specificity(0, 0, 0, 0)
+ZERO_SPECIFICITY = Specificity(0, 0, 0, 0, 0)
 
 NO_MATCH = Match(None, ZERO_SPECIFICITY)
 
