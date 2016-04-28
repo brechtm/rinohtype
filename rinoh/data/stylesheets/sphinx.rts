@@ -8,6 +8,7 @@ mono_typeface=TeX Gyre Cursor
 serif_typeface=TeX Gyre Pagella
 sans_typeface=Tex Gyre Heros
 thin_black_stroke=0.5pt,#000
+blue=#20435c
 
 [default:Paragraph]
 typeface=$(serif_typeface)
@@ -146,7 +147,7 @@ page_break=RIGHT
 typeface=$(sans_typeface)
 font_weight=BOLD
 font_size=16pt
-font_color=#20435c
+font_color=$(blue)
 line_spacing=SINGLE
 space_above=18pt
 space_below=12pt
@@ -201,7 +202,16 @@ base=heading level 1
 number_format=uppercase character
 
 [topic]
+space_above=5pt
+space_below=5pt
 margin_left=0.5cm
+margin_right=0.5cm
+border=$(thin_black_stroke)
+padding_left=10pt
+padding_right=10pt
+padding_top=4pt
+padding_bottom=4pt
+background_color=#f5f5f5
 
 [topic title]
 base=default
@@ -213,9 +223,11 @@ space_below=5pt
 [post requirement]
 
 [rubric]
-base=topic title
-text_align=CENTER
-font_color=#7f0000
+typeface=$(sans_typeface)
+font_size=9pt
+font_weight=bold
+font_color=$(blue)
+space_above=8pt
 
 [sidebar]
 space_above=5pt
