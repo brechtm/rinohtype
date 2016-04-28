@@ -149,6 +149,7 @@ matcher('definition term paragraph', SelectorByName('definition term')
 matcher('definition term classifier', SelectorByName('definition term')
                                       / ... /StyledText.like('classifier'))
 matcher('definition', Definition)
+matcher('definition paragraph', 'definition' / Paragraph)
 
 matcher('related links', GroupedFlowables.like('related links'))
 matcher('related links section title', 'related links'

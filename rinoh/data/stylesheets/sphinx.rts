@@ -68,7 +68,6 @@ font_color=#f00
 font_slant=ITALIC
 
 [monospaced]
-base=default
 typeface=$(mono_typeface)
 hyphenate=False
 ligatures=False
@@ -316,6 +315,7 @@ indent_first=0pt
 [definition list]
 
 [definition term]
+space_above=4pt
 keep_with_next=true
 
 [definition term paragraph]
@@ -328,6 +328,10 @@ font_weight=REGULAR
 
 [definition]
 margin_left=20pt
+
+[definition paragraph]
+base=body
+space_above=1pt
 
 
 # (Sphinx) version added/changed & deprecated
