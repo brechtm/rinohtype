@@ -578,13 +578,11 @@ margin_left=2pt
 margin_right=2pt
 vertical_align=MIDDLE
 
-[table body cell background on even row]
-fill_color=#e5e5e5
-
 [table body cell paragraph]
 base=default
-font_size=9pt
 indent_first=0
+margin_left=3pt
+margin_right=3pt
 
 [table body cell list item number]
 base=table body cell paragraph
@@ -601,17 +599,31 @@ base=table body cell paragraph
 text_align=LEFT
 
 [table top border]
-stroke=1pt,#000
+stroke=$(thin_black_stroke)
 
 [table bottom border]
 base=table top border
 
 [table head bottom border]
 base=table top border
-stroke=0.5pt,#000
 
 [table body top border]
 base=table head bottom border
+
+[table cell border:TableCellBorder]
+stroke=$(thin_black_stroke)
+
+[table cell left border]
+base=table cell border
+
+[table cell top border]
+base=table cell border
+
+[table cell right border]
+base=table cell border
+
+[table cell bottom border]
+base=table cell border
 
 [horizontal rule]
 space_above=10pt
