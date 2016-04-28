@@ -694,18 +694,23 @@ keep_with_next=true
 [level 1 index entry]
 base=default
 text_align=left
+margin_left=40pt
+indent_first=-40pt
 
 [level 2 index entry]
 base=level 1 index entry
-indent_first=20pt
+margin_left=60pt
+indent_first=-40pt
 
 [level 3 index entry]
 base=level 1 index entry
-indent_first=40pt
+margin_left=80pt
+indent_first=-40pt
 
 [level 4 index entry]
 base=level 1 index entry
-indent_first=60pt
+margin_left=100pt
+indent_first=-40pt
 
 
 # chapter titles
