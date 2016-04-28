@@ -689,6 +689,7 @@ keep_with_next=true
 
 [level 1 index entry]
 base=default
+text_align=left
 
 [level 2 index entry]
 base=level 1 index entry
