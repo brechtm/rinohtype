@@ -16,7 +16,7 @@ from .text import MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexTerm',
+__all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexTerm',
            'InlineIndexTarget', 'IndexTarget']
 
 
@@ -53,7 +53,7 @@ class Index(GroupedFlowables):
                 section = first.upper() if first.isalpha() else 'Symbols'
                 subentries = index_entries[entry]
                 if initials and top_level and section != last_section:
-                    yield Paragraph(section, style='section label')
+                    yield IndexLabel(section)
                     last_section = section
                 try:
                     refs = intersperse((Reference(tgt.get_id(document), PAGE)
@@ -61,7 +61,7 @@ class Index(GroupedFlowables):
                     entry_line = entry + ', ' + MixedStyledText(refs)
                 except KeyError:
                     entry_line = entry
-                yield IndexEntry(entry_line, level, style='index entry')
+                yield IndexEntry(entry_line, level)
                 for paragraph in hande_level(subentries, level=level + 1):
                     yield paragraph
 
@@ -69,6 +69,10 @@ class Index(GroupedFlowables):
         index_entries = container.document.index_entries
         for paragraph in hande_level(index_entries):
             yield paragraph
+
+
+class IndexLabel(Paragraph):
+    pass
 
 
 class IndexEntry(Paragraph):

@@ -11,7 +11,7 @@ from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import DummyFlowable, SetMetadataFlowable, WarnFlowable
 from .flowable import AddToFrontMatter
 from .highlight import CodeBlock, Token
-from .index import Index, IndexEntry
+from .index import Index, IndexLabel, IndexEntry
 from .index import InlineIndexTarget, IndexTarget
 from .inline import InlineFlowable
 from .number import NumberedParagraph
