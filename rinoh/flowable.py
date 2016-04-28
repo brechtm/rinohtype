@@ -33,8 +33,8 @@ from .util import ReadAliasAttribute, NotImplementedAttribute
 
 
 __all__ = ['Flowable', 'FlowableStyle',
-           'DummyFlowable', 'WarnFlowable', 'SetMetadataFlowable',
-           'AddToFrontMatter',
+           'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
+           'SetMetadataFlowable', 'AddToFrontMatter',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
@@ -215,8 +215,8 @@ class Flowable(Styled):
 class DummyFlowable(Flowable):
     style_class = None
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
+    def __init__(self, id=None, parent=None):
+        super().__init__(id=id, parent=parent)
 
     def get_style(self, attribute, flowable_target):
         if attribute == 'keep_with_next':
@@ -225,6 +225,17 @@ class DummyFlowable(Flowable):
 
     def flow(self, container, last_descender, state=None, **kwargs):
         return 0, 0, last_descender
+
+
+class AnchorFlowable(DummyFlowable):
+    def get_style(self, attribute, flowable_target):
+        if attribute == 'keep_with_next':
+            return True
+        raise TypeError
+
+    def flow(self, container, last_descender, state=None, **kwargs):
+        self.create_destination(container, True)
+        return super().flow(container, last_descender, state=state, **kwargs)
 
 
 class WarnFlowable(DummyFlowable):

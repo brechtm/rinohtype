@@ -411,7 +411,7 @@ class Target(DocutilsBodyNode, DocutilsInlineNode):
             return self.process_content()   # TODO: use refname?
 
     def build_flowable(self):
-        return rt.DummyFlowable()   # TODO: body targets
+        return rt.AnchorFlowable()
 
 
 class Enumerated_List(DocutilsBodyNode):

@@ -21,7 +21,7 @@ from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
 from rinoh.dimension import INCH
-from rinoh.index import IndexSection
+from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.number import NUMBER, ROMAN_LC
 from rinoh.paper import LETTER
 from rinoh.paragraph import Paragraph
@@ -34,7 +34,7 @@ from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
                             DocumentTemplate, FixedDocumentPartTemplate,
                             ContentsPartTemplate)
-from rinoh.text import Tab
+from rinoh.text import Tab, SingleStyledText
 
 from ...backend import pdf
 
@@ -54,15 +54,10 @@ class RinohTreePreprocessor(GenericNodeVisitor):
         self.current_docname = None
 
     def default_visit(self, node):
-        def transform_id(id):
-            if id.startswith('%'):
-                return id
-            else:
-                return '%' + self.current_docname + '#' + id
-
         try:
             if 'refid' in node:
-                node['refid'] = transform_id(node['refid'])
+                node['refid'] = fully_qualified_id(self.current_docname,
+                                                   node['refid'])
             elif 'refuri' in node and node.get('internal', False):
                 node['refid'] = node.attributes.pop('refuri')
             ids, module_ids = [], []
@@ -70,7 +65,7 @@ class RinohTreePreprocessor(GenericNodeVisitor):
                 if id.startswith('module-'):
                     module_ids.append(id)
                 else:
-                    ids.append(transform_id(id))
+                    ids.append(fully_qualified_id(self.current_docname, id))
             node['ids'] = ids + module_ids
         except (TypeError, KeyError):
             pass
@@ -157,7 +152,31 @@ class RinohBuilder(Builder):
             else:
                 pass
             pendingnode.replace_self(newnodes)
-        return largetree
+        return largetree, docnames
+
+    def generate_indices(self, docnames):
+        def index_flowables(content):
+            for section, entries in content:
+                yield IndexLabel(str(section))
+                for (name, subtype, docname, anchor, _, _, _) in entries:
+                    target_ids = ([anchor] if anchor else None)
+                    yield IndexEntry(name, level=2 if subtype == 2 else 1,
+                                     target_ids=target_ids)
+
+        indices_config = self.config.rinoh_domain_indices
+        if indices_config:
+            for domain in self.env.domains.values():
+                for indexcls in domain.indices:
+                    indexname = '%s-%s' % (domain.name, indexcls.name)
+                    if isinstance(indices_config, list):
+                        if indexname not in indices_config:
+                            continue
+                    content, collapsed = indexcls(domain).generate(docnames)
+                    if not content:
+                        continue
+                    index_section_label = str(indexcls.localname)
+                    yield IndexSection(SingleStyledText(index_section_label),
+                                       index_flowables(content))
 
     def init_document_data(self):
         document_data = []
@@ -186,22 +205,26 @@ class RinohBuilder(Builder):
         for entry in document_data:
             docname, targetname, title, author = entry
             self.info("processing " + targetname + "... ", nonl=1)
-            doctree = self.assemble_doctree(docname)
+            doctree, docnames = self.assemble_doctree(docname)
             self.preprocess_tree(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author
             doctree.settings.title = title
             doctree.settings.docname = docname
-            self.write_doc(self.config.master_doc, doctree, targetname)
+            self.write_doc(self.config.master_doc, doctree, docnames,
+                           targetname)
             self.info("done")
 
-    def write_doc(self, docname, doctree, targetname):
+    def write_doc(self, docname, doctree, docnames, targetname):
         os.chdir(self.srcdir)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree)
         options = DocumentOptions(stylesheet=self.config.rinoh_stylesheet)
         document_parts = self.config.rinoh_document_parts
+        indices = list(self.generate_indices(docnames))
+        # TODO: more cleanly inject the indices into the document part template
+        document_parts[-1].flowables = indices + document_parts[-1].flowables
         rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
                                           options=options, backend=pdf)
         if self.config.rinoh_logo:
@@ -213,6 +236,10 @@ class RinohBuilder(Builder):
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
+
+
+def fully_qualified_id(docname, id):
+    return id if id.startswith('%') else '%' + docname + '#' + id
 
 
 def front_matter_section_title_flowables(section_id):
@@ -313,3 +340,4 @@ def setup(app):
     app.add_config_value('rinoh_paper_size', LETTER, 'html')
     app.add_config_value('rinoh_document_parts', default_document_parts, 'html')
     app.add_config_value('rinoh_logo', None, 'html')
+    app.add_config_value('rinoh_domain_indices', True, 'html')

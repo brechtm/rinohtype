@@ -21,11 +21,14 @@ __all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexTerm',
 
 
 class IndexSection(Section):
-    def __init__(self):
-        section_title = StringField(SectionTitles, 'index')
-        super().__init__([Heading(section_title, style='unnumbered'),
-                          Index()],
-                         style='index')
+    def __init__(self, title=None, flowables=None):
+        section_title = title or StringField(SectionTitles, 'index')
+        contents = [Heading(section_title, style='unnumbered')]
+        if flowables:
+            contents += list(flowables)
+        else:
+            contents.append(Index())
+        super().__init__(contents, style='index')
 
 
 class IndexStyle(GroupedFlowablesStyle):
@@ -55,13 +58,9 @@ class Index(GroupedFlowables):
                 if initials and top_level and section != last_section:
                     yield IndexLabel(section)
                     last_section = section
-                try:
-                    refs = intersperse((Reference(tgt.get_id(document), PAGE)
-                                       for term, tgt in subentries[None]), ', ')
-                    entry_line = entry + ', ' + MixedStyledText(refs)
-                except KeyError:
-                    entry_line = entry
-                yield IndexEntry(entry_line, level)
+                target_ids = [target.get_id(document)
+                              for term, target in subentries.get(None, ())]
+                yield IndexEntry(entry, level, target_ids)
                 for paragraph in hande_level(subentries, level=level + 1):
                     yield paragraph
 
@@ -76,8 +75,14 @@ class IndexLabel(Paragraph):
 
 
 class IndexEntry(Paragraph):
-    def __init__(self, text_or_items, level, id=None, style=None, parent=None):
-        super().__init__(text_or_items, id=id, style=style, parent=parent)
+    def __init__(self, text_or_items, level, target_ids=None,
+                 id=None, style=None, parent=None):
+        if target_ids:
+            refs = intersperse((Reference(id, PAGE) for id in target_ids), ', ')
+            entry_text = text_or_items + ', ' + MixedStyledText(refs)
+        else:
+            entry_text = text_or_items
+        super().__init__(entry_text, id=id, style=style, parent=parent)
         self.index_level = level
 
 
