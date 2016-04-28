@@ -11,6 +11,8 @@ from os import path
 
 import docutils
 
+from docutils.nodes import GenericNodeVisitor, SkipNode
+
 from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.locale import _
@@ -41,6 +43,63 @@ from ..rst import ReStructuredTextReader
 from . import nodes
 
 
+class RinohTreePreprocessor(GenericNodeVisitor):
+    """Preprocess the docutils document tree to prepare it for mapping to the
+    rinohtype document tree"""
+
+    def __init__(self, document, builder):
+        super().__init__(document)
+        self.default_highlight_language = builder.config.highlight_language
+        self.highlight_stack = [self.default_highlight_language]
+        self.current_docname = None
+
+    def default_visit(self, node):
+        def transform_id(id):
+            if id.startswith('%'):
+                return id
+            else:
+                return '%' + self.current_docname + '#' + id
+
+        try:
+            if 'refid' in node:
+                node['refid'] = transform_id(node['refid'])
+            elif 'refuri' in node and node.get('internal', False):
+                node['refid'] = node.attributes.pop('refuri')
+            ids, module_ids = [], []
+            for id in node['ids']:
+                if id.startswith('module-'):
+                    module_ids.append(id)
+                else:
+                    ids.append(transform_id(id))
+            node['ids'] = ids + module_ids
+        except (TypeError, KeyError):
+            pass
+
+    def default_departure(self, node):
+        pass
+
+    def visit_start_of_file(self, node):
+        self.current_docname = node['docname']
+        self.highlight_stack.append(self.default_highlight_language)
+
+    def depart_start_of_file(self, node):
+        self.highlight_stack.pop()
+
+    def visit_highlightlang(self, node):
+        self.highlight_stack[-1] = node.get('lang')
+        raise SkipNode
+
+    def visit_rubric(self, node):
+        if node.children[0].astext() in ('Footnotes', _('Footnotes')):
+            node.tagname = 'footnotes-rubric'  # mapped to a DummyFlowable
+            raise SkipNode
+
+    def visit_literal_block(self, node):
+        self.default_visit(node)
+        if 'language' not in node.attributes:
+            node.attributes['language'] = self.highlight_stack[-1]
+
+
 class RinohBuilder(Builder):
     """Renders to a PDF using RinohType."""
 
@@ -61,37 +120,8 @@ class RinohBuilder(Builder):
     def preprocess_tree(self, tree):
         """Transform internal refuri targets in reference nodes to refids and
         transform footnote rubrics so that they do not end up in the output"""
-        highlight_language = self.config.highlight_language
-
-        def transform_id(id):
-            return id if id.startswith('%') else '%' + docname + '#' + id
-
-        for node in tree.traverse():
-            if node.tagname == 'start_of_file':
-                docname = node['docname']
-                continue
-            if (node.tagname == 'rubric'
-                and node.children[0].astext() in ('Footnotes', _('Footnotes'))):
-                node.tagname = 'footnotes-rubric'   # mapped to a DummyFlowable
-            elif node.tagname == 'highlightlang':
-                highlight_language = node.get('lang')
-            elif (node.tagname == 'literal_block'
-                  and 'language' not in node.attributes):
-                node.attributes['language'] = highlight_language
-            try:
-                if 'refid' in node:
-                    node['refid'] = transform_id(node['refid'])
-                elif 'refuri' in node and node.get('internal', False):
-                    node['refid'] = node.attributes.pop('refuri')
-                ids, module_ids = [], []
-                for id in node['ids']:
-                    if id.startswith('module-'):
-                        module_ids.append(id)
-                    else:
-                        ids.append(transform_id(id))
-                node['ids'] = ids + module_ids
-            except (TypeError, KeyError):
-                pass
+        visitor = RinohTreePreprocessor(tree, self)
+        tree.walkabout(visitor)
 
     def prepare_writing(self, docnames):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
