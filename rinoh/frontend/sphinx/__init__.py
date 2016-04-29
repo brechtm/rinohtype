@@ -160,7 +160,8 @@ class RinohBuilder(Builder):
                 yield IndexLabel(str(section))
                 for (name, subtype, docname, anchor, _, _, _) in entries:
                     target_ids = ([anchor] if anchor else None)
-                    yield IndexEntry(name, level=2 if subtype == 2 else 1,
+                    entry_name = SingleStyledText(name, style='domain')
+                    yield IndexEntry(entry_name, level=2 if subtype == 2 else 1,
                                      target_ids=target_ids)
 
         indices_config = self.config.rinoh_domain_indices

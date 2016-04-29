@@ -21,14 +21,14 @@ __all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexTerm',
 
 
 class IndexSection(Section):
-    def __init__(self, title=None, flowables=None):
+    def __init__(self, title=None, flowables=None, style=None):
         section_title = title or StringField(SectionTitles, 'index')
         contents = [Heading(section_title, style='unnumbered')]
         if flowables:
             contents += list(flowables)
         else:
             contents.append(Index())
-        super().__init__(contents, style='index')
+        super().__init__(contents, style=style)
 
 
 class IndexStyle(GroupedFlowablesStyle):

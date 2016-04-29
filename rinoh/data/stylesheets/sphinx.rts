@@ -712,6 +712,9 @@ base=level 1 index entry
 margin_left=100pt
 indent_first=-40pt
 
+[domain index entry name]
+typeface=$(mono_typeface)
+
 
 # chapter titles
 
