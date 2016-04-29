@@ -35,11 +35,8 @@ class DocutilsNode(TreeNode, metaclass=TreeNodeMeta):
         return node.children
 
     @property
-    def _id(self):
-        try:
-            return self.get('ids')[0]
-        except IndexError:
-            return None
+    def _ids(self):
+        return self.get('ids')
 
     @property
     def _location(self):
@@ -111,27 +108,7 @@ class DocutilsReader(object):
                                   parser=self.parser_class())
         return self.from_doctree(doctree)
 
-    @staticmethod
-    def replace_secondary_ids(tree):
-        id_aliases = {}
-        for node in tree.traverse():
-            try:
-                primary_id, *alias_ids = node.attributes['ids']
-                for alias_id in alias_ids:
-                    id_aliases[alias_id] = primary_id
-            except (AttributeError, KeyError, ValueError):
-                pass
-        # replace alias IDs used in references with the corresponding primary ID
-        for node in tree.traverse():
-            try:
-                refid = node.get('refid')
-                if refid in id_aliases:
-                    node.attributes['refid'] = id_aliases[refid]
-            except AttributeError:
-                pass
-
     def from_doctree(self, doctree):
-        self.replace_secondary_ids(doctree)
         mapped_tree = DocutilsNode.map_node(doctree.document)
         return mapped_tree.children_flowables()
 

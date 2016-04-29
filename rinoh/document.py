@@ -342,12 +342,15 @@ to the terms of the GNU Affero General Public License version 3.''')
         self._unique_id += 1
         return self._unique_id
 
-    def register_element(self, id, element):
-        self.ids_by_element[element] = id
-        self.elements[id] = element
+    def register_element(self, element):
+        primary_id = element.get_id(self, create=False) or self.unique_id
+        self.ids_by_element[element] = primary_id
+        self.elements[primary_id] = element
+        return primary_id
 
     def register_page_reference(self, page, element):
-        self.page_references[element.get_id(self)] = page.number
+        for id in element.get_ids(self):
+            self.page_references[id] = page.number
 
     def set_reference(self, id, reference_type, value):
         id_references = self.references.setdefault(id, {})

@@ -251,9 +251,7 @@ class TableOfContentsSection(Section):
 
     def get_id(self, document, create=True):
         try:
-            id = document.metadata['toc_id']
-            document.register_element(id, self)
-            return id
+            return document.metadata['toc_id']
         except KeyError:
             return super().get_id(document, create)
 
@@ -351,8 +349,10 @@ class Admonition(GroupedFlowables):
         inline_title = self.get_style('inline_title', container)
         if inline_title and isinstance(first_flowable, Paragraph):
             title = MixedStyledText(title, style='inline title')
-            yield Paragraph(title + ' ' + first_flowable, id=first_flowable.id,
-                            style=first_flowable.style)
+            kwargs = dict(id=first_flowable.id, style=first_flowable.style)
+            paragraph = Paragraph(title + ' ' + first_flowable, **kwargs)
+            paragraph.secondary_ids = first_flowable.secondary_ids
+            yield paragraph
         else:
             yield Paragraph(title, style='title')
             yield first_flowable

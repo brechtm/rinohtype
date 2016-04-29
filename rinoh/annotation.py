@@ -20,8 +20,8 @@ class Annotation(object):
 class NamedDestination(Annotation):
     type = 'NamedDestination'
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, *names):
+        self.names = names
 
 
 class NamedDestinationLink(Annotation):

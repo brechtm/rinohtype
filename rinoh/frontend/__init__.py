@@ -121,10 +121,12 @@ class BodyNode(BodyNodeBase):
         return flowable
 
     def flowables(self):
-        id = self._id
+        ids = iter(self._ids)
         for i, flowable in enumerate(self.build_flowables()):
-            if self.set_id and i == 0 and id:
-                flowable.id = id
+            if self.set_id and i == 0 and self._ids:
+                flowable.id = next(ids)
+                for id in ids:
+                    flowable.secondary_ids.append(id)
             flowable.source = self
             yield flowable
 

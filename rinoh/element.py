@@ -33,6 +33,7 @@ class DocumentElement(object):
         Both parameters are optional, and can be set at a later point by
         assigning to the identically named instance attributes."""
         self.id = id
+        self.secondary_ids = []
         self.parent = parent
         self.source = source
 
@@ -41,9 +42,13 @@ class DocumentElement(object):
             return self.id or document.ids_by_element[self]
         except KeyError:
             if create:
-                id = document.unique_id
-                document.register_element(id, self)
-                return id
+                return document.register_element(self)
+
+    def get_ids(self, document):
+        primary_id = self.get_id(document)
+        yield primary_id
+        for id in self.secondary_ids:
+            yield id
 
     @property
     def source(self):
@@ -66,8 +71,8 @@ class DocumentElement(object):
 
     def prepare(self, flowable_target):
         """Determine number labels and register references with the document"""
-        if self.id:
-            flowable_target.document.register_element(self.id, self)
+        if self.get_id(flowable_target.document, create=False):
+            flowable_target.document.register_element(self)
 
     def create_destination(self, container, at_top_of_container=False):
         """Create a destination anchor in the `container` to direct links to
@@ -91,7 +96,8 @@ def create_destination(flowable, container, at_top_of_container=False):
     """Create a destination anchor in the `container` to direct links to
     `flowable` to."""
     vertical_position = 0 if at_top_of_container else container.cursor
-    destination = NamedDestination(str(flowable.get_id(container.document)))
+    ids = flowable.get_ids(container.document)
+    destination = NamedDestination(*(str(id) for id in ids))
     container.canvas.annotate(destination, 0, vertical_position,
                               container.width, None)
     container.document.register_page_reference(container.page, flowable)

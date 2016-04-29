@@ -159,9 +159,9 @@ class Figure(InseparableFlowables, StaticGroupedFlowables):
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         document = flowable_target.document
-        element_id = self.get_id(document)
         number = document.counters.setdefault(self.category, 1)
         document.counters[self.category] += 1
-        document.set_reference(element_id, NUMBER, str(number))
-        # TODO: need to store formatted number
-        # document.set_reference(element_id, TITLE, caption text)
+        for id in self.get_ids(document):
+            document.set_reference(id, NUMBER, str(number))
+            # TODO: need to store formatted number
+            # document.set_reference(element_id, TITLE, caption text)
