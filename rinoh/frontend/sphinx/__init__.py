@@ -122,16 +122,19 @@ class RinohBuilder(Builder):
         # toc = self.env.get_toctree_for(self.config.master_doc, self, False)
         pass
 
-    def assemble_doctree(self, indexfile):
+    def assemble_doctree(self, indexfile, toctree_only):
         docnames = set([indexfile])
         self.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
-        # extract toctree nodes from the tree and put them in a fresh document
-        new_tree = docutils.utils.new_document('<rinoh output>')
-        for node in tree.traverse(addnodes.toctree):
-            new_tree += node
-        largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
+        if toctree_only:
+            # extract toctree nodes from the tree and put them in a
+            # fresh document
+            new_tree = docutils.utils.new_document('<rinoh output>')
+            for node in tree.traverse(addnodes.toctree):
+                new_tree += node
+            tree = new_tree
+        largetree = inline_all_toctrees(self, docnames, indexfile, tree,
                                         darkgreen)
         largetree['docname'] = indexfile
         self.info()
@@ -204,9 +207,10 @@ class RinohBuilder(Builder):
     def write(self, *ignored):
         document_data = self.init_document_data()
         for entry in document_data:
-            docname, targetname, title, author = entry
+            docname, targetname, title, author = entry[:4]
+            toctree_only = entry[4] if len(entry) > 4 else False
             self.info("processing " + targetname + "... ", nonl=1)
-            doctree, docnames = self.assemble_doctree(docname)
+            doctree, docnames = self.assemble_doctree(docname, toctree_only)
             self.preprocess_tree(doctree)
 
             self.info("rendering... ")
