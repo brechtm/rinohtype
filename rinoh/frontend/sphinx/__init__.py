@@ -23,7 +23,7 @@ from sphinx.util.osutil import ensuredir, os_path, SEP
 from rinoh.dimension import INCH
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.number import NUMBER, ROMAN_LC
-from rinoh.paper import LETTER
+from rinoh.paper import A4, LETTER
 from rinoh.paragraph import Paragraph
 from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
                              DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
@@ -184,8 +184,8 @@ class RinohBuilder(Builder):
 
     def init_document_data(self):
         document_data = []
-        preliminary_document_data = [list(x)
-                                     for x in self.config.rinoh_documents]
+        preliminary_document_data = [list(entry)
+                                     for entry in self.config.rinoh_documents]
         if not preliminary_document_data:
             self.warn('no "rinoh_documents" config value found; '
                       'no documents will be written')
@@ -232,8 +232,9 @@ class RinohBuilder(Builder):
         document_parts[-1].flowables = indices + document_parts[-1].flowables
         rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
                                           options=options, backend=pdf)
-        if self.config.rinoh_logo:
-            rinoh_document.metadata['logo'] = self.config.rinoh_logo
+        rinoh_logo = self.config.rinoh_logo
+        if rinoh_logo:
+            rinoh_document.metadata['logo'] = rinoh_logo
         rinoh_document.metadata['title'] = doctree.settings.title
         rinoh_document.metadata['subtitle'] = ('Release {}'
                                                .format(self.config.release))
@@ -247,21 +248,46 @@ def fully_qualified_id(docname, id):
     return id if id.startswith('%') else '%' + docname + '#' + id
 
 
-def front_matter_section_title_flowables(section_id):
-    yield Paragraph(Reference(section_id, TITLE),
-                    style='front matter section title')
+
+def info_config_conversion(config_option):
+    print("'rinoh_{0}' config variable not set, automatically converting "
+          "from 'latex_{0}'".format(config_option))
 
 
-def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER, style='number'),
-                    style='body matter chapter label')
-    yield Paragraph(Reference(section_id, TITLE),
-                    style='body matter chapter title')
+def default_documents(config):
+    def latex_document_to_rinoh_document(entry):
+        startdocname, targetname, title, author, documentclass = entry[:5]
+        toctree_only = entry[5] if len(entry) > 5 else False
+        targetname_root, _ = os.path.splitext(targetname)
+        return startdocname, targetname_root, title, author, toctree_only
+
+    info_config_conversion('documents')
+    return [latex_document_to_rinoh_document(entry)
+            for entry in config.latex_documents]
 
 
 def default_stylesheet(config):
     return StyleSheetFile(sphinx_stylesheet.filename, sphinx_stylesheet.matcher,
                           pygments_style=config.pygments_style or 'sphinx')
+
+
+def default_paper_size(config):
+    info_config_conversion('paper_size')
+    try:
+        return dict(a4paper=A4,
+                    letterpaper=LETTER)[config.latex_elements['papersize']]
+    except KeyError:
+        return dict(a4=A4, letter=LETTER)[config.latex_paper_size]
+
+
+def default_logo(config):
+    info_config_conversion('logo')
+    return config.latex_logo
+
+
+def default_domain_indices(config):
+    info_config_conversion('domain_indices')
+    return config.latex_domain_indices
 
 
 def default_document_parts(config):
@@ -338,11 +364,23 @@ def default_document_parts(config):
                                       back_matter_left_page)]
 
 
+def front_matter_section_title_flowables(section_id):
+    yield Paragraph(Reference(section_id, TITLE),
+                    style='front matter section title')
+
+
+def body_matter_chapter_title_flowables(section_id):
+    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER, style='number'),
+                    style='body matter chapter label')
+    yield Paragraph(Reference(section_id, TITLE),
+                    style='body matter chapter title')
+
+
 def setup(app):
     app.add_builder(RinohBuilder)
-    app.add_config_value('rinoh_documents', [], 'env')
+    app.add_config_value('rinoh_documents', default_documents, 'env')
     app.add_config_value('rinoh_stylesheet', default_stylesheet, 'html')
-    app.add_config_value('rinoh_paper_size', LETTER, 'html')
+    app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
+    app.add_config_value('rinoh_logo', default_logo, 'html')
+    app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_document_parts', default_document_parts, 'html')
-    app.add_config_value('rinoh_logo', None, 'html')
-    app.add_config_value('rinoh_domain_indices', True, 'html')
