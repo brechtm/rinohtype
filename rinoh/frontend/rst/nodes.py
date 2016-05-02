@@ -562,9 +562,6 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
 class Figure(DocutilsGroupingNode):
     grouped_flowables_class = rt.Figure
 
-    def build_flowable(self, **kwargs):
-        return rt.Float(super().build_flowable(**kwargs))
-
 
 class Caption(DocutilsBodyNode):
     def build_flowable(self):

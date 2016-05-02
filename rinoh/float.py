@@ -10,7 +10,8 @@ from .color import RED
 from .dimension import PT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
-                       HorizontallyAlignedFlowableState)
+                       HorizontallyAlignedFlowableState, Float, FloatStyle,
+                       GroupedFlowablesStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
@@ -153,7 +154,12 @@ class Caption(NumberedParagraph):
         return MixedStyledText(label + self.content, parent=self)
 
 
-class Figure(InseparableFlowables, StaticGroupedFlowables):
+class FigureStyle(FloatStyle, GroupedFlowablesStyle):
+    pass
+
+
+class Figure(Float, InseparableFlowables, StaticGroupedFlowables):
+    style_class = FigureStyle
     category = 'Figure'
 
     def prepare(self, flowable_target):

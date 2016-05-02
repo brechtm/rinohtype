@@ -605,6 +605,11 @@ class HorizontallyAlignedFlowable(Flowable):
         return container.width, top_to_baseline, descender
 
 
+class FloatStyle(FlowableStyle):
+    float = Attribute(Bool, True, 'Float the flowable to the top or bottom of '
+                                  'the page')
+
+
 class Float(Flowable):
     """Transform a :class:`Flowable` into a floating element. A floating element
     or 'float' is not flowed into its designated container, but is forwarded to
@@ -614,22 +619,18 @@ class Float(Flowable):
     This is typically used to place figures and tables at the top or bottom of a
     page, instead of in between paragraphs."""
 
-    def __init__(self, flowable, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.flowable = flowable
-        flowable.parent = self
-
-    def prepare(self, flowable_target):
-        self.flowable.prepare(flowable_target)
-
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow contents into the float space associated with `container`."""
-        id = self.get_id(container.document)
-        if id not in container.document.floats:
-            self.flowable.flow(container.float_space, None)
-            container.document.floats.add(id)
-            container.page.check_overflow()
-        return 0, 0, last_descender
+        if self.get_style('float', container):
+            id = self.get_id(container.document)
+            if id not in container.document.floats:
+                super().flow(container.float_space, None)
+                container.document.floats.add(id)
+                container.page.check_overflow()
+            return 0, 0, last_descender
+        else:
+            return super().flow(container, last_descender, state=state,
+                                **kwargs)
 
 
 ANY = 'any'
