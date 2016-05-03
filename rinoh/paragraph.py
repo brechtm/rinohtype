@@ -833,37 +833,47 @@ def group_spans(line):
         yield span, glyph_and_widths
 
 
+class AnnotationRect(object):
+    __slots__ = ('annotation', 'left', 'width', 'height', 'ascender')
+
+    def __init__(self, annotation, left, width, height, ascender):
+        self.annotation = annotation
+        self.left = left
+        self.width = width
+        self.height = height
+        self.ascender = ascender
+
+    def update(self, width, height, ascender):
+        self.width += width
+        self.height = max(self.height, height)
+        self.ascender = max(self.ascender, ascender)
+
+
 class AnnotationState(object):
     __slots__ = ('anchor', 'link', 'container')
 
     def __init__(self, container):
-        self.anchor = None, None, None, None, None
-        self.link = None, None, None, None, None
+        self.anchor = None
+        self.link = None
         self.container = container
 
     def update_annotation(self, span, annotation_type, left, width):
         annotation = getattr(span, annotation_type + '_annotation')
-        (current_annotation, current_left, current_width,
-         current_height, current_ascender) = getattr(self, annotation_type)
-        if annotation is not current_annotation:
+        annotation_rect = getattr(self, annotation_type)
+        if annotation_rect and annotation is not annotation_rect.annotation:
             self.place_if_any(annotation_type)
         if annotation:
             container = self.container
-            if annotation is current_annotation:
-                current_width += width
-                current_ascender = max(current_ascender,
+            if annotation_rect and annotation is annotation_rect.annotation:
+                annotation_rect.update(width, span.height(container),
                                        span.ascender(container))
-                current_height = max(current_height, span.height(container))
             else:
-                current_left = left
-                current_width = width
-                current_ascender = span.ascender(container)
-                current_height = span.height(container)
-            annotation_tuple = (annotation, current_left, current_width,
-                                current_height, current_ascender)
+                annotation_rect = AnnotationRect(annotation, left, width,
+                                                 span.height(container),
+                                                 span.ascender(container))
         else:
-            annotation_tuple = None, None, None, None, None
-        setattr(self, annotation_type, annotation_tuple)
+            annotation_rect = None
+        setattr(self, annotation_type, annotation_rect)
 
     def update(self, span, left, width):
         if isinstance(span, AnnotatedSpan):
@@ -874,8 +884,10 @@ class AnnotationState(object):
         annotation_types = ((annotation_type, ) if annotation_type
                             else ('anchor', 'link'))
         for type in annotation_types:
-            annotation, left, width, height, ascender = getattr(self, type)
-            if annotation:
-                top = self.container.cursor - ascender
-                self.container.canvas.annotate(annotation, left, top,
-                                               width, height)
+            annotation_rect = getattr(self, type)
+            if annotation_rect:
+                top = self.container.cursor - annotation_rect.ascender
+                self.container.canvas.annotate(annotation_rect.annotation,
+                                               annotation_rect.left, top,
+                                               annotation_rect.width,
+                                               annotation_rect.height)
