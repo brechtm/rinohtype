@@ -17,21 +17,29 @@ class Annotation(object):
     pass
 
 
-class NamedDestination(Annotation):
+class AnchorAnnotation(Annotation):
+    pass
+
+
+class NamedDestination(AnchorAnnotation):
     type = 'NamedDestination'
 
     def __init__(self, *names):
         self.names = names
 
 
-class NamedDestinationLink(Annotation):
+class LinkAnnotation(Annotation):
+    pass
+
+
+class NamedDestinationLink(LinkAnnotation):
     type = 'NamedDestinationLink'
 
     def __init__(self, name):
         self.name = name
 
 
-class HyperLink(Annotation):
+class HyperLink(LinkAnnotation):
     type = 'URI'
 
     def __init__(self, target):
@@ -39,9 +47,10 @@ class HyperLink(Annotation):
 
 
 class AnnotatedSpan(Decorator):
-    def __init__(self, span, annotation):
+    def __init__(self, span, anchor=None, link=None):
         super().__init__(span)
-        self.annotation = annotation
+        self.anchor_annotation = anchor
+        self.link_annotation = link
 
 
 from .text import MixedStyledText
@@ -53,5 +62,17 @@ class AnnotatedText(MixedStyledText):
         self.annotation = annotation
 
     def spans(self, container):
+        ann = self.annotation
+        anchor = ann if isinstance(ann, AnchorAnnotation) else None
+        link = ann if isinstance(ann, LinkAnnotation) else None
         for span in super().spans(container):
-            yield AnnotatedSpan(span, self.annotation)
+            if isinstance(span, AnnotatedSpan):
+                if anchor:
+                    assert span.anchor_annotation is None
+                    span.anchor_annotation = anchor
+                elif link:
+                    assert span.link_annotation is None
+                    span.link_annotation = link
+                yield span
+            else:
+                yield AnnotatedSpan(span, anchor=anchor, link=link)

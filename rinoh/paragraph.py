@@ -40,6 +40,7 @@ from functools import partial
 from itertools import tee
 
 from . import DATA_PATH
+from .annotation import AnnotatedSpan
 from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .hyphenator import Hyphenator
@@ -833,34 +834,48 @@ def group_spans(line):
 
 
 class AnnotationState(object):
-    __slots__ = ('annotation', 'left', 'width', 'ascender', 'height',
-                 'container')
+    __slots__ = ('anchor', 'link', 'container')
 
     def __init__(self, container):
-        self.annotation = None
+        self.anchor = None, None, None, None, None
+        self.link = None, None, None, None, None
         self.container = container
 
-    def update(self, span, left, width):
-        if not hasattr(span, 'annotation'):
-            return
-        annotation = span.annotation
-        if annotation is not self.annotation:
-            self.place_if_any()
+    def update_annotation(self, span, annotation_type, left, width):
+        annotation = getattr(span, annotation_type + '_annotation')
+        (current_annotation, current_left, current_width,
+         current_height, current_ascender) = getattr(self, annotation_type)
+        if annotation is not current_annotation:
+            self.place_if_any(annotation_type)
         if annotation:
             container = self.container
-            if annotation is self.annotation:
-                self.width += width
-                self.ascender = max(self.ascender, span.ascender(container))
-                self.height = max(self.height, span.height(container))
+            if annotation is current_annotation:
+                current_width += width
+                current_ascender = max(current_ascender,
+                                       span.ascender(container))
+                current_height = max(current_height, span.height(container))
             else:
-                self.left = left
-                self.width = width
-                self.ascender = span.ascender(container)
-                self.height = span.height(container)
-        self.annotation = annotation
+                current_left = left
+                current_width = width
+                current_ascender = span.ascender(container)
+                current_height = span.height(container)
+            annotation_tuple = (annotation, current_left, current_width,
+                                current_height, current_ascender)
+        else:
+            annotation_tuple = None, None, None, None, None
+        setattr(self, annotation_type, annotation_tuple)
 
-    def place_if_any(self):
-        if self.annotation:
-            top = self.container.cursor - self.ascender
-            self.container.canvas.annotate(self.annotation, self.left, top,
-                                           self.width, self.height)
+    def update(self, span, left, width):
+        if isinstance(span, AnnotatedSpan):
+            self.update_annotation(span, 'anchor', left, width)
+            self.update_annotation(span, 'link', left, width)
+
+    def place_if_any(self, annotation_type=None):
+        annotation_types = ((annotation_type, ) if annotation_type
+                            else ('anchor', 'link'))
+        for type in annotation_types:
+            annotation, left, width, height, ascender = getattr(self, type)
+            if annotation:
+                top = self.container.cursor - ascender
+                self.container.canvas.annotate(annotation, left, top,
+                                               width, height)
