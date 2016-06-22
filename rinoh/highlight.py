@@ -5,18 +5,19 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-import unicodedata
-
 try:
     from pygments import lex
-    from pygments.lexers import get_lexer_by_name
+    from pygments.filters import ErrorToken
+    from pygments.lexers import get_lexer_by_name, guess_lexer
     from pygments.lexers.agile import PythonLexer
     from pygments.style import StyleMeta
     from pygments.styles import get_style_by_name
+    from pygments.util import ClassNotFound
     PYGMENTS_AVAILABLE = True
 except ImportError:
     PYGMENTS_AVAILABLE = False
 
+from sphinx.highlighting import lexers
 
 from .color import HexColor
 from .font.style import BOLD, ITALIC
@@ -42,20 +43,65 @@ class CodeBlock(Paragraph):
     significant_whitespace = True
 
     def __init__(self, text, language=None, id=None, style=None, parent=None):
-        if PYGMENTS_AVAILABLE:
-            if language:
-                lexer = get_lexer_by_name(language)
-                lexer.add_filter('tokenmerge')
-                text = highlight(text, lexer)
+        if PYGMENTS_AVAILABLE and language:
+            text = self.highlight_block(language, text)
         else:
             warn("The 'pygments' package is not available; cannot perform "
                  "syntax highlighting of {}s.".format(type(self).__name__))
         super().__init__(text, id=id, style=style, parent=parent)
 
-
-def highlight(code, lexer):
-    for token_type, value in lex(code, lexer):
-        yield Token(value, token_type)
+    def highlight_block(self, lang, text):
+        # This is a copy of Sphinx's PygmentsBridge.highlight_block() that
+        # outputs a list of :class:`Token`\ s instead of marked up text
+        if lang in ('py3', 'python3', 'default'):
+            if lang in ('py', 'python'):
+                if text.startswith('>>>'):
+                    # interactive session
+                    lexer = lexers['pycon']
+                else:
+                    lexer = lexers['python']
+            elif lang in ('py3', 'python3', 'default'):
+                if text.startswith('>>>'):
+                    lexer = lexers['pycon3']
+                else:
+                    lexer = lexers['python3']
+            elif lang == 'guess':
+                try:
+                    lexer = guess_lexer(text)
+                except Exception:
+                    lexer = lexers['none']
+            else:
+                if lang in lexers:
+                    lexer = lexers[lang]
+                else:
+                    try:
+                        lexer = lexers[lang] = get_lexer_by_name(lang)
+                    except ClassNotFound:
+                        if warn:
+                            warn('Pygments lexer name %r is not known'
+                                 % lang)
+                            lexer = lexers['none']
+                        else:
+                            raise
+                    else:
+                        lexer.add_filter('raiseonerror')
+        else:
+            lexer = get_lexer_by_name(lang)
+        lexer.add_filter('tokenmerge')
+        try:
+            text = [Token(value, token_type)
+                    for token_type, value in lex(text, lexer)]
+        except ErrorToken as exc:
+            # this is most probably not the selected language,
+            # so let it pass unhighlighted
+            if lang == 'default':
+                pass  # automatic highlighting failed.
+            elif warn:
+                warn('Could not lex literal_block as "%s". '
+                     'Highlighting skipped.' % lang)
+            else:
+                raise exc
+        return text
 
 
 class Token(SingleStyledText):
