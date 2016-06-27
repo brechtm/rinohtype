@@ -91,7 +91,6 @@ class Page(Container):
         return self
 
     def set_current_section(self, section, heading):
-        self._empty = False
         if heading:
             if (section.level not in self._current_section
                     or not self._current_section[section.level][1]):

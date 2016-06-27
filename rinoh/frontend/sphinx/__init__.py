@@ -127,15 +127,22 @@ class RinohBuilder(Builder):
         self.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
+        new_tree = docutils.utils.new_document('<rinoh output>')
         if toctree_only:
             # extract toctree nodes from the tree and put them in a
             # fresh document
-            new_tree = docutils.utils.new_document('<rinoh output>')
             for node in tree.traverse(addnodes.toctree):
                 new_tree += node
-            tree = new_tree
-        largetree = inline_all_toctrees(self, docnames, indexfile, tree,
-                                        darkgreen)
+        else:
+            for node in tree.children:
+                if node.tagname == 'section':
+                    for child in node.children:
+                        if child.tagname != 'title':
+                            new_tree += child
+                else:
+                    new_tree += node
+        largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
+                                        darkgreen) #, [indexfile])
         largetree['docname'] = indexfile
         self.info()
         self.info("resolving references...")
