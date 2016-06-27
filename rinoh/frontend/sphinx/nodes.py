@@ -9,6 +9,11 @@ import unicodedata
 
 from itertools import chain
 
+from pygments.lexers import get_lexer_by_name, guess_lexer
+from pygments.util import ClassNotFound
+
+from sphinx.highlighting import lexers
+
 from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
@@ -17,10 +22,12 @@ from ...reference import Reference, REFERENCE
 from ...structure import DefinitionList, DefinitionTerm, Definition, FieldList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
+from ...warnings import warn
 
 from ..rst import (DocutilsInlineNode, DocutilsBodyNode,
                    DocutilsGroupingNode, DocutilsDummyNode)
 from ..rst.nodes import Admonition, Strong, Emphasis
+from ..rst.nodes import Literal_Block as rst_Literal_Block
 
 
 __all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
@@ -73,6 +80,54 @@ class Pending_XRef(DocutilsInlineNode):
 
 class Literal_Emphasis(Emphasis):
     pass
+
+
+class Literal_Block(rst_Literal_Block):
+    @staticmethod
+    def lexer_getter(text, language):
+        # This is a partial copy of Sphinx's PygmentsBridge.highlight_block()
+        if language in ('py3', 'python3', 'default'):
+            if language in ('py', 'python'):
+                if text.startswith('>>>'):
+                    # interactive session
+                    lexer = lexers['pycon']
+                else:
+                    lexer = lexers['python']
+            elif language in ('py3', 'python3', 'default'):
+                if text.startswith('>>>'):
+                    lexer = lexers['pycon3']
+                else:
+                    lexer = lexers['python3']
+            elif language == 'guess':
+                try:
+                    lexer = guess_lexer(text)
+                except Exception:
+                    lexer = lexers['none']
+            else:
+                if language in lexers:
+                    lexer = lexers[language]
+                else:
+                    try:
+                        lexer = lexers[language] = get_lexer_by_name(language)
+                    except ClassNotFound:
+                        if warn:
+                            warn('Pygments lexer name %r is not known'
+                                 % language)
+                            lexer = lexers['none']
+                        else:
+                            raise
+                    else:
+                        lexer.add_filter('raiseonerror')
+        else:
+            lexer = get_lexer_by_name(language)
+        return lexer
+
+    @property
+    def language(self):
+        if 'language' in self.attributes:    # (Sphinx)    .. code-block::
+            return self.get('language')
+        else:                                # (docutils)
+            return super().language
 
 
 class Abbreviation(DocutilsInlineNode):

@@ -310,15 +310,18 @@ class Problematic(DocutilsBodyNode, DocutilsInlineNode):
 
 
 class Literal_Block(DocutilsBodyNode):
-    def build_flowable(self):
+    lexer_getter = None
+
+    @property
+    def language(self):
         classes = self.get('classes')
-        if classes and classes[0] == 'code':  # .. code::         (docutils)
-            language = classes[1]
-        elif 'language' in self.attributes:   # .. code-block::   (Sphinx)
-            language = self.get('language')
-        else:
-            language = None
-        return rt.CodeBlock(self.text, language=language)
+        if classes and classes[0] == 'code':    # .. code::
+            return classes[1]
+        return None                             # literal block (double colon)
+
+    def build_flowable(self):
+        return rt.CodeBlock(self.text, language=self.language,
+                            lexer_getter=self.lexer_getter)
 
 
 class Block_Quote(DocutilsGroupingNode):
