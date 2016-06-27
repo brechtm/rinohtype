@@ -180,10 +180,7 @@ class Container(object):
         """Render the contents of this container to its canvas.
 
         Note that the rendered contents need to be :meth:`place`d on the parent
-        container's canvas before they become visible.
-
-        This method returns an iterator yielding all the :class:`Chain`\ s that
-        have run out of containers."""
+        container's canvas before they become visible."""
         for child in self.children:
             child.render(type, rerender)
 
