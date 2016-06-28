@@ -316,17 +316,15 @@ class DocumentTemplateSection(DocumentSection):
 class DocumentTemplate(Document):
     options_class = DocumentOptions
 
-    def __init__(self, flowables, document_parts, strings=None, options=None,
-                 backend=None):
+    def __init__(self, flowables, strings=None, options=None, backend=None):
         self.options = options or self.options_class()
-        self.document_parts = document_parts
         super().__init__(flowables, self.options['stylesheet'], strings=strings,
                          backend=backend)
 
     @property
     def sections(self):
         last_section_number_format = None
-        for i, document_part_tmpl in enumerate(self.document_parts):
+        for i, document_part_tmpl in enumerate(self.parts):
             number_format = document_part_tmpl.page_number_format
             if i == 0 or number_format != last_section_number_format:
                 if i > 0:

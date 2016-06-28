@@ -20,21 +20,16 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
-from rinoh.dimension import INCH
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
-from rinoh.number import NUMBER, ROMAN_LC
+from rinoh.number import NUMBER
 from rinoh.paper import A4, LETTER
 from rinoh.paragraph import Paragraph
-from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
-                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
-                             SECTION_NUMBER, SECTION_TITLE)
-from rinoh.structure import TableOfContentsSection
+from rinoh.reference import Reference, TITLE
 from rinoh.style import StyleSheetFile
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
-from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentOptions,
-                            DocumentTemplate, FixedDocumentPartTemplate,
-                            ContentsPartTemplate)
-from rinoh.text import Tab, SingleStyledText
+from rinoh.template import DocumentOptions
+from rinoh.templates import BookTemplate
+from rinoh.text import SingleStyledText
 
 from ...backend import pdf
 
@@ -233,12 +228,12 @@ class RinohBuilder(Builder):
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree)
         options = DocumentOptions(stylesheet=self.config.rinoh_stylesheet)
-        document_parts = self.config.rinoh_document_parts
+        document_template = self.config.rinoh_document_template
         indices = list(self.generate_indices(docnames))
         # TODO: more cleanly inject the indices into the document part template
-        document_parts[-1].flowables = indices + document_parts[-1].flowables
-        rinoh_document = DocumentTemplate(rinoh_tree, document_parts,
-                                          options=options, backend=pdf)
+        # document_parts[-1].flowables = indices + document_parts[-1].flowables
+        rinoh_document = document_template(rinoh_tree, options=options,
+                                           backend=pdf)
         rinoh_logo = self.config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
@@ -297,78 +292,8 @@ def default_domain_indices(config):
     return config.latex_domain_indices
 
 
-def default_document_parts(config):
-    page_kwargs = dict(page_size=config.rinoh_paper_size,
-                       left_margin=1*INCH, right_margin=1*INCH,
-                       top_margin=1*INCH, bottom_margin=1*INCH)
-    title_page_template = TitlePageTemplate(**page_kwargs)
-    front_matter_right_page =\
-        PageTemplate(header_footer_distance=0,
-                     header_text=None,
-                     footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.5 * INCH,
-                     chapter_title_flowables=
-                        front_matter_section_title_flowables,
-                     **page_kwargs)
-    front_matter_left_page =\
-        PageTemplate(header_footer_distance=0,
-                     header_text=None,
-                     footer_text=Variable(PAGE_NUMBER),
-                     **page_kwargs)
-    content_right_page = \
-        PageTemplate(header_footer_distance=0,
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_NUMBER(2))
-                                  + '.  ' + Variable(SECTION_TITLE(2))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.4*INCH,
-                     chapter_title_flowables=
-                         body_matter_chapter_title_flowables,
-                     **page_kwargs)
-    content_left_page = \
-        PageTemplate(header_footer_distance=0,
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
-                                  'Chapter ' + Variable(SECTION_NUMBER(1))
-                                  + '.  ' + Variable(SECTION_TITLE(1))),
-                     **page_kwargs)
-    back_matter_right_page =\
-        PageTemplate(columns=2,
-                     header_footer_distance=0,
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_TITLE(1))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.5 * INCH,
-                     chapter_title_flowables=
-                        front_matter_section_title_flowables,
-                     **page_kwargs)
-    back_matter_left_page =\
-        PageTemplate(columns=2,
-                     header_footer_distance=0,
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
-                                  + Variable(SECTION_TITLE(1))),
-                     **page_kwargs)
-    return [FixedDocumentPartTemplate([], title_page_template),
-            FixedDocumentPartTemplate([TableOfContentsSection()],
-                                      front_matter_right_page,
-                                      front_matter_left_page,
-                                      page_number_format=ROMAN_LC),
-            ContentsPartTemplate(content_right_page, content_left_page,
-                                 page_number_format=NUMBER),
-            FixedDocumentPartTemplate([IndexSection()],
-                                      back_matter_right_page,
-                                      back_matter_left_page)]
+def default_document_template(config):
+    return BookTemplate
 
 
 def front_matter_section_title_flowables(section_id):
@@ -390,4 +315,5 @@ def setup(app):
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
-    app.add_config_value('rinoh_document_parts', default_document_parts, 'html')
+    app.add_config_value('rinoh_document_template', default_document_template,
+                         'html')

@@ -6,15 +6,10 @@ from rinoh.stylesheets import sphinx
 from rinoh.template import (DocumentOptions, DocumentTemplate, PageTemplate,
                             TitlePageTemplate, ContentsPartTemplate,
                             FixedDocumentPartTemplate)
+from rinoh.templates import ArticleTemplate
+
 
 if __name__ == '__main__':
-    title_page_template = TitlePageTemplate(top_margin=8*CM)
-    page_template = PageTemplate()
-    document_parts = [FixedDocumentPartTemplate([], title_page_template),
-                      FixedDocumentPartTemplate([TableOfContentsSection()],
-                                                page_template),
-                      ContentsPartTemplate(page_template)]
-
     strings = (AdmonitionTitles(important='IMPORTANT:',
                                 tip='TIP:'),
                )
@@ -26,6 +21,6 @@ if __name__ == '__main__':
         # manual_options = BookOptions(stylesheet=STYLESHEET)
         # document = Book(document_tree, options=manual_options, backend=pdf)
         doc_options = DocumentOptions(stylesheet=sphinx)
-        document = DocumentTemplate(flowables, document_parts, strings=strings,
-                                    options=doc_options, backend=pdf)
+        document = ArticleTemplate(flowables, strings=strings,
+                                   options=doc_options, backend=pdf)
         document.render(name)
