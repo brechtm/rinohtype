@@ -16,7 +16,8 @@ from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
                              SECTION_NUMBER, SECTION_TITLE)
 from rinoh.structure import TableOfContentsSection
 from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
-                            FixedDocumentPartTemplate, ContentsPartTemplate)
+                            FixedDocumentPartTemplate, ContentsPartTemplate,
+                            TemplateConfiguration)
 from rinoh.text import Tab
 
 
@@ -33,33 +34,36 @@ def body_matter_chapter_title_flowables(section_id):
     yield Paragraph(Reference(section_id, TITLE),
                     style='body matter chapter title')
 
-base_page = \
+template_conf = TemplateConfiguration()
+
+template_conf['page'] = \
     PageTemplate(page_size=paper_size,
                  left_margin=1 * INCH,
                  right_margin=1 * INCH,
                  top_margin=1 * INCH,
                  bottom_margin=1 * INCH)
 
-title_page = TitlePageTemplate(**base_page)
+template_conf['title page'] = TitlePageTemplate(base='page')
 
-front_matter_right_page = \
-    PageTemplate(header_footer_distance=0,
+template_conf['front matter right page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0,
                  header_text=None,
                  footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
                  chapter_header_text=None,
                  chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
                  chapter_title_height=2.5 * INCH,
-                 chapter_title_flowables=front_matter_section_title_flowables,
-                 **base_page)
+                 chapter_title_flowables=front_matter_section_title_flowables)
 
-front_matter_left_page = \
-    PageTemplate(header_footer_distance=0,
+template_conf['front matter left page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0,
                  header_text=None,
-                 footer_text=Variable(PAGE_NUMBER),
-                 **base_page)
+                 footer_text=Variable(PAGE_NUMBER))
 
-content_right_page = \
-    PageTemplate(header_footer_distance=0,
+template_conf['content right page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0,
                  header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
                               + ', ' + Variable(DOCUMENT_SUBTITLE)),
                  footer_text=(Variable(SECTION_NUMBER(2))
@@ -68,20 +72,20 @@ content_right_page = \
                  chapter_header_text=None,
                  chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
                  chapter_title_height=2.4 * INCH,
-                 chapter_title_flowables=body_matter_chapter_title_flowables,
-                 **base_page)
+                 chapter_title_flowables=body_matter_chapter_title_flowables)
 
-content_left_page = \
-    PageTemplate(header_footer_distance=0,
+template_conf['content left page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0,
                  header_text=(Variable(DOCUMENT_TITLE) + ', '
                               + Variable(DOCUMENT_SUBTITLE)),
                  footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
                               'Chapter ' + Variable(SECTION_NUMBER(1))
-                              + '.  ' + Variable(SECTION_TITLE(1))),
-                 **base_page)
+                              + '.  ' + Variable(SECTION_TITLE(1))))
 
-back_matter_right_page = \
-    PageTemplate(columns=2,
+template_conf['back matter right page'] = \
+    PageTemplate(base='page',
+                 columns=2,
                  header_footer_distance=0,
                  header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
                               + ', ' + Variable(DOCUMENT_SUBTITLE)),
@@ -90,27 +94,28 @@ back_matter_right_page = \
                  chapter_header_text=None,
                  chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
                  chapter_title_height=2.5 * INCH,
-                 chapter_title_flowables=front_matter_section_title_flowables,
-                 **base_page)
+                 chapter_title_flowables=front_matter_section_title_flowables)
 
-back_matter_left_page = \
-    PageTemplate(columns=2,
+template_conf['back matter left page'] = \
+    PageTemplate(base='page',
+                 columns=2,
                  header_footer_distance=0,
                  header_text=(Variable(DOCUMENT_TITLE) + ', '
                               + Variable(DOCUMENT_SUBTITLE)),
                  footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
-                              + Variable(SECTION_TITLE(1))),
-                 **base_page)
+                              + Variable(SECTION_TITLE(1))))
 
 
 class BookTemplate(DocumentTemplate):
-    parts = [FixedDocumentPartTemplate([], title_page),
+    template_configuration = template_conf
+    parts = [FixedDocumentPartTemplate([], 'title page'),
              FixedDocumentPartTemplate([TableOfContentsSection()],
-                                       front_matter_right_page,
-                                       front_matter_left_page,
+                                       'front matter right page',
+                                       'front matter left page',
                                        page_number_format=ROMAN_LC),
-             ContentsPartTemplate(content_right_page, content_left_page,
+             ContentsPartTemplate('content right page',
+                                  'content left page',
                                   page_number_format=NUMBER),
              FixedDocumentPartTemplate([IndexSection()],
-                                       back_matter_right_page,
-                                       back_matter_left_page)]
+                                       'back matter right page',
+                                       'back matter left page')]

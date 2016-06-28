@@ -9,15 +9,21 @@
 from rinoh.dimension import CM
 from rinoh.structure import TableOfContentsSection
 from rinoh.template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
-                            ContentsPartTemplate, FixedDocumentPartTemplate)
+                            ContentsPartTemplate, FixedDocumentPartTemplate,
+                            TemplateConfiguration)
 
 
-title_page_template = TitlePageTemplate(top_margin=8*CM)
-page_template = PageTemplate()
+template_conf = TemplateConfiguration()
+
+
+template_conf['title page'] = TitlePageTemplate(top_margin=8*CM)
+
+template_conf['page'] = PageTemplate()
 
 
 class ArticleTemplate(DocumentTemplate):
-    parts = [FixedDocumentPartTemplate([], title_page_template),
+    template_configuration = template_conf
+    parts = [FixedDocumentPartTemplate([], 'title page'),
              FixedDocumentPartTemplate([TableOfContentsSection()],
-                                       page_template),
-             ContentsPartTemplate(page_template)]
+                                       'page'),
+             ContentsPartTemplate('page')]

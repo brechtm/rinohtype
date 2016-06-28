@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from collections import OrderedDict
 from types import FunctionType
 
 from .dimension import DimensionBase, CM, PT
@@ -25,7 +26,7 @@ from .strings import StringField
 from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet, Bool, Integer, AttributeType
 from .stylesheets import sphinx
-from .util import NamedDescriptor, WithNamedDescriptors
+from .util import NamedDescriptor, WithNamedDescriptors, NotImplementedAttribute
 
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
@@ -60,6 +61,13 @@ class Option(NamedDescriptor):
                         self.default_value))
 
 
+class Templated(object):
+    def get_option(self, option, document):
+        name = self.template_name
+        template = document.template_configuration.find_template(name)
+        return template[option]
+
+
 class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, PORTRAIT,
@@ -77,7 +85,8 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
 
-    def __init__(self, **options):
+    def __init__(self, base=None, **options):
+        self.base = base
         for name, value in options.items():
             option_descriptor = getattr(type(self), name, None)
             if not isinstance(option_descriptor, Option):
@@ -91,7 +100,7 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
     def __getitem__(self, name):
         return getattr(self, name)
 
-    def page(self, document_part, chain, after_break, **kwargs):
+    def page(self, template_name, document_part, chain, after_break, **kwargs):
         raise NotImplementedError
 
 
@@ -130,24 +139,27 @@ class PageTemplate(PageTemplateBase):
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
                                   'container holding the chapter title')
 
-    def page(self, document_part, chain, after_break, **kwargs):
-        return SimplePage(document_part, chain, self, after_break, **kwargs)
+    def page(self, document_part, template_name, chain, after_break, **kwargs):
+        return SimplePage(document_part, template_name, chain, self,
+                          after_break, **kwargs)
 
 
-class PageBase(Page):
-    def __init__(self, document_part, options, after_break):
-        paper = options['page_size']
-        orientation = options['page_orientation']
+class PageBase(Page, Templated):
+    def __init__(self, document_part, template_name, options, after_break):
+        self.template_name = template_name
+        document = document_part.document
+        paper = self.get_option('page_size', document)
+        orientation = self.get_option('page_orientation', document)
         super().__init__(document_part, paper, orientation)
         self.template = options
-        self.left_margin = options['left_margin']
-        self.right_margin = options['right_margin']
-        self.top_margin = options['top_margin']
-        self.bottom_margin = options['bottom_margin']
+        self.left_margin = self.get_option('left_margin', document)
+        self.right_margin = self.get_option('right_margin', document)
+        self.top_margin = self.get_option('top_margin', document)
+        self.bottom_margin = self.get_option('bottom_margin', document)
         self.body_width = self.width - (self.left_margin + self.right_margin)
         self.body_height = self.height - (self.top_margin + self.bottom_margin)
-        background = options['background']
-        after_break_background = options['after_break_background']
+        background = self.get_option('background', document)
+        after_break_background = self.get_option('after_break_background', document)
         bg = after_break_background or background
         if after_break and bg:
             self.background = FlowablesContainer('background', BACKGROUND, self)
@@ -158,11 +170,12 @@ class PageBase(Page):
 
 
 class SimplePage(PageBase):
-    def __init__(self, document_part, chain, options, new_chapter):
-        super().__init__(document_part, options, new_chapter)
-        num_cols = options['columns']
-        header_footer_distance = options['header_footer_distance']
-        column_spacing = options['column_spacing']
+    def __init__(self, document_part, template_name, chain, options, new_chapter):
+        super().__init__(document_part, template_name, options, new_chapter)
+        document = document_part.document
+        num_cols = self.get_option('columns', document)
+        header_footer_distance = self.get_option('header_footer_distance', document)
+        column_spacing = self.get_option('column_spacing', document)
         total_column_spacing = column_spacing * (num_cols - 1)
         column_width = (self.body_width - total_column_spacing) / num_cols
         self.body = Container('body', self, self.left_margin, self.top_margin,
@@ -172,19 +185,19 @@ class SimplePage(PageBase):
         float_space = DownExpandingContainer('floats', CONTENT, self.body, 0, 0,
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
-        if options['chapter_title_flowables'] and new_chapter:
-            height = options['chapter_title_height']
+        if self.get_option('chapter_title_flowables', document) and new_chapter:
+            height = self.get_option('chapter_title_height', document)
             self.chapter_title = FlowablesContainer('chapter title', CONTENT,
                                                     self.body, 0, 0,
                                                     height=height)
             column_top = self.chapter_title.bottom
-            header = options['chapter_header_text']
-            footer = options['chapter_footer_text']
+            header = self.get_option('chapter_header_text', document)
+            footer = self.get_option('chapter_footer_text', document)
         else:
             self.chapter_title = None
             column_top = float_space.bottom
-            header = options['header_text']
-            footer = options['footer_text']
+            header = self.get_option('header_text', document)
+            footer = self.get_option('footer_text', document)
         self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
                                          self.body, chain,
                                          left=i * (column_width
@@ -225,13 +238,14 @@ class TitlePageTemplate(PageTemplateBase):
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
 
-    def page(self, document_part, chain, after_break, **kwargs):
-        return TitlePage(document_part, self, after_break)
+    def page(self, document_part, template_name, chain, after_break, **kwargs):
+        return TitlePage(document_part, template_name, self, after_break)
 
 
 class TitlePage(PageBase):
-    def __init__(self, document_part, options, after_break):
-        super().__init__(document_part, options, after_break)
+    def __init__(self, document_part, template_name, options, after_break):
+        super().__init__(document_part, template_name, options, after_break)
+        document = document_part.document
         self.title = DownExpandingContainer('title', CONTENT, self,
                                             self.left_margin, self.top_margin,
                                             self.body_width)
@@ -243,17 +257,17 @@ class TitlePage(PageBase):
         if 'subtitle' in self.document.metadata:
             self.title << Paragraph(self.document.metadata['subtitle'],
                                     style='title page subtitle')
-        if 'author' in self.document.metadata and options['show_author']:
+        if 'author' in self.document.metadata and self.get_option('show_author', document):
             self.title << Paragraph(self.document.metadata['author'],
                                     style='title page author')
-        if options['show_date']:
+        if self.get_option('show_date', document):
             date = self.document.metadata['date']
             try:
                 self.title << Paragraph(date.strftime('%B %d, %Y'),
                                         style='title page date')
             except AttributeError:
                 self.title << Paragraph(date, style='title page date')
-        extra = options['extra']
+        extra = self.get_option('extra', document)
         if extra:
             self.title << Paragraph(extra, style='title page extra')
 
@@ -308,15 +322,24 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
+class TemplateConfiguration(OrderedDict):
+    def find_template(self, name):
+        return self[name]
+
 
 class DocumentTemplateSection(DocumentSection):
     parts = []
 
 
 class DocumentTemplate(Document):
+    template_configuration = NotImplementedAttribute()
+    parts = NotImplementedAttribute()
     options_class = DocumentOptions
 
-    def __init__(self, flowables, strings=None, options=None, backend=None):
+    def __init__(self, flowables, strings=None, template_configuration=None,
+                 options=None, backend=None):
+        if template_configuration:
+            self.template_configuration = template_configuration
         self.options = options or self.options_class()
         super().__init__(flowables, self.options['stylesheet'], strings=strings,
                          backend=backend)
