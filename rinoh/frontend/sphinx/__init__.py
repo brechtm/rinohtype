@@ -28,7 +28,7 @@ from rinoh.reference import Reference, TITLE
 from rinoh.style import StyleSheetFile
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
 from rinoh.template import DocumentOptions
-from rinoh.templates import BookTemplate
+from rinoh.templates import Book
 from rinoh.text import SingleStyledText
 
 from ...backend import pdf
@@ -293,7 +293,7 @@ def default_domain_indices(config):
 
 
 def default_document_template(config):
-    return BookTemplate
+    return Book
 
 
 def front_matter_section_title_flowables(section_id):

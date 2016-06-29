@@ -13,17 +13,16 @@ from rinoh.template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
                             TemplateConfiguration)
 
 
-template_conf = TemplateConfiguration()
+__all__ = ['Article']
 
 
-template_conf['title page'] = TitlePageTemplate(top_margin=8*CM)
+class Article(DocumentTemplate):
 
-template_conf['page'] = PageTemplate()
+    class Configuration(TemplateConfiguration):
+        title_page = TitlePageTemplate(top_margin=8*CM)
+        page = PageTemplate()
 
-
-class ArticleTemplate(DocumentTemplate):
-    template_configuration = template_conf
-    parts = [FixedDocumentPartTemplate([], 'title page'),
+    parts = [FixedDocumentPartTemplate([], Configuration.title_page),
              FixedDocumentPartTemplate([TableOfContentsSection()],
-                                       'page'),
-             ContentsPartTemplate('page')]
+                                       Configuration.page),
+             ContentsPartTemplate(Configuration.page)]

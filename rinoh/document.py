@@ -228,11 +228,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        page_template_name = (self.left_page_template if len(self.pages) % 2
-                              else self.right_page_template)
-        template_configuration = self.document.template_configuration
-        page_template = template_configuration.find_template(page_template_name)
-        return page_template.page(self, page_template_name, self.chain,
+        page_template = (self.left_page_template if len(self.pages) % 2
+                         else self.right_page_template)
+        return page_template.page(self, page_template.name, self.chain,
                                   new_chapter, **kwargs)
 
     @classmethod

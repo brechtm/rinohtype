@@ -64,7 +64,7 @@ class Option(NamedDescriptor):
 class Templated(object):
     def get_option(self, option, document):
         name = self.template_name
-        return document.template_configuration.get_option(name, option)
+        return document.configuration.get_option(name, option)
 
 
 # TODO: consolidate Style/Template(Meta) classes
@@ -97,6 +97,9 @@ class Template(dict, metaclass=TemplateMeta):
                                 .format(name))
             self[name] = value
 
+    def __call__(self, **kwargs):
+        self.configuration[self.name] = type(self)(**kwargs)
+
     @classmethod
     def _get_default(cls, option):
         """Return the default value for `option`.
@@ -112,9 +115,21 @@ class Template(dict, metaclass=TemplateMeta):
             raise KeyError("No option '{}' in {}".format(option, cls))
 
 
-class TemplateConfiguration(OrderedDict):
+class TemplateConfigurationMeta(type):
+    def __new__(mcls, classname, bases, cls_dict):
+        for name, attr in cls_dict.items():
+            if isinstance(attr, Template):
+                attr.name = name
+        return super().__new__(mcls, classname, bases, cls_dict)
+
+
+class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
     def __init__(self, base=None):
         self.base = base
+        for name, member in type(self).__dict__.items():
+            if isinstance(member, Template):
+                member.configuration = self
+        super().__init__()
 
     def __call__(self, template_name, **kwargs):
         template_class = self._get_template_class(template_name)
@@ -132,7 +147,10 @@ class TemplateConfiguration(OrderedDict):
         try:
             return self[name]
         except KeyError:
-            return self.base[name]
+            if self.base and name in self.base:
+                return self.base[name]
+            else:
+                return getattr(self, name)   # default template
 
     def get_option(self, template_name, option_name):
         template = self.find_template(template_name)
@@ -390,14 +408,13 @@ class DocumentTemplateSection(DocumentSection):
 
 
 class DocumentTemplate(Document):
-    template_configuration = NotImplementedAttribute()
+    Configuration = NotImplementedAttribute()
     parts = NotImplementedAttribute()
     options_class = DocumentOptions
 
-    def __init__(self, flowables, strings=None, template_configuration=None,
+    def __init__(self, flowables, strings=None, configuration=None,
                  options=None, backend=None):
-        if template_configuration:
-            self.template_configuration = template_configuration
+        self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
         super().__init__(flowables, self.options['stylesheet'], strings=strings,
                          backend=backend)

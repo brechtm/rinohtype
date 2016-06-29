@@ -6,8 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .article import ArticleTemplate
-from .book import BookTemplate
+from .article import Article
+from .book import Book
 
 
-__all__ = ['ArticleTemplate', 'BookTemplate']
+__all__ = ['Article', 'Book']
