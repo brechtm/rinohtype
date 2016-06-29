@@ -64,11 +64,87 @@ class Option(NamedDescriptor):
 class Templated(object):
     def get_option(self, option, document):
         name = self.template_name
-        template = document.template_configuration.find_template(name)
-        return template[option]
+        return document.template_configuration.get_option(name, option)
 
 
-class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
+# TODO: consolidate Style/Template(Meta) classes
+class TemplateMeta(WithNamedDescriptors):
+    def __new__(cls, classname, bases, cls_dict):
+        options = cls_dict['_options'] = {}
+        for name, attr in cls_dict.items():
+            if isinstance(attr, Option):
+                options[name] = attr
+        supported_options = set(name for name in options)
+        for base_class in bases:
+            try:
+                supported_options.update(base_class._supported_attributes)
+            except AttributeError:
+                pass
+        cls_dict['_supported_options'] = supported_options
+        return super().__new__(cls, classname, bases, cls_dict)
+
+
+class Template(dict, metaclass=TemplateMeta):
+    def __init__(self, base=None, **options):
+        self.base = base
+        for name, value in options.items():
+            option_descriptor = getattr(type(self), name, None)
+            if not isinstance(option_descriptor, Option):
+                raise AttributeError('Unsupported page template option: {}'
+                                     .format(name))
+            if not option_descriptor.accepted_type.check_type(value):
+                raise TypeError('Page template option has wrong type: {}'
+                                .format(name))
+            self[name] = value
+
+    @classmethod
+    def _get_default(cls, option):
+        """Return the default value for `option`.
+
+        If no default is specified in this style, get the default from the
+        nearest superclass.
+        If `option` is not supported, raise a :class:`KeyError`."""
+        try:
+            for klass in cls.__mro__:
+                if option in klass._options:
+                    return klass._options[option].default_value
+        except AttributeError:
+            raise KeyError("No option '{}' in {}".format(option, cls))
+
+
+class TemplateConfiguration(OrderedDict):
+    def __init__(self, base=None):
+        self.base = base
+
+    def __call__(self, template_name, **kwargs):
+        template_class = self._get_template_class(template_name)
+        self[template_name] = template_class(**kwargs)
+
+    def _get_template_class(self, template_name):
+        try:
+            return type(self[template_name])
+        except KeyError:
+            if not self.base:
+                raise
+            return self.base._get_template_class(template_name)
+
+    def find_template(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            return self.base[name]
+
+    def get_option(self, template_name, option_name):
+        template = self.find_template(template_name)
+        try:
+            return template[option_name]
+        except KeyError:
+            if not self.base:
+                return template._get_default(option_name)
+            return self.base.get_option(template_name, option_name)
+
+
+class PageTemplateBase(Template):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, PORTRAIT,
                               'The orientation of pages in the document')
@@ -84,21 +160,6 @@ class PageTemplateBase(dict, metaclass=WithNamedDescriptors):
                                              'background of the page')
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
-
-    def __init__(self, base=None, **options):
-        self.base = base
-        for name, value in options.items():
-            option_descriptor = getattr(type(self), name, None)
-            if not isinstance(option_descriptor, Option):
-                raise AttributeError('Unsupported page template option: {}'
-                                     .format(name))
-            if not option_descriptor.accepted_type.check_type(value):
-                raise TypeError('Page template option has wrong type: {}'
-                                .format(name))
-            setattr(self, name, value)
-
-    def __getitem__(self, name):
-        return getattr(self, name)
 
     def page(self, template_name, document_part, chain, after_break, **kwargs):
         raise NotImplementedError
@@ -228,7 +289,9 @@ class SimplePage(PageBase):
         section_id = heading.section.get_id(self.document)
         create_destination(heading.section, self.chapter_title, False)
         create_destination(heading, self.chapter_title, False)
-        for flowable in self.template['chapter_title_flowables'](section_id):
+        chapter_title_flowables = self.get_option('chapter_title_flowables',
+                                                  self.document)
+        for flowable in chapter_title_flowables(section_id):
             _, _, descender = flowable.flow(self.chapter_title, descender)
 
 
@@ -320,11 +383,6 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
 
     def __getitem__(self, name):
         return getattr(self, name)
-
-
-class TemplateConfiguration(OrderedDict):
-    def find_template(self, name):
-        return self[name]
 
 
 class DocumentTemplateSection(DocumentSection):

@@ -230,7 +230,8 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         contains a container associated with `chain`."""
         page_template_name = (self.left_page_template if len(self.pages) % 2
                               else self.right_page_template)
-        page_template = self.document.template_configuration[page_template_name]
+        template_configuration = self.document.template_configuration
+        page_template = template_configuration.find_template(page_template_name)
         return page_template.page(self, page_template_name, self.chain,
                                   new_chapter, **kwargs)
 
