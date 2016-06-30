@@ -8,29 +8,15 @@
 
 import argparse
 import os
-import string
-
-from xmlrpc.client import ServerProxy
-
-import pip
-import pkg_resources
 
 from rinoh import paper
 
 from rinoh.backend import pdf
-from rinoh.font import TypefaceNotInstalled
+from rinoh.font import TypefaceNotInstalled, install_typeface
 from rinoh.frontend.rst import ReStructuredTextReader
-
-
-
-def entry_point_name_to_identifier(entry_point_name):
-    try:
-        entry_point_name.encode('ascii')
-        ascii_name = entry_point_name
-    except UnicodeEncodeError:
-        ascii_name = entry_point_name.encode('punycode').decode('ascii')
-    return ''.join(char for char in ascii_name
-                   if char in string.ascii_lowercase + string.digits)
+from rinoh.stylesheets import sphinx
+from rinoh.template import DocumentOptions
+from rinoh.templates import Article
 
 
 def main():
@@ -60,32 +46,21 @@ def main():
     if input_dir:
         os.chdir(input_dir)
 
+    parser = ReStructuredTextReader()
+    with open(input_filename) as input_file:
+        document_tree = parser.parse(input_file)
+    options = DocumentOptions(stylesheet=sphinx)
+    document = Article(document_tree, options=options, backend=pdf)
+
     while True:
         try:
-            from rinohlib.templates.article import Article, ArticleOptions
+            document.render(input_root)
             break
         except TypefaceNotInstalled as err:
             print("Typeface '{}' not installed. Attempting to install it from "
                   "PyPI...".format(err.typeface_name))
             # answer = input()
-            pypi = ServerProxy('https://pypi.python.org/pypi')
-            typeface_id = entry_point_name_to_identifier(err.typeface_id)
-            distribution_name_parts = ['rinoh', 'typeface', typeface_id]
-            for pkg in pypi.search(dict(name=distribution_name_parts)):
-                if pkg['name'] == '-'.join(distribution_name_parts):
-                    typeface_pkg = pkg['name']
-                    print("Installing typeface package '{}' using pip..."
-                          .format(typeface_pkg))
-                    pip.main(['install', typeface_pkg])
-                    break
-            else:
+            success = install_typeface(err.entry_point_name)
+            if not success:
                 raise SystemExit("No '{}' typeface found on PyPI. Aborting."
                                  .format(err.typeface_name))
-            pkg_resources.working_set.__init__()      # rescan entry points
-
-    parser = ReStructuredTextReader()
-    with open(input_filename) as input_file:
-        document_tree = parser.parse(input_file)
-    options = ArticleOptions(page_size=page_size)
-    document = Article(document_tree, options, backend=pdf)
-    document.render(input_root)
