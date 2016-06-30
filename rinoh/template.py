@@ -64,7 +64,7 @@ class Option(NamedDescriptor):
 class Templated(object):
     def get_option(self, option, document):
         name = self.template_name
-        return document.configuration.get_option(name, option)
+        return document.configuration.get_template_option(name, option)
 
 
 # TODO: consolidate Style/Template(Meta) classes
@@ -115,10 +115,24 @@ class Template(dict, metaclass=TemplateMeta):
             raise KeyError("No option '{}' in {}".format(option, cls))
 
 
+class TemplateOption(NamedDescriptor):
+    def __init__(self, accepted_type, default_value, description):
+        self.accepted_type = accepted_type
+        self.default_value = default_value
+        self.description = description
+
+    def __call__(self, value):
+        if not self.accepted_type.check_type(value):
+            raise TypeError('{} option has wrong type: {}'
+                            .format(type(self.configuration).__name__,
+                                    self.name))
+        self.configuration[self.name] = value
+
+
 class TemplateConfigurationMeta(type):
     def __new__(mcls, classname, bases, cls_dict):
         for name, attr in cls_dict.items():
-            if isinstance(attr, Template):
+            if isinstance(attr, (Template, TemplateOption)):
                 attr.name = name
         return super().__new__(mcls, classname, bases, cls_dict)
 
@@ -127,7 +141,7 @@ class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
     def __init__(self, base=None):
         self.base = base
         for name, member in type(self).__dict__.items():
-            if isinstance(member, Template):
+            if isinstance(member, (Template, TemplateOption)):
                 member.configuration = self
         super().__init__()
 
@@ -143,6 +157,20 @@ class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
                 raise
             return self.base._get_template_class(template_name)
 
+    @classmethod
+    def _get_default(cls, option):
+        """Return the default value for `option`.
+
+        If no default is specified in this style, get the default from the
+        nearest superclass.
+        If `option` is not supported, raise a :class:`KeyError`."""
+        try:
+            for klass in cls.__mro__:
+                if option in klass._options:
+                    return klass._options[option].default_value
+        except AttributeError:
+            raise KeyError("No option '{}' in {}".format(option, cls))
+
     def find_template(self, name):
         try:
             return self[name]
@@ -152,14 +180,22 @@ class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
             else:
                 return getattr(self, name)   # default template
 
-    def get_option(self, template_name, option_name):
+    def get_option(self, option_name):
+        try:
+            return self[option_name]
+        except KeyError:
+            if not self.base:
+                return getattr(self, option_name).default_value
+            return self.base.get_option(option_name)
+
+    def get_template_option(self, template_name, option_name):
         template = self.find_template(template_name)
         try:
             return template[option_name]
         except KeyError:
             if not self.base:
                 return template._get_default(option_name)
-            return self.base.get_option(template_name, option_name)
+            return self.base.get_template_option(template_name, option_name)
 
 
 class PageTemplateBase(Template):
@@ -326,23 +362,31 @@ class TitlePageTemplate(PageTemplateBase):
 class TitlePage(PageBase):
     def __init__(self, document_part, template_name, options, after_break):
         super().__init__(document_part, template_name, options, after_break)
-        document = document_part.document
+        document = self.document
+        metadata = document.metadata
         self.title = DownExpandingContainer('title', CONTENT, self,
                                             self.left_margin, self.top_margin,
                                             self.body_width)
-        if 'logo' in self.document.metadata:
-            self.title << Image(self.document.metadata['logo'],
+        if 'logo' in metadata:
+            self.title << Image(metadata['logo'],
                                 style='title page logo')
-        self.title << Paragraph(self.document.metadata['title'],
+        self.title << Paragraph(metadata['title'],
                                 style='title page title')
-        if 'subtitle' in self.document.metadata:
-            self.title << Paragraph(self.document.metadata['subtitle'],
+        if 'subtitle' in metadata:
+            self.title << Paragraph(metadata['subtitle'],
                                     style='title page subtitle')
-        if 'author' in self.document.metadata and self.get_option('show_author', document):
-            self.title << Paragraph(self.document.metadata['author'],
+        if 'author' in metadata and self.get_option('show_author', document):
+            self.title << Paragraph(metadata['author'],
                                     style='title page author')
+        config = self.document.configuration
+        try:
+            abstract_location = config.get_option('abstract_location')
+            if 'abstract' in metadata and abstract_location == TITLE:
+                self.title << metadata['abstract']
+        except AttributeError:
+            pass
         if self.get_option('show_date', document):
-            date = self.document.metadata['date']
+            date = metadata['date']
             try:
                 self.title << Paragraph(date.strftime('%B %d, %Y'),
                                         style='title page date')
@@ -429,6 +473,8 @@ class DocumentTemplate(Document):
                     yield current_section
                 current_section = DocumentTemplateSection(self, number_format)
             part = document_part_tmpl.document_part(current_section)
-            current_section._parts.append(part)
-            last_section_number_format = document_part_tmpl.page_number_format
-        yield current_section
+            if part:
+                current_section._parts.append(part)
+                last_section_number_format = document_part_tmpl.page_number_format
+        if current_section._parts:
+            yield current_section
