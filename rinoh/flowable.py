@@ -26,7 +26,7 @@ from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
-                     EndOfContainer, PageBreakException)
+                     EndOfContainer, PageBreakException, CONTENT)
 from .style import Styled, Style, OptionSet, Attribute, Bool
 from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
@@ -118,7 +118,8 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        container.page._empty = False
+        if container.type == CONTENT:
+            container.page._empty = False
         top_to_baseline = 0
         state = state or self.initial_state(container)
         if state.initial:
