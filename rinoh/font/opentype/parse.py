@@ -15,7 +15,7 @@ from ...util import all_subclasses
 
 def create_reader(data_format, process_struct=lambda data: data[0]):
     data_struct = struct.Struct('>' + data_format)
-    def reader(file):
+    def reader(file, **kwargs):
         data = data_struct.unpack(file.read(data_struct.size))
         return process_struct(data)
     return reader
@@ -47,7 +47,7 @@ class Packed(OrderedDict):
     reader = None
     fields = []
 
-    def __init__(self, file):
+    def __init__(self, file, **kwargs):
         super().__init__(self)
         self.value = self.__class__.reader(file)
         for name, mask, processor in self.fields:
@@ -56,7 +56,7 @@ class Packed(OrderedDict):
 
 def array(reader, length):
     def array_reader(file, **kwargs):
-        return [reader(file, **kwargs) for i in range(length)]
+        return [reader(file, **kwargs) for _ in range(length)]
     return array_reader
 
 
@@ -68,22 +68,19 @@ def context(reader, *indirect_args):
 
 
 def context_array(reader, count_key, *indirect_args, multiplier=1):
-    def context_array_reader(file, table=None, **kwargs):
+    def context_array_reader(file, table, **kwargs):
         length = int(table[count_key] * multiplier)
         args = [table[key] for key in indirect_args]
-        try:
-            return array(reader, length)(file, *args, table=table, **kwargs)
-        except TypeError:
-            return array(reader, length)(file, *args)
+        return array(reader, length)(file, *args, table=table, **kwargs)
     return context_array_reader
 
 
 def indirect(reader, *indirect_args, offset_reader=offset):
-    def indirect_reader(file, base, **kwargs):
+    def indirect_reader(file, base, table, **kwargs):
         indirect_offset = offset_reader(file)
         restore_position = file.tell()
         args = [table[key] for key in indirect_args]
-        result = reader(file, base + indirect_offset, *args)
+        result = reader(file, base + indirect_offset, *args, **kwargs)
         file.seek(restore_position)
         return result
     return indirect_reader
@@ -101,16 +98,16 @@ def indirect_array(reader, count_key, *indirect_args):
 class OpenTypeTableBase(OrderedDict):
     entries = []
 
-    def __init__(self, file, file_offset=None):
+    def __init__(self, file, file_offset=None, **kwargs):
         super().__init__()
-        self.parse(file, file_offset, self.entries)
+        if file_offset is None:
+            file_offset = kwargs.pop('base', None)
+        self.parse(file, file_offset, self.entries, **kwargs)
 
-    def parse(self, file, base, entries):
+    def parse(self, file, base, entries, **kwargs):
+        kwargs.pop('table', None)
         for key, reader in entries:
-            try: # special readers
-                value = reader(file, base=base, table=self)
-            except TypeError: # table reader or simple reader
-                value = reader(file)
+            value = reader(file, base=base, table=self, **kwargs)
             if key is not None:
                 self[key] = value
 
@@ -118,10 +115,10 @@ class OpenTypeTableBase(OrderedDict):
 class OpenTypeTable(OpenTypeTableBase):
     tag = None
 
-    def __init__(self, file, file_offset=None):
+    def __init__(self, file, file_offset=None, **kwargs):
         if file_offset is not None:
             file.seek(file_offset)
-        super().__init__(file, file_offset)
+        super().__init__(file, file_offset, **kwargs)
 
 
 
@@ -129,7 +126,7 @@ class MultiFormatTable(OpenTypeTable):
     formats = {}
 
     def __init__(self, file, file_offset=None, **kwargs):
-        super().__init__(file, file_offset)
+        super().__init__(file, file_offset, **kwargs)
         table_format = self[self.entries[0][0]]
         if table_format in self.formats:
             self.parse(file, file_offset, self.formats[table_format])

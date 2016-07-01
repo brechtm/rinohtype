@@ -23,7 +23,7 @@ class ListTable(OpenTypeTable):
     entries = [('Count', uint16),
                ('Record', context_array(ListRecord, 'Count'))]
 
-    def __init__(self, file, file_offset):
+    def __init__(self, file, file_offset, **kwargs):
         super().__init__(file, file_offset)
         self.by_tag = {}
         for record in self['Record']:

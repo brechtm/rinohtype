@@ -321,7 +321,7 @@ class CmapSubtable(MultiFormatTable):
 ##    def _format_99_init(self):
 ##        pass
 
-    def __init__(self, file, file_offset=None):
+    def __init__(self, file, file_offset=None, **kwargs):
         # TODO: detect already-parsed table (?)
         super().__init__(file, file_offset)
         # TODO: create format-dependent lookup function instead of storing
