@@ -1,2 +1,6 @@
-include LICENSE README.rst
-recursive-include docs *.html *.css *.png
+include LICENSE README.rst CHANGES.rst
+recursive-include rinoh/data *
+recursive-include doc *.html *.css *.png
+recursive-include examples *.py *.txt *.xml *.jpg
+recursive-include tests *.py
+include bin/rinoh

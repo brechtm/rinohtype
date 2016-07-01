@@ -1,9 +1,10 @@
-.idea/
 *.pyc
 *~
 *.rtc
 /.python-version
 /.cache
+/.idea
+/.tox
 /build
 /dist
 /RinohType.egg-info
