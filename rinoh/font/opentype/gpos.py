@@ -182,14 +182,26 @@ class PairAdjustmentSubtable(MultiFormatTable):
 
 class EntryExitRecord(OpenTypeTable):
     entries = [('EntryAnchor', indirect(Anchor)),
-               ('ExitAnchor', indirect(Anchor, 'EntryExitCount'))]
+               ('ExitAnchor', indirect(Anchor))]
 
 
 class CursiveAttachmentSubtable(OpenTypeTable):
     entries = [('PosFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('EntryExitCount', uint16),
-               ('EntryExitRecord', context_array(EntryExitRecord, 'EntryExitCount'))]
+               ('EntryExitRecord', context_array(EntryExitRecord,
+                                                 'EntryExitCount'))]
+
+    def lookup(self, a_id, b_id):
+        assert self['PosFormat'] == 1
+        try:
+            a_index = self['Coverage'].index(a_id)
+            b_index = self['Coverage'].index(b_id)
+        except ValueError:
+            raise KeyError
+        a_entry_exit = self['EntryExitRecord'][a_index]
+        b_entry_exit = self['EntryExitRecord'][b_index]
+        raise NotImplementedError
 
 
 class MarkCoverage(OpenTypeTable):
