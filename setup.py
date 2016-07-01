@@ -5,6 +5,7 @@ Setup script for RinohType
 """
 
 import os
+import re
 import sys
 
 from datetime import datetime
@@ -17,23 +18,29 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_ABSPATH = os.path.join(BASE_PATH, PACKAGE)
 VERSION_FILE = os.path.join(PACKAGE_ABSPATH, 'version.py')
 
+VERSION_FORMAT = re.compile(r'v\d+\.\d+\.\d+')
+
+# All external commands are relative to BASE_PATH
+os.chdir(BASE_PATH)
+
 # retrieve the version number from git or VERSION_FILE
 # inspired by http://dcreager.net/2010/02/10/setuptools-git-version-numbers/
 try:
     print('Attempting to get version number from git...')
-    git = Popen(['git', 'describe', '--abbrev=4', '--dirty'],
+    git = Popen(['git', 'describe', '--always', '--dirty'],
                 stdout=PIPE, stderr=sys.stderr)
     if git.wait() != 0:
         raise OSError
-    line = git.stdout.readlines()[0]
-    __version__ = line.strip()[1:].decode('ascii')
+    line, = git.stdout.readlines()
+    line = line.strip().decode('ascii')
+    __version__ = line[1:] if VERSION_FORMAT.match(line) else line
     __release_date__ = datetime.now().strftime('%b %d %Y, %H:%M:%S')
     with open(VERSION_FILE, 'w') as version_file:
         version_file.write("__version__ = '{}'\n".format(__version__))
         version_file.write("__release_date__ = '{}'\n".format(__release_date__))
 except OSError as e:
     print('Assume we are running from a source distribution.')
-    # read version from from VERSION_FILE
+    # read version from VERSION_FILE
     with open(VERSION_FILE) as version_file:
         code = compile(version_file.read(), VERSION_FILE, 'exec')
         exec(code)
@@ -65,6 +72,8 @@ setup(
     install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
     entry_points={
+        'rinoh_stylesheets':
+            ['sphinx = rinoh.stylesheets:sphinx'],
         'rinoh_typefaces':
             ['courier = rinoh.fonts.adobe14:courier',
              'helvetica = rinoh.fonts.adobe14:helvetica',
