@@ -822,7 +822,7 @@ class FontDescriptor(Dictionary):
         self['CapHeight'] = Integer(font.cap_height)
         self['XHeight'] = Integer(font.x_height)
         self['StemV'] = Integer(font.stem_v)
-        if font_file:
+        if font_file is not None:
             self[font_file.key] = font_file
 
     def determine_flags(self, font, symbolic):
