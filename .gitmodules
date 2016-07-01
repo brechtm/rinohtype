@@ -1,4 +1,4 @@
 [submodule "doc/_build/html"]
 	path = doc/_build/html
-	url = git@github.com:brechtm/rinohtype.git
+	url = https://github.com/brechtm/rinohtype.git
 	branch = gh-pages
