@@ -9,7 +9,7 @@ python:
   - '3.5'
 
 install:
-  - pip install tox-travis
+  - pip install tox-travis "virtualenv<14.0.0"
 
 script:
   - tox
