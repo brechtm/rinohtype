@@ -121,6 +121,12 @@ class Boolean(Object):
         super().__init__(indirect)
         self.value = value
 
+    def __bool__(self):
+        return self.value
+
+    def __eq__(self, other):
+        return self.value == other.value
+
     def _repr(self):
         return self.value
 
@@ -328,9 +334,9 @@ class Dictionary(Container, OrderedDict):
     type = None
     subtype = None
 
-    def __init__(self, indirect=False, **items):
+    def __init__(self, *args, indirect=False, **items):
         Container.__init__(self, indirect)
-        OrderedDict.__init__(self, **items)
+        OrderedDict.__init__(self, *args, **items)
         if self.__class__.type:
             self['Type'] = Name(self.__class__.type)
         if self.__class__.subtype:

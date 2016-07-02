@@ -255,7 +255,9 @@ class PDFObjectReader(object):
         number_string = b''
         while True:
             char = self.file.read(1)
-            if char not in b'+-.0123456789':
+            if not char:
+                break
+            elif char not in b'+-.0123456789':
                 self.file.seek(-1, SEEK_CUR)
                 break
             number_string += char
