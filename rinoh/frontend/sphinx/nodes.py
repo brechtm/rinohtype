@@ -51,7 +51,7 @@ class Compact_Paragraph(DocutilsGroupingNode):
 class Index(DocutilsBodyNode, DocutilsInlineNode):
     @property
     def _index_terms(self):
-        for type, entry_name, target, ignored in self.get('entries'):
+        for type, entry_name, target, ignored, key in self.get('entries'):
             if type == 'single':
                 yield IndexTerm(*(n.strip() for n in entry_name.split(';')))
             elif type == 'pair':

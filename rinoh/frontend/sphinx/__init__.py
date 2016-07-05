@@ -137,7 +137,7 @@ class RinohBuilder(Builder):
                 else:
                     new_tree += node
         largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
-                                        darkgreen) #, [indexfile])
+                                        darkgreen, [indexfile])
         largetree['docname'] = indexfile
         self.info()
         self.info("resolving references...")
