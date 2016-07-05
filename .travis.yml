@@ -3,13 +3,12 @@ language: python
 sudo: false
 
 python:
-  - '3.2'
   - '3.3'
   - '3.4'
   - '3.5'
 
 install:
-  - pip install tox-travis "virtualenv<14.0.0"
+  - pip install tox-travis
 
 script:
   - tox
