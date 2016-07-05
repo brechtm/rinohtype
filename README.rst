@@ -1,6 +1,18 @@
 RinohType
 =========
 
+.. image:: http://img.shields.io/pypi/v/rinohtype.svg
+   :target: https://pypi.python.org/pypi/rinohtype
+   :alt: PyPI
+
+.. image:: https://travis-ci.org/brechtm/rinohtype.svg
+   :target: https://travis-ci.org/brechtm/rinohtype
+   :alt: Build status
+
+.. image:: https://www.quantifiedcode.com/api/v1/project/44e411c95df74f5e8cd04eb067a73f4b/badge.svg
+   :target: https://www.quantifiedcode.com/app/project/44e411c95df74f5e8cd04eb067a73f4b
+   :alt: Code issues
+
 RinohType is a document processor in the style of LaTeX_. It can render
 structured text documents to PDF based on a document template and a style sheet.
 An important goal of RinohType is to be more user-friendly than LaTeX. This
