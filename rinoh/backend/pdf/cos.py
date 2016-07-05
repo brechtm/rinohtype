@@ -509,8 +509,8 @@ class Document(dict):
     def build_dests_names_array(self):
         if 'Names' in self.catalog:
             self.catalog['Names'].delete(self)
-        names = self.catalog['Names'] = Dictionary(True)
-        dests = names['Dests'] = Dictionary(True)
+        names = self.catalog['Names'] = Dictionary(indirect=True)
+        dests = names['Dests'] = Dictionary(indirect=True)
         dests_names = dests['Names'] = Array()
         for name in sorted(self.dests):
             dests_names.append(name)
@@ -633,7 +633,7 @@ class Action(Dictionary):
     action_type = None
 
     def __init__(self, next=None, indirect=False):
-        super().__init__(indirect)
+        super().__init__(indirect=indirect)
         if self.__class__.action_type:
             self['S'] = Name(self.__class__.action_type)
         if next:
@@ -657,7 +657,7 @@ class Annotation(Dictionary):
     type = 'Annot'
 
     def __init__(self, rectangle, indirect=False):
-        super().__init__(indirect)
+        super().__init__(indirect=indirect)
         self['Rect'] = rectangle
         self['Border'] = Array(3 * [Integer(0)])
 
@@ -737,7 +737,7 @@ class CompositeFont(Font):
     subtype = 'Type0'
 
     def __init__(self, descendant_font, encoding, to_unicode=None):
-        super().__init__(True)
+        super().__init__(indirect=True)
         self['BaseFont'] = descendant_font.composite_font_name(encoding)
         self['DescendantFonts'] = Array([descendant_font], False)
         try:
@@ -750,7 +750,7 @@ class CompositeFont(Font):
 
 class CIDSystemInfo(Dictionary):
     def __init__(self, ordering, registry, supplement):
-        super().__init__(False)
+        super().__init__(indirect=False)
         self['Ordering'] = String(ordering)
         self['Registry'] = String(registry)
         self['Supplement'] = Integer(supplement)
@@ -759,7 +759,7 @@ class CIDSystemInfo(Dictionary):
 class CIDFont(Font):
     def __init__(self, base_font, cid_system_info, font_descriptor,
                  dw=1000, w=None):
-        super().__init__(True)
+        super().__init__(indirect=True)
         self['BaseFont'] = Name(base_font)
         self['FontDescriptor'] = font_descriptor
         self['CIDSystemInfo'] = cid_system_info
@@ -818,7 +818,7 @@ class FontDescriptor(Dictionary):
     type = 'FontDescriptor'
 
     def __init__(self, font, symbolic, font_file=None):
-        super().__init__(True)
+        super().__init__(indirect=True)
         self['FontName'] = Name(font.name)
         self['Flags'] = Integer(self.determine_flags(font, symbolic))
         self['FontBBox'] = Array([Integer(item) for item in font.bounding_box])
@@ -876,7 +876,7 @@ class OpenTypeFontFile(Stream):
 
 class FontEncoding(Dictionary):
     def __init__(self, base_encoding=None, differences=None, indirect=True):
-        super().__init__(indirect)
+        super().__init__(indirect=indirect)
         self['Type'] = Name('Encoding')
         if base_encoding:
             self['BaseEncoding'] = Name(base_encoding)
