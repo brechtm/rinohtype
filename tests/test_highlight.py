@@ -6,7 +6,7 @@ import sphinx
 
 from pygments.style import Style
 from pygments.token import (Comment, Keyword, Number, Text, Name, Punctuation,
-                            Operator, Literal)
+                            Operator, Literal, is_token_subtype)
 
 from rinoh.color import HexColor
 from rinoh.font import ITALIC
@@ -16,7 +16,7 @@ from rinoh.highlight import (highlight_block, get_pygments_style, Token,
 
 
 
-def test_highlight():
+def test_highlight_block():
     code = ("""def sandwich(bread, cheese=True):
                    result = []
                    result.append(bread.slice())
@@ -24,7 +24,8 @@ def test_highlight():
                        result.append('cheese')
                    return result""")
     indent = 15 * ' '
-    assert list(highlight_block('python', code, None)) == \
+    result = highlight_block('python', code, None)
+    reference = \
         [Token('def', Keyword), Token(' ', Text),
            Token('sandwich', Name.Function), Token('(', Punctuation),
            Token('bread', Name), Token(',', Punctuation), Token(' ', Text),
@@ -44,6 +45,9 @@ def test_highlight():
            Token("'cheese'", Literal.String), Token(')', Punctuation),
          Token('\n' + indent + '    ', Text), Token('return', Keyword),
            Token(' ', Text), Token('result', Name), Token('\n', Text)]
+    for res, ref in zip(result, reference):
+        assert res.text(None) == ref.text(None)
+        assert is_token_subtype(res.type, ref.type)
 
 
 def test_get_pygments_style():
