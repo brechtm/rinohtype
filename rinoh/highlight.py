@@ -41,30 +41,31 @@ class CodeBlock(Paragraph):
     def __init__(self, text, language=None, id=None, style=None, parent=None,
                  lexer_getter=None):
         if PYGMENTS_AVAILABLE:
-            text = self.highlight_block(language or 'text', text, lexer_getter)
+            text = highlight_block(language or 'text', text, lexer_getter)
         else:
             warn("The 'pygments' package is not available; cannot perform "
                  "syntax highlighting of {}s.".format(type(self).__name__))
         super().__init__(text, id=id, style=style, parent=parent)
 
-    def highlight_block(self, language, text, lexer_getter):
-        get_lexer = lexer_getter or (lambda text, lang: get_lexer_by_name(lang))
-        lexer = get_lexer(text, language)
-        lexer.add_filter('tokenmerge')
-        try:
-            text = [Token(value, token_type)
-                    for token_type, value in lex(text, lexer)]
-        except ErrorToken as exc:
-            # this is most probably not the selected language,
-            # so let it pass unhighlighted
-            if language == 'default':
-                pass  # automatic highlighting failed.
-            elif warn:
-                warn('Could not lex literal_block as "%s". '
-                     'Highlighting skipped.' % language)
-            else:
-                raise exc
-        return text
+
+def highlight_block(language, text, lexer_getter):
+    get_lexer = lexer_getter or (lambda text, lang: get_lexer_by_name(lang))
+    lexer = get_lexer(text, language)
+    lexer.add_filter('tokenmerge')
+    try:
+        text = [Token(value, token_type)
+                for token_type, value in lex(text, lexer)]
+    except ErrorToken as exc:
+        # this is most probably not the selected language,
+        # so let it pass unhighlighted
+        if language == 'default':
+            pass  # automatic highlighting failed.
+        elif warn:
+            warn('Could not lex literal_block as "%s". '
+                 'Highlighting skipped.' % language)
+        else:
+            raise exc
+    return text
 
 
 class Token(SingleStyledText):

@@ -4,7 +4,6 @@ import pytest
 import pygments
 import sphinx
 
-from pygments.lexers.agile import PythonLexer
 from pygments.style import Style
 from pygments.token import (Comment, Keyword, Number, Text, Name, Punctuation,
                             Operator, Literal)
@@ -12,7 +11,7 @@ from pygments.token import (Comment, Keyword, Number, Text, Name, Punctuation,
 from rinoh.color import HexColor
 from rinoh.font import ITALIC
 from rinoh.font.style import BOLD
-from rinoh.highlight import (highlight, get_pygments_style, Token,
+from rinoh.highlight import (highlight_block, get_pygments_style, Token,
                              pygments_style_to_stylesheet)
 
 
@@ -25,7 +24,7 @@ def test_highlight():
                        result.append('cheese')
                    return result""")
     indent = 15 * ' '
-    assert list(highlight(code, PythonLexer())) == \
+    assert list(highlight_block('python', code, None)) == \
         [Token('def', Keyword), Token(' ', Text),
            Token('sandwich', Name.Function), Token('(', Punctuation),
            Token('bread', Name), Token(',', Punctuation), Token(' ', Text),
