@@ -5,9 +5,9 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import os
 
 from .color import RED
-from .dimension import PT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
@@ -69,7 +69,13 @@ class ImageBase(Flowable):
 
     def render(self, container, last_descender, state, **kwargs):
         try:
-            image = container.document.backend.Image(self.filename_or_file)
+            try:
+                source_root = container.document.document_tree.source_root
+                filename_or_file = os.path.join(source_root,
+                                                self.filename_or_file)
+            except AttributeError:  # self.filename_or_file is a file
+                filename_or_file = self.filename_or_file
+            image = container.document.backend.Image(filename_or_file)
         except OSError as err:
             message = "Error opening image file: {}".format(err)
             self.warn(message)

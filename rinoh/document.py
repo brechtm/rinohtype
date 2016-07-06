@@ -22,6 +22,7 @@ Classes representing a document:
 
 
 import datetime
+import os
 import pickle
 
 from collections import OrderedDict
@@ -47,6 +48,10 @@ class DocumentTree(StaticGroupedFlowables):
     def __init__(self, source_file, flowables):
         super().__init__(flowables)
         self.source_file = source_file
+
+    @property
+    def source_root(self):
+        return os.path.abspath(os.path.dirname(self.source_file))
 
 
 class PageOrientation(str):
