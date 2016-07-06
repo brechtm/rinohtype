@@ -80,7 +80,7 @@ class ImageBase(Flowable):
             message = "Error opening image file: {}".format(err)
             self.warn(message)
             text = SingleStyledText(message, style=TextStyle(font_color=RED))
-            return Paragraph(text).render(container, last_descender)
+            return Paragraph(text).flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
         if width is not None:
