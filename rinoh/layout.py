@@ -602,7 +602,6 @@ class Chain(FlowableTarget):
             last_descender=None
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
-                # TODO: keep_with_next
                 _, _, last_descender = flowable.flow(container, last_descender,
                                                      self._state.flowable_state)
                 self._state.next_flowable()

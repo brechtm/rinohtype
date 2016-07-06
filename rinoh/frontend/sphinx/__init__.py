@@ -224,9 +224,10 @@ class RinohBuilder(Builder):
             self.info("done")
 
     def write_doc(self, docname, doctree, docnames, targetname):
-        os.chdir(self.srcdir)
+        suffix, = self.config.source_suffix
+        source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
-        rinoh_tree = parser.from_doctree(doctree)
+        rinoh_tree = parser.from_doctree(source_path, doctree)
         options = DocumentOptions(stylesheet=self.config.rinoh_stylesheet)
         document_template = self.config.rinoh_document_template
         indices = list(self.generate_indices(docnames))

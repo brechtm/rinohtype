@@ -9,6 +9,7 @@
 from docutils.core import publish_doctree
 from docutils.parsers.rst import Parser as ReStructuredTextParser
 
+from ...document import DocumentTree
 from ...text import MixedStyledText
 
 from .. import (TreeNode, TreeNodeMeta, InlineNode, BodyNode, BodySubNode,
@@ -106,11 +107,12 @@ class DocutilsReader(object):
         filename = getattr(file, 'name', None)
         doctree = publish_doctree(file.read(), source_path=filename,
                                   parser=self.parser_class())
-        return self.from_doctree(doctree)
+        return self.from_doctree(filename, doctree)
 
-    def from_doctree(self, doctree):
+    def from_doctree(self, filename, doctree):
         mapped_tree = DocutilsNode.map_node(doctree.document)
-        return mapped_tree.children_flowables()
+        flowables = mapped_tree.children_flowables()
+        return DocumentTree(filename, flowables)
 
 
 class ReStructuredTextReader(DocutilsReader):

@@ -29,7 +29,7 @@ from itertools import count
 
 from . import __version__, __release_date__
 from .backend import pdf
-from .flowable import RIGHT, LEFT
+from .flowable import RIGHT, LEFT, StaticGroupedFlowables
 from .layout import (Container, ReflowRequired, Chain, PageBreakException,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NUMBER, format_number
@@ -41,6 +41,12 @@ from .util import NotImplementedAttribute, RefKeyDictionary
 
 __all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
            'PageOrientation', 'PORTRAIT', 'LANDSCAPE']
+
+
+class DocumentTree(StaticGroupedFlowables):
+    def __init__(self, source_file, flowables):
+        super().__init__(flowables)
+        self.source_file = source_file
 
 
 class PageOrientation(str):
@@ -302,15 +308,12 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, content_flowables, stylesheet, strings=None,
+    def __init__(self, document_tree, stylesheet, strings=None,
                  backend=pdf):
-        """`backend` specifies the backend to use for rendering the document.
-        `title`, `author` and `keywords` (iterable of strings) are metadata
-        describing the document. These will be written to the output by the
-        backend."""
+        """`backend` specifies the backend to use for rendering the document."""
         self._print_version_and_license()
         self.front_matter = []
-        self.content_flowables = content_flowables
+        self.document_tree = document_tree
         self.stylesheet = stylesheet
         self._strings = strings or ()
         self.backend = backend
@@ -407,8 +410,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                     self.page_references == prev_page_references)
 
         try:
-            for flowable in self.content_flowables:
-                flowable.build_document(self)
+            self.document_tree.build_document(self)
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
             _sections = [section for section in self.sections]

@@ -412,7 +412,7 @@ class ContentsPartTemplate(DocumentPartTemplate):
     def document_part(self, document_section):
         return DocumentPart(document_section,
                             self.page_template, self.left_page_template,
-                            document_section.document.content_flowables)
+                            document_section.document.document_tree.children)
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
