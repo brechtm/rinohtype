@@ -36,17 +36,13 @@ def test_rstdemo(tmpdir):
     options = DocumentOptions(stylesheet=sphinx_base14)
     document = Article(flowables, configuration=configuration,
                        options=options, backend=pdf)
-    output = tmpdir.join('demo').strpath
-    document.render(output)
     os.chdir(tmpdir.strpath)
-    print('CWD: ', os.getcwd())
-    print(os.path.join(TEST_DIR, 'reference/demo.pdf'))
-    print(output + '.pdf')
-    diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'),
-             output + '.pdf')
+    document.render('demo')
+    if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):
+        pytest.fail('The generated PDF is different from the reference PDF.\n'
+                    'Generated files can be found in {}'.format(tmpdir.strpath))
 
 
 def diff_pdf(a_filename, b_filename):
     rc = subprocess.call([DIFF_PDF, a_filename, b_filename])
-    if rc != 0:
-        pytest.fail('The generated PDF is different from the reference PDF.')
+    return rc == 0
