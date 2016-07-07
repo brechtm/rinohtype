@@ -2,9 +2,11 @@ language: python
 
 sudo: false
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y poppler-utils imagemagick
+addons:
+  apt:
+    packages:
+      - poppler-utils
+      - imagemagick
 
 python:
   - '3.3'
