@@ -14,7 +14,7 @@ from ..style import StyleSheetFile
 from .matcher import matcher
 
 
-__all__ = ['matcher', 'sphinx']
+__all__ = ['matcher', 'sphinx', 'sphinx_base14']
 
 
 STYLESHEETS_PATH = os.path.join(DATA_PATH, 'stylesheets')
@@ -24,3 +24,5 @@ def path(filename):
 
 
 sphinx = StyleSheetFile(path('sphinx.rts'), matcher)
+
+sphinx_base14 = StyleSheetFile(path('base14.rts'), matcher, base=sphinx)
