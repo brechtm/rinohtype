@@ -690,7 +690,7 @@ class Type1Font(Font):
     subtype = 'Type1'
 
     def __init__(self, font, font_descriptor):
-        super().__init__(True)
+        super().__init__(indirect=True)
         self.font = font
         self.differences = {}
         self._free_codes = iter(i for i in chain(range(32, 255), range(0, 32))
