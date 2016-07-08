@@ -100,14 +100,16 @@ project's ``conf.py``:
     sphinx-build -b rinoh . _build/rinoh
 
 
+Contributing
+------------
+
+See `CONTRIBUTING.rst <CONTRIBUTING.rst>`_.
+
+
 License
 -------
 
 All of RinohType's source code is licensed under the `Affero GPL`_, unless
 indicated otherwise in the source file (such as ``hyphenator.py``).
-
-My intention is to make RinohType free for non-commercial use and offer a
-separate license for commercial use. The AGPL will likely be replaced soon with
-another license to better reflect this intention.
 
 .. _Affero GPL: https://www.gnu.org/licenses/agpl-3.0.html
