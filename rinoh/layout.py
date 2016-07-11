@@ -522,6 +522,7 @@ class FootnoteContainer(UpExpandingContainer):
     def add_footnote(self, footnote):
         self.footnote_queue.append(footnote)
         if not self._flowing_footnotes:
+            self._flowing_footnotes = True
             try:
                 self.flow_footnotes()
             finally:
