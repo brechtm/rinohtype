@@ -437,8 +437,7 @@ class ParagraphBase(Flowable):
                 if first_line_only:
                     break
                 continue
-            if not word.is_space:
-                prev_state = copy(state)
+            prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
 
