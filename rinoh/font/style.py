@@ -5,7 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from ..style import OptionSet
+from ..attribute import OptionSet
 
 
 __all__ = ['FontWeight', 'HAIRLINE', 'THIN', 'ULTRA_LIGHT', 'EXTRA_LIGHT',

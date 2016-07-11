@@ -21,13 +21,14 @@ from contextlib import contextmanager
 from copy import copy
 from itertools import chain, tee
 
+from .attribute import Attribute, OptionSet, Bool
 from .color import Color
 from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
                      EndOfContainer, PageBreakException, CONTENT)
-from .style import Styled, Style, OptionSet, Attribute, Bool
+from .style import Styled, Style
 from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
 

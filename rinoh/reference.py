@@ -9,10 +9,10 @@
 import re
 
 from .annotation import NamedDestinationLink, AnnotatedSpan
+from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
-from .style import OptionSet, Attribute
 from .text import SingleStyledTextBase, TextStyle, StyledText, MixedStyledText
 
 

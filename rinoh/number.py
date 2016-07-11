@@ -12,8 +12,9 @@ Functions for formatting numbers:
 
 """
 
+from .attribute import Attribute, OptionSet, Bool
 from .paragraph import ParagraphBase, ParagraphStyle
-from .style import Style, OptionSet, Attribute, Bool
+from .style import Style
 from .text import StyledText
 
 __all__ = ['NumberStyle', 'Label', 'NumberedParagraph',

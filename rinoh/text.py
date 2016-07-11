@@ -41,6 +41,8 @@ from ast import literal_eval
 from html.entities import name2codepoint
 from itertools import groupby, zip_longest, tee
 
+from .attribute import (AttributeType, Attribute, Bool, Integer,
+                        AcceptNoneAttributeType)
 from .color import Color, BLACK
 from .dimension import DimensionBase, PT
 from .font import Typeface
@@ -48,8 +50,7 @@ from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
                          SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
-from .style import (Style, Styled, PARENT_STYLE, StyleException, AttributeType,
-                    Attribute, Bool, Integer, AcceptNoneAttributeType)
+from .style import Style, Styled, PARENT_STYLE, StyleException
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',

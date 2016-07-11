@@ -6,12 +6,13 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .attribute import Attribute, Bool
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Reference, PAGE
 from .strings import StringField
 from .structure import Section, Heading, SectionTitles
-from .style import Styled, Attribute, Bool
+from .style import Styled
 from .text import MixedStyledText, StyledText
 from .util import intersperse
 

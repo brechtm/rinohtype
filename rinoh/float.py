@@ -7,6 +7,7 @@
 
 import os
 
+from .attribute import AttributeType
 from .color import RED
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
@@ -17,7 +18,6 @@ from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import NUMBER
-from .style import AttributeType
 from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import ReadAliasAttribute
 

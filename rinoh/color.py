@@ -10,7 +10,7 @@ import struct
 
 from itertools import repeat
 
-from .style import AcceptNoneAttributeType
+from .attribute import AcceptNoneAttributeType
 
 
 __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',

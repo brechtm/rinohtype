@@ -7,8 +7,8 @@
 
 
 from collections import OrderedDict
-from types import FunctionType
 
+from .attribute import Bool, Integer, Function
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
@@ -24,7 +24,7 @@ from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
 from .text import StyledText, Tab
 from .strings import StringField
 from .structure import Header, Footer, SectionTitles
-from .style import StyleSheet, Bool, Integer, AttributeType
+from .style import StyleSheet
 from .stylesheets import sphinx
 from .util import NamedDescriptor, WithNamedDescriptors, NotImplementedAttribute
 
@@ -223,13 +223,6 @@ def chapter_title_flowables(section_id):
     yield Paragraph(StringField(SectionTitles, 'chapter'))
     yield Paragraph(Reference(section_id, NUMBER))
     yield Paragraph(Reference(section_id, TITLE))
-
-
-
-class Function(AttributeType):
-    @classmethod
-    def check_type(cls, value):
-        return isinstance(value, (FunctionType, type(None)))
 
 
 

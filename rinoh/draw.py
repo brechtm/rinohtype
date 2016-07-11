@@ -5,8 +5,9 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from .attribute import Attribute, AcceptNoneAttributeType
 from .color import Color, BLACK, GRAY90
-from .style import Style, Styled, Attribute, AcceptNoneAttributeType
+from .style import Style, Styled
 from .dimension import Dimension, PT
 
 

@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
 from .element import create_destination
 from .flowable import GroupedFlowables, StaticGroupedFlowables
@@ -20,7 +21,7 @@ from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
-from .style import PARENT_STYLE, Attribute, Bool, Integer, OverrideDefault
+from .style import PARENT_STYLE
 from .strings import Strings, String, StringField
 
 

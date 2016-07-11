@@ -14,8 +14,8 @@ The :class:`Paper` class and a number of predefined paper sizes:
 """
 
 
+from .attribute import AttributeType
 from .dimension import INCH, MM
-from .style import AttributeType
 
 
 __all__ = ['Paper',

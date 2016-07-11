@@ -22,7 +22,7 @@ It also exports a number of pre-defined units:
 
 import re
 
-from .style import AcceptNoneAttributeType
+from .attribute import AcceptNoneAttributeType
 
 
 __all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM', 'PERCENT']

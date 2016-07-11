@@ -11,6 +11,7 @@ from itertools import chain
 from functools import partial
 from math import sqrt
 
+from .attribute import Attribute, OptionSet, OverrideDefault, Integer, Bool
 from .dimension import DimensionBase as DimBase
 from .draw import Line, Rectangle, ShapeStyle
 from .flowable import (HorizontallyAlignedFlowable,
@@ -19,7 +20,7 @@ from .flowable import (HorizontallyAlignedFlowable,
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .reference import NUMBER
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
-from .style import Styled, OptionSet, Attribute, OverrideDefault, Integer, Bool
+from .style import Styled
 from .util import ReadAliasAttribute
 
 

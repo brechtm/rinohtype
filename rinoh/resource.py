@@ -15,7 +15,7 @@ import pkg_resources
 from pkg_resources import iter_entry_points
 
 from .util import NotImplementedAttribute
-from .style import AttributeType
+from .attribute import AttributeType
 
 
 __all__ = ['Resource', 'ResourceNotInstalled']

@@ -41,12 +41,12 @@ from itertools import tee
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
+from .attribute import Attribute, AttributeType, OptionSet
 from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import ContainerOverflow, EndOfContainer
-from .style import Attribute, AttributeType, OptionSet
 from .text import TextStyle, MixedStyledText
 from .util import all_subclasses, ReadAliasAttribute
 
