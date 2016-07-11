@@ -6,19 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import pip
-import pkg_resources
-import string
-
 from warnings import warn
-from xmlrpc.client import ServerProxy
-
-from pkg_resources import iter_entry_points
 
 from .style import FontWeight, MEDIUM
 from .style import FontSlant, UPRIGHT, OBLIQUE, ITALIC
 from .style import FontWidth, NORMAL, CONDENSED, EXTENDED
-from ..style import AttributeType
+from ..resource import Resource
 from ..util import NotImplementedAttribute
 from ..warnings import RinohWarning
 
@@ -96,40 +89,9 @@ class Font(object):
         raise NotImplementedError
 
 
-class TypefaceNotInstalled(Exception):
-    def __init__(self, typeface_name, entry_point_name):
-        self.typeface_name = typeface_name
-        self.entry_point_name = entry_point_name
+class Typeface(Resource, dict):
+    resource_type = 'typeface'
 
-
-def entry_point_name_to_identifier(entry_point_name):
-    try:
-        entry_point_name.encode('ascii')
-        ascii_name = entry_point_name
-    except UnicodeEncodeError:
-        ascii_name = entry_point_name.encode('punycode').decode('ascii')
-    return ''.join(char for char in ascii_name
-                   if char in string.ascii_lowercase + string.digits)
-
-
-def install_typeface(entry_point_name):
-    success = False
-    pypi = ServerProxy('https://pypi.python.org/pypi')
-    typeface_id = entry_point_name_to_identifier(entry_point_name)
-    distribution_name_parts = ['rinoh', 'typeface', typeface_id]
-    for pkg in pypi.search(dict(name=distribution_name_parts)):
-        if pkg['name'] == '-'.join(distribution_name_parts):
-            typeface_pkg = pkg['name']
-            print("Installing typeface package '{}' using pip..."
-                  .format(typeface_pkg))
-            pip.main(['install', typeface_pkg])
-            pkg_resources.working_set.__init__()  # rescan entry points
-            success = True
-            break
-    return success
-
-
-class Typeface(AttributeType, dict):
     def __new__(cls, name, *fonts, weight_order=FontWeight.values):
         if not fonts:
             return cls.from_string(name)
@@ -147,22 +109,6 @@ class Typeface(AttributeType, dict):
     @classmethod
     def check_type(cls, value):
         return isinstance(value, cls)
-
-    @classmethod
-    def parse_string(cls, typeface_name):
-        entry_point_name = typeface_name.lower()
-        entry_points = iter_entry_points('rinoh_typefaces', entry_point_name)
-        try:
-            entry_point = next(entry_points)
-        except StopIteration:
-            raise TypefaceNotInstalled(typeface_name, entry_point_name)
-        other_distributions = [repr(ep.dist) for ep in entry_points]
-        if other_distributions:
-            warn("'{}' is also provided by:\n".format(typeface_name)
-                 + ''.join('* {}\n'.format(dist)
-                           for dist in other_distributions)
-                 + 'Using ' + repr(entry_point.dist))
-        return entry_point.load()
 
     def get_font(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
         def find_closest_style(style, styles, alternatives):

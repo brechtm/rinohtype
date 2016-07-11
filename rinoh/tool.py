@@ -12,8 +12,9 @@ import os
 from rinoh import paper
 
 from rinoh.backend import pdf
-from rinoh.font import TypefaceNotInstalled, install_typeface
+from rinoh.font import Typeface
 from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.resource import ResourceNotInstalled
 from rinoh.stylesheets import sphinx
 from rinoh.template import DocumentOptions
 from rinoh.templates import Article
@@ -56,11 +57,11 @@ def main():
         try:
             document.render(input_root)
             break
-        except TypefaceNotInstalled as err:
+        except ResourceNotInstalled as err:
             print("Typeface '{}' not installed. Attempting to install it from "
-                  "PyPI...".format(err.typeface_name))
+                  "PyPI...".format(err.resource_name))
             # answer = input()
-            success = install_typeface(err.entry_point_name)
+            success = Typeface.install_from_pypi(err.entry_point_name)
             if not success:
                 raise SystemExit("No '{}' typeface found on PyPI. Aborting."
-                                 .format(err.typeface_name))
+                                 .format(err.resource_name))
