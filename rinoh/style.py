@@ -643,11 +643,13 @@ class StyledMatcher(dict):
                         yield Match(name, specificity)
 
 
-class StyleSheet(OrderedDict, AttributeType):
+class StyleSheet(OrderedDict, Resource):
     """Dictionary storing a set of related :class:`Style`s by name.
 
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
     style by name. See :class:`Style`."""
+
+    resource_type = 'stylesheet'
 
     def __init__(self, name, matcher=None, base=None, description=None,
                  pygments_style=None, **user_options):
@@ -656,7 +658,7 @@ class StyleSheet(OrderedDict, AttributeType):
         self.description = description
         self.matcher = matcher if matcher is not None else base.matcher
         self.matcher.check_validity()
-        self.base = base
+        self.base = self.from_string(base) if isinstance(base, str) else base
         self.variables = {}
         from .highlight import pygments_style_to_stylesheet
         self.highlight = (pygments_style_to_stylesheet(pygments_style)
@@ -751,6 +753,7 @@ class StyleSheetFile(StyleSheet):
         options = dict(config['STYLESHEET']
                        if config.has_section('STYLESHEET') else {})
         name = options.pop('name', filename)
+        base = options.pop('base', base)
         options.update(kwargs)    # optionally override options
         super().__init__(name, matcher, base, **options)
         self.filename = filename

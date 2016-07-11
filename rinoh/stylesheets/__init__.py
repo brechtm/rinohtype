@@ -25,4 +25,4 @@ def path(filename):
 
 sphinx = StyleSheetFile(path('sphinx.rts'), matcher)
 
-sphinx_base14 = StyleSheetFile(path('base14.rts'), matcher, base=sphinx)
+sphinx_base14 = StyleSheetFile(path('base14.rts'), matcher)
