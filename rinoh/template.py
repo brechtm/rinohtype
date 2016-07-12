@@ -8,7 +8,8 @@
 
 from collections import OrderedDict
 
-from .attribute import Bool, Integer, Function
+from .attribute import Bool, Integer, Function, Attribute, WithAttributes, \
+    AttributesDictionary
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
@@ -34,31 +35,8 @@ __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
            'DocumentTemplate', 'DocumentOptions', 'Option']
 
 
-class Option(NamedDescriptor):
+class Option(Attribute):
     """Descriptor used to describe a document option"""
-    def __init__(self, accepted_type, default_value, description):
-        self.accepted_type = accepted_type
-        self.default_value = default_value
-        self.description = description
-
-    def __get__(self, document_options, type=None):
-        try:
-            return document_options.get(self.name, self.default_value)
-        except AttributeError:
-            return self
-
-    def __set__(self, options, value):
-        if not self.accepted_type.check_type(value):
-            raise TypeError('{} option has wrong type: {}'
-                            .format(type(options).__name__, self.name))
-        options[self.name] = value
-
-    @property
-    def __doc__(self):
-        return (':description: {} (:class:`{}`)\n'
-                ':default: {}'
-                .format(self.description, self.accepted_type.__name__,
-                        self.default_value))
 
 
 class Templated(object):
@@ -67,60 +45,12 @@ class Templated(object):
         return document.configuration.get_template_option(name, option)
 
 
-# TODO: consolidate Style/Template(Meta) classes
-class TemplateMeta(WithNamedDescriptors):
-    def __new__(cls, classname, bases, cls_dict):
-        options = cls_dict['_options'] = {}
-        for name, attr in cls_dict.items():
-            if isinstance(attr, Option):
-                options[name] = attr
-        supported_options = set(name for name in options)
-        for base_class in bases:
-            try:
-                supported_options.update(base_class._supported_attributes)
-            except AttributeError:
-                pass
-        cls_dict['_supported_options'] = supported_options
-        return super().__new__(cls, classname, bases, cls_dict)
-
-
-class Template(dict, metaclass=TemplateMeta):
-    def __init__(self, base=None, **options):
-        self.base = base
-        for name, value in options.items():
-            option_descriptor = getattr(type(self), name, None)
-            if not isinstance(option_descriptor, Option):
-                raise AttributeError('Unsupported page template option: {}'
-                                     .format(name))
-            if not option_descriptor.accepted_type.check_type(value):
-                raise TypeError('Page template option has wrong type: {}'
-                                .format(name))
-            self[name] = value
-
+class Template(AttributesDictionary, NamedDescriptor):
     def __call__(self, **kwargs):
         self.configuration[self.name] = type(self)(**kwargs)
 
-    @classmethod
-    def _get_default(cls, option):
-        """Return the default value for `option`.
 
-        If no default is specified in this style, get the default from the
-        nearest superclass.
-        If `option` is not supported, raise a :class:`KeyError`."""
-        try:
-            for klass in cls.__mro__:
-                if option in klass._options:
-                    return klass._options[option].default_value
-        except AttributeError:
-            raise KeyError("No option '{}' in {}".format(option, cls))
-
-
-class TemplateOption(NamedDescriptor):
-    def __init__(self, accepted_type, default_value, description):
-        self.accepted_type = accepted_type
-        self.default_value = default_value
-        self.description = description
-
+class TemplateOption(Attribute):
     def __call__(self, value):
         if not self.accepted_type.check_type(value):
             raise TypeError('{} option has wrong type: {}'
@@ -129,21 +59,28 @@ class TemplateOption(NamedDescriptor):
         self.configuration[self.name] = value
 
 
-class TemplateConfigurationMeta(type):
-    def __new__(mcls, classname, bases, cls_dict):
-        for name, attr in cls_dict.items():
-            if isinstance(attr, (Template, TemplateOption)):
-                attr.name = name
-        return super().__new__(mcls, classname, bases, cls_dict)
+class TemplateConfiguration(OrderedDict, metaclass=WithAttributes):
+    stylesheet = TemplateOption(StyleSheet, sphinx, 'The stylesheet to use for '
+                                                    'styling document elements')
 
-
-class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
-    def __init__(self, base=None):
+    def __init__(self, base=None, **attributes):
         self.base = base
         for name, member in type(self).__dict__.items():
             if isinstance(member, (Template, TemplateOption)):
                 member.configuration = self
-        super().__init__()
+        super().__init__(attributes)
+
+    def __getitem__(self, name):
+        try:
+            return super().__getitem__(name)
+        except KeyError:
+            if self.base is not None:
+                return self.base[name]
+            raise
+
+    def __setitem__(self, name, style):
+        assert name not in self
+        super().__setitem__(name, style)
 
     def __call__(self, template_name, **kwargs):
         template_class = self._get_template_class(template_name)
@@ -156,6 +93,16 @@ class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
             if not self.base:
                 raise
             return self.base._get_template_class(template_name)
+
+    @classmethod
+    def attribute_definition(cls, name):
+        try:
+            for klass in cls.__mro__:
+                if name in klass._attributes:
+                    return klass._attributes[name]
+        except AttributeError:
+            pass
+        raise KeyError
 
     @classmethod
     def _get_default(cls, option):
@@ -184,9 +131,7 @@ class TemplateConfiguration(OrderedDict, metaclass=TemplateConfigurationMeta):
         try:
             return self[option_name]
         except KeyError:
-            if not self.base:
-                return getattr(self, option_name).default_value
-            return self.base.get_option(option_name)
+            return getattr(type(self), option_name).default_value
 
     def get_template_option(self, template_name, option_name):
         template = self.find_template(template_name)
@@ -426,9 +371,6 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
     specified as keyword arguments (`options`) matching the class's
     attributes."""
 
-    stylesheet = Option(StyleSheet, sphinx, 'The stylesheet to use for '
-                                            'styling document elements')
-
     def __init__(self, **options):
         for name, value in options.items():
             option_descriptor = getattr(type(self), name, None)
@@ -453,8 +395,8 @@ class DocumentTemplate(Document):
                  options=None, backend=None):
         self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
-        super().__init__(flowables, self.options['stylesheet'], strings=strings,
-                         backend=backend)
+        stylesheet = self.configuration.get_option('stylesheet')
+        super().__init__(flowables, stylesheet, strings=strings, backend=backend)
 
     @property
     def sections(self):

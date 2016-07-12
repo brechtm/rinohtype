@@ -6,19 +6,21 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from rinoh.dimension import INCH
-from rinoh.index import IndexSection
-from rinoh.number import NUMBER, ROMAN_LC
-from rinoh.paper import A4
-from rinoh.paragraph import Paragraph
-from rinoh.reference import (Variable, Reference, PAGE_NUMBER, TITLE,
-                             DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
-                             SECTION_NUMBER, SECTION_TITLE)
-from rinoh.structure import TableOfContentsSection
-from rinoh.template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
-                            FixedDocumentPartTemplate, ContentsPartTemplate,
-                            TemplateConfiguration)
-from rinoh.text import Tab
+from ..attribute import OverrideDefault
+from ..dimension import INCH
+from ..index import IndexSection
+from ..number import NUMBER, ROMAN_LC
+from ..paper import A4
+from ..paragraph import Paragraph
+from ..reference import (Variable, Reference, PAGE_NUMBER, TITLE,
+                         DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
+                         SECTION_NUMBER, SECTION_TITLE)
+from ..structure import TableOfContentsSection
+from ..stylesheets import sphinx
+from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
+                        FixedDocumentPartTemplate, ContentsPartTemplate,
+                        TemplateConfiguration)
+from ..text import Tab
 
 
 paper_size = A4
@@ -38,6 +40,7 @@ def body_matter_chapter_title_flowables(section_id):
 class Book(DocumentTemplate):
 
     class Configuration(TemplateConfiguration):
+        stylesheet = OverrideDefault(sphinx)
         page = \
             PageTemplate(page_size=paper_size,
                          left_margin=1 * INCH,

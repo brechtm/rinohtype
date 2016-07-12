@@ -15,10 +15,11 @@ try:
 except ImportError:
     PYGMENTS_AVAILABLE = False
 
+from .attribute import OverrideDefault
 from .color import HexColor
 from .font.style import BOLD, ITALIC
 from .paragraph import Paragraph, ParagraphStyle
-from .style import StyledMatcher, StyleSheet, OverrideDefault
+from .style import StyledMatcher, StyleSheet
 from .text import SingleStyledText, TextStyle
 from .warnings import warn
 

@@ -39,7 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from itertools import groupby, zip_longest, tee
+from itertools import groupby, tee
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)

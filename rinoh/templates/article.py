@@ -6,14 +6,15 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from rinoh.attribute import OptionSet, Bool
-from rinoh.dimension import CM
-from rinoh.document import DocumentPart
-from rinoh.structure import TableOfContentsSection
-from rinoh.template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
-                            ContentsPartTemplate, FixedDocumentPartTemplate,
-                            TemplateConfiguration, TemplateOption,
-                            DocumentPartTemplate)
+from ..attribute import OptionSet, Bool, OverrideDefault
+from ..dimension import CM
+from ..document import DocumentPart
+from ..structure import TableOfContentsSection
+from ..stylesheets import sphinx_article
+from ..template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
+                        ContentsPartTemplate, FixedDocumentPartTemplate,
+                        TemplateConfiguration, TemplateOption,
+                        DocumentPartTemplate)
 
 
 __all__ = ['Article', 'TITLE', 'FRONT_MATTER']
@@ -46,6 +47,7 @@ class ArticleFrontMatter(DocumentPartTemplate):
 class Article(DocumentTemplate):
 
     class Configuration(TemplateConfiguration):
+        stylesheet = OverrideDefault(sphinx_article)
         table_of_contents = TemplateOption(Bool, True,
                                            'Show or hide the table of contents')
         abstract_location = TemplateOption(AbstractLocation, FRONT_MATTER,

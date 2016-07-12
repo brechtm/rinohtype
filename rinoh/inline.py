@@ -6,11 +6,11 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .attribute import Attribute
 from .dimension import DimensionBase, PT
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
-from .style import Attribute
 
 
 __all__ = ['InlineFlowableException', 'InlineFlowable']

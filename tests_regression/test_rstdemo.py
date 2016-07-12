@@ -15,7 +15,6 @@ from rinoh.backend import pdf
 from rinoh.dimension import CM
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.stylesheets import sphinx_base14
-from rinoh.template import DocumentOptions
 from rinoh.templates import Article
 
 
@@ -25,17 +24,15 @@ DIFF_PDF = os.path.join(TEST_DIR, 'diffpdf.sh')
 
 
 def test_rstdemo(tmpdir):
-    configuration = Article.Configuration()
-    configuration.abstract_location('title')
-    configuration.table_of_contents(False)
-    configuration.title_page(top_margin=2 * CM)
+    configuration = Article.Configuration(stylesheet=sphinx_base14,
+                                          abstract_location='title',
+                                          table_of_contents=False)
+    configuration.title_page(top_margin=2*CM)
 
     with open(os.path.join(TEST_DIR, 'demo.txt')) as file:
         parser = ReStructuredTextReader()
         flowables = parser.parse(file)
-    options = DocumentOptions(stylesheet=sphinx_base14)
-    document = Article(flowables, configuration=configuration,
-                       options=options, backend=pdf)
+    document = Article(flowables, configuration=configuration, backend=pdf)
     os.chdir(tmpdir.strpath)
     document.render('demo')
     if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):

@@ -25,17 +25,15 @@ from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
 
-from .attribute import Attribute, OverrideDefault
+from .attribute import AttributesDictionary, Var
 from .element import DocumentElement
 from .resource import Resource
-from .util import (cached, unique, all_subclasses, WithNamedDescriptors,
-                   NotImplementedAttribute)
+from .util import cached, unique, all_subclasses, NotImplementedAttribute
 from .warnings import warn
 
 
-__all__ = ['Style', 'Styled', 'Var', 'StyledMatcher', 'StyleSheet',
-           'StyleSheetFile', 'ClassSelector', 'ContextSelector', 'PARENT_STYLE',
-           'StyleException']
+__all__ = ['Style', 'Styled', 'StyledMatcher', 'StyleSheet', 'StyleSheetFile',
+           'ClassSelector', 'ContextSelector', 'PARENT_STYLE', 'StyleException']
 
 
 class StyleException(Exception):
@@ -65,32 +63,7 @@ class NoStyleException(StyleException):
     :class:`StyleSheet`."""
 
 
-class StyleMeta(WithNamedDescriptors):
-    def __new__(cls, classname, bases, cls_dict):
-        attributes = cls_dict['_attributes'] = {}
-        for name, attr in cls_dict.items():
-            if isinstance(attr, Attribute):
-                attributes[name] = attr
-            if isinstance(attr, OverrideDefault):
-                for base_cls in bases:
-                    try:
-                        attr.overrides = base_cls.attribute_definition(name)
-                        break
-                    except KeyError:
-                        pass
-                else:
-                    raise NotImplementedError
-        supported_attributes = set(name for name in attributes)
-        for base_class in bases:
-            try:
-                supported_attributes.update(base_class._supported_attributes)
-            except AttributeError:
-                pass
-        cls_dict['_supported_attributes'] = supported_attributes
-        return super().__new__(cls, classname, bases, cls_dict)
-
-
-class Style(dict, metaclass=StyleMeta):
+class Style(AttributesDictionary):
     """"Dictionary storing style attributes.
 
     The style attributes associated with this :class:`Style` are specified as
@@ -111,23 +84,7 @@ class Style(dict, metaclass=StyleMeta):
         is forwarded to the parent of the element the lookup originates from.
         If `base` is a :class:`str`, it is used to look up the base style in
         the :class:`StyleSheet` this style is defined in."""
-        self.base = base or self.default_base
-        self.name = None
-        for name, value in attributes.items():
-            try:
-                self._check_attribute_type(name, value, accept_variables=True)
-            except KeyError:
-                raise TypeError('{} is not a supported attribute for '
-                                '{}'.format(name, type(self).__name__))
-        super().__init__(attributes)
-
-    def _check_attribute_type(self, name, value, accept_variables):
-        attribute = self.attribute_definition(name)
-        if not (attribute.accepted_type.check_type(value)
-                or accept_variables and isinstance(value, VarBase)):
-            type_name = type(value).__name__
-            raise TypeError("{} ({}) is not of the correct type for the '{}' "
-                            'style attribute'.format(value, type_name, name))
+        super().__init__(base, **attributes)
 
     def __repr__(self):
         """Return a textual representation of this style."""
@@ -161,38 +118,6 @@ class Style(dict, metaclass=StyleMeta):
                 raise BaseStyleException(self.base, attribute)
             else:
                 return self.base[attribute]
-
-    @classmethod
-    def _get_default(cls, attribute):
-        """Return the default value for `attribute`.
-
-        If no default is specified in this style, get the default from the
-        nearest superclass.
-        If `attribute` is not supported, raise a :class:`KeyError`."""
-        try:
-            for klass in cls.__mro__:
-                if attribute in klass._attributes:
-                    return klass._attributes[attribute].default_value
-        except AttributeError:
-            raise KeyError("No attribute '{}' in {}".format(attribute, cls))
-
-    @classmethod
-    def attribute_definition(cls, name):
-        try:
-            for klass in cls.__mro__:
-                if name in klass._attributes:
-                    return klass._attributes[name]
-        except AttributeError:
-            pass
-        raise KeyError
-
-    def get_value(self, attribute, document):
-        value = self[attribute]
-        if isinstance(value, VarBase):
-            accepted_type = self.attribute_definition(attribute).accepted_type
-            value = value.get(accepted_type, document)
-            self._check_attribute_type(attribute, value, accept_variables=False)
-        return value
 
 
 class ParentStyle(Style):
@@ -927,34 +852,6 @@ def parse_number(first_char, chars):
             break
         number_chars.append(char)
     return literal_eval(''.join(number_chars))
-
-
-class VarBase(object):
-    def __getattr__(self, name):
-        return VarAttribute(self, name)
-
-    def get(self, style, attribute, document):
-        raise NotImplementedError
-
-
-class Var(VarBase):
-    def __init__(self, name):
-        super().__init__()
-        self.name = name
-
-    def get(self, accepted_type, document):
-        return document.get_style_var(self.name, accepted_type)
-
-
-class VarAttribute(VarBase):
-    def __init__(self, parent, attribute_name):
-        super().__init__()
-        self.parent = parent
-        self.attribute_name = attribute_name
-
-    def get(self, accepted_type, document):
-        return getattr(self.parent.get(accepted_type, document),
-                       self.attribute_name)
 
 
 class Specificity(namedtuple('Specificity',

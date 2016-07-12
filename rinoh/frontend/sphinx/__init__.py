@@ -228,13 +228,11 @@ class RinohBuilder(Builder):
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
-        options = DocumentOptions(stylesheet=self.config.rinoh_stylesheet)
         document_template = self.config.rinoh_document_template
         indices = list(self.generate_indices(docnames))
         # TODO: more cleanly inject the indices into the document part template
         # document_parts[-1].flowables = indices + document_parts[-1].flowables
-        rinoh_document = document_template(rinoh_tree, options=options,
-                                           backend=pdf)
+        rinoh_document = document_template(rinoh_tree, backend=pdf)
         rinoh_logo = self.config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
