@@ -52,7 +52,7 @@ class Article(DocumentTemplate):
                                            'Where to place the abstract')
 
         title_page = TitlePageTemplate(top_margin=8*CM)
-        page = PageTemplate()
+        page = PageTemplate(chapter_title_flowables=None)
 
     parts = [FixedDocumentPartTemplate([], Configuration.title_page),
              ArticleFrontMatter(Configuration.page),
