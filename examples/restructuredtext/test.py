@@ -2,7 +2,7 @@ from rinoh.backend import pdf
 from rinoh.dimension import CM
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.structure import AdmonitionTitles
-from rinoh.stylesheets import sphinx
+from rinoh.stylesheets import sphinx_article
 from rinoh.template import DocumentOptions
 from rinoh.templates import Article
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         parser = ReStructuredTextReader()
         with open(name + '.txt') as file:
             flowables = parser.parse(file)
-        doc_options = DocumentOptions(stylesheet=sphinx)
+        doc_options = DocumentOptions(stylesheet=sphinx_article)
         document = Article(flowables, strings=strings,
                            configuration=configuration,
                            options=doc_options, backend=pdf)

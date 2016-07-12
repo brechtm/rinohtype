@@ -1,0 +1,7 @@
+[STYLESHEET]
+name=Sphinx (article)
+base=sphinx
+description=The Sphinx stylesheet adjusted for the article template
+
+[chapter]
+page_break=none
