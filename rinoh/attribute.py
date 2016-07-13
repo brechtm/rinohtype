@@ -137,7 +137,7 @@ class WithAttributes(WithNamedDescriptors):
         return super().__new__(cls, classname, bases, cls_dict)
 
 
-class AttributesDictionary(dict, metaclass=WithAttributes):
+class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
     default_base = None
 
     def __init__(self, base=None, **attributes):
@@ -192,8 +192,8 @@ class AttributesDictionary(dict, metaclass=WithAttributes):
 
 
 class RuleSet(OrderedDict):
-    def __init__(self, base=None):
-        super().__init__()
+    def __init__(self, base=None, **kwargs):
+        super().__init__(**kwargs)
         self.base = base
 
     def __getitem__(self, name):

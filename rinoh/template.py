@@ -6,8 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .attribute import (Bool, Integer, Function, Attribute, WithAttributes,
-                        AttributesDictionary, RuleSet, Var)
+from .attribute import (Bool, Integer, Function, Attribute,
+                        AttributesDictionary, RuleSet)
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
@@ -61,7 +61,7 @@ class TemplateOption(Attribute):
         self.configuration[self.name] = value
 
 
-class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
+class TemplateConfiguration(RuleSet, AttributesDictionary):
     stylesheet = TemplateOption(StyleSheet, sphinx, 'The stylesheet to use for '
                                                     'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
@@ -70,33 +70,7 @@ class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
         for name, member in type(self).__dict__.items():
             if isinstance(member, (Template, TemplateOption)):
                 member.configuration = self
-        super().__init__(base)
-        for key, value in attributes.items():
-            self[key] = value
-
-    @classmethod
-    def attribute_definition(cls, name):
-        try:
-            for klass in cls.__mro__:
-                if name in klass._attributes:
-                    return klass._attributes[name]
-        except AttributeError:
-            pass
-        raise KeyError
-
-    @classmethod
-    def _get_default(cls, option):
-        """Return the default value for `option`.
-
-        If no default is specified in this style, get the default from the
-        nearest superclass.
-        If `option` is not supported, raise a :class:`KeyError`."""
-        try:
-            for klass in cls.__mro__:
-                if option in klass._options:
-                    return klass._options[option].default_value
-        except AttributeError:
-            raise KeyError("No option '{}' in {}".format(option, cls))
+        super().__init__(base, **attributes)
 
     def find_templates(self, name):
         """Yields all :class:`Template`\ s in the template hierarchy:
