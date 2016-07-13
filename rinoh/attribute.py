@@ -181,11 +181,11 @@ class AttributesDictionary(dict, metaclass=WithAttributes):
             pass
         raise KeyError
 
-    def get_value(self, attribute, document):
+    def get_value(self, attribute, stylesheet):
         value = self[attribute]
         if isinstance(value, VarBase):
             accepted_type = self.attribute_definition(attribute).accepted_type
-            value = value.get(accepted_type, document)
+            value = value.get(accepted_type, stylesheet)
             self._check_attribute_type(attribute, value, accept_variables=False)
         return value
 
@@ -239,8 +239,8 @@ class Var(VarBase):
         super().__init__()
         self.name = name
 
-    def get(self, accepted_type, document):
-        return document.get_style_var(self.name, accepted_type)
+    def get(self, accepted_type, stylesheet):
+        return stylesheet.get_variable(self.name, accepted_type)
 
 
 class VarAttribute(VarBase):

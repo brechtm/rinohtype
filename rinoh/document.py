@@ -382,9 +382,6 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
-    def get_style_var(self, name, accepted_type):
-        return self.stylesheet.get_variable(name, accepted_type)
-
     def strings(self, strings_class):
         for strings in self._strings:
             if isinstance(strings, strings_class):

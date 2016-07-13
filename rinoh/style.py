@@ -469,10 +469,10 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.style_class._get_default(attribute)
 
     def get_base_style_recursive(self, exception, flowable_target):
-        document = flowable_target.document
+        stylesheet = flowable_target.document.stylesheet
         try:
-            base_style = document.stylesheet[exception.base_name]
-            return base_style.get_value(exception.attribute, document)
+            base_style = stylesheet[exception.base_name]
+            return base_style.get_value(exception.attribute, stylesheet)
         except ParentStyleException:
             return self.parent.get_style_recursive(exception.attribute,
                                                    flowable_target)
@@ -480,10 +480,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.get_base_style_recursive(e, flowable_target)
 
     def get_style_recursive(self, attribute, flowable_target):
+        stylesheet = flowable_target.document.stylesheet
         try:
             try:
                 style = self._style(flowable_target)
-                return style.get_value(attribute, flowable_target.document)
+                return style.get_value(attribute, stylesheet)
             except NoStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
                     raise ParentStyleException
