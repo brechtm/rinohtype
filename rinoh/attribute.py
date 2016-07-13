@@ -182,11 +182,11 @@ class AttributesDictionary(dict, metaclass=WithAttributes):
             pass
         raise KeyError
 
-    def get_value(self, attribute, stylesheet):
+    def get_value(self, attribute, rule_set):
         value = self[attribute]
         if isinstance(value, VarBase):
             accepted_type = self.attribute_definition(attribute).accepted_type
-            value = value.get(accepted_type, stylesheet)
+            value = value.get(accepted_type, rule_set)
             self._check_attribute_type(attribute, value, accept_variables=False)
         return value
 
@@ -195,7 +195,6 @@ class RuleSet(OrderedDict):
     def __init__(self, base=None):
         super().__init__()
         self.base = base
-        self.variables = {}
 
     def __getitem__(self, name):
         try:
@@ -217,17 +216,17 @@ class RuleSet(OrderedDict):
     def __str__(self):
         return '{}({})'.format(type(self).__name__, self.name)
 
-    def get_entry_class(self, name):
-        raise NotImplementedError
-
     def get_variable(self, name, accepted_type):
         try:
             return self._get_variable(name, accepted_type)
         except KeyError:
             return self.base.get_variable(name, accepted_type)
 
+    def get_entry_class(self, name):
+        raise NotImplementedError
+
     def _get_variable(self, name, accepted_type):
-        return self.variables[name]
+        raise NotImplementedError
 
 
 class Bool(AttributeType):

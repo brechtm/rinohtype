@@ -64,6 +64,7 @@ class TemplateOption(Attribute):
 class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
     stylesheet = TemplateOption(StyleSheet, sphinx, 'The stylesheet to use for '
                                                     'styling document elements')
+    paper_size = Attribute(Paper, A4, 'The default paper size')
 
     def __init__(self, base=None, **attributes):
         for name, member in type(self).__dict__.items():
@@ -97,14 +98,22 @@ class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
         except AttributeError:
             raise KeyError("No option '{}' in {}".format(option, cls))
 
-    def find_template(self, name):
-        try:
-            return self[name]
-        except KeyError:
-            if self.base and name in self.base:
-                return self.base[name]
-            else:
-                return getattr(self, name)   # default template
+    def find_templates(self, name):
+        """Yields all :class:`Template`\ s in the template hierarchy:
+
+        - template matching `name` in this TemplateConfiguration
+        - templates in base TemplateConfigurations (recursively)
+        - the default template"""
+        for template in self._find_templates_recursive(name):
+            yield template
+        yield getattr(self, name)   # the default template
+
+    def _find_templates_recursive(self, name):
+        if name in self:
+            yield self[name]
+        if self.base:
+            for template in self.base._find_templates_recursive(name):
+                yield template
 
     def get_option(self, option_name):
         try:
@@ -113,13 +122,15 @@ class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
             return getattr(type(self), option_name).default_value
 
     def get_template_option(self, template_name, option_name):
-        template = self.find_template(template_name)
-        try:
-            return template.get_value(option_name, self)
-        except KeyError:
-            if not self.base:
-                return template._get_default(option_name)
-            return self.base.get_template_option(template_name, option_name)
+        for template in self.find_templates(template_name):
+            try:
+                return template.get_value(option_name, self)
+            except KeyError:
+                continue
+        return template._get_default(option_name)
+
+    def _get_variable(self, name, accepted_type):
+        return self.get_option(name)
 
 
 class PageTemplateBase(Template):

@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ..attribute import OptionSet, Bool, OverrideDefault
+from ..attribute import OptionSet, Bool, OverrideDefault, Var
 from ..dimension import CM
 from ..document import DocumentPart
 from ..structure import TableOfContentsSection
@@ -53,8 +53,10 @@ class Article(DocumentTemplate):
         abstract_location = TemplateOption(AbstractLocation, FRONT_MATTER,
                                            'Where to place the abstract')
 
-        title_page = TitlePageTemplate(top_margin=8*CM)
-        page = PageTemplate(chapter_title_flowables=None)
+        title_page = TitlePageTemplate(page_size=Var('paper_size'),
+                                       top_margin=8*CM)
+        page = PageTemplate(page_size=Var('paper_size'),
+                            chapter_title_flowables=None)
 
     parts = [FixedDocumentPartTemplate([], Configuration.title_page),
              ArticleFrontMatter(Configuration.page),

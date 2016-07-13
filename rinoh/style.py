@@ -592,6 +592,7 @@ class StyleSheet(RuleSet, Resource):
             warn('Unsupported options passed to stylesheet: {}'
                  .format(', '.join(user_options.keys())))
         self.user_options = user_options
+        self.variables = {}
 
     def get_styled(self, name):
         style_sheet = self
@@ -605,6 +606,9 @@ class StyleSheet(RuleSet, Resource):
 
     def get_entry_class(self, name):
         return self.get_styled(name).style_class
+
+    def _get_variable(self, name, accepted_type):
+        return self.variables[name]
 
     def get_selector(self, name):
         try:

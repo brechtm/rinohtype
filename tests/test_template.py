@@ -7,8 +7,9 @@
 
 import pytest
 
-from rinoh.attribute import Bool
+from rinoh.attribute import Bool, Var
 from rinoh.dimension import PT
+from rinoh.paper import A5
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             TemplateOption, PageTemplate, ContentsPartTemplate)
 
@@ -19,7 +20,8 @@ class MyDocumentTemplate(DocumentTemplate):
         b = TemplateOption(Bool, True, 'flag B')
         c = TemplateOption(Bool, True, 'flag C')
 
-        page_tmpl = PageTemplate(column_spacing=1*PT)
+        page_tmpl = PageTemplate(page_size=Var('paper_size'),
+                                 column_spacing=1*PT)
 
     parts = [ContentsPartTemplate(Configuration.page_tmpl)]
 
@@ -42,3 +44,18 @@ def test_template_configuration_base():
     assert conf.get_option('c') == True
     assert conf.get_template_option('page_tmpl', 'columns') == 1
     assert conf.get_template_option('page_tmpl', 'column_spacing') == 10*PT
+
+
+def test_template_configuration_var():
+    conf = MyDocumentTemplate.Configuration(a=False,
+                                            paper_size=A5)
+    assert conf.get_option('paper_size') == A5
+    assert conf.get_template_option('page_tmpl', 'page_size') == A5
+
+
+def test_template_configuration_var2():
+    conf = MyDocumentTemplate.Configuration(a=False,
+                                            paper_size=A5)
+    conf.page_tmpl(columns=2)
+    assert conf.get_option('paper_size') == A5
+    assert conf.get_template_option('page_tmpl', 'page_size') == A5
