@@ -1,6 +1,7 @@
 
 import pytest
 
+from rinoh.attribute import OptionSet, Bool, Integer
 from rinoh.color import Color, HexColor
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.draw import Stroke
@@ -11,9 +12,8 @@ from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import ReferenceField, TITLE, PAGE, ReferenceText
-from rinoh.style import (OptionSet, Bool, Integer, parse_keyword, parse_string,
-                         parse_number, parse_selector_args, StyleParseError,
-                         CharIterator)
+from rinoh.style import (parse_keyword, parse_string, parse_number,
+                         parse_selector_args, StyleParseError, CharIterator)
 from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 

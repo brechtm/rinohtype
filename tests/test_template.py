@@ -7,18 +7,18 @@
 
 import pytest
 
-from rinoh.attribute import Bool, Var
+from rinoh.attribute import Attribute, Bool, Var
 from rinoh.dimension import PT
 from rinoh.paper import A5
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
-                            TemplateOption, PageTemplate, ContentsPartTemplate)
+                            PageTemplate, ContentsPartTemplate)
 
 
 class MyDocumentTemplate(DocumentTemplate):
     class Configuration(TemplateConfiguration):
-        a = TemplateOption(Bool, True, 'flag A')
-        b = TemplateOption(Bool, True, 'flag B')
-        c = TemplateOption(Bool, True, 'flag C')
+        a = Attribute(Bool, True, 'flag A')
+        b = Attribute(Bool, True, 'flag B')
+        c = Attribute(Bool, True, 'flag C')
 
         page_tmpl = PageTemplate(page_size=Var('paper_size'),
                                  column_spacing=1*PT)
