@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ..attribute import OverrideDefault
+from ..attribute import OverrideDefault, Var
 from ..dimension import INCH
 from ..index import IndexSection
 from ..number import NUMBER, ROMAN_LC
@@ -22,8 +22,6 @@ from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         TemplateConfiguration)
 from ..text import Tab
 
-
-paper_size = A4
 
 def front_matter_section_title_flowables(section_id):
     yield Paragraph(Reference(section_id, TITLE),
@@ -42,7 +40,7 @@ class Book(DocumentTemplate):
     class Configuration(TemplateConfiguration):
         stylesheet = OverrideDefault(sphinx)
         page = \
-            PageTemplate(page_size=paper_size,
+            PageTemplate(page_size=Var('paper_size'),
                          left_margin=1 * INCH,
                          right_margin=1 * INCH,
                          top_margin=1 * INCH,
