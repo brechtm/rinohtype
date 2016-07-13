@@ -73,18 +73,6 @@ class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
         for key, value in attributes.items():
             self[key] = value
 
-    def __call__(self, template_name, **kwargs):
-        template_class = self._get_template_class(template_name)
-        self[template_name] = template_class(**kwargs)
-
-    def _get_template_class(self, template_name):
-        try:
-            return type(self[template_name])
-        except KeyError:
-            if not self.base:
-                raise
-            return self.base._get_template_class(template_name)
-
     @classmethod
     def attribute_definition(cls, name):
         try:
