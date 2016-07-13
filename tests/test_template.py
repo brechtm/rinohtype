@@ -38,7 +38,7 @@ def test_template_configuration():
 def test_template_configuration_base():
     base_conf = MyDocumentTemplate.Configuration(a=False)
     conf = MyDocumentTemplate.Configuration(base=base_conf, b=False)
-    conf.page_tmpl(column_spacing=10*PT)
+    conf('page_tmpl', column_spacing=10*PT)
     assert conf.get_option('a') == False
     assert conf.get_option('b') == False
     assert conf.get_option('c') == True
@@ -56,6 +56,6 @@ def test_template_configuration_var():
 def test_template_configuration_var2():
     conf = MyDocumentTemplate.Configuration(a=False,
                                             paper_size=A5)
-    conf.page_tmpl(columns=2)
+    conf('page_tmpl', columns=2)
     assert conf.get_option('paper_size') == A5
     assert conf.get_template_option('page_tmpl', 'page_size') == A5

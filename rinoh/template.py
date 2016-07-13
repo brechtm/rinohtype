@@ -48,29 +48,13 @@ class Templated(object):
 
 
 class Template(AttributesDictionary, NamedDescriptor):
-    def __call__(self, **kwargs):
-        self.configuration[self.name] = type(self)(**kwargs)
-
-
-class TemplateOption(Attribute):
-    def __call__(self, value):
-        if not self.accepted_type.check_type(value):
-            raise TypeError('{} option has wrong type: {}'
-                            .format(type(self.configuration).__name__,
-                                    self.name))
-        self.configuration[self.name] = value
+    pass
 
 
 class TemplateConfiguration(RuleSet, AttributesDictionary):
-    stylesheet = TemplateOption(StyleSheet, sphinx, 'The stylesheet to use for '
-                                                    'styling document elements')
+    stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
+                                               'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
-
-    def __init__(self, base=None, **attributes):
-        for name, member in type(self).__dict__.items():
-            if isinstance(member, (Template, TemplateOption)):
-                member.configuration = self
-        super().__init__(base, **attributes)
 
     def find_templates(self, name):
         """Yields all :class:`Template`\ s in the template hierarchy:
@@ -102,6 +86,10 @@ class TemplateConfiguration(RuleSet, AttributesDictionary):
             except KeyError:
                 continue
         return template._get_default(option_name)
+
+    @classmethod
+    def get_entry_class(cls, name):
+        return type(getattr(cls, name))
 
     def _get_variable(self, name, accepted_type):
         return self.get_option(name)
