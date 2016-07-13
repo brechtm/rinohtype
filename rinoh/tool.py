@@ -15,9 +15,11 @@ from rinoh.backend import pdf
 from rinoh.font import Typeface
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.resource import ResourceNotInstalled
-from rinoh.stylesheets import sphinx
-from rinoh.template import DocumentOptions
+from rinoh.style import StyleSheet
 from rinoh.templates import Article
+
+
+DEFAULT = ' (default: %(default)s)'
 
 
 def main():
@@ -25,8 +27,12 @@ def main():
                                                  'document to PDF.')
     parser.add_argument('input', type=str, nargs='?',
                        help='the reStructuredText document to render')
-    parser.add_argument('--paper', type=str, nargs='?', default='A4',
-                       help='the paper size to render to (default: A4)')
+    parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
+                        default='sphinx_article',
+                        help='the style sheet used to style the document '
+                             'elements' + DEFAULT)
+    parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
+                       help='the paper size to render to ' + DEFAULT)
     args = parser.parse_args()
 
     try:
@@ -35,8 +41,15 @@ def main():
         parser.print_help()
         return
 
+    kwargs = {}
     try:
-        page_size = getattr(paper, args.paper.upper())
+        kwargs['stylesheet'] = StyleSheet.from_string(args.stylesheet)
+    except ResourceNotInstalled as err:
+        raise SystemExit("Could not find the Style sheet '{}'. Aborting."
+                         .format(err.resource_name))
+
+    try:
+        page_size = getattr(paper, args.paper.upper()) # TODO: use variable
     except AttributeError:
         print("Unknown paper size '{}'. Must be one of:".format(args.paper))
         print('   A0, A1, ..., A10, letter, legal, junior_legal, ledger, '
@@ -50,8 +63,9 @@ def main():
     parser = ReStructuredTextReader()
     with open(input_filename) as input_file:
         document_tree = parser.parse(input_file)
-    options = DocumentOptions(stylesheet=sphinx)
-    document = Article(document_tree, options=options, backend=pdf)
+
+    configuration = Article.Configuration(**kwargs)
+    document = Article(document_tree, configuration=configuration, backend=pdf)
 
     while True:
         try:
