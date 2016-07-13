@@ -48,7 +48,20 @@ class Templated(object):
 
 
 class Template(AttributesDictionary, NamedDescriptor):
-    pass
+    def get_value(self, attribute, template_configuration):
+        try:
+            return super().get_value(attribute, template_configuration)
+        except KeyError:
+            bases = []
+            if isinstance(self.base, str):
+                iter = template_configuration.find_templates(self.base)
+                bases.extend(iter)
+            elif self.base is not None:
+                bases.append(self.base)
+            for base_template in bases:
+                return base_template.get_value(attribute, template_configuration)
+            else:
+                raise KeyError
 
 
 class TemplateConfiguration(RuleSet, AttributesDictionary):
@@ -85,7 +98,7 @@ class TemplateConfiguration(RuleSet, AttributesDictionary):
                 return template.get_value(option_name, self)
             except KeyError:
                 continue
-        return template._get_default(option_name)
+        return template._get_default(option_name)  # FIXME: possibly never reached
 
     @classmethod
     def get_entry_class(cls, name):
