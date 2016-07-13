@@ -27,7 +27,6 @@ from rinoh.paragraph import Paragraph
 from rinoh.reference import Reference, TITLE
 from rinoh.style import StyleSheetFile
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
-from rinoh.template import DocumentOptions
 from rinoh.templates import Book
 from rinoh.text import SingleStyledText
 
@@ -232,7 +231,10 @@ class RinohBuilder(Builder):
         indices = list(self.generate_indices(docnames))
         # TODO: more cleanly inject the indices into the document part template
         # document_parts[-1].flowables = indices + document_parts[-1].flowables
-        rinoh_document = document_template(rinoh_tree, backend=pdf)
+        paper_size = self.config.rinoh_paper_size
+        config = document_template.Configuration(paper_size=paper_size)
+        rinoh_document = document_template(rinoh_tree, configuration=config,
+                                           backend=pdf)
         rinoh_logo = self.config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
