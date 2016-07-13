@@ -108,13 +108,13 @@ def get_pygments_style(style):
             return get_style_by_name(style)
 
 
-def pygments_style_to_stylesheet(style):
+def pygments_style_to_stylesheet(style, base=None):
     if not PYGMENTS_AVAILABLE:
         return None
     pygments_style = get_pygments_style(style)
     matcher = StyledMatcher()
     style_sheet_name = '{} (pygments)'.format(pygments_style.__name__)
-    style_sheet = StyleSheet(style_sheet_name, matcher=matcher)
+    style_sheet = StyleSheet(style_sheet_name, matcher=matcher, base=base)
     for token_type, style in pygments_style:
         style_name = '(pygments){}'.format(token_type)
         matcher[style_name] = Token.like(type=token_type)

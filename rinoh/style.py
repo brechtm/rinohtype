@@ -579,29 +579,19 @@ class StyleSheet(RuleSet, Resource):
 
     def __init__(self, name, matcher=None, base=None, description=None,
                  pygments_style=None, **user_options):
-        super().__init__()
+        base = self.from_string(base) if isinstance(base, str) else base
+        from .highlight import pygments_style_to_stylesheet
+        if pygments_style:
+            base = pygments_style_to_stylesheet(pygments_style, base)
+        super().__init__(base)
         self.name = name
         self.description = description
         self.matcher = matcher if matcher is not None else base.matcher
         self.matcher.check_validity()
-        self.base = self.from_string(base) if isinstance(base, str) else base
-        from .highlight import pygments_style_to_stylesheet
-        self.highlight = (pygments_style_to_stylesheet(pygments_style)
-                          if pygments_style else None)
         if user_options:
             warn('Unsupported options passed to stylesheet: {}'
                  .format(', '.join(user_options.keys())))
         self.user_options = user_options
-
-    def __getitem__(self, name):
-        try:
-            return OrderedDict.__getitem__(self, name)
-        except KeyError:
-            if self.highlight is not None:
-                return self.highlight[name]
-            if self.base is not None:
-                return self.base[name]
-            raise
 
     def get_styled(self, name):
         style_sheet = self
@@ -628,9 +618,6 @@ class StyleSheet(RuleSet, Resource):
     def find_matches(self, styled, container):
         for match in self.matcher.match(styled, container):
             yield match
-        if self.highlight is not None:
-            for match in self.highlight.find_matches(styled, container):
-                yield match
         if self.base is not None:
             for match in self.base.find_matches(styled, container):
                 yield match
