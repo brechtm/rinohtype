@@ -41,8 +41,9 @@ def get_version():
         # read version from VERSION_FILE
         with open(VERSION_FILE) as version_file:
             code = compile(version_file.read(), VERSION_FILE, 'exec')
-            exec(code)
-        version, release_date = __version__, __release_date__
+        exec(code)
+        version = locals()['__version__']
+        release_date = locals()['__release_date__']
     return version, release_date
 
 
