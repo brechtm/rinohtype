@@ -14,7 +14,7 @@ import pip
 import pkg_resources
 from pkg_resources import iter_entry_points
 
-from .util import NotImplementedAttribute
+from .util import NotImplementedAttribute, class_property
 from .attribute import AttributeType
 
 
@@ -24,11 +24,15 @@ __all__ = ['Resource', 'ResourceNotInstalled']
 class Resource(AttributeType):
     resource_type = NotImplementedAttribute()
 
+    @class_property
+    def entry_point_group_name(cls):
+        return 'rinoh_{}s'.format(cls.resource_type)
+
     @classmethod
     def parse_string(cls, resource_name):
         entry_point_name = resource_name.lower()
-        group_name = 'rinoh_{}s'.format(cls.resource_type)
-        entry_points = iter_entry_points(group_name, entry_point_name)
+        entry_points = iter_entry_points(cls.entry_point_group_name,
+                                         entry_point_name)
         try:
             entry_point = next(entry_points)
         except StopIteration:
@@ -41,6 +45,11 @@ class Resource(AttributeType):
                            for dist in other_distributions)
                  + 'Using ' + repr(entry_point.dist))
         return entry_point.load()
+
+    @class_property
+    def installed_resources(cls):
+        for entry_point in iter_entry_points(cls.entry_point_group_name):
+            yield entry_point.name
 
     @classmethod
     def install_from_pypi(cls, entry_point_name):

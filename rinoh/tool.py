@@ -33,7 +33,15 @@ def main():
                              'elements' + DEFAULT)
     parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
                        help='the paper size to render to ' + DEFAULT)
+    parser.add_argument('--list-stylesheets', action='store_true',
+                        help='list the available style sheets')
     args = parser.parse_args()
+
+    if args.list_stylesheets:
+        print('Installed style sheets:')
+        for name in StyleSheet.installed_resources:
+            print('- {}'.format(name))
+        return
 
     try:
         input_dir, input_filename = os.path.split(args.input)
@@ -45,8 +53,10 @@ def main():
     try:
         kwargs['stylesheet'] = StyleSheet.from_string(args.stylesheet)
     except ResourceNotInstalled as err:
-        raise SystemExit("Could not find the Style sheet '{}'. Aborting."
-                         .format(err.resource_name))
+        raise SystemExit("Could not find the Style sheet '{}'. Aborting.\n"
+                         "Run `{} --list-stylesheets` to find out which style "
+                         "sheets are available."
+                         .format(err.resource_name, parser.prog))
 
     try:
         page_size = getattr(paper, args.paper.upper()) # TODO: use variable
