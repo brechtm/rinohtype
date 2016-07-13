@@ -59,7 +59,7 @@ def main():
                          .format(err.resource_name, parser.prog))
 
     try:
-        page_size = getattr(paper, args.paper.upper()) # TODO: use variable
+        kwargs['paper_size'] = getattr(paper, args.paper.upper())
     except AttributeError:
         print("Unknown paper size '{}'. Must be one of:".format(args.paper))
         print('   A0, A1, ..., A10, letter, legal, junior_legal, ledger, '
