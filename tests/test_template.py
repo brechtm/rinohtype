@@ -1,0 +1,44 @@
+# This file is part of RinohType, the Python document preparation system.
+#
+# Copyright (c) Brecht Machiels.
+#
+# Use of this source code is subject to the terms of the GNU Affero General
+# Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
+
+import pytest
+
+from rinoh.attribute import Bool
+from rinoh.dimension import PT
+from rinoh.template import (DocumentTemplate, TemplateConfiguration,
+                            TemplateOption, PageTemplate, ContentsPartTemplate)
+
+
+class MyDocumentTemplate(DocumentTemplate):
+    class Configuration(TemplateConfiguration):
+        a = TemplateOption(Bool, True, 'flag A')
+        b = TemplateOption(Bool, True, 'flag B')
+        c = TemplateOption(Bool, True, 'flag C')
+
+        page_tmpl = PageTemplate(column_spacing=1*PT)
+
+    parts = [ContentsPartTemplate(Configuration.page_tmpl)]
+
+
+def test_template_configuration():
+    conf = MyDocumentTemplate.Configuration(a=False)
+    assert conf.get_option('a') == False
+    assert conf.get_option('b') == True
+    assert conf.get_option('c') == True
+    assert conf.get_template_option('page_tmpl', 'columns') == 1
+    assert conf.get_template_option('page_tmpl', 'column_spacing') == 1*PT
+
+
+def test_template_configuration_base():
+    base_conf = MyDocumentTemplate.Configuration(a=False)
+    conf = MyDocumentTemplate.Configuration(base=base_conf, b=False)
+    conf.page_tmpl(column_spacing=10*PT)
+    assert conf.get_option('a') == False
+    assert conf.get_option('b') == False
+    assert conf.get_option('c') == True
+    assert conf.get_template_option('page_tmpl', 'columns') == 1
+    assert conf.get_template_option('page_tmpl', 'column_spacing') == 10*PT

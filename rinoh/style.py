@@ -25,7 +25,7 @@ from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
 
-from .attribute import AttributesDictionary, Var
+from .attribute import AttributesDictionary, RuleSet, Var
 from .element import DocumentElement
 from .resource import Resource
 from .util import cached, unique, all_subclasses, NotImplementedAttribute
@@ -569,7 +569,7 @@ class StyledMatcher(dict):
                         yield Match(name, specificity)
 
 
-class StyleSheet(OrderedDict, Resource):
+class StyleSheet(RuleSet, Resource):
     """Dictionary storing a set of related :class:`Style`s by name.
 
     :class:`Style`s stored in a :class:`StyleStore` can refer to their base
@@ -585,7 +585,6 @@ class StyleSheet(OrderedDict, Resource):
         self.matcher = matcher if matcher is not None else base.matcher
         self.matcher.check_validity()
         self.base = self.from_string(base) if isinstance(base, str) else base
-        self.variables = {}
         from .highlight import pygments_style_to_stylesheet
         self.highlight = (pygments_style_to_stylesheet(pygments_style)
                           if pygments_style else None)
@@ -596,24 +595,13 @@ class StyleSheet(OrderedDict, Resource):
 
     def __getitem__(self, name):
         try:
-            return super().__getitem__(name)
+            return OrderedDict.__getitem__(self, name)
         except KeyError:
             if self.highlight is not None:
                 return self.highlight[name]
             if self.base is not None:
                 return self.base[name]
             raise
-
-    def __setitem__(self, name, style):
-        assert name not in self
-        style.name = name
-        super().__setitem__(name, style)
-
-    def __call__(self, name, **kwargs):
-        self[name] = self.get_style_class(name)(**kwargs)
-
-    def __str__(self):
-        return '{}({})'.format(type(self).__name__, self.name)
 
     def get_styled(self, name):
         style_sheet = self
@@ -625,17 +613,8 @@ class StyleSheet(OrderedDict, Resource):
                 style_sheet = style_sheet.base
         raise KeyError("No selector found for style '{}'".format(name))
 
-    def get_style_class(self, name):
+    def get_entry_class(self, name):
         return self.get_styled(name).style_class
-
-    def get_variable(self, name, accepted_type):
-        try:
-            return self._get_variable(name, accepted_type)
-        except KeyError:
-            return self.base.get_variable(name, accepted_type)
-
-    def _get_variable(self, name, accepted_type):
-        return self.variables[name]
 
     def get_selector(self, name):
         try:
@@ -724,7 +703,7 @@ class StyleSheetFile(StyleSheet):
                     pass
             except ValueError:
                 style_name = section_name
-                style_cls = self.get_style_class(style_name)
+                style_cls = self.get_entry_class(style_name)
             attribute_values = {}
             for name, value in section_body.items():
                 value = value.replace('\n', ' ')

@@ -6,10 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from collections import OrderedDict
-
-from .attribute import Bool, Integer, Function, Attribute, WithAttributes, \
-    AttributesDictionary
+from .attribute import (Bool, Integer, Function, Attribute, WithAttributes,
+                        AttributesDictionary, RuleSet, Var)
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
@@ -39,10 +37,14 @@ class Option(Attribute):
     """Descriptor used to describe a document option"""
 
 
+class DefaultOptionException(Exception):
+    pass
+
+
 class Templated(object):
     def get_option(self, option, document):
-        name = self.template_name
-        return document.configuration.get_template_option(name, option)
+        configuration = document.configuration
+        return configuration.get_template_option(self.template_name, option)
 
 
 class Template(AttributesDictionary, NamedDescriptor):
@@ -59,28 +61,17 @@ class TemplateOption(Attribute):
         self.configuration[self.name] = value
 
 
-class TemplateConfiguration(OrderedDict, metaclass=WithAttributes):
+class TemplateConfiguration(RuleSet, metaclass=WithAttributes):
     stylesheet = TemplateOption(StyleSheet, sphinx, 'The stylesheet to use for '
                                                     'styling document elements')
 
     def __init__(self, base=None, **attributes):
-        self.base = base
         for name, member in type(self).__dict__.items():
             if isinstance(member, (Template, TemplateOption)):
                 member.configuration = self
-        super().__init__(attributes)
-
-    def __getitem__(self, name):
-        try:
-            return super().__getitem__(name)
-        except KeyError:
-            if self.base is not None:
-                return self.base[name]
-            raise
-
-    def __setitem__(self, name, style):
-        assert name not in self
-        super().__setitem__(name, style)
+        super().__init__(base)
+        for key, value in attributes.items():
+            self[key] = value
 
     def __call__(self, template_name, **kwargs):
         template_class = self._get_template_class(template_name)
@@ -136,7 +127,7 @@ class TemplateConfiguration(OrderedDict, metaclass=WithAttributes):
     def get_template_option(self, template_name, option_name):
         template = self.find_template(template_name)
         try:
-            return template[option_name]
+            return template.get_value(option_name, self)
         except KeyError:
             if not self.base:
                 return template._get_default(option_name)

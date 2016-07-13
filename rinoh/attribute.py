@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from collections import OrderedDict
 from types import FunctionType
 
 from .util import NamedDescriptor, WithNamedDescriptors
@@ -188,6 +189,45 @@ class AttributesDictionary(dict, metaclass=WithAttributes):
             value = value.get(accepted_type, stylesheet)
             self._check_attribute_type(attribute, value, accept_variables=False)
         return value
+
+
+class RuleSet(OrderedDict):
+    def __init__(self, base=None):
+        super().__init__()
+        self.base = base
+        self.variables = {}
+
+    def __getitem__(self, name):
+        try:
+            return super().__getitem__(name)
+        except KeyError:
+            if self.base is not None:
+                return self.base[name]
+            raise
+
+    def __setitem__(self, name, style):
+        assert name not in self
+        if isinstance(style, AttributesDictionary):
+            style.name = name
+        super().__setitem__(name, style)
+
+    def __call__(self, name, **kwargs):
+        self[name] = self.get_entry_class(name)(**kwargs)
+
+    def __str__(self):
+        return '{}({})'.format(type(self).__name__, self.name)
+
+    def get_entry_class(self, name):
+        raise NotImplementedError
+
+    def get_variable(self, name, accepted_type):
+        try:
+            return self._get_variable(name, accepted_type)
+        except KeyError:
+            return self.base.get_variable(name, accepted_type)
+
+    def _get_variable(self, name, accepted_type):
+        return self.variables[name]
 
 
 class Bool(AttributeType):
