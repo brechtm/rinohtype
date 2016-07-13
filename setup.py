@@ -83,16 +83,21 @@ setup(
     install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
     entry_points={
-        'console_scripts':
-            ['rinoh = rinoh.tool:main'],
-        'rinoh_stylesheets':
-            ['sphinx = rinoh.stylesheets:sphinx'],
-        'rinoh_typefaces':
-            ['courier = rinoh.fonts.adobe14:courier',
-             'helvetica = rinoh.fonts.adobe14:helvetica',
-             'symbol = rinoh.fonts.adobe14:symbol',
-             'times = rinoh.fonts.adobe14:times',
-             'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats']
+        'console_scripts': [
+            'rinoh = rinoh.tool:main',
+        ],
+        'rinoh_stylesheets': [
+            'sphinx = rinoh.stylesheets:sphinx',
+            'sphinx_article = rinoh.stylesheets:sphinx_article',
+            'sphinx_base14 = rinoh.stylesheets:sphinx_base14',
+        ],
+        'rinoh_typefaces': [
+            'courier = rinoh.fonts.adobe14:courier',
+            'helvetica = rinoh.fonts.adobe14:helvetica',
+            'symbol = rinoh.fonts.adobe14:symbol',
+            'times = rinoh.fonts.adobe14:times',
+            'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats',
+        ]
     },
     #test_suite='nose.collector',
 
