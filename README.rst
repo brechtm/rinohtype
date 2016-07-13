@@ -13,6 +13,10 @@ RinohType
    :target: https://www.quantifiedcode.com/app/project/44e411c95df74f5e8cd04eb067a73f4b
    :alt: Code issues
 
+.. image:: https://badges.gitter.im/brechtm/rinohtype.png
+   :target: https://gitter.im/brechtm/rinohtype
+   :alt: Gitter chat
+
 RinohType is a document processor in the style of LaTeX_. It can render
 structured text documents to PDF based on a document template and a style sheet.
 An important goal of RinohType is to be more user-friendly than LaTeX. This
