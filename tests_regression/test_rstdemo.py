@@ -24,7 +24,7 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 DIFF_PDF = os.path.join(TEST_DIR, 'diffpdf.sh')
 
 
-def test_rstdemo(tmpdir, expect):
+def test_rstdemo(tmpdir):
     configuration = Article.Configuration(stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
@@ -36,8 +36,8 @@ def test_rstdemo(tmpdir, expect):
     document = Article(flowables, configuration=configuration, backend=pdf)
     os.chdir(tmpdir.strpath)
     document.render('demo')
-    _, _, _, badlinks, _, _ =check_pdf_links('demo.pdf')
-    expect(badlinks == ['table-of-contents'])
+    _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
+    pytest.assume(badlinks == ['table-of-contents'])
     if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):
         pytest.fail('The generated PDF is different from the reference PDF.\n'
                     'Generated files can be found in {}'.format(tmpdir.strpath))
