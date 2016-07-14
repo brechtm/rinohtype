@@ -4,6 +4,7 @@
 /.python-version
 /.cache
 /.idea
+/.eggs
 /.tox
 /build
 /dist

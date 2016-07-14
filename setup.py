@@ -100,7 +100,8 @@ setup(
             'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats',
         ]
     },
-    #test_suite='nose.collector',
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest>=2.0.0', 'pytest-assume', 'requests', 'PyPDF2'],
 
     author='Brecht Machiels',
     author_email='brecht@mos6581.org',
