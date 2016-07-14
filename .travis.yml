@@ -5,18 +5,18 @@ sudo: false
 cache:
     apt: true
     directories:
-        - $HOME/.cache/pip
+      - $HOME/.cache/pip
 
-addons:
-  apt:
-    packages:
-      - poppler-utils
-      - imagemagick
-
-python:
-  - '3.3'
-  - '3.4'
-  - '3.5'
+matrix:
+  include:
+    - python: '3.3'
+    - python: '3.4'
+    - python: '3.5'
+      addons:
+        apt:
+          packages:
+            - poppler-utils
+            - imagemagick
 
 install:
   - pip install tox-travis
