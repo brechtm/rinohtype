@@ -6,10 +6,11 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import pytest
-
 import os
+import pytest
 import subprocess
+
+from pdf_linkchecker import check_pdf_links
 
 from rinoh.backend import pdf
 from rinoh.dimension import CM
@@ -23,7 +24,7 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 DIFF_PDF = os.path.join(TEST_DIR, 'diffpdf.sh')
 
 
-def test_rstdemo(tmpdir):
+def test_rstdemo(tmpdir, expect):
     configuration = Article.Configuration(stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
@@ -35,6 +36,8 @@ def test_rstdemo(tmpdir):
     document = Article(flowables, configuration=configuration, backend=pdf)
     os.chdir(tmpdir.strpath)
     document.render('demo')
+    _, _, _, badlinks, _, _ =check_pdf_links('demo.pdf')
+    expect(badlinks == ['table-of-contents'])
     if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):
         pytest.fail('The generated PDF is different from the reference PDF.\n'
                     'Generated files can be found in {}'.format(tmpdir.strpath))
