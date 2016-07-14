@@ -7,9 +7,10 @@
 
 
 import os
-import pytest
-import subprocess
 
+import pytest
+
+from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 
 from rinoh.backend import pdf
@@ -20,8 +21,6 @@ from rinoh.templates import Article
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-
-DIFF_PDF = os.path.join(TEST_DIR, 'diffpdf.sh')
 
 
 def test_rstdemo(tmpdir):
@@ -41,8 +40,3 @@ def test_rstdemo(tmpdir):
     if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):
         pytest.fail('The generated PDF is different from the reference PDF.\n'
                     'Generated files can be found in {}'.format(tmpdir.strpath))
-
-
-def diff_pdf(a_filename, b_filename):
-    rc = subprocess.call([DIFF_PDF, a_filename, b_filename])
-    return rc == 0
