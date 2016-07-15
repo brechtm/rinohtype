@@ -301,34 +301,46 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(object):
-    def __init__(self, right_page_template, left_page_template=None,
+    def __init__(self, name, right_page_template, left_page_template=None,
                  page_number_format=NUMBER):
+        self.name = name
         self.page_template = right_page_template
         self.left_page_template = left_page_template
         self.page_number_format = page_number_format
 
-    def document_part(self, document_section):
+    def _insert_extra_flowables(self, flowables, extra_flowables):
+        result = [flowable for flowable in flowables]
+        for flowable, position in (extra_flowables or []):
+            result.insert(position, flowable)
+        return result
+
+    def document_part(self, document_section, extra_flowables=None):
         raise NotImplementedError
 
 
 class ContentsPartTemplate(DocumentPartTemplate):
-    def document_part(self, document_section):
+    def document_part(self, document_section, extra_flowables=None):
+        content_flowables = document_section.document.document_tree.children
+        flowables = self._insert_extra_flowables(content_flowables,
+                                                 extra_flowables)
         return DocumentPart(document_section,
                             self.page_template, self.left_page_template,
-                            document_section.document.document_tree.children)
+                            flowables)
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
-    def __init__(self, flowables, right_page_template, left_page_template=None,
-                 page_number_format=NUMBER):
-        super().__init__(right_page_template, left_page_template,
+    def __init__(self, name, flowables, right_page_template,
+                 left_page_template=None, page_number_format=NUMBER):
+        super().__init__(name, right_page_template, left_page_template,
                          page_number_format=page_number_format)
         self.flowables = flowables
 
-    def document_part(self, document_section):
+    def document_part(self, document_section, extra_flowables=None):
+        flowables = self._insert_extra_flowables(self.flowables,
+                                                 extra_flowables)
         return DocumentPart(document_section,
                             self.page_template, self.left_page_template,
-                            self.flowables)
+                            flowables)
 
 
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):
@@ -362,6 +374,11 @@ class DocumentTemplate(Document):
         self.options = options or self.options_class()
         stylesheet = self.configuration.get_option('stylesheet')
         super().__init__(flowables, stylesheet, strings=strings, backend=backend)
+        self._to_insert = {}
+
+    def insert(self, document_part_name, flowable, position):
+        docpart_flowables = self._to_insert.setdefault(document_part_name, [])
+        docpart_flowables.append((flowable, position))
 
     @property
     def sections(self):
@@ -372,7 +389,9 @@ class DocumentTemplate(Document):
                 if i > 0:
                     yield current_section
                 current_section = DocumentTemplateSection(self, number_format)
-            part = document_part_tmpl.document_part(current_section)
+            extra_flowables = self._to_insert.get(document_part_tmpl.name)
+            part = document_part_tmpl.document_part(current_section,
+                                                    extra_flowables)
             if part:
                 current_section._parts.append(part)
                 last_section_number_format = document_part_tmpl.page_number_format

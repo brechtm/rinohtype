@@ -23,7 +23,7 @@ class MyDocumentTemplate(DocumentTemplate):
         page_tmpl = PageTemplate(page_size=Var('paper_size'),
                                  column_spacing=1*PT)
 
-    parts = [ContentsPartTemplate(Configuration.page_tmpl)]
+    parts = [ContentsPartTemplate('contents', Configuration.page_tmpl)]
 
 
 def test_template_configuration():

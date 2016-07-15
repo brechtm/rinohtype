@@ -28,7 +28,7 @@ class AbstractLocation(OptionSet):
 
 
 class ArticleFrontMatter(DocumentPartTemplate):
-    def document_part(self, document_section):
+    def document_part(self, document_section, extra_flowables=None):
         document = document_section.document
         meta = document.metadata
         abstract_loc = document.configuration.get_option('abstract_location')
@@ -37,6 +37,7 @@ class ArticleFrontMatter(DocumentPartTemplate):
             flowables.append(meta['abstract'])
         if document.configuration.get_option('table_of_contents'):
             flowables.append(TableOfContentsSection())
+        flowables = self._insert_extra_flowables(flowables, extra_flowables)
         if flowables:
             return DocumentPart(document_section,
                                 self.page_template, self.left_page_template,
@@ -57,6 +58,6 @@ class Article(DocumentTemplate):
         page = PageTemplate(page_size=Var('paper_size'),
                             chapter_title_flowables=None)
 
-    parts = [FixedDocumentPartTemplate([], Configuration.title_page),
-             ArticleFrontMatter(Configuration.page),
-             ContentsPartTemplate(Configuration.page)]
+    parts = [FixedDocumentPartTemplate('title', [], Configuration.title_page),
+             ArticleFrontMatter('front matter', Configuration.page),
+             ContentsPartTemplate('contents', Configuration.page)]

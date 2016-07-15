@@ -10,7 +10,6 @@ from ..attribute import OverrideDefault, Var
 from ..dimension import INCH
 from ..index import IndexSection
 from ..number import NUMBER, ROMAN_LC
-from ..paper import A4
 from ..paragraph import Paragraph
 from ..reference import (Variable, Reference, PAGE_NUMBER, TITLE,
                          DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
@@ -109,14 +108,16 @@ class Book(DocumentTemplate):
                          footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
                                       + Variable(SECTION_TITLE(1))))
 
-    parts = [FixedDocumentPartTemplate([], Configuration.title_page),
-             FixedDocumentPartTemplate([TableOfContentsSection()],
+    parts = [FixedDocumentPartTemplate('title', [], Configuration.title_page),
+             FixedDocumentPartTemplate('front matter',
+                                       [TableOfContentsSection()],
                                        Configuration.front_matter_right_page,
                                        Configuration.front_matter_left_page,
                                        page_number_format=ROMAN_LC),
-             ContentsPartTemplate(Configuration.content_right_page,
+             ContentsPartTemplate('contents',
+                                  Configuration.content_right_page,
                                   Configuration.content_left_page,
                                   page_number_format=NUMBER),
-             FixedDocumentPartTemplate([IndexSection()],
+             FixedDocumentPartTemplate('indices', [IndexSection()],
                                        Configuration.back_matter_right_page,
                                        Configuration.back_matter_left_page)]
