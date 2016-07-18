@@ -13,7 +13,8 @@ from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
-from .text import SingleStyledTextBase, TextStyle, StyledText, MixedStyledText
+from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
+                   StyledText, MixedStyledText)
 
 
 __all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
@@ -258,7 +259,7 @@ class SECTION_TITLE(SectionFieldType):
         super().__init__('section title', level)
 
 
-class Variable(SingleStyledTextBase):
+class Variable(MixedStyledTextBase):
     def __init__(self, type, style=None):
         super().__init__(style=style)
         self.type = type
@@ -287,4 +288,4 @@ class Variable(SingleStyledTextBase):
                 text = ''
         else:
             text = '?'
-        return text
+        return MixedStyledText(text, parent=self)

@@ -336,7 +336,21 @@ class SingleStyledText(SingleStyledTextBase):
         return self._text
 
 
-class MixedStyledText(StyledText, list):
+class MixedStyledTextBase(StyledText):
+    def to_string(self, flowable_target):
+        return ''.join(item.to_string(flowable_target)
+                       for item in self.text(flowable_target))
+
+    def spans(self, container):
+        """Recursively yield all the :class:`SingleStyledText` items in this
+        mixed-styled text."""
+        for item in self.text(container):
+            container.register_styled(item)
+            for span in item.spans(container):
+                yield span
+
+
+class MixedStyledText(MixedStyledTextBase, list):
     """Concatenation of :class:`StyledText` objects."""
 
     _assumed_equal = {}
@@ -372,9 +386,6 @@ class MixedStyledText(StyledText, list):
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
 
-    def to_string(self, flowable_target):
-        return ''.join(item.to_string(flowable_target) for item in self)
-
     def __eq__(self, other):
         # avoid infinite recursion due to the 'parent' attribute
         assumed_equal = type(self)._assumed_equal.setdefault(id(self), set())
@@ -401,13 +412,8 @@ class MixedStyledText(StyledText, list):
         item.parent = self
         list.append(self, item)
 
-    def spans(self, container):
-        """Recursively yield all the :class:`SingleStyledText` items in this
-        mixed-styled text."""
-        for item in self:
-            container.register_styled(item)
-            for span in item.spans(container):
-                yield span
+    def text(self, flowable_target, **kwargs):
+        return self
 
 
 class ConditionalMixedStyledText(MixedStyledText):
