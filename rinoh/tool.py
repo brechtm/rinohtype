@@ -17,6 +17,7 @@ from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
+from rinoh.template import DocumentTemplate
 from rinoh.templates import Article
 
 
@@ -28,6 +29,9 @@ def main():
                                                  'document to PDF.')
     parser.add_argument('input', type=str, nargs='?',
                        help='the reStructuredText document to render')
+    parser.add_argument('-t', '--template', type=str, nargs='?',
+                        default='article',
+                        help='the document template to use' + DEFAULT)
     parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
                         default='sphinx_article',
                         help='the style sheet used to style the document '
@@ -79,8 +83,10 @@ def main():
     with open(input_filename) as input_file:
         document_tree = parser.parse(input_file)
 
-    configuration = Article.Configuration(**kwargs)
-    document = Article(document_tree, configuration=configuration, backend=pdf)
+    template = DocumentTemplate.from_string(args.template)
+    configuration = template.Configuration(**kwargs)
+    document = template(document_tree, configuration=configuration,
+                        backend=pdf)
 
     while True:
         try:
