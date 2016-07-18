@@ -14,7 +14,7 @@ if __name__ == '__main__':
     configuration = Article.Configuration(stylesheet=sphinx_article,
                                           abstract_location='title',
                                           table_of_contents=False)
-    configuration.title_page(top_margin=2 * CM)
+    configuration('title_page', top_margin=2 * CM)
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
