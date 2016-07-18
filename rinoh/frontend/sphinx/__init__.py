@@ -28,7 +28,7 @@ from rinoh.paragraph import Paragraph
 from rinoh.reference import Reference, TITLE
 from rinoh.style import StyleSheetFile
 from rinoh.stylesheets import sphinx as sphinx_stylesheet
-from rinoh.templates import Book
+from rinoh.template import DocumentTemplate
 from rinoh.text import SingleStyledText
 
 from ...backend import pdf
@@ -228,10 +228,13 @@ class RinohBuilder(Builder):
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
-        document_template = self.config.rinoh_document_template
+        rinoh_document_template = self.config.rinoh_document_template
+        template = (DocumentTemplate.from_string(rinoh_document_template)
+                    if isinstance(rinoh_document_template, str)
+                    else rinoh_document_template)
         paper_size = self.config.rinoh_paper_size
-        config = document_template.Configuration(paper_size=paper_size)
-        rinoh_document = document_template(rinoh_tree, configuration=config,
+        config = template.Configuration(paper_size=paper_size)
+        rinoh_document = template(rinoh_tree, configuration=config,
                                            backend=pdf)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('indices', extra_indices, 0)
@@ -293,10 +296,6 @@ def default_domain_indices(config):
     return config.latex_domain_indices
 
 
-def default_document_template(config):
-    return Book
-
-
 def front_matter_section_title_flowables(section_id):
     yield Paragraph(Reference(section_id, TITLE),
                     style='front matter section title')
@@ -316,5 +315,4 @@ def setup(app):
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
-    app.add_config_value('rinoh_document_template', default_document_template,
-                         'html')
+    app.add_config_value('rinoh_document_template', 'book', 'html')
