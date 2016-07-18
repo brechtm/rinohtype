@@ -236,6 +236,12 @@ class FlowablesContainerBase(Container):
         self._self_cursor._value = 0  # initialized at container's top edge
         del self._cursor.addends[1:]
 
+    def mark_page_nonempty(self):
+        if self.type == CONTENT:
+            self.page._empty = False
+        elif self.type is None:
+            self.parent.mark_page_nonempty()
+
     @property
     def cursor(self):
         """Keeps track of where the next flowable is to be placed. As flowables
@@ -610,7 +616,8 @@ class Chain(FlowableTarget):
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             self.done = True
-        except PageBreakException:
+        except PageBreakException as exc:
+            self._state.flowable_state = exc.flowable_state
             self._fresh_page_state = copy(self._state)
             raise
         except EndOfContainer as e:

@@ -320,7 +320,7 @@ class DocumentPartTemplate(object):
 
 class ContentsPartTemplate(DocumentPartTemplate):
     def document_part(self, document_section, extra_flowables=None):
-        content_flowables = document_section.document.document_tree.children
+        content_flowables = [document_section.document.document_tree]
         flowables = self._insert_extra_flowables(content_flowables,
                                                  extra_flowables)
         return DocumentPart(document_section,

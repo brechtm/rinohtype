@@ -111,6 +111,9 @@ class Flowable(Styled):
     def initial_state(self, container):
         return FlowableState(self)
 
+    def mark_page_nonempty(self, container):
+        container.mark_page_nonempty()
+
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -119,8 +122,7 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        if container.type == CONTENT:
-            container.page._empty = False
+        self.mark_page_nonempty(container)
         top_to_baseline = 0
         state = state or self.initial_state(container)
         if state.initial:
@@ -330,6 +332,9 @@ class GroupedFlowables(Flowable):
             title = Paragraph(title_text, style='title')
             flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
+
+    def mark_page_nonempty(self, container):
+        pass
 
     def render(self, container, descender, state, first_line_only=False,
                **kwargs):

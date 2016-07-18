@@ -20,6 +20,7 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
+from rinoh.flowable import StaticGroupedFlowables
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.number import NUMBER
 from rinoh.paper import A4, LETTER
@@ -232,8 +233,8 @@ class RinohBuilder(Builder):
         config = document_template.Configuration(paper_size=paper_size)
         rinoh_document = document_template(rinoh_tree, configuration=config,
                                            backend=pdf)
-        for pos, index_section in enumerate(self.generate_indices(docnames)):
-            rinoh_document.insert('indices', index_section, pos)
+        extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
+        rinoh_document.insert('indices', extra_indices, 0)
         rinoh_logo = self.config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
