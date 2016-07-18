@@ -18,7 +18,6 @@ from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate
-from rinoh.templates import Article
 
 
 DEFAULT = ' (default: %(default)s)'
@@ -33,13 +32,14 @@ def main():
                         default='article',
                         help='the document template to use' + DEFAULT)
     parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
+                        metavar='NAME OR FILENAME',
                         help='the style sheet used to style the document '
                              'elements '
-                             + DEFAULT % dict(default='template default'))
+                             + DEFAULT % dict(default="the template's default"))
     parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
                        help='the paper size to render to ' + DEFAULT)
     parser.add_argument('--list-stylesheets', action='store_true',
-                        help='list the available style sheets')
+                        help='list the installed style sheets')
     args = parser.parse_args()
 
     if args.list_stylesheets:
