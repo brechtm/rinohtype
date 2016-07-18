@@ -33,9 +33,9 @@ def main():
                         default='article',
                         help='the document template to use' + DEFAULT)
     parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
-                        default='sphinx_article',
                         help='the style sheet used to style the document '
-                             'elements' + DEFAULT)
+                             'elements '
+                             + DEFAULT % dict(default='template default'))
     parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
                        help='the paper size to render to ' + DEFAULT)
     parser.add_argument('--list-stylesheets', action='store_true',
@@ -55,17 +55,19 @@ def main():
         return
 
     kwargs = {}
-    if os.path.exists(args.stylesheet):
-        stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
-    else:
-        try:
-            stylesheet = StyleSheet.from_string(args.stylesheet)
-        except ResourceNotInstalled as err:
-            raise SystemExit("Could not find the Style sheet '{}'. Aborting.\n"
-                             "Run `{} --list-stylesheets` to find out which style "
-                             "sheets are available."
-                             .format(err.resource_name, parser.prog))
-    kwargs['stylesheet'] = stylesheet
+    if args.stylesheet:
+        if os.path.exists(args.stylesheet):
+            stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
+        else:
+            try:
+                stylesheet = StyleSheet.from_string(args.stylesheet)
+            except ResourceNotInstalled as err:
+                raise SystemExit("Could not find the Style sheet '{}'. "
+                                 "Aborting.\n"
+                                 "Run `{} --list-stylesheets` to find out "
+                                 "which style sheets are available."
+                                 .format(err.resource_name, parser.prog))
+        kwargs['stylesheet'] = stylesheet
 
     try:
         kwargs['paper_size'] = getattr(paper, args.paper.upper())
