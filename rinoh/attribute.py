@@ -269,7 +269,7 @@ class VarBase(object):
     def __getattr__(self, name):
         return VarAttribute(self, name)
 
-    def get(self, style, attribute, document):
+    def get(self, style, attribute, rule_set):
         raise NotImplementedError
 
 
@@ -278,8 +278,8 @@ class Var(VarBase):
         super().__init__()
         self.name = name
 
-    def get(self, accepted_type, stylesheet):
-        return stylesheet.get_variable(self.name, accepted_type)
+    def get(self, accepted_type, rule_set):
+        return rule_set.get_variable(self.name, accepted_type)
 
 
 class VarAttribute(VarBase):
@@ -288,6 +288,6 @@ class VarAttribute(VarBase):
         self.parent = parent
         self.attribute_name = attribute_name
 
-    def get(self, accepted_type, document):
-        return getattr(self.parent.get(accepted_type, document),
+    def get(self, accepted_type, rule_set):
+        return getattr(self.parent.get(accepted_type, rule_set),
                        self.attribute_name)
