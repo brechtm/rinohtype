@@ -38,17 +38,27 @@ def main():
                              + DEFAULT % dict(default="the template's default"))
     parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
                        help='the paper size to render to ' + DEFAULT)
+    parser.add_argument('--list-templates', action='store_true',
+                        help='list the installed document templates and exit')
     parser.add_argument('--list-stylesheets', action='store_true',
-                        help='list the installed style sheets')
+                        help='list the installed style sheets and exit')
     parser.add_argument('--version', action='version',
                         version='%(prog)s {} ({})'.format(__version__,
                                                           __release_date__))
     args = parser.parse_args()
 
+    do_exit = False
+    if args.list_templates:
+        print('Installed document templates:')
+        for name in sorted(DocumentTemplate.installed_resources):
+            print('- {}'.format(name))
+        do_exit = True
     if args.list_stylesheets:
         print('Installed style sheets:')
-        for name in StyleSheet.installed_resources:
+        for name in sorted(StyleSheet.installed_resources):
             print('- {}'.format(name))
+        do_exit = True
+    if do_exit:
         return
 
     try:
