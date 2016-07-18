@@ -87,12 +87,12 @@ setup(
         'console_scripts': [
             'rinoh = rinoh.tool:main',
         ],
-        'rinoh_stylesheets': [
+        'rinoh.stylesheets': [
             'sphinx = rinoh.stylesheets:sphinx',
             'sphinx_article = rinoh.stylesheets:sphinx_article',
             'sphinx_base14 = rinoh.stylesheets:sphinx_base14',
         ],
-        'rinoh_typefaces': [
+        'rinoh.typefaces': [
             'courier = rinoh.fonts.adobe14:courier',
             'helvetica = rinoh.fonts.adobe14:helvetica',
             'symbol = rinoh.fonts.adobe14:symbol',

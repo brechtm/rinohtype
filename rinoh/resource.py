@@ -26,7 +26,7 @@ class Resource(AttributeType):
 
     @class_property
     def entry_point_group_name(cls):
-        return 'rinoh_{}s'.format(cls.resource_type)
+        return 'rinoh.{}s'.format(cls.resource_type)
 
     @classmethod
     def parse_string(cls, resource_name):
