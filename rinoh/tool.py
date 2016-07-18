@@ -15,7 +15,8 @@ from rinoh.backend import pdf
 from rinoh.font import Typeface
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.resource import ResourceNotInstalled
-from rinoh.style import StyleSheet
+from rinoh.style import StyleSheet, StyleSheetFile
+from rinoh.stylesheets import matcher
 from rinoh.templates import Article
 
 
@@ -50,13 +51,17 @@ def main():
         return
 
     kwargs = {}
-    try:
-        kwargs['stylesheet'] = StyleSheet.from_string(args.stylesheet)
-    except ResourceNotInstalled as err:
-        raise SystemExit("Could not find the Style sheet '{}'. Aborting.\n"
-                         "Run `{} --list-stylesheets` to find out which style "
-                         "sheets are available."
-                         .format(err.resource_name, parser.prog))
+    if os.path.exists(args.stylesheet):
+        stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
+    else:
+        try:
+            stylesheet = StyleSheet.from_string(args.stylesheet)
+        except ResourceNotInstalled as err:
+            raise SystemExit("Could not find the Style sheet '{}'. Aborting.\n"
+                             "Run `{} --list-stylesheets` to find out which style "
+                             "sheets are available."
+                             .format(err.resource_name, parser.prog))
+    kwargs['stylesheet'] = stylesheet
 
     try:
         kwargs['paper_size'] = getattr(paper, args.paper.upper())
