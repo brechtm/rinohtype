@@ -87,6 +87,10 @@ setup(
         'console_scripts': [
             'rinoh = rinoh.tool:main',
         ],
+        'rinoh.templates': [
+            'article = rinoh.templates:Article',
+            'book = rinoh.templates:Book',
+        ],
         'rinoh.stylesheets': [
             'sphinx = rinoh.stylesheets:sphinx',
             'sphinx_article = rinoh.stylesheets:sphinx_article',

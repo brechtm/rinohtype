@@ -20,6 +20,7 @@ from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
+from .resource import Resource
 from .text import StyledText, Tab
 from .strings import StringField
 from .structure import Header, Footer, SectionTitles
@@ -363,7 +364,9 @@ class DocumentTemplateSection(DocumentSection):
     parts = []
 
 
-class DocumentTemplate(Document):
+class DocumentTemplate(Document, Resource):
+    resource_type = 'template'
+
     Configuration = NotImplementedAttribute()
     parts = NotImplementedAttribute()
     options_class = DocumentOptions
