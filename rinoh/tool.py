@@ -9,7 +9,7 @@
 import argparse
 import os
 
-from rinoh import paper
+from rinoh import paper, __version__, __release_date__
 
 from rinoh.backend import pdf
 from rinoh.font import Typeface
@@ -40,6 +40,9 @@ def main():
                        help='the paper size to render to ' + DEFAULT)
     parser.add_argument('--list-stylesheets', action='store_true',
                         help='list the installed style sheets')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s {} ({})'.format(__version__,
+                                                          __release_date__))
     args = parser.parse_args()
 
     if args.list_stylesheets:
