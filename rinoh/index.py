@@ -33,7 +33,7 @@ class IndexSection(Section):
 
 
 class IndexStyle(GroupedFlowablesStyle):
-    initials = Attribute(Bool, True, 'Group index entries based on their'
+    initials = Attribute(Bool, True, 'Group index entries based on their '
                                      'first letter')
 
 
@@ -50,7 +50,7 @@ class Index(GroupedFlowables):
         def hande_level(index_entries, level=1):
             top_level = level == 1
             entries = sorted((name for name in index_entries if name),
-                             key=lambda s: str(s).lower())
+                             key=lambda s: (s.lower(), s))
             last_section = None
             for entry in entries:
                 first = entry[0]
