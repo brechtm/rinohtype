@@ -20,6 +20,7 @@ include README.rst
 include .bumpversion.cfg
 include .coveragerc
 include .travis.yml
+include appveyor.yml
 include tox.ini
 include coverage.py
 include Dockerfile
