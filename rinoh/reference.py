@@ -11,6 +11,7 @@ import re
 from .annotation import NamedDestinationLink, AnnotatedSpan
 from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
+from .layout import ReflowRequired
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
@@ -200,7 +201,10 @@ class NoteMarkerBase(ReferenceBase, Label):
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
-        container._footnote_space.add_footnote(note)
+        try:
+            container._footnote_space.add_footnote(note)
+        except ReflowRequired:
+            pass
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
