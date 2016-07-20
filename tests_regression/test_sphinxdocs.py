@@ -10,10 +10,6 @@ import os
 
 import pytest
 
-from sphinx.application import Sphinx
-
-from rinoh.frontend.sphinx import setup as setup_rinoh_sphinx_builder
-
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 
@@ -24,6 +20,9 @@ SPHINX_DOC_DIR = os.path.join(TEST_DIR, 'sphinx', 'doc')
 
 
 def test_sphinxdocs(tmpdir):
+    from sphinx.application import Sphinx
+    from rinoh.frontend.sphinx import setup as setup_rinoh_sphinx_builder
+
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,
                     confdir=SPHINX_DOC_DIR,
                     outdir=tmpdir.join('rinoh').strpath,
