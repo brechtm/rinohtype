@@ -233,9 +233,10 @@ class RinohBuilder(Builder):
                     if isinstance(rinoh_document_template, str)
                     else rinoh_document_template)
         paper_size = self.config.rinoh_paper_size
-        config = template.Configuration(paper_size=paper_size)
-        rinoh_document = template(rinoh_tree, configuration=config,
-                                           backend=pdf)
+        user_config = self.config.rinoh_template_configuration
+        config = template.Configuration(base=user_config,
+                                        paper_size=paper_size)
+        rinoh_document = template(rinoh_tree, configuration=config, backend=pdf)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('indices', extra_indices, 0)
         rinoh_logo = self.config.rinoh_logo
@@ -316,3 +317,4 @@ def setup(app):
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_document_template', 'book', 'html')
+    app.add_config_value('rinoh_template_configuration', None, 'html')
