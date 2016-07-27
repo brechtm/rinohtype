@@ -154,6 +154,7 @@ class Flowable(Styled):
         if reference_id:
              document.last_page_references[reference_id] = container.page.number
         container.advance(float(self.get_style('space_below', container)), True)
+        container.document.progress(self)
         return margin_left + width + margin_right, top_to_baseline, descender
 
     def flow_inner(self, container, descender, state=None, **kwargs):
@@ -394,6 +395,12 @@ class StaticGroupedFlowables(GroupedFlowables):
         self.children = []
         for flowable in flowables:
             self.append(flowable)
+
+    @property
+    def elements(self):
+        for child in self.children:
+            for element in child.elements:
+                yield element
 
     def append(self, flowable):
         flowable.parent = self

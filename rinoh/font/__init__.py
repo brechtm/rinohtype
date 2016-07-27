@@ -13,7 +13,7 @@ from .style import FontSlant, UPRIGHT, OBLIQUE, ITALIC
 from .style import FontWidth, NORMAL, CONDENSED, EXTENDED
 from ..resource import Resource
 from ..util import NotImplementedAttribute
-from ..warnings import RinohWarning
+from ..warnings import warn
 
 
 # TODO: provide predefined Font objects for known font filenames?
@@ -141,9 +141,7 @@ class Typeface(Resource, dict):
             available_weight != weight):
             warn('{} has no {} {} {} style available. Falling back to {} {} {}'
                  .format(self.name, width, weight, slant,
-                         available_width, available_weight, available_slant),
-                 RinohWarning)
-
+                         available_width, available_weight, available_slant))
         return font
 
     # TODO: return bolder font than given font

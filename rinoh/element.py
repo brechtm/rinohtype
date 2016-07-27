@@ -65,6 +65,10 @@ class DocumentElement(object):
         """Set `source` as the source element of this document element."""
         self._source = source
 
+    @property
+    def elements(self):
+        yield self
+
     def build_document(self, document):
         """Set document metadata and populate front and back matter"""
         pass

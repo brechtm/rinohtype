@@ -24,6 +24,8 @@ Classes representing a document:
 import datetime
 import os
 import pickle
+import sys
+import time
 
 from collections import OrderedDict
 from itertools import count
@@ -323,6 +325,8 @@ class Document(object):
         self._strings = strings or ()
         self.backend = backend
         self.backend_document = self.backend.Document(self.CREATOR)
+        self._flowables = list(id(element)
+                               for element in document_tree.elements)
 
         self.metadata = dict(title='Document Title',
                              date=datetime.date.today())
@@ -469,7 +473,29 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.floats = set()
         self.placed_footnotes = set()
         section_page_counts = []
+        self._start_time = time.time()
         for section in _sections:
             section_page_count = section.render(sum(section_page_counts))
             section_page_counts.append(section_page_count)
+        sys.stdout.write('\n')     # for the progress indicator
         return section_page_counts
+
+    PROGRESS_BAR_WIDTH = 40
+
+    def progress(self, flowable):
+        try:
+            index = self._flowables.index(id(flowable))
+        except ValueError:
+            pass
+        else:
+            percent = 100 * index / (len(self._flowables) - 1)
+            time_passed = time.time() - self._start_time
+            passed = int(time_passed)
+            eta = int(time_passed / percent * (100 - percent))
+            filled = int(self.PROGRESS_BAR_WIDTH * percent / 100)
+            sys.stdout.write('\r{:3d}% [{}{}] ETA {:02d}:{:02d} ({:02d}:{:02d})'
+                             .format(int(percent), filled * '=',
+                                     (self.PROGRESS_BAR_WIDTH - filled) * ' ',
+                                     eta // 60, eta % 60,
+                                     passed // 60, passed % 60))
+            sys.stdout.flush()
