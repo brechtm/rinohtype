@@ -22,7 +22,7 @@ install:
   - pip install tox-travis
 
 script:
-  - tox
+  - travis_wait 20 tox
 
 notifications:
   webhooks:
