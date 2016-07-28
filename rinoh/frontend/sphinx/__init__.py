@@ -21,13 +21,13 @@ from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 
 from rinoh.flowable import StaticGroupedFlowables
+from rinoh.highlight import pygments_style_to_stylesheet
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.number import NUMBER
 from rinoh.paper import A4, LETTER
 from rinoh.paragraph import Paragraph
 from rinoh.reference import Reference, TITLE
-from rinoh.style import StyleSheetFile
-from rinoh.stylesheets import sphinx as sphinx_stylesheet
+from rinoh.style import StyleSheet
 from rinoh.template import DocumentTemplate
 from rinoh.text import SingleStyledText
 
@@ -224,27 +224,44 @@ class RinohBuilder(Builder):
             self.info("done")
 
     def write_doc(self, docname, doctree, docnames, targetname):
-        suffix, = self.config.source_suffix
+        config = self.config
+        suffix, = config.source_suffix
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
-        rinoh_document_template = self.config.rinoh_document_template
+        rinoh_document_template = config.rinoh_document_template
         template = (DocumentTemplate.from_string(rinoh_document_template)
                     if isinstance(rinoh_document_template, str)
                     else rinoh_document_template)
-        paper_size = self.config.rinoh_paper_size
-        user_config = self.config.rinoh_template_configuration
-        config = template.Configuration(base=user_config,
-                                        paper_size=paper_size)
-        rinoh_document = template(rinoh_tree, configuration=config, backend=pdf)
+        if isinstance(self.config.rinoh_stylesheet, str):
+            stylesheet = StyleSheet.from_string(self.config.rinoh_stylesheet)
+        elif self.config.rinoh_stylesheet is None:
+            stylesheet = template.Configuration.stylesheet.default_value
+        else:
+            stylesheet = self.config.rinoh_stylesheet
+        if config.pygments_style is not None:
+            stylesheet = pygments_style_to_stylesheet(config.pygments_style,
+                                                      stylesheet)
+        paper_size = config.rinoh_paper_size
+        base_config = template.Configuration(paper_size=paper_size,
+                                             stylesheet=stylesheet)
+        if config.rinoh_template_configuration is not None:
+            template_configuration = config.rinoh_template_configuration
+            if template_configuration.base is None:
+                template_configuration.base = base_config
+        else:
+            template_configuration = base_config
+        rinoh_document = template(rinoh_tree,
+                                  configuration=template_configuration,
+                                  backend=pdf)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('indices', extra_indices, 0)
-        rinoh_logo = self.config.rinoh_logo
+        rinoh_logo = config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
         rinoh_document.metadata['title'] = doctree.settings.title
         rinoh_document.metadata['subtitle'] = ('Release {}'
-                                               .format(self.config.release))
+                                               .format(config.release))
         rinoh_document.metadata['author'] = doctree.settings.author
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
@@ -271,11 +288,6 @@ def default_documents(config):
     info_config_conversion('documents')
     return [latex_document_to_rinoh_document(entry)
             for entry in config.latex_documents]
-
-
-def default_stylesheet(config):
-    return StyleSheetFile(sphinx_stylesheet.filename, sphinx_stylesheet.matcher,
-                          pygments_style=config.pygments_style or 'sphinx')
 
 
 def default_paper_size(config):
@@ -312,7 +324,7 @@ def body_matter_chapter_title_flowables(section_id):
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
-    app.add_config_value('rinoh_stylesheet', default_stylesheet, 'html')
+    app.add_config_value('rinoh_stylesheet', None, 'html')
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
