@@ -488,7 +488,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         except ValueError:
             pass
         else:
-            percent = 100 * index / (len(self._flowables) - 1)
+            percent = 100 * (index + 1) / len(self._flowables)
             time_passed = time.time() - self._start_time
             passed = int(time_passed)
             eta = int(time_passed / percent * (100 - percent))
