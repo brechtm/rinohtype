@@ -321,6 +321,8 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(object):
+    skip_if_no_flowables = True
+
     def __init__(self, name, right_page_template, left_page_template=None,
                  page_number_format=NUMBER):
         self.name = name
@@ -328,24 +330,32 @@ class DocumentPartTemplate(object):
         self.left_page_template = left_page_template
         self.page_number_format = page_number_format
 
-    def _insert_extra_flowables(self, flowables, extra_flowables):
-        result = [flowable for flowable in flowables]
-        for flowable, position in (extra_flowables or []):
-            result.insert(position, flowable)
-        return result
+    def flowables(self, document):
+        """Returns a list of :class:`Flowable`\ s that make up the document
+        part"""
+        raise NotImplementedError
 
     def document_part(self, document_section, extra_flowables=None):
-        raise NotImplementedError
+        flowables = [flowable
+                     for flowable in self.flowables(document_section.document)]
+        for flowable, position in (extra_flowables or []):
+            flowables.insert(position, flowable)
+        if flowables or not self.skip_if_no_flowables:
+            return DocumentPart(document_section,
+                                self.page_template, self.left_page_template,
+                                flowables)
+
+
+class TitlePartTemplate(DocumentPartTemplate):
+    skip_if_no_flowables = False
+
+    def flowables(self, document):
+        return iter([])
 
 
 class ContentsPartTemplate(DocumentPartTemplate):
-    def document_part(self, document_section, extra_flowables=None):
-        content_flowables = [document_section.document.document_tree]
-        flowables = self._insert_extra_flowables(content_flowables,
-                                                 extra_flowables)
-        return DocumentPart(document_section,
-                            self.page_template, self.left_page_template,
-                            flowables)
+    def flowables(self, document):
+        yield document.document_tree
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
@@ -353,14 +363,10 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
                  left_page_template=None, page_number_format=NUMBER):
         super().__init__(name, right_page_template, left_page_template,
                          page_number_format=page_number_format)
-        self.flowables = flowables
+        self._flowables = flowables
 
-    def document_part(self, document_section, extra_flowables=None):
-        flowables = self._insert_extra_flowables(self.flowables,
-                                                 extra_flowables)
-        return DocumentPart(document_section,
-                            self.page_template, self.left_page_template,
-                            flowables)
+    def flowables(self, document):
+        return self._flowables
 
 
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):

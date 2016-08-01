@@ -18,7 +18,7 @@ from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx
 from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
-                        TemplateConfiguration)
+                        TemplateConfiguration, TitlePartTemplate)
 from ..text import Tab
 
 
@@ -109,7 +109,7 @@ class BookConfiguration(TemplateConfiguration):
 
 class Book(DocumentTemplate):
     Configuration = BookConfiguration
-    parts = [FixedDocumentPartTemplate('title', [], Configuration.title_page),
+    parts = [TitlePartTemplate('title', Configuration.title_page),
              FixedDocumentPartTemplate('front matter',
                                        [TableOfContentsSection()],
                                        Configuration.front_matter_right_page,

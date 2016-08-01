@@ -8,12 +8,11 @@
 
 from ..attribute import Attribute, OptionSet, Bool, OverrideDefault, Var
 from ..dimension import CM
-from ..document import DocumentPart
 from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx_article
 from ..template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
-                        ContentsPartTemplate, FixedDocumentPartTemplate,
-                        TemplateConfiguration, DocumentPartTemplate)
+                        ContentsPartTemplate, TemplateConfiguration,
+                        DocumentPartTemplate, TitlePartTemplate)
 
 
 __all__ = ['Article', 'TITLE', 'FRONT_MATTER']
@@ -30,20 +29,13 @@ class AbstractLocation(OptionSet):
 
 
 class ArticleFrontMatter(DocumentPartTemplate):
-    def document_part(self, document_section, extra_flowables=None):
-        document = document_section.document
+    def flowables(self, document):
         meta = document.metadata
         abstract_loc = document.configuration.get_option('abstract_location')
-        flowables = []
         if 'abstract' in meta and abstract_loc == FRONT_MATTER:
-            flowables.append(meta['abstract'])
+            yield meta['abstract']
         if document.configuration.get_option('table_of_contents'):
-            flowables.append(TableOfContentsSection())
-        flowables = self._insert_extra_flowables(flowables, extra_flowables)
-        if flowables:
-            return DocumentPart(document_section,
-                                self.page_template, self.left_page_template,
-                                flowables)
+            yield TableOfContentsSection()
 
 
 class ArticleConfiguration(TemplateConfiguration):
@@ -54,13 +46,13 @@ class ArticleConfiguration(TemplateConfiguration):
                                   'Where to place the abstract')
 
     title_page = TitlePageTemplate(page_size=Var('paper_size'),
-                                   top_margin=8 * CM)
+                                   top_margin=8*CM)
     page = PageTemplate(page_size=Var('paper_size'),
                         chapter_title_flowables=None)
 
 
 class Article(DocumentTemplate):
     Configuration = ArticleConfiguration
-    parts = [FixedDocumentPartTemplate('title', [], Configuration.title_page),
+    parts = [TitlePartTemplate('title', Configuration.title_page),
              ArticleFrontMatter('front matter', Configuration.page),
              ContentsPartTemplate('contents', Configuration.page)]
