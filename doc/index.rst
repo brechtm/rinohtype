@@ -60,6 +60,9 @@ Contents:
     intro
     install
     quickstart
+    rinoh
+    sphinx
+    templates
     advanced
     api/index
     changelog

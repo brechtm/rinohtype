@@ -19,13 +19,8 @@ used to render reStructuredText_ documents such as `demo.txt`_::
 After rendering finishes, you will find ``demo.pdf`` alongside the input file.
 
 ``rinoh`` allows specifying the document template and style sheet to use when
-rendering the reStructuredText document. See the program options below for
-details.
-
-.. autoprogram:: rinoh.tool:parser
-   :prog: rinoh
-
-.. todo:: separate page for ``rinoh``
+rendering the reStructuredText document. See its :ref:`command-line options
+<rinoh>` for details.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
@@ -41,8 +36,8 @@ To use rinohtype to render Sphinx documents, at a minimum you need to add
 project's ``conf.py``.
 
 If your Sphinx project is already configured for rendering with LaTeX,
-rinohtype will happily interpret the :confval:`sphinx:latex_documents` and
-other options for the LaTeX builder. Otherwise, you need to set the
+rinohtype will happily interpret :confval:`sphinx:latex_documents` and other
+options for the LaTeX builder. Otherwise, you need to set the
 :confval:`rinoh_documents` configuration option::
 
     rinoh_documents = [('index',            # top-level file (index.rst)
@@ -51,76 +46,12 @@ other options for the LaTeX builder. Otherwise, you need to set the
                         'John A. Uthor')]   # document author
 
 Other configuration variables are optional and allow configuring the style of
-the generated PDF document.
+the generated PDF document. See :ref:`sphinx_builder` for details.
 
-When building the documentation, select the `rinoh` builder::
+When building the documentation, select the `rinoh` builder by passing it to
+:program:`sphinx-build`'s :option:`sphinx:-b` option::
 
     sphinx-build -b rinoh . _build/rinoh
-
-
-Options for the Sphinx Builder
-------------------------------
-
-.. confval:: rinoh_documents
-
-    Determines how to group the document tree into PDF output files. Its format
-    is identical to that of :confval:`sphinx:latex_documents`, with the
-    exception that `targetname` should specify the name of the PDF file without
-    the extension. If it is not specified, the value of
-    :confval:`sphinx:latex_documents` is used instead (with the ``.tex``
-    extension stripped from the `targetname`).
-
-.. confval:: rinoh_document_template
-
-    The document template to use for rendering the Sphinx documentation. It can
-    be a :class:`DocumentTemplate` subclass or a string identifying an
-    installed template. For the latter, see the :option:`--list-templates`
-    option of :program:`rinoh`. Default: ``'book'``.
-
-.. confval:: rinoh_template_configuration
-
-    This variable allows configuring the document template specified in
-    :confval:`rinoh_document_template`. Its value needs to be an instance of
-    the :class:`TemplateConfiguration` subclass associated with the specified
-    document template class. Default: ``None``.
-
-.. confval:: rinoh_paper_size
-
-    If no paper size is configured in :confval:`rinoh_template_configuration`,
-    this determines the paper size used. This should be a :class:`Paper`
-    instance. A set of predefined paper sizes can be found in the
-    :mod:`rinoh.paper` module. If not specified, the value of the
-    ``'papersize'`` entry in :confval:`sphinx:latex_elements` is converted to
-    the equivalent :class:`Paper`. If this is not specified, the value
-    specified for :confval:`sphinx:latex_paper_size` is used.
-
-.. confval:: rinoh_stylesheet
-
-    If :confval:`rinoh_template_configuration` does not specify a style sheet,
-    this variable specifies the style sheet used to style the document
-    elements. It can be a :class:`StyleSheet` instance or a string identifying
-    an installed style sheet. Default: the default style sheet for the chosen
-    document template.
-
-    If :confval:`sphinx:pygments_style` is specified, it overrides the code
-    highlighting style for the specified or default style sheet.
-
-.. note:: Since the interactions between
-    :confval:`rinoh_template_configuration`, :confval:`rinoh_paper_size`,
-    :confval:`rinoh_stylesheet` and :confval:`sphinx:pygments_style` are fairly
-    complex, this behavior may be changed (simplified) in the future.
-
-.. confval:: rinoh_logo
-
-    Path (relative to the configuration directory) to an image file to use at
-    the top of the title page. If not specified, the
-    :confval:`sphinx:latex_logo` value is used.
-
-.. confval:: rinoh_domain_indices
-
-    Controls the generation of domain-specific indices. Identical to
-    :confval:`sphinx:latex_domain_indices`, which is also used when
-    :confval:`rinoh_domain_indices` is not specified.
 
 
 .. _library_quickstart:
@@ -211,8 +142,8 @@ Here is an example document tree of a short article:
 .. todo:: make ``source_path`` optional
 
 It is clear that this type of content is best parsed from a structured document
-file such as reStructuredText or XML. Manually building a document tree is well
-suited for short, custom documents however.
+format such as reStructuredText or XML. Manually building a document tree is
+well suited for short, custom documents however.
 
 
 Style Sheets
@@ -307,7 +238,7 @@ If the style definition for a particular document element is missing, the
 default values for its style properties are used.
 
 To use this style sheet, you need to specify the :class:`StyledMatcher` to use,
-since there is not base providing one. The following example used the standard
+since there is not base providing one. The following example uses the standard
 matcher:
 
 .. code-block:: python
@@ -324,8 +255,8 @@ matcher:
 
 
 
-Documument Templates
-~~~~~~~~~~~~~~~~~~~~
+Document Templates
+~~~~~~~~~~~~~~~~~~
 
 As with style sheets, you can choose to make use of the templates provided by
 rinohtype and optionally customize it or you can create a custom template from
@@ -335,10 +266,10 @@ scratch.
 Using an Existing Template
 --------------------------
 
-Rinohtype includes two document templates; :class:`Article` and :class:`Book`.
-These templates can be customized by passing an instance of respectively
-:class:`Article.Configuration` or :class:`Book.Configuration` as
-`configuration` on template instantiation.
+Rinohtype provides a number of standard :ref:`document templates`. These can be
+customized by passing an instance of the associated
+:class:`rinoh.template.TemplateConfiguration` as `configuration` on template
+instantiation.
 
 The example from :ref:`library_quickstart` above can be customized by setting
 template options.
@@ -379,44 +310,9 @@ default values. For example, the paper size is changed to A5 from the default
 A4. See below for a list of the settings that can be changed and their
 description.
 
-The top margin of the title page is also changed. ``'title_page'`` corresponds
-to the :attr:`rinoh.templates.article.ArticleConfiguration.title_page` page
-template.
-
-.. todo:: separate pages for the Article and Book templates
-
-The configuration classes specific to :class:`Article` and :class:`Book`
-templates are:
-
-.. autoclass:: rinoh.templates.article.ArticleConfiguration
-    :show-inheritance:
-    :members:
-
-.. autoclass:: rinoh.templates.book.BookConfiguration
-    :show-inheritance:
-    :members:
-
-Both derive from :class:`TemplateConfiguration` and thus additionally accept
-the options offered by it:
-
-.. autoclass:: rinoh.template.TemplateConfiguration
-    :members:
-
-The document templates make use of page templates:
-
-.. autoclass:: rinoh.template.PageTemplate
-    :show-inheritance:
-    :members:
-
-.. autoclass:: rinoh.template.TitlePageTemplate
-    :show-inheritance:
-    :members:
-
-The base class for these collects the common options:
-
-.. autoclass:: rinoh.template.PageTemplateBase
-    :show-inheritance:
-    :members:
+The top margin of the title page is also changed by setting the corresponding
+option for the :attr:`rinoh.templates.article.ArticleConfiguration.title_page`
+page template.
 
 
 Creating a Custom Template
@@ -427,8 +323,9 @@ The :attr:`parts` attribute determines the global structure of the document. It
 is a list of :class:`DocumentPartTemplate`\ s, each referencing a page
 template.
 
-The :class:`Article` template, for example, consists of a title page, a front
-matter part (a custom :class:`DocumentPartTemplate` subclass) and the article
+The :class:`rinoh.templates.article.Article` template, for example, consists of
+a title page, a front matter part (a custom
+:class:`rinoh.template.DocumentPartTemplate` subclass) and the article
 contents:
 
 .. literalinclude:: /../rinoh/templates/article.py
