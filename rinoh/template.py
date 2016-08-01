@@ -37,6 +37,8 @@ __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
 class Option(Attribute):
     """Descriptor used to describe a document option"""
 
+    __doc__ = Attribute.__doc__
+
 
 class DefaultOptionException(Exception):
     pass
@@ -55,7 +57,7 @@ class Template(AttributesDictionary, NamedDescriptor):
         except KeyError:
             bases = []
             if isinstance(self.base, str):
-                iter = template_configuration.find_templates(self.base)
+                iter = template_configuration._find_templates(self.base)
                 bases.extend(iter)
             elif self.base is not None:
                 bases.append(self.base)
@@ -70,7 +72,7 @@ class TemplateConfiguration(RuleSet, AttributesDictionary):
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
 
-    def find_templates(self, name):
+    def _find_templates(self, name):
         """Yields all :class:`Template`\ s in the template hierarchy:
 
         - template matching `name` in this TemplateConfiguration
@@ -94,7 +96,7 @@ class TemplateConfiguration(RuleSet, AttributesDictionary):
             return getattr(type(self), option_name).default_value
 
     def get_template_option(self, template_name, option_name):
-        for template in self.find_templates(template_name):
+        for template in self._find_templates(template_name):
             try:
                 return template.get_value(option_name, self)
             except KeyError:
@@ -126,6 +128,20 @@ class PageTemplateBase(Template):
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
 
+    # required for __doc__ to be used by Sphinx
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return self    # TODO: allow for page_template.page_size
+
+    @property
+    def __doc__(self):
+        return (':page template: :class:`{}.{}`\n'
+                .format(type(self).__module__, type(self).__name__)
+                + (':base: {}\n'.format(self.base) if self.base else '')
+                + ':defaults: ' + ''.join('    - {}={}\n'.format(key, value)
+                                          for key, value in self.items()))
+
     def page(self, template_name, document_part, chain, after_break, **kwargs):
         raise NotImplementedError
 
@@ -134,7 +150,6 @@ def chapter_title_flowables(section_id):
     yield Paragraph(StringField(SectionTitles, 'chapter'))
     yield Paragraph(Reference(section_id, NUMBER))
     yield Paragraph(Reference(section_id, TITLE))
-
 
 
 class PageTemplate(PageTemplateBase):
@@ -157,6 +172,8 @@ class PageTemplate(PageTemplateBase):
                                      'represent the chapter title')
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
                                   'container holding the chapter title')
+
+    __doc__ = PageTemplateBase.__doc__
 
     def page(self, document_part, template_name, chain, after_break, **kwargs):
         return SimplePage(document_part, template_name, chain, self,
@@ -258,6 +275,8 @@ class TitlePageTemplate(PageTemplateBase):
     show_author = Option(Bool, True, "Show or hide the document's author")
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
+
+    __doc__ = PageTemplateBase.__doc__
 
     def page(self, document_part, template_name, chain, after_break, **kwargs):
         return TitlePage(document_part, template_name, self, after_break)
@@ -371,12 +390,12 @@ class DocumentTemplate(Document, Resource):
     parts = NotImplementedAttribute()
     options_class = DocumentOptions
 
-    def __init__(self, flowables, strings=None, configuration=None,
+    def __init__(self, document_tree, strings=None, configuration=None,
                  options=None, backend=None):
         self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
         stylesheet = self.configuration.get_option('stylesheet')
-        super().__init__(flowables, stylesheet, strings=strings, backend=backend)
+        super().__init__(document_tree, stylesheet, strings=strings, backend=backend)
         self._to_insert = {}
 
     def insert(self, document_part_name, flowable, position):

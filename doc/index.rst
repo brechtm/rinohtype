@@ -3,27 +3,28 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-RinohType: The Python Document Processor
+rinohtype: The Python Document Processor
 ========================================
+
+.. todolist::
 
 Release v\ |version|. (:ref:`Release History <changelog>`)
 
-RinohType is the heavy-duty PDF library for Python. It helps automating the
+RinohType is a high-level PDF library for Python. It helps automating the
 creation of any type of document, ranging from invoices to long, complex
 technical documents.
 
-Additionally, RinohType offers a modern alternative to LaTeX_ when paired with
-Sphinx_. Sphinx helps writing large documents and supports a multitude of
-different output formats including searchable HTML. RinohType provides a Sphinx
-backend that allows generating beautiful PDF documents.
+Paired with Sphinx_, rinohtype offers a modern alternative to LaTeX_ . Sphinx
+helps writing large structured documents and supports a multitude of different
+output formats including searchable HTML. Rinohtype provides a Sphinx backend
+that allows generating beautiful PDF documents.
 
 .. _Sphinx: http://sphinx-doc.org
 .. _LaTeX: http://en.wikipedia.org/wiki/LaTeX
 
 
-Here is a list of RinohType's most important features:
+Here is a list of rinohtype's main features:
 
-* built on Unicode; ready for non-latin languages
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
 * figures, large tables and automatically generated table of contents
@@ -36,6 +37,7 @@ Here is a list of RinohType's most important features:
   typographic features such as kerning, ligatures and small capitals
 * embeds PDF, PNG and JPEG images, preserving transparency and color profiles
 * easy to deploy; pure-Python with few dependencies
+* built on Unicode; ready for non-latin languages
 
 
 RinohType is currently in a beta phase. We are working toward a first stable

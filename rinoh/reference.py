@@ -272,7 +272,9 @@ class Variable(MixedStyledTextBase):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
     def text(self, container, **kwargs):
-        if self.type == PAGE_NUMBER:
+        if container is None:
+            text = '${}'.format(self.type)
+        elif self.type == PAGE_NUMBER:
             text = container.page.formatted_number
         elif self.type == NUMBER_OF_PAGES:
             document_section = container.document_part.document_section

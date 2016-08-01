@@ -44,20 +44,21 @@ class ArticleFrontMatter(DocumentPartTemplate):
                                 flowables)
 
 
+class ArticleConfiguration(TemplateConfiguration):
+    stylesheet = OverrideDefault(sphinx_article)
+    table_of_contents = Attribute(Bool, True,
+                                  'Show or hide the table of contents')
+    abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
+                                  'Where to place the abstract')
+
+    title_page = TitlePageTemplate(page_size=Var('paper_size'),
+                                   top_margin=8 * CM)
+    page = PageTemplate(page_size=Var('paper_size'),
+                        chapter_title_flowables=None)
+
+
 class Article(DocumentTemplate):
-
-    class Configuration(TemplateConfiguration):
-        stylesheet = OverrideDefault(sphinx_article)
-        table_of_contents = Attribute(Bool, True,
-                                      'Show or hide the table of contents')
-        abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
-                                      'Where to place the abstract')
-
-        title_page = TitlePageTemplate(page_size=Var('paper_size'),
-                                       top_margin=8*CM)
-        page = PageTemplate(page_size=Var('paper_size'),
-                            chapter_title_flowables=None)
-
+    Configuration = ArticleConfiguration
     parts = [FixedDocumentPartTemplate('title', [], Configuration.title_page),
              ArticleFrontMatter('front matter', Configuration.page),
              ContentsPartTemplate('contents', Configuration.page)]

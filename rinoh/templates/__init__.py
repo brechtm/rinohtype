@@ -11,3 +11,7 @@ from .book import Book
 
 
 __all__ = ['Article', 'Book']
+
+
+ArticleConfiguration = Article.Configuration
+BookConfiguration = Book.Configuration

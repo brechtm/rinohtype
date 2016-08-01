@@ -33,8 +33,11 @@ from rinoh import __version__
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.todo',
     'sphinx.ext.coverage',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinxcontrib.autoprogram',
     'rinoh.frontend.sphinx'
 ]
 
@@ -101,12 +104,16 @@ pygments_style = 'sphinx'
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
 
+autodoc_member_order = 'bysource'
+
+intersphinx_mapping = {'sphinx': ('http://www.sphinx-doc.org/en/1.4.5', None)}
+
 
 # -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -338,4 +345,13 @@ epub_exclude_files = ['search.html']
 # -- Options for rinohtype PDF output -------------------------------------
 
 rinoh_documents = [('index', 'rinohtype', 'RinohType',
-                    'Brecht Machiels')]
+                    'Brecht Machiels', False)]
+
+
+# -- Extension interface -------------------------------------------------------
+
+def setup(app):
+    app.add_object_type('confval', 'confval',
+                        objname='Sphinx builder configuration value',
+                        indextemplate='pair: %s; '
+                                      'Sphinx builder configuration value')

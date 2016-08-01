@@ -30,12 +30,6 @@ space_above=5pt
 space_below=0
 text_align=justify
 
-[italic]
-font_slant=italic
-
-[bold]
-font_weight=BOLD
-
 [emphasis]
 font_slant=italic
 
@@ -48,6 +42,12 @@ typeface=$(mono_typeface)
 
 [quote]
 font_slant=italic
+
+[italic]
+font_slant=italic
+
+[bold]
+font_weight=BOLD
 
 [file path]
 typeface=$(mono_typeface)

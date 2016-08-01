@@ -15,8 +15,8 @@ Flowables and Inline Elements
 .. module:: rinoh.flowable
 
 A :class:`Flowable` is a document element that is placed on a page. It is
-usually a part of a document tree. Flowables at one level in a document tree are
-rendered one below the other.
+usually a part of a document tree. Flowables at one level in a document tree
+are rendered one below the other.
 
 Here is schematic representation of an example document tree::
 
@@ -51,9 +51,9 @@ always of the :class:`ListItem` type. Each list item contains an item number
 lists, the item body is typically a single :class:`Paragraph`. The second list
 item contains a nested :class:`List`.
 
-A :class:`Paragraph` does not have any :class:`Flowable` children. It is however
-the root node of a tree of inline elements. This is an example paragraph in
-which several text styles are combined::
+A :class:`Paragraph` does not have any :class:`Flowable` children. It is
+however the root node of a tree of inline elements. This is an example
+paragraph in which several text styles are combined::
 
     Paragraph
      |- SingleStyledText('Text with ')
@@ -72,24 +72,26 @@ Besides :class:`SingleStyledText` and :class:`MixedStyledText` elements
 :class:`InlineFlowable`\ s. Currently, the only inline flowable is
 :class:`InlineImage`.
 
-The common superclass for flowable and inline elements is :class:`Styled`, which
-indicates that these elements can be styled using the style sheets discussed in
-the next section.
+The common superclass for flowable and inline elements is :class:`Styled`,
+which indicates that these elements can be styled using the style sheets
+discussed in the next section.
 
+
+.. _stylesheets_advanced:
 
 Style Sheets
 ~~~~~~~~~~~~
 
 RinohType's style sheets are heavily inspired by CSS_, but add some
 functionality that CSS lacks. Similar to CSS, RinohType makes use of so-called
-*selectors* to select document elements (flowables or inline elements) to style.
+selectors* to select document elements (flowables or inline elements) to style.
 
-Unlike CSS however, these selectors are not directly specified in a style sheet.
-Instead, all selectors are collected in a *matcher* where they are mapped to
-descriptive labels for the selected elements. The actual *style sheets* assign
-style properties to these labels. Besides the usefulness of having these labels
-instead of the more cryptic selectors, a matcher can be reused by multiple style
-sheets, avoiding duplication.
+Unlike CSS however, these selectors are not directly specified in a style
+sheet. Instead, all selectors are collected in a *matcher* where they are
+mapped to descriptive labels for the selected elements. The actual *style
+sheets* assign style properties to these labels. Besides the usefulness of
+having these labels instead of the more cryptic selectors, a matcher can be
+reused by multiple style sheets, avoiding duplication.
 
 .. _CSS: https://en.wikipedia.org/wiki/Cascading_Style_Sheets
 
@@ -139,8 +141,8 @@ indexing. Indexing a list ``lst[slice(0, None, 2)]`` is equivalent to
 ``lst[0::2]``.
 
 RinohType borrows CSS's concept of `specificity`_ to determine the "winning"
-selector when multiple selectors match a given document element. Roughly stated,
-the more specific selector will win. For example::
+selector when multiple selectors match a given document element. Roughly
+stated, the more specific selector will win. For example::
 
     ListItem / Paragraph                      # specificity (0, 0, 2)
 
@@ -150,9 +152,9 @@ wins over::
 
 since it matches two elements instead of just one.
 
-Specificity is represented as a 3-tuple. The three elements represent the number
-of style, attributes and class matches. Here are some selectors along with their
-specificity::
+Specificity is represented as a 3-tuple. The three elements represent the
+number of style, attributes and class matches. Here are some selectors along
+with their specificity::
 
     StyledText.like('emphasis')               # specificity (1, 0, 1)
     TableCell / ... / Paragraph               # specificity (0, 0, 2)
@@ -203,8 +205,8 @@ to assign style properties to::
 Each :class:`Styled` has a :class:`Style` class associated with it. For
 :class:`Paragraph`, this is :class:`ParagraphStyle`. These style classes
 determine which style attributes are accepted for the styled element. The style
-class is automatically determined from the selector, so it is possible to simply
-pass the style properties to the style sheet.
+class is automatically determined from the selector, so it is possible to
+simply pass the style properties to the style sheet.
 
 
 Variables
@@ -241,12 +243,13 @@ The style system makes a distinction between text (inline) elements and
 flowables with respect to how property values are resolved.
 
 **Text elements** by default inherit the properties from their parent. Take for
-example the ``emphasis`` style definition from the example above. The value for
-style properties other than ``font_slant`` (which is defined in the ``emphasis``
-style itself) will be looked up in the style definition corresponding to the
-parent element. That can be another :class:`StyledText` instance, or a
-:class:`Paragraph`. If that style definition neither defines the style property,
-the lookup proceeds recursively, moving up in the document tree.
+example the ``emphasis`` style definition from the example above. The value
+for style properties other than ``font_slant`` (which is defined in the
+``emphasis`` style itself) will be looked up in the style definition
+corresponding to the parent element. That can be another :class:`StyledText`
+instance, or a :class:`Paragraph`. If that style definition neither defines
+the style property, the lookup proceeds recursively, moving up in the document
+tree.
 
 For **flowables**, there is no fall-back to the parent's style by default.
 A base style can be explicitly specified however. If a style property is not
@@ -301,11 +304,11 @@ The new stylesheet can override styles defined in the base style sheet. The
 following redefines the ``emphasis`` style to display emphasized text in a bold
 font::
 
-     my_style_sheet('emphasis', font_weight=BOLD) 
+    my_style_sheet('emphasis', font_weight=BOLD)
 
-Variables can also be overridden. This overrides the ``fonts`` variable in order
-to replace the serif font defined in the Sphinx style sheet (Palatino) with
-Times::
+Variables can also be overridden. This overrides the ``fonts`` variable in
+order to replace the serif font defined in the Sphinx style sheet (Palatino)
+with Times::
 
     from rinohlib.fonts.texgyre.termes import typeface as times
     from rinohlib.fonts.texgyre.cursor import typeface as courier
@@ -318,10 +321,10 @@ Times::
 The variable's new value also affects styles defined in the base style sheet.
 
 The new style sheet can optionally be passed a :class:`StyledMatcher` to define
-new styles. This is useful when you want to have custom markup in your document,
-such as custom roles or directives are used in a reStructuredText document. For
-example, the following defines a custom style to apply to text that is tagged
-with the ``acronym`` role::
+new styles. This is useful when you want to have custom markup in your
+document, such as custom roles or directives are used in a reStructuredText
+document. For example, the following defines a custom style to apply to text
+that is tagged with the ``acronym`` role::
 
     my_matcher = StyledMatcher()
     my_matcher['acronym'] = StyledText.like(classes=['acronym'])

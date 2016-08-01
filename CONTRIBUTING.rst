@@ -3,9 +3,9 @@ Contributing
 
 Thank you for considering contributing to rinohtype!
 
-Please send your contributions by creating a pull request on GitHub. You will be
-asked to agree to the `contributor license agreement`_. Note that agreeing to
-the CLA does **not** transfer the copyright of your contribution. The
+Please send your contributions by creating a pull request on GitHub. You will
+be asked to agree to the `contributor license agreement`_. Note that agreeing
+to the CLA does **not** transfer the copyright of your contribution. The
 `GitHub CLA`_ page nicely summarizes the purpose of a CLA.
 
 .. _contributor license agreement:
@@ -18,8 +18,8 @@ Coding guidelines
 -----------------
 
 Please follow the coding style used in the existing codebase, which generally
-follows the `PEP 8`_ style guide. Here are the most important rules the codebase
-conforms to:
+follows the `PEP 8`_ style guide. Here are the most important rules the
+codebase conforms to:
 
 * lines are wrapped at 80 columns
 
@@ -27,7 +27,7 @@ conforms to:
 
 * descriptive variable/function/class names (not shortened)
 
-* imports are grouped into groups: standard library, external packages and
+* imports are grouped into sections: standard library, external packages and
   rinohtype modules
 
 * minimize use of external dependencies

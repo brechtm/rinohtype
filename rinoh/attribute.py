@@ -111,8 +111,14 @@ class OverrideDefault(Attribute):
     def description(self):
         return self.overrides.description
 
+    __doc__ = Attribute.__doc__
+
 
 class WithAttributes(WithNamedDescriptors):
+    @classmethod
+    def __prepare__(metacls, name, bases):
+        return OrderedDict()  # keeps the order of member variables (PEP3115)
+
     def __new__(cls, classname, bases, cls_dict):
         attributes = cls_dict['_attributes'] = {}
         for name, attr in cls_dict.items():
@@ -277,6 +283,9 @@ class Var(VarBase):
     def __init__(self, name):
         super().__init__()
         self.name = name
+
+    def __repr__(self):
+        return "{}('{}')".format(type(self).__name__, self.name)
 
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
