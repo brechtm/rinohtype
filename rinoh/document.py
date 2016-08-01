@@ -346,8 +346,7 @@ class Document(object):
 This program comes with ABSOLUTELY NO WARRANTY. Its use is subject
 to the terms of the GNU Affero General Public License version 3.''')
 
-    @property
-    def unique_id(self):
+    def _get_unique_id(self):
         """Yields a different integer value on each access, used to uniquely
         identify :class:`Flowable`s for which no identifier was
         specified."""
@@ -355,7 +354,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         return self._unique_id
 
     def register_element(self, element):
-        primary_id = element.get_id(self, create=False) or self.unique_id
+        primary_id = (element.get_id(self, create=False)
+                      or self._get_unique_id())
         self.ids_by_element[element] = primary_id
         self.elements[primary_id] = element
         return primary_id
@@ -425,14 +425,14 @@ to the terms of the GNU Affero General Public License version 3.''')
             self.page_references = prev_page_references.copy()
             for section in _sections:
                 section.prepare()
-            section_num_pages = self.render_pages(_sections)
+            section_num_pages = self._render_pages(_sections)
             while not has_converged(section_num_pages):
                 prev_number_of_pages = section_num_pages
                 prev_page_references = self.page_references.copy()
                 print('Not yet converged, rendering again...')
                 del self.backend_document
                 self.backend_document = self.backend.Document(self.CREATOR)
-                section_num_pages = self.render_pages(_sections)
+                section_num_pages = self._render_pages(_sections)
             self.create_outlines()
             if filename:
                 self._save_cache(filename_root, section_num_pages,
@@ -466,7 +466,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             current_level = section.level
         self.backend_document.create_outlines(sections)
 
-    def render_pages(self, _sections):
+    def _render_pages(self, _sections):
         """Render the complete document once and return the number of pages
         rendered."""
         self.style_log = StyleLog(self.stylesheet)
