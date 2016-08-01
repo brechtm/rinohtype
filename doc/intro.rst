@@ -49,7 +49,7 @@ scratch. The same goes for the style sheet used to style the document elements.
 reStructuredText Renderer
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Rinohtype comes with a command-line tool ``rinoh`` that can render
+Rinohtype includes the :program:`rinoh` command-line tool that can render
 reStructuredText documents. Rendering the reStructuredText demonstration
 article `demo.txt`_ (using the standard article template and style sheet)
 generates :download:`demo.pdf`.
@@ -79,8 +79,8 @@ High-level PDF library
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Rinohtype can be used as a Python library to generate PDF documents. Just like
-with ``rinoh`` and the Sphinx builder, you can select which document template
-and style sheet to use.
+with :program:`rinoh` and the Sphinx builder, you can select which document
+template and style sheet to use.
 
 Additionally, you need to supply a document tree. This document tree can be
 parsed from a structured document format such as reStructuredText by using one

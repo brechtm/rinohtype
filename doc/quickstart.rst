@@ -11,16 +11,16 @@ sheets and document templates are explained.
 reStructuredText Renderer
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Installing rinohtype places the ``rinoh`` script in the ``PATH``. This can be
-used to render reStructuredText_ documents such as `demo.txt`_::
+Installing rinohtype places the :program:`rinoh` script in the :envvar:`PATH`.
+This can be used to render reStructuredText_ documents such as `demo.txt`_::
 
     rinoh demo.txt
 
 After rendering finishes, you will find ``demo.pdf`` alongside the input file.
 
-``rinoh`` allows specifying the document template and style sheet to use when
-rendering the reStructuredText document. See its :ref:`command-line options
-<rinoh>` for details.
+:program:`rinoh` allows specifying the document template and style sheet to use
+when rendering the reStructuredText document. See its :ref:`command-line
+options <rinoh>` for details.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
@@ -59,9 +59,9 @@ When building the documentation, select the `rinoh` builder by passing it to
 High-level PDF Library
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. note:: The focus of rinohtype development is currently on the ``rinoh`` tool
-    and Sphinx builder at this moment. Use as a Python library is possible, but
-    documentation may be lacking. Please be patient.
+.. note:: The focus of rinohtype development is currently on the
+    :program:`rinoh` tool and Sphinx builder at this moment. Use as a Python
+    library is possible, but documentation may be lacking. Please be patient.
 
 The most basic way to use rinohtype in an application is to hook up an included
 frontend, a document template and a style sheet:
