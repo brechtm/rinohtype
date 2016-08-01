@@ -49,7 +49,19 @@ class AcceptNoneAttributeType(AttributeType):
         return super(__class__, cls).from_string(string)
 
 
-class OptionSet(AttributeType):
+class OptionSetMeta(type):
+    def __new__(cls, classname, bases, cls_dict):
+        cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
+                               if '__doc__' in cls_dict else '')
+        cls_dict['__doc__'] += ('Accepts these options:\n\n'
+                               + '\n'.join("- '{}'".format(val)
+                                           for val in cls_dict['values']))
+        return super().__new__(cls, classname, bases, cls_dict)
+
+
+class OptionSet(AttributeType, metaclass=OptionSetMeta):
+    """Accepts the values listed in :attr:`values`"""
+
     values = ()
 
     @classmethod

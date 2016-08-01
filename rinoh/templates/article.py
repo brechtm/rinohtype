@@ -24,6 +24,8 @@ FRONT_MATTER = 'front_matter'
 
 
 class AbstractLocation(OptionSet):
+    """Where to place the article's abstract"""
+
     values = TITLE, FRONT_MATTER
 
 
