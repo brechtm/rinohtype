@@ -1,6 +1,6 @@
-.. _document_templates:
-
 .. module:: rinoh.template
+
+.. _document_templates:
 
 Standard Document Templates
 ===========================

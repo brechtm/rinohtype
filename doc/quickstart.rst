@@ -266,7 +266,7 @@ scratch.
 Using an Existing Template
 --------------------------
 
-Rinohtype provides a number of standard :ref:`document templates`. These can be
+Rinohtype provides a number of :ref:`document_templates`. These can be
 customized by passing an instance of the associated
 :class:`rinoh.template.TemplateConfiguration` as `configuration` on template
 instantiation.
