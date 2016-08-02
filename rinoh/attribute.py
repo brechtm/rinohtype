@@ -122,7 +122,7 @@ class WithAttributes(WithNamedDescriptors):
     def __prepare__(metacls, name, bases):
         return OrderedDict()  # keeps the order of member variables (PEP3115)
 
-    def __new__(cls, classname, bases, cls_dict):
+    def __new__(mcls, classname, bases, cls_dict):
         attributes = cls_dict['_attributes'] = OrderedDict()
         doc = 'Args:\n'
         for name, attr in cls_dict.items():
@@ -169,7 +169,7 @@ class WithAttributes(WithNamedDescriptors):
             doc += ('\n                       ').join(mro_clss)
         cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
                                if '__doc__' in cls_dict else '\n') + doc
-        return super().__new__(cls, classname, bases, cls_dict)
+        return super().__new__(mcls, classname, bases, cls_dict)
 
 
 class AttributesDictionary(OrderedDict, metaclass=WithAttributes):

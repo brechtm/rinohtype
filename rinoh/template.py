@@ -4,7 +4,7 @@
 #
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
-
+from collections import OrderedDict
 
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes)
@@ -79,6 +79,7 @@ class TemplateConfigurationMeta(WithAttributes):
                     template_doc += ('    - **{}** = ``{}``\n'
                                      .format(name, value))
                 page_templates.append(template_doc)
+                attr.template_configuration = cls
         if page_templates:
             cls.__doc__ += '\n\nAttributes:\n\n'
             cls.__doc__ += '\n'.join(page_templates)
@@ -331,6 +332,30 @@ class DocumentPartTemplate(object):
         self.left_page_template = left_page_template
         self.page_number_format = page_number_format
 
+    @property
+    def doc_kwargs(self):
+        def link(page_template):
+            conf = page_template.template_configuration
+            return ':attr:`{}.{}`'.format(conf.__name__, page_template.name)
+
+        kwargs = OrderedDict()
+        if self.left_page_template:
+            kwargs['right_page_template'] = link(self.page_template)
+            kwargs['left_page_template'] = link(self.left_page_template)
+        else:
+            kwargs['page_template'] = link(self.page_template)
+        kwargs['page_number_format'] = '``{}``'.format(self.page_number_format
+                                                       .upper())
+        return kwargs
+
+    @property
+    def doc_repr(self):
+        doc = ('**{}** (:class:`{}.{}`)\n\n'\
+               .format(self.name, type(self).__module__, type(self).__name__))
+        for key, value in self.doc_kwargs.items():
+            doc += '  - *{}*: {}\n'.format(key, value)
+        return doc
+
     def flowables(self, document):
         """Returns a list of :class:`Flowable`\ s that make up the document
         part"""
@@ -366,6 +391,13 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
                          page_number_format=page_number_format)
         self._flowables = flowables
 
+    @property
+    def doc_kwargs(self):
+        kwargs = OrderedDict()
+        kwargs['flowables'] = '``{}``'.format(self._flowables)
+        kwargs.update(super().doc_kwargs)
+        return kwargs
+
     def flowables(self, document):
         return self._flowables
 
@@ -390,7 +422,21 @@ class DocumentTemplateSection(DocumentSection):
     parts = []
 
 
-class DocumentTemplate(Document, Resource):
+class DocumentTemplateMeta(type):
+    def __new__(cls, classname, bases, cls_dict):
+        if 'parts' in cls_dict and not isinstance(cls_dict['parts'],
+                                                  NotImplementedAttribute):
+            doc = (cls_dict['__doc__'] + '\n\n'
+                   if '__doc__' in cls_dict else '')
+            doc += ('This template builds a document consisting of the '
+                    'following parts:\n\n')
+            for part in cls_dict['parts']:
+                doc += '- {}\n'.format(part.doc_repr)
+            cls_dict['__doc__'] = doc
+        return super().__new__(cls, classname, bases, cls_dict)
+
+
+class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
     resource_type = 'template'
 
     Configuration = NotImplementedAttribute()
