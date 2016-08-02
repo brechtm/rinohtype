@@ -36,6 +36,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinxcontrib.autoprogram',
     'rinoh.frontend.sphinx'

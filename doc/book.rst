@@ -8,10 +8,8 @@ Book
 The book template ...
 
 .. autoclass:: Book
-    :show-inheritance:
     :members:
 
 
 .. autoclass:: BookConfiguration
-    :show-inheritance:
     :members:

@@ -49,6 +49,8 @@ class ReferenceBase(SingleStyledTextBase):
         raise NotImplementedError
 
     def text(self, container):
+        if container is None:
+            return '$REF({})'.format(self.type)
         target_id = self.target_id(container.document)
         try:
             if self.type == REFERENCE:

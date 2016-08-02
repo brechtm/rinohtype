@@ -7,7 +7,7 @@
 
 
 from .attribute import (Bool, Integer, Function, Attribute,
-                        AttributesDictionary, RuleSet)
+                        AttributesDictionary, RuleSet, WithAttributes)
 from .dimension import DimensionBase, CM, PT
 from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
@@ -37,8 +37,6 @@ __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
 class Option(Attribute):
     """Descriptor used to describe a document option"""
 
-    __doc__ = Attribute.__doc__
-
 
 class DefaultOptionException(Exception):
     pass
@@ -67,7 +65,28 @@ class Template(AttributesDictionary, NamedDescriptor):
                 raise KeyError
 
 
-class TemplateConfiguration(RuleSet, AttributesDictionary):
+class TemplateConfigurationMeta(WithAttributes):
+    def __new__(mcls, classname, bases, cls_dict):
+        cls = super().__new__(mcls, classname, bases, cls_dict)
+        page_templates = []
+        for name, attr in cls_dict.items():
+            if isinstance(attr, Template):
+                attr_type = type(attr)
+                template_doc = ('  {}: Defaults for :class:`{}.{}`:\n\n'
+                                .format(name, attr_type.__module__,
+                                        attr_type.__name__))
+                for name, value in attr.items():
+                    template_doc += ('    - **{}** = ``{}``\n'
+                                     .format(name, value))
+                page_templates.append(template_doc)
+        if page_templates:
+            cls.__doc__ += '\n\nAttributes:\n\n'
+            cls.__doc__ += '\n'.join(page_templates)
+        return cls
+
+
+class TemplateConfiguration(RuleSet, AttributesDictionary,
+                            metaclass=TemplateConfigurationMeta):
     stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
@@ -128,20 +147,6 @@ class PageTemplateBase(Template):
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
 
-    # required for __doc__ to be used by Sphinx
-    def __get__(self, instance, owner):
-        if instance is None:
-            return self
-        return self    # TODO: allow for page_template.page_size
-
-    @property
-    def __doc__(self):
-        return (':page template: :class:`{}.{}`\n'
-                .format(type(self).__module__, type(self).__name__)
-                + (':base: {}\n'.format(self.base) if self.base else '')
-                + ':defaults: ' + ''.join('    - {}={}\n'.format(key, value)
-                                          for key, value in self.items()))
-
     def page(self, template_name, document_part, chain, after_break, **kwargs):
         raise NotImplementedError
 
@@ -172,8 +177,6 @@ class PageTemplate(PageTemplateBase):
                                      'represent the chapter title')
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
                                   'container holding the chapter title')
-
-    __doc__ = PageTemplateBase.__doc__
 
     def page(self, document_part, template_name, chain, after_break, **kwargs):
         return SimplePage(document_part, template_name, chain, self,
@@ -275,8 +278,6 @@ class TitlePageTemplate(PageTemplateBase):
     show_author = Option(Bool, True, "Show or hide the document's author")
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
-
-    __doc__ = PageTemplateBase.__doc__
 
     def page(self, document_part, template_name, chain, after_break, **kwargs):
         return TitlePage(document_part, template_name, self, after_break)
@@ -393,7 +394,10 @@ class DocumentTemplate(Document, Resource):
     resource_type = 'template'
 
     Configuration = NotImplementedAttribute()
+
     parts = NotImplementedAttribute()
+    """List of :class:`DocumentPartTemplate`\ s that make up the document."""
+
     options_class = DocumentOptions
 
     def __init__(self, document_tree, strings=None, configuration=None,

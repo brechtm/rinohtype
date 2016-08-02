@@ -101,13 +101,6 @@ class Attribute(NamedDescriptor):
                             .format(self.name, self.accepted_type))
         style[self.name] = value
 
-    @property
-    def __doc__(self):
-        return (':description: {} (:class:`{}`)\n'
-                ':default: {}'
-                .format(self.description, self.accepted_type.__name__,
-                        self.default_value))
-
 
 class OverrideDefault(Attribute):
     """Overrides the default value of an attribute defined in a superclass"""
@@ -123,8 +116,6 @@ class OverrideDefault(Attribute):
     def description(self):
         return self.overrides.description
 
-    __doc__ = Attribute.__doc__
-
 
 class WithAttributes(WithNamedDescriptors):
     @classmethod
@@ -132,26 +123,52 @@ class WithAttributes(WithNamedDescriptors):
         return OrderedDict()  # keeps the order of member variables (PEP3115)
 
     def __new__(cls, classname, bases, cls_dict):
-        attributes = cls_dict['_attributes'] = {}
+        attributes = cls_dict['_attributes'] = OrderedDict()
+        doc = 'Args:\n'
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
                 attributes[name] = attr
-            if isinstance(attr, OverrideDefault):
-                for base_cls in bases:
-                    try:
-                        attr.overrides = base_cls.attribute_definition(name)
-                        break
-                    except KeyError:
-                        pass
+                if isinstance(attr, OverrideDefault):
+                    for base_cls in bases:
+                        try:
+                            attr.overrides = base_cls.attribute_definition(
+                                name)
+                            break
+                        except KeyError:
+                            pass
+                    else:
+                        raise NotImplementedError
+                    doc += ('    {}: Overrides :class:`{}` default: {}\n'
+                            .format(name, base_cls.__name__,
+                                    attr.default_value))
                 else:
-                    raise NotImplementedError
+                    doc += ('    {} ({}): {}. Default: {}\n'
+                           .format(name, attr.accepted_type.__name__,
+                                   attr.description, attr.default_value))
         supported_attributes = set(name for name in attributes)
+        mro_clss = []
         for base_class in bases:
             try:
                 supported_attributes.update(base_class._supported_attributes)
+                for mro_class in base_class.__mro__:
+                    if getattr(mro_class, '_attributes', None):
+                        mro_class_name = '{}.{}'.format(mro_class.__module__,
+                                                        mro_class.__name__)
+                        mro_doc = ('* :class:`{}`: {}'
+                                   .format(mro_class_name,
+                                           ', '.join('**{}**'.format(name)
+                                                     for name
+                                                     in mro_class._attributes)
+                                           ))
+                        mro_clss.append(mro_doc)
             except AttributeError:
                 pass
         cls_dict['_supported_attributes'] = supported_attributes
+        if mro_clss:
+            doc += '\n:Inherited parameters: '
+            doc += ('\n                       ').join(mro_clss)
+        cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
+                               if '__doc__' in cls_dict else '\n') + doc
         return super().__new__(cls, classname, bases, cls_dict)
 
 

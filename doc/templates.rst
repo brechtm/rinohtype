@@ -36,16 +36,13 @@ on template instantiation.
 The document templates make use of page templates:
 
 .. autoclass:: PageTemplate
-    :show-inheritance:
     :members:
 
 .. autoclass:: TitlePageTemplate
-    :show-inheritance:
     :members:
 
 
 The base class for these collects the common options:
 
 .. autoclass:: PageTemplateBase
-    :show-inheritance:
     :members:
