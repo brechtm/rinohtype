@@ -1,48 +1,14 @@
-.. module:: rinoh.template
+.. module:: rinoh.templates
 
 .. _document_templates:
 
 Standard Document Templates
 ===========================
 
-Rinohtype includes the following document templates:
+Rinohtype includes a number of document templates. These are configurable and
+therefore should cater for most documents.
 
 .. toctree::
 
     article
     book
-
-
-These are configurable and therefor should cater for most documents. The
-templates inherit from :class:`DocumentTemplate`.
-
-.. autoclass:: DocumentTemplate
-    :members:
-    :inherited-members:
-
-The document part templates should implement the following interface:
-
-.. autoclass:: DocumentPartTemplate
-    :members:
-
-Customization of the templates is performed by passing an instance of the
-template-specific :class:`TemplateConfiguration` subclass as *configuration*
-on template instantiation.
-
-.. autoclass:: TemplateConfiguration
-    :members:
-
-
-The document templates make use of page templates:
-
-.. autoclass:: PageTemplate
-    :members:
-
-.. autoclass:: TitlePageTemplate
-    :members:
-
-
-The base class for these collects the common options:
-
-.. autoclass:: PageTemplateBase
-    :members:
