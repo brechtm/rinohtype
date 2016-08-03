@@ -466,7 +466,8 @@ class MaybeContainer(ContextManager):
         return self._container
 
     def __exit__(self, exc_type, exc_value, _):
-        if (exc_type is None or (issubclass(exc_type, EndOfContainer)
+        if (exc_type is None or (issubclass(exc_type, (EndOfContainer,
+                                                       PageBreakException))
                                  and not exc_value.flowable_state.initial)):
             self._container.do_place()
 
