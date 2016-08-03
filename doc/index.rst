@@ -52,8 +52,6 @@ projects involving RinohType, so please don't hesitate to contact us.
 .. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
 
 
-Contents:
-
 .. toctree::
     :maxdepth: 2
 
