@@ -1,7 +1,7 @@
 #!/bin/env python
 
 """
-Setup script for RinohType
+Setup script for rinohtype
 """
 
 import os
@@ -68,7 +68,7 @@ def long_description():
 
 
 setup(
-    name='RinohType',
+    name='rinohtype',
     version=version,
     packages=find_packages(),
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',

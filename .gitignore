@@ -8,6 +8,6 @@
 /.tox
 /build
 /dist
-/RinohType.egg-info
+/rinohtype.egg-info
 /MANIFEST
 /rinoh/version.py
