@@ -1,4 +1,4 @@
-# This file is part of RinohType, the Python document preparation system.
+# This file is part of rinohtype, the Python document preparation system.
 #
 # Copyright (c) Brecht Machiels.
 #
@@ -303,7 +303,7 @@ class Document(object):
     This is an abstract base class; subclasses should implement :meth:`setup`
     and :meth:`add_to_chain`."""
 
-    CREATOR = 'RinohType v{} ({})'.format(__version__, __release_date__)
+    CREATOR = 'rinohtype v{} ({})'.format(__version__, __release_date__)
 
     CACHE_EXTENSION = '.rtc'
 
@@ -340,7 +340,7 @@ class Document(object):
         self._unique_id = 0
 
     def _print_version_and_license(self):
-        print('RinohType {} ({})  Copyright (c) Brecht Machiels'
+        print('rinohtype {} ({})  Copyright (c) Brecht Machiels'
               .format(__version__, __release_date__))
         print('''\
 This program comes with ABSOLUTELY NO WARRANTY. Its use is subject

@@ -1,4 +1,4 @@
-.. RinohType documentation master file, created by
+.. rinohtype documentation master file, created by
    sphinx-quickstart on Sat Jan 31 16:06:11 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -10,7 +10,7 @@ rinohtype: The Python Document Processor
 
 Release v\ |version|. (:ref:`Release History <changelog>`)
 
-RinohType is a high-level PDF library for Python. It helps automating the
+Rinohtype is a high-level PDF library for Python. It helps automating the
 creation of any type of document, ranging from invoices to long, complex
 technical documents.
 
@@ -40,14 +40,14 @@ Here is a list of rinohtype's main features:
 * built on Unicode; ready for non-latin languages
 
 
-RinohType is currently in a beta phase. We are working toward a first stable
+Rinohtype is currently in a beta phase. We are working toward a first stable
 release.
 
-RinohType is open source software licensed under the `GNU AGPL 3.0`_.
+Rinohtype is open source software licensed under the `GNU AGPL 3.0`_.
 Practically, this means you are free to use it in open-source software, but not
 in (commercial) closed-source software. For this purpose, you need a commercial
 license (see http://www.opqode.com/). We are also available for consultancy
-projects involving RinohType, so please don't hesitate to contact us.
+projects involving rinohtype, so please don't hesitate to contact us.
 
 .. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
 

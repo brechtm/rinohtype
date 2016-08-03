@@ -1,4 +1,4 @@
-# This file is part of RinohType, the Python document preparation system.
+# This file is part of rinohtype, the Python document preparation system.
 #
 # Copyright (c) Brecht Machiels.
 #

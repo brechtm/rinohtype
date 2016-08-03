@@ -4,7 +4,7 @@ Advanced Topics
 ===============
 
 This sections serves as a reference for various building blocks making up
-RinohType. The information presented here is useful for those who want to learn
+rinohtype. The information presented here is useful for those who want to learn
 how element styling works in RinohType, which is helpful when creating custom
 style sheets.
 
@@ -82,9 +82,10 @@ discussed in the next section.
 Style Sheets
 ~~~~~~~~~~~~
 
-RinohType's style sheets are heavily inspired by CSS_, but add some
-functionality that CSS lacks. Similar to CSS, RinohType makes use of so-called
-selectors* to select document elements (flowables or inline elements) to style.
+Rinohtype's style sheets are heavily inspired by CSS_, but add some
+functionality that CSS lacks. Similar to CSS, rinohtype makes use of so-called
+*selectors* to select document elements (flowables or inline elements) to
+style.
 
 Unlike CSS however, these selectors are not directly specified in a style
 sheet. Instead, all selectors are collected in a *matcher* where they are
@@ -99,7 +100,7 @@ reused by multiple style sheets, avoiding duplication.
 Selectors
 .........
 
-Selectors in RinohType always select elements of a particular type. The
+Selectors in rinohtype always select elements of a particular type. The
 **class** of a document element is also a selector for all instances of the
 class (and its subclasses). This selector matches all paragraphs in the
 document, for example::
@@ -140,7 +141,7 @@ The argument passed as *row_index* is slice object that is used for extended
 indexing. Indexing a list ``lst[slice(0, None, 2)]`` is equivalent to
 ``lst[0::2]``.
 
-RinohType borrows CSS's concept of `specificity`_ to determine the "winning"
+Rinohtype borrows CSS's concept of `specificity`_ to determine the "winning"
 selector when multiple selectors match a given document element. Roughly
 stated, the more specific selector will win. For example::
 
@@ -184,7 +185,7 @@ descriptions to selectors::
                                     / GroupedFlowables.like('line block'))
     ...
 
-RinohType currently includes one styled matcher which defines labels for all
+Rinohtype currently includes one styled matcher which defines labels for all
 common elements in documents::
 
     from rinohlib.stylesheets.matcher import matcher

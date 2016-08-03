@@ -1,4 +1,4 @@
-# This file is part of RinohType, the Python document preparation system.
+# This file is part of rinohtype, the Python document preparation system.
 #
 # Copyright (c) Brecht Machiels.
 #
@@ -452,7 +452,7 @@ class ObjectStream(Stream):
 
 
 class Document(dict):
-    PRODUCER = 'RinohType v{} PDF backend ({})'.format(__version__,
+    PRODUCER = 'rinohtype v{} PDF backend ({})'.format(__version__,
                                                        __release_date__)
 
     def __init__(self, creator):

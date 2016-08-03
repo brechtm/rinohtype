@@ -1,4 +1,4 @@
-# This file is part of RinohType, the Python document preparation system.
+# This file is part of rinohtype, the Python document preparation system.
 #
 # Copyright (c) Brecht Machiels.
 #
@@ -91,7 +91,7 @@ class RinohTreePreprocessor(GenericNodeVisitor):
 
 
 class RinohBuilder(Builder):
-    """Renders to a PDF using RinohType."""
+    """Renders to a PDF using rinohtype."""
 
     name = 'rinoh'
     format = 'pdf'
