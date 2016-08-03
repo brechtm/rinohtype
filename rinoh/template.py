@@ -76,8 +76,11 @@ class TemplateConfigurationMeta(WithAttributes):
                                 .format(name, attr_type.__module__,
                                         attr_type.__name__))
                 for name, value in attr.items():
-                    template_doc += ('    - **{}** = ``{}``\n'
-                                     .format(name, value))
+                    if isinstance(value, StyledText):
+                        value = "'" + (str(value).replace('\n', '\\n')
+                                                 .replace('\t', '\\t')) + "'"
+                    template_doc += ('    - **{}** = ``{}``\n'.format(name,
+                                                                      value))
                 page_templates.append(template_doc)
                 attr.template_configuration = cls
         if page_templates:
@@ -323,6 +326,21 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(object):
+    """A template that produces a doument part, given a set of flowables,
+    page templates and a page number format.
+
+    Args:
+        name (:class:`str`): a descriptive name for this document part template
+        right_page_template (:class:`PageTemplateBase`): the page template
+            for right pages
+        left_page_template (:class:`PageTemplateBase`): the page template
+            for left pages. If not given, `right_page_template` is used.
+        page_number_format (:class:`rinoh.number.NumberFormat`): the number
+             format used to style the page numbers in this document part. If it
+             is different from the preceding part's number format, page
+             numbering restarts at 1.
+    """
+
     skip_if_no_flowables = True
 
     def __init__(self, name, right_page_template, left_page_template=None,
@@ -357,8 +375,8 @@ class DocumentPartTemplate(object):
         return doc
 
     def flowables(self, document):
-        """Returns a list of :class:`Flowable`\ s that make up the document
-        part"""
+        """Return a list of :class:`rinoh.flowable.Flowable`\ s that make up
+        the document part"""
         raise NotImplementedError
 
     def document_part(self, document_section, extra_flowables=None):
@@ -373,6 +391,8 @@ class DocumentPartTemplate(object):
 
 
 class TitlePartTemplate(DocumentPartTemplate):
+    """The title page of a document."""
+
     skip_if_no_flowables = False
 
     def flowables(self, document):
@@ -380,11 +400,24 @@ class TitlePartTemplate(DocumentPartTemplate):
 
 
 class ContentsPartTemplate(DocumentPartTemplate):
+    """The body of a document.
+
+    Renders all of the content present in the
+    :class:`rinoh.document.DocumentTree` passed to a :class:`DocumentTemplate`.
+    """
+
     def flowables(self, document):
         yield document.document_tree
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
+    """A document part template that renders a fixed list of flowables.
+
+    Args:
+        flowables (:class:`list`): a list of flowables to include in the
+            document part
+    """
+
     def __init__(self, name, flowables, right_page_template,
                  left_page_template=None, page_number_format=NUMBER):
         super().__init__(name, right_page_template, left_page_template,
