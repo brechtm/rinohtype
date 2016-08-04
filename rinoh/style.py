@@ -45,8 +45,8 @@ class ParentStyleException(StyleException):
 
 
 class BaseStyleException(StyleException):
-    """The attribute is not specified in this :class:`Style`. Find the attribute
-    in a base style."""
+    """The `attribute` is not specified in this :class:`Style`. Try to find the
+    attribute in a base style instead."""
 
     def __init__(self, base_name, attribute):
         self.base_name = base_name
@@ -64,12 +64,14 @@ class NoStyleException(StyleException):
 
 
 class Style(AttributesDictionary):
-    """"Dictionary storing style attributes.
+    """Dictionary storing style attributes.
 
     The style attributes associated with this :class:`Style` are specified as
     class attributes of type :class:`Attribute`.
 
-    Style attributes can also be accessed as object attributes."""
+    Style attributes can also be accessed as object attributes.
+
+    """
 
     default_base = None
 
@@ -396,7 +398,14 @@ class StyledMeta(type, ClassSelectorBase):
 
 
 class Styled(DocumentElement, metaclass=StyledMeta):
-    """An element that has a :class:`Style` associated with it."""
+    """A document element who's style can be configured.
+
+    Args:
+        style (str, Style): the style to associate with this element. If
+            `style` is a string, the corresponding style is lookup up in the
+            document's style sheet by means of selectors.
+
+    """
 
     style_class = None
     """The :class:`Style` subclass that corresponds to this :class:`Styled`
@@ -519,11 +528,18 @@ class InvalidStyledMatcher(Exception):
 
 
 class StyledMatcher(dict):
-    def __init__(self, iterable=None, **kwargs):
+    """Dictionary mapping labels to selectors.
+
+    This matcher can be initialized in the same way as a :class:`dict` by
+    passing a mapping, an interable and/or keyword arguments.
+
+    """
+
+    def __init__(self, mapping_or_iterable=None, **kwargs):
         super().__init__()
         self.by_name = {}
         self._pending = {}
-        self.update(iterable, **kwargs)
+        self.update(mapping_or_iterable, **kwargs)
 
     def __call__(self, name, selector):
         self[name] = selector
@@ -570,10 +586,21 @@ class StyledMatcher(dict):
 
 
 class StyleSheet(RuleSet, Resource):
-    """Dictionary storing a set of related :class:`Style`s by name.
+    """Dictionary storing a collection of related styles by name.
 
-    :class:`Style`s stored in a :class:`StyleStore` can refer to their base
-    style by name. See :class:`Style`."""
+    :class:`Style`\ s stored in a :class:`StyleSheet` can refer to their base
+    style by name.
+
+    Args:
+        name (str): a label for this style sheet
+        matcher (StyledMatcher): the matcher providing the selectors the styles
+            contained in this style sheet map to. If no matcher is given, the
+            `base`\ 's matcher is used.
+        base (StyleSheet): the style sheet to extend
+        description (str): a short string describing this style sheet
+        pygments_style (str): the Pygments style to use for styling code blocks
+
+    """
 
     resource_type = 'stylesheet'
 
@@ -638,10 +665,23 @@ class StyleSheet(RuleSet, Resource):
 
 
 class StyleSheetFile(StyleSheet):
+    """Loads styles defined in a `.rts` file (INI format).
+
+    Args:
+        filename (str): the path to the style sheet file
+
+    :class:`StyleSheetFile` takes the same optional arguments as
+    :class:`StyleSheet`.  These can also be specified in the ``[STYLESHEET]``
+    section of the style sheet file. If an argument is specified in both
+    places, the one passed as an argument overrides the one specified in the
+    style sheet file.
+
+    """
+
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
     RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
 
-    def __init__(self, filename, matcher, base=None, **kwargs):
+    def __init__(self, filename, matcher=None, base=None, **kwargs):
         config = ConfigParser(default_section=None, delimiters=('=',),
                               comment_prefixes=('#', ), interpolation=None)
         with open(filename) as file:

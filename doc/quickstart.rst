@@ -145,6 +145,7 @@ It is clear that this type of content is best parsed from a structured document
 format such as reStructuredText or XML. Manually building a document tree is
 well suited for short, custom documents however.
 
+.. _quickstart_stylesheets:
 
 Style Sheets
 ~~~~~~~~~~~~
@@ -174,8 +175,8 @@ rinohtype as a PDF library to create custom documents, the default matcher
 should cover your needs.
 
 
-Building on an Existing Style Sheet
------------------------------------
+Extending an Existing Style Sheet
+---------------------------------
 
 Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following example creates a new
@@ -196,7 +197,7 @@ of italic font.
     [emphasis]
     font_slant=bold
 
-This style sheet also redefines the variable ``mono_typeface``. This variable
+This style sheet also redefines the ``mono_typeface`` variable. This variable
 is used in the Sphinx style sheet in all style definitions where a monospaced
 font is desired. Redefining the variable affects all of these style
 definitions.

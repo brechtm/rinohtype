@@ -124,7 +124,7 @@ class WithAttributes(WithNamedDescriptors):
 
     def __new__(mcls, classname, bases, cls_dict):
         attributes = cls_dict['_attributes'] = OrderedDict()
-        doc = 'Args:\n'
+        doc = ''
         for name, attr in cls_dict.items():
             if isinstance(attr, Attribute):
                 attributes[name] = attr
@@ -146,16 +146,16 @@ class WithAttributes(WithNamedDescriptors):
                            .format(name, attr.accepted_type.__name__,
                                    attr.description, attr.default_value))
         supported_attributes = set(name for name in attributes)
+        if attributes:
+            doc = 'Args:\n' + doc
         mro_clss = []
         for base_class in bases:
             try:
                 supported_attributes.update(base_class._supported_attributes)
                 for mro_class in base_class.__mro__:
                     if getattr(mro_class, '_attributes', None):
-                        mro_class_name = '{}.{}'.format(mro_class.__module__,
-                                                        mro_class.__name__)
-                        mro_doc = ('* :class:`{}`: {}'
-                                   .format(mro_class_name,
+                        mro_doc = ('* :class:`.{}`: {}'
+                                   .format(mro_class.__name__,
                                            ', '.join('**{}**'.format(name)
                                                      for name
                                                      in mro_class._attributes)

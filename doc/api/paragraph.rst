@@ -1,9 +1,9 @@
+.. module:: rinoh.paragraph
+
 .. _paragraph:
 
 Paragraph
 =========
-
-.. module:: rinoh.paragraph
 
 .. autoclass:: ParagraphBase
     :members:
@@ -18,10 +18,10 @@ Paragraph
     :members:
 
 
+.. module:: rinoh.text
+
 Inline Elements
 ---------------
-
-.. module:: rinoh.text
 
 .. autoclass:: StyledText
     :members:
@@ -65,14 +65,6 @@ Tabulation
     :members:
 
 
-
-.. autoclass:: Paragraph
-    :members:
-
-.. autoclass:: Paragraph
-    :members:
-
-
 Rendering Internals
 -------------------
 
@@ -88,4 +80,3 @@ Miscellaneous Internals
 
 .. autoclass:: HyphenatorStore
     :members:
-

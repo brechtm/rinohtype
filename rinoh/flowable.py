@@ -70,9 +70,12 @@ class FlowableStyle(Style):
 
 
 class FlowableState(object):
-    """Stores a :class:`Flowable`\'s rendering state, which can be copied. This
-    enables saving the rendering state at certain points in the rendering
-    process, so rendering can later be resumed at those points, if needed."""
+    """Stores a flowable's rendering state, which can be copied.
+
+    This enables saving the rendering state at certain points in the rendering
+    process, so rendering can later be resumed at those points, if needed.
+
+    """
 
     def __init__(self, flowable, _initial=True):
         self.flowable = flowable
@@ -83,9 +86,12 @@ class FlowableState(object):
 
 
 class Flowable(Styled):
-    """An element that can be 'flowed' into a :class:`Container`. A flowable can
-    adapt to the width of the container, or it can horizontally align itself in
-    the container."""
+    """A document element that can be "flowed" into a container on the page.
+
+    A flowable can adapt to the width of the container, or it can horizontally
+    align itself in the container (see :class:`HorizontallyAlignedFlowable`).
+
+    """
 
     style_class = FlowableStyle
 
@@ -216,6 +222,12 @@ class Flowable(Styled):
 # flowables that do not render anything (but with optional side-effects)
 
 class DummyFlowable(Flowable):
+    """A flowable that does not directly place anything on the page.
+
+    Subclasses can produce side-effects to affect the output in another way.
+
+    """
+
     style_class = None
 
     def __init__(self, id=None, parent=None):
@@ -231,6 +243,12 @@ class DummyFlowable(Flowable):
 
 
 class AnchorFlowable(DummyFlowable):
+    """A dummy flowable that registers a destination anchor.
+
+    Places a destination for the flowable's ID at the current cursor position.
+
+    """
+
     def get_style(self, attribute, flowable_target):
         if attribute == 'keep_with_next':
             return True
@@ -242,6 +260,13 @@ class AnchorFlowable(DummyFlowable):
 
 
 class WarnFlowable(DummyFlowable):
+    """A dummy flowable that emits a warning during the rendering stage.
+
+    Args:
+        message (str): the warning message to emit
+
+    """
+
     def __init__(self, message, parent=None):
         super().__init__(parent=parent)
         self.message = message
@@ -252,6 +277,13 @@ class WarnFlowable(DummyFlowable):
 
 
 class SetMetadataFlowable(DummyFlowable):
+    """A dummy flowable that stores metadata in the document.
+
+    The metadata is passed as keyword arguments. It will be available to other
+    flowables during the rendering stage.
+
+    """
+
     def __init__(self, parent=None, **metadata):
         super().__init__(parent=parent)
         self.metadata = metadata
@@ -271,6 +303,7 @@ class AddToFrontMatter(DummyFlowable):
 
 # grouping flowables
 
+# TODO: duplicates keep_with_next behavior - remove?
 class InseparableFlowables(Flowable):
     def render(self, container, last_descender, state, **kwargs):
         max_flowable_width = 0
@@ -318,9 +351,19 @@ class GroupedFlowablesStyle(FlowableStyle):
 
 
 class GroupedFlowables(Flowable):
+    """Groups a list of flowables and renders them one below the other.
+
+    Makes sure that a flowable for which `keep_with_next` is enabled is not
+    seperated from the flowable that follows it.
+
+    Subclasses should implement :meth:`flowables`.
+
+    """
+
     style_class = GroupedFlowablesStyle
 
     def flowables(self, container):
+        """Generator yielding the :class:`Flowable`\ s"""
         raise NotImplementedError
 
     def initial_state(self, container):
@@ -390,6 +433,13 @@ class KeepWithNextException(Exception):
 
 
 class StaticGroupedFlowables(GroupedFlowables):
+    """Groups a static list of flowables.
+
+    Args:
+        flowables (iterable[Flowable]): the flowables to group
+
+    """
+
     def __init__(self, flowables, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.children = []
@@ -445,6 +495,18 @@ class LabeledFlowableState(FlowableState):
 
 
 class LabeledFlowable(Flowable):
+    """A flowable with a label.
+
+    The flowable and the label are rendered side-by-side. If the label exceeds
+    the `label_max_width` style attribute value, the flowable is rendered below
+    the label.
+
+    Args:
+        label (Flowable): the label for the flowable
+        flowable (Flowable): the flowable to label
+
+    """
+
     style_class = LabeledFlowableStyle
 
     def __init__(self, label, flowable, id=None, style=None, parent=None):
@@ -545,6 +607,12 @@ def inline_container(name, container, **kwargs):
 
 
 class GroupedLabeledFlowables(GroupedFlowables):
+    """Groups a list of labeled flowables, lining them up.
+
+
+
+    """
+
     def _calculate_label_width(self, container):
         return max(flowable.label_width(container)
                    for flowable in self.flowables(container))
@@ -582,6 +650,13 @@ class HorizontallyAlignedFlowableState(FlowableState):
 
 
 class HorizontallyAlignedFlowable(Flowable):
+    """A flowable with configurable width and horizontal alignment.
+
+    The `width` and `horizontal_align` control the width and horizontal
+    alignment of the flowable.
+
+    """
+
     style_class = HorizontallyAlignedFlowableStyle
 
     def __init__(self, *args, align=None, width=None, **kwargs):
@@ -620,16 +695,19 @@ class FloatStyle(FlowableStyle):
 
 
 class Float(Flowable):
-    """Transform a :class:`Flowable` into a floating element. A floating element
-    or 'float' is not flowed into its designated container, but is forwarded to
-    another container pointed to by the former's :attr:`Container.float_space`
-    attribute.
+    """A flowable that can optionally be placed elsewhere on the page.
 
-    This is typically used to place figures and tables at the top or bottom of a
-    page, instead of in between paragraphs."""
+    If this flowable's `float` style attribute is set to ``True``, it is not
+    flowed in line with the surrounding flowables, but it is instead flowed
+    into another container pointed to by the former's
+    :attr:`Container.float_space` attribute.
+
+    This is typically used to place figures and tables at the top or bottom of
+    a page, instead of in between paragraphs.
+
+    """
 
     def flow(self, container, last_descender, state=None, **kwargs):
-        """Flow contents into the float space associated with `container`."""
         if self.get_style('float', container):
             id = self.get_id(container.document)
             if id not in container.document.floats:
@@ -655,6 +733,14 @@ class PageBreakStyle(FlowableStyle):
 
 
 class PageBreak(Flowable):
+    """A flowable that optionally triggers a page break before rendering.
+
+    If this flowable's `page_break` style attribute is not ``None``, it breaks
+    to the page of the type indicated by `page_break` before starting
+    rendering.
+
+    """
+
     style_class = PageBreakStyle
     exception_class = PageBreakException
 
