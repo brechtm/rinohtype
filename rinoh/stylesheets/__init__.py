@@ -25,6 +25,6 @@ def path(filename):
 
 sphinx = StyleSheetFile(path('sphinx.rts'), matcher)
 
-sphinx_article = StyleSheetFile(path('sphinx_article.rts'), matcher)
+sphinx_article = StyleSheetFile(path('sphinx_article.rts'))
 
-sphinx_base14 = StyleSheetFile(path('base14.rts'), matcher)
+sphinx_base14 = StyleSheetFile(path('base14.rts'))

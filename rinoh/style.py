@@ -613,7 +613,7 @@ class StyleSheet(RuleSet, Resource):
         super().__init__(base)
         self.name = name
         self.description = description
-        self.matcher = matcher if matcher is not None else base.matcher
+        self.matcher = matcher if matcher is not None else StyledMatcher()
         self.matcher.check_validity()
         if user_options:
             warn('Unsupported options passed to stylesheet: {}'
@@ -622,14 +622,7 @@ class StyleSheet(RuleSet, Resource):
         self.variables = {}
 
     def get_styled(self, name):
-        style_sheet = self
-        while style_sheet is not None:
-            try:
-                selector = style_sheet.matcher.by_name[name]
-                return selector.get_styled_class(style_sheet.matcher)
-            except KeyError:
-                style_sheet = style_sheet.base
-        raise KeyError("No selector found for style '{}'".format(name))
+        return self.get_selector(name).get_styled_class(self.matcher)
 
     def get_entry_class(self, name):
         return self.get_styled(name).style_class
@@ -640,11 +633,11 @@ class StyleSheet(RuleSet, Resource):
     def get_selector(self, name):
         try:
             return self.matcher.by_name[name]
-        except KeyError:
+        except (AttributeError, KeyError):
             if self.base is not None:
                 return self.base.get_selector(name)
             else:
-                raise
+                raise KeyError("No selector found for style '{}'".format(name))
 
     def find_matches(self, styled, container):
         for match in self.matcher.match(styled, container):
