@@ -97,7 +97,7 @@ multiple style sheets, avoiding duplication.
 Selectors
 .........
 
-Selectors in rinohtype select elements of a particular type. The *class** of a
+Selectors in rinohtype select elements of a particular type. The *class* of a
 document element serves as a selector for all instances of the class (and its
 subclasses). The :class:`.Paragraph` class is a selector that matches all
 paragraphs in the document, for example::
@@ -181,11 +181,11 @@ with a higher specificity will also match it::
     DefinitionList / Definition / Paragraph   # specificity (0, 0, 0, 0, 3)
 
 To make sure the :class:`.CodeBlock` selector wins, we increase the priority of
-the :class:`.CodeBlock` selector by prepending it with a `+` sign::
+the :class:`.CodeBlock` selector by prepending it with a ``+`` sign::
 
     +CodeBlock                                # specificity (1, 0, 0, 0, 2)
 
-In general, you can use multiple `+` or `-` signs to adjust the priority::
+In general, you can use multiple ``+`` or ``-`` signs to adjust the priority::
 
     ++CodeBlock                               # specificity (2, 0, 0, 0, 2)
     ---CodeBlock                              # specificity (-3, 0, 0, 0, 2)
@@ -194,9 +194,6 @@ In general, you can use multiple `+` or `-` signs to adjust the priority::
 .. _CSS selectors: https://en.wikipedia.org/wiki/Cascading_Style_Sheets#Selector
 .. _specificity: https://en.wikipedia.org/wiki/Cascading_St174yle_Sheets#Specificity
 
-
-.. [#slice] Indexing a list like this ``lst[slice(0, None, 2)]`` is equivalent
-            to ``lst[0::2]``.
 
 Matchers
 ........
@@ -433,3 +430,66 @@ element's style.
     For flowables, *base* can be set to ``PARENT_STYLE`` to enable fallback,
     but this requires that the current element type is the same or a subclass
     of the parent type, so it is not recommended.
+
+
+Style Logs
+..........
+
+When rendering a document, rinohtype will create a :index:`style log`. It is
+written to disk using the same base name as the output file, but with a
+`.stylelog` extension. The information logged in the style log is invaluable
+when debugging your style sheet. It tells you which style maps to each element
+in the document.
+
+The style log lists the document elements (as a tree) that have been rendered
+to each page, and for each element all matching styles are listed together with
+their specificity. No styles are listed when there aren't any selectors
+matching an element and the default values are used. The winning style is
+indicated with a ``>`` symbol. Styles that are not defined in the style sheet
+or its base(s) are marked with an ``x``. If none of the styles are defined,
+rinohtype falls back to using the default style.
+
+Here is an example excerpt from a style log:
+
+.. code-block:: text
+
+    ...
+      Paragraph('January 03, 2012', style='title page date')
+           > (0,0,1,0,2) title page date
+             (0,0,0,0,2) body
+        SingleStyledText('January 03, 2012')
+    ---------------------------------- page 3 ----------------------------------
+    #### ChainedContainer('column1')
+      DocumentTree()
+        Section(id='structural-elements')             demo.txt:62 <section>
+             > (0,0,0,1,2) chapter
+          Heading('1 Structural Elements')            demo.txt:62 <title>
+               > (0,0,0,1,2) heading level 1
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1 Structural Elements')
+                SingleStyledText('1')
+                MixedStyledText(' ')
+                  SingleStyledText(' ')
+                SingleStyledText('Structural Elements')
+          Paragraph('A paragraph.')                   demo.txt:64 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('A paragraph.')
+              SingleStyledText('A paragraph.')
+          List(style='bulleted')                      demo.txt:66 <bullet_list>
+               > (0,0,1,0,2) bulleted list
+            ListItem()
+                 x (0,0,1,0,4) bulleted list item
+                 > fallback to default style
+              ListItemLabel('•')
+                   > (0,0,1,0,6) bulleted list item label
+                     (0,0,0,0,2) list item label
+                  MixedStyledText('•')
+                    SingleStyledText('')
+                    SingleStyledText('•')
+              StaticGroupedFlowables()                demo.txt:66 <list_item>
+                   > (0,0,0,0,3) list item body
+    ...
+
+
+.. [#slice] Indexing a list like this ``lst[slice(0, None, 2)]`` is equivalent
+            to ``lst[0::2]``.
