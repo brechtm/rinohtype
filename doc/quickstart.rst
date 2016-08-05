@@ -22,6 +22,14 @@ After rendering finishes, you will find ``demo.pdf`` alongside the input file.
 when rendering the reStructuredText document. See its :ref:`command-line
 options <rinoh>` for details.
 
+.. _rendering_passes:
+
+Two rendering passes are required to make sure that cross-references to page
+numbers are correct. After a document has been rendered, rinohtype will save
+the page reference data to a `.rtc` file. Provided the document (or the
+template or style sheet) doesn't change a lot, this can prevent the need to
+perform a second rendering pass.
+
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
@@ -52,6 +60,9 @@ When building the documentation, select the `rinoh` builder by passing it to
 :program:`sphinx-build`'s :option:`sphinx:-b` option::
 
     sphinx-build -b rinoh . _build/rinoh
+
+Just like the :program:`rinoh` command line tool, the Sphinx builder requires
+two :ref:`rendering passes <rendering_passes>`.
 
 
 .. _library_quickstart:
