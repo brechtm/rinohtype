@@ -107,7 +107,9 @@ pygments_style = 'sphinx'
 
 autodoc_member_order = 'bysource'
 
-intersphinx_mapping = {'sphinx': ('http://www.sphinx-doc.org/en/1.4.5',
+intersphinx_mapping = {'python': ('https://docs.python.org/3.5',
+                                  'python-objects.inv'),
+                       'sphinx': ('http://www.sphinx-doc.org/en/1.4.5',
                                   'sphinx-objects.inv')}
 
 

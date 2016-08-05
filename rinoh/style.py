@@ -530,8 +530,8 @@ class InvalidStyledMatcher(Exception):
 class StyledMatcher(dict):
     """Dictionary mapping labels to selectors.
 
-    This matcher can be initialized in the same way as a :class:`dict` by
-    passing a mapping, an interable and/or keyword arguments.
+    This matcher can be initialized in the same way as a :class:`python:dict`
+    by passing a mapping, an interable and/or keyword arguments.
 
     """
 

@@ -110,9 +110,9 @@ list item (the list item label)::
 
     ListItem / Paragraph
 
-`Python's ellipsis`_ can be used to match any number of levels of elements in
-the document tree. The following selector matches paragraphs at any level
-inside a table cell::
+Python's :ref:`ellipsis <python:bltin-ellipsis-object>` can be used to match
+any number of levels of elements in the document tree. The following selector
+matches paragraphs at any level inside a table cell::
 
     TableCell / ... / Paragraph
 
@@ -192,7 +192,6 @@ In general, you can use multiple `+` or `-` signs to adjust the priority::
 
 
 .. _CSS selectors: https://en.wikipedia.org/wiki/Cascading_Style_Sheets#Selector
-.. _Python's ellipsis: https://docs.python.org/3.5/library/constants.html#Ellipsis
 .. _specificity: https://en.wikipedia.org/wiki/Cascading_St174yle_Sheets#Specificity
 
 
