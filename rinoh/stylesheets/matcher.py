@@ -140,7 +140,7 @@ matcher('choices list item', 'choices list' / ListItem)
 matcher('choices list item label', 'choices list item' / ListItemLabel)
 
 matcher('list item body', ListItem / GroupedFlowables)
-matcher('list item paragraph', ListItem / ... / Paragraph)
+matcher('list item paragraph', 'list item body' / Paragraph)
 
 matcher('definition list', DefinitionList)
 matcher('definition term', DefinitionTerm)
