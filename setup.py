@@ -81,7 +81,10 @@ setup(
                             'backend/pdf/xobject/icc/*.icc',
                             'backend/pdf/xobject/icc/*.txt',
                             ]},
-    install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1'],
+    install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1',
+                      'rinoh-typeface-texgyrecursor>=0.1.1',
+                      'rinoh-typeface-texgyreheros>=0.1.1',
+                      'rinoh-typeface-texgyrepagella>=0.1.1'],
     extras_require = {'bitmap':  ['Pillow']},
     entry_points={
         'console_scripts': [
