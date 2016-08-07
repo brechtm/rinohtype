@@ -222,7 +222,7 @@ matcher('admonition inline title', SelectorByName('admonition')
                                    / ... / StyledText.like('inline title'))
 
 for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning',
-                        'seealso'):
+                        'seealso', 'tip'):
     admonition_selector = Admonition.like(admonition_type=admonition_type)
     matcher(admonition_type + ' admonition', admonition_selector)
     selector = admonition_selector / Paragraph.like('title')

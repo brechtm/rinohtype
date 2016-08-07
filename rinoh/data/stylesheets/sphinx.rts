@@ -487,6 +487,9 @@ base=admonition
 border_top=none
 border_bottom=none
 
+[tip admonition]
+base=builtin admonition
+
 [header_footer:Paragraph]
 base=default
 typeface=$(sans_typeface)
