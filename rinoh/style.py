@@ -197,6 +197,10 @@ class SelectorWithPriority(Selector):
         return self.selector.get_style_name(matcher)
 
     @property
+    def selectors(self):
+        return (self, )
+
+    @property
     def referenced_selectors(self):
         return self.selector.referenced_selectors
 
