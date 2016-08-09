@@ -167,7 +167,7 @@ properties. Style sheets are stored in plain text files using the INI format
 with the ``.rts`` extension. Below is an excerpt from the `Sphinx` style sheet
 included with rinohtype.
 
-.. literalinclude:: /../rinoh/data/stylesheets/sphinx.rts
+.. literalinclude:: /../src/rinoh/data/stylesheets/sphinx.rts
     :language: ini
     :end-before: [italic]
 
@@ -340,7 +340,7 @@ a title page, a front matter part (a custom
 :class:`rinoh.template.DocumentPartTemplate` subclass) and the article
 contents:
 
-.. literalinclude:: /../rinoh/templates/article.py
+.. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: Article
 
 
@@ -351,11 +351,11 @@ The :class:`TemplateConfiguration` subclass associated with :class:`Article`
   placement and the location of the abstract, and
 - defines the page templates referenced in :attr:`Article.parts`
 
-.. literalinclude:: /../rinoh/templates/article.py
+.. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: ArticleConfiguration
 
 The configuration attributes are used in the custom front matter document part
 template:
 
-.. literalinclude:: /../rinoh/templates/article.py
+.. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: ArticleFrontMatter

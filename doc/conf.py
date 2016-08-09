@@ -19,9 +19,9 @@ import os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('..'))
+#sys.path.insert(0, os.path.abspath('..'))
 
-from rinoh import __version__
+import rinoh
 
 # -- General configuration ------------------------------------------------
 
@@ -63,7 +63,7 @@ copyright = '2015, Brecht Machiels'
 # built documents.
 #
 # The short X.Y version.
-version = __version__
+version = rinoh.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
