@@ -5,23 +5,11 @@ Setup script for rinohtype
 """
 
 import os
-import re
-import sys
 
-from datetime import datetime
 from setuptools import setup, find_packages
-from subprocess import Popen, PIPE
 
 
-PACKAGE = 'rinoh'
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-PACKAGE_ABSPATH = os.path.join(BASE_PATH, PACKAGE)
-VERSION_FILE = os.path.join(PACKAGE_ABSPATH, 'version.py')
-
-VERSION_FORMAT = re.compile(r'v\d+\.\d+\.\d+')
-
-# All external commands are relative to BASE_PATH
-os.chdir(BASE_PATH)
 
 
 def long_description():
