@@ -4,6 +4,9 @@ Release History
 Upcoming Release
 ~~~~~~~~~~~~~~~~
 
+Release 0.2.0 (2016-08-09)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Styling:
 
 * generate a style log (show matching styles) to help style sheet development

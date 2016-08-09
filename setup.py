@@ -35,7 +35,7 @@ def long_description():
 
 setup(
     name='rinohtype',
-    version='0.1.3',
+    version='0.2.0',
     packages=find_packages(),
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',
                             'data/fonts/adobe14/MustRead.html',
