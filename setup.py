@@ -23,40 +23,6 @@ VERSION_FORMAT = re.compile(r'v\d+\.\d+\.\d+')
 # All external commands are relative to BASE_PATH
 os.chdir(BASE_PATH)
 
-def get_version():
-    # retrieve the version number from git or VERSION_FILE
-    # inspired by http://dcreager.net/2010/02/10/setuptools-git-version-numbers/
-    try:
-        print('Attempting to get version number from git...')
-        git = Popen(['git', 'describe', '--always', '--dirty'],
-                    stdout=PIPE, stderr=sys.stderr)
-        if git.wait() != 0:
-            raise OSError
-        line, = git.stdout.readlines()
-        line = line.strip().decode('ascii')
-        version = line[1:] if VERSION_FORMAT.match(line) else line
-        release_date = datetime.now().strftime('%b %d %Y, %H:%M:%S')
-    except OSError as e:
-        print('Assume we are running from a source distribution.')
-        # read version from VERSION_FILE
-        with open(VERSION_FILE) as version_file:
-            code = compile(version_file.read(), VERSION_FILE, 'exec')
-        exec(code)
-        version = locals()['__version__']
-        release_date = locals()['__release_date__']
-    return version, release_date
-
-
-if sys.argv[1] == 'develop':   # 'pip install -e' or 'python setup.py develop'
-    print('Installing in develop mode')
-    version, release_date = 'dev', 'now'
-else:
-    version, release_date = get_version()
-
-with open(VERSION_FILE, 'w') as version_file:
-    version_file.write("__version__ = '{}'\n".format(version))
-    version_file.write("__release_date__ = '{}'\n".format(release_date))
-
 
 def long_description():
     with open(os.path.join(BASE_PATH, 'README.rst')) as readme:
@@ -69,7 +35,7 @@ def long_description():
 
 setup(
     name='rinohtype',
-    version=version,
+    version='0.1.3',
     packages=find_packages(),
     package_data={PACKAGE: ['data/fonts/adobe14/*.afm',
                             'data/fonts/adobe14/MustRead.html',
