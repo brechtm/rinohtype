@@ -8,5 +8,5 @@
 /.tox
 /build
 /dist
-/rinohtype.egg-info
+/src/rinohtype.egg-info
 /MANIFEST
