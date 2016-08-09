@@ -11,16 +11,24 @@ sheets and document templates are explained.
 reStructuredText Renderer
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Installing RinohType places the ``rinoh`` script in the ``PATH``. This can be
-used to render reStructuredText_ documents such as `demo.txt`_::
+Installing rinohtype places the :program:`rinoh` script in the :envvar:`PATH`.
+This can be used to render reStructuredText_ documents such as `demo.txt`_::
 
     rinoh demo.txt
 
 After rendering finishes, you will find ``demo.pdf`` alongside the input file.
 
-At this moment, ``rinoh`` does not yet accept many command-line options. It
-always renders the reStructuredText document using the article template. You can
-however specify the paper size using the ``--paper`` command line argument.
+:program:`rinoh` allows specifying the document template and style sheet to use
+when rendering the reStructuredText document. See its :ref:`command-line
+options <rinoh>` for details.
+
+.. _rendering_passes:
+
+Two rendering passes are required to make sure that cross-references to page
+numbers are correct. After a document has been rendered, rinohtype will save
+the page reference data to a `.rtc` file. Provided the document (or the
+template or style sheet) doesn't change a lot, this can prevent the need to
+perform a second rendering pass.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
@@ -31,86 +39,101 @@ however specify the paper size using the ``--paper`` command line argument.
 Sphinx Builder
 ~~~~~~~~~~~~~~
 
-To use RinohType to render Sphinx documents, you need to adjust the Sphinx
-project's ``conf.py``:
+To use rinohtype to render Sphinx documents, at a minimum you need to add
+``'rinoh.frontend.sphinx'`` to the ``extensions`` list in the Sphinx
+project's ``conf.py``.
 
-1. add ``rinoh.frontend.sphinx`` to the ``extensions`` list, and
-2. set the ``rinoh_documents`` configuration option::
+If your Sphinx project is already configured for rendering with LaTeX,
+rinohtype will happily interpret :confval:`sphinx:latex_documents` and other
+options for the LaTeX builder. Otherwise, you need to set the
+:confval:`rinoh_documents` configuration option::
 
     rinoh_documents = [('index',            # top-level file (index.rst)
                         'target',           # output (target.pdf)
                         'Document Title',   # document title
                         'John A. Uthor')]   # document author
 
-3. (optional) you can customize some aspects of the document template such as
-   margins and headers and footer text by specifying ``rinoh_options``::
+Other configuration variables are optional and allow configuring the style of
+the generated PDF document. See :ref:`sphinx_builder` for details.
 
-    from rinoh.dimension import CM
-    from rinoh.reference import Variable, PAGE_NUMBER, NUMBER_OF_PAGES
-    from rinoh.text import Tab
-    from rinoh.float import InlineImage
-
-    footer_text = (InlineImage('images/company_logo.pdf')
-                   + Tab() + Tab()
-                   + Variable(PAGE_NUMBER) + ' / ' + Variable(NUMBER_OF_PAGES))
-
-    rinoh_options = dict(header_text=Tab() + project,
-                         footer_text=footer_text,
-                         page_horizontal_margin=3*CM,
-                         page_vertical_margin=4.5*CM)
-
-   The Sphinx builder uses the :class:`Book` document template\ [1]_.
-   ``rinoh_options`` are passed to :class:`BookOptions`, so see its
-   documentation for details.
-
-4. now we can select the `rinoh` builder when building the documentation::
+When building the documentation, select the `rinoh` builder by passing it to
+:program:`sphinx-build`'s :option:`sphinx:-b` option::
 
     sphinx-build -b rinoh . _build/rinoh
 
+Just like the :program:`rinoh` command line tool, the Sphinx builder requires
+two :ref:`rendering passes <rendering_passes>`.
 
-High-level PDF library
+
+.. _library_quickstart:
+
+High-level PDF Library
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The most basic way to use the RinohType package is to hook up an included
-parser, a style sheet and a document template::
+.. note:: The focus of rinohtype development is currently on the
+    :program:`rinoh` tool and Sphinx builder at this moment. Use as a Python
+    library is possible, but documentation may be lacking. Please be patient.
 
-    from rinoh.paper import A4
+The most basic way to use rinohtype in an application is to hook up an included
+frontend, a document template and a style sheet:
+
+.. testsetup:: my_document
+
+    import os, shutil, tempfile
+
+    lastdir = os.getcwd()
+    tmpdir = tempfile.mkdtemp()
+    os.chdir(tmpdir)
+    with open('my_document.rst', 'w') as rst_file:
+        rst_file.write('Hello World!')
+
+
+.. testcleanup:: my_document
+
+    os.chdir(lastdir)
+    shutil.rmtree(tmpdir)
+
+.. testcode:: my_document
+
     from rinoh.backend import pdf
-    from rinoh.frontend.rst import ReStructuredTextParser
+    from rinoh.frontend.rst import ReStructuredTextReader
+    from rinoh.templates import Article
 
-    from rinohlib.stylesheets.sphinx import styles as STYLESHEET
-    from rinohlib.templates.article import Article, ArticleOptions
-
-
-    # the parser builds a RinohType document tree
-    parser = ReStructuredTextParser()
-    with open('my_document.rst') as rst_file:
-        document_tree = parser.parse(rst_file)
-
-    # customize the article template
-    article_options = ArticleOptions(page_size=A4, columns=2,
-                                     table_of_contents=True,
-                                     stylesheet=STYLESHEET)
+    # the parser builds a rinohtype document tree
+    parser = ReStructuredTextReader()
+    with open('my_document.rst') as file:
+        document_tree = parser.parse(file)
 
     # render the document to 'my_document.pdf'
-    document = Article(document_tree, options=article_options,
-                       backend=pdf)
+    document = Article(document_tree, backend=pdf)
     document.render('my_document')
+
+.. testoutput:: my_document
+    :hide:
+
+    ...
+    Writing output: my_document.pdf
 
 
 This basic application can be customized to your specific requirements by
-customizing the style sheet, the document template and the way the document's
-content tree is built. The basics of style sheets and document templates are
+customizing the document template, the style sheet and the way the document's
+content tree is built. The basics of document templates and style sheets are
 covered the the sections below.
 
-The document tree returned by the :class:`ReStructuredTextParser` in the
-example above can be easily built manually. `document_tree` is simply a list
-of :class:`Flowable`\ s. These flowables can have children flowables. These in
+The document tree returned by the :class:`ReStructuredTextReader` in the
+example above can also be built manually. A :class:`DocumentTree` is simply a
+list of :class:`Flowable`\ s, which can have child elements. These children in
 turn can also have children, and so on; together they form a tree.
 
-Here is an example document tree of a short article::
+Here is an example document tree of a short article:
 
-    document_tree = [Paragraph('My Document', style='title'), # metadata!
+.. testcode:: document_tree
+
+    from rinoh.document import DocumentTree
+    from rinoh.styleds import *
+
+    document_tree = DocumentTree('/path/to/source_file.ext',
+                    [Paragraph('My Document', style='title'), # metadata!
                      Section([Heading('First Section'),
                               Paragraph('This is a paragraph with some'
                                         + Emphasized('emphasized text')
@@ -121,116 +144,218 @@ Here is an example document tree of a short article::
                                       ])
                              ]),
                      Section([Heading('Second Section'),
-                              List([ListItem(Paragraph('a list item')),
-                                    ListItem(Paragraph('another list item'))
+                              List([Paragraph('a list item'),
+                                    Paragraph('another list item')
                                    ])
                              ])
-                    ]
+                    ])
 
-It is obvious this type of content is best parsed from a structured document
-file such as reStructuredText or XML. Manually building a document tree is well
-suited for short, custom documents however. Please refer to the invoice example
-for details.
+.. todo:: make ``source_path`` optional
 
+It is clear that this type of content is best parsed from a structured document
+format such as reStructuredText or XML. Manually building a document tree is
+well suited for short, custom documents however.
+
+.. _quickstart_stylesheets:
 
 Style Sheets
 ~~~~~~~~~~~~
 
-A RinohType style sheet is defined in a Pyton source file, as an instance of the
-:class:`StyleSheet` class. For each document element, the style sheet object
-registers a list of style properties.
+A style sheet determines the look of each of the elements in a document. For
+each type of document element, the style sheet object registers a list of style
+properties. Style sheets are stored in plain text files using the INI format
+with the ``.rts`` extension. Below is an excerpt from the `Sphinx` style sheet
+included with rinohtype.
 
-This is similar to how HTML's cascading style sheets work. In RinohType however,
-style properties are assigned to document elements by means of a descriptive
-label for the latter instead of a selector. RinohType also makes use of
-selectors, but these are collected in a :class:`StyledMatcher`. Unless you are
-using RinohType as a PDF library to creating custom documents, the default
-matcher should cover your needs.
+.. literalinclude:: /../src/rinoh/data/stylesheets/sphinx.rts
+    :language: ini
+    :end-before: [italic]
+
+Except for ``[STYLESHEET]`` and ``[VARIABLES]``, each configuration section
+in a style sheet determines the style of a particular type of document element.
+The ``emphasis`` style, for example, determines the look of emphasized text,
+which is displayed in an italic font. For more on style sheets, please refer
+to the :ref:`stylesheets_advanced` section in :ref:`advanced`.
+
+This is similar to how HTML's cascading style sheets work. In rinohtype
+however, document elements are identified by means of a descriptive label (such
+as *emphasis*) instead of a cryptic selector. Rinohtype also makes use of
+selectors, but these are collected in a :class:`StyledMatcher` which maps them
+to descriptive names to be used by many style sheets. Unless you are using
+rinohtype as a PDF library to create custom documents, the default matcher
+should cover your needs.
 
 
-Building on an existing style sheet
-...................................
+Extending an Existing Style Sheet
+---------------------------------
 
 Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following example creates a new
-style sheet based on the Sphinx stylesheet included with RinohType. The style
+style sheet based on the Sphinx stylesheet included with rinohtype. The style
 sheet redefines the style for emphasized text, displaying it in a bold instead
 of italic font.
 
+.. code-block:: ini
+
+    [STYLESHEET]
+    name=My Style Sheet
+    description=Small tweaks made to the Sphinx style sheet
+    base=sphinx
+
+    [VARIABLES]
+    mono_typeface=Courier
+
+    [emphasis]
+    font_slant=bold
+
+This style sheet also redefines the ``mono_typeface`` variable. This variable
+is used in the Sphinx style sheet in all style definitions where a monospaced
+font is desired. Redefining the variable affects all of these style
+definitions.
+
+    .. todo:: How to do this in a INI style sheet?
+
+        Here, the new new style definition completely replaces the style
+        definition contained in the Sphinx style sheet. It is also possible to
+        override only part of the style definition. The following style
+        definition changes only the item spacing between enumerated list items.
+        All other style properties (such as the left margin and the item
+        numbering format) remain unchanged.
+
+
+        .. code-block:: python
+
+            my_style_sheet('enumerated list', base=styles['default'],
+                           flowable_spacing=3*PT)
+
+To use this style sheet, load it using :class:`StyleSheetFile`:
+
 .. code-block:: python
 
-    from rinoh.dimension import PT
-    from rinoh.font.style import BOLD
-    from rinohlib.stylesheets.sphinx import styles
+    from rinoh.style import StyleSheetFile
 
-    my_style_sheet = StyleSheet('My Style Sheet', base=styles)
-
-    my_style_sheet('emphasis', font_weight=BOLD)
-
-
-Here, the new new style definition completely replaces the style definition
-contained in the Sphinx style sheet. It is also possible to override only part
-of the style definition. The following style definition changes only the item
-spacing between enumerated list items. All other style properties (such as the
-left margin and the item numbering format) remain unchanged.
-
-
-.. code-block:: python
-
-    my_style_sheet('enumerated list', base=styles['default'],
-                   flowable_spacing=3*PT)
+    my_stylesheet = StyleSheetFile('m_stylesheet.rts')
 
 
 
-Starting with a clean slate
-...........................
+Starting from Scratch
+---------------------
 
-Instantiating a new style sheet without passing it a base style sheet creates
-an independent style sheet. You need to specify the :class:`StyledMatcher` to
-use in this case.
+If you don't specify a base style sheet in the ``[STYLESHEET]`` section, you
+create an independent style sheet. You should do this if you want to create
+a document style that is radically different from what is provided by existing
+style sheets.
+
+If the style definition for a particular document element is missing, the
+default values for its style properties are used.
+
+To use this style sheet, you need to specify the :class:`StyledMatcher` to use,
+since there is not base providing one. The following example uses the standard
+matcher:
 
 .. code-block:: python
 
-    from rinoh.dimension import PT
-    from rinoh.font.style import BOLD
-    from rinohlib.stylesheets.sphinx import styles
-    from rinohlib.stylesheets.matcher import matcher
+    from rinoh.style import StyleSheetFile
+    from rinoh.stylesheets import matcher
 
-    independent_style_sheet = StyleSheet('My Independent Style Sheet',
-                                         matcher=matcher)
+    my_stylesheet = StyleSheetFile('m_stylesheet.rts', matcher=matcher)
 
 
-If a style definition for a particular document element is missing, the default
-values for its style properties are used.
+.. note:: In the future, rinohtype will allow generating an INI style sheet,
+    listing all matched elements and their style attributes together with the
+    default values.
 
 
-Documument Templates
-~~~~~~~~~~~~~~~~~~~~
+
+Document Templates
+~~~~~~~~~~~~~~~~~~
 
 As with style sheets, you can choose to make use of the templates provided by
-RinohType or you can create a custom template from scratch. This section only
-covers the former. For an example of how to create a custom template, see the
-invoice example.
-
-RinohType includes two document templates; :class:`Article` and :class:`Book`.
-Theese templates can be customized by passing an :class:`ArticleOptions` or
-:class:`BookOptions` instance as `options` on template instantiation
-respectively. Both these classes derive from :class:`DocumentOptions` and thus
-accept the options offered by it:
-
-.. autoclass:: rinohlib.templates.base.DocumentOptions
-    :members:
+rinohtype and optionally customize it or you can create a custom template from
+scratch.
 
 
-The :class:`Article` and :class:`Book` templates also have some specific
-options:
+Using an Existing Template
+--------------------------
 
-.. autoclass:: rinohlib.templates.article.ArticleOptions
-    :members:
+Rinohtype provides a number of :ref:`document_templates`. These can be
+customized by passing an instance of the associated
+:class:`rinoh.template.TemplateConfiguration` as `configuration` on template
+instantiation.
+
+The example from :ref:`library_quickstart` above can be customized by setting
+template options.
+
+.. testcode:: my_document
+
+    from rinoh.backend import pdf
+    from rinoh.dimension import CM
+    from rinoh.frontend.rst import ReStructuredTextReader
+    from rinoh.paper import A5
+    from rinoh.stylesheets import sphinx_base14
+    from rinoh.templates import Article
+
+    # the parser builds a rinohtype document tree
+    parser = ReStructuredTextReader()
+    with open('my_document.rst') as file:
+        document_tree = parser.parse(file)
+
+    # customize the article template
+    configuration = Article.Configuration(paper_size=A5,
+                                          stylesheet=sphinx_base14,
+                                          abstract_location='title',
+                                          table_of_contents=False)
+    configuration('title_page', top_margin=2*CM)
+
+    # render the document to 'my_document.pdf'
+    document = Article(document_tree, configuration=configuration, backend=pdf)
+    document.render('my_document')
+
+.. testoutput:: my_document
+    :hide:
+
+    ...
+    Writing output: my_document.pdf
+
+Here, a number of global template settings are specified to override the
+default values. For example, the paper size is changed to A5 from the default
+A4. See below for a list of the settings that can be changed and their
+description.
+
+The top margin of the title page is also changed by setting the corresponding
+option for the :attr:`rinoh.templates.article.ArticleConfiguration.title_page`
+page template.
 
 
-.. autoclass:: rinohlib.templates.book.BookOptions
-    :members:
+Creating a Custom Template
+--------------------------
+
+A custom template can be created by inheriting from :class:`DocumentTemplate`.
+The :attr:`parts` attribute determines the global structure of the document. It
+is a list of :class:`DocumentPartTemplate`\ s, each referencing a page
+template.
+
+The :class:`rinoh.templates.article.Article` template, for example, consists of
+a title page, a front matter part (a custom
+:class:`rinoh.template.DocumentPartTemplate` subclass) and the article
+contents:
+
+.. literalinclude:: /../src/rinoh/templates/article.py
+    :pyobject: Article
 
 
-.. [1] This will be configurable in the future.
+The :class:`TemplateConfiguration` subclass associated with :class:`Article`
+
+- overrides the default style sheet,
+- introduces configuration attributes to control the table of contents
+  placement and the location of the abstract, and
+- defines the page templates referenced in :attr:`Article.parts`
+
+.. literalinclude:: /../src/rinoh/templates/article.py
+    :pyobject: ArticleConfiguration
+
+The configuration attributes are used in the custom front matter document part
+template:
+
+.. literalinclude:: /../src/rinoh/templates/article.py
+    :pyobject: ArticleFrontMatter

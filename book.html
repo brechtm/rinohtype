@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Book &mdash; rinohtype 0.2.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+        <link rel="up" title="Standard Document Templates" href="templates.html"/>
+        <link rel="next" title="Advanced Topics" href="advanced.html"/>
+        <link rel="prev" title="Article" href="article.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="templates.html">Standard Document Templates</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="article.html">Article</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Book</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="templates.html">Standard Document Templates</a> &raquo;</li>
+      
+    <li>Book</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/book.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-rinoh.templates.book"><span id="book-template"></span></span><div class="section" id="book">
+<h1>Book<a class="headerlink" href="#book" title="Permalink to this headline">¶</a></h1>
+<p>The book template consists of a title page, the table of contents, the body
+text and an index. The front matter pages are numbered using lowercase roman
+numerals. The template uses different templates for even and odd pages.</p>
+<dl class="class">
+<dt id="rinoh.templates.book.Book">
+<em class="property">class </em><code class="descclassname">rinoh.templates.book.</code><code class="descname">Book</code><span class="sig-paren">(</span><em>document_tree</em>, <em>strings=None</em>, <em>configuration=None</em>, <em>options=None</em>, <em>backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.book.Book" title="Permalink to this definition">¶</a></dt>
+<dd><p>This template builds a document consisting of the following parts:</p>
+<ul class="simple">
+<li><strong>title</strong> (<a class="reference internal" href="api/template.html#rinoh.template.TitlePartTemplate" title="rinoh.template.TitlePartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.TitlePartTemplate</span></code></a>)<ul>
+<li><em>page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.title_page" title="rinoh.templates.book.BookConfiguration.title_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.title_page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+<li><strong>front matter</strong> (<a class="reference internal" href="api/template.html#rinoh.template.FixedDocumentPartTemplate" title="rinoh.template.FixedDocumentPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.FixedDocumentPartTemplate</span></code></a>)<ul>
+<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.structure.TableOfContentsSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x10afd3438&gt;]</span></code></li>
+<li><em>right_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.front_matter_right_page" title="rinoh.templates.book.BookConfiguration.front_matter_right_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.front_matter_right_page</span></code></a></li>
+<li><em>left_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.front_matter_left_page" title="rinoh.templates.book.BookConfiguration.front_matter_left_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.front_matter_left_page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">LOWERCASE</span> <span class="pre">ROMAN</span></code></li>
+</ul>
+</li>
+<li><strong>contents</strong> (<a class="reference internal" href="api/template.html#rinoh.template.ContentsPartTemplate" title="rinoh.template.ContentsPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.ContentsPartTemplate</span></code></a>)<ul>
+<li><em>right_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.content_right_page" title="rinoh.templates.book.BookConfiguration.content_right_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.content_right_page</span></code></a></li>
+<li><em>left_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.content_left_page" title="rinoh.templates.book.BookConfiguration.content_left_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.content_left_page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+<li><strong>indices</strong> (<a class="reference internal" href="api/template.html#rinoh.template.FixedDocumentPartTemplate" title="rinoh.template.FixedDocumentPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.FixedDocumentPartTemplate</span></code></a>)<ul>
+<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.index.IndexSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x10afd3ba8&gt;]</span></code></li>
+<li><em>right_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.back_matter_right_page" title="rinoh.templates.book.BookConfiguration.back_matter_right_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.back_matter_right_page</span></code></a></li>
+<li><em>left_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.back_matter_left_page" title="rinoh.templates.book.BookConfiguration.back_matter_left_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.back_matter_left_page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+</ul>
+<dl class="attribute">
+<dt id="rinoh.templates.book.Book.Configuration">
+<code class="descname">Configuration</code><a class="headerlink" href="#rinoh.templates.book.Book.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#rinoh.templates.book.BookConfiguration" title="rinoh.templates.book.BookConfiguration"><code class="xref py py-class docutils literal"><span class="pre">BookConfiguration</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.templates.book.BookConfiguration">
+<em class="property">class </em><code class="descclassname">rinoh.templates.book.</code><code class="descname">BookConfiguration</code><span class="sig-paren">(</span><em>base=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.book.BookConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>stylesheet</strong> &#8211; Overrides <code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code> default: StyleSheetFile(Sphinx)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Inherited parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code></a>: <strong>stylesheet</strong>, <strong>paper_size</strong></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.page">
+<code class="descname">page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>page_size</strong> = <code class="docutils literal"><span class="pre">Var('paper_size')</span></code></li>
+<li><strong>top_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
+<li><strong>right_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
+<li><strong>bottom_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
+<li><strong>left_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.title_page">
+<code class="descname">title_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.title_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.TitlePageTemplate" title="rinoh.template.TitlePageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.TitlePageTemplate</span></code></a>:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.front_matter_right_page">
+<code class="descname">front_matter_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.front_matter_right_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d730&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">180.00pt</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.front_matter_left_page">
+<code class="descname">front_matter_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.front_matter_left_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.content_right_page">
+<code class="descname">content_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.content_right_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_NUMBER(2).</span>&nbsp; <span class="pre">$SECTION_TITLE(2)\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
+<li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">body_matter_chapter_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d510&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">172.80pt</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.content_left_page">
+<code class="descname">content_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.content_left_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER\t\tChapter</span> <span class="pre">$SECTION_NUMBER(1).</span>&nbsp; <span class="pre">$SECTION_TITLE(1)'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.back_matter_right_page">
+<code class="descname">back_matter_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.back_matter_right_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_TITLE(1)\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
+<li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>columns</strong> = <code class="docutils literal"><span class="pre">2</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d730&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">180.00pt</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.book.BookConfiguration.back_matter_left_page">
+<code class="descname">back_matter_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.back_matter_left_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER\t\t$SECTION_TITLE(1)'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
+<li><strong>columns</strong> = <code class="docutils literal"><span class="pre">2</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced Topics" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="article.html" class="btn btn-neutral" title="Article" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

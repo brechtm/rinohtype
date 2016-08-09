@@ -1,407 +1,651 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Advanced Topics &mdash; RinohType 0.1.3-92-g7ec59-dirty documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3-92-g7ec59-dirty',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="RinohType 0.1.3-92-g7ec59-dirty documentation" href="index.html" />
-    <link rel="next" title="API Documentation" href="api/index.html" />
-    <link rel="prev" title="Quickstart" href="quickstart.html" />
-   
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Advanced Topics &mdash; rinohtype 0.2.0 documentation</title>
+  
 
-  </head>
-  <body role="document">  
+  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+        <link rel="next" title="API Documentation" href="api/index.html"/>
+        <link rel="prev" title="Book" href="book.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#flowables-and-inline-elements">Flowables and Inline Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#styling-document-elements">Styling Document Elements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#selectors">Selectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#matchers">Matchers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#style-sheets">Style Sheets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#base-styles">Base Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#custom-selectors">Custom Selectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variables">Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#style-attribute-resolution">Style Attribute Resolution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#style-logs">Style Logs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Advanced Topics</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/advanced.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="advanced-topics">
 <span id="advanced"></span><h1>Advanced Topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h1>
-<p>This sections serves as a reference for various building blocks making up
-RinohType. The information presented here is useful for those who want to learn
-how element styling works in RinohType, which is helpful when creating custom
-style sheets.</p>
-<div class="section" id="module-rinoh.flowable">
-<span id="flowables-and-inline-elements"></span><h2>Flowables and Inline Elements<a class="headerlink" href="#module-rinoh.flowable" title="Permalink to this headline">¶</a></h2>
-<p>A <a class="reference internal" href="api/flowables.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> is a document element that is placed on a page. It is
-usually a part of a document tree. Flowables at one level in a document tree are
-rendered one below the other.</p>
+<p>This section serves as a guide to the internal workings of rinohtype, and more
+specifically on how element styling works. This will be helpful if you want to
+create custom style sheets or develop a new frontend.</p>
+<div class="section" id="flowables-and-inline-elements">
+<h2>Flowables and Inline Elements<a class="headerlink" href="#flowables-and-inline-elements" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> is a document element that is placed on a page. It is
+usually a part of a document tree. Flowables at one level in a document tree
+are rendered one below the other.</p>
 <p>Here is schematic representation of an example document tree:</p>
-<div class="highlight-python"><div class="highlight"><pre>|- Section
-|   |- Paragraph
-|   \- Paragraph
-\- Section
-    |- Paragraph
-    |- List
-    |   |- ListItem
-    |   |   |- Paragraph (item number or bullet)
-    |   |   \- StaticGroupedFlowables (item body)
-    |   |       \- Paragraph
-    |   \- ListItem
-    |       \- Paragraph
-    |   |   \- StaticGroupedFlowables
-    |   |       \- List
-    |   |           |- ListItem
-    |   |           |   \- ...
-    |   |           \- ...
-    \- Paragraph
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">|-</span> <span class="n">Section</span>
+<span class="o">|</span>   <span class="o">|-</span> <span class="n">Paragraph</span>
+<span class="o">|</span>   \<span class="o">-</span> <span class="n">Paragraph</span>
+\<span class="o">-</span> <span class="n">Section</span>
+    <span class="o">|-</span> <span class="n">Paragraph</span>
+    <span class="o">|-</span> <span class="n">List</span>
+    <span class="o">|</span>   <span class="o">|-</span> <span class="n">ListItem</span>
+    <span class="o">|</span>   <span class="o">|</span>   <span class="o">|-</span> <span class="n">Paragraph</span> <span class="p">(</span><span class="n">item</span> <span class="n">label</span><span class="p">;</span> <span class="n">a</span> <span class="n">number</span> <span class="ow">or</span> <span class="n">bullet</span> <span class="n">symbol</span><span class="p">)</span>
+    <span class="o">|</span>   <span class="o">|</span>   \<span class="o">-</span> <span class="n">StaticGroupedFlowables</span> <span class="p">(</span><span class="n">item</span> <span class="n">body</span><span class="p">)</span>
+    <span class="o">|</span>   <span class="o">|</span>       \<span class="o">-</span> <span class="n">Paragraph</span>
+    <span class="o">|</span>   \<span class="o">-</span> <span class="n">ListItem</span>
+    <span class="o">|</span>       \<span class="o">-</span> <span class="n">Paragraph</span>
+    <span class="o">|</span>   <span class="o">|</span>   \<span class="o">-</span> <span class="n">StaticGroupedFlowables</span>
+    <span class="o">|</span>   <span class="o">|</span>       \<span class="o">-</span> <span class="n">List</span>
+    <span class="o">|</span>   <span class="o">|</span>           <span class="o">|-</span> <span class="n">ListItem</span>
+    <span class="o">|</span>   <span class="o">|</span>           <span class="o">|</span>   \<span class="o">-</span> <span class="o">...</span>
+    <span class="o">|</span>   <span class="o">|</span>           \<span class="o">-</span> <span class="o">...</span>
+    \<span class="o">-</span> <span class="n">Paragraph</span>
 </pre></div>
 </div>
 <p>This represents a document consisting of two sections. The first section
 contains two paragraphs. The second section contains a paragraph followed by
 a list and another paragraph. All of the elements in this tree are instances of
-<a class="reference internal" href="api/flowables.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> subclasses.</p>
-<p><code class="xref py py-class docutils literal"><span class="pre">Section</span></code> and <code class="xref py py-class docutils literal"><span class="pre">List</span></code> are subclasses of <a class="reference internal" href="api/flowables.html#rinoh.flowable.GroupedFlowables" title="rinoh.flowable.GroupedFlowables"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowables</span></code></a>;
-they group a number of other flowables. In the case of <code class="xref py py-class docutils literal"><span class="pre">List</span></code>, these are
-always of the <code class="xref py py-class docutils literal"><span class="pre">ListItem</span></code> type. Each list item contains an item number
-(ordered list) or a bullet symbol (unordered list) and an item body. For simple
-lists, the item body is typically a single <code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code>. The second list
-item contains a nested <code class="xref py py-class docutils literal"><span class="pre">List</span></code>.</p>
-<p>A <code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code> does not have any <a class="reference internal" href="api/flowables.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> children. It is however
-the root node of a tree of inline elements. This is an example paragraph in
-which several text styles are combined:</p>
-<div class="highlight-python"><div class="highlight"><pre>Paragraph
- |- SingleStyledText(&#39;Text with &#39;)
- |- MixedStyledText(style=&#39;emphasis&#39;)
- |   |- SingleStyledText(&#39;multiple &#39;)
- |   \- MixedStyledText(style=&#39;strong&#39;)
- |       |- SingleStyledText(&#39;nested &#39;)
- |       \- SingleStyledText(&#39;styles&#39;, style=&#39;small caps&#39;)
- \- SingleStyledText(&#39;.&#39;)
+<a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> subclasses.</p>
+<p><code class="xref py py-class docutils literal"><span class="pre">Section</span></code> and <code class="xref py py-class docutils literal"><span class="pre">List</span></code> are subclasses of
+<a class="reference internal" href="api/flowable.html#rinoh.flowable.GroupedFlowables" title="rinoh.flowable.GroupedFlowables"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowables</span></code></a>; they group a number of flowables. In the case of
+<a class="reference internal" href="api/structure.html#rinoh.structure.List" title="rinoh.structure.List"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>, these are always of the <code class="xref py py-class docutils literal"><span class="pre">ListItem</span></code> type. Each list item
+contains an item number (ordered list) or a bullet symbol (unordered list) and
+an item body. For simple lists, the item body is typically a single
+<a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a>. The second list item contains a nested <a class="reference internal" href="api/structure.html#rinoh.structure.List" title="rinoh.structure.List"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>.</p>
+<p>A <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a> does not have any <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> children. It is
+however the root node of a tree of <em>inline elements</em>. This is an example
+paragraph in which several text styles are combined:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Paragraph</span>
+ <span class="o">|-</span> <span class="n">SingleStyledText</span><span class="p">(</span><span class="s1">&#39;Text with &#39;</span><span class="p">)</span>
+ <span class="o">|-</span> <span class="n">MixedStyledText</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;emphasis&#39;</span><span class="p">)</span>
+ <span class="o">|</span>   <span class="o">|-</span> <span class="n">SingleStyledText</span><span class="p">(</span><span class="s1">&#39;multiple &#39;</span><span class="p">)</span>
+ <span class="o">|</span>   \<span class="o">-</span> <span class="n">MixedStyledText</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;strong&#39;</span><span class="p">)</span>
+ <span class="o">|</span>       <span class="o">|-</span> <span class="n">SingleStyledText</span><span class="p">(</span><span class="s1">&#39;nested &#39;</span><span class="p">)</span>
+ <span class="o">|</span>       \<span class="o">-</span> <span class="n">SingleStyledText</span><span class="p">(</span><span class="s1">&#39;styles&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;small caps&#39;</span><span class="p">)</span>
+ \<span class="o">-</span> <span class="n">SingleStyledText</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The eventual style of the words in this paragraph is determined by the applied
-style sheet. Read more about this in the next section.</p>
-<p>Besides <code class="xref py py-class docutils literal"><span class="pre">SingleStyledText</span></code> and <code class="xref py py-class docutils literal"><span class="pre">MixedStyledText</span></code> elements
-(subclasses of <code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code>), paragraphs can also contain
+<p>The visual representation of the words in this paragraph is determined by the
+applied style sheet. Read more about how this works in the next section.</p>
+<p>Besides <a class="reference internal" href="api/paragraph.html#rinoh.text.SingleStyledText" title="rinoh.text.SingleStyledText"><code class="xref py py-class docutils literal"><span class="pre">SingleStyledText</span></code></a> and <a class="reference internal" href="api/paragraph.html#rinoh.text.MixedStyledText" title="rinoh.text.MixedStyledText"><code class="xref py py-class docutils literal"><span class="pre">MixedStyledText</span></code></a> elements
+(subclasses of <a class="reference internal" href="api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a>), paragraphs can also contain
 <code class="xref py py-class docutils literal"><span class="pre">InlineFlowable</span></code>s. Currently, the only inline flowable is
 <code class="xref py py-class docutils literal"><span class="pre">InlineImage</span></code>.</p>
-<p>The common superclass for flowable and inline elements is <code class="xref py py-class docutils literal"><span class="pre">Styled</span></code>, which
-indicates that these elements can be styled using the style sheets discussed in
-the next section.</p>
+<p>The common superclass for flowable and inline elements is <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a>,
+which indicates that these elements can be styled using the style sheets which
+are discussed next.</p>
 </div>
-<div class="section" id="style-sheets">
-<h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
-<p>RinohType&#8217;s style sheets are heavily inspired by <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>, but add some
-functionality that CSS lacks. Similar to CSS, RinohType makes use of so-called
-<em>selectors</em> to select document elements (flowables or inline elements) to style.</p>
-<p>Unlike CSS however, these selectors are not directly specified in a style sheet.
-Instead, all selectors are collected in a <em>matcher</em> where they are mapped to
-descriptive labels for the selected elements. The actual <em>style sheets</em> assign
-style properties to these labels. Besides the usefulness of having these labels
-instead of the more cryptic selectors, a matcher can be reused by multiple style
-sheets, avoiding duplication.</p>
+<div class="section" id="styling-document-elements">
+<span id="stylesheets-advanced"></span><h2>Styling Document Elements<a class="headerlink" href="#styling-document-elements" title="Permalink to this headline">¶</a></h2>
+<p>Rinohtype&#8217;s style sheets are heavily inspired by <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>, but add some
+functionality that CSS lacks. Similar to CSS, rinohtype makes use of so-called
+<em>selectors</em> to select document elements (flowables and inline elements) to
+style.</p>
+<p>Unlike CSS however, these selectors are not directly specified in a style
+sheet. Instead, all selectors are collected in a <em>matcher</em> where they are
+mapped to descriptive labels for the selected elements. A <em>style sheets</em>
+assigns style properties to these labels. Besides the usefulness of having
+these labels instead of the more cryptic selectors, a matcher can be reused by
+multiple style sheets, avoiding duplication.</p>
 <div class="section" id="selectors">
 <h3>Selectors<a class="headerlink" href="#selectors" title="Permalink to this headline">¶</a></h3>
-<p>Selectors in RinohType always select elements of a particular type. The
-<strong>class</strong> of a document element is also a selector for all instances of the
-class (and its subclasses). This selector matches all paragraphs in the
-document, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Paragraph</span>
+<p>Selectors in rinohtype select elements of a particular type. The <em>class</em> of a
+document element serves as a selector for all instances of the class (and its
+subclasses). The <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a> class is a selector that matches all
+paragraphs in the document, for example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Paragraph</span>
 </pre></div>
 </div>
 <p>As with <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets#Selector">CSS selectors</a>, elements can also be matched based on their context.
 For example, the following matches any paragraph that is a direct child of a
-list item (the list item number or symbol):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>
+list item (the list item label):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>
 </pre></div>
 </div>
-<p><a class="reference external" href="https://docs.python.org/3.5/library/constants.html#Ellipsis">Python&#8217;s ellipsis</a> can be used to match any number of levels of elements in
-the document tree. The following selector matches any paragraph element at any
-level inside a table cell:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">TableCell</span> <span class="o">/</span> <span class="o">...</span> <span class="o">/</span> <span class="n">Paragraph</span>
+<p>Python&#8217;s <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#bltin-ellipsis-object" title="(in Python v3.5)"><span class="xref std std-ref">ellipsis</span></a> can be used to match
+any number of levels of elements in the document tree. The following selector
+matches paragraphs at any level inside a table cell:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TableCell</span> <span class="o">/</span> <span class="o">...</span> <span class="o">/</span> <span class="n">Paragraph</span>
 </pre></div>
 </div>
-<p>Selectors can select all instances of <code class="xref py py-class docutils literal"><span class="pre">Styled</span></code> subclasses. These include
-<a class="reference internal" href="api/flowables.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> and <code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code>, but also <code class="xref py py-class docutils literal"><span class="pre">TableSection</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">TableRow</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Line</span></code> and <code class="xref py py-class docutils literal"><span class="pre">Shape</span></code>. Elements of the latter
-classes are children of certain flowables (such as table).</p>
-<p>Similar to HTML/CSS&#8217;s <em>class</em> attribute, <code class="xref py py-class docutils literal"><span class="pre">Styled</span></code> elements can have a
-<strong>style</strong> attribute which can be specified when constructing a selector. This
-one selects all styled text elements with the <em>emphasis</em> style, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;emphasis&#39;</span><span class="p">)</span>
+<p>Selectors can select all instances of <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a> subclasses. These
+include <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a> and <a class="reference internal" href="api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a>, but also
+<code class="xref py py-class docutils literal"><span class="pre">TableSection</span></code>, <code class="xref py py-class docutils literal"><span class="pre">TableRow</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Line</span></code> and <code class="xref py py-class docutils literal"><span class="pre">Shape</span></code>.
+Elements of some of the latter classes only appear as children of other
+flowables (such as <code class="xref py py-class docutils literal"><span class="pre">Table</span></code>).</p>
+<p>Similar to a HTML element&#8217;s <em>class</em> attribute, <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a> elements can
+have an optional <em>style</em> attribute which can be used when constructing a
+selector. This one selects all styled text elements with the <em>emphasis</em> style,
+for example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;emphasis&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">like()</span></code> method can also match <strong>arbitrary attributes</strong> of elements.
-This can be used to do more advanced things such as selecting the background
-objects on all odd rows of a table, limited to the cells not spanning multiple
-rows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">TableCell</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">row_index</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">TableCellBackground</span>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">Styled.like()</span></code> method can also match <strong>arbitrary attributes</strong> of
+elements by passing them as keyword arguments. This can be used to do more
+advanced things such as selecting the background objects on all odd rows of a
+table, limited to the cells not spanning multiple rows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">TableCell</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">row_index</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">TableCellBackground</span>
 </pre></div>
 </div>
-<p>The argument passed as <em>row_index</em> is slice object that is used for extended
-indexing. Indexing a list <code class="docutils literal"><span class="pre">lst[slice(0,</span> <span class="pre">None,</span> <span class="pre">2)]</span></code> is equivalent to
-<code class="docutils literal"><span class="pre">lst[0::2]</span></code>.</p>
-<p>RinohType borrows CSS&#8217;s concept of <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets#Specificity">specificity</a> to determine the &#8220;winning&#8221;
-selector when multiple selectors match a given document element. Roughly stated,
-the more specific selector will win. For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>                      <span class="c"># specificity (0, 0, 2)</span>
+<p>The argument passed as <em>row_index</em> is a slice object that is used for extended
+indexing<a class="footnote-reference" href="#slice" id="id1">[1]</a>. To make this work, <code class="xref py py-attr docutils literal"><span class="pre">TableCell.row_index</span></code> is an
+object with a custom <code class="xref py py-meth docutils literal"><span class="pre">__eq__()</span></code> that allows comparison to a slice.</p>
+<p>Rinohtype borrows CSS&#8217;s concept of <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_St174yle_Sheets#Specificity">specificity</a> to determine the &#8220;winning&#8221;
+selector when multiple selectors match a given document element. Each part of
+a selector adds to the specificity of a selector. Roughly stated, the more
+specific selector will win. For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>                      <span class="c1"># specificity (0, 0, 0, 0, 2)</span>
 </pre></div>
 </div>
 <p>wins over:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">Paragraph</span>                                 <span class="c"># specificity (0, 0, 1)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Paragraph</span>                                 <span class="c1"># specificity (0, 0, 0, 0, 1)</span>
 </pre></div>
 </div>
 <p>since it matches two elements instead of just one.</p>
-<p>Specificity is represented as a 3-tuple. The three elements represent the number
-of style, attributes and class matches. Here are some selectors along with their
-specificity:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;emphasis&#39;</span><span class="p">)</span>               <span class="c"># specificity (1, 0, 1)</span>
-<span class="n">TableCell</span> <span class="o">/</span> <span class="o">...</span> <span class="o">/</span> <span class="n">Paragraph</span>               <span class="c"># specificity (0, 0, 2)</span>
-<span class="n">TableCell</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">row_index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>    <span class="c"># specificity (0, 1, 1)</span>
+<p>Specificity is represented as a 5-tuple. The last four elements represent the
+number of <em>location</em> (currently not used), <em>style</em>, <em>attribute</em> and <em>class</em>
+matches. Here are some selectors along with their specificity:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;emphasis&#39;</span><span class="p">)</span>               <span class="c1"># specificity (0, 0, 1, 0, 1)</span>
+<span class="n">TableCell</span> <span class="o">/</span> <span class="o">...</span> <span class="o">/</span> <span class="n">Paragraph</span>               <span class="c1"># specificity (0, 0, 0, 0, 2)</span>
+<span class="n">TableCell</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">row_index</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># specificity (0, 0, 0, 2, 1)</span>
 </pre></div>
 </div>
-<p>Specificity ordering is the same as tuple ordering, so (1, 0, 0) wins over
-(0, 5, 0) and (0, 0, 3) for example. Only when the number of style matches are
-equal the attributes match count is compared, and so on.</p>
+<p>Specificity ordering is the same as tuple ordering, so (0, 0, 1, 0, 0) wins
+over (0, 0, 0, 5, 0) and (0, 0, 0, 0, 3) for example. Only when the number of
+style matches are equal, the attributes match count is compared and so on.</p>
+<p>In practice, the class match count is dependent on the element being matched.
+If the class of the element exactly matches the selector, the right-most
+specificity value is increased by 2. If the element&#8217;s class is a subclass of
+the selector, it is only increased by 1.</p>
+<p>The first element of the specificity tuple is the <em>priority</em> of the selector.
+For most selectors, the priority will have the default value of 0. The priority
+of a selector only needs to be set in some cases. For example, we want the
+<code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code> selector to match a <code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code> instance. However,
+because <code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code> is a <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a> subclass, another selector
+with a higher specificity will also match it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CodeBlock</span>                                 <span class="c1"># specificity (0, 0, 0, 0, 2)</span>
+<span class="n">DefinitionList</span> <span class="o">/</span> <span class="n">Definition</span> <span class="o">/</span> <span class="n">Paragraph</span>   <span class="c1"># specificity (0, 0, 0, 0, 3)</span>
+</pre></div>
+</div>
+<p>To make sure the <code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code> selector wins, we increase the priority of
+the <code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code> selector by prepending it with a <code class="docutils literal"><span class="pre">+</span></code> sign:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">+</span><span class="n">CodeBlock</span>                                <span class="c1"># specificity (1, 0, 0, 0, 2)</span>
+</pre></div>
+</div>
+<p>In general, you can use multiple <code class="docutils literal"><span class="pre">+</span></code> or <code class="docutils literal"><span class="pre">-</span></code> signs to adjust the priority:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">++</span><span class="n">CodeBlock</span>                               <span class="c1"># specificity (2, 0, 0, 0, 2)</span>
+<span class="o">---</span><span class="n">CodeBlock</span>                              <span class="c1"># specificity (-3, 0, 0, 0, 2)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="matchers">
 <h3>Matchers<a class="headerlink" href="#matchers" title="Permalink to this headline">¶</a></h3>
-<p>At the most basic level, a <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> is a dictionary that maps
-descriptions to selectors:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">matcher</span> <span class="o">=</span> <span class="n">StyledMatcher</span><span class="p">()</span>
+<p>At the most basic level, a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code></a> is a dictionary that maps
+labels to selectors:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">matcher</span> <span class="o">=</span> <span class="n">StyledMatcher</span><span class="p">()</span>
 <span class="o">...</span>
-<span class="n">matcher</span><span class="p">[</span><span class="s">&#39;emphasis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;emphasis&#39;</span><span class="p">)</span>
-<span class="n">matcher</span><span class="p">[</span><span class="s">&#39;chapter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Section</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">matcher</span><span class="p">[</span><span class="s">&#39;list item number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>
-<span class="n">matcher</span><span class="p">[</span><span class="s">&#39;nested line block&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">GroupedFlowables</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;line block&#39;</span><span class="p">)</span>
-                                <span class="o">/</span> <span class="n">GroupedFlowables</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&#39;line block&#39;</span><span class="p">))</span>
-<span class="o">...</span>
-</pre></div>
-</div>
-<p>RinohType currently includes one styled matcher which defines labels for all
-common elements in documents:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinohlib.stylesheets.matcher</span> <span class="kn">import</span> <span class="n">matcher</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="id1">
-<h3>Style Sheets<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>A <code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code> takes a <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> to provide element labels
-to assign style properties to:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">styles</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s">&#39;IEEE&#39;</span><span class="p">,</span> <span class="n">matcher</span><span class="o">=</span><span class="n">matcher</span><span class="p">)</span>
-<span class="o">...</span>
-<span class="n">styles</span><span class="p">(</span><span class="s">&#39;emphasis&#39;</span><span class="p">,</span> <span class="n">font_slant</span><span class="o">=</span><span class="n">ITALIC</span><span class="p">)</span>
-<span class="n">styles</span><span class="p">(</span><span class="s">&#39;nested line block&#39;</span><span class="p">,</span> <span class="n">margin_left</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
+<span class="n">matcher</span><span class="p">[</span><span class="s1">&#39;emphasis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;emphasis&#39;</span><span class="p">)</span>
+<span class="n">matcher</span><span class="p">[</span><span class="s1">&#39;chapter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Section</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">matcher</span><span class="p">[</span><span class="s1">&#39;list item number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ListItem</span> <span class="o">/</span> <span class="n">Paragraph</span>
+<span class="n">matcher</span><span class="p">[</span><span class="s1">&#39;nested line block&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">GroupedFlowables</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;line block&#39;</span><span class="p">)</span>
+                                <span class="o">/</span> <span class="n">GroupedFlowables</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s1">&#39;line block&#39;</span><span class="p">))</span>
 <span class="o">...</span>
 </pre></div>
 </div>
-<p>Each <code class="xref py py-class docutils literal"><span class="pre">Styled</span></code> has a <code class="xref py py-class docutils literal"><span class="pre">Style</span></code> class associated with it. For
-<code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code>, this is <code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code>. These style classes
-determine which style attributes are accepted for the styled element. The style
-class is automatically determined from the selector, so it is possible to simply
-pass the style properties to the style sheet.</p>
+<p>Rinohtype currently includes one matcher which defines labels for all common
+elements in documents:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.stylesheets</span> <span class="k">import</span> <span class="n">matcher</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="style-sheets">
+<h3>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code></a> takes a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code></a> to provide element
+labels to assign style properties to:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">styles</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s1">&#39;IEEE&#39;</span><span class="p">,</span> <span class="n">matcher</span><span class="o">=</span><span class="n">matcher</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">styles</span><span class="p">[</span><span class="s1">&#39;strong&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TextStyle</span><span class="p">(</span><span class="n">font_weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">)</span>
+<span class="n">styles</span><span class="p">(</span><span class="s1">&#39;emphasis&#39;</span><span class="p">,</span> <span class="n">font_slant</span><span class="o">=</span><span class="n">ITALIC</span><span class="p">)</span>
+<span class="n">styles</span><span class="p">(</span><span class="s1">&#39;nested line block&#39;</span><span class="p">,</span> <span class="n">margin_left</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Each <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a> has a <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal"><span class="pre">Style</span></code></a> class associated with it. For
+<a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a>, this is <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a>. These style classes
+determine which style attributes are accepted for the styled element. Because
+the style class can automatically be determined from the selector, it is
+possible to simply pass the style properties to the style sheet by calling the
+<a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code></a> instance as shown above.</p>
+<p>Style sheets are usually loaded from a <cite>.rts</cite> file using
+<a class="reference internal" href="api/style.html#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile"><code class="xref py py-class docutils literal"><span class="pre">StyleSheetFile</span></code></a>. An example style sheet file is shown in
+<a class="reference internal" href="quickstart.html#quickstart-stylesheets"><span class="std std-ref">Style Sheets</span></a> in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide.</p>
+<p>A style sheet file contains a number of sections, denoted by a section title
+enclosed in squate brackets. There are two special sections:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">[STYLESHEET]</span></code> describes global style sheet information (see
+<a class="reference internal" href="api/style.html#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile"><code class="xref py py-class docutils literal"><span class="pre">StyleSheetFile</span></code></a> for details)</li>
+<li><code class="docutils literal"><span class="pre">[VARIABLES]</span></code> collects variables that can be referenced elsewhere in the
+style sheet</li>
+</ul>
+<p>Other sections define the style for a document elements. The section titles
+correspond to the labels associated with selectors in the
+<a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code></a>. Each entry in a section sets a value for a style
+attribute. The style for enumerated lists is defined like this, for example:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[enumerated list]</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">ordered</span><span class="o">=</span><span class="s">True</span>
+<span class="na">flowable_spacing</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;)&#39;</span>
+</pre></div>
+</div>
+<p>Since this is an enumerated list, <em>ordered</em> is set to <code class="docutils literal"><span class="pre">True</span></code>. <em>number_format</em>
+and <em>label_suffix</em> are set to produce list items labels of the style <em>1)</em>,
+<em>2)</em>, .... Other entries control margins and spacing. See <a class="reference internal" href="api/structure.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a>
+for the full list of accepted style attributes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The supported attributes and format of attribute values have not not
+yet been fully documented. Please look at the <a class="reference external" href="https://github.com/brechtm/rinohtype/tree/master/rinoh/data/stylesheets">included style sheets</a> for
+now.</p>
+</div>
+<div class="section" id="base-styles">
+<h4>Base Styles<a class="headerlink" href="#base-styles" title="Permalink to this headline">¶</a></h4>
+<p>It is possible to define styles which are not linked to a selector. These can
+be useful to collect common attributes in a base style for a set of style
+definitions. For example, the Sphinx style sheet defines the <em>header_footer</em>
+style to serve as a base for the <em>header</em> and <em>footer</em> styles:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[header_footer:Paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">50% CENTER, 100% RIGHT</span>
+
+<span class="k">[header]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">24pt</span>
+
+<span class="k">[footer]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
+</pre></div>
+</div>
+<p>Because there is no selector associated with <em>header_footer</em>, the element type
+needs to be specified manually. This is done by adding the name of the relevant
+<a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a> subclass to the section name, using a colon (<code class="docutils literal"><span class="pre">:</span></code>) to
+separate it from the style name.</p>
+</div>
+<div class="section" id="custom-selectors">
+<h4>Custom Selectors<a class="headerlink" href="#custom-selectors" title="Permalink to this headline">¶</a></h4>
+<p>There is limited support for defining new selectors directly in a style sheet
+file. This allows making tweaks to an existing style sheet without having to
+create a new <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code></a>, but should be used sparingly.</p>
+<p>The syntax for specifying a selector for a style is the same as for element
+class, with the additional requirement that the element type name needs to be
+followed by parentheses. Arguments to be passed to <code class="xref py py-meth docutils literal"><span class="pre">Styled.like()</span></code> can
+be included within the parentheses. For example:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[special text:StyledText(&#39;special&#39;)]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">#FF00FF</span>
+
+<span class="k">[accept button:InlineImage(filename=&#39;images/accept_button.png&#39;)]</span>
+<span class="na">baseline</span><span class="o">=</span><span class="s">20%</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="variables">
 <h4>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h4>
 <p>Variables can be used for values that are used in multiple style definitions.
-This example declares a variable <code class="docutils literal"><span class="pre">fonts</span></code> to allow easily changing the
+This example declares a number of typefaces to allow easily replacing the
 fonts in a style sheet:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinoh.font</span> <span class="kn">import</span> <span class="n">TypeFamily</span>
-
-<span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.pagella</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">palatino</span>
-<span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.cursor</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">courier</span>
-<span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.heros</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">helvetica</span>
-
-<span class="n">styles</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;font&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TypeFamily</span><span class="p">(</span><span class="n">serif</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
-                                      <span class="n">sans</span><span class="o">=</span><span class="n">helvetica</span><span class="p">,</span>
-                                      <span class="n">mono</span><span class="o">=</span><span class="n">courier</span><span class="p">)</span>
-<span class="o">...</span>
-<span class="n">styles</span><span class="p">(</span><span class="s">&#39;monospaced&#39;</span><span class="p">,</span>
-       <span class="n">typeface</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s">&#39;font_family&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mono</span><span class="p">,</span>
-       <span class="n">font_size</span><span class="o">=</span><span class="mi">9</span><span class="o">*</span><span class="n">PT</span><span class="p">,</span>
-       <span class="n">hyphenate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-       <span class="n">ligatures</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-<span class="o">...</span>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span>
 </pre></div>
 </div>
-<p>Another stylesheet can inherit (see below) from this one and easily replace all
-fonts in the document by overriding the <code class="docutils literal"><span class="pre">fonts</span></code> variable.</p>
+<p>It also defines the <em>thin_black_stroke</em> line style for use in table and frame
+styles, and a specific color labelled <em>blue</em>. These variables can be referenced
+in style definitions as follows:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[code block]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">1pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">3pt</span>
+</pre></div>
 </div>
-<div class="section" id="style-property-resolution">
-<h4>Style Property Resolution<a class="headerlink" href="#style-property-resolution" title="Permalink to this headline">¶</a></h4>
+<p>Another stylesheet can inherit (see below) from this one and easily replace
+fonts in the document by overriding the variables.</p>
+</div>
+<div class="section" id="style-attribute-resolution">
+<h4>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Permalink to this headline">¶</a></h4>
 <p>The style system makes a distinction between text (inline) elements and
-flowables with respect to how property values are resolved.</p>
+flowables with respect to how attribute values are resolved.</p>
 <p><strong>Text elements</strong> by default inherit the properties from their parent. Take for
-example the <code class="docutils literal"><span class="pre">emphasis</span></code> style definition from the example above. The value for
-style properties other than <code class="docutils literal"><span class="pre">font_slant</span></code> (which is defined in the <code class="docutils literal"><span class="pre">emphasis</span></code>
+example the <em>emphasis</em> style definition from the example above. The value for
+style properties other than <em>font_slant</em> (which is defined in the <em>emphasis</em>
 style itself) will be looked up in the style definition corresponding to the
-parent element. That can be another <code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code> instance, or a
-<code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code>. If that style definition neither defines the style property,
-the lookup proceeds recursively, moving up in the document tree.</p>
+parent element. That can be another <a class="reference internal" href="api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> instance, or a
+<a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a>. If that style definition neither defines the style
+attribute, the lookup proceeds recursively, moving up in the document tree.</p>
 <p>For <strong>flowables</strong>, there is no fall-back to the parent&#8217;s style by default.
-A base style can be explicitly specified however. If a style property is not
+A base style can be explicitly specified however. If a style attribute is not
 present in a particular style definition, it is looked up in the base style.</p>
 <p>This can also help avoid duplication of style information and the resulting
-maintenance difficulties. In the following example, the <code class="docutils literal"><span class="pre">unnumbered</span> <span class="pre">heading</span>
-<span class="pre">level</span> <span class="pre">1</span></code> style inherits all properties from <code class="docutils literal"><span class="pre">heading</span> <span class="pre">level</span> <span class="pre">1</span></code>, overriding
-only the <code class="docutils literal"><span class="pre">number_format</span></code> property:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">styles</span><span class="p">(</span><span class="s">&#39;heading level 1&#39;</span><span class="p">,</span>
-       <span class="n">typeface</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s">&#39;ieee_family&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">serif</span><span class="p">,</span>
-       <span class="n">font_weight</span><span class="o">=</span><span class="n">REGULAR</span><span class="p">,</span>
-       <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">PT</span><span class="p">,</span>
-       <span class="n">small_caps</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-       <span class="n">justify</span><span class="o">=</span><span class="n">CENTER</span><span class="p">,</span>
-       <span class="n">line_spacing</span><span class="o">=</span><span class="n">FixedSpacing</span><span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">PT</span><span class="p">),</span>
-       <span class="n">space_above</span><span class="o">=</span><span class="mi">18</span><span class="o">*</span><span class="n">PT</span><span class="p">,</span>
-       <span class="n">space_below</span><span class="o">=</span><span class="mi">6</span><span class="o">*</span><span class="n">PT</span><span class="p">,</span>
-       <span class="n">number_format</span><span class="o">=</span><span class="n">ROMAN_UC</span><span class="p">,</span>
-       <span class="n">label_suffix</span><span class="o">=</span><span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">FixedWidthSpace</span><span class="p">())</span>
+maintenance difficulties. In the following example, the <em>unnumbered heading
+level 1</em> style inherits all properties from <em>heading level 1</em>, overriding
+only the <em>number_format</em> attribute:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[heading level 1]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">16pt</span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">SINGLE</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39; &#39;</span>
 
-<span class="n">styles</span><span class="p">(</span><span class="s">&#39;unnumbered heading level 1&#39;</span><span class="p">,</span>
-       <span class="n">base</span><span class="o">=</span><span class="s">&#39;heading level 1&#39;</span><span class="p">,</span>
-       <span class="n">number_format</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="k">[unnumbered heading level 1]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
 </pre></div>
 </div>
-<p>When a value for a particular style property is set nowhere in the style
+<p>When a value for a particular style attribute is set nowhere in the style
 definition lookup hierarchy its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
-<code class="xref py py-class docutils literal"><span class="pre">Style</span></code> subclasses.</p>
-<p>For both text elements and flowables, it is possible to override the default
-behavior of falling back to the parent&#8217;s style or not. For <code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code>
-styles, setting <code class="docutils literal"><span class="pre">base</span></code> to <code class="docutils literal"><span class="pre">None</span></code> or another <code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code> prevents
-fallback to the parent element&#8217;s style. For flowables, <code class="docutils literal"><span class="pre">base</span></code> can be set to
-<code class="docutils literal"><span class="pre">PARENT_STYLE</span></code> to enable fallback, but this requires that the current
-element type is the same or a subclass of the parent type, so it is not
-recommended.</p>
+<a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal"><span class="pre">Style</span></code></a> subclasses.</p>
+<p>For text elements, it is possible to override the default behavior of
+falling back to the parent&#8217;s style. Setting <em>base</em> to the label of a
+<code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code> or <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a> prevents fallback to the parent
+element&#8217;s style.</p>
 </div>
-<div class="section" id="extending-a-style-sheet">
-<h4>Extending a Style Sheet<a class="headerlink" href="#extending-a-style-sheet" title="Permalink to this headline">¶</a></h4>
-<p>A style sheet can be extended by defining a new style sheet that references it
-as a base:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinohlib.stylesheets.sphinx</span> <span class="kn">import</span> <span class="n">stylesheet</span>
-
-<span class="n">my_style_sheet</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s">&#39;my style&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">stylesheet</span><span class="p">)</span>
+</div>
+<div class="section" id="style-logs">
+<h3>Style Logs<a class="headerlink" href="#style-logs" title="Permalink to this headline">¶</a></h3>
+<p>When rendering a document, rinohtype will create a <span class="target" id="index-2"></span>style log. It is
+written to disk using the same base name as the output file, but with a
+<cite>.stylelog</cite> extension. The information logged in the style log is invaluable
+when debugging your style sheet. It tells you which style maps to each element
+in the document.</p>
+<p>The style log lists the document elements (as a tree) that have been rendered
+to each page, and for each element all matching styles are listed together with
+their specificity. No styles are listed when there aren&#8217;t any selectors
+matching an element and the default values are used. The winning style is
+indicated with a <code class="docutils literal"><span class="pre">&gt;</span></code> symbol. Styles that are not defined in the style sheet
+or its base(s) are marked with an <code class="docutils literal"><span class="pre">x</span></code>. If none of the styles are defined,
+rinohtype falls back to using the default style.</p>
+<p>Here is an example excerpt from a style log:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>...
+  Paragraph(&#39;January 03, 2012&#39;, style=&#39;title page date&#39;)
+       &gt; (0,0,1,0,2) title page date
+         (0,0,0,0,2) body
+    SingleStyledText(&#39;January 03, 2012&#39;)
+---------------------------------- page 3 ----------------------------------
+#### ChainedContainer(&#39;column1&#39;)
+  DocumentTree()
+    Section(id=&#39;structural-elements&#39;)             demo.txt:62 &lt;section&gt;
+         &gt; (0,0,0,1,2) chapter
+      Heading(&#39;1 Structural Elements&#39;)            demo.txt:62 &lt;title&gt;
+           &gt; (0,0,0,1,2) heading level 1
+             (0,0,0,0,2) other heading levels
+          MixedStyledText(&#39;1 Structural Elements&#39;)
+            SingleStyledText(&#39;1&#39;)
+            MixedStyledText(&#39; &#39;)
+              SingleStyledText(&#39; &#39;)
+            SingleStyledText(&#39;Structural Elements&#39;)
+      Paragraph(&#39;A paragraph.&#39;)                   demo.txt:64 &lt;paragraph&gt;
+           &gt; (0,0,0,0,2) body
+        MixedStyledText(&#39;A paragraph.&#39;)
+          SingleStyledText(&#39;A paragraph.&#39;)
+      List(style=&#39;bulleted&#39;)                      demo.txt:66 &lt;bullet_list&gt;
+           &gt; (0,0,1,0,2) bulleted list
+        ListItem()
+             x (0,0,1,0,4) bulleted list item
+             &gt; fallback to default style
+          ListItemLabel(&#39;•&#39;)
+               &gt; (0,0,1,0,6) bulleted list item label
+                 (0,0,0,0,2) list item label
+              MixedStyledText(&#39;•&#39;)
+                SingleStyledText(&#39;&#39;)
+                SingleStyledText(&#39;•&#39;)
+          StaticGroupedFlowables()                demo.txt:66 &lt;list_item&gt;
+               &gt; (0,0,0,0,3) list item body
+...
 </pre></div>
 </div>
-<p>The new stylesheet can override styles defined in the base style sheet. The
-following redefines the <code class="docutils literal"><span class="pre">emphasis</span></code> style to display emphasized text in a bold
-font:</p>
-<p>my_style_sheet(&#8216;emphasis&#8217;, font_weight=BOLD)</p>
-<p>Variables can also be overridden. This overrides the <code class="docutils literal"><span class="pre">fonts</span></code> variable in order
-to replace the serif font defined in the Sphinx style sheet (Palatino) with
-Times:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.termes</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">times</span>
-<span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.cursor</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">courier</span>
-<span class="kn">from</span> <span class="nn">rinohlib.fonts.texgyre.heros</span> <span class="kn">import</span> <span class="n">typeface</span> <span class="k">as</span> <span class="n">helvetica</span>
-
-<span class="n">my_style_sheet</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;fonts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TypeFamily</span><span class="p">(</span><span class="n">serif</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
-                                               <span class="n">sans</span><span class="o">=</span><span class="n">helvetica</span><span class="p">,</span>
-                                               <span class="n">mono</span><span class="o">=</span><span class="n">courier</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The variable&#8217;s new value also affects styles defined in the base style sheet.</p>
-<p>The new style sheet can optionally be passed a <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> to define
-new styles. This is useful when you want to have custom markup in your document,
-such as custom roles or directives are used in a reStructuredText document. For
-example, the following defines a custom style to apply to text that is tagged
-with the <code class="docutils literal"><span class="pre">acronym</span></code> role:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">my_matcher</span> <span class="o">=</span> <span class="n">StyledMatcher</span><span class="p">()</span>
-<span class="n">my_matcher</span><span class="p">[</span><span class="s">&#39;acronym&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StyledText</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;acronym&#39;</span><span class="p">])</span>
-
-<span class="n">my_style_sheet</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s">&#39;my style&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">stylesheet</span><span class="p">,</span>
-                            <span class="n">matcher</span><span class="o">=</span><span class="n">my_matcher</span><span class="p">)</span>
-<span class="n">my_style_sheet</span><span class="p">(</span><span class="s">&#39;acronym&#39;</span><span class="p">,</span> <span class="n">small_caps</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<table class="docutils footnote" frame="void" id="slice" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Indexing a list like this <code class="docutils literal"><span class="pre">lst[slice(0,</span> <span class="pre">None,</span> <span class="pre">2)]</span></code> is equivalent
+to <code class="docutils literal"><span class="pre">lst[0::2]</span></code>.</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 
 
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Advanced Topics</a><ul>
-<li><a class="reference internal" href="#module-rinoh.flowable">Flowables and Inline Elements</a></li>
-<li><a class="reference internal" href="#style-sheets">Style Sheets</a><ul>
-<li><a class="reference internal" href="#selectors">Selectors</a></li>
-<li><a class="reference internal" href="#matchers">Matchers</a></li>
-<li><a class="reference internal" href="#id1">Style Sheets</a><ul>
-<li><a class="reference internal" href="#variables">Variables</a></li>
-<li><a class="reference internal" href="#style-property-resolution">Style Property Resolution</a></li>
-<li><a class="reference internal" href="#extending-a-style-sheet">Extending a Style Sheet</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="quickstart.html" title="previous chapter">Quickstart</a></li>
-      <li>Next: <a href="api/index.html" title="next chapter">API Documentation</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/advanced.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="book.html" class="btn btn-neutral" title="Book" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Brecht Machiels.
+
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, Brecht Machiels.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
-      
-      |
-      <a href="_sources/advanced.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

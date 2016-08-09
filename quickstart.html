@@ -1,521 +1,547 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Quickstart &mdash; RinohType 0.1.3-92-g7ec59-dirty documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3-92-g7ec59-dirty',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="RinohType 0.1.3-92-g7ec59-dirty documentation" href="index.html" />
-    <link rel="next" title="Advanced Topics" href="advanced.html" />
-    <link rel="prev" title="Installation" href="install.html" />
-   
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; rinohtype 0.2.0 documentation</title>
+  
 
-  </head>
-  <body role="document">  
+  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+        <link rel="next" title="Command-line Renderer" href="rinoh.html"/>
+        <link rel="prev" title="Installation" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#restructuredtext-renderer">reStructuredText Renderer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sphinx-builder">Sphinx Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#high-level-pdf-library">High-level PDF Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#style-sheets">Style Sheets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#extending-an-existing-style-sheet">Extending an Existing Style Sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-from-scratch">Starting from Scratch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#document-templates">Document Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-an-existing-template">Using an Existing Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-template">Creating a Custom Template</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/quickstart.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="quickstart">
 <span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>This section gets you started quickly, discussing each of the three modes of
-operation introduced in <a class="reference internal" href="intro.html#introduction"><span>Introduction</span></a>. Additionally, the basics of style
+operation introduced in <a class="reference internal" href="intro.html#introduction"><span class="std std-ref">Introduction</span></a>. Additionally, the basics of style
 sheets and document templates are explained.</p>
 <div class="section" id="restructuredtext-renderer">
 <h2>reStructuredText Renderer<a class="headerlink" href="#restructuredtext-renderer" title="Permalink to this headline">¶</a></h2>
-<p>Installing RinohType places the <code class="docutils literal"><span class="pre">rinoh</span></code> script in the <code class="docutils literal"><span class="pre">PATH</span></code>. This can be
-used to render <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> documents such as <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a>:</p>
-<div class="highlight-python"><div class="highlight"><pre>rinoh demo.txt
+<p>Installing rinohtype places the <strong class="program">rinoh</strong> script in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code>.
+This can be used to render <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> documents such as <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rinoh</span> <span class="n">demo</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
 <p>After rendering finishes, you will find <code class="docutils literal"><span class="pre">demo.pdf</span></code> alongside the input file.</p>
-<p>At this moment, <code class="docutils literal"><span class="pre">rinoh</span></code> does not yet accept many command-line options. It
-always renders the reStructuredText document using the article template. You can
-however specify the paper size using the <code class="docutils literal"><span class="pre">--paper</span></code> command line argument.</p>
+<p><strong class="program">rinoh</strong> allows specifying the document template and style sheet to use
+when rendering the reStructuredText document. See its <a class="reference internal" href="rinoh.html#rinoh"><span class="std std-ref">command-line
+options</span></a> for details.</p>
+<p id="rendering-passes">Two rendering passes are required to make sure that cross-references to page
+numbers are correct. After a document has been rendered, rinohtype will save
+the page reference data to a <cite>.rtc</cite> file. Provided the document (or the
+template or style sheet) doesn&#8217;t change a lot, this can prevent the need to
+perform a second rendering pass.</p>
 </div>
 <div class="section" id="sphinx-builder">
 <span id="sphinx-quickstart"></span><h2>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h2>
-<p>To use RinohType to render Sphinx documents, you need to adjust the Sphinx
-project&#8217;s <code class="docutils literal"><span class="pre">conf.py</span></code>:</p>
-<ol class="arabic">
-<li><p class="first">add <code class="docutils literal"><span class="pre">rinoh.frontend.sphinx</span></code> to the <code class="docutils literal"><span class="pre">extensions</span></code> list, and</p>
-</li>
-<li><p class="first">set the <code class="docutils literal"><span class="pre">rinoh_documents</span></code> configuration option:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;index&#39;</span><span class="p">,</span>            <span class="c"># top-level file (index.rst)</span>
-                    <span class="s">&#39;target&#39;</span><span class="p">,</span>           <span class="c"># output (target.pdf)</span>
-                    <span class="s">&#39;Document Title&#39;</span><span class="p">,</span>   <span class="c"># document title</span>
-                    <span class="s">&#39;John A. Uthor&#39;</span><span class="p">)]</span>   <span class="c"># document author</span>
+<p>To use rinohtype to render Sphinx documents, at a minimum you need to add
+<code class="docutils literal"><span class="pre">'rinoh.frontend.sphinx'</span></code> to the <code class="docutils literal"><span class="pre">extensions</span></code> list in the Sphinx
+project&#8217;s <code class="docutils literal"><span class="pre">conf.py</span></code>.</p>
+<p>If your Sphinx project is already configured for rendering with LaTeX,
+rinohtype will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_documents</span></code></a> and other
+options for the LaTeX builder. Otherwise, you need to set the
+<a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>            <span class="c1"># top-level file (index.rst)</span>
+                    <span class="s1">&#39;target&#39;</span><span class="p">,</span>           <span class="c1"># output (target.pdf)</span>
+                    <span class="s1">&#39;Document Title&#39;</span><span class="p">,</span>   <span class="c1"># document title</span>
+                    <span class="s1">&#39;John A. Uthor&#39;</span><span class="p">)]</span>   <span class="c1"># document author</span>
 </pre></div>
 </div>
-</li>
-<li><p class="first">(optional) you can customize some aspects of the document template such as
-margins and headers and footer text by specifying <code class="docutils literal"><span class="pre">rinoh_options</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinoh.dimension</span> <span class="kn">import</span> <span class="n">CM</span>
-<span class="kn">from</span> <span class="nn">rinoh.reference</span> <span class="kn">import</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">PAGE_NUMBER</span><span class="p">,</span> <span class="n">NUMBER_OF_PAGES</span>
-<span class="kn">from</span> <span class="nn">rinoh.text</span> <span class="kn">import</span> <span class="n">Tab</span>
-<span class="kn">from</span> <span class="nn">rinoh.float</span> <span class="kn">import</span> <span class="n">InlineImage</span>
-
-<span class="n">footer_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">InlineImage</span><span class="p">(</span><span class="s">&#39;images/company_logo.pdf&#39;</span><span class="p">)</span>
-               <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span>
-               <span class="o">+</span> <span class="n">Variable</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; / &#39;</span> <span class="o">+</span> <span class="n">Variable</span><span class="p">(</span><span class="n">NUMBER_OF_PAGES</span><span class="p">))</span>
-
-<span class="n">rinoh_options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">header_text</span><span class="o">=</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">project</span><span class="p">,</span>
-                     <span class="n">footer_text</span><span class="o">=</span><span class="n">footer_text</span><span class="p">,</span>
-                     <span class="n">page_horizontal_margin</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">CM</span><span class="p">,</span>
-                     <span class="n">page_vertical_margin</span><span class="o">=</span><span class="mf">4.5</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
+<p>Other configuration variables are optional and allow configuring the style of
+the generated PDF document. See <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a> for details.</p>
+<p>When building the documentation, select the <cite>rinoh</cite> builder by passing it to
+<strong class="program">sphinx-build</strong>&#8216;s <code class="xref std std-option docutils literal"><span class="pre">-b</span></code> option:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
 </pre></div>
 </div>
-<p>The Sphinx builder uses the <code class="xref py py-class docutils literal"><span class="pre">Book</span></code> document template<a class="footnote-reference" href="#id3" id="id2">[1]</a>.
-<code class="docutils literal"><span class="pre">rinoh_options</span></code> are passed to <code class="xref py py-class docutils literal"><span class="pre">BookOptions</span></code>, so see its
-documentation for details.</p>
-</li>
-<li><p class="first">now we can select the <cite>rinoh</cite> builder when building the documentation:</p>
-<div class="highlight-python"><div class="highlight"><pre>sphinx-build -b rinoh . _build/rinoh
-</pre></div>
-</div>
-</li>
-</ol>
+<p>Just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder requires
+two <a class="reference internal" href="#rendering-passes"><span class="std std-ref">rendering passes</span></a>.</p>
 </div>
 <div class="section" id="high-level-pdf-library">
-<h2>High-level PDF library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h2>
-<p>The most basic way to use the RinohType package is to hook up an included
-parser, a style sheet and a document template:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinoh.paper</span> <span class="kn">import</span> <span class="n">A4</span>
-<span class="kn">from</span> <span class="nn">rinoh.backend</span> <span class="kn">import</span> <span class="n">pdf</span>
-<span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextParser</span>
+<span id="library-quickstart"></span><h2>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The focus of rinohtype development is currently on the
+<strong class="program">rinoh</strong> tool and Sphinx builder at this moment. Use as a Python
+library is possible, but documentation may be lacking. Please be patient.</p>
+</div>
+<p>The most basic way to use rinohtype in an application is to hook up an included
+frontend, a document template and a style sheet:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.backend</span> <span class="k">import</span> <span class="n">pdf</span>
+<span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="k">import</span> <span class="n">ReStructuredTextReader</span>
+<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="k">import</span> <span class="n">Article</span>
 
-<span class="kn">from</span> <span class="nn">rinohlib.stylesheets.sphinx</span> <span class="kn">import</span> <span class="n">styles</span> <span class="k">as</span> <span class="n">STYLESHEET</span>
-<span class="kn">from</span> <span class="nn">rinohlib.templates.article</span> <span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">ArticleOptions</span>
+<span class="c1"># the parser builds a rinohtype document tree</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextReader</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_document.rst&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">document_tree</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
-
-<span class="c"># the parser builds a RinohType document tree</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextParser</span><span class="p">()</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;my_document.rst&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rst_file</span><span class="p">:</span>
-    <span class="n">document_tree</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">rst_file</span><span class="p">)</span>
-
-<span class="c"># customize the article template</span>
-<span class="n">article_options</span> <span class="o">=</span> <span class="n">ArticleOptions</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">A4</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                 <span class="n">table_of_contents</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                 <span class="n">stylesheet</span><span class="o">=</span><span class="n">STYLESHEET</span><span class="p">)</span>
-
-<span class="c"># render the document to &#39;my_document.pdf&#39;</span>
-<span class="n">document</span> <span class="o">=</span> <span class="n">Article</span><span class="p">(</span><span class="n">document_tree</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">article_options</span><span class="p">,</span>
-                   <span class="n">backend</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
-<span class="n">document</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">&#39;my_document&#39;</span><span class="p">)</span>
+<span class="c1"># render the document to &#39;my_document.pdf&#39;</span>
+<span class="n">document</span> <span class="o">=</span> <span class="n">Article</span><span class="p">(</span><span class="n">document_tree</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+<span class="n">document</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;my_document&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This basic application can be customized to your specific requirements by
-customizing the style sheet, the document template and the way the document&#8217;s
-content tree is built. The basics of style sheets and document templates are
+customizing the document template, the style sheet and the way the document&#8217;s
+content tree is built. The basics of document templates and style sheets are
 covered the the sections below.</p>
-<p>The document tree returned by the <code class="xref py py-class docutils literal"><span class="pre">ReStructuredTextParser</span></code> in the
-example above can be easily built manually. <cite>document_tree</cite> is simply a list
-of <code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code>s. These flowables can have children flowables. These in
+<p>The document tree returned by the <code class="xref py py-class docutils literal"><span class="pre">ReStructuredTextReader</span></code> in the
+example above can also be built manually. A <code class="xref py py-class docutils literal"><span class="pre">DocumentTree</span></code> is simply a
+list of <code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code>s, which can have child elements. These children in
 turn can also have children, and so on; together they form a tree.</p>
 <p>Here is an example document tree of a short article:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">document_tree</span> <span class="o">=</span> <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="s">&#39;My Document&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s">&#39;title&#39;</span><span class="p">),</span> <span class="c"># metadata!</span>
-                 <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s">&#39;First Section&#39;</span><span class="p">),</span>
-                          <span class="n">Paragraph</span><span class="p">(</span><span class="s">&#39;This is a paragraph with some&#39;</span>
-                                    <span class="o">+</span> <span class="n">Emphasized</span><span class="p">(</span><span class="s">&#39;emphasized text&#39;</span><span class="p">)</span>
-                                    <span class="o">+</span> <span class="s">&#39;and an&#39;</span>
-                                    <span class="o">+</span> <span class="n">InlineImage</span><span class="p">(</span><span class="s">&#39;image.pdf&#39;</span><span class="p">)),</span>
-                          <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s">&#39;A subsection&#39;</span><span class="p">),</span>
-                                   <span class="n">Paragraph</span><span class="p">(</span><span class="s">&#39;Another paragraph&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.document</span> <span class="k">import</span> <span class="n">DocumentTree</span>
+<span class="kn">from</span> <span class="nn">rinoh.styleds</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">document_tree</span> <span class="o">=</span> <span class="n">DocumentTree</span><span class="p">(</span><span class="s1">&#39;/path/to/source_file.ext&#39;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;My Document&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">),</span> <span class="c1"># metadata!</span>
+                 <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s1">&#39;First Section&#39;</span><span class="p">),</span>
+                          <span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;This is a paragraph with some&#39;</span>
+                                    <span class="o">+</span> <span class="n">Emphasized</span><span class="p">(</span><span class="s1">&#39;emphasized text&#39;</span><span class="p">)</span>
+                                    <span class="o">+</span> <span class="s1">&#39;and an&#39;</span>
+                                    <span class="o">+</span> <span class="n">InlineImage</span><span class="p">(</span><span class="s1">&#39;image.pdf&#39;</span><span class="p">)),</span>
+                          <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s1">&#39;A subsection&#39;</span><span class="p">),</span>
+                                   <span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;Another paragraph&#39;</span><span class="p">)</span>
                                   <span class="p">])</span>
                          <span class="p">]),</span>
-                 <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s">&#39;Second Section&#39;</span><span class="p">),</span>
-                          <span class="n">List</span><span class="p">([</span><span class="n">ListItem</span><span class="p">(</span><span class="n">Paragraph</span><span class="p">(</span><span class="s">&#39;a list item&#39;</span><span class="p">)),</span>
-                                <span class="n">ListItem</span><span class="p">(</span><span class="n">Paragraph</span><span class="p">(</span><span class="s">&#39;another list item&#39;</span><span class="p">))</span>
+                 <span class="n">Section</span><span class="p">([</span><span class="n">Heading</span><span class="p">(</span><span class="s1">&#39;Second Section&#39;</span><span class="p">),</span>
+                          <span class="n">List</span><span class="p">([</span><span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;a list item&#39;</span><span class="p">),</span>
+                                <span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;another list item&#39;</span><span class="p">)</span>
                                <span class="p">])</span>
                          <span class="p">])</span>
-                <span class="p">]</span>
+                <span class="p">])</span>
 </pre></div>
 </div>
-<p>It is obvious this type of content is best parsed from a structured document
-file such as reStructuredText or XML. Manually building a document tree is well
-suited for short, custom documents however. Please refer to the invoice example
-for details.</p>
+<p>It is clear that this type of content is best parsed from a structured document
+format such as reStructuredText or XML. Manually building a document tree is
+well suited for short, custom documents however.</p>
 </div>
 <div class="section" id="style-sheets">
-<h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
-<p>A RinohType style sheet is defined in a Pyton source file, as an instance of the
-<code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code> class. For each document element, the style sheet object
-registers a list of style properties.</p>
-<p>This is similar to how HTML&#8217;s cascading style sheets work. In RinohType however,
-style properties are assigned to document elements by means of a descriptive
-label for the latter instead of a selector. RinohType also makes use of
-selectors, but these are collected in a <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code>. Unless you are
-using RinohType as a PDF library to creating custom documents, the default
-matcher should cover your needs.</p>
-<div class="section" id="building-on-an-existing-style-sheet">
-<h3>Building on an existing style sheet<a class="headerlink" href="#building-on-an-existing-style-sheet" title="Permalink to this headline">¶</a></h3>
+<span id="quickstart-stylesheets"></span><h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
+<p>A style sheet determines the look of each of the elements in a document. For
+each type of document element, the style sheet object registers a list of style
+properties. Style sheets are stored in plain text files using the INI format
+with the <code class="docutils literal"><span class="pre">.rts</span></code> extension. Below is an excerpt from the <cite>Sphinx</cite> style sheet
+included with rinohtype.</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span>
+<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span>
+
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span>
+
+<span class="k">[default:Paragraph]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span>
+<span class="na">kerning</span><span class="o">=</span><span class="s">True</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span>
+<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span>
+<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span>
+
+<span class="k">[body]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span>
+
+<span class="k">[emphasis]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[strong]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[literal strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">strong</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+
+<span class="k">[quote]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+</pre></div>
+</div>
+<p>Except for <code class="docutils literal"><span class="pre">[STYLESHEET]</span></code> and <code class="docutils literal"><span class="pre">[VARIABLES]</span></code>, each configuration section
+in a style sheet determines the style of a particular type of document element.
+The <code class="docutils literal"><span class="pre">emphasis</span></code> style, for example, determines the look of emphasized text,
+which is displayed in an italic font. For more on style sheets, please refer
+to the <a class="reference internal" href="advanced.html#stylesheets-advanced"><span class="std std-ref">Styling Document Elements</span></a> section in <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Advanced Topics</span></a>.</p>
+<p>This is similar to how HTML&#8217;s cascading style sheets work. In rinohtype
+however, document elements are identified by means of a descriptive label (such
+as <em>emphasis</em>) instead of a cryptic selector. Rinohtype also makes use of
+selectors, but these are collected in a <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> which maps them
+to descriptive names to be used by many style sheets. Unless you are using
+rinohtype as a PDF library to create custom documents, the default matcher
+should cover your needs.</p>
+<div class="section" id="extending-an-existing-style-sheet">
+<h3>Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Permalink to this headline">¶</a></h3>
 <p>Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following example creates a new
-style sheet based on the Sphinx stylesheet included with RinohType. The style
+style sheet based on the Sphinx stylesheet included with rinohtype. The style
 sheet redefines the style for emphasized text, displaying it in a bold instead
 of italic font.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinoh.dimension</span> <span class="kn">import</span> <span class="n">PT</span>
-<span class="kn">from</span> <span class="nn">rinoh.font.style</span> <span class="kn">import</span> <span class="n">BOLD</span>
-<span class="kn">from</span> <span class="nn">rinohlib.stylesheets.sphinx</span> <span class="kn">import</span> <span class="n">styles</span>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span>
+<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span>
 
-<span class="n">my_style_sheet</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s">&#39;My Style Sheet&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">styles</span><span class="p">)</span>
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span>
 
-<span class="n">my_style_sheet</span><span class="p">(</span><span class="s">&#39;emphasis&#39;</span><span class="p">,</span> <span class="n">font_weight</span><span class="o">=</span><span class="n">BOLD</span><span class="p">)</span>
+<span class="k">[emphasis]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">bold</span>
 </pre></div>
 </div>
-<p>Here, the new new style definition completely replaces the style definition
-contained in the Sphinx style sheet. It is also possible to override only part
-of the style definition. The following style definition changes only the item
-spacing between enumerated list items. All other style properties (such as the
-left margin and the item numbering format) remain unchanged.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">my_style_sheet</span><span class="p">(</span><span class="s">&#39;enumerated list&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">],</span>
-               <span class="n">flowable_spacing</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">PT</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="starting-with-a-clean-slate">
-<h3>Starting with a clean slate<a class="headerlink" href="#starting-with-a-clean-slate" title="Permalink to this headline">¶</a></h3>
-<p>Instantiating a new style sheet without passing it a base style sheet creates
-an independent style sheet. You need to specify the <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> to
-use in this case.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">rinoh.dimension</span> <span class="kn">import</span> <span class="n">PT</span>
-<span class="kn">from</span> <span class="nn">rinoh.font.style</span> <span class="kn">import</span> <span class="n">BOLD</span>
-<span class="kn">from</span> <span class="nn">rinohlib.stylesheets.sphinx</span> <span class="kn">import</span> <span class="n">styles</span>
-<span class="kn">from</span> <span class="nn">rinohlib.stylesheets.matcher</span> <span class="kn">import</span> <span class="n">matcher</span>
+<p>This style sheet also redefines the <code class="docutils literal"><span class="pre">mono_typeface</span></code> variable. This variable
+is used in the Sphinx style sheet in all style definitions where a monospaced
+font is desired. Redefining the variable affects all of these style
+definitions.</p>
+<blockquote>
+<div></div></blockquote>
+<p>To use this style sheet, load it using <code class="xref py py-class docutils literal"><span class="pre">StyleSheetFile</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.style</span> <span class="kn">import</span> <span class="n">StyleSheetFile</span>
 
-<span class="n">independent_style_sheet</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s">&#39;My Independent Style Sheet&#39;</span><span class="p">,</span>
-                                     <span class="n">matcher</span><span class="o">=</span><span class="n">matcher</span><span class="p">)</span>
+<span class="n">my_stylesheet</span> <span class="o">=</span> <span class="n">StyleSheetFile</span><span class="p">(</span><span class="s1">&#39;m_stylesheet.rts&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If a style definition for a particular document element is missing, the default
-values for its style properties are used.</p>
+</div>
+<div class="section" id="starting-from-scratch">
+<h3>Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Permalink to this headline">¶</a></h3>
+<p>If you don&#8217;t specify a base style sheet in the <code class="docutils literal"><span class="pre">[STYLESHEET]</span></code> section, you
+create an independent style sheet. You should do this if you want to create
+a document style that is radically different from what is provided by existing
+style sheets.</p>
+<p>If the style definition for a particular document element is missing, the
+default values for its style properties are used.</p>
+<p>To use this style sheet, you need to specify the <code class="xref py py-class docutils literal"><span class="pre">StyledMatcher</span></code> to use,
+since there is not base providing one. The following example uses the standard
+matcher:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.style</span> <span class="kn">import</span> <span class="n">StyleSheetFile</span>
+<span class="kn">from</span> <span class="nn">rinoh.stylesheets</span> <span class="kn">import</span> <span class="n">matcher</span>
+
+<span class="n">my_stylesheet</span> <span class="o">=</span> <span class="n">StyleSheetFile</span><span class="p">(</span><span class="s1">&#39;m_stylesheet.rts&#39;</span><span class="p">,</span> <span class="n">matcher</span><span class="o">=</span><span class="n">matcher</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the future, rinohtype will allow generating an INI style sheet,
+listing all matched elements and their style attributes together with the
+default values.</p>
 </div>
 </div>
-<div class="section" id="documument-templates">
-<h2>Documument Templates<a class="headerlink" href="#documument-templates" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="document-templates">
+<h2>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this headline">¶</a></h2>
 <p>As with style sheets, you can choose to make use of the templates provided by
-RinohType or you can create a custom template from scratch. This section only
-covers the former. For an example of how to create a custom template, see the
-invoice example.</p>
-<p>RinohType includes two document templates; <code class="xref py py-class docutils literal"><span class="pre">Article</span></code> and <code class="xref py py-class docutils literal"><span class="pre">Book</span></code>.
-Theese templates can be customized by passing an <code class="xref py py-class docutils literal"><span class="pre">ArticleOptions</span></code> or
-<code class="xref py py-class docutils literal"><span class="pre">BookOptions</span></code> instance as <cite>options</cite> on template instantiation
-respectively. Both these classes derive from <code class="xref py py-class docutils literal"><span class="pre">DocumentOptions</span></code> and thus
-accept the options offered by it:</p>
-<dl class="class">
-<dt id="rinohlib.templates.base.DocumentOptions">
-<em class="property">class </em><code class="descclassname">rinohlib.templates.base.</code><code class="descname">DocumentOptions</code><span class="sig-paren">(</span><em>**options</em><span class="sig-paren">)</span><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Collects options to customize a <code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code>. Options are
-specified as keyword arguments (<cite>options</cite>) matching the class&#8217;s
-attributes.</p>
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.columns">
-<code class="descname">columns</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.columns" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The number of columns for the body text (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">1</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+rinohtype and optionally customize it or you can create a custom template from
+scratch.</p>
+<div class="section" id="using-an-existing-template">
+<h3>Using an Existing Template<a class="headerlink" href="#using-an-existing-template" title="Permalink to this headline">¶</a></h3>
+<p>Rinohtype provides a number of <a class="reference internal" href="templates.html#document-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
+customized by passing an instance of the associated
+<a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.TemplateConfiguration</span></code></a> as <cite>configuration</cite> on template
+instantiation.</p>
+<p>The example from <a class="reference internal" href="#library-quickstart"><span class="std std-ref">High-level PDF Library</span></a> above can be customized by setting
+template options.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.backend</span> <span class="k">import</span> <span class="n">pdf</span>
+<span class="kn">from</span> <span class="nn">rinoh.dimension</span> <span class="k">import</span> <span class="n">CM</span>
+<span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="k">import</span> <span class="n">ReStructuredTextReader</span>
+<span class="kn">from</span> <span class="nn">rinoh.paper</span> <span class="k">import</span> <span class="n">A5</span>
+<span class="kn">from</span> <span class="nn">rinoh.stylesheets</span> <span class="k">import</span> <span class="n">sphinx_base14</span>
+<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="k">import</span> <span class="n">Article</span>
 
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.footer_text">
-<code class="descname">footer_text</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.footer_text" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The text to place in the page footer (<code class="xref py py-class docutils literal"><span class="pre">MixedStyledText</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">$PAGE_NUMBER/$NUMBER_OF_PAGES</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<span class="c1"># the parser builds a rinohtype document tree</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextReader</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_document.rst&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">document_tree</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.header_text">
-<code class="descname">header_text</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.header_text" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The text to place in the page header (<code class="xref py py-class docutils literal"><span class="pre">MixedStyledText</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">$SECTION_NUMBER(1) $SECTION_TITLE(1)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<span class="c1"># customize the article template</span>
+<span class="n">configuration</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">Configuration</span><span class="p">(</span><span class="n">paper_size</span><span class="o">=</span><span class="n">A5</span><span class="p">,</span>
+                                      <span class="n">stylesheet</span><span class="o">=</span><span class="n">sphinx_base14</span><span class="p">,</span>
+                                      <span class="n">abstract_location</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">,</span>
+                                      <span class="n">table_of_contents</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">configuration</span><span class="p">(</span><span class="s1">&#39;title_page&#39;</span><span class="p">,</span> <span class="n">top_margin</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
 
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.page_horizontal_margin">
-<code class="descname">page_horizontal_margin</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.page_horizontal_margin" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The margin size on the left and the right of the page (<code class="xref py py-class docutils literal"><span class="pre">DimensionBase</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">85.04pt</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<span class="c1"># render the document to &#39;my_document.pdf&#39;</span>
+<span class="n">document</span> <span class="o">=</span> <span class="n">Article</span><span class="p">(</span><span class="n">document_tree</span><span class="p">,</span> <span class="n">configuration</span><span class="o">=</span><span class="n">configuration</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">pdf</span><span class="p">)</span>
+<span class="n">document</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;my_document&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, a number of global template settings are specified to override the
+default values. For example, the paper size is changed to A5 from the default
+A4. See below for a list of the settings that can be changed and their
+description.</p>
+<p>The top margin of the title page is also changed by setting the corresponding
+option for the <a class="reference internal" href="article.html#rinoh.templates.article.ArticleConfiguration.title_page" title="rinoh.templates.article.ArticleConfiguration.title_page"><code class="xref py py-attr docutils literal"><span class="pre">rinoh.templates.article.ArticleConfiguration.title_page</span></code></a>
+page template.</p>
+</div>
+<div class="section" id="creating-a-custom-template">
+<h3>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this headline">¶</a></h3>
+<p>A custom template can be created by inheriting from <code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code>.
+The <code class="xref py py-attr docutils literal"><span class="pre">parts</span></code> attribute determines the global structure of the document. It
+is a list of <code class="xref py py-class docutils literal"><span class="pre">DocumentPartTemplate</span></code>s, each referencing a page
+template.</p>
+<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">rinoh.templates.article.Article</span></code></a> template, for example, consists of
+a title page, a front matter part (a custom
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentPartTemplate" title="rinoh.template.DocumentPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.DocumentPartTemplate</span></code></a> subclass) and the article
+contents:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
+    <span class="n">Configuration</span> <span class="o">=</span> <span class="n">ArticleConfiguration</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">TitlePartTemplate</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">title_page</span><span class="p">),</span>
+             <span class="n">ArticleFrontMatter</span><span class="p">(</span><span class="s1">&#39;front matter&#39;</span><span class="p">,</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">page</span><span class="p">),</span>
+             <span class="n">ContentsPartTemplate</span><span class="p">(</span><span class="s1">&#39;contents&#39;</span><span class="p">,</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">page</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code> subclass associated with <code class="xref py py-class docutils literal"><span class="pre">Article</span></code></p>
+<ul class="simple">
+<li>overrides the default style sheet,</li>
+<li>introduces configuration attributes to control the table of contents
+placement and the location of the abstract, and</li>
+<li>defines the page templates referenced in <code class="xref py py-attr docutils literal"><span class="pre">Article.parts</span></code></li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ArticleConfiguration</span><span class="p">(</span><span class="n">TemplateConfiguration</span><span class="p">):</span>
+    <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx_article</span><span class="p">)</span>
+    <span class="n">table_of_contents</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">Bool</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                  <span class="s1">&#39;Show or hide the table of contents&#39;</span><span class="p">)</span>
+    <span class="n">abstract_location</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">AbstractLocation</span><span class="p">,</span> <span class="n">FRONT_MATTER</span><span class="p">,</span>
+                                  <span class="s1">&#39;Where to place the abstract&#39;</span><span class="p">)</span>
 
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.page_orientation">
-<code class="descname">page_orientation</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.page_orientation" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The orientation of pages in the document (<code class="xref py py-class docutils literal"><span class="pre">PageOrientation</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">portrait</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.page_size">
-<code class="descname">page_size</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.page_size" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The format of the pages in the document (<code class="xref py py-class docutils literal"><span class="pre">Paper</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">A4</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.page_vertical_margin">
-<code class="descname">page_vertical_margin</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.page_vertical_margin" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The margin size on the top and bottom of the page (<code class="xref py py-class docutils literal"><span class="pre">DimensionBase</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">85.04pt</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.show_author">
-<code class="descname">show_author</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.show_author" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Show or hide the document&#8217;s author (<code class="xref py py-class docutils literal"><span class="pre">bool</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">True</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.show_date">
-<code class="descname">show_date</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.show_date" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Show or hide the document&#8217;s date (<code class="xref py py-class docutils literal"><span class="pre">bool</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">True</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.base.DocumentOptions.stylesheet">
-<code class="descname">stylesheet</code><a class="headerlink" href="#rinohlib.templates.base.DocumentOptions.stylesheet" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">The stylesheet to use for styling document elements (<code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">StyleSheet(Sphinx)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<p>The <code class="xref py py-class docutils literal"><span class="pre">Article</span></code> and <code class="xref py py-class docutils literal"><span class="pre">Book</span></code> templates also have some specific
-options:</p>
-<dl class="class">
-<dt id="rinohlib.templates.article.ArticleOptions">
-<em class="property">class </em><code class="descclassname">rinohlib.templates.article.</code><code class="descname">ArticleOptions</code><span class="sig-paren">(</span><em>**options</em><span class="sig-paren">)</span><a class="headerlink" href="#rinohlib.templates.article.ArticleOptions" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="rinohlib.templates.article.ArticleOptions.abstract_location">
-<code class="descname">abstract_location</code><a class="headerlink" href="#rinohlib.templates.article.ArticleOptions.abstract_location" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Where to place the abstract (<code class="xref py py-class docutils literal"><span class="pre">AbstractLocation</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">front_matter</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinohlib.templates.article.ArticleOptions.table_of_contents">
-<code class="descname">table_of_contents</code><a class="headerlink" href="#rinohlib.templates.article.ArticleOptions.table_of_contents" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Show or hide the table of contents (<code class="xref py py-class docutils literal"><span class="pre">bool</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">True</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="rinohlib.templates.book.BookOptions">
-<em class="property">class </em><code class="descclassname">rinohlib.templates.book.</code><code class="descname">BookOptions</code><span class="sig-paren">(</span><em>**options</em><span class="sig-paren">)</span><a class="headerlink" href="#rinohlib.templates.book.BookOptions" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="rinohlib.templates.book.BookOptions.extra">
-<code class="descname">extra</code><a class="headerlink" href="#rinohlib.templates.book.BookOptions.extra" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Description:</th><td class="field-body">Extra text to include on the title page below the title (<code class="xref py py-class docutils literal"><span class="pre">MixedStyledText</span></code>)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Default:</th><td class="field-body">None</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<table class="docutils footnote" frame="void" id="id3" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>This will be configurable in the future.</td></tr>
-</tbody>
-</table>
+    <span class="n">title_page</span> <span class="o">=</span> <span class="n">TitlePageTemplate</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s1">&#39;paper_size&#39;</span><span class="p">),</span>
+                                   <span class="n">top_margin</span><span class="o">=</span><span class="mi">8</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s1">&#39;paper_size&#39;</span><span class="p">),</span>
+                        <span class="n">chapter_title_flowables</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The configuration attributes are used in the custom front matter document part
+template:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ArticleFrontMatter</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">flowables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="n">abstract_loc</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;abstract_location&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;abstract&#39;</span> <span class="ow">in</span> <span class="n">meta</span> <span class="ow">and</span> <span class="n">abstract_loc</span> <span class="o">==</span> <span class="n">FRONT_MATTER</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;abstract&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">document</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s1">&#39;table_of_contents&#39;</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">TableOfContentsSection</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
 
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Quickstart</a><ul>
-<li><a class="reference internal" href="#restructuredtext-renderer">reStructuredText Renderer</a></li>
-<li><a class="reference internal" href="#sphinx-builder">Sphinx Builder</a></li>
-<li><a class="reference internal" href="#high-level-pdf-library">High-level PDF library</a></li>
-<li><a class="reference internal" href="#style-sheets">Style Sheets</a><ul>
-<li><a class="reference internal" href="#building-on-an-existing-style-sheet">Building on an existing style sheet</a></li>
-<li><a class="reference internal" href="#starting-with-a-clean-slate">Starting with a clean slate</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#documument-templates">Documument Templates</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
-      <li>Next: <a href="advanced.html" title="next chapter">Advanced Topics</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/quickstart.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rinoh.html" class="btn btn-neutral float-right" title="Command-line Renderer" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Brecht Machiels.
+
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2015, Brecht Machiels.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
-      
-      |
-      <a href="_sources/quickstart.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

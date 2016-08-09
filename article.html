@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Article &mdash; rinohtype 0.2.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+        <link rel="up" title="Standard Document Templates" href="templates.html"/>
+        <link rel="next" title="Book" href="book.html"/>
+        <link rel="prev" title="Standard Document Templates" href="templates.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="templates.html">Standard Document Templates</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Article</a></li>
+<li class="toctree-l2"><a class="reference internal" href="book.html">Book</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="templates.html">Standard Document Templates</a> &raquo;</li>
+      
+    <li>Article</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/article.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-rinoh.templates.article"><span id="article-template"></span></span><div class="section" id="article">
+<h1>Article<a class="headerlink" href="#article" title="Permalink to this headline">¶</a></h1>
+<p>The article template consists of a title page, an optional table of contents
+and the body text. By default, it uses a single numbering style for all pages
+and the same template for even and odd pages.</p>
+<dl class="class">
+<dt id="rinoh.templates.article.Article">
+<em class="property">class </em><code class="descclassname">rinoh.templates.article.</code><code class="descname">Article</code><span class="sig-paren">(</span><em>document_tree</em>, <em>strings=None</em>, <em>configuration=None</em>, <em>options=None</em>, <em>backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.Article" title="Permalink to this definition">¶</a></dt>
+<dd><p>This template builds a document consisting of the following parts:</p>
+<ul class="simple">
+<li><strong>title</strong> (<a class="reference internal" href="api/template.html#rinoh.template.TitlePartTemplate" title="rinoh.template.TitlePartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.TitlePartTemplate</span></code></a>)<ul>
+<li><em>page_template</em>: <a class="reference internal" href="#rinoh.templates.article.ArticleConfiguration.title_page" title="rinoh.templates.article.ArticleConfiguration.title_page"><code class="xref py py-attr docutils literal"><span class="pre">ArticleConfiguration.title_page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+<li><strong>front matter</strong> (<code class="xref py py-class docutils literal"><span class="pre">rinoh.templates.article.ArticleFrontMatter</span></code>)<ul>
+<li><em>page_template</em>: <a class="reference internal" href="#rinoh.templates.article.ArticleConfiguration.page" title="rinoh.templates.article.ArticleConfiguration.page"><code class="xref py py-attr docutils literal"><span class="pre">ArticleConfiguration.page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+<li><strong>contents</strong> (<a class="reference internal" href="api/template.html#rinoh.template.ContentsPartTemplate" title="rinoh.template.ContentsPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.ContentsPartTemplate</span></code></a>)<ul>
+<li><em>page_template</em>: <a class="reference internal" href="#rinoh.templates.article.ArticleConfiguration.page" title="rinoh.templates.article.ArticleConfiguration.page"><code class="xref py py-attr docutils literal"><span class="pre">ArticleConfiguration.page</span></code></a></li>
+<li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
+</ul>
+</li>
+</ul>
+<dl class="attribute">
+<dt id="rinoh.templates.article.Article.Configuration">
+<code class="descname">Configuration</code><a class="headerlink" href="#rinoh.templates.article.Article.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#rinoh.templates.article.ArticleConfiguration" title="rinoh.templates.article.ArticleConfiguration"><code class="xref py py-class docutils literal"><span class="pre">ArticleConfiguration</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.templates.article.ArticleConfiguration">
+<em class="property">class </em><code class="descclassname">rinoh.templates.article.</code><code class="descname">ArticleConfiguration</code><span class="sig-paren">(</span><em>base=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.ArticleConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stylesheet</strong> &#8211; Overrides <code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code> default: StyleSheetFile(Sphinx (article))</li>
+<li><strong>table_of_contents</strong> (<em>Bool</em>) &#8211; Show or hide the table of contents. Default: True</li>
+<li><strong>abstract_location</strong> (<a class="reference internal" href="#rinoh.templates.article.AbstractLocation" title="rinoh.templates.article.AbstractLocation"><em>AbstractLocation</em></a>) &#8211; Where to place the abstract. Default: front_matter</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Inherited parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code></a>: <strong>stylesheet</strong>, <strong>paper_size</strong></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rinoh.templates.article.ArticleConfiguration.title_page">
+<code class="descname">title_page</code><a class="headerlink" href="#rinoh.templates.article.ArticleConfiguration.title_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.TitlePageTemplate" title="rinoh.template.TitlePageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.TitlePageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>page_size</strong> = <code class="docutils literal"><span class="pre">Var('paper_size')</span></code></li>
+<li><strong>top_margin</strong> = <code class="docutils literal"><span class="pre">226.77pt</span></code></li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.templates.article.ArticleConfiguration.page">
+<code class="descname">page</code><a class="headerlink" href="#rinoh.templates.article.ArticleConfiguration.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
+<ul class="simple">
+<li><strong>page_size</strong> = <code class="docutils literal"><span class="pre">Var('paper_size')</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.templates.article.AbstractLocation">
+<em class="property">class </em><code class="descclassname">rinoh.templates.article.</code><code class="descname">AbstractLocation</code><a class="headerlink" href="#rinoh.templates.article.AbstractLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Where to place the article&#8217;s abstract</p>
+<p>Accepts these options:</p>
+<ul class="simple">
+<li>&#8216;title&#8217;</li>
+<li>&#8216;front_matter&#8217;</li>
+</ul>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="book.html" class="btn btn-neutral float-right" title="Book" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="templates.html" class="btn btn-neutral" title="Standard Document Templates" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

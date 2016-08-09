@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Documentation &mdash; rinohtype 0.2.0 documentation</title>
+  <title>Structure &mdash; rinohtype 0.2.0 documentation</title>
   
 
   
@@ -31,8 +31,9 @@
 
   
     <link rel="top" title="rinohtype 0.2.0 documentation" href="../index.html"/>
-        <link rel="next" title="Flowable" href="flowable.html"/>
-        <link rel="prev" title="Advanced Topics" href="../advanced.html"/> 
+        <link rel="up" title="API Documentation" href="index.html"/>
+        <link rel="next" title="Style" href="style.html"/>
+        <link rel="prev" title="Paragraph" href="paragraph.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -89,10 +90,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="style.html">Style</a></li>
 <li class="toctree-l2"><a class="reference internal" href="template.html">Templates</a></li>
 </ul>
@@ -128,11 +129,13 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>API Documentation</li>
+          <li><a href="index.html">API Documentation</a> &raquo;</li>
+      
+    <li>Structure</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/index.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/structure.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -142,41 +145,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api-documentation">
-<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The API documentation is still incomplete.</p>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="flowable.html">Flowable</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html#no-output-flowables">No-Output Flowables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html#labeled-flowables">Labeled Flowables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html#grouping-flowables">Grouping Flowables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html#horizontally-aligned-flowables">Horizontally Aligned Flowables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html#floating-flowables">Floating Flowables</a></li>
+  <span class="target" id="module-rinoh.structure"></span><div class="section" id="structure">
+<span id="id1"></span><h1>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rinoh.structure.List">
+<em class="property">class </em><code class="descclassname">rinoh.structure.</code><code class="descname">List</code><span class="sig-paren">(</span><em>flowables</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.List" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="rinoh.structure.List.style_class">
+<code class="descname">style_class</code><a class="headerlink" href="#rinoh.structure.List.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.structure.ListStyle">
+<em class="property">class </em><code class="descclassname">rinoh.structure.</code><code class="descname">ListStyle</code><span class="sig-paren">(</span><em>base=None</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.ListStyle" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ordered</strong> (<em>Bool</em>) &#8211; This list is ordered or unordered. Default: False</li>
+<li><strong>bullet</strong> (<a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a>) &#8211; Bullet to use in unordered lists. Default: •</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="paragraph.html">Paragraph</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html#inline-elements">Inline Elements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html#styling-properties">Styling Properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html#rendering-internals">Rendering Internals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html#miscellaneous-internals">Miscellaneous Internals</a></li>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Inherited parameters:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="flowable.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a>: <strong>title</strong>, <strong>flowable_spacing</strong></li>
+<li><a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle" title="rinoh.flowable.FlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">FlowableStyle</span></code></a>: <strong>space_above</strong>, <strong>space_below</strong>, <strong>margin_left</strong>, <strong>margin_right</strong>, <strong>padding_left</strong>, <strong>padding_right</strong>, <strong>padding_top</strong>, <strong>padding_bottom</strong>, <strong>keep_with_next</strong>, <strong>border</strong>, <strong>border_left</strong>, <strong>border_right</strong>, <strong>border_top</strong>, <strong>border_bottom</strong>, <strong>background_color</strong></li>
+<li><code class="xref py py-class docutils literal"><span class="pre">NumberStyle</span></code>: <strong>number_format</strong></li>
+<li><code class="xref py py-class docutils literal"><span class="pre">LabelStyle</span></code>: <strong>label_prefix</strong>, <strong>label_suffix</strong>, <strong>custom_label</strong></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="style.html">Style</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="style.html#style-sheet">Style Sheet</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="template.html">Templates</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="template.html#document-parts">Document Parts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="template.html#page-templates">Page Templates</a></li>
-</ul>
-</li>
-</ul>
-</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
@@ -186,10 +193,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="flowable.html" class="btn btn-neutral float-right" title="Flowable" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="style.html" class="btn btn-neutral float-right" title="Style" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../advanced.html" class="btn btn-neutral" title="Advanced Topics" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="paragraph.html" class="btn btn-neutral" title="Paragraph" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

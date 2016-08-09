@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sphinx Builder &mdash; rinohtype 0.2.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+        <link rel="next" title="Standard Document Templates" href="templates.html"/>
+        <link rel="prev" title="Command-line Renderer" href="rinoh.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Sphinx Builder</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/sphinx.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sphinx-builder">
+<span id="id1"></span><h1>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="xref py py-mod docutils literal"><span class="pre">rinoh.frontent.sphinx</span></code> is a Sphinx extension module. It provides a
+Sphinx builder with the name <em>rinoh</em>.</p>
+<p>The <em>rinoh</em> builder recognizes the following <code class="docutils literal"><span class="pre">conf.py</span></code> options. Of thse, only
+<a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_documents</span></code></a> (or <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_documents</span></code></a>) needs to be
+specified:</p>
+<dl class="confval">
+<dt id="confval-rinoh_documents">
+<code class="descname">rinoh_documents</code><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines how to group the document tree into PDF output files. Its format
+is identical to that of <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_documents</span></code></a>, with the
+exception that <cite>targetname</cite> should specify the name of the PDF file without
+the extension. If it is not specified, the value of
+<a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_documents</span></code></a> is used instead (with the <code class="docutils literal"><span class="pre">.tex</span></code>
+extension stripped from the <cite>targetname</cite>).</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-rinoh_document_template">
+<code class="descname">rinoh_document_template</code><a class="headerlink" href="#confval-rinoh_document_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>The document template to use for rendering the Sphinx documentation. It can
+be a <code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code> subclass or a string identifying an
+installed template. For the latter, run <a class="reference internal" href="rinoh.html#cmdoption-rinoh--list-templates"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-templates</span></code></a>
+to list the available templates. Default: <code class="docutils literal"><span class="pre">'book'</span></code>.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-rinoh_template_configuration">
+<code class="descname">rinoh_template_configuration</code><a class="headerlink" href="#confval-rinoh_template_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>This variable allows configuring the document template specified in
+<a class="reference internal" href="#confval-rinoh_document_template"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_document_template</span></code></a>. Its value needs to be an instance of
+the <code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code> subclass associated with the specified
+document template class. Default: <code class="docutils literal"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-rinoh_paper_size">
+<code class="descname">rinoh_paper_size</code><a class="headerlink" href="#confval-rinoh_paper_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>If no paper size is configured in <a class="reference internal" href="#confval-rinoh_template_configuration"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_template_configuration</span></code></a>,
+this determines the paper size used. This should be a <code class="xref py py-class docutils literal"><span class="pre">Paper</span></code>
+instance. A set of predefined paper sizes can be found in the
+<code class="xref py py-mod docutils literal"><span class="pre">rinoh.paper</span></code> module. If not specified, the value of the
+<code class="docutils literal"><span class="pre">'papersize'</span></code> entry in <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_elements" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_elements</span></code></a> is converted to
+the equivalent <code class="xref py py-class docutils literal"><span class="pre">Paper</span></code>. If this is not specified, the value
+specified for <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_paper_size" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_paper_size</span></code></a> is used.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-rinoh_stylesheet">
+<code class="descname">rinoh_stylesheet</code><a class="headerlink" href="#confval-rinoh_stylesheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <a class="reference internal" href="#confval-rinoh_template_configuration"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_template_configuration</span></code></a> does not specify a style sheet,
+this variable specifies the style sheet used to style the document
+elements. It can be a <code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code> instance or a string identifying
+an installed style sheet. Default: the default style sheet for the chosen
+document template.</p>
+<p>If <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-pygments_style" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">pygments_style</span></code></a> is specified, it overrides the code
+highlighting style for the specified or default style sheet.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since the interactions between
+<a class="reference internal" href="#confval-rinoh_template_configuration"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_template_configuration</span></code></a>, <a class="reference internal" href="#confval-rinoh_paper_size"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_paper_size</span></code></a>,
+<a class="reference internal" href="#confval-rinoh_stylesheet"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_stylesheet</span></code></a> and <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-pygments_style" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">pygments_style</span></code></a> are fairly
+complex, this behavior may be changed (simplified) in the future.</p>
+</div>
+<dl class="confval">
+<dt id="confval-rinoh_logo">
+<code class="descname">rinoh_logo</code><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path (relative to the configuration directory) to an image file to use at
+the top of the title page. If not specified, the
+<a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_logo" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_logo</span></code></a> value is used.</p>
+</dd></dl>
+
+<dl class="confval">
+<dt id="confval-rinoh_domain_indices">
+<code class="descname">rinoh_domain_indices</code><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the generation of domain-specific indices. Identical to
+<a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_domain_indices" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_domain_indices</span></code></a>, which is also used when
+<a class="reference internal" href="#confval-rinoh_domain_indices"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_domain_indices</span></code></a> is not specified.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="templates.html" class="btn btn-neutral float-right" title="Standard Document Templates" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rinoh.html" class="btn btn-neutral" title="Command-line Renderer" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
