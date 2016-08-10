@@ -109,7 +109,8 @@ class Document(object):
     def write(self, file):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())
-            contents.write(page.canvas.getvalue())
+            for val in page.canvas.getvalue_x():
+                contents.write(val)
             page.cos_page['Contents'] = contents
         self.cos_document.write(file)
 
@@ -136,12 +137,22 @@ class Canvas(BytesIO):
         self.fonts = {}
         self.images = {}
         self.annotations = []
+        self.children = []
 
     def append(self, parent_canvas, left, top):
-        with parent_canvas.save_state():
-            parent_canvas.translate(left, top)
-            parent_canvas.write(self.getvalue())
+        parent_canvas.children.append((left, top, self))
         self.propagate_annotations(parent_canvas, left, top)
+
+    def getvalue_x(self):
+        for left, top, child in self.children:
+            if (left, top) == (None, None):
+                yield child
+            else:
+                yield b'q\n'
+                yield '1 0 0 1 {:f} {:f} cm\n'.format(left, - top).encode('ascii')
+                for x in child.getvalue_x():
+                    yield x
+                yield b'Q\n'
 
     def propagate_annotations(self, parent_canvas, left, top):
         translated_annotations = (annotation_location + (left, top)
@@ -151,7 +162,7 @@ class Canvas(BytesIO):
         parent_canvas.annotations.extend(translated_annotations)
 
     def print(self, string):
-        self.write(string.encode('ascii') + b'\n')
+        self.children.append((None, None, string.encode('ascii') + b'\n'))
 
     @contextmanager
     def save_state(self):
