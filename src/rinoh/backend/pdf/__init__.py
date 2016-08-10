@@ -109,7 +109,7 @@ class Document(object):
     def write(self, file):
         for page in self.pages:
             contents = cos.Stream(filter=FlateDecode())
-            contents.write(page.canvas.getvalue().encode('utf_8'))
+            contents.write(page.canvas.getvalue())
             page.cos_page['Contents'] = contents
         self.cos_document.write(file)
 
@@ -130,7 +130,7 @@ class Page(object):
         fonts_dict[font_name] = font_rsc
 
 
-class Canvas(StringIO):
+class Canvas(BytesIO):
     def __init__(self, clip=False):
         super().__init__()
         self.fonts = {}
@@ -150,37 +150,40 @@ class Canvas(StringIO):
         parent_canvas.images.update(self.images)
         parent_canvas.annotations.extend(translated_annotations)
 
+    def print(self, string):
+        self.write(string.encode('ascii') + b'\n')
+
     @contextmanager
     def save_state(self):
-        print('q', file=self)
+        self.print('q')
         yield
-        print('Q', file=self)
+        self.print('Q')
 
     def translate(self, x, y):
-        print('1 0 0 1 {:f} {:f} cm'.format(x, - y), file=self)
+        self.print('1 0 0 1 {:f} {:f} cm'.format(x, - y))
 
     def rotate(self, degrees):
         rad = math.radians(degrees)
         sine, cosine = math.sin(rad), math.cos(rad)
-        print('{cos:f} {sin:f} {neg_sin:f} {cos:f} 0 0 cm'
-              .format(cos=cosine, sin=sine, neg_sin=-sine), file=self)
+        self.print('{cos:f} {sin:f} {neg_sin:f} {cos:f} 0 0 cm'
+                   .format(cos=cosine, sin=sine, neg_sin=-sine))
 
     def scale(self, x, y=None):
         if y is None:
             y = x
-        print('{:f} 0 0 {:f} 0 0 cm'.format(x, y), file=self)
+        self.print('{:f} 0 0 {:f} 0 0 cm'.format(x, y))
 
     def move_to(self, x, y):
-        print('{:f} {:f} m'.format(x, y), file=self)
+        self.print('{:f} {:f} m'.format(x, y))
 
     def line_to(self, x, y):
-        print('{:f} {:f} l'.format(x, y), file=self)
+        self.print('{:f} {:f} l'.format(x, y))
 
     def new_path(self):
         pass
 
     def close_path(self):
-        print('h', file=self)
+        self.print('h')
 
     def line_path(self, points):
         self.new_path()
@@ -189,35 +192,35 @@ class Canvas(StringIO):
             self.line_to(*point)
 
     def line_width(self, width):
-        print('{0} w'.format(float(width)), file=self)
+        self.print('{0} w'.format(float(width)))
 
     def stroke_color(self, color):
         r, g, b, a = color.rgba
-        print('{0} {1} {2} RG'.format(r, g, b), file=self)
+        self.print('{0} {1} {2} RG'.format(r, g, b))
 
     def fill_color(self, color):
         r, g, b, a = color.rgba
-        print('{0} {1} {2} rg'.format(r, g, b), file=self)
+        self.print('{0} {1} {2} rg'.format(r, g, b))
 
     def stroke(self, line_width=None, color=None):
         if color:
             self.stroke_color(color)
         if line_width:
             self.line_width(line_width)
-        print('S', file=self)
+        self.print('S')
 
     def fill(self, color=None):
         with self.save_state():
             if color:
                 self.fill_color(color)
-            print('f', file=self)
+                self.print('f')
 
     def stroke_and_fill(self, stroke_width, stroke_color, fill_color):
         with self.save_state():
             self.line_width(stroke_width)
             self.stroke_color(stroke_color)
             self.fill_color(fill_color)
-            print('B', file=self)
+            self.print('B')
 
     def register_font(self, document, font):
         font_number, font_rsc = document.backend_document.register_font(font)
@@ -254,13 +257,13 @@ class Canvas(StringIO):
         if current_string:
             string += '({})'.format(current_string)
         with self.save_state():
-            print('BT', file=self)
-            print('/{} {} Tf'.format(font_name, size), file=self)
+            self.print('BT')
+            self.print('/{} {} Tf'.format(font_name, size))
             self.fill_color(color)
             y_offset = span.y_offset(container)
-            print('{:f} {:f} Td'.format(left, - (cursor - y_offset)), file=self)
-            print('[{}] TJ'.format(string), file=self)
-            print('ET', file=self)
+            self.print('{:f} {:f} Td'.format(left, - (cursor - y_offset)))
+            self.print('[{}] TJ'.format(string))
+            self.print('ET')
         return total_width
 
     def annotate(self, annotation, left, top, width, height):
@@ -286,7 +289,7 @@ class Canvas(StringIO):
             self.scale(scale_width, scale_height)
             if image.xobject.subtype == 'Image':
                 self.scale(image.width, image.height)
-            print('/Im{} Do'.format(image_number), file=self)
+            self.print('/Im{} Do'.format(image_number))
         return scaled_width, scaled_height
 
 
