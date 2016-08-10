@@ -1,5 +1,5 @@
 Release History
-===============
+---------------
 
 Upcoming Release
 ~~~~~~~~~~~~~~~~
