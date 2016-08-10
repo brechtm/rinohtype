@@ -4,7 +4,7 @@ Release History
 Upcoming Release
 ~~~~~~~~~~~~~~~~
 
-Release 0.2.0 (2016-08-09)
+Release 0.2.0 (2016-08-10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Styling:
