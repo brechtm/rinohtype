@@ -15,11 +15,7 @@ import sys
 
 from importlib import import_module
 
-try:
-    from .version import __version__, __release_date__
-except ImportError:
-    __version__ = 'devel'
-    __release_date__ = 'now'
+from .version import __version__, __release_date__
 
 
 if sys.version_info < (3, 3):
