@@ -27,8 +27,8 @@ matrix:
     - python: 3.5
       env:
         - TOXENV=regression
-        - TIMEOUT=travis_wait 45
-        - WITH_COVERAGE=1
+          TIMEOUT=45
+          WITH_COVERAGE=1
       addons:
         apt:
           packages:
@@ -42,7 +42,7 @@ install:
   - python setup.py bdist_wheel
 
 script:
-  - $TIMEOUT tox -v $([ $DIST == wheel ] && echo "--installpkg ./dist/rinohtype-*.whl")
+  - $([ -z $TIMEOUT ] || echo "travis_wait $TIMEOUT") tox -v $([ $DIST == wheel ] && echo "--installpkg ./dist/rinohtype-*.whl")
 
 notifications:
   webhooks:
