@@ -66,7 +66,7 @@ setup(
         'Environment :: Console',
         'Environment :: Other Environment',
         'Environment :: Web Environment',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
         'License :: OSI Approved :: GNU Affero General Public License v3',
