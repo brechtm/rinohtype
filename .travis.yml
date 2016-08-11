@@ -17,6 +17,7 @@ matrix:
           packages:
             - poppler-utils
             - imagemagick
+    - python: 'nightly'
 
 install:
   - pip install tox-travis

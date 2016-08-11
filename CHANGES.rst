@@ -4,6 +4,8 @@ Release History
 Upcoming Release
 ~~~~~~~~~~~~~~~~
 
+* support Python 3.6
+
 Release 0.2.0 (2016-08-10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
