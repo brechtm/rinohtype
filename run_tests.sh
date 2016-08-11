@@ -15,5 +15,5 @@ set -x      # echo all lines in the script before executing them
 
 py.test $COVERAGE_ARGS $@
 if [[ $WITH_COVERAGE -eq 1 ]]; then
-    python $TOXINIDIR/coverage.py
+    python coverage.py
 fi
