@@ -7,26 +7,39 @@ cache:
     directories:
       - $HOME/.cache/pip
 
+python:
+  - 3.3
+  - 3.4
+  - 3.5
+  - nightly
+  - pypy3.3-5.2-alpha1
+
+env:
+  - DIST=
+    WITH_COVERAGE=1
+  - DIST="--installpkg ./dist/rinohtype-*.whl"
+
 matrix:
   include:
-    - python: '3.3'
-    - python: '3.4'
-    - python: '3.5'
+    - python: 3.5
+      env:
+        - TOXENV=regression
+        - TIMEOUT=travis_wait 45
+        - WITH_COVERAGE=1
       addons:
         apt:
           packages:
             - poppler-utils
             - imagemagick
-    - python: 'nightly'
-    - python: 'pypy3.3-5.2-alpha1'
+    - python: 3.5
+      env: TOXENV=test-docs
 
 install:
   - pip install tox-travis wheel
   - python setup.py bdist_wheel
 
 script:
-  - travis_wait 45 tox
-  - travis_wait 45 tox --installpkg ./dist/rinohtype-*.whl
+  - $TIMEOUT tox -v $DIST
 
 notifications:
   webhooks:

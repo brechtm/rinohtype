@@ -17,5 +17,6 @@ include .travis.yml
 include tox.ini
 include coverage.py
 include Dockerfile
+include run_tests.sh
 
 global-exclude *.py[cod] __pycache__ *.so *.dylib .DS_Store
