@@ -21,10 +21,12 @@ matrix:
     - python: 'pypy3.3-5.2-alpha1'
 
 install:
-  - pip install tox-travis
+  - pip install tox-travis wheel
+  - python setup.py bdist_wheel
 
 script:
   - travis_wait 45 tox
+  - travis_wait 45 tox --installpkg ./dist/rinohtype-*.whl
 
 notifications:
   webhooks:
