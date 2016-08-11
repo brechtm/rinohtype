@@ -42,7 +42,9 @@ install:
   - python setup.py bdist_wheel
 
 script:
-  - $([ -z $TIMEOUT ] || echo "travis_wait $TIMEOUT") tox -v $([ $DIST == wheel ] && echo "--installpkg ./dist/rinohtype-*.whl")
+  - function timeout { [ -z $TIMEOUT ] || echo "travis_wait $TIMEOUT"; }
+  - function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
+  - $(timeout) tox -v $(installpkg)
 
 notifications:
   webhooks:
