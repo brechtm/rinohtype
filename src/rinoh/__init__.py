@@ -11,6 +11,7 @@
 """
 
 import os
+import sys
 
 from importlib import import_module
 
@@ -19,6 +20,11 @@ try:
 except ImportError:
     __version__ = 'devel'
     __release_date__ = 'now'
+
+
+if sys.version_info < (3, 3):
+    print('rinohtype requires Python 3.3 or higher')
+    sys.exit(1)
 
 
 CORE_MODULES = ['annotation', 'color', 'dimension', 'document', 'draw', 'float',

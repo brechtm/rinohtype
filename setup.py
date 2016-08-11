@@ -5,11 +5,17 @@ Setup script for rinohtype
 """
 
 import os
+import sys
 
 from setuptools import setup, find_packages
 
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+if sys.version_info < (3, 3):
+    print('rinohtype requires Python 3.3 or higher')
+    sys.exit(1)
 
 
 def long_description():
