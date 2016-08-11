@@ -18,6 +18,7 @@ matrix:
             - poppler-utils
             - imagemagick
     - python: 'nightly'
+    - python: 'pypy3.3-5.2-alpha1'
 
 install:
   - pip install tox-travis
