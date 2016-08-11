@@ -22,6 +22,8 @@ env:
 matrix:
   include:
     - python: 3.5
+      env: TOXENV=check
+    - python: 3.5
       env:
         - TOXENV=regression
         - TIMEOUT=travis_wait 45
