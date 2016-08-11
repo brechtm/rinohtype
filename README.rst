@@ -97,8 +97,8 @@ Installation is trivial::
     pip install rinohtype
 
 
-reStructuredText
-~~~~~~~~~~~~~~~~
+reStructuredText Renderer
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The easiest way to get started with rinohtype is to render a reStructuredText
 document (such as `demo.txt`_) using the ``rinoh`` command line tool::
