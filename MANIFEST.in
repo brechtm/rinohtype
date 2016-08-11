@@ -4,6 +4,10 @@ graft src
 graft tests
 graft tests_regression
 prune tests_regression/sphinx
+include tests_regression/sphinx/AUTHORS
+include tests_regression/sphinx/CHANGES
+include tests_regression/sphinx/EXAMPLES
+graft tests_regression/sphinx/doc
 
 recursive-include examples *.md *.py *.txt *.xml *.jpg *.png
 
