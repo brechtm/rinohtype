@@ -29,7 +29,7 @@ def long_description():
 
 setup(
     name='rinohtype',
-    version='0.2.0',
+    version='0.2.1.dev',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
