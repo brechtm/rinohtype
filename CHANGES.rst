@@ -4,7 +4,10 @@ Release History
 Release 0.2.1.dev
 ~~~~~~~~~~~~~~~~~
 
+* unsupported Python versions: prevent installation where possible (sdist)
+  or exit on import (wheel)
 * support Python 3.6
+
 
 Release 0.2.0 (2016-08-10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
