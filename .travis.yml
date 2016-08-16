@@ -32,8 +32,12 @@ matrix:
       addons:
         apt:
           packages:
-            - poppler-utils
             - imagemagick
+      before_install:
+        # install poppler 0.41.0 (required by the diffpdf script)
+        - travis_retry curl -L http://brechtm.github.io/rinohtype-travis/dotlocal.tar.xz | tar xJ -C ~
+        - export PATH=$HOME/.local/bin:$PATH
+        - export LD_LIBRARY_PATH=$HOME/.local/lib
     - python: 3.5
       env: TOXENV=test-docs
 

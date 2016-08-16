@@ -86,40 +86,37 @@ class Literal_Block(rst_Literal_Block):
     @staticmethod
     def lexer_getter(text, language):
         # This is a partial copy of Sphinx's PygmentsBridge.highlight_block()
-        if language in ('py3', 'python3', 'default'):
-            if language in ('py', 'python'):
-                if text.startswith('>>>'):
-                    # interactive session
-                    lexer = lexers['pycon']
-                else:
-                    lexer = lexers['python']
-            elif language in ('py3', 'python3', 'default'):
-                if text.startswith('>>>'):
-                    lexer = lexers['pycon3']
-                else:
-                    lexer = lexers['python3']
-            elif language == 'guess':
-                try:
-                    lexer = guess_lexer(text)
-                except Exception:
-                    lexer = lexers['none']
+        if language in ('py', 'python'):
+            if text.startswith('>>>'):
+                # interactive session
+                lexer = lexers['pycon']
             else:
-                if language in lexers:
-                    lexer = lexers[language]
-                else:
-                    try:
-                        lexer = lexers[language] = get_lexer_by_name(language)
-                    except ClassNotFound:
-                        if warn:
-                            warn('Pygments lexer name %r is not known'
-                                 % language)
-                            lexer = lexers['none']
-                        else:
-                            raise
-                    else:
-                        lexer.add_filter('raiseonerror')
+                lexer = lexers['python']
+        elif language in ('py3', 'python3', 'default'):
+            if text.startswith('>>>'):
+                lexer = lexers['pycon3']
+            else:
+                lexer = lexers['python3']
+        elif language == 'guess':
+            try:
+                lexer = guess_lexer(text)
+            except Exception:
+                lexer = lexers['none']
         else:
-            lexer = get_lexer_by_name(language)
+            if language in lexers:
+                lexer = lexers[language]
+            else:
+                try:
+                    lexer = lexers[language] = get_lexer_by_name(language)
+                except ClassNotFound:
+                    if warn:
+                        warn('Pygments lexer name %r is not known'
+                             % language)
+                        lexer = lexers['none']
+                    else:
+                        raise
+                else:
+                    lexer.add_filter('raiseonerror')
         return lexer
 
     @property
