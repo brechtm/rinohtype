@@ -4,9 +4,15 @@ Release History
 Release 0.2.1.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
 * unsupported Python versions: prevent installation where possible (sdist)
   or exit on import (wheel)
 * support Python 3.6
+
+Bugfixes:
+
+* Fix #47: ClassNotFound exception in Literal_Block.lexer_getter()
 
 
 Release 0.2.0 (2016-08-10)
