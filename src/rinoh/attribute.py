@@ -187,11 +187,14 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
 
     def _check_attribute_type(self, name, value, accept_variables):
         attribute = self.attribute_definition(name)
-        if not (attribute.accepted_type.check_type(value)
-                or accept_variables and isinstance(value, VarBase)):
+        if isinstance(value, Var):
+            if not accept_variables:
+                raise TypeError("The '{}' attribute does not accept variables"
+                                .format(name))
+        elif not attribute.accepted_type.check_type(value):
             type_name = type(value).__name__
             raise TypeError("{} ({}) is not of the correct type for the '{}' "
-                            'attribute'.format(value, type_name, name))
+                            "attribute".format(value, type_name, name))
 
     @classmethod
     def _get_default(cls, attribute):
@@ -219,7 +222,7 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
 
     def get_value(self, attribute, rule_set):
         value = self[attribute]
-        if isinstance(value, VarBase):
+        if isinstance(value, Var):
             accepted_type = self.attribute_definition(attribute).accepted_type
             value = value.get(accepted_type, rule_set)
             self._check_attribute_type(attribute, value, accept_variables=False)
@@ -300,15 +303,7 @@ class Function(AttributeType):
 
 # variables
 
-class VarBase(object):
-    def __getattr__(self, name):
-        return VarAttribute(self, name)
-
-    def get(self, style, attribute, rule_set):
-        raise NotImplementedError
-
-
-class Var(VarBase):
+class Var(object):
     def __init__(self, name):
         super().__init__()
         self.name = name
@@ -318,14 +313,3 @@ class Var(VarBase):
 
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
-
-
-class VarAttribute(VarBase):
-    def __init__(self, parent, attribute_name):
-        super().__init__()
-        self.parent = parent
-        self.attribute_name = attribute_name
-
-    def get(self, accepted_type, rule_set):
-        return getattr(self.parent.get(accepted_type, rule_set),
-                       self.attribute_name)

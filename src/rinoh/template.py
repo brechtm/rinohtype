@@ -13,9 +13,9 @@ from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
 from .element import create_destination
 from .float import BackgroundImage, Image
-from .layout import (FootnoteContainer, DownExpandingContainer,
-                     ChainedContainer, UpExpandingContainer, Container,
-                     FlowablesContainer, BACKGROUND, CONTENT, HEADER_FOOTER)
+from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
+                     FlowablesContainer, FootnoteContainer, ChainedContainer,
+                     BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE)
 from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
@@ -230,9 +230,9 @@ class SimplePage(PageBase):
         self.body.float_space = float_space
         if self.get_option('chapter_title_flowables', document) and new_chapter:
             height = self.get_option('chapter_title_height', document)
-            self.chapter_title = FlowablesContainer('chapter title', CONTENT,
-                                                    self.body, 0, 0,
-                                                    height=height)
+            self.chapter_title = FlowablesContainer('chapter title',
+                                                    CHAPTER_TITLE, self.body,
+                                                    0, 0, height=height)
             column_top = self.chapter_title.bottom
             header = self.get_option('chapter_header_text', document)
             footer = self.get_option('chapter_footer_text', document)

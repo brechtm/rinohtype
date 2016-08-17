@@ -99,6 +99,7 @@ class Flowable(Styled):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
         super().__init__(id=id, style=style, parent=parent)
+        self.annotation = None
 
     @property
     def level(self):
@@ -152,7 +153,12 @@ class Flowable(Styled):
                 initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
-                container.mark_page_nonempty()
+                if self.annotation:
+                    height = float(margin_container.height)
+                    margin_container.canvas.annotate(self.annotation,
+                                                     0, 0, width, height)
+                if not self.get_style('keep_with_next', container):
+                    container.mark_page_nonempty()
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)

@@ -211,7 +211,10 @@ class Fraction(object):
         return '{:.2f}%'.format(self._percent)
 
     def __eq__(self, other):
-        return self._percent == other._percent
+        try:
+            return self._percent == other._percent
+        except AttributeError:
+            return False
 
     def to_points(self, total_dimension):
         return self._percent / 100 * float(total_dimension)
