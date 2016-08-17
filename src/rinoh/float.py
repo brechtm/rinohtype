@@ -40,8 +40,8 @@ class ImageState(HorizontallyAlignedFlowableState):
 
 class ImageBase(Flowable):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, id=None, style=None, parent=None,
-                 **kwargs):
+                 dpi=None, rotate=0, limit_width=None,
+                 id=None, style=None, parent=None, **kwargs):
         super().__init__(id=id, style=style, parent=parent, **kwargs)
         self.filename_or_file = filename_or_file
         if (width, height) != (None, None):
@@ -56,6 +56,7 @@ class ImageBase(Flowable):
         self.height = height
         self.dpi = dpi
         self.rotate = rotate
+        self.limit_width = limit_width
 
     @property
     def filename(self):
@@ -94,18 +95,22 @@ class ImageBase(Flowable):
                 scale_width = scale_height
         else:
             scale_height = scale_width
-        if scale_width is None:
+        if scale_width is None:                   # no width or height given
             if self.scale in (FIT, FILL):
                 w_scale = float(container.width) / image.width
                 h_scale = float(container.remaining_height) / image.height
                 min_or_max = min if self.scale == FIT else max
-                scale = min_or_max(w_scale, h_scale)
+                scale_width = scale_height = min_or_max(w_scale, h_scale)
             else:
-                scale = self.scale
-            scale_width = scale_height = scale
+                scale_width = scale_height = self.scale
         dpi_x, dpi_y = image.dpi
         dpi_scale_x = (dpi_x / self.dpi) if self.dpi and dpi_x else 1
         dpi_scale_y = (dpi_y / self.dpi) if self.dpi and dpi_y else 1
+        if (scale_width == scale_height == 1.0    # limit width if necessary
+                and self.limit_width is not None
+                and image.width * dpi_scale_x > container.width):
+            limit_width = self.limit_width.to_points(container.width)
+            scale_width = scale_height = limit_width / image.width
         w, h = container.canvas.place_image(image, left, top,
                                             container.document,
                                             scale_width * dpi_scale_x,
@@ -134,11 +139,12 @@ class InlineImage(ImageBase, InlineFlowable):
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, align=None,
+                 dpi=None, rotate=0, limit_width=None, align=None,
                  id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, dpi=dpi, rotate=rotate,
-                         align=align, id=id, style=style, parent=parent)
+                         limit_width=limit_width, align=align,
+                         id=id, style=style, parent=parent)
 
 
 
