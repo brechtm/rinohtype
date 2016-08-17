@@ -451,6 +451,7 @@ class Paragraph(ParagraphBase, MixedStyledText):
         MixedStyledText.__init__(self, text_or_items, style=style,
                                  parent=parent)
         self.id = id
+        self.annotation = None
 
     def text(self, container):
         return self

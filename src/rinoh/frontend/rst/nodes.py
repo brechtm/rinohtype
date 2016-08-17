@@ -350,22 +350,28 @@ class Doctest_Block(DocutilsBodyNode):
 
 
 class Reference(DocutilsBodyNode, DocutilsInlineNode):
-    def build_styled_text(self):
+    @property
+    def annotation(self):
         if self.get('refid'):
-            link = rt.NamedDestinationLink(self.get('refid'))
-            style = 'internal link'
+            return rt.NamedDestinationLink(self.get('refid'))
         elif self.get('refuri'):
-            link = rt.HyperLink(self.get('refuri'))
-            style = 'external link'
-        else:
-            return rt.MixedStyledText(self.process_content(),
-                                      style='broken link')
-        return rt.AnnotatedText(self.process_content(), link, style=style)
+            return rt.HyperLink(self.get('refuri'))
+
+    def build_styled_text(self):
+        annotation = self.annotation
+        content = self.process_content()
+        if annotation is None:
+            return rt.MixedStyledText(content, style='broken link')
+        style = ('external link' if annotation.type == 'URI'
+                 else 'internal link')
+        return rt.AnnotatedText(content, annotation, style=style)
 
     def build_flowable(self):
         children = self.getchildren()
         assert len(children) == 1
-        return self.image.flowable()
+        image = self.image.flowable()
+        image.annotation = self.annotation
+        return image
 
 
 class Footnote(DocutilsBodyNode):
