@@ -39,6 +39,36 @@ class ImageState(HorizontallyAlignedFlowableState):
 
 
 class ImageBase(Flowable):
+    """Base class for flowables displaying an image
+
+    If DPI information is embedded in the image, it is used to determine the
+    size at which the image is displayed in the document (depending on the
+    sizing options specified). Otherwise, a value of 72 DPI is used.
+
+    Args:
+        filename_or_file (str, file): the image to display. This can be a path
+            to an image file on the file system or a file-like object
+            containing the image.
+        scale (float): scales the image to `scale` times its original size
+        width (DimensionBase, Fraction): specifies the absolute width
+            (DimensionBase) or the width relative to the container width
+            (Fraction).
+        height (DimensionBase): specifies the absolute height (DimensionBase)
+            or the width relative to the container **width** (Fraction).
+        dpi (float): overrides the DPI value embedded in the image (or the
+            default of 72)
+        rotate (float): the angle in degrees to rotate the image over
+        limit_width (DimensionBase, Fraction): limit the image to this width
+            when none of scale, width and height are given and the image would
+            be wider than the container.
+
+    If only one of `width` or `height` is given, the image is scaled preserving
+    the original aspect ratio.
+
+    If `width` or `height` is given, `scale` or `dpi` may not be specified.
+
+    """
+
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  dpi=None, rotate=0, limit_width=None,
                  id=None, style=None, parent=None, **kwargs):
