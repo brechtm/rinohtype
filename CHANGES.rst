@@ -6,12 +6,17 @@ Release 0.2.1.dev
 
 New Features:
 
+* optionally limit the width of large images and make use of this to simulate
+  the Sphinx LaTeX builder behavior (#46)
+* reStructuredText/Sphinx: support for images with hyperlinks (#49)
 * unsupported Python versions: prevent installation where possible (sdist)
   or exit on import (wheel)
 * support Python 3.6
 
 Bugfixes:
 
+* make StyleSheet objects picklable so the Sphinx builder's rinoh_stylesheet
+  option can actually be used
 * Fix #47: ClassNotFound exception in Literal_Block.lexer_getter()
 * Fix #45: Images that don't fit are still placed on the page
 
