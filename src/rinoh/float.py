@@ -44,12 +44,13 @@ class ImageBase(Flowable):
                  **kwargs):
         super().__init__(id=id, style=style, parent=parent, **kwargs)
         self.filename_or_file = filename_or_file
-        if scale != 1.0 and (width, height, dpi) != (None, None, None):
-            raise TypeError('Scale may not be specified when either width, '
-                            'height or dpi are given.')
-        if dpi is not None and (width, height, scale) != (None, None, 1.0):
-            raise TypeError('DPI may not be specified when either width, '
-                            'height or scale are given.')
+        if (width, height) != (None, None):
+            if scale != 1.0:
+                raise TypeError('Scale may not be specified when either '
+                                'width or height are given.')
+            if dpi is not None:
+                raise TypeError('DPI may not be specified when either '
+                                'width or height are given.')
         self.scale = scale
         self.width = width
         self.height = height
@@ -103,8 +104,8 @@ class ImageBase(Flowable):
                 scale = self.scale
             scale_width = scale_height = scale
         dpi_x, dpi_y = image.dpi
-        dpi_scale_x = dpi_x / self.dpi if self.dpi and dpi_x else 1
-        dpi_scale_y = dpi_y / self.dpi if self.dpi and dpi_y else 1
+        dpi_scale_x = (dpi_x / self.dpi) if self.dpi and dpi_x else 1
+        dpi_scale_y = (dpi_y / self.dpi) if self.dpi and dpi_y else 1
         w, h = container.canvas.place_image(image, left, top,
                                             container.document,
                                             scale_width * dpi_scale_x,
