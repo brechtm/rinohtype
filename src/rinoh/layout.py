@@ -206,6 +206,7 @@ class Container(object):
 BACKGROUND = 'background'
 CONTENT = 'content'
 HEADER_FOOTER = 'header_footer'
+CHAPTER_TITLE = 'chapter_title'
 
 
 class FlowablesContainerBase(Container):

@@ -13,6 +13,7 @@ New Features:
 Bugfixes:
 
 * Fix #47: ClassNotFound exception in Literal_Block.lexer_getter()
+* Fix #45: Images that don't fit are still placed on the page
 
 
 Release 0.2.0 (2016-08-10)

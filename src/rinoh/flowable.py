@@ -152,7 +152,8 @@ class Flowable(Styled):
                 initial_after = eoc.flowable_state.initial
                 raise eoc
             finally:
-                container.mark_page_nonempty()
+                if not self.get_style('keep_with_next', container):
+                    container.mark_page_nonempty()
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)

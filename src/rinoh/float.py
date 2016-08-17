@@ -110,11 +110,10 @@ class ImageBase(Flowable):
                                             scale_width * dpi_scale_x,
                                             scale_height * dpi_scale_y,
                                             self.rotate)
-        ignore_overflow = (self.scale == FIT) or (not state.initial)
+        ignore_overflow = (self.scale == FIT) or container.page._empty
         try:
             container.advance(h, ignore_overflow)
         except ContainerOverflow:
-            state.initial = False
             raise EndOfContainer(state)
         return w, h, 0
 
