@@ -20,6 +20,7 @@ Bugfixes:
   option can actually be used
 * Fix #47: ClassNotFound exception in Literal_Block.lexer_getter()
 * Fix #45: Images that don't fit are still placed on the page
+* don't warn about duplicate style matches that resolve to the same style
 
 
 Release 0.2.0 (2016-08-10)
