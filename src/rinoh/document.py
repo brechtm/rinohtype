@@ -84,7 +84,8 @@ class Page(Container):
         document = self.document_part.document
         backend_document = document.backend_document
         self.backend_page = document.backend.Page(backend_document,
-                                                  width, height)
+                                                  width, height, self.number,
+                                                  self.number_format)
         self.section = None     # will point to the last section on this page
         self.overflowed_chains = []
         self._current_section = {}

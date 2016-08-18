@@ -9,6 +9,7 @@ New Features:
 * optionally limit the width of large images and make use of this to simulate
   the Sphinx LaTeX builder behavior (#46)
 * reStructuredText/Sphinx: support for images with hyperlinks (#49)
+* record the styled page numbers in the PDF as page labels (#41)
 * unsupported Python versions: prevent installation where possible (sdist)
   or exit on import (wheel)
 * support Python 3.6
