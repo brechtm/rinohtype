@@ -52,7 +52,7 @@ reStructuredText Renderer
 Rinohtype includes the :program:`rinoh` command-line tool that can render
 reStructuredText documents. Rendering the reStructuredText demonstration
 article `demo.txt`_ (using the standard article template and style sheet)
-generates :download:`demo.pdf`.
+generates :download:`demo.pdf <../tests_regression/reference/demo.pdf>`.
 
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
@@ -67,7 +67,7 @@ Sphinx Builder
 .. only:: not rinoh
 
     |common| This documentation was rendered by rinohtype to
-    :download:`rinohtype.pdf`.
+    :download:`rinohtype.pdf <_build/rinoh/rinohtype.pdf>`.
 
 .. only:: rinoh
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Book &mdash; rinohtype 0.2.0 documentation</title>
+  <title>Book &mdash; rinohtype 0.2.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="rinohtype 0.2.0 documentation" href="index.html"/>
+    <link rel="top" title="rinohtype 0.2.1 documentation" href="index.html"/>
         <link rel="up" title="Standard Document Templates" href="templates.html"/>
         <link rel="next" title="Advanced Topics" href="advanced.html"/>
         <link rel="prev" title="Article" href="article.html"/> 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.2.1
               </div>
             
           
@@ -158,7 +158,7 @@ numerals. The template uses different templates for even and odd pages.</p>
 </ul>
 </li>
 <li><strong>front matter</strong> (<a class="reference internal" href="api/template.html#rinoh.template.FixedDocumentPartTemplate" title="rinoh.template.FixedDocumentPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.FixedDocumentPartTemplate</span></code></a>)<ul>
-<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.structure.TableOfContentsSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x10afd3438&gt;]</span></code></li>
+<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.structure.TableOfContentsSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x11018b400&gt;]</span></code></li>
 <li><em>right_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.front_matter_right_page" title="rinoh.templates.book.BookConfiguration.front_matter_right_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.front_matter_right_page</span></code></a></li>
 <li><em>left_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.front_matter_left_page" title="rinoh.templates.book.BookConfiguration.front_matter_left_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.front_matter_left_page</span></code></a></li>
 <li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">LOWERCASE</span> <span class="pre">ROMAN</span></code></li>
@@ -171,7 +171,7 @@ numerals. The template uses different templates for even and odd pages.</p>
 </ul>
 </li>
 <li><strong>indices</strong> (<a class="reference internal" href="api/template.html#rinoh.template.FixedDocumentPartTemplate" title="rinoh.template.FixedDocumentPartTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.FixedDocumentPartTemplate</span></code></a>)<ul>
-<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.index.IndexSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x10afd3ba8&gt;]</span></code></li>
+<li><em>flowables</em>: <code class="docutils literal"><span class="pre">[&lt;rinoh.index.IndexSection</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x111a126d8&gt;]</span></code></li>
 <li><em>right_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.back_matter_right_page" title="rinoh.templates.book.BookConfiguration.back_matter_right_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.back_matter_right_page</span></code></a></li>
 <li><em>left_page_template</em>: <a class="reference internal" href="#rinoh.templates.book.BookConfiguration.back_matter_left_page" title="rinoh.templates.book.BookConfiguration.back_matter_left_page"><code class="xref py py-attr docutils literal"><span class="pre">BookConfiguration.back_matter_left_page</span></code></a></li>
 <li><em>page_number_format</em>: <code class="docutils literal"><span class="pre">NUMBER</span></code></li>
@@ -209,11 +209,11 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
-<li><strong>page_size</strong> = <code class="docutils literal"><span class="pre">Var('paper_size')</span></code></li>
 <li><strong>top_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
 <li><strong>right_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
 <li><strong>bottom_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
 <li><strong>left_margin</strong> = <code class="docutils literal"><span class="pre">72.00pt</span></code></li>
+<li><strong>page_size</strong> = <code class="docutils literal"><span class="pre">Var('paper_size')</span></code></li>
 </ul>
 </dd></dl>
 
@@ -228,13 +228,13 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">front_matter_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.front_matter_right_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
-<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
-<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
 <li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
-<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d730&gt;</span></code></li>
-<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
 <li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">180.00pt</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x111f58488&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
 </ul>
 </dd></dl>
 
@@ -243,9 +243,9 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">front_matter_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.front_matter_left_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 <li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER'</span></code></li>
 <li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 </ul>
 </dd></dl>
 
@@ -254,13 +254,13 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">content_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.content_right_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
-<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_NUMBER(2).</span>&nbsp; <span class="pre">$SECTION_TITLE(2)\t\t$PAGE_NUMBER'</span></code></li>
-<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
 <li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
-<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">body_matter_chapter_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d510&gt;</span></code></li>
-<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_NUMBER(2).</span>&nbsp; <span class="pre">$SECTION_TITLE(2)\t\t$PAGE_NUMBER'</span></code></li>
 <li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">172.80pt</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">body_matter_chapter_title_flowables</span> <span class="pre">at</span> <span class="pre">0x111f580d0&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
 </ul>
 </dd></dl>
 
@@ -269,9 +269,9 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">content_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.content_left_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 <li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER\t\tChapter</span> <span class="pre">$SECTION_NUMBER(1).</span>&nbsp; <span class="pre">$SECTION_TITLE(1)'</span></code></li>
 <li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 </ul>
 </dd></dl>
 
@@ -280,14 +280,14 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">back_matter_right_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.back_matter_right_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
-<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_TITLE(1)\t\t$PAGE_NUMBER'</span></code></li>
-<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
 <li><strong>chapter_header_text</strong> = <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 <li><strong>columns</strong> = <code class="docutils literal"><span class="pre">2</span></code></li>
-<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x10bc1d730&gt;</span></code></li>
-<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$SECTION_TITLE(1)\t\t$PAGE_NUMBER'</span></code></li>
 <li><strong>chapter_title_height</strong> = <code class="docutils literal"><span class="pre">180.00pt</span></code></li>
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>chapter_title_flowables</strong> = <code class="docutils literal"><span class="pre">&lt;function</span> <span class="pre">front_matter_section_title_flowables</span> <span class="pre">at</span> <span class="pre">0x111f58488&gt;</span></code></li>
+<li><strong>chapter_footer_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$PAGE_NUMBER'</span></code></li>
+<li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'\t\t$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
 </ul>
 </dd></dl>
 
@@ -296,10 +296,10 @@ numerals. The template uses different templates for even and odd pages.</p>
 <code class="descname">back_matter_left_page</code><a class="headerlink" href="#rinoh.templates.book.BookConfiguration.back_matter_left_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaults for <a class="reference internal" href="api/template.html#rinoh.template.PageTemplate" title="rinoh.template.PageTemplate"><code class="xref py py-class docutils literal"><span class="pre">rinoh.template.PageTemplate</span></code></a>:</p>
 <ul class="simple">
+<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
+<li><strong>columns</strong> = <code class="docutils literal"><span class="pre">2</span></code></li>
 <li><strong>footer_text</strong> = <code class="docutils literal"><span class="pre">'$PAGE_NUMBER\t\t$SECTION_TITLE(1)'</span></code></li>
 <li><strong>header_text</strong> = <code class="docutils literal"><span class="pre">'$DOCUMENT_TITLE,</span> <span class="pre">$DOCUMENT_SUBTITLE'</span></code></li>
-<li><strong>columns</strong> = <code class="docutils literal"><span class="pre">2</span></code></li>
-<li><strong>header_footer_distance</strong> = <code class="docutils literal"><span class="pre">0</span></code></li>
 </ul>
 </dd></dl>
 
@@ -348,7 +348,7 @@ numerals. The template uses different templates for even and odd pages.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.2.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
