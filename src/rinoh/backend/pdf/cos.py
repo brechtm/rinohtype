@@ -457,6 +457,8 @@ class Document(dict):
 
     def __init__(self, creator):
         self.catalog = Catalog()
+        self.catalog['PageLabels'] = Dictionary(indirect=True)
+        self.catalog['PageLabels']['Nums'] = Array()
         self.info = Dictionary(indirect=True)
         self.timestamp = time.time()
         self.set_info('Creator', creator)
@@ -603,6 +605,26 @@ class Page(Dictionary):
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
+
+
+DECIMAL_ARABIC = Name('D')
+UPPERCASE_ROMAN = Name('R')
+LOWERCASE_ROMAN = Name('r')
+UPPERCASE_LETTERS = Name('A')
+LOWERCASE_LETTERS = Name('a')
+
+
+class PageLabel(Dictionary):
+    type = 'PageLabel'
+
+    def __init__(self, numbering_style=None, label_prefix=None, start=None):
+        super().__init__(indirect=False)
+        if numbering_style:
+            self['S'] = numbering_style
+        if label_prefix is not None:
+            self['P'] = String(label_prefix)
+        if start is not None:
+            self['St'] = Integer(start)
 
 
 class Outlines(Dictionary):

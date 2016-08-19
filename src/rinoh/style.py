@@ -653,9 +653,15 @@ class StyleSheet(RuleSet, Resource):
     def find_style(self, styled, container):
         matches = sorted(self.find_matches(styled, container),
                          key=attrgetter('specificity'), reverse=True)
-        if len(set(match.specificity for match in matches)) < len(matches):
-            styled.warn('Multiple selectors match with the same specificity. '
-                        'See the style log for details.', container)
+        if len(matches) > 1:
+            last_match = matches[0]
+            for match in matches[1:]:
+                if (match.specificity == last_match.specificity
+                        and match.style_name != last_match.style_name):
+                    styled.warn('Multiple selectors match with the same '
+                                'specificity. See the style log for details.',
+                                container)
+                last_match = match
         for match in matches:
             try:
                 return self[match.style_name]

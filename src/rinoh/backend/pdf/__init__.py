@@ -8,7 +8,7 @@
 
 import math
 
-from io import StringIO, BytesIO
+from io import BytesIO
 from contextlib import contextmanager
 
 from . import cos
@@ -107,20 +107,37 @@ class Document(object):
         parent['Count'] = cos.Integer(count if top_level else - count)
 
     def write(self, file):
-        for page in self.pages:
+        from ... import number
+        page_number_formats = {number.NUMBER: cos.DECIMAL_ARABIC,
+                               number.CHARACTER_LC: cos.LOWERCASE_LETTERS,
+                               number.CHARACTER_UC: cos.UPPERCASE_LETTERS,
+                               number.ROMAN_LC: cos.LOWERCASE_ROMAN,
+                               number.ROMAN_UC: cos.UPPERCASE_ROMAN}
+
+        page_labels = self.cos_document.catalog['PageLabels']['Nums']
+        last_number_format = None
+        for index, page in enumerate(self.pages):
             contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue())
             page.cos_page['Contents'] = contents
+            if page.number_format != last_number_format:
+                pdf_number_format = page_number_formats[page.number_format]
+                page_labels.append(cos.Integer(index))
+                page_labels.append(cos.PageLabel(pdf_number_format,
+                                                 start=page.number))
+                last_number_format = page.number_format
         self.cos_document.write(file)
 
 
 class Page(object):
-    def __init__(self, backend_document, width, height):
+    def __init__(self, backend_document, width, height, number, number_format):
         self.backend_document = backend_document
         cos_pages = backend_document.cos_document.catalog['Pages']
         self.cos_page = cos_pages.new_page(float(width), float(height))
         self.width = width
         self.height = height
+        self.number = number
+        self.number_format = number_format
         self.canvas = PageCanvas(self)
         self.backend_document.pages.append(self)
 
