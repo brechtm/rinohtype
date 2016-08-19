@@ -13,15 +13,20 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
 import os
+import time
+
+from subprocess import check_output
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('..'))
 
-import rinoh
+SETUP = os.path.join(os.path.dirname(__file__), '..', 'setup.py')
+
+def from_setup(arg):
+    return check_output([SETUP, arg]).strip().decode('ascii')
 
 # -- General configuration ------------------------------------------------
 
@@ -55,15 +60,16 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'rinohtype'
-copyright = '2015, Brecht Machiels'
+project = from_setup('--name')
+author = from_setup('--author')
+copyright = '{}, {}'.format(time.strftime('%Y'), author)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = rinoh.__version__
+release = version = from_setup('--version')
 # The full version, including alpha/beta/rc tags.
 release = version
 
