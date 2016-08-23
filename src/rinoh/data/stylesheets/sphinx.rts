@@ -463,6 +463,7 @@ border_bottom=$(thin_black_stroke)
 
 [admonition title]
 base=default
+keep_with_next=true
 font_weight=BOLD
 indent_first=0
 space_above=5pt
