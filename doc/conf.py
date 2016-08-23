@@ -16,7 +16,7 @@
 import os
 import time
 
-from subprocess import check_output
+from distutils.core import run_setup
 
 import pkg_resources
 
@@ -27,8 +27,7 @@ import pkg_resources
 
 SETUP = os.path.join(os.path.dirname(__file__), '..', 'setup.py')
 
-def from_setup(arg):
-    return check_output([SETUP, arg]).strip().decode('ascii')
+distribution = run_setup(SETUP, stop_after='init')
 
 # -- General configuration ------------------------------------------------
 
@@ -62,8 +61,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = from_setup('--name')
-author = from_setup('--author')
+project = distribution.get_name()
+author = distribution.get_author()
 copyright = '{}, {}'.format(time.strftime('%Y'), author)
 
 # The version info for the project you're documenting, acts as replacement for
@@ -71,7 +70,7 @@ copyright = '{}, {}'.format(time.strftime('%Y'), author)
 # built documents.
 #
 # The short X.Y version.
-release = version = from_setup('--version')
+release = version = distribution.get_version()
 # The full version, including alpha/beta/rc tags.
 release = version
 

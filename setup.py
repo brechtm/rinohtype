@@ -4,13 +4,9 @@
 Setup script for rinohtype
 """
 
-import os
 import sys
 
 from setuptools import setup, find_packages
-
-
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 if sys.version_info < (3, 3):
@@ -19,10 +15,13 @@ if sys.version_info < (3, 3):
 
 
 def long_description():
-    with open(os.path.join(BASE_PATH, 'README.rst')) as readme:
+    import os
+
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(base_path, 'README.rst')) as readme:
         result = readme.read()
     result += '\n\n'
-    with open(os.path.join(BASE_PATH, 'CHANGES.rst')) as changes:
+    with open(os.path.join(base_path, 'CHANGES.rst')) as changes:
         result += changes.read()
     return result
 
