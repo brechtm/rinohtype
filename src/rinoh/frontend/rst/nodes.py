@@ -453,7 +453,8 @@ class Definition_List_Item(DocutilsBodySubNode):
     def process(self):
         term = self.term.styled_text()
         try:
-            term += ' : ' + self.classifier.styled_text()
+            for classifier in self.classifier:
+                term += ' : ' + classifier.styled_text()
         except AttributeError:
             pass
         return (rt.DefinitionTerm([rt.Paragraph(term)]),

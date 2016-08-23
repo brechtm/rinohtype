@@ -4,6 +4,10 @@ Release History
 Release 0.2.2.dev
 ~~~~~~~~~~~~~~~~~
 
+Bugfixes:
+
+* reStructuredText: only the first classifier for a definition term was shown
+
 Release 0.2.1 (2016-08-18)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
