@@ -459,6 +459,9 @@ base=admonition title
 [builtin admonition:Admonition]
 base=admonition
 inline_title=true
+
+[boxed builtin admonition:Admonition]
+base=builtin admonition
 border=$(thin_black_stroke)
 padding_left=8pt
 padding_right=8pt
@@ -468,27 +471,36 @@ base=admonition title
 font_color=#f00
 
 [attention admonition]
-base=builtin admonition
+base=boxed builtin admonition
 
 [caution admonition]
-base=builtin admonition
+base=boxed builtin admonition
 
 [danger admonition]
-base=builtin admonition
-
-[error admonition]
-base=builtin admonition
+base=boxed builtin admonition
 
 [warning admonition]
+base=boxed builtin admonition
+
+[error admonition]
+base=boxed builtin admonition
+
+[hint admonition]
+base=builtin admonition
+
+[important admonition]
+base=builtin admonition
+
+[note admonition]
+base=builtin admonition
+
+[tip admonition]
 base=builtin admonition
 
 [seealso admonition]
 base=admonition
 border_top=none
 border_bottom=none
-
-[tip admonition]
-base=builtin admonition
 
 [header_footer:Paragraph]
 base=default

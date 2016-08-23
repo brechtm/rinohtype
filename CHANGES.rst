@@ -4,7 +4,11 @@ Release History
 Release 0.2.2.dev
 ~~~~~~~~~~~~~~~~~
 
-Bugfixes:
+Changed:
+
+* Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
+
+Fixed:
 
 * reStructuredText: only the first classifier for a definition term was shown
 
