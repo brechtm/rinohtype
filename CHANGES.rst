@@ -6,6 +6,8 @@ Release 0.2.2.dev
 
 Changed:
 
+* rename FieldList to DefinitionList and use it to replace uses (docutils and
+  Sphinx frontends) of the old DefinitionList (#54)
 * Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
 
 Fixed:

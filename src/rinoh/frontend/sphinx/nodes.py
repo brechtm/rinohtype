@@ -15,11 +15,11 @@ from pygments.util import ClassNotFound
 from sphinx.highlighting import lexers
 
 from ...annotation import HyperLink, AnnotatedText
-from ...flowable import LabeledFlowable
+from ...flowable import LabeledFlowable, StaticGroupedFlowables
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference, REFERENCE
-from ...structure import DefinitionList, DefinitionTerm, Definition, FieldList
+from ...structure import DefinitionList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 from ...warnings import warn
@@ -210,7 +210,7 @@ class ProductionList(DocutilsBodyNode):
             item = LabeledFlowable(token_label, token_definition,
                                    style='production')
             items.append(item)
-        return FieldList(items, style='production list')
+        return DefinitionList(items, style='production list')
 
 
 class Production(DocutilsBodyNode):
@@ -227,9 +227,11 @@ class TermSep(DocutilsInlineNode):
 
 class Desc(DocutilsBodyNode):
     def build_flowable(self):
-        sigs = [sig.flowable() for sig in self.desc_signature]
-        desc = self.desc_content.flowable()
-        return DefinitionList([(DefinitionTerm(sigs), desc)],
+        term = StaticGroupedFlowables((sig.flowable()
+                                       for sig in self.desc_signature),
+                                      style='signatures')
+        description = self.desc_content.flowable()
+        return DefinitionList([LabeledFlowable(term, description)],
                               style='object description')
 
 
@@ -286,7 +288,7 @@ class Desc_Annotation(DocutilsInlineNode):
 
 
 class Desc_Content(DocutilsGroupingNode):
-    grouped_flowables_class = Definition
+    style = 'content'
 
 
 class Desc_Returns(DocutilsInlineNode):

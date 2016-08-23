@@ -314,6 +314,10 @@ indent_first=0pt
 
 [definition list]
 
+[definition list item]
+label_min_width=17pt
+label_max_width=0
+
 [definition term]
 space_above=4pt
 keep_with_next=true
@@ -325,9 +329,9 @@ font_weight=BOLD
 
 [definition term classifier]
 font_weight=REGULAR
+font_slant=italic
 
 [definition]
-margin_left=20pt
 
 [definition paragraph]
 base=body
@@ -345,11 +349,12 @@ font_slant=ITALIC
 space_above=3pt
 space_below=3pt
 
-[object definition term]
+[object signatures]
 base=definition term
 
 [object signature]
-base=default
+base=definition term paragraph
+font_weight=regular
 
 [object name]
 typeface=$(mono_typeface)
@@ -414,6 +419,11 @@ space_below=0
 
 # field lists
 
+[field list]
+
+[field list item]
+label_max_width=80pt
+
 [field name]
 base=default
 indent_first=0
@@ -422,6 +432,11 @@ font_weight=BOLD
 
 
 # option lists
+
+[option list]
+
+[option list item]
+base=field list item
 
 [option]
 base=body
