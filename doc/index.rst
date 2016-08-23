@@ -63,6 +63,7 @@ projects involving rinohtype, so please don't hesitate to contact us.
     templates
     advanced
     api/index
+    faq
     changelog
 
 
