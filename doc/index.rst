@@ -17,7 +17,7 @@ technical documents.
 Paired with Sphinx_, rinohtype offers a modern alternative to LaTeX_ . Sphinx
 helps writing large structured documents and supports a multitude of different
 output formats including searchable HTML. Rinohtype provides a Sphinx backend
-that allows generating beautiful PDF documents.
+that allows generating professionally typeset PDF documents.
 
 .. _Sphinx: http://sphinx-doc.org
 .. _LaTeX: http://en.wikipedia.org/wiki/LaTeX
