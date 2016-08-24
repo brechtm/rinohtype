@@ -851,57 +851,63 @@
               SingleStyledText('Definition Lists')
         DefinitionList()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <definition_list>
              > (0,0,0,0,2) definition list
-          DefinitionTerm()
-               > (0,0,0,0,2) definition term
-            Paragraph('Term')
-                 > (0,0,0,0,4) definition term paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Term')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:173 <term>
-                SingleStyledText('Term')
-          Definition()   None:None <definition>
-               > (0,0,0,0,2) definition
-            Paragraph('Definition')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:174 <paragraph>
-                 > (0,0,0,0,4) definition paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Definition')
-                SingleStyledText('Definition')
-          DefinitionTerm()
-               > (0,0,0,0,2) definition term
-            Paragraph('Term : classifier')
-                 > (0,0,0,0,4) definition term paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Term : classifier')
-                SingleStyledText('Term')
-                SingleStyledText(' : ')
-                MixedStyledText('classifier', style='classifier')   None:None <classifier>
-                     > (0,0,1,0,3) definition term classifier
-                  SingleStyledText('classifier')
-          Definition()   None:None <definition>
-               > (0,0,0,0,2) definition
-            Paragraph('Definition paragraph 1.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:176 <paragraph>
-                 > (0,0,0,0,4) definition paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Definition paragraph 1.')
-                SingleStyledText('Definition paragraph 1.')
-            Paragraph('Definition paragraph 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:178 <paragraph>
-                 > (0,0,0,0,4) definition paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Definition paragraph 2.')
-                SingleStyledText('Definition paragraph 2.')
-          DefinitionTerm()
-               > (0,0,0,0,2) definition term
-            Paragraph('Term')
-                 > (0,0,0,0,4) definition term paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Term')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:180 <term>
-                SingleStyledText('Term')
-          Definition()   None:None <definition>
-               > (0,0,0,0,2) definition
-            Paragraph('Definition')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:180 <paragraph>
-                 > (0,0,0,0,4) definition paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Definition')
-                SingleStyledText('Definition')
+          LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:173 <definition_list_item>
+               > (0,0,0,0,4) definition list item
+            StaticGroupedFlowables(style='definition term')
+                 > (0,0,1,0,5) definition term
+              Paragraph('Term')
+                   > (0,0,1,0,7) definition term paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Term')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:173 <term>
+                  SingleStyledText('Term')
+            StaticGroupedFlowables(style='definition')   None:None <definition>
+                 > (0,0,1,0,5) definition
+              Paragraph('Definition')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:174 <paragraph>
+                   > (0,0,1,0,7) definition paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Definition')
+                  SingleStyledText('Definition')
+          LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:177 <definition_list_item>
+               > (0,0,0,0,4) definition list item
+            StaticGroupedFlowables(style='definition term')
+                 > (0,0,1,0,5) definition term
+              Paragraph('Term : classifier')
+                   > (0,0,1,0,7) definition term paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Term : classifier')
+                  SingleStyledText('Term')
+                  SingleStyledText(' : ')
+                  MixedStyledText('classifier', style='classifier')   None:None <classifier>
+                       > (0,0,2,0,8) definition term classifier
+                    SingleStyledText('classifier')
+            StaticGroupedFlowables(style='definition')   None:None <definition>
+                 > (0,0,1,0,5) definition
+              Paragraph('Definition paragraph 1.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:176 <paragraph>
+                   > (0,0,1,0,7) definition paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Definition paragraph 1.')
+                  SingleStyledText('Definition paragraph 1.')
+              Paragraph('Definition paragraph 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:178 <paragraph>
+                   > (0,0,1,0,7) definition paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Definition paragraph 2.')
+                  SingleStyledText('Definition paragraph 2.')
+          LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:180 <definition_list_item>
+               > (0,0,0,0,4) definition list item
+            StaticGroupedFlowables(style='definition term')
+                 > (0,0,1,0,5) definition term
+              Paragraph('Term')
+                   > (0,0,1,0,7) definition term paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Term')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:180 <term>
+                  SingleStyledText('Term')
+            StaticGroupedFlowables(style='definition')   None:None <definition>
+                 > (0,0,1,0,5) definition
+              Paragraph('Definition')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:180 <paragraph>
+                   > (0,0,1,0,7) definition paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Definition')
+                  SingleStyledText('Definition')
       Section(id='field-lists')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:183 <section>
         Heading('2.5 Field Lists')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:183 <title>
              > (0,0,0,1,2) heading level 2
@@ -911,10 +917,14 @@
               MixedStyledText(' ')
                 SingleStyledText(' ')
               SingleStyledText('Field Lists')
-        FieldList()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:185 <field_list>
+        DefinitionList(style='field list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:185 <field_list>
+             > (0,0,1,0,2) field list
+               (0,0,0,0,2) definition list
           LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:185 <field>
-            Paragraph('what', style='field_name')
-                 > (0,0,1,0,2) field name
+               > (0,0,1,0,4) field list item
+                 (0,0,0,0,4) definition list item
+            Paragraph('what', style='field name')
+                 > (0,0,2,0,6) field name
                    (0,0,0,0,2) body
               MixedStyledText('what')   None:None <field_name>
                 SingleStyledText('what')
@@ -924,8 +934,10 @@
                 MixedStyledText('Field lists map field names to f...')
                   SingleStyledText('Field lists map field names to f...')
           LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:189 <field>
-            Paragraph('how arg1 arg2', style='field_name')
-                 > (0,0,1,0,2) field name
+               > (0,0,1,0,4) field list item
+                 (0,0,0,0,4) definition list item
+            Paragraph('how arg1 arg2', style='field name')
+                 > (0,0,2,0,6) field name
                    (0,0,0,0,2) body
               MixedStyledText('how arg1 arg2')   None:None <field_name>
                 SingleStyledText('how arg1 arg2')
@@ -965,8 +977,12 @@
     (continued) Section(id='body-elements')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:79 <section>
          > (0,0,0,1,2) chapter
       (continued) Section(id='field-lists')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:183 <section>
-        (continued) FieldList()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:185 <field_list>
+        (continued) DefinitionList(style='field list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:185 <field_list>
+             > (0,0,1,0,2) field list
+               (0,0,0,0,2) definition list
           (continued) LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:189 <field>
+               > (0,0,1,0,4) field list item
+                 (0,0,0,0,4) definition list item
             (continued) StaticGroupedFlowables()   None:None <field_body>
               (continued) Paragraph('The field body may contain one o...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:193 <paragraph>
                    > (0,0,0,0,2) body
@@ -983,8 +999,12 @@
              > (0,0,0,0,2) body
           MixedStyledText('For listing command-line options...')
             SingleStyledText('For listing command-line options...')
-        FieldList()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list>
+        DefinitionList(style='option list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list>
+             > (0,0,1,0,2) option list
+               (0,0,0,0,2) definition list
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('-a', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -999,6 +1019,8 @@
                 MixedStyledText('command-line option "a"')
                   SingleStyledText('command-line option "a"')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('-b file', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1022,6 +1044,8 @@
                 MixedStyledText('options can have arguments and l...')
                   SingleStyledText('options can have arguments and l...')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('--long', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1036,6 +1060,8 @@
                 MixedStyledText('options can be long also')
                   SingleStyledText('options can be long also')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('--input=file', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1059,6 +1085,8 @@
                 MixedStyledText('long options can also have argum...')
                   SingleStyledText('long options can also have argum...')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('--very-long-option', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1077,6 +1105,8 @@
                 MixedStyledText('The description may contain mult...')
                   SingleStyledText('The description may contain mult...')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('-x, -y, -z', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1103,6 +1133,8 @@
                 MixedStyledText('Multiple options are an "option ...')
                   SingleStyledText('Multiple options are an "option ...')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('-v, --verbose', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1123,6 +1155,8 @@
                 MixedStyledText('Commonly-seen: short & long opti...')
                   SingleStyledText('Commonly-seen: short & long opti...')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('-1 file, --one=file, --two file', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -1176,6 +1210,8 @@
                 MixedStyledText('Multiple options with arguments.')
                   SingleStyledText('Multiple options with arguments.')
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
+               > (0,0,1,0,4) option list item
+                 (0,0,0,0,4) definition list item
             Paragraph('/V', style='option_group')   None:None <option_group>
                  > (0,0,1,0,2) option
                    (0,0,0,0,2) body
@@ -2269,19 +2305,25 @@
                   MixedStyledText('Does not compute.')
                     SingleStyledText('Does not compute.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <hint>
-               > (0,0,0,0,2) admonition
-            Paragraph('Hint:', style='title')
-                 > (0,0,1,0,4) admonition title
-                   (0,0,1,0,2) title
-                   (0,0,0,0,2) body
-              SingleStyledText('Hint:')
-            Paragraph('It's bigger than a bread box.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:451 <paragraph>
+               > (0,0,0,1,2) hint admonition
+                 (0,0,0,0,2) admonition
+            Paragraph('Hint: It's bigger than a bread b...')
                  > (0,0,0,0,2) body
-              MixedStyledText('It's bigger than a bread box.')
-                SingleStyledText('It's bigger than a bread box.')
+              MixedStyledText('Hint: It's bigger than a bread b...')
+                MixedStyledText('Hint: ', style='inline title')
+                     x (0,0,1,1,3) hint admonition inline title
+                     > (0,0,1,0,3) admonition inline title
+                  SingleStyledText('Hint:')
+                  SingleStyledText(' ')
+                Paragraph('It's bigger than a bread box.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:451 <paragraph>
+                     > (0,0,0,0,2) body
+                  MixedStyledText('It's bigger than a bread box.')
+                    SingleStyledText('It's bigger than a bread box.')
           Admonition()   None:None <important>
-               > (0,0,0,0,2) admonition
+               > (0,0,0,1,2) important admonition
+                 (0,0,0,0,2) admonition
             Paragraph('Important', style='title')
+                 x (0,0,1,1,4) important admonition title
                  > (0,0,1,0,4) admonition title
                    (0,0,1,0,2) title
                    (0,0,0,0,2) body
@@ -2353,16 +2395,20 @@
                     MixedStyledText('Back up your data.')
                       SingleStyledText('Back up your data.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <note>
-               > (0,0,0,0,2) admonition
-            Paragraph('Note:', style='title')
-                 > (0,0,1,0,4) admonition title
-                   (0,0,1,0,2) title
-                   (0,0,0,0,2) body
-              SingleStyledText('Note:')
-            Paragraph('This is a note.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:459 <paragraph>
+               > (0,0,0,1,2) note admonition
+                 (0,0,0,0,2) admonition
+            Paragraph('Note: This is a note.')
                  > (0,0,0,0,2) body
-              MixedStyledText('This is a note.')
-                SingleStyledText('This is a note.')
+              MixedStyledText('Note: This is a note.')
+                MixedStyledText('Note: ', style='inline title')
+                     x (0,0,1,1,3) note admonition inline title
+                     > (0,0,1,0,3) admonition inline title
+                  SingleStyledText('Note:')
+                  SingleStyledText(' ')
+                Paragraph('This is a note.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:459 <paragraph>
+                     > (0,0,0,0,2) body
+                  MixedStyledText('This is a note.')
+                    SingleStyledText('This is a note.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <tip>
                > (0,0,0,1,2) tip admonition
                  (0,0,0,0,2) admonition
@@ -2405,6 +2451,27 @@
                  > (0,0,0,0,2) body
               MixedStyledText('You can make up your own admonit...')
                 SingleStyledText('You can make up your own admonit...')
+        Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
+          Heading('2.15.4 Topics, Sidebars, and Rub...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <title>
+               > (0,0,0,1,2) heading level 3
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.15.4 Topics, Sidebars, and Rub...')
+                SingleStyledText('2.15.4')
+                MixedStyledText(' ')
+                  SingleStyledText(' ')
+                SingleStyledText('Topics, Sidebars, and Rubrics')
+          StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
+               > (0,0,1,0,1) sidebar
+            Paragraph('Sidebar Title', style='title')   None:None <title>
+                 > (0,0,2,0,3) sidebar title
+                   (0,0,1,0,2) title
+                   (0,0,0,0,2) body
+              MixedStyledText('Sidebar Title')
+                SingleStyledText('Sidebar Title')
+            Paragraph('This is a sidebar.  It is for te...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:476 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('This is a sidebar.  It is for te...')
+                SingleStyledText('This is a sidebar.  It is for te...')
 #### UpExpandingContainer('header')
   Header('2 Body Elements')
        > (0,0,0,0,2) header
@@ -2432,32 +2499,12 @@
     (continued) Section(id='body-elements')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:79 <section>
          > (0,0,0,1,2) chapter
       (continued) Section(id='directives')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:398 <section>
-        Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
-          Heading('2.15.4 Topics, Sidebars, and Rub...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <title>
-               > (0,0,0,1,2) heading level 3
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('2.15.4 Topics, Sidebars, and Rub...')
-                SingleStyledText('2.15.4')
-                MixedStyledText(' ')
-                  SingleStyledText(' ')
-                SingleStyledText('Topics, Sidebars, and Rubrics')
-          StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
+        (continued) Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
+          (continued) StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
                > (0,0,1,0,1) sidebar
-            Paragraph('Sidebar Title', style='title')   None:None <title>
-                 > (0,0,2,0,3) sidebar title
-                   (0,0,1,0,2) title
-                   (0,0,0,0,2) body
-              MixedStyledText('Sidebar Title')
-                SingleStyledText('Sidebar Title')
-            Paragraph('This is a sidebar.  It is for te...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:476 <paragraph>
-                 > (0,0,0,0,2) body
-              MixedStyledText('This is a sidebar.  It is for te...')
-                SingleStyledText('This is a sidebar.  It is for te...')
             Paragraph('This is a rubric inside a sideba...', style='rubric')   None:None <rubric>
                  > (0,0,1,0,2) rubric
                    (0,0,0,0,2) body
-              MixedStyledText('This is a rubric inside a sideba...')
-                SingleStyledText('This is a rubric inside a sideba...')
             Paragraph('Sidebars often appears beside th...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:481 <paragraph>
                  > (0,0,0,0,2) body
               MixedStyledText('Sidebars often appears beside th...')
