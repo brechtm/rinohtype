@@ -454,13 +454,13 @@ to the terms of the GNU Affero General Public License version 3.''')
                                     if isinstance(flowable, Section)):
             section_number = self.get_reference(section_id, NUMBER)
             section_title = self.get_reference(section_id, TITLE)
-            if section.level > current_level:
-                assert section.level == current_level + 1
+            if section.level == current_level + 1:
                 stack.append(parent)
                 parent = current
             elif section.level < current_level:
                 for i in range(current_level - section.level):
-                    parent = stack.pop()
+                    if stack:
+                        parent = stack.pop()
             current = []
             item = (str(section_id), section_number, section_title, current)
             parent.append(item)
