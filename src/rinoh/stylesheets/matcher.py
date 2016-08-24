@@ -177,9 +177,8 @@ matcher('versionmodified', StyledText.like(classes=['versionmodified']))
 
 # (Sphinx) object descriptions
 
-matcher('object description', DefinitionList.like('object description'))
-matcher('object description item', 'object description' / LabeledFlowable)
-matcher('object signatures', 'object description item'
+matcher('object description', LabeledFlowable.like('object description'))
+matcher('object signatures', 'object description'
                              / GroupedFlowables.like('signatures'))
 matcher('object signature', 'object signatures' / Paragraph)
 sig = SelectorByName('object signature') / ...
@@ -195,7 +194,7 @@ matcher('object parameter (no emphasis)',
 matcher('object brackets', sig / StyledText.like('brackets'))
 matcher('object optional parameter', sig / StyledText.like('optional'))
 matcher('object annotation', sig / StyledText.like('annotation'))
-matcher('object description content', 'object description item'
+matcher('object description content', 'object description'
                                       / GroupedFlowables.like('content'))
 matcher('object description content paragraph', 'object description content'
                                                 / Paragraph)

@@ -348,6 +348,7 @@ font_slant=ITALIC
 # (Sphinx) object descriptions
 
 [object description]
+base=definition list item
 space_above=3pt
 space_below=3pt
 

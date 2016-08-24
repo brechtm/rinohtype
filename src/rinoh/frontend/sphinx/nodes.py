@@ -231,8 +231,7 @@ class Desc(DocutilsBodyNode):
                                        for sig in self.desc_signature),
                                       style='signatures')
         description = self.desc_content.flowable()
-        return DefinitionList([LabeledFlowable(term, description)],
-                              style='object description')
+        return LabeledFlowable(term, description, style='object description')
 
 
 class Desc_Signature(DocutilsBodyNode):
