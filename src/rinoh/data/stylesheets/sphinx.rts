@@ -39,6 +39,8 @@ font_weight=BOLD
 [literal strong]
 base=strong
 typeface=$(mono_typeface)
+hyphenate=False
+ligatures=False
 
 [quote]
 font_slant=italic
