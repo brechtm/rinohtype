@@ -318,7 +318,7 @@ indent_first=0pt
 
 [definition list item]
 label_min_width=17pt
-label_max_width=0pt
+label_max_width=none
 
 [definition term]
 space_above=4pt
@@ -351,6 +351,7 @@ font_slant=ITALIC
 base=definition list item
 space_above=3pt
 space_below=3pt
+label_max_width=none
 
 [object signatures]
 base=definition term

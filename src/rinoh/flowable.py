@@ -530,7 +530,8 @@ class LabeledFlowable(Flowable):
         label_max_width = self.get_style('label_max_width', container)
         virtual_container = VirtualContainer(container)
         label_width, _, _ = self.label.flow(virtual_container, 0)
-        spillover = label_width > label_max_width.to_points(container.width)
+        spillover = (label_width > label_max_width.to_points(container.width)
+                     if label_max_width else True)
         return label_width, spillover
 
     def initial_state(self, container):
@@ -543,7 +544,9 @@ class LabeledFlowable(Flowable):
             return self.get_style(name, container)
 
         label_min_width = style('label_min_width').to_points(container.width)
-        label_max_width = style('label_max_width').to_points(container.width)
+        label_max_width = style('label_max_width')
+        if label_max_width:
+            label_max_width = label_max_width.to_points(container.width)
         label_spacing = style('label_spacing')
         wrap_label = style('wrap_label')
         align_baselines = style('align_baselines')
@@ -555,11 +558,14 @@ class LabeledFlowable(Flowable):
             label_width = label_column_width
         elif free_label_width < label_min_width:
             label_width = label_min_width
-        elif free_label_width <= label_max_width:
+        elif label_max_width and free_label_width <= label_max_width:
             label_width = free_label_width
         else:
             label_width = label_min_width
-        if free_label_width > label_width:
+
+        if not label_max_width:
+            label_spillover = True
+        elif free_label_width > label_width:
             if wrap_label:
                 vcontainer = VirtualContainer(container, width=label_max_width)
                 wrapped_width, _, _ = self.label.flow(vcontainer, 0)
