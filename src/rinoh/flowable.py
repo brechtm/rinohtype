@@ -527,29 +527,52 @@ class LabeledFlowable(Flowable):
         self.flowable.prepare(flowable_target)
 
     def label_width(self, container):
+        label_max_width = self.get_style('label_max_width', container)
         virtual_container = VirtualContainer(container)
         label_width, _, _ = self.label.flow(virtual_container, 0)
-        return label_width
+        spillover = label_width > label_max_width.to_points(container.width)
+        return label_width, spillover
 
     def initial_state(self, container):
         initial_content_state = self.flowable.initial_state(container)
         return LabeledFlowableState(self, initial_content_state)
 
-    def render(self, container, last_descender, state, max_label_width=None,
+    def render(self, container, last_descender, state, label_column_width=None,
                **kwargs):
-        label_column_min_width = self.get_style('label_min_width', container)
-        label_column_max_width = self.get_style('label_max_width', container)
-        label_spacing = self.get_style('label_spacing', container)
-        wrap_label = self.get_style('wrap_label', container)
-        align_baselines = self.get_style('align_baselines', container)
+        def style(name):
+            return self.get_style(name, container)
 
-        label_width = self.label_width(container)
-        max_label_width = max_label_width or label_width
-        label_column_width = max(label_column_min_width,
-                                 min(max_label_width, label_column_max_width))
-        left = label_column_width + label_spacing
-        label_spillover = not wrap_label and label_width > label_column_width
-        label_cntnr_width = None if label_spillover else label_column_width
+        label_min_width = style('label_min_width').to_points(container.width)
+        label_max_width = style('label_max_width').to_points(container.width)
+        label_spacing = style('label_spacing')
+        wrap_label = style('wrap_label')
+        align_baselines = style('align_baselines')
+
+        free_label_width, _ = self.label_width(container)
+
+        label_spillover = False
+        if label_column_width:  # part of a GroupedLabeledFlowables
+            label_width = label_column_width
+        elif free_label_width < label_min_width:
+            label_width = label_min_width
+        elif free_label_width <= label_max_width:
+            label_width = free_label_width
+        else:
+            label_width = label_min_width
+        if free_label_width > label_width:
+            if wrap_label:
+                vcontainer = VirtualContainer(container, width=label_max_width)
+                wrapped_width, _, _ = self.label.flow(vcontainer, 0)
+                if wrapped_width < label_max_width:
+                    label_width = wrapped_width
+                else:
+                    label_width = label_min_width
+                    label_spillover = True
+            else:
+                label_spillover = True
+
+        left = label_width + label_spacing
+        label_cntnr_width = None if label_spillover else label_width
 
         if align_baselines and (state.initial and not label_spillover):
             label_baseline = find_baseline(self.label, container,
@@ -620,8 +643,12 @@ class GroupedLabeledFlowables(GroupedFlowables):
     """
 
     def _calculate_label_width(self, container):
-        return max(flowable.label_width(container)
-                   for flowable in self.flowables(container))
+        max_width = 0
+        for flowable in self.flowables(container):
+            width, splillover = flowable.label_width(container)
+            if not splillover:
+                max_width = max(max_width, width)
+        return max_width
 
     def render(self, container, descender, state, **kwargs):
         if state.initial:
@@ -630,7 +657,7 @@ class GroupedLabeledFlowables(GroupedFlowables):
             max_label_width = state.max_label_width
         try:
             return super().render(container, descender, state=state,
-                                  max_label_width=max_label_width)
+                                  label_column_width=max_label_width)
         except EndOfContainer as eoc:
             eoc.flowable_state.max_label_width = max_label_width
             raise

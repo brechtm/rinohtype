@@ -12,6 +12,7 @@ Changed:
 
 Fixed:
 
+* GroupedLabeledFlowables label width could unnecessarily be too wide
 * reStructuredText: only the first classifier for a definition term was shown
 
 Release 0.2.1 (2016-08-18)
