@@ -21,7 +21,7 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 SPHINX_DOC_DIR = os.path.join(TEST_DIR, 'sphinx', 'doc')
 
 
-def test_sphinxdocs(tmpdir):
+def test_sphinxdocs(tmpdir, capsys):
     from sphinx.application import Sphinx
 
     template_configuration = Book.Configuration()
@@ -41,7 +41,8 @@ def test_sphinxdocs(tmpdir):
                                                    'rinoh.frontend.sphinx'],
                                        rinoh_template_configuration=
                                            template_configuration))
-    sphinx.build()
+    with capsys.disabled():
+        sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath
     with in_directory(tmpdir.strpath):
