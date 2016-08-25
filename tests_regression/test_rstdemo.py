@@ -24,7 +24,7 @@ from rinoh.templates import Article
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
-def test_rstdemo(tmpdir, capsys):
+def test_rstdemo(tmpdir):
     configuration = Article.Configuration(stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
@@ -35,8 +35,7 @@ def test_rstdemo(tmpdir, capsys):
         flowables = parser.parse(file)
     document = Article(flowables, configuration=configuration, backend=pdf)
     with in_directory(tmpdir.strpath):
-        with capsys.disabled():
-            document.render('demo')
+        document.render('demo')
         _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
         pytest.assume(badlinks == ['table-of-contents'])
         if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'),
