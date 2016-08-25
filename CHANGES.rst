@@ -7,6 +7,17 @@ Release 0.3.0.dev
 Release 0.2.2.dev
 ~~~~~~~~~~~~~~~~~
 
+Changed:
+
+* rename FieldList to DefinitionList and use it to replace uses (docutils and
+  Sphinx frontends) of the old DefinitionList (#54)
+* Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
+
+Fixed:
+
+* GroupedLabeledFlowables label width could unnecessarily be too wide
+* reStructuredText: only the first classifier for a definition term was shown
+
 Release 0.2.1 (2016-08-18)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

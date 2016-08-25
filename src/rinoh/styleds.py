@@ -23,8 +23,7 @@ from .reference import Note, RegisterNote
 from .reference import NoteMarkerBase, NoteMarkerByID, NoteMarkerWithNote
 from .structure import Header, Footer
 from .structure import HorizontalRule
-from .structure import List, ListItem, ListItemLabel, FieldList
-from .structure import DefinitionList, DefinitionTerm, Definition
+from .structure import List, ListItem, ListItemLabel, DefinitionList
 from .structure import Section, TableOfContentsSection, Heading
 from .structure import Admonition
 from .structure import TableOfContents, TableOfContentsEntry

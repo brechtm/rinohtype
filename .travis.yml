@@ -40,6 +40,8 @@ matrix:
         - export LD_LIBRARY_PATH=$HOME/.local/lib
     - python: 3.5
       env: TOXENV=test-docs
+    - python: 3.5
+      env: TOXENV=build-docs
 
 install:
   - pip install tox-travis wheel

@@ -143,12 +143,15 @@ matcher('list item body', ListItem / GroupedFlowables)
 matcher('list item paragraph', 'list item body' / Paragraph)
 
 matcher('definition list', DefinitionList)
-matcher('definition term', DefinitionTerm)
+matcher('definition list item', 'definition list' / LabeledFlowable)
+matcher('definition term', 'definition list item'
+                            / GroupedFlowables.like('definition term'))
 matcher('definition term paragraph', SelectorByName('definition term')
                                      / ... / Paragraph)
-matcher('definition term classifier', SelectorByName('definition term')
+matcher('definition term classifier', SelectorByName('definition term paragraph')
                                       / ... /StyledText.like('classifier'))
-matcher('definition', Definition)
+matcher('definition', 'definition list item'
+                      / GroupedFlowables.like('definition'))
 matcher('definition paragraph', 'definition' / Paragraph)
 
 matcher('related links', GroupedFlowables.like('related links'))
@@ -174,30 +177,32 @@ matcher('versionmodified', StyledText.like(classes=['versionmodified']))
 
 # (Sphinx) object descriptions
 
-desc = DefinitionList.like('object description')
-
-matcher('object description', desc)
-matcher('object definition term', desc / DefinitionTerm)
-matcher('object signature', SelectorByName('object definition term') / Paragraph)
-matcher('object name', desc / ... / StyledText.like('main object name'))
-matcher('additional name part', desc / ... / StyledText.like('additional name part'))
-matcher('object type', desc / ... / StyledText.like('type'))
-matcher('object returns', desc / ... / StyledText.like('returns'))
-matcher('object parentheses', desc / ... / StyledText.like('parentheses'))
-matcher('object parameter list', desc / ... / StyledText.like('parameter list'))
-matcher('object parameter', desc / ... / StyledText.like('parameter'))
-matcher('object parameter (no emphasis)', desc / ... / StyledText.like('noemph parameter'))
-matcher('object brackets', desc / ... / StyledText.like('brackets'))
-matcher('object optional parameter', desc / ... / StyledText.like('optional'))
-matcher('object annotation', desc / ... / StyledText.like('annotation'))
-matcher('object description content', desc / Definition)
-matcher('object description content paragraph',
-            SelectorByName('object description content') / Paragraph)
+matcher('object description', LabeledFlowable.like('object description'))
+matcher('object signatures', 'object description'
+                             / GroupedFlowables.like('signatures'))
+matcher('object signature', 'object signatures' / Paragraph)
+sig = SelectorByName('object signature') / ...
+matcher('object name', sig / StyledText.like('main object name'))
+matcher('additional name part', sig / StyledText.like('additional name part'))
+matcher('object type', sig / StyledText.like('type'))
+matcher('object returns', sig / StyledText.like('returns'))
+matcher('object parentheses', sig / StyledText.like('parentheses'))
+matcher('object parameter list', sig / StyledText.like('parameter list'))
+matcher('object parameter', sig / StyledText.like('parameter'))
+matcher('object parameter (no emphasis)',
+        sig / StyledText.like('noemph parameter'))
+matcher('object brackets', sig / StyledText.like('brackets'))
+matcher('object optional parameter', sig / StyledText.like('optional'))
+matcher('object annotation', sig / StyledText.like('annotation'))
+matcher('object description content', 'object description'
+                                      / GroupedFlowables.like('content'))
+matcher('object description content paragraph', 'object description content'
+                                                / Paragraph)
 
 
 # (Sphinx) production list
 
-matcher('production list', FieldList.like('production list'))
+matcher('production list', DefinitionList.like('production list'))
 matcher('production', 'production list' / LabeledFlowable.like('production'))
 matcher('token name', SelectorByName('production list')
                       / ... / Paragraph.like('token'))
@@ -207,11 +212,15 @@ matcher('token definition', SelectorByName('production list')
 
 # field lists
 
-matcher('field name', Paragraph.like('field_name'))
+matcher('field list', DefinitionList.like('field list'))
+matcher('field list item', 'field list' / LabeledFlowable)
+matcher('field name', 'field list item' / Paragraph.like('field name'))
 
 
 # option lists
 
+matcher('option list', DefinitionList.like('option list'))
+matcher('option list item', 'option list' / LabeledFlowable)
 matcher('option', Paragraph.like('option_group'))
 matcher('option string', MixedStyledText.like('option_string'))
 matcher('option argument', MixedStyledText.like('option_arg'))
@@ -221,8 +230,8 @@ matcher('admonition title', 'admonition' / Paragraph.like('title'))
 matcher('admonition inline title', SelectorByName('admonition')
                                    / ... / StyledText.like('inline title'))
 
-for admonition_type in ('attention', 'caution', 'danger', 'error', 'warning',
-                        'seealso', 'tip'):
+for admonition_type in ('attention', 'caution', 'danger', 'error', 'hint',
+                        'important', 'note', 'tip', 'warning', 'seealso'):
     admonition_selector = Admonition.like(admonition_type=admonition_type)
     matcher(admonition_type + ' admonition', admonition_selector)
     selector = admonition_selector / Paragraph.like('title')

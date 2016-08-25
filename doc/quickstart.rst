@@ -16,7 +16,9 @@ This can be used to render reStructuredText_ documents such as `demo.txt`_::
 
     rinoh demo.txt
 
-After rendering finishes, you will find ``demo.pdf`` alongside the input file.
+After rendering finishes, you will find
+:download:`demo.pdf <../tests_regression/reference/demo.pdf>` alongside the
+input file.
 
 :program:`rinoh` allows specifying the document template and style sheet to use
 when rendering the reStructuredText document. See its :ref:`command-line

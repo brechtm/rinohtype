@@ -13,8 +13,7 @@ from datetime import datetime
 
 import rinoh as rt
 
-from . import (DocutilsInlineNode, DocutilsNode,
-               DocutilsBodyNode, DocutilsBodySubNode,
+from . import (DocutilsInlineNode, DocutilsNode, DocutilsBodyNode,
                DocutilsGroupingNode, DocutilsDummyNode)
 from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
@@ -443,21 +442,21 @@ class List_Item(DocutilsGroupingNode):
     pass
 
 
-class Definition_List(DocutilsBodyNode):
+class Definition_List(DocutilsGroupingNode):
+    grouped_flowables_class = rt.DefinitionList
+
+
+class Definition_List_Item(DocutilsBodyNode):
     def build_flowable(self):
-        return rt.DefinitionList([item.process()
-                                  for item in self.definition_list_item])
-
-
-class Definition_List_Item(DocutilsBodySubNode):
-    def process(self):
-        term = self.term.styled_text()
+        term_text = self.term.styled_text()
         try:
-            term += ' : ' + self.classifier.styled_text()
+            for classifier in self.classifier:
+                term_text += ' : ' + classifier.styled_text()
         except AttributeError:
             pass
-        return (rt.DefinitionTerm([rt.Paragraph(term)]),
-                self.definition.flowable())
+        term = rt.StaticGroupedFlowables([rt.Paragraph(term_text)],
+                                         style='definition term')
+        return rt.LabeledFlowable(term, self.definition.flowable())
 
 
 class Term(DocutilsInlineNode):
@@ -475,12 +474,12 @@ class Classifier(DocutilsInlineNode):
 
 
 class Definition(DocutilsGroupingNode):
-    grouped_flowables_class = rt.Definition
+    style = 'definition'
 
 
-class Field_List(DocutilsBodyNode):
-    def build_flowable(self):
-        return rt.FieldList([field.flowable() for field in self.field])
+class Field_List(DocutilsGroupingNode):
+    grouped_flowables_class = rt.DefinitionList
+    style = 'field list'
 
 
 class Field(DocutilsBodyNode):
@@ -493,7 +492,7 @@ class Field(DocutilsBodyNode):
         return self.field_body.flowable()
 
     def build_flowable(self):
-        label = rt.Paragraph(self.field_name.styled_text(), style='field_name')
+        label = rt.Paragraph(self.field_name.styled_text(), style='field name')
         return rt.LabeledFlowable(label, self.field_body.flowable())
 
 
@@ -505,9 +504,9 @@ class Field_Body(DocutilsGroupingNode):
     pass
 
 
-class Option_List(DocutilsBodyNode):
-    def build_flowable(self):
-        return rt.FieldList([item.flowable() for item in self.option_list_item])
+class Option_List(DocutilsGroupingNode):
+    grouped_flowables_class = rt.DefinitionList
+    style = 'option list'
 
 
 class Option_List_Item(DocutilsBodyNode):

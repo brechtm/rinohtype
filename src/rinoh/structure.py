@@ -25,9 +25,9 @@ from .style import PARENT_STYLE
 from .strings import Strings, String, StringField
 
 
-__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
-           'ListItemLabel', 'FieldList', 'DefinitionList', 'DefinitionTerm',
-           'Definition', 'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
+__all__ = ['Section', 'Heading',
+           'ListStyle', 'List', 'ListItem', 'ListItemLabel', 'DefinitionList',
+           'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -199,23 +199,7 @@ class ListItemLabel(ParagraphBase, Label):
         return MixedStyledText(self.format_label(label, container), parent=self)
 
 
-class FieldList(GroupedLabeledFlowables, StaticGroupedFlowables):
-    pass
-
-
-class DefinitionList(StaticGroupedFlowables):
-    def __init__(self, term_and_definition_pairs, id=None, style=None,
-                 parent=None):
-        flowables = [item for term, definition in term_and_definition_pairs
-                     for item in (term, definition)]
-        super().__init__(flowables, id=id, style=style, parent=parent)
-
-
-class DefinitionTerm(StaticGroupedFlowables):
-    pass
-
-
-class Definition(StaticGroupedFlowables):
+class DefinitionList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
