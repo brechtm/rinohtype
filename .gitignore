@@ -6,6 +6,8 @@
 /.idea
 /.eggs
 /.tox
+/.coverage
+/coverage.xml
 /build
 /dist
 /src/rinohtype.egg-info

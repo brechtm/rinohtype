@@ -17,6 +17,7 @@ include LICENSE
 include README.rst
 
 include .bumpversion.cfg
+include .coveragerc
 include .travis.yml
 include tox.ini
 include coverage.py

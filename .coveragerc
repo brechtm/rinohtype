@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = rinoh
+
+[paths]
+source =
+    src/rinoh
+    .tox/*/lib/python*/site-packages/rinoh
+    .tox/pypy*/site-packages/rinoh

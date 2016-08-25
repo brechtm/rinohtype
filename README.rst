@@ -9,8 +9,8 @@ rinohtype
    :target: https://travis-ci.org/brechtm/rinohtype
    :alt: Build status
 
-.. image:: https://coveralls.io/repos/github/brechtm/rinohtype/badge.svg?branch=master
-   :target: https://coveralls.io/github/brechtm/rinohtype?branch=master
+.. image:: https://codecov.io/gh/brechtm/rinohtype/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/brechtm/rinohtype
    :alt: Test coverage
 
 .. image:: https://www.quantifiedcode.com/api/v1/project/44e411c95df74f5e8cd04eb067a73f4b/badge.svg
