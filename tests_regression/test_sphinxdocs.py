@@ -22,7 +22,6 @@ SPHINX_DOC_DIR = os.path.join(TEST_DIR, 'sphinx', 'doc')
 
 def test_sphinxdocs(tmpdir):
     from sphinx.application import Sphinx
-    from rinoh.frontend.sphinx import setup as setup_rinoh_sphinx_builder
 
     template_configuration = Book.Configuration()
     template_configuration('title_page', show_date=False)
@@ -31,11 +30,16 @@ def test_sphinxdocs(tmpdir):
                     confdir=SPHINX_DOC_DIR,
                     outdir=tmpdir.join('rinoh').strpath,
                     doctreedir=tmpdir.join('doctrees').strpath,
-                    buildername='html',
-                    confoverrides=dict(extensions=['rinoh.frontend.sphinx']))
-    setup_rinoh_sphinx_builder(sphinx)
-    sphinx._init_builder('rinoh')
-    sphinx.config.rinoh_template_configuration = template_configuration
+                    buildername='rinoh',
+                    confoverrides=dict(extensions=['sphinx.ext.autodoc',
+                                                   'sphinx.ext.doctest',
+                                                   'sphinx.ext.todo',
+                                                   'sphinx.ext.autosummary',
+                                                   'sphinx.ext.extlinks',
+                                                   'sphinx.ext.viewcode',
+                                                   'rinoh.frontend.sphinx'],
+                                       rinoh_template_configuration=
+                                           template_configuration))
     sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath
