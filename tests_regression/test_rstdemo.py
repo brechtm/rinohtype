@@ -12,6 +12,7 @@ import pytest
 
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
+from util import in_directory
 
 from rinoh.backend import pdf
 from rinoh.dimension import CM
@@ -33,10 +34,12 @@ def test_rstdemo(tmpdir):
         parser = ReStructuredTextReader()
         flowables = parser.parse(file)
     document = Article(flowables, configuration=configuration, backend=pdf)
-    os.chdir(tmpdir.strpath)
-    document.render('demo')
-    _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
-    pytest.assume(badlinks == ['table-of-contents'])
-    if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'), 'demo.pdf'):
-        pytest.fail('The generated PDF is different from the reference PDF.\n'
-                    'Generated files can be found in {}'.format(tmpdir.strpath))
+    with in_directory(tmpdir.strpath):
+        document.render('demo')
+        _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
+        pytest.assume(badlinks == ['table-of-contents'])
+        if not diff_pdf(os.path.join(TEST_DIR, 'reference/demo.pdf'),
+                        'demo.pdf'):
+            pytest.fail('The generated PDF is different from the reference '
+                        'PDF.\nGenerated files can be found in {}'
+                        .format(tmpdir.strpath))

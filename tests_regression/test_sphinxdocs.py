@@ -12,6 +12,7 @@ import pytest
 
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
+from util import in_directory
 
 from rinoh.templates import Book
 
@@ -43,10 +44,12 @@ def test_sphinxdocs(tmpdir):
     sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath
-    os.chdir(tmpdir.strpath)
-    # _, _, _, badlinks, _, _ = check_pdf_links(out_file)
-    # pytest.assume(badlinks == [], 'Output PDF contains broken '
-    #                               'hyperlinks: {}'.format(badlinks))
-    if not diff_pdf(os.path.join(TEST_DIR, 'reference/sphinx.pdf'), out_file):
-        pytest.fail('The generated PDF is different from the reference PDF.\n'
-                    'Generated files can be found in {}'.format(tmpdir.strpath))
+    with in_directory(tmpdir.strpath):
+        # _, _, _, badlinks, _, _ = check_pdf_links(out_file)
+        # pytest.assume(badlinks == [], 'Output PDF contains broken '
+        #                               'hyperlinks: {}'.format(badlinks))
+        if not diff_pdf(os.path.join(TEST_DIR, 'reference/sphinx.pdf'),
+                        out_file):
+            pytest.fail('The generated PDF is different from the reference '
+                        'PDF.\nGenerated files can be found in {}'
+                        .format(tmpdir.strpath))
