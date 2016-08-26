@@ -77,6 +77,9 @@ ligatures=False
 [error]
 font_color=#f00
 
+[linked reference]
+font_color=#355f7c
+
 [internal hyperlink]
 font_slant=italic
 font_color=#355f7b

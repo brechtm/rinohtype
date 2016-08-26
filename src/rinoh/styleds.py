@@ -16,8 +16,8 @@ from .index import InlineIndexTarget, IndexTarget
 from .inline import InlineFlowable
 from .number import NumberedParagraph
 from .paragraph import ParagraphBase, Paragraph
-from .reference import Reference, DirectReference, ReferenceField, ReferenceText
-from .reference import ReferencingParagraph
+from .reference import ReferenceBase, Reference, DirectReference
+from .reference import ReferenceField, ReferenceText, ReferencingParagraph
 from .reference import Variable
 from .reference import Note, RegisterNote
 from .reference import NoteMarkerBase, NoteMarkerByID, NoteMarkerWithNote

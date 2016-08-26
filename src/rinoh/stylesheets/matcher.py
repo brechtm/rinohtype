@@ -44,8 +44,8 @@ matcher = StyledMatcher({
 
 })
 
-matcher('linked reference', Reference.like(link=True))
-matcher('unlinked reference', Reference.like(link=False))
+matcher('linked reference', ReferenceBase.like(link=True))
+matcher('unlinked reference', ReferenceBase.like(link=False))
 
 matcher('internal hyperlink', StyledText.like('internal link'))
 matcher('external hyperlink', StyledText.like('external link'))
@@ -153,6 +153,9 @@ matcher('definition term classifier', SelectorByName('definition term paragraph'
 matcher('definition', 'definition list item'
                       / GroupedFlowables.like('definition'))
 matcher('definition paragraph', 'definition' / Paragraph)
+
+
+# (DITA) related links
 
 matcher('related links', GroupedFlowables.like('related links'))
 matcher('related links section title', 'related links'
