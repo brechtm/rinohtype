@@ -23,14 +23,15 @@ from ..text import Tab
 
 
 def front_matter_section_title_flowables(section_id):
-    yield Paragraph(Reference(section_id, TITLE),
+    yield Paragraph(Reference(section_id, TITLE, link=False),
                     style='front matter section title')
 
 
 def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER, style='number'),
+    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER,
+                                           link=False, style='number'),
                     style='body matter chapter label')
-    yield Paragraph(Reference(section_id, TITLE),
+    yield Paragraph(Reference(section_id, TITLE, link=False),
                     style='body matter chapter title')
 
 
