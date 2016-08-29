@@ -707,13 +707,13 @@ class StyleSheetFile(StyleSheet):
                 continue
             try:
                 style_name, selector  = section_name.split(':')
+            except ValueError:
+                style_name = section_name
+                style_cls = self.get_entry_class(style_name)
+            else:
                 m = self.RE_SELECTOR.match(selector)
-                if m:
-                    styled_name = m.group('name')
-                    selector_args = m.group('args')
-                else:
-                    styled_name = selector
-                    selector_args = None
+                styled_name, selector_args = (m.group('name', 'args') if m
+                                              else selector, None)
                 for styled_class in all_subclasses(Styled):
                     if styled_class.__name__ == styled_name:
                         style_cls = styled_class.style_class
@@ -738,9 +738,6 @@ class StyleSheetFile(StyleSheet):
                                                 matcher_styled.__name__))
                 except KeyError:
                     pass
-            except ValueError:
-                style_name = section_name
-                style_cls = self.get_entry_class(style_name)
             attribute_values = {}
             for name, value in section_body.items():
                 value = value.replace('\n', ' ')
@@ -750,9 +747,10 @@ class StyleSheetFile(StyleSheet):
                     try:
                         attribute = style_cls.attribute_definition(name)
                     except KeyError:
-                        raise TypeError("'{}' is not a supported attribute for "
-                                        "'{}' ({})".format(name, style_name,
-                                                           style_cls.__name__))
+                        raise TypeError("'{}' is not a supported attribute "
+                                        "for '{}' ({})"
+                                        .format(name, style_name,
+                                                style_cls.__name__))
                     stripped = value.strip()
                     m = self.RE_VARIABLE.match(stripped)
                     if m:
