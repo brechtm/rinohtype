@@ -44,10 +44,11 @@ from .annotation import AnnotatedSpan
 from .attribute import Attribute, AttributeType, OptionSet
 from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
+from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import ContainerOverflow, EndOfContainer
-from .text import TextStyle, MixedStyledText
+from .text import TextStyle, MixedStyledText, SingleStyledText
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -301,19 +302,46 @@ class ParagraphStyle(FlowableStyle, TextStyle):
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
     word = Word()
+
+    def words(span, chars, word_to_glyphs):
+        nonlocal word
+        glyphs_span = GlyphsSpan(span, word_to_glyphs, chars)
+        if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
+            if word:
+                yield word
+            if chars != '\N{ZERO WIDTH SPACE}':
+                yield Word([(glyphs_span, chars)])
+            word = Word()
+        else:
+            word.append((glyphs_span, chars))
+
     for span in spans:
         try:
-            word_to_glyphs = create_to_glyphs(span, container)
+            word_to_glyphs, get_glyph = create_to_glyphs(span, container)
             for chars in span.split(container):
-                glyphs_span = GlyphsSpan(span, word_to_glyphs, chars)
-                if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
-                    if word:
-                        yield word
-                    if chars != '\N{ZERO WIDTH SPACE}':
-                        yield Word([(glyphs_span, chars)])
-                    word = Word()
-                else:
-                    word.append((glyphs_span, chars))
+                ok_chars = []
+                for char in chars.replace('\N{NO-BREAK SPACE}', ' '):
+                    try:
+                        get_glyph(char)
+                    except MissingGlyphException:
+                        for word in words(span, ''.join(ok_chars),
+                                          word_to_glyphs):
+                            yield word
+                        fallback_typeface = (container.document
+                                             .fallback_typeface)
+                        fallback_style = TextStyle(typeface=fallback_typeface)
+                        fallback_span = SingleStyledText(char, parent=span,
+                                                         style=fallback_style)
+                        fallback_word_to_glyphs, _ = \
+                            create_to_glyphs(fallback_span, container)
+                        for word in words(fallback_span, char,
+                                          fallback_word_to_glyphs):
+                            yield word
+                        ok_chars = []
+                    else:
+                        ok_chars.append(char)
+                for word in words(span, ''.join(ok_chars), word_to_glyphs):
+                    yield word
         except InlineFlowableException:
             glyphs_span = span.flow_inline(container, 0)
             word.append((glyphs_span, '<inline image>'))
@@ -527,7 +555,7 @@ def create_to_glyphs(span, flowable_target):
         return [GlyphAndWidth(glyph, scale * (glyph.width + kern_adjust))
                 for glyph, kern_adjust in glyphs_kern]
 
-    return word_to_glyphs
+    return word_to_glyphs, get_glyph
 
 
 def form_ligatures(glyphs, get_ligature):

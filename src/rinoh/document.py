@@ -30,6 +30,8 @@ import time
 from collections import OrderedDict
 from itertools import count
 
+from rinoh.font import Typeface
+
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT, StaticGroupedFlowables
@@ -342,6 +344,7 @@ class Document(object):
         self.last_page_references = {}
         self.index_entries = {}
         self._unique_id = 0
+        self.fallback_typeface = Typeface('DejaVu Serif')
 
     def _print_version_and_license(self):
         print('rinohtype {} ({})  Copyright (c) Brecht Machiels'

@@ -10,7 +10,7 @@ from warnings import warn
 
 from ...util import cached
 from ...warnings import RinohWarning
-from .. import Font, GlyphMetrics, LeafGetter
+from .. import Font, GlyphMetrics, LeafGetter, MissingGlyphException
 from ..style import MEDIUM, UPRIGHT, NORMAL, OLD_STYLE
 from ..style import SMALL_CAPITAL
 
@@ -92,7 +92,7 @@ class OpenTypeFont(Font, OpenTypeParser):
         except KeyError:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({})'
                  .format(self.name, ord(char), char), RinohWarning)
-            return self._glyphs['?']
+            raise MissingGlyphException(char)
 
         if variant in self._VARIANTS and 'GSUB' in self:
             feature = self._VARIANTS[variant]

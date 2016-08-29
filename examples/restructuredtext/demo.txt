@@ -64,7 +64,14 @@ Structural Elements
 Section Title
 -------------
 
-That's it, the text just above this line.
+That's ㉭ it ‣․ the text just above this line.
+
+Test‣ two.
+
+Test ‣three.
+
+Test‣four.
+
 
 Transitions
 -----------

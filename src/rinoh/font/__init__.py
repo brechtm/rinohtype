@@ -179,3 +179,7 @@ class LeafGetter(object):
                 return self.default
             else:
                 raise
+
+
+class MissingGlyphException(Exception):
+    """The font does not contain a glyph for the given unicode character"""
