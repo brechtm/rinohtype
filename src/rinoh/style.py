@@ -87,6 +87,7 @@ class Style(AttributesDictionary):
         If `base` is a :class:`str`, it is used to look up the base style in
         the :class:`StyleSheet` this style is defined in."""
         super().__init__(base, **attributes)
+        self._name = None
 
     def __repr__(self):
         """Return a textual representation of this style."""
@@ -118,6 +119,16 @@ class Style(AttributesDictionary):
                 return self.base[attribute]
             else:
                 raise BaseStyleException(self, attribute)
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if name in SPECIAL_STYLES:
+            raise ValueError("The '{}' style name is reserved.".format(name))
+        self._name = name
 
 
 class SpecialStyle(Style):
@@ -152,6 +163,10 @@ from which the lookup originates."""
 DEFAULT_STYLE = DefaultStyle()
 """Style to use as a base for styles that do not extend the style of the same
 name in the base style sheet."""
+
+
+SPECIAL_STYLES = dict(DEFAULT_STYLE=DEFAULT_STYLE,
+                      PARENT_STYLE=PARENT_STYLE)
 
 
 class Selector(object):
@@ -772,7 +787,7 @@ class StyleSheetFile(StyleSheet):
             for name, value in section_body.items():
                 value = value.replace('\n', ' ')
                 if name == 'base':
-                    attribute_values[name] = value
+                    attribute_values[name] = SPECIAL_STYLES.get(value, value)
                 else:
                     try:
                         attribute = style_cls.attribute_definition(name)
