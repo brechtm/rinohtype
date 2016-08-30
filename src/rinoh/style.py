@@ -48,8 +48,8 @@ class BaseStyleException(StyleException):
     """The `attribute` is not specified in this :class:`Style`. Try to find the
     attribute in a base style instead."""
 
-    def __init__(self, base_name, attribute):
-        self.base_name = base_name
+    def __init__(self, style, attribute):
+        self.style = style
         self.attribute = attribute
 
 
@@ -114,12 +114,10 @@ class Style(AttributesDictionary):
         try:
             return super().__getitem__(attribute)
         except KeyError:
-            if self.base is None:
-                raise DefaultStyleException
-            elif isinstance(self.base, str):
-                raise BaseStyleException(self.base, attribute)
-            else:
+            if isinstance(self.base, Style):
                 return self.base[attribute]
+            else:
+                raise BaseStyleException(self, attribute)
 
 
 class ParentStyle(Style):
@@ -481,16 +479,23 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         except DefaultStyleException:
             return self.style_class._get_default(attribute)
 
-    def get_base_style_recursive(self, exception, flowable_target):
-        stylesheet = flowable_target.document.stylesheet
+    def get_base_style_recursive(self, exception, flowable_target, stylesheet):
+        base_name = exception.style.base
+        if base_name is None:
+            stylesheet = stylesheet.base
+            base_name = exception.style.name
         try:
-            base_style = stylesheet[exception.base_name]
+            base_style = stylesheet[base_name]
+        except (KeyError, TypeError):
+            raise DefaultStyleException
+        try:
             return base_style.get_value(exception.attribute, stylesheet)
         except ParentStyleException:
             return self.parent.get_style_recursive(exception.attribute,
                                                    flowable_target)
-        except BaseStyleException as e:
-            return self.get_base_style_recursive(e, flowable_target)
+        except BaseStyleException as exc:
+            return self.get_base_style_recursive(exc, flowable_target,
+                                                 stylesheet)
 
     def get_style_recursive(self, attribute, flowable_target):
         stylesheet = flowable_target.document.stylesheet
@@ -510,7 +515,8 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             except KeyError:  # 'attribute' is not supported by the parent
                 return parent.get_style_recursive(attribute, flowable_target)
         except BaseStyleException as exception:
-            return self.get_base_style_recursive(exception, flowable_target)
+            return self.get_base_style_recursive(exception, flowable_target,
+                                                 stylesheet)
 
     @cached
     def _style(self, container):

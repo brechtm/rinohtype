@@ -6,6 +6,8 @@ Release 0.2.2.dev
 
 Changed:
 
+* if no base is given for a style, style attribute lookup proceeds to look in
+  the style of the same name in the base style sheet (#66)
 * rename FieldList to DefinitionList and use it to replace uses (docutils and
   Sphinx frontends) of the old DefinitionList (#54)
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList
