@@ -163,6 +163,8 @@ well suited for short, custom documents however.
 Style Sheets
 ~~~~~~~~~~~~
 
+.. currentmodule:: rinoh.style
+
 A style sheet determines the look of each of the elements in a document. For
 each type of document element, the style sheet object registers a list of style
 properties. Style sheets are stored in plain text files using the INI format
@@ -272,6 +274,8 @@ matcher:
 Document Templates
 ~~~~~~~~~~~~~~~~~~
 
+.. currentmodule:: rinoh.template
+
 As with style sheets, you can choose to make use of the templates provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch.
@@ -282,7 +286,7 @@ Using an Existing Template
 
 Rinohtype provides a number of :ref:`document_templates`. These can be
 customized by passing an instance of the associated
-:class:`rinoh.template.TemplateConfiguration` as `configuration` on template
+:class:`TemplateConfiguration` as `configuration` on template
 instantiation.
 
 The example from :ref:`library_quickstart` above can be customized by setting
@@ -325,7 +329,7 @@ A4. See below for a list of the settings that can be changed and their
 description.
 
 The top margin of the title page is also changed by setting the corresponding
-option for the :attr:`rinoh.templates.article.ArticleConfiguration.title_page`
+option for the :attr:`.ArticleConfiguration.title_page`
 page template.
 
 
@@ -333,25 +337,24 @@ Creating a Custom Template
 --------------------------
 
 A custom template can be created by inheriting from :class:`DocumentTemplate`.
-The :attr:`parts` attribute determines the global structure of the document. It
-is a list of :class:`DocumentPartTemplate`\ s, each referencing a page
-template.
+The :attr:`~DocumentTemplate.parts` attribute determines the global structure
+of the document. It is a list of :class:`DocumentPartTemplate`\ s, each
+referencing a page template.
 
-The :class:`rinoh.templates.article.Article` template, for example, consists of
-a title page, a front matter part (a custom
-:class:`rinoh.template.DocumentPartTemplate` subclass) and the article
+The :class:`.Article` template, for example, consists of a title page, a front
+matter part (a custom :class:`DocumentPartTemplate` subclass) and the article
 contents:
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: Article
 
 
-The :class:`TemplateConfiguration` subclass associated with :class:`Article`
+The :class:`TemplateConfiguration` subclass associated with :class:`.Article`
 
 - overrides the default style sheet,
 - introduces configuration attributes to control the table of contents
   placement and the location of the abstract, and
-- defines the page templates referenced in :attr:`Article.parts`
+- defines the page templates referenced in :attr:`.Article.parts`
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: ArticleConfiguration
