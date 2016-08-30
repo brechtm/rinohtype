@@ -8,6 +8,8 @@ Changed:
 
 * if no base is given for a style, style attribute lookup proceeds to look in
   the style of the same name in the base style sheet (#66)
+* DEFAULT_STYLE can be used as a base style to prevent style attribute lookup
+  in the style of the same name in the base style sheet
 * rename FieldList to DefinitionList and use it to replace uses (docutils and
   Sphinx frontends) of the old DefinitionList (#54)
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList

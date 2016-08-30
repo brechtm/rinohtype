@@ -120,23 +120,38 @@ class Style(AttributesDictionary):
                 raise BaseStyleException(self, attribute)
 
 
-class ParentStyle(Style):
-    """Special style that delegates attribute lookups by raising a
-    :class:`ParentStyleException` on each attempt to access an attribute."""
+class SpecialStyle(Style):
+    """Special style that delegates attribute lookups by raising an
+    exception on each attempt to access an attribute."""
+
+    exception = NotImplementedAttribute()
 
     def __repr__(self):
         return self.__class__.__name__
 
     def __getitem__(self, attribute):
-        raise ParentStyleException
+        raise self.exception
 
     def __bool__(self):
         return True
 
 
+class ParentStyle(SpecialStyle):
+    exception = ParentStyleException
+
+
+class DefaultStyle(SpecialStyle):
+    exception = DefaultStyleException
+
+
 PARENT_STYLE = ParentStyle()
-"""Special style that forwards style lookups to the parent of the
-:class:`Styled` from which the lookup originates."""
+"""Style that forwards style lookups to the parent of the :class:`Styled`
+from which the lookup originates."""
+
+
+DEFAULT_STYLE = DefaultStyle()
+"""Style to use as a base for styles that do not extend the style of the same
+name in the base style sheet."""
 
 
 class Selector(object):
