@@ -498,11 +498,20 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         base_name = exception.style.base
         if base_name is None:
             stylesheet = stylesheet.base
-            base_name = exception.style.name
-        try:
-            base_style = stylesheet[base_name]
-        except (KeyError, TypeError):
-            raise DefaultStyleException
+            if stylesheet is None:
+                raise DefaultStyleException
+            try:
+                base_style = stylesheet[exception.style.name]
+            except KeyError:
+                raise DefaultStyleException
+        else:
+            try:
+                base_style = stylesheet[base_name]
+            except KeyError:
+                raise ValueError("The base style '{}' for style '{}' could "
+                                 "not be found in the style sheet or base "
+                                 "style sheets".format(base_name,
+                                                       exception.style.name))
         try:
             return base_style.get_value(exception.attribute, stylesheet)
         except ParentStyleException:
