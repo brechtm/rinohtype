@@ -169,6 +169,8 @@ properties. Style sheets are stored in plain text files using the INI format
 with the ``.rts`` extension. Below is an excerpt from the `Sphinx` style sheet
 included with rinohtype.
 
+.. _base style sheet:
+
 .. literalinclude:: /../src/rinoh/data/stylesheets/sphinx.rts
     :language: ini
     :end-before: [italic]
@@ -193,9 +195,7 @@ Extending an Existing Style Sheet
 
 Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following example creates a new
-style sheet based on the Sphinx stylesheet included with rinohtype. The style
-sheet redefines the style for emphasized text, displaying it in a bold instead
-of italic font.
+style sheet based on the Sphinx stylesheet included with rinohtype.
 
 .. code-block:: ini
 
@@ -208,27 +208,27 @@ of italic font.
     mono_typeface=Courier
 
     [emphasis]
-    font_slant=bold
+    font_color=#00a
 
-This style sheet also redefines the ``mono_typeface`` variable. This variable
-is used in the Sphinx style sheet in all style definitions where a monospaced
-font is desired. Redefining the variable affects all of these style
-definitions.
+    [strong]
+    base=DEFAULT_STYLE
+    font_color=#a00
 
-    .. todo:: How to do this in a INI style sheet?
+By default, styles defined in a style sheet *extend* the corresponding style
+from the base style sheet. In this example, emphasized text will still be set
+in an italic font as configured in the `base style sheet`_, but it will
+additionally be colored blue (#00a).
 
-        Here, the new new style definition completely replaces the style
-        definition contained in the Sphinx style sheet. It is also possible to
-        override only part of the style definition. The following style
-        definition changes only the item spacing between enumerated list items.
-        All other style properties (such as the left margin and the item
-        numbering format) remain unchanged.
+It is also possible to completely override the style definition. This can be
+done by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
+illustrated by the `strong` style. This causes strongly emphasised text to be
+displayed in red (#a00) but **not** in a bold font as defined in the `base
+style sheet`_ (the default for ``font_weight`` is `Medium`; see
+:class:`~rinoh.text.TextStyle`).
 
-
-        .. code-block:: python
-
-            my_style_sheet('enumerated list', base=styles['default'],
-                           flowable_spacing=3*PT)
+The style sheet also redefines the ``mono_typeface`` variable. This variable is
+used in the Sphinx style sheet in all style definitions where a monospaced font
+is desired. Redefining the variable affects all of these style definitions.
 
 To use this style sheet, load it using :class:`StyleSheetFile`:
 

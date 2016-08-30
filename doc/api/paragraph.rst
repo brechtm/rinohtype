@@ -26,6 +26,9 @@ Inline Elements
 .. autoclass:: StyledText
     :members:
 
+.. autoclass:: TextStyle
+    :members:
+
 .. autoclass:: SingleStyledText
     :members:
 
