@@ -4,6 +4,8 @@
 #
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
+
+
 from collections import OrderedDict
 
 from .attribute import (Bool, Integer, Function, Attribute,
@@ -13,6 +15,7 @@ from .document import (Document, DocumentSection, DocumentPart,
                        Page, PageOrientation, PORTRAIT)
 from .element import create_destination
 from .float import BackgroundImage, Image
+from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
                      BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE)
@@ -91,6 +94,7 @@ class TemplateConfigurationMeta(WithAttributes):
 
 class TemplateConfiguration(RuleSet, AttributesDictionary,
                             metaclass=TemplateConfigurationMeta):
+    language = Attribute(Language, EN, 'The main language of the document')
     stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
@@ -484,7 +488,9 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
         self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
         stylesheet = self.configuration.get_option('stylesheet')
-        super().__init__(document_tree, stylesheet, strings=strings, backend=backend)
+        language = self.configuration.get_option('language')
+        super().__init__(document_tree, stylesheet, strings=strings,
+                         language=language, backend=backend)
         self._to_insert = {}
 
     def insert(self, document_part_name, flowable, position):

@@ -33,6 +33,7 @@ from itertools import count
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT, StaticGroupedFlowables
+from .language import EN
 from .layout import (Container, ReflowRequired, Chain, PageBreakException,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NUMBER, format_number
@@ -40,6 +41,7 @@ from .reference import TITLE
 from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity, StyleLog
 from .util import NotImplementedAttribute, RefKeyDictionary
+from .warnings import warn
 
 
 __all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
@@ -316,13 +318,14 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, document_tree, stylesheet, strings=None,
+    def __init__(self, document_tree, stylesheet, strings=None, language=None,
                  backend=pdf):
         """`backend` specifies the backend to use for rendering the document."""
         self._print_version_and_license()
         self.front_matter = []
         self.document_tree = document_tree
         self.stylesheet = stylesheet
+        self.language = language
         self._strings = strings or ()
         self.backend = backend
         self.backend_document = self.backend.Document(self.CREATOR)
@@ -387,11 +390,18 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
-    def strings(self, strings_class):
+    def get_string(self, strings_class, key):
         for strings in self._strings:
             if isinstance(strings, strings_class):
                 return strings
-        return strings_class()
+        try:
+            return self.language.strings[strings_class][key]
+        except KeyError:
+            warn('The {} "{}" string is not defined for {} ({}). Using the '
+                 'english string instead.'.format(strings_class.__name__, key,
+                                                  self.language.name,
+                                                  self.language.code))
+            return EN.strings[strings_class][key]
 
     def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due

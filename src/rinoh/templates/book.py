@@ -14,7 +14,8 @@ from ..paragraph import Paragraph
 from ..reference import (Variable, Reference, PAGE_NUMBER, TITLE,
                          DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                          SECTION_NUMBER, SECTION_TITLE)
-from ..structure import TableOfContentsSection
+from ..strings import StringField
+from ..structure import TableOfContentsSection, SectionTitles
 from ..stylesheets import sphinx
 from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
@@ -28,8 +29,9 @@ def front_matter_section_title_flowables(section_id):
 
 
 def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER,
-                                           link=False, style='number'),
+    yield Paragraph(StringField(SectionTitles, 'chapter') + ' '
+                    + Reference(section_id, NUMBER, link=False,
+                                style='number'),
                     style='body matter chapter label')
     yield Paragraph(Reference(section_id, TITLE, link=False),
                     style='body matter chapter title')
@@ -80,7 +82,8 @@ class BookConfiguration(TemplateConfiguration):
                      header_text=(Variable(DOCUMENT_TITLE) + ', '
                                   + Variable(DOCUMENT_SUBTITLE)),
                      footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
-                                  'Chapter ' + Variable(SECTION_NUMBER(1))
+                                  StringField(SectionTitles, 'chapter')
+                                  + ' ' + Variable(SECTION_NUMBER(1))
                                   + '.  ' + Variable(SECTION_TITLE(1))))
 
     back_matter_right_page = \

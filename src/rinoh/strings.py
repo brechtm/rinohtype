@@ -15,29 +15,26 @@ __all__ = ['String', 'Strings', 'StringField']
 
 class String(NamedDescriptor):
     """Descriptor used to describe a configurable string"""
-    def __init__(self, default_value, description):
-        self.default_value = default_value
+    def __init__(self, description):
         self.description = description
         self.name = None
 
-    def __get__(self, style, type=None):
+    def __get__(self, strings, type=None):
         try:
-            return style.get(self.name, self.default_value)
+            return strings.get(self.name)
         except AttributeError:
             return self
 
-    def __set__(self, style, value):
+    def __set__(self, strings, value):
         if not StyledText.check_type(value):
-            raise TypeError('The {} style attribute only accepts styled text'
+            raise TypeError('String attributes only accept styled text'
                             .format(self.name))
-        style[self.name] = value
+        strings[self.name] = value
 
     @property
     def __doc__(self):
-        return (':description: {} (:class:`{}`)\n'
-                ':default: {}'
-                .format(self.description, self.accepted_type.__name__,
-                        self.default_value))
+        return (':description: {} (:class:`{}`)'
+                .format(self.description, self.accepted_type.__name__))
 
 
 class Strings(dict, metaclass=WithNamedDescriptors):
@@ -59,10 +56,16 @@ class StringField(SingleStyledTextBase):
         self.strings_class = strings_class
         self.key = key
 
+    def __repr__(self):
+        return "{}({}, '{}')".format(type(self).__name__,
+                                     self.strings_class, self.key)
+
     def string(self, document):
-        return document.strings(self.strings_class)[self.key]
+        return document.get_string(self.strings_class, self.key)
 
     def text(self, flowable_target):
+        if flowable_target is None:
+            return repr(self)
         string = self.string(flowable_target.document)
         try:
             return string.to_string(flowable_target)
