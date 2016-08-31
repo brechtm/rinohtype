@@ -29,7 +29,7 @@ def front_matter_section_title_flowables(section_id):
 
 
 def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph(StringField(SectionTitles, 'chapter') + ' '
+    yield Paragraph(StringField(SectionTitles, 'chapter').upper() + ' '
                     + Reference(section_id, NUMBER, link=False,
                                 style='number'),
                     style='body matter chapter label')

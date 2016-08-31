@@ -51,10 +51,11 @@ class Strings(dict, metaclass=WithNamedDescriptors):
 
 
 class StringField(SingleStyledTextBase):
-    def __init__(self, strings_class, key, style=None, parent=None):
+    def __init__(self, strings_class, key, case=None, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class
         self.key = key
+        self.case = case or (lambda string: string)
 
     def __repr__(self):
         return "{}({}, '{}')".format(type(self).__name__,
@@ -68,6 +69,23 @@ class StringField(SingleStyledTextBase):
             return repr(self)
         string = self.string(flowable_target.document)
         try:
-            return string.to_string(flowable_target)
+            string = string.to_string(flowable_target)
         except AttributeError:
-            return string
+            pass
+        return self.case(string)
+
+    def _case(self, case_function):
+        return type(self)(self.strings_class, self.key, case=case_function,
+                          style=self.style, parent=self.parent)
+
+    def lower(self):
+        return self._case(str.lower)
+
+    def upper(self):
+        return self._case(str.upper)
+
+    def capitalize(self):
+        return self._case(str.capitalize)
+
+    def title(self):
+        return self._case(str.title)
