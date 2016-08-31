@@ -14,6 +14,8 @@ from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
 
+from rinoh.strings import StringsList
+from rinoh.structure import AdmonitionTitles
 from rinoh.templates import Book
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -24,7 +26,14 @@ SPHINX_DOC_DIR = os.path.join(TEST_DIR, 'sphinx', 'doc')
 def test_sphinxdocs(tmpdir):
     from sphinx.application import Sphinx
 
-    template_configuration = Book.Configuration()
+    strings = StringsList(AdmonitionTitles(error='Error:',
+                                           hint='Hint:',
+                                           important='Important',
+                                           note='Note:',
+                                           tip='Tip:',
+                                           warning='Warning:',
+                                           seealso='See also:'))
+    template_configuration = Book.Configuration(strings=strings)
     template_configuration('title_page', show_date=False)
 
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,

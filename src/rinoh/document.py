@@ -391,9 +391,9 @@ to the terms of the GNU Affero General Public License version 3.''')
             pickle.dump(cache, file)
 
     def get_string(self, strings_class, key):
-        for strings in self._strings:
-            if isinstance(strings, strings_class):
-                return strings
+        if (strings_class in self._strings
+                and key in self._strings[strings_class]):
+            return self._strings[strings_class][key]
         try:
             return self.language.strings[strings_class][key]
         except KeyError:

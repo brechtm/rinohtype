@@ -25,7 +25,7 @@ from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
 from .resource import Resource
 from .text import StyledText, Tab
-from .strings import StringField
+from .strings import StringField, StringsList
 from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet
 from .stylesheets import sphinx
@@ -95,6 +95,8 @@ class TemplateConfigurationMeta(WithAttributes):
 class TemplateConfiguration(RuleSet, AttributesDictionary,
                             metaclass=TemplateConfigurationMeta):
     language = Attribute(Language, EN, 'The main language of the document')
+    strings = Attribute(StringsList, None, 'Strings to override standard '
+                                           'element names')
     stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
@@ -151,7 +153,7 @@ class PageTemplateBase(Template):
     bottom_margin = Option(DimensionBase, 3*CM, 'The margin size at the bottom '
                                                 'of the page')
     background = Option(BackgroundImage, None, 'An image to place in the '
-                                             'background of the page')
+                                               'background of the page')
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
 
@@ -483,12 +485,13 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
 
     options_class = DocumentOptions
 
-    def __init__(self, document_tree, strings=None, configuration=None,
-                 options=None, backend=None):
+    def __init__(self, document_tree, configuration=None, options=None,
+                 backend=None):
         self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
         stylesheet = self.configuration.get_option('stylesheet')
         language = self.configuration.get_option('language')
+        strings = self.configuration.get_option('strings')
         super().__init__(document_tree, stylesheet, strings=strings,
                          language=language, backend=backend)
         self._to_insert = {}

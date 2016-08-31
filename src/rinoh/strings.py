@@ -6,11 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .attribute import AttributeType
 from .text import StyledText, SingleStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
-__all__ = ['String', 'Strings', 'StringField']
+__all__ = ['String', 'Strings', 'StringsList', 'StringField']
 
 
 class String(NamedDescriptor):
@@ -48,6 +49,12 @@ class Strings(dict, metaclass=WithNamedDescriptors):
 
     def __getitem__(self, name):
         return getattr(self, name)
+
+
+class StringsList(AttributeType, dict):
+    def __init__(self, *strings_items):
+        for strings in strings_items:
+            self[type(strings)] = strings
 
 
 class StringField(SingleStyledTextBase):
