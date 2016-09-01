@@ -248,6 +248,11 @@ class StyledText(Styled, AcceptNoneAttributeType):
             # get the position style using self.get_style('position')
         return offset
 
+    @property
+    def items(self):
+        """The list of items in this StyledText."""
+        raise NotImplementedError
+
     def spans(self, container):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
@@ -297,6 +302,10 @@ class SingleStyledTextBase(StyledText):
     def line_gap(self, container):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
+
+    @property
+    def items(self):
+        return [self]
 
     def spans(self, container):
         yield self
@@ -370,12 +379,10 @@ class MixedStyledText(MixedStyledTextBase, list):
             self.append(item)
 
     def __add__(self, other):
-        if isinstance(other, str) or self.style == other.style:
-            try:
-                other_list = list(other)
-            except TypeError:
-                other_list = [other]
-            return MixedStyledText(list(self) + other_list,
+        if isinstance(other, str):
+            other = SingleStyledText(other)
+        if self.style == other.style:
+            return MixedStyledText(self.items + other.items,
                                    style=self.style, parent=self.parent)
         else:
             return super().__add__(other)
@@ -411,6 +418,10 @@ class MixedStyledText(MixedStyledTextBase, list):
             item = SingleStyledText(item)
         item.parent = self
         list.append(self, item)
+
+    @property
+    def items(self):
+        return list(self)
 
     def text(self, flowable_target, **kwargs):
         return self
