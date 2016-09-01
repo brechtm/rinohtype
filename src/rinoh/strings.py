@@ -11,7 +11,7 @@ from .text import StyledText, SingleStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
-__all__ = ['String', 'Strings', 'StringsList', 'StringField']
+__all__ = ['String', 'StringCollection', 'Strings', 'StringField']
 
 
 class String(NamedDescriptor):
@@ -38,26 +38,40 @@ class String(NamedDescriptor):
                 .format(self.description, self.accepted_type.__name__))
 
 
-class Strings(dict, metaclass=WithNamedDescriptors):
+class StringCollection(dict, metaclass=WithNamedDescriptors):
+    """A collection of related configurable strings"""
     def __init__(self, **options):
         for name, value in options.items():
             string_descriptor = getattr(type(self), name, None)
             if not isinstance(string_descriptor, String):
-                raise AttributeError('Unsupported page template option: {}'
-                                     .format(name))
+                raise AttributeError("'{}' is not an accepted string for {}"
+                                     .format(name, type(self).__name__))
             setattr(self, name, value)
 
     def __getitem__(self, name):
         return getattr(self, name)
 
 
-class StringsList(AttributeType, dict):
-    def __init__(self, *strings_items):
-        for strings in strings_items:
-            self[type(strings)] = strings
+class Strings(AttributeType, dict):
+    """Stores several :class:`StringCollection`\ s"""
+    def __init__(self, *string_collections):
+        for string_collection in string_collections:
+            self[type(string_collection)] = string_collection
+
+    def __setitem__(self, string_collection_class, string_collection):
+        if string_collection_class in self:
+            raise ValueError("{} is already registered with this {} instance"
+                             .format(string_collection_class.__name__,
+                                     type(self).__name__))
+        super().__setitem__(string_collection_class, string_collection)
 
 
 class StringField(SingleStyledTextBase):
+    """Styled text that will be substituted with a configured string
+
+    The configured string is either the localized string as determined by the
+    language set for the document or the user-supplied string passed to the
+    :class:`TemplateConfiguration`"""
     def __init__(self, strings_class, key, case=None, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class

@@ -25,7 +25,7 @@ from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
 from .resource import Resource
 from .text import StyledText, Tab
-from .strings import StringField, StringsList
+from .strings import StringField, Strings
 from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet
 from .stylesheets import sphinx
@@ -95,8 +95,8 @@ class TemplateConfigurationMeta(WithAttributes):
 class TemplateConfiguration(RuleSet, AttributesDictionary,
                             metaclass=TemplateConfigurationMeta):
     language = Attribute(Language, EN, 'The main language of the document')
-    strings = Attribute(StringsList, None, 'Strings to override standard '
-                                           'element names')
+    strings = Attribute(Strings, None, 'Strings to override standard element '
+                                       'names')
     stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')

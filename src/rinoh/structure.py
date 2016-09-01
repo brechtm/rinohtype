@@ -22,7 +22,7 @@ from .reference import (ReferenceField, ReferencingParagraph,
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
-from .strings import Strings, String, StringField
+from .strings import StringCollection, String, StringField
 
 
 __all__ = ['Section', 'Heading',
@@ -33,7 +33,7 @@ __all__ = ['Section', 'Heading',
            'HorizontalRule', 'HorizontalRuleStyle']
 
 
-class SectionTitles(Strings):
+class SectionTitles(StringCollection):
     contents = String('Title for the table of contents section')
     chapter = String('Label for top-level sections')
     index = String('Title for the index section')
@@ -299,7 +299,7 @@ class AdmonitionStyle(GroupedFlowablesStyle):
                                          "with the body text, if possible")
 
 
-class AdmonitionTitles(Strings):
+class AdmonitionTitles(StringCollection):
     attention = String('Title for attention admonitions')
     caution = String('Title for caution admonitions')
     danger = String('Title for danger admonitions')

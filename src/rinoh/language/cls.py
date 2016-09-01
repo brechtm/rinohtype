@@ -9,7 +9,7 @@
 import weakref
 
 from ..attribute import AttributeType
-from ..strings import Strings
+from ..strings import StringCollection
 
 
 __all__ = ['Language']
@@ -25,7 +25,7 @@ class Language(AttributeType):
         self.strings = {}
 
     def __contains__(self, item):
-        assert isinstance(item, Strings)
+        assert isinstance(item, StringCollection)
         strings_class = type(item)
         assert strings_class not in self.strings
         self.strings[strings_class] = item
