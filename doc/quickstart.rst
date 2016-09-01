@@ -137,9 +137,9 @@ Here is an example document tree of a short article:
     document_tree = DocumentTree('/path/to/source_file.ext',
                     [Paragraph('My Document', style='title'), # metadata!
                      Section([Heading('First Section'),
-                              Paragraph('This is a paragraph with some'
+                              Paragraph('This is a paragraph with some '
                                         + Emphasized('emphasized text')
-                                        + 'and an'
+                                        + ' and an '
                                         + InlineImage('image.pdf')),
                               Section([Heading('A subsection'),
                                        Paragraph('Another paragraph')
