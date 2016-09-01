@@ -42,6 +42,10 @@ class InlineFlowable(Flowable):
     def y_offset(self, document):
         return 0
 
+    @property
+    def items(self):
+        return [self]
+
     def spans(self, document):
         yield self
 
