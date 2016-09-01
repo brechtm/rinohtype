@@ -47,7 +47,7 @@ from .flowable import Flowable, FlowableStyle, FlowableState
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import ContainerOverflow, EndOfContainer
-from .text import TextStyle, MixedStyledText
+from .text import TextStyle, MixedStyledText, SingleStyledText
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -297,11 +297,45 @@ class ParagraphStyle(FlowableStyle, TextStyle):
     tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
+def merge_spans(spans, flowable_target):
+    cur_span = None
+    cur_font = cur_scale = cur_color \
+        = cur_variant = cur_kerning = cur_ligatures = None
+    for span in spans:
+        font = span.font(flowable_target)
+        scale = span.height(flowable_target) / font.units_per_em
+        color = span.get_style('font_color', flowable_target)
+        variant = span.get_style('font_variant', flowable_target)
+        kerning = span.get_style('kerning', flowable_target)
+        ligatures = span.get_style('ligatures', flowable_target)
+        if ((font, scale, color, variant, kerning, ligatures)
+                != (cur_font, cur_scale, cur_color,
+                    cur_variant, cur_kerning, cur_ligatures)):
+            if cur_span is not None:
+                yield cur_span
+            cur_span = span
+            cur_font = font
+            cur_scale = scale
+            cur_color = color
+            cur_variant = variant
+            cur_kerning = kerning
+            cur_ligatures = ligatures
+        elif cur_span is not None:
+            cur_span = SingleStyledText(cur_span.text(flowable_target)
+                                        + span.text(flowable_target),
+                                        style=cur_span.style,
+                                        parent=cur_span.parent)
+        else:
+            cur_span = span
+    if cur_span is not None:
+        yield cur_span
+
+
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
     word = Word()
-    for span in spans:
+    for span in merge_spans(spans, container):
         try:
             word_to_glyphs = create_to_glyphs(span, container)
             for chars in span.split(container):
