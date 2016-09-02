@@ -300,7 +300,7 @@ class ParagraphStyle(FlowableStyle, TextStyle):
     tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
-class GlyphAndWidth(object):
+class Glyph(object):
     __slots__ = ('glyph', 'width', 'char')
 
     def __init__(self, glyph, width, char):
@@ -350,7 +350,7 @@ def create_lig_kern(span, flowable_target):
         else:
             glyphs_kern = [(char, glyph, 0.0)
                            for char, glyph in chars_and_glyphs]
-        return [GlyphAndWidth(glyph, scale * (glyph.width + kern_adjust), char)
+        return [Glyph(glyph, scale * (glyph.width + kern_adjust), char)
                 for char, glyph, kern_adjust in glyphs_kern]
 
     return get_glyph, lig_kern
@@ -360,21 +360,21 @@ def handle_missing_glyphs(span, container):
     get_glyph, lig_kern = create_lig_kern(span, container)
     fallback_typeface = container.document.fallback_typeface
     fallback_style = TextStyle(typeface=fallback_typeface)
-    string = ''
+    string = []
     for char in span.text(container):
         try:
             get_glyph(char)
-            string += char
+            string.append(char)
         except MissingGlyphException:
             if string:
-                yield SingleStyledText(string, parent=span)
-                string = ''
+                yield SingleStyledText(''.join(string), parent=span)
+                string.clear()
             if span.get_style('typeface', container) is fallback_typeface:
                 yield SingleStyledText('?', parent=span)
             else:
                 yield SingleStyledText(char, style=fallback_style, parent=span)
     if string:
-        yield SingleStyledText(string, parent=span)
+        yield SingleStyledText(''.join(string), parent=span)
 
 
 # TODO: shouldn't take a container (but needed by flow_inline)
@@ -390,25 +390,25 @@ def spans_to_words(spans, container):
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             space, = lig_kern(' ')
-            words = span.split(container)
-            for chars in words:
-                if chars in (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}'):
+            parts = span.split(container)
+            for part in parts:
+                if part in (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}'):
                     if word:
                         yield word
-                    if chars != '\N{ZERO WIDTH SPACE}':
-                        gws = lig_kern(chars, [space.glyph])
+                    if part != '\N{ZERO WIDTH SPACE}':
+                        gws = lig_kern(part, [space.glyph])
                         yield Word([GlyphsSpan(span, lig_kern, gws)])
                     word = Word()
                     continue
                 try:
-                    glyphs = [get_glyph(char) for char in chars]
+                    glyphs = [get_glyph(char) for char in part]
                 except MissingGlyphException:
-                    rest_of_span = SingleStyledText(chars + ''.join(words),
+                    rest_of_span = SingleStyledText(part + ''.join(parts),
                                                     parent=span)
                     new_spans = handle_missing_glyphs(rest_of_span, container)
                     spans = chain(new_spans, spans)
                     break
-                glyphs_and_widths = lig_kern(chars, glyphs)
+                glyphs_and_widths = lig_kern(part, glyphs)
                 glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
                 word.append(glyphs_span)
         except InlineFlowableException:
@@ -631,7 +631,7 @@ class GlyphsSpan(list):
                 fill_glyphs = self.chars_to_glyphs(fill_string)
                 fill_string_width = sum(glyph.width for glyph in fill_glyphs)
                 number, rest = divmod(glyph_and_width.width, fill_string_width)
-                yield GlyphAndWidth(glyph_and_width.glyph, rest, glyph_and_width.char)
+                yield Glyph(glyph_and_width.glyph, rest, glyph_and_width.char)
                 for i in range(int(number)):
                     for fill_glyph_and_width in fill_glyphs:
                         yield fill_glyph_and_width
@@ -712,7 +712,7 @@ class Line(list):
             tab_position = tab_stop.get_position(self.width)
             if self.cursor < tab_position:
                 tab_width = tab_position - self.cursor
-                tab = GlyphAndWidth(glyphs_span.space.glyph, tab_width, '\t')
+                tab = Glyph(glyphs_span.space.glyph, tab_width, '\t')
                 if tab_stop.fill:
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
