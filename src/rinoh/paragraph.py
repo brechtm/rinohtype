@@ -37,7 +37,7 @@ import re
 from ast import literal_eval
 from copy import copy
 from functools import partial
-from itertools import tee
+from itertools import tee, chain
 
 from rinoh.font import NORMAL
 
@@ -356,15 +356,39 @@ def create_lig_kern(span, flowable_target):
     return get_glyph, lig_kern
 
 
+def handle_missing_glyphs(span, container):
+    get_glyph, lig_kern = create_lig_kern(span, container)
+    fallback_typeface = container.document.fallback_typeface
+    fallback_style = TextStyle(typeface=fallback_typeface)
+    string = ''
+    for char in span.text(container):
+        try:
+            get_glyph(char)
+            string += char
+        except MissingGlyphException:
+            if string:
+                yield SingleStyledText(string, parent=span)
+                string = ''
+            yield SingleStyledText(char, style=fallback_style, parent=span)
+    if string:
+        yield SingleStyledText(string, parent=span)
+
+
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
     word = Word()
-    for span in spans:
+    spans = iter(spans)
+    while True:
+        try:
+            span = next(spans)
+        except StopIteration:
+            break
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             space, = lig_kern(' ')
-            for chars in span.split(container):
+            words = span.split(container)
+            for chars in words:
                 if chars in (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}'):
                     if word:
                         yield word
@@ -373,37 +397,17 @@ def spans_to_words(spans, container):
                         yield Word([GlyphsSpan(span, lig_kern, gws)])
                     word = Word()
                     continue
-                glyphs, ok_chars = [], ''
-                for char in chars:
-                    try:
-                        glyphs.append(get_glyph(char))
-                        ok_chars += char
-                    except MissingGlyphException:
-                        # add chars for which glyphs do exist to the word
-                        if ok_chars:
-                            glyphs_and_widths = lig_kern(ok_chars, glyphs)
-                            glyphs_span = GlyphsSpan(span, lig_kern,
-                                                     glyphs_and_widths)
-                            word.append(glyphs_span)
-                            glyphs, ok_chars = [], ''
-
-                        # add the failing char using the fallback font
-                        fallback_typeface = (container.document
-                                             .fallback_typeface)
-                        fallback_style = TextStyle(typeface=fallback_typeface)
-                        fallback_span = SingleStyledText(char, parent=span,
-                                                         style=fallback_style)
-                        _, fallback_lig_kern = create_lig_kern(fallback_span,
-                                                               container)
-                        glyphs_and_widths = fallback_lig_kern(char)
-                        glyphs_span = GlyphsSpan(fallback_span,
-                                                 fallback_lig_kern,
-                                                 glyphs_and_widths)
-                        word.append(glyphs_span)
-                if ok_chars:
-                    glyphs_and_widths = lig_kern(ok_chars, glyphs)
-                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
-                    word.append(glyphs_span)
+                try:
+                    glyphs = [get_glyph(char) for char in chars]
+                except MissingGlyphException:
+                    rest_of_span = SingleStyledText(chars + ''.join(words),
+                                                    parent=span)
+                    new_spans = handle_missing_glyphs(rest_of_span, container)
+                    spans = chain(new_spans, spans)
+                    break
+                glyphs_and_widths = lig_kern(chars, glyphs)
+                glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
+                word.append(glyphs_span)
         except InlineFlowableException:
             glyphs_span = span.flow_inline(container, 0)
             word.append(glyphs_span)
