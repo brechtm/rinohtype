@@ -39,7 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from itertools import groupby, tee
+from itertools import tee
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -309,22 +309,6 @@ class SingleStyledTextBase(StyledText):
 
     def spans(self, container):
         yield self
-
-    @staticmethod
-    def split_words(text):
-        def is_special_character(char):
-            return char in ' \t\n\N{ZERO WIDTH SPACE}'
-
-        for is_special, characters in groupby(text, is_special_character):
-            if is_special:
-                for char in characters:
-                    yield char
-            else:
-                yield ''.join(characters)
-
-    def split(self, container, **kwargs):
-        """Yield the words and spaces in this single-styled text."""
-        return self.split_words(self.text(container, **kwargs))
 
     def before_placing(self, container):
         pass

@@ -37,9 +37,7 @@ import re
 from ast import literal_eval
 from copy import copy
 from functools import partial
-from itertools import tee, chain
-
-from rinoh.font import NORMAL
+from itertools import tee, chain, groupby
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
@@ -377,6 +375,21 @@ def handle_missing_glyphs(span, container):
         yield SingleStyledText(''.join(string), parent=span)
 
 
+WHITESPACE = (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}')
+
+
+def split(text):
+    def is_special_character(char):
+        return char in WHITESPACE
+
+    for is_special, characters in groupby(text, is_special_character):
+        if is_special:
+            for char in characters:
+                yield char
+        else:
+            yield ''.join(characters)
+
+
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
@@ -390,9 +403,9 @@ def spans_to_words(spans, container):
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             space, = lig_kern(' ')
-            parts = span.split(container)
+            parts = split(span.text(container))
             for part in parts:
-                if part in (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}'):
+                if part in WHITESPACE:
                     if word:
                         yield word
                     if part != '\N{ZERO WIDTH SPACE}':

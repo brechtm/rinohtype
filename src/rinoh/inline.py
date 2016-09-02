@@ -49,9 +49,6 @@ class InlineFlowable(Flowable):
     def spans(self, document):
         yield self
 
-    def split(self, container):
-        yield self
-
     def flow_inline(self, container, last_descender, state=None):
         baseline = self.baseline or self.get_style('baseline', container)
         virtual_container = VirtualContainer(container)
