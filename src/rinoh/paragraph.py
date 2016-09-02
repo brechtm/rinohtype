@@ -369,7 +369,10 @@ def handle_missing_glyphs(span, container):
             if string:
                 yield SingleStyledText(string, parent=span)
                 string = ''
-            yield SingleStyledText(char, style=fallback_style, parent=span)
+            if span.get_style('typeface', container) is fallback_typeface:
+                yield SingleStyledText('?', parent=span)
+            else:
+                yield SingleStyledText(char, style=fallback_style, parent=span)
     if string:
         yield SingleStyledText(string, parent=span)
 
