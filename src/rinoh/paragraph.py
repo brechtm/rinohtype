@@ -390,6 +390,17 @@ class Tab(LinePart):
 class NewLine(LinePart):
     char = '\n'
 
+    def __init__(self, span, chars_to_glyphs):
+        self.span = span
+        self.chars_to_glyphs = chars_to_glyphs
+
+    def __getitem__(self, index):
+        raise NewLineException
+
+
+class NewLineException(Exception):
+    pass
+
 
 class ZeroWidthSpace(LinePart):
     char = '\N{ZERO WIDTH SPACE}'
@@ -420,7 +431,9 @@ def spans_to_words(spans, container):
                     if word:
                         yield word
                     for _ in characters:
-                        if special.char != '\N{ZERO WIDTH SPACE}':
+                        if special == NewLine:
+                            yield special(span, lig_kern)
+                        elif special.char != '\N{ZERO WIDTH SPACE}':
                             gws = lig_kern(special.char, [space.glyph])
                             yield Word([GlyphsSpan(span, lig_kern, gws)])
                     word = Word()
@@ -544,24 +557,24 @@ class ParagraphBase(Flowable):
                 word = state.next_word()
             except StopIteration:
                 break
-            if word.is_newline:
-                glyphs_span, = word
-                gs = GlyphsSpan(glyphs_span.span, glyphs_span.chars_to_glyphs)
+            try:
+                if not line.append_word(word, container, descender):
+                    for first, second in word.hyphenate(container):
+                        if line.append_word(first, container, descender):
+                            state.prepend_word(second)  # prepend second part
+                            break
+                    else:
+                        state = prev_state
+                    line = typeset_line(line)
+                    if first_line_only:
+                        break
+                    continue
+            except NewLineException:
+                gs = GlyphsSpan(word.span, word.chars_to_glyphs)
                 line.append(gs)
                 line = typeset_line(line, last_line=True, force=True)
                 if first_line_only:
                     break
-            elif not line.append_word(word, container, descender):
-                for first, second in word.hyphenate(container):
-                    if line.append_word(first, container, descender):
-                        state.prepend_word(second)  # prepend second part
-                        break
-                else:
-                    state = prev_state
-                line = typeset_line(line)
-                if first_line_only:
-                    break
-                continue
             prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
