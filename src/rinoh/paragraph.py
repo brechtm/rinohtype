@@ -375,19 +375,30 @@ def handle_missing_glyphs(span, container):
         yield SingleStyledText(''.join(string), parent=span)
 
 
-WHITESPACE = (' ',  '\t', '\n', '\N{ZERO WIDTH SPACE}')
+class LinePart(object):
+    pass
 
 
-def split(text):
-    def is_special_character(char):
-        return char in WHITESPACE
+class Space(LinePart):
+    char = ' '
 
-    for is_special, characters in groupby(text, is_special_character):
-        if is_special:
-            for char in characters:
-                yield char
-        else:
-            yield ''.join(characters)
+
+class Tab(LinePart):
+    char = '\t'
+
+
+class NewLine(LinePart):
+    char = '\n'
+
+
+class ZeroWidthSpace(LinePart):
+    char = '\N{ZERO WIDTH SPACE}'
+
+
+WHITESPACE = {' ': Space,
+              '\t': Tab,
+              '\n': NewLine,
+              '\N{ZERO WIDTH SPACE}': ZeroWidthSpace}
 
 
 # TODO: shouldn't take a container (but needed by flow_inline)
@@ -403,27 +414,31 @@ def spans_to_words(spans, container):
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             space, = lig_kern(' ')
-            parts = split(span.text(container))
-            for part in parts:
-                if part in WHITESPACE:
+            groups = groupby(iter(span.text(container)), WHITESPACE.get)
+            for special, characters in groups:
+                if special:
                     if word:
                         yield word
-                    if part != '\N{ZERO WIDTH SPACE}':
-                        gws = lig_kern(part, [space.glyph])
-                        yield Word([GlyphsSpan(span, lig_kern, gws)])
+                    for _ in characters:
+                        if special.char != '\N{ZERO WIDTH SPACE}':
+                            gws = lig_kern(special.char, [space.glyph])
+                            yield Word([GlyphsSpan(span, lig_kern, gws)])
                     word = Word()
-                    continue
-                try:
-                    glyphs = [get_glyph(char) for char in part]
-                except MissingGlyphException:
-                    rest_of_span = SingleStyledText(part + ''.join(parts),
-                                                    parent=span)
-                    new_spans = handle_missing_glyphs(rest_of_span, container)
-                    spans = chain(new_spans, spans)
-                    break
-                glyphs_and_widths = lig_kern(part, glyphs)
-                glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
-                word.append(glyphs_span)
+                else:
+                    part = ''.join(characters)
+                    try:
+                        glyphs = [get_glyph(char) for char in part]
+                    except MissingGlyphException:
+                        rest = ''.join(char for _, group in groups
+                                       for char in group)
+                        rest_of_span = SingleStyledText(part + rest,
+                                                        parent=span)
+                        new_spans = handle_missing_glyphs(rest_of_span, container)
+                        spans = chain(new_spans, spans)
+                        break
+                    glyphs_and_widths = lig_kern(part, glyphs)
+                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
+                    word.append(glyphs_span)
         except InlineFlowableException:
             glyphs_span = span.flow_inline(container, 0)
             word.append(glyphs_span)
@@ -658,7 +673,7 @@ class GlyphsSpan(list):
             return super().__iter__()
 
 
-class Word(list):
+class Word(LinePart, list):
     def __init__(self, glyphs_spans=()):
         super().__init__(glyphs_spans)
 
@@ -667,11 +682,11 @@ class Word(list):
 
     @property
     def is_space(self):
-        return self[0][0].char in ' \t'
+        return len(self) == 1 and len(self[0]) == 1 and self[0][0].char in ' \t'
 
     @property
     def is_newline(self):
-        return self[0][0].char == '\n'
+        return len(self) == 1 and len(self[0]) == 1 and self[0][0].char == '\n'
 
     @property
     def width(self):
