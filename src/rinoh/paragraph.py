@@ -379,20 +379,29 @@ class LinePart(object):
     pass
 
 
-class Space(LinePart):
-    char = ' '
-
-
-class Tab(LinePart):
-    char = '\t'
-
-
-class NewLine(LinePart):
-    char = '\n'
-
+class SpecialCharacter(LinePart):
     def __init__(self, span, chars_to_glyphs):
         self.span = span
         self.chars_to_glyphs = chars_to_glyphs
+
+
+class Space(SpecialCharacter):
+    char = ' '
+
+
+class Tab(SpecialCharacter):
+    char = '\t'
+
+    def __getitem__(self, index):
+        raise TabException
+
+
+class TabException(Exception):
+    pass
+
+
+class NewLine(SpecialCharacter):
+    char = '\n'
 
     def __getitem__(self, index):
         raise NewLineException
@@ -431,7 +440,7 @@ def spans_to_words(spans, container):
                     if word:
                         yield word
                     for _ in characters:
-                        if special == NewLine:
+                        if special in (NewLine, Tab):
                             yield special(span, lig_kern)
                         elif special.char != '\N{ZERO WIDTH SPACE}':
                             gws = lig_kern(special.char, [space.glyph])
@@ -771,17 +780,19 @@ class Line(list):
                       self.container)
 
     def append_word(self, word_or_inline, container, descender):
-        first_glyphs_span = word_or_inline[0]
+        try:
+            first_glyphs_span = word_or_inline[0]
+        except TabException:
+            empty_glyphs_span = GlyphsSpan(word_or_inline.span,
+                                           word_or_inline.chars_to_glyphs)
+            self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
+            self.append(empty_glyphs_span)
+            return True
+
         if first_glyphs_span[0].char == ' ':
             if not self and not self.significant_whitespace:
                 return True
             first_glyphs_span.space = first_glyphs_span[0]
-        elif first_glyphs_span[0].char == '\t':
-            empty_glyphs_span = GlyphsSpan(first_glyphs_span.span,
-                                           first_glyphs_span.chars_to_glyphs)
-            self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
-            self.append(empty_glyphs_span)
-            return True
         width = word_or_inline.width
         if self._current_tab:
             current_tab = self._current_tab
