@@ -771,11 +771,7 @@ class Line(list):
                       self.container)
 
     def append_word(self, word_or_inline, container, descender):
-        try:
-            first_glyphs_span = word_or_inline[0]
-        except TypeError:
-            return self.add_flowable(word_or_inline, container, descender)
-
+        first_glyphs_span = word_or_inline[0]
         if first_glyphs_span[0].char == ' ':
             if not self and not self.significant_whitespace:
                 return True

@@ -91,10 +91,3 @@ class InlineFlowableSpan(DocumentElement):
 
     def before_placing(self, container):
         pass
-
-    # TODO: get_style and word_to_glyphs may need proper implementations
-    def get_style(self, attribute, document=None):
-        pass
-
-    def word_to_glyphs(self, word):
-        return word
