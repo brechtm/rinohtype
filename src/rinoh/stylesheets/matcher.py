@@ -27,6 +27,7 @@ matcher = StyledMatcher({
 
     # inline text
 
+    'fallback': StyledText.like('_fallback_'),
     'italic': StyledText.like('italic'),
     'bold': StyledText.like('bold'),
     'emphasis': StyledText.like('emphasis'),

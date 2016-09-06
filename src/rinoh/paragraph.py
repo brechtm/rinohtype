@@ -355,9 +355,7 @@ def create_lig_kern(span, flowable_target):
 
 
 def handle_missing_glyphs(span, container):
-    get_glyph, lig_kern = create_lig_kern(span, container)
-    fallback_typeface = container.document.fallback_typeface
-    fallback_style = TextStyle(typeface=fallback_typeface)
+    get_glyph, _ = create_lig_kern(span, container)
     string = []
     for char in span.text(container):
         try:
@@ -367,10 +365,10 @@ def handle_missing_glyphs(span, container):
             if string:
                 yield SingleStyledText(''.join(string), parent=span)
                 string.clear()
-            if span.get_style('typeface', container) is fallback_typeface:
+            if span.parent.style == '_fallback_':
                 yield SingleStyledText('?', parent=span)
             else:
-                yield SingleStyledText(char, style=fallback_style, parent=span)
+                yield SingleStyledText(char, style='_fallback_', parent=span)
     if string:
         yield SingleStyledText(''.join(string), parent=span)
 
@@ -474,7 +472,8 @@ def spans_to_words(spans, container):
                                        for char in group)
                         rest_of_span = SingleStyledText(part + rest,
                                                         parent=span)
-                        new_spans = handle_missing_glyphs(rest_of_span, container)
+                        new_spans = handle_missing_glyphs(rest_of_span,
+                                                          container)
                         spans = chain(new_spans, spans)
                         break
                     glyphs_and_widths = lig_kern(part, glyphs)
