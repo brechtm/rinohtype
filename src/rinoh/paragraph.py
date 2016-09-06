@@ -586,9 +586,9 @@ class ParagraphBase(Flowable):
             except StopIteration:
                 break
             try:
-                if not line.append_word(word, container, descender):
+                if not line.append_word(word):
                     for first, second in word.hyphenate(container):
-                        if line.append_word(first, container, descender):
+                        if line.append_word(first):
                             state.prepend_word(second)  # prepend second part
                             break
                     else:
@@ -760,7 +760,8 @@ class Line(list):
         self._current_tab = None
         self._current_tab_stop = None
 
-    def _handle_tab(self, glyphs_span, span):
+    def _handle_tab(self, glyphs_span):
+        span = glyphs_span.span
         if not self.tab_stops:
             span.warn('No tab stops defined for this paragraph style.',
                       self.container)
@@ -789,7 +790,7 @@ class Line(list):
             span.warn('Tab did not fall into any of the tab stops.',
                       self.container)
 
-    def append_word(self, word_or_inline, container, descender):
+    def append_word(self, word_or_inline):
         try:
             first_glyphs_span = word_or_inline[0]
         except SpaceException:
