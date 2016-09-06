@@ -381,12 +381,32 @@ class LinePart(object):
 
 class SpecialCharacter(LinePart):
     def __init__(self, span, chars_to_glyphs):
-        self.span = span
-        self.chars_to_glyphs = chars_to_glyphs
+        self.glyphs_span = GlyphsSpan(span, chars_to_glyphs)
+
+    def __iter__(self):
+        yield self.glyphs_span
+
+    @property
+    def width(self):
+        return self.glyphs_span.width
 
 
 class Space(SpecialCharacter):
     char = ' '
+
+    def __init__(self, span, chars_to_glyphs):
+        super().__init__(span, chars_to_glyphs)
+        self.glyphs_span.append_space()
+
+    def hyphenate(self, container):
+        return iter([])
+
+    def __getitem__(self, index):
+        raise SpaceException
+
+
+class SpaceException(Exception):
+    pass
 
 
 class Tab(SpecialCharacter):
@@ -411,8 +431,12 @@ class NewLineException(Exception):
     pass
 
 
-class ZeroWidthSpace(LinePart):
+class ZeroWidthSpace(SpecialCharacter):
     char = '\N{ZERO WIDTH SPACE}'
+
+    def __getitem__(self, index):
+        assert index == 0
+        return self.glyphs_span
 
 
 WHITESPACE = {' ': Space,
@@ -433,18 +457,13 @@ def spans_to_words(spans, container):
             break
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
-            space, = lig_kern(' ')
             groups = groupby(iter(span.text(container)), WHITESPACE.get)
             for special, characters in groups:
                 if special:
                     if word:
                         yield word
                     for _ in characters:
-                        if special in (NewLine, Tab):
-                            yield special(span, lig_kern)
-                        elif special.char != '\N{ZERO WIDTH SPACE}':
-                            gws = lig_kern(special.char, [space.glyph])
-                            yield Word([GlyphsSpan(span, lig_kern, gws)])
+                        yield special(span, lig_kern)
                     word = Word()
                 else:
                     part = ''.join(characters)
@@ -579,8 +598,7 @@ class ParagraphBase(Flowable):
                         break
                     continue
             except NewLineException:
-                gs = GlyphsSpan(word.span, word.chars_to_glyphs)
-                line.append(gs)
+                line.append(word.glyphs_span)
                 line = typeset_line(line, last_line=True, force=True)
                 if first_line_only:
                     break
@@ -703,14 +721,6 @@ class Word(LinePart, list):
         return ''.join(str(glyphs_span) for glyphs_span in self)
 
     @property
-    def is_space(self):
-        return len(self) == 1 and len(self[0]) == 1 and self[0][0].char in ' \t'
-
-    @property
-    def is_newline(self):
-        return len(self) == 1 and len(self[0]) == 1 and self[0][0].char == '\n'
-
-    @property
     def width(self):
         return sum(glyph_span.width for glyph_span in self)
 
@@ -782,17 +792,16 @@ class Line(list):
     def append_word(self, word_or_inline, container, descender):
         try:
             first_glyphs_span = word_or_inline[0]
+        except SpaceException:
+            if not self and not self.significant_whitespace:
+                return True
+            first_glyphs_span = word_or_inline.glyphs_span
         except TabException:
-            empty_glyphs_span = GlyphsSpan(word_or_inline.span,
-                                           word_or_inline.chars_to_glyphs)
-            self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
+            empty_glyphs_span = copy(word_or_inline.glyphs_span)
+            self._handle_tab(empty_glyphs_span)
             self.append(empty_glyphs_span)
             return True
 
-        if first_glyphs_span[0].char == ' ':
-            if not self and not self.significant_whitespace:
-                return True
-            first_glyphs_span.space = first_glyphs_span[0]
         width = word_or_inline.width
         if self._current_tab:
             current_tab = self._current_tab
