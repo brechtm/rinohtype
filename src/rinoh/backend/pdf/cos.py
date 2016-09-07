@@ -736,22 +736,25 @@ class Type1Font(Font):
     def register_indirect(self, document, visited=None):
         if id(self) in visited:
             return
-        for key in ('FirstChar', 'LastChar', 'Widths', 'Encoding'):
-            if key in self:
-                self[key].delete(document)
-                del self[key]
-        widths = {}
-        for name, code in chain(self.font.encoding.items(),
-                                self.differences.items()):
-            glyph = self.font._glyphs[name]
-            widths[code] = glyph.width
-        first, last = min(widths), max(widths)
-        self['FirstChar'] = Integer(first)
-        self['LastChar'] = Integer(last)
-        self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
-                                for c in range(first, last + 1)), True)
-        if self.differences:
-            self['Encoding'] = FontEncoding(differences=self.differences)
+        try:
+            self.font
+        except AttributeError:    # this font was parsed from a PDF file
+            pass
+        else:
+            for key in ('FirstChar', 'LastChar', 'Widths', 'Encoding'):
+                if key in self:
+                    self[key].delete(document)
+                    del self[key]
+            widths = {code: self.font._glyphs[name].width
+                      for name, code in chain(self.font.encoding.items(),
+                                              self.differences.items())}
+            first, last = min(widths), max(widths)
+            self['FirstChar'] = Integer(first)
+            self['LastChar'] = Integer(last)
+            self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
+                                    for c in range(first, last + 1)), True)
+            if self.differences:
+                self['Encoding'] = FontEncoding(differences=self.differences)
         return super().register_indirect(document, visited=visited)
 
 
