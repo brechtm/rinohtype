@@ -279,7 +279,10 @@ class PDFReader(PDFObjectReader, cos.Document):
         self.timestamp = time.time()
         self._by_object_id = {}
         xref_offset = self.find_xref_offset()
-        self._xref, trailer = self.parse_xref_table(xref_offset)
+        try:
+            self._xref, trailer = self.parse_xref_stream(xref_offset)
+        except ValueError:
+            self._xref, trailer = self.parse_xref_table(xref_offset)
         if 'Info' in trailer:
             self.info = trailer['Info']
         else:
