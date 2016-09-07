@@ -579,6 +579,10 @@ class Document(dict):
             file.close()
 
 
+class XRefStream(Stream):
+    type = 'XRef'
+
+
 class Catalog(Dictionary):
     type = 'Catalog'
 

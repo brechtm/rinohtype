@@ -379,12 +379,11 @@ class PDFReader(PDFObjectReader, cos.Document):
         size = int(xref_stream['Size'])
         widths = [int(width) for width in xref_stream['W']]
         assert len(widths) == 3
+        assert max(widths) <= 8
         if 'Index' in xref_stream:
             index = iter(int(value) for value in xref_stream['Index'])
         else:
             index = (0, size)
-        row_struct = struct.Struct('>' + ''.join('{}B'.format(width)
-                                                 for width in widths))
         xref_stream.seek(0)
         while True:
             try:
@@ -392,7 +391,9 @@ class PDFReader(PDFObjectReader, cos.Document):
             except StopIteration:
                 break
             for identifier in range(first, first + total):
-                fields = row_struct.unpack(xref_stream.read(row_struct.size))
+                values = (xref_stream.read(width) for width in widths)
+                fields = [struct.unpack('>Q', value.rjust(8, b'\x00'))[0]
+                          for value in values]
                 if widths[0] == 0:
                     field_type = 1
                 else:
