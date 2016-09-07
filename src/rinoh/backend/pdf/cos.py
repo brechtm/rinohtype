@@ -15,7 +15,7 @@ from contextlib import contextmanager
 from collections import OrderedDict
 from datetime import datetime
 from functools import wraps
-from io import BytesIO
+from io import BytesIO, SEEK_END
 from itertools import chain
 
 from ... import __version__, __release_date__
@@ -395,6 +395,7 @@ class Stream(Dictionary):
                 self['DecodeParms'] = self.filter.params
         if 'Length' in self:
             self['Length'].delete(document)
+        assert self._data.tell() == self._data.seek(0, SEEK_END)
         self['Length'] = Integer(self._data.tell())
         out += super().direct_bytes(document)
         out += b'\nstream\n'
