@@ -468,6 +468,12 @@ class Document(dict):
         self.dests = {}
         self._by_object_id = {}
 
+    def get_page(self, index):
+        for i, page in enumerate(self.catalog['Pages'].pages):
+            if i == index:
+                return page
+        raise IndexError
+
     def register(self, obj):
         try:
             reference = self._by_object_id[id(obj)]
@@ -595,6 +601,11 @@ class Pages(Dictionary):
         self['Count'] = Integer(self['Count'] + 1)
         return page
 
+    @property
+    def pages(self):
+        for kid in self['Kids']:
+            yield from kid.object.pages
+
 
 class Page(Dictionary):
     type = 'Page'
@@ -605,6 +616,10 @@ class Page(Dictionary):
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
+
+    @property
+    def pages(self):
+        yield self
 
 
 DECIMAL_ARABIC = Name('D')

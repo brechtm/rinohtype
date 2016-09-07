@@ -486,7 +486,7 @@ FIELD_CLASSES = {0: FreeObjectEntry,
 class PDFPageReader(XObjectForm):
     def __init__(self, file_or_filename, page_number=1):
         pdf_file = PDFReader(file_or_filename)
-        page = pdf_file.catalog['Pages']['Kids'][page_number - 1]
+        page = pdf_file.get_page(page_number - 1)
         super().__init__(page['MediaBox'])
         content_stream = page['Contents']
         if 'Filter' in content_stream:
