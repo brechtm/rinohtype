@@ -19,7 +19,8 @@ from ..structure import TableOfContentsSection, SectionTitles
 from ..stylesheets import sphinx
 from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
-                        TemplateConfiguration, TitlePartTemplate)
+                        TemplateConfiguration, TitlePartTemplate,
+                        DocumentPartTemplate)
 from ..text import Tab
 
 
@@ -111,6 +112,14 @@ class BookConfiguration(TemplateConfiguration):
                                   + Variable(SECTION_TITLE(1))))
 
 
+class BookBackMatter(DocumentPartTemplate):
+    index_section = IndexSection()
+
+    def flowables(self, document):
+        if document.index_entries:
+            yield self.index_section
+
+
 class Book(DocumentTemplate):
     Configuration = BookConfiguration
     parts = [TitlePartTemplate('title', Configuration.title_page),
@@ -123,6 +132,7 @@ class Book(DocumentTemplate):
                                   Configuration.content_right_page,
                                   Configuration.content_left_page,
                                   page_number_format=NUMBER),
-             FixedDocumentPartTemplate('indices', [IndexSection()],
-                                       Configuration.back_matter_right_page,
-                                       Configuration.back_matter_left_page)]
+             BookBackMatter('indices',
+                            Configuration.back_matter_right_page,
+                            Configuration.back_matter_left_page)
+             ]
