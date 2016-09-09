@@ -313,7 +313,6 @@ class Document(object):
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_references = {}      # mapping id's to page numbers
-        self.last_page_references = {}
         self.index_entries = {}
         self._unique_id = 0
 

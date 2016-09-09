@@ -163,8 +163,6 @@ class Flowable(Styled):
                     if reference_id:
                         self.create_destination(margin_container, True)
         document = container.document
-        if reference_id:
-             document.last_page_references[reference_id] = container.page.number
         container.advance(float(self.get_style('space_below', container)), True)
         container.document.progress(self)
         return margin_left + width + margin_right, top_to_baseline, descender
