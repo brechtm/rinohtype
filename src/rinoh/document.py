@@ -77,6 +77,7 @@ class Page(Container):
         size defined by `paper` (:class:`Paper`). The page's `orientation` can
         be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
         self._document_part = document_part
+        self.number = document_part._get_next_page_number()
         self.paper = paper
         self.orientation = orientation
         if orientation is PORTRAIT:
@@ -133,10 +134,6 @@ class Page(Container):
         return current_section
 
     @property
-    def number(self):
-        return self.document_part.page_number(self)
-
-    @property
     def number_format(self):
         return self.document_part.page_number_format
 
@@ -185,6 +182,7 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.template = template
         self.document = document
         self.first_page_number = first_page_number
+        self._last_page_number = first_page_number - 1
         self.flowable_targets = []
         self.pages = []
         if flowables:
@@ -194,14 +192,13 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         else:
             self.chain = None
 
+    def _get_next_page_number(self):
+        self._last_page_number += 1
+        return self._last_page_number
+
     @property
     def page_number_format(self):
         return self.template.page_number_format
-
-    def page_number(self, the_page):
-        for i, page in enumerate(self.pages, start=self.first_page_number):
-            if the_page is page:
-                return i
 
     @property
     def number_of_pages(self):
