@@ -36,7 +36,8 @@ setup(
     install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.1.1',
                       'rinoh-typeface-texgyrecursor>=0.1.1',
                       'rinoh-typeface-texgyreheros>=0.1.1',
-                      'rinoh-typeface-texgyrepagella>=0.1.1'],
+                      'rinoh-typeface-texgyrepagella>=0.1.1',
+                      'rinoh-typeface-dejavuserif'],
     extras_require = {'bitmap':  ['Pillow']},
     entry_points={
         'console_scripts': [

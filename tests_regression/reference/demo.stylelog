@@ -124,6 +124,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('1')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('http://www.python.org/')   None:None <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -138,6 +140,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('2')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('A footnote contains body element...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:327 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -154,6 +158,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('3')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('This footnote is numbered automa...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:338 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -165,6 +171,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('4')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('Footnotes may be numbered, eithe...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:332 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -173,11 +181,11 @@
           SingleStyledText('Footnotes may be numbered, eithe...')
           NoteMarkerByID('2', style='footnote')   None:None <footnote_reference>
                > (0,0,1,0,1) footnote marker
-               x (0,0,0,1,1) linked reference
+                 (0,0,0,1,1) linked reference
           SingleStyledText(') or automatically using a "#"-p...')
           NoteMarkerByID('4', style='footnote')   None:None <footnote_reference>
                > (0,0,1,0,1) footnote marker
-               x (0,0,0,1,1) linked reference
+                 (0,0,0,1,1) linked reference
           SingleStyledText(') and as a hyperlink reference (')
           AnnotatedText('label', style='internal link')   None:None <reference>
                > (0,0,1,0,1) internal hyperlink
@@ -189,6 +197,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('5')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('Footnotes may also use symbols, ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:341 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -197,13 +207,15 @@
           SingleStyledText('Footnotes may also use symbols, ...')
           NoteMarkerByID('6', style='footnote')   None:None <footnote_reference>
                > (0,0,1,0,1) footnote marker
-               x (0,0,0,1,1) linked reference
+                 (0,0,0,1,1) linked reference
           SingleStyledText('.')
   Note(id='id12')
     Paragraph('6')
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('6')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('This footnote shows the next sym...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:344 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -215,6 +227,8 @@
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
       DirectReference('[CIT2002]')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
     StaticGroupedFlowables()
       Paragraph('Citations are text-labeled footn...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:352 <paragraph>
            > (0,0,0,0,5) footnote paragraph
@@ -283,7 +297,7 @@
               SingleStyledText(' ')
               NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText('), internal cross-references (')
               AnnotatedText('example', style='internal link')   None:None <reference>
                    > (0,0,1,0,1) internal hyperlink
@@ -297,23 +311,23 @@
               SingleStyledText('), footnote references (manually...')
               NoteMarkerByID('2', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText(', anonymous auto-numbered ')
               NoteMarkerByID('3', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText(', labeled auto-numbered ')
               NoteMarkerByID('4', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText(', or symbolic ')
               NoteMarkerByID('5', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText('), citation references (')
               NoteMarkerByID('[CIT2002]', style='citation')   None:None <citation_reference>
                    > (0,0,1,0,1) citation marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText('), substitution references (')
               InlineImage('images/biohazard.png')   None:None <image>
                    x (0,0,0,0,2) inline image
@@ -405,6 +419,7 @@
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
+                  SingleStyledText('')
             StaticGroupedFlowables()   None:None <list_item>
                  > (0,0,0,0,3) list item body
               Paragraph('A bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:124 <paragraph>
@@ -423,6 +438,7 @@
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
+                        SingleStyledText('')
                   StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
                     Paragraph('Nested bullet list.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:126 <paragraph>
@@ -439,6 +455,7 @@
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
+                        SingleStyledText('')
                   StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
                     Paragraph('Nested item 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:127 <paragraph>
@@ -455,6 +472,7 @@
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
+                  SingleStyledText('')
             StaticGroupedFlowables()   None:None <list_item>
                  > (0,0,0,0,3) list item body
               Paragraph('Item 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:129 <paragraph>
@@ -478,6 +496,7 @@
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
+                        SingleStyledText('')
                   StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
                     Paragraph('Nested bullet list.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:133 <paragraph>
@@ -494,6 +513,7 @@
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
+                        SingleStyledText('')
                   StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
                     Paragraph('Nested item 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:134 <paragraph>
@@ -512,6 +532,7 @@
                             MixedStyledText('•')
                               SingleStyledText('')
                               SingleStyledText('•')
+                              SingleStyledText('')
                         StaticGroupedFlowables()   None:None <list_item>
                              > (0,0,0,0,3) list item body
                           Paragraph('Third level.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:136 <paragraph>
@@ -571,6 +592,7 @@
                             MixedStyledText('•')
                               SingleStyledText('')
                               SingleStyledText('•')
+                              SingleStyledText('')
                         StaticGroupedFlowables()   None:None <list_item>
                              > (0,0,0,0,3) list item body
                           Paragraph('Item 2.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:137 <paragraph>
@@ -587,6 +609,7 @@
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
+                        SingleStyledText('')
                   StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
                     Paragraph('Nested item 3.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:139 <paragraph>
@@ -1638,6 +1661,7 @@
                         MixedStyledText('•')
                           SingleStyledText('')
                           SingleStyledText('•')
+                          SingleStyledText('')
                     StaticGroupedFlowables()   None:None <list_item>
                          > (0,0,0,0,3) list item body
                       Paragraph('Table cells')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:305 <paragraph>
@@ -1657,6 +1681,7 @@
                         MixedStyledText('•')
                           SingleStyledText('')
                           SingleStyledText('•')
+                          SingleStyledText('')
                     StaticGroupedFlowables()   None:None <list_item>
                          > (0,0,0,0,3) list item body
                       Paragraph('contain')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:306 <paragraph>
@@ -1676,6 +1701,7 @@
                         MixedStyledText('•')
                           SingleStyledText('')
                           SingleStyledText('•')
+                          SingleStyledText('')
                     StaticGroupedFlowables()   None:None <list_item>
                          > (0,0,0,0,3) list item body
                       Paragraph('body elements.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:307 <paragraph>
@@ -2045,7 +2071,7 @@
             SingleStyledText('Here's a reference to the above,...')
             NoteMarkerByID('[CIT2002]', style='citation')   None:None <citation_reference>
                  > (0,0,1,0,1) citation marker
-                 x (0,0,0,1,1) linked reference
+                   (0,0,0,1,1) linked reference
             SingleStyledText(', and a ')
             SingleStyledText('[nonexistent]_', style='error')   None:None <problematic>
                  > (0,0,1,0,1) error
@@ -2098,7 +2124,7 @@
             SingleStyledText(' ')
             NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
                  > (0,0,1,0,1) footnote marker
-                 x (0,0,0,1,1) linked reference
+                   (0,0,0,1,1) linked reference
             SingleStyledText('".')
         Paragraph('Targets may be indirect and anon...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:375 <paragraph>
              > (0,0,0,0,2) body
@@ -2250,75 +2276,65 @@
             Paragraph('Attention! Directives at large.')
                  > (0,0,0,0,2) body
               MixedStyledText('Attention! Directives at large.')
-                MixedStyledText('Attention! ', style='inline title')
+                MixedStyledText('Attention!', style='inline title')
                      x (0,0,1,1,3) attention admonition inline title
                      > (0,0,1,0,3) admonition inline title
                   SingleStyledText('Attention!')
-                  SingleStyledText(' ')
-                Paragraph('Directives at large.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:441 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('Directives at large.')
-                    SingleStyledText('Directives at large.')
+                SingleStyledText(' ')
+                MixedStyledText('Directives at large.')
+                  SingleStyledText('Directives at large.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <caution>
                > (0,0,0,1,2) caution admonition
                  (0,0,0,0,2) admonition
             Paragraph('Caution! Don't take any wooden n...')
                  > (0,0,0,0,2) body
               MixedStyledText('Caution! Don't take any wooden n...')
-                MixedStyledText('Caution! ', style='inline title')
+                MixedStyledText('Caution!', style='inline title')
                      x (0,0,1,1,3) caution admonition inline title
                      > (0,0,1,0,3) admonition inline title
                   SingleStyledText('Caution!')
-                  SingleStyledText(' ')
-                Paragraph('Don't take any wooden nickels.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:445 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('Don't take any wooden nickels.')
-                    SingleStyledText('Don't take any wooden nickels.')
+                SingleStyledText(' ')
+                MixedStyledText('Don't take any wooden nickels.')
+                  SingleStyledText('Don't take any wooden nickels.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <danger>
                > (0,0,0,1,2) danger admonition
                  (0,0,0,0,2) admonition
             Paragraph('!DANGER! Mad scientist at work!')
                  > (0,0,0,0,2) body
               MixedStyledText('!DANGER! Mad scientist at work!')
-                MixedStyledText('!DANGER! ', style='inline title')
+                MixedStyledText('!DANGER!', style='inline title')
                      x (0,0,1,1,3) danger admonition inline title
                      > (0,0,1,0,3) admonition inline title
                   SingleStyledText('!DANGER!')
-                  SingleStyledText(' ')
-                Paragraph('Mad scientist at work!')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:447 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('Mad scientist at work!')
-                    SingleStyledText('Mad scientist at work!')
+                SingleStyledText(' ')
+                MixedStyledText('Mad scientist at work!')
+                  SingleStyledText('Mad scientist at work!')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <error>
                > (0,0,0,1,2) error admonition
                  (0,0,0,0,2) admonition
-            Paragraph('Error: Does not compute.')
+            Paragraph('Error Does not compute.')
                  > (0,0,0,0,2) body
-              MixedStyledText('Error: Does not compute.')
-                MixedStyledText('Error: ', style='inline title')
+              MixedStyledText('Error Does not compute.')
+                MixedStyledText('Error', style='inline title')
                      x (0,0,1,1,3) error admonition inline title
                      > (0,0,1,0,3) admonition inline title
-                  SingleStyledText('Error:')
-                  SingleStyledText(' ')
-                Paragraph('Does not compute.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:449 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('Does not compute.')
-                    SingleStyledText('Does not compute.')
+                  SingleStyledText('Error')
+                SingleStyledText(' ')
+                MixedStyledText('Does not compute.')
+                  SingleStyledText('Does not compute.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <hint>
                > (0,0,0,1,2) hint admonition
                  (0,0,0,0,2) admonition
-            Paragraph('Hint: It's bigger than a bread b...')
+            Paragraph('Hint It's bigger than a bread bo...')
                  > (0,0,0,0,2) body
-              MixedStyledText('Hint: It's bigger than a bread b...')
-                MixedStyledText('Hint: ', style='inline title')
+              MixedStyledText('Hint It's bigger than a bread bo...')
+                MixedStyledText('Hint', style='inline title')
                      x (0,0,1,1,3) hint admonition inline title
                      > (0,0,1,0,3) admonition inline title
-                  SingleStyledText('Hint:')
-                  SingleStyledText(' ')
-                Paragraph('It's bigger than a bread box.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:451 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('It's bigger than a bread box.')
-                    SingleStyledText('It's bigger than a bread box.')
+                  SingleStyledText('Hint')
+                SingleStyledText(' ')
+                MixedStyledText('It's bigger than a bread box.')
+                  SingleStyledText('It's bigger than a bread box.')
           Admonition()   None:None <important>
                > (0,0,0,1,2) important admonition
                  (0,0,0,0,2) admonition
@@ -2339,6 +2355,7 @@
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
+                      SingleStyledText('')
                 StaticGroupedFlowables()   None:None <list_item>
                      > (0,0,0,0,3) list item body
                   Paragraph('Wash behind your ears.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:454 <paragraph>
@@ -2355,6 +2372,7 @@
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
+                      SingleStyledText('')
                 StaticGroupedFlowables()   None:None <list_item>
                      > (0,0,0,0,3) list item body
                   Paragraph('Clean up your room.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:455 <paragraph>
@@ -2371,6 +2389,7 @@
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
+                      SingleStyledText('')
                 StaticGroupedFlowables()   None:None <list_item>
                      > (0,0,0,0,3) list item body
                   Paragraph('Call your mother.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:456 <paragraph>
@@ -2387,6 +2406,7 @@
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
+                      SingleStyledText('')
                 StaticGroupedFlowables()   None:None <list_item>
                      > (0,0,0,0,3) list item body
                   Paragraph('Back up your data.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:457 <paragraph>
@@ -2397,48 +2417,42 @@
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <note>
                > (0,0,0,1,2) note admonition
                  (0,0,0,0,2) admonition
-            Paragraph('Note: This is a note.')
+            Paragraph('Note This is a note.')
                  > (0,0,0,0,2) body
-              MixedStyledText('Note: This is a note.')
-                MixedStyledText('Note: ', style='inline title')
+              MixedStyledText('Note This is a note.')
+                MixedStyledText('Note', style='inline title')
                      x (0,0,1,1,3) note admonition inline title
                      > (0,0,1,0,3) admonition inline title
-                  SingleStyledText('Note:')
-                  SingleStyledText(' ')
-                Paragraph('This is a note.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:459 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('This is a note.')
-                    SingleStyledText('This is a note.')
+                  SingleStyledText('Note')
+                SingleStyledText(' ')
+                MixedStyledText('This is a note.')
+                  SingleStyledText('This is a note.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <tip>
                > (0,0,0,1,2) tip admonition
                  (0,0,0,0,2) admonition
-            Paragraph('Tip: 15% if the service is good.')
+            Paragraph('Tip 15% if the service is good.')
                  > (0,0,0,0,2) body
-              MixedStyledText('Tip: 15% if the service is good.')
-                MixedStyledText('Tip: ', style='inline title')
+              MixedStyledText('Tip 15% if the service is good.')
+                MixedStyledText('Tip', style='inline title')
                      x (0,0,1,1,3) tip admonition inline title
                      > (0,0,1,0,3) admonition inline title
-                  SingleStyledText('Tip:')
-                  SingleStyledText(' ')
-                Paragraph('15% if the service is good.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:461 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('15% if the service is good.')
-                    SingleStyledText('15% if the service is good.')
+                  SingleStyledText('Tip')
+                SingleStyledText(' ')
+                MixedStyledText('15% if the service is good.')
+                  SingleStyledText('15% if the service is good.')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <warning>
                > (0,0,0,1,2) warning admonition
                  (0,0,0,0,2) admonition
-            Paragraph('Warning: Strong prose may provok...')
+            Paragraph('Warning Strong prose may provoke...')
                  > (0,0,0,0,2) body
-              MixedStyledText('Warning: Strong prose may provok...')
-                MixedStyledText('Warning: ', style='inline title')
+              MixedStyledText('Warning Strong prose may provoke...')
+                MixedStyledText('Warning', style='inline title')
                      x (0,0,1,1,3) warning admonition inline title
                      > (0,0,1,0,3) admonition inline title
-                  SingleStyledText('Warning:')
-                  SingleStyledText(' ')
-                Paragraph('Strong prose may provoke extreme...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:463 <paragraph>
-                     > (0,0,0,0,2) body
-                  MixedStyledText('Strong prose may provoke extreme...')
-                    SingleStyledText('Strong prose may provoke extreme...')
+                  SingleStyledText('Warning')
+                SingleStyledText(' ')
+                MixedStyledText('Strong prose may provoke extreme...')
+                  SingleStyledText('Strong prose may provoke extreme...')
           Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <admonition>
                > (0,0,0,0,2) admonition
             Paragraph('And, by the way...', style='title')
@@ -2558,7 +2572,7 @@
               SingleStyledText(' ')
               NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
                    > (0,0,1,0,1) footnote marker
-                   x (0,0,0,1,1) linked reference
+                     (0,0,0,1,1) linked reference
               SingleStyledText('.')
         Section(id='compound-paragraph')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:503 <section>
           Heading('2.15.7 Compound Paragraph')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:503 <title>

@@ -22,7 +22,7 @@ from .reference import (ReferenceField, ReferencingParagraph,
 from .reference import NUMBER, TITLE, PAGE
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
-from .strings import Strings, String, StringField
+from .strings import StringCollection, String, StringField
 
 
 __all__ = ['Section', 'Heading',
@@ -33,11 +33,10 @@ __all__ = ['Section', 'Heading',
            'HorizontalRule', 'HorizontalRuleStyle']
 
 
-class SectionTitles(Strings):
-    contents = String('Table of Contents', 'Title for the table of contents'
-                                           ' section')
-    chapter = String('Chapter', 'Label for top-level sections')
-    index = String('Index', 'Title for the index section')
+class SectionTitles(StringCollection):
+    contents = String('Title for the table of contents section')
+    chapter = String('Label for top-level sections')
+    index = String('Title for the index section')
 
 
 class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
@@ -300,17 +299,17 @@ class AdmonitionStyle(GroupedFlowablesStyle):
                                          "with the body text, if possible")
 
 
-class AdmonitionTitles(Strings):
-    attention = String('Attention!', 'Title for attention admonitions')
-    caution = String('Caution!', 'Title for caution admonitions')
-    danger = String('!DANGER!', 'Title for danger admonitions')
-    error = String('Error:', 'Title for error admonitions')
-    hint = String('Hint:', 'Title for hint admonitions')
-    important = String('Important', 'Title for important admonitions')
-    note = String('Note:', 'Title for note admonitions')
-    tip = String('Tip:', 'Title for tip admonitions')
-    warning = String('Warning:', 'Title for warning admonitions')
-    seealso = String('See also:', 'Title for see-also admonitions')
+class AdmonitionTitles(StringCollection):
+    attention = String('Title for attention admonitions')
+    caution = String('Title for caution admonitions')
+    danger = String('Title for danger admonitions')
+    error = String('Title for error admonitions')
+    hint = String('Title for hint admonitions')
+    important = String('Title for important admonitions')
+    note = String('Title for note admonitions')
+    tip = String('Title for tip admonitions')
+    warning = String('Title for warning admonitions')
+    seealso = String('Title for see-also admonitions')
 
 
 class Admonition(GroupedFlowables):
@@ -324,8 +323,9 @@ class Admonition(GroupedFlowables):
         self.admonition_type = type
 
     def title(self, document):
-        titles = document.strings(AdmonitionTitles)
-        return self.custom_title or titles[self.admonition_type]
+        return (self.custom_title
+                or document.get_string(AdmonitionTitles,
+                                       self.admonition_type))
 
     def flowables(self, container):
         title = self.title(container.document)

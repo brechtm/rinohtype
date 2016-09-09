@@ -247,7 +247,7 @@ class ContextManager(object):
     def __enter__(self):
         raise NotImplementedError
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         raise NotImplementedError
 
 

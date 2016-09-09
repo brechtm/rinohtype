@@ -279,7 +279,10 @@ class PDFReader(PDFObjectReader, cos.Document):
         self.timestamp = time.time()
         self._by_object_id = {}
         xref_offset = self.find_xref_offset()
-        self._xref, trailer = self.parse_xref_table(xref_offset)
+        try:
+            self._xref, trailer = self.parse_xref_stream(xref_offset)
+        except ValueError:
+            self._xref, trailer = self.parse_xref_table(xref_offset)
         if 'Info' in trailer:
             self.info = trailer['Info']
         else:
@@ -379,12 +382,11 @@ class PDFReader(PDFObjectReader, cos.Document):
         size = int(xref_stream['Size'])
         widths = [int(width) for width in xref_stream['W']]
         assert len(widths) == 3
+        assert max(widths) <= 8
         if 'Index' in xref_stream:
             index = iter(int(value) for value in xref_stream['Index'])
         else:
             index = (0, size)
-        row_struct = struct.Struct('>' + ''.join('{}B'.format(width)
-                                                 for width in widths))
         xref_stream.seek(0)
         while True:
             try:
@@ -392,7 +394,9 @@ class PDFReader(PDFObjectReader, cos.Document):
             except StopIteration:
                 break
             for identifier in range(first, first + total):
-                fields = row_struct.unpack(xref_stream.read(row_struct.size))
+                values = (xref_stream.read(width) for width in widths)
+                fields = [struct.unpack('>Q', value.rjust(8, b'\x00'))[0]
+                          for value in values]
                 if widths[0] == 0:
                     field_type = 1
                 else:
@@ -486,7 +490,7 @@ FIELD_CLASSES = {0: FreeObjectEntry,
 class PDFPageReader(XObjectForm):
     def __init__(self, file_or_filename, page_number=1):
         pdf_file = PDFReader(file_or_filename)
-        page = pdf_file.catalog['Pages']['Kids'][page_number - 1]
+        page = pdf_file.get_page(page_number - 1)
         super().__init__(page['MediaBox'])
         content_stream = page['Contents']
         if 'Filter' in content_stream:

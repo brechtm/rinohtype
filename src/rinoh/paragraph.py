@@ -37,17 +37,18 @@ import re
 from ast import literal_eval
 from copy import copy
 from functools import partial
-from itertools import tee
+from itertools import tee, chain, groupby
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import Attribute, AttributeType, OptionSet
 from .dimension import DimensionBase, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
+from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import ContainerOverflow, EndOfContainer
-from .text import TextStyle, MixedStyledText
+from .text import TextStyle, MixedStyledText, SingleStyledText
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -297,26 +298,190 @@ class ParagraphStyle(FlowableStyle, TextStyle):
     tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
+class Glyph(object):
+    __slots__ = ('glyph', 'width', 'char')
+
+    def __init__(self, glyph, width, char):
+        self.glyph = glyph
+        self.width = width
+        self.char = char
+
+
+def form_ligatures(chars_and_glyphs, get_ligature):
+    prev_char, prev_glyph = next(chars_and_glyphs)
+    for char, glyph in chars_and_glyphs:
+        ligature_glyph = get_ligature(prev_glyph, glyph)
+        if ligature_glyph:
+            prev_char += char
+            prev_glyph = ligature_glyph
+        else:
+            yield prev_char, prev_glyph
+            prev_char, prev_glyph = char, glyph
+    yield prev_char, prev_glyph
+
+
+def kern(chars_and_glyphs, get_kerning):
+    prev_char, prev_glyph = next(chars_and_glyphs)
+    for char, glyph in chars_and_glyphs:
+        yield prev_char, prev_glyph, get_kerning(prev_glyph, glyph)
+        prev_char, prev_glyph = char, glyph
+    yield prev_char, prev_glyph, 0.0
+
+
+def create_lig_kern(span, flowable_target):
+    font = span.font(flowable_target)
+    scale = span.height(flowable_target) / font.units_per_em
+    variant = span.get_style('font_variant', flowable_target)
+    kerning = span.get_style('kerning', flowable_target)
+    ligatures = span.get_style('ligatures', flowable_target)
+    get_glyph = partial(font.get_glyph, variant=variant)
+    # TODO: handle ligatures at span borders
+    def lig_kern(chars, glyphs=None):
+        if glyphs is None:
+            glyphs = (get_glyph(char) for char in chars)
+        chars_and_glyphs = zip(chars, glyphs)
+        if ligatures:
+            chars_and_glyphs = form_ligatures(chars_and_glyphs,
+                                              font.get_ligature)
+        if kerning:
+            glyphs_kern = kern(chars_and_glyphs, font.get_kerning)
+        else:
+            glyphs_kern = [(char, glyph, 0.0)
+                           for char, glyph in chars_and_glyphs]
+        return [Glyph(glyph, scale * (glyph.width + kern_adjust), char)
+                for char, glyph, kern_adjust in glyphs_kern]
+
+    return get_glyph, lig_kern
+
+
+def handle_missing_glyphs(span, container):
+    get_glyph, _ = create_lig_kern(span, container)
+    string = []
+    for char in span.text(container):
+        try:
+            get_glyph(char)
+            string.append(char)
+        except MissingGlyphException:
+            if string:
+                yield SingleStyledText(''.join(string), parent=span)
+                string.clear()
+            if span.parent.style == '_fallback_':
+                yield SingleStyledText('?', parent=span)
+            else:
+                yield SingleStyledText(char, style='_fallback_', parent=span)
+    if string:
+        yield SingleStyledText(''.join(string), parent=span)
+
+
+class LinePart(object):
+    pass
+
+
+class SpecialCharacter(LinePart):
+    def __init__(self, span, chars_to_glyphs):
+        self.glyphs_span = GlyphsSpan(span, chars_to_glyphs)
+
+    def __iter__(self):
+        yield self.glyphs_span
+
+    @property
+    def width(self):
+        return self.glyphs_span.width
+
+
+class Space(SpecialCharacter):
+    char = ' '
+
+    def __init__(self, span, chars_to_glyphs):
+        super().__init__(span, chars_to_glyphs)
+        self.glyphs_span.append_space()
+
+    def hyphenate(self, container):
+        return iter([])
+
+    def __getitem__(self, index):
+        raise SpaceException
+
+
+class SpaceException(Exception):
+    pass
+
+
+class Tab(SpecialCharacter):
+    char = '\t'
+
+    def __getitem__(self, index):
+        raise TabException
+
+
+class TabException(Exception):
+    pass
+
+
+class NewLine(SpecialCharacter):
+    char = '\n'
+
+    def __getitem__(self, index):
+        raise NewLineException
+
+
+class NewLineException(Exception):
+    pass
+
+
+class ZeroWidthSpace(SpecialCharacter):
+    char = '\N{ZERO WIDTH SPACE}'
+
+    def __getitem__(self, index):
+        assert index == 0
+        return self.glyphs_span
+
+
+WHITESPACE = {' ': Space,
+              '\t': Tab,
+              '\n': NewLine,
+              '\N{ZERO WIDTH SPACE}': ZeroWidthSpace}
+
+
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
     word = Word()
-    for span in spans:
+    spans = iter(spans)
+    while True:
         try:
-            word_to_glyphs = create_to_glyphs(span, container)
-            for chars in span.split(container):
-                glyphs_span = GlyphsSpan(span, word_to_glyphs, chars)
-                if chars in (' ', '\t', '\n', '\N{ZERO WIDTH SPACE}'):
+            span = next(spans)
+        except StopIteration:
+            break
+        try:
+            get_glyph, lig_kern = create_lig_kern(span, container)
+            groups = groupby(iter(span.text(container)), WHITESPACE.get)
+            for special, characters in groups:
+                if special:
                     if word:
                         yield word
-                    if chars != '\N{ZERO WIDTH SPACE}':
-                        yield Word([(glyphs_span, chars)])
+                    for _ in characters:
+                        yield special(span, lig_kern)
                     word = Word()
                 else:
-                    word.append((glyphs_span, chars))
+                    part = ''.join(characters)
+                    try:
+                        glyphs = [get_glyph(char) for char in part]
+                    except MissingGlyphException:
+                        rest = ''.join(char for _, group in groups
+                                       for char in group)
+                        rest_of_span = SingleStyledText(part + rest,
+                                                        parent=span)
+                        new_spans = handle_missing_glyphs(rest_of_span,
+                                                          container)
+                        spans = chain(new_spans, spans)
+                        break
+                    glyphs_and_widths = lig_kern(part, glyphs)
+                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
+                    word.append(glyphs_span)
         except InlineFlowableException:
             glyphs_span = span.flow_inline(container, 0)
-            word.append((glyphs_span, '<inline image>'))
+            word.append(glyphs_span)
     if word:
         yield word
 
@@ -419,24 +584,23 @@ class ParagraphBase(Flowable):
                 word = state.next_word()
             except StopIteration:
                 break
-            if word.is_newline:
-                (glyphs_span, chars), = word
-                gs = GlyphsSpan(glyphs_span.span, glyphs_span.word_to_glyphs)
-                line.append(gs)
+            try:
+                if not line.append_word(word):
+                    for first, second in word.hyphenate(container):
+                        if line.append_word(first):
+                            state.prepend_word(second)  # prepend second part
+                            break
+                    else:
+                        state = prev_state
+                    line = typeset_line(line)
+                    if first_line_only:
+                        break
+                    continue
+            except NewLineException:
+                line.append(word.glyphs_span)
                 line = typeset_line(line, last_line=True, force=True)
                 if first_line_only:
                     break
-            elif not line.append_word(word, container, descender):
-                for first, second in word.hyphenate(container):
-                    if line.append_word(first, container, descender):
-                        state.prepend_word(second)  # prepend second part
-                        break
-                else:
-                    state = prev_state
-                line = typeset_line(line)
-                if first_line_only:
-                    break
-                continue
             prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
@@ -500,82 +664,21 @@ def create_hyphenate(span, container):
     return hyphenate
 
 
-class GlyphAndWidth(object):
-    __slots__ = ('glyph', 'width')
-
-    def __init__(self, glyph, width):
-        self.glyph = glyph
-        self.width = width
-
-
-def create_to_glyphs(span, flowable_target):
-    font = span.font(flowable_target)
-    scale = span.height(flowable_target) / font.units_per_em
-    variant = span.get_style('font_variant', flowable_target)
-    kerning = span.get_style('kerning', flowable_target)
-    ligatures = span.get_style('ligatures', flowable_target)
-    get_glyph = partial(font.get_glyph, variant=variant)
-    # TODO: handle ligatures at span borders
-    def word_to_glyphs(word):
-        glyphs = [get_glyph(char) for char in word]
-        if ligatures:
-            glyphs = form_ligatures(glyphs, font.get_ligature)
-        if kerning:
-            glyphs_kern = kern(glyphs, font.get_kerning)
-        else:
-            glyphs_kern = [(glyph, 0.0) for glyph in glyphs]
-        return [GlyphAndWidth(glyph, scale * (glyph.width + kern_adjust))
-                for glyph, kern_adjust in glyphs_kern]
-
-    return word_to_glyphs
-
-
-def form_ligatures(glyphs, get_ligature):
-    glyphs = iter(glyphs)
-    result = []
-    prev_glyph = next(glyphs)
-    for glyph in glyphs:
-        ligature_glyph = get_ligature(prev_glyph, glyph)
-        if ligature_glyph:
-            prev_glyph = ligature_glyph
-        else:
-            result.append(prev_glyph)
-            prev_glyph = glyph
-    result.append(prev_glyph)
-    return result
-
-
-def kern(glyphs, get_kerning):
-    glyphs = iter(glyphs)
-    result = []
-    prev_glyph = next(glyphs)
-    for glyph in glyphs:
-        result.append((prev_glyph, get_kerning(prev_glyph, glyph)))
-        prev_glyph = glyph
-    result.append((prev_glyph, 0.0))
-    return result
-
-
 class GlyphsSpan(list):
-    def __init__(self, span, word_to_glyphs, chars=None):
+    def __init__(self, span, chars_to_glyphs, glyphs_and_widths=[]):
         super().__init__()
         self.span = span
         self.filled_tabs = {}
-        self.word_to_glyphs = word_to_glyphs
-        self.space, = word_to_glyphs(' ')
-        if chars:
-            self.append_chars(chars)
+        self.chars_to_glyphs = chars_to_glyphs
+        self.space, = chars_to_glyphs(' ')
+        super().__init__(glyphs_and_widths)
 
-    def append_chars(self, chars):
-        if chars in '\t\n':
-            self.append_space()
-        else:
-            chars = chars.replace('\N{NO-BREAK SPACE}', ' ')
-            super().extend(self.word_to_glyphs(chars))
+    def __str__(self):
+        return ''.join(glyph_and_width.char for glyph_and_width in self)
 
     @property
     def width(self):
-        return sum(item.width for item in self)
+        return sum(glyph_and_width.width for glyph_and_width in self)
 
     @property
     def number_of_spaces(self):
@@ -583,7 +686,7 @@ class GlyphsSpan(list):
 
     @property
     def ends_with_space(self):
-        return self[-1] is self.space
+        return self[-1] == self.space
 
     def append_space(self):
         self.append(self.space)
@@ -592,10 +695,10 @@ class GlyphsSpan(list):
         for index, glyph_and_width in enumerate(super().__iter__()):
             if index in self.filled_tabs:
                 fill_string = self.filled_tabs[index]
-                fill_glyphs = self.word_to_glyphs(fill_string)
+                fill_glyphs = self.chars_to_glyphs(fill_string)
                 fill_string_width = sum(glyph.width for glyph in fill_glyphs)
                 number, rest = divmod(glyph_and_width.width, fill_string_width)
-                yield GlyphAndWidth(glyph_and_width.glyph, rest)
+                yield Glyph(glyph_and_width.glyph, rest, glyph_and_width.char)
                 for i in range(int(number)):
                     for fill_glyph_and_width in fill_glyphs:
                         yield fill_glyph_and_width
@@ -609,37 +712,29 @@ class GlyphsSpan(list):
             return super().__iter__()
 
 
-class Word(list):
-    def __init__(self, glyphspan_chars_pairs=None):
-        super().__init__(glyphspan_chars_pairs or [])
+class Word(LinePart, list):
+    def __init__(self, glyphs_spans=()):
+        super().__init__(glyphs_spans)
 
     def __str__(self):
-        return ''.join(chars for glyphs_span, chars in self)
-
-    @property
-    def is_space(self):
-        return self[0][1] in (' ', '\t')
-
-    @property
-    def is_newline(self):
-        return self[0][1] == '\n'
+        return ''.join(str(glyphs_span) for glyphs_span in self)
 
     @property
     def width(self):
-        return sum(glyph_span.width for glyph_span, chars in self)
+        return sum(glyph_span.width for glyph_span in self)
 
     def hyphenate(self, container):
         # TODO: hyphenate mixed-styled words (if lang is the same)
         if len(self) > 1:
             return
-        first_glyphs_span, first_chars = self[0]
+        first_glyphs_span, = self
         span = first_glyphs_span.span
-        w2g = first_glyphs_span.word_to_glyphs
+        c2g = first_glyphs_span.chars_to_glyphs
         hyphenate = create_hyphenate(first_glyphs_span.span, container)
         for first, second in hyphenate(str(self)):
-            first_gs = GlyphsSpan(span, w2g, first)
-            second_gs = GlyphsSpan(span, w2g, second)
-            yield Word([(first_gs, first)]), Word([(second_gs, second)])
+            first_gs = GlyphsSpan(span, c2g, c2g(first))
+            second_gs = GlyphsSpan(span, c2g, c2g(second))
+            yield Word([first_gs]), Word([second_gs])
 
 
 class Line(list):
@@ -664,7 +759,8 @@ class Line(list):
         self._current_tab = None
         self._current_tab_stop = None
 
-    def _handle_tab(self, glyphs_span, span):
+    def _handle_tab(self, glyphs_span):
+        span = glyphs_span.span
         if not self.tab_stops:
             span.warn('No tab stops defined for this paragraph style.',
                       self.container)
@@ -676,7 +772,7 @@ class Line(list):
             tab_position = tab_stop.get_position(self.width)
             if self.cursor < tab_position:
                 tab_width = tab_position - self.cursor
-                tab = GlyphAndWidth(glyphs_span.space.glyph, tab_width)
+                tab = Glyph(glyphs_span.space.glyph, tab_width, '\t')
                 if tab_stop.fill:
                     glyphs_span.filled_tabs[len(glyphs_span)] = tab_stop.fill
                 glyphs_span.append(tab)
@@ -693,22 +789,19 @@ class Line(list):
             span.warn('Tab did not fall into any of the tab stops.',
                       self.container)
 
-    def append_word(self, word_or_inline, container, descender):
+    def append_word(self, word_or_inline):
         try:
-            first_glyphs_span, first_chars = word_or_inline[0]
-        except TypeError:
-            return self.add_flowable(word_or_inline, container, descender)
-
-        if first_chars == ' ':
+            first_glyphs_span = word_or_inline[0]
+        except SpaceException:
             if not self and not self.significant_whitespace:
                 return True
-            first_glyphs_span.space = first_glyphs_span[0]
-        elif first_chars == '\t':
-            empty_glyphs_span = GlyphsSpan(first_glyphs_span.span,
-                                           first_glyphs_span.word_to_glyphs)
-            self._handle_tab(empty_glyphs_span, empty_glyphs_span.span)
+            first_glyphs_span = word_or_inline.glyphs_span
+        except TabException:
+            empty_glyphs_span = copy(word_or_inline.glyphs_span)
+            self._handle_tab(empty_glyphs_span)
             self.append(empty_glyphs_span)
             return True
+
         width = word_or_inline.width
         if self._current_tab:
             current_tab = self._current_tab
@@ -730,7 +823,7 @@ class Line(list):
                 first_glyphs_span.span.warn('item too long to fit on line',
                                             self.container)
         self.cursor += width
-        for glyphs_span, chars in word_or_inline:
+        for glyphs_span in word_or_inline:
             self.append(glyphs_span)
         return True
 

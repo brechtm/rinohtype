@@ -15,7 +15,7 @@ from contextlib import contextmanager
 from collections import OrderedDict
 from datetime import datetime
 from functools import wraps
-from io import BytesIO
+from io import BytesIO, SEEK_END
 from itertools import chain
 
 from ... import __version__, __release_date__
@@ -395,6 +395,7 @@ class Stream(Dictionary):
                 self['DecodeParms'] = self.filter.params
         if 'Length' in self:
             self['Length'].delete(document)
+        assert self._data.tell() == self._data.seek(0, SEEK_END)
         self['Length'] = Integer(self._data.tell())
         out += super().direct_bytes(document)
         out += b'\nstream\n'
@@ -467,6 +468,12 @@ class Document(dict):
         self.id = None
         self.dests = {}
         self._by_object_id = {}
+
+    def get_page(self, index):
+        for i, page in enumerate(self.catalog['Pages'].pages):
+            if i == index:
+                return page
+        raise IndexError
 
     def register(self, obj):
         try:
@@ -573,6 +580,10 @@ class Document(dict):
             file.close()
 
 
+class XRefStream(Stream):
+    type = 'XRef'
+
+
 class Catalog(Dictionary):
     type = 'Catalog'
 
@@ -595,6 +606,11 @@ class Pages(Dictionary):
         self['Count'] = Integer(self['Count'] + 1)
         return page
 
+    @property
+    def pages(self):
+        for kid in self['Kids']:
+            yield from kid.object.pages
+
 
 class Page(Dictionary):
     type = 'Page'
@@ -605,6 +621,10 @@ class Page(Dictionary):
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
+
+    @property
+    def pages(self):
+        yield self
 
 
 DECIMAL_ARABIC = Name('D')
@@ -736,22 +756,25 @@ class Type1Font(Font):
     def register_indirect(self, document, visited=None):
         if id(self) in visited:
             return
-        for key in ('FirstChar', 'LastChar', 'Widths', 'Encoding'):
-            if key in self:
-                self[key].delete(document)
-                del self[key]
-        widths = {}
-        for name, code in chain(self.font.encoding.items(),
-                                self.differences.items()):
-            glyph = self.font._glyphs[name]
-            widths[code] = glyph.width
-        first, last = min(widths), max(widths)
-        self['FirstChar'] = Integer(first)
-        self['LastChar'] = Integer(last)
-        self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
-                                for c in range(first, last + 1)), True)
-        if self.differences:
-            self['Encoding'] = FontEncoding(differences=self.differences)
+        try:
+            self.font
+        except AttributeError:    # this font was parsed from a PDF file
+            pass
+        else:
+            for key in ('FirstChar', 'LastChar', 'Widths', 'Encoding'):
+                if key in self:
+                    self[key].delete(document)
+                    del self[key]
+            widths = {code: self.font._glyphs[name].width
+                      for name, code in chain(self.font.encoding.items(),
+                                              self.differences.items())}
+            first, last = min(widths), max(widths)
+            self['FirstChar'] = Integer(first)
+            self['LastChar'] = Integer(last)
+            self['Widths'] = Array((Integer(widths[c] if c in widths else 0)
+                                    for c in range(first, last + 1)), True)
+            if self.differences:
+                self['Encoding'] = FontEncoding(differences=self.differences)
         return super().register_indirect(document, visited=visited)
 
 

@@ -48,8 +48,8 @@ class BaseStyleException(StyleException):
     """The `attribute` is not specified in this :class:`Style`. Try to find the
     attribute in a base style instead."""
 
-    def __init__(self, base_name, attribute):
-        self.base_name = base_name
+    def __init__(self, style, attribute):
+        self.style = style
         self.attribute = attribute
 
 
@@ -87,6 +87,7 @@ class Style(AttributesDictionary):
         If `base` is a :class:`str`, it is used to look up the base style in
         the :class:`StyleSheet` this style is defined in."""
         super().__init__(base, **attributes)
+        self._name = None
 
     def __repr__(self):
         """Return a textual representation of this style."""
@@ -114,31 +115,58 @@ class Style(AttributesDictionary):
         try:
             return super().__getitem__(attribute)
         except KeyError:
-            if self.base is None:
-                raise DefaultStyleException
-            elif isinstance(self.base, str):
-                raise BaseStyleException(self.base, attribute)
-            else:
+            if isinstance(self.base, Style):
                 return self.base[attribute]
+            else:
+                raise BaseStyleException(self, attribute)
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if name in SPECIAL_STYLES:
+            raise ValueError("The '{}' style name is reserved.".format(name))
+        self._name = name
 
 
-class ParentStyle(Style):
-    """Special style that delegates attribute lookups by raising a
-    :class:`ParentStyleException` on each attempt to access an attribute."""
+class SpecialStyle(Style):
+    """Special style that delegates attribute lookups by raising an
+    exception on each attempt to access an attribute."""
+
+    exception = NotImplementedAttribute()
 
     def __repr__(self):
         return self.__class__.__name__
 
     def __getitem__(self, attribute):
-        raise ParentStyleException
+        raise self.exception
 
     def __bool__(self):
         return True
 
 
+class ParentStyle(SpecialStyle):
+    exception = ParentStyleException
+
+
+class DefaultStyle(SpecialStyle):
+    exception = DefaultStyleException
+
+
 PARENT_STYLE = ParentStyle()
-"""Special style that forwards style lookups to the parent of the
-:class:`Styled` from which the lookup originates."""
+"""Style that forwards style lookups to the parent of the :class:`Styled`
+from which the lookup originates."""
+
+
+DEFAULT_STYLE = DefaultStyle()
+"""Style to use as a base for styles that do not extend the style of the same
+name in the base style sheet."""
+
+
+SPECIAL_STYLES = dict(DEFAULT_STYLE=DEFAULT_STYLE,
+                      PARENT_STYLE=PARENT_STYLE)
 
 
 class Selector(object):
@@ -481,16 +509,32 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         except DefaultStyleException:
             return self.style_class._get_default(attribute)
 
-    def get_base_style_recursive(self, exception, flowable_target):
-        stylesheet = flowable_target.document.stylesheet
+    def get_base_style_recursive(self, exception, flowable_target, stylesheet):
+        base_name = exception.style.base
+        if base_name is None:
+            stylesheet = stylesheet.base
+            if stylesheet is None:
+                raise DefaultStyleException
+            try:
+                base_style = stylesheet[exception.style.name]
+            except KeyError:
+                raise DefaultStyleException
+        else:
+            try:
+                base_style = stylesheet[base_name]
+            except KeyError:
+                raise ValueError("The base style '{}' for style '{}' could "
+                                 "not be found in the style sheet or base "
+                                 "style sheets".format(base_name,
+                                                       exception.style.name))
         try:
-            base_style = stylesheet[exception.base_name]
             return base_style.get_value(exception.attribute, stylesheet)
         except ParentStyleException:
             return self.parent.get_style_recursive(exception.attribute,
                                                    flowable_target)
-        except BaseStyleException as e:
-            return self.get_base_style_recursive(e, flowable_target)
+        except BaseStyleException as exc:
+            return self.get_base_style_recursive(exc, flowable_target,
+                                                 stylesheet)
 
     def get_style_recursive(self, attribute, flowable_target):
         stylesheet = flowable_target.document.stylesheet
@@ -510,7 +554,8 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             except KeyError:  # 'attribute' is not supported by the parent
                 return parent.get_style_recursive(attribute, flowable_target)
         except BaseStyleException as exception:
-            return self.get_base_style_recursive(exception, flowable_target)
+            return self.get_base_style_recursive(exception, flowable_target,
+                                                 stylesheet)
 
     @cached
     def _style(self, container):
@@ -707,13 +752,13 @@ class StyleSheetFile(StyleSheet):
                 continue
             try:
                 style_name, selector  = section_name.split(':')
+            except ValueError:
+                style_name = section_name
+                style_cls = self.get_entry_class(style_name)
+            else:
                 m = self.RE_SELECTOR.match(selector)
-                if m:
-                    styled_name = m.group('name')
-                    selector_args = m.group('args')
-                else:
-                    styled_name = selector
-                    selector_args = None
+                styled_name, selector_args = (m.group('name', 'args') if m
+                                              else selector, None)
                 for styled_class in all_subclasses(Styled):
                     if styled_class.__name__ == styled_name:
                         style_cls = styled_class.style_class
@@ -738,21 +783,19 @@ class StyleSheetFile(StyleSheet):
                                                 matcher_styled.__name__))
                 except KeyError:
                     pass
-            except ValueError:
-                style_name = section_name
-                style_cls = self.get_entry_class(style_name)
             attribute_values = {}
             for name, value in section_body.items():
                 value = value.replace('\n', ' ')
                 if name == 'base':
-                    attribute_values[name] = value
+                    attribute_values[name] = SPECIAL_STYLES.get(value, value)
                 else:
                     try:
                         attribute = style_cls.attribute_definition(name)
                     except KeyError:
-                        raise TypeError("'{}' is not a supported attribute for "
-                                        "'{}' ({})".format(name, style_name,
-                                                           style_cls.__name__))
+                        raise TypeError("'{}' is not a supported attribute "
+                                        "for '{}' ({})"
+                                        .format(name, style_name,
+                                                style_cls.__name__))
                     stripped = value.strip()
                     m = self.RE_VARIABLE.match(stripped)
                     if m:

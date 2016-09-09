@@ -29,13 +29,15 @@ class AbstractLocation(OptionSet):
 
 
 class ArticleFrontMatter(DocumentPartTemplate):
+    toc_section = TableOfContentsSection()
+
     def flowables(self, document):
         meta = document.metadata
         abstract_loc = document.configuration.get_option('abstract_location')
         if 'abstract' in meta and abstract_loc == FRONT_MATTER:
             yield meta['abstract']
         if document.configuration.get_option('table_of_contents'):
-            yield TableOfContentsSection()
+            yield self.toc_section
 
 
 class ArticleConfiguration(TemplateConfiguration):

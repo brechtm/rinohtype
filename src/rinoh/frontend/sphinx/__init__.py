@@ -23,10 +23,8 @@ from sphinx.util.osutil import ensuredir, os_path, SEP
 from rinoh.flowable import StaticGroupedFlowables
 from rinoh.highlight import pygments_style_to_stylesheet
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
-from rinoh.number import NUMBER
+from rinoh.language import Language
 from rinoh.paper import A4, LETTER
-from rinoh.paragraph import Paragraph
-from rinoh.reference import Reference, TITLE
 from rinoh.style import StyleSheet
 from rinoh.template import DocumentTemplate
 from rinoh.text import SingleStyledText
@@ -251,6 +249,12 @@ class RinohBuilder(Builder):
                 template_configuration.base = base_config
         else:
             template_configuration = base_config
+        lang = self.config.language
+        if lang:
+            try:
+                template_configuration.language = Language.from_string(lang)
+            except KeyError:
+                self.warn('The language "{}" is not supported by rinohtype.')
         rinoh_document = template(rinoh_tree,
                                   configuration=template_configuration,
                                   backend=pdf)
@@ -307,18 +311,6 @@ def default_logo(config):
 def default_domain_indices(config):
     info_config_conversion('domain_indices')
     return config.latex_domain_indices
-
-
-def front_matter_section_title_flowables(section_id):
-    yield Paragraph(Reference(section_id, TITLE),
-                    style='front matter section title')
-
-
-def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph('CHAPTER ' + Reference(section_id, NUMBER, style='number'),
-                    style='body matter chapter label')
-    yield Paragraph(Reference(section_id, TITLE),
-                    style='body matter chapter title')
 
 
 def setup(app):

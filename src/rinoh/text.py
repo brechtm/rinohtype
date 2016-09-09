@@ -39,7 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from itertools import groupby, tee
+from itertools import tee
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -248,6 +248,11 @@ class StyledText(Styled, AcceptNoneAttributeType):
             # get the position style using self.get_style('position')
         return offset
 
+    @property
+    def items(self):
+        """The list of items in this StyledText."""
+        raise NotImplementedError
+
     def spans(self, container):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
@@ -298,24 +303,12 @@ class SingleStyledTextBase(StyledText):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
 
+    @property
+    def items(self):
+        return [self]
+
     def spans(self, container):
         yield self
-
-    @staticmethod
-    def split_words(text):
-        def is_special_character(char):
-            return char in ' \t\n\N{ZERO WIDTH SPACE}'
-
-        for is_special, characters in groupby(text, is_special_character):
-            if is_special:
-                for char in characters:
-                    yield char
-            else:
-                yield ''.join(characters)
-
-    def split(self, container, **kwargs):
-        """Yield the words and spaces in this single-styled text."""
-        return self.split_words(self.text(container, **kwargs))
 
     def before_placing(self, container):
         pass
@@ -370,12 +363,10 @@ class MixedStyledText(MixedStyledTextBase, list):
             self.append(item)
 
     def __add__(self, other):
-        if isinstance(other, str) or self.style == other.style:
-            try:
-                other_list = list(other)
-            except TypeError:
-                other_list = [other]
-            return MixedStyledText(list(self) + other_list,
+        if isinstance(other, str):
+            other = SingleStyledText(other)
+        if self.style == other.style:
+            return MixedStyledText(self.items + other.items,
                                    style=self.style, parent=self.parent)
         else:
             return super().__add__(other)
@@ -411,6 +402,10 @@ class MixedStyledText(MixedStyledTextBase, list):
             item = SingleStyledText(item)
         item.parent = self
         list.append(self, item)
+
+    @property
+    def items(self):
+        return list(self)
 
     def text(self, flowable_target, **kwargs):
         return self

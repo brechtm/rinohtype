@@ -7,6 +7,7 @@ pygments_style=friendly
 mono_typeface=TeX Gyre Cursor
 serif_typeface=TeX Gyre Pagella
 sans_typeface=Tex Gyre Heros
+fallback_typeface=DejaVu Serif
 thin_black_stroke=0.5pt,#000
 blue=#20435c
 
@@ -23,6 +24,9 @@ kerning=True
 ligatures=True
 hyphen_lang=en_US
 hyphen_chars=4
+
+[fallback]
+typeface=$(fallback_typeface)
 
 [body]
 base=default
@@ -76,6 +80,9 @@ ligatures=False
 
 [error]
 font_color=#f00
+
+[linked reference]
+font_color=#355f7c
 
 [internal hyperlink]
 font_slant=italic

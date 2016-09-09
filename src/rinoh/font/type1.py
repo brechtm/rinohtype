@@ -14,7 +14,7 @@ from binascii import unhexlify
 from io import BytesIO
 from warnings import warn
 
-from . import Font, GlyphMetrics, LeafGetter
+from . import Font, GlyphMetrics, LeafGetter, MissingGlyphException
 from .style import MEDIUM,  UPRIGHT, NORMAL
 from .style import SMALL_CAPITAL, OLD_STYLE
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
@@ -240,7 +240,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), RinohWarning)
-            return self._glyphs.get('.notdef', self._glyphs['space'])
+            raise MissingGlyphException
 
     def get_ligature(self, glyph, successor_glyph):
         try:

@@ -42,10 +42,11 @@ class InlineFlowable(Flowable):
     def y_offset(self, document):
         return 0
 
-    def spans(self, document):
-        yield self
+    @property
+    def items(self):
+        return [self]
 
-    def split(self, container):
+    def spans(self, document):
         yield self
 
     def flow_inline(self, container, last_descender, state=None):
@@ -90,10 +91,3 @@ class InlineFlowableSpan(DocumentElement):
 
     def before_placing(self, container):
         pass
-
-    # TODO: get_style and word_to_glyphs may need proper implementations
-    def get_style(self, attribute, document=None):
-        pass
-
-    def word_to_glyphs(self, word):
-        return word

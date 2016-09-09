@@ -137,9 +137,9 @@ Here is an example document tree of a short article:
     document_tree = DocumentTree('/path/to/source_file.ext',
                     [Paragraph('My Document', style='title'), # metadata!
                      Section([Heading('First Section'),
-                              Paragraph('This is a paragraph with some'
+                              Paragraph('This is a paragraph with some '
                                         + Emphasized('emphasized text')
-                                        + 'and an'
+                                        + ' and an '
                                         + InlineImage('image.pdf')),
                               Section([Heading('A subsection'),
                                        Paragraph('Another paragraph')
@@ -163,11 +163,15 @@ well suited for short, custom documents however.
 Style Sheets
 ~~~~~~~~~~~~
 
+.. currentmodule:: rinoh.style
+
 A style sheet determines the look of each of the elements in a document. For
 each type of document element, the style sheet object registers a list of style
 properties. Style sheets are stored in plain text files using the INI format
 with the ``.rts`` extension. Below is an excerpt from the `Sphinx` style sheet
 included with rinohtype.
+
+.. _base style sheet:
 
 .. literalinclude:: /../src/rinoh/data/stylesheets/sphinx.rts
     :language: ini
@@ -193,9 +197,7 @@ Extending an Existing Style Sheet
 
 Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following example creates a new
-style sheet based on the Sphinx stylesheet included with rinohtype. The style
-sheet redefines the style for emphasized text, displaying it in a bold instead
-of italic font.
+style sheet based on the Sphinx stylesheet included with rinohtype.
 
 .. code-block:: ini
 
@@ -208,27 +210,27 @@ of italic font.
     mono_typeface=Courier
 
     [emphasis]
-    font_slant=bold
+    font_color=#00a
 
-This style sheet also redefines the ``mono_typeface`` variable. This variable
-is used in the Sphinx style sheet in all style definitions where a monospaced
-font is desired. Redefining the variable affects all of these style
-definitions.
+    [strong]
+    base=DEFAULT_STYLE
+    font_color=#a00
 
-    .. todo:: How to do this in a INI style sheet?
+By default, styles defined in a style sheet *extend* the corresponding style
+from the base style sheet. In this example, emphasized text will still be set
+in an italic font as configured in the `base style sheet`_, but it will
+additionally be colored blue (#00a).
 
-        Here, the new new style definition completely replaces the style
-        definition contained in the Sphinx style sheet. It is also possible to
-        override only part of the style definition. The following style
-        definition changes only the item spacing between enumerated list items.
-        All other style properties (such as the left margin and the item
-        numbering format) remain unchanged.
+It is also possible to completely override the style definition. This can be
+done by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
+illustrated by the `strong` style. This causes strongly emphasised text to be
+displayed in red (#a00) but **not** in a bold font as defined in the `base
+style sheet`_ (the default for ``font_weight`` is `Medium`; see
+:class:`~rinoh.text.TextStyle`).
 
-
-        .. code-block:: python
-
-            my_style_sheet('enumerated list', base=styles['default'],
-                           flowable_spacing=3*PT)
+The style sheet also redefines the ``mono_typeface`` variable. This variable is
+used in the Sphinx style sheet in all style definitions where a monospaced font
+is desired. Redefining the variable affects all of these style definitions.
 
 To use this style sheet, load it using :class:`StyleSheetFile`:
 
@@ -272,6 +274,8 @@ matcher:
 Document Templates
 ~~~~~~~~~~~~~~~~~~
 
+.. currentmodule:: rinoh.template
+
 As with style sheets, you can choose to make use of the templates provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch.
@@ -282,7 +286,7 @@ Using an Existing Template
 
 Rinohtype provides a number of :ref:`document_templates`. These can be
 customized by passing an instance of the associated
-:class:`rinoh.template.TemplateConfiguration` as `configuration` on template
+:class:`TemplateConfiguration` as `configuration` on template
 instantiation.
 
 The example from :ref:`library_quickstart` above can be customized by setting
@@ -325,7 +329,7 @@ A4. See below for a list of the settings that can be changed and their
 description.
 
 The top margin of the title page is also changed by setting the corresponding
-option for the :attr:`rinoh.templates.article.ArticleConfiguration.title_page`
+option for the :attr:`.ArticleConfiguration.title_page`
 page template.
 
 
@@ -333,25 +337,24 @@ Creating a Custom Template
 --------------------------
 
 A custom template can be created by inheriting from :class:`DocumentTemplate`.
-The :attr:`parts` attribute determines the global structure of the document. It
-is a list of :class:`DocumentPartTemplate`\ s, each referencing a page
-template.
+The :attr:`~DocumentTemplate.parts` attribute determines the global structure
+of the document. It is a list of :class:`DocumentPartTemplate`\ s, each
+referencing a page template.
 
-The :class:`rinoh.templates.article.Article` template, for example, consists of
-a title page, a front matter part (a custom
-:class:`rinoh.template.DocumentPartTemplate` subclass) and the article
+The :class:`.Article` template, for example, consists of a title page, a front
+matter part (a custom :class:`DocumentPartTemplate` subclass) and the article
 contents:
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: Article
 
 
-The :class:`TemplateConfiguration` subclass associated with :class:`Article`
+The :class:`TemplateConfiguration` subclass associated with :class:`.Article`
 
 - overrides the default style sheet,
 - introduces configuration attributes to control the table of contents
   placement and the location of the abstract, and
-- defines the page templates referenced in :attr:`Article.parts`
+- defines the page templates referenced in :attr:`.Article.parts`
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: ArticleConfiguration
