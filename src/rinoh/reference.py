@@ -283,9 +283,8 @@ class Variable(MixedStyledTextBase):
         elif self.type == PAGE_NUMBER:
             text = container.page.formatted_number
         elif self.type == NUMBER_OF_PAGES:
-            document_section = container.document_part.document_section
-            number = document_section.previous_number_of_pages
-            text = format_number(number, container.page.number_format)
+            part = container.document_part
+            text = format_number(part.number_of_pages, part.page_number_format)
         elif self.type == DOCUMENT_TITLE:
             text = container.document.metadata['title']
         elif self.type == DOCUMENT_SUBTITLE:

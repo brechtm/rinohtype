@@ -11,8 +11,7 @@ from collections import OrderedDict
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes)
 from .dimension import DimensionBase, CM, PT
-from .document import (Document, DocumentSection, DocumentPart,
-                       Page, PageOrientation, PORTRAIT)
+from .document import Document, DocumentPart, Page, PageOrientation, PORTRAIT
 from .element import create_destination
 from .float import BackgroundImage, Image
 from .language import Language, EN
@@ -380,20 +379,26 @@ class DocumentPartTemplate(object):
             doc += '  - *{}*: {}\n'.format(key, value)
         return doc
 
+    def prepare(self, fake_container):
+        for flowable in self.all_flowables(fake_container.document):
+            flowable.prepare(fake_container)
+
     def flowables(self, document):
         """Return a list of :class:`rinoh.flowable.Flowable`\ s that make up
         the document part"""
         raise NotImplementedError
 
-    def document_part(self, document_section, extra_flowables=None):
-        flowables = [flowable
-                     for flowable in self.flowables(document_section.document)]
-        for flowable, position in (extra_flowables or []):
+    def all_flowables(self, document):
+        extra_flowables = document._to_insert.get(self.name, ())
+        flowables = [flowable for flowable in self.flowables(document)]
+        for flowable, position in extra_flowables:
             flowables.insert(position, flowable)
+        return flowables
+
+    def document_part(self, document, first_page_number):
+        flowables = self.all_flowables(document)
         if flowables or not self.skip_if_no_flowables:
-            return DocumentPart(document_section,
-                                self.page_template, self.left_page_template,
-                                flowables)
+            return DocumentPart(self, document, first_page_number, flowables)
 
 
 class TitlePartTemplate(DocumentPartTemplate):
@@ -457,10 +462,6 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
-class DocumentTemplateSection(DocumentSection):
-    parts = []
-
-
 class DocumentTemplateMeta(type):
     def __new__(cls, classname, bases, cls_dict):
         if 'parts' in cls_dict and not isinstance(cls_dict['parts'],
@@ -500,20 +501,9 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
         docpart_flowables = self._to_insert.setdefault(document_part_name, [])
         docpart_flowables.append((flowable, position))
 
-    @property
-    def sections(self):
-        last_section_number_format = None
-        for i, document_part_tmpl in enumerate(self.parts):
-            number_format = document_part_tmpl.page_number_format
-            if i == 0 or number_format != last_section_number_format:
-                if i > 0:
-                    yield current_section
-                current_section = DocumentTemplateSection(self, number_format)
-            extra_flowables = self._to_insert.get(document_part_tmpl.name)
-            part = document_part_tmpl.document_part(current_section,
-                                                    extra_flowables)
-            if part:
-                current_section._parts.append(part)
-                last_section_number_format = document_part_tmpl.page_number_format
-        if current_section._parts:
-            yield current_section
+    def prepare(self):
+        class FakeContainer(object):    # TODO: clean up
+            document = self
+
+        for part_template in self.parts:
+            part_template.prepare(FakeContainer)

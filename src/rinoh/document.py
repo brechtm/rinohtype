@@ -30,8 +30,6 @@ import time
 from collections import OrderedDict
 from itertools import count
 
-from rinoh.font import Typeface
-
 from . import __version__, __release_date__
 from .backend import pdf
 from .flowable import RIGHT, LEFT, StaticGroupedFlowables
@@ -46,7 +44,7 @@ from .util import NotImplementedAttribute, RefKeyDictionary
 from .warnings import warn
 
 
-__all__ = ['Page', 'DocumentPart', 'DocumentSection', 'Document',
+__all__ = ['Page', 'DocumentPart', 'Document',
            'PageOrientation', 'PORTRAIT', 'LANDSCAPE']
 
 
@@ -135,16 +133,12 @@ class Page(Container):
         return current_section
 
     @property
-    def document_section(self):
-        return self.document_part.document_section
-
-    @property
     def number(self):
-        return self.document_section.page_number(self)
+        return self.document_part.page_number(self)
 
     @property
     def number_format(self):
-        return self.document_section.page_number_format
+        return self.document_part.page_number_format
 
     @property
     def formatted_number(self):
@@ -181,17 +175,16 @@ class BackendDocumentMetadata(object):
 
 
 class DocumentPart(object, metaclass=DocumentLocationType):
-    """Part of a :class:`DocumentSection` that has a specific page template."""
+    """Part of a :class:`Document` that has a specific page template."""
 
     header = None
     footer = None
     end_at = LEFT
 
-    def __init__(self, document_section,
-                 right_page_template, left_page_template, flowables):
-        self.document_section = document_section
-        self.right_page_template = right_page_template
-        self.left_page_template = left_page_template or right_page_template
+    def __init__(self, template, document, first_page_number, flowables):
+        self.template = template
+        self.document = document
+        self.first_page_number = first_page_number
         self.flowable_targets = []
         self.pages = []
         if flowables:
@@ -202,18 +195,28 @@ class DocumentPart(object, metaclass=DocumentLocationType):
             self.chain = None
 
     @property
-    def document(self):
-        return self.document_section.document
+    def page_number_format(self):
+        return self.template.page_number_format
+
+    def page_number(self, the_page):
+        for i, page in enumerate(self.pages, start=self.first_page_number):
+            if the_page is page:
+                return i
 
     @property
     def number_of_pages(self):
-        return len(self.pages)
+        doc = self.document
+        for part_template, part_page_count in zip(doc.parts,
+                                                  doc.part_page_counts):
+            if part_template is self.template:
+                return part_page_count.count
+        return 0
 
     def prepare(self):
-        for flowable_target in self.flowable_targets:
-            flowable_target.prepare(flowable_target)
+        for flowable in self._flowables(self.document):
+            flowable.prepare(self)
 
-    def render(self, document_page_count):
+    def render(self):
         del self.pages[:]
         self.add_page(self.first_page())
         for page in self.pages:
@@ -229,11 +232,11 @@ class DocumentPart(object, metaclass=DocumentLocationType):
                 next_page_type = LEFT if page.number % 2 else RIGHT
                 page = self.new_page(next_page_type == break_type)
                 self.add_page(page)     # this grows self.pages!
-        page_count = document_page_count + self.number_of_pages
+        page_count = self.first_page_number - 1 + len(self.pages)
         next_page_type = LEFT if page_count % 2 else RIGHT
         if next_page_type == self.end_at:
             self.add_page(self.first_page())
-        return self.number_of_pages
+        return len(self.pages)
 
     def add_page(self, page):
         """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
@@ -246,8 +249,11 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        page_template = (self.left_page_template if len(self.pages) % 2
-                         else self.right_page_template)
+        right_page_template = self.template.page_template
+        left_page_template = (self.template.left_page_template
+                              or right_page_template)
+        page_template = (left_page_template if len(self.pages) % 2
+                         else right_page_template)
         return page_template.page(self, page_template.name, self.chain,
                                   new_chapter, **kwargs)
 
@@ -259,48 +265,17 @@ class DocumentPart(object, metaclass=DocumentLocationType):
             return None
 
 
-class DocumentSection(object, metaclass=DocumentLocationType):
-    """A section of a :class:`Document` that has its own page numbering."""
+class PartPageCount(object):
+    def __init__(self):
+        self.count = 0
 
-    parts = NotImplementedAttribute()
+    def __eq__(self, other):
+        return self.count == other.count
 
-    def __init__(self, document, page_number_format=NUMBER):
-        self.document = document
-        self.page_number_format = page_number_format
-        self._parts = [part_class(self) for part_class in self.parts]
-        self.previous_number_of_pages = 0
+    def __iadd__(self, other):
+        self.count += other
+        return self
 
-    @property
-    def number_of_pages(self):
-        return sum(part.number_of_pages for part in self._parts)
-
-    @property
-    def pages(self):
-        return (page for part in self._parts for page in part.pages)
-
-    def page_number(self, this_page):
-        for i, page in enumerate(self.pages, start=1):
-            if this_page is page:
-                return i
-
-    def prepare(self):
-        for part in self._parts:
-            part.prepare()
-
-    def render(self, doc_page_count):
-        section_page_count = 0
-        for part in self._parts:
-            part_page_count = part.render(doc_page_count + section_page_count)
-            section_page_count += part_page_count
-        self.previous_number_of_pages = section_page_count
-        return section_page_count
-
-    @classmethod
-    def match(cls, styled, container):
-        if isinstance(container.document_part.document_section, cls):
-            return Specificity(0, 1, 0, 0, 0)
-        else:
-            return None
 
 
 class Document(object):
@@ -417,7 +392,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             raise ValueError("You need to specify either 'filename_root' or "
                              "'file'.")
 
-        def has_converged(section_number_of_pages):
+        def has_converged(part_page_counts):
             """Return `True` if the last rendering iteration converged to a
             stable result.
 
@@ -425,30 +400,28 @@ to the terms of the GNU Affero General Public License version 3.''')
             references to document elements have changed since the previous
             rendering iteration."""
             nonlocal prev_number_of_pages, prev_page_references
-            return (section_number_of_pages == prev_number_of_pages and
+            return (part_page_counts == prev_number_of_pages and
                     self.page_references == prev_page_references)
 
         try:
             self.document_tree.build_document(self)
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
-            _sections = [section for section in self.sections]
-            for prev_num, section in zip(prev_number_of_pages, _sections):
-                section.previous_number_of_pages = prev_num
+
+            self.part_page_counts = prev_number_of_pages
+            self.prepare()
             self.page_references = prev_page_references.copy()
-            for section in _sections:
-                section.prepare()
-            section_num_pages = self._render_pages(_sections)
-            while not has_converged(section_num_pages):
-                prev_number_of_pages = section_num_pages
+            self.part_page_counts = self._render_pages(self.parts)
+            while not has_converged(self.part_page_counts):
+                prev_number_of_pages = self.part_page_counts
                 prev_page_references = self.page_references.copy()
                 print('Not yet converged, rendering again...')
                 del self.backend_document
                 self.backend_document = self.backend.Document(self.CREATOR)
-                section_num_pages = self._render_pages(_sections)
+                self.part_page_counts = self._render_pages(self.parts)
             self.create_outlines()
             if filename:
-                self._save_cache(filename_root, section_num_pages,
+                self._save_cache(filename_root, self.part_page_counts,
                                  self.page_references)
                 self.style_log.write_log(filename_root)
                 print('Writing output: {}'.format(filename))
@@ -458,6 +431,9 @@ to the terms of the GNU Affero General Public License version 3.''')
                 file.close()
 
     def create_outlines(self):
+        """Create an outline in the output file that allows for easy navigation
+        of the document. The outline is a hierarchical tree of all the sections
+        in the document."""
         sections = parent = []
         current_level = 1
         stack = []
@@ -479,19 +455,29 @@ to the terms of the GNU Affero General Public License version 3.''')
             current_level = section.level
         self.backend_document.create_outlines(sections)
 
-    def _render_pages(self, _sections):
+    def _render_pages(self, part_templates):
         """Render the complete document once and return the number of pages
         rendered."""
         self.style_log = StyleLog(self.stylesheet)
         self.floats = set()
         self.placed_footnotes = set()
-        section_page_counts = []
         self._start_time = time.time()
-        for section in _sections:
-            section_page_count = section.render(sum(section_page_counts))
-            section_page_counts.append(section_page_count)
+
+        part_page_counts = []
+        last_number_format = None
+        for part_template in part_templates:
+            if part_template.page_number_format != last_number_format:
+                part_page_count = PartPageCount()
+                first_page_number = 1
+            part = part_template.document_part(self, first_page_number)
+            if part:
+                page_count = part.render()
+                part_page_count += page_count
+                first_page_number += page_count
+                last_number_format = part_template.page_number_format
+            part_page_counts.append(part_page_count)
         sys.stdout.write('\n')     # for the progress indicator
-        return section_page_counts
+        return part_page_counts
 
     PROGRESS_BAR_WIDTH = 40
 
