@@ -196,7 +196,7 @@ class Selector(object):
     def pri(self, priority):
         return SelectorWithPriority(self, priority)
 
-    def get_styled_class(self, matcher):
+    def get_styled_class(self, stylesheet_or_matcher):
         raise NotImplementedError
 
     def get_style_name(self, matcher):
@@ -218,8 +218,8 @@ class SelectorWithPriority(Selector):
     def pri(self, priority):
         return SelectorWithPriority(self.selector, self.priority + priority)
 
-    def get_styled_class(self, matcher):
-        return self.selector.get_styled_class(matcher)
+    def get_styled_class(self, stylesheet_or_matcher):
+        return self.selector.get_styled_class(stylesheet_or_matcher)
 
     def get_style_name(self, matcher):
         return self.selector.get_style_name(matcher)
@@ -274,9 +274,9 @@ class SelectorByName(SingleSelector):
     def flatten(self, container):
         return container.document.stylesheet.get_selector(self.name)
 
-    def get_styled_class(self, matcher):
-        selector = matcher.by_name[self.name]
-        return selector.get_styled_class(matcher)
+    def get_styled_class(self, stylesheet_or_matcher):
+        selector = stylesheet_or_matcher.get_selector(self.name)
+        return selector.get_styled_class(stylesheet_or_matcher)
 
     def get_style_name(self, matcher):
         selector = matcher.by_name[self.name]
@@ -288,7 +288,7 @@ class SelectorByName(SingleSelector):
 
 
 class ClassSelectorBase(SingleSelector):
-    def get_styled_class(self, matcher):
+    def get_styled_class(self, stylesheet_or_matcher):
         return self.cls
 
     @property
@@ -346,8 +346,8 @@ class ContextSelector(Selector):
                             for child_selector
                             in selector.flatten(container).selectors))
 
-    def get_styled_class(self, matcher):
-        return self.selectors[-1].get_styled_class(matcher)
+    def get_styled_class(self, stylesheet_or_matcher):
+        return self.selectors[-1].get_styled_class(stylesheet_or_matcher)
 
     def get_style_name(self, matcher):
         return self.selectors[-1].get_style_name(matcher)
@@ -613,6 +613,9 @@ class StyledMatcher(dict):
         if newly_defined_name in self._pending:
             self.update(self._pending.pop(newly_defined_name))
 
+    def get_selector(self, name):
+        return self.by_name[name]
+
     def check_validity(self):
         if self._pending:
             raise InvalidStyledMatcher(list(self._pending.keys()))
@@ -671,7 +674,7 @@ class StyleSheet(RuleSet, Resource):
         self.variables = {}
 
     def get_styled(self, name):
-        return self.get_selector(name).get_styled_class(self.matcher)
+        return self.get_selector(name).get_styled_class(self)
 
     def get_entry_class(self, name):
         return self.get_styled(name).style_class
