@@ -761,7 +761,7 @@ class StyleSheetFile(StyleSheet):
             else:
                 m = self.RE_SELECTOR.match(selector)
                 styled_name, selector_args = (m.group('name', 'args') if m
-                                              else selector, None)
+                                              else (selector, None))
                 for styled_class in all_subclasses(Styled):
                     if styled_class.__name__ == styled_name:
                         style_cls = styled_class.style_class
