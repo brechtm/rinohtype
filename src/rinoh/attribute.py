@@ -6,14 +6,18 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import re
+
 from collections import OrderedDict
+from configparser import ConfigParser
 from types import FunctionType
 
-from .util import NamedDescriptor, WithNamedDescriptors
-
+from .util import (NamedDescriptor, WithNamedDescriptors,
+                   NotImplementedAttribute)
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
-           'OverrideDefault', 'AttributesDictionary', 'Bool', 'Integer', 'Var']
+           'OverrideDefault', 'AttributesDictionary', 'RuleSet', 'RuleSetFile',
+           'Bool', 'Integer', 'Var']
 
 
 class AttributeType(object):
@@ -264,6 +268,40 @@ class RuleSet(OrderedDict):
         raise NotImplementedError
 
     def _get_variable(self, name, accepted_type):
+        raise NotImplementedError
+
+
+class RuleSetFile(RuleSet):
+
+    main_section = NotImplementedAttribute()
+
+    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
+
+    def __init__(self, filename, base=None, **kwargs):
+        config = ConfigParser(default_section=None, delimiters=('=',),
+                              comment_prefixes=('#', ), interpolation=None)
+        with open(filename) as file:
+            config.read_file(file)
+        options = dict(config[self.main_section]
+                       if config.has_section(self.main_section) else {})
+        name = options.pop('name', filename)
+        base = options.pop('base', base)
+        options.update(kwargs)    # optionally override options
+        super().__init__(name, base=base, **options)
+        self.filename = filename
+        if config.has_section('VARIABLES'):
+            for name, value in config.items('VARIABLES'):
+                self.variables[name] = value
+        for section_name, section_body in config.items():
+            if section_name in (None, self.main_section, 'VARIABLES'):
+                continue
+            if ':' in section_name:
+                entry_name, classifier = section_name.split(':')
+            else:
+                entry_name, classifier = section_name, None
+            self.process_section(entry_name, classifier, section_body.items())
+
+    def process_section(self, section_name, classifier, items):
         raise NotImplementedError
 
 

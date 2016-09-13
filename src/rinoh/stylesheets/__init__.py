@@ -23,7 +23,7 @@ def path(filename):
     return os.path.join(STYLESHEETS_PATH, filename)
 
 
-sphinx = StyleSheetFile(path('sphinx.rts'), matcher)
+sphinx = StyleSheetFile(path('sphinx.rts'), matcher=matcher)
 
 sphinx_article = StyleSheetFile(path('sphinx_article.rts'))
 

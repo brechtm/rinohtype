@@ -11,7 +11,8 @@ from collections import OrderedDict
 import re
 
 from .attribute import (Bool, Integer, Function, Attribute,
-                        AttributesDictionary, RuleSet, WithAttributes)
+                        AttributesDictionary, RuleSet, WithAttributes,
+                        RuleSetFile)
 from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PORTRAIT
 from .element import create_destination
@@ -387,6 +388,14 @@ class TemplateConfiguration(RuleSet):
             raise ValueError("'{}' is not a template used used by {}"
                              .format(name, self.document_template_class))
         return type(template)
+
+
+class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
+
+    main_section = 'TEMPLATE_CONFIGURATION'
+
+    def process_section(self, section_name, classifier, items):
+        raise NotImplementedError
 
 
 class DocumentTemplateMeta(WithAttributes):

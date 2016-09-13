@@ -20,12 +20,11 @@ Base classes and exceptions for styled document elements.
 import re
 
 from ast import literal_eval
-from configparser import ConfigParser
 from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
 
-from .attribute import AttributesDictionary, RuleSet, Var
+from .attribute import AttributesDictionary, RuleSet, RuleSetFile, Var
 from .element import DocumentElement
 from .resource import Resource
 from .util import cached, unique, all_subclasses, NotImplementedAttribute
@@ -718,7 +717,7 @@ class StyleSheet(RuleSet, Resource):
         raise NoStyleException
 
 
-class StyleSheetFile(StyleSheet):
+class StyleSheetFile(RuleSetFile, StyleSheet):
     """Loads styles defined in a `.rts` file (INI format).
 
     Args:
@@ -732,86 +731,66 @@ class StyleSheetFile(StyleSheet):
 
     """
 
-    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
-    RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
+    main_section = 'STYLESHEET'
 
-    def __init__(self, filename, matcher=None, base=None, **kwargs):
-        config = ConfigParser(default_section=None, delimiters=('=',),
-                              comment_prefixes=('#', ), interpolation=None)
-        with open(filename) as file:
-            config.read_file(file)
-        options = dict(config['STYLESHEET']
-                       if config.has_section('STYLESHEET') else {})
-        name = options.pop('name', filename)
-        base = options.pop('base', base)
-        options.update(kwargs)    # optionally override options
-        super().__init__(name, matcher, base, **options)
-        self.filename = filename
-        if config.has_section('VARIABLES'):
-            for name, value in config.items('VARIABLES'):
-                self.variables[name] = value
-        for section_name, section_body in config.items():
-            if section_name in (None, 'STYLESHEET', 'VARIABLES'):
-                continue
-            try:
-                style_name, selector  = section_name.split(':')
-            except ValueError:
-                style_name = section_name
-                style_cls = self.get_entry_class(style_name)
-            else:
-                m = self.RE_SELECTOR.match(selector)
-                styled_name, selector_args = (m.group('name', 'args') if m
-                                              else (selector, None))
-                for styled_class in all_subclasses(Styled):
-                    if styled_class.__name__ == styled_name:
-                        style_cls = styled_class.style_class
-                        break
-                else:
-                    raise TypeError("Invalid type '{}' given for style '{}'"
-                                    .format(styled_name, style_name))
-                if selector_args:
-                    args, kwargs = parse_selector_args(selector_args)
-                    selector = styled_class.like(*args, **kwargs)
-                    self.matcher[style_name] = selector
-                try:
-                    matcher_styled = self.get_styled(style_name)
-                    if styled_class is not matcher_styled:
-                        raise TypeError("The type '{}' specified for style "
-                                        "'{}' does not match the type '{}' "
-                                        "returned by the matcher. Note that "
-                                        "you do not have to specify the type "
-                                        "in this case!"
-                                        .format(styled_class.__name__,
-                                                style_name,
-                                                matcher_styled.__name__))
-                except KeyError:
-                    pass
-            attribute_values = {}
-            for name, value in section_body.items():
-                value = value.replace('\n', ' ')
-                if name == 'base':
-                    attribute_values[name] = SPECIAL_STYLES.get(value, value)
-                else:
-                    try:
-                        attribute = style_cls.attribute_definition(name)
-                    except KeyError:
-                        raise TypeError("'{}' is not a supported attribute "
-                                        "for '{}' ({})"
-                                        .format(name, style_name,
-                                                style_cls.__name__))
-                    stripped = value.strip()
-                    m = self.RE_VARIABLE.match(stripped)
-                    if m:
-                        variable_name, = m.groups()
-                        value = Var(variable_name)
-                    else:
-                        accepted_type = attribute.accepted_type
-                        value = accepted_type.from_string(stripped)
-                    attribute_values[name] = value
-            self[style_name] = style_cls(**attribute_values)
+    RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
 
     def _get_variable(self, name, accepted_type):
         return accepted_type.from_string(self.variables[name])
+
+    def process_section(self, style_name, selector, items):
+        if selector:
+            m = self.RE_SELECTOR.match(selector)
+            styled_name, selector_args = (m.group('name', 'args') if m
+                                          else (selector, None))
+            for styled_class in all_subclasses(Styled):
+                if styled_class.__name__ == styled_name:
+                    style_cls = styled_class.style_class
+                    break
+            else:
+                raise TypeError("Invalid type '{}' given for style '{}'"
+                                .format(styled_name, style_name))
+            if selector_args:
+                args, kwargs = parse_selector_args(selector_args)
+                selector = styled_class.like(*args, **kwargs)
+                self.matcher[style_name] = selector
+            try:
+                matcher_styled = self.get_styled(style_name)
+                if styled_class is not matcher_styled:
+                    raise TypeError("The type '{}' specified for style "
+                                    "'{}' does not match the type '{}' "
+                                    "returned by the matcher. Note that "
+                                    "you do not have to specify the type "
+                                    "in this case!"
+                                    .format(styled_class.__name__,
+                                            style_name,
+                                            matcher_styled.__name__))
+            except KeyError:
+                pass
+        else:
+            style_cls = self.get_entry_class(style_name)
+        attribute_values = {}
+        for name, value in items:
+            value = value.replace('\n', ' ')
+            if name == 'base':
+                attribute_values[name] = SPECIAL_STYLES.get(value, value)
+            else:
+                try:
+                    attribute = style_cls.attribute_definition(name)
+                except KeyError:
+                    raise TypeError("'{}' is not a supported attribute for "
+                                    "'{}' ({})".format(name, style_name,
+                                                       style_cls.__name__))
+                stripped = value.strip()
+                m = self.RE_VARIABLE.match(stripped)
+                if m:
+                    variable_name, = m.groups()
+                    value = Var(variable_name)
+                else:
+                    accepted_type = attribute.accepted_type
+                    value = accepted_type.from_string(stripped)
+                attribute_values[name] = value
+        self[style_name] = style_cls(**attribute_values)
 
 
 class StyleParseError(Exception):
