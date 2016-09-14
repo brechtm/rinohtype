@@ -58,7 +58,12 @@ class Template(AttributesDictionary, NamedDescriptor):
             bases = []
             if isinstance(self.base, str):
                 iter = template_configuration._find_templates(self.base)
-                bases.extend(iter)
+                try:
+                    bases.extend(iter)
+                except KeyError:
+                    raise ValueError("Could not find the base template '{}' "
+                                     "for the '{}' page template."
+                                     .format(self.base, self.name))
             elif self.base is not None:
                 bases.append(self.base)
             for base_template in bases:
@@ -69,6 +74,7 @@ class Template(AttributesDictionary, NamedDescriptor):
 
 class TemplateConfigurationMeta(WithAttributes):
     def __new__(mcls, classname, bases, cls_dict):
+        cls_dict['_defaults'] = OrderedDict()
         cls = super().__new__(mcls, classname, bases, cls_dict)
         page_templates = []
         for name, attr in cls_dict.items():
@@ -90,6 +96,10 @@ class TemplateConfigurationMeta(WithAttributes):
             cls.__doc__ += '\n'.join(page_templates)
         return cls
 
+    def __setitem__(cls, key, value):
+        value.name = key
+        cls._defaults[key] = value
+
 
 class TemplateConfiguration(RuleSet, AttributesDictionary,
                             metaclass=TemplateConfigurationMeta):
@@ -108,7 +118,7 @@ class TemplateConfiguration(RuleSet, AttributesDictionary,
         - the default template"""
         for template in self._find_templates_recursive(name):
             yield template
-        yield getattr(self, name)   # the default template
+        yield self._defaults[name]   # the default template
 
     def _find_templates_recursive(self, name):
         if name in self:
@@ -131,9 +141,9 @@ class TemplateConfiguration(RuleSet, AttributesDictionary,
                 continue
         return template._get_default(option_name)  # FIXME: possibly never reached
 
-    @classmethod
-    def get_entry_class(cls, name):
-        return type(getattr(cls, name))
+    def get_entry_class(self, name):
+        template = next(self._find_templates(name))
+        return type(template)
 
     def _get_variable(self, name, accepted_type):
         return self.get_option(name)
@@ -330,54 +340,25 @@ class TitlePage(PageBase):
             self.title << Paragraph(extra, style='title page extra')
 
 
-class DocumentPartTemplate(object):
-    """A template that produces a doument part, given a set of flowables,
-    page templates and a page number format.
+class DocumentPartTemplate(Template):
+    """A template that produces a document part, given a set of flowables,
+    and page templates. The latter are looked up in the
+    :class:`TemplateConfiguration`.
 
     Args:
         name (:class:`str`): a descriptive name for this document part template
-        right_page_template (:class:`PageTemplateBase`): the page template
-            for right pages
-        left_page_template (:class:`PageTemplateBase`): the page template
-            for left pages. If not given, `right_page_template` is used.
-        page_number_format (:class:`rinoh.number.NumberFormat`): the number
-             format used to style the page numbers in this document part. If it
-             is different from the preceding part's number format, page
-             numbering restarts at 1.
     """
 
     skip_if_no_flowables = True
 
-    def __init__(self, name, right_page_template, left_page_template=None,
-                 page_number_format=NUMBER):
+    def __init__(self, name):
         self.name = name
-        self.page_template = right_page_template
-        self.left_page_template = left_page_template
-        self.page_number_format = page_number_format
-
-    @property
-    def doc_kwargs(self):
-        def link(page_template):
-            conf = page_template.template_configuration
-            return ':attr:`{}.{}`'.format(conf.__name__, page_template.name)
-
-        kwargs = OrderedDict()
-        if self.left_page_template:
-            kwargs['right_page_template'] = link(self.page_template)
-            kwargs['left_page_template'] = link(self.left_page_template)
-        else:
-            kwargs['page_template'] = link(self.page_template)
-        kwargs['page_number_format'] = '``{}``'.format(self.page_number_format
-                                                       .upper())
-        return kwargs
+        self.page_number_format = NUMBER
 
     @property
     def doc_repr(self):
-        doc = ('**{}** (:class:`{}.{}`)\n\n'\
-               .format(self.name, type(self).__module__, type(self).__name__))
-        for key, value in self.doc_kwargs.items():
-            doc += '  - *{}*: {}\n'.format(key, value)
-        return doc
+        return ('**{}** (:class:`{}.{}`)\n'
+                .format(self.name, type(self).__module__, type(self).__name__))
 
     def prepare(self, fake_container):
         for flowable in self.all_flowables(fake_container.document):
@@ -429,10 +410,8 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
             document part
     """
 
-    def __init__(self, name, flowables, right_page_template,
-                 left_page_template=None, page_number_format=NUMBER):
-        super().__init__(name, right_page_template, left_page_template,
-                         page_number_format=page_number_format)
+    def __init__(self, name, flowables):
+        super().__init__(name)
         self._flowables = flowables
 
     @property
@@ -496,6 +475,17 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
         super().__init__(document_tree, stylesheet, strings=strings,
                          language=language, backend=backend)
         self._to_insert = {}
+
+    def get_page_template(self, part, right_or_left):
+        part_template_name = part.template.name
+        label = '{} page'.format(right_or_left) if right_or_left else 'page'
+        find_templates = self.configuration._find_templates
+        try:
+            templates = find_templates(part_template_name + ':' + label)
+            return next(templates)
+        except KeyError:
+            templates = find_templates(part_template_name + ':page')
+            return next(templates)
 
     def insert(self, document_part_name, flowable, position):
         docpart_flowables = self._to_insert.setdefault(document_part_name, [])

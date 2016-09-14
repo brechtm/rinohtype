@@ -38,80 +38,6 @@ def body_matter_chapter_title_flowables(section_id):
                     style='body matter chapter title')
 
 
-class BookConfiguration(TemplateConfiguration):
-    stylesheet = OverrideDefault(sphinx)
-    page = \
-        PageTemplate(page_size=Var('paper_size'),
-                     left_margin=1 * INCH,
-                     right_margin=1 * INCH,
-                     top_margin=1 * INCH,
-                     bottom_margin=1 * INCH)
-    title_page = TitlePageTemplate(base='page')
-    front_matter_right_page = \
-        PageTemplate(base='page',
-                     header_footer_distance=0,
-                     header_text=None,
-                     footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab()
-                                         + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.5 * INCH,
-                     chapter_title_flowables=
-                     front_matter_section_title_flowables)
-    front_matter_left_page = \
-        PageTemplate(base='page',
-                     header_footer_distance=0,
-                     header_text=None,
-                     footer_text=Variable(PAGE_NUMBER))
-    content_right_page = \
-        PageTemplate(base='page',
-                     header_footer_distance=0,
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_NUMBER(2))
-                                  + '.  ' + Variable(SECTION_TITLE(2))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab()
-                                         + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.4 * INCH,
-                     chapter_title_flowables=
-                     body_matter_chapter_title_flowables)
-    content_left_page = \
-        PageTemplate(base='page',
-                     header_footer_distance=0,
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
-                                  StringField(SectionTitles, 'chapter')
-                                  + ' ' + Variable(SECTION_NUMBER(1))
-                                  + '.  ' + Variable(SECTION_TITLE(1))))
-
-    back_matter_right_page = \
-        PageTemplate(base='page',
-                     columns=2,
-                     header_footer_distance=0,
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_TITLE(1))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab()
-                                         + Variable(PAGE_NUMBER),
-                     chapter_title_height=2.5 * INCH,
-                     chapter_title_flowables=
-                     front_matter_section_title_flowables)
-
-    back_matter_left_page = \
-        PageTemplate(base='page',
-                     columns=2,
-                     header_footer_distance=0,
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
-                                  + Variable(SECTION_TITLE(1))))
-
-
 class BookBackMatter(DocumentPartTemplate):
     index_section = IndexSection()
 
@@ -120,19 +46,91 @@ class BookBackMatter(DocumentPartTemplate):
             yield self.index_section
 
 
+class BookConfiguration(TemplateConfiguration):
+    stylesheet = OverrideDefault(sphinx)
+
+
 class Book(DocumentTemplate):
     Configuration = BookConfiguration
-    parts = [TitlePartTemplate('title', Configuration.title_page),
+    parts = [TitlePartTemplate('title'),
              FixedDocumentPartTemplate('front matter',
-                                       [TableOfContentsSection()],
-                                       Configuration.front_matter_right_page,
-                                       Configuration.front_matter_left_page,
-                                       page_number_format=ROMAN_LC),
-             ContentsPartTemplate('contents',
-                                  Configuration.content_right_page,
-                                  Configuration.content_left_page,
-                                  page_number_format=NUMBER),
-             BookBackMatter('indices',
-                            Configuration.back_matter_right_page,
-                            Configuration.back_matter_left_page)
-             ]
+                                       [TableOfContentsSection()]),
+             ContentsPartTemplate('contents'),
+             BookBackMatter('back matter')]
+
+
+# default page templates
+
+BookConfiguration['page'] = \
+    PageTemplate(page_size=Var('paper_size'),
+                 left_margin=1*INCH,
+                 right_margin=1*INCH,
+                 top_margin=1*INCH,
+                 bottom_margin=1*INCH)
+
+BookConfiguration['title:page'] = TitlePageTemplate(base='page')
+
+BookConfiguration['front matter:page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0,
+                 header_text=None)
+
+BookConfiguration['front matter:right page'] = \
+    PageTemplate(base='front matter:page',
+                 footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                 chapter_header_text=None,
+                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                 chapter_title_height=2.5*INCH,
+                 chapter_title_flowables=front_matter_section_title_flowables)
+
+BookConfiguration['front matter:left page'] = \
+    PageTemplate(base='front matter:page',
+                 footer_text=Variable(PAGE_NUMBER))
+
+BookConfiguration['contents:page'] = \
+    PageTemplate(base='page',
+                 header_footer_distance=0)
+
+BookConfiguration['contents:right page'] = \
+    PageTemplate(base='contents:page',
+                 header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                              + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                 footer_text=(Variable(SECTION_NUMBER(2))
+                              + '.  ' + Variable(SECTION_TITLE(2))
+                              + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                 chapter_header_text=None,
+                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                 chapter_title_height=2.4*INCH,
+                 chapter_title_flowables=body_matter_chapter_title_flowables)
+
+BookConfiguration['contents:left page'] = \
+    PageTemplate(base='contents:page',
+                 header_text=(Variable(DOCUMENT_TITLE) + ', '
+                              + Variable(DOCUMENT_SUBTITLE)),
+                 footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
+                              StringField(SectionTitles, 'chapter')
+                              + ' ' + Variable(SECTION_NUMBER(1))
+                              + '.  ' + Variable(SECTION_TITLE(1))))
+
+BookConfiguration['back matter:page'] = \
+    PageTemplate(base='page',
+                 columns=2,
+                 header_footer_distance=0)
+
+BookConfiguration['back matter:right page'] = \
+    PageTemplate(base='back matter:page',
+                 header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                              + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                 footer_text=(Variable(SECTION_TITLE(1))
+                              + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                 chapter_header_text=None,
+                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                 chapter_title_height=2.5*INCH,
+                 chapter_title_flowables=front_matter_section_title_flowables)
+
+BookConfiguration['back matter:left page'] = \
+    PageTemplate(base='back matter:page',
+                 header_text=(Variable(DOCUMENT_TITLE) + ', '
+                              + Variable(DOCUMENT_SUBTITLE)),
+                 footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
+                              + Variable(SECTION_TITLE(1))))

@@ -311,7 +311,7 @@ template options.
                                           stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
-    configuration('title_page', top_margin=2*CM)
+    configuration('title:page', top_margin=2*CM)
 
     # render the document to 'my_document.pdf'
     document = Article(document_tree, configuration=configuration, backend=pdf)

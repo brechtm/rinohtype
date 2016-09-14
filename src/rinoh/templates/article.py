@@ -47,14 +47,19 @@ class ArticleConfiguration(TemplateConfiguration):
     abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
                                   'Where to place the abstract')
 
-    title_page = TitlePageTemplate(page_size=Var('paper_size'),
-                                   top_margin=8*CM)
-    page = PageTemplate(page_size=Var('paper_size'),
-                        chapter_title_flowables=None)
-
 
 class Article(DocumentTemplate):
     Configuration = ArticleConfiguration
-    parts = [TitlePartTemplate('title', Configuration.title_page),
-             ArticleFrontMatter('front matter', Configuration.page),
-             ContentsPartTemplate('contents', Configuration.page)]
+    parts = [TitlePartTemplate('title'),
+             ArticleFrontMatter('front matter'),
+             ContentsPartTemplate('contents')]
+
+
+# default page templates
+
+ArticleConfiguration['page'] = PageTemplate(page_size=Var('paper_size'),
+                                            chapter_title_flowables=None)
+ArticleConfiguration['title:page'] = TitlePageTemplate(base='page',
+                                                       top_margin=8*CM)
+ArticleConfiguration['front matter:page'] = PageTemplate(base='page')
+ArticleConfiguration['contents:page'] = PageTemplate(base='page')
