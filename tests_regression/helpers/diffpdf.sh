@@ -23,8 +23,8 @@ function diff_page {
     page_index=$(($page_number - 1))
 
     # 2+x faster
-    (cat $pdf_file1 | pdftoppm -f $page_number -singlefile -gray - | convert - miff:- ; \
-     cat $pdf_file2 | pdftoppm -f $page_number -singlefile -gray - | convert - miff:- ) | \
+    (pdftoppm -f $page_number -singlefile -gray $pdf_file1 | convert - miff:- ; \
+     pdftoppm -f $page_number -singlefile -gray $pdf_file2 | convert - miff:- ) | \
     convert - \( -clone 0-1 -compose darken -composite \) \
             -channel RGB -combine $DIFFDIR/$page_number.jpg
 
@@ -45,7 +45,7 @@ function diff_page {
 #            -highlight-color blue pdfdiff/$page_number.png
 
     if (($? > 0)); then
-        echo "Problem running pdftoppm or convert!"
+        echo "Problem running pdftoppm or convert (page $page_number)!"
         exit 1
     fi
     grayscale=$(convert pdfdiff/$page_number.jpg -colorspace HSL -channel g -separate +channel -format "%[fx:mean]" info:)
