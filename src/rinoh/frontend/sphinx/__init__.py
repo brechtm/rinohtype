@@ -259,7 +259,7 @@ class RinohBuilder(Builder):
                                   configuration=template_configuration,
                                   backend=pdf)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
-        rinoh_document.insert('indices', extra_indices, 0)
+        rinoh_document.insert('back matter', extra_indices, 0)
         rinoh_logo = config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo

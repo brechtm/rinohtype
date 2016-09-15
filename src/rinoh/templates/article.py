@@ -48,11 +48,11 @@ class ArticleConfiguration(TemplateConfiguration):
                                   'Where to place the abstract')
 
 
-class Article(DocumentTemplate):
-    Configuration = ArticleConfiguration
-    parts = [TitlePartTemplate('title'),
-             ArticleFrontMatter('front matter'),
-             ContentsPartTemplate('contents')]
+# default document part templates
+
+ArticleConfiguration['title'] = TitlePartTemplate()
+ArticleConfiguration['front matter'] = ArticleFrontMatter()
+ArticleConfiguration['contents'] = ContentsPartTemplate()
 
 
 # default page templates
@@ -63,3 +63,8 @@ ArticleConfiguration['title:page'] = TitlePageTemplate(base='page',
                                                        top_margin=8*CM)
 ArticleConfiguration['front matter:page'] = PageTemplate(base='page')
 ArticleConfiguration['contents:page'] = PageTemplate(base='page')
+
+
+class Article(DocumentTemplate):
+    Configuration = ArticleConfiguration
+    parts = ['title', 'front matter', 'contents']

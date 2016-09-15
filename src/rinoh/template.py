@@ -18,6 +18,7 @@ from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
                      BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE)
+from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
@@ -349,16 +350,20 @@ class DocumentPartTemplate(Template):
         name (:class:`str`): a descriptive name for this document part template
     """
 
-    skip_if_no_flowables = True
+    page_number_format = Option(NumberFormat, NUMBER, "The number for page "
+                                "numbers in this document part. If it is "
+                                "different from the preceding part's number "
+                                "format, numbering restarts at 1")
 
-    def __init__(self, name):
-        self.name = name
-        self.page_number_format = NUMBER
+    skip_if_no_flowables = True
 
     @property
     def doc_repr(self):
-        return ('**{}** (:class:`{}.{}`)\n'
-                .format(self.name, type(self).__module__, type(self).__name__))
+        doc = ('**{}** (:class:`{}.{}`)\n\n'\
+               .format(self.name, type(self).__module__, type(self).__name__))
+        for name, default_value in self.items():
+            doc += '  - *{}*: ``{}``\n'.format(name, default_value)
+        return doc
 
     def prepare(self, fake_container):
         for flowable in self.all_flowables(fake_container.document):
@@ -410,8 +415,8 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
             document part
     """
 
-    def __init__(self, name, flowables):
-        super().__init__(name)
+    def __init__(self, flowables, **attributes):
+        super().__init__(**attributes)
         self._flowables = flowables
 
     @property
@@ -449,8 +454,9 @@ class DocumentTemplateMeta(type):
                    if '__doc__' in cls_dict else '')
             doc += ('This template builds a document consisting of the '
                     'following parts:\n\n')
+            config = cls_dict['Configuration']
             for part in cls_dict['parts']:
-                doc += '- {}\n'.format(part.doc_repr)
+                doc += '- {}\n'.format(config._defaults[part].doc_repr)
             cls_dict['__doc__'] = doc
         return super().__new__(cls, classname, bases, cls_dict)
 
@@ -461,7 +467,7 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
     Configuration = NotImplementedAttribute()
 
     parts = NotImplementedAttribute()
-    """List of :class:`DocumentPartTemplate`\ s that make up the document."""
+    """List of document parts that make up the document."""
 
     options_class = DocumentOptions
 
@@ -475,6 +481,8 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
         super().__init__(document_tree, stylesheet, strings=strings,
                          language=language, backend=backend)
         self._to_insert = {}
+        self.part_templates = [next(self.configuration._find_templates(name))
+                               for name in self.parts]
 
     def get_page_template(self, part, right_or_left):
         part_template_name = part.template.name
@@ -495,5 +503,5 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
         class FakeContainer(object):    # TODO: clean up
             document = self
 
-        for part_template in self.parts:
+        for part_template in self.part_templates:
             part_template.prepare(FakeContainer)

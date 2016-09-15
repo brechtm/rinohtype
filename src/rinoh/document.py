@@ -203,7 +203,7 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     @property
     def number_of_pages(self):
         doc = self.document
-        for part_template, part_page_count in zip(doc.parts,
+        for part_template, part_page_count in zip(doc.part_templates,
                                                   doc.part_page_counts):
             if part_template is self.template:
                 return part_page_count.count
@@ -406,14 +406,14 @@ to the terms of the GNU Affero General Public License version 3.''')
             self.part_page_counts = prev_number_of_pages
             self.prepare()
             self.page_references = prev_page_references.copy()
-            self.part_page_counts = self._render_pages(self.parts)
+            self.part_page_counts = self._render_pages()
             while not has_converged(self.part_page_counts):
                 prev_number_of_pages = self.part_page_counts
                 prev_page_references = self.page_references.copy()
                 print('Not yet converged, rendering again...')
                 del self.backend_document
                 self.backend_document = self.backend.Document(self.CREATOR)
-                self.part_page_counts = self._render_pages(self.parts)
+                self.part_page_counts = self._render_pages()
             self.create_outlines()
             if filename:
                 self._save_cache(filename_root, self.part_page_counts,
@@ -450,7 +450,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             current_level = section.level
         self.backend_document.create_outlines(sections)
 
-    def _render_pages(self, part_templates):
+    def _render_pages(self):
         """Render the complete document once and return the number of pages
         rendered."""
         self.style_log = StyleLog(self.stylesheet)
@@ -460,7 +460,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
         part_page_counts = []
         last_number_format = None
-        for part_template in part_templates:
+        for part_template in self.part_templates:
             if part_template.page_number_format != last_number_format:
                 part_page_count = PartPageCount()
                 first_page_number = 1

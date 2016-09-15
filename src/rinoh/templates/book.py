@@ -38,7 +38,7 @@ def body_matter_chapter_title_flowables(section_id):
                     style='body matter chapter title')
 
 
-class BookBackMatter(DocumentPartTemplate):
+class BackMatterTemplate(DocumentPartTemplate):
     index_section = IndexSection()
 
     def flowables(self, document):
@@ -50,13 +50,14 @@ class BookConfiguration(TemplateConfiguration):
     stylesheet = OverrideDefault(sphinx)
 
 
-class Book(DocumentTemplate):
-    Configuration = BookConfiguration
-    parts = [TitlePartTemplate('title'),
-             FixedDocumentPartTemplate('front matter',
-                                       [TableOfContentsSection()]),
-             ContentsPartTemplate('contents'),
-             BookBackMatter('back matter')]
+# default document part templates
+
+BookConfiguration['title'] = TitlePartTemplate(page_number_format=NUMBER)
+BookConfiguration['front matter'] = FixedDocumentPartTemplate(
+                                        [TableOfContentsSection()],
+                                        page_number_format=ROMAN_LC)
+BookConfiguration['contents'] = ContentsPartTemplate(page_number_format=NUMBER)
+BookConfiguration['back matter'] = BackMatterTemplate(page_number_format=NUMBER)
 
 
 # default page templates
@@ -134,3 +135,8 @@ BookConfiguration['back matter:left page'] = \
                               + Variable(DOCUMENT_SUBTITLE)),
                  footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
                               + Variable(SECTION_TITLE(1))))
+
+
+class Book(DocumentTemplate):
+    Configuration = BookConfiguration
+    parts = ['title', 'front matter', 'contents', 'back matter']
