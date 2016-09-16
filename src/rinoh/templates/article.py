@@ -61,13 +61,3 @@ class Article(DocumentTemplate):
                                    top_margin=8*CM)
     front_matter_page = PageTemplate(base='page')
     contents_page = PageTemplate(base='page')
-
-
-# overwrite Article.Configuration with a class defined at module level
-# to allow pickling of its instances (required by Sphinx)
-
-class ArticleConfiguration(TemplateConfiguration):
-    document_template_class = Article
-
-
-Article.Configuration = ArticleConfiguration

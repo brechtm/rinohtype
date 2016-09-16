@@ -410,11 +410,12 @@ class DocumentTemplateMeta(WithAttributes):
                     cls.__doc__ += ('    - **{}** = ``{}``\n'.format(name,
                                                                      value))
                 template.template_configuration = cls
-
-        class Configuration(TemplateConfiguration):
-            document_template_class = cls
-
-        cls.Configuration = Configuration
+        cfg_class_name = classname + 'Configuration'
+        cfg_class = type(cfg_class_name, (TemplateConfiguration, ),
+                         dict(document_template_class=cls))
+        # assign this document template's configuration class a name at the
+        # module level so that Sphinx can pickle instances of it
+        cls.Configuration = globals()[cfg_class_name] = cfg_class
         return cls
 
 
