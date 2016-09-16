@@ -133,3 +133,13 @@ class Book(DocumentTemplate):
                                   + Variable(DOCUMENT_SUBTITLE)),
                      footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
                                   + Variable(SECTION_TITLE(1))))
+
+
+# overwrite Book.Configuration with a class defined at module level
+# to allow pickling of its instances (required by Sphinx)
+
+class BookConfiguration(TemplateConfiguration):
+    document_template_class = Book
+
+
+Book.Configuration = BookConfiguration
