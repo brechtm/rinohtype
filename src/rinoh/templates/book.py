@@ -46,97 +46,90 @@ class BackMatterTemplate(DocumentPartTemplate):
             yield self.index_section
 
 
-class BookConfiguration(TemplateConfiguration):
+class Book(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx)
 
-
-# default document part templates
-
-BookConfiguration['title'] = TitlePartTemplate(page_number_format=NUMBER)
-BookConfiguration['front matter'] = FixedDocumentPartTemplate(
-                                        [TableOfContentsSection()],
-                                        page_number_format=ROMAN_LC)
-BookConfiguration['contents'] = ContentsPartTemplate(page_number_format=NUMBER)
-BookConfiguration['back matter'] = BackMatterTemplate(page_number_format=NUMBER)
+    parts = ['title', 'front_matter', 'contents', 'back_matter']
 
 
-# default page templates
+    # default document part templates
+    title = TitlePartTemplate(page_number_format=NUMBER)
+    front_matter = FixedDocumentPartTemplate([TableOfContentsSection()],
+                                             page_number_format=ROMAN_LC)
+    contents = ContentsPartTemplate(page_number_format=NUMBER)
+    back_matter = BackMatterTemplate(page_number_format=NUMBER)
 
-BookConfiguration['page'] = \
-    PageTemplate(page_size=Var('paper_size'),
-                 left_margin=1*INCH,
-                 right_margin=1*INCH,
-                 top_margin=1*INCH,
-                 bottom_margin=1*INCH)
-
-BookConfiguration['title:page'] = TitlePageTemplate(base='page')
-
-BookConfiguration['front matter:page'] = \
-    PageTemplate(base='page',
-                 header_footer_distance=0,
-                 header_text=None)
-
-BookConfiguration['front matter:right page'] = \
-    PageTemplate(base='front matter:page',
-                 footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                 chapter_header_text=None,
-                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                 chapter_title_height=2.5*INCH,
-                 chapter_title_flowables=front_matter_section_title_flowables)
-
-BookConfiguration['front matter:left page'] = \
-    PageTemplate(base='front matter:page',
-                 footer_text=Variable(PAGE_NUMBER))
-
-BookConfiguration['contents:page'] = \
-    PageTemplate(base='page',
-                 header_footer_distance=0)
-
-BookConfiguration['contents:right page'] = \
-    PageTemplate(base='contents:page',
-                 header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                              + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                 footer_text=(Variable(SECTION_NUMBER(2))
-                              + '.  ' + Variable(SECTION_TITLE(2))
-                              + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                 chapter_header_text=None,
-                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                 chapter_title_height=2.4*INCH,
-                 chapter_title_flowables=body_matter_chapter_title_flowables)
-
-BookConfiguration['contents:left page'] = \
-    PageTemplate(base='contents:page',
-                 header_text=(Variable(DOCUMENT_TITLE) + ', '
-                              + Variable(DOCUMENT_SUBTITLE)),
-                 footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
-                              StringField(SectionTitles, 'chapter')
-                              + ' ' + Variable(SECTION_NUMBER(1))
-                              + '.  ' + Variable(SECTION_TITLE(1))))
-
-BookConfiguration['back matter:page'] = \
-    PageTemplate(base='page',
-                 columns=2,
-                 header_footer_distance=0)
-
-BookConfiguration['back matter:right page'] = \
-    PageTemplate(base='back matter:page',
-                 header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                              + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                 footer_text=(Variable(SECTION_TITLE(1))
-                              + Tab() + Tab() + Variable(PAGE_NUMBER)),
-                 chapter_header_text=None,
-                 chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
-                 chapter_title_height=2.5*INCH,
-                 chapter_title_flowables=front_matter_section_title_flowables)
-
-BookConfiguration['back matter:left page'] = \
-    PageTemplate(base='back matter:page',
-                 header_text=(Variable(DOCUMENT_TITLE) + ', '
-                              + Variable(DOCUMENT_SUBTITLE)),
-                 footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
-                              + Variable(SECTION_TITLE(1))))
-
-
-class Book(DocumentTemplate):
-    Configuration = BookConfiguration
-    parts = ['title', 'front matter', 'contents', 'back matter']
+    # default page templates
+    page =  \
+        PageTemplate(page_size=Var('paper_size'),
+                     left_margin=1*INCH,
+                     right_margin=1*INCH,
+                     top_margin=1*INCH,
+                     bottom_margin=1*INCH)
+    
+    title_page =  TitlePageTemplate(base='page')
+    
+    front_matter_page =  \
+        PageTemplate(base='page',
+                     header_footer_distance=0,
+                     header_text=None)
+    
+    front_matter_right_page =  \
+        PageTemplate(base='front_matter_page',
+                     footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.5*INCH,
+                     chapter_title_flowables=front_matter_section_title_flowables)
+    
+    front_matter_left_page =  \
+        PageTemplate(base='front_matter_page',
+                     footer_text=Variable(PAGE_NUMBER))
+    
+    contents_page =  \
+        PageTemplate(base='page',
+                     header_footer_distance=0)
+    
+    contents_right_page =  \
+        PageTemplate(base='contents_page',
+                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(SECTION_NUMBER(2))
+                                  + '.  ' + Variable(SECTION_TITLE(2))
+                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.4*INCH,
+                     chapter_title_flowables=body_matter_chapter_title_flowables)
+    
+    contents_left_page = \
+        PageTemplate(base='contents_page',
+                     header_text=(Variable(DOCUMENT_TITLE) + ', '
+                                  + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
+                                  StringField(SectionTitles, 'chapter')
+                                  + ' ' + Variable(SECTION_NUMBER(1))
+                                  + '.  ' + Variable(SECTION_TITLE(1))))
+    
+    back_matter_page = \
+        PageTemplate(base='page',
+                     columns=2,
+                     header_footer_distance=0)
+    
+    back_matter_right_page = \
+        PageTemplate(base='back_matter_page',
+                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
+                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(SECTION_TITLE(1))
+                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     chapter_header_text=None,
+                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_title_height=2.5*INCH,
+                     chapter_title_flowables=front_matter_section_title_flowables)
+    
+    back_matter_left_page = \
+        PageTemplate(base='back_matter_page',
+                     header_text=(Variable(DOCUMENT_TITLE) + ', '
+                                  + Variable(DOCUMENT_SUBTITLE)),
+                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
+                                  + Variable(SECTION_TITLE(1))))

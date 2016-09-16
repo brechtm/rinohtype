@@ -33,38 +33,31 @@ class ArticleFrontMatter(DocumentPartTemplate):
 
     def flowables(self, document):
         meta = document.metadata
-        abstract_loc = document.configuration.get_option('abstract_location')
+        abstract_loc = document.get_option('abstract_location')
         if 'abstract' in meta and abstract_loc == FRONT_MATTER:
             yield meta['abstract']
-        if document.configuration.get_option('table_of_contents'):
+        if document.get_option('table_of_contents'):
             yield self.toc_section
 
 
-class ArticleConfiguration(TemplateConfiguration):
+class Article(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx_article)
     table_of_contents = Attribute(Bool, True,
                                   'Show or hide the table of contents')
     abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
                                   'Where to place the abstract')
 
+    parts = ['title', 'front_matter', 'contents']
 
-# default document part templates
+    # default document part templates
+    title = TitlePartTemplate()
+    front_matter = ArticleFrontMatter()
+    contents = ContentsPartTemplate()
 
-ArticleConfiguration['title'] = TitlePartTemplate()
-ArticleConfiguration['front matter'] = ArticleFrontMatter()
-ArticleConfiguration['contents'] = ContentsPartTemplate()
-
-
-# default page templates
-
-ArticleConfiguration['page'] = PageTemplate(page_size=Var('paper_size'),
-                                            chapter_title_flowables=None)
-ArticleConfiguration['title:page'] = TitlePageTemplate(base='page',
-                                                       top_margin=8*CM)
-ArticleConfiguration['front matter:page'] = PageTemplate(base='page')
-ArticleConfiguration['contents:page'] = PageTemplate(base='page')
-
-
-class Article(DocumentTemplate):
-    Configuration = ArticleConfiguration
-    parts = ['title', 'front matter', 'contents']
+    # default page templates
+    page = PageTemplate(page_size=Var('paper_size'),
+                        chapter_title_flowables=None)
+    title_page = TitlePageTemplate(base='page',
+                                   top_margin=8*CM)
+    front_matter_page = PageTemplate(base='page')
+    contents_page = PageTemplate(base='page')

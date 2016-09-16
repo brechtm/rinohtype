@@ -15,7 +15,7 @@ if __name__ == '__main__':
                                           abstract_location='title',
                                           table_of_contents=False,
                                           strings=strings)
-    configuration('title:page', top_margin=2*CM)
+    configuration('title_page', top_margin=2*CM)
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()

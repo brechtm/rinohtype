@@ -234,7 +234,7 @@ class RinohBuilder(Builder):
         if isinstance(self.config.rinoh_stylesheet, str):
             stylesheet = StyleSheet.from_string(self.config.rinoh_stylesheet)
         elif self.config.rinoh_stylesheet is None:
-            stylesheet = template.Configuration.stylesheet.default_value
+            stylesheet = template.stylesheet.default_value
         else:
             stylesheet = self.config.rinoh_stylesheet
         if config.pygments_style is not None:
@@ -259,7 +259,7 @@ class RinohBuilder(Builder):
                                   configuration=template_configuration,
                                   backend=pdf)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
-        rinoh_document.insert('back matter', extra_indices, 0)
+        rinoh_document.insert('back_matter', extra_indices, 0)
         rinoh_logo = config.rinoh_logo
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo

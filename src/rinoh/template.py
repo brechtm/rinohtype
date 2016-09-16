@@ -8,6 +8,8 @@
 
 from collections import OrderedDict
 
+import re
+
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes)
 from .dimension import DimensionBase, CM, PT
@@ -47,18 +49,17 @@ class DefaultOptionException(Exception):
 
 class Templated(object):
     def get_option(self, option, document):
-        configuration = document.configuration
-        return configuration.get_template_option(self.template_name, option)
+        return document.get_template_option(self.template_name, option)
 
 
 class Template(AttributesDictionary, NamedDescriptor):
-    def get_value(self, attribute, template_configuration):
+    def get_value(self, attribute, document):
         try:
-            return super().get_value(attribute, template_configuration)
+            return super().get_value(attribute, document)
         except KeyError:
             bases = []
             if isinstance(self.base, str):
-                iter = template_configuration._find_templates(self.base)
+                iter = document._find_templates(self.base)
                 try:
                     bases.extend(iter)
                 except KeyError:
@@ -68,86 +69,9 @@ class Template(AttributesDictionary, NamedDescriptor):
             elif self.base is not None:
                 bases.append(self.base)
             for base_template in bases:
-                return base_template.get_value(attribute, template_configuration)
+                return base_template.get_value(attribute, document)
             else:
                 raise KeyError
-
-
-class TemplateConfigurationMeta(WithAttributes):
-    def __new__(mcls, classname, bases, cls_dict):
-        cls_dict['_defaults'] = OrderedDict()
-        cls = super().__new__(mcls, classname, bases, cls_dict)
-        page_templates = []
-        for name, attr in cls_dict.items():
-            if isinstance(attr, Template):
-                attr_type = type(attr)
-                template_doc = ('  {}: Defaults for :class:`{}.{}`:\n\n'
-                                .format(name, attr_type.__module__,
-                                        attr_type.__name__))
-                for name, value in attr.items():
-                    if isinstance(value, StyledText):
-                        value = "'" + (str(value).replace('\n', '\\n')
-                                                 .replace('\t', '\\t')) + "'"
-                    template_doc += ('    - **{}** = ``{}``\n'.format(name,
-                                                                      value))
-                page_templates.append(template_doc)
-                attr.template_configuration = cls
-        if page_templates:
-            cls.__doc__ += '\n\nAttributes:\n\n'
-            cls.__doc__ += '\n'.join(page_templates)
-        return cls
-
-    def __setitem__(cls, key, value):
-        value.name = key
-        cls._defaults[key] = value
-
-
-class TemplateConfiguration(RuleSet, AttributesDictionary,
-                            metaclass=TemplateConfigurationMeta):
-    language = Attribute(Language, EN, 'The main language of the document')
-    strings = Attribute(Strings, None, 'Strings to override standard element '
-                                       'names')
-    stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
-                                               'styling document elements')
-    paper_size = Attribute(Paper, A4, 'The default paper size')
-
-    def _find_templates(self, name):
-        """Yields all :class:`Template`\ s in the template hierarchy:
-
-        - template matching `name` in this TemplateConfiguration
-        - templates in base TemplateConfigurations (recursively)
-        - the default template"""
-        for template in self._find_templates_recursive(name):
-            yield template
-        yield self._defaults[name]   # the default template
-
-    def _find_templates_recursive(self, name):
-        if name in self:
-            yield self[name]
-        if self.base:
-            for template in self.base._find_templates_recursive(name):
-                yield template
-
-    def get_option(self, option_name):
-        try:
-            return self[option_name]
-        except KeyError:
-            return getattr(type(self), option_name).default_value
-
-    def get_template_option(self, template_name, option_name):
-        for template in self._find_templates(template_name):
-            try:
-                return template.get_value(option_name, self)
-            except KeyError:
-                continue
-        return template._get_default(option_name)  # FIXME: possibly never reached
-
-    def get_entry_class(self, name):
-        template = next(self._find_templates(name))
-        return type(template)
-
-    def _get_variable(self, name, accepted_type):
-        return self.get_option(name)
 
 
 class PageTemplateBase(Template):
@@ -322,12 +246,11 @@ class TitlePage(PageBase):
         if 'author' in metadata and self.get_option('show_author', document):
             self.title << Paragraph(metadata['author'],
                                     style='title page author')
-        config = self.document.configuration
         try:
-            abstract_location = config.get_option('abstract_location')
+            abstract_location = self.document.get_option('abstract_location')
             if 'abstract' in metadata and abstract_location == TITLE:
                 self.title << metadata['abstract']
-        except AttributeError:
+        except KeyError:
             pass
         if self.get_option('show_date', document):
             date = metadata['date']
@@ -446,25 +369,65 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
-class DocumentTemplateMeta(type):
-    def __new__(cls, classname, bases, cls_dict):
-        if 'parts' in cls_dict and not isinstance(cls_dict['parts'],
-                                                  NotImplementedAttribute):
-            doc = (cls_dict['__doc__'] + '\n\n'
-                   if '__doc__' in cls_dict else '')
-            doc += ('This template builds a document consisting of the '
-                    'following parts:\n\n')
-            config = cls_dict['Configuration']
-            for part in cls_dict['parts']:
-                doc += '- {}\n'.format(config._defaults[part].doc_repr)
-            cls_dict['__doc__'] = doc
-        return super().__new__(cls, classname, bases, cls_dict)
+class TemplateConfiguration(RuleSet):
+    def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
+        if name in self:
+            yield self[name]
+        if self.base:
+            for template in self.base._find_templates_recursive(name):
+                yield template
+
+    def _get_variable(self, name, accepted_type):
+        return self[name]
+
+    def get_entry_class(self, name):
+        try:
+            template = self.document_template_class.get_default_template(name)
+        except KeyError:
+            raise ValueError("'{}' is not a template used used by {}"
+                             .format(name, self.document_template_class))
+        return type(template)
 
 
-class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
+class DocumentTemplateMeta(WithAttributes):
+    def __new__(mcls, classname, bases, cls_dict):
+        templates = cls_dict['_templates'] = OrderedDict()
+        cls = super().__new__(mcls, classname, bases, cls_dict)
+        for name, attr in cls_dict.items():
+            if isinstance(attr, Template):
+                templates[name] = attr
+        if templates:
+            cls.__doc__ += '\n\nAttributes:\n\n'
+            for name, template in templates.items():
+                attr_type = type(template)
+                cls.__doc__ += ('  {}: Defaults for :class:`{}.{}`:\n\n'
+                                .format(name, attr_type.__module__,
+                                        attr_type.__name__))
+                for name, value in template.items():
+                    if isinstance(value, StyledText):
+                        value = "'" + (str(value).replace('\n', '\\n')
+                                       .replace('\t', '\\t')) + "'"
+                    cls.__doc__ += ('    - **{}** = ``{}``\n'.format(name,
+                                                                     value))
+                template.template_configuration = cls
+
+        class Configuration(TemplateConfiguration):
+            document_template_class = cls
+
+        cls.Configuration = Configuration
+        return cls
+
+
+class DocumentTemplate(Document, AttributesDictionary, Resource,
+                       metaclass=DocumentTemplateMeta):
     resource_type = 'template'
 
-    Configuration = NotImplementedAttribute()
+    language = Attribute(Language, EN, 'The main language of the document')
+    strings = Attribute(Strings, None, 'Strings to override standard element '
+                                       'names')
+    stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
+                                               'styling document elements')
+    paper_size = Attribute(Paper, A4, 'The default paper size')
 
     parts = NotImplementedAttribute()
     """List of document parts that make up the document."""
@@ -475,25 +438,69 @@ class DocumentTemplate(Document, Resource, metaclass=DocumentTemplateMeta):
                  backend=None):
         self.configuration = configuration or self.Configuration()
         self.options = options or self.options_class()
-        stylesheet = self.configuration.get_option('stylesheet')
-        language = self.configuration.get_option('language')
-        strings = self.configuration.get_option('strings')
+        stylesheet = self.get_option('stylesheet')
+        language = self.get_option('language')
+        strings = self.get_option('strings')
         super().__init__(document_tree, stylesheet, strings=strings,
                          language=language, backend=backend)
-        self._to_insert = {}
-        self.part_templates = [next(self.configuration._find_templates(name))
+        self.part_templates = [next(self._find_templates(name))
                                for name in self.parts]
+        self._defaults = OrderedDict()
+        self._to_insert = {}
+
+    def _find_templates(self, name):
+        """Yields all :class:`Template`\ s in the template hierarchy:
+
+        - template matching `name` in this TemplateConfiguration
+        - templates in base TemplateConfigurations (recursively)
+        - the default template"""
+        for template in self.configuration._find_templates_recursive(name):
+            yield template
+        yield self.get_default_template(name)
+
+    RE_PAGE = re.compile('^(.*)_(right|left)_page$')
+
+    @classmethod
+    def get_default_template(cls, template_name):
+        try:
+            template = cls._templates[template_name]
+        except KeyError:
+            m = cls.RE_PAGE.match(template_name)
+            if m:
+                template = cls._templates[m.group(1) + '_page']
+            else:
+                raise
+        return template
+
+    def get_variable(self, name, accepted_type):
+        try:
+            return self.configuration._get_variable(name, accepted_type)
+        except KeyError:
+            return self._get_default(name)
+
+    def get_option(self, option_name):
+        try:
+            return self.configuration[option_name]
+        except KeyError:
+            return self._get_default(option_name)
+
+    def get_template_option(self, template_name, option_name):
+        for template in self._find_templates(template_name):
+            try:
+                return template.get_value(option_name, self)
+            except KeyError:
+                continue
+        return template._get_default(option_name)
+
+    def get_entry_class(self, name):
+        template = next(self._find_templates(name))
+        return type(template)
 
     def get_page_template(self, part, right_or_left):
         part_template_name = part.template.name
-        label = '{} page'.format(right_or_left) if right_or_left else 'page'
-        find_templates = self.configuration._find_templates
-        try:
-            templates = find_templates(part_template_name + ':' + label)
-            return next(templates)
-        except KeyError:
-            templates = find_templates(part_template_name + ':page')
-            return next(templates)
+        label = '{}_page'.format(right_or_left) if right_or_left else 'page'
+        templates = self._find_templates(part_template_name + '_' + label)
+        return next(templates)
 
     def insert(self, document_part_name, flowable, position):
         docpart_flowables = self._to_insert.setdefault(document_part_name, [])
