@@ -669,16 +669,12 @@ class StyleSheet(RuleSet, Resource):
             warn('Unsupported options passed to stylesheet: {}'
                  .format(', '.join(user_options.keys())))
         self.user_options = user_options
-        self.variables = {}
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
 
     def get_entry_class(self, name):
         return self.get_styled(name).style_class
-
-    def _get_variable(self, name, accepted_type):
-        return self.variables[name]
 
     def get_selector(self, name):
         try:
@@ -733,9 +729,6 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
     main_section = 'STYLESHEET'
 
     RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
-
-    def _get_variable(self, name, accepted_type):
-        return accepted_type.from_string(self.variables[name])
 
     def process_section(self, style_name, selector, items):
         if selector:

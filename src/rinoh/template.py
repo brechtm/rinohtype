@@ -378,9 +378,6 @@ class TemplateConfiguration(RuleSet):
             for template in self.base._find_templates_recursive(name):
                 yield template
 
-    def _get_variable(self, name, accepted_type):
-        return self[name]
-
     def get_entry_class(self, name):
         try:
             template = self.document_template_class.get_default_template(name)
