@@ -236,6 +236,9 @@ DOCUMENT_TITLE = FieldType('document title')
 DOCUMENT_SUBTITLE = FieldType('document subtitle')
 
 
+FIELDS = (PAGE_NUMBER, NUMBER_OF_PAGES, DOCUMENT_TITLE, DOCUMENT_SUBTITLE)
+
+
 class SectionFieldType(FieldType):
     ref_type = None
 

@@ -191,7 +191,20 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        return SingleStyledText(text.format(**NAME2CHAR), style=style)
+        from rinoh.reference import FIELDS, Variable
+
+        fields = {'{' + field.name.replace(' ', '_') + '}': field
+                  for field in FIELDS}
+        RE_FIELDS = re.compile('(' + '|'.join(fields) + ')', re.IGNORECASE)
+
+        items = []
+        for part in (prt for prt in RE_FIELDS.split(text) if prt):
+            try:
+                item = Variable(fields[part.lower()])
+            except KeyError:
+                item = part.format(**NAME2CHAR)
+            items.append(item)
+        return MixedStyledText(items, style=style)
 
     def __str__(self):
         return self.to_string(None)

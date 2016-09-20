@@ -42,8 +42,8 @@ base=page
 
 [contents_right_page]
 base=contents_page
-;header_text='\t\t{DOCUMENT_TITLE}, {DOCUMENT_SUBTITLE}'
+header_text='\t\t{DOCUMENT_TITLE}   {NUMBER_OF_PAGES}'
 
 [contents_left_page]
 base=contents_page
-;header_text='{DOCUMENT_TITLE}, {DOCUMENT_SUBTITLE}'
+header_text='{PAGE_NUMBER}   {DOCUMENT_SUBTITLE}'
