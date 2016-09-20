@@ -1,0 +1,49 @@
+[TEMPLATE_CONFIGURATION]
+name=
+template=article
+description=
+
+[GENERAL]
+parts =
+    title
+    front_matter
+    contents
+stylesheet=sphinx_article
+;strings=
+table_of_contents=false
+abstract_location=title
+
+[VARIABLES]
+paper_size=A4
+
+[title]
+page_number_format=number
+
+[front_matter]
+page_number_format=lowercase roman
+
+[contents]
+page_number_format=number
+
+[page]
+page_size=$(paper_size)
+left_margin=1in
+right_margin=1in
+top_margin=1in
+bottom_margin=1in
+;chapter_title_flowables=none
+
+[title_page]
+base=page
+top_margin=2cm
+
+[front_matter_page]
+base=page
+
+[contents_right_page]
+base=contents_page
+;header_text='\t\t{DOCUMENT_TITLE}, {DOCUMENT_SUBTITLE}'
+
+[contents_left_page]
+base=contents_page
+;header_text='{DOCUMENT_TITLE}, {DOCUMENT_SUBTITLE}'

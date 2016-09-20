@@ -11,12 +11,7 @@ if __name__ == '__main__':
     strings = Strings(AdmonitionTitles(important='IMPORTANT:',
                                        tip='TIP:'))
 
-    configuration = Article.Configuration('test',
-                                          stylesheet=sphinx_article,
-                                          abstract_location='title',
-                                          table_of_contents=False,
-                                          strings=strings)
-    configuration('title_page', top_margin=2*CM)
+    configuration = Article.ConfigurationFile('article.rtt')
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
