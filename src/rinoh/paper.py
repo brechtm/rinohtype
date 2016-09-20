@@ -35,6 +35,14 @@ class Paper(AttributeType):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def parse_string(cls, string):
+        for paper in globals().values():
+            if isinstance(paper, cls) and paper.name.lower() == string.lower():
+                return paper
+        raise ValueError("'{}' is not a known {} format"
+                         .format(string, cls.__name__))
+
 
 # International (DIN 476 / ISO 216)
 
