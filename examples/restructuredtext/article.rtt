@@ -40,10 +40,13 @@ top_margin=2cm
 [front_matter_page]
 base=page
 
+[contents_page]
+footer_text = '\t{PAGE_NUMBER} of {NUMBER_OF_PAGES}'
+
 [contents_right_page]
 base=contents_page
-header_text='\t\t{DOCUMENT_TITLE}   {NUMBER_OF_PAGES}'
+header_text='\t\t{SECTION_TITLE(1)}  {SECTION_NUMBER(1)}'
 
 [contents_left_page]
 base=contents_page
-header_text='{PAGE_NUMBER}   {DOCUMENT_SUBTITLE}'
+header_text='{SECTION_NUMBER(2)}  {SECTION_TITLE(2)}'

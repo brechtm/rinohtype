@@ -16,6 +16,7 @@ from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
                    StyledText, MixedStyledText)
+from .util import NotImplementedAttribute, all_subclasses
 
 
 __all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
@@ -219,15 +220,20 @@ class NoteMarkerWithNote(DirectReference, NoteMarkerBase):
         super().prepare(flowable_target)
 
 
-class FieldType(object):
+class FieldTypeBase(object):
+    name = NotImplementedAttribute()
+
+    def __str__(self):
+        return self.name.upper().replace(' ', '_')
+
+
+class FieldType(FieldTypeBase):
     def __init__(self, name):
+        super().__init__()
         self.name = name
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
-
-    def __str__(self):
-        return self.name.upper().replace(' ', '_')
 
 
 PAGE_NUMBER = FieldType('page number')
@@ -239,11 +245,11 @@ DOCUMENT_SUBTITLE = FieldType('document subtitle')
 FIELDS = (PAGE_NUMBER, NUMBER_OF_PAGES, DOCUMENT_TITLE, DOCUMENT_SUBTITLE)
 
 
-class SectionFieldType(FieldType):
+class SectionFieldType(FieldTypeBase):
     ref_type = None
 
-    def __init__(self, name, level):
-        super().__init__(name)
+    def __init__(self, level):
+        super().__init__()
         self.level = level
 
     def __repr__(self):
@@ -255,17 +261,16 @@ class SectionFieldType(FieldType):
 
 
 class SECTION_NUMBER(SectionFieldType):
+    name = 'section number'
     ref_type = NUMBER
-
-    def __init__(self, level):
-        super().__init__('section number', level)
 
 
 class SECTION_TITLE(SectionFieldType):
+    name = 'section title'
     ref_type = TITLE
 
-    def __init__(self, level):
-        super().__init__('section title', level)
+
+SECTION_FIELDS = tuple(cls for cls in all_subclasses(SectionFieldType))
 
 
 class Variable(MixedStyledTextBase):

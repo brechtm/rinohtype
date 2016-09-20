@@ -39,7 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from itertools import tee
+from itertools import tee, chain
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -191,19 +191,35 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        from rinoh.reference import FIELDS, Variable
+        from rinoh.reference import FIELDS, SECTION_FIELDS, Variable
 
-        fields = {'{' + field.name.replace(' ', '_') + '}': field
-                  for field in FIELDS}
-        RE_FIELDS = re.compile('(' + '|'.join(fields) + ')', re.IGNORECASE)
+        fields = {str(field): field for field in FIELDS}
+        section_field_names = {cls.name.upper().replace(' ', '_'): cls
+                               for cls in SECTION_FIELDS}
+        section_field_patterns = {r'{}\(\d+\)'.format(name): cls
+                                  for name, cls in section_field_names.items()}
+        field_pattern = '|'.join(chain(fields, section_field_patterns))
+        re_all = re.compile('{(' + field_pattern + ')}', re.IGNORECASE)
+        re_section = re.compile('(' + '|'.join(section_field_names) + ')'
+                                + '\((\d+)\)', re.IGNORECASE)
+
+        def handle_field(string):
+            try:
+                field = fields[string.upper()]
+            except KeyError:
+                m = re_section.match(string)
+                section_field, level = m.groups()
+                field = section_field_names[section_field](int(level))
+            return Variable(field)
 
         items = []
-        for part in (prt for prt in RE_FIELDS.split(text) if prt):
+        parts = iter(re_all.split(text))
+        while True:
             try:
-                item = Variable(fields[part.lower()])
-            except KeyError:
-                item = part.format(**NAME2CHAR)
-            items.append(item)
+                items.append(next(parts).format(**NAME2CHAR))
+                items.append(handle_field(next(parts)))
+            except StopIteration:
+                break
         return MixedStyledText(items, style=style)
 
     def __str__(self):
