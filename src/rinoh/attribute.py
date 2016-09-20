@@ -280,7 +280,7 @@ class RuleSetFile(RuleSet):
 
     def __init__(self, filename, base=None, **kwargs):
         config = ConfigParser(default_section=None, delimiters=('=',),
-                              comment_prefixes=('#', ), interpolation=None)
+                              interpolation=None)
         with open(filename) as file:
             config.read_file(file)
         options = dict(config[self.main_section]
