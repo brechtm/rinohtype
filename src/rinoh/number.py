@@ -143,6 +143,3 @@ class NumberedParagraph(ParagraphBase, Label):
 
     def text(self, container):
         raise NotImplementedError
-
-
-from .reference import NUMBER

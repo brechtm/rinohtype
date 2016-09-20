@@ -8,6 +8,8 @@
 
 import re
 
+from itertools import chain, zip_longest
+
 from .annotation import NamedDestinationLink, AnnotatedSpan
 from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
@@ -16,7 +18,7 @@ from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
                    StyledText, MixedStyledText)
-from .util import NotImplementedAttribute, all_subclasses
+from .util import NotImplementedAttribute
 
 
 __all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
@@ -228,12 +230,19 @@ class FieldTypeBase(object):
 
 
 class FieldType(FieldTypeBase):
+    all = {}
+
     def __init__(self, name):
         super().__init__()
         self.name = name
+        self.all[str(self)] = self
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
+
+    @classmethod
+    def from_string(cls, string):
+        return cls.all[string.upper()]
 
 
 PAGE_NUMBER = FieldType('page number')
@@ -242,22 +251,41 @@ DOCUMENT_TITLE = FieldType('document title')
 DOCUMENT_SUBTITLE = FieldType('document subtitle')
 
 
-FIELDS = (PAGE_NUMBER, NUMBER_OF_PAGES, DOCUMENT_TITLE, DOCUMENT_SUBTITLE)
+class SectionFieldTypeMeta(type):
+    def __new__(metacls, classname, bases, cls_dict):
+        cls = super().__new__(metacls, classname, bases, cls_dict)
+        try:
+            SectionFieldType.all[str(cls)] = cls
+        except NameError:
+            pass
+        return cls
+
+    def __str__(cls):
+        return cls.name.upper().replace(' ', '_')
 
 
-class SectionFieldType(FieldTypeBase):
+class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
     ref_type = None
+    all = {}
 
     def __init__(self, level):
         super().__init__()
         self.level = level
 
     def __repr__(self):
-        return "{}('{}', {})".format(self.__class__.__name__, self.name,
+        return "{}('{}', {})".format(type(self).__name__, self.name,
                                      self.level)
 
     def __str__(self):
         return '{}({})'.format(super().__str__(), self.level)
+
+    REGEX = re.compile('(?P<name>[a-z_]+)\((?P<level>\d+)\)', re.IGNORECASE)
+
+    @classmethod
+    def from_string(cls, string):
+        m = cls.REGEX.match(string)
+        section_field, level = m.group('name', 'level')
+        return cls.all[section_field.upper()](int(level))
 
 
 class SECTION_NUMBER(SectionFieldType):
@@ -270,9 +298,6 @@ class SECTION_TITLE(SectionFieldType):
     ref_type = TITLE
 
 
-SECTION_FIELDS = tuple(cls for cls in all_subclasses(SectionFieldType))
-
-
 class Variable(MixedStyledTextBase):
     def __init__(self, type, style=None):
         super().__init__(style=style)
@@ -280,6 +305,14 @@ class Variable(MixedStyledTextBase):
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
+
+    @classmethod
+    def parse_string(cls, string):
+        try:
+            field = FieldType.from_string(string)
+        except KeyError:
+            field = SectionFieldType.from_string(string)
+        return cls(field)
 
     @property
     def items(self):
@@ -308,3 +341,17 @@ class Variable(MixedStyledTextBase):
         else:
             text = '?'
         return MixedStyledText(text, parent=self)
+
+    RE_VARIABLE = re.compile('{(' + '|'.join(chain(FieldType.all,
+                                                   (r'{}\(\d+\)'.format(name)
+                                                    for name
+                                                    in SectionFieldType.all)))
+                             + ')}', re.IGNORECASE)
+
+    @classmethod
+    def substitute(cls, text, substitute_others):
+        parts = iter(cls.RE_VARIABLE.split(text))
+        for other_text, variable in zip_longest(parts, parts):
+            yield substitute_others(other_text)
+            if variable is not None:
+                yield cls.parse_string(variable)

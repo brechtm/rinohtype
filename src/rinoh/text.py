@@ -39,7 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from itertools import tee, chain
+from itertools import tee
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -115,7 +115,8 @@ class CharacterLike(Styled):
         raise NotImplementedError
 
 
-NAME2CHAR = {name: chr(codepoint) for name, codepoint in name2codepoint.items()}
+NAME2CHAR = {name: chr(codepoint)
+             for name, codepoint in name2codepoint.items()}
 
 
 class StyledText(Styled, AcceptNoneAttributeType):
@@ -191,35 +192,10 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        from rinoh.reference import FIELDS, SECTION_FIELDS, Variable
+        def substitute_html_entities(string):
+            return string.format(**NAME2CHAR)
 
-        fields = {str(field): field for field in FIELDS}
-        section_field_names = {cls.name.upper().replace(' ', '_'): cls
-                               for cls in SECTION_FIELDS}
-        section_field_patterns = {r'{}\(\d+\)'.format(name): cls
-                                  for name, cls in section_field_names.items()}
-        field_pattern = '|'.join(chain(fields, section_field_patterns))
-        re_all = re.compile('{(' + field_pattern + ')}', re.IGNORECASE)
-        re_section = re.compile('(' + '|'.join(section_field_names) + ')'
-                                + '\((\d+)\)', re.IGNORECASE)
-
-        def handle_field(string):
-            try:
-                field = fields[string.upper()]
-            except KeyError:
-                m = re_section.match(string)
-                section_field, level = m.groups()
-                field = section_field_names[section_field](int(level))
-            return Variable(field)
-
-        items = []
-        parts = iter(re_all.split(text))
-        while True:
-            try:
-                items.append(next(parts).format(**NAME2CHAR))
-                items.append(handle_field(next(parts)))
-            except StopIteration:
-                break
+        items = Variable.substitute(text, substitute_html_entities)
         return MixedStyledText(items, style=style)
 
     def __str__(self):
@@ -629,3 +605,6 @@ class Subscript(MixedStyledText):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
         super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent)
+
+
+from .reference import Variable
