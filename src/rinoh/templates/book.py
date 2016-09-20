@@ -49,8 +49,8 @@ class BackMatterTemplate(DocumentPartTemplate):
 class Book(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx)
 
-    parts = ['title', 'front_matter', 'contents', 'back_matter']
-
+    parts = OverrideDefault(['title', 'front_matter',
+                             'contents', 'back_matter'])
 
     # default document part templates
     title = TitlePartTemplate(page_number_format=NUMBER)

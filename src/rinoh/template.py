@@ -12,7 +12,7 @@ import re
 
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes,
-                        RuleSetFile)
+                        RuleSetFile, AttributeType)
 from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PORTRAIT
 from .element import create_destination
@@ -428,6 +428,22 @@ class DocumentTemplateMeta(WithAttributes):
         return cls
 
 
+class PartsList(AttributeType, list):
+    """Stores the names of the document part template making up a document"""
+    def __init__(self, *parts):
+        super().__init__(parts)
+
+    @classmethod
+    def check_type(cls, value):
+        if not (super().check_type(cls, value) or isinstance(value, list)):
+            return False
+        return all(isinstance(item, str) for item in value)
+
+    @classmethod
+    def parse_string(cls, string):
+        return cls(*string.split())
+
+
 class DocumentTemplate(Document, AttributesDictionary, Resource,
                        metaclass=DocumentTemplateMeta):
     resource_type = 'template'
@@ -439,8 +455,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
                                                'styling document elements')
     paper_size = Attribute(Paper, A4, 'The default paper size')
 
-    parts = NotImplementedAttribute()
-    """List of document parts that make up the document."""
+    parts = Attribute(PartsList, [], 'The parts making up this document')
 
     options_class = DocumentOptions
 
@@ -453,8 +468,9 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         strings = self.get_option('strings')
         super().__init__(document_tree, stylesheet, strings=strings,
                          language=language, backend=backend)
+        parts = self.get_option('parts')
         self.part_templates = [next(self._find_templates(name))
-                               for name in self.parts]
+                               for name in parts]
         self._defaults = OrderedDict()
         self._to_insert = {}
 

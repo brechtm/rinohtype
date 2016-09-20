@@ -47,7 +47,7 @@ class Article(DocumentTemplate):
     abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
                                   'Where to place the abstract')
 
-    parts = ['title', 'front_matter', 'contents']
+    parts = OverrideDefault(['title', 'front_matter', 'contents'])
 
     # default document part templates
     title = TitlePartTemplate()
