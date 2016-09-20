@@ -234,8 +234,9 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
 
 
 class RuleSet(OrderedDict):
-    def __init__(self, base=None, **kwargs):
+    def __init__(self, name, base=None, **kwargs):
         super().__init__(**kwargs)
+        self.name = name
         self.base = base
 
     def __getitem__(self, name):

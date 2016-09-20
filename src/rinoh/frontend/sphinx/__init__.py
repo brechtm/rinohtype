@@ -241,7 +241,8 @@ class RinohBuilder(Builder):
             stylesheet = pygments_style_to_stylesheet(config.pygments_style,
                                                       stylesheet)
         paper_size = config.rinoh_paper_size
-        base_config = template.Configuration(paper_size=paper_size,
+        base_config = template.Configuration('Sphinx base',
+                                             paper_size=paper_size,
                                              stylesheet=stylesheet)
         if config.rinoh_template_configuration is not None:
             template_configuration = config.rinoh_template_configuration

@@ -661,8 +661,7 @@ class StyleSheet(RuleSet, Resource):
         from .highlight import pygments_style_to_stylesheet
         if pygments_style:
             base = pygments_style_to_stylesheet(pygments_style, base)
-        super().__init__(base)
-        self.name = name
+        super().__init__(name, base=base)
         self.description = description
         self.matcher = matcher if matcher is not None else StyledMatcher()
         self.matcher.check_validity()

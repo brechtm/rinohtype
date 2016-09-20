@@ -25,7 +25,8 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 def test_rstdemo(tmpdir):
-    configuration = Article.Configuration(stylesheet=sphinx_base14,
+    configuration = Article.Configuration('custom article',
+                                          stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
     configuration('title_page', top_margin=2*CM)

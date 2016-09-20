@@ -33,7 +33,8 @@ def test_sphinxdocs(tmpdir):
                                        tip='Tip:',
                                        warning='Warning:',
                                        seealso='See also:'))
-    template_configuration = Book.Configuration(strings=strings)
+    template_configuration = Book.Configuration('Sphinx test',
+                                                strings=strings)
     template_configuration('title_page', show_date=False)
 
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,

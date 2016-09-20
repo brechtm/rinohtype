@@ -11,7 +11,8 @@ if __name__ == '__main__':
     strings = Strings(AdmonitionTitles(important='IMPORTANT:',
                                        tip='TIP:'))
 
-    configuration = Article.Configuration(stylesheet=sphinx_article,
+    configuration = Article.Configuration('test',
+                                          stylesheet=sphinx_article,
                                           abstract_location='title',
                                           table_of_contents=False,
                                           strings=strings)
