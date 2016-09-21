@@ -18,7 +18,7 @@ from .number import NumberedParagraph
 from .paragraph import ParagraphBase, Paragraph
 from .reference import ReferenceBase, Reference, DirectReference
 from .reference import ReferenceField, ReferenceText, ReferencingParagraph
-from .reference import Variable
+from .reference import Field
 from .reference import Note, RegisterNote
 from .reference import NoteMarkerBase, NoteMarkerByID, NoteMarkerWithNote
 from .structure import Header, Footer

@@ -24,7 +24,7 @@ from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
 from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
-from .reference import (Variable, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
+from .reference import (Field, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                         NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
 from .resource import Resource
 from .text import StyledText, Tab
@@ -107,11 +107,11 @@ class PageTemplate(PageTemplateBase):
                                     'header and footer to the content area')
     columns = Option(Integer, 1, 'The number of columns for the body text')
     column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
-    header_text = Option(StyledText, Variable(SECTION_NUMBER(1))
-                                     + ' ' + Variable(SECTION_TITLE(1)),
+    header_text = Option(StyledText, Field(SECTION_NUMBER(1))
+                         + ' ' + Field(SECTION_TITLE(1)),
                          'The text to place in the page header')
-    footer_text = Option(StyledText, Tab() + Variable(PAGE_NUMBER)
-                                     + '/' + Variable(NUMBER_OF_PAGES),
+    footer_text = Option(StyledText, Tab() + Field(PAGE_NUMBER)
+                         + '/' + Field(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
     chapter_header_text = Option(StyledText, None, 'The text to place in the '
                                  'header on a page that starts a new chapter')

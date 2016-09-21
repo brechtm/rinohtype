@@ -21,12 +21,12 @@ from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
 from .util import NotImplementedAttribute
 
 
-__all__ = ['Variable', 'Reference', 'ReferenceField', 'ReferenceText',
-           'ReferenceType', 'ReferencingParagraph', 'ReferencingParagraphStyle',
+__all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
+           'ReferencingParagraph', 'ReferencingParagraphStyle',
            'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
            'NoteMarkerWithNote',
-           'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER', 'SECTION_TITLE',
-           'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
+           'Field', 'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
+           'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 
 
                             # examples for section "3.2 Some Title"
@@ -298,7 +298,7 @@ class SECTION_TITLE(SectionFieldType):
     ref_type = TITLE
 
 
-class Variable(MixedStyledTextBase):
+class Field(MixedStyledTextBase):
     def __init__(self, type, style=None):
         super().__init__(style=style)
         self.type = type

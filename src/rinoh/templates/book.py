@@ -11,7 +11,7 @@ from ..dimension import INCH
 from ..index import IndexSection
 from ..number import NUMBER, ROMAN_LC
 from ..paragraph import Paragraph
-from ..reference import (Variable, Reference, PAGE_NUMBER, TITLE,
+from ..reference import (Field, Reference, PAGE_NUMBER, TITLE,
                          DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                          SECTION_NUMBER, SECTION_TITLE)
 from ..strings import StringField
@@ -76,15 +76,15 @@ class Book(DocumentTemplate):
     
     front_matter_right_page =  \
         PageTemplate(base='front_matter_page',
-                     footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.5*INCH,
                      chapter_title_flowables=front_matter_section_title_flowables)
     
     front_matter_left_page =  \
         PageTemplate(base='front_matter_page',
-                     footer_text=Variable(PAGE_NUMBER))
+                     footer_text=Field(PAGE_NUMBER))
     
     contents_page =  \
         PageTemplate(base='page',
@@ -92,24 +92,24 @@ class Book(DocumentTemplate):
     
     contents_right_page =  \
         PageTemplate(base='contents_page',
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_NUMBER(2))
-                                  + '.  ' + Variable(SECTION_TITLE(2))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
+                                  + ', ' + Field(DOCUMENT_SUBTITLE)),
+                     footer_text=(Field(SECTION_NUMBER(2))
+                                  + '.  ' + Field(SECTION_TITLE(2))
+                                  + Tab() + Tab() + Field(PAGE_NUMBER)),
                      chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.4*INCH,
                      chapter_title_flowables=body_matter_chapter_title_flowables)
     
     contents_left_page = \
         PageTemplate(base='contents_page',
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab() +
+                     header_text=(Field(DOCUMENT_TITLE) + ', '
+                                  + Field(DOCUMENT_SUBTITLE)),
+                     footer_text=(Field(PAGE_NUMBER) + Tab() + Tab() +
                                   StringField(SectionTitles, 'chapter')
-                                  + ' ' + Variable(SECTION_NUMBER(1))
-                                  + '.  ' + Variable(SECTION_TITLE(1))))
+                                  + ' ' + Field(SECTION_NUMBER(1))
+                                  + '.  ' + Field(SECTION_TITLE(1))))
     
     back_matter_page = \
         PageTemplate(base='page',
@@ -118,18 +118,18 @@ class Book(DocumentTemplate):
     
     back_matter_right_page = \
         PageTemplate(base='back_matter_page',
-                     header_text=(Tab() + Tab() + Variable(DOCUMENT_TITLE)
-                                  + ', ' + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(SECTION_TITLE(1))
-                                  + Tab() + Tab() + Variable(PAGE_NUMBER)),
+                     header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
+                                  + ', ' + Field(DOCUMENT_SUBTITLE)),
+                     footer_text=(Field(SECTION_TITLE(1))
+                                  + Tab() + Tab() + Field(PAGE_NUMBER)),
                      chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Variable(PAGE_NUMBER),
+                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.5*INCH,
                      chapter_title_flowables=front_matter_section_title_flowables)
     
     back_matter_left_page = \
         PageTemplate(base='back_matter_page',
-                     header_text=(Variable(DOCUMENT_TITLE) + ', '
-                                  + Variable(DOCUMENT_SUBTITLE)),
-                     footer_text=(Variable(PAGE_NUMBER) + Tab() + Tab()
-                                  + Variable(SECTION_TITLE(1))))
+                     header_text=(Field(DOCUMENT_TITLE) + ', '
+                                  + Field(DOCUMENT_SUBTITLE)),
+                     footer_text=(Field(PAGE_NUMBER) + Tab() + Tab()
+                                  + Field(SECTION_TITLE(1))))

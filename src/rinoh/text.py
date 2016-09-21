@@ -195,7 +195,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
         def substitute_html_entities(string):
             return string.format(**NAME2CHAR)
 
-        items = Variable.substitute(text, substitute_html_entities)
+        items = Field.substitute(text, substitute_html_entities)
         return MixedStyledText(items, style=style)
 
     def __str__(self):
@@ -607,4 +607,4 @@ class Subscript(MixedStyledText):
         super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent)
 
 
-from .reference import Variable
+from .reference import Field
