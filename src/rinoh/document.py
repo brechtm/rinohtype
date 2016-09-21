@@ -72,12 +72,12 @@ class Page(Container):
 
     register_with_parent = False
 
-    def __init__(self, document_part, paper, orientation=PORTRAIT):
+    def __init__(self, document_part, number, paper, orientation=PORTRAIT):
         """Initialize this page as part of `document` (:class:`Document`) with a
         size defined by `paper` (:class:`Paper`). The page's `orientation` can
         be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
         self._document_part = document_part
-        self.number = document_part._get_next_page_number()
+        self.number = number
         self.paper = paper
         self.orientation = orientation
         if orientation is PORTRAIT:
@@ -178,11 +178,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     footer = None
     end_at = LEFT
 
-    def __init__(self, template, document, first_page_number, flowables):
+    def __init__(self, template, document, flowables):
         self.template = template
         self.document = document
-        self.first_page_number = first_page_number
-        self._last_page_number = first_page_number - 1
         self.flowable_targets = []
         self.pages = []
         if flowables:
@@ -213,10 +211,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         for flowable in self._flowables(self.document):
             flowable.prepare(self)
 
-    def render(self):
-        del self.pages[:]
-        self.add_page(self.first_page())
-        for page in self.pages:
+    def render(self, first_page_number):
+        self.add_page(self.first_page(first_page_number))
+        for page_number, page in enumerate(self.pages, first_page_number + 1):
             try:
                 page.render()
                 break_type = None
@@ -227,31 +224,29 @@ class DocumentPart(object, metaclass=DocumentLocationType):
             page.place()
             if self.chain and not self.chain.done:
                 next_page_type = LEFT if page.number % 2 else RIGHT
-                page = self.new_page(next_page_type == break_type)
+                page = self.new_page(page_number, next_page_type == break_type)
                 self.add_page(page)     # this grows self.pages!
-        page_count = self.first_page_number - 1 + len(self.pages)
-        next_page_type = LEFT if page_count % 2 else RIGHT
+        next_page_type = RIGHT if page_number % 2 else LEFT
         if next_page_type == self.end_at:
-            self.add_page(self.first_page())
+            self.add_page(self.first_page(page_number + 1))
         return len(self.pages)
 
     def add_page(self, page):
         """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
         self.pages.append(page)
 
-    def first_page(self):
-        return self.new_page(new_chapter=True)
+    def first_page(self, page_number):
+        return self.new_page(page_number, new_chapter=True)
 
-    def new_page(self, new_chapter, **kwargs):
+    def new_page(self, page_number, new_chapter, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        right_page_template = self.document.get_page_template(self, RIGHT)
-        left_page_template = self.document.get_page_template(self, LEFT)
-        page_template = (left_page_template if len(self.pages) % 2
-                         else right_page_template)
-        return page_template.page(self, page_template.name, self.chain,
-                                  new_chapter, **kwargs)
+        right_template = self.document.get_page_template(self, RIGHT)
+        left_template = self.document.get_page_template(self, LEFT)
+        page_template = right_template if page_number % 2 else left_template
+        return page_template.page(self, page_template.name, page_number,
+                                  self.chain, new_chapter, **kwargs)
 
     @classmethod
     def match(cls, styled, container):
@@ -459,14 +454,15 @@ to the terms of the GNU Affero General Public License version 3.''')
         self._start_time = time.time()
 
         part_page_counts = []
+        first_page_number = 1
         last_number_format = None
         for part_template in self.part_templates:
-            if part_template.page_number_format != last_number_format:
-                part_page_count = PartPageCount()
-                first_page_number = 1
             part = part_template.document_part(self, first_page_number)
             if part:
-                page_count = part.render()
+                if part_template.page_number_format != last_number_format:
+                    part_page_count = PartPageCount()
+                    first_page_number = 1
+                page_count = part.render(first_page_number)
                 part_page_count += page_count
                 first_page_number += page_count
                 last_number_format = part_template.page_number_format

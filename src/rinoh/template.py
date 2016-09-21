@@ -92,7 +92,8 @@ class PageTemplateBase(Template):
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
 
-    def page(self, template_name, document_part, chain, after_break, **kwargs):
+    def page(self, document_part, template_name, page_number, chain,
+             after_break, **kwargs):
         raise NotImplementedError
 
 
@@ -123,18 +124,20 @@ class PageTemplate(PageTemplateBase):
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
                                   'container holding the chapter title')
 
-    def page(self, document_part, template_name, chain, after_break, **kwargs):
-        return SimplePage(document_part, template_name, chain, self,
-                          after_break, **kwargs)
+    def page(self, document_part, template_name, page_number, chain,
+             after_break, **kwargs):
+        return SimplePage(document_part, template_name, page_number, chain,
+                          self, after_break, **kwargs)
 
 
 class PageBase(Page, Templated):
-    def __init__(self, document_part, template_name, options, after_break):
+    def __init__(self, document_part, template_name, page_number, options,
+                 after_break):
         self.template_name = template_name
         document = document_part.document
         paper = self.get_option('page_size', document)
         orientation = self.get_option('page_orientation', document)
-        super().__init__(document_part, paper, orientation)
+        super().__init__(document_part, page_number, paper, orientation)
         self.template = options
         self.left_margin = self.get_option('left_margin', document)
         self.right_margin = self.get_option('right_margin', document)
@@ -154,8 +157,10 @@ class PageBase(Page, Templated):
 
 
 class SimplePage(PageBase):
-    def __init__(self, document_part, template_name, chain, options, new_chapter):
-        super().__init__(document_part, template_name, options, new_chapter)
+    def __init__(self, document_part, template_name, page_number, chain,
+                 options, new_chapter):
+        super().__init__(document_part, template_name, page_number, options,
+                         new_chapter)
         document = document_part.document
         num_cols = self.get_option('columns', document)
         header_footer_distance = self.get_option('header_footer_distance', document)
@@ -224,13 +229,17 @@ class TitlePageTemplate(PageTemplateBase):
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
 
-    def page(self, document_part, template_name, chain, after_break, **kwargs):
-        return TitlePage(document_part, template_name, self, after_break)
+    def page(self, document_part, template_name, page_number, chain,
+             after_break, **kwargs):
+        return TitlePage(document_part, template_name, page_number, self,
+                         after_break)
 
 
 class TitlePage(PageBase):
-    def __init__(self, document_part, template_name, options, after_break):
-        super().__init__(document_part, template_name, options, after_break)
+    def __init__(self, document_part, template_name, page_number, options,
+                 after_break):
+        super().__init__(document_part, template_name, page_number, options,
+                         after_break)
         document = self.document
         metadata = document.metadata
         self.title = DownExpandingContainer('title', CONTENT, self,
@@ -308,7 +317,7 @@ class DocumentPartTemplate(Template):
     def document_part(self, document, first_page_number):
         flowables = self.all_flowables(document)
         if flowables or not self.skip_if_no_flowables:
-            return DocumentPart(self, document, first_page_number, flowables)
+            return DocumentPart(self, document, flowables)
 
 
 class TitlePartTemplate(DocumentPartTemplate):
