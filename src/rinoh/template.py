@@ -6,9 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from collections import OrderedDict
-
 import re
+
+from collections import OrderedDict
+from functools import partial
 
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes,
@@ -130,19 +131,19 @@ class PageTemplate(PageTemplateBase):
 
 class PageBase(Page, Templated):
     def __init__(self, document_part, template_name, page_number, after_break):
+        get_option = partial(self.get_option, document=document_part.document)
         self.template_name = template_name
-        document = document_part.document
-        paper = self.get_option('page_size', document)
-        orientation = self.get_option('page_orientation', document)
+        paper = get_option('page_size')
+        orientation = get_option('page_orientation')
         super().__init__(document_part, page_number, paper, orientation)
-        self.left_margin = self.get_option('left_margin', document)
-        self.right_margin = self.get_option('right_margin', document)
-        self.top_margin = self.get_option('top_margin', document)
-        self.bottom_margin = self.get_option('bottom_margin', document)
+        self.left_margin = get_option('left_margin')
+        self.right_margin = get_option('right_margin')
+        self.top_margin = get_option('top_margin')
+        self.bottom_margin = get_option('bottom_margin')
         self.body_width = self.width - (self.left_margin + self.right_margin)
         self.body_height = self.height - (self.top_margin + self.bottom_margin)
-        background = self.get_option('background', document)
-        after_break_background = self.get_option('after_break_background', document)
+        background = get_option('background')
+        after_break_background = get_option('after_break_background')
         bg = after_break_background or background
         if after_break and bg:
             self.background = FlowablesContainer('background', BACKGROUND, self)
@@ -156,10 +157,10 @@ class SimplePage(PageBase):
     def __init__(self, document_part, template_name, page_number, chain,
                  new_chapter):
         super().__init__(document_part, template_name, page_number, new_chapter)
-        document = document_part.document
-        num_cols = self.get_option('columns', document)
-        header_footer_distance = self.get_option('header_footer_distance', document)
-        column_spacing = self.get_option('column_spacing', document)
+        get_option = partial(self.get_option, document=document_part.document)
+        num_cols = get_option('columns')
+        header_footer_distance = get_option('header_footer_distance')
+        column_spacing = get_option('column_spacing')
         total_column_spacing = column_spacing * (num_cols - 1)
         column_width = (self.body_width - total_column_spacing) / num_cols
         self.body = Container('body', self, self.left_margin, self.top_margin,
@@ -169,19 +170,19 @@ class SimplePage(PageBase):
         float_space = DownExpandingContainer('floats', CONTENT, self.body, 0, 0,
                                              max_height=self.body_height / 2)
         self.body.float_space = float_space
-        if self.get_option('chapter_title_flowables', document) and new_chapter:
-            height = self.get_option('chapter_title_height', document)
+        if get_option('chapter_title_flowables') and new_chapter:
+            height = get_option('chapter_title_height')
             self.chapter_title = FlowablesContainer('chapter title',
                                                     CHAPTER_TITLE, self.body,
                                                     0, 0, height=height)
             column_top = self.chapter_title.bottom
-            header = self.get_option('chapter_header_text', document)
-            footer = self.get_option('chapter_footer_text', document)
+            header = get_option('chapter_header_text')
+            footer = get_option('chapter_footer_text')
         else:
             self.chapter_title = None
             column_top = float_space.bottom
-            header = self.get_option('header_text', document)
-            footer = self.get_option('footer_text', document)
+            header = get_option('header_text')
+            footer = get_option('footer_text')
         self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
                                          self.body, chain,
                                          left=i * (column_width
@@ -232,8 +233,8 @@ class TitlePage(PageBase):
     def __init__(self, document_part, template_name, page_number, after_break):
         super().__init__(document_part, template_name, page_number,
                          after_break)
-        document = self.document
-        metadata = document.metadata
+        get_option = partial(self.get_option, document=self.document)
+        metadata = self.document.metadata
         self.title = DownExpandingContainer('title', CONTENT, self,
                                             self.left_margin, self.top_margin,
                                             self.body_width)
@@ -245,7 +246,7 @@ class TitlePage(PageBase):
         if 'subtitle' in metadata:
             self.title << Paragraph(metadata['subtitle'],
                                     style='title page subtitle')
-        if 'author' in metadata and self.get_option('show_author', document):
+        if 'author' in metadata and get_option('show_author'):
             self.title << Paragraph(metadata['author'],
                                     style='title page author')
         try:
@@ -254,14 +255,14 @@ class TitlePage(PageBase):
                 self.title << metadata['abstract']
         except KeyError:
             pass
-        if self.get_option('show_date', document):
+        if get_option('show_date'):
             date = metadata['date']
             try:
                 self.title << Paragraph(date.strftime('%B %d, %Y'),
                                         style='title page date')
             except AttributeError:
                 self.title << Paragraph(date, style='title page date')
-        extra = self.get_option('extra', document)
+        extra = get_option('extra')
         if extra:
             self.title << Paragraph(extra, style='title page extra')
 
