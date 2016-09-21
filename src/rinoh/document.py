@@ -245,8 +245,8 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         right_template = self.document.get_page_template(self, RIGHT)
         left_template = self.document.get_page_template(self, LEFT)
         page_template = right_template if page_number % 2 else left_template
-        return page_template.page(self, page_template.name, page_number,
-                                  self.chain, new_chapter, **kwargs)
+        return page_template.page(self, page_number, self.chain, new_chapter,
+                                  **kwargs)
 
     @classmethod
     def match(cls, styled, container):
