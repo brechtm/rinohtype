@@ -224,6 +224,25 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
             pass
         raise KeyError
 
+    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
+
+    @classmethod
+    def parse_value(cls, name, value):
+        try:
+            attribute = cls.attribute_definition(name)
+        except KeyError:
+            raise TypeError("'{}' is not a supported attribute for "
+                            "{}".format(name, cls.__name__))
+        stripped = value.replace('\n', ' ').strip()
+        m = cls.RE_VARIABLE.match(stripped)
+        if m:
+            variable_name, = m.groups()
+            value = Var(variable_name)
+        else:
+            accepted_type = attribute.accepted_type
+            value = accepted_type.from_string(stripped)
+        return value
+
     def get_value(self, attribute, rule_set):
         value = self[attribute]
         if isinstance(value, Var):
@@ -276,8 +295,6 @@ class RuleSet(OrderedDict):
 class RuleSetFile(RuleSet):
 
     main_section = NotImplementedAttribute()
-
-    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
 
     def __init__(self, filename, base=None, **kwargs):
         config = ConfigParser(default_section=None, delimiters=('=',),

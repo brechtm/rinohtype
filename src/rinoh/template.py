@@ -392,43 +392,16 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
     main_section = 'TEMPLATE_CONFIGURATION'
 
     def process_section(self, section_name, classifier, items):
-        doc_cls = self.document_template_class
+        document_template_class = self.document_template_class
         if section_name == 'GENERAL':
             for name, value in items:
-                value = value.replace('\n', ' ')
-                try:
-                    attribute = doc_cls.attribute_definition(name)
-                except KeyError:
-                    raise TypeError("'{}' is not a supported attribute for "
-                                    "{}".format(name, doc_cls.__name__))
-                stripped = value.strip()
-                m = self.RE_VARIABLE.match(stripped)
-                if m:
-                    variable_name, = m.groups()
-                    value = Var(variable_name)
-                else:
-                    accepted_type = attribute.accepted_type
-                    value = accepted_type.from_string(stripped)
-                self[name] = value
+                self[name] = document_template_class.parse_value(name, value)
         else:
             template_class = self.get_entry_class(section_name)
             attributes = {}
             for name, value in items:
-                value = value.replace('\n', ' ')
                 if name != 'base':
-                    try:
-                        attribute = template_class.attribute_definition(name)
-                    except KeyError:
-                        raise TypeError("'{}' is not a supported attribute for "
-                                        "{}".format(name, doc_cls.__name__))
-                    stripped = value.strip()
-                    m = self.RE_VARIABLE.match(stripped)
-                    if m:
-                        variable_name, = m.groups()
-                        value = Var(variable_name)
-                    else:
-                        accepted_type = attribute.accepted_type
-                        value = accepted_type.from_string(stripped)
+                    value = template_class.parse_value(name, value)
                 attributes[name] = value
             self[section_name] = template_class(**attributes)
 

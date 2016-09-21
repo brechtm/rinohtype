@@ -763,25 +763,11 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
             style_cls = self.get_entry_class(style_name)
         attribute_values = {}
         for name, value in items:
-            value = value.replace('\n', ' ')
             if name == 'base':
-                attribute_values[name] = SPECIAL_STYLES.get(value, value)
-            else:
-                try:
-                    attribute = style_cls.attribute_definition(name)
-                except KeyError:
-                    raise TypeError("'{}' is not a supported attribute for "
-                                    "'{}' ({})".format(name, style_name,
-                                                       style_cls.__name__))
                 stripped = value.strip()
-                m = self.RE_VARIABLE.match(stripped)
-                if m:
-                    variable_name, = m.groups()
-                    value = Var(variable_name)
-                else:
-                    accepted_type = attribute.accepted_type
-                    value = accepted_type.from_string(stripped)
-                attribute_values[name] = value
+                attribute_values[name] = SPECIAL_STYLES.get(stripped, stripped)
+            else:
+                attribute_values[name] = style_cls.parse_value(name, value)
         self[style_name] = style_cls(**attribute_values)
 
 
