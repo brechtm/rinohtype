@@ -18,7 +18,7 @@ from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .reference import NUMBER
+from .reference import ReferenceType
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 from .util import ReadAliasAttribute
@@ -27,8 +27,7 @@ from .util import ReadAliasAttribute
 __all__ = ['Table', 'TableWithCaption',
            'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle', 'TableCellBorder',
-           'TableCellBackground',
-           'TOP', 'MIDDLE', 'BOTTOM']
+           'TableCellBackground', 'VerticalAlign']
 
 
 class TableState(HorizontallyAlignedFlowableState):
@@ -291,11 +290,11 @@ class Table(HorizontallyAlignedFlowable):
                 cell_container.place_at(container, x_cursor, y_pos)
                 vertical_align = rendered_cell.cell.get_style('vertical_align',
                                                               container)
-                if vertical_align == TOP:
+                if vertical_align == VerticalAlign.TOP:
                     vertical_offset = 0
-                elif vertical_align == MIDDLE:
+                elif vertical_align == VerticalAlign.MIDDLE:
                     vertical_offset = (cell_height - rendered_cell.height) / 2
-                elif vertical_align == BOTTOM:
+                elif vertical_align == VerticalAlign.BOTTOM:
                     vertical_offset = (cell_height - rendered_cell.height)
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(container, x_cursor, y_offset)
@@ -312,7 +311,7 @@ class TableWithCaption(StaticGroupedFlowables):
         number = document.counters.setdefault(self.category, 1)
         document.counters[self.category] += 1
         for id in self.get_ids(document):
-            document.set_reference(id, NUMBER, str(number))
+            document.set_reference(id, ReferenceType.NUMBER, str(number))
 
 
 class TableSection(Styled, list):
@@ -378,18 +377,14 @@ class TableRow(Styled, list):
         return spanned_columns
 
 
-TOP = 'top'
-MIDDLE = 'middle'
-BOTTOM = 'bottom'
-
-
 class VerticalAlign(OptionSet):
-    values = TOP, MIDDLE, BOTTOM
+    values = 'top', 'middle', 'bottom'
 
 
 class TableCellStyle(GroupedFlowablesStyle):
-    vertical_align = Attribute(VerticalAlign, MIDDLE, 'Vertical alignment of '
-                               'the cell contents within the available space')
+    vertical_align = Attribute(VerticalAlign, 'middle',
+                               'Vertical alignment of the cell contents '
+                               'within the available space')
 
 
 class TableCell(StaticGroupedFlowables):

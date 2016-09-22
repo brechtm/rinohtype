@@ -29,20 +29,20 @@ __all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
            'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 
 
-                            # examples for section "3.2 Some Title"
-REFERENCE = 'reference'     # Section 3.2
-NUMBER = 'number'           # 3.2
-TITLE = 'title'             # Some Title
-PAGE = 'page'               # <number of the page on which section 3.2 starts>
-
-
 class ReferenceType(OptionSet):
-    values = REFERENCE, NUMBER, TITLE, PAGE
+    values = 'reference', 'number', 'title', 'page'
+
+
+# examples for section "3.2 Some Title"
+# reference: Section 3.2
+# number:    3.2
+# title:     Some Title
+# page:      <number of the page on which section 3.2 starts>
 
 
 class ReferenceBase(SingleStyledTextBase):
-    def __init__(self, type=NUMBER, link=True, quiet=False,
-                 style=None, parent=None):
+    def __init__(self, type='number', link=True, quiet=False, style=None,
+                 parent=None):
         super().__init__(style=style, parent=parent)
         self.type = type
         self.link = link
@@ -56,23 +56,23 @@ class ReferenceBase(SingleStyledTextBase):
             return '$REF({})'.format(self.type)
         target_id = self.target_id(container.document)
         try:
-            if self.type == REFERENCE:
+            if self.type == ReferenceType.REFERENCE:
                 category = container.document.elements[target_id].category
-                number = container.document.get_reference(target_id, NUMBER)
+                number = container.document.get_reference(target_id, 'number')
                 text = '{}\N{No-BREAK SPACE}{}'.format(category, number)
-            elif self.type == NUMBER:
+            elif self.type == ReferenceType.NUMBER:
                 text = container.document.get_reference(target_id, self.type)
                 if text is None:
                     if not self.quiet:
                         self.warn('Cannot reference "{}"'.format(target_id),
                                   container)
                     text = ''
-            elif self.type == PAGE:
+            elif self.type == ReferenceType.PAGE:
                 try:
                     text = str(container.document.page_references[target_id])
                 except KeyError:
                     text = '??'
-            elif self.type == TITLE:
+            elif self.type == ReferenceType.TITLE:
                 text = container.document.get_reference(target_id, self.type)
             else:
                 raise NotImplementedError(self.type)
@@ -91,7 +91,7 @@ class ReferenceBase(SingleStyledTextBase):
 
 
 class Reference(ReferenceBase):
-    def __init__(self, target_id, type=NUMBER, link=True, style=None,
+    def __init__(self, target_id, type='number', link=True, style=None,
                  quiet=False, **kwargs):
         super().__init__(type=type, link=link, style=style, quiet=quiet,
                          **kwargs)
@@ -102,7 +102,7 @@ class Reference(ReferenceBase):
 
 
 class DirectReference(ReferenceBase):
-    def __init__(self, referenceable, type=NUMBER, link=False, style=None,
+    def __init__(self, referenceable, type='number', link=False, style=None,
                  **kwargs):
         super().__init__(type=type, link=link, style=style, **kwargs)
         self.referenceable = referenceable
@@ -142,8 +142,8 @@ class ReferenceText(StyledText):
 
 
 class ReferencingParagraphStyle(ParagraphStyle):
-    text = Attribute(ReferenceText, ReferenceField(TITLE), 'The text content '
-                                                           'of this paragraph')
+    text = Attribute(ReferenceText, ReferenceField('title'),
+                     'The text content of this paragraph')
 
 
 class ReferencingParagraph(ParagraphBase):
@@ -183,7 +183,7 @@ class NoteMarkerBase(ReferenceBase, Label):
     style_class = NoteMarkerStyle
 
     def __init__(self, custom_label=None, **kwargs):
-        kwargs.update(type=NUMBER, link=True)
+        kwargs.update(type='number', link=True)
         super().__init__(**kwargs)
         Label.__init__(self, custom_label=custom_label)
 
@@ -191,7 +191,7 @@ class NoteMarkerBase(ReferenceBase, Label):
         document = flowable_target.document
         target_id = self.target_id(document)
         try:  # set reference only once (notes can be referenced multiple times)
-            document.get_reference(target_id, NUMBER)
+            document.get_reference(target_id, 'number')
         except KeyError:
             if self.get_style('custom_label', flowable_target):
                 assert self.custom_label is not None
@@ -202,7 +202,7 @@ class NoteMarkerBase(ReferenceBase, Label):
                 counter.append(self)
                 formatted_number = format_number(len(counter), number_format)
             label = self.format_label(str(formatted_number), flowable_target)
-            document.set_reference(target_id, NUMBER, str(label))
+            document.set_reference(target_id, 'number', str(label))
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
@@ -265,7 +265,7 @@ class SectionFieldTypeMeta(type):
 
 
 class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
-    ref_type = None
+    reference_type = None
     all = {}
 
     def __init__(self, level):
@@ -290,12 +290,12 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
 
 class SECTION_NUMBER(SectionFieldType):
     name = 'section number'
-    ref_type = NUMBER
+    reference_type = 'number'
 
 
 class SECTION_TITLE(SectionFieldType):
     name = 'section title'
-    ref_type = TITLE
+    reference_type = 'title'
 
 
 class Field(MixedStyledTextBase):
@@ -335,7 +335,8 @@ class Field(MixedStyledTextBase):
             section = container.page.get_current_section(self.type.level)
             section_id = section.get_id(doc) if section else None
             if section_id:
-                text = doc.get_reference(section_id, self.type.ref_type) or ''
+                text = doc.get_reference(section_id,
+                                         self.type.reference_type) or ''
             else:
                 text = ''
         else:

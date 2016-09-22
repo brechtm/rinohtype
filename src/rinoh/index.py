@@ -9,7 +9,7 @@
 from .attribute import Attribute, Bool
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
-from .reference import Reference, PAGE
+from .reference import Reference
 from .strings import StringField
 from .structure import Section, Heading, SectionTitles
 from .style import Styled
@@ -79,7 +79,8 @@ class IndexEntry(Paragraph):
     def __init__(self, text_or_items, level, target_ids=None,
                  id=None, style=None, parent=None):
         if target_ids:
-            refs = intersperse((Reference(id, PAGE) for id in target_ids), ', ')
+            refs = intersperse((Reference(id, 'page')
+                                for id in target_ids), ', ')
             entry_text = text_or_items + ', ' + MixedStyledText(refs)
         else:
             entry_text = text_or_items

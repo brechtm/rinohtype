@@ -17,37 +17,28 @@ from .paragraph import ParagraphBase, ParagraphStyle
 from .style import Style
 from .text import StyledText
 
-__all__ = ['NumberStyle', 'Label', 'NumberedParagraph',
-           'NUMBER', 'CHARACTER_LC', 'CHARACTER_UC', 'ROMAN_LC', 'ROMAN_UC',
-           'SYMBOL', 'format_number']
 
-
-NUMBER = 'number'
-CHARACTER_LC = 'lowercase character'
-CHARACTER_UC = 'uppercase character'
-ROMAN_LC = 'lowercase roman'
-ROMAN_UC = 'uppercase roman'
-SYMBOL = 'symbol'
+__all__ = ['NumberStyle', 'Label', 'NumberedParagraph', 'format_number']
 
 
 class NumberFormat(OptionSet):
-    values = (NUMBER, CHARACTER_LC, CHARACTER_UC, ROMAN_LC, ROMAN_UC, SYMBOL,
-              None)
+    values = (None, 'number', 'symbol', 'lowercase character',
+              'uppercase character', 'lowercase roman', 'uppercase roman')
+
+
+# number: plain arabic numbers (1, 2, 3, ...)
+# lowercase character: lowercase letters (a, b, c, ..., aa, ab, ...)
+# uppercase character: uppercase letters (A, B, C, ..., AA, AB, ...)
+# lowercase roman: lowercase Roman numerals (i, ii, iii, iv, v, vi, ...)
+# uppercase roman: uppercase Roman numerals (I, II, III, IV, V, VI, ...)
+# symbol: symbols (*, †, ‡, §, ‖, ¶, #, **, *†, ...)
 
 
 def format_number(number, format):
-    """Format `number` according the given `format`:
-
-    * :const:`NUMBER`: plain arabic number (1, 2, 3, ...)
-    * :const:`CHARACTER_LC`: lowercase letters (a, b, c, ..., aa, ab, ...)
-    * :const:`CHARACTER_UC`: uppercase letters (A, B, C, ..., AA, AB, ...)
-    * :const:`ROMAN_LC`: lowercase Roman (i, ii, iii, iv, v, vi, ...)
-    * :const:`ROMAN_UC`: uppercase Roman (I, II, III, IV, V, VI, ...)
-
-    """
-    if format == NUMBER:
+    """Format `number` according the given `format` (:class:`NumberFormat`)"""
+    if format == NumberFormat.NUMBER:
         return str(number)
-    elif format == CHARACTER_LC:
+    elif format == NumberFormat.LOWERCASE_CHARACTER:
         string = ''
         while number > 0:
             number, ordinal = divmod(number, 26)
@@ -56,13 +47,13 @@ def format_number(number, format):
                 number -= 1
             string = chr(ord('a') - 1 + ordinal) + string
         return string
-    elif format == CHARACTER_UC:
-        return format_number(number, CHARACTER_LC).upper()
-    elif format == ROMAN_LC:
+    elif format == NumberFormat.UPPERCASE_CHARACTER:
+        return format_number(number, 'lowercase character').upper()
+    elif format == NumberFormat.LOWERCASE_ROMAN:
         return romanize(number).lower()
-    elif format == ROMAN_UC:
+    elif format == NumberFormat.UPPERCASE_ROMAN:
         return romanize(number)
-    elif format == SYMBOL:
+    elif format == NumberFormat.SYMBOL:
         return symbolize(number)
     else:
         raise ValueError("Unknown number format '{}'".format(format))
@@ -94,7 +85,7 @@ def symbolize(number):
 class LabelStyle(Style):
     label_prefix = Attribute(StyledText, None, 'Text to prepend to the label')
     label_suffix = Attribute(StyledText, None, 'Text to append to the label')
-    custom_label = Attribute(Bool, False, 'Use a cutom label if specified')
+    custom_label = Attribute(Bool, False, 'Use a custom label if specified')
 
 
 class Label(object):
@@ -108,7 +99,8 @@ class Label(object):
 
 
 class NumberStyle(LabelStyle):
-    number_format = Attribute(NumberFormat, NUMBER, 'How numbers are formatted')
+    number_format = Attribute(NumberFormat, 'number',
+                              'How numbers are formatted')
 
 
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
@@ -135,7 +127,7 @@ class NumberedParagraph(ParagraphBase, Label):
     def number(self, container):
         document = container.document
         target_id = self.referenceable.get_id(document)
-        formatted_number = document.get_reference(target_id, NUMBER)
+        formatted_number = document.get_reference(target_id, 'number')
         if formatted_number:
             return self.format_label(formatted_number, container)
         else:

@@ -11,21 +11,11 @@ from ..dimension import CM
 from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx_article
 from ..template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
-                        ContentsPartTemplate, TemplateConfiguration,
-                        DocumentPartTemplate, TitlePartTemplate)
+                        ContentsPartTemplate, DocumentPartTemplate,
+                        TitlePartTemplate, AbstractLocation)
 
 
-__all__ = ['Article', 'TITLE', 'FRONT_MATTER']
-
-
-TITLE = 'title'
-FRONT_MATTER = 'front_matter'
-
-
-class AbstractLocation(OptionSet):
-    """Where to place the article's abstract"""
-
-    values = TITLE, FRONT_MATTER
+__all__ = ['Article']
 
 
 class ArticleFrontMatter(DocumentPartTemplate):
@@ -34,7 +24,8 @@ class ArticleFrontMatter(DocumentPartTemplate):
     def flowables(self, document):
         meta = document.metadata
         abstract_loc = document.get_option('abstract_location')
-        if 'abstract' in meta and abstract_loc == FRONT_MATTER:
+        if ('abstract' in meta
+                and abstract_loc == AbstractLocation.FRONT_MATTER):
             yield meta['abstract']
         if document.get_option('table_of_contents'):
             yield self.toc_section
@@ -44,7 +35,7 @@ class Article(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx_article)
     table_of_contents = Attribute(Bool, True,
                                   'Show or hide the table of contents')
-    abstract_location = Attribute(AbstractLocation, FRONT_MATTER,
+    abstract_location = Attribute(AbstractLocation, 'front matter',
                                   'Where to place the abstract')
 
     parts = OverrideDefault(['title', 'front_matter', 'contents'])

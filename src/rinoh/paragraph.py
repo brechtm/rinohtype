@@ -54,18 +54,13 @@ from .util import all_subclasses, ReadAliasAttribute
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
            'ProportionalSpacing', 'FixedSpacing', 'Leading',
-           'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE',
-           'LEFT', 'RIGHT', 'CENTER', 'JUSTIFY']
+           'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE']
 
 
 # Text justification
 
-from .flowable import LEFT, RIGHT, CENTER
-JUSTIFY = 'justify'
-
-
 class TextAlign(OptionSet):
-    values = LEFT, RIGHT, CENTER, JUSTIFY
+    values = 'left', 'right', 'center', 'justify'
 
 
 # Line spacing
@@ -214,13 +209,13 @@ PREDEFINED_SPACINGS = dict(default=DEFAULT,
 
 
 class TabAlign(OptionSet):
-    values = LEFT, RIGHT, CENTER
+    values = 'left', 'right', 'center'
 
 
 class TabStop(object):
     """Horizontal position for aligning text of successive lines."""
 
-    def __init__(self, position, align=LEFT, fill=None):
+    def __init__(self, position, align='left', fill=None):
         """`position` can be an absolute position (:class:`Dimension`) or can
         be relative to the line width (:class:`Fraction`).
         The alignment of text with respect to the tab stop is determined by
@@ -279,7 +274,7 @@ class TabStopList(AttributeType):
             _, i = m.span()
             position, align, fill = m.group('position', 'align', 'fill')
             tabstop = TabStop(DimensionBase.from_string(position),
-                              TabAlign.from_string(align) if align else LEFT,
+                              TabAlign.from_string(align) if align else 'left',
                               literal_eval(fill) if fill else None)
             tabstops.append(tabstop)
         return tabstops
@@ -293,8 +288,8 @@ class ParagraphStyle(FlowableStyle, TextStyle):
                                                   'line of text')
     line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '
                              'baselines of two successive lines of text')
-    text_align = Attribute(TextAlign, JUSTIFY, 'Alignment of text to the '
-                                               'margins')
+    text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '
+                                                 'margins')
     tab_stops = Attribute(TabStopList, [], 'List of tab positions')
 
 
@@ -778,7 +773,7 @@ class Line(list):
                 glyphs_span.append(tab)
                 self.cursor = tab_position
                 self._current_tab_stop = tab_stop
-                if tab_stop.align in (RIGHT, CENTER):
+                if tab_stop.align in (TabAlign.RIGHT, TabAlign.CENTER):
                     self._current_tab = tab
                     self._current_tab_stop = tab_stop
                 else:
@@ -806,7 +801,8 @@ class Line(list):
         if self._current_tab:
             current_tab = self._current_tab
             tab_width = current_tab.width
-            factor = 2 if self._current_tab_stop.align == CENTER else 1
+            factor = (2 if self._current_tab_stop.align == TabAlign.CENTER
+                      else 1)
             item_width = width / factor
             if item_width < tab_width:
                 current_tab.width -= item_width
@@ -869,10 +865,10 @@ class Line(list):
         # horizontal displacement
         left = self.indent
 
-        if self._has_tab or text_align == JUSTIFY and last_line:
-            text_align = LEFT
+        if self._has_tab or text_align == TextAlign.JUSTIFY and last_line:
+            text_align = 'left'
         extra_space = self.width - self.cursor
-        if text_align == JUSTIFY:
+        if text_align == TextAlign.JUSTIFY:
             # TODO: padding added to spaces should be prop. to font size
             nr_spaces = sum(glyph_span.number_of_spaces for glyph_span in self)
             if nr_spaces > 0:
@@ -880,9 +876,9 @@ class Line(list):
                 for glyph_span in self:
                     if glyph_span.number_of_spaces > 0:
                         glyph_span.space.width += add_to_spaces
-        elif text_align == CENTER:
+        elif text_align == TextAlign.CENTER:
             left += extra_space / 2.0
-        elif text_align == RIGHT:
+        elif text_align == TextAlign.RIGHT:
             left += extra_space
 
         canvas = container.canvas

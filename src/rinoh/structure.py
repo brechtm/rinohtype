@@ -19,7 +19,7 @@ from .number import NumberedParagraph, NumberedParagraphStyle
 from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
 from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
-from .reference import NUMBER, TITLE, PAGE
+from .reference import ReferenceType
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
 from .strings import StringCollection, String, StringField
@@ -129,14 +129,14 @@ class Heading(NumberedParagraph):
             separator = self.get_style('number_separator', flowable_target)
             if separator is not None and self.level > 1:
                 parent_id = self.section.parent.section.get_id(document)
-                parent_ref = document.get_reference(parent_id, NUMBER)
+                parent_ref = document.get_reference(parent_id, 'number')
                 if parent_ref:
                     label = parent_ref + separator + label
         else:
             label = None
         title_string = self.content.to_string(flowable_target)
-        document.set_reference(section_id, NUMBER, label)
-        document.set_reference(section_id, TITLE, title_string)
+        document.set_reference(section_id, ReferenceType.NUMBER, label)
+        document.set_reference(section_id, ReferenceType.TITLE, title_string)
 
     def text(self, container):
         number = self.number(container)
@@ -278,9 +278,9 @@ class TableOfContents(GroupedFlowables):
 
 
 class TableOfContentsEntryStyle(ReferencingParagraphStyle):
-    text = OverrideDefault(ReferenceField(NUMBER)
-                           + Tab() + ReferenceField(TITLE)
-                           + Tab() + ReferenceField(PAGE))
+    text = OverrideDefault(ReferenceField('number')
+                           + Tab() + ReferenceField('title')
+                           + Tab() + ReferenceField('page'))
 
 
 class TableOfContentsEntry(ReferencingParagraph):

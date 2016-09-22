@@ -33,12 +33,11 @@ from itertools import count
 from . import __version__, __release_date__
 from .attribute import OptionSet
 from .backend import pdf
-from .flowable import RIGHT, LEFT, StaticGroupedFlowables
+from .flowable import StaticGroupedFlowables
 from .language import EN
 from .layout import (Container, ReflowRequired, Chain, PageBreakException,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
-from .number import NUMBER, format_number
-from .reference import TITLE
+from .number import format_number
 from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity, StyleLog
 from .util import NotImplementedAttribute, RefKeyDictionary
@@ -46,7 +45,7 @@ from .warnings import warn
 
 
 __all__ = ['Page', 'DocumentPart', 'Document',
-           'PageOrientation', 'PORTRAIT', 'LANDSCAPE']
+           'PageOrientation']
 
 
 class DocumentTree(StaticGroupedFlowables):
@@ -59,12 +58,12 @@ class DocumentTree(StaticGroupedFlowables):
         return os.path.abspath(os.path.dirname(self.source_file))
 
 
-PORTRAIT = 'portrait'
-LANDSCAPE = 'landscape'
-
-
 class PageOrientation(OptionSet):
-    values = (PORTRAIT, LANDSCAPE)
+    values = 'portrait', 'landscape'
+
+
+class PageType(OptionSet):
+    values = 'left', 'right', 'any'
 
 
 class Page(Container):
@@ -73,7 +72,7 @@ class Page(Container):
 
     register_with_parent = False
 
-    def __init__(self, document_part, number, paper, orientation=PORTRAIT):
+    def __init__(self, document_part, number, paper, orientation='portrait'):
         """Initialize this page as part of `document` (:class:`Document`) with a
         size defined by `paper` (:class:`Paper`). The page's `orientation` can
         be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
@@ -81,9 +80,9 @@ class Page(Container):
         self.number = number
         self.paper = paper
         self.orientation = orientation
-        if orientation is PORTRAIT:
+        if orientation == PageOrientation.PORTRAIT:
             width, height = paper.width, paper.height
-        elif orientation is LANDSCAPE:
+        elif orientation == PageOrientation.LANDSCAPE:
             width, height = paper.height, paper.width
         document = self.document_part.document
         backend_document = document.backend_document
@@ -175,9 +174,7 @@ class BackendDocumentMetadata(object):
 class DocumentPart(object, metaclass=DocumentLocationType):
     """Part of a :class:`Document` that has a specific page template."""
 
-    header = None
-    footer = None
-    end_at = LEFT
+    end_at = PageType.LEFT
 
     def __init__(self, template, document, flowables):
         self.template = template
@@ -224,10 +221,10 @@ class DocumentPart(object, metaclass=DocumentLocationType):
                 break_type = None
             page.place()
             if self.chain and not self.chain.done:
-                next_page_type = LEFT if page.number % 2 else RIGHT
+                next_page_type = 'left' if page.number % 2 else 'right'
                 page = self.new_page(page_number, next_page_type == break_type)
                 self.add_page(page)     # this grows self.pages!
-        next_page_type = RIGHT if page_number % 2 else LEFT
+        next_page_type = 'right' if page_number % 2 else 'left'
         if next_page_type == self.end_at:
             self.add_page(self.first_page(page_number + 1))
         return len(self.pages)
@@ -243,8 +240,8 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
-        right_template = self.document.get_page_template(self, RIGHT)
-        left_template = self.document.get_page_template(self, LEFT)
+        right_template = self.document.get_page_template(self, 'right')
+        left_template = self.document.get_page_template(self, 'left')
         page_template = right_template if page_number % 2 else left_template
         return page_template.page(self, page_number, self.chain, new_chapter,
                                   **kwargs)
@@ -431,8 +428,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         for section_id, section in ((id, flowable)
                                     for id, flowable in self.elements.items()
                                     if isinstance(flowable, Section)):
-            section_number = self.get_reference(section_id, NUMBER)
-            section_title = self.get_reference(section_id, TITLE)
+            section_number = self.get_reference(section_id, 'number')
+            section_title = self.get_reference(section_id, 'title')
             if section.level > current_level:
                 assert section.level == current_level + 1
                 stack.append(parent)

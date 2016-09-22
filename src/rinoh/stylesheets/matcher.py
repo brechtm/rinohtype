@@ -1,4 +1,3 @@
-from rinoh.reference import TITLE, PAGE, NUMBER, REFERENCE
 from rinoh.style import StyledMatcher, SelectorByName
 from rinoh.styleds import *
 
@@ -169,10 +168,10 @@ rlp = matcher('related links list item paragraph',
                   SelectorByName('related links list item')
                   / ... / ReferencingParagraph)
 rlpe = rlp / ...
-matcher('related link title reference', rlpe / ReferenceField.like(type=TITLE))
-matcher('related link page reference', rlpe / ReferenceField.like(type=PAGE))
-matcher('related link number reference', rlpe /ReferenceField.like(type=NUMBER))
-matcher('related link reference', rlpe / ReferenceField.like(type=REFERENCE))
+matcher('related link title reference',rlpe / ReferenceField.like(type='title'))
+matcher('related link page reference', rlpe / ReferenceField.like(type='page'))
+matcher('related link number reference', rlpe /ReferenceField.like(type='number'))
+matcher('related link reference', rlpe / ReferenceField.like(type='reference'))
 
 
 # (Sphinx) version added/changed & deprecated

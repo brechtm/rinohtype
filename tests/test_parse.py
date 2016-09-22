@@ -5,16 +5,15 @@ from rinoh.attribute import OptionSet, Bool, Integer
 from rinoh.color import Color, HexColor
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.draw import Stroke
-from rinoh.number import (NumberFormat, NUMBER, CHARACTER_LC, CHARACTER_UC,
-                          ROMAN_LC, ROMAN_UC, SYMBOL)
-from rinoh.flowable import HorizontalAlignment, LEFT, RIGHT, CENTER, Break, ANY
-from rinoh.paragraph import (TextAlign, JUSTIFY, TabAlign,
+from rinoh.number import NumberFormat
+from rinoh.flowable import HorizontalAlignment, Break
+from rinoh.paragraph import (TextAlign, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
-from rinoh.reference import ReferenceField, TITLE, PAGE, ReferenceText
+from rinoh.reference import ReferenceField, ReferenceText
 from rinoh.style import (parse_keyword, parse_string, parse_number,
                          parse_selector_args, StyleParseError, CharIterator)
-from rinoh.table import VerticalAlign, TOP, MIDDLE, BOTTOM
+from rinoh.table import VerticalAlign
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
 
@@ -49,12 +48,16 @@ def test_optionset_from_string():
 
 def test_numberformat_from_string():
     assert NumberFormat.from_string('none') == None
-    assert NumberFormat.from_string('number') == NUMBER
-    assert NumberFormat.from_string('lowercase character') == CHARACTER_LC
-    assert NumberFormat.from_string('uppercase CHARACTER') == CHARACTER_UC
-    assert NumberFormat.from_string('LOWERCASE ROMAN') == ROMAN_LC
-    assert NumberFormat.from_string('uppercase roman') == ROMAN_UC
-    assert NumberFormat.from_string('sYMBOl') == SYMBOL
+    assert NumberFormat.from_string('number') == NumberFormat.NUMBER
+    assert NumberFormat.from_string('lowercase character') \
+               == NumberFormat.LOWERCASE_CHARACTER
+    assert NumberFormat.from_string('uppercase CHARACTER') \
+               == NumberFormat.UPPERCASE_CHARACTER
+    assert NumberFormat.from_string('LOWERCASE ROMAN') \
+               == NumberFormat.LOWERCASE_ROMAN
+    assert NumberFormat.from_string('uppercase roman') \
+               == NumberFormat.UPPERCASE_ROMAN
+    assert NumberFormat.from_string('sYMBOl') == NumberFormat.SYMBOL
     with pytest.raises(ValueError):
         NumberFormat.from_string('Character')
     with pytest.raises(ValueError):
@@ -62,10 +65,10 @@ def test_numberformat_from_string():
 
 
 def test_textalign_from_string():
-    assert TextAlign.from_string('left') == LEFT
-    assert TextAlign.from_string('cenTER') == CENTER
-    assert TextAlign.from_string('RighT') == RIGHT
-    assert TextAlign.from_string('justify') == JUSTIFY
+    assert TextAlign.from_string('left') == TextAlign.LEFT
+    assert TextAlign.from_string('cenTER') == TextAlign.CENTER
+    assert TextAlign.from_string('RighT') == TextAlign.RIGHT
+    assert TextAlign.from_string('justify') == TextAlign.JUSTIFY
     with pytest.raises(ValueError):
         assert TextAlign.from_string('none')
     with pytest.raises(ValueError):
@@ -73,24 +76,28 @@ def test_textalign_from_string():
 
 
 def test_horizontalalignment_from_string():
-    assert HorizontalAlignment.from_string('left') == LEFT
-    assert HorizontalAlignment.from_string('Right') == RIGHT
-    assert HorizontalAlignment.from_string('CENTER') == CENTER
+    assert HorizontalAlignment.from_string('left') == HorizontalAlignment.LEFT
+    assert HorizontalAlignment.from_string('Right') \
+               == HorizontalAlignment.RIGHT
+    assert HorizontalAlignment.from_string('CENTER') \
+               == HorizontalAlignment.CENTER
     with pytest.raises(ValueError):
         HorizontalAlignment.from_string('none')
 
 
 def test_break_from_string():
     assert Break.from_string('none') == None
-    assert Break.from_string('aNY') == ANY
+    assert Break.from_string('Left') == Break.LEFT
+    assert Break.from_string('RIGHT') == Break.RIGHT
+    assert Break.from_string('aNY') == Break.ANY
     with pytest.raises(ValueError):
         assert Break.from_string('center')
 
 
 def test_tabalign_from_string():
-    assert TabAlign.from_string('left') == LEFT
-    assert TabAlign.from_string('right') == RIGHT
-    assert TabAlign.from_string('center') == CENTER
+    assert TabAlign.from_string('left') == TabAlign.LEFT
+    assert TabAlign.from_string('right') == TabAlign.RIGHT
+    assert TabAlign.from_string('center') == TabAlign.CENTER
     with pytest.raises(ValueError):
         assert TabAlign.from_string('none')
     with pytest.raises(ValueError):
@@ -106,8 +113,8 @@ def test_linespacing_from_string():
     assert LineSpacing.from_string('fixed(2pt)') == FixedSpacing(2*PT)
     assert LineSpacing.from_string('fixed(1.4 cm)') == FixedSpacing(1.4*CM)
     assert LineSpacing.from_string('fixed(1pT,single)') == FixedSpacing(1*PT)
-    assert LineSpacing.from_string('fixed(1pT ,DOUBLE)') == FixedSpacing(1*PT,
-                                                                         DOUBLE)
+    assert LineSpacing.from_string('fixed(1pT ,DOUBLE)') \
+               == FixedSpacing(1*PT, DOUBLE)
     assert LineSpacing.from_string('leading(3    PT)') == Leading(3*PT)
     with pytest.raises(ValueError):
         assert LineSpacing.from_string('5 pt')
@@ -126,9 +133,9 @@ def test_linespacing_from_string():
 
 
 def test_verticalalign_from_string():
-    assert VerticalAlign.from_string('top') == TOP
-    assert VerticalAlign.from_string('miDDLE') == MIDDLE
-    assert VerticalAlign.from_string('BOTTOM') == BOTTOM
+    assert VerticalAlign.from_string('top') == VerticalAlign.TOP
+    assert VerticalAlign.from_string('miDDLE') == VerticalAlign.MIDDLE
+    assert VerticalAlign.from_string('BOTTOM') == VerticalAlign.BOTTOM
     with pytest.raises(ValueError):
         assert VerticalAlign.from_string('none')
     with pytest.raises(ValueError):
@@ -228,16 +235,16 @@ def test_referencetext_from_string():
     assert ReferenceText.from_string("'Chapter {NUMBER}\t{title}'") \
            == MixedStyledText(
                   [MixedStyledText([SingleStyledText('Chapter '),
-                                    ReferenceField(NUMBER), Tab(),
-                                    ReferenceField(TITLE)])])
+                                    ReferenceField('number'), Tab(),
+                                    ReferenceField('title')])])
     assert ReferenceText.from_string("'{bull} '(style1)"
                                      "'{nbsp}{TITLE}\t{PaGE}'(style2)") \
            == MixedStyledText(
                   [MixedStyledText([SingleStyledText('\N{BULLET} ')],
                                    style='style1'),
                    MixedStyledText([SingleStyledText('\N{NO-BREAK SPACE}'),
-                                    ReferenceField(TITLE), Tab(),
-                                    ReferenceField(PAGE)],
+                                    ReferenceField('title'), Tab(),
+                                    ReferenceField('page')],
                                    style='style2')])
 
 

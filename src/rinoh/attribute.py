@@ -62,6 +62,12 @@ class OptionSetMeta(type):
                                            for val in cls_dict['values']))
         return super().__new__(cls, classname, bases, cls_dict)
 
+    def __getattr__(cls, item):
+        string = item.lower().replace('_', ' ')
+        if string in cls.values:
+            return string
+        raise AttributeError(item)
+
 
 class OptionSet(AttributeType, metaclass=OptionSetMeta):
     """Accepts the values listed in :attr:`values`"""
@@ -89,6 +95,7 @@ class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
     def __init__(self, accepted_type, default_value, description, name=None):
         self.accepted_type = accepted_type
+        assert accepted_type.check_type(default_value)
         self.default_value = default_value
         self.description = description
         self.name = name

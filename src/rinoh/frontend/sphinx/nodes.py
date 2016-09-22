@@ -18,7 +18,7 @@ from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable, StaticGroupedFlowables
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
-from ...reference import Reference, REFERENCE
+from ...reference import Reference
 from ...structure import DefinitionList
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
@@ -312,7 +312,7 @@ class AutoSummary_Table(DocutilsGroupingNode):
 
 class Number_Reference(DocutilsInlineNode):
     def build_styled_text(self):
-        return Reference(self.get('refid'), REFERENCE, style='link')
+        return Reference(self.get('refid'), 'reference', style='link')
 
 
 class Footnotes_Rubric(DocutilsDummyNode):

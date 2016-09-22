@@ -13,9 +13,9 @@ from functools import partial
 
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes,
-                        RuleSetFile, AttributeType)
+                        RuleSetFile, AttributeType, OptionSet)
 from .dimension import DimensionBase, CM, PT
-from .document import Document, DocumentPart, Page, PageOrientation, PORTRAIT
+from .document import Document, DocumentPart, Page, PageOrientation
 from .element import create_destination
 from .float import BackgroundImage, Image
 from .language import Language, EN
@@ -25,8 +25,8 @@ from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
 from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
-from .reference import (Field, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
-                        NUMBER_OF_PAGES, Reference, NUMBER, TITLE)
+from .reference import (Reference, Field, SECTION_NUMBER, SECTION_TITLE,
+                        PAGE_NUMBER, NUMBER_OF_PAGES)
 from .resource import Resource
 from .text import StyledText, Tab
 from .strings import StringField, Strings
@@ -38,7 +38,7 @@ from .util import NamedDescriptor, WithNamedDescriptors
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
            'ContentsPartTemplate', 'FixedDocumentPartTemplate',
-           'DocumentTemplate', 'DocumentOptions', 'Option']
+           'DocumentTemplate', 'DocumentOptions', 'Option', 'AbstractLocation']
 
 
 class Option(Attribute):
@@ -47,6 +47,12 @@ class Option(Attribute):
 
 class DefaultOptionException(Exception):
     pass
+
+
+class AbstractLocation(OptionSet):
+    """Where to place the article's abstract"""
+
+    values = 'title', 'front matter'
 
 
 class Templated(object):
@@ -80,7 +86,7 @@ class Template(AttributesDictionary, NamedDescriptor):
 
 class PageTemplateBase(Template):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
-    page_orientation = Option(PageOrientation, PORTRAIT,
+    page_orientation = Option(PageOrientation, 'portrait',
                               'The orientation of pages in the document')
     left_margin = Option(DimensionBase, 3*CM, 'The margin size on the left of '
                                               'the page')
@@ -101,8 +107,8 @@ class PageTemplateBase(Template):
 
 def chapter_title_flowables(section_id):
     yield Paragraph(StringField(SectionTitles, 'chapter'))
-    yield Paragraph(Reference(section_id, NUMBER))
-    yield Paragraph(Reference(section_id, TITLE))
+    yield Paragraph(Reference(section_id, 'number'))
+    yield Paragraph(Reference(section_id, 'title'))
 
 
 class PageTemplate(PageTemplateBase):
@@ -253,7 +259,8 @@ class TitlePage(PageBase):
                                     style='title page author')
         try:
             abstract_location = self.document.get_option('abstract_location')
-            if 'abstract' in metadata and abstract_location == TITLE:
+            if ('abstract' in metadata
+                    and abstract_location == AbstractLocation.TITLE):
                 self.title << metadata['abstract']
         except KeyError:
             pass
@@ -278,7 +285,7 @@ class DocumentPartTemplate(Template):
         name (:class:`str`): a descriptive name for this document part template
     """
 
-    page_number_format = Option(NumberFormat, NUMBER, "The number for page "
+    page_number_format = Option(NumberFormat, 'number', "The number for page "
                                 "numbers in this document part. If it is "
                                 "different from the preceding part's number "
                                 "format, numbering restarts at 1")
@@ -456,7 +463,7 @@ class PartsList(AttributeType, list):
 
     @classmethod
     def check_type(cls, value):
-        if not (super().check_type(cls, value) or isinstance(value, list)):
+        if not (super().check_type(value) or isinstance(value, list)):
             return False
         return all(isinstance(item, str) for item in value)
 

@@ -9,9 +9,8 @@
 from ..attribute import OverrideDefault, Var
 from ..dimension import INCH
 from ..index import IndexSection
-from ..number import NUMBER, ROMAN_LC
 from ..paragraph import Paragraph
-from ..reference import (Field, Reference, PAGE_NUMBER, TITLE,
+from ..reference import (Field, Reference, PAGE_NUMBER,
                          DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                          SECTION_NUMBER, SECTION_TITLE)
 from ..strings import StringField
@@ -19,22 +18,21 @@ from ..structure import TableOfContentsSection, SectionTitles
 from ..stylesheets import sphinx
 from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
-                        TemplateConfiguration, TitlePartTemplate,
-                        DocumentPartTemplate)
+                        TitlePartTemplate, DocumentPartTemplate)
 from ..text import Tab
 
 
 def front_matter_section_title_flowables(section_id):
-    yield Paragraph(Reference(section_id, TITLE, link=False),
+    yield Paragraph(Reference(section_id, 'title', link=False),
                     style='front matter section title')
 
 
 def body_matter_chapter_title_flowables(section_id):
     yield Paragraph(StringField(SectionTitles, 'chapter').upper() + ' '
-                    + Reference(section_id, NUMBER, link=False,
+                    + Reference(section_id, 'number', link=False,
                                 style='number'),
                     style='body matter chapter label')
-    yield Paragraph(Reference(section_id, TITLE, link=False),
+    yield Paragraph(Reference(section_id, 'title', link=False),
                     style='body matter chapter title')
 
 
@@ -53,11 +51,12 @@ class Book(DocumentTemplate):
                              'contents', 'back_matter'])
 
     # default document part templates
-    title = TitlePartTemplate(page_number_format=NUMBER)
-    front_matter = FixedDocumentPartTemplate([TableOfContentsSection()],
-                                             page_number_format=ROMAN_LC)
-    contents = ContentsPartTemplate(page_number_format=NUMBER)
-    back_matter = BackMatterTemplate(page_number_format=NUMBER)
+    title = TitlePartTemplate(page_number_format='number')
+    front_matter = FixedDocumentPartTemplate(
+                       [TableOfContentsSection()],
+                       page_number_format='lowercase roman')
+    contents = ContentsPartTemplate(page_number_format='number')
+    back_matter = BackMatterTemplate(page_number_format='number')
 
     # default page templates
     page =  \

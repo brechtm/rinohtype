@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .attribute import AttributeType
+from .attribute import AcceptNoneAttributeType
 from .text import StyledText, SingleStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
@@ -52,7 +52,7 @@ class StringCollection(dict, metaclass=WithNamedDescriptors):
         return getattr(self, name)
 
 
-class Strings(AttributeType, dict):
+class Strings(AcceptNoneAttributeType, dict):
     """Stores several :class:`StringCollection`\ s"""
     def __init__(self, *string_collections):
         for string_collection in string_collections:

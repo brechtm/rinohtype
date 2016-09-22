@@ -27,7 +27,7 @@ from .dimension import DimensionBase, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
-                     EndOfContainer, PageBreakException, CONTENT)
+                     EndOfContainer, PageBreakException)
 from .style import Styled, Style
 from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
@@ -482,7 +482,7 @@ class LabeledFlowableStyle(FlowableStyle):
                                                    'and the labeled flowable')
     align_baselines = Attribute(Bool, True, 'Line up the baselines of the '
                                             'label and the labeled flowable')
-    wrap_label = Attribute(bool, False, 'Wrap the label at `label_max_width`')
+    wrap_label = Attribute(Bool, False, 'Wrap the label at `label_max_width`')
 
 
 class LabeledFlowableState(FlowableState):
@@ -667,18 +667,13 @@ class GroupedLabeledFlowables(GroupedFlowables):
             raise
 
 
-LEFT = 'left'
-RIGHT = 'right'
-CENTER = 'center'
-
-
 class HorizontalAlignment(OptionSet):
-    values = LEFT, RIGHT, CENTER
+    values = 'left', 'right', 'center'
 
 
 class HorizontallyAlignedFlowableStyle(FlowableStyle):
     width = Attribute(DimensionBase, None, 'The width of the flowable')
-    horizontal_align = Attribute(HorizontalAlignment, LEFT,
+    horizontal_align = Attribute(HorizontalAlignment, 'left',
                                  'Horizontal alignment of the flowable')
 
 
@@ -703,10 +698,10 @@ class HorizontallyAlignedFlowable(Flowable):
 
     def _align(self, container, width):
         align = self.align or self.get_style('horizontal_align', container)
-        if align == LEFT or width is None:
+        if align == HorizontalAlignment.LEFT or width is None:
             return
         left_extra = float(container.width - width)
-        if align == CENTER:
+        if align == HorizontalAlignment.CENTER:
             left_extra /= 2
         container.left = float(container.left) + left_extra
 
@@ -757,11 +752,8 @@ class Float(Flowable):
                                 **kwargs)
 
 
-ANY = 'any'
-
-
 class Break(OptionSet):
-    values = None, ANY, LEFT, RIGHT
+    values = None, 'any', 'left', 'right'
 
 
 class PageBreakStyle(FlowableStyle):
@@ -783,13 +775,14 @@ class PageBreak(Flowable):
 
     def flow(self, container, last_descender, state=None, **kwargs):
         state = state or self.initial_state(container)
-        this_page_type = LEFT if container.page.number % 2 == 0 else RIGHT
+        page_number = container.page.number
+        this_page_type = 'left' if page_number % 2 == 0 else 'right'
         page_break = self.get_style('page_break', container)
         if state.initial and page_break:
             if not (container.page._empty
-                    and page_break in (ANY, this_page_type)):
-                if page_break == ANY:
-                    page_break = LEFT if container.page.number % 2 else RIGHT
+                    and page_break in (Break.ANY, this_page_type)):
+                if page_break == Break.ANY:
+                    page_break = 'left' if page_number % 2 else 'right'
                 chain = container.top_level_container.chain
                 raise self.exception_class(page_break, chain, state)
         return super().flow(container, last_descender, state)

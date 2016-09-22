@@ -7,7 +7,7 @@
 
 import os
 
-from .attribute import AttributeType
+from .attribute import AcceptNoneAttributeType
 from .color import RED
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
@@ -17,7 +17,7 @@ from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
-from .reference import NUMBER
+from .reference import ReferenceType
 from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import ReadAliasAttribute
 
@@ -182,7 +182,7 @@ class Image(_Image):
     pass
 
 
-class BackgroundImage(_Image, AttributeType):
+class BackgroundImage(_Image, AcceptNoneAttributeType):
     pass
 
 
@@ -210,6 +210,6 @@ class Figure(Float, InseparableFlowables, StaticGroupedFlowables):
         number = document.counters.setdefault(self.category, 1)
         document.counters[self.category] += 1
         for id in self.get_ids(document):
-            document.set_reference(id, NUMBER, str(number))
+            document.set_reference(id, ReferenceType.NUMBER, str(number))
             # TODO: need to store formatted number
             # document.set_reference(element_id, TITLE, caption text)
