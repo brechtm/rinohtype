@@ -283,7 +283,11 @@ class RuleSet(OrderedDict):
         try:
             return self._get_variable(name, accepted_type)
         except KeyError:
-            return self.base.get_variable(name, accepted_type)
+            if self.base:
+                return self.base.get_variable(name, accepted_type)
+            else:
+                raise VariableNotDefined("Variable '{}' is not defined"
+                                         .format(name))
 
     def _get_variable(self, name, accepted_type):
         return self.variables[name]
@@ -321,8 +325,10 @@ class RuleSetFile(RuleSet):
             self.process_section(entry_name, classifier, section_body.items())
 
     def _get_variable(self, name, accepted_type):
-        variable_string = super()._get_variable(name, accepted_type)
-        return accepted_type.from_string(variable_string)
+        variable = super()._get_variable(name, accepted_type)
+        if isinstance(variable, str):
+            variable = accepted_type.from_string(variable)
+        return variable
 
     def process_section(self, section_name, classifier, items):
         raise NotImplementedError
@@ -374,3 +380,7 @@ class Var(object):
 
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
+
+
+class VariableNotDefined(Exception):
+    pass

@@ -57,7 +57,7 @@ class Templated(object):
 class Template(AttributesDictionary, NamedDescriptor):
     def get_value(self, attribute, document):
         try:
-            return super().get_value(attribute, document)
+            return super().get_value(attribute, document.configuration)
         except KeyError:
             bases = []
             if isinstance(self.base, str):
