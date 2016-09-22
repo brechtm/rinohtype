@@ -31,6 +31,7 @@ from collections import OrderedDict
 from itertools import count
 
 from . import __version__, __release_date__
+from .attribute import OptionSet
 from .backend import pdf
 from .flowable import RIGHT, LEFT, StaticGroupedFlowables
 from .language import EN
@@ -58,12 +59,12 @@ class DocumentTree(StaticGroupedFlowables):
         return os.path.abspath(os.path.dirname(self.source_file))
 
 
-class PageOrientation(str):
-    pass
+PORTRAIT = 'portrait'
+LANDSCAPE = 'landscape'
 
 
-PORTRAIT = PageOrientation('portrait')
-LANDSCAPE = PageOrientation('landscape')
+class PageOrientation(OptionSet):
+    values = (PORTRAIT, LANDSCAPE)
 
 
 class Page(Container):
