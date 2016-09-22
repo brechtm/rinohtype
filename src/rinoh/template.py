@@ -375,6 +375,10 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
 
 
 class TemplateConfiguration(RuleSet):
+    def __init__(self, name, base=None, **kwargs):
+        super().__init__(name, base=base, **kwargs)
+        self.variables['paper_size'] = A4
+
     def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
         if name in self:
             yield self[name]
@@ -470,7 +474,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
                                        'names')
     stylesheet = Attribute(StyleSheet, sphinx, 'The stylesheet to use for '
                                                'styling document elements')
-    paper_size = Attribute(Paper, A4, 'The default paper size')
 
     parts = Attribute(PartsList, [], 'The parts making up this document')
 
