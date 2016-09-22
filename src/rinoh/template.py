@@ -13,7 +13,7 @@ from functools import partial
 
 from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes,
-                        RuleSetFile, AttributeType, Var)
+                        RuleSetFile, AttributeType)
 from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PORTRAIT
 from .element import create_destination
@@ -33,7 +33,7 @@ from .strings import StringField, Strings
 from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet
 from .stylesheets import sphinx
-from .util import NamedDescriptor, WithNamedDescriptors, NotImplementedAttribute
+from .util import NamedDescriptor, WithNamedDescriptors
 
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
@@ -71,9 +71,11 @@ class Template(AttributesDictionary, NamedDescriptor):
             elif self.base is not None:
                 bases.append(self.base)
             for base_template in bases:
-                return base_template.get_value(attribute, document)
-            else:
-                raise KeyError
+                try:
+                    return base_template.get_value(attribute, document)
+                except KeyError:
+                    continue
+        raise KeyError
 
 
 class PageTemplateBase(Template):
