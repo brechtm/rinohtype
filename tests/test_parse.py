@@ -10,7 +10,8 @@ from rinoh.flowable import HorizontalAlignment, Break
 from rinoh.paragraph import (TextAlign, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
-from rinoh.reference import ReferenceField, ReferenceText
+from rinoh.reference import (ReferenceField, ReferenceText, Field, PAGE_NUMBER,
+                             NUMBER_OF_PAGES, SECTION_TITLE, SECTION_NUMBER)
 from rinoh.style import (parse_keyword, parse_string, parse_number,
                          parse_selector_args, StyleParseError, CharIterator)
 from rinoh.table import VerticalAlign
@@ -207,17 +208,15 @@ def test_stroke_from_string():
 
 
 def test_styledtext_from_string():
-    assert StyledText.from_string("'one'") \
-           == MixedStyledText([SingleStyledText('one')])
-    assert StyledText.from_string("'on\\'e'") \
-           == MixedStyledText([SingleStyledText("on'e")])
+    assert StyledText.from_string("'one'") == SingleStyledText('one')
+    assert StyledText.from_string("'on\\'e'") == SingleStyledText("on'e")
     assert StyledText.from_string("'one' 'two'") \
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('two')])
     assert StyledText.from_string("'one'(style1)") \
-           == MixedStyledText([SingleStyledText('one', style='style1')])
+           == SingleStyledText('one', style='style1')
     assert StyledText.from_string("'one' (style1)") \
-           == MixedStyledText([SingleStyledText('one', style='style1')])
+           == SingleStyledText('one', style='style1')
     assert StyledText.from_string("'one'(style1) 'two'") \
            == MixedStyledText([SingleStyledText('one', style='style1'),
                                SingleStyledText('two')])
@@ -225,18 +224,35 @@ def test_styledtext_from_string():
            == MixedStyledText([SingleStyledText('one', style='style1'),
                                SingleStyledText('two', style='style2')])
     assert StyledText.from_string("'one{nbsp}two'") \
-           == MixedStyledText([SingleStyledText('one\N{NO-BREAK SPACE}two')])
+           == SingleStyledText('one\N{NO-BREAK SPACE}two')
     assert StyledText.from_string("'one' '{gt}two'(style2)") \
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('>two', style='style2')])
 
+    # with fields
+    assert StyledText.from_string("'{SECTION_NUMBER(7)}' (style)") \
+           == Field(SECTION_NUMBER(7), style='style')
+    assert StyledText.from_string("'abc {NUMBER_OF_PAGES}' (style)") \
+           == MixedStyledText([SingleStyledText('abc '),
+                               Field(NUMBER_OF_PAGES)], style='style')
+    assert StyledText.from_string("'{PAGE_NUMBER}abc' (style)") \
+           == MixedStyledText([Field(PAGE_NUMBER),
+                               SingleStyledText('abc')], style='style')
+    assert StyledText.from_string("'one{nbsp}two{SECTION_TITLE(1)}'") \
+           == MixedStyledText([SingleStyledText('one\N{NO-BREAK SPACE}two'),
+                               Field(SECTION_TITLE(1))])
+    assert StyledText.from_string("'one{PAGE_NUMBER}'(style1) 'moh'(style2)") \
+           == MixedStyledText([MixedStyledText([SingleStyledText('one'),
+                                                Field(PAGE_NUMBER)],
+                                               style='style1'),
+                               SingleStyledText('moh', style='style2')])
+
 
 def test_referencetext_from_string():
     assert ReferenceText.from_string("'Chapter {NUMBER}\t{title}'") \
-           == MixedStyledText(
-                  [MixedStyledText([SingleStyledText('Chapter '),
-                                    ReferenceField('number'), Tab(),
-                                    ReferenceField('title')])])
+           == MixedStyledText([SingleStyledText('Chapter '),
+                               ReferenceField('number'), Tab(),
+                               ReferenceField('title')])
     assert ReferenceText.from_string("'{bull} '(style1)"
                                      "'{nbsp}{TITLE}\t{PaGE}'(style2)") \
            == MixedStyledText(

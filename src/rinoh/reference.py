@@ -17,7 +17,7 @@ from .layout import ReflowRequired
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
-                   StyledText, MixedStyledText)
+                   StyledText, SingleStyledText, MixedStyledText)
 from .util import NotImplementedAttribute
 
 
@@ -272,9 +272,11 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
         super().__init__()
         self.level = level
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.__dict__ == other.__dict__
+
     def __repr__(self):
-        return "{}('{}', {})".format(type(self).__name__, self.name,
-                                     self.level)
+        return "{}({})".format(type(self).__name__, self.level)
 
     def __str__(self):
         return '{}({})'.format(super().__str__(), self.level)
@@ -307,12 +309,12 @@ class Field(MixedStyledTextBase):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, style=None):
         try:
             field = FieldType.from_string(string)
         except KeyError:
             field = SectionFieldType.from_string(string)
-        return cls(field)
+        return cls(field, style=style)
 
     @property
     def items(self):
@@ -341,7 +343,7 @@ class Field(MixedStyledTextBase):
                 text = ''
         else:
             text = '?'
-        return MixedStyledText(text, parent=self)
+        yield SingleStyledText(text, parent=self)
 
     RE_VARIABLE = re.compile('{(' + '|'.join(chain(FieldType.all,
                                                    (r'{}\(\d+\)'.format(name)
@@ -350,9 +352,20 @@ class Field(MixedStyledTextBase):
                              + ')}', re.IGNORECASE)
 
     @classmethod
-    def substitute(cls, text, substitute_others):
-        parts = iter(cls.RE_VARIABLE.split(text))
-        for other_text, variable in zip_longest(parts, parts):
-            yield substitute_others(other_text)
-            if variable is not None:
-                yield cls.parse_string(variable)
+    def substitute(cls, text, substitute_others, style):
+        def sub(parts):
+            iter_parts = iter(parts)
+            for other_text, field_type in zip_longest(iter_parts, iter_parts):
+                if other_text:
+                    yield substitute_others(other_text)
+                if field_type:
+                    yield cls.parse_string(field_type)
+
+        parts = cls.RE_VARIABLE.split(text)
+        if len(parts) == 1:
+            return substitute_others(text, style=style)
+        elif sum(1 for part in parts if part) == 1:
+            field_type, = (part for part in parts if part)
+            return cls.parse_string(field_type, style=style)
+        else:
+            return MixedStyledText(sub(parts), style=style)

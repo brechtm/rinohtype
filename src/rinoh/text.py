@@ -157,8 +157,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
                 escape = char == '\\'
             raise StyledTextParseError('Missing closing quote')
 
-        def parse_style(saved_chars):
-            chars, saved_chars = tee(saved_chars)
+        def parse_style(chars):
+            chars, saved_chars = tee(chars)
             try:
                 next_char = skip_whitespace(chars)
             except StopIteration:
@@ -188,15 +188,19 @@ class StyledText(Styled, AcceptNoneAttributeType):
                 texts.append(cls._substitute_variables(text, style))
             except StopIteration:
                 break
-        return MixedStyledText(texts)
+
+        if len(texts) > 1:
+            return MixedStyledText(texts)
+        else:
+            first, = texts
+            return first
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        def substitute_html_entities(string):
-            return string.format(**NAME2CHAR)
+        def substitute_html_entities(string, style=None):
+            return SingleStyledText(string.format(**NAME2CHAR), style=style)
 
-        items = Field.substitute(text, substitute_html_entities)
-        return MixedStyledText(items, style=style)
+        return Field.substitute(text, substitute_html_entities, style=style)
 
     def __str__(self):
         return self.to_string(None)
@@ -413,7 +417,7 @@ class MixedStyledText(MixedStyledTextBase, list):
         return list(self)
 
     def text(self, flowable_target, **kwargs):
-        return self
+        return self.items
 
 
 class ConditionalMixedStyledText(MixedStyledText):
