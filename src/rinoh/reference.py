@@ -128,23 +128,8 @@ class ReferenceText(StyledText):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        super_substitute_variables = super()._substitute_variables
-        def sub(parts):
-            iter_parts = iter(parts)
-            for other_text, ref_type in zip_longest(iter_parts, iter_parts):
-                if other_text:
-                    yield super_substitute_variables(other_text, style=None)
-                if ref_type:
-                    yield ReferenceField(ref_type.lower())
-
-        parts = cls.RE_TYPES.split(text)
-        if len(parts) == 1:
-            return super_substitute_variables(text, style=style)
-        elif sum(1 for part in parts if part) == 1:
-            reference_type, = (part for part in parts if part)
-            return ReferenceField(reference_type.lower(), style=style)
-        else:
-            return MixedStyledText(sub(parts), style=style)
+        return substitute_variables(text, cls.RE_TYPES, ReferenceField,
+                                    super()._substitute_variables, style)
 
 
 class ReferencingParagraphStyle(ParagraphStyle):
@@ -351,27 +336,33 @@ class Field(MixedStyledTextBase):
             text = '?'
         yield SingleStyledText(text, parent=self)
 
-    RE_VARIABLE = re.compile('{(' + '|'.join(chain(FieldType.all,
-                                                   (r'{}\(\d+\)'.format(name)
+    RE_FIELD = re.compile('{(' + '|'.join(chain(FieldType.all,
+                                                (r'{}\(\d+\)'.format(name)
                                                     for name
                                                     in SectionFieldType.all)))
-                             + ')}', re.IGNORECASE)
+                          + ')}', re.IGNORECASE)
 
     @classmethod
     def substitute(cls, text, substitute_others, style):
-        def sub(parts):
-            iter_parts = iter(parts)
-            for other_text, field_type in zip_longest(iter_parts, iter_parts):
-                if other_text:
-                    yield substitute_others(other_text)
-                if field_type:
-                    yield cls.parse_string(field_type)
+        return substitute_variables(text, cls.RE_FIELD, cls.parse_string,
+                                    substitute_others, style)
 
-        parts = cls.RE_VARIABLE.split(text)
-        if len(parts) == 1:
-            return substitute_others(text, style=style)
-        elif sum(1 for part in parts if part) == 1:
-            field_type, = (part for part in parts if part)
-            return cls.parse_string(field_type, style=style)
-        else:
-            return MixedStyledText(sub(parts), style=style)
+
+def substitute_variables(text, split_regex, create_variable,
+                         substitute_others, style):
+    def sub(parts):
+        iter_parts = iter(parts)
+        for other_text, variable_type in zip_longest(iter_parts, iter_parts):
+            if other_text:
+                yield substitute_others(other_text, style=None)
+            if variable_type:
+                yield create_variable(variable_type.lower())
+
+    parts = split_regex.split(text)
+    if len(parts) == 1:                             # no variables
+        return substitute_others(text, style=style)
+    elif sum(1 for part in parts if part) == 1:     # only a single variable
+        variable_type, = (part for part in parts if part)
+        return create_variable(variable_type.lower(), style=style)
+    else:                                           # variable(s) and text
+        return MixedStyledText(sub(parts), style=style)
