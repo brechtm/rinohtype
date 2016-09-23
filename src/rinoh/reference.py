@@ -120,8 +120,7 @@ class ReferenceField(ReferenceBase):
 
 
 class ReferenceText(StyledText):
-    RE_TYPES = re.compile('({(?:' + '|'.join(ReferenceType.values) + ')})',
-                          re.IGNORECASE)
+    RE_TYPES = re.compile('{(' + '|'.join(ReferenceType.values) + ')}', re.I)
 
     @classmethod
     def check_type(cls, value):
@@ -129,16 +128,23 @@ class ReferenceText(StyledText):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        items = []
-        for part in (prt for prt in cls.RE_TYPES.split(text) if prt):
-            if part.lower() in ('{' + ref_type + '}'
-                                for ref_type in ReferenceType.values):
-                field_type = part[1:-1].lower()
-                item = ReferenceField(field_type)
-            else:
-                item = super()._substitute_variables(part, style=None)
-            items.append(item)
-        return MixedStyledText(items, style=style)
+        super_substitute_variables = super()._substitute_variables
+        def sub(parts):
+            iter_parts = iter(parts)
+            for other_text, ref_type in zip_longest(iter_parts, iter_parts):
+                if other_text:
+                    yield super_substitute_variables(other_text, style=None)
+                if ref_type:
+                    yield ReferenceField(ref_type.lower())
+
+        parts = cls.RE_TYPES.split(text)
+        if len(parts) == 1:
+            return super_substitute_variables(text, style=style)
+        elif sum(1 for part in parts if part) == 1:
+            reference_type, = (part for part in parts if part)
+            return ReferenceField(reference_type.lower(), style=style)
+        else:
+            return MixedStyledText(sub(parts), style=style)
 
 
 class ReferencingParagraphStyle(ParagraphStyle):

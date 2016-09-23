@@ -249,6 +249,7 @@ def test_styledtext_from_string():
 
 
 def test_referencetext_from_string():
+    assert ReferenceText.from_string("'{NUMBER}'") == ReferenceField('number')
     assert ReferenceText.from_string("'Chapter {NUMBER}\t{title}'") \
            == MixedStyledText([SingleStyledText('Chapter '),
                                ReferenceField('number'), Tab(),
@@ -256,8 +257,7 @@ def test_referencetext_from_string():
     assert ReferenceText.from_string("'{bull} '(style1)"
                                      "'{nbsp}{TITLE}\t{PaGE}'(style2)") \
            == MixedStyledText(
-                  [MixedStyledText([SingleStyledText('\N{BULLET} ')],
-                                   style='style1'),
+                  [SingleStyledText('\N{BULLET} ', style='style1'),
                    MixedStyledText([SingleStyledText('\N{NO-BREAK SPACE}'),
                                     ReferenceField('title'), Tab(),
                                     ReferenceField('page')],
