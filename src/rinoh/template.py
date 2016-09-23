@@ -382,8 +382,15 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
 
 
 class TemplateConfiguration(RuleSet):
-    def __init__(self, name, base=None, **kwargs):
-        super().__init__(name, base=base, **kwargs)
+    def __init__(self, name, base=None, description=None, **options):
+        unsupported = (options.keys()
+                       - self.document_template_class._supported_attributes)
+        if unsupported:
+            raise ValueError('Unsupported option(s) passed to {}: {}'
+                             .format(type(self).__name__,
+                                     ', '.join(unsupported)))
+        super().__init__(name, base=base, **options)
+        self.description = description
         self.variables['paper_size'] = A4
 
     def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
@@ -457,7 +464,8 @@ class DocumentTemplateMeta(WithAttributes):
 
 
 class PartsList(AttributeType, list):
-    """Stores the names of the document part template making up a document"""
+    """Stores the names of the document part templates making up a document"""
+
     def __init__(self, *parts):
         super().__init__(parts)
 

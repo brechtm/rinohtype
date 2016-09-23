@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name=
-template=article
+;template=article
 description=
 
 [GENERAL]

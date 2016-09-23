@@ -52,6 +52,11 @@ def test_template_configuration_base():
     assert doc.get_template_option('contents_page', 'column_spacing') == 10*PT
 
 
+def test_template_configuration_unsupported_option():
+    with pytest.raises(ValueError):
+        MyDocumentTemplate.Configuration('test', unsupported=666)
+
+
 def test_template_configuration_var():
     conf = MyDocumentTemplate.Configuration('test', a=False)
     conf.variables['paper_size'] = A5
