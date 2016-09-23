@@ -16,6 +16,7 @@ if __name__ == '__main__':
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
         with open(name + '.txt') as file:
-            flowables = parser.parse(file)
-        document = Article(flowables, configuration=configuration, backend=pdf)
+            document_tree = parser.parse(file)
+        document = Article(document_tree, configuration=configuration,
+                           backend=pdf)
         document.render(name)
