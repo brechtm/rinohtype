@@ -9,53 +9,65 @@ import pytest
 
 from rinoh.attribute import Attribute, Bool, Var
 from rinoh.dimension import PT
+from rinoh.document import DocumentTree
 from rinoh.paper import A5
-from rinoh.template import (DocumentTemplate, TemplateConfiguration,
-                            PageTemplate, ContentsPartTemplate)
+from rinoh.template import DocumentTemplate, PageTemplate, ContentsPartTemplate
 
 
 class MyDocumentTemplate(DocumentTemplate):
-    class Configuration(TemplateConfiguration):
-        a = Attribute(Bool, True, 'flag A')
-        b = Attribute(Bool, True, 'flag B')
-        c = Attribute(Bool, True, 'flag C')
+    a = Attribute(Bool, True, 'flag A')
+    b = Attribute(Bool, True, 'flag B')
+    c = Attribute(Bool, True, 'flag C')
 
-        page_tmpl = PageTemplate(page_size=Var('paper_size'),
+    parts = ['contents']
+
+    contents = ContentsPartTemplate()
+
+    contents_page = PageTemplate(page_size=Var('paper_size'),
                                  column_spacing=1*PT)
 
-    parts = [ContentsPartTemplate('contents', Configuration.page_tmpl)]
+
+document_tree = DocumentTree([])
 
 
 def test_template_configuration():
-    conf = MyDocumentTemplate.Configuration(a=False)
-    assert conf.get_option('a') == False
-    assert conf.get_option('b') == True
-    assert conf.get_option('c') == True
-    assert conf.get_template_option('page_tmpl', 'columns') == 1
-    assert conf.get_template_option('page_tmpl', 'column_spacing') == 1*PT
+    conf = MyDocumentTemplate.Configuration('test', a=False)
+    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    assert doc.get_option('a') == False
+    assert doc.get_option('b') == True
+    assert doc.get_option('c') == True
+    assert doc.get_template_option('contents_page', 'columns') == 1
+    assert doc.get_template_option('contents_page', 'column_spacing') == 1*PT
 
 
 def test_template_configuration_base():
-    base_conf = MyDocumentTemplate.Configuration(a=False)
-    conf = MyDocumentTemplate.Configuration(base=base_conf, b=False)
-    conf('page_tmpl', column_spacing=10*PT)
-    assert conf.get_option('a') == False
-    assert conf.get_option('b') == False
-    assert conf.get_option('c') == True
-    assert conf.get_template_option('page_tmpl', 'columns') == 1
-    assert conf.get_template_option('page_tmpl', 'column_spacing') == 10*PT
+    base_conf = MyDocumentTemplate.Configuration('base', a=False)
+    conf = MyDocumentTemplate.Configuration('test', base=base_conf, b=False)
+    conf('contents_page', column_spacing=10*PT)
+    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    assert doc.get_option('a') == False
+    assert doc.get_option('b') == False
+    assert doc.get_option('c') == True
+    assert doc.get_template_option('contents_page', 'columns') == 1
+    assert doc.get_template_option('contents_page', 'column_spacing') == 10*PT
 
 
 def test_template_configuration_var():
-    conf = MyDocumentTemplate.Configuration(a=False,
-                                            paper_size=A5)
-    assert conf.get_option('paper_size') == A5
-    assert conf.get_template_option('page_tmpl', 'page_size') == A5
+    conf = MyDocumentTemplate.Configuration('test', a=False)
+    conf.variables['paper_size'] = A5
+    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    assert doc.get_option('a') == False
+    assert doc.get_option('b') == True
+    assert doc.get_option('c') == True
+    assert doc.get_template_option('contents_page', 'page_size') == A5
 
 
 def test_template_configuration_var2():
-    conf = MyDocumentTemplate.Configuration(a=False,
-                                            paper_size=A5)
-    conf('page_tmpl', columns=2)
-    assert conf.get_option('paper_size') == A5
-    assert conf.get_template_option('page_tmpl', 'page_size') == A5
+    conf = MyDocumentTemplate.Configuration('test', a=False)
+    conf('contents_page', columns=2)
+    conf.variables['paper_size'] = A5
+    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    assert doc.get_option('a') == False
+    assert doc.get_option('b') == True
+    assert doc.get_option('c') == True
+    assert doc.get_template_option('contents_page', 'page_size') == A5
