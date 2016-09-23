@@ -17,6 +17,5 @@ if __name__ == '__main__':
         parser = ReStructuredTextReader()
         with open(name + '.txt') as file:
             document_tree = parser.parse(file)
-        document = Article(document_tree, configuration=configuration,
-                           backend=pdf)
+        document = Article(document_tree, configuration=configuration)
         document.render(name)

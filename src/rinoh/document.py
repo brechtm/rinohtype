@@ -285,7 +285,7 @@ class Document(object):
     keywords = BackendDocumentMetadata('keywords')
 
     def __init__(self, document_tree, stylesheet, strings=None, language=None,
-                 backend=pdf):
+                 backend=None):
         """`backend` specifies the backend to use for rendering the document."""
         self._print_version_and_license()
         self.front_matter = []
@@ -293,7 +293,7 @@ class Document(object):
         self.stylesheet = stylesheet
         self.language = language
         self._strings = strings or ()
-        self.backend = backend
+        self.backend = backend or pdf
         self.backend_document = self.backend.Document(self.CREATOR)
         self._flowables = list(id(element)
                                for element in document_tree.elements)
