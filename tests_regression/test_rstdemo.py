@@ -29,6 +29,8 @@ def test_rstdemo(tmpdir):
                                           stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
+    configuration('title', end_at_page='left')
+    configuration('contents', end_at_page='left')
     configuration('title_page', top_margin=2*CM)
 
     with open(os.path.join(TEST_DIR, 'demo.txt')) as file:

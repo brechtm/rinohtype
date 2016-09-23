@@ -15,7 +15,7 @@ from .attribute import (Bool, Integer, Function, Attribute,
                         AttributesDictionary, RuleSet, WithAttributes,
                         RuleSetFile, AttributeType, OptionSet)
 from .dimension import DimensionBase, CM, PT
-from .document import Document, DocumentPart, Page, PageOrientation
+from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
 from .float import BackgroundImage, Image
 from .language import Language, EN
@@ -289,6 +289,8 @@ class DocumentPartTemplate(Template):
                                 "numbers in this document part. If it is "
                                 "different from the preceding part's number "
                                 "format, numbering restarts at 1")
+    end_at_page = Option(PageType, 'any', 'The type of page to end this '
+                                          'document part on')
 
     skip_if_no_flowables = True
 

@@ -174,8 +174,6 @@ class BackendDocumentMetadata(object):
 class DocumentPart(object, metaclass=DocumentLocationType):
     """Part of a :class:`Document` that has a specific page template."""
 
-    end_at = PageType.LEFT
-
     def __init__(self, template, document, flowables):
         self.template = template
         self.document = document
@@ -225,7 +223,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
                 page = self.new_page(page_number, next_page_type == break_type)
                 self.add_page(page)     # this grows self.pages!
         next_page_type = 'right' if page_number % 2 else 'left'
-        if next_page_type == self.end_at:
+        end_at_page = self.document.get_template_option(self.template.name,
+                                                        'end_at_page')
+        if next_page_type == end_at_page:
             self.add_page(self.first_page(page_number + 1))
         return len(self.pages)
 

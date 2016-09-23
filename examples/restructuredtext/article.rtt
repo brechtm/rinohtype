@@ -18,12 +18,15 @@ paper_size=A4
 
 [title]
 page_number_format=number
+end_at_page=left
 
 [front_matter]
 page_number_format=lowercase roman
+end_at_page=left
 
 [contents]
 page_number_format=number
+end_at_page=any
 
 [page]
 page_size=$(paper_size)

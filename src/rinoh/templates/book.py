@@ -51,12 +51,16 @@ class Book(DocumentTemplate):
                              'contents', 'back_matter'])
 
     # default document part templates
-    title = TitlePartTemplate(page_number_format='number')
+    title = TitlePartTemplate(page_number_format='number',
+                              end_at_page='left')
     front_matter = FixedDocumentPartTemplate(
                        [TableOfContentsSection()],
-                       page_number_format='lowercase roman')
-    contents = ContentsPartTemplate(page_number_format='number')
-    back_matter = BackMatterTemplate(page_number_format='number')
+                       page_number_format='lowercase roman',
+                       end_at_page='left')
+    contents = ContentsPartTemplate(page_number_format='number',
+                                    end_at_page='left')
+    back_matter = BackMatterTemplate(page_number_format='number',
+                                     end_at_page='left')
 
     # default page templates
     page =  \
