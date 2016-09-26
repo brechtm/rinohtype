@@ -18,6 +18,7 @@ from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
 from .float import BackgroundImage, Image
+from .flowable import Flowable
 from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
@@ -306,14 +307,14 @@ class DocumentPartTemplate(Template):
         for flowable in self.all_flowables(fake_container.document):
             flowable.prepare(fake_container)
 
-    def flowables(self, document):
+    def _flowables(self, document):
         """Return a list of :class:`rinoh.flowable.Flowable`\ s that make up
         the document part"""
         raise NotImplementedError
 
     def all_flowables(self, document):
         extra_flowables = document._to_insert.get(self.name, ())
-        flowables = [flowable for flowable in self.flowables(document)]
+        flowables = [flowable for flowable in self._flowables(document)]
         for flowable, position in extra_flowables:
             flowables.insert(position, flowable)
         return flowables
@@ -329,7 +330,7 @@ class TitlePartTemplate(DocumentPartTemplate):
 
     skip_if_no_flowables = False
 
-    def flowables(self, document):
+    def _flowables(self, document):
         return iter([])
 
 
@@ -340,21 +341,23 @@ class ContentsPartTemplate(DocumentPartTemplate):
     :class:`rinoh.document.DocumentTree` passed to a :class:`DocumentTemplate`.
     """
 
-    def flowables(self, document):
+    def _flowables(self, document):
         yield document.document_tree
 
 
+class FlowablesList(AttributeType):
+    @classmethod
+    def check_type(cls, value):
+        if not (super().check_type(value) or isinstance(value, list)):
+            return False
+        return all(isinstance(item, Flowable) for item in value)
+
+
 class FixedDocumentPartTemplate(DocumentPartTemplate):
-    """A document part template that renders a fixed list of flowables.
+    """A document part template that renders a fixed list of flowables"""
 
-    Args:
-        flowables (:class:`list`): a list of flowables to include in the
-            document part
-    """
-
-    def __init__(self, flowables, **attributes):
-        super().__init__(**attributes)
-        self._flowables = flowables
+    flowables = Option(FlowablesList, [], 'The list of flowables to include '
+                                          'in this document part')
 
     @property
     def doc_kwargs(self):
@@ -363,8 +366,8 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
         kwargs.update(super().doc_kwargs)
         return kwargs
 
-    def flowables(self, document):
-        return self._flowables
+    def _flowables(self, document):
+        return document.get_template_option(self.name, 'flowables')
 
 
 class DocumentOptions(dict, metaclass=WithNamedDescriptors):
@@ -413,7 +416,7 @@ class TemplateConfiguration(RuleSet):
         try:
             template = self.document_template_class.get_default_template(name)
         except KeyError:
-            raise ValueError("'{}' is not a template used used by {}"
+            raise ValueError("'{}' is not a template used by {}"
                              .format(name, self.document_template_class))
         return type(template)
 

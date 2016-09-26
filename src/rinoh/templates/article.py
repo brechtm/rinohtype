@@ -21,7 +21,7 @@ __all__ = ['Article']
 class ArticleFrontMatter(DocumentPartTemplate):
     toc_section = TableOfContentsSection()
 
-    def flowables(self, document):
+    def _flowables(self, document):
         meta = document.metadata
         abstract_loc = document.get_option('abstract_location')
         if ('abstract' in meta

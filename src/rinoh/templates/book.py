@@ -39,7 +39,7 @@ def body_matter_chapter_title_flowables(section_id):
 class BackMatterTemplate(DocumentPartTemplate):
     index_section = IndexSection()
 
-    def flowables(self, document):
+    def _flowables(self, document):
         if document.index_entries:
             yield self.index_section
 
@@ -54,7 +54,7 @@ class Book(DocumentTemplate):
     title = TitlePartTemplate(page_number_format='number',
                               end_at_page='left')
     front_matter = FixedDocumentPartTemplate(
-                       [TableOfContentsSection()],
+                       flowables=[TableOfContentsSection()],
                        page_number_format='lowercase roman',
                        end_at_page='left')
     contents = ContentsPartTemplate(page_number_format='number',
