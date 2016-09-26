@@ -384,7 +384,14 @@ class DocumentOptions(dict, metaclass=WithNamedDescriptors):
 
 
 class TemplateConfiguration(RuleSet):
-    def __init__(self, name, base=None, description=None, **options):
+    document_template_class = None
+
+    def __init__(self, name, base=None, template=None, description=None,
+                 **options):
+        if template:
+            template_class = DocumentTemplate.from_string(template)
+            assert self.document_template_class in (None, template_class)
+            self.document_template_class = template_class
         unsupported = (options.keys()
                        - self.document_template_class._supported_attributes)
         if unsupported:
@@ -409,6 +416,10 @@ class TemplateConfiguration(RuleSet):
             raise ValueError("'{}' is not a template used used by {}"
                              .format(name, self.document_template_class))
         return type(template)
+
+    def document(self, document_tree, options=None, backend=None):
+        return self.document_template_class(document_tree, configuration=self,
+                                            options=options, backend=backend)
 
 
 class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
