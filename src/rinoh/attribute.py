@@ -37,7 +37,7 @@ class AttributeType(object):
 
     @classmethod
     def parse_string(cls, string):
-        raise NotImplementedError
+        raise NotImplementedError(cls)
 
 
 class AcceptNoneAttributeType(AttributeType):
