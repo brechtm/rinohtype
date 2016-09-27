@@ -326,10 +326,10 @@ class RuleSetFile(RuleSet):
             if section_name in (None, self.main_section, 'VARIABLES'):
                 continue
             if ':' in section_name:
-                entry_name, classifier = section_name.split(':')
+                name, classifier = (s.strip() for s in section_name.split(':'))
             else:
-                entry_name, classifier = section_name, None
-            self.process_section(entry_name, classifier, section_body.items())
+                name, classifier = section_name.strip(), None
+            self.process_section(name, classifier, section_body.items())
 
     def _get_variable(self, name, accepted_type):
         variable = super()._get_variable(name, accepted_type)
