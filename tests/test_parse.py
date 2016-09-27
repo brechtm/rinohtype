@@ -269,7 +269,7 @@ def test_referencetext_from_string():
 
 def test_parse_keyword():
     def helper(string):
-        chars = iter(string)
+        chars = CharIterator(string)
         return parse_keyword(chars), ''.join(chars)
 
     assert helper('style=') == ('style', '')
@@ -286,7 +286,7 @@ def test_parse_keyword():
 def test_parse_string():
     def helper(string):
         chars = iter(string)
-        return parse_string(next(chars), chars), ''.join(chars)
+        return parse_string(chars), ''.join(chars)
 
     assert helper('"test"') == ('test', '')
     assert helper("'test'") == ('test', '')
@@ -300,7 +300,7 @@ def test_parse_string():
 def test_parse_number():
     def helper(string):
         chars = CharIterator(string)
-        return parse_number(next(chars), chars), ''.join(chars)
+        return parse_number(chars), ''.join(chars)
 
     assert helper('1') == (1, '')
     assert helper('+1') == (1, '')
@@ -317,13 +317,15 @@ def test_parse_number():
 
 def test_parse_selector_args():
     def helper(string):
-        chars = CharIterator(string + ')')
+        chars = CharIterator('({})'.format(string))
         return parse_selector_args(chars)
 
-    assert helper("") == ([], dict())
-    assert helper("   ") == ([], dict())
+    assert helper("") == ([], {})
+    assert helper("   ") == ([], {})
     assert helper("'style name'") == (['style name'], {})
     assert helper("666") == ([666], {})
+    assert helper("'baboo', ") == (['baboo'], {})
+    assert helper("22, ") == ([22], {})
     assert helper("'style name', 666") == (['style name', 666], {})
     assert helper("'style name' ,666") == (['style name', 666], {})
     assert helper("'style name',666") == (['style name', 666], {})

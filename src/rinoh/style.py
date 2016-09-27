@@ -773,15 +773,14 @@ def parse_selector(string):
     try:
         while True:
             eat_whitespace(chars)
-            first_char = next(chars)
+            first_char = chars.peek()
             if first_char in ("'", '"'):
-                selector_name = parse_string(first_char, chars)
+                selector_name = parse_string(chars)
                 selector = SelectorByName(selector_name)
             elif first_char == '.':
-                assert next(chars) + next(chars) == '..'
+                assert next(chars) + next(chars) + next(chars) == '...'
                 selector = EllipsisSelector()
             else:
-                chars.push_back(first_char)
                 selector = parse_class_selector(chars)
             selectors.append(selector)
             eat_whitespace(chars)
@@ -794,15 +793,9 @@ def parse_selector(string):
 def parse_class_selector(chars):
     styled_chars = []
     eat_whitespace(chars)
-    has_args = False
-    for char in chars:
-        if char not in string.ascii_letters:
-            if char == '(':
-                has_args = True
-            else:
-                chars.push_back(char)
-            break
-        styled_chars.append(char)
+    while chars.peek() and chars.peek() in string.ascii_letters:
+        styled_chars.append(next(chars))
+    has_args = chars.peek() == '('
     styled_name = ''.join(styled_chars)
     for selector in all_subclasses(Styled):
         if selector.__name__ == styled_name:
@@ -817,84 +810,80 @@ def parse_class_selector(chars):
 
 def parse_selector_args(chars):
     args, kwargs = [], {}
+    assert next(chars) == '('
     eat_whitespace(chars)
-    char = next(chars)
-    if char == ')':
-        return args, kwargs
-    chars.push_back(char)
-    try:
-        while True:
-            argument = parse_value(chars)
-            if argument is not None:
-                assert not kwargs
-                args.append(argument)
-            else:
-                keyword = parse_keyword(chars)
-                eat_whitespace(chars)
-                kwargs[keyword] = parse_value(chars)
+    while chars.peek() not in (None, ')'):
+        argument = parse_value(chars)
+        if argument is not None:
+            assert not kwargs
+            args.append(argument)
+        else:
+            keyword = parse_keyword(chars)
             eat_whitespace(chars)
-            char = next(chars)
-            if char == ')':
-                break
-            assert char == ','
-            eat_whitespace(chars)
-    except StopIteration:
-        pass
+            kwargs[keyword] = parse_value(chars)
+        eat_whitespace(chars)
+        char = next(chars)
+        if char == ')':
+            break
+        assert char == ','
+        eat_whitespace(chars)
+    else:
+        assert next(chars) == ')'
     return args, kwargs
 
 
 def eat_whitespace(chars):
-    for char in chars:
-        if char not in ' \t':
-            chars.push_back(char)
-            break
+    while chars.peek() and chars.peek() in ' \t':
+        next(chars)
 
 
-class CharIterator(object):
+class CharIterator(str):
     def __init__(self, string):
-        self._iter = iter(string)
-        self._pushed_back = []
+        self.next_index = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self._pushed_back:
-            return self._pushed_back.pop(0)
-        return next(self._iter)
+        index = self.next_index
+        self.next_index += 1
+        try:
+            return self[index]
+        except IndexError:
+            raise StopIteration
 
-    def push_back(self, char):
-        self._pushed_back.insert(0, char)
+    def peek(self):
+        try:
+            return self[self.next_index]
+        except IndexError:
+            return None
 
 
 def parse_keyword(chars):
     keyword_chars = []
-    for char in chars:
-        if not (char.isalnum() or char == '_'):
-            break
-        keyword_chars.append(char)
-    try:
-        while char != '=':
-            assert char in ' \t'
-            char = next(chars)
-    except (StopIteration, AssertionError):
+    while chars.peek() and chars.peek() in (string.ascii_letters
+                                            + string.digits + '_'):
+        keyword_chars.append(next(chars))
+    eat_whitespace(chars)
+    if chars.peek() != '=':
         raise StyleParseError('Expecting an equals sign to follow a keyword')
+    next(chars)
     return ''.join(keyword_chars)
 
 
 def parse_value(chars):
-    first_char = next(chars)
+    first_char = chars.peek()
     if first_char in ("'", '"'):
-        argument = parse_string(first_char, chars)
+        argument = parse_string(chars)
     elif first_char.isnumeric() or first_char in '+-':
-        argument = parse_number(first_char, chars)
+        argument = parse_number(chars)
     else:
-        chars.push_back(first_char)
         argument = None
     return argument
 
 
-def parse_string(open_quote, chars):
+def parse_string(chars):
+    open_quote = next(chars)
     string_chars = [open_quote]
     escape_next = False
     for char in chars:
@@ -911,13 +900,10 @@ def parse_string(open_quote, chars):
     return literal_eval(''.join(string_chars))
 
 
-def parse_number(first_char, chars):
-    number_chars = [first_char]
-    for char in chars:
-        if char not in '0123456789.e+-':
-            chars.push_back(char)
-            break
-        number_chars.append(char)
+def parse_number(chars):
+    number_chars = [next(chars)]
+    while chars.peek() and chars.peek() in '0123456789.e+-':
+        number_chars.append(next(chars))
     return literal_eval(''.join(number_chars))
 
 
