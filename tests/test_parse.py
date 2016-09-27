@@ -5,8 +5,9 @@ from rinoh.attribute import OptionSet, Bool, Integer
 from rinoh.color import Color, HexColor
 from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.draw import Stroke
-from rinoh.number import NumberFormat
+from rinoh.float import BackgroundImage, Scale
 from rinoh.flowable import HorizontalAlignment, Break
+from rinoh.number import NumberFormat
 from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
 from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
@@ -281,6 +282,22 @@ def test_referencetext_from_string():
                                     ReferenceField('title'), Tab(),
                                     ReferenceField('page')],
                                    style='style2')])
+
+
+def test_scale_from_string():
+    assert Scale.from_string("0") == 0
+    assert Scale.from_string("1.0") == 1.0
+    assert Scale.from_string("0.5") == 0.5
+    assert Scale.from_string("fit") == Scale.FIT
+    assert Scale.from_string("fill") == Scale.FILL
+    with pytest.raises(ValueError):
+        Scale.from_string("unknown")
+    with pytest.raises(ValueError):
+        Scale.from_string("/")
+    with pytest.raises(ValueError):
+        Scale.from_string("1.75")
+    with pytest.raises(ValueError):
+        assert Scale.from_string("-0.5")
 
 
 # selectors

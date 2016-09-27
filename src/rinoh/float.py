@@ -5,9 +5,10 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+
 import os
 
-from .attribute import AcceptNoneAttributeType
+from .attribute import AcceptNoneAttributeType, OptionSet
 from .color import RED
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontallyAlignedFlowable,
@@ -22,15 +23,25 @@ from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import ReadAliasAttribute
 
 
-__all__ = ['InlineImage', 'Image', 'Caption', 'Figure']
+__all__ = ['Scale', 'InlineImage', 'Image', 'Caption', 'Figure']
 
 
-LEFT = 'left'
-CENTER = 'center'
-RIGHT = 'right'
+class Scale(OptionSet):
+    values = 'fit', 'fill'
 
-FIT = 'fit'
-FILL = 'fill'
+    @classmethod
+    def check_type(cls, value):
+        return super().check_type(value) or 0 <= value <= 1
+
+    @classmethod
+    def parse_string(cls, string):
+        try:
+            value = super().parse_string(string)
+        except ValueError:
+            value = float(string)
+            if not cls.check_type(value):
+                raise ValueError('Scale factor should be lie between 0 and 1')
+        return value
 
 
 class ImageState(HorizontallyAlignedFlowableState):
@@ -126,10 +137,10 @@ class ImageBase(Flowable):
         else:
             scale_height = scale_width
         if scale_width is None:                   # no width or height given
-            if self.scale in (FIT, FILL):
+            if self.scale in Scale.values:
                 w_scale = float(container.width) / image.width
                 h_scale = float(container.remaining_height) / image.height
-                min_or_max = min if self.scale == FIT else max
+                min_or_max = min if self.scale == Scale.FIT else max
                 scale_width = scale_height = min_or_max(w_scale, h_scale)
             else:
                 scale_width = scale_height = self.scale
@@ -146,7 +157,7 @@ class ImageBase(Flowable):
                                             scale_width * dpi_scale_x,
                                             scale_height * dpi_scale_y,
                                             self.rotate)
-        ignore_overflow = (self.scale == FIT) or container.page._empty
+        ignore_overflow = (self.scale == Scale.FIT) or container.page._empty
         try:
             container.advance(h, ignore_overflow)
         except ContainerOverflow:
