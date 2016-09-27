@@ -818,6 +818,10 @@ def parse_class_selector(chars):
 def parse_selector_args(chars):
     args, kwargs = [], {}
     eat_whitespace(chars)
+    char = next(chars)
+    if char == ')':
+        return args, kwargs
+    chars.push_back(char)
     try:
         while True:
             argument = parse_value(chars)

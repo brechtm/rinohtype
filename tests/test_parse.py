@@ -320,6 +320,8 @@ def test_parse_selector_args():
         chars = CharIterator(string + ')')
         return parse_selector_args(chars)
 
+    assert helper("") == ([], dict())
+    assert helper("   ") == ([], dict())
     assert helper("'style name'") == (['style name'], {})
     assert helper("666") == ([666], {})
     assert helper("'style name', 666") == (['style name', 666], {})
@@ -344,6 +346,8 @@ def test_parse_class_selector():
     assert helper('Paragraph   ') == (Paragraph, '   ')
     assert helper('  Paragraph') == (Paragraph, '')
     assert helper('  Paragraph ') == (Paragraph, ' ')
+    assert helper('Paragraph()') == (Paragraph.like(), '')
+    assert helper('Paragraph(   )') == (Paragraph.like(), '')
     assert helper("Paragraph('style')") == (Paragraph.like('style'), '')
     assert helper("Paragraph('style', "
                   "meh=5)") == (Paragraph.like('style', meh=5), '')
