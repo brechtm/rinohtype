@@ -17,14 +17,15 @@ Base classes and exceptions for styled document elements.
                                delegated to the parent :class:`Styled`
 """
 
-import re
+import os
+import string
 
 from ast import literal_eval
 from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
 
-from .attribute import AttributesDictionary, RuleSet, RuleSetFile, Var
+from .attribute import AttributesDictionary, RuleSet, RuleSetFile
 from .element import DocumentElement
 from .resource import Resource
 from .util import cached, unique, all_subclasses, NotImplementedAttribute
@@ -32,7 +33,8 @@ from .warnings import warn
 
 
 __all__ = ['Style', 'Styled', 'StyledMatcher', 'StyleSheet', 'StyleSheetFile',
-           'ClassSelector', 'ContextSelector', 'PARENT_STYLE', 'StyleException']
+           'ClassSelector', 'ContextSelector', 'PARENT_STYLE',
+           'StyleException']
 
 
 class StyleException(Exception):
@@ -191,6 +193,9 @@ class Selector(object):
 
     def __neg__(self):
         return self.pri(-1)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
     def pri(self, priority):
         return SelectorWithPriority(self, priority)
@@ -728,24 +733,10 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
 
     main_section = 'STYLESHEET'
 
-    RE_SELECTOR = re.compile(r'^(?P<name>[a-z]+)\((?P<args>.*)\)$', re.I)
-
     def process_section(self, style_name, selector, items):
         if selector:
-            m = self.RE_SELECTOR.match(selector)
-            styled_name, selector_args = (m.group('name', 'args') if m
-                                          else (selector, None))
-            for styled_class in all_subclasses(Styled):
-                if styled_class.__name__ == styled_name:
-                    style_cls = styled_class.style_class
-                    break
-            else:
-                raise TypeError("Invalid type '{}' given for style '{}'"
-                                .format(styled_name, style_name))
-            if selector_args:
-                args, kwargs = parse_selector_args(selector_args)
-                selector = styled_class.like(*args, **kwargs)
-                self.matcher[style_name] = selector
+            selector = parse_selector(selector)
+            styled_class = selector.get_styled_class(self)
             try:
                 matcher_styled = self.get_styled(style_name)
                 if styled_class is not matcher_styled:
@@ -754,11 +745,12 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
                                     "returned by the matcher. Note that "
                                     "you do not have to specify the type "
                                     "in this case!"
-                                    .format(styled_class.__name__,
+                                    .format(selector.__name__,
                                             style_name,
                                             matcher_styled.__name__))
             except KeyError:
                 pass
+            style_cls = styled_class.style_class
         else:
             style_cls = self.get_entry_class(style_name)
         attribute_values = {}
@@ -775,12 +767,59 @@ class StyleParseError(Exception):
     pass
 
 
-def parse_selector_args(selector_args):
-    args, kwargs = [], {}
-    chars = CharIterator(selector_args)
+def parse_selector(string):
+    chars = CharIterator(string)
+    selectors = []
     try:
         while True:
             eat_whitespace(chars)
+            first_char = next(chars)
+            if first_char in ("'", '"'):
+                selector_name = parse_string(first_char, chars)
+                selector = SelectorByName(selector_name)
+            elif first_char == '.':
+                assert next(chars) + next(chars) == '..'
+                selector = EllipsisSelector()
+            else:
+                chars.push_back(first_char)
+                selector = parse_class_selector(chars)
+            selectors.append(selector)
+            eat_whitespace(chars)
+            assert next(chars) == '/'
+    except StopIteration:
+        pass
+    return ContextSelector(*selectors)
+
+
+def parse_class_selector(chars):
+    styled_chars = []
+    eat_whitespace(chars)
+    has_args = False
+    for char in chars:
+        if char not in string.ascii_letters:
+            if char == '(':
+                has_args = True
+            else:
+                chars.push_back(char)
+            break
+        styled_chars.append(char)
+    styled_name = ''.join(styled_chars)
+    for selector in all_subclasses(Styled):
+        if selector.__name__ == styled_name:
+            break
+    else:
+        raise TypeError("Invalid styled class '{}'".format(styled_name))
+    if has_args:
+        args, kwargs = parse_selector_args(chars)
+        selector = selector.like(*args, **kwargs)
+    return selector
+
+
+def parse_selector_args(chars):
+    args, kwargs = [], {}
+    eat_whitespace(chars)
+    try:
+        while True:
             argument = parse_value(chars)
             if argument is not None:
                 assert not kwargs
@@ -790,7 +829,11 @@ def parse_selector_args(selector_args):
                 eat_whitespace(chars)
                 kwargs[keyword] = parse_value(chars)
             eat_whitespace(chars)
-            assert next(chars) == ','
+            char = next(chars)
+            if char == ')':
+                break
+            assert char == ','
+            eat_whitespace(chars)
     except StopIteration:
         pass
     return args, kwargs

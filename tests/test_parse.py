@@ -7,13 +7,14 @@ from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.draw import Stroke
 from rinoh.number import NumberFormat
 from rinoh.flowable import HorizontalAlignment, Break
-from rinoh.paragraph import (TextAlign, TabAlign,
+from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import (ReferenceField, ReferenceText, Field, PAGE_NUMBER,
                              NUMBER_OF_PAGES, SECTION_TITLE, SECTION_NUMBER)
-from rinoh.style import (parse_keyword, parse_string, parse_number,
-                         parse_selector_args, StyleParseError, CharIterator)
+from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
+                         parse_class_selector, parse_keyword, parse_string,
+                         parse_number, StyleParseError, CharIterator)
 from rinoh.table import VerticalAlign
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
@@ -278,6 +279,8 @@ def test_parse_keyword():
     assert helper('key =  efzef') == ('key', '  efzef')
     with pytest.raises(StyleParseError):
         helper('bad key =')
+    with pytest.raises(StyleParseError):
+        helper('bad')
 
 
 def test_parse_string():
@@ -313,17 +316,55 @@ def test_parse_number():
 
 
 def test_parse_selector_args():
-    assert parse_selector_args("'style name'") == (['style name'], {})
-    assert parse_selector_args("666") == ([666], {})
-    assert parse_selector_args("'style name', 666") == (['style name', 666], {})
-    assert parse_selector_args("'style name' ,666") == (['style name', 666], {})
-    assert parse_selector_args("'style name',666") == (['style name', 666], {})
-    assert parse_selector_args("'arg1', 'arg2'") == (['arg1', 'arg2'], {})
-    assert parse_selector_args("key='value'") == ([], dict(key='value'))
-    assert parse_selector_args("key=123") == ([], dict(key=123))
-    assert parse_selector_args("k1=13,k2='meh'") == ([], dict(k1=13, k2='meh'))
-    assert parse_selector_args("key9='value'") == ([], dict(key9='value'))
-    assert parse_selector_args("key_9='value'") == ([], dict(key_9='value'))
-    assert parse_selector_args("'arg', key='value'") == (['arg'],
-                                                          dict(key='value'))
-    assert parse_selector_args("22, key='value'") == ([22], dict(key='value'))
+    def helper(string):
+        chars = CharIterator(string + ')')
+        return parse_selector_args(chars)
+
+    assert helper("'style name'") == (['style name'], {})
+    assert helper("666") == ([666], {})
+    assert helper("'style name', 666") == (['style name', 666], {})
+    assert helper("'style name' ,666") == (['style name', 666], {})
+    assert helper("'style name',666") == (['style name', 666], {})
+    assert helper("'arg1', 'arg2'") == (['arg1', 'arg2'], {})
+    assert helper("key='value'") == ([], dict(key='value'))
+    assert helper("key=123") == ([], dict(key=123))
+    assert helper("k1=13,k2='meh'") == ([], dict(k1=13, k2='meh'))
+    assert helper("key9='value'") == ([], dict(key9='value'))
+    assert helper("key_9='value'") == ([], dict(key_9='value'))
+    assert helper("'arg', key='value'") == (['arg'], dict(key='value'))
+    assert helper("22, key='value'") == ([22], dict(key='value'))
+
+
+def test_parse_class_selector():
+    def helper(string):
+        chars = CharIterator(string)
+        return parse_class_selector(chars), ''.join(chars)
+
+    assert helper('Paragraph') == (Paragraph, '')
+    assert helper('Paragraph   ') == (Paragraph, '   ')
+    assert helper('  Paragraph') == (Paragraph, '')
+    assert helper('  Paragraph ') == (Paragraph, ' ')
+    assert helper("Paragraph('style')") == (Paragraph.like('style'), '')
+    assert helper("Paragraph('style', "
+                  "meh=5)") == (Paragraph.like('style', meh=5), '')
+    assert helper(" StyledText('style')  ") == (StyledText.like('style'), '  ')
+
+
+def test_parse_selector():
+    assert parse_selector("Paragraph / StyledText") == Paragraph / StyledText
+    assert parse_selector("  Paragraph / StyledText") == Paragraph / StyledText
+    assert parse_selector(" Paragraph /StyledText  ") == Paragraph / StyledText
+    assert parse_selector("Paragraph('aa') / StyledText('bb')") \
+               == Paragraph.like('aa') / StyledText.like('bb')
+    assert parse_selector("Paragraph('aa') / StyledText") \
+               == Paragraph.like('aa') / StyledText
+    assert parse_selector("Paragraph('aa' ,meh=5) / StyledText") \
+               == Paragraph.like('aa', meh=5) / StyledText
+    assert parse_selector("Paragraph /    StyledText('bb ') ") \
+               == Paragraph / StyledText.like('bb ')
+    assert parse_selector("Paragraph('aa') / ... / StyledText(blip ='blop')") \
+               == Paragraph.like('aa') / ... / StyledText.like(blip='blop')
+    assert parse_selector("  'paragraph' / StyledText")\
+               == SelectorByName('paragraph') / StyledText
+    assert parse_selector("Paragraph('aa') / ... / 'some style'") \
+               == Paragraph.like('aa') / ... / SelectorByName('some style')
