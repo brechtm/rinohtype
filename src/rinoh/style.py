@@ -740,6 +740,8 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
         if selector:
             selector = parse_selector(selector)
             styled_class = selector.get_styled_class(self)
+            if not isinstance(selector, StyledMeta):
+                self.matcher[style_name] = selector
             try:
                 matcher_styled = self.get_styled(style_name)
                 if styled_class is not matcher_styled:
