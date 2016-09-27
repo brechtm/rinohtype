@@ -852,6 +852,15 @@ class CharIterator(str):
         except IndexError:
             raise StopIteration
 
+    def match(self, chars):
+        """Return all next characters that are listed in `chars` as a string"""
+        start_index = self.next_index
+        for char in self:
+            if char not in chars:
+                self.next_index -= 1
+                break
+        return self[start_index:self.next_index]
+
     def peek(self):
         try:
             return self[self.next_index]
@@ -860,10 +869,7 @@ class CharIterator(str):
 
 
 def parse_keyword(chars):
-    keyword_chars = []
-    while chars.peek() and chars.peek() in (string.ascii_letters
-                                            + string.digits + '_'):
-        keyword_chars.append(next(chars))
+    keyword_chars = chars.match(string.ascii_letters + string.digits + '_')
     eat_whitespace(chars)
     if chars.peek() != '=':
         raise StyleParseError('Expecting an equals sign to follow a keyword')
@@ -901,10 +907,7 @@ def parse_string(chars):
 
 
 def parse_number(chars):
-    number_chars = [next(chars)]
-    while chars.peek() and chars.peek() in '0123456789.e+-':
-        number_chars.append(next(chars))
-    return literal_eval(''.join(number_chars))
+    return literal_eval(chars.match('0123456789.e+-'))
 
 
 class Specificity(namedtuple('Specificity',
