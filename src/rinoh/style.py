@@ -773,24 +773,27 @@ class StyleParseError(Exception):
 def parse_selector(string):
     chars = CharIterator(string)
     selectors = []
-    try:
-        while True:
-            eat_whitespace(chars)
-            first_char = chars.peek()
-            if first_char in ("'", '"'):
-                selector_name = parse_string(chars)
-                selector = SelectorByName(selector_name)
-            elif first_char == '.':
-                assert next(chars) + next(chars) + next(chars) == '...'
-                selector = EllipsisSelector()
-            else:
-                selector = parse_class_selector(chars)
-            selectors.append(selector)
-            eat_whitespace(chars)
-            assert next(chars) == '/'
-    except StopIteration:
-        pass
-    return ContextSelector(*selectors)
+    while True:
+        eat_whitespace(chars)
+        first_char = chars.peek()
+        if first_char in ("'", '"'):
+            selector_name = parse_string(chars)
+            selector = SelectorByName(selector_name)
+        elif first_char == '.':
+            assert next(chars) + next(chars) + next(chars) == '...'
+            selector = EllipsisSelector()
+        else:
+            selector = parse_class_selector(chars)
+        selectors.append(selector)
+        eat_whitespace(chars)
+        try:
+            next(chars) == '/'
+        except StopIteration:
+            break
+    if len(selectors) == 1:
+        return selectors[0]
+    else:
+        return ContextSelector(*selectors)
 
 
 def parse_class_selector(chars):

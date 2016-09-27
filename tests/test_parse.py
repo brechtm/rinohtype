@@ -357,6 +357,7 @@ def test_parse_class_selector():
 
 
 def test_parse_selector():
+    assert parse_selector("Paragraph") == Paragraph
     assert parse_selector("Paragraph / StyledText") == Paragraph / StyledText
     assert parse_selector("  Paragraph / StyledText") == Paragraph / StyledText
     assert parse_selector(" Paragraph /StyledText  ") == Paragraph / StyledText
