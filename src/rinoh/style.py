@@ -425,6 +425,9 @@ class StyledMeta(type, ClassSelectorBase):
     attributes = {}
     style_name = None
 
+    def __hash__(self):
+        return hash(id(self))
+
     @property
     def cls(cls):
         return cls
