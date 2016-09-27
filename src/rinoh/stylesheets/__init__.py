@@ -19,11 +19,12 @@ __all__ = ['matcher', 'sphinx', 'sphinx_base14']
 
 STYLESHEETS_PATH = os.path.join(DATA_PATH, 'stylesheets')
 
+
 def path(filename):
     return os.path.join(STYLESHEETS_PATH, filename)
 
 
-sphinx = StyleSheetFile(path('sphinx.rts'), matcher=matcher)
+sphinx = StyleSheetFile(path('sphinx.rts'))
 
 sphinx_article = StyleSheetFile(path('sphinx_article.rts'))
 

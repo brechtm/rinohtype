@@ -665,13 +665,15 @@ class StyleSheet(RuleSet, Resource):
 
     def __init__(self, name, matcher=None, base=None, description=None,
                  pygments_style=None, **user_options):
-        base = self.from_string(base) if isinstance(base, str) else base
         from .highlight import pygments_style_to_stylesheet
+        from .stylesheets import matcher as default_matcher
+
+        base = self.from_string(base) if isinstance(base, str) else base
         if pygments_style:
             base = pygments_style_to_stylesheet(pygments_style, base)
         super().__init__(name, base=base)
         self.description = description
-        self.matcher = matcher if matcher is not None else StyledMatcher()
+        self.matcher = matcher if matcher is not None else default_matcher
         self.matcher.check_validity()
         if user_options:
             warn('Unsupported options passed to stylesheet: {}'
