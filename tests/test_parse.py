@@ -7,6 +7,7 @@ from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
 from rinoh.draw import Stroke
 from rinoh.number import NumberFormat
 from rinoh.flowable import HorizontalAlignment, Break
+from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
 from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              LineSpacing, DEFAULT, STANDARD, SINGLE, DOUBLE,
                              ProportionalSpacing, FixedSpacing, Leading)
@@ -187,6 +188,22 @@ def test_dimensionbase_from_string():
         assert DimensionBase.from_string('20inch')
 
 
+def test_paper_from_string():
+    assert Paper.from_string('A4') == A4
+    assert Paper.from_string('a5') == A5
+    assert Paper.from_string('junIOr legal') == JUNIOR_LEGAL
+    assert Paper.from_string('212pt * 5.84in') == Paper('212pt * 5.84in',
+                                                         212*PT, 5.84*INCH)
+    assert Paper.from_string('2 cm * 4cm') == Paper('2 cm * 4cm', 2*CM, 4*CM)
+    assert Paper.from_string('2cm * 4 cm') == Paper('2cm * 4 cm', 2*CM, 4*CM)
+    assert Paper.from_string('2cm*4cm') == Paper('2cm*4cm', 2*CM, 4*CM)
+    assert Paper.from_string('2  cm*4  cm') == Paper('2  cm*4  cm', 2*CM, 4*CM)
+    with pytest.raises(ValueError):
+        Paper.from_string('212pt * 5.84in * 6cm')
+    with pytest.raises(ValueError):
+        Paper.from_string('212pt * 5.84')
+
+
 def test_color_from_string():
     assert Color.from_string('none') == None
     assert Color.from_string('#ffffff') == HexColor('#FFFFFF')
@@ -198,6 +215,7 @@ def test_color_from_string():
 
 def test_stroke_from_string():
     assert Stroke.from_string('1pt,#fff') == Stroke(1*PT, HexColor('#FFF'))
+    assert Stroke.from_string('1pt, #fff') == Stroke(1*PT, HexColor('#FFF'))
     assert Stroke.from_string('99cm,#123456aa') == Stroke(99*CM,
                                                          HexColor('#123456aa'))
     with pytest.raises(ValueError):

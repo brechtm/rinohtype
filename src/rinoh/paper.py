@@ -15,7 +15,7 @@ The :class:`Paper` class and a number of predefined paper sizes:
 
 
 from .attribute import AttributeType
-from .dimension import INCH, MM
+from .dimension import Dimension, INCH, MM
 
 
 __all__ = ['Paper',
@@ -37,11 +37,16 @@ class Paper(AttributeType):
 
     @classmethod
     def parse_string(cls, string):
-        for paper in globals().values():
-            if isinstance(paper, cls) and paper.name.lower() == string.lower():
-                return paper
-        raise ValueError("'{}' is not a known {} format"
-                         .format(string, cls.__name__))
+        try:
+            return PAPER_BY_NAME[string.lower()]
+        except KeyError:
+            try:
+                width, height = (Dimension.from_string(part.strip())
+                                 for part in string.split('*'))
+            except ValueError:
+                raise ValueError("'{}' is not a valid {} format"
+                                 .format(string, cls.__name__))
+            return cls(string, width, height)
 
 
 # International (DIN 476 / ISO 216)
@@ -66,3 +71,8 @@ LEGAL = Paper('legal', 8.5*INCH, 14*INCH)
 JUNIOR_LEGAL = Paper('junior legal', 8*INCH, 5*INCH)
 LEDGER = Paper('ledger', 17*INCH, 11*INCH)
 TABLOID = Paper('tabloid', 11*INCH, 17*INCH)
+
+
+PAPER_BY_NAME = {paper.name.lower(): paper
+                 for paper in globals().values()
+                 if isinstance(paper, Paper)}
