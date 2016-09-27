@@ -93,12 +93,12 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
 
 class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
-    def __init__(self, accepted_type, default_value, description, name=None):
+    def __init__(self, accepted_type, default_value, description):
         self.accepted_type = accepted_type
         assert accepted_type.check_type(default_value)
         self.default_value = default_value
         self.description = description
-        self.name = name
+        self.name = None
 
     def __get__(self, style, type=None):
         try:
