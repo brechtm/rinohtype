@@ -11,6 +11,7 @@ import re
 from collections import OrderedDict
 from functools import partial
 
+from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType)
@@ -26,7 +27,7 @@ from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
 from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
-from .reference import (Reference, Field, SECTION_NUMBER, SECTION_TITLE,
+from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
                         PAGE_NUMBER, NUMBER_OF_PAGES)
 from .resource import Resource
 from .text import StyledText, Tab
@@ -109,9 +110,16 @@ class PageTemplateBase(Template):
 class FlowablesList(AcceptNoneAttributeType):
     @classmethod
     def check_type(cls, value):
-        if not (super().check_type(value) or isinstance(value, list)):
+        if not (super().check_type(value) or isinstance(value, (list, tuple))):
             return False
         return value is None or all(isinstance(val, Flowable) for val in value)
+
+    @classmethod
+    def parse_string(cls, string):
+        locals = {}
+        locals.update(reference.__dict__)
+        locals.update(styleds.__dict__)
+        return eval(string, {'__builtins__':{}}, locals)
 
 
 CHAPTER_TITLE_FLOWABLES = [Paragraph(StringField(SectionTitles, 'chapter')),
