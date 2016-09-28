@@ -22,18 +22,15 @@ from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
 from ..text import Tab
 
 
-def front_matter_section_title_flowables(section_id):
-    yield Paragraph(Reference(section_id, 'title', link=False),
-                    style='front matter section title')
+FRONT_MATTER_TITLE = [Paragraph(Field(SECTION_TITLE(1)),
+                                style='front matter section title')]
 
 
-def body_matter_chapter_title_flowables(section_id):
-    yield Paragraph(StringField(SectionTitles, 'chapter').upper() + ' '
-                    + Reference(section_id, 'number', link=False,
-                                style='number'),
-                    style='body matter chapter label')
-    yield Paragraph(Reference(section_id, 'title', link=False),
-                    style='body matter chapter title')
+BODY_TITLE = [Paragraph(StringField(SectionTitles, 'chapter').upper() + ' '
+                        + Field(SECTION_NUMBER(1), style='number'),
+                        style='body matter chapter label'),
+              Paragraph(Field(SECTION_TITLE(1)),
+                        style='body matter chapter title')]
 
 
 class BackMatterTemplate(DocumentPartTemplate):
@@ -83,7 +80,7 @@ class Book(DocumentTemplate):
                      chapter_header_text=None,
                      chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.5*INCH,
-                     chapter_title_flowables=front_matter_section_title_flowables)
+                     chapter_title_flowables=FRONT_MATTER_TITLE)
     
     front_matter_left_page =  \
         PageTemplate(base='front_matter_page',
@@ -103,7 +100,7 @@ class Book(DocumentTemplate):
                      chapter_header_text=None,
                      chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.4*INCH,
-                     chapter_title_flowables=body_matter_chapter_title_flowables)
+                     chapter_title_flowables=BODY_TITLE)
     
     contents_left_page = \
         PageTemplate(base='contents_page',
@@ -128,7 +125,7 @@ class Book(DocumentTemplate):
                      chapter_header_text=None,
                      chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
                      chapter_title_height=2.5*INCH,
-                     chapter_title_flowables=front_matter_section_title_flowables)
+                     chapter_title_flowables=FRONT_MATTER_TITLE)
     
     back_matter_left_page = \
         PageTemplate(base='back_matter_page',

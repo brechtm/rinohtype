@@ -11,9 +11,9 @@ import re
 from collections import OrderedDict
 from functools import partial
 
-from .attribute import (Bool, Integer, Function, Attribute,
-                        AttributesDictionary, RuleSet, WithAttributes,
-                        RuleSetFile, AttributeType, OptionSet)
+from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
+                        RuleSet, RuleSetFile, WithAttributes, AttributeType,
+                        OptionSet, AcceptNoneAttributeType)
 from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
@@ -106,10 +106,17 @@ class PageTemplateBase(Template):
         raise NotImplementedError
 
 
-def chapter_title_flowables(section_id):
-    yield Paragraph(StringField(SectionTitles, 'chapter'))
-    yield Paragraph(Reference(section_id, 'number'))
-    yield Paragraph(Reference(section_id, 'title'))
+class FlowablesList(AcceptNoneAttributeType):
+    @classmethod
+    def check_type(cls, value):
+        if not (super().check_type(value) or isinstance(value, list)):
+            return False
+        return value is None or all(isinstance(val, Flowable) for val in value)
+
+
+CHAPTER_TITLE_FLOWABLES = [Paragraph(StringField(SectionTitles, 'chapter')),
+                           Paragraph(Field(SECTION_NUMBER(1))),
+                           Paragraph(Field(SECTION_TITLE(1)))]
 
 
 class PageTemplate(PageTemplateBase):
@@ -127,7 +134,7 @@ class PageTemplate(PageTemplateBase):
                                  'header on a page that starts a new chapter')
     chapter_footer_text = Option(StyledText, None, 'The text to place in the '
                                  'footer on a page that starts a new chapter')
-    chapter_title_flowables = Option(Function, chapter_title_flowables,
+    chapter_title_flowables = Option(FlowablesList, CHAPTER_TITLE_FLOWABLES,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
     chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
@@ -218,13 +225,11 @@ class SimplePage(PageBase):
             self.footer.append_flowable(Footer(footer))
 
     def create_chapter_title(self, heading):
-        descender = None
-        section_id = heading.section.get_id(self.document)
         create_destination(heading.section, self.chapter_title, False)
         create_destination(heading, self.chapter_title, False)
-        chapter_title_flowables = self.get_option('chapter_title_flowables',
-                                                  self.document)
-        for flowable in chapter_title_flowables(section_id):
+        descender = None
+        for flowable in self.get_option('chapter_title_flowables',
+                                        self.document):
             _, _, descender = flowable.flow(self.chapter_title, descender)
 
 
@@ -343,14 +348,6 @@ class ContentsPartTemplate(DocumentPartTemplate):
 
     def _flowables(self, document):
         yield document.document_tree
-
-
-class FlowablesList(AttributeType):
-    @classmethod
-    def check_type(cls, value):
-        if not (super().check_type(value) or isinstance(value, list)):
-            return False
-        return all(isinstance(item, Flowable) for item in value)
 
 
 class FixedDocumentPartTemplate(DocumentPartTemplate):
