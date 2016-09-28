@@ -8,17 +8,21 @@
 
 import os
 
-from .attribute import AcceptNoneAttributeType, OptionSet
+from string import whitespace
+
+from .attribute import AcceptNoneAttributeType, OptionSet, Integer, Bool
 from .color import RED
+from .dimension import Dimension
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
-                       HorizontallyAlignedFlowable,
+                       GroupedFlowablesStyle, HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
-                       GroupedFlowablesStyle)
+                       HorizontalAlignment)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import ReferenceType
+from .style import CharIterator, eat_whitespace, parse_string
 from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import ReadAliasAttribute
 
@@ -193,8 +197,32 @@ class Image(_Image):
     pass
 
 
+BACKGROUND_IMAGE_KWARGS = dict(scale=Scale, width=Dimension, height=Dimension,
+                               dpi=Integer, rotate=Integer, limit_width=Bool,
+                               align=HorizontalAlignment)
+
+
 class BackgroundImage(_Image, AcceptNoneAttributeType):
-    pass
+    @classmethod
+    def parse_string(cls, string):
+        chars = CharIterator(string)
+        filename = parse_string(chars)
+        kwargs = {}
+        rest = ''.join(chars).strip()
+        while rest:
+            rest, value_string = (part.strip() for part in rest.rsplit('=', 1))
+            try:
+                rest, keyword = (p.strip() for p in rest.rsplit(maxsplit=1))
+            except ValueError:
+                rest, keyword = '', rest.strip()
+            try:
+                value_type = BACKGROUND_IMAGE_KWARGS[keyword]
+            except KeyError:
+                raise ValueError("'{}' is not a supported keyword argument "
+                                 "for {}".format(keyword, cls.__name__))
+            value = value_type.from_string(value_string)
+            kwargs[keyword] = value
+        return cls(filename, **kwargs)
 
 
 class Caption(NumberedParagraph):
