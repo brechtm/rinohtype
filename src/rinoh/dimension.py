@@ -46,7 +46,11 @@ class DimensionType(type):
         def operator(self, other):
             """Operator delegating to the :class:`float` method `method_name`"""
             float_operator = getattr(float, method_name)
-            return float_operator(float(self), float(other))
+            try:
+                float_other = float(other)
+            except TypeError:
+                return False
+            return float_operator(float(self), float_other)
         return operator
 
 
