@@ -30,9 +30,9 @@ from .reference import (Reference, Field, SECTION_NUMBER, SECTION_TITLE,
                         PAGE_NUMBER, NUMBER_OF_PAGES)
 from .resource import Resource
 from .text import StyledText, Tab
-from .strings import StringField, Strings
+from .strings import StringField, StringCollection, Strings
 from .structure import Header, Footer, SectionTitles
-from .style import StyleSheet
+from .style import StyleSheet, CharIterator, parse_string
 from .stylesheets import sphinx
 from .util import NamedDescriptor, WithNamedDescriptors
 
@@ -434,6 +434,12 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
         if section_name == 'GENERAL':
             for name, value in items:
                 self[name] = document_template_class.parse_value(name, value)
+        elif section_name in StringCollection.subclasses:
+            collection_cls = StringCollection.subclasses[section_name]
+            strings = self.setdefault('strings', Strings())
+            collection_items = {name: parse_string(CharIterator(value))
+                                for name, value in items}
+            strings[collection_cls] = collection_cls(**collection_items)
         else:
             template_class = self.get_entry_class(section_name)
             attributes = {}

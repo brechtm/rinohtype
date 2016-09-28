@@ -227,11 +227,11 @@ class NamedDescriptor(object):
 
 class WithNamedDescriptors(type):
     """Set the names of the descriptors"""
-    def __new__(cls, classname, bases, cls_dict):
+    def __new__(metacls, classname, bases, cls_dict):
         for name, attr in cls_dict.items():
             if isinstance(attr, NamedDescriptor):
                 attr.name = name
-        return type.__new__(cls, classname, bases, cls_dict)
+        return super().__new__(metacls, classname, bases, cls_dict)
 
 
 # context managers

@@ -38,8 +38,20 @@ class String(NamedDescriptor):
                 .format(self.description, self.accepted_type.__name__))
 
 
-class StringCollection(dict, metaclass=WithNamedDescriptors):
+class StringCollectionMeta(WithNamedDescriptors):
+    def __new__(metacls, classname, bases, cls_dict):
+        cls = super().__new__(metacls, classname, bases, cls_dict)
+        try:
+            StringCollection.subclasses[classname] = cls
+        except NameError:
+            pass  # cls is StringCollection
+        return cls
+
+
+class StringCollection(dict, metaclass=StringCollectionMeta):
     """A collection of related configurable strings"""
+    subclasses = {}
+
     def __init__(self, **options):
         for name, value in options.items():
             string_descriptor = getattr(type(self), name, None)
