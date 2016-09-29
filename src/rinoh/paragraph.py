@@ -69,6 +69,18 @@ class LineSpacing(AttributeType):
     """Base class for line spacing types. Line spacing is defined as the
     distance between the baselines of two consecutive lines."""
 
+    def __str__(self):
+        for name, spacing in PREDEFINED_SPACINGS.items():
+            if self is spacing:
+                return name
+        label = type(self).__name__.lower().replace('spacing', '')
+        args = ', '.join(str(arg) for arg in self._str_args)
+        return label + ('({})'.format(args) if args else '')
+
+    @property
+    def _str_args(self):
+        raise NotImplementedError
+
     REGEX = re.compile(r'^(?P<type>[a-z]+)(\((?P<arg>.*)\))?$', re.I)
 
     @classmethod
@@ -108,6 +120,10 @@ class LineSpacing(AttributeType):
 class DefaultSpacing(LineSpacing):
     """The default line spacing as specified by the font."""
 
+    @property
+    def _str_args(self):
+        return None
+
     def advance(self, line, last_descender, container):
         max_line_gap = max(float(glyph_span.span.line_gap(container))
                            for glyph_span in line)
@@ -127,6 +143,10 @@ class ProportionalSpacing(LineSpacing):
         """`factor` specifies the amount by which the line height is multiplied
         to obtain the line spacing."""
         self.factor = factor
+
+    @property
+    def _str_args(self):
+        return (self.factor, )
 
     @classmethod
     def parse_arguments(cls, factor):
@@ -163,8 +183,15 @@ class FixedSpacing(LineSpacing):
         Optionally, `minimum` specifies the minimum :class:`LineSpacing` to use,
         which can prevent lines with large fonts from overlapping. If no minimum
         is required, set to `None`."""
-        self.pitch = float(pitch)
+        self.pitch = pitch
         self.minimum = minimum
+
+    @property
+    def _str_args(self):
+        if self.minimum is SINGLE:
+            return (self.pitch, )
+        else:
+            return (self.pitch, self.minimum)
 
     @classmethod
     def parse_arguments(cls, pitch_str, minimum_str=None):
@@ -175,7 +202,7 @@ class FixedSpacing(LineSpacing):
         return pitch,
 
     def advance(self, line, last_descender, container):
-        advance = self.pitch + last_descender
+        advance = float(self.pitch) + last_descender
         if self.minimum is not None:
             minimum = self.minimum.advance(line, last_descender, container)
             return max(advance, minimum)
@@ -189,7 +216,11 @@ class Leading(LineSpacing):
     def __init__(self, leading):
         """`leading` specifies the space between the bottom of a line and the
         top of the following line."""
-        self.leading = float(leading)
+        self.leading = leading
+
+    @property
+    def _str_args(self):
+        return (self.leading, )
 
     @classmethod
     def parse_arguments(cls, leading_str):
@@ -199,7 +230,7 @@ class Leading(LineSpacing):
     def advance(self, line, last_descender, container):
         document = container
         max_ascender = max(float(item.span.ascender(document)) for item in line)
-        return max_ascender + self.leading
+        return max_ascender + float(self.leading)
 
 
 PREDEFINED_SPACINGS = dict(default=DEFAULT,
