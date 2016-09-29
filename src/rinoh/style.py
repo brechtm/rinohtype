@@ -886,27 +886,28 @@ class CharIterator(str):
 
 
 def parse_keyword(chars):
-    keyword_chars = chars.match(string.ascii_letters + string.digits + '_')
+    keyword = chars.match(string.ascii_letters + string.digits + '_')
     eat_whitespace(chars)
     if chars.peek() != '=':
         raise StyleParseError('Expecting an equals sign to follow a keyword')
     next(chars)
-    return ''.join(keyword_chars)
+    return keyword
 
 
 def parse_value(chars):
     first_char = chars.peek()
     if first_char in ("'", '"'):
-        argument = parse_string(chars)
+        value = parse_string(chars)
     elif first_char.isnumeric() or first_char in '+-':
-        argument = parse_number(chars)
+        value = parse_number(chars)
     else:
-        argument = None
-    return argument
+        value = None
+    return value
 
 
 def parse_string(chars):
     open_quote = next(chars)
+    assert open_quote in '"\''
     string_chars = [open_quote]
     escape_next = False
     for char in chars:
