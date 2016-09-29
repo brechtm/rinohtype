@@ -10,10 +10,10 @@ import re
 
 from collections import OrderedDict
 from configparser import ConfigParser
-from types import FunctionType
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
                    NotImplementedAttribute)
+
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
            'OverrideDefault', 'AttributesDictionary', 'RuleSet', 'RuleSetFile',
@@ -367,12 +367,6 @@ class Integer(AttributeType):
         except ValueError:
             raise ValueError("'{}' is not a valid {}"
                              .format(string, cls.__name__))
-
-
-class Function(AttributeType):
-    @classmethod
-    def check_type(cls, value):
-        return isinstance(value, (FunctionType, type(None)))
 
 
 # variables
