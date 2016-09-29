@@ -397,9 +397,14 @@ class TemplateConfiguration(RuleSet):
     def __init__(self, name, base=None, template=None, description=None,
                  **options):
         if template:
-            template_class = DocumentTemplate.from_string(template)
-            assert self.document_template_class in (None, template_class)
-            self.document_template_class = template_class
+            if isinstance(template, str):
+                template = DocumentTemplate.from_string(template)
+            assert self.document_template_class in (None, template)
+            self.document_template_class = template
+        parse_value = self.document_template_class.parse_value
+        options = {name: parse_value(name, value)
+                         if isinstance(value, str) else value
+                   for name, value in options.items()}
         unsupported = (options.keys()
                        - self.document_template_class._supported_attributes)
         if unsupported:
@@ -435,11 +440,7 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
     main_section = 'TEMPLATE_CONFIGURATION'
 
     def process_section(self, section_name, classifier, items):
-        document_template_class = self.document_template_class
-        if section_name == 'GENERAL':
-            for name, value in items:
-                self[name] = document_template_class.parse_value(name, value)
-        elif section_name in StringCollection.subclasses:
+        if section_name in StringCollection.subclasses:
             collection_cls = StringCollection.subclasses[section_name]
             strings = self.setdefault('strings', Strings())
             collection_items = {name: parse_string(CharIterator(value))

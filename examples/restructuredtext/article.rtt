@@ -3,13 +3,11 @@ name=
 template=article
 description=
 
-[GENERAL]
 parts =
     title
     front_matter
     contents
 stylesheet=sphinx_article
-;strings=
 table_of_contents=false
 abstract_location=title
 
