@@ -385,6 +385,9 @@ class Var(object):
     def __repr__(self):
         return "{}('{}')".format(type(self).__name__, self.name)
 
+    def __str__(self):
+        return '$({})'.format(self.name)
+
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
 
