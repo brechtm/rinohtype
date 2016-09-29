@@ -156,7 +156,7 @@ class WithAttributes(WithNamedDescriptors):
                     doc += ('    {} ({}): {}. Default: {}\n'
                            .format(name, attr.accepted_type.__name__,
                                    attr.description, attr.default_value))
-        supported_attributes = set(name for name in attributes)
+        supported_attributes = list(name for name in attributes)
         if attributes:
             doc = 'Args:\n' + doc
         mro_clss = []
@@ -181,6 +181,12 @@ class WithAttributes(WithNamedDescriptors):
         cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
                                if '__doc__' in cls_dict else '\n') + doc
         return super().__new__(mcls, classname, bases, cls_dict)
+
+    @property
+    def supported_attributes(cls):
+        for mro_class in cls.__mro__:
+            for name in getattr(mro_class, '_supported_attributes', ()):
+                yield name
 
 
 class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
@@ -260,11 +266,13 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
 
 
 class RuleSet(OrderedDict):
+    main_section = NotImplementedAttribute()
+
     def __init__(self, name, base=None, **kwargs):
         super().__init__(**kwargs)
         self.name = name
         self.base = base
-        self.variables = {}
+        self.variables = OrderedDict()
 
     def __getitem__(self, name):
         try:
@@ -303,10 +311,8 @@ class RuleSet(OrderedDict):
         raise NotImplementedError
 
 
+
 class RuleSetFile(RuleSet):
-
-    main_section = NotImplementedAttribute()
-
     def __init__(self, filename, base=None, **kwargs):
         config = ConfigParser(default_section=None, delimiters=('=',),
                               interpolation=None)

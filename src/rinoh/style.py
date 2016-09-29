@@ -662,6 +662,8 @@ class StyleSheet(RuleSet, Resource):
     """
 
     resource_type = 'stylesheet'
+    main_section = 'STYLESHEET'
+    extension = '.rts'
 
     def __init__(self, name, matcher=None, base=None, description=None,
                  pygments_style=None, **user_options):
@@ -728,6 +730,39 @@ class StyleSheet(RuleSet, Resource):
                 pass
         raise NoStyleException
 
+    def write(self, base_filename):
+        from configparser import ConfigParser
+        config = ConfigParser(interpolation=None)
+        config.add_section(self.main_section)
+        main = config[self.main_section]
+        main['name'] = self.name
+        main['description'] = self.description or ''
+
+        config.add_section('VARIABLES')
+        variables = config['VARIABLES']
+        for name, value in self.variables.items():
+            variables[name] = str(value)
+
+        for style_name, style in self.items():
+            classifier = ('' if style_name in self.matcher.by_name
+                          else ':' + type(style).__name__.replace('Style', ''))
+            config.add_section(style_name + classifier)
+            section = config[style_name + classifier]
+            if style.base is not style.default_base:
+                section['base'] = str(style.base)
+            for name in type(style).supported_attributes:
+                try:
+                    section[name] = str(style[name])
+                except StyleException:  # default
+                    section[';' + name] = str(style._get_default(name))
+        with open(base_filename + self.extension, 'w') as file:
+            config.write(file, space_around_delimiters=True)
+            print(';Undefined styles:', file=file)
+            for style_name, selector in self.matcher.by_name.items():
+                if style_name in self:
+                    continue
+                print(';[{}]'.format(style_name), file=file)
+
 
 class StyleSheetFile(RuleSetFile, StyleSheet):
     """Loads styles defined in a `.rts` file (INI format).
@@ -742,8 +777,6 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
     style sheet file.
 
     """
-
-    main_section = 'STYLESHEET'
 
     def process_section(self, style_name, selector, items):
         if selector:
