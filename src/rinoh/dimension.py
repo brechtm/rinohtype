@@ -92,7 +92,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
 
     def __repr__(self):
         """Return a textual representation of the evaluated value."""
-        return '{:.2f}pt'.format(float(self))
+        return '{:.2f}pt'.format(float(self)).replace('.00', '')
 
     def __abs__(self):
         """Return the absolute value of this dimension (in points)."""
