@@ -48,7 +48,7 @@ from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import ContainerOverflow, EndOfContainer
-from .text import TextStyle, MixedStyledText, SingleStyledText
+from .text import TextStyle, MixedStyledText, SingleStyledText, ESCAPE
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -262,12 +262,21 @@ class TabStop(object):
         return "{}({}, {}, {})".format(type(self).__name__, self._position,
                                        self.align.upper(), fill_repr)
 
+    def __str__(self):
+        result = '{} {}'.format(self._position, self.align)
+        if self.fill:
+            result += " '{}'".format(self.fill.translate(ESCAPE))
+        return result
+
     def get_position(self, line_width):
         """Return the absolute position of this tab stop."""
         return self._position.to_points(line_width)
 
 
-class TabStopList(AttributeType):
+class TabStopList(AttributeType, list):
+    def __str__(self):
+        return ', '.join(str(tab_stop) for tab_stop in self)
+
     @classmethod
     def check_type(cls, value):
         return (isinstance(value, (list, tuple))
@@ -308,7 +317,7 @@ class TabStopList(AttributeType):
                               TabAlign.from_string(align) if align else 'left',
                               literal_eval(fill) if fill else None)
             tabstops.append(tabstop)
-        return tabstops
+        return cls(tabstops)
 
 
 # TODO: look at Word/OpenOffice for more options
