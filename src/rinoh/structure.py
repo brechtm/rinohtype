@@ -78,10 +78,6 @@ class Section(StaticGroupedFlowables, PageBreak):
     def create_destination(self, container, at_top_of_container=False):
         pass    # destination is set by the section's Heading
 
-    def render(self, container, descender, state, **kwargs):
-        container.page.set_current_section(self, heading=False)
-        return super().render(container, descender, state, **kwargs)
-
 
 class HeadingStyle(NumberedParagraphStyle):
     number_separator = Attribute(StyledText, '.',

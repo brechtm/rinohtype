@@ -162,7 +162,6 @@ class Flowable(Styled):
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)
-        document = container.document
         container.advance(float(self.get_style('space_below', container)), True)
         container.document.progress(self)
         return margin_left + width + margin_right, top_to_baseline, descender

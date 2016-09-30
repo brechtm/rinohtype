@@ -89,9 +89,6 @@ class Page(Container):
         self.backend_page = document.backend.Page(backend_document,
                                                   width, height, self.number,
                                                   self.number_format)
-        self.section = None     # will point to the last section on this page
-        self.overflowed_chains = []
-        self._current_section = {}
         self._empty = True
         super().__init__('PAGE', None, 0, 0, width, height)
 
@@ -106,14 +103,6 @@ class Page(Container):
     def page(self):
         """Returns the page itself."""
         return self
-
-    def set_current_section(self, section, heading):
-        if heading:
-            if (section.level not in self._current_section
-                    or not self._current_section[section.level][1]):
-                self._current_section[section.level] = section, True
-        elif section.level not in self._current_section:
-            self._current_section[section.level] = section, False
 
     def get_current_section(self, level):
         current_section = None
