@@ -106,6 +106,9 @@ class Typeface(Resource, dict):
             weights = slants.setdefault(font.slant, {})
             weights[font.weight] = font
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def check_type(cls, value):
         return isinstance(value, cls)
