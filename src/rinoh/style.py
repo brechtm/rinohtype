@@ -572,7 +572,8 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return container.document.stylesheet.find_style(self, container)
 
     def before_placing(self, container):
-        pass
+        if self.parent:
+            self.parent.before_placing(container)
 
 
 class InvalidStyledMatcher(Exception):

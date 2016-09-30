@@ -8,6 +8,7 @@
 
 import re
 
+from copy import copy
 from itertools import chain, zip_longest
 
 from .annotation import NamedDestinationLink, AnnotatedSpan
@@ -40,7 +41,7 @@ class ReferenceType(OptionSet):
 # page:      <number of the page on which section 3.2 starts>
 
 
-class ReferenceBase(SingleStyledTextBase):
+class ReferenceBase(MixedStyledTextBase):
     def __init__(self, type='number', link=True, quiet=False, style=None,
                  parent=None):
         super().__init__(style=style, parent=parent)
@@ -51,7 +52,11 @@ class ReferenceBase(SingleStyledTextBase):
     def target_id(self, document):
         raise NotImplementedError
 
-    def text(self, container):
+    @property
+    def items(self):
+        return [self]
+
+    def children(self, container):
         if container is None:
             return '$REF({})'.format(self.type)
         target_id = self.target_id(container.document)
@@ -79,7 +84,16 @@ class ReferenceBase(SingleStyledTextBase):
         except KeyError:
             self.warn("Unknown label '{}'".format(target_id), container)
             text = "??".format(target_id)
-        return text
+        # TODO: clean up
+        if isinstance(text, MixedStyledTextBase):
+            for child in text.children(container):
+                child_copy = copy(child)
+                child_copy.parent = self
+                yield child_copy
+        elif isinstance(text, SingleStyledTextBase):
+            yield text
+        else:
+            yield SingleStyledText(text, parent=self)
 
     def spans(self, container):
         spans = super().spans(container)
@@ -186,14 +200,14 @@ class NoteMarkerBase(ReferenceBase, Label):
         except KeyError:
             if self.get_style('custom_label', flowable_target):
                 assert self.custom_label is not None
-                formatted_number = str(self.custom_label)
+                label = self.custom_label
             else:
                 number_format = self.get_style('number_format', flowable_target)
                 counter = document.counters.setdefault(Note.category, [])
                 counter.append(self)
-                formatted_number = format_number(len(counter), number_format)
-            label = self.format_label(str(formatted_number), flowable_target)
-            document.set_reference(target_id, 'number', str(label))
+                label = format_number(len(counter), number_format)
+            formatted_label = self.format_label(label, flowable_target)
+            document.set_reference(target_id, 'number', formatted_label)
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
@@ -201,6 +215,7 @@ class NoteMarkerBase(ReferenceBase, Label):
             container._footnote_space.add_footnote(note)
         except ReflowRequired:
             pass
+        super().before_placing(container)
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
@@ -311,7 +326,7 @@ class Field(MixedStyledTextBase):
     def items(self):
         return [self]
 
-    def text(self, container, **kwargs):
+    def children(self, container, **kwargs):
         if container is None:
             text = '${}'.format(self.type)
         elif self.type == PAGE_NUMBER:

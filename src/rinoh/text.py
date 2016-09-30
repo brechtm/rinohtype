@@ -319,8 +319,6 @@ class SingleStyledTextBase(StyledText):
     def spans(self, container):
         yield self
 
-    def before_placing(self, container):
-        pass
 
 ESCAPE = str.maketrans({"'": r"\'",
                         '\n': r'\n',
@@ -351,14 +349,14 @@ class SingleStyledText(SingleStyledTextBase):
 class MixedStyledTextBase(StyledText):
     def to_string(self, flowable_target):
         return ''.join(item.to_string(flowable_target)
-                       for item in self.text(flowable_target))
+                       for item in self.children(flowable_target))
 
     def spans(self, container):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        for item in self.text(container):
-            container.register_styled(item)
-            for span in item.spans(container):
+        for child in self.children(container):
+            container.register_styled(child)
+            for span in child.spans(container):
                 yield span
 
 
@@ -430,7 +428,7 @@ class MixedStyledText(MixedStyledTextBase, list):
     def items(self):
         return list(self)
 
-    def text(self, flowable_target, **kwargs):
+    def children(self, flowable_target, **kwargs):
         return self.items
 
 
