@@ -111,14 +111,16 @@ class Page(Container):
                             if (isinstance(element, Section)
                                 and element.level == level)):
             try:
-                first_page = self.document.page_references[id]
+                first_page = self.document.page_elements[id]
             except KeyError:
                 break
-            if first_page == self.number:
+            if first_page.document_part is not self.document_part:
+                continue
+            elif first_page.number == self.number:
                 return section
-            elif first_page > self.number:
+            elif first_page.number > self.number:
                 break
-            elif first_page <= self.number:
+            elif first_page.number <= self.number:
                 current_section = section
         return current_section
 
@@ -293,6 +295,7 @@ class Document(object):
         self.elements = OrderedDict()  # mapping id's to flowables
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
+        self.page_elements = {}        # mapping id's to pages
         self.page_references = {}      # mapping id's to page numbers
         self.index_entries = {}
         self._unique_id = 0
@@ -320,7 +323,8 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def register_page_reference(self, page, element):
         for id in element.get_ids(self):
-            self.page_references[id] = page.number
+            self.page_elements[id] = page
+            self.page_references[id] = page.formatted_number
 
     def set_reference(self, id, reference_type, value):
         id_references = self.references.setdefault(id, {})
@@ -387,6 +391,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
             self.part_page_counts = prev_number_of_pages
             self.prepare()
+            self.page_elements.clear()
             self.page_references = prev_page_references.copy()
             self.part_page_counts = self._render_pages()
             while not has_converged(self.part_page_counts):
