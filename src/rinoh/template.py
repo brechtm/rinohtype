@@ -524,7 +524,8 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     def __init__(self, document_tree, configuration=None, options=None,
                  backend=None):
-        self.configuration = configuration or self.Configuration('empty')
+        self.configuration = (configuration if configuration is not None
+                              else self.Configuration('empty'))
         self.options = options or self.options_class()
         stylesheet = self.get_option('stylesheet')
         language = self.get_option('language')
