@@ -3,7 +3,8 @@ import pytest
 
 from rinoh.attribute import OptionSet, Bool, Integer
 from rinoh.color import Color, HexColor
-from rinoh.dimension import DimensionBase, PT, PICA, INCH, MM, CM, PERCENT
+from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
+                             PERCENT, QUARTERS)
 from rinoh.draw import Stroke
 from rinoh.float import BackgroundImage, Scale
 from rinoh.flowable import HorizontalAlignment, Break
@@ -174,19 +175,20 @@ def test_integer_from_string():
         assert Integer.from_string('0.5')
 
 
-def test_dimensionbase_from_string():
-    assert DimensionBase.from_string('none') == None
-    assert DimensionBase.from_string('0') == 0
-    assert DimensionBase.from_string('1pt') == 1*PT
-    assert DimensionBase.from_string('10 pt') == 10*PT
-    assert DimensionBase.from_string('25pc') == 25*PICA
-    assert DimensionBase.from_string('1.5 in') == 1.5*INCH
-    assert DimensionBase.from_string('99999mm') == 99999*MM
-    assert DimensionBase.from_string('-2.1 cm') == -2.1*CM
-    assert DimensionBase.from_string('21%') == 21.00*PERCENT
-    assert DimensionBase.from_string('-16.12%') == -16.12*PERCENT
+def test_dimension_from_string():
+    assert Dimension.from_string('none') == None
+    assert Dimension.from_string('0') == 0
+    assert Dimension.from_string('1pt') == 1*PT
+    assert Dimension.from_string('10 pt') == 10*PT
+    assert Dimension.from_string('25pc') == 25*PICA
+    assert Dimension.from_string('1.5 in') == 1.5*INCH
+    assert Dimension.from_string('99999mm') == 99999*MM
+    assert Dimension.from_string('-2.1 cm') == -2.1*CM
+    assert Dimension.from_string('21%') == 21*PERCENT
+    assert Dimension.from_string('-16.12%') == -16.12*PERCENT
+    assert Dimension.from_string('3/4') == 3*QUARTERS
     with pytest.raises(ValueError):
-        assert DimensionBase.from_string('20inch')
+        assert Dimension.from_string('20inch')
 
 
 def test_paper_from_string():

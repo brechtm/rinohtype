@@ -595,7 +595,7 @@ DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
                               'mm': MM,
                               'pt': PT,
                               'pc': PICA,
-                              'px': DimensionUnit(1 / 100 * INCH),
+                              'px': DimensionUnit(1 / 100 * INCH, 'px'),
                               '%': PERCENT,
                               'em': None,
                               'ex': None}

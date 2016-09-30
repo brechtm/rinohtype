@@ -1,73 +1,90 @@
 
 
-import unittest
+import pytest
+
+from rinoh.dimension import PT, INCH, PICA, MM, CM, PERCENT, QUARTERS
 
 
-from rinoh.dimension import PT, INCH
+# test operators
+
+def test_addition():
+    assert 100*PT + 10 == 110
+    assert 100*PT + 10*PT == 110
+    assert 100 + 10*PT ==  110
+    assert 1*INCH + 8*PT == 80
 
 
-class TestDimension(unittest.TestCase):
+def test_subtraction():
+    assert 100*PT - 10 == 90
+    assert 100*PT - 10*PT == 90
+    assert 100 - 10*PT == 90
+    assert 1*INCH - 2*PT == 70
 
-    # test operators
 
-    def test_addition(self):
-        self.assertEqual(100*PT + 10, 110)
-        self.assertEqual(100*PT + 10*PT, 110)
-        self.assertEqual(100 + 10*PT,  110)
-        self.assertEqual(1*INCH + 8*PT, 80)
+def test_multiplication():
+    assert 3 * 30*PT == 90
+    assert 30*PT * 3 == 90
 
-    def test_subtraction(self):
-        self.assertEqual(100*PT - 10, 90)
-        self.assertEqual(100*PT - 10*PT, 90)
-        self.assertEqual(100 - 10*PT, 90)
-        self.assertEqual(1*INCH - 2*PT, 70)
 
-    def test_multiplication(self):
-        self.assertEqual(3 * 30*PT, 90)
-        self.assertEqual(30*PT * 3, 90)
+def test_division():
+    assert 30*PT / 5 == 6
 
-    def test_division(self):
-        self.assertEqual(30*PT / 5, 6)
 
-    def test_grow(self):
-        a = 20*PT
-        a.grow(50)
-        self.assertEqual(a, 70)
-        b = 20*PT
-        b.grow(30*PT)
-        self.assertEqual(b, 50)
-        c = 100*PT
-        c.grow(-50)
-        self.assertEqual(c, 50)
-        d = 100*PT
-        d.grow(-30*PT)
-        self.assertEqual(d, 70)
+def test_grow():
+    a = 20*PT
+    a.grow(50)
+    assert a == 70
+    b = 20*PT
+    b.grow(30*PT)
+    assert b == 50
+    c = 100*PT
+    c.grow(-50)
+    assert c == 50
+    d = 100*PT
+    d.grow(-30*PT)
+    assert d == 70
 
-    def test_negation(self):
-        self.assertEqual(-20*PT, -20)
 
-    # test late evaluation
+def test_negation():
+    assert -20*PT == -20
 
-    def test_late_addition(self):
-        a = 10*PT
-        b = a + 5*PT
-        a.grow(2)
-        self.assertEqual(b, 17)
 
-    def test_late_subtraction(self):
-        a = 10*PT
-        b = a - 5*PT
-        a.grow(2)
-        self.assertEqual(b, 7)
+# test late evaluation
 
-    def test_late_multiplication(self):
-        a = 10*PT
-        b = a * 2
-        a.grow(2)
-        self.assertEqual(b, 24)
+def test_late_addition():
+    a = 10*PT
+    b = a + 5*PT
+    a.grow(2)
+    assert b == 17
 
-    def test_late_division(self):
-        a = 10*PT
-        b = a / 2
-        a.grow(2)
-        self.assertEqual(b, 6)
+
+def test_late_subtraction():
+    a = 10*PT
+    b = a - 5*PT
+    a.grow(2)
+    assert b == 7
+
+
+def test_late_multiplication():
+    a = 10*PT
+    b = a * 2
+    a.grow(2)
+    assert b == 24
+
+
+def test_late_division():
+    a = 10*PT
+    b = a / 2
+    a.grow(2)
+    assert b == 6
+
+
+def test_units():
+    assert 4*INCH / 2 == 2*INCH
+    assert 1*CM + 10*MM == 2*CM
+    assert 1*PICA / 6 == 2*PT
+
+
+def test_fractions():
+    assert (50*PERCENT).to_points(100*PT) == 50
+    assert (3*QUARTERS).to_points(100*PT) == 75

@@ -109,11 +109,11 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
 
     REGEX = re.compile(r"""(?P<value>
                              [+-]?         # optional sign
-                             \d*.?\d+      # integer or float value
+                             \d*\.?\d+     # integer or float value
                            )
                            \s*             # optional space between value & unit
                            (?P<unit>
-                             [a-z%]*       # unit (can be an empty string)
+                             [a-z%/0-9]*   # unit (can be an empty string)
                            )
                        """, re.IGNORECASE | re.VERBOSE)
 
@@ -125,7 +125,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
             if unit == '':
                 assert value == '0'
                 return 0
-            dimension_unit = UNIT_TO_DIMENSION[unit.lower()]
+            dimension_unit = DimensionUnitBase.all[unit.lower()]
             _, end = m.span()
             if string[end:].strip():
                 raise ValueError("{}: trailing characters after dimension"
@@ -143,16 +143,21 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
 
 class Dimension(DimensionBase):
     # TODO: em, ex? (depends on context)
-    def __init__(self, value=0):
+    def __init__(self, value=0, unit=None):
         """Initialize a dimension at `value` points."""
         self._value = value
+        self._unit = unit or PT
+
+    def __str__(self):
+        number = '{:.2f}'.format(self._value).rstrip('0').rstrip('.')
+        return '{}{}'.format(number, self._unit.label)
 
     def grow(self, value):
         self._value += float(value)
         return self
 
     def __float__(self):
-        return float(self._value)
+        return float(self._value) * self._unit.points_per_unit
 
 
 class DimensionAddition(DimensionBase):
@@ -189,52 +194,57 @@ class DimensionMaximum(DimensionBase):
         return max(*(float(dimension) for dimension in self.dimensions))
 
 
-class DimensionUnit(object):
-    def __init__(self, points_per_unit):
+class DimensionUnitBase(object):
+    all = {}
+
+    def __init__(self, label):
+        self.label = label
+        self.all[label] = self
+
+
+class DimensionUnit(DimensionUnitBase):
+    def __init__(self, points_per_unit, label):
+        super().__init__(label)
         self.points_per_unit = float(points_per_unit)
 
     def __rmul__(self, value):
-        return Dimension(value * self.points_per_unit)
+        return Dimension(value, self)
 
 
 # Units
 
-PT = DimensionUnit(1)
-INCH = DimensionUnit(72*PT)
-PICA = DimensionUnit(1 / 6 * INCH)
-MM = DimensionUnit(1 / 25.4 * INCH)
-CM = DimensionUnit(10*MM)
+PT = DimensionUnit(1, 'pt')
+INCH = DimensionUnit(72*PT, 'in')
+PICA = DimensionUnit(1 / 6 * INCH, 'pc')
+MM = DimensionUnit(1 / 25.4 * INCH, 'mm')
+CM = DimensionUnit(10*MM, 'cm')
 
 
-class Fraction(object):
-    def __init__(self, percent):
-        self._percent = percent
+class Fraction(DimensionUnitBase):
+    def __init__(self, nominator, unit):
+        self._nominator = nominator
+        self._unit = unit
 
-    def __repr__(self):
-        """Return a textual representation of the evaluated value."""
-        return '{:.2f}%'.format(self._percent)
+    def __str__(self):
+       number = '{:.2f}'.format(self._nominator).rstrip('0').rstrip('.')
+       return '{}{}'.format(number, self._unit.label)
 
     def __eq__(self, other):
-        try:
-            return self._percent == other._percent
-        except AttributeError:
-            return False
+        return self.__dict__ == other.__dict__
 
     def to_points(self, total_dimension):
-        return self._percent / 100 * float(total_dimension)
+        fraction = self._nominator / self._unit.denominator
+        return fraction * float(total_dimension)
 
 
-class FractionUnit(object):
-    def __rmul__(self, percent):
-        return Fraction(percent)
+class FractionUnit(DimensionUnitBase):
+    def __init__(self, denominator, label):
+        super().__init__(label)
+        self.denominator = denominator
+
+    def __rmul__(self, nominator):
+        return Fraction(nominator, self)
 
 
-PERCENT = FractionUnit()
-
-
-UNIT_TO_DIMENSION = {'pt': PT,
-                     'in': INCH,
-                     'cm': CM,
-                     'mm': MM,
-                     'pc': PICA,
-                     '%': PERCENT}
+PERCENT = FractionUnit(100, '%')
+QUARTERS = FractionUnit(4, '/4')
