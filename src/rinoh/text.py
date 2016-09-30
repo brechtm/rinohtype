@@ -322,6 +322,10 @@ class SingleStyledTextBase(StyledText):
     def before_placing(self, container):
         pass
 
+ESCAPE = str.maketrans({"'": r"\'",
+                        '\n': r'\n',
+                        '\t': r'\t'})
+
 
 class SingleStyledText(SingleStyledTextBase):
     def __init__(self, text, style=None, parent=None):
@@ -333,6 +337,12 @@ class SingleStyledText(SingleStyledTextBase):
         space."""
         super().__init__(style=style, parent=parent)
         self._text = text
+
+    def __str__(self):
+        result = "'{}'".format(self._text.translate(ESCAPE))
+        if self.style:
+            result += ' ({})'.format(self.style)
+        return result
 
     def text(self, container, **kwargs):
         return self._text
@@ -385,6 +395,10 @@ class MixedStyledText(MixedStyledTextBase, list):
         along with a representation of its :class:`TextStyle`."""
         return '{}{} (style={})'.format(self.__class__.__name__,
                                         super().__repr__(), self.style)
+
+    def __str__(self):
+        assert self.style is None
+        return ' '.join(str(item) for item in self)
 
     def __eq__(self, other):
         # avoid infinite recursion due to the 'parent' attribute
