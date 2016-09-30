@@ -9,11 +9,11 @@
 import argparse
 import os
 
-from rinoh import paper, __version__, __release_date__
+from rinoh import __version__, __release_date__
 
-from rinoh.backend import pdf
 from rinoh.font import Typeface
 from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
@@ -68,7 +68,8 @@ def main():
         parser.print_help()
         return
 
-    kwargs = {}
+    template_cfg = {}
+    variables = {}
     if args.stylesheet:
         if os.path.exists(args.stylesheet):
             stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
@@ -81,14 +82,14 @@ def main():
                                  "Run `{} --list-stylesheets` to find out "
                                  "which style sheets are available."
                                  .format(err.resource_name, parser.prog))
-        kwargs['stylesheet'] = stylesheet
+        template_cfg['stylesheet'] = stylesheet
 
     try:
-        kwargs['paper_size'] = getattr(paper, args.paper.upper())
-    except AttributeError:
+        variables['paper_size'] = Paper.from_string(args.paper.lower())
+    except KeyError:
         print("Unknown paper size '{}'. Must be one of:".format(args.paper))
-        print('   A0, A1, ..., A10, letter, legal, junior_legal, ledger, '
-              'tabloid')
+        print('   {}'.format(', '.join(sorted(paper.name for paper
+                                              in PAPER_BY_NAME.values()))))
         return
 
     input_root, input_ext = os.path.splitext(input_filename)
@@ -100,10 +101,10 @@ def main():
         document_tree = parser.parse(input_file)
 
     template = DocumentTemplate.from_string(args.template)
-    configuration = template.Configuration(**kwargs)
-    document = template(document_tree, configuration=configuration,
-                        backend=pdf)
-
+    configuration = template.Configuration('rinoh command line options',
+                                           **template_cfg)
+    configuration.variables.update(variables)
+    document = template(document_tree, configuration=configuration)
     while True:
         try:
             document.render(input_root)
