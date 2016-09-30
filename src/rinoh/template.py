@@ -406,7 +406,7 @@ class TemplateConfiguration(RuleSet):
                          if isinstance(value, str) else value
                    for name, value in options.items()}
         unsupported = (options.keys()
-                       - self.document_template_class._supported_attributes)
+                       - self.document_template_class.supported_attributes)
         if unsupported:
             raise ValueError('Unsupported option(s) passed to {}: {}'
                              .format(type(self).__name__,
