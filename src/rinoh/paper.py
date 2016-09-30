@@ -32,6 +32,11 @@ class Paper(AttributeType):
         self.width = width
         self.height = height
 
+    def __repr__(self):
+        return ('{}({}, width={}, height={})'
+                .format(type(self).__name__, self.name,
+                        self.width, self.height))
+
     def __str__(self):
         return self.name
 
