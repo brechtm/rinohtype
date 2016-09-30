@@ -165,7 +165,7 @@ class DimensionAddition(DimensionBase):
         self.addends = list(addends)
 
     def __float__(self):
-        return sum(map(float, self.addends))
+        return sum(map(float, self.addends or (0.0, )))
 
 
 class DimensionSubtraction(DimensionBase):

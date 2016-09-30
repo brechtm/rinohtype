@@ -2,7 +2,8 @@
 
 import pytest
 
-from rinoh.dimension import PT, INCH, PICA, MM, CM, PERCENT, QUARTERS
+from rinoh.dimension import (DimensionAddition,
+                             PT, INCH, PICA, MM, CM, PERCENT, QUARTERS)
 
 
 # test operators
@@ -12,6 +13,7 @@ def test_addition():
     assert 100*PT + 10*PT == 110
     assert 100 + 10*PT ==  110
     assert 1*INCH + 8*PT == 80
+    assert float(DimensionAddition()) == 0
 
 
 def test_subtraction():
