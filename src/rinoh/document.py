@@ -425,7 +425,11 @@ to the terms of the GNU Affero General Public License version 3.''')
             section_number = self.get_reference(section_id, 'number')
             section_title = self.get_reference(section_id, 'title')
             if section.level > current_level:
-                assert section.level == current_level + 1
+                if section.level != current_level + 1:
+                    warn("Your document section hierarchy is missing levels. "
+                         "Please report this at https://github.com/brechtm"
+                         "/rinohtype/pull/67")
+                    break
                 stack.append(parent)
                 parent = current
             elif section.level < current_level:
