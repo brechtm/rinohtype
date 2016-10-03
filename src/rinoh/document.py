@@ -278,6 +278,7 @@ class Document(object):
     def __init__(self, document_tree, stylesheet, strings=None, language=None,
                  backend=None):
         """`backend` specifies the backend to use for rendering the document."""
+        super().__init__()
         self._print_version_and_license()
         self.front_matter = []
         self.document_tree = document_tree
