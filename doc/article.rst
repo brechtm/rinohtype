@@ -13,10 +13,6 @@ and the same template for even and odd pages.
     :members:
 
 
-.. autoclass:: ArticleConfiguration
-    :members:
-
-
 .. autoclass:: AbstractLocation
     :members:
     :inherited-members:

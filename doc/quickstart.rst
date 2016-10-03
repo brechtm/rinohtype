@@ -97,7 +97,6 @@ frontend, a document template and a style sheet:
 
 .. testcode:: my_document
 
-    from rinoh.backend import pdf
     from rinoh.frontend.rst import ReStructuredTextReader
     from rinoh.templates import Article
 
@@ -107,7 +106,7 @@ frontend, a document template and a style sheet:
         document_tree = parser.parse(file)
 
     # render the document to 'my_document.pdf'
-    document = Article(document_tree, backend=pdf)
+    document = Article(document_tree)
     document.render('my_document')
 
 .. testoutput:: my_document
@@ -134,25 +133,23 @@ Here is an example document tree of a short article:
     from rinoh.document import DocumentTree
     from rinoh.styleds import *
 
-    document_tree = DocumentTree('/path/to/source_file.ext',
-                    [Paragraph('My Document', style='title'), # metadata!
-                     Section([Heading('First Section'),
-                              Paragraph('This is a paragraph with some '
-                                        + Emphasized('emphasized text')
-                                        + ' and an '
-                                        + InlineImage('image.pdf')),
-                              Section([Heading('A subsection'),
-                                       Paragraph('Another paragraph')
-                                      ])
-                             ]),
-                     Section([Heading('Second Section'),
-                              List([Paragraph('a list item'),
-                                    Paragraph('another list item')
-                                   ])
-                             ])
-                    ])
-
-.. todo:: make ``source_path`` optional
+    document_tree = DocumentTree(
+                        [Paragraph('My Document', style='title'), # metadata!
+                         Section([Heading('First Section'),
+                                  Paragraph('This is a paragraph with some '
+                                            + Emphasized('emphasized text')
+                                            + ' and an '
+                                            + InlineImage('image.pdf')),
+                                  Section([Heading('A subsection'),
+                                           Paragraph('Another paragraph')
+                                          ])
+                                 ]),
+                         Section([Heading('Second Section'),
+                                  List([Paragraph('a list item'),
+                                        Paragraph('another list item')
+                                       ])
+                                 ])
+                        ])
 
 It is clear that this type of content is best parsed from a structured document
 format such as reStructuredText or XML. Manually building a document tree is
@@ -294,7 +291,6 @@ template options.
 
 .. testcode:: my_document
 
-    from rinoh.backend import pdf
     from rinoh.dimension import CM
     from rinoh.frontend.rst import ReStructuredTextReader
     from rinoh.paper import A5
@@ -307,14 +303,15 @@ template options.
         document_tree = parser.parse(file)
 
     # customize the article template
-    configuration = Article.Configuration(paper_size=A5,
+    configuration = Article.Configuration('my article configuration',
                                           stylesheet=sphinx_base14,
                                           abstract_location='title',
                                           table_of_contents=False)
-    configuration('title:page', top_margin=2*CM)
+    configuration('title_page', top_margin=2*CM)
+    configuration.variables['paper_size'] = A5
 
     # render the document to 'my_document.pdf'
-    document = Article(document_tree, configuration=configuration, backend=pdf)
+    document = Article(document_tree, configuration=configuration)
     document.render('my_document')
 
 .. testoutput:: my_document
@@ -329,8 +326,7 @@ A4. See below for a list of the settings that can be changed and their
 description.
 
 The top margin of the title page is also changed by setting the corresponding
-option for the :attr:`.ArticleConfiguration.title_page`
-page template.
+option for the :attr:`.Article.title_page` page template.
 
 
 Creating a Custom Template

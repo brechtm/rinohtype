@@ -71,7 +71,7 @@ Tabulation
 Rendering Internals
 -------------------
 
-.. autoclass:: GlyphAndWidth
+.. autoclass:: Glyph
     :members:
 
 .. autoclass:: GlyphsSpan
