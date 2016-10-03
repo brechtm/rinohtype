@@ -1,4 +1,5 @@
 graft doc
+prune doc/.eggs
 prune doc/_build
 graft src
 graft tests
