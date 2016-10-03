@@ -72,25 +72,6 @@ if [ -z "$DIFFDIR" ]; then
     exit 1
 fi
 
-echo "Running $MAXPROCS processes in parallel"
-
-pdf1_num_pages=$(num_pages $pdf_file1)
-pdf2_num_pages=$(num_pages $pdf_file2)
-
-min_pages=$(minimum $pdf1_num_pages $pdf2_num_pages)
-
-if [ "$pdf1_num_pages" -ne "$pdf2_num_pages" ]; then
-    echo "PDF files have different lengths ($pdf1_num_pages and $pdf2_num_pages)"
-    rc=1
-fi
-
-if [ -d "$DIFFDIR" ]; then
-    rm -f $DIFFDIR/*
-else
-    mkdir $DIFFDIR
-fi
-
-
 # get exit status from subshells (http://stackoverflow.com/a/29535256/438249)
 function wait_for_processes {
     local rc=0
@@ -109,7 +90,29 @@ function howmany() {
     echo $#
 }
 
+
+# main program
+
 rc=0
+
+echo "Running $MAXPROCS processes in parallel"
+
+pdf1_num_pages=$(num_pages $pdf_file1)
+pdf2_num_pages=$(num_pages $pdf_file2)
+
+min_pages=$(minimum $pdf1_num_pages $pdf2_num_pages)
+
+if [ "$pdf1_num_pages" -ne "$pdf2_num_pages" ]; then
+    echo "PDF files have different lengths ($pdf1_num_pages and $pdf2_num_pages)"
+    rc=1
+fi
+
+if [ -d "$DIFFDIR" ]; then
+    rm -f $DIFFDIR/*
+else
+    mkdir $DIFFDIR
+fi
+
 pids=""
 for page_number in `seq 1 $min_pages`;
 do
