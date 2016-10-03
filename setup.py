@@ -61,7 +61,7 @@ setup(
         ]
     },
     setup_requires=['pytest-runner'],
-    tests_require=['pytest>=2.0.0', 'pytest-assume', 'requests', 'PyPDF2'],
+    tests_require=['pytest>=2.0.0', 'pytest-assume'],
 
     author='Brecht Machiels',
     author_email='brecht@mos6581.org',
