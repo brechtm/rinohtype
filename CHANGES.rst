@@ -4,8 +4,17 @@ Release History
 Release 0.3.0.dev
 ~~~~~~~~~~~~~~~~~
 
-Release 0.2.2.dev
-~~~~~~~~~~~~~~~~~
+New Features:
+
+* support localization of standard document strings (en, fr, it, nl)
+* localized strings can be overridden in the document template configuration
+* make use of a fallback typeface when a glyph is not present in a typeface
+  (the 'fallback' style in the Sphinx stylesheet sets the fallback typeface)
+* template configuration (INI) files: specify which document parts to include,
+  configure document part and page templates, customize localized strings, ...
+* support specifying more complex selectors directly in a style sheet file
+* preliminary support for writing a style sheet to an INI file, listing default
+  values for non-specified attributes
 
 Changed:
 
@@ -17,13 +26,34 @@ Changed:
   Sphinx frontends) of the old DefinitionList (#54)
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList
   by setting max_label_width to None, 0 or a 0-valued Dimension
+* hide the index chapter when there are no index entries
 * Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
+* Sphinx style sheet: keep the admonition title together with the body
 * Sphinx style sheet: color linked references as in the LaTeX output (#62)
+* Sphinx style sheet: disable hyphenation/ligatures for literal strong text
+* no more DocumentSection; a document now consists of parts (containing pages)
+* template configuration:
+
+   - refer to document part templates by name so that they can be replaced
+   - the list of document parts can be changed in the template configuration
+   - document parts take the 'end_at_page' option (left, right, or any)
+   - find (left/right) page templates via the document part name they belong to
+   - fall back to <doc_part>_page when the right or left template is not found
+   - each template configuration requires a name
+
+* DocumentTree: make the source_tree argument optional
+* use the PDF backend by default (no need to specify it)
+* store the unit with Dimension instances (better printing)
 
 Fixed:
 
-* GroupedLabeledFlowables label width could unnecessarily be too wide
+* GroupedLabeledFlowables label width could be unnecessarily wide
 * reStructuredText: only the first classifier for a definition term was shown
+* PDF backend: fix writing of Type 1 fonts from a parsed PDF file
+* PDF reader: handle multi-page PDFs (#71)
+* PDF reader: fix parsing of XRef streams
+* PDF reader: fix writing of parsed files
+
 
 Release 0.2.1 (2016-08-18)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
