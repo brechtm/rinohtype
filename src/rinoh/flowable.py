@@ -708,13 +708,17 @@ class HorizontallyAlignedFlowable(Flowable):
         return self.width or self.get_style('width', container)
 
     def flow(self, container, last_descender, state=None, **kwargs):
+        width = None
         with MaybeContainer(container) as align_container:
             try:
                 width, top_to_baseline, descender = \
                     super().flow(align_container, last_descender, state)
             except EndOfContainer as eoc:
-                width = eoc.flowable_state.width
-                raise
+                try:
+                    width = eoc.flowable_state.width
+                except AttributeError:  # image was not found, a Paragraph with
+                    pass                # a warning message was placed instead
+                raise eoc
             finally:
                 self._align(align_container, width)
         return container.width, top_to_baseline, descender
