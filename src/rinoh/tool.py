@@ -93,11 +93,8 @@ def main():
         return
 
     input_root, input_ext = os.path.splitext(input_filename)
-    if input_dir:
-        os.chdir(input_dir)
-
     parser = ReStructuredTextReader()
-    with open(input_filename) as input_file:
+    with open(args.input) as input_file:
         document_tree = parser.parse(input_file)
 
     template = DocumentTemplate.from_string(args.template)
