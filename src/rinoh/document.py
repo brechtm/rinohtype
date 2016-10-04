@@ -51,11 +51,11 @@ __all__ = ['Page', 'DocumentPart', 'Document',
 class DocumentTree(StaticGroupedFlowables):
     def __init__(self, flowables, source_file=None):
         super().__init__(flowables)
-        self.source_file = source_file
+        self.source_file = os.path.abspath(source_file)
 
     @property
     def source_root(self):
-        return os.path.abspath(os.path.dirname(self.source_file))
+        return os.path.dirname(self.source_file)
 
 
 class PageOrientation(OptionSet):
