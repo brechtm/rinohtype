@@ -526,7 +526,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
                  backend=None):
         self.configuration = (configuration if configuration is not None
                               else self.Configuration('empty'))
-        self.options = options or self.options_class()
+        self.options = options if options is not None else self.options_class()
         stylesheet = self.get_option('stylesheet')
         language = self.get_option('language')
         strings = self.get_option('strings')
