@@ -108,7 +108,7 @@ class ElementTreeNode(TreeNode):
 
     @property
     def filename(self):
-        return self.node._root._roottree._filename
+        return self.node._root._filename
 
     @property
     def _location(self):

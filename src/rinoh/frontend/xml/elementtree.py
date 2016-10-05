@@ -8,6 +8,7 @@
 
 import sys
 
+from os import path
 from urllib.parse import urlparse, urljoin
 from urllib.request import urlopen
 from warnings import warn
@@ -84,12 +85,17 @@ class Parser(ElementTree.XMLParser):
             rewrite_map[start_string] = prefix
         return rewrite_map
 
-    def parse(self, xmlfile):
-        xml = ElementTree.ElementTree()
-        xml.parse(xmlfile, self)
-        xml._filename = xmlfile
-        xml.getroot()._roottree = xml
-        return xml
+    def parse(self, file_or_filename, root_directory=None):
+        filename = (file_or_filename if isinstance(file_or_filename, str)
+                    else getattr(file_or_filename, 'name', None))
+        element_tree = ElementTree.ElementTree()
+        element_tree.parse(file_or_filename, self)
+        root_node = element_tree.getroot()
+        relative_filename = (filename if root_directory is None
+                             else path.relpath(filename, root_directory))
+        root_node._filename = relative_filename
+        root_node._abs_filename = path.abspath(filename)
+        return root_node
 
 
 class ExternalEntityRefHandler(object):
