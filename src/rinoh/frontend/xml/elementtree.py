@@ -91,10 +91,13 @@ class Parser(ElementTree.XMLParser):
         element_tree = ElementTree.ElementTree()
         element_tree.parse(file_or_filename, self)
         root_node = element_tree.getroot()
-        relative_filename = (filename if root_directory is None
-                             else path.relpath(filename, root_directory))
-        root_node._filename = relative_filename
-        root_node._abs_filename = path.abspath(filename)
+        if filename:
+            relative_filename = (filename if root_directory is None
+                                 else path.relpath(filename, root_directory))
+            root_node._filename = relative_filename
+            root_node._abs_filename = path.abspath(filename)
+        else:
+            root_node._filename = root_node._abs_filename = None
         return root_node
 
 

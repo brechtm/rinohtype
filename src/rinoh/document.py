@@ -51,7 +51,8 @@ __all__ = ['Page', 'DocumentPart', 'Document',
 class DocumentTree(StaticGroupedFlowables):
     def __init__(self, flowables, source_file=None):
         super().__init__(flowables)
-        self.source_file = os.path.abspath(source_file)
+        self.source_file = (os.path.abspath(source_file)
+                            if source_file else None)
 
     @property
     def source_root(self):
