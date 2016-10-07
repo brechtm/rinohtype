@@ -6,9 +6,9 @@ Release 0.3.0.dev
 
 New Features:
 
-* support localization of standard document strings (en, fr, it, nl)
+* support localization of standard document strings (en, fr, it, nl) (#53)
 * localized strings can be overridden in the document template configuration
-* make use of a fallback typeface when a glyph is not present in a typeface
+* make use of a fallback typeface when a glyph is not available (#55)
   (the 'fallback' style in the Sphinx stylesheet sets the fallback typeface)
 * template configuration (INI) files: specify which document parts to include,
   configure document part and page templates, customize localized strings, ...
@@ -26,7 +26,7 @@ Changed:
   Sphinx frontends) of the old DefinitionList (#54)
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList
   by setting max_label_width to None, 0 or a 0-valued Dimension
-* hide the index chapter when there are no index entries
+* hide the index chapter when there are no index entries (#51)
 * Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
 * Sphinx style sheet: keep the admonition title together with the body
 * Sphinx style sheet: color linked references as in the LaTeX output (#62)
@@ -42,6 +42,7 @@ Changed:
    - each template configuration requires a name
 
 * DocumentTree: make the source_tree argument optional
+* don't abort when the document section hierarchy is missing levels (#67)
 * use the PDF backend by default (no need to specify it)
 * store the unit with Dimension instances (better printing)
 
