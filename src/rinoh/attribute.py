@@ -314,6 +314,7 @@ class RuleSet(OrderedDict):
 
 class RuleSetFile(RuleSet):
     def __init__(self, filename, base=None, **kwargs):
+        self.filename = filename
         config = ConfigParser(default_section=None, delimiters=('=',),
                               interpolation=None)
         with open(filename) as file:
@@ -324,7 +325,6 @@ class RuleSetFile(RuleSet):
         base = options.pop('base', base)
         options.update(kwargs)    # optionally override options
         super().__init__(name, base=base, **options)
-        self.filename = filename
         if config.has_section('VARIABLES'):
             for name, value in config.items('VARIABLES'):
                 self.variables[name] = value

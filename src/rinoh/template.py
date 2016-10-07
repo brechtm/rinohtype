@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import os
 import re
 
 from collections import OrderedDict
@@ -40,7 +41,8 @@ from .util import NamedDescriptor, WithNamedDescriptors
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
            'ContentsPartTemplate', 'FixedDocumentPartTemplate',
-           'DocumentTemplate', 'DocumentOptions', 'Option', 'AbstractLocation']
+           'DocumentOptions', 'Option', 'AbstractLocation', 'DocumentTemplate',
+           'TemplateConfiguration', 'TemplateConfigurationFile']
 
 
 class Option(Attribute):
@@ -401,6 +403,11 @@ class TemplateConfiguration(RuleSet):
                 template = DocumentTemplate.from_string(template)
             assert self.document_template_class in (None, template)
             self.document_template_class = template
+        if isinstance(options.get('stylesheet'), str):
+            filename = os.path.join(self._stylesheet_search_path,
+                                    options['stylesheet'])
+            if os.path.isfile(filename):
+                options['stylesheet'] = filename
         parse_value = self.document_template_class.parse_value
         options = {name: parse_value(name, value)
                          if isinstance(value, str) else value
@@ -414,6 +421,10 @@ class TemplateConfiguration(RuleSet):
         super().__init__(name, base=base, **options)
         self.description = description
         self.variables['paper_size'] = A4
+
+    @property
+    def _stylesheet_search_path(self):
+        return os.getcwd()
 
     def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
         if name in self:
@@ -438,6 +449,10 @@ class TemplateConfiguration(RuleSet):
 class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
 
     main_section = 'TEMPLATE_CONFIGURATION'
+
+    @property
+    def _stylesheet_search_path(self):
+        return os.path.dirname(self.filename)
 
     def process_section(self, section_name, classifier, items):
         if section_name in StringCollection.subclasses:
