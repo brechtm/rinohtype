@@ -654,9 +654,10 @@ class StyleSheet(RuleSet, Resource):
     Args:
         name (str): a label for this style sheet
         matcher (StyledMatcher): the matcher providing the selectors the styles
-            contained in this style sheet map to. If no matcher is given, the
-            `base`\ 's matcher is used.
-        base (StyleSheet): the style sheet to extend
+            contained in this style sheet map to. If no matcher is given and
+            `base` is specified, the `base`\ 's matcher is used. If `base` is
+            not set, the default matcher is used.
+        base (StyleSheet or str): the style sheet to extend
         description (str): a short string describing this style sheet
         pygments_style (str): the Pygments style to use for styling code blocks
 
@@ -672,12 +673,15 @@ class StyleSheet(RuleSet, Resource):
         from .stylesheets import matcher as default_matcher
 
         base = self.from_string(base) if isinstance(base, str) else base
+        if matcher is None:
+            matcher = default_matcher if base is None else StyledMatcher()
+        if matcher is not None:
+            matcher.check_validity()
         if pygments_style:
             base = pygments_style_to_stylesheet(pygments_style, base)
         super().__init__(name, base=base)
         self.description = description
-        self.matcher = matcher if matcher is not None else default_matcher
-        self.matcher.check_validity()
+        self.matcher = matcher
         if user_options:
             warn('Unsupported options passed to stylesheet: {}'
                  .format(', '.join(user_options.keys())))
