@@ -17,7 +17,7 @@ from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
-from rinoh.template import DocumentTemplate
+from rinoh.template import DocumentTemplate, TemplateConfigurationFile
 
 
 DEFAULT = ' (default: %(default)s)'
@@ -28,7 +28,9 @@ parser = argparse.ArgumentParser(description='Render a reStructuredText '
 parser.add_argument('input', type=str, nargs='?',
                     help='the reStructuredText document to render')
 parser.add_argument('-t', '--template', type=str, nargs='?', default='article',
-                    help='the document template to use' + DEFAULT)
+                    metavar='NAME OR FILENAME',
+                    help='the document template or template configuration to '
+                         'use' + DEFAULT)
 parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
                     metavar='NAME OR FILENAME',
                     help='the style sheet used to style the document '
@@ -97,11 +99,15 @@ def main():
     with open(args.input) as input_file:
         document_tree = parser.parse(input_file)
 
-    template = DocumentTemplate.from_string(args.template)
-    configuration = template.Configuration('rinoh command line options',
-                                           **template_cfg)
+    if os.path.isfile(args.template):
+        template_cfg['base'] = TemplateConfigurationFile(args.template)
+        template_cls = template_cfg['base'].document_template_class
+    else:
+        template_cls = DocumentTemplate.from_string(args.template)
+    configuration = template_cls.Configuration('rinoh command line options',
+                                               **template_cfg)
     configuration.variables.update(variables)
-    document = template(document_tree, configuration=configuration)
+    document = template_cls(document_tree, configuration=configuration)
     while True:
         try:
             document.render(input_root)
