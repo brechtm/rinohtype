@@ -1,8 +1,8 @@
 Release History
 ---------------
 
-Release 0.3.0.dev
-~~~~~~~~~~~~~~~~~
+Release 0.3.0 (2016-11-23)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
@@ -30,7 +30,7 @@ New Features:
   not mapped
 * validate the default value passed to an Attribute
 * preliminary support for writing a style sheet to an INI file, listing default
-  values for non-specified attributes
+  values for non-specified attributes (#23)
 
 Changed:
 
