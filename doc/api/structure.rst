@@ -10,3 +10,7 @@ Structure
 
 .. autoclass:: ListStyle
     :members:
+
+
+.. autoclass:: DefinitionList
+    :members:

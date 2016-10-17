@@ -1,0 +1,34 @@
+[TEMPLATE_CONFIGURATION]
+name = my article configuration
+template = article
+
+parts =
+    title
+    ;front_matter
+    contents
+stylesheet = sphinx_base14
+language = fr
+abstract_location = title
+
+[SectionTitles]
+contents='Contents'
+
+[AdmonitionTitles]
+caution = 'Careful!'
+warning = 'Please be warned'
+
+[VARIABLES]
+paper_size = A5
+
+[SectionTitles]
+contents='Contents'
+
+[title]
+page_number_format=lowercase roman
+end_at_page=left
+
+[contents]
+page_number_format=number
+
+[title_page]
+top_margin = 2cm

@@ -4,8 +4,9 @@ Advanced Topics
 ===============
 
 This section serves as a guide to the internal workings of rinohtype, and more
-specifically on how element styling works. This will be helpful if you want to
-create custom style sheets or develop a new frontend.
+specifically on how element styling and document templates work. This will be
+helpful if you want to create custom style sheets, design a new document
+template or develop a new frontend.
 
 
 Flowables and Inline Elements
@@ -116,6 +117,12 @@ matches paragraphs at any level inside a table cell::
 
     TableCell / ... / Paragraph
 
+To help avoid duplicating selector definitions, context selectors can reference
+other selectors defined in the same :ref:`matcher <matchers>` using
+:class:`SelectorByName`::
+
+    SelectorByName('definition term') / ... / Paragraph
+
 Selectors can select all instances of :class:`.Styled` subclasses. These
 include :class:`.Flowable` and :class:`.StyledText`, but also
 :class:`.TableSection`, :class:`.TableRow`, :class:`.Line` and :class:`.Shape`.
@@ -195,6 +202,8 @@ In general, you can use multiple ``+`` or ``-`` signs to adjust the priority::
 .. _specificity: https://en.wikipedia.org/wiki/Cascading_St174yle_Sheets#Specificity
 
 
+.. _matchers:
+
 Matchers
 ........
 
@@ -241,7 +250,7 @@ Style sheets are usually loaded from a `.rts` file using
 :ref:`quickstart_stylesheets` in the :ref:`quickstart` guide.
 
 A style sheet file contains a number of sections, denoted by a section title
-enclosed in squate brackets. There are two special sections:
+enclosed in square brackets. There are two special sections:
 
 - ``[STYLESHEET]`` describes global style sheet information (see
   :class:`.StyleSheetFile` for details)
@@ -259,12 +268,12 @@ attribute. The style for enumerated lists is defined like this, for example:
     margin_left=8pt
     space_above=5pt
     space_below=5pt
-    ordered=True
+    ordered=true
     flowable_spacing=5pt
     number_format=NUMBER
     label_suffix=')'
 
-Since this is an enumerated list, *ordered* is set to ``True``. *number_format*
+Since this is an enumerated list, *ordered* is set to ``true``. *number_format*
 and *label_suffix* are set to produce list items labels of the style *1)*,
 *2)*, .... Other entries control margins and spacing. See :class:`.ListStyle`
 for the full list of accepted style attributes.
@@ -289,7 +298,7 @@ style to serve as a base for the *header* and *footer* styles:
 
 .. code-block:: ini
 
-    [header_footer:Paragraph]
+    [header_footer : Paragraph]
     base=default
     typeface=$(sans_typeface)
     font_size=10pt
@@ -312,28 +321,51 @@ style to serve as a base for the *header* and *footer* styles:
 Because there is no selector associated with *header_footer*, the element type
 needs to be specified manually. This is done by adding the name of the relevant
 :class:`.Styled` subclass to the section name, using a colon (``:``) to
-separate it from the style name.
+separate it from the style name, optionally surrounded by spaces.
 
 
 Custom Selectors
 ,,,,,,,,,,,,,,,,
 
-There is limited support for defining new selectors directly in a style sheet
-file. This allows making tweaks to an existing style sheet without having to
-create a new :class:`.StyledMatcher`, but should be used sparingly.
+It is also possible to define new selectors directly in a style sheet file.
+This allows making tweaks to an existing style sheet without having to create a
+new :class:`.StyledMatcher`. However, this should be used sparingly. If a great
+number of custoù selectors are required, it is better to create a new
+:class:`.StyledMatcher`
 
-The syntax for specifying a selector for a style is the same as for element
-class, with the additional requirement that the element type name needs to be
-followed by parentheses. Arguments to be passed to :meth:`.Styled.like()` can
-be included within the parentheses. For example:
+The syntax for specifying a selector for a style is similar to that when
+constructing selectors in a Python source code (see `Matchers`_), but with a
+number of important differences.
+
+A :class:`.Styled` subclass name followed by parentheses represents a simple
+class selectors (without context). Arguments to be passed to
+:meth:`.Styled.like()` can be included within the parentheses.
 
 .. code-block:: ini
 
-    [special text:StyledText('special')]
+    [special text : StyledText('special')]
     font_color=#FF00FF
 
-    [accept button:InlineImage(filename='images/accept_button.png')]
+    [accept button : InlineImage(filename='images/ok_button.png')]
     baseline=20%
+
+If no arguments are passed to the class selector, it is important that the
+selector is followed by parentheses. If the parentheses are omitted, the
+selector is not registered with the matcher and the style can only be used as a
+base style for (see `Base Styles`_).
+
+As in Python source code, context selectors are constructed using forward
+slashes (``/``) and the ellipsis (``...``). Another selector can be referenced
+in a context selector by enclosing its name in single or double quotes.
+
+.. code-block:: ini
+
+    [admonition title colon : Admonition / ... / StyledText('colon')]
+    font_size=10pt
+
+    [chapter title number : 'chapter title' / Paragraph('number')]
+    font_size=96pt
+    text_align=right
 
 
 Variables
@@ -489,6 +521,15 @@ Here is an example excerpt from a style log:
               StaticGroupedFlowables()                demo.txt:66 <list_item>
                    > (0,0,0,0,3) list item body
     ...
+
+
+Document Templates
+~~~~~~~~~~~~~~~~~~
+
+.. note:: This section still needs to be written. For now, please refer to the
+    :ref:`templates_quickstart` section in the :ref:`quickstart`, which
+    discusses the configuration of existing templates and the creation of
+    custom templates.
 
 
 .. [#slice] Indexing a list like this ``lst[slice(0, None, 2)]`` is equivalent

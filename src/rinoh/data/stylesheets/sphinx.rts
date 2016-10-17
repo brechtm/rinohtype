@@ -376,14 +376,14 @@ hyphenate=False
 [additional name part]
 base=monospaced
 
-[object type] 
+[object type]
 
-[object returns] 
+[object returns]
 
 [object parentheses]
 font_size=11pt
 
-[object parameter list] 
+[object parameter list]
 
 [object parameter (no emphasis)]
 
@@ -395,7 +395,7 @@ font_slant=ITALIC
 font_size=11pt
 font_weight=BOLD
 
-[object optional parameter] 
+[object optional parameter]
 
 [object annotation]
 font_weight=BOLD

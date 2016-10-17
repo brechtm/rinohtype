@@ -73,8 +73,8 @@ High-level PDF Library
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: The focus of rinohtype development is currently on the
-    :program:`rinoh` tool and Sphinx builder at this moment. Use as a Python
-    library is possible, but documentation may be lacking. Please be patient.
+    :program:`rinoh` tool and Sphinx builder. Use as a Python library is
+    possible, but documentation may be lacking. Please be patient.
 
 The most basic way to use rinohtype in an application is to hook up an included
 frontend, a document template and a style sheet:
@@ -164,9 +164,9 @@ Style Sheets
 
 A style sheet determines the look of each of the elements in a document. For
 each type of document element, the style sheet object registers a list of style
-properties. Style sheets are stored in plain text files using the INI format
-with the ``.rts`` extension. Below is an excerpt from the `Sphinx` style sheet
-included with rinohtype.
+properties. Style sheets are stored in plain text files using the Windows
+INI\ [#ini]_ format with the ``.rts`` extension. Below is an excerpt from the
+:doc:`sphinx_stylesheet` included with rinohtype.
 
 .. _base style sheet:
 
@@ -214,9 +214,8 @@ style sheet based on the Sphinx stylesheet included with rinohtype.
     font_color=#a00
 
 By default, styles defined in a style sheet *extend* the corresponding style
-from the base style sheet. In this example, emphasized text will still be set
-in an italic font as configured in the `base style sheet`_, but it will
-additionally be colored blue (#00a).
+from the base style sheet. In this example, emphasized text will be set in an
+italic font (as configured in the `base style sheet`_) and colored blue (#00a).
 
 It is also possible to completely override the style definition. This can be
 done by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
@@ -226,8 +225,9 @@ style sheet`_ (the default for ``font_weight`` is `Medium`; see
 :class:`~rinoh.text.TextStyle`).
 
 The style sheet also redefines the ``mono_typeface`` variable. This variable is
-used in the Sphinx style sheet in all style definitions where a monospaced font
-is desired. Redefining the variable affects all of these style definitions.
+used in the `base style sheet`_ in all style definitions where a monospaced
+font is desired. Redefining the variable affects all of these style
+definitions.
 
 To use this style sheet, load it using :class:`StyleSheetFile`:
 
@@ -235,8 +235,7 @@ To use this style sheet, load it using :class:`StyleSheetFile`:
 
     from rinoh.style import StyleSheetFile
 
-    my_stylesheet = StyleSheetFile('m_stylesheet.rts')
-
+    my_stylesheet = StyleSheetFile('tweaked_sphinx.rts')
 
 
 Starting from Scratch
@@ -245,73 +244,135 @@ Starting from Scratch
 If you don't specify a base style sheet in the ``[STYLESHEET]`` section, you
 create an independent style sheet. You should do this if you want to create
 a document style that is radically different from what is provided by existing
-style sheets.
+style sheets. This style sheet can be loaded in the same way as
+`tweaked_shinx.rts` above.
 
-If the style definition for a particular document element is missing, the
-default values for its style properties are used.
+If the style definition for a particular document element is not included in
+the style sheet, the default values for its style properties are used.
 
-To use this style sheet, you need to specify the :class:`StyledMatcher` to use,
-since there is not base providing one. The following example uses the standard
-matcher:
+Unless a custom :class:`StyledMatcher` is passed to :class:`StyleSheetFile`,
+the default matcher is used. Providing your own matcher offers even more
+customizability, but it is unlikely you will need this. See the :ref:`matchers`
+section in :ref:`advanced` for details.
 
-.. code-block:: python
-
-    from rinoh.style import StyleSheetFile
-    from rinoh.stylesheets import matcher
-
-    my_stylesheet = StyleSheetFile('m_stylesheet.rts', matcher=matcher)
-
-
-.. note:: In the future, rinohtype will allow generating an INI style sheet,
-    listing all matched elements and their style attributes together with the
-    default values.
+.. note:: In the future, rinohtype will allow generating an empty INI style
+    sheet, listing all styles defined in the matcher with the supported style
+    attributes along with the default values as comments. This generated style
+    sheet can serve as a good starting point for developing a custom style
+    sheet from scratch.
 
 
+.. _templates_quickstart:
 
 Document Templates
 ~~~~~~~~~~~~~~~~~~
 
 .. currentmodule:: rinoh.template
 
-As with style sheets, you can choose to make use of the templates provided by
+As with style sheets, you can choose to make use of a template provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch.
 
 
-Using an Existing Template
---------------------------
+Configuring a Template
+----------------------
 
-Rinohtype provides a number of :ref:`document_templates`. These can be
+rinohtype provides a number of :ref:`document_templates`. These can be
 customized by passing an instance of the associated
-:class:`TemplateConfiguration` as `configuration` on template
-instantiation.
+:class:`TemplateConfiguration` as `configuration` on template instantiation. A
+template configuration can also be described using a plain text file in the
+INI\ [#ini]_ format with the ``.rtt`` extension.
 
-The example from :ref:`library_quickstart` above can be customized by setting
-template options.
+The example from :ref:`library_quickstart` above can be customized using the
+following template configuration, for example:
+
+.. literalinclude:: /my_article.rtt
+    :language: ini
+
+The ``TEMPLATE_CONFIGURATION`` sections collects global template options. Set
+*name* to provide a short label for your template configuration. *template*
+identifies the document template to configure.
+
+All document templates consist of a number of document parts. The
+:class:`.Article` template defines three parts: :class:`.Article.title`,
+:class:`.Article.front_matter` and :class:`.Article.contents`. The order of
+these parts can be changed (although that makes little sense for the article
+template), and individual parts can optionally be hidden by setting the
+`Article.parts` configuration option. The configuration above hides the front
+matter part (commented out using a semicolon), for example.
+
+The template configuration also specifies which style sheet is used for styling
+document elements. The :class:`.DocumentTemplate.stylesheet` option takes the
+name of an installed style sheet (see :option:`rinoh:--list-stylesheets`) or
+the filename of a stylesheet file (``.rts``).
+
+The :class:`.DocumentTemplate.language` option sets the default language for
+the document. It determines which language is used for standard document
+strings such as section and admonition titles.
+
+The :class:`.Article` template defines two custom template options. The
+:class:`.Article.abstract_location` option determines where the (optional)
+article abstract is placed, on the title page or in the front matter part.
+
+:class:`.Article.table_of_contents` allows hiding the table of contents
+section. Empty document parts will not be included in the document. When the
+table of contents section is suppressed and there is no abstract in the input
+document or :class:`.Article.abstract_location` is set to title, the front
+matter document part will not appear in the PDF.
+
+The standard document strings configured by the
+:class:`.DocumentTemplate.language` option described above can be overridden
+by user-defined strings in the :class:`SectionTitles` :class:`AdmonitionTitles`
+sections of the configuration file. For example, the default title for the
+table of contents section (*Table of Contents*) is replaced with *Contents*.
+The configuration also sets custom titles for the caution and warning
+admonitions.
+
+The others sections in the configuration file are the ``VARIABLES`` section,
+followed by document part and page template sections. Similar to style sheets,
+the variables can be referenced in the template configuration sections. Here,
+the ``paper_size`` variable is set, which is being referenced by by all page
+templates in :class:`Article` (although indirectly through the
+:class:`.Article.page` base page template).
+
+For document part templates, :class:`.DocumentPartTemplate.page_number_format`
+determines how page numbers are formatted. When a document part uses the same
+page number format as the preceding part, the numbering is continued.
+
+The :class:`.DocumentPartTemplate.end_at_page` option controls at which page
+the document part ends. This is set to ``left`` for the title part in the
+example configuration to make the contents part start on a right page.
+
+Each document part finds page templates by name. They will first look for
+specific left/right page templates by appending ``_left_page`` or
+``_right_page`` to the document part name. If these page templates have not
+been defined in the template, it will look for the
+``<document part name>_page`` template.
+
+The example configuration only adjusts the top margin for the
+:class:`TitlePageTemplate`, but many more aspects of the page templates are
+configurable. Refer to :ref:`document_templates` for details.
+
+.. todo:: base for part template?
+
+To render a document using this template configuration, load the template file
+using :class:`.TemplateConfigurationFile`.
 
 .. testcode:: my_document
 
-    from rinoh.dimension import CM
     from rinoh.frontend.rst import ReStructuredTextReader
-    from rinoh.paper import A5
-    from rinoh.stylesheets import sphinx_base14
-    from rinoh.templates import Article
+    from rinoh.template import TemplateConfigurationFile
 
     # the parser builds a rinohtype document tree
     parser = ReStructuredTextReader()
     with open('my_document.rst') as file:
         document_tree = parser.parse(file)
 
-    # customize the article template
-    configuration = Article.Configuration('my article configuration',
-                                          stylesheet=sphinx_base14,
-                                          abstract_location='title',
-                                          table_of_contents=False)
-    configuration('title_page', top_margin=2*CM)
-    configuration.variables['paper_size'] = A5
+    # load the article template configuration file
+    config = TemplateConfigurationFile('my_article.rtt')
 
     # render the document to 'my_document.pdf'
-    document = Article(document_tree, configuration=configuration)
+    document = config.document(document_tree)
     document.render('my_document')
 
 .. testoutput:: my_document
@@ -320,43 +381,87 @@ template options.
     ...
     Writing output: my_document.pdf
 
-Here, a number of global template settings are specified to override the
-default values. For example, the paper size is changed to A5 from the default
-A4. See below for a list of the settings that can be changed and their
-description.
+The :meth:`.TemplateConfigurationFile.document` method creates a document
+instance with the template configuration applied. So if you want to render your
+document using a different template configuration, it suffices to load the new
+configuration file.
 
-The top margin of the title page is also changed by setting the corresponding
-option for the :attr:`.Article.title_page` page template.
+Refer to the :class:`.Article` documentation to discover all of the options
+accepted by it and the document part and page templates.
+
+
+.. todo:: what to include here, what in advanced?
+
+
+Customizing a Template
+----------------------
+
+If you need to customize a template beyond what is possible by configuration,
+you can subclass the :class:`Article` (or other) template class and extend it,
+or override document part and page templates with custom templates.
+
+.. testcode:: subclass_article
+
+    from rinoh.template import DocumentPartTemplate, PageTemplate
+    from rinoh.templates import Article
+
+
+    class BibliographyPartTemplate(DocumentPartTemplate):
+        ...
+
+
+    class MyTitlePageTemplate(PageTemplate):
+        ...
+
+
+    class MyArticle(Article):
+        parts = OverrideDefault(['title', 'contents', 'bibliography'])
+
+        # default document part templates
+        bibliography = BibliographyPartTemplate()
+
+        # default page templates
+        title_page = MyTitlePageTemplate(base='page')
+        bibliography_page = PageTemplate(base='page')
+
+
+:class:`MyArticle` extends the :class:`.Article` template, adding the extra
+:attr:`MyArticle.bibliography` document part, along with the page template
+:attr:`MyArticle.bibliography_page`. The new document part is included in
+:attr:`MyArticle.parts`, while also leaving out :attr:`~Article.front_matter`
+by default. Finally, the template also replaces the title page template with a
+custom one.
 
 
 Creating a Custom Template
 --------------------------
 
-A custom template can be created by inheriting from :class:`DocumentTemplate`.
-The :attr:`~DocumentTemplate.parts` attribute determines the global structure
-of the document. It is a list of :class:`DocumentPartTemplate`\ s, each
-referencing a page template.
+A new template can be created by subclassing :class:`DocumentTemplate`,
+defining all document parts, their templates and page templates.
 
-The :class:`.Article` template, for example, consists of a title page, a front
-matter part (a custom :class:`DocumentPartTemplate` subclass) and the article
-contents:
+The :class:`.Article` and :class:`.Book` templates are examples of templates
+that inherit directly from :class:`DocumentTemplate`. We will briefly discuss
+the article template here.
+
+The :class:`.Article` template, for example, overrides the default style sheet
+and defines the two custom template attributes discussed in
+`Configuring a Template`_ above. The document parts ``title``, ``front_matter``
+and ``contents`` are listed the in ``parts`` attribute and templates for each
+of them are provided along with page templates:
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: Article
 
-
-The :class:`TemplateConfiguration` subclass associated with :class:`.Article`
-
-- overrides the default style sheet,
-- introduces configuration attributes to control the table of contents
-  placement and the location of the abstract, and
-- defines the page templates referenced in :attr:`.Article.parts`
-
-.. literalinclude:: /../src/rinoh/templates/article.py
-    :pyobject: ArticleConfiguration
-
-The configuration attributes are used in the custom front matter document part
-template:
+The custom :class:`.ArticleFrontMatter` template reads the values for the
+two custom template attributes defined in :class:`.Article`:
 
 .. literalinclude:: /../src/rinoh/templates/article.py
     :pyobject: ArticleFrontMatter
+
+Have a look at the :doc:`src/book` for an example of a slightly more complex
+template that defines separate templates for left and right pages.
+
+
+.. footnotes
+
+.. [#ini] see *Supported INI File Structure* in :mod:`python:configparser`
