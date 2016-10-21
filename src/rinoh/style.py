@@ -1022,7 +1022,7 @@ class StyleLog(object):
         raise NotImplementedError
 
     def write_log(self, filename_root):
-        with open(filename_root + '.stylelog', 'w') as log:
+        with open(filename_root + '.stylelog', 'w', encoding='utf-8') as log:
             current_page = None
             current_container = None
             for entry in self.entries:

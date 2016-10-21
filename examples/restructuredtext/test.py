@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
-        with open(name + '.txt') as file:
+        with open(name + '.txt', encoding='utf-8') as file:
             document_tree = parser.parse(file)
         document = configuration.document(document_tree)
         document.render(name)
