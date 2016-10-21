@@ -14,4 +14,5 @@ __all__ = ['CommonMarkReader']
 
 
 class CommonMarkReader(DocutilsReader):
+    extensions = ('md', )
     parser_class = CommonMarkParser

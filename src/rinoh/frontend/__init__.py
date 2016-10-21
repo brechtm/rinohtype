@@ -9,10 +9,11 @@
 from itertools import chain
 
 from ..flowable import StaticGroupedFlowables
+from ..util import NotImplementedAttribute
 
 
 __all__ = ['TreeNode', 'InlineNode', 'BodyNode', 'BodySubNode', 'GroupingNode',
-           'DummyNode', 'TreeNodeMeta']
+           'DummyNode', 'TreeNodeMeta', 'Reader']
 
 
 class TreeNode(object):
@@ -174,3 +175,7 @@ class TreeNodeMeta(type):
         elif set(bases).isdisjoint(set(metaclass.bases)):
             cls._mapping[node_name] = cls
         return cls
+
+
+class Reader(object):
+    extensions = NotImplementedAttribute()

@@ -13,7 +13,7 @@ from ...document import DocumentTree
 from ...text import MixedStyledText
 
 from .. import (TreeNode, TreeNodeMeta, InlineNode, BodyNode, BodySubNode,
-                GroupingNode, DummyNode)
+                GroupingNode, DummyNode, Reader)
 
 
 __all__ = ['DocutilsNode', 'DocutilsInlineNode',
@@ -100,7 +100,7 @@ class DocutilsDummyNode(DocutilsNode, DummyNode):
 from . import nodes
 
 
-class DocutilsReader(object):
+class DocutilsReader(Reader):
     parser_class = None
 
     def parse(self, file):
@@ -116,4 +116,5 @@ class DocutilsReader(object):
 
 
 class ReStructuredTextReader(DocutilsReader):
+    extensions = ('rst', )
     parser_class = ReStructuredTextParser
