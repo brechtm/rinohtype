@@ -27,17 +27,17 @@ parser = argparse.ArgumentParser(description='Render a reStructuredText '
                                              'document to PDF.')
 parser.add_argument('input', type=str, nargs='?',
                     help='the reStructuredText document to render')
-parser.add_argument('-t', '--template', type=str, nargs='?', default='article',
+parser.add_argument('-t', '--template', type=str, default='article',
                     metavar='NAME OR FILENAME',
                     help='the document template or template configuration to '
                          'use' + DEFAULT)
-parser.add_argument('-s', '--stylesheet', type=str, nargs='?',
-                    metavar='NAME OR FILENAME',
+parser.add_argument('-s', '--stylesheet', type=str, metavar='NAME OR FILENAME',
                     help='the style sheet used to style the document '
                          'elements '
                          + DEFAULT % dict(default="the template's default"))
-parser.add_argument('-p', '--paper', type=str, nargs='?', default='A4',
-                    help='the paper size to render to ' + DEFAULT)
+parser.add_argument('-p', '--paper', type=str,
+                    help='the paper size to render to '
+                         + DEFAULT % dict(default="the template's default"))
 parser.add_argument('--list-templates', action='store_true',
                     help='list the installed document templates and exit')
 parser.add_argument('--list-stylesheets', action='store_true',
@@ -86,13 +86,14 @@ def main():
                                  .format(err.resource_name, parser.prog))
         template_cfg['stylesheet'] = stylesheet
 
-    try:
-        variables['paper_size'] = Paper.from_string(args.paper.lower())
-    except KeyError:
-        print("Unknown paper size '{}'. Must be one of:".format(args.paper))
-        print('   {}'.format(', '.join(sorted(paper.name for paper
-                                              in PAPER_BY_NAME.values()))))
-        return
+    if args.paper:
+        try:
+            variables['paper_size'] = Paper.from_string(args.paper.lower())
+        except ValueError:
+            accepted = ', '.join(sorted(paper.name for paper
+                                        in PAPER_BY_NAME.values()))
+            raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
+                             "   {}".format(args.paper, accepted))
 
     input_root, input_ext = os.path.splitext(input_filename)
     parser = ReStructuredTextReader()
