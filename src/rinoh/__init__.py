@@ -23,12 +23,14 @@ if sys.version_info < (3, 3):
     sys.exit(1)
 
 
-CORE_MODULES = ['annotation', 'color', 'dimension', 'document', 'draw', 'float',
-                'flowable', 'highlight', 'index', 'inline', 'layout', 'number',
-                'paper', 'paragraph', 'reference', 'structure', 'style',
-                'table', 'text']
+CORE_MODULES = ['annotation', 'attribute', 'color', 'dimension', 'document',
+                'draw', 'element', 'float', 'flowable', 'highlight', 'index',
+                'inline', 'layout', 'number', 'paper', 'paragraph',
+                'reference', 'structure', 'style', 'table', 'template', 'text']
 
-__all__ = CORE_MODULES + ['font', 'frontend', 'backend', 'styleds', 'styles']
+__all__ = CORE_MODULES + ['font', 'fonts', 'frontend', 'backend', 'resource',
+                          'styleds', 'styles', 'stylesheets', 'templates',
+                          'strings', 'language']
 
 
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
