@@ -34,6 +34,7 @@ setup(
     include_package_data=True,
     python_requires='>= 3.3',
     install_requires=['setuptools', 'pip', 'docutils', 'purepng>=0.2.0',
+                      'recommonmark',
                       'rinoh-typeface-texgyrecursor>=0.1.1',
                       'rinoh-typeface-texgyreheros>=0.1.1',
                       'rinoh-typeface-texgyrepagella>=0.1.1',
@@ -42,6 +43,10 @@ setup(
     entry_points={
         'console_scripts': [
             'rinoh = rinoh.tool:main',
+        ],
+        'rinoh.frontends': [
+            'CommonMark = rinoh.frontend.commonmark:CommonMarkReader',
+            'reStructuredText = rinoh.frontend.rst:ReStructuredTextReader',
         ],
         'rinoh.templates': [
             'article = rinoh.templates:Article',

@@ -9,10 +9,11 @@
 import argparse
 import os
 
+from pkg_resources import get_distribution, iter_entry_points
+
 from rinoh import __version__, __release_date__
 
 from rinoh.font import Typeface
-from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
@@ -23,10 +24,16 @@ from rinoh.template import DocumentTemplate, TemplateConfigurationFile
 DEFAULT = ' (default: %(default)s)'
 
 
-parser = argparse.ArgumentParser(description='Render a reStructuredText '
-                                             'document to PDF.')
+parser = argparse.ArgumentParser(description='Render a structured document '
+                                             'to PDF.')
 parser.add_argument('input', type=str, nargs='?',
                     help='the reStructuredText document to render')
+parser.add_argument('-f', '--format', type=str,
+                    help='the format of the input file'
+                         + DEFAULT % dict(default='autodetect'))
+parser.add_argument('-o', '--option', type=str, action='append', nargs=1,
+                    default=[], metavar='OPTION=VALUE',
+                    help='options to be passed to the input file reader')
 parser.add_argument('-t', '--template', type=str, default='article',
                     metavar='NAME OR FILENAME',
                     help='the document template or template configuration to '
@@ -42,9 +49,40 @@ parser.add_argument('--list-templates', action='store_true',
                     help='list the installed document templates and exit')
 parser.add_argument('--list-stylesheets', action='store_true',
                     help='list the installed style sheets and exit')
+parser.add_argument('--list-formats', action='store_true',
+                    help='list the supported input formats and exit')
 parser.add_argument('--version', action='version',
                     version='%(prog)s {} ({})'.format(__version__,
                                                       __release_date__))
+
+
+def get_distribution_str(entry_point):
+    dist = entry_point.dist
+    return ('built-in' if dist == get_distribution('rinohtype')
+            else '{0.project_name} {0.version}'.format(dist))
+
+
+def get_reader_cls(format, file_extension):
+    if format:
+        for entry_point in iter_entry_points('rinoh.frontends'):
+            if format.lower() == entry_point.name.lower():
+                return entry_point.name, entry_point.load()
+        raise SystemExit("Unknown format '{}'. Run `{} --list-formats` to "
+                         "find out which formats are supported."
+                         .format(format, parser.prog))
+    else:
+        for entry_point in iter_entry_points('rinoh.frontends'):
+            reader_cls = entry_point.load()
+            for reader_extension in reader_cls.extensions:
+                if reader_extension == file_extension:
+                    print('Using the {} frontend [{}]'
+                          .format(entry_point.name,
+                                  get_distribution_str(entry_point)))
+                    return entry_point.name, reader_cls
+        raise SystemExit("Cannot determine input format from extension '{}'. "
+                         "Specify the format using the `--format` option. Run "
+                         "`{} --list-formats` to find out which formats are "
+                         "supported.".format(file_extension, parser.prog))
 
 
 def main():
@@ -61,12 +99,19 @@ def main():
         for name in sorted(StyleSheet.installed_resources):
             print('- {}'.format(name))
         do_exit = True
+    if args.list_formats:
+        print('Supported input file formats:')
+        for entry_point in iter_entry_points('rinoh.frontends'):
+            reader_cls = entry_point.load()
+            distribution = get_distribution_str(entry_point)
+            print('- {} (.{}) [{}]'
+                  .format(entry_point.name, ', .'.join(reader_cls.extensions),
+                          distribution))
+        do_exit = True
     if do_exit:
         return
 
-    try:
-        input_dir, input_filename = os.path.split(args.input)
-    except AttributeError:
+    if args.input is None:
         parser.print_help()
         return
 
@@ -95,10 +140,18 @@ def main():
             raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
                              "   {}".format(args.paper, accepted))
 
+    input_dir, input_filename = os.path.split(args.input)
     input_root, input_ext = os.path.splitext(input_filename)
-    parser = ReStructuredTextReader()
+    reader_name, reader_cls = get_reader_cls(args.format, input_ext[1:])
+    options = dict((part.strip() for part in option.split('=', maxsplit=1))
+                   for option, in args.option)
+    try:
+        reader = reader_cls(**options)
+    except TypeError as e:
+        raise SystemExit('The {} frontend does not accept the given options:\n'
+                         '  {}'.format(reader_name, e))
     with open(args.input) as input_file:
-        document_tree = parser.parse(input_file)
+        document_tree = reader.parse(input_file)
 
     if os.path.isfile(args.template):
         template_cfg['base'] = TemplateConfigurationFile(args.template)
