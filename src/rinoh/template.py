@@ -15,7 +15,7 @@ from functools import partial
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
-                        OptionSet, AcceptNoneAttributeType)
+                        OptionSet, AcceptNoneAttributeType, VariableNotDefined)
 from .dimension import DimensionBase, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
@@ -420,7 +420,6 @@ class TemplateConfiguration(RuleSet):
                                      ', '.join(unsupported)))
         super().__init__(name, base=base, **options)
         self.description = description
-        self.variables['paper_size'] = A4
 
     @property
     def _stylesheet_search_path(self):
@@ -440,6 +439,15 @@ class TemplateConfiguration(RuleSet):
             raise ValueError("'{}' is not a template used by {}"
                              .format(name, self.document_template_class))
         return type(template)
+
+    def get_variable(self, name, accepted_type):
+        try:
+            return super().get_variable(name, accepted_type)
+        except VariableNotDefined:
+            try:
+                return self.document_template_class.variables[name]
+            except KeyError:
+                raise
 
     def document(self, document_tree, options=None, backend=None):
         return self.document_template_class(document_tree, configuration=self,
@@ -536,6 +544,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
     parts = Attribute(PartsList, [], 'The parts making up this document')
 
     options_class = DocumentOptions
+    variables = dict(paper_size=A4)
 
     def __init__(self, document_tree, configuration=None, options=None,
                  backend=None):
@@ -576,12 +585,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
             else:
                 raise
         return template
-
-    def get_variable(self, name, accepted_type):
-        try:
-            return self.configuration._get_variable(name, accepted_type)
-        except KeyError:
-            return self._get_default(name)
 
     def get_option(self, option_name):
         try:
