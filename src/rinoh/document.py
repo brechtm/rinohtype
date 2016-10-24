@@ -31,7 +31,7 @@ from collections import OrderedDict
 from itertools import count
 
 from . import __version__, __release_date__
-from .attribute import OptionSet
+from .attribute import OptionSet, Attribute
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
@@ -40,19 +40,39 @@ from .layout import (Container, ReflowRequired, Chain, PageBreakException,
 from .number import format_number
 from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity, StyleLog
-from .util import NotImplementedAttribute, RefKeyDictionary
+from .util import (NotImplementedAttribute, RefKeyDictionary,
+                   WithNamedDescriptors)
 from .warnings import warn
 
 
-__all__ = ['Page', 'DocumentPart', 'Document',
-           'PageOrientation']
+__all__ = ['Page', 'PageOrientation', 'PageType',
+           'DocumentPart', 'Document', 'DocumentOptions', 'DocumentTree']
+
+
+class DocumentOptions(dict, metaclass=WithNamedDescriptors):
+    """Collects options to customize a :class:`DocumentTemplate`. Options are
+    specified as keyword arguments (`options`) matching the class's
+    attributes."""
+
+    def __init__(self, **options):
+        for name, value in options.items():
+            option_descriptor = getattr(type(self), name, None)
+            if not isinstance(option_descriptor, Attribute):
+                raise AttributeError('No such document option: {}'
+                                     .format(name))
+            setattr(self, name, value)
+
+    def __getitem__(self, name):
+        return getattr(self, name)
 
 
 class DocumentTree(StaticGroupedFlowables):
-    def __init__(self, flowables, source_file=None):
+    def __init__(self, flowables, source_file=None,
+                 options_class=DocumentOptions):
         super().__init__(flowables)
         self.source_file = (os.path.abspath(source_file)
                             if source_file else None)
+        self.options_class = options_class
 
     @property
     def source_root(self):

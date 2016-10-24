@@ -36,12 +36,12 @@ from .strings import StringField, StringCollection, Strings
 from .structure import Header, Footer, SectionTitles
 from .style import StyleSheet, CharIterator, parse_string
 from .stylesheets import sphinx
-from .util import NamedDescriptor, WithNamedDescriptors
+from .util import NamedDescriptor
 
 
 __all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
            'ContentsPartTemplate', 'FixedDocumentPartTemplate',
-           'DocumentOptions', 'Option', 'AbstractLocation', 'DocumentTemplate',
+           'Option', 'AbstractLocation', 'DocumentTemplate',
            'TemplateConfiguration', 'TemplateConfigurationFile']
 
 
@@ -377,22 +377,6 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
         return document.get_template_option(self.name, 'flowables')
 
 
-class DocumentOptions(dict, metaclass=WithNamedDescriptors):
-    """Collects options to customize a :class:`DocumentTemplate`. Options are
-    specified as keyword arguments (`options`) matching the class's
-    attributes."""
-
-    def __init__(self, **options):
-        for name, value in options.items():
-            option_descriptor = getattr(type(self), name, None)
-            if not isinstance(option_descriptor, Option):
-                raise AttributeError('No such document option: {}'.format(name))
-            setattr(self, name, value)
-
-    def __getitem__(self, name):
-        return getattr(self, name)
-
-
 class TemplateConfiguration(RuleSet):
     document_template_class = None
 
@@ -543,14 +527,14 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     parts = Attribute(PartsList, [], 'The parts making up this document')
 
-    options_class = DocumentOptions
     variables = dict(paper_size=A4)
 
     def __init__(self, document_tree, configuration=None, options=None,
                  backend=None):
         self.configuration = (configuration if configuration is not None
                               else self.Configuration('empty'))
-        self.options = options if options is not None else self.options_class()
+        self.options = (options if options is not None
+                        else document_tree.options_class())
         stylesheet = self.get_option('stylesheet')
         language = self.get_option('language')
         strings = self.get_option('strings')
