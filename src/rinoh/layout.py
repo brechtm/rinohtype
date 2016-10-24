@@ -262,7 +262,7 @@ class FlowablesContainerBase(Container):
         elif ignore_overflow:
             self._self_cursor.grow(float(self.remaining_height))
         else:
-            raise ContainerOverflow
+            raise ContainerOverflow(self.page.number)
 
     def check_overflow(self):
         if self.remaining_height < 0:
