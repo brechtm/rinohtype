@@ -12,31 +12,36 @@ on_finish:
 
 environment:
   matrix:
-    # For Python versions available on Appveyor, see
-    # http://www.appveyor.com/docs/installed-software#python
-#    - PYTHON: "C:\\Python33"
-#    - PYTHON: "C:\\Python34"
-#    - PYTHON: "C:\\Python35"
-#    - PYTHON: "C:\\Python33-x64"
-#    - PYTHON: "C:\\Python34-x64"
-    - PYTHON: "C:\\Python35-x64"
+    - TOXENV: py33,py34,py35
+#      DIST: sdist
+#      WITH_COVERAGE: 1
+#    - TOXENV: py33,py34,py35
+#      DIST: wheel
+#      WITH_COVERAGE: 0
+    - TOXENV: check
+    - TOXENV: regression
+#      WITH_COVERAGE: 1
+    - TOXENV: test-docs
+    - TOXENV: build-docs
+
 
 install:
-  - choco install imagemagick.tool
-  - set PATH=C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;%PATH%
   - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
   - bash -lc "pacman --noconfirm --sync --refresh --refresh pacman"
   - bash -lc "pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade"
   - bash -xlc "pacman --noconfirm -S --needed tar unzip make"
-  - bash -xlc "pacman --noconfirm -S --needed mingw-w64-x86_64-poppler"
+  - if "%TOXENV%" == "regression" bash -xlc "pacman --noconfirm -S --needed mingw-w64-x86_64-poppler"
+  - if "%TOXENV%" == "regression" choco install imagemagick.tool
+  - if "%TOXENV%" == "regression" set PATH=C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;%PATH%
+  - if "%TOXENV%" == "regression" git submodule update --init
 
 
 build: off
 
 
 before_test:
-  - echo %PATH%
-  - "%PYTHON%\\python.exe -m pip install tox-travis"
+  - py -3.5 -m pip install tox-travis
 
 test_script:
-  - "%PYTHON%\\python.exe -m tox"
+  - echo %PATH%
+  - py -3.5 -m tox
