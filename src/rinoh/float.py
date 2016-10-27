@@ -8,8 +8,6 @@
 
 import os
 
-from string import whitespace
-
 from .attribute import AcceptNoneAttributeType, OptionSet, Integer, Bool
 from .color import RED
 from .dimension import Dimension
@@ -22,9 +20,9 @@ from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph
 from .paragraph import Paragraph
 from .reference import ReferenceType
-from .style import CharIterator, eat_whitespace, parse_string
+from .style import CharIterator, parse_string
 from .text import MixedStyledText, SingleStyledText, TextStyle
-from .util import ReadAliasAttribute
+from .util import posix_path, ReadAliasAttribute
 
 
 __all__ = ['Scale', 'InlineImage', 'Image', 'Caption', 'Figure']
@@ -51,6 +49,16 @@ class Scale(OptionSet):
 class ImageState(HorizontallyAlignedFlowableState):
     image = ReadAliasAttribute('flowable')
     width = None
+
+
+class Filename(str):
+    """str subclass that provides system-independent path comparison"""
+
+    def __eq__(self, other):
+        return posix_path(self) == posix_path(other)
+
+    def __ne__(self, other):
+        return not (self == other)
 
 
 class ImageBase(Flowable):
@@ -106,7 +114,7 @@ class ImageBase(Flowable):
     @property
     def filename(self):
         if isinstance(self.filename_or_file, str):
-            return self.filename_or_file
+            return Filename(self.filename_or_file)
 
     def _short_repr_args(self, flowable_target):
         yield "'{}'".format(self.filename)

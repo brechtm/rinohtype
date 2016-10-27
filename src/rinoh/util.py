@@ -20,6 +20,9 @@ Collection of miscellaneous classes, functions and decorators:
 """
 
 
+import ntpath
+import os
+import posixpath
 import time
 
 from collections import MutableMapping
@@ -27,11 +30,11 @@ from functools import wraps
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'last', 'consumer',
-           'static_variable', 'cached', 'cached_property', 'cached_generator',
-           'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
-           'NotImplementedAttribute', 'NamedDescriptor', 'WithNamedDescriptors',
-           'ContextManager', 'RefKeyDictionary']
+__all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'posix_path',
+           'consumer', 'static_variable', 'cached', 'cached_property',
+           'cached_generator', 'class_property', 'timed', 'Decorator',
+           'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
+           'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary']
 
 
 # functions
@@ -70,6 +73,10 @@ def unique(iterable):
         if item not in seen:
             seen.add(item)
             yield item
+
+
+def posix_path(path):
+    return os.path.normpath(path.replace(ntpath.sep, posixpath.sep))
 
 
 # function decorators
