@@ -150,8 +150,6 @@ def main():
     except TypeError as e:
         raise SystemExit('The {} frontend does not accept the given options:\n'
                          '  {}'.format(reader_name, e))
-    with open(args.input) as input_file:
-        document_tree = reader.parse(input_file)
 
     if os.path.isfile(args.template):
         template_cfg['base'] = TemplateConfigurationFile(args.template)
@@ -161,6 +159,8 @@ def main():
     configuration = template_cls.Configuration('rinoh command line options',
                                                **template_cfg)
     configuration.variables.update(variables)
+
+    document_tree = reader.parse(args.input)
     document = template_cls(document_tree, configuration=configuration)
     while True:
         try:

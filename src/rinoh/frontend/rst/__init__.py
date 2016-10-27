@@ -7,6 +7,7 @@
 
 
 from docutils.core import publish_doctree
+from docutils.io import FileInput
 from docutils.parsers.rst import Parser as ReStructuredTextParser
 
 from ...document import DocumentTree
@@ -103,10 +104,19 @@ from . import nodes
 class DocutilsReader(Reader):
     parser_class = None
 
-    def parse(self, file):
-        filename = getattr(file, 'name', None)
-        doctree = publish_doctree(file.read(), source_path=filename,
-                                  parser=self.parser_class())
+    def parse(self, filename_or_file):
+        if isinstance(filename_or_file, str):
+            filename = filename_or_file
+            settings_overrides = dict(input_encoding='utf-8')
+            doctree = publish_doctree(None, source_path=filename,
+                                      source_class=FileInput,
+                                      settings_overrides=settings_overrides,
+                                      parser=self.parser_class())
+        else:
+            filename = getattr(filename_or_file, 'name', None)
+            doctree = publish_doctree(filename_or_file,
+                                      source_class=FileInput,
+                                      parser=self.parser_class())
         return self.from_doctree(filename, doctree)
 
     def from_doctree(self, filename, doctree):
