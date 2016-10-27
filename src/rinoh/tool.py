@@ -140,6 +140,8 @@ def main():
             raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
                              "   {}".format(args.paper, accepted))
 
+    if not os.path.exists(args.input):
+        raise SystemExit('{}: No such file'.format(args.input))
     input_dir, input_filename = os.path.split(args.input)
     input_root, input_ext = os.path.splitext(input_filename)
     reader_name, reader_cls = get_reader_cls(args.format, input_ext[1:])
