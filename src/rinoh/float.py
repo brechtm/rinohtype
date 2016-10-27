@@ -125,11 +125,13 @@ class ImageBase(Flowable):
     def render(self, container, last_descender, state, **kwargs):
         try:
             try:
-                source_root = container.document.document_tree.source_root
-                filename_or_file = os.path.join(source_root,
-                                                self.filename_or_file)
+                posix_filename = posix_path(self.filename_or_file)
             except AttributeError:  # self.filename_or_file is a file
                 filename_or_file = self.filename_or_file
+            else:
+                source_root = container.document.document_tree.source_root
+                abs_filename = os.path.join(source_root, posix_filename)
+                filename_or_file = os.path.normpath(abs_filename)
             image = container.document.backend.Image(filename_or_file)
         except OSError as err:
             message = "Error opening image file: {}".format(err)
