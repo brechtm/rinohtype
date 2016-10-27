@@ -20,15 +20,12 @@ warning = 'Please be warned'
 [VARIABLES]
 paper_size = A5
 
-[SectionTitles]
-contents='Contents'
-
 [title]
-page_number_format=lowercase roman
-end_at_page=left
+page_number_format = lowercase roman
+end_at_page = left
 
 [contents]
-page_number_format=number
+page_number_format = number
 
 [title_page]
 top_margin = 2cm
