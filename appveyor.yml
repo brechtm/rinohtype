@@ -25,6 +25,10 @@ environment:
     - TOXENV: build-docs
 
 
+matrix:
+  fast_finish: true
+
+
 install:
   - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
   - bash -lc "pacman --noconfirm --sync --refresh --refresh pacman"
