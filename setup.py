@@ -65,7 +65,6 @@ setup(
             'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats',
         ]
     },
-    setup_requires=['pytest-runner'],
     tests_require=['pytest>=2.0.0', 'pytest-assume'],
 
     author='Brecht Machiels',
