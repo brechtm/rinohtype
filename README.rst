@@ -5,9 +5,13 @@ rinohtype
    :target: https://pypi.python.org/pypi/rinohtype
    :alt: PyPI
 
-.. image:: https://travis-ci.org/brechtm/rinohtype.svg
+.. image:: https://travis-ci.org/brechtm/rinohtype.svg?branch=master
    :target: https://travis-ci.org/brechtm/rinohtype
    :alt: Build status
+
+.. image:: https://ci.appveyor.com/api/projects/status/qobpfyha7g4k109e/branch/master?svg=true
+   :target: https://ci.appveyor.com/project/brechtm/rinohtype
+   :alt: Windows Build status
 
 .. image:: https://codecov.io/gh/brechtm/rinohtype/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/brechtm/rinohtype
