@@ -51,6 +51,9 @@ parser.add_argument('--list-stylesheets', action='store_true',
                     help='list the installed style sheets and exit')
 parser.add_argument('--list-formats', action='store_true',
                     help='list the supported input formats and exit')
+parser.add_argument('--list-options', metavar='FRONTEND', type=str,
+                    help='list the options supported by the given frontend '
+                         'and exit')
 parser.add_argument('--version', action='version',
                     version='%(prog)s {} ({})'.format(__version__,
                                                       __release_date__))
@@ -62,27 +65,28 @@ def get_distribution_str(entry_point):
             else '{0.project_name} {0.version}'.format(dist))
 
 
-def get_reader_cls(format, file_extension):
-    if format:
-        for entry_point in iter_entry_points('rinoh.frontends'):
-            if format.lower() == entry_point.name.lower():
-                return entry_point.name, entry_point.load()
-        raise SystemExit("Unknown format '{}'. Run `{} --list-formats` to "
-                         "find out which formats are supported."
-                         .format(format, parser.prog))
-    else:
-        for entry_point in iter_entry_points('rinoh.frontends'):
-            reader_cls = entry_point.load()
-            for reader_extension in reader_cls.extensions:
-                if reader_extension == file_extension:
-                    print('Using the {} frontend [{}]'
-                          .format(entry_point.name,
-                                  get_distribution_str(entry_point)))
-                    return entry_point.name, reader_cls
-        raise SystemExit("Cannot determine input format from extension '{}'. "
-                         "Specify the format using the `--format` option. Run "
-                         "`{} --list-formats` to find out which formats are "
-                         "supported.".format(file_extension, parser.prog))
+def get_reader_by_name(format_name):
+    for entry_point in iter_entry_points('rinoh.frontends'):
+        if format_name.lower() == entry_point.name.lower():
+            return entry_point.name, entry_point.load()
+    raise SystemExit("Unknown format '{}'. Run `{} --list-formats` to "
+                     "find out which formats are supported."
+                     .format(format_name, parser.prog))
+
+
+def get_reader_by_extension(file_extension):
+    for entry_point in iter_entry_points('rinoh.frontends'):
+        reader_cls = entry_point.load()
+        for reader_extension in reader_cls.extensions:
+            if reader_extension == file_extension:
+                print('Using the {} frontend [{}]'
+                      .format(entry_point.name,
+                              get_distribution_str(entry_point)))
+                return entry_point.name, reader_cls
+    raise SystemExit("Cannot determine input format from extension '{}'. "
+                     "Specify the format using the `--format` option. Run "
+                     "`{} --list-formats` to find out which formats are "
+                     "supported.".format(file_extension, parser.prog))
 
 
 def main():
@@ -107,6 +111,18 @@ def main():
             print('- {} (.{}) [{}]'
                   .format(entry_point.name, ', .'.join(reader_cls.extensions),
                           distribution))
+        do_exit = True
+    if args.list_options:
+        reader_name, reader_cls = get_reader_by_name(args.list_options)
+        if list(reader_cls.supported_attributes):
+            print('Options supported by the {} frontend'.format(reader_name))
+            for name in reader_cls.supported_attributes:
+                attr_def = reader_cls.attribute_definition(name)
+                print('- {} ({}): {}. Default: {}'
+                      .format(name, attr_def.accepted_type.__name__,
+                              attr_def.description, attr_def.default_value))
+        else:
+            print('The {} frontend takes no options'.format(reader_name))
         do_exit = True
     if do_exit:
         return
@@ -144,7 +160,8 @@ def main():
         raise SystemExit('{}: No such file'.format(args.input))
     input_dir, input_filename = os.path.split(args.input)
     input_root, input_ext = os.path.splitext(input_filename)
-    reader_name, reader_cls = get_reader_cls(args.format, input_ext[1:])
+    reader_name, reader_cls = (get_reader_by_name(args.format) if args.format
+                               else get_reader_by_extension(input_ext[1:]))
     str_options = dict((part.strip() for part in option.split('=', maxsplit=1))
                        for option, in args.option)
     try:
