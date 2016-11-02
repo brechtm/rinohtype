@@ -235,7 +235,7 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
                     return klass._attributes[name]
         except AttributeError:
             pass
-        raise KeyError
+        raise KeyError(name)
 
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
 
@@ -356,8 +356,8 @@ class Bool(AttributeType):
     def parse_string(cls, string):
         lower_string = string.lower()
         if lower_string not in ('true', 'false'):
-            raise ValueError("'{}' is not a valid {}. Must be one of 'true' or "
-                             "'false'".format(string, cls.__name__))
+            raise ValueError("'{}' is not a valid {}. Must be one of 'true' "
+                             "or 'false'".format(string, cls.__name__))
         return lower_string == 'true'
 
 

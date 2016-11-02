@@ -145,13 +145,20 @@ def main():
     input_dir, input_filename = os.path.split(args.input)
     input_root, input_ext = os.path.splitext(input_filename)
     reader_name, reader_cls = get_reader_cls(args.format, input_ext[1:])
-    options = dict((part.strip() for part in option.split('=', maxsplit=1))
-                   for option, in args.option)
+    str_options = dict((part.strip() for part in option.split('=', maxsplit=1))
+                       for option, in args.option)
     try:
-        reader = reader_cls(**options)
-    except TypeError as e:
-        raise SystemExit('The {} frontend does not accept the given options:\n'
-                         '  {}'.format(reader_name, e))
+        options = {}
+        for key, str_value in str_options.items():
+            attr_def = reader_cls.attribute_definition(key)
+            options[key] = attr_def.accepted_type.from_string(str_value)
+    except KeyError as e:
+        raise SystemExit('The {} frontend does not accept the option {}'
+                         .format(reader_name, e))
+    except ValueError as e:
+        raise SystemExit("The value passed to the '{}' option is not valid:\n"
+                         '  {}'.format(key, e))
+    reader = reader_cls(**options)
 
     if os.path.isfile(args.template):
         template_cfg['base'] = TemplateConfigurationFile(args.template)
