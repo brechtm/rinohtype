@@ -46,33 +46,15 @@ from .warnings import warn
 
 
 __all__ = ['Page', 'PageOrientation', 'PageType',
-           'DocumentPart', 'Document', 'DocumentOptions', 'DocumentTree']
-
-
-class DocumentOptions(dict, metaclass=WithNamedDescriptors):
-    """Collects options to customize a :class:`DocumentTemplate`. Options are
-    specified as keyword arguments (`options`) matching the class's
-    attributes."""
-
-    def __init__(self, **options):
-        for name, value in options.items():
-            option_descriptor = getattr(type(self), name, None)
-            if not isinstance(option_descriptor, Attribute):
-                raise AttributeError('No such document option: {}'
-                                     .format(name))
-            setattr(self, name, value)
-
-    def __getitem__(self, name):
-        return getattr(self, name)
+           'DocumentPart', 'Document', 'DocumentTree']
 
 
 class DocumentTree(StaticGroupedFlowables):
-    def __init__(self, flowables, source_file=None,
-                 options_class=DocumentOptions):
+    def __init__(self, flowables, source_file=None, options=None):
         super().__init__(flowables)
         self.source_file = (os.path.abspath(source_file)
                             if source_file else None)
-        self.options_class = options_class
+        self.options = options
 
     @property
     def source_root(self):

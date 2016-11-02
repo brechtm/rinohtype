@@ -433,9 +433,9 @@ class TemplateConfiguration(RuleSet):
             except KeyError:
                 raise
 
-    def document(self, document_tree, options=None, backend=None):
+    def document(self, document_tree, backend=None):
         return self.document_template_class(document_tree, configuration=self,
-                                            options=options, backend=backend)
+                                            backend=backend)
 
 
 class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
@@ -529,12 +529,10 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     variables = dict(paper_size=A4)
 
-    def __init__(self, document_tree, configuration=None, options=None,
-                 backend=None):
+    def __init__(self, document_tree, configuration=None, backend=None):
         self.configuration = (configuration if configuration is not None
                               else self.Configuration('empty'))
-        self.options = (options if options is not None
-                        else document_tree.options_class())
+        self.options = document_tree.options
         stylesheet = self.get_option('stylesheet')
         language = self.get_option('language')
         strings = self.get_option('strings')

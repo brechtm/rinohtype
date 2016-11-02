@@ -8,6 +8,7 @@
 
 from itertools import chain
 
+from ..attribute import AttributesDictionary
 from ..flowable import StaticGroupedFlowables
 from ..util import NotImplementedAttribute
 
@@ -177,5 +178,8 @@ class TreeNodeMeta(type):
         return cls
 
 
-class Reader(object):
+class Reader(AttributesDictionary):
     extensions = NotImplementedAttribute()
+
+    def __getitem__(self, name):
+        return getattr(self, name)
