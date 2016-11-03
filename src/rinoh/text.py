@@ -48,15 +48,14 @@ from .dimension import DimensionBase, PT
 from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
-                         TextPosition, MEDIUM, UPRIGHT, NORMAL, BOLD, ITALIC,
-                         SMALL_CAPITAL ,SUPERSCRIPT, SUBSCRIPT)
+                         TextPosition)
 from .style import Style, Styled, PARENT_STYLE, StyleException
 
 
 __all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
            'ConditionalMixedStyledText', 'Space', 'FixedWidthSpace',
-           'NoBreakSpace', 'Spacer', 'Tab', 'Newline', 'Bold', 'Italic',
-           'Emphasized', 'SmallCaps', 'Superscript', 'Subscript']
+           'NoBreakSpace', 'Spacer', 'Tab', 'Newline',
+           'Superscript', 'Subscript']
 
 
 class Locale(AttributeType):
@@ -78,15 +77,15 @@ class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects"""
 
     typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
-    font_weight = Attribute(FontWeight, MEDIUM, 'Thickness of character '
-                                                'outlines relative to their '
-                                                'height')
-    font_slant = Attribute(FontSlant, UPRIGHT, 'Slope style of the font')
-    font_width = Attribute(FontWidth, NORMAL, 'Stretch of the characters')
+    font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
+                                                  'outlines relative to their '
+                                                  'height')
+    font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
+    font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
     font_size = Attribute(DimensionBase, 10*PT, 'Height of characters')
     font_color = Attribute(Color, BLACK, 'Color of the font')
-    font_variant = Attribute(FontVariant, NORMAL, 'Variant of the font')
-    position = Attribute(TextPosition, NORMAL, 'Vertical text position')
+    font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
+    position = Attribute(TextPosition, 'normal', 'Vertical text position')
     kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
     ligatures = Attribute(Bool, True, 'Run letters together where possible')
     # TODO: character spacing
@@ -216,15 +215,16 @@ class StyledText(Styled, AcceptNoneAttributeType):
     def paragraph(self):
         return self.parent.paragraph
 
-    position = {SUPERSCRIPT: 1 / 3,
-                SUBSCRIPT: - 1 / 6}
+    position = {TextPosition.SUPERSCRIPT: 1 / 3,
+                TextPosition.SUBSCRIPT: - 1 / 6}
     position_size = 583 / 1000
 
     def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
         try:
             style = self._style(container)
-            return style.get_value('position', container) != NORMAL
+            return style.get_value('position',
+                                   container) != TextPosition.NORMAL
         except StyleException:
             return False
 
@@ -561,48 +561,8 @@ class Tab(ControlCharacter):
 
 # predefined text styles
 
-ITALIC_STYLE = EMPHASIZED_STYLE = TextStyle(font_slant=ITALIC)
-BOLD_STYLE = TextStyle(font_weight=BOLD)
-BOLD_ITALIC_STYLE = TextStyle(font_weight=BOLD, font_slant=ITALIC)
-SMALL_CAPITALS_STYLE = TextStyle(font_variant=SMALL_CAPITAL)
-SUPERSCRIPT_STYLE = TextStyle(position=SUPERSCRIPT)
-SUBSCRIPT_STYLE = TextStyle(position=SUBSCRIPT)
-
-
-class Bold(MixedStyledText):
-    """Bold text."""
-
-    def __init__(self, text):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=BOLD_STYLE)
-
-
-class Italic(MixedStyledText):
-    """Italic text."""
-
-    def __init__(self, text, parent=None):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=ITALIC_STYLE, parent=parent)
-
-
-class Emphasized(MixedStyledText):
-    """Emphasized text."""
-
-    def __init__(self, text, parent=None):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=EMPHASIZED_STYLE, parent=parent)
-
-
-class SmallCaps(MixedStyledText):
-    """Small capitals text."""
-
-    def __init__(self, text, parent=None):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=SMALL_CAPITALS_STYLE, parent=parent)
+SUPERSCRIPT_STYLE = TextStyle(position='superscript')
+SUBSCRIPT_STYLE = TextStyle(position='subscript')
 
 
 class Superscript(MixedStyledText):

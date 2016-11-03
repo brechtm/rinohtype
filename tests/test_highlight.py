@@ -21,8 +21,7 @@ except ImportError:
 
 
 from rinoh.color import HexColor
-from rinoh.font import ITALIC
-from rinoh.font.style import BOLD
+from rinoh.font import FontSlant, FontWeight
 from rinoh.highlight import (highlight_block, get_pygments_style, Token,
                              pygments_style_to_stylesheet)
 
@@ -113,12 +112,12 @@ def test_pygments_style_to_stylesheet():
 
     comment_style = matching_style(style_sheet, Comment)
     assert comment_style.keys() == set(['font_slant', 'font_color'])
-    assert comment_style.font_slant == ITALIC
+    assert comment_style.font_slant == FontSlant.ITALIC
     assert comment_style.font_color == HexColor('#60a0b0')
 
     keyword_style = matching_style(style_sheet, Keyword)
     assert keyword_style.keys() == set(['font_weight', 'font_color'])
-    assert keyword_style.font_weight == BOLD
+    assert keyword_style.font_weight == FontWeight.BOLD
     assert keyword_style.font_color == HexColor('#007020')
 
     number_style = matching_style(style_sheet, Number)

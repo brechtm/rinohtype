@@ -8,73 +8,39 @@
 from ..attribute import OptionSet
 
 
-__all__ = ['FontWeight', 'HAIRLINE', 'THIN', 'ULTRA_LIGHT', 'EXTRA_LIGHT',
-           'LIGHT', 'BOOK', 'REGULAR', 'MEDIUM', 'DEMI_BOLD', 'BOLD',
-           'EXTRA_BOLD', 'HEAVY', 'BLACK', 'EXTRA_BLACK', 'ULTRA_BLACK',
-           'FontSlant', 'UPRIGHT', 'OBLIQUE', 'ITALIC',
-           'FontWidth', 'NORMAL', 'CONDENSED', 'EXTENDED',
-           'FontVariant', 'SMALL_CAPITAL', 'OLD_STYLE',
-           'TextPosition', 'SUPERSCRIPT', 'SUBSCRIPT']
+__all__ = ['FontWeight', 'FontSlant', 'FontWidth', 'FontVariant',
+           'TextPosition']
 
-
-# weight
-HAIRLINE = 'Hairline'
-THIN = 'Thin'
-ULTRA_LIGHT = 'Ultra-Light'
-EXTRA_LIGHT = 'Extra-Light'
-LIGHT = 'Light'
-BOOK = 'Book'
-REGULAR = 'Regular'
-MEDIUM = 'Medium'
-DEMI_BOLD = 'Demi-Bold'
-BOLD = 'Bold'
-EXTRA_BOLD = 'Extra-Bold'
-HEAVY = 'Heavy'
-BLACK = 'Black'
-EXTRA_BLACK = 'Extra-Black'
-ULTRA_BLACK = 'Ultra-Black'
 
 class FontWeight(OptionSet):
-    values = (HAIRLINE, THIN, ULTRA_LIGHT, EXTRA_LIGHT, LIGHT, BOOK, REGULAR,
-              MEDIUM, DEMI_BOLD, BOLD, EXTRA_BOLD, HEAVY, BLACK, EXTRA_BLACK,
-              ULTRA_BLACK)
+    values = ('hairline', 'thin', 'ultra-light', 'extra-light', 'light',
+              'book', 'regular', 'medium', 'demi-bold', 'bold', 'extra-bold',
+              'heavy', 'black', 'extra-black', 'ultra-black')
 
-
-# slant
-UPRIGHT = 'Upright'
-OBLIQUE = 'Oblique'
-ITALIC = 'Italic'
 
 class FontSlant(OptionSet):
-    values = UPRIGHT, OBLIQUE, ITALIC
-    alternatives = {UPRIGHT: (OBLIQUE, ITALIC),
-                    OBLIQUE: (ITALIC, UPRIGHT),
-                    ITALIC: (OBLIQUE, UPRIGHT)}
+    values = 'upright', 'oblique', 'italic'
+    alternatives = dict(upright=('oblique', 'italic'),
+                        oblique=('italic', 'upright'),
+                        italic=('oblique', 'upright'))
 
-
-# width
-NORMAL = 'Normal'
-CONDENSED = 'Condensed'
-EXTENDED = 'Extended'
 
 class FontWidth(OptionSet):
-    values = NORMAL, CONDENSED, EXTENDED
-    alternatives = {NORMAL: (CONDENSED, EXTENDED),
-                    CONDENSED: (NORMAL, EXTENDED),
-                    EXTENDED: (NORMAL, CONDENSED)}
+    values = 'normal', 'condensed', 'extended'
+    alternatives = dict(normal=('condensed', 'extended'),
+                        condensed=('normal', 'extended'),
+                        extended=('normal', 'condensed'))
 
-
-# variant
-SMALL_CAPITAL = 'Small Capital'
-OLD_STYLE = 'Oldstyle Figures'
 
 class FontVariant(OptionSet):
-    values = NORMAL, SMALL_CAPITAL, OLD_STYLE
+    values = 'normal', 'small capital', 'oldstyle figures'
 
-
-# position
-SUPERSCRIPT = 'Superscript'
-SUBSCRIPT = 'Subscript'
 
 class TextPosition(OptionSet):
-    values = NORMAL, SUPERSCRIPT, SUBSCRIPT
+    values = 'normal', 'superscript', 'subscript'
+
+
+# for backward compatibility
+for option_set in (FontWeight, FontSlant, FontWidth):
+    for value in option_set.values:
+        globals()[value.replace('-', '_').upper()] = value

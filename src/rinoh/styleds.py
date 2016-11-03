@@ -29,7 +29,6 @@ from .structure import Admonition
 from .structure import TableOfContents, TableOfContentsEntry
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody
 from .table import TableRow, TableCell, TableCellBackground, TableCellBorder
-from .text import Bold, Italic, Emphasized, SmallCaps
 from .text import Box
 from .text import Character
 from .text import CharacterLike

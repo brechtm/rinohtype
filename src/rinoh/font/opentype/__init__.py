@@ -8,11 +8,10 @@
 
 from warnings import warn
 
+from ...font.style import FontVariant
 from ...util import cached
 from ...warnings import RinohWarning
 from .. import Font, GlyphMetrics, LeafGetter, MissingGlyphException
-from ..style import MEDIUM, UPRIGHT, NORMAL, OLD_STYLE
-from ..style import SMALL_CAPITAL
 
 from .parse import OpenTypeParser
 from .ids import NAME_PS_NAME, PLATFORM_WINDOWS, LANGUAGE_WINDOWS_EN_US
@@ -40,7 +39,8 @@ class OpenTypeFont(Font, OpenTypeParser):
     x_height = LeafGetter('OS/2', 'sxHeight')
     stem_v = 50
 
-    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+    def __init__(self, filename,
+                 weight='medium', slant='upright', width='normal'):
         OpenTypeParser.__init__(self, filename)
         super().__init__(filename, weight, slant, width)
         self._glyphs_by_code = self._create_glyph_metrics()
@@ -83,8 +83,8 @@ class OpenTypeFont(Font, OpenTypeParser):
             raise Exception
         return glyphs_by_char
 
-    _VARIANTS = {SMALL_CAPITAL: 'smcp',
-                 OLD_STYLE: 'onum'}
+    _VARIANTS = {FontVariant.SMALL_CAPITAL: 'smcp',
+                 FontVariant.OLDSTYLE_FIGURES: 'onum'}
 
     def get_glyph(self, char, variant):
         try:

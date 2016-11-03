@@ -14,10 +14,10 @@ from binascii import unhexlify
 from io import BytesIO
 from warnings import warn
 
+
 from . import Font, GlyphMetrics, LeafGetter, MissingGlyphException
-from .style import MEDIUM,  UPRIGHT, NORMAL
-from .style import SMALL_CAPITAL, OLD_STYLE
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
+from ..font.style import FontVariant
 from ..util import cached
 from ..warnings import RinohWarning
 
@@ -166,8 +166,8 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
     x_height = LeafGetter('FontMetrics', 'XHeight', default=500)
     stem_v = LeafGetter('FontMetrics', 'StdVW', default=50)
 
-    def __init__(self, file_or_filename, weight=MEDIUM, slant=UPRIGHT,
-                 width=NORMAL, unicode_mapping=None):
+    def __init__(self, file_or_filename, weight='medium', slant='upright',
+                 width='normal', unicode_mapping=None):
         try:
             filename = file_or_filename
             file = open(file_or_filename, 'rt', encoding='ascii')
@@ -176,7 +176,7 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             filename = None
             file = file_or_filename
             close_file = False
-        self._suffixes = {NORMAL: ''}
+        self._suffixes = {FontVariant.NORMAL: ''}
         self._unicode_mapping = unicode_mapping
         AdobeFontMetricsParser.__init__(self, file)
         if close_file:
@@ -191,15 +191,16 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
 
     encoding_scheme = LeafGetter('FontMetrics', 'EncodingScheme')
 
-    _SUFFIXES = {SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
-                 OLD_STYLE: ('.oldstyle', )}
+    _SUFFIXES = {FontVariant.SMALL_CAPITAL: ('.smcp', '.sc', 'small'),
+                 FontVariant.OLDSTYLE_FIGURES: ('.oldstyle', )}
 
     def _find_suffix(self, char, variant, upper=False):
         try:
             return self._suffixes[variant]
         except KeyError:
             for suffix in self._SUFFIXES[variant]:
-                for name in self._char_to_glyph_names(char, NORMAL):
+                for name in self._char_to_glyph_names(char,
+                                                      FontVariant.NORMAL):
                     if name + suffix in self._glyphs:
                         self._suffixes[variant] = suffix
                         return suffix
@@ -232,11 +233,11 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
         for name in self._char_to_glyph_names(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
-        if variant != NORMAL:
+        if variant != FontVariant.NORMAL:
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
                  'back to the standard glyph.'.format(variant, ord(char), char),
                  RinohWarning)
-            return self.get_glyph(char, NORMAL)
+            return self.get_glyph(char, FontVariant.NORMAL)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char), RinohWarning)
@@ -331,8 +332,8 @@ class PrinterFontBinary(PrinterFont):
 
 
 class Type1Font(AdobeFontMetrics):
-    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL,
-                 unicode_mapping=None, core=False):
+    def __init__(self, filename, weight='medium', slant='upright',
+                 width='normal', unicode_mapping=None, core=False):
         super().__init__(filename + '.afm', weight, slant, width,
                          unicode_mapping)
         self.core = core

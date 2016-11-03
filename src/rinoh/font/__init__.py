@@ -8,9 +8,7 @@
 
 from warnings import warn
 
-from .style import FontWeight, MEDIUM
-from .style import FontSlant, UPRIGHT, OBLIQUE, ITALIC
-from .style import FontWidth, NORMAL, CONDENSED, EXTENDED
+from .style import FontWeight, FontSlant, FontWidth
 from ..resource import Resource
 from ..util import NotImplementedAttribute
 from ..warnings import warn
@@ -43,7 +41,7 @@ class Font(object):
 
     @property
     def italic(self):
-        return self.slant != UPRIGHT
+        return self.slant != FontSlant.UPRIGHT
 
     # font metrics in font coordinates
     italic_angle = NotImplementedAttribute()
@@ -54,7 +52,8 @@ class Font(object):
     x_height = NotImplementedAttribute()
     stem_v = NotImplementedAttribute()
 
-    def __init__(self, filename, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+    def __init__(self, filename,
+                 weight='medium', slant='upright', width='normal'):
         self.filename = filename
         if not FontWeight.check_type(weight):
             raise ValueError('Unknown font weight. Must be one of {}'
@@ -113,7 +112,7 @@ class Typeface(Resource, dict):
     def check_type(cls, value):
         return isinstance(value, cls)
 
-    def get_font(self, weight=MEDIUM, slant=UPRIGHT, width=NORMAL):
+    def get_font(self, weight='medium', slant='upright', width='normal'):
         def find_closest_style(style, styles, alternatives):
             try:
                 return style, styles[style]

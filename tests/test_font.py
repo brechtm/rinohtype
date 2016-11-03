@@ -9,11 +9,10 @@
 import pytest
 
 from rinoh.font import Typeface, MissingGlyphException
-from rinoh.font.style import NORMAL, REGULAR
 
 
 def test_missingglyph_type1():
     times = Typeface('Times')
-    font = times.get_font(weight=REGULAR)
+    font = times.get_font(weight='regular')
     with pytest.raises(MissingGlyphException):
-        font.get_glyph('\u2024', NORMAL)
+        font.get_glyph('\u2024', 'normal')
