@@ -405,6 +405,12 @@ class TemplateConfiguration(RuleSet):
         super().__init__(name, base=base, **options)
         self.description = description
 
+    def __getitem__(self, name):
+        try:
+            return super().__getitem__(name)
+        except KeyError:
+            return self.document_template_class._get_default(name)
+
     @property
     def _stylesheet_search_path(self):
         return os.getcwd()
@@ -569,10 +575,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         return template
 
     def get_option(self, option_name):
-        try:
-            return self.configuration[option_name]
-        except KeyError:
-            return self._get_default(option_name)
+        return self.configuration[option_name]
 
     def get_template_option(self, template_name, option_name):
         for template in self._find_templates(template_name):

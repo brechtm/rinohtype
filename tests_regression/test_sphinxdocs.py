@@ -49,8 +49,7 @@ def test_sphinxdocs(tmpdir):
                                                    'sphinx.ext.extlinks',
                                                    'sphinx.ext.viewcode',
                                                    'rinoh.frontend.sphinx'],
-                                       rinoh_template_configuration=
-                                           template_configuration))
+                                       rinoh_template=template_configuration))
     sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath

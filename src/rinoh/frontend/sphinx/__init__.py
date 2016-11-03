@@ -26,10 +26,8 @@ from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.language import Language
 from rinoh.paper import A4, LETTER
 from rinoh.style import StyleSheet
-from rinoh.template import DocumentTemplate
+from rinoh.template import DocumentTemplate, TemplateConfiguration
 from rinoh.text import SingleStyledText
-
-from ...backend import pdf
 
 from ..rst import ReStructuredTextReader
 
@@ -227,38 +225,8 @@ class RinohBuilder(Builder):
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
-        rinoh_document_template = config.rinoh_document_template
-        template = (DocumentTemplate.from_string(rinoh_document_template)
-                    if isinstance(rinoh_document_template, str)
-                    else rinoh_document_template)
-        if isinstance(self.config.rinoh_stylesheet, str):
-            stylesheet = StyleSheet.from_string(self.config.rinoh_stylesheet)
-        elif self.config.rinoh_stylesheet is None:
-            stylesheet = template.stylesheet.default_value
-        else:
-            stylesheet = self.config.rinoh_stylesheet
-        if config.pygments_style is not None:
-            stylesheet = pygments_style_to_stylesheet(config.pygments_style,
-                                                      stylesheet)
-        base_config = template.Configuration('Sphinx base',
-                                             stylesheet=stylesheet)
-        if config.rinoh_template_configuration is not None:
-            template_configuration = config.rinoh_template_configuration
-            if template_configuration.base is None:
-                template_configuration.base = base_config
-        else:
-            template_configuration = base_config
-        paper_size = config.rinoh_paper_size
-        template_configuration.variables['paper_size'] = paper_size
-        lang = self.config.language
-        if lang:
-            try:
-                template_configuration.language = Language.from_string(lang)
-            except KeyError:
-                self.warn('The language "{}" is not supported by rinohtype.')
-        rinoh_document = template(rinoh_tree,
-                                  configuration=template_configuration,
-                                  backend=pdf)
+        template_cfg = template_from_config(self.config, self.warn)
+        rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
         rinoh_logo = config.rinoh_logo
@@ -271,6 +239,48 @@ class RinohBuilder(Builder):
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
+
+
+def template_from_config(config, warn):
+    template_cfg = {}
+    rinoh_template = config.rinoh_template
+    if isinstance(rinoh_template, TemplateConfiguration):
+        template_cfg['base'] = rinoh_template
+        template_cls = rinoh_template.document_template_class
+    else:
+        template_cls = (DocumentTemplate.from_string(rinoh_template)
+                        if isinstance(rinoh_template, str)
+                        else rinoh_template)
+    stylesheet = (StyleSheet.from_string(config.rinoh_stylesheet)
+                  if isinstance(config.rinoh_stylesheet, str)
+                  else config.rinoh_stylesheet)
+    if config.pygments_style is not None:
+        if stylesheet is not None:
+            base = stylesheet
+        elif 'base' in template_cfg:
+            base = template_cfg['base']['stylesheet']
+        else:
+            base = template_cls.stylesheet.default_value
+        stylesheet = pygments_style_to_stylesheet(config.pygments_style, base)
+    if stylesheet is not None:
+        template_cfg['stylesheet'] = stylesheet
+
+    language = config.language
+    if language:
+        try:
+            template_cfg['language'] = Language.from_string(language)
+        except KeyError:
+            warn('The language "{}" is not supported by rinohtype.')
+
+    variables = {}
+    if config.rinoh_paper_size:
+        variables['paper_size'] = config.rinoh_paper_size
+
+    sphinx_config = template_cls.Configuration('Sphinx conf.py options',
+                                               **template_cfg)
+    sphinx_config.variables.update(variables)
+    return sphinx_config
+
 
 
 def fully_qualified_id(docname, id):
@@ -321,5 +331,4 @@ def setup(app):
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
-    app.add_config_value('rinoh_document_template', 'book', 'html')
-    app.add_config_value('rinoh_template_configuration', None, 'html')
+    app.add_config_value('rinoh_template', 'book', 'html')
