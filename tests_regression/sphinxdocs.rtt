@@ -1,0 +1,18 @@
+[TEMPLATE_CONFIGURATION]
+name=Sphinx test
+template=book
+description=
+
+
+[AdmonitionTitles]
+error='Error:'
+hint='Hint:'
+important='Important'
+note='Note:'
+tip='Tip:'
+warning='Warning:'
+seealso='See also:'
+
+
+[title_page]
+show_date=false

@@ -14,29 +14,19 @@ from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
 
-from rinoh.backend import pdf
-from rinoh.dimension import CM
 from rinoh.frontend.rst import ReStructuredTextReader
-from rinoh.stylesheets import sphinx_base14
-from rinoh.templates import Article
+from rinoh.template import TemplateConfigurationFile
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 def test_rstdemo(tmpdir):
-    configuration = Article.Configuration('custom article',
-                                          stylesheet=sphinx_base14,
-                                          abstract_location='title',
-                                          table_of_contents=False)
-    configuration('title', end_at_page='left')
-    configuration('contents', end_at_page='left')
-    configuration('title_page', top_margin=2*CM)
+    config = TemplateConfigurationFile(os.path.join(TEST_DIR, 'rstdemo.rtt'))
 
-    with open(os.path.join(TEST_DIR, 'demo.txt')) as file:
-        parser = ReStructuredTextReader()
-        flowables = parser.parse(file)
-    document = Article(flowables, configuration=configuration, backend=pdf)
+    parser = ReStructuredTextReader()
+    flowables = parser.parse(os.path.join(TEST_DIR, 'demo.txt'))
+    document = config.document(flowables)
     with in_directory(tmpdir.strpath):
         document.render('demo')
         _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
