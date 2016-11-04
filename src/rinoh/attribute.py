@@ -68,6 +68,9 @@ class OptionSetMeta(type):
             return string
         raise AttributeError(item)
 
+    def __iter__(cls):
+        return iter(cls.values)
+
 
 class OptionSet(AttributeType, metaclass=OptionSetMeta):
     """Accepts the values listed in :attr:`values`"""

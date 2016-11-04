@@ -13,7 +13,7 @@ from pkg_resources import get_distribution, iter_entry_points
 
 from rinoh import __version__, __release_date__
 
-from rinoh.font import Typeface
+from rinoh.font import Typeface, FontWeight, FontWidth, FontSlant
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
@@ -49,6 +49,8 @@ parser.add_argument('--list-templates', action='store_true',
                     help='list the installed document templates and exit')
 parser.add_argument('--list-stylesheets', action='store_true',
                     help='list the installed style sheets and exit')
+parser.add_argument('--list-fonts', action='store_true',
+                    help='list the installed fonts')
 parser.add_argument('--list-formats', action='store_true',
                     help='list the supported input formats and exit')
 parser.add_argument('--list-options', metavar='FRONTEND', type=str,
@@ -124,6 +126,24 @@ def main():
         else:
             print('The {} frontend takes no options'.format(reader_name))
         do_exit = True
+    if args.list_fonts:
+        print('Installed fonts:')
+        for entry_point in iter_entry_points('rinoh.typefaces'):
+            typeface = entry_point.load()
+            distribution = get_distribution_str(entry_point)
+            print('- {} [{}]' .format(typeface.name, distribution))
+            for width in (w for w in FontWidth if w in typeface):
+                styles = []
+                for slant in (s for s in FontSlant if s in typeface[width]):
+                    for weight in (w for w in FontWeight
+                                   if w in typeface[width][slant]):
+                        style = weight.title()
+                        if slant != FontSlant.UPRIGHT:
+                            style = '{}-{}'.format(slant.title(),
+                                                        style)
+                        styles.append(style)
+                print('   {}: {}'.format(width.title(), ', '.join(styles)))
+        do_exit = True
     if do_exit:
         return
 
@@ -134,7 +154,7 @@ def main():
     template_cfg = {}
     variables = {}
     if args.stylesheet:
-        if os.path.exists(args.stylesheet):
+        if os.path.isfile(args.stylesheet):
             stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
         else:
             try:
