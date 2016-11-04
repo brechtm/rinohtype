@@ -805,13 +805,9 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
             style_cls = styled_class.style_class
         else:
             style_cls = self.get_entry_class(style_name)
-        attribute_values = {}
-        for name, value in items:
-            if name == 'base':
-                stripped = value.strip()
-                attribute_values[name] = SPECIAL_STYLES.get(stripped, stripped)
-            else:
-                attribute_values[name] = style_cls.parse_value(name, value)
+        attribute_values = {name: SPECIAL_STYLES.get(val.strip(), val.strip())
+                                  if name == 'base' else val
+                            for name, val in items}
         self[style_name] = style_cls(**attribute_values)
 
 

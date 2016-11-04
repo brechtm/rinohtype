@@ -392,16 +392,9 @@ class TemplateConfiguration(RuleSet):
                                     options['stylesheet'])
             if os.path.isfile(filename):
                 options['stylesheet'] = filename
-        parse_value = self.document_template_class.parse_value
-        options = {name: parse_value(name, value)
-                         if isinstance(value, str) else value
-                   for name, value in options.items()}
-        unsupported = (options.keys()
-                       - self.document_template_class.supported_attributes)
-        if unsupported:
-            raise ValueError('Unsupported option(s) passed to {}: {}'
-                             .format(type(self).__name__,
-                                     ', '.join(unsupported)))
+        tmpl_cls = self.document_template_class
+        for attr, value in options.items():
+            options[attr] = tmpl_cls.validate_attribute(attr, value, True)
         super().__init__(name, base=base, **options)
         self.description = description
 
@@ -461,12 +454,7 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
             strings[collection_cls] = collection_cls(**collection_items)
         else:
             template_class = self.get_entry_class(section_name)
-            attributes = {}
-            for name, value in items:
-                if name != 'base':
-                    value = template_class.parse_value(name, value)
-                attributes[name] = value
-            self[section_name] = template_class(**attributes)
+            self[section_name] = template_class(**dict(items))
 
 
 class DocumentTemplateMeta(WithAttributes):

@@ -53,7 +53,7 @@ def test_template_configuration_base():
 
 
 def test_template_configuration_unsupported_option():
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         MyDocumentTemplate.Configuration('test', unsupported=666)
 
 
