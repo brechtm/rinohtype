@@ -9,17 +9,23 @@
 import argparse
 import os
 
+from collections import OrderedDict
+
 from pkg_resources import get_distribution, iter_entry_points
 
 from rinoh import __version__, __release_date__
 
-from rinoh.font import Typeface, FontWeight, FontWidth, FontSlant
+from rinoh.dimension import PT
+from rinoh.document import DocumentTree
+from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
+from rinoh.font import Typeface, FontSlant
 from rinoh.paper import Paper, PAPER_BY_NAME
+from rinoh.paragraph import ParagraphStyle, Paragraph
 from rinoh.resource import ResourceNotInstalled
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
-
+from rinoh.templates import Article
 
 DEFAULT = ' (default: %(default)s)'
 
@@ -49,8 +55,10 @@ parser.add_argument('--list-templates', action='store_true',
                     help='list the installed document templates and exit')
 parser.add_argument('--list-stylesheets', action='store_true',
                     help='list the installed style sheets and exit')
-parser.add_argument('--list-fonts', action='store_true',
-                    help='list the installed fonts')
+parser.add_argument('--list-fonts', metavar='FILENAME', type=str, nargs='?',
+                    const=object,
+                    help='list the installed fonts or, if FILENAME is given, '
+                         'write a PDF file displaying all the fonts')
 parser.add_argument('--list-formats', action='store_true',
                     help='list the supported input formats and exit')
 parser.add_argument('--list-options', metavar='FRONTEND', type=str,
@@ -91,6 +99,41 @@ def get_reader_by_extension(file_extension):
                      "supported.".format(file_extension, parser.prog))
 
 
+def installed_typefaces():
+    for entry_point in iter_entry_points('rinoh.typefaces'):
+        yield entry_point.load(), get_distribution_str(entry_point)
+
+
+def display_fonts(filename):
+    def font_paragraph(typeface, font):
+        style = ParagraphStyle(typeface=typeface, font_width=font.width,
+                               font_slant=font.slant, font_weight=font.weight)
+        return Paragraph('{} {} {} {}'
+                         .format(typeface.name, font.width.title(),
+                                 font.slant.title(), font.weight.title()),
+                         style=style)
+
+    def typeface_section(typeface, distribution):
+        group_style = GroupedFlowablesStyle(space_below=10*PT)
+        title_style = ParagraphStyle(keep_with_next=True,
+                                     tab_stops='100% RIGHT',
+                                     border_bottom='0.5pt, #000',
+                                     padding_bottom=1*PT,
+                                     space_below=2*PT)
+        title = Paragraph('{}\t[{}]'.format(typeface.name, distribution),
+                          style=title_style)
+        return StaticGroupedFlowables([title]
+                                      + [font_paragraph(typeface, font)
+                                         for font in typeface.fonts()],
+                                      style=group_style)
+
+    document_tree = DocumentTree(typeface_section(typeface, dist)
+                                 for typeface, dist in installed_typefaces())
+    template_cfg = Article.Configuration('fonts overview', parts=['contents'])
+    document = template_cfg.document(document_tree)
+    document.render(filename)
+
+
 def main():
     global parser
     args = parser.parse_args()
@@ -127,22 +170,23 @@ def main():
             print('The {} frontend takes no options'.format(reader_name))
         do_exit = True
     if args.list_fonts:
-        print('Installed fonts:')
-        for entry_point in iter_entry_points('rinoh.typefaces'):
-            typeface = entry_point.load()
-            distribution = get_distribution_str(entry_point)
-            print('- {} [{}]' .format(typeface.name, distribution))
-            for width in (w for w in FontWidth if w in typeface):
-                styles = []
-                for slant in (s for s in FontSlant if s in typeface[width]):
-                    for weight in (w for w in FontWeight
-                                   if w in typeface[width][slant]):
-                        style = weight.title()
-                        if slant != FontSlant.UPRIGHT:
-                            style = '{}-{}'.format(slant.title(),
-                                                        style)
+        if args.list_fonts is object:
+            print('Installed fonts:')
+            for typeface, distribution in installed_typefaces():
+                print('- {} [{}]' .format(typeface.name, distribution))
+                widths = OrderedDict()
+                for font in typeface.fonts():
+                    widths.setdefault(font.width, []).append(font)
+                for width, fonts in widths.items():
+                    styles = []
+                    for font in fonts:
+                        style = font.weight.title()
+                        if font.slant != FontSlant.UPRIGHT:
+                            style = '{}-{}'.format(font.slant.title(), style)
                         styles.append(style)
-                print('   {}: {}'.format(width.title(), ', '.join(styles)))
+                    print('   {}: {}'.format(width.title(), ', '.join(styles)))
+        else:
+            display_fonts(args.list_fonts)
         do_exit = True
     if do_exit:
         return

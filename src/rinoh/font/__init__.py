@@ -112,6 +112,13 @@ class Typeface(Resource, dict):
     def check_type(cls, value):
         return isinstance(value, cls)
 
+    def fonts(self):
+        for width in (w for w in FontWidth if w in self):
+            for slant in (s for s in FontSlant if s in self[width]):
+                for weight in (w for w in FontWeight
+                               if w in self[width][slant]):
+                    yield self[width][slant][weight]
+
     def get_font(self, weight='medium', slant='upright', width='normal'):
         def find_closest_style(style, styles, alternatives):
             try:
