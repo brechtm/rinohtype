@@ -138,7 +138,8 @@ Here is an example document tree of a short article:
                         [Paragraph('My Document', style='title'), # metadata!
                          Section([Heading('First Section'),
                                   Paragraph('This is a paragraph with some '
-                                            + Emphasized('emphasized text')
+                                            + StyledText('emphasized text',
+                                                         style='emphasis')
                                             + ' and an '
                                             + InlineImage('image.pdf')),
                                   Section([Heading('A subsection'),
