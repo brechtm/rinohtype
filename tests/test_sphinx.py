@@ -93,3 +93,23 @@ def test_sphinx_config_rinoh_template(tmpdir):
     template_cfg = template_from_config(app.config, print)
     assert template_cfg.document_template_class == Article
     assert template_cfg['stylesheet'].name == 'Sphinx (article)'
+
+
+def test_sphinx_config_rinoh_template_from_entrypoint(tmpdir):
+    app = create_sphinx_app(tmpdir, rinoh_template='book')
+    template_cfg = template_from_config(app.config, print)
+    assert not template_cfg.keys()
+    assert template_cfg.document_template_class == Book
+    assert template_cfg['stylesheet'].name == 'Sphinx'
+
+
+def test_sphinx_config_rinoh_template_from_filename(tmpdir):
+    template_cfg_path = tmpdir.join('template_cfg.rtt').strpath
+    with open(template_cfg_path, 'w') as template_cfg:
+        print('[TEMPLATE_CONFIGURATION]', file=template_cfg)
+        print('template = book', file=template_cfg)
+    app = create_sphinx_app(tmpdir, rinoh_template=template_cfg_path)
+    template_cfg = template_from_config(app.config, print)
+    assert not template_cfg.keys()
+    assert template_cfg.document_template_class == Book
+    assert template_cfg['stylesheet'].name == 'Sphinx'

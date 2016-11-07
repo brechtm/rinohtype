@@ -26,7 +26,8 @@ from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.language import Language
 from rinoh.paper import A4, LETTER
 from rinoh.style import StyleSheet
-from rinoh.template import DocumentTemplate, TemplateConfiguration
+from rinoh.template import (DocumentTemplate, TemplateConfiguration,
+                            TemplateConfigurationFile)
 from rinoh.text import SingleStyledText
 
 from ..rst import ReStructuredTextReader
@@ -247,6 +248,9 @@ def template_from_config(config, warn):
     if isinstance(rinoh_template, TemplateConfiguration):
         template_cfg['base'] = rinoh_template
         template_cls = rinoh_template.document_template_class
+    elif os.path.isfile(rinoh_template):
+        template_cfg['base'] = TemplateConfigurationFile(rinoh_template)
+        template_cls = template_cfg['base'].document_template_class
     else:
         template_cls = (DocumentTemplate.from_string(rinoh_template)
                         if isinstance(rinoh_template, str)

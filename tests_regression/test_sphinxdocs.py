@@ -25,7 +25,7 @@ SPHINX_DOC_DIR = path.join(TEST_DIR, 'sphinx', 'doc')
 def test_sphinxdocs(tmpdir):
     from sphinx.application import Sphinx
 
-    config = TemplateConfigurationFile(path.join(TEST_DIR, 'sphinxdocs.rtt'))
+    template_cfg_path = path.join(TEST_DIR, 'sphinxdocs.rtt')
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,
                     confdir=SPHINX_DOC_DIR,
                     outdir=tmpdir.join('rinoh').strpath,
@@ -38,7 +38,7 @@ def test_sphinxdocs(tmpdir):
                                                    'sphinx.ext.extlinks',
                                                    'sphinx.ext.viewcode',
                                                    'rinoh.frontend.sphinx'],
-                                       rinoh_template=config))
+                                       rinoh_template=template_cfg_path))
     sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath
