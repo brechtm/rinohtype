@@ -15,9 +15,20 @@ New Features:
 * support specifying more complex selectors directly in a style sheet file
 * preliminary support for writing a style sheet to an INI file, listing default
   values for non-specified attributes
+* make the the frontends independent of the current working directory
+* rinoh (command line renderer):
+
+  - support template configuration files
+  - support file formats for which a frontend is installed (see --list-formats)
+  - accept options to configure the frontend (see --list-options)
+  - option to list the installed fonts (on the command line or in a PDF file)
 
 Changed:
 
+* rinoh: the output PDF is now placed in the current directory, not in the same
+  directory as the input file
+* Sphinx builder configuration: replace the ``rinoh_document_template`` and
+  ``rinoh_template_configuration`` options with ``rinoh_template``
 * if no base is given for a style, style attribute lookup proceeds to look in
   the style of the same name in the base style sheet (#66)
 * DEFAULT_STYLE can be used as a base style to prevent style attribute lookup
@@ -27,6 +38,7 @@ Changed:
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList
   by setting max_label_width to None, 0 or a 0-valued Dimension
 * hide the index chapter when there are no index entries (#51)
+* style sheets: use the default matcher if none is specified
 * Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
 * Sphinx style sheet: keep the admonition title together with the body
 * Sphinx style sheet: color linked references as in the LaTeX output (#62)
@@ -48,7 +60,9 @@ Changed:
 
 Fixed:
 
+* improve compatibility with Windows: Windows path names and file encoding
 * GroupedLabeledFlowables label width could be unnecessarily wide
+* HorizontallyAlignedFlowable: make more robust
 * reStructuredText: only the first classifier for a definition term was shown
 * PDF backend: fix writing of Type 1 fonts from a parsed PDF file
 * PDF reader: handle multi-page PDFs (#71)
