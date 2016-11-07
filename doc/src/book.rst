@@ -1,4 +1,6 @@
 
+:orphan:
+
 .. _src_book:
 
 Book template source code

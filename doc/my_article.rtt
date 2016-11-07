@@ -11,7 +11,7 @@ language = fr
 abstract_location = title
 
 [SectionTitles]
-contents='Contents'
+contents = 'Contents'
 
 [AdmonitionTitles]
 caution = 'Careful!'

@@ -10,7 +10,6 @@ The standard templates shipped with rinohtype all inherit from
 
 .. autoclass:: DocumentTemplate
     :members:
-    :inherited-members:
 
 Customization of the templates is performed by passing an instance of the
 template-specific :class:`TemplateConfiguration` subclass as *configuration*

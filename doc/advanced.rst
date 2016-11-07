@@ -330,16 +330,14 @@ Custom Selectors
 It is also possible to define new selectors directly in a style sheet file.
 This allows making tweaks to an existing style sheet without having to create a
 new :class:`.StyledMatcher`. However, this should be used sparingly. If a great
-number of custoù selectors are required, it is better to create a new
+number of custom selectors are required, it is better to create a new
 :class:`.StyledMatcher`
 
 The syntax for specifying a selector for a style is similar to that when
 constructing selectors in a Python source code (see `Matchers`_), but with a
-number of important differences.
-
-A :class:`.Styled` subclass name followed by parentheses represents a simple
-class selectors (without context). Arguments to be passed to
-:meth:`.Styled.like()` can be included within the parentheses.
+number of important differences. A :class:`.Styled` subclass name followed by
+parentheses represents a simple class selector (without context). Arguments to
+be passed to :meth:`.Styled.like()` can be included within the parentheses.
 
 .. code-block:: ini
 
@@ -349,10 +347,10 @@ class selectors (without context). Arguments to be passed to
     [accept button : InlineImage(filename='images/ok_button.png')]
     baseline=20%
 
-If no arguments are passed to the class selector, it is important that the
-selector is followed by parentheses. If the parentheses are omitted, the
+Even if no arguments are passed to the class selector, it is important that the
+class name is followed by parentheses. If the parentheses are omitted, the
 selector is not registered with the matcher and the style can only be used as a
-base style for (see `Base Styles`_).
+base style for other style definitions (see `Base Styles`_).
 
 As in Python source code, context selectors are constructed using forward
 slashes (``/``) and the ellipsis (``...``). Another selector can be referenced
@@ -362,6 +360,10 @@ in a context selector by enclosing its name in single or double quotes.
 
     [admonition title colon : Admonition / ... / StyledText('colon')]
     font_size=10pt
+
+    [chapter title : LabeledFlowable('chapter title')]
+    label_spacing=1cm
+    align_baselines=false
 
     [chapter title number : 'chapter title' / Paragraph('number')]
     font_size=96pt

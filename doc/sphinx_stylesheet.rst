@@ -1,4 +1,6 @@
 
+:orphan:
+
 .. _Sphinx style sheet:
 
 Sphinx style sheet
