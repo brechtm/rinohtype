@@ -42,8 +42,8 @@ parser.add_argument('-o', '--option', type=str, action='append', nargs=1,
                     help='options to be passed to the input file reader')
 parser.add_argument('-t', '--template', type=str, default='article',
                     metavar='NAME OR FILENAME',
-                    help='the document template or template configuration to '
-                         'use' + DEFAULT)
+                    help='the document template or template configuration '
+                         'file to use' + DEFAULT)
 parser.add_argument('-s', '--stylesheet', type=str, metavar='NAME OR FILENAME',
                     help='the style sheet used to style the document '
                          'elements '
