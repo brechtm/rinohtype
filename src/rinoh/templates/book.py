@@ -10,8 +10,7 @@ from ..attribute import OverrideDefault, Var
 from ..dimension import INCH
 from ..index import IndexSection
 from ..paragraph import Paragraph
-from ..reference import (Field, Reference, PAGE_NUMBER,
-                         DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
+from ..reference import (Field, PAGE_NUMBER, DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                          SECTION_NUMBER, SECTION_TITLE)
 from ..strings import StringField
 from ..structure import TableOfContentsSection, SectionTitles

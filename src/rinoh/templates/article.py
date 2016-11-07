@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from ..attribute import Attribute, OptionSet, Bool, OverrideDefault, Var
+from ..attribute import Attribute, Bool, OverrideDefault, Var
 from ..dimension import CM
 from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx_article
