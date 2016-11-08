@@ -343,10 +343,10 @@ class Field(MixedStyledTextBase):
             section = container.page.get_current_section(self.type.level)
             section_id = section.get_id(doc) if section else None
             if section_id:
-                text = doc.get_reference(section_id,
-                                         self.type.reference_type) or ''
+                text = (doc.get_reference(section_id, self.type.reference_type)\
+                        or '\N{ZERO WIDTH SPACE}')
             else:
-                text = ''
+                text = '\N{ZERO WIDTH SPACE}'
         else:
             text = '?'
         yield SingleStyledText(text, parent=self)
