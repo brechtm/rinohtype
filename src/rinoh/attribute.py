@@ -149,7 +149,7 @@ class WithAttributes(WithNamedDescriptors):
                         pass
                 else:
                     raise NotImplementedError
-                doc.append('{} (:class:`.{}`): Overrides the defaults '
+                doc.append('{} (:class:`.{}`): Overrides the default '
                            'set in :class:`.{}` with {}'
                            .format(name, attr.accepted_type.__name__,
                                    base_cls.__name__, attr.default_value))

@@ -492,17 +492,21 @@ class DocumentTemplateMeta(WithAttributes):
             doc = []
             for name, template in templates.items():
                 attr_type = type(template)
-                tmpl_doc = ('{} (:class:`.{}`)'.format(name,
-                                                       attr_type.__name__))
+                base = (':attr:`{}`'.format(template.base)
+                        if template.base else '``None``')
+                tmpl_doc = ('{} (:class:`{}`): base: {}'
+                            .format(name, attr_type.__name__, base))
                 if template:
                     defaults = []
                     for name, value in template.items():
                         if isinstance(value, StyledText):
-                            value = "'" + (str(value).replace('\n', '\\n')
-                                           .replace('\t', '\\t')) + "'"
-                        defaults.append('- **{}** = ``{}``'
-                                        .format(name, value))
-                    tmpl_doc += (': Overrides these defaults:\n\n            '
+                            value = (str(value).replace('\n', '\\n')
+                                     .replace('\t', '\\t'))
+                        defaults.append('- :attr:`~.{}.{}` = ``{}``'
+                                        .format(attr_type.__name__, name,
+                                                value))
+                    tmpl_doc += ('\n\n         Overrides these defaults:'
+                                 '\n\n            '
                                  + '\n            '.join(defaults) + '\n')
                 doc.append(tmpl_doc)
                 template.template_configuration = cls
