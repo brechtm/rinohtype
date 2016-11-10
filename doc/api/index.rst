@@ -10,6 +10,7 @@ API Documentation
     document
     flowable
     language
+    paper
     paragraph
     structure
     strings
