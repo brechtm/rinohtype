@@ -10,6 +10,7 @@ import re
 
 from collections import OrderedDict
 from configparser import ConfigParser
+from itertools import chain
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
                    NotImplementedAttribute)
@@ -132,57 +133,50 @@ class OverrideDefault(Attribute):
 
 
 class WithAttributes(WithNamedDescriptors):
-    @classmethod
-    def __prepare__(metacls, name, bases):
-        return OrderedDict()  # keeps the order of member variables (PEP3115)
-
     def __new__(mcls, classname, bases, cls_dict):
         attributes = cls_dict['_attributes'] = OrderedDict()
-        doc = ''
+        doc = []
         for name, attr in cls_dict.items():
-            if isinstance(attr, Attribute):
-                attributes[name] = attr
-                if isinstance(attr, OverrideDefault):
-                    for base_cls in bases:
-                        try:
-                            attr.overrides = base_cls.attribute_definition(
-                                name)
-                            break
-                        except KeyError:
-                            pass
-                    else:
-                        raise NotImplementedError
-                    doc += ('    {}: Overrides :class:`{}` default: {}\n'
-                            .format(name, base_cls.__name__,
-                                    attr.default_value))
+            if not isinstance(attr, Attribute):
+                continue
+            attributes[name] = attr
+            if isinstance(attr, OverrideDefault):
+                for base_cls in bases:
+                    try:
+                        attr.overrides = base_cls.attribute_definition(name)
+                        break
+                    except KeyError:
+                        pass
                 else:
-                    doc += ('    {} ({}): {}. Default: {}\n'
+                    raise NotImplementedError
+                doc.append('{} (:class:`.{}`): Overrides the defaults '
+                           'set in :class:`.{}` with {}'
+                           .format(name, attr.accepted_type.__name__,
+                                   base_cls.__name__, attr.default_value))
+            else:
+                doc.append('{} (:class:`.{}`): {}. Default: {}'
                            .format(name, attr.accepted_type.__name__,
                                    attr.description, attr.default_value))
         supported_attributes = list(name for name in attributes)
-        if attributes:
-            doc = 'Args:\n' + doc
-        mro_clss = []
         for base_class in bases:
             try:
-                supported_attributes.update(base_class._supported_attributes)
-                for mro_class in base_class.__mro__:
-                    if getattr(mro_class, '_attributes', None):
-                        mro_doc = ('* :class:`.{}`: {}'
-                                   .format(mro_class.__name__,
-                                           ', '.join('**{}**'.format(name)
-                                                     for name
-                                                     in mro_class._attributes)
-                                           ))
-                        mro_clss.append(mro_doc)
+                supported_attributes.extend(base_class._supported_attributes)
             except AttributeError:
-                pass
+                continue
+            for mro_cls in base_class.__mro__:
+                for name, attr in getattr(mro_cls, '_attributes', {}).items():
+                    if name in attributes:
+                        continue
+                    doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) '
+                               '{}. Default: {}'
+                               .format(name, attr.accepted_type.__name__,
+                                       mro_cls.__name__, mro_cls.__name__, name,
+                                       attr.description, attr.default_value))
+        if doc:
+            attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
+            cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'
+                                   + attr_doc)
         cls_dict['_supported_attributes'] = supported_attributes
-        if mro_clss:
-            doc += '\n:Inherited parameters: '
-            doc += ('\n                       ').join(mro_clss)
-        cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
-                               if '__doc__' in cls_dict else '\n') + doc
         return super().__new__(mcls, classname, bases, cls_dict)
 
     @property

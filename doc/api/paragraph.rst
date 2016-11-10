@@ -2,8 +2,8 @@
 
 .. _paragraph:
 
-Paragraph
-=========
+Paragraph (:mod:`rinoh.paragraph`)
+==================================
 
 .. autoclass:: ParagraphBase
     :members:
@@ -20,8 +20,8 @@ Paragraph
 
 .. module:: rinoh.text
 
-Inline Elements
----------------
+Inline Elements (:mod:`rinoh.text`)
+-----------------------------------
 
 .. autoclass:: StyledText
     :members:
@@ -59,6 +59,15 @@ Line Spacing
 
 .. autoclass:: Leading
     :members:
+
+
+A number of standard line spacings have been predefined:
+
+.. autodata:: STANDARD
+
+.. autodata:: SINGLE
+
+.. autodata:: DOUBLE
 
 
 Tabulation

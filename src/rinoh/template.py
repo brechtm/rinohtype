@@ -11,6 +11,7 @@ import re
 
 from collections import OrderedDict
 from functools import partial
+from itertools import chain
 
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
@@ -293,15 +294,15 @@ class TitlePage(PageBase):
 
 
 class DocumentPartTemplate(Template):
-    """A template that produces a document part, given a set of flowables,
-    and page templates. The latter are looked up in the
-    :class:`TemplateConfiguration`.
+    """A template that produces a document part
 
-    Args:
-        name (:class:`str`): a descriptive name for this document part template
+    The document part is created given a set of flowables, and page templates.
+    The latter are looked up in the :class:`TemplateConfiguration` where this
+    part template was.
+
     """
 
-    page_number_format = Option(NumberFormat, 'number', "The number for page "
+    page_number_format = Option(NumberFormat, 'number', "The format for page "
                                 "numbers in this document part. If it is "
                                 "different from the preceding part's number "
                                 "format, numbering restarts at 1")
@@ -353,7 +354,8 @@ class ContentsPartTemplate(DocumentPartTemplate):
     """The body of a document.
 
     Renders all of the content present in the
-    :class:`rinoh.document.DocumentTree` passed to a :class:`DocumentTemplate`.
+    :class:`~.DocumentTree` passed to the :class:`DocumentTemplate`.
+
     """
 
     def _flowables(self, document):
@@ -378,6 +380,19 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
 
 
 class TemplateConfiguration(RuleSet):
+    """Stores a configuration for a :class:`DocumentTemplate`
+
+    Args:
+        name (str): a label for this template configuration
+        base (TemplateConfiguration): the template configuration to extend
+        template (DocumentTemplateMeta or str): the document template to
+            configure
+        description (str): a short string describing this style sheet
+        **options: configuration values for the attributes defined by the
+            document template (`template` or :attr:`document_template_class`)
+
+    """
+
     document_template_class = None
 
     def __init__(self, name, base=None, template=None, description=None,
@@ -433,6 +448,14 @@ class TemplateConfiguration(RuleSet):
                 raise
 
     def document(self, document_tree, backend=None):
+        """Create a :class:`DocumentTemplate` object based on the given
+        document tree and this template configuration
+
+        Args:
+            document_tree (DocumentTree): tree of the document's contents
+            backend: the backend to use when rendering the document
+
+        """
         return self.document_template_class(document_tree, configuration=self,
                                             backend=backend)
 
@@ -465,19 +488,27 @@ class DocumentTemplateMeta(WithAttributes):
             if isinstance(attr, Template):
                 templates[name] = attr
         if templates:
-            cls.__doc__ += '\n\nAttributes:\n\n'
+            doc = []
             for name, template in templates.items():
                 attr_type = type(template)
-                cls.__doc__ += ('  {}: Defaults for :class:`{}.{}`:\n\n'
-                                .format(name, attr_type.__module__,
-                                        attr_type.__name__))
-                for name, value in template.items():
-                    if isinstance(value, StyledText):
-                        value = "'" + (str(value).replace('\n', '\\n')
-                                       .replace('\t', '\\t')) + "'"
-                    cls.__doc__ += ('    - **{}** = ``{}``\n'.format(name,
-                                                                     value))
+                tmpl_doc = ('{} (:class:`.{}`)'.format(name,
+                                                       attr_type.__name__))
+                if template:
+                    defaults = []
+                    for name, value in template.items():
+                        if isinstance(value, StyledText):
+                            value = "'" + (str(value).replace('\n', '\\n')
+                                           .replace('\t', '\\t')) + "'"
+                        defaults.append('- **{}** = ``{}``'
+                                        .format(name, value))
+                    tmpl_doc += (': Overrides these defaults:\n\n            '
+                                 + '\n            '.join(defaults) + '\n')
+                doc.append(tmpl_doc)
                 template.template_configuration = cls
+
+            templ_doc = '\n        '.join(chain(['\n\n    Attributes:'], doc))
+            cls.__doc__ += templ_doc
+
         cfg_class_name = classname + 'Configuration'
         cfg_class = type(cfg_class_name, (TemplateConfiguration, ),
                          dict(document_template_class=cls))
@@ -493,7 +524,12 @@ class DocumentTemplateMeta(WithAttributes):
 
 
 class PartsList(AttributeType, list):
-    """Stores the names of the document part templates making up a document"""
+    """Stores the names of the document part templates making up a document
+
+    Args:
+        *parts (list[str]): the names of the document parts
+
+    """
 
     def __init__(self, *parts):
         super().__init__(parts)
@@ -511,6 +547,15 @@ class PartsList(AttributeType, list):
 
 class DocumentTemplate(Document, AttributesDictionary, Resource,
                        metaclass=DocumentTemplateMeta):
+    """Template for documents
+
+    Args:
+        document_tree (DocumentTree): a tree of the document's contents
+        configuration (TemplateConfiguration): configuration for this template
+        backend: the backend used for rendering the document
+
+    """
+
     resource_type = 'template'
 
     language = Attribute(Language, EN, 'The main language of the document')
@@ -530,8 +575,8 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         stylesheet = self.get_option('stylesheet')
         language = self.get_option('language')
         strings = self.get_option('strings')
-        super().__init__(document_tree, stylesheet, strings=strings,
-                         language=language, backend=backend)
+        super().__init__(document_tree, stylesheet, language, strings=strings,
+                         backend=backend)
         parts = self.get_option('parts')
         self.part_templates = [next(self._find_templates(name))
                                for name in parts]

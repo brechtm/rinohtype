@@ -115,6 +115,8 @@ pygments_style = 'sphinx'
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
 
+napoleon_use_rtype = False
+
 autodoc_member_order = 'bysource'
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3.5',

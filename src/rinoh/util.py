@@ -25,7 +25,7 @@ import os
 import posixpath
 import time
 
-from collections import MutableMapping
+from collections import MutableMapping, OrderedDict
 from functools import wraps
 from weakref import ref
 
@@ -234,6 +234,11 @@ class NamedDescriptor(object):
 
 class WithNamedDescriptors(type):
     """Set the names of the descriptors"""
+
+    @classmethod
+    def __prepare__(metacls, name, bases):
+        return OrderedDict()  # keeps the order of member variables (PEP3115)
+
     def __new__(metacls, classname, bases, cls_dict):
         for name, attr in cls_dict.items():
             if isinstance(attr, NamedDescriptor):

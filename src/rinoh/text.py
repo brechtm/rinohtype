@@ -361,7 +361,14 @@ class MixedStyledTextBase(StyledText):
 
 
 class MixedStyledText(MixedStyledTextBase, list):
-    """Concatenation of :class:`StyledText` objects."""
+    """Concatenation of styled text
+
+    Args:
+        text_or_items (str, StyledText or iterable of these): mixed styled text
+        style: see :class:`.Styled`
+        parent: see :class:`.DocumentElement`
+
+    """
 
     _assumed_equal = {}
 

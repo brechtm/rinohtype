@@ -42,3 +42,10 @@ for name in CORE_MODULES:
     module_dict, module_all = module.__dict__, module.__all__
     globals().update({name: module_dict[name] for name in module_all})
     __all__ += module_all
+
+
+# list all StringCollection subclasses in its docstring
+_ = ['* :class:`.{}`'.format(subclass_name)
+     for subclass_name in sorted(strings.StringCollection.subclasses)]
+strings.StringCollection.__doc__ += ('\n\n    :Subclasses: '
+                                     + '\n                 '.join(_))

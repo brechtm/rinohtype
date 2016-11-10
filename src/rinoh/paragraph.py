@@ -6,38 +6,18 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 """
-Classes for representing paragraphs and typesetting them:
 
-* :class:`Paragraph`: A paragraph of mixed-styled text.
-* :class:`ParagraphStyle`: Style class specifying paragraph formatting.
-* :class:`TabStop`: Horizontal position for aligning text of successive lines.
-
-The `line_spacing` option in a :class:`ParagraphStyle` can be any of:
-
-* :class:`ProportionalSpacing`: Line spacing proportional to the line height.
-* :class:`FixedSpacing`: Fixed line spacing, with optional minimum spacing.
-* :class:`Leading`: Line spacing determined by the space in between two lines.
-* :const:`DEFAULT`: The default line spacing as specified by the font.
-* :const:`STANDARD`: Line spacing equal to 120% of the line height.
-* :const:`SINGLE`: Line spacing equal to the line height (no leading).
-* :const:`DOUBLE`: Line spacing of double the line height.
-
-Horizontal justification of lines can be one of:
-
-* :const:`LEFT`
-* :const:`RIGHT`
-* :const:`CENTER`
-* :const:`BOTH`
+Classes for representing and typesetting paragraphs
 
 """
 
-import os
 import re
 
 from ast import literal_eval
 from copy import copy
 from functools import partial
 from itertools import tee, chain, groupby
+from os import path
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
@@ -143,6 +123,9 @@ class ProportionalSpacing(LineSpacing):
         """`factor` specifies the amount by which the line height is multiplied
         to obtain the line spacing."""
         self.factor = factor
+
+    def __repr__(self):
+        return '{}({})'.format(type(self).__name__, self.factor)
 
     @property
     def _str_args(self):
@@ -552,8 +535,12 @@ class ParagraphState(FlowableState):
 
 
 class ParagraphBase(Flowable):
-    """A paragraph of mixed-styled text that can be flowed into a
-    :class:`Container`."""
+    """Base class for paragraphs
+
+    A paragraph is a collection of mixed-styled text that can be flowed into a
+    container.
+
+    """
 
     style_class = ParagraphStyle
     significant_whitespace = False
@@ -577,12 +564,20 @@ class ParagraphBase(Flowable):
         raise NotImplementedError('{}.text()'.format(self.__class__.__name__))
 
     def render(self, container, descender, state, first_line_only=False):
-        """Typeset the paragraph onto `container`, starting below the current
-        cursor position of the container. `descender` is the descender height of
-        the preceeding line or `None`.
-        When the end of the container is reached, the rendering state is
-        preserved to continue setting the rest of the paragraph when this method
-        is called with a new container."""
+        """Typeset the paragraph
+
+        The paragraph is typeset in the given container starting below the
+        current cursor position of the container. When the end of the container
+        is reached, the rendering state is preserved to continue setting the
+        rest of the paragraph when this method is called with a new container.
+
+        Args:
+            container (Container): the container to render to
+            descender (float or None): descender height of the preceeding line
+            state (ParagraphState): the state where rendering will continue
+            first_line_only (bool): typeset only the first line
+
+        """
         indent_first = (float(self.get_style('indent_first', container))
                         if state.initial else 0)
         line_width = float(container.width)
@@ -644,9 +639,16 @@ class ParagraphBase(Flowable):
 
 
 class Paragraph(ParagraphBase, MixedStyledText):
+    """A paragraph of static text
+
+    Args:
+        text_or_items: see :class:`.MixedStyledText`
+        style: see :class:`.Styled`
+        parent: see :class:`.DocumentElement`
+
+    """
+
     def __init__(self, text_or_items, id=None, style=None, parent=None):
-        """See :class:`MixedStyledText`. As a paragraph typically doesn't have
-        a parent, `style` should be specified."""
         MixedStyledText.__init__(self, text_or_items, style=style,
                                  parent=parent)
         self.id = id
@@ -660,14 +662,14 @@ class HyphenatorStore(dict):
     def __missing__(self, key):
         hyphen_lang, hyphen_chars = key
         dic_path = dic_file = 'hyph_{}.dic'.format(hyphen_lang)
-        if not os.path.exists(dic_path):
-            dic_path = os.path.join(os.path.join(DATA_PATH, 'hyphen'), dic_file)
-            if not os.path.exists(dic_path):
+        if not path.exists(dic_path):
+            dic_path = path.join(path.join(DATA_PATH, 'hyphen'), dic_file)
+            if not path.exists(dic_path):
                 raise IOError("Hyphenation dictionary '{}' neither found in "
                               "current directory, nor in the data directory"
                               .format(dic_file))
-        self[key] = hyphenator = Hyphenator(dic_path, hyphen_chars, hyphen_chars)
-        return hyphenator
+        self[key] = Hyphenator(dic_path, hyphen_chars, hyphen_chars)
+        return self[key]
 
 
 HYPHENATORS = HyphenatorStore()

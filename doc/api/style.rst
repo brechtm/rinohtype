@@ -2,11 +2,16 @@
 
 .. _style:
 
-Style
-=====
+Style (:mod:`rinoh.style`)
+==========================
 
 .. autoclass:: Styled
     :members:
+    :exclude-members: style_class
+
+    .. autoattribute:: style_class
+        :annotation:
+
 
 .. autoclass:: Style
     :members:

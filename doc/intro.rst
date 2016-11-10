@@ -3,7 +3,7 @@
 Introduction
 ============
 
-Rinohtype was initially conceived as a modern replacement for LaTeX. An
+rinohtype was initially conceived as a modern replacement for LaTeX. An
 important goal in the design of rinohtype is for documents to be much easier to
 customize than in LaTeX. By today's standards, the arcane TeX macro language
 upon which LaTeX is built makes customization unnecessarily difficult for one.
@@ -22,34 +22,34 @@ Style sheets
     font weight, size and color, horizontal alignment of text etc.
 
 Structured Input
-    Rinohtype renders a document from a document tree that does not describe
+    rinohtype renders a document from a document tree that does not describe
     any style aspects but only semantics. The style sheet maps specific style
     properties to the elements in this document tree. The document tree can be
     generated from a structured document format such as reStructuredText and
     DocBook using one of the included frontends, or it can be built manually.
 
-Rinohtype is implemented as a Python package and doubles as a high-level PDF
+rinohtype is implemented as a Python package and doubles as a high-level PDF
 library. Its modular design makes it easy to to customize and extend for
-specific applications. Because rinotype's source code is open, all of its
-internals can be inspected and even modified, making it extremely customizable.
+specific applications. Moreover, because rinotype's source code is open, all of
+its internals can be inspected and even modified, making it customizable at all
+levels.
 
 
 Usage Examples
 --------------
 
-Rinohtype supports three modes of operation. These are discussed in more detail
-in the :ref:`quickstart` guide.
-
-For each of these modes, you can choose to use one of the document templates
-included with rinohtype or a third-party template available from PyPI and
-optionally customize it to your needs. Or you can create a custom template from
-scratch. The same goes for the style sheet used to style the document elements.
+rinohtype supports three modes of operation, which are discussed in more detail
+in the :ref:`quickstart` guide. For each of these modes, you can choose to use
+one of the document templates included with rinohtype or a third-party template
+available from PyPI and optionally customize it to your needs. Or you can
+create a custom template from scratch. The same goes for the style sheet used
+to style the document elements.
 
 
 reStructuredText Renderer
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Rinohtype includes the :program:`rinoh` command-line tool that can render
+rinohtype includes the :program:`rinoh` command-line tool that can render
 reStructuredText documents. Rendering the reStructuredText demonstration
 article `demo.txt`_ (using the standard article template and style sheet)
 generates :download:`demo.pdf <../tests_regression/reference/demo.pdf>`.
@@ -78,7 +78,7 @@ Sphinx Builder
 High-level PDF library
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Rinohtype can be used as a Python library to generate PDF documents. Just like
+rinohtype can be used as a Python library to generate PDF documents. Just like
 with :program:`rinoh` and the Sphinx builder, you can select which document
 template and style sheet to use.
 

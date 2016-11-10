@@ -34,6 +34,8 @@ __all__ = ['Section', 'Heading',
 
 
 class SectionTitles(StringCollection):
+    """Collection of localized titles for common sections"""
+
     contents = String('Title for the table of contents section')
     chapter = String('Label for top-level sections')
     index = String('Title for the index section')
@@ -49,6 +51,13 @@ class NewChapterException(PageBreakException):
 
 
 class Section(StaticGroupedFlowables, PageBreak):
+    """A subdivision of a document
+
+    A section usually has a heading associated with it, which is optionally
+    numbered.
+
+    """
+
     style_class = SectionStyle
     exception_class = NewChapterException
 
@@ -89,6 +98,15 @@ class HeadingStyle(NumberedParagraphStyle):
 
 
 class Heading(NumberedParagraph):
+    """The title for a section
+
+    Args:
+        title (StyledText): the title text
+        custom_label (StyledText): a frontend can supply a custom label to use
+            instead of an automatically determined section number
+
+    """
+
     style_class = HeadingStyle
 
     def __init__(self, title, custom_label=None,
@@ -296,6 +314,8 @@ class AdmonitionStyle(GroupedFlowablesStyle):
 
 
 class AdmonitionTitles(StringCollection):
+    """Collection of localized titles for common admonitions"""
+
     attention = String('Title for attention admonitions')
     caution = String('Title for caution admonitions')
     danger = String('Title for danger admonitions')

@@ -7,8 +7,11 @@ API Documentation
 .. toctree::
     :maxdepth: 2
 
+    document
     flowable
+    language
     paragraph
     structure
+    strings
     style
     template

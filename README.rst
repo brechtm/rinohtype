@@ -109,7 +109,7 @@ document (such as `demo.txt`_) using the ``rinoh`` command line tool::
 
    rinoh demo.txt
 
-When the script finishes, you will find ``demo.pdf`` alongside the input file.
+When ``rinoh`` finishes, you will find ``demo.pdf`` alongside the input file.
 
 By default ``rinoh`` renders the input document using the article template. Run
 ``rinoh --help`` to see how you can tell ``rinoh`` which document template and

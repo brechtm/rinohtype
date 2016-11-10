@@ -16,13 +16,25 @@ __all__ = ['Language']
 
 
 class Language(AttributeType):
-    languages = {}
+    """Collects localized strings for a particular language
+
+    Args:
+        code (str): short code identifying the language
+        name (str): native name of the language
+
+    """
+
+    languages = {}  #: Dictionary mapping codes to :class:`Language`\ s
 
     def __init__(self, code, name):
         self.languages[code] = weakref.ref(self)
         self.code = code
         self.name = name
         self.strings = {}
+
+    def __repr__(self):
+        return "{}('{}', '{}')".format(type(self).__name__,
+                                       self.code, self.name)
 
     def __contains__(self, item):
         assert isinstance(item, StringCollection)

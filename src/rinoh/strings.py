@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from itertools import chain
+
 from .attribute import AcceptNoneAttributeType
 from .text import StyledText, SingleStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
@@ -15,7 +17,13 @@ __all__ = ['String', 'StringCollection', 'Strings', 'StringField']
 
 
 class String(NamedDescriptor):
-    """Descriptor used to describe a configurable string"""
+    """Descriptor used to describe a configurable string
+
+    Args:
+        description (str): a short description for this string
+
+    """
+
     def __init__(self, description):
         self.description = description
         self.name = None
@@ -32,11 +40,6 @@ class String(NamedDescriptor):
                             .format(self.name))
         strings[self.name] = value
 
-    @property
-    def __doc__(self):
-        return (':description: {} (:class:`{}`)'
-                .format(self.description, self.accepted_type.__name__))
-
 
 class StringCollectionMeta(WithNamedDescriptors):
     def __new__(metacls, classname, bases, cls_dict):
@@ -45,15 +48,29 @@ class StringCollectionMeta(WithNamedDescriptors):
             StringCollection.subclasses[classname] = cls
         except NameError:
             pass  # cls is StringCollection
+        else:
+            strings = []
+            attrs = []
+            for name, string in cls_dict.items():
+                if not isinstance(string, String):
+                    continue
+                strings.append(string)
+                attrs.append('{} (:class:`.{}`): {}'
+                             .format(name, type(string).__name__,
+                                     string.description))
+            cls._strings = strings
+            cls.__doc__ += ('\n        '
+                            .join(chain(['\n\n    Attributes:'], attrs)))
         return cls
 
 
 class StringCollection(dict, metaclass=StringCollectionMeta):
     """A collection of related configurable strings"""
+
     subclasses = {}
 
-    def __init__(self, **options):
-        for name, value in options.items():
+    def __init__(self, **strings):
+        for name, value in strings.items():
             string_descriptor = getattr(type(self), name, None)
             if not isinstance(string_descriptor, String):
                 raise AttributeError("'{}' is not an accepted string for {}"
@@ -66,6 +83,7 @@ class StringCollection(dict, metaclass=StringCollectionMeta):
 
 class Strings(AcceptNoneAttributeType, dict):
     """Stores several :class:`StringCollection`\ s"""
+
     def __init__(self, *string_collections):
         for string_collection in string_collections:
             self[type(string_collection)] = string_collection
@@ -83,7 +101,9 @@ class StringField(SingleStyledTextBase):
 
     The configured string is either the localized string as determined by the
     language set for the document or the user-supplied string passed to the
-    :class:`TemplateConfiguration`"""
+    :class:`TemplateConfiguration`
+
+    """
     def __init__(self, strings_class, key, case=None, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class

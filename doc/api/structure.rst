@@ -2,8 +2,35 @@
 
 .. _structure:
 
-Structure
-=========
+Structure (:mod:`rinoh.structure`)
+==================================
+
+
+Sections
+~~~~~~~~
+
+.. autoclass:: Section
+    :members:
+
+
+.. autoclass:: SectionStyle
+    :members:
+
+
+.. autoclass:: Heading
+    :members:
+
+
+.. autoclass:: HeadingStyle
+    :members:
+
+
+.. autoclass:: SectionTitles
+    :members:
+
+
+Lists
+~~~~~
 
 .. autoclass:: List
     :members:

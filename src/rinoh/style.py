@@ -701,6 +701,20 @@ class StyleSheet(RuleSet, Resource):
         return self.get_styled(name).style_class
 
     def get_selector(self, name):
+        """Find a selector mapped to a style in this or a base style sheet.
+
+        Args:
+            name (str): a style name
+
+        Returns:
+            :class:`.Selector`: the selector mapped to the style `name`
+
+        Raises:
+            KeyError: if the style `name` was not found in this or a base
+                style sheet
+
+        """
+
         try:
             return self.matcher.by_name[name]
         except (AttributeError, KeyError):

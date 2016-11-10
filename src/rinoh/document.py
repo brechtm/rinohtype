@@ -31,7 +31,7 @@ from collections import OrderedDict
 from itertools import count
 
 from . import __version__, __release_date__
-from .attribute import OptionSet, Attribute
+from .attribute import OptionSet
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
@@ -40,8 +40,7 @@ from .layout import (Container, ReflowRequired, Chain, PageBreakException,
 from .number import format_number
 from .structure import NewChapterException, Section
 from .style import DocumentLocationType, Specificity, StyleLog
-from .util import (NotImplementedAttribute, RefKeyDictionary,
-                   WithNamedDescriptors)
+from .util import RefKeyDictionary
 from .warnings import warn
 
 
@@ -50,6 +49,16 @@ __all__ = ['Page', 'PageOrientation', 'PageType',
 
 
 class DocumentTree(StaticGroupedFlowables):
+    """Holds the document's contents as a tree of flowables
+
+    Args:
+        flowables (list[Flowable]): the list of top-level flowables
+        source_file (str): absolute path of the source file, used to locate
+            images and include in logging and error and warnings.
+        options (Reader): frontend-specific options
+
+    """
+
     def __init__(self, flowables, source_file=None, options=None):
         super().__init__(flowables)
         self.source_file = (os.path.abspath(source_file)
@@ -70,15 +79,22 @@ class PageType(OptionSet):
 
 
 class Page(Container):
-    """A single page in a document. A :class:`Page` is a :class:`Container`, so
-    other containers can be added as children."""
+    """A single page in a document.
+
+    A :class:`Page` is a :class:`Container`, so other containers can be added
+    as children.
+
+    Args:
+        document_part (DocumentPart): the document part this page is part of
+        number (int): the 1-based index of this page in the document part
+        paper (Paper): determines the dimensions of this page
+        orientation (PageOrientation): the orientation of this page
+
+    """
 
     register_with_parent = False
 
     def __init__(self, document_part, number, paper, orientation='portrait'):
-        """Initialize this page as part of `document` (:class:`Document`) with a
-        size defined by `paper` (:class:`Paper`). The page's `orientation` can
-        be either :const:`PORTRAIT` or :const:`LANDSCAPE`."""
         self._document_part = document_part
         self.number = number
         self.paper = paper
@@ -166,7 +182,16 @@ class BackendDocumentMetadata(object):
 
 
 class DocumentPart(object, metaclass=DocumentLocationType):
-    """Part of a :class:`Document` that has a specific page template."""
+    """Part of a document.
+
+    Args:
+        template (DocumentPartTemplate): the template that determines the
+            contents and style of this document part
+        document (Document): the document this part belongs to
+        flowables (list[Flowable]): the flowables to render in this document
+            part
+
+    """
 
     def __init__(self, template, document, flowables):
         self.template = template
@@ -262,15 +287,20 @@ class PartPageCount(object):
 
 
 class Document(object):
-    """A document renders the contents described in an input file onto pages.
-    This is an abstract base class; subclasses should implement :meth:`setup`
-    and :meth:`add_to_chain`."""
+    """Renders a document tree to pages
+
+    Args:
+        document_tree (DocumentTree): a tree of the document's contents
+        stylesheet (StyleSheet): style sheet used to style document elements
+        language (Language): the language to use for standard strings
+        strings (Strings): overrides localized strings provided by `language`
+        backend: the backend used for rendering the document
+
+    """
 
     CREATOR = 'rinohtype v{} ({})'.format(__version__, __release_date__)
 
     CACHE_EXTENSION = '.rtc'
-
-    sections = NotImplementedAttribute()
 
     # FIXME: get backend document metadata from Document metadata
     title = BackendDocumentMetadata('title')
@@ -278,7 +308,7 @@ class Document(object):
     subject = BackendDocumentMetadata('subject')
     keywords = BackendDocumentMetadata('keywords')
 
-    def __init__(self, document_tree, stylesheet, strings=None, language=None,
+    def __init__(self, document_tree, stylesheet, language, strings=None,
                  backend=None):
         """`backend` specifies the backend to use for rendering the document."""
         super().__init__()

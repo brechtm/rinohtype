@@ -366,7 +366,7 @@ class GroupedFlowables(Flowable):
     style_class = GroupedFlowablesStyle
 
     def flowables(self, container):
-        """Generator yielding the :class:`Flowable`\ s"""
+        """Generator yielding the :class:`Flowable`\ s to group"""
         raise NotImplementedError
 
     def initial_state(self, container):

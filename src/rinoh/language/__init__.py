@@ -15,3 +15,17 @@ from .nl import NL
 
 
 __all__ = ['Language', 'EN', 'FR', 'IT', 'NL']
+
+
+# generate docstrings for the Language instances
+
+for code, language_ref in Language.languages.items():
+    language = language_ref()
+    lines = []
+    for string_collection in language.strings.values():
+        lines.append("\n.. rubric:: {}\n"
+                     .format(type(string_collection).__name__))
+        for string in string_collection._strings:
+            lines.append(":{}: {}".format(string.name,
+                                            string_collection[string.name]))
+    language.__doc__ = '\n'.join(lines)

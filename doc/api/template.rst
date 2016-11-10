@@ -2,28 +2,36 @@
 
 .. _template:
 
-Templates
-=========
+Templates (:mod:`rinoh.template`)
+=================================
 
-The standard templates shipped with rinohtype all inherit from
-:class:`DocumentTemplate`:
+Document templates are created by subclassing :class:`DocumentTemplate`, just
+like the :ref:`standard templates <document_templates>` shipped with rinohtype.
 
 .. autoclass:: DocumentTemplate
     :members:
 
-Customization of the templates is performed by passing an instance of the
-template-specific :class:`TemplateConfiguration` subclass as *configuration*
-on template instantiation.
+
+Document templates can be customized by setting values for the configuration
+attributes defined in a :class:`DocumentTemplate` subclass in a
+:class:`TemplateConfiguration`. An template configuration can be passed as
+*configuration* on template instantiation. However, it is better to make use of
+the :class:`~TemplateConfiguration.document` method, however.
 
 .. autoclass:: TemplateConfiguration
+    :members:
+
+.. autoclass:: PartsList
     :members:
 
 
 Document Parts
 ~~~~~~~~~~~~~~
 
-The document part templates of which instances are include in
-:attr:`DocumentTemplate.parts` implement this interface:
+The document part templates which are listed by name in
+:attr:`DocumentTemplate.parts` are looked up as attributes of the
+:class:`DocumentTemplate` subclass. They are instances of
+:class:`DocumentPartTemplate` subclasses:
 
 .. autoclass:: DocumentPartTemplate
     :members:
