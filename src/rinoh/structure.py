@@ -145,7 +145,8 @@ class Heading(NumberedParagraph):
                 parent_id = self.section.parent.section.get_id(document)
                 parent_ref = document.get_reference(parent_id, 'number')
                 if parent_ref:
-                    label = parent_ref + separator + label
+                    separator_string = separator.to_string(flowable_target)
+                    label = parent_ref + separator_string + label
         else:
             label = None
         title_string = self.content.to_string(flowable_target)
