@@ -247,10 +247,10 @@ def template_from_config(config, warn):
     rinoh_template = config.rinoh_template
     if isinstance(rinoh_template, TemplateConfiguration):
         template_cfg['base'] = rinoh_template
-        template_cls = rinoh_template.document_template_class
+        template_cls = rinoh_template.template
     elif os.path.isfile(rinoh_template):
         template_cfg['base'] = TemplateConfigurationFile(rinoh_template)
-        template_cls = template_cfg['base'].document_template_class
+        template_cls = template_cfg['base'].template
     else:
         template_cls = (DocumentTemplate.from_string(rinoh_template)
                         if isinstance(rinoh_template, str)

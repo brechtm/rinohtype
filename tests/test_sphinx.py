@@ -31,7 +31,7 @@ def create_sphinx_app(tmpdir, **confoverrides):
 def test_sphinx_config_default(tmpdir):
     app = create_sphinx_app(tmpdir)
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
     assert template_cfg.get_variable('paper_size', None) == LETTER
@@ -40,7 +40,7 @@ def test_sphinx_config_default(tmpdir):
 def test_sphinx_config_latex_paper_size(tmpdir):
     app = create_sphinx_app(tmpdir, latex_paper_size='a4')
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
     assert template_cfg.get_variable('paper_size', None) == A4
@@ -49,7 +49,7 @@ def test_sphinx_config_latex_paper_size(tmpdir):
 def test_sphinx_config_latex_elements_papersize(tmpdir):
     app = create_sphinx_app(tmpdir, latex_elements=dict(papersize='a4paper'))
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
     assert template_cfg.get_variable('paper_size', None) == A4
@@ -59,7 +59,7 @@ def test_sphinx_config_rinoh_paper_size(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_paper_size=A4,
                             latex_paper_size='letter')
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
     assert template_cfg.get_variable('paper_size', None) == A4
@@ -68,21 +68,21 @@ def test_sphinx_config_rinoh_paper_size(tmpdir):
 def test_sphinx_config_language(tmpdir):
     app = create_sphinx_app(tmpdir, language='it')
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert template_cfg['language'] == IT
 
 
 def test_sphinx_config_builtin_stylesheet(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_stylesheet='sphinx_base14')
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert template_cfg['stylesheet'].name == 'Sphinx (PDF Core Fonts)'
 
 
 def test_sphinx_config_pygments_style(tmpdir):
     app = create_sphinx_app(tmpdir, pygments_style='igor')
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert template_cfg['stylesheet'].base is not None
 
 
@@ -91,7 +91,7 @@ def test_sphinx_config_rinoh_template(tmpdir):
                                          stylesheet='sphinx_article')
     app = create_sphinx_app(tmpdir, rinoh_template=template_cfg)
     template_cfg = template_from_config(app.config, print)
-    assert template_cfg.document_template_class == Article
+    assert template_cfg.template == Article
     assert template_cfg['stylesheet'].name == 'Sphinx (article)'
 
 
@@ -99,7 +99,7 @@ def test_sphinx_config_rinoh_template_from_entrypoint(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_template='book')
     template_cfg = template_from_config(app.config, print)
     assert not template_cfg.keys()
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert template_cfg['stylesheet'].name == 'Sphinx'
 
 
@@ -111,5 +111,5 @@ def test_sphinx_config_rinoh_template_from_filename(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_template=template_cfg_path)
     template_cfg = template_from_config(app.config, print)
     assert not template_cfg.keys()
-    assert template_cfg.document_template_class == Book
+    assert template_cfg.template == Book
     assert template_cfg['stylesheet'].name == 'Sphinx'

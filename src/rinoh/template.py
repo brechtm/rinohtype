@@ -388,26 +388,27 @@ class TemplateConfiguration(RuleSet):
         template (DocumentTemplateMeta or str): the document template to
             configure
         description (str): a short string describing this style sheet
-        **options: configuration values for the attributes defined by the
-            document template (`template` or :attr:`document_template_class`)
+        **options: configuration values for the configuration attributes
+            defined by the document :attr:`template`
 
     """
 
-    document_template_class = None
+    template = None
+    """The :class:`.DocumentTemplate` subclass to configure"""
 
     def __init__(self, name, base=None, template=None, description=None,
                  **options):
         if template:
             if isinstance(template, str):
                 template = DocumentTemplate.from_string(template)
-            assert self.document_template_class in (None, template)
-            self.document_template_class = template
+            assert self.template in (None, template)
+            self.template = template
         if isinstance(options.get('stylesheet'), str):
             filename = os.path.join(self._stylesheet_search_path,
                                     options['stylesheet'])
             if os.path.isfile(filename):
                 options['stylesheet'] = filename
-        tmpl_cls = self.document_template_class
+        tmpl_cls = self.template
         for attr, value in options.items():
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
         super().__init__(name, base=base, **options)
@@ -417,7 +418,7 @@ class TemplateConfiguration(RuleSet):
         try:
             return super().__getitem__(name)
         except KeyError:
-            return self.document_template_class._get_default(name)
+            return self.template._get_default(name)
 
     @property
     def _stylesheet_search_path(self):
@@ -432,10 +433,10 @@ class TemplateConfiguration(RuleSet):
 
     def get_entry_class(self, name):
         try:
-            template = self.document_template_class.get_default_template(name)
+            template = self.template.get_default_template(name)
         except KeyError:
             raise ValueError("'{}' is not a template used by {}"
-                             .format(name, self.document_template_class))
+                             .format(name, self.template))
         return type(template)
 
     def get_variable(self, name, accepted_type):
@@ -443,7 +444,7 @@ class TemplateConfiguration(RuleSet):
             return super().get_variable(name, accepted_type)
         except VariableNotDefined:
             try:
-                return self.document_template_class.variables[name]
+                return self.template.variables[name]
             except KeyError:
                 raise
 
@@ -456,8 +457,8 @@ class TemplateConfiguration(RuleSet):
             backend: the backend to use when rendering the document
 
         """
-        return self.document_template_class(document_tree, configuration=self,
-                                            backend=backend)
+        return self.template(document_tree, configuration=self,
+                             backend=backend)
 
 
 class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
@@ -511,14 +512,14 @@ class DocumentTemplateMeta(WithAttributes):
 
         cfg_class_name = classname + 'Configuration'
         cfg_class = type(cfg_class_name, (TemplateConfiguration, ),
-                         dict(document_template_class=cls))
+                         dict(template=cls))
         # assign this document template's configuration class a name at the
         # module level so that Sphinx can pickle instances of it
         cls.Configuration = globals()[cfg_class_name] = cfg_class
 
         file_class_name = classname + 'ConfigurationFile'
         file_class = type(file_class_name, (TemplateConfigurationFile, ),
-                         dict(document_template_class=cls))
+                          dict(template=cls))
         cls.ConfigurationFile = globals()[file_class_name] = file_class
         return cls
 

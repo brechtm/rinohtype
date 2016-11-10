@@ -243,7 +243,7 @@ def main():
 
     if os.path.isfile(args.template):
         template_cfg['base'] = TemplateConfigurationFile(args.template)
-        template_cls = template_cfg['base'].document_template_class
+        template_cls = template_cfg['base'].template
     else:
         template_cls = DocumentTemplate.from_string(args.template)
     configuration = template_cls.Configuration('rinoh command line options',
