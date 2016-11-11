@@ -195,6 +195,12 @@ class StyledText(Styled, AcceptNoneAttributeType):
             return first
 
     @classmethod
+    def validate(cls, value, accept_variables=False, attribute_name=None):
+        if attribute_name is None and isinstance(value, str):
+            value = SingleStyledText(value)
+        return super().validate(value, accept_variables, attribute_name)
+
+    @classmethod
     def _substitute_variables(cls, text, style):
         def substitute_html_entities(string, style=None):
             return SingleStyledText(string.format(**NAME2CHAR), style=style)

@@ -55,18 +55,9 @@ class Font(object):
     def __init__(self, filename,
                  weight='medium', slant='upright', width='normal'):
         self.filename = filename
-        if not FontWeight.check_type(weight):
-            raise ValueError('Unknown font weight. Must be one of {}'
-                             .format(', '.join(FontWeight.values)))
-        if not FontSlant.check_type(slant):
-            raise ValueError('Unknown font slant. Must be one of {}'
-                             .format(', '.join(FontSlant.values)))
-        if not FontWidth.check_type(width):
-            raise ValueError('Unknown font width. Must be one of {}'
-                             .format(', '.join(FontWidth.values)))
-        self.weight = weight
-        self.slant = slant
-        self.width = width
+        self.weight = FontWeight.validate(weight)
+        self.slant = FontSlant.validate(slant)
+        self.width = FontWidth.validate(width)
         # font metrics in Postscript points
         self.ascender_in_pt = self.ascender / self.units_per_em
         self.descender_in_pt = self.descender / self.units_per_em

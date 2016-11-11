@@ -40,6 +40,31 @@ class AttributeType(object):
     def parse_string(cls, string):
         raise NotImplementedError(cls)
 
+    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
+
+    @classmethod
+    def validate(cls, value, accept_variables=False, attribute_name=None):
+        if isinstance(value, str):
+            stripped = value.replace('\n', ' ').strip()
+            m = cls.RE_VARIABLE.match(stripped)
+            if m:
+                value = Var(m.group(1))
+            else:
+                value = cls.from_string(stripped)
+        if isinstance(value, Var):
+            if not accept_variables:
+                raise TypeError("The '{}' attribute does not accept variables"
+                                .format(attribute_name))
+        elif not cls.check_type(value):
+            raise TypeError("{} ({}) is not of the correct type for the '{}' "
+                            "attribute".format(value, type(value).__name__,
+                                               attribute_name))
+        return value
+
+    @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format(repr(value))
+
 
 class AcceptNoneAttributeType(AttributeType):
     @classmethod
@@ -98,11 +123,10 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
 class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
     def __init__(self, accepted_type, default_value, description):
-        self.accepted_type = accepted_type
-        assert accepted_type.check_type(default_value)
-        self.default_value = default_value
-        self.description = description
         self.name = None
+        self.accepted_type = accepted_type
+        self.default_value = accepted_type.validate(default_value)
+        self.description = description
 
     def __get__(self, style, type=None):
         try:
@@ -195,31 +219,14 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
             attributes[name] = self.validate_attribute(name, value, True)
         super().__init__(attributes)
 
-    RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
-
     @classmethod
     def validate_attribute(cls, name, value, accept_variables):
         try:
-            attribute = cls.attribute_definition(name)
+            attribute_type = cls.attribute_definition(name).accepted_type
         except KeyError:
             raise TypeError('{} is not a supported attribute for {}'
                             .format(name, cls.__name__))
-        if isinstance(value, str):
-            stripped = value.replace('\n', ' ').strip()
-            m = cls.RE_VARIABLE.match(stripped)
-            if m:
-                value = Var(m.group(1))
-            else:
-                value = attribute.accepted_type.from_string(stripped)
-        if isinstance(value, Var):
-            if not accept_variables:
-                raise TypeError("The '{}' attribute does not accept variables"
-                                .format(name))
-        elif not attribute.accepted_type.check_type(value):
-            raise TypeError("{} ({}) is not of the correct type for the '{}' "
-                            "attribute".format(value, type(value).__name__,
-                                               name))
-        return value
+        return attribute_type.validate(value, accept_variables, name)
 
     @classmethod
     def _get_default(cls, attribute):
