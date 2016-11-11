@@ -45,3 +45,8 @@ class Language(AttributeType):
     @classmethod
     def parse_string(cls, string):
         return cls.languages[string]()
+
+    @classmethod
+    def doc_repr(cls, value):
+        return ':data:`~.rinoh.language.{}` ({})'.format(value.code.upper(),
+                                                         value.name)

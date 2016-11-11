@@ -119,6 +119,10 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
                                      "', '".join(value_strings)))
         return cls.values[index]
 
+    @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format(value)
+
 
 class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
@@ -174,13 +178,15 @@ class WithAttributes(WithNamedDescriptors):
                 else:
                     raise NotImplementedError
                 doc.append('{} (:class:`.{}`): Overrides the default '
-                           'set in :class:`.{}` with {}'
+                           'set in :class:`.{}`'
                            .format(name, attr.accepted_type.__name__,
-                                   base_cls.__name__, attr.default_value))
+                                   base_cls.__name__))
             else:
-                doc.append('{} (:class:`.{}`): {}. Default: {}'
+                doc.append('{} (:class:`.{}`): {}'
                            .format(name, attr.accepted_type.__name__,
-                                   attr.description, attr.default_value))
+                                   attr.description))
+            default = attr.accepted_type.doc_repr(attr.default_value)
+            doc.append('\n            Default: {}\n'.format(default))
         supported_attributes = list(name for name in attributes)
         for base_class in bases:
             try:
@@ -191,11 +197,12 @@ class WithAttributes(WithNamedDescriptors):
                 for name, attr in getattr(mro_cls, '_attributes', {}).items():
                     if name in attributes:
                         continue
-                    doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) '
-                               '{}. Default: {}'
+                    doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) {}'
                                .format(name, attr.accepted_type.__name__,
                                        mro_cls.__name__, mro_cls.__name__, name,
-                                       attr.description, attr.default_value))
+                                       attr.description))
+                    default = attr.accepted_type.doc_repr(attr.default_value)
+                    doc.append('\n            Default: {}\n'.format(default))
         if doc:
             attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
             cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'

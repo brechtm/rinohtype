@@ -549,6 +549,11 @@ class PartsList(AttributeType, list):
     def parse_string(cls, string):
         return cls(*string.split())
 
+    @classmethod
+    def doc_repr(cls, value):
+        return '[{}]'.format(', '.join(':attr:`{}`'.format(part_name)
+                                       for part_name in value))
+
 
 class DocumentTemplate(Document, AttributesDictionary, Resource,
                        metaclass=DocumentTemplateMeta):

@@ -103,6 +103,10 @@ class Typeface(Resource, dict):
     def check_type(cls, value):
         return isinstance(value, cls)
 
+    @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format(value.name)
+
     def fonts(self):
         for width in (w for w in FontWidth if w in self):
             for slant in (s for s in FontSlant if s in self[width]):
