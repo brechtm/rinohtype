@@ -35,7 +35,8 @@ class DimensionType(type):
         """Return a new class with predefined comparison operators"""
         for method_name in ('__lt__', '__le__', '__gt__', '__ge__',
                             '__eq__', '__ne__'):
-            cls_dict[method_name] = mcs._make_operator(method_name)
+            if method_name not in cls_dict:
+                cls_dict[method_name] = mcs._make_operator(method_name)
         return type.__new__(mcs, name, bases, cls_dict)
 
     @staticmethod
@@ -89,10 +90,6 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
     def __truediv__(self, divisor):
         """Return the quotient of this dimension and `divisor`."""
         return DimensionMultiplication(self, 1.0 / divisor)
-
-    def __repr__(self):
-        """Return a textual representation of the evaluated value."""
-        return '{:.2f}pt'.format(float(self)).replace('.00', '')
 
     def __abs__(self):
         """Return the absolute value of this dimension (in points)."""
@@ -220,7 +217,7 @@ MM = DimensionUnit(1 / 25.4 * INCH, 'mm')
 CM = DimensionUnit(10*MM, 'cm')
 
 
-class Fraction(DimensionUnitBase):
+class Fraction(DimensionBase):
     def __init__(self, nominator, unit):
         self._nominator = nominator
         self._unit = unit
@@ -229,8 +226,7 @@ class Fraction(DimensionUnitBase):
        number = '{:.2f}'.format(self._nominator).rstrip('0').rstrip('.')
        return '{}{}'.format(number, self._unit.label)
 
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+    __eq__ = AcceptNoneAttributeType.__eq__
 
     def to_points(self, total_dimension):
         fraction = self._nominator / self._unit.denominator
