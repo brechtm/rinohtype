@@ -17,7 +17,7 @@ from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, VariableNotDefined)
-from .dimension import DimensionBase, CM, PT
+from .dimension import Dimension, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
 from .float import BackgroundImage, Image
@@ -93,14 +93,14 @@ class PageTemplateBase(Template):
     page_size = Option(Paper, A4, 'The format of the pages in the document')
     page_orientation = Option(PageOrientation, 'portrait',
                               'The orientation of pages in the document')
-    left_margin = Option(DimensionBase, 3*CM, 'The margin size on the left of '
-                                              'the page')
-    right_margin = Option(DimensionBase, 3*CM, 'The margin size on the right '
-                                               'of the page')
-    top_margin = Option(DimensionBase, 3*CM, 'The margin size at the top of '
-                                              'the page')
-    bottom_margin = Option(DimensionBase, 3*CM, 'The margin size at the bottom '
-                                                'of the page')
+    left_margin = Option(Dimension, 3*CM, 'The margin size on the left of the '
+                                          'page')
+    right_margin = Option(Dimension, 3*CM, 'The margin size on the right of '
+                                           'the page')
+    top_margin = Option(Dimension, 3*CM, 'The margin size at the top of the '
+                                         'page')
+    bottom_margin = Option(Dimension, 3*CM, 'The margin size at the bottom of '
+                                            'the page')
     background = Option(BackgroundImage, None, 'An image to place in the '
                                                'background of the page')
     after_break_background = Option(BackgroundImage, None, 'An image to place '
@@ -131,10 +131,10 @@ CHAPTER_TITLE_FLOWABLES = [Paragraph(StringField(SectionTitles, 'chapter')),
 
 
 class PageTemplate(PageTemplateBase):
-    header_footer_distance = Option(DimensionBase, 14*PT, 'Distance of the '
+    header_footer_distance = Option(Dimension, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
     columns = Option(Integer, 1, 'The number of columns for the body text')
-    column_spacing = Option(DimensionBase, 1*CM, 'The spacing between columns')
+    column_spacing = Option(Dimension, 1*CM, 'The spacing between columns')
     header_text = Option(StyledText, Field(SECTION_NUMBER(1))
                          + ' ' + Field(SECTION_TITLE(1)),
                          'The text to place in the page header')
@@ -148,7 +148,7 @@ class PageTemplate(PageTemplateBase):
     chapter_title_flowables = Option(FlowablesList, CHAPTER_TITLE_FLOWABLES,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
-    chapter_title_height = Option(DimensionBase, 150*PT, 'The height of the '
+    chapter_title_height = Option(Dimension, 150*PT, 'The height of the '
                                   'container holding the chapter title')
 
     def page(self, document_part, page_number, chain, after_break, **kwargs):

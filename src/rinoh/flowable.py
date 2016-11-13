@@ -23,7 +23,7 @@ from itertools import chain, tee
 
 from .attribute import Attribute, OptionSet, Bool
 from .color import Color
-from .dimension import DimensionBase, PT
+from .dimension import Dimension, PT
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
@@ -46,16 +46,16 @@ __all__ = ['Flowable', 'FlowableStyle',
 class FlowableStyle(Style):
     """The :class:`Style` for :class:`Flowable` objects."""
 
-    space_above = Attribute(DimensionBase, 0, 'Vertical space preceding the '
+    space_above = Attribute(Dimension, 0, 'Vertical space preceding the '
                                               'flowable')
-    space_below = Attribute(DimensionBase, 0, 'Vertical space following the '
+    space_below = Attribute(Dimension, 0, 'Vertical space following the '
                                               'flowable')
-    margin_left = Attribute(DimensionBase, 0, 'Left margin')
-    margin_right = Attribute(DimensionBase, 0, 'Right margin')
-    padding_left = Attribute(DimensionBase, 0, 'Left padding')
-    padding_right = Attribute(DimensionBase, 0, 'Right padding')
-    padding_top = Attribute(DimensionBase, 0, 'Top padding')
-    padding_bottom = Attribute(DimensionBase, 0, 'Bottom padding')
+    margin_left = Attribute(Dimension, 0, 'Left margin')
+    margin_right = Attribute(Dimension, 0, 'Right margin')
+    padding_left = Attribute(Dimension, 0, 'Left padding')
+    padding_right = Attribute(Dimension, 0, 'Right padding')
+    padding_top = Attribute(Dimension, 0, 'Top padding')
+    padding_bottom = Attribute(Dimension, 0, 'Bottom padding')
     keep_with_next = Attribute(Bool, False, 'Keep this flowable and the next '
                                             'on the same page')
     border = Attribute(Stroke, None, 'Border surrounding the flowable')
@@ -350,7 +350,7 @@ class GroupedFlowablesState(FlowableState):
 
 class GroupedFlowablesStyle(FlowableStyle):
     title = Attribute(StyledText, None, 'Title to precede the flowables')
-    flowable_spacing = Attribute(DimensionBase, 0, 'Spacing between flowables')
+    flowable_spacing = Attribute(Dimension, 0, 'Spacing between flowables')
 
 
 class GroupedFlowables(Flowable):
@@ -475,10 +475,10 @@ class StaticGroupedFlowables(GroupedFlowables):
 
 
 class LabeledFlowableStyle(FlowableStyle):
-    label_min_width = Attribute(DimensionBase, 12*PT, 'Minimum label width')
-    label_max_width = Attribute(DimensionBase, 80*PT, 'Maximum label width')
-    label_spacing = Attribute(DimensionBase, 3*PT, 'Spacing between a label '
-                                                   'and the labeled flowable')
+    label_min_width = Attribute(Dimension, 12*PT, 'Minimum label width')
+    label_max_width = Attribute(Dimension, 80*PT, 'Maximum label width')
+    label_spacing = Attribute(Dimension, 3*PT, 'Spacing between a label and '
+                                               'the labeled flowable')
     align_baselines = Attribute(Bool, True, 'Line up the baselines of the '
                                             'label and the labeled flowable')
     wrap_label = Attribute(Bool, False, 'Wrap the label at `label_max_width`')
@@ -671,7 +671,7 @@ class HorizontalAlignment(OptionSet):
 
 
 class HorizontallyAlignedFlowableStyle(FlowableStyle):
-    width = Attribute(DimensionBase, None, 'The width of the flowable')
+    width = Attribute(Dimension, None, 'The width of the flowable')
     horizontal_align = Attribute(HorizontalAlignment, 'left',
                                  'Horizontal alignment of the flowable')
 

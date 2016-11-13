@@ -7,7 +7,7 @@
 
 
 from .attribute import Attribute
-from .dimension import DimensionBase, PT
+from .dimension import Dimension, PT
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
@@ -21,9 +21,9 @@ class InlineFlowableException(Exception):
 
 
 class InlineFlowableStyle(FlowableStyle):
-    baseline = Attribute(DimensionBase, 0*PT, "The location of the flowable's "
-                                              "baseline relative to the bottom "
-                                              "edge")
+    baseline = Attribute(Dimension, 0*PT, "The location of the flowable's "
+                                          "baseline relative to the bottom "
+                                          "edge")
 
 
 class InlineFlowable(Flowable):
