@@ -22,7 +22,7 @@ from os import path
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import Attribute, AttributeType, OptionSet
-from .dimension import DimensionBase, PT
+from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .font import MissingGlyphException
 from .hyphenator import Hyphenator
@@ -178,7 +178,7 @@ class FixedSpacing(LineSpacing):
 
     @classmethod
     def parse_arguments(cls, pitch_str, minimum_str=None):
-        pitch = DimensionBase.from_string(pitch_str)
+        pitch = Dimension.from_string(pitch_str)
         if minimum_str:
             minimum = LineSpacing.from_string(minimum_str)
             return pitch, minimum
@@ -207,7 +207,7 @@ class Leading(LineSpacing):
 
     @classmethod
     def parse_arguments(cls, leading_str):
-        leading = DimensionBase.from_string(leading_str)
+        leading = Dimension.from_string(leading_str)
         return leading,
 
     def advance(self, line, last_descender, container):
@@ -281,7 +281,7 @@ class TabStopList(AttributeType, list):
                              ,                     # separating comma
                              \s*                   # whitespace
                            )?
-                       """.format(pos=DimensionBase.REGEX.pattern,
+                       """.format(pos=Dimension.REGEX.pattern,
                                   align='|'.join(TabAlign.values)),
                        re.IGNORECASE | re.VERBOSE)
 
@@ -296,7 +296,7 @@ class TabStopList(AttributeType, list):
                                  .format(string, cls.__name__))
             _, i = m.span()
             position, align, fill = m.group('position', 'align', 'fill')
-            tabstop = TabStop(DimensionBase.from_string(position),
+            tabstop = TabStop(Dimension.from_string(position),
                               TabAlign.from_string(align) if align else 'left',
                               literal_eval(fill) if fill else None)
             tabstops.append(tabstop)
@@ -307,8 +307,8 @@ class TabStopList(AttributeType, list):
 class ParagraphStyle(FlowableStyle, TextStyle):
     """The :class:`Style` for :class:`Paragraph` objects"""
 
-    indent_first = Attribute(DimensionBase, 0*PT, 'Indentation of the first '
-                                                  'line of text')
+    indent_first = Attribute(Dimension, 0*PT, 'Indentation of the first line '
+                                              'of text')
     line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '
                              'baselines of two successive lines of text')
     text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '

@@ -44,7 +44,7 @@ from itertools import tee
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
 from .color import Color, BLACK
-from .dimension import DimensionBase, PT
+from .dimension import Dimension, PT
 from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
@@ -82,7 +82,7 @@ class TextStyle(Style):
                                                   'height')
     font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
     font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
-    font_size = Attribute(DimensionBase, 10*PT, 'Height of characters')
+    font_size = Attribute(Dimension, 10*PT, 'Height of characters')
     font_color = Attribute(Color, BLACK, 'Color of the font')
     font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
     position = Attribute(TextPosition, 'normal', 'Vertical text position')
