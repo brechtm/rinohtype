@@ -9,46 +9,47 @@ from rinoh.dimension import (DimensionAddition,
 # test operators
 
 def test_addition():
-    assert 100*PT + 10 == 110
-    assert 100*PT + 10*PT == 110
-    assert 100 + 10*PT ==  110
-    assert 1*INCH + 8*PT == 80
+    assert float(100*PT + 10) == 110
+    assert float(100*PT + 10*PT) == 110
+    assert float(100 + 10*PT) ==  110
+    assert float(1*INCH + 8*PT) == 80
     assert float(DimensionAddition()) == 0
 
 
 def test_subtraction():
-    assert 100*PT - 10 == 90
-    assert 100*PT - 10*PT == 90
-    assert 100 - 10*PT == 90
-    assert 1*INCH - 2*PT == 70
+    assert float(100*PT - 10) == 90
+    assert float(100*PT - 10*PT) == 90
+    assert float(100 - 10*PT) == 90
+    assert float(1*INCH - 2*PT) == 70
 
 
 def test_multiplication():
-    assert 3 * 30*PT == 90
-    assert 30*PT * 3 == 90
+    assert float(3 * 30*PT) == 90
+    assert float(30*PT * 3) == 90
 
 
 def test_division():
-    assert 30*PT / 5 == 6
+    assert float(30*PT / 5) == 6
 
 
 def test_grow():
     a = 20*PT
     a.grow(50)
-    assert a == 70
+    assert a == 70*PT
     b = 20*PT
     b.grow(30*PT)
-    assert b == 50
+    assert b == 50*PT
     c = 100*PT
     c.grow(-50)
-    assert c == 50
+    assert c == 50*PT
     d = 100*PT
     d.grow(-30*PT)
-    assert d == 70
+    assert d == 70*PT
 
 
 def test_negation():
-    assert -20*PT == -20
+    twenty = 20*PT
+    assert float(-twenty) == -20
 
 
 # test late evaluation
@@ -57,34 +58,34 @@ def test_late_addition():
     a = 10*PT
     b = a + 5*PT
     a.grow(2)
-    assert b == 17
+    assert float(b) == 17
 
 
 def test_late_subtraction():
     a = 10*PT
     b = a - 5*PT
     a.grow(2)
-    assert b == 7
+    assert float(b) == 7
 
 
 def test_late_multiplication():
     a = 10*PT
     b = a * 2
     a.grow(2)
-    assert b == 24
+    assert float(b) == 24
 
 
 def test_late_division():
     a = 10*PT
     b = a / 2
     a.grow(2)
-    assert b == 6
+    assert float(b) == 6
 
 
 def test_units():
-    assert 4*INCH / 2 == 2*INCH
-    assert 1*CM + 10*MM == 2*CM
-    assert 1*PICA / 6 == 2*PT
+    assert float(4*INCH / 2) == float(2*INCH)
+    assert float(1*CM + 10*MM) == float(2*CM)
+    assert float(1*PICA / 6) == float(2*PT)
 
 
 def test_fractions():

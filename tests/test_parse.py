@@ -4,7 +4,7 @@ import pytest
 from rinoh.attribute import OptionSet, Bool, Integer
 from rinoh.color import Color, HexColor
 from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
-                             PERCENT, QUARTERS)
+                             PERCENT, THIRDS, QUARTERS)
 from rinoh.draw import Stroke
 from rinoh.float import BackgroundImage, Scale
 from rinoh.flowable import HorizontalAlignment, Break
@@ -186,6 +186,7 @@ def test_dimension_from_string():
     assert Dimension.from_string('-2.1 cm') == -2.1*CM
     assert Dimension.from_string('21%') == 21*PERCENT
     assert Dimension.from_string('-16.12%') == -16.12*PERCENT
+    assert Dimension.from_string('1/3') == 1*THIRDS
     assert Dimension.from_string('3/4') == 3*QUARTERS
     with pytest.raises(ValueError):
         assert Dimension.from_string('20inch')

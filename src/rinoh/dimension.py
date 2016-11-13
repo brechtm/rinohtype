@@ -33,8 +33,7 @@ class DimensionType(type):
 
     def __new__(mcs, name, bases, cls_dict):
         """Return a new class with predefined comparison operators"""
-        for method_name in ('__lt__', '__le__', '__gt__', '__ge__',
-                            '__eq__', '__ne__'):
+        for method_name in ('__lt__', '__le__', '__gt__', '__ge__'):
             if method_name not in cls_dict:
                 cls_dict[method_name] = mcs._make_operator(method_name)
         return type.__new__(mcs, name, bases, cls_dict)
@@ -97,12 +96,11 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
 
     def __float__(self):
         """Evaluate the value of this dimension in points."""
-        raise NotImplementedError
+        return float(self.to_points(None))
 
     @classmethod
     def check_type(cls, value):
-        return (super().check_type(value) or isinstance(value, Fraction)
-                or value == 0)
+        return super().check_type(value) or value == 0
 
     REGEX = re.compile(r"""(?P<value>
                              [+-]?         # optional sign
@@ -134,8 +132,15 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
         except (AttributeError, KeyError, AssertionError):
             raise ValueError("'{}' is not a valid dimension".format(string))
 
+    @classmethod
+    def validate(cls, value, accept_variables=False, attribute_name=None):
+        value = super().validate(value, accept_variables, attribute_name)
+        if isinstance(value, (int, float)):
+            value = Dimension(value, PT)
+        return value
+
     def to_points(self, total_dimension):
-        return float(self)
+        raise NotImplementedError
 
 
 class Dimension(DimensionBase):
@@ -153,42 +158,52 @@ class Dimension(DimensionBase):
         self._value += float(value)
         return self
 
-    def __float__(self):
-        return float(self._value) * self._unit.points_per_unit
+    def to_points(self, total_dimension):
+        return self._unit.to_points(self._value, total_dimension)
+
+
+def to_dimension(value):
+    if isinstance(value, DimensionBase):
+        return value
+    assert isinstance(value, (int, float))
+    return Dimension(value)
 
 
 class DimensionAddition(DimensionBase):
     def __init__(self, *addends):
-        self.addends = list(addends)
+        self.addends = list(to_dimension(addend) for addend in addends)
 
-    def __float__(self):
-        return sum(map(float, self.addends or (0.0, )))
+    def to_points(self, total_dimension):
+        return sum(addend.to_points(total_dimension)
+                   for addend in self.addends) if self.addends else 0
 
 
 class DimensionSubtraction(DimensionBase):
     def __init__(self, minuend, subtrahend):
-        self.minuend = minuend
-        self.subtrahend = subtrahend
+        self.minuend = to_dimension(minuend)
+        self.subtrahend = to_dimension(subtrahend)
 
-    def __float__(self):
-        return float(self.minuend) - float(self.subtrahend)
+    def to_points(self, total_dimension):
+        return (self.minuend.to_points(total_dimension)
+                - self.subtrahend.to_points(total_dimension))
 
 
 class DimensionMultiplication(DimensionBase):
     def __init__(self, multiplicand, multiplier):
-        self.multiplicand = multiplicand
+        self.multiplicand = to_dimension(multiplicand)
         self.multiplier = multiplier
 
-    def __float__(self):
-        return float(self.multiplicand) * self.multiplier
+    def to_points(self, total_dimension):
+        return self.multiplicand.to_points(total_dimension) * self.multiplier
 
 
 class DimensionMaximum(DimensionBase):
     def __init__(self, *dimensions):
-        self.dimensions = dimensions
+        self.dimensions = [to_dimension(dim) for dim in dimensions]
 
-    def __float__(self):
-        return max(*(float(dimension) for dimension in self.dimensions))
+    def to_points(self, total_dimension):
+        return max(*(dimension.to_points(total_dimension)
+                   for dimension in self.dimensions))
 
 
 class DimensionUnitBase(object):
@@ -198,14 +213,20 @@ class DimensionUnitBase(object):
         self.label = label
         self.all[label] = self
 
+    def __rmul__(self, value):
+        return Dimension(value, self)
+
+    def to_points(self, value, total_dimension):
+        raise NotImplementedError
+
 
 class DimensionUnit(DimensionUnitBase):
     def __init__(self, points_per_unit, label):
         super().__init__(label)
         self.points_per_unit = float(points_per_unit)
 
-    def __rmul__(self, value):
-        return Dimension(value, self)
+    def to_points(self, value, total_dimension):
+        return value * self.points_per_unit
 
 
 # Units
@@ -217,30 +238,16 @@ MM = DimensionUnit(1 / 25.4 * INCH, 'mm')
 CM = DimensionUnit(10*MM, 'cm')
 
 
-class Fraction(DimensionBase):
-    def __init__(self, nominator, unit):
-        self._nominator = nominator
-        self._unit = unit
-
-    def __str__(self):
-       number = '{:.2f}'.format(self._nominator).rstrip('0').rstrip('.')
-       return '{}{}'.format(number, self._unit.label)
-
-    __eq__ = AcceptNoneAttributeType.__eq__
-
-    def to_points(self, total_dimension):
-        fraction = self._nominator / self._unit.denominator
-        return fraction * float(total_dimension)
-
-
 class FractionUnit(DimensionUnitBase):
     def __init__(self, denominator, label):
         super().__init__(label)
         self.denominator = denominator
 
-    def __rmul__(self, nominator):
-        return Fraction(nominator, self)
+    def to_points(self, value, total_dimension):
+        fraction = value / self.denominator
+        return fraction * float(total_dimension)
 
 
 PERCENT = FractionUnit(100, '%')
+THIRDS = FractionUnit(3, '/3')
 QUARTERS = FractionUnit(4, '/4')
