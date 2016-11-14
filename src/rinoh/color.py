@@ -49,6 +49,11 @@ class Color(AcceptNoneAttributeType):
             raise ValueError("'{}' is not a valid {}. Must be a HEX string."
                              .format(string, cls.__name__))
 
+    @classmethod
+    def doc_format(cls):
+        return ('HEX string with optional alpha component '
+                '(``#RRGGBB``, ``#RRGGBBAA``, ``#RGB`` or ``#RGBA``)')
+
 
 class HexColor(Color):
     def __init__(self, string):

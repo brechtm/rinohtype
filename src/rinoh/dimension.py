@@ -23,10 +23,12 @@ It also exports a number of pre-defined units:
 import re
 
 from .attribute import AcceptNoneAttributeType
+from collections import OrderedDict
 
 
-__all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM', 'PERCENT']
 
+__all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM',
+           'PERCENT', 'QUARTERS']
 
 class DimensionType(type):
     """Maps comparison operators to their equivalents in :class:`float`"""
@@ -134,6 +136,12 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
         except (AttributeError, KeyError, AssertionError):
             raise ValueError("'{}' is not a valid dimension".format(string))
 
+    @classmethod
+    def doc_format(cls):
+        return ('a numeric value followed by a unit ({})'
+                .format(', '.join('``{}``'.format(unit)
+                                  for unit in DimensionUnitBase.all)))
+
     def to_points(self, total_dimension):
         return float(self)
 
@@ -192,7 +200,7 @@ class DimensionMaximum(DimensionBase):
 
 
 class DimensionUnitBase(object):
-    all = {}
+    all = OrderedDict()
 
     def __init__(self, label):
         self.label = label

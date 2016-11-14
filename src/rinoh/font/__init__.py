@@ -107,6 +107,11 @@ class Typeface(Resource, dict):
     def doc_repr(cls, value):
         return '``{}``'.format(value.name)
 
+    @classmethod
+    def doc_format(cls):
+        return ('the name of a typeface. See :option:`rinoh --list-fonts` '
+                'for a list of the available typefaces.')
+
     def fonts(self):
         for width in (w for w in FontWidth if w in self):
             for slant in (s for s in FontSlant if s in self[width]):

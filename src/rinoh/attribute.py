@@ -11,9 +11,10 @@ import re
 from collections import OrderedDict
 from configparser import ConfigParser
 from itertools import chain
+from warnings import warn
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
-                   NotImplementedAttribute)
+                   NotImplementedAttribute, class_property)
 
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
@@ -63,7 +64,12 @@ class AttributeType(object):
 
     @classmethod
     def doc_repr(cls, value):
-        return '``{}``'.format(repr(value))
+        return '``{}``'.format(value)
+
+    @classmethod
+    def doc_format(cls):
+        warn('Missing implementation for {}.doc_format'.format(cls.__name__))
+        return ''
 
 
 class AcceptNoneAttributeType(AttributeType):
@@ -77,6 +83,10 @@ class AcceptNoneAttributeType(AttributeType):
         if string.strip().lower() == 'none':
             return None
         return super(__class__, cls).from_string(string)
+
+    @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format('none' if value is None else value)
 
 
 class OptionSetMeta(type):
@@ -107,21 +117,28 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
     def check_type(cls, value):
         return value in cls.values
 
+    @class_property
+    def value_strings(cls):
+        return ['none' if value is None else value.lower()
+                for value in cls.values]
+
     @classmethod
     def parse_string(cls, string):
-        value_strings = ['none' if value is None else value.lower()
-                         for value in cls.values]
         try:
-            index = value_strings.index(string.lower())
+            index = cls.value_strings.index(string.lower())
         except ValueError:
             raise ValueError("'{}' is not a valid {}. Must be one of: '{}'"
                              .format(string, cls.__name__,
-                                     "', '".join(value_strings)))
+                                     "', '".join(cls.value_strings)))
         return cls.values[index]
 
     @classmethod
     def doc_repr(cls, value):
         return '``{}``'.format(value)
+
+    @classmethod
+    def doc_format(cls):
+        return ', '.join('``{}``'.format(s) for s in cls.value_strings)
 
 
 class Attribute(NamedDescriptor):
@@ -185,7 +202,9 @@ class WithAttributes(WithNamedDescriptors):
                 doc.append('{} (:class:`.{}`): {}'
                            .format(name, attr.accepted_type.__name__,
                                    attr.description))
+            format = attr.accepted_type.doc_format()
             default = attr.accepted_type.doc_repr(attr.default_value)
+            doc.append('\n            Accepts: {}\n'.format(format))
             doc.append('\n            Default: {}\n'.format(default))
         supported_attributes = list(name for name in attributes)
         for base_class in bases:
@@ -199,9 +218,11 @@ class WithAttributes(WithNamedDescriptors):
                         continue
                     doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) {}'
                                .format(name, attr.accepted_type.__name__,
-                                       mro_cls.__name__, mro_cls.__name__, name,
-                                       attr.description))
+                                       mro_cls.__name__, mro_cls.__name__,
+                                       name, attr.description))
+                    format = attr.accepted_type.doc_format()
                     default = attr.accepted_type.doc_repr(attr.default_value)
+                    doc.append('\n            Accepts: {}\n'.format(format))
                     doc.append('\n            Default: {}\n'.format(default))
         if doc:
             attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
@@ -363,6 +384,14 @@ class Bool(AttributeType):
                              "or 'false'".format(string, cls.__name__))
         return lower_string == 'true'
 
+    @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format(str(value).lower())
+
+    @classmethod
+    def doc_format(cls):
+        return '``true`` or ``false``'
+
 
 class Integer(AttributeType):
     @classmethod
@@ -376,6 +405,10 @@ class Integer(AttributeType):
         except ValueError:
             raise ValueError("'{}' is not a valid {}"
                              .format(string, cls.__name__))
+
+    @classmethod
+    def doc_format(cls):
+        return 'a natural number (positive integer)'
 
 
 # variables

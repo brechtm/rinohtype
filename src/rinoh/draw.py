@@ -33,6 +33,11 @@ class Stroke(AcceptNoneAttributeType):
         color = Color.from_string(color_str)
         return cls(width, color)
 
+    @classmethod
+    def doc_format(cls):
+        return ('the width (:class:`.Dimension`) and color (:class:`.Color`) '
+                'of the stroke, separated by a comma (``,``)')
+
 
 class LineStyle(Style):
     stroke = Attribute(Stroke, Stroke(1*PT, BLACK), 'Width and color used to '
