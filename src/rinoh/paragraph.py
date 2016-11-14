@@ -46,8 +46,16 @@ class TextAlign(OptionSet):
 # Line spacing
 
 class LineSpacing(AttributeType):
-    """Base class for line spacing types. Line spacing is defined as the
-    distance between the baselines of two consecutive lines."""
+    """Base class for line spacing types
+
+    Line spacing is defined as the distance between the baselines of two
+    consecutive lines of text in a paragraph.
+
+    """
+
+    def __repr__(self):
+        args = ', '.join(repr(arg) for arg in self._str_args)
+        return '{}({})'.format(type(self).__name__, args)
 
     def __str__(self):
         for name, spacing in PREDEFINED_SPACINGS.items():
@@ -91,6 +99,13 @@ class LineSpacing(AttributeType):
     def parse_arguments(cls, arg_strings):
         raise NotImplementedError
 
+    @classmethod
+    def doc_format(cls):
+        return ('a :ref:`predefined line spacing <predefined_line_spacings>` '
+                'type or the name of a line spacing type followed by comma-'
+                'separated arguments enclosed in braces: '
+                '``<spacing type>(<arg1>, <arg2>, ...)``')
+
     def advance(self, line, last_descender, container):
         """Return the distance between the descender of the previous line and
         the baseline of the current line."""
@@ -102,13 +117,13 @@ class DefaultSpacing(LineSpacing):
 
     @property
     def _str_args(self):
-        return None
+        return ()
 
     def advance(self, line, last_descender, container):
         max_line_gap = max(float(glyph_span.span.line_gap(container))
                            for glyph_span in line)
         max_ascender = max(float(glyph_span.span.ascender(container))
-                       for glyph_span in line)
+                           for glyph_span in line)
         return max_ascender + max_line_gap
 
 
@@ -117,15 +132,16 @@ DEFAULT = DefaultSpacing()
 
 
 class ProportionalSpacing(LineSpacing):
-    """Line spacing proportional to the line height."""
+    """Line spacing proportional to the line height
+
+    Args:
+        factor (float): amount by which the line height is multiplied to obtain
+            the line spacing
+
+    """
 
     def __init__(self, factor):
-        """`factor` specifies the amount by which the line height is multiplied
-        to obtain the line spacing."""
         self.factor = factor
-
-    def __repr__(self):
-        return '{}({})'.format(type(self).__name__, self.factor)
 
     @property
     def _str_args(self):
@@ -158,14 +174,18 @@ DOUBLE = ProportionalSpacing(2.0)
 
 
 class FixedSpacing(LineSpacing):
-    """Fixed line spacing, with optional minimum spacing."""
+    """Fixed line spacing, with optional minimum spacing
+
+    Args:
+        pitch (Dimension): the distance between the baseline of two consecutive
+            lines of text
+        minimum (LineSpacing): the minimum line spacing to prevents lines with
+            large fonts (or inline elements) from overlapping; set to ``None``
+            if no minimum is required, set to `None`
+
+    """
 
     def __init__(self, pitch, minimum=SINGLE):
-        """`pitch` specifies the distance between the baseline of two
-        consecutive lines of text.
-        Optionally, `minimum` specifies the minimum :class:`LineSpacing` to use,
-        which can prevent lines with large fonts from overlapping. If no minimum
-        is required, set to `None`."""
         self.pitch = pitch
         self.minimum = minimum
 
@@ -194,11 +214,15 @@ class FixedSpacing(LineSpacing):
 
 
 class Leading(LineSpacing):
-    """Line spacing determined by the space in between two lines."""
+    """Line spacing determined by the space in between two lines
+
+    Args:
+        leading (Dimension): the space between the bottom of a line and the top
+            of the next line of text
+
+    """
 
     def __init__(self, leading):
-        """`leading` specifies the space between the bottom of a line and the
-        top of the following line."""
         self.leading = leading
 
     @property
@@ -302,6 +326,14 @@ class TabStopList(AttributeType, list):
             tabstops.append(tabstop)
         return cls(tabstops)
 
+    @classmethod
+    def doc_format(cls):
+        return ('a comma-seperated list of tab stops. A tab stop is specified '
+                'as ``<position> [align] [fill string]``, where '
+                '``<position>`` (:class:`.Dimension`) is required and '
+                '``align`` (:class:`.TabAlign`) and ``fill string`` '
+                '(string enclosed in quotes) are optional.')
+
 
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(FlowableStyle, TextStyle):
@@ -313,7 +345,7 @@ class ParagraphStyle(FlowableStyle, TextStyle):
                              'baselines of two successive lines of text')
     text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '
                                                  'margins')
-    tab_stops = Attribute(TabStopList, [], 'List of tab positions')
+    tab_stops = Attribute(TabStopList, TabStopList(), 'List of tab positions')
 
 
 class Glyph(object):

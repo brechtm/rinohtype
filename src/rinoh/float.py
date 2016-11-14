@@ -234,6 +234,12 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
             kwargs[keyword] = value
         return cls(filename, **kwargs)
 
+    @classmethod
+    def doc_format(cls):
+        return ('filename of an image file enclosed in quotes, optionally '
+                'followed by space-delimited keyword arguments '
+                '(``<keyword>=<value>``) that determine how the image is '
+                'displayed')
 
 class Caption(NumberedParagraph):
     @property

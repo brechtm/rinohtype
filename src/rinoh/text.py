@@ -72,6 +72,10 @@ class Locale(AttributeType):
                              "form 'en_US'.".format(string))
         return string
 
+    @classmethod
+    def doc_format(cls):
+        return 'locale identifier in the ``<language ID>_<region ID>`` format'
+
 
 class TextStyle(Style):
     """The :class:`Style` for :class:`StyledText` objects"""
@@ -193,6 +197,13 @@ class StyledText(Styled, AcceptNoneAttributeType):
         else:
             first, = texts
             return first
+
+    @classmethod
+    def doc_format(cls):
+        return ("a list of styled text strings, separated by spaces. A styled "
+                "text string is a quoted string (``'`` or ``\"``), optionally "
+                "followed by a style name enclosed in braces: "
+                "``'text string' (style name)``")
 
     @classmethod
     def validate(cls, value, accept_variables=False, attribute_name=None):

@@ -20,7 +20,10 @@ It also exports a number of pre-defined units:
 
 """
 
+import inspect
 import re
+
+import sys
 
 from .attribute import AcceptNoneAttributeType
 from collections import OrderedDict
@@ -156,6 +159,13 @@ class Dimension(DimensionBase):
     def __str__(self):
         number = '{:.2f}'.format(self._value).rstrip('0').rstrip('.')
         return '{}{}'.format(number, self._unit.label)
+
+    def __repr__(self):
+        for name, obj in inspect.getmembers(sys.modules[__name__]):
+            if obj is self._unit:
+                return '{}*{}'.format(self._value, name)
+        else:
+            raise ValueError
 
     def grow(self, value):
         self._value += float(value)

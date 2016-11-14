@@ -140,12 +140,12 @@ def main():
     do_exit = False
     if args.list_templates:
         print('Installed document templates:')
-        for name in sorted(DocumentTemplate.installed_resources):
+        for name, _ in sorted(DocumentTemplate.installed_resources):
             print('- {}'.format(name))
         do_exit = True
     if args.list_stylesheets:
         print('Installed style sheets:')
-        for name in sorted(StyleSheet.installed_resources):
+        for name, _ in sorted(StyleSheet.installed_resources):
             print('- {}'.format(name))
         do_exit = True
     if args.list_formats:

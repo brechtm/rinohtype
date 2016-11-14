@@ -61,7 +61,11 @@ Line Spacing
     :members:
 
 
-A number of standard line spacings have been predefined:
+.. _predefined_line_spacings:
+
+The following standard line spacings have been predefined:
+
+.. autodata:: DEFAULT
 
 .. autodata:: STANDARD
 

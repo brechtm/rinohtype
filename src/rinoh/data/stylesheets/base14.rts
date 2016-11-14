@@ -2,6 +2,7 @@
 name=Sphinx (PDF Core Fonts)
 base=sphinx
 description=The Sphinx stylesheet, but using the fonts from the PDF core set
+    (yielding smaller PDF files)
 
 [VARIABLES]
 mono_typeface=Courier

@@ -6,7 +6,9 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import inspect
 import os
+import sys
 
 from .. import DATA_PATH
 from ..style import StyleSheetFile
@@ -29,3 +31,12 @@ sphinx = StyleSheetFile(path('sphinx.rts'))
 sphinx_article = StyleSheetFile(path('sphinx_article.rts'))
 
 sphinx_base14 = StyleSheetFile(path('base14.rts'))
+
+
+# generate docstrings for the StyleSheet instances
+
+for name, stylesheet in inspect.getmembers(sys.modules[__name__]):
+    if not isinstance(stylesheet, StyleSheetFile):
+        continue
+    stylesheet.__doc__ = (':entry point name: ``{}``\n\n{}'
+                          .format(stylesheet, stylesheet.description))

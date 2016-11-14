@@ -49,7 +49,7 @@ class Resource(AttributeType):
     @class_property
     def installed_resources(cls):
         for entry_point in iter_entry_points(cls.entry_point_group_name):
-            yield entry_point.name
+            yield entry_point.name, entry_point
 
     @classmethod
     def install_from_pypi(cls, entry_point_name):

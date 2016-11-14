@@ -124,6 +124,11 @@ class FlowablesList(AcceptNoneAttributeType):
         locals.update(styleds.__dict__)
         return eval(string, {'__builtins__':{}}, locals)
 
+    @classmethod
+    def doc_format(cls):
+        return ('Python source code that represents a list of '
+                ':class:`.Flowable`\ s')
+
 
 CHAPTER_TITLE_FLOWABLES = [Paragraph(StringField(SectionTitles, 'chapter')),
                            Paragraph(Field(SECTION_NUMBER(1))),
@@ -539,6 +544,9 @@ class PartsList(AttributeType, list):
     def __init__(self, *parts):
         super().__init__(parts)
 
+    def __str__(self):
+        return ' '.join(self.parts)
+
     @classmethod
     def check_type(cls, value):
         if not (super().check_type(value) or isinstance(value, list)):
@@ -551,8 +559,14 @@ class PartsList(AttributeType, list):
 
     @classmethod
     def doc_repr(cls, value):
-        return '[{}]'.format(', '.join(':attr:`{}`'.format(part_name)
-                                       for part_name in value))
+        space = '\ ``\N{NO-BREAK SPACE}``\ '
+        return space.join(':attr:`{}`'.format(part)
+                          for part in value) or '(empty list)'
+
+    @classmethod
+    def doc_format(cls):
+        return 'a space-separated list of document part template names'
+
 
 
 class DocumentTemplate(Document, AttributesDictionary, Resource,

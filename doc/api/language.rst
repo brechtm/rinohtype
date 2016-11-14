@@ -13,6 +13,8 @@ Language (:mod:`rinoh.language`)
         :annotation:
 
 
+.. _supported_languages:
+
 The following languages are supported:
 
 .. autodata:: EN

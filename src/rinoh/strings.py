@@ -95,6 +95,11 @@ class Strings(AcceptNoneAttributeType, dict):
                                      type(self).__name__))
         super().__setitem__(string_collection_class, string_collection)
 
+    @classmethod
+    def doc_format(cls):
+        return ('strings need to be entered in INI sections named after the '
+                ':class:`.StringCollection` subclasses')
+
 
 class StringField(SingleStyledTextBase):
     """Styled text that will be substituted with a configured string

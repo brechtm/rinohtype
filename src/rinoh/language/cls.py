@@ -50,3 +50,8 @@ class Language(AttributeType):
     def doc_repr(cls, value):
         return ':data:`~.rinoh.language.{}` ({})'.format(value.code.upper(),
                                                          value.name)
+
+    @classmethod
+    def doc_format(cls):
+        return ('the code of one of the '
+                ':ref:`supported languages <supported_languages>`')

@@ -7,7 +7,7 @@
 
 """
 
-The :class:`Paper` class and a number of predefined paper sizes.
+The :class:`Paper` class and a number of predefined paper formats.
 
 """
 
@@ -37,9 +37,9 @@ class Paper(AttributeType):
         self.height = height
 
     def __repr__(self):
-        return ('{}({}, width={}, height={})'
+        return ("{}('{}', width={}, height={})"
                 .format(type(self).__name__, self.name,
-                        self.width, self.height))
+                        repr(self.width), repr(self.height)))
 
     def __str__(self):
         return self.name
@@ -56,6 +56,12 @@ class Paper(AttributeType):
                 raise ValueError("'{}' is not a valid {} format"
                                  .format(string, cls.__name__))
             return cls(string, width, height)
+
+    @classmethod
+    def doc_format(cls):
+        return ('the name of a :ref:`predefined paper format <paper>` '
+                'or ``<width> * <height>`` where ``width`` and ``height`` are '
+                ':class:`.Dimension`\ s')
 
 
 # International (DIN 476 / ISO 216)

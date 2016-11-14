@@ -687,12 +687,33 @@ class StyleSheet(RuleSet, Resource):
                  .format(', '.join(user_options.keys())))
         self.user_options = user_options
 
+    def __str__(self):
+        for name, entry_point in self.installed_resources:
+            if self is entry_point.load():
+                return name
+        raise NotImplementedError
+
     @classmethod
     def parse_string(cls, filename_or_resource_name):
         if os.path.isfile(filename_or_resource_name):
             return StyleSheetFile(filename_or_resource_name)
         else:
             return super().parse_string(filename_or_resource_name)
+
+    @classmethod
+    def doc_repr(cls, value):
+        for name, entry_point in cls.installed_resources:
+            if value is entry_point.load():
+                object_name, = entry_point.attrs
+                return ('``{}`` (= :data:`{}.{}`)'
+                        .format(name, entry_point.module_name, object_name))
+        raise NotImplementedError
+
+    @classmethod
+    def doc_format(cls):
+        return ('the name of an :ref:`installed style sheet <included_style_'
+                'sheets>` or the filename of a stylesheet file (with the '
+                '``{}`` extension)'.format(cls.extension))
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
