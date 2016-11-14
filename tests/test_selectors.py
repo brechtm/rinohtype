@@ -8,7 +8,7 @@
 
 import pytest
 
-from rinoh.float import Image
+from rinoh.image import Image
 
 
 def test_image():

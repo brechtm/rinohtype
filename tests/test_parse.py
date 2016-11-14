@@ -6,8 +6,8 @@ from rinoh.color import Color, HexColor
 from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
                              PERCENT, QUARTERS)
 from rinoh.draw import Stroke
-from rinoh.float import BackgroundImage, Scale
 from rinoh.flowable import HorizontalAlignment, Break
+from rinoh.image import BackgroundImage, Scale
 from rinoh.number import NumberFormat
 from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
 from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,

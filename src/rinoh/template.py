@@ -20,7 +20,7 @@ from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
 from .dimension import Dimension, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
-from .float import BackgroundImage, Image
+from .image import BackgroundImage, Image
 from .flowable import Flowable
 from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,

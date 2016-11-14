@@ -1,8 +1,8 @@
 
 from .annotation import AnnotatedText
 from .draw import Line, Shape, Polygon, Rectangle
-from .float import Figure, Caption
-from .float import Image, InlineImage
+from .image import Figure, Caption
+from .image import Image, InlineImage
 from .flowable import Flowable, Float
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import HorizontallyAlignedFlowable
