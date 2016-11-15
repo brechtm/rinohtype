@@ -393,7 +393,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             return self.language.strings[strings_class][key]
         except KeyError:
             warn('The {} "{}" string is not defined for {} ({}). Using the '
-                 'english string instead.'.format(strings_class.__name__, key,
+                 'English string instead.'.format(strings_class.__name__, key,
                                                   self.language.name,
                                                   self.language.code))
             return EN.strings[strings_class][key]
