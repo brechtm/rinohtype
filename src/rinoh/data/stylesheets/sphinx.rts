@@ -113,6 +113,12 @@ margin_left=1cm
 base=default
 text_align=RIGHT
 
+[centered]
+base=default
+text_align=CENTER
+font_weight=BOLD
+space_below=4pt
+
 [line block line]
 base=default
 space_below=0pt

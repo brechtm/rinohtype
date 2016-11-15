@@ -46,6 +46,11 @@ class Compact_Paragraph(DocutilsGroupingNode):
     pass
 
 
+class Centered(DocutilsBodyNode):
+    def build_flowable(self):
+        return Paragraph(super().process_content(), style='centered')
+
+
 # inline nodes
 
 class Index(DocutilsBodyNode, DocutilsInlineNode):

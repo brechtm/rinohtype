@@ -57,6 +57,7 @@ matcher('broken hyperlink', StyledText.like('broken link'))
 matcher('body', Paragraph)
 matcher('code block', +CodeBlock)
 matcher('attribution', Paragraph.like('attribution'))
+matcher('centered', Paragraph.like('centered'))
 
 matcher('block quote', GroupedFlowables.like('block quote'))
 matcher('line block', GroupedFlowables.like('line block'))
