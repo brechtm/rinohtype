@@ -165,8 +165,16 @@ class Attribute(NamedDescriptor):
 class OverrideDefault(Attribute):
     """Overrides the default value of an attribute defined in a superclass"""
     def __init__(self, default_value):
-        self.default_value = default_value
-        self.overrides = None
+        self._default_value = default_value
+
+    @property
+    def overrides(self):
+        return self._overrides
+
+    @overrides.setter
+    def overrides(self, attribute):
+        self._overrides = attribute
+        self.default_value = self.accepted_type.validate(self._default_value)
 
     @property
     def accepted_type(self):
