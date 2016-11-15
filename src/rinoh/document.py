@@ -353,6 +353,8 @@ to the terms of the GNU Affero General Public License version 3.''')
                       or self._get_unique_id())
         self.ids_by_element[element] = primary_id
         self.elements[primary_id] = element
+        for id in element.secondary_ids:
+            self.elements[id] = element
         return primary_id
 
     def register_page_reference(self, page, element):
