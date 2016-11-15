@@ -122,6 +122,7 @@ matcher('(table) enumerated list item label', '(table) enumerated list item'
                                               / ListItemLabel)
 
 matcher('bulleted list', List.like('bulleted'))
+matcher('compact bulleted list', List.like('bulleted', compact=True))
 matcher('bulleted list item', 'bulleted list' / ListItem)
 matcher('bulleted list item label', 'bulleted list item' / ListItemLabel)
 matcher('nested bulleted list', ListItem / 'bulleted list')

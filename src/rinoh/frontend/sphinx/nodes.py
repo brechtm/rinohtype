@@ -19,25 +19,26 @@ from ...flowable import LabeledFlowable, StaticGroupedFlowables
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference
-from ...structure import DefinitionList
+from ...structure import DefinitionList, List
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 from ...warnings import warn
 
-from ..rst import (DocutilsInlineNode, DocutilsBodyNode,
+from ..rst import (DocutilsNode, DocutilsInlineNode, DocutilsBodyNode,
                    DocutilsGroupingNode, DocutilsDummyNode)
 from ..rst.nodes import Admonition, Strong, Emphasis
 from ..rst.nodes import Literal_Block as rst_Literal_Block
 
 
-__all__ = ['Compact_Paragraph', 'Index', 'Pending_XRef', 'Literal_Emphasis',
-           'Abbreviation', 'Download_Reference', 'SeeAlso', 'Glossary',
-           'Start_of_File', 'Todo_Node', 'HighlightLang', 'Literal_Strong',
-           'ProductionList', 'Production', 'TermSep', 'Desc', 'Desc_Signature',
-           'Desc_Name', 'Desc_AddName', 'Desc_Type', 'Desc_ParameterList',
-           'Desc_Parameter', 'Desc_Optional', 'Desc_Annotation', 'Desc_Content',
-           'Desc_Returns', 'VersionModified', 'Tabular_Col_Spec',
-           'AutoSummary_Table', 'Number_Reference']
+__all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
+           'Literal_Emphasis', 'Abbreviation', 'Download_Reference', 'SeeAlso',
+           'Glossary', 'Start_of_File', 'Todo_Node', 'HighlightLang',
+           'Literal_Strong', 'ProductionList', 'Production', 'TermSep', 'Desc',
+           'Desc_Signature', 'Desc_Name', 'Desc_AddName', 'Desc_Type',
+           'Desc_ParameterList', 'Desc_Parameter', 'Desc_Optional',
+           'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
+           'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
+           'Number_Reference']
 
 
 # other paragraph-level nodes
@@ -49,6 +50,22 @@ class Compact_Paragraph(DocutilsGroupingNode):
 class Centered(DocutilsBodyNode):
     def build_flowable(self):
         return Paragraph(super().process_content(), style='centered')
+
+
+class HList(DocutilsBodyNode):
+    def build_flowable(self):
+        list = List([list_item.flowable()
+                     for hlistcol in self.hlistcol
+                     for bullet_list in hlistcol.getchildren()
+                     for list_item in bullet_list.getchildren()],
+                    style='bulleted')
+        list.compact = True
+        list.columns = sum(1 for _ in self.hlistcol)
+        return list
+
+
+class HListCol(DocutilsNode):
+    pass
 
 
 # inline nodes
