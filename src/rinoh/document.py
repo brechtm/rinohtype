@@ -500,9 +500,11 @@ to the terms of the GNU Affero General Public License version 3.''')
         sys.stdout.write('\n')     # for the progress indicator
         return part_page_counts
 
+    PROGRESS_TEMPLATE = \
+        '\r{:3d}% [{}{}] ETA {:02d}:{:02d} ({:02d}:{:02d}) page {}'
     PROGRESS_BAR_WIDTH = 40
 
-    def progress(self, flowable):
+    def progress(self, flowable, container):
         try:
             index = self._flowables.index(id(flowable))
         except ValueError:
@@ -513,9 +515,10 @@ to the terms of the GNU Affero General Public License version 3.''')
             passed = int(time_passed)
             eta = int(time_passed / percent * (100 - percent))
             filled = int(self.PROGRESS_BAR_WIDTH * percent / 100)
-            sys.stdout.write('\r{:3d}% [{}{}] ETA {:02d}:{:02d} ({:02d}:{:02d})'
+            sys.stdout.write(self.PROGRESS_TEMPLATE
                              .format(int(percent), filled * '=',
                                      (self.PROGRESS_BAR_WIDTH - filled) * ' ',
                                      eta // 60, eta % 60,
-                                     passed // 60, passed % 60))
+                                     passed // 60, passed % 60,
+                                     container.page.formatted_number))
             sys.stdout.flush()

@@ -163,7 +163,7 @@ class Flowable(Styled):
                     if reference_id:
                         self.create_destination(margin_container, True)
         container.advance(float(self.get_style('space_below', container)), True)
-        container.document.progress(self)
+        container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
 
     def flow_inner(self, container, descender, state=None, **kwargs):
