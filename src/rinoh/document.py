@@ -331,6 +331,7 @@ class Document(object):
         self.references = {}           # mapping id's to reference data
         self.page_elements = {}        # mapping id's to pages
         self.page_references = {}      # mapping id's to page numbers
+        self._sections = []
         self.index_entries = {}
         self._unique_id = 0
 
@@ -455,9 +456,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         sections = parent = []
         current_level = 1
         stack = []
-        for section_id, section in ((id, flowable)
-                                    for id, flowable in self.elements.items()
-                                    if isinstance(flowable, Section)):
+        for section in self._sections:
+            section_id = section.get_id(self, create=False)
             section_number = self.get_reference(section_id, 'number')
             section_title = self.get_reference(section_id, 'title')
             if section.level > current_level:

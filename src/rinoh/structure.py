@@ -124,6 +124,7 @@ class Heading(NumberedParagraph):
 
     def prepare(self, flowable_target):
         document = flowable_target.document
+        document._sections.append(self.section)
         section_id = self.section.get_id(document)
         numbering_style = self.get_style('number_format', flowable_target)
         if self.get_style('custom_label', flowable_target):
@@ -279,17 +280,12 @@ class TableOfContents(GroupedFlowables):
                 yield flowable_id, flowable
 
         depth = self.get_style('depth', container)
-        items = ((flowable_id, flowable)
-                 for flowable_id, flowable
-                     in container.document.elements.items()
-                 if (isinstance(flowable, Section)
-                     and flowable.show_in_toc(container)
-                     and flowable.level <= depth))
+        items = (section for section in container.document._sections
+                 if section.show_in_toc(container) and section.level <= depth)
         if self.local and self.section:
             items = limit_items(items, self.section)
-
-        for flowable_id, flowable in items:
-            yield TableOfContentsEntry(flowable, parent=self)
+        for section in items:
+            yield TableOfContentsEntry(section, parent=self)
 
 
 class TableOfContentsEntryStyle(ReferencingParagraphStyle):
