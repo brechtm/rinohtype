@@ -725,8 +725,8 @@ class HorizontallyAlignedFlowable(Flowable):
 
 
 class FloatStyle(FlowableStyle):
-    float = Attribute(Bool, True, 'Float the flowable to the top or bottom of '
-                                  'the page')
+    float = Attribute(Bool, False, 'Float the flowable to the top or bottom '
+                                   'of the page')
 
 
 class Float(Flowable):
