@@ -22,7 +22,12 @@ class TreeNode(object):
 
     @classmethod
     def map_node(cls, node):
-        return cls._mapping[cls.node_tag_name(node).replace('-', '_')](node)
+        node_name = cls.node_tag_name(node)
+        try:
+            return cls._mapping[node_name.replace('-', '_')](node)
+        except KeyError:
+            raise NotImplementedError("The '{}' node is not yet supported ({})"
+                                      .format(node_name, cls.__module__))
 
     def __init__(self, doctree_node):
         self.node = doctree_node
