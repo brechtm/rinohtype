@@ -8,7 +8,10 @@
 
 import os
 
-from .attribute import AcceptNoneAttributeType, OptionSet, Integer, Bool
+from functools import partial
+
+from .attribute import (Attribute, AcceptNoneAttributeType, Bool, Integer,
+                        OptionSet)
 from .color import RED
 from .dimension import Dimension
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
@@ -17,11 +20,11 @@ from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        HorizontalAlignment)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
-from .number import NumberedParagraph
+from .number import NumberedParagraph, NumberedParagraphStyle, format_number
 from .paragraph import Paragraph
 from .reference import ReferenceType
 from .style import CharIterator, parse_string
-from .text import MixedStyledText, SingleStyledText, TextStyle
+from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
 from .util import posix_path, ReadAliasAttribute
 
 
