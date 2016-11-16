@@ -241,13 +241,49 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
                 '(``<keyword>=<value>``) that determine how the image is '
                 'displayed')
 
+
+class CaptionStyle(NumberedParagraphStyle):
+    numbering_level = Attribute(Integer, 1, 'At which section level to '
+                                            'restart numbering')
+    number_separator = Attribute(StyledText, '.',
+                                 'Characters inserted between the section '
+                                 'number and the caption number')
+
+
 class Caption(NumberedParagraph):
+    style_class = CaptionStyle
+
     @property
     def referenceable(self):
         return self.parent
 
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        document = flowable_target.document
+        get_style = partial(self.get_style, flowable_target=flowable_target)
+        category = self.referenceable.category
+        section_level = get_style('numbering_level')
+        category_counters = document.counters.setdefault(category, {})
+        section = self.section
+        while section and section.level > section_level:
+            section = section.parent.section
+        section_id = section.get_id(document, False) if section else None
+        category_counter = category_counters.setdefault(section_id, [])
+        category_counter.append(self)
+        number = str(len(category_counter))
+        if section_id:
+            section_number = document.get_reference(section_id, 'number')
+            sep = get_style('number_separator') or SingleStyledText('')
+            number = section_number + sep.to_string(flowable_target) + number
+        reference = '{} {}'.format(category, number)
+        for id in self.referenceable.get_ids(document):
+            document.set_reference(id, ReferenceType.NUMBER, number)
+            document.set_reference(id, ReferenceType.REFERENCE, reference)
+            # TODO: need to store formatted number
+            # document.set_reference(id, ReferenceType.TITLE, caption text)
+
     def text(self, container):
-        label = self.parent.category + ' ' + self.number(container)
+        label = self.referenceable.category + ' ' + self.number(container)
         return MixedStyledText(label + self.content, parent=self)
 
 
@@ -258,15 +294,3 @@ class FigureStyle(FloatStyle, GroupedFlowablesStyle):
 class Figure(Float, InseparableFlowables, StaticGroupedFlowables):
     style_class = FigureStyle
     category = 'Figure'
-
-    def prepare(self, flowable_target):
-        super().prepare(flowable_target)
-        document = flowable_target.document
-        number = document.counters.setdefault(self.category, 1)
-        document.counters[self.category] += 1
-        reference = '{} {}'.format(self.category, number)
-        for id in self.get_ids(document):
-            document.set_reference(id, ReferenceType.NUMBER, str(number))
-            document.set_reference(id, ReferenceType.REFERENCE, reference)
-            # TODO: need to store formatted number
-            # document.set_reference(id, ReferenceType.TITLE, caption text)

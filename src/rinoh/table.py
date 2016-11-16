@@ -305,14 +305,6 @@ class Table(HorizontallyAlignedFlowable):
 class TableWithCaption(StaticGroupedFlowables):
     category = 'Table'
 
-    def prepare(self, flowable_target):
-        super().prepare(flowable_target)
-        document = flowable_target.document
-        number = document.counters.setdefault(self.category, 1)
-        document.counters[self.category] += 1
-        for id in self.get_ids(document):
-            document.set_reference(id, ReferenceType.NUMBER, str(number))
-
 
 class TableSection(Styled, list):
     def __init__(self, rows, style=None, parent=None):
