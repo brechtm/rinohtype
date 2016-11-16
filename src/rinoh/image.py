@@ -270,7 +270,8 @@ class Caption(NumberedParagraph):
         section_id = section.get_id(document, False) if section else None
         category_counter = category_counters.setdefault(section_id, [])
         category_counter.append(self)
-        number = str(len(category_counter))
+        number_format = get_style('number_format')
+        number = format_number(len(category_counter), number_format)
         if section_id:
             section_number = document.get_reference(section_id, 'number')
             sep = get_style('number_separator') or SingleStyledText('')
@@ -279,7 +280,6 @@ class Caption(NumberedParagraph):
         for id in self.referenceable.get_ids(document):
             document.set_reference(id, ReferenceType.NUMBER, number)
             document.set_reference(id, ReferenceType.REFERENCE, reference)
-            # TODO: need to store formatted number
             # document.set_reference(id, ReferenceType.TITLE, caption text)
 
     def text(self, container):
