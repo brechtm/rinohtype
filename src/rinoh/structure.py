@@ -267,17 +267,12 @@ class TableOfContents(GroupedFlowables):
 
     def flowables(self, container):
         def limit_items(items, section):
-            section_id = section.get_id(container.document)
-            section_level = section.level
-
-            # fast-forward `items` to the first sub-section of `section`
-            while next(items)[0] != section_id:
-                pass
-
-            for flowable_id, flowable in items:
-                if flowable.level == section_level:
+            while next(items) is not section:  # fast-forward `items` to the
+                pass                           # first sub-section of `section`
+            for item in items:
+                if item.level == section.level:
                     break
-                yield flowable_id, flowable
+                yield item
 
         depth = self.get_style('depth', container)
         items = (section for section in container.document._sections
