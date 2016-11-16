@@ -75,11 +75,11 @@ class Table(HorizontallyAlignedFlowable):
         """
 
         Args:
-          width (:class:`DimensionBase` or `None`): the width of the table. If
-              `None`, the with of the table is automatically determined.
-          column_widths (list or `None`): a list of relative (:class:`Number`)
-              and absolute (:class:`DimensionBase`) column widths. A value of
-              `None` auto-sizes the column. Passing `None` instead of a list
+          width (DimensionBase or None): the width of the table. If ``None``,
+              the width of the table is automatically determined.
+          column_widths (list or None): a list of relative (int or float)
+              and absolute (:class:`.Dimension`) column widths. A value of
+              ``None`` auto-sizes the column. Passing ``None` instead of a list
               auto-sizes all columns.
 
         """
@@ -164,22 +164,22 @@ class Table(HorizontallyAlignedFlowable):
         max_column_widths = calculate_column_widths(float('+inf'))
 
         # calculate relative column widths for auto-sized columns
-        auto_relative_colwidths = [sqrt(minimum * maximum) for minimum, maximum
-                                   in zip(min_column_widths, max_column_widths)]
+        auto_rel_colwidths = [sqrt(minimum * maximum) for minimum, maximum
+                              in zip(min_column_widths, max_column_widths)]
         column_widths = self.column_widths or [None for _ in max_column_widths]
         try:          # TODO: max() instead of min()?
             relative_factor = min(auto_relative_width / width
-                                 for width, auto_relative_width
-                                 in zip(column_widths, auto_relative_colwidths)
-                                 if width and not isinstance(width, DimBase))
+                                  for width, auto_relative_width
+                                  in zip(column_widths, auto_rel_colwidths)
+                                  if width and not isinstance(width, DimBase))
         except ValueError:
             relative_factor = 1
         column_widths = [auto_relative_width * relative_factor
                          if width is None else width
                          for width, auto_relative_width
-                         in zip(column_widths, auto_relative_colwidths)]
+                         in zip(column_widths, auto_rel_colwidths)]
 
-        # TODO: if table fits in width without wrapping cells, set with of
+        # TODO: if table fits in width without wrapping cells, set width of
         #       auto-sized columns to max_width
 
         # set min = max for columns with a fixed width
@@ -202,20 +202,51 @@ class Table(HorizontallyAlignedFlowable):
                              if not isinstance(width, DimBase))
             no_wrap_rel_cols_width = total_portions * max_factor
             table_width = min(total_fixed_cols_width + no_wrap_rel_cols_width,
-                              container.width)
+                              float(container.width))
         else:
             table_width = total_fixed_cols_width
+
+        # TODO: warn when a column's fixed width < min width
 
         # determine absolute width of columns with relative widths
         if total_portions:
             total_relative_cols_width = table_width - total_fixed_cols_width
             portion_width = total_relative_cols_width / total_portions
-            return [width.to_points(container.width)
-                    if isinstance(width, DimBase) else width * portion_width
-                    for width in column_widths]
-        else:
-            return [width.to_points(container.width) for width in column_widths]
+            auto_widths = [width if isinstance(width, DimBase)
+                           else width * portion_width
+                           for width in column_widths]
+            extra = [0 if isinstance(width, DimBase)
+                     else auto_width - min_column_widths[index]
+                     for index, auto_width in enumerate(auto_widths)]
+            excess = [0 if isinstance(width, DimBase)
+                      else auto_width - max_column_widths[index]
+                      for index, auto_width in enumerate(auto_widths)]
+            excess_pos = sum(x for x in excess if x > 0)
+            extra_neg = sum(x for x in extra if x <= 0) + excess_pos
+            extra_pos = (sum(x for x, c in zip(extra, excess)
+                             if x > 0 and c <= 0))
+            if extra_pos + extra_neg < 0:
+                self.warn('Table contents are too wide to fit within the '
+                          'width available for the table', container)
+                return [width.to_points(container.width)
+                        if isinstance(width, DimBase) else width
+                        for width in auto_widths]
 
+            def final_column_width(index, width):
+                if isinstance(width, DimBase):
+                    return width.to_points(container.width)
+                elif excess[index] > 0:
+                    return max_column_widths[index]
+                elif extra[index] <= 0:
+                    return min_column_widths[index]
+                else:
+                    return width + (extra_neg * extra[index] / extra_pos)
+
+            return [final_column_width(i, width)
+                    for i, width in enumerate(auto_widths)]
+        else:
+            return [width.to_points(container.width)
+                    for width in column_widths]
 
     @classmethod
     def _render_section(cls, container, rows, column_widths):
