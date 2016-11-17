@@ -226,7 +226,7 @@ class RinohBuilder(Builder):
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
-        template_cfg = template_from_config(self.config, self.warn)
+        template_cfg = template_from_config(config, self.confdir, self.warn)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
@@ -242,22 +242,27 @@ class RinohBuilder(Builder):
         rinoh_document.render(outfilename)
 
 
-def template_from_config(config, warn):
+def template_from_config(config, confdir, warn):
     template_cfg = {}
-    rinoh_template = config.rinoh_template
-    if isinstance(rinoh_template, TemplateConfiguration):
-        template_cfg['base'] = rinoh_template
-        template_cls = rinoh_template.template
-    elif os.path.isfile(rinoh_template):
-        template_cfg['base'] = TemplateConfigurationFile(rinoh_template)
-        template_cls = template_cfg['base'].template
+    if isinstance(config.rinoh_template, str):
+        tmpl_path = path.join(confdir, config.rinoh_template)
+        if path.isfile(tmpl_path):
+            template_cfg['base'] = TemplateConfigurationFile(tmpl_path)
+            template_cls = template_cfg['base'].template
+        else:
+           template_cls = DocumentTemplate.from_string(config.rinoh_template)
+    elif isinstance(config.rinoh_template, TemplateConfiguration):
+        template_cfg['base'] = config.rinoh_template
+        template_cls = config.rinoh_template.template
     else:
-        template_cls = (DocumentTemplate.from_string(rinoh_template)
-                        if isinstance(rinoh_template, str)
-                        else rinoh_template)
-    stylesheet = (StyleSheet.from_string(config.rinoh_stylesheet)
-                  if isinstance(config.rinoh_stylesheet, str)
-                  else config.rinoh_stylesheet)
+        template_cls = config.rinoh_template
+    if isinstance(config.rinoh_stylesheet, str):
+        stylesheet_path = path.join(confdir, config.rinoh_stylesheet)
+        stylesheet = StyleSheet.from_string(stylesheet_path
+                                            if path.isfile(stylesheet_path)
+                                            else config.rinoh_stylesheet)
+    else:
+        stylesheet = config.rinoh_stylesheet
     if config.pygments_style is not None:
         if stylesheet is not None:
             base = stylesheet
