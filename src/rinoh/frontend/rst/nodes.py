@@ -23,7 +23,6 @@ from ...util import intersperse
 # (http://docutils.sourceforge.net/docs/ref/doctree.html)
 # - abbreviation
 # - acronym
-# - container
 # - decoration / header / footer
 # - math / math_block
 # - pending
@@ -38,7 +37,18 @@ class Text(DocutilsInlineNode):
 
 
 class Inline(DocutilsInlineNode):
-    pass
+    style = None
+    class_styles = {}
+
+    @property
+    def style_from_class(self):
+        for cls in self.get('classes'):
+            if cls in self.class_styles:
+                return self.class_styles[cls]
+        return self.style
+
+    def build_styled_text(self):
+        return rt.SingleStyledText(self.text, style=self.style_from_class)
 
 
 class Document(DocutilsBodyNode):
@@ -270,24 +280,20 @@ class Generated(DocutilsInlineNode):
         return self.process_content()
 
 
-class Emphasis(DocutilsInlineNode):
-    def build_styled_text(self):
-        return rt.SingleStyledText(self.text, style='emphasis')
+class Emphasis(Inline):
+    style = 'emphasis'
 
 
-class Strong(DocutilsInlineNode):
-    def build_styled_text(self):
-        return rt.SingleStyledText(self.text, style='strong')
+class Strong(Inline):
+    style = 'strong'
 
 
 class Title_Reference(DocutilsInlineNode):
-    def build_styled_text(self):
-        return rt.SingleStyledText(self.text, style='title reference')
+    style = 'title reference'
 
 
-class Literal(DocutilsInlineNode):
-    def build_styled_text(self):
-        return rt.SingleStyledText(self.text, style='monospaced')
+class Literal(Inline):
+    style = 'monospaced'
 
 
 class Superscript(DocutilsInlineNode):

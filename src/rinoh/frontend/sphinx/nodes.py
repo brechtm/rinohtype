@@ -26,8 +26,7 @@ from ...warnings import warn
 
 from ..rst import (DocutilsNode, DocutilsInlineNode, DocutilsBodyNode,
                    DocutilsGroupingNode, DocutilsDummyNode)
-from ..rst.nodes import Admonition, Strong, Emphasis
-from ..rst.nodes import Literal_Block as rst_Literal_Block
+from ..rst import nodes as rst
 
 
 __all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
@@ -100,11 +99,37 @@ class Pending_XRef(DocutilsInlineNode):
         raise NotImplementedError
 
 
-class Literal_Emphasis(Emphasis):
-    pass
+class Inline(rst.Inline):
+    class_styles = dict(guilabel='UI control')
 
 
-class Literal_Block(rst_Literal_Block):
+class Literal(rst.Literal):
+    class_styles = dict(file='file path',
+                        kbd='keystrokes',
+                        menuselection='menu cascade',
+                        regexp='regular expression',
+                        samp='code with variable')
+
+
+class Literal_Emphasis(rst.Literal):
+    style = 'literal emphasis'
+    class_styles = dict(mailheader='mail header',
+                        mimetype='MIME type',
+                        newsgroup='newsgroup')
+
+
+class Literal_Strong(rst.Literal):
+    style = 'literal strong'
+    class_styles = dict(command='command',
+                        makevar='make variable',
+                        program='program')
+
+
+class ManPage(rst.Inline):
+    style = 'man page'
+
+
+class Literal_Block(rst.Literal_Block):
     @staticmethod
     def lexer_getter(text, language):
         # This is a partial copy of Sphinx's PygmentsBridge.highlight_block()
@@ -174,7 +199,7 @@ class Download_Reference(DocutilsInlineNode):
 
 # admonitions
 
-class SeeAlso(Admonition):
+class SeeAlso(rst.Admonition):
     pass
 
 
@@ -193,17 +218,12 @@ class Start_of_File(DocutilsGroupingNode):
         return super().build_flowable(id='%' + self.get('docname'), **kwargs)
 
 
-class Todo_Node(Admonition):
+class Todo_Node(rst.Admonition):
     pass
 
 
 class HighlightLang(DocutilsDummyNode):  # these are handled by RinohBuilder
     pass
-
-
-class Literal_Strong(Strong):
-    def build_styled_text(self):
-        return SingleStyledText(self.text, style='literal strong')
 
 
 # toctree nodes are processed by the Sphinx builder
