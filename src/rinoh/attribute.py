@@ -64,7 +64,7 @@ class AttributeType(object):
 
     @classmethod
     def doc_repr(cls, value):
-        return '``{}``'.format(value) if value else '(no value)'
+        return '``{}``'.format(value) if value is not None else '(no value)'
 
     @classmethod
     def doc_format(cls):

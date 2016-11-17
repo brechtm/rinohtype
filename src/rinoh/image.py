@@ -10,8 +10,8 @@ import os
 
 from functools import partial
 
-from .attribute import (Attribute, AcceptNoneAttributeType, Bool, Integer,
-                        OptionSet)
+from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
+                        OptionSet, AttributesDictionary)
 from .color import RED
 from .dimension import Dimension
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
@@ -47,6 +47,10 @@ class Scale(OptionSet):
             if not cls.check_type(value):
                 raise ValueError('Scale factor should be lie between 0 and 1')
         return value
+
+    @classmethod
+    def doc_format(cls):
+        return '{} or a float between 0 and 1'.format(super().doc_format())
 
 
 class ImageState(HorizontallyAlignedFlowableState):
@@ -210,17 +214,36 @@ class Image(_Image):
     pass
 
 
-BACKGROUND_IMAGE_KWARGS = dict(scale=Scale, width=Dimension, height=Dimension,
-                               dpi=Integer, rotate=Integer, limit_width=Bool,
-                               align=HorizontalAlignment)
+class BackgroundImageMeta(type(_Image), type(AttributesDictionary)):
+    pass
+
+
+class BackgroundImageArgs(AttributesDictionary):
+    scale = Attribute(Scale, 'fit', 'Scaling factor for the image')
+    width = Attribute(Dimension, None, 'The width to scale the image to')
+    height = Attribute(Dimension, None, 'The height to scale the image to')
+    dpi = Attribute(Integer, 0, 'Overrides the DPI value set in the image')
+    rotate = Attribute(Integer, 0, 'The angle in degrees to rotate the image')
+    limit_width = Attribute(Dimension, None, 'Limit the image width when none '
+                            'of :attr:`scale`, :attr:`width` and '
+                            ':attr:`height` are given and the image would '
+                            'be wider than the container')
+    align = Attribute(HorizontalAlignment, 'left', 'How to align the image '
+                                                   'within the page')
 
 
 class BackgroundImage(_Image, AcceptNoneAttributeType):
+    """Image to place in the background of a page
+
+    Takes the same arguments as :class:`Image`.
+
+    """
+
     @classmethod
     def parse_string(cls, string):
         chars = CharIterator(string)
         filename = parse_string(chars)
-        kwargs = {}
+        kwargs = BackgroundImageArgs()
         rest = ''.join(chars).strip()
         while rest:
             rest, value_string = (part.strip() for part in rest.rsplit('=', 1))
@@ -229,7 +252,7 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
             except ValueError:
                 rest, keyword = '', rest.strip()
             try:
-                value_type = BACKGROUND_IMAGE_KWARGS[keyword]
+                value_type = kwargs._attributes[keyword].accepted_type
             except KeyError:
                 raise ValueError("'{}' is not a supported keyword argument "
                                  "for {}".format(keyword, cls.__name__))

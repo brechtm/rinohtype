@@ -318,9 +318,9 @@ def test_backgroundimage_from_string():
     assert BackgroundImage.from_string("'image.jpg' scale=fill dpi = 56") \
                == BackgroundImage('image.jpg', scale='fill', dpi=56)
     assert BackgroundImage.from_string("'image.jpg' height=2cm rotate =20 "
-                                       "align=   right limit_width=trUe") \
+                                       "align=   right limit_width = 5cm") \
                == BackgroundImage('image.jpg', height=2*CM, rotate=20,
-                                  align='right', limit_width=True)
+                                  align='right', limit_width=5*CM)
     with pytest.raises(ValueError):
         BackgroundImage.from_string("'image.jpg'  unsupported_keyword=5")
 
