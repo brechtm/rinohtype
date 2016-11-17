@@ -62,7 +62,7 @@ font_slant=italic
 font_weight=BOLD
 
 [file path]
-typeface=$(mono_typeface)
+base=monospaced
 
 [keystrokes]
 base=monospaced
