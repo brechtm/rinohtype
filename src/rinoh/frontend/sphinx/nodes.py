@@ -100,7 +100,8 @@ class Pending_XRef(DocutilsInlineNode):
 
 
 class Inline(rst.Inline):
-    class_styles = dict(guilabel='UI control')
+    class_styles = dict(guilabel='UI control',
+                        accelerator='accelerator')
 
 
 class Literal(rst.Literal):

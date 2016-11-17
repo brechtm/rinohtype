@@ -98,7 +98,10 @@ base=literal emphasis
 font_weight=BOLD
 
 [UI control]
-font_weight=BOLD
+font_slant=italic
+
+[UI control accelerator]
+font_weight=bold
 
 [menu cascade]
 font_weight=BOLD

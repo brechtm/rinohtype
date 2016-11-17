@@ -49,6 +49,8 @@ matcher = StyledMatcher({
     'man page': StyledText.like('man page'),
     'window title': StyledText.like('window title'),
     'UI control': StyledText.like('UI control'),
+    'UI control accelerator': SelectorByName('UI control') / ...
+                              / StyledText.like('accelerator'),
     'menu cascade': StyledText.like('menu cascade'),
     'draft comment': StyledText.like('draft comment'),
     'title reference': StyledText.like('title reference'),
