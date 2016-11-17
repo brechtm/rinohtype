@@ -617,7 +617,7 @@ def convert_quantity(quantity_string):
 class Table(DocutilsBodyNode):
     def build_flowable(self):
         tgroup = self.tgroup
-        if tgroup.get('colwidths', 'auto') == 'given':
+        if 'colwidths-given' in self.get('classes'):
             column_widths = [int(colspec.get('colwidth'))
                              for colspec in tgroup.colspec]
         else:
