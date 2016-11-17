@@ -48,7 +48,7 @@ class Inline(DocutilsInlineNode):
         return self.style
 
     def build_styled_text(self):
-        return rt.SingleStyledText(self.text, style=self.style_from_class)
+        return self.process_content(style=self.style_from_class)
 
 
 class Document(DocutilsBodyNode):
