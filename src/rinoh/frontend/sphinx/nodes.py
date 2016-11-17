@@ -179,10 +179,8 @@ class Abbreviation(DocutilsInlineNode):
         result = self.process_content(style='abbreviation')
         # TODO: only show the explanation the first time
         # (needs support at Document level)
-        try:
+        if 'explanation' in self.attributes:
             result += ' (' + self.get('explanation') + ')'
-        except KeyError:
-            pass
         return result
 
 
