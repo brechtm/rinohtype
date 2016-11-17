@@ -179,9 +179,6 @@ class Table(HorizontallyAlignedFlowable):
                          for width, auto_relative_width
                          in zip(column_widths, auto_rel_colwidths)]
 
-        # TODO: if table fits in width without wrapping cells, set width of
-        #       auto-sized columns to max_width
-
         # set min = max for columns with a fixed width
         total_fixed_cols_width = 0
         total_portions = 0
@@ -192,6 +189,10 @@ class Table(HorizontallyAlignedFlowable):
                 total_fixed_cols_width += width_in_pt
             else:
                 total_portions += column_width
+
+        # does the table fit within the available width without wrapping?
+        if sum(max_column_widths) <= container.width:
+            return max_column_widths
 
         # determine table width
         if fixed_width:
