@@ -18,7 +18,6 @@ from util import in_directory
 
 from rinoh.attribute import OverrideDefault, Var
 from rinoh.frontend.rst import ReStructuredTextReader
-from rinoh.frontend.sphinx import nodes     # load the Sphinx docutils nodes
 from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
 
 
@@ -37,6 +36,8 @@ class Minimal(DocumentTemplate):
 
 
 def render(source, filename):
+    from rinoh.frontend.sphinx import nodes    # load the Sphinx docutils nodes
+
     file = BytesIO('\n'.join(source).encode('utf-8'))
     reader = ReStructuredTextReader()
     doctree = reader.parse(file)
