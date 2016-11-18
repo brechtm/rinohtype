@@ -99,8 +99,10 @@ class OptionSetMeta(type):
         return super().__new__(cls, classname, bases, cls_dict)
 
     def __getattr__(cls, item):
+        if item == 'NONE' and None in cls.values:
+            return None
         string = item.lower().replace('_', ' ')
-        if string in cls.values:
+        if item.isupper() and string in cls.values:
             return string
         raise AttributeError(item)
 
