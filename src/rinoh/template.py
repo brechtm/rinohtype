@@ -16,7 +16,8 @@ from itertools import chain
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
-                        OptionSet, AcceptNoneAttributeType, VariableNotDefined)
+                        OptionSet, AcceptNoneAttributeType, VariableNotDefined,
+                        OverrideDefault)
 from .dimension import Dimension, CM, PT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
@@ -313,8 +314,8 @@ class DocumentPartTemplate(Template):
                                 "format, numbering restarts at 1")
     end_at_page = Option(PageType, 'any', 'The type of page to end this '
                                           'document part on')
-
-    skip_if_no_flowables = True
+    drop_if_empty = Option(Bool, True, 'Exclude this part from the document '
+                                       'if it is empty (no flowables)')
 
     @property
     def doc_repr(self):
@@ -342,14 +343,14 @@ class DocumentPartTemplate(Template):
 
     def document_part(self, document, first_page_number):
         flowables = self.all_flowables(document)
-        if flowables or not self.skip_if_no_flowables:
+        if flowables or not self.drop_if_empty:
             return DocumentPart(self, document, flowables)
 
 
 class TitlePartTemplate(DocumentPartTemplate):
     """The title page of a document."""
 
-    skip_if_no_flowables = False
+    drop_if_empty = OverrideDefault(False)
 
     def _flowables(self, document):
         return iter([])
