@@ -148,9 +148,9 @@ class Typeface(Resource, dict):
 
         if (available_width != width or available_slant != slant or
             available_weight != weight):
-            warn('{} has no {} {} {} style available. Falling back to {} {} {}'
-                 .format(self.name, width, weight, slant,
-                         available_width, available_weight, available_slant))
+            warn('{} does not include a {} {} {} font. Falling back to {} {} '
+                 '{}'.format(self.name, width, weight, slant, available_width,
+                             available_weight, available_slant))
         return font
 
     # TODO: return bolder font than given font
