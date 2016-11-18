@@ -198,12 +198,9 @@ class DocumentPart(object, metaclass=DocumentLocationType):
         self.document = document
         self.flowable_targets = []
         self.pages = []
-        if flowables:
-            self.chain = Chain(self)
-            for flowable in flowables:
+        self.chain = Chain(self)
+        for flowable in flowables or []:
                 self.chain << flowable
-        else:
-            self.chain = None
 
     def _get_next_page_number(self):
         self._last_page_number += 1

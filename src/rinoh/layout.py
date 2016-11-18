@@ -584,6 +584,7 @@ class Chain(FlowableTarget):
         self.document_part = document_part
         self._init_state()
         self.containers = []
+        self.done = True
 
     def _init_state(self):
         """Reset the state of this chain: empty the list of containers, and zero
