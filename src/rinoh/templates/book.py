@@ -47,6 +47,9 @@ class Book(DocumentTemplate):
                              'contents', 'back_matter'])
 
     # default document part templates
+    cover = FixedDocumentPartTemplate(drop_if_empty=False,
+                                      page_number_format=None,
+                                      end_at_page='left')
     title = TitlePartTemplate(page_number_format='number',
                               end_at_page='left')
     front_matter = FixedDocumentPartTemplate(
@@ -65,8 +68,9 @@ class Book(DocumentTemplate):
                      right_margin=1*INCH,
                      top_margin=1*INCH,
                      bottom_margin=1*INCH)
-    
-    title_page =  TitlePageTemplate(base='page')
+
+    cover_page = PageTemplate(base='page')
+    title_page = TitlePageTemplate(base='page')
     
     front_matter_page =  \
         PageTemplate(base='page',
