@@ -215,12 +215,10 @@ class DocumentPart(object, metaclass=DocumentLocationType):
 
     @property
     def number_of_pages(self):
-        doc = self.document
-        for part_template, part_page_count in zip(doc.part_templates,
-                                                  doc.part_page_counts):
-            if part_template is self.template:
-                return part_page_count.count
-        return 0
+        try:
+            return self.document.part_page_counts[self.template.name].count
+        except KeyError:
+            return 0
 
     def prepare(self):
         for flowable in self._flowables(self.document):
@@ -376,7 +374,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             with open(filename + self.CACHE_EXTENSION, 'rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
         except (IOError, TypeError):
-            prev_number_of_pages, prev_page_references = [], {}
+            prev_number_of_pages, prev_page_references = {}, {}
         return prev_number_of_pages, prev_page_references
 
     def _save_cache(self, filename, section_number_of_pages, page_references):
@@ -485,20 +483,18 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.placed_footnotes = set()
         self._start_time = time.time()
 
-        part_page_counts = []
-        first_page_number = 1
+        part_page_counts = {}
+        part_page_count = PartPageCount()
         last_number_format = None
         for part_template in self.part_templates:
-            part = part_template.document_part(self, first_page_number)
-            if part:
-                if part_template.page_number_format != last_number_format:
-                    part_page_count = PartPageCount()
-                    first_page_number = 1
-                page_count = part.render(first_page_number)
-                part_page_count += page_count
-                first_page_number += page_count
-                last_number_format = part_template.page_number_format
-            part_page_counts.append(part_page_count)
+            part = part_template.document_part(self, part_page_count.count + 1)
+            if part is None:
+                continue
+            if part_template.page_number_format != last_number_format:
+                part_page_count = PartPageCount()
+            part_page_count += part.render(part_page_count.count + 1)
+            part_page_counts[part_template.name] = part_page_count
+            last_number_format = part_template.page_number_format
         sys.stdout.write('\n')     # for the progress indicator
         return part_page_counts
 
