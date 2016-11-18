@@ -613,7 +613,9 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
         - template matching `name` in this TemplateConfiguration
         - templates in base TemplateConfigurations (recursively)
-        - the default template"""
+        - the default template defined in the DocumentTemplate class
+
+        """
         for template in self.configuration._find_templates_recursive(name):
             yield template
         yield self.get_default_template(name)
@@ -623,14 +625,24 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
     @classmethod
     def get_default_template(cls, template_name):
         try:
-            template = cls._templates[template_name]
+            return cls._get_default_template_recursive(template_name)
         except KeyError:
             m = cls.RE_PAGE.match(template_name)
             if m:
-                template = cls._templates[m.group(1) + '_page']
+                general_template = m.group(1) + '_page'
+                return cls._get_default_template_recursive(general_template)
+
+    @classmethod
+    def _get_default_template_recursive(cls, template_name):
+        for mro_cls in cls.__mro__:
+            try:
+                templates = mro_cls._templates
+            except AttributeError:
+                break
             else:
-                raise
-        return template
+                if template_name in templates:
+                    return templates[template_name]
+        raise KeyError("No '{}' template found", template_name)
 
     def get_option(self, option_name):
         return self.configuration[option_name]
