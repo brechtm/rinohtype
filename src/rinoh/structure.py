@@ -91,9 +91,9 @@ class Section(StaticGroupedFlowables, PageBreak):
 class HeadingStyle(NumberedParagraphStyle):
     number_separator = Attribute(StyledText, '.',
                                  "Characters inserted between the number "
-                                 "labels of the parent section and this "
-                                 "section. If `None`, only show this section's "
-                                 "number label.")
+                                 "label of the parent section and this "
+                                 "section. If ``None``, only show this "
+                                 "section's number label.")
     keep_with_next = OverrideDefault(True)
 
 
