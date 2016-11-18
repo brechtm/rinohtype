@@ -55,6 +55,8 @@ def format_number(number, format):
         return romanize(number)
     elif format == NumberFormat.SYMBOL:
         return symbolize(number)
+    elif format == NumberFormat.NONE:
+        return ''
     else:
         raise ValueError("Unknown number format '{}'".format(format))
 
