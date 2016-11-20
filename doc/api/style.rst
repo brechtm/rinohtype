@@ -51,3 +51,10 @@ These style sheets are included with rinohtype:
 
 Additional style sheets can be installed from PyPI. The installed style sheets
 can be listed using :option:`rinoh --list-stylesheets`.
+
+
+The default matcher
+~~~~~~~~~~~~~~~~~~~
+
+.. autodata:: rinoh.stylesheets.matcher
+    :annotation:

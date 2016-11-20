@@ -373,3 +373,12 @@ matcher('level 2 index entry', IndexEntry.like(index_level=2))
 matcher('level 3 index entry', IndexEntry.like(index_level=3))
 matcher('level 4 index entry', IndexEntry.like(index_level=4))
 matcher('domain index entry name', IndexEntry / ... / StyledText.like('domain'))
+
+
+doc = ['The default matcher defines the following styles',
+       '']
+for style_name, selector in matcher.by_name.items():
+    style_class = selector.get_styled_class(matcher).style_class
+    doc.append('* {}: :class:`.{}`'.format(style_name, style_class.__name__))
+
+matcher.__doc__ = '\n'.join(doc)

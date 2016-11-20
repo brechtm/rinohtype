@@ -594,7 +594,7 @@ class StyledMatcher(dict):
 
     def __init__(self, mapping_or_iterable=None, **kwargs):
         super().__init__()
-        self.by_name = {}
+        self.by_name = OrderedDict()
         self._pending = {}
         self.update(mapping_or_iterable, **kwargs)
 
