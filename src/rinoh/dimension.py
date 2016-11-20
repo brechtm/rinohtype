@@ -6,17 +6,18 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 """
-This module exports a single class:
+Classes for expressing dimensions: lengths, widths, line thickness, etc.
 
-* :class:`Dimension`: Late-evaluated dimension, forming the basis of the layout
-  engine
+Each dimension is expressed in terms of a unit. Several common units are are
+defined here as constants. To create a new dimension, multiply number with
+a unit::
 
-It also exports a number of pre-defined units:
+    height = 100*PT
+    width = 50*PERCENT
 
-* :const:`PT`: PostScript point
-* :const:`INCH`: Inch, equal to 72 PostScript points
-* :const:`MM`: Millimeter
-* :const:`CM`: Centimeter
+Fractional dimensions are evaluated within the context they are defined in. For
+example, the width of a :class:`Flowable` is evaluated with respect to the
+total width available to it.
 
 """
 
@@ -29,9 +30,9 @@ from .attribute import AcceptNoneAttributeType
 from collections import OrderedDict
 
 
-
 __all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM',
            'PERCENT', 'QUARTERS']
+
 
 class DimensionType(type):
     """Maps comparison operators to their equivalents in :class:`float`"""
@@ -61,13 +62,17 @@ class DimensionType(type):
 
 
 class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
-    """Late-evaluated dimension. The result of mathematical operations on
-    dimension objects is not a statically evaluated version, but rather stores
-    references to the operator arguments. The result is only evaluated to a
-    number on conversion to a :class:`float`.
+    """Late-evaluated dimension
+
+    The result of mathematical operations on dimension objects is not a
+    statically evaluated version, but rather stores references to the operator
+    arguments. The result is only evaluated to a number on conversion to a
+    :class:`float`.
 
     The internal representation is in terms of PostScript points. A PostScript
-    point is equal to one 72th of an inch."""
+    point is equal to one 72th of an inch.
+
+    """
 
     def __neg__(self):
         return DimensionMultiplication(self, -1)
@@ -146,13 +151,36 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
                                   for unit in DimensionUnitBase.all)))
 
     def to_points(self, total_dimension):
+        """Convert this dimension to PostScript points
+
+        If this dimension is context-sensitive, it will be evaluated relative
+        to ``total_dimension``. This can be the total width available to a
+        flowable, for example.
+
+        Args:
+            total_dimension (int, float or Dimension): the dimension providing
+                context to a context-sensitive dimension. If int or float, it
+                is assumed to have a unit of PostScript points.
+
+        Returns:
+            float: this dimension in PostScript points
+
+        """
         return float(self)
 
 
 class Dimension(DimensionBase):
+    """A simple dimension
+
+    Args:
+        value (int or float): the magnitude of the dimension
+        unit (DimensionUnit): the unit this dimension is expressed in.
+            Default: :data:`PT`.
+
+    """
+
     # TODO: em, ex? (depends on context)
     def __init__(self, value=0, unit=None):
-        """Initialize a dimension at `value` points."""
         self._value = value
         self._unit = unit or PT
 
@@ -167,15 +195,35 @@ class Dimension(DimensionBase):
         else:
             raise ValueError
 
-    def grow(self, value):
-        self._value += float(value)
-        return self
-
     def __float__(self):
         return float(self._value) * self._unit.points_per_unit
 
+    def grow(self, value):
+        """Grow this dimension (in-place)
+
+        The ``value`` is interpreted as a magnitude expressed in the same unit
+        as this dimension.
+
+        Args:
+            value (int or float): the amount to add to the magnitude of this
+                dimension
+
+        Returns:
+            :class:`Dimension`: this (growed) dimension itself
+
+        """
+        self._value += float(value)
+        return self
+
 
 class DimensionAddition(DimensionBase):
+    """The sum of a set of dimensions
+
+    Args:
+        addends (Dimension\ s):
+
+    """
+
     def __init__(self, *addends):
         self.addends = list(addends)
 
@@ -218,9 +266,22 @@ class DimensionUnitBase(object):
 
 
 class DimensionUnit(DimensionUnitBase):
+    """A unit to express absolute dimensions in
+
+    Args:
+        points_per_unit (int or float): the number of PostScript points that
+            fit in one unit
+        label (str): label for the unit
+
+    """
+
     def __init__(self, points_per_unit, label):
         super().__init__(label)
         self.points_per_unit = float(points_per_unit)
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, self.points_per_unit,
+                                   repr(self.label))
 
     def __rmul__(self, value):
         return Dimension(value, self)
@@ -228,37 +289,60 @@ class DimensionUnit(DimensionUnitBase):
 
 # Units
 
-PT = DimensionUnit(1, 'pt')
-INCH = DimensionUnit(72*PT, 'in')
-PICA = DimensionUnit(1 / 6 * INCH, 'pc')
-MM = DimensionUnit(1 / 25.4 * INCH, 'mm')
-CM = DimensionUnit(10*MM, 'cm')
+PT = DimensionUnit(1, 'pt')                 #: PostScript points
+INCH = DimensionUnit(72*PT, 'in')           #: imperial/US inch
+PICA = DimensionUnit(1 / 6 * INCH, 'pc')    #: computer pica
+MM = DimensionUnit(1 / 25.4 * INCH, 'mm')   #: millimeter
+CM = DimensionUnit(10*MM, 'cm')             #: centimeter
 
 
 class Fraction(DimensionBase):
-    def __init__(self, nominator, unit):
-        self._nominator = nominator
+    """A context-sensitive dimension
+
+    This fraction is multiplied by the reference dimension when evaluating it
+    using :meth:`to_points`.
+
+    Args:
+        numerator (int or float): the numerator of the fraction
+        unit (FractionUnit): the fraction unit
+
+    """
+
+    def __init__(self, numerator, unit):
+        self._numerator = numerator
         self._unit = unit
 
     def __str__(self):
-       number = '{:.2f}'.format(self._nominator).rstrip('0').rstrip('.')
+       number = '{:.2f}'.format(self._numerator).rstrip('0').rstrip('.')
        return '{}{}'.format(number, self._unit.label)
 
     __eq__ = AcceptNoneAttributeType.__eq__
 
     def to_points(self, total_dimension):
-        fraction = self._nominator / self._unit.denominator
+        fraction = self._numerator / self._unit.denominator
         return fraction * float(total_dimension)
 
 
 class FractionUnit(DimensionUnitBase):
+    """A unit to express relative dimensions in
+
+    Args:
+        denominator (int or float): the number of parts to divide the whole in
+        label (str): label for the unit
+
+    """
+
     def __init__(self, denominator, label):
         super().__init__(label)
         self.denominator = denominator
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, self.denominator,
+                                   repr(self.label))
 
     def __rmul__(self, nominator):
         return Fraction(nominator, self)
 
 
-PERCENT = FractionUnit(100, '%')
-QUARTERS = FractionUnit(4, '/4')
+PERCENT = FractionUnit(100, '%')            #: fraction of 100
+QUARTERS = FractionUnit(4, '/4')            #: fraction of 4
