@@ -82,15 +82,14 @@ class Font(object):
 class Typeface(Resource, dict):
     resource_type = 'typeface'
 
-    def __new__(cls, name, *fonts, weight_order=FontWeight.values):
+    def __new__(cls, name, *fonts):
         if not fonts:
             return cls.from_string(name)
         else:
-            return super().__new__(cls, name, *fonts, weight_order=weight_order)
+            return super().__new__(cls, name, *fonts)
 
-    def __init__(self, name, *fonts, weight_order=FontWeight.values):
+    def __init__(self, name, *fonts):
         self.name = name
-        self.weight_order = weight_order
         for font in fonts:
             slants = self.setdefault(font.width, {})
             weights = slants.setdefault(font.slant, {})
