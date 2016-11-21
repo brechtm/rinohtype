@@ -38,5 +38,5 @@ sphinx_base14 = StyleSheetFile(path('base14.rts'))
 for name, stylesheet in inspect.getmembers(sys.modules[__name__]):
     if not isinstance(stylesheet, StyleSheetFile):
         continue
-    stylesheet.__doc__ = (':entry point name: ``{}``\n\n{}'
-                          .format(stylesheet, stylesheet.description))
+    stylesheet.__doc__ = ('{}\n\nEntry point name: ``{}``'
+                          .format(stylesheet.description, stylesheet))
