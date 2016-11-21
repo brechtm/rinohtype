@@ -195,18 +195,19 @@ class WithAttributes(WithNamedDescriptors):
                 continue
             attributes[name] = attr
             if isinstance(attr, OverrideDefault):
-                for base_cls in bases:
+                for mro_cls in (cls for base_cls in bases
+                                for cls in base_cls.__mro__):
                     try:
-                        attr.overrides = base_cls.attribute_definition(name)
+                        attr.overrides = mro_cls._attributes[name]
                         break
                     except KeyError:
                         pass
                 else:
                     raise NotImplementedError
-                doc.append('{} (:class:`.{}`): Overrides the default '
-                           'set in :class:`.{}`'
+                doc.append('{0} (:class:`.{1}`): Overrides the default '
+                           'set in :attr:`{2} <.{2}.{0}>`'
                            .format(name, attr.accepted_type.__name__,
-                                   base_cls.__name__))
+                                   mro_cls.__name__))
             else:
                 doc.append('{} (:class:`.{}`): {}'
                            .format(name, attr.accepted_type.__name__,
