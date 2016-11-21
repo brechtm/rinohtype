@@ -11,6 +11,7 @@ API Documentation
     document
     flowable
     font
+    image
     language
     paper
     paragraph

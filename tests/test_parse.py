@@ -287,7 +287,7 @@ def test_referencetext_from_string():
 
 
 def test_scale_from_string():
-    assert Scale.from_string("0") == 0
+    assert Scale.from_string("0.1") == 0.1
     assert Scale.from_string("1.0") == 1.0
     assert Scale.from_string("0.5") == 0.5
     assert Scale.from_string("fit") == Scale.FIT
@@ -297,7 +297,7 @@ def test_scale_from_string():
     with pytest.raises(ValueError):
         Scale.from_string("/")
     with pytest.raises(ValueError):
-        Scale.from_string("1.75")
+        Scale.from_string("0")
     with pytest.raises(ValueError):
         assert Scale.from_string("-0.5")
 

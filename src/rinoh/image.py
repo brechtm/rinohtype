@@ -28,15 +28,23 @@ from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
 from .util import posix_path, ReadAliasAttribute
 
 
-__all__ = ['Scale', 'InlineImage', 'Image', 'Caption', 'Figure']
+__all__ = ['Image', 'InlineImage', 'BackgroundImage', 'BackgroundImageArgs',
+           'Scale', 'Caption', 'Figure']
 
 
 class Scale(OptionSet):
+    """Scaling factor for images
+
+    Can be a numerical value where a value of 1 keeps the image's original size
+    or one of :attr:`values`.
+
+    """
+
     values = 'fit', 'fill'
 
     @classmethod
     def check_type(cls, value):
-        return super().check_type(value) or 0 <= value <= 1
+        return super().check_type(value) or value > 0
 
     @classmethod
     def parse_string(cls, string):
@@ -45,12 +53,14 @@ class Scale(OptionSet):
         except ValueError:
             value = float(string)
             if not cls.check_type(value):
-                raise ValueError('Scale factor should be lie between 0 and 1')
+                raise ValueError('Scale factor should be larger than 0')
         return value
 
     @classmethod
     def doc_format(cls):
-        return '{} or a float between 0 and 1'.format(super().doc_format())
+        return ('{} or a float larger than 0'
+                .format(', '.join('``{}``'.format(s)
+                                  for s in cls.value_strings)))
 
 
 class ImageState(HorizontallyAlignedFlowableState):
@@ -80,17 +90,16 @@ class ImageBase(Flowable):
             to an image file on the file system or a file-like object
             containing the image.
         scale (float): scales the image to `scale` times its original size
-        width (DimensionBase, Fraction): specifies the absolute width
-            (DimensionBase) or the width relative to the container width
-            (Fraction).
-        height (DimensionBase): specifies the absolute height (DimensionBase)
-            or the width relative to the container **width** (Fraction).
+        width (Dimension): specifies the absolute width or the width relative
+            to the container width
+        height (Dimension): specifies the absolute height or the width relative
+            to the container **width**.
         dpi (float): overrides the DPI value embedded in the image (or the
             default of 72)
         rotate (float): the angle in degrees to rotate the image over
-        limit_width (DimensionBase, Fraction): limit the image to this width
-            when none of scale, width and height are given and the image would
-            be wider than the container.
+        limit_width (Dimension): limit the image to this width when none of
+            scale, width and height are given and the image would be wider than
+            the container
 
     If only one of `width` or `height` is given, the image is scaled preserving
     the original aspect ratio.
@@ -219,6 +228,8 @@ class BackgroundImageMeta(type(_Image), type(AttributesDictionary)):
 
 
 class BackgroundImageArgs(AttributesDictionary):
+    """Arguments accepted by attributes of type :class:`BackgroundImage`"""
+
     scale = Attribute(Scale, 'fit', 'Scaling factor for the image')
     width = Attribute(Dimension, None, 'The width to scale the image to')
     height = Attribute(Dimension, None, 'The height to scale the image to')
@@ -235,7 +246,9 @@ class BackgroundImageArgs(AttributesDictionary):
 class BackgroundImage(_Image, AcceptNoneAttributeType):
     """Image to place in the background of a page
 
-    Takes the same arguments as :class:`Image`.
+    Takes the same arguments as :class:`Image`. :class:`BackgroundImageArgs`
+    details how to set the keyword arguments when specifying a background image
+    in a template configuration.
 
     """
 
@@ -271,9 +284,8 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
 class CaptionStyle(NumberedParagraphStyle):
     numbering_level = Attribute(Integer, 1, 'At which section level to '
                                             'restart numbering')
-    number_separator = Attribute(StyledText, '.',
-                                 'Characters inserted between the section '
-                                 'number and the caption number')
+    number_separator = Attribute(StyledText, '.', 'Characters inserted between'
+                                 ' the section number and the caption number')
 
 
 class Caption(NumberedParagraph):
