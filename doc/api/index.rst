@@ -10,6 +10,7 @@ API Documentation
     dimension
     document
     flowable
+    font
     language
     paper
     paragraph
