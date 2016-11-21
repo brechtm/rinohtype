@@ -528,7 +528,7 @@ class RenderedRow(list):
         super().append(rendered_cell)
 
 
-class TableCellBorderStyle(ShapeStyle):
+class TableCellBorderStyle(LineStyle):
     stroke = OverrideDefault(None)
 
 
