@@ -25,7 +25,7 @@ from .util import NotImplementedAttribute
 __all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
            'ReferencingParagraph', 'ReferencingParagraphStyle',
            'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
-           'NoteMarkerWithNote',
+           'NoteMarkerWithNote', 'NoteMarkerStyle',
            'Field', 'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
            'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 

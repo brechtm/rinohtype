@@ -13,21 +13,21 @@ from math import sqrt
 
 from .attribute import Attribute, OptionSet, OverrideDefault, Integer, Bool
 from .dimension import DimensionBase as DimBase
-from .draw import Line, Rectangle, ShapeStyle
+from .draw import Line, Rectangle, ShapeStyle, LineStyle
 from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .reference import ReferenceType
 from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
 from .style import Styled
 from .util import ReadAliasAttribute
 
 
-__all__ = ['Table', 'TableWithCaption',
+__all__ = ['Table', 'TableStyle', 'TableWithCaption',
            'TableSection', 'TableHead', 'TableBody', 'TableRow',
-           'TableCell', 'TableCellStyle', 'TableCellBorder',
-           'TableCellBackground', 'VerticalAlign']
+           'TableCell', 'TableCellStyle',
+           'TableCellBorder', 'TableCellBorderStyle',
+           'TableCellBackground', 'TableCellBackgroundStyle', 'VerticalAlign']
 
 
 class TableState(HorizontallyAlignedFlowableState):

@@ -27,15 +27,17 @@ class Color(AcceptNoneAttributeType):
         self.b = blue
         self.a = alpha
 
-    def __repr__(self):
-        rgba_bytes = struct.pack(4 * 'B', *(int(color * 255)
-                                            for color in self.rgba))
+    def __str__(self):
+        rgba_bytes = struct.pack(4 * 'B', *(int(c * 255) for c in self.rgba))
         string = binascii.hexlify(rgba_bytes).decode('ascii')
         if string.endswith('ff'):
             string = string[:-2]
         if string[::2] == string[1::2]:
             string = string[::2]
         return '#' + string
+
+    def __repr__(self):
+        return '{}({}, {}, {}, {})'.format(type(self).__name__, *self.rgba)
 
     @property
     def rgba(self):

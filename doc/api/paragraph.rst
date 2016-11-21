@@ -20,8 +20,8 @@ Paragraph (:mod:`rinoh.paragraph`)
 
 .. module:: rinoh.text
 
-Inline Elements (:mod:`rinoh.text`)
------------------------------------
+Styled Text (:mod:`rinoh.text`)
+-------------------------------
 
 .. autoclass:: StyledText
     :members:
@@ -33,6 +33,18 @@ Inline Elements (:mod:`rinoh.text`)
     :members:
 
 .. autoclass:: MixedStyledText
+    :members:
+
+
+.. module:: rinoh.inline
+
+Inline Elements (:mod:`rinoh.inline`)
+-------------------------------------
+
+.. autoclass:: InlineFlowable
+    :members:
+
+.. autoclass:: InlineFlowableStyle
     :members:
 
 

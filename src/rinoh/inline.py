@@ -13,7 +13,7 @@ from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
 
 
-__all__ = ['InlineFlowableException', 'InlineFlowable']
+__all__ = ['InlineFlowableException', 'InlineFlowable', 'InlineFlowableStyle']
 
 
 class InlineFlowableException(Exception):

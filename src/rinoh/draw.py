@@ -5,19 +5,27 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+
 from .attribute import Attribute, AcceptNoneAttributeType
 from .color import Color, BLACK, GRAY90
 from .style import Style, Styled
 from .dimension import Dimension, PT
 
 
-__all__ = ['LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
+__all__ = ['Stroke', 'LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
 
 
 class Stroke(AcceptNoneAttributeType):
     def __init__(self, width, color):
         self.width = width
         self.color = color
+
+    def __str__(self):
+        return '{}, {}'.format(self.width, self.color)
+
+    def __repr__(self):
+        return '{}({}, {})'.format(type(self).__name__, repr(self.width),
+                                   repr(self.color))
 
     @classmethod
     def check_type(cls, value):

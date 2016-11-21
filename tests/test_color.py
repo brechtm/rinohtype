@@ -37,14 +37,14 @@ def test_hex_color():
     assert color.g == 0x23 / 255
     assert color.b == 0xF6 / 255
     assert color.a == 1.0
-    assert repr(color) == '#1023f6'
+    assert str(color) == '#1023f6'
 
     color2 = HexColor('E30BCAD7')
     assert color2.r == 0xE3 / 255
     assert color2.g == 0x0B / 255
     assert color2.b == 0xCA / 255
     assert color2.a == 0xD7 / 255
-    assert repr(color2) == '#e30bcad7'
+    assert str(color2) == '#e30bcad7'
 
 
 def test_short_hex_color():
@@ -52,14 +52,14 @@ def test_short_hex_color():
     assert color3.r == 0xAA / 255
     assert color3.g == 0x44 / 255
     assert color3.b == 0x99 / 255
-    assert repr(color3) == '#a49'
+    assert str(color3) == '#a49'
 
     color4 = HexColor('#2c6e')
     assert color4.r == 0x22 / 255
     assert color4.g == 0xCC / 255
     assert color4.b == 0x66 / 255
     assert color4.a == 0xEE / 255
-    assert repr(color4) == '#2c6e'
+    assert str(color4) == '#2c6e'
 
 
 def test_bad_hex_value():

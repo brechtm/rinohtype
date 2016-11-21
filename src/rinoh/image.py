@@ -29,7 +29,7 @@ from .util import posix_path, ReadAliasAttribute
 
 
 __all__ = ['Image', 'InlineImage', 'BackgroundImage', 'BackgroundImageArgs',
-           'Scale', 'Caption', 'Figure']
+           'Scale', 'Caption', 'CaptionStyle', 'Figure', 'FigureStyle']
 
 
 class Scale(OptionSet):

@@ -62,7 +62,7 @@ projects involving rinohtype, so please don't hesitate to contact us.
     sphinx
     templates
     advanced
-    api/index
+    api/api
     faq
     changelog
 
