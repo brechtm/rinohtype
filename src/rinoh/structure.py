@@ -27,7 +27,7 @@ from .strings import StringCollection, String, StringField
 
 __all__ = ['Section', 'Heading',
            'ListStyle', 'List', 'ListItem', 'ListItemLabel', 'DefinitionList',
-           'HeaderStyle', 'Header', 'FooterStyle', 'Footer',
+           'Header', 'Footer',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'HorizontalRule', 'HorizontalRuleStyle']
@@ -218,20 +218,12 @@ class DefinitionList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
-class HeaderStyle(ParagraphStyle):
-    pass
-
-
 class Header(Paragraph):
-    style_class = HeaderStyle
-
-
-class FooterStyle(ParagraphStyle):
     pass
 
 
 class Footer(Paragraph):
-    style_class = FooterStyle
+    pass
 
 
 class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
