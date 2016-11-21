@@ -90,13 +90,12 @@ class AcceptNoneAttributeType(AttributeType):
 
 
 class OptionSetMeta(type):
-    def __new__(cls, classname, bases, cls_dict):
-        cls_dict['__doc__'] = (cls_dict['__doc__'] + '\n\n'
-                               if '__doc__' in cls_dict else '')
-        cls_dict['__doc__'] += ('Accepts these options:\n\n'
-                               + '\n'.join("- '{}'".format(val)
-                                           for val in cls_dict['values']))
-        return super().__new__(cls, classname, bases, cls_dict)
+    def __new__(metacls, classname, bases, cls_dict):
+        cls = super().__new__(metacls, classname, bases, cls_dict)
+        cls.__doc__ = (cls_dict['__doc__'] + '\n\n'
+                       if '__doc__' in cls_dict else '')
+        cls.__doc__ += 'Accepts: {}'.format(cls.doc_format())
+        return cls
 
     def __getattr__(cls, item):
         if item == 'NONE' and None in cls.values:
