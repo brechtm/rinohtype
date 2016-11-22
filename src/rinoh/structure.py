@@ -241,6 +241,9 @@ class TableOfContentsSection(Section):
                           TableOfContents()],
                          style='table of contents')
 
+    def __repr__(self):
+        return '{}()'.format(type(self).__name__)
+
     def get_id(self, document, create=True):
         try:
             return document.metadata['toc_id']
@@ -256,6 +259,12 @@ class TableOfContents(GroupedFlowables):
         super().__init__(id=id, style=style, parent=parent)
         self.local = local
         self.source = self
+
+    def __repr__(self):
+        args = ''.join(', {}={}'.format(name, repr(getattr(self, name)))
+                       for name in ('id', 'style')
+                       if getattr(self, name) is not None)
+        return '{}(local={}{})'.format(type(self).__name__, self.local, args)
 
     def flowables(self, container):
         def limit_items(items, section):
