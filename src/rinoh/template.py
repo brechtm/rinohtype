@@ -500,7 +500,7 @@ class DocumentTemplateMeta(WithAttributes):
                 attr_type = type(template)
                 base = (':attr:`{}`'.format(template.base)
                         if template.base else '``None``')
-                tmpl_doc = ('{} (:class:`{}`): base: {}'
+                tmpl_doc = ('{} (:class:`.{}`): base: {}'
                             .format(name, attr_type.__name__, base))
                 if template:
                     defaults = []
