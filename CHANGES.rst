@@ -13,15 +13,24 @@ New Features:
 * template configuration (INI) files: specify which document parts to include,
   configure document part and page templates, customize localized strings, ...
 * support specifying more complex selectors directly in a style sheet file
-* preliminary support for writing a style sheet to an INI file, listing default
-  values for non-specified attributes
-* make the the frontends independent of the current working directory
+* (figure and table) captions support hierarchical numbering (see CaptionStyle)
+* make the frontends independent of the current working directory
+* reStructuredText: support the table :widths: option (upcoming docutils 0.13)
+* Sphinx frontend: provide styles for Sphinx's inline markup roles
 * rinoh (command line renderer):
 
   - support template configuration files
   - support file formats for which a frontend is installed (see --list-formats)
   - accept options to configure the frontend (see --list-options)
   - option to list the installed fonts (on the command line or in a PDF file)
+
+* show the current page number as part of the rendering progress indicator
+* Book template: support for setting a cover page
+* frontends: raise a more descriptive exception when a document tree node is
+  not mapped
+* validate the default value passed to an Attribute
+* preliminary support for writing a style sheet to an INI file, listing default
+  values for non-specified attributes
 
 Changed:
 
@@ -37,6 +46,7 @@ Changed:
   Sphinx frontends) of the old DefinitionList (#54)
 * the new DefinitionList (FieldList) can be styled like the old DefinitionList
   by setting max_label_width to None, 0 or a 0-valued Dimension
+* figures are now non-floating by default (float placement needs more work)
 * hide the index chapter when there are no index entries (#51)
 * style sheets: use the default matcher if none is specified
 * Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder
@@ -53,17 +63,26 @@ Changed:
    - fall back to <doc_part>_page when the right or left template is not found
    - each template configuration requires a name
 
-* DocumentTree: make the source_tree argument optional
+* DocumentTree: make the ``source_file`` argument optional
 * don't abort when the document section hierarchy is missing levels (#67)
 * use the PDF backend by default (no need to specify it)
 * store the unit with Dimension instances (better printing)
+* rename the `float` module to `image`
 
 Fixed:
 
 * improve compatibility with Windows: Windows path names and file encoding
+* crash if a StyledText is passed to HeadingStyle.number_separator
 * GroupedLabeledFlowables label width could be unnecessarily wide
+* fix and improve automatic table column sizing
+* Figures can now be referenced using the 'reference' format ("Figure 1.2")
 * HorizontallyAlignedFlowable: make more robust
+* make document elements referenceable by secondary IDs
 * reStructuredText: only the first classifier for a definition term was shown
+* Sphinx frontend: support the 'centered' directive
+* Sphinx frontend: basic support for the 'hlist' directive
+* Sphinx frontend: handle :abbr: without explanation
+* Sphinx frontend: support nested inline nodes (guilabel & samp roles)
 * PDF backend: fix writing of Type 1 fonts from a parsed PDF file
 * PDF reader: handle multi-page PDFs (#71)
 * PDF reader: fix parsing of XRef streams
