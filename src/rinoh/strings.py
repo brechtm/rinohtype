@@ -113,11 +113,19 @@ class StringField(SingleStyledTextBase):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class
         self.key = key
-        self.case = case or (lambda string: string)
+        self.case = case
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.__dict__ == other.__dict__
 
     def __repr__(self):
         return "{}({}, '{}')".format(type(self).__name__,
                                      self.strings_class, self.key)
+
+    @classmethod
+    def parse_string(cls, string, style=None):
+        collection, key = string.split('.')
+        return cls(StringCollection.subclasses[collection], key, style=style)
 
     def string(self, document):
         return document.get_string(self.strings_class, self.key)
@@ -130,7 +138,7 @@ class StringField(SingleStyledTextBase):
             string = string.to_string(flowable_target)
         except AttributeError:
             pass
-        return self.case(string)
+        return self.case(string) if self.case else string
 
     def _case(self, case_function):
         return type(self)(self.strings_class, self.key, case=case_function,

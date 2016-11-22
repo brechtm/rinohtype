@@ -15,6 +15,8 @@ from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import (ReferenceField, ReferenceText, Field, PAGE_NUMBER,
                              NUMBER_OF_PAGES, SECTION_TITLE, SECTION_NUMBER)
+from rinoh.strings import StringField
+from rinoh.structure import SectionTitles, AdmonitionTitles
 from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
                          parse_class_selector, parse_keyword, parse_string,
                          parse_number, StyleParseError, CharIterator)
@@ -268,6 +270,13 @@ def test_styledtext_from_string():
                                                 Field(PAGE_NUMBER)],
                                                style='style1'),
                                SingleStyledText('moh', style='style2')])
+    assert StyledText.from_string("'{SectionTitles.chapter}abc' (style)") \
+           == MixedStyledText([StringField(SectionTitles, 'chapter'),
+                               SingleStyledText('abc')], style='style')
+    assert StyledText.from_string("'1{AdmonitionTitles.warning}2' (style)") \
+           == MixedStyledText([SingleStyledText('1'),
+                               StringField(AdmonitionTitles, 'warning'),
+                               SingleStyledText('2')], style='style')
 
 
 def test_referencetext_from_string():

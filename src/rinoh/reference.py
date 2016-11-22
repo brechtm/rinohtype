@@ -17,6 +17,7 @@ from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .layout import ReflowRequired
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
+from .strings import StringCollection, StringField
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
                    StyledText, SingleStyledText, MixedStyledText)
 from .util import NotImplementedAttribute
@@ -148,7 +149,10 @@ class ReferenceText(StyledText):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        return substitute_variables(text, cls.RE_TYPES, ReferenceField,
+        def create_reference_field(key, style=None):
+            return ReferenceField(key.lower(), style=style)
+
+        return substitute_variables(text, cls.RE_TYPES, create_reference_field,
                                     super()._substitute_variables, style)
 
 
@@ -238,7 +242,11 @@ class FieldTypeBase(object):
     name = NotImplementedAttribute()
 
     def __str__(self):
-        return '{{{}}}'.format(self.name.upper().replace(' ', '_'))
+        return '{{{}}}'.format(self.key)
+
+    @property
+    def key(self):
+        return self.name.upper().replace(' ', '_')
 
 
 class FieldType(FieldTypeBase):
@@ -247,7 +255,7 @@ class FieldType(FieldTypeBase):
     def __init__(self, name):
         super().__init__()
         self.name = name
-        self.all[str(self)] = self
+        self.all[self.key] = self
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
@@ -267,13 +275,14 @@ class SectionFieldTypeMeta(type):
     def __new__(metacls, classname, bases, cls_dict):
         cls = super().__new__(metacls, classname, bases, cls_dict)
         try:
-            SectionFieldType.all[str(cls)] = cls
+            SectionFieldType.all[classname] = cls
         except NameError:
             pass
         return cls
 
-    def __str__(cls):
-        return cls.name.upper().replace(' ', '_')
+    @property
+    def key(cls):
+        return cls.__name__
 
 
 class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
@@ -289,9 +298,6 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
 
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.level)
-
-    def __str__(self):
-        return '{{{}({})}}'.format(type(self), self.level)
 
     REGEX = re.compile('(?P<name>[a-z_]+)\((?P<level>\d+)\)', re.IGNORECASE)
 
@@ -310,6 +316,15 @@ class SECTION_NUMBER(SectionFieldType):
 class SECTION_TITLE(SectionFieldType):
     name = 'section title'
     reference_type = 'title'
+
+
+from . import structure    # fills StringCollection.subclasses
+
+RE_STRINGFIELD = ('|'.join(r'{}\.(?:{})'
+                           .format(collection_name, '|'.join(s.name for s
+                                                             in cls._strings))
+                           for collection_name, cls
+                           in StringCollection.subclasses.items()))
 
 
 class Field(MixedStyledTextBase):
@@ -367,11 +382,18 @@ class Field(MixedStyledTextBase):
                                                 (r'{}\(\d+\)'.format(name)
                                                     for name
                                                     in SectionFieldType.all)))
+                          + '|' + RE_STRINGFIELD
                           + ')}', re.IGNORECASE)
 
     @classmethod
     def substitute(cls, text, substitute_others, style):
-        return substitute_variables(text, cls.RE_FIELD, cls.parse_string,
+        def create_variable(key, style=None):
+            try:
+                return cls.parse_string(key.lower(), style=style)
+            except AttributeError:
+                return StringField.parse_string(key, style=style)
+
+        return substitute_variables(text, cls.RE_FIELD, create_variable,
                                     substitute_others, style)
 
 
@@ -383,13 +405,13 @@ def substitute_variables(text, split_regex, create_variable,
             if other_text:
                 yield substitute_others(other_text, style=None)
             if variable_type:
-                yield create_variable(variable_type.lower())
+                yield create_variable(variable_type)
 
     parts = split_regex.split(text)
     if len(parts) == 1:                             # no variables
         return substitute_others(text, style=style)
     elif sum(1 for part in parts if part) == 1:     # only a single variable
         variable_type, = (part for part in parts if part)
-        return create_variable(variable_type.lower(), style=style)
+        return create_variable(variable_type, style=style)
     else:                                           # variable(s) and text
         return MixedStyledText(sub(parts), style=style)
