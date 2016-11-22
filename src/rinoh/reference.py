@@ -49,6 +49,12 @@ class ReferenceBase(MixedStyledTextBase):
         self.link = link
         self.quiet = quiet
 
+    def __str__(self):
+        result = "'{{{}}}'".format(self.type.upper())
+        if self.style is not None:
+            result += ' ({})'.format(self.style)
+        return result
+
     def target_id(self, document):
         raise NotImplementedError
 
@@ -232,7 +238,7 @@ class FieldTypeBase(object):
     name = NotImplementedAttribute()
 
     def __str__(self):
-        return self.name.upper().replace(' ', '_')
+        return '{{{}}}'.format(self.name.upper().replace(' ', '_'))
 
 
 class FieldType(FieldTypeBase):
@@ -285,7 +291,7 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
         return "{}({})".format(type(self).__name__, self.level)
 
     def __str__(self):
-        return '{}({})'.format(super().__str__(), self.level)
+        return '{{{}({})}}'.format(type(self), self.level)
 
     REGEX = re.compile('(?P<name>[a-z_]+)\((?P<level>\d+)\)', re.IGNORECASE)
 
@@ -310,6 +316,12 @@ class Field(MixedStyledTextBase):
     def __init__(self, type, style=None):
         super().__init__(style=style)
         self.type = type
+
+    def __str__(self):
+        result = "'{}'".format(self.type)
+        if self.style is not None:
+            result += ' ({})'.format(self.style)
+        return result
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)

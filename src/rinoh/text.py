@@ -199,6 +199,10 @@ class StyledText(Styled, AcceptNoneAttributeType):
             return first
 
     @classmethod
+    def doc_repr(cls, value):
+        return '``{}``'.format(value) if value else '(no value)'
+
+    @classmethod
     def doc_format(cls):
         return ("a list of styled text strings, separated by spaces. A styled "
                 "text string is a quoted string (``'`` or ``\"``), optionally "
@@ -344,18 +348,12 @@ ESCAPE = str.maketrans({"'": r"\'",
 
 class SingleStyledText(SingleStyledTextBase):
     def __init__(self, text, style=None, parent=None):
-        """Initialize this single-styled text with `text` (:class:`str`),
-        `style`, and `parent` (see :class:`StyledText`).
-
-        In `text`, tab, line-feed and newline characters are all considered
-        whitespace. Consecutive whitespace characters are reduced to a single
-        space."""
         super().__init__(style=style, parent=parent)
         self._text = text
 
     def __str__(self):
         result = "'{}'".format(self._text.translate(ESCAPE))
-        if self.style:
+        if self.style is not None:
             result += ' ({})'.format(self.style)
         return result
 

@@ -505,9 +505,6 @@ class DocumentTemplateMeta(WithAttributes):
                 if template:
                     defaults = []
                     for name, value in template.items():
-                        if isinstance(value, StyledText):
-                            value = (str(value).replace('\n', '\\n')
-                                     .replace('\t', '\\t'))
                         defaults.append('- :attr:`~.{}.{}` = ``{}``'
                                         .format(attr_type.__name__, name,
                                                 value))
