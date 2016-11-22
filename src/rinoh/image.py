@@ -300,12 +300,12 @@ class Caption(NumberedParagraph):
         document = flowable_target.document
         get_style = partial(self.get_style, flowable_target=flowable_target)
         category = self.referenceable.category
-        section_level = get_style('numbering_level')
-        category_counters = document.counters.setdefault(category, {})
+        numbering_level = get_style('numbering_level')
         section = self.section
-        while section and section.level > section_level:
+        while section and section.level > numbering_level:
             section = section.parent.section
         section_id = section.get_id(document, False) if section else None
+        category_counters = document.counters.setdefault(category, {})
         category_counter = category_counters.setdefault(section_id, [])
         category_counter.append(self)
         number_format = get_style('number_format')
