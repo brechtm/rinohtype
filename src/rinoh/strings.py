@@ -118,6 +118,12 @@ class StringField(SingleStyledTextBase):
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
 
+    def __str__(self):
+        result = "'{{{}.{}}}'".format(self.strings_class.__name__, self.key)
+        if self.style is not None:
+            result += ' ({})'.format(self.style)
+        return result
+
     def __repr__(self):
         return "{}({}, '{}')".format(type(self).__name__,
                                      self.strings_class, self.key)
