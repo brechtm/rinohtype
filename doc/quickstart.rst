@@ -164,11 +164,11 @@ Style Sheets
 
 .. currentmodule:: rinoh.style
 
-A style sheet determines the look of each of the elements in a document. For
-each type of document element, the style sheet object registers a list of style
-properties. Style sheets are stored in plain text files using the Windows
-INI\ [#ini]_ format with the ``.rts`` extension. Below is an excerpt from the
-:doc:`sphinx_stylesheet` included with rinohtype.
+A style sheet defines the look of each elements in a document. For each type of
+document element, the style sheet assign values to the style properties
+available for that element. Style sheets are stored in plain text files using
+the Windows INI\ [#ini]_ format with the ``.rts`` extension. Below is an
+excerpt from the :doc:`sphinx_stylesheet` included with rinohtype.
 
 .. _base style sheet:
 
@@ -179,24 +179,27 @@ INI\ [#ini]_ format with the ``.rts`` extension. Below is an excerpt from the
 Except for ``[STYLESHEET]`` and ``[VARIABLES]``, each configuration section
 in a style sheet determines the style of a particular type of document element.
 The ``emphasis`` style, for example, determines the look of emphasized text,
-which is displayed in an italic font. For more on style sheets, please refer
-to the :ref:`stylesheets_advanced` section in :ref:`advanced`.
+which is displayed in an italic font. This is similar to how HTML's cascading
+style sheets work. In rinohtype however, document elements are identified by
+means of a descriptive label (such as *emphasis*) instead of a cryptic
+selector. rinohtype also makes use of selectors, but these are collected in a
+:class:`StyledMatcher` which maps them to descriptive names to be used by many
+style sheets. Unless you are using rinohtype as a PDF library to create custom
+documents, the :ref:`default matcher <default_matcher>` should cover your
+needs.
 
-This is similar to how HTML's cascading style sheets work. In rinohtype
-however, document elements are identified by means of a descriptive label (such
-as *emphasis*) instead of a cryptic selector. Rinohtype also makes use of
-selectors, but these are collected in a :class:`StyledMatcher` which maps them
-to descriptive names to be used by many style sheets. Unless you are using
-rinohtype as a PDF library to create custom documents, the default matcher
-should cover your needs.
+The following two subsections briefly illustrate how to extend an existing
+style sheet and how to create a new, independent style sheet. For more in-depth
+information on style sheets, please refer to the :ref:`stylesheets_advanced`
+section in :ref:`advanced`.
 
 
 Extending an Existing Style Sheet
 ---------------------------------
 
 Starting from an existing style sheet, it is easy to make small changes to the
-style of individual document elements. The following example creates a new
-style sheet based on the Sphinx stylesheet included with rinohtype.
+style of individual document elements. The following style sheet file is based
+on the Sphinx stylesheet included with rinohtype.
 
 .. code-block:: ini
 
@@ -217,19 +220,22 @@ style sheet based on the Sphinx stylesheet included with rinohtype.
 
 By default, styles defined in a style sheet *extend* the corresponding style
 from the base style sheet. In this example, emphasized text will be set in an
-italic font (as configured in the `base style sheet`_) and colored blue (#00a).
+italic font (as configured in the `base style sheet`_) and colored blue
+(``#00a``).
 
 It is also possible to completely override the style definition. This can be
 done by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
 illustrated by the `strong` style. This causes strongly emphasised text to be
 displayed in red (#a00) but **not** in a bold font as defined in the `base
 style sheet`_ (the default for ``font_weight`` is `Medium`; see
-:class:`~rinoh.text.TextStyle`).
+:class:`~rinoh.text.TextStyle`). Refer to :ref:`default_matcher` to find out
+which style attributes each style accepts (by following the hyperlink to the
+style class's documentation).
 
 The style sheet also redefines the ``mono_typeface`` variable. This variable is
 used in the `base style sheet`_ in all style definitions where a monospaced
-font is desired. Redefining the variable affects all of these style
-definitions.
+font is desired. Redefining the variable in the derived style sheet, affects
+all of these style definitions.
 
 
 Starting from Scratch
@@ -242,9 +248,9 @@ definition for a particular document element is not included in the style
 sheet, the default values for its style properties are used.
 
 Unless a custom :class:`StyledMatcher` is passed to :class:`StyleSheetFile`,
-the default matcher is used. Providing your own matcher offers even more
-customizability, but it is unlikely you will need this. See the :ref:`matchers`
-section in :ref:`advanced` for details.
+the :ref:`default matcher <default_matcher>` is used. Providing your own
+matcher offers even more customizability, but it is unlikely you will need
+this. See the :ref:`matchers` section in :ref:`advanced` for details.
 
 .. note:: In the future, rinohtype will be able to generate an empty INI style
     sheet, listing all styles defined in the matcher with the supported style
