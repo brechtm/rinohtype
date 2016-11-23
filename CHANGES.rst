@@ -56,12 +56,12 @@ Changed:
 * no more DocumentSection; a document now consists of parts (containing pages)
 * template configuration:
 
-   - refer to document part templates by name so that they can be replaced
-   - the list of document parts can be changed in the template configuration
-   - document parts take the 'end_at_page' option (left, right, or any)
-   - find (left/right) page templates via the document part name they belong to
-   - fall back to <doc_part>_page when the right or left template is not found
-   - each template configuration requires a name
+  - refer to document part templates by name so that they can be replaced
+  - the list of document parts can be changed in the template configuration
+  - document parts take the 'end_at_page' option (left, right, or any)
+  - find (left/right) page templates via the document part name they belong to
+  - fall back to <doc_part>_page when the right or left template is not found
+  - each template configuration requires a name
 
 * DocumentTree: make the ``source_file`` argument optional
 * don't abort when the document section hierarchy is missing levels (#67)
