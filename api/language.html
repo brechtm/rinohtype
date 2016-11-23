@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Language (rinoh.language) &mdash; rinohtype 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Documentation" href="api.html"/>
+        <link rel="next" title="Paper sizes (rinoh.paper)" href="paper.html"/>
+        <link rel="prev" title="Index (rinoh.index)" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="docutils literal"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="docutils literal"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="docutils literal"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="docutils literal"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="docutils literal"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="docutils literal"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="docutils literal"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="docutils literal"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="docutils literal"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="docutils literal"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="docutils literal"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+      
+    <li>Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/language.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-rinoh.language"></span><div class="section" id="language-rinoh-language">
+<span id="language"></span><h1>Language (<a class="reference internal" href="#module-rinoh.language" title="rinoh.language"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.language</span></code></a>)<a class="headerlink" href="#language-rinoh-language" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rinoh.language.Language">
+<em class="property">class </em><code class="descclassname">rinoh.language.</code><code class="descname">Language</code><span class="sig-paren">(</span><em>code</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects localized strings for a particular language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; short code identifying the language</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; native name of the language</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rinoh.language.Language.languages">
+<code class="descname">languages</code><a class="headerlink" href="#rinoh.language.Language.languages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary mapping codes to <a class="reference internal" href="#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal"><span class="pre">Language</span></code></a>s</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="supported-languages">The following languages are supported:</p>
+<dl class="data">
+<dt id="rinoh.language.EN">
+<code class="descclassname">rinoh.language.</code><code class="descname">EN</code><em class="property"> = Language('en', 'English')</em><a class="headerlink" href="#rinoh.language.EN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for English</p>
+<p class="rubric">SectionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Contents:</th><td class="field-body">Table of Contents</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Chapter:</th><td class="field-body">Chapter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Index:</th><td class="field-body">Index</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">AdmonitionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attention:</th><td class="field-body">Attention!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Caution:</th><td class="field-body">Caution!</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Danger:</th><td class="field-body">!DANGER!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Error:</th><td class="field-body">Error</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Hint:</th><td class="field-body">Hint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Important:</th><td class="field-body">Important</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Note</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tip:</th><td class="field-body">Tip</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Warning:</th><td class="field-body">Warning</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Seealso:</th><td class="field-body">See also</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="rinoh.language.FR">
+<code class="descclassname">rinoh.language.</code><code class="descname">FR</code><em class="property"> = Language('fr', 'Français')</em><a class="headerlink" href="#rinoh.language.FR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Français</p>
+<p class="rubric">SectionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Contents:</th><td class="field-body">Table des Matières</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Chapter:</th><td class="field-body">Chapitre</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Index:</th><td class="field-body">Index</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">AdmonitionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attention:</th><td class="field-body">Attention!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Caution:</th><td class="field-body">Prudence!</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Danger:</th><td class="field-body">!DANGER!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Error:</th><td class="field-body">Erreur</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Hint:</th><td class="field-body">Conseil</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Important:</th><td class="field-body">Important</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Note</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tip:</th><td class="field-body">Astuce</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Warning:</th><td class="field-body">Avertissement</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Seealso:</th><td class="field-body">Voir aussi</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="rinoh.language.IT">
+<code class="descclassname">rinoh.language.</code><code class="descname">IT</code><em class="property"> = Language('it', 'Italiano')</em><a class="headerlink" href="#rinoh.language.IT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Italiano</p>
+<p class="rubric">SectionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Contents:</th><td class="field-body">Contenuti</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Chapter:</th><td class="field-body">Capitolo</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Index:</th><td class="field-body">Indice</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">AdmonitionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attention:</th><td class="field-body">Attenzione!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Caution:</th><td class="field-body">Prudenza!</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Danger:</th><td class="field-body">!PERICOLO!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Error:</th><td class="field-body">Errore</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Hint:</th><td class="field-body">Consiglio</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Important:</th><td class="field-body">Importante</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Nota</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tip:</th><td class="field-body">Suggerimento</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Warning:</th><td class="field-body">Avvertimento</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Seealso:</th><td class="field-body">Vedi anche</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="rinoh.language.NL">
+<code class="descclassname">rinoh.language.</code><code class="descname">NL</code><em class="property"> = Language('nl', 'Nederlands')</em><a class="headerlink" href="#rinoh.language.NL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Nederlands</p>
+<p class="rubric">SectionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Contents:</th><td class="field-body">Inhoudsopgave</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Chapter:</th><td class="field-body">Hoofdstuk</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Index:</th><td class="field-body">Index</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">AdmonitionTitles</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attention:</th><td class="field-body">Opgelet!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Caution:</th><td class="field-body">Pas op!</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Danger:</th><td class="field-body">!GEVAAR!</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Error:</th><td class="field-body">Fout</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Hint:</th><td class="field-body">Hint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Important:</th><td class="field-body">Belangrijk</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Note:</th><td class="field-body">Noot</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tip:</th><td class="field-body">Tip</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Warning:</th><td class="field-body">Waarschuwing</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Seealso:</th><td class="field-body">Zie ook</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="paper.html" class="btn btn-neutral float-right" title="Paper sizes (rinoh.paper)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Index (rinoh.index)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

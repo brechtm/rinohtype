@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; rinohtype 0.2.1 documentation</title>
+  <title>Introduction &mdash; rinohtype 0.3.0 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="rinohtype 0.2.1 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/>
         <link rel="next" title="Installation" href="install.html"/>
         <link rel="prev" title="rinohtype: The Python Document Processor" href="index.html"/> 
 
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -97,7 +100,8 @@
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
 
@@ -145,7 +149,7 @@
             
   <div class="section" id="introduction">
 <span id="id1"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>Rinohtype was initially conceived as a modern replacement for LaTeX. An
+<p>rinohtype was initially conceived as a modern replacement for LaTeX. An
 important goal in the design of rinohtype is for documents to be much easier to
 customize than in LaTeX. By today&#8217;s standards, the arcane TeX macro language
 upon which LaTeX is built makes customization unnecessarily difficult for one.
@@ -162,27 +166,28 @@ elements. A style sheet assigns style attributes to each type of document
 element. For example, a paragraph&#8217;s style is determined by the typeface,
 font weight, size and color, horizontal alignment of text etc.</dd>
 <dt>Structured Input</dt>
-<dd>Rinohtype renders a document from a document tree that does not describe
+<dd>rinohtype renders a document from a document tree that does not describe
 any style aspects but only semantics. The style sheet maps specific style
 properties to the elements in this document tree. The document tree can be
 generated from a structured document format such as reStructuredText and
 DocBook using one of the included frontends, or it can be built manually.</dd>
 </dl>
-<p>Rinohtype is implemented as a Python package and doubles as a high-level PDF
+<p>rinohtype is implemented as a Python package and doubles as a high-level PDF
 library. Its modular design makes it easy to to customize and extend for
-specific applications. Because rinotype&#8217;s source code is open, all of its
-internals can be inspected and even modified, making it extremely customizable.</p>
+specific applications. Moreover, because rinotype&#8217;s source code is open, all of
+its internals can be inspected and even modified, making it customizable at all
+levels.</p>
 <div class="section" id="usage-examples">
 <h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
-<p>Rinohtype supports three modes of operation. These are discussed in more detail
-in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide.</p>
-<p>For each of these modes, you can choose to use one of the document templates
-included with rinohtype or a third-party template available from PyPI and
-optionally customize it to your needs. Or you can create a custom template from
-scratch. The same goes for the style sheet used to style the document elements.</p>
+<p>rinohtype supports three modes of operation, which are discussed in more detail
+in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide. For each of these modes, you can choose to use
+one of the document templates included with rinohtype or a third-party template
+available from PyPI and optionally customize it to your needs. Or you can
+create a custom template from scratch. The same goes for the style sheet used
+to style the document elements.</p>
 <div class="section" id="restructuredtext-renderer">
 <h3>reStructuredText Renderer<a class="headerlink" href="#restructuredtext-renderer" title="Permalink to this headline">¶</a></h3>
-<p>Rinohtype includes the <strong class="program">rinoh</strong> command-line tool that can render
+<p>rinohtype includes the <strong class="program">rinoh</strong> command-line tool that can render
 reStructuredText documents. Rendering the reStructuredText demonstration
 article <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a> (using the standard article template and style sheet)
 generates <a class="reference download internal" href="_downloads/demo.pdf" download=""><code class="xref download docutils literal"><span class="pre">demo.pdf</span></code></a>.</p>
@@ -196,7 +201,7 @@ LaTeX installation. This documentation was rendered by rinohtype to
 </div>
 <div class="section" id="high-level-pdf-library">
 <h3>High-level PDF library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h3>
-<p>Rinohtype can be used as a Python library to generate PDF documents. Just like
+<p>rinohtype can be used as a Python library to generate PDF documents. Just like
 with <strong class="program">rinoh</strong> and the Sphinx builder, you can select which document
 template and style sheet to use.</p>
 <p>Additionally, you need to supply a document tree. This document tree can be
@@ -230,7 +235,7 @@ structured document format, a templating engine like <a class="reference externa
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Brecht Machiels.
+        &copy; Copyright 2016, Brecht Machiels.
 
     </p>
   </div>
@@ -252,7 +257,7 @@ structured document format, a templating engine like <a class="reference externa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.1',
+            VERSION:'0.3.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

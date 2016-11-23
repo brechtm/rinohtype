@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Command-line Renderer &mdash; rinohtype 0.2.1 documentation</title>
+  <title>Command-line Renderer &mdash; rinohtype 0.3.0 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="rinohtype 0.2.1 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/>
         <link rel="next" title="Sphinx Builder" href="sphinx.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -92,7 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
 
@@ -142,10 +146,14 @@
 <span id="rinoh"></span><h1>Command-line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
 <h2>rinoh<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Render a reStructuredText document to PDF.</p>
-<p>usage: rinoh [-h] [-t [TEMPLATE]] [-s [NAME OR FILENAME]] [-p [PAPER]]
-             [&#8211;list-templates] [&#8211;list-stylesheets] [&#8211;version]
-             [input]</p>
+<p>Render a structured document to PDF.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">usage: rinoh [-h] [-f FORMAT] [-o OPTION=VALUE] [-t NAME OR FILENAME]</span>
+<span class="go">                 [-s NAME OR FILENAME] [-p PAPER] [--list-templates]</span>
+<span class="go">                 [--list-stylesheets] [--list-fonts [FILENAME]] [--list-formats]</span>
+<span class="go">                 [--list-options FRONTEND] [--version]</span>
+<span class="go">                 [input]</span>
+</pre></div>
+</div>
 <dl class="option">
 <dt id="cmdoption-rinoh-arg-input">
 <code class="descname">input</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-arg-input" title="Permalink to this definition">¶</a></dt>
@@ -159,9 +167,21 @@
 </dd></dl>
 
 <dl class="option">
+<dt id="cmdoption-rinoh-f">
+<span id="cmdoption-rinoh--format"></span><code class="descname">-f</code><code class="descclassname"> &lt;format&gt;</code><code class="descclassname">, </code><code class="descname">--format</code><code class="descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-rinoh-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>the format of the input file (default: autodetect)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rinoh-o">
+<span id="cmdoption-rinoh--option"></span><code class="descname">-o</code><code class="descclassname"> &lt;option=value&gt;</code><code class="descclassname">, </code><code class="descname">--option</code><code class="descclassname"> &lt;option=value&gt;</code><a class="headerlink" href="#cmdoption-rinoh-o" title="Permalink to this definition">¶</a></dt>
+<dd><p>options to be passed to the input file reader</p>
+</dd></dl>
+
+<dl class="option">
 <dt id="cmdoption-rinoh-t">
-<span id="cmdoption-rinoh--template"></span><code class="descname">-t</code><code class="descclassname"> &lt;template&gt;</code><code class="descclassname">, </code><code class="descname">--template</code><code class="descclassname"> &lt;template&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
-<dd><p>the document template to use (default: article)</p>
+<span id="cmdoption-rinoh--template"></span><code class="descname">-t</code><code class="descclassname"> &lt;name or filename&gt;</code><code class="descclassname">, </code><code class="descname">--template</code><code class="descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
+<dd><p>the document template or template configuration file to use (default: article)</p>
 </dd></dl>
 
 <dl class="option">
@@ -173,7 +193,7 @@
 <dl class="option">
 <dt id="cmdoption-rinoh-p">
 <span id="cmdoption-rinoh--paper"></span><code class="descname">-p</code><code class="descclassname"> &lt;paper&gt;</code><code class="descclassname">, </code><code class="descname">--paper</code><code class="descclassname"> &lt;paper&gt;</code><a class="headerlink" href="#cmdoption-rinoh-p" title="Permalink to this definition">¶</a></dt>
-<dd><p>the paper size to render to  (default: A4)</p>
+<dd><p>the paper size to render to  (default: the template&#8217;s default)</p>
 </dd></dl>
 
 <dl class="option">
@@ -186,6 +206,24 @@
 <dt id="cmdoption-rinoh--list-stylesheets">
 <code class="descname">--list-stylesheets</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--list-stylesheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed style sheets and exit</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rinoh--list-fonts">
+<code class="descname">--list-fonts</code><code class="descclassname"> &lt;filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh--list-fonts" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the installed fonts or, if FILENAME is given, write a PDF file displaying all the fonts</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rinoh--list-formats">
+<code class="descname">--list-formats</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--list-formats" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the supported input formats and exit</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rinoh--list-options">
+<code class="descname">--list-options</code><code class="descclassname"> &lt;frontend&gt;</code><a class="headerlink" href="#cmdoption-rinoh--list-options" title="Permalink to this definition">¶</a></dt>
+<dd><p>list the options supported by the given frontend and exit</p>
 </dd></dl>
 
 <dl class="option">
@@ -216,7 +254,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Brecht Machiels.
+        &copy; Copyright 2016, Brecht Machiels.
 
     </p>
   </div>
@@ -238,7 +276,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.1',
+            VERSION:'0.3.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

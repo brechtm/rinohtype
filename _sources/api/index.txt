@@ -1,14 +1,7 @@
+.. _index:
 
-API Documentation
-=================
+Index (:mod:`rinoh.index`)
+==========================
 
-.. note:: The API documentation is still incomplete.
-
-.. toctree::
-    :maxdepth: 2
-
-    flowable
-    paragraph
-    structure
-    style
-    template
+.. automodule:: rinoh.index
+    :members:

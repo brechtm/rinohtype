@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Document (rinoh.document) &mdash; rinohtype 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Documentation" href="api.html"/>
+        <link rel="next" title="Drawing Primitives (rinoh.draw)" href="draw.html"/>
+        <link rel="prev" title="Dimension (rinoh.dimension)" href="dimension.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages">Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="docutils literal"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="docutils literal"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="docutils literal"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="docutils literal"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="docutils literal"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="docutils literal"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="docutils literal"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="docutils literal"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="docutils literal"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="docutils literal"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="docutils literal"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+      
+    <li>Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/document.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-rinoh.document"></span><div class="section" id="document-rinoh-document">
+<span id="document"></span><h1>Document (<a class="reference internal" href="#module-rinoh.document" title="rinoh.document"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.document</span></code></a>)<a class="headerlink" href="#document-rinoh-document" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rinoh.document.DocumentTree">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">DocumentTree</code><span class="sig-paren">(</span><em>flowables</em>, <em>source_file=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the document&#8217;s contents as a tree of flowables</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>flowables</strong> (<em>list[Flowable]</em>) &#8211; the list of top-level flowables</li>
+<li><strong>source_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; absolute path of the source file, used to locate
+images and include in logging and error and warnings.</li>
+<li><strong>options</strong> (<em>Reader</em>) &#8211; frontend-specific options</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.document.Document">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>document_tree</em>, <em>stylesheet</em>, <em>language</em>, <em>strings=None</em>, <em>backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders a document tree to pages</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>document_tree</strong> (<a class="reference internal" href="#rinoh.document.DocumentTree" title="rinoh.document.DocumentTree"><em>DocumentTree</em></a>) &#8211; a tree of the document&#8217;s contents</li>
+<li><strong>stylesheet</strong> (<a class="reference internal" href="style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><em>StyleSheet</em></a>) &#8211; style sheet used to style document elements</li>
+<li><strong>language</strong> (<a class="reference internal" href="language.html#rinoh.language.Language" title="rinoh.language.Language"><em>Language</em></a>) &#8211; the language to use for standard strings</li>
+<li><strong>strings</strong> (<a class="reference internal" href="strings.html#rinoh.strings.Strings" title="rinoh.strings.Strings"><em>Strings</em></a>) &#8211; overrides localized strings provided by <cite>language</cite></li>
+<li><strong>backend</strong> &#8211; the backend used for rendering the document</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rinoh.document.Document.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>filename_root=None</em>, <em>file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render the document repeatedly until the output no longer changes due
+to cross-references that need some iterations to converge.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.document.Document.create_outlines">
+<code class="descname">create_outlines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.create_outlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an outline in the output file that allows for easy navigation
+of the document. The outline is a hierarchical tree of all the sections
+in the document.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.document.DocumentPart">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">DocumentPart</code><span class="sig-paren">(</span><em>template</em>, <em>document</em>, <em>flowables</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Part of a document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template</strong> (<a class="reference internal" href="template.html#rinoh.template.DocumentPartTemplate" title="rinoh.template.DocumentPartTemplate"><em>DocumentPartTemplate</em></a>) &#8211; the template that determines the
+contents and style of this document part</li>
+<li><strong>document</strong> (<a class="reference internal" href="#rinoh.document.Document" title="rinoh.document.Document"><em>Document</em></a>) &#8211; the document this part belongs to</li>
+<li><strong>flowables</strong> (<em>list[Flowable]</em>) &#8211; the flowables to render in this document
+part</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rinoh.document.DocumentPart.add_page">
+<code class="descname">add_page</code><span class="sig-paren">(</span><em>page</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentPart.add_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append <cite>page</cite> (<a class="reference internal" href="#rinoh.document.Page" title="rinoh.document.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a>) to this <a class="reference internal" href="#rinoh.document.DocumentPart" title="rinoh.document.DocumentPart"><code class="xref py py-class docutils literal"><span class="pre">DocumentPart</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.document.DocumentPart.new_page">
+<code class="descname">new_page</code><span class="sig-paren">(</span><em>page_number</em>, <em>new_chapter</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentPart.new_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by <code class="xref py py-meth docutils literal"><span class="pre">render()</span></code> with the <code class="xref py py-class docutils literal"><span class="pre">Chain`s</span> <span class="pre">that</span> <span class="pre">need</span> <span class="pre">more</span>
+<span class="pre">:class:`Container`s.</span> <span class="pre">This</span> <span class="pre">method</span> <span class="pre">should</span> <span class="pre">create</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">:class:`Page</span></code> which
+contains a container associated with <cite>chain</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="pages">
+<h2>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rinoh.document.Page">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">Page</code><span class="sig-paren">(</span><em>document_part</em>, <em>number</em>, <em>paper</em>, <em>orientation='portrait'</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Permalink to this definition">¶</a></dt>
+<dd><p>A single page in a document.</p>
+<p>A <a class="reference internal" href="#rinoh.document.Page" title="rinoh.document.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> is a <code class="xref py py-class docutils literal"><span class="pre">Container</span></code>, so other containers can be added
+as children.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>document_part</strong> (<a class="reference internal" href="#rinoh.document.DocumentPart" title="rinoh.document.DocumentPart"><em>DocumentPart</em></a>) &#8211; the document part this page is part of</li>
+<li><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; the 1-based index of this page in the document part</li>
+<li><strong>paper</strong> (<a class="reference internal" href="paper.html#rinoh.paper.Paper" title="rinoh.paper.Paper"><em>Paper</em></a>) &#8211; determines the dimensions of this page</li>
+<li><strong>orientation</strong> (<a class="reference internal" href="#rinoh.document.PageOrientation" title="rinoh.document.PageOrientation"><em>PageOrientation</em></a>) &#8211; the orientation of this page</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rinoh.document.Page.page">
+<code class="descname">page</code><a class="headerlink" href="#rinoh.document.Page.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the page itself.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.document.PageOrientation">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">PageOrientation</code><a class="headerlink" href="#rinoh.document.PageOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal"><span class="pre">portrait</span></code>, <code class="docutils literal"><span class="pre">landscape</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.document.PageType">
+<em class="property">class </em><code class="descclassname">rinoh.document.</code><code class="descname">PageType</code><a class="headerlink" href="#rinoh.document.PageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal"><span class="pre">left</span></code>, <code class="docutils literal"><span class="pre">right</span></code>, <code class="docutils literal"><span class="pre">any</span></code></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="draw.html" class="btn btn-neutral float-right" title="Drawing Primitives (rinoh.draw)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dimension.html" class="btn btn-neutral" title="Dimension (rinoh.dimension)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -2,8 +2,8 @@
 
 .. _flowables:
 
-Flowable
-========
+Flowable (:mod:`rinoh.flowable`)
+================================
 
 .. autoclass:: Flowable
 

@@ -11,7 +11,3 @@ numerals. The template uses different templates for even and odd pages.
 
 .. autoclass:: Book
     :members:
-
-
-.. autoclass:: BookConfiguration
-    :members:

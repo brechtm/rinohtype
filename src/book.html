@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Book template source code &mdash; rinohtype 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Book template source code</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/src/book.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="book-template-source-code">
+<span id="src-book"></span><h1>Book template source code<a class="headerlink" href="#book-template-source-code" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># This file is part of rinohtype, the Python document preparation system.</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (c) Brecht Machiels.</span>
+<span class="c1">#</span>
+<span class="c1"># Use of this source code is subject to the terms of the GNU Affero General</span>
+<span class="c1"># Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.</span>
+
+
+<span class="kn">from</span> <span class="nn">..attribute</span> <span class="k">import</span> <span class="n">OverrideDefault</span><span class="p">,</span> <span class="n">Var</span>
+<span class="kn">from</span> <span class="nn">..dimension</span> <span class="k">import</span> <span class="n">INCH</span>
+<span class="kn">from</span> <span class="nn">..index</span> <span class="k">import</span> <span class="n">IndexSection</span>
+<span class="kn">from</span> <span class="nn">..paragraph</span> <span class="k">import</span> <span class="n">Paragraph</span>
+<span class="kn">from</span> <span class="nn">..reference</span> <span class="k">import</span> <span class="p">(</span><span class="n">Field</span><span class="p">,</span> <span class="n">PAGE_NUMBER</span><span class="p">,</span> <span class="n">DOCUMENT_TITLE</span><span class="p">,</span> <span class="n">DOCUMENT_SUBTITLE</span><span class="p">,</span>
+                         <span class="n">SECTION_NUMBER</span><span class="p">,</span> <span class="n">SECTION_TITLE</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..strings</span> <span class="k">import</span> <span class="n">StringField</span>
+<span class="kn">from</span> <span class="nn">..structure</span> <span class="k">import</span> <span class="n">TableOfContentsSection</span><span class="p">,</span> <span class="n">SectionTitles</span>
+<span class="kn">from</span> <span class="nn">..stylesheets</span> <span class="k">import</span> <span class="n">sphinx</span>
+<span class="kn">from</span> <span class="nn">..template</span> <span class="k">import</span> <span class="p">(</span><span class="n">TitlePageTemplate</span><span class="p">,</span> <span class="n">PageTemplate</span><span class="p">,</span> <span class="n">DocumentTemplate</span><span class="p">,</span>
+                        <span class="n">FixedDocumentPartTemplate</span><span class="p">,</span> <span class="n">ContentsPartTemplate</span><span class="p">,</span>
+                        <span class="n">TitlePartTemplate</span><span class="p">,</span> <span class="n">DocumentPartTemplate</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..text</span> <span class="k">import</span> <span class="n">Tab</span>
+
+
+<span class="n">FRONT_MATTER_TITLE</span> <span class="o">=</span> <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                                <span class="n">style</span><span class="o">=</span><span class="s1">&#39;front matter section title&#39;</span><span class="p">)]</span>
+
+
+<span class="n">BODY_TITLE</span> <span class="o">=</span> <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="n">StringField</span><span class="p">(</span><span class="n">SectionTitles</span><span class="p">,</span> <span class="s1">&#39;chapter&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+                        <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">SECTION_NUMBER</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">),</span>
+                        <span class="n">style</span><span class="o">=</span><span class="s1">&#39;body matter chapter label&#39;</span><span class="p">),</span>
+              <span class="n">Paragraph</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                        <span class="n">style</span><span class="o">=</span><span class="s1">&#39;body matter chapter title&#39;</span><span class="p">)]</span>
+
+
+<span class="k">class</span> <span class="nc">BackMatterTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
+    <span class="n">index_section</span> <span class="o">=</span> <span class="n">IndexSection</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_flowables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">document</span><span class="o">.</span><span class="n">index_entries</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_section</span>
+
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
+    <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx</span><span class="p">)</span>
+
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;front_matter&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;contents&#39;</span><span class="p">,</span> <span class="s1">&#39;back_matter&#39;</span><span class="p">])</span>
+
+    <span class="c1"># default document part templates</span>
+    <span class="n">cover</span> <span class="o">=</span> <span class="n">FixedDocumentPartTemplate</span><span class="p">(</span><span class="n">drop_if_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                      <span class="n">page_number_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">end_at_page</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">TitlePartTemplate</span><span class="p">(</span><span class="n">page_number_format</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                              <span class="n">end_at_page</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">front_matter</span> <span class="o">=</span> <span class="n">FixedDocumentPartTemplate</span><span class="p">(</span>
+                       <span class="n">flowables</span><span class="o">=</span><span class="p">[</span><span class="n">TableOfContentsSection</span><span class="p">()],</span>
+                       <span class="n">page_number_format</span><span class="o">=</span><span class="s1">&#39;lowercase roman&#39;</span><span class="p">,</span>
+                       <span class="n">end_at_page</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">ContentsPartTemplate</span><span class="p">(</span><span class="n">page_number_format</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                                    <span class="n">end_at_page</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">back_matter</span> <span class="o">=</span> <span class="n">BackMatterTemplate</span><span class="p">(</span><span class="n">page_number_format</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
+                                     <span class="n">end_at_page</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+    <span class="c1"># default page templates</span>
+    <span class="n">page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s1">&#39;paper_size&#39;</span><span class="p">),</span>
+                     <span class="n">left_margin</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">right_margin</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">top_margin</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">bottom_margin</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">INCH</span><span class="p">)</span>
+
+    <span class="n">cover_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">title_page</span> <span class="o">=</span> <span class="n">TitlePageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    
+    <span class="n">front_matter_page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">,</span>
+                     <span class="n">header_footer_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                     <span class="n">header_text</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    
+    <span class="n">front_matter_right_page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;front_matter_page&#39;</span><span class="p">,</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">),</span>
+                     <span class="n">chapter_header_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">chapter_footer_text</span><span class="o">=</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">),</span>
+                     <span class="n">chapter_title_height</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">chapter_title_flowables</span><span class="o">=</span><span class="n">FRONT_MATTER_TITLE</span><span class="p">)</span>
+    
+    <span class="n">front_matter_left_page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;front_matter_page&#39;</span><span class="p">,</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">))</span>
+    
+    <span class="n">contents_page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">,</span>
+                     <span class="n">header_footer_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">contents_right_page</span> <span class="o">=</span>  \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;contents_page&#39;</span><span class="p">,</span>
+                     <span class="n">header_text</span><span class="o">=</span><span class="p">(</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_TITLE</span><span class="p">)</span>
+                                  <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_SUBTITLE</span><span class="p">)),</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">SECTION_NUMBER</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                                  <span class="o">+</span> <span class="s1">&#39;.  &#39;</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                                  <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">)),</span>
+                     <span class="n">chapter_header_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">chapter_footer_text</span><span class="o">=</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">),</span>
+                     <span class="n">chapter_title_height</span><span class="o">=</span><span class="mf">2.4</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">chapter_title_flowables</span><span class="o">=</span><span class="n">BODY_TITLE</span><span class="p">)</span>
+    
+    <span class="n">contents_left_page</span> <span class="o">=</span> \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;contents_page&#39;</span><span class="p">,</span>
+                     <span class="n">header_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_TITLE</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+                                  <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_SUBTITLE</span><span class="p">)),</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">)</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span>
+                                  <span class="n">StringField</span><span class="p">(</span><span class="n">SectionTitles</span><span class="p">,</span> <span class="s1">&#39;chapter&#39;</span><span class="p">)</span>
+                                  <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">SECTION_NUMBER</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                                  <span class="o">+</span> <span class="s1">&#39;.  &#39;</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">))))</span>
+    
+    <span class="n">back_matter_page</span> <span class="o">=</span> \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">,</span>
+                     <span class="n">columns</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                     <span class="n">header_footer_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">back_matter_right_page</span> <span class="o">=</span> \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;back_matter_page&#39;</span><span class="p">,</span>
+                     <span class="n">header_text</span><span class="o">=</span><span class="p">(</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_TITLE</span><span class="p">)</span>
+                                  <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_SUBTITLE</span><span class="p">)),</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                                  <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">)),</span>
+                     <span class="n">chapter_header_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">chapter_footer_text</span><span class="o">=</span><span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">),</span>
+                     <span class="n">chapter_title_height</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">INCH</span><span class="p">,</span>
+                     <span class="n">chapter_title_flowables</span><span class="o">=</span><span class="n">FRONT_MATTER_TITLE</span><span class="p">)</span>
+    
+    <span class="n">back_matter_left_page</span> <span class="o">=</span> \
+        <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;back_matter_page&#39;</span><span class="p">,</span>
+                     <span class="n">header_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_TITLE</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+                                  <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">DOCUMENT_SUBTITLE</span><span class="p">)),</span>
+                     <span class="n">footer_text</span><span class="o">=</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">PAGE_NUMBER</span><span class="p">)</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span> <span class="o">+</span> <span class="n">Tab</span><span class="p">()</span>
+                                  <span class="o">+</span> <span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cross-References and Fields (rinoh.reference) &mdash; rinohtype 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="../index.html"/>
+        <link rel="up" title="API Documentation" href="api.html"/>
+        <link rel="next" title="Structure (rinoh.structure)" href="structure.html"/>
+        <link rel="prev" title="Paragraph (rinoh.paragraph)" href="paragraph.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="docutils literal"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="docutils literal"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="docutils literal"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="docutils literal"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="docutils literal"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="docutils literal"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="docutils literal"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="docutils literal"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="docutils literal"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="docutils literal"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="docutils literal"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+      
+    <li>Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/reference.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-rinoh.reference">
+<span id="cross-references-and-fields-rinoh-reference"></span><span id="reference"></span><h1>Cross-References and Fields (<a class="reference internal" href="#module-rinoh.reference" title="rinoh.reference"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.reference</span></code></a>)<a class="headerlink" href="#module-rinoh.reference" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rinoh.reference.ReferenceType">
+<em class="property">class </em><code class="descclassname">rinoh.reference.</code><code class="descname">ReferenceType</code><a class="headerlink" href="#rinoh.reference.ReferenceType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal"><span class="pre">reference</span></code>, <code class="docutils literal"><span class="pre">number</span></code>, <code class="docutils literal"><span class="pre">title</span></code>, <code class="docutils literal"><span class="pre">page</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.reference.ReferencingParagraphStyle">
+<em class="property">class </em><code class="descclassname">rinoh.reference.</code><code class="descname">ReferencingParagraphStyle</code><span class="sig-paren">(</span><em>base=None</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.text">
+<code class="descname">text</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.text" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">ReferenceText</span></code> &#8211; The text content of this paragraph</p>
+<p>Accepts: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal"><span class="pre">'</span></code> or <code class="docutils literal"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">'{TITLE}'</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.indent_first">
+<code class="descname">indent_first</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.indent_first" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphStyle.indent_first" title="rinoh.paragraph.ParagraphStyle.indent_first"><code class="xref py py-attr docutils literal"><span class="pre">ParagraphStyle</span></code></a>) Indentation of the first line of text</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0pt</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.line_spacing">
+<code class="descname">line_spacing</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.line_spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="paragraph.html#rinoh.paragraph.LineSpacing" title="rinoh.paragraph.LineSpacing"><code class="xref py py-class docutils literal"><span class="pre">LineSpacing</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphStyle.line_spacing" title="rinoh.paragraph.ParagraphStyle.line_spacing"><code class="xref py py-attr docutils literal"><span class="pre">ParagraphStyle</span></code></a>) Spacing between the baselines of two successive lines of text</p>
+<p>Accepts: a <a class="reference internal" href="paragraph.html#predefined-line-spacings"><span class="std std-ref">predefined line spacing</span></a> type or the name of a line spacing type followed by comma-separated arguments enclosed in braces: <code class="docutils literal"><span class="pre">&lt;spacing</span> <span class="pre">type&gt;(&lt;arg1&gt;,</span> <span class="pre">&lt;arg2&gt;,</span> <span class="pre">...)</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">default</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.text_align">
+<code class="descname">text_align</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.text_align" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">TextAlign</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphStyle.text_align" title="rinoh.paragraph.ParagraphStyle.text_align"><code class="xref py py-attr docutils literal"><span class="pre">ParagraphStyle</span></code></a>) Alignment of text to the margins</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">left</span></code>, <code class="docutils literal"><span class="pre">right</span></code>, <code class="docutils literal"><span class="pre">center</span></code>, <code class="docutils literal"><span class="pre">justify</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">justify</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.tab_stops">
+<code class="descname">tab_stops</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.tab_stops" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">TabStopList</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphStyle.tab_stops" title="rinoh.paragraph.ParagraphStyle.tab_stops"><code class="xref py py-attr docutils literal"><span class="pre">ParagraphStyle</span></code></a>) List of tab positions</p>
+<p>Accepts: a comma-seperated list of tab stops. A tab stop is specified as <code class="docutils literal"><span class="pre">&lt;position&gt;</span> <span class="pre">[align]</span> <span class="pre">[fill</span> <span class="pre">string]</span></code>, where <code class="docutils literal"><span class="pre">&lt;position&gt;</span></code> (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) is required and <code class="docutils literal"><span class="pre">align</span></code> (<code class="xref py py-class docutils literal"><span class="pre">TabAlign</span></code>) and <code class="docutils literal"><span class="pre">fill</span> <span class="pre">string</span></code> (string enclosed in quotes) are optional.</p>
+<p>Default: (no value)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.space_above">
+<code class="descname">space_above</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.space_above" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.space_above" title="rinoh.flowable.FlowableStyle.space_above"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Vertical space preceding the flowable</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.space_below">
+<code class="descname">space_below</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.space_below" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.space_below" title="rinoh.flowable.FlowableStyle.space_below"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Vertical space following the flowable</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.margin_left">
+<code class="descname">margin_left</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.margin_left" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.margin_left" title="rinoh.flowable.FlowableStyle.margin_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Left margin</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.margin_right">
+<code class="descname">margin_right</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.margin_right" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.margin_right" title="rinoh.flowable.FlowableStyle.margin_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Right margin</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.padding_left">
+<code class="descname">padding_left</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.padding_left" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_left" title="rinoh.flowable.FlowableStyle.padding_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Left padding</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.padding_right">
+<code class="descname">padding_right</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.padding_right" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_right" title="rinoh.flowable.FlowableStyle.padding_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Right padding</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.padding_top">
+<code class="descname">padding_top</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.padding_top" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_top" title="rinoh.flowable.FlowableStyle.padding_top"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Top padding</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.padding_bottom">
+<code class="descname">padding_bottom</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.padding_bottom" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_bottom" title="rinoh.flowable.FlowableStyle.padding_bottom"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Bottom padding</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.keep_with_next">
+<code class="descname">keep_with_next</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.keep_with_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.keep_with_next" title="rinoh.flowable.FlowableStyle.keep_with_next"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Keep this flowable and the next on the same page</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.border">
+<code class="descname">border</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.border" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border" title="rinoh.flowable.FlowableStyle.border"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border surrounding the flowable</p>
+<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.border_left">
+<code class="descname">border_left</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.border_left" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_left" title="rinoh.flowable.FlowableStyle.border_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border left of the flowable</p>
+<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.border_right">
+<code class="descname">border_right</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.border_right" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_right" title="rinoh.flowable.FlowableStyle.border_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border right of the flowable</p>
+<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.border_top">
+<code class="descname">border_top</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.border_top" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_top" title="rinoh.flowable.FlowableStyle.border_top"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border above the flowable</p>
+<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.border_bottom">
+<code class="descname">border_bottom</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.border_bottom" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_bottom" title="rinoh.flowable.FlowableStyle.border_bottom"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border below the flowable</p>
+<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.background_color">
+<code class="descname">background_color</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.background_color" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Color</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.background_color" title="rinoh.flowable.FlowableStyle.background_color"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Color of the area within the flowable&#8217;s borders</p>
+<p>Accepts: HEX string with optional alpha component (<code class="docutils literal"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal"><span class="pre">#RGB</span></code> or <code class="docutils literal"><span class="pre">#RGBA</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.typeface">
+<code class="descname">typeface</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.typeface" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="font.html#rinoh.font.Typeface" title="rinoh.font.Typeface"><code class="xref py py-class docutils literal"><span class="pre">Typeface</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.typeface" title="rinoh.text.TextStyle.typeface"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Typeface to set the text in</p>
+<p>Accepts: the name of a typeface. See <a class="reference internal" href="../rinoh.html#cmdoption-rinoh--list-fonts"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-fonts</span></code></a> for a list of the available typefaces.</p>
+<p>Default: <code class="docutils literal"><span class="pre">Times</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_weight">
+<code class="descname">font_weight</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontWeight</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_weight" title="rinoh.text.TextStyle.font_weight"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Thickness of character outlines relative to their height</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">hairline</span></code>, <code class="docutils literal"><span class="pre">thin</span></code>, <code class="docutils literal"><span class="pre">ultra-light</span></code>, <code class="docutils literal"><span class="pre">extra-light</span></code>, <code class="docutils literal"><span class="pre">light</span></code>, <code class="docutils literal"><span class="pre">book</span></code>, <code class="docutils literal"><span class="pre">regular</span></code>, <code class="docutils literal"><span class="pre">medium</span></code>, <code class="docutils literal"><span class="pre">demi-bold</span></code>, <code class="docutils literal"><span class="pre">bold</span></code>, <code class="docutils literal"><span class="pre">extra-bold</span></code>, <code class="docutils literal"><span class="pre">heavy</span></code>, <code class="docutils literal"><span class="pre">black</span></code>, <code class="docutils literal"><span class="pre">extra-black</span></code>, <code class="docutils literal"><span class="pre">ultra-black</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">medium</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_slant">
+<code class="descname">font_slant</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_slant" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontSlant</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_slant" title="rinoh.text.TextStyle.font_slant"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Slope style of the font</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">upright</span></code>, <code class="docutils literal"><span class="pre">oblique</span></code>, <code class="docutils literal"><span class="pre">italic</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">upright</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_width">
+<code class="descname">font_width</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_width" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontWidth</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_width" title="rinoh.text.TextStyle.font_width"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Stretch of the characters</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">condensed</span></code>, <code class="docutils literal"><span class="pre">extended</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_size">
+<code class="descname">font_size</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_size" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_size" title="rinoh.text.TextStyle.font_size"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Height of characters</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">10pt</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_color">
+<code class="descname">font_color</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_color" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Color</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_color" title="rinoh.text.TextStyle.font_color"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Color of the font</p>
+<p>Accepts: HEX string with optional alpha component (<code class="docutils literal"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal"><span class="pre">#RGB</span></code> or <code class="docutils literal"><span class="pre">#RGBA</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">#000</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.font_variant">
+<code class="descname">font_variant</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.font_variant" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontVariant</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_variant" title="rinoh.text.TextStyle.font_variant"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Variant of the font</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">small</span> <span class="pre">capital</span></code>, <code class="docutils literal"><span class="pre">oldstyle</span> <span class="pre">figures</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.position">
+<code class="descname">position</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.position" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">TextPosition</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.position" title="rinoh.text.TextStyle.position"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Vertical text position</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">superscript</span></code>, <code class="docutils literal"><span class="pre">subscript</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.kerning">
+<code class="descname">kerning</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.kerning" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.kerning" title="rinoh.text.TextStyle.kerning"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Improve inter-letter spacing</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.ligatures">
+<code class="descname">ligatures</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.ligatures" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.ligatures" title="rinoh.text.TextStyle.ligatures"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Run letters together where possible</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.hyphenate">
+<code class="descname">hyphenate</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.hyphenate" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphenate" title="rinoh.text.TextStyle.hyphenate"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Allow words to be broken over two lines</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.hyphen_chars">
+<code class="descname">hyphen_chars</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.hyphen_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Integer</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphen_chars" title="rinoh.text.TextStyle.hyphen_chars"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Minimum number of characters in a hyphenated part of a word</p>
+<p>Accepts: a natural number (positive integer)</p>
+<p>Default: <code class="docutils literal"><span class="pre">2</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.ReferencingParagraphStyle.hyphen_lang">
+<code class="descname">hyphen_lang</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraphStyle.hyphen_lang" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Locale</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphen_lang" title="rinoh.text.TextStyle.hyphen_lang"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Language to use for hyphenation. Accepts locale codes such as &#8216;en_US&#8217;</p>
+<p>Accepts: locale identifier in the <code class="docutils literal"><span class="pre">&lt;language</span> <span class="pre">ID&gt;_&lt;region</span> <span class="pre">ID&gt;</span></code> format</p>
+<p>Default: <code class="docutils literal"><span class="pre">en_US</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rinoh.reference.NoteMarkerStyle">
+<em class="property">class </em><code class="descclassname">rinoh.reference.</code><code class="descname">NoteMarkerStyle</code><span class="sig-paren">(</span><em>base=None</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.typeface">
+<code class="descname">typeface</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.typeface" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="font.html#rinoh.font.Typeface" title="rinoh.font.Typeface"><code class="xref py py-class docutils literal"><span class="pre">Typeface</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.typeface" title="rinoh.text.TextStyle.typeface"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Typeface to set the text in</p>
+<p>Accepts: the name of a typeface. See <a class="reference internal" href="../rinoh.html#cmdoption-rinoh--list-fonts"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-fonts</span></code></a> for a list of the available typefaces.</p>
+<p>Default: <code class="docutils literal"><span class="pre">Times</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_weight">
+<code class="descname">font_weight</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontWeight</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_weight" title="rinoh.text.TextStyle.font_weight"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Thickness of character outlines relative to their height</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">hairline</span></code>, <code class="docutils literal"><span class="pre">thin</span></code>, <code class="docutils literal"><span class="pre">ultra-light</span></code>, <code class="docutils literal"><span class="pre">extra-light</span></code>, <code class="docutils literal"><span class="pre">light</span></code>, <code class="docutils literal"><span class="pre">book</span></code>, <code class="docutils literal"><span class="pre">regular</span></code>, <code class="docutils literal"><span class="pre">medium</span></code>, <code class="docutils literal"><span class="pre">demi-bold</span></code>, <code class="docutils literal"><span class="pre">bold</span></code>, <code class="docutils literal"><span class="pre">extra-bold</span></code>, <code class="docutils literal"><span class="pre">heavy</span></code>, <code class="docutils literal"><span class="pre">black</span></code>, <code class="docutils literal"><span class="pre">extra-black</span></code>, <code class="docutils literal"><span class="pre">ultra-black</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">medium</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_slant">
+<code class="descname">font_slant</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_slant" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontSlant</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_slant" title="rinoh.text.TextStyle.font_slant"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Slope style of the font</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">upright</span></code>, <code class="docutils literal"><span class="pre">oblique</span></code>, <code class="docutils literal"><span class="pre">italic</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">upright</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_width">
+<code class="descname">font_width</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_width" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontWidth</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_width" title="rinoh.text.TextStyle.font_width"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Stretch of the characters</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">condensed</span></code>, <code class="docutils literal"><span class="pre">extended</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_size">
+<code class="descname">font_size</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_size" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_size" title="rinoh.text.TextStyle.font_size"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Height of characters</p>
+<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">10pt</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_color">
+<code class="descname">font_color</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_color" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Color</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_color" title="rinoh.text.TextStyle.font_color"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Color of the font</p>
+<p>Accepts: HEX string with optional alpha component (<code class="docutils literal"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal"><span class="pre">#RGB</span></code> or <code class="docutils literal"><span class="pre">#RGBA</span></code>)</p>
+<p>Default: <code class="docutils literal"><span class="pre">#000</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.font_variant">
+<code class="descname">font_variant</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_variant" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">FontVariant</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.font_variant" title="rinoh.text.TextStyle.font_variant"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Variant of the font</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">small</span> <span class="pre">capital</span></code>, <code class="docutils literal"><span class="pre">oldstyle</span> <span class="pre">figures</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.position">
+<code class="descname">position</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.position" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">TextPosition</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.position" title="rinoh.text.TextStyle.position"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Vertical text position</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">normal</span></code>, <code class="docutils literal"><span class="pre">superscript</span></code>, <code class="docutils literal"><span class="pre">subscript</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">normal</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.kerning">
+<code class="descname">kerning</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.kerning" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.kerning" title="rinoh.text.TextStyle.kerning"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Improve inter-letter spacing</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.ligatures">
+<code class="descname">ligatures</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.ligatures" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.ligatures" title="rinoh.text.TextStyle.ligatures"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Run letters together where possible</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.hyphenate">
+<code class="descname">hyphenate</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphenate" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphenate" title="rinoh.text.TextStyle.hyphenate"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Allow words to be broken over two lines</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.hyphen_chars">
+<code class="descname">hyphen_chars</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_chars" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Integer</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphen_chars" title="rinoh.text.TextStyle.hyphen_chars"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Minimum number of characters in a hyphenated part of a word</p>
+<p>Accepts: a natural number (positive integer)</p>
+<p>Default: <code class="docutils literal"><span class="pre">2</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.hyphen_lang">
+<code class="descname">hyphen_lang</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_lang" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Locale</span></code> &#8211; (<a class="reference internal" href="paragraph.html#rinoh.text.TextStyle.hyphen_lang" title="rinoh.text.TextStyle.hyphen_lang"><code class="xref py py-attr docutils literal"><span class="pre">TextStyle</span></code></a>) Language to use for hyphenation. Accepts locale codes such as &#8216;en_US&#8217;</p>
+<p>Accepts: locale identifier in the <code class="docutils literal"><span class="pre">&lt;language</span> <span class="pre">ID&gt;_&lt;region</span> <span class="pre">ID&gt;</span></code> format</p>
+<p>Default: <code class="docutils literal"><span class="pre">en_US</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.number_format">
+<code class="descname">number_format</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.number_format" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">NumberFormat</span></code> &#8211; (<code class="xref py py-attr docutils literal"><span class="pre">NumberStyle</span></code>) How numbers are formatted</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">none</span></code>, <code class="docutils literal"><span class="pre">number</span></code>, <code class="docutils literal"><span class="pre">symbol</span></code>, <code class="docutils literal"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">number</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.label_prefix">
+<code class="descname">label_prefix</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> &#8211; (<code class="xref py py-attr docutils literal"><span class="pre">LabelStyle</span></code>) Text to prepend to the label</p>
+<p>Accepts: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal"><span class="pre">'</span></code> or <code class="docutils literal"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p>Default: (no value)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.label_suffix">
+<code class="descname">label_suffix</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> &#8211; (<code class="xref py py-attr docutils literal"><span class="pre">LabelStyle</span></code>) Text to append to the label</p>
+<p>Accepts: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal"><span class="pre">'</span></code> or <code class="docutils literal"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p>Default: (no value)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rinoh.reference.NoteMarkerStyle.custom_label">
+<code class="descname">custom_label</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.custom_label" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<code class="xref py py-attr docutils literal"><span class="pre">LabelStyle</span></code>) Use a custom label if specified</p>
+<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
+<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="structure.html" class="btn btn-neutral float-right" title="Structure (rinoh.structure)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="paragraph.html" class="btn btn-neutral" title="Paragraph (rinoh.paragraph)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
