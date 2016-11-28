@@ -46,8 +46,7 @@ class Article(DocumentTemplate):
     contents = ContentsPartTemplate()
 
     # default page templates
-    page = PageTemplate(page_size=Var('paper_size'),
-                        chapter_title_flowables=None)
+    page = PageTemplate(page_size=Var('paper_size'))
     title_page = TitlePageTemplate(base='page',
                                    top_margin=8*CM)
     front_matter_page = PageTemplate(base='page')

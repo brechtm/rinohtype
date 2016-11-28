@@ -131,11 +131,6 @@ class FlowablesList(AcceptNoneAttributeType):
                 ':class:`.Flowable`\ s')
 
 
-CHAPTER_TITLE_FLOWABLES = [Paragraph(StringField(SectionTitles, 'chapter')),
-                           Paragraph(Field(SECTION_NUMBER(1))),
-                           Paragraph(Field(SECTION_TITLE(1)))]
-
-
 class PageTemplate(PageTemplateBase):
     header_footer_distance = Option(Dimension, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
@@ -151,7 +146,7 @@ class PageTemplate(PageTemplateBase):
                                  'header on a page that starts a new chapter')
     chapter_footer_text = Option(StyledText, None, 'The text to place in the '
                                  'footer on a page that starts a new chapter')
-    chapter_title_flowables = Option(FlowablesList, CHAPTER_TITLE_FLOWABLES,
+    chapter_title_flowables = Option(FlowablesList, None,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
     chapter_title_height = Option(Dimension, 150*PT, 'The height of the '
