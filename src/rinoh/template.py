@@ -18,7 +18,7 @@ from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, VariableNotDefined,
                         OverrideDefault)
-from .dimension import Dimension, CM, PT
+from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
 from .image import BackgroundImage, Image
@@ -35,7 +35,7 @@ from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
 from .resource import Resource
 from .text import StyledText, Tab
 from .strings import StringField, StringCollection, Strings
-from .structure import Header, Footer, SectionTitles
+from .structure import Header, Footer, SectionTitles, HorizontalRule
 from .style import StyleSheet, CharIterator, parse_string
 from .stylesheets import sphinx
 from .util import NamedDescriptor
@@ -270,8 +270,10 @@ class TitlePage(PageBase):
                                             self.left_margin, self.top_margin,
                                             self.body_width)
         if 'logo' in metadata:
+            self.title << HorizontalRule(style='title page rule')
             self.title << Image(metadata['logo'],
-                                style='title page logo')
+                                style='title page logo',
+                                limit_width=100*PERCENT)
         self.title << Paragraph(metadata['title'],
                                 style='title page title')
         if 'subtitle' in metadata:

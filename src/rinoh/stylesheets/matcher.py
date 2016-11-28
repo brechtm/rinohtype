@@ -9,6 +9,7 @@ matcher = StyledMatcher({
 
     # title page items
 
+    'title page rule': HorizontalRule.like('title page rule'),
     'title page logo': Image.like('title page logo'),
     'title page title': Paragraph.like('title page title'),
     'title page subtitle': Paragraph.like('title page subtitle'),

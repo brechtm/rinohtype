@@ -4,6 +4,11 @@ Release History
 Release 0.3.1.dev
 ~~~~~~~~~~~~~~~~~
 
+Changed:
+
+* more closely mimic the Sphinx LaTeX builder's title page (issue #60)
+
+
 Release 0.3.0 (2016-11-23)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
