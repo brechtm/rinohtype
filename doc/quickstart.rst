@@ -164,7 +164,7 @@ Style Sheets
 
 .. currentmodule:: rinoh.style
 
-A style sheet defines the look of each elements in a document. For each type of
+A style sheet defines the look of each element in a document. For each type of
 document element, the style sheet assign values to the style properties
 available for that element. Style sheets are stored in plain text files using
 the Windows INI\ [#ini]_ format with the ``.rts`` extension. Below is an
@@ -183,10 +183,10 @@ which is displayed in an italic font. This is similar to how HTML's cascading
 style sheets work. In rinohtype however, document elements are identified by
 means of a descriptive label (such as *emphasis*) instead of a cryptic
 selector. rinohtype also makes use of selectors, but these are collected in a
-:class:`StyledMatcher` which maps them to descriptive names to be used by many
-style sheets. Unless you are using rinohtype as a PDF library to create custom
-documents, the :ref:`default matcher <default_matcher>` should cover your
-needs.
+:ref:`matcher <matchers>` which maps them to descriptive names (like
+*emphasis*) to be used by many style sheets. Unless you are using rinohtype as
+a PDF library to create custom documents, the :ref:`default matcher
+<default_matcher>` should cover your needs.
 
 The following two subsections briefly illustrate how to extend an existing
 style sheet and how to create a new, independent style sheet. For more in-depth
