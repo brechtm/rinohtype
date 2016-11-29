@@ -9,6 +9,10 @@ rinohtype
    :target: https://pypi.python.org/pypi/rinohtype
    :alt: Python version
 
+.. image:: https://badges.gitter.im/brechtm/rinohtype.png
+   :target: https://gitter.im/brechtm/rinohtype
+   :alt: Gitter chat
+
 .. image:: https://travis-ci.org/brechtm/rinohtype.svg?branch=master
    :target: https://travis-ci.org/brechtm/rinohtype
    :alt: Build status
@@ -24,10 +28,6 @@ rinohtype
 .. image:: https://www.quantifiedcode.com/api/v1/project/44e411c95df74f5e8cd04eb067a73f4b/badge.svg
    :target: https://www.quantifiedcode.com/app/project/44e411c95df74f5e8cd04eb067a73f4b
    :alt: Code issues
-
-.. image:: https://badges.gitter.im/brechtm/rinohtype.png
-   :target: https://gitter.im/brechtm/rinohtype
-   :alt: Gitter chat
 
 Rinohtype is a document processor in the style of LaTeX_. It renders structured
 documents to PDF based on a document template and a style sheet. An important
