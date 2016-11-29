@@ -33,7 +33,7 @@ DEFAULT = ' (default: %(default)s)'
 parser = argparse.ArgumentParser(description='Render a structured document '
                                              'to PDF.')
 parser.add_argument('input', type=str, nargs='?',
-                    help='the reStructuredText document to render')
+                    help='the document to render')
 parser.add_argument('-f', '--format', type=str,
                     help='the format of the input file'
                          + DEFAULT % dict(default='autodetect'))

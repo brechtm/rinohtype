@@ -8,13 +8,13 @@ operation introduced in :ref:`Introduction`. Additionally, the basics of style
 sheets and document templates are explained.
 
 
-reStructuredText Renderer
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Command-Line Renderer
+~~~~~~~~~~~~~~~~~~~~~
 
 Installing rinohtype places the :program:`rinoh` script in the :envvar:`PATH`.
 This can be used to render reStructuredText_ documents such as `demo.txt`_::
 
-    rinoh demo.txt
+    rinoh --format reStructuredText demo.txt
 
 After rendering finishes, you will find
 :download:`demo.pdf <../tests_regression/reference/demo.pdf>` alongside the
