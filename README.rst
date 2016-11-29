@@ -5,6 +5,10 @@ rinohtype
    :target: https://pypi.python.org/pypi/rinohtype
    :alt: PyPI
 
+.. image:: https://img.shields.io/pypi/pyversions/rinohtype.svg
+   :target: https://pypi.python.org/pypi/rinohtype
+   :alt: Python version
+
 .. image:: https://travis-ci.org/brechtm/rinohtype.svg?branch=master
    :target: https://travis-ci.org/brechtm/rinohtype
    :alt: Build status
