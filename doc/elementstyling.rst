@@ -1,6 +1,6 @@
-.. _advanced:
+.. _styling:
 
-Advanced Topics
+Element Styling
 ===============
 
 This section serves as a guide to the internal workings of rinohtype, and more
@@ -247,7 +247,7 @@ possible to simply pass the style properties to the style sheet by calling the
 
 Style sheets are usually loaded from a `.rts` file using
 :class:`.StyleSheetFile`. An example style sheet file is shown in
-:ref:`quickstart_stylesheets` in the :ref:`quickstart` guide.
+:ref:`basics_stylesheets`.
 
 A style sheet file contains a number of sections, denoted by a section title
 enclosed in square brackets. There are two special sections:
@@ -523,15 +523,6 @@ Here is an example excerpt from a style log:
               StaticGroupedFlowables()                demo.txt:66 <list_item>
                    > (0,0,0,0,3) list item body
     ...
-
-
-Document Templates
-~~~~~~~~~~~~~~~~~~
-
-.. note:: This section still needs to be written. For now, please refer to the
-    :ref:`templates_quickstart` section in the :ref:`quickstart`, which
-    discusses the configuration of existing templates and the creation of
-    custom templates.
 
 
 .. [#slice] Indexing a list like this ``lst[slice(0, None, 2)]`` is equivalent

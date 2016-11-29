@@ -58,10 +58,10 @@ projects involving rinohtype, so please don't hesitate to contact us.
     intro
     install
     quickstart
-    rinoh
-    sphinx
+    basicstyling
+    elementstyling
     templates
-    advanced
+    reference
     api/api
     faq
     changelog
