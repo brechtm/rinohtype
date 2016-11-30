@@ -11,9 +11,6 @@ Paragraph (:mod:`rinoh.paragraph`)
 .. autoclass:: Paragraph
     :members:
 
-.. autoclass:: ParagraphStyle
-    :members:
-
 .. autoclass:: ParagraphState
     :members:
 
@@ -24,9 +21,6 @@ Styled Text (:mod:`rinoh.text`)
 -------------------------------
 
 .. autoclass:: StyledText
-    :members:
-
-.. autoclass:: TextStyle
     :members:
 
 .. autoclass:: SingleStyledText
@@ -42,9 +36,6 @@ Inline Elements (:mod:`rinoh.inline`)
 -------------------------------------
 
 .. autoclass:: InlineFlowable
-    :members:
-
-.. autoclass:: InlineFlowableStyle
     :members:
 
 

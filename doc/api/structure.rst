@@ -13,15 +13,7 @@ Sections
     :members:
 
 
-.. autoclass:: SectionStyle
-    :members:
-
-
 .. autoclass:: Heading
-    :members:
-
-
-.. autoclass:: HeadingStyle
     :members:
 
 
@@ -34,12 +26,6 @@ Lists
 
 .. autoclass:: List
     :members:
-
-.. autoclass:: ListStyle
-    :members:
-
-.. autoclass:: ListItemLabelStyle
-
 
 .. autoclass:: DefinitionList
     :members:
@@ -54,22 +40,14 @@ Table of Contents
 .. autoclass:: TableOfContents
     :members:
 
-.. autoclass:: TableOfContentsStyle
-    :members:
-
 .. autoclass:: TableOfContentsEntry
     :members:
 
-.. autoclass:: TableOfContentsEntryStyle
-    :members:
 
 Adminitions
 ~~~~~~~~~~~
 
 .. autoclass:: Admonition
-    :members:
-
-.. autoclass:: AdmonitionStyle
     :members:
 
 .. autoclass:: AdmonitionTitles
@@ -80,7 +58,4 @@ Horizontal Rule
 ~~~~~~~~~~~~~~~
 
 .. autoclass:: HorizontalRule
-    :members:
-
-.. autoclass:: HorizontalRuleStyle
     :members:

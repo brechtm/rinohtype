@@ -44,6 +44,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
+    'sphinx.ext.autosummary',
     'sphinxcontrib.autoprogram',
     'rinoh.frontend.sphinx'
 ]
@@ -118,6 +119,8 @@ pygments_style = 'sphinx'
 napoleon_use_rtype = False
 
 autodoc_member_order = 'bysource'
+
+autosummary_generate = True
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3.5',
                                   'python-objects.inv'),
