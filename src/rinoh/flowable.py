@@ -65,6 +65,7 @@ class FlowableStyle(Style):
     border_bottom = Attribute(Stroke, None, 'Border below the flowable')
     background_color = Attribute(Color, None, "Color of the area within the "
                                               "flowable's borders")
+    hide = Attribute(Bool, False, 'Suppress rendering the flowable')
 
     default_base = None
 
@@ -126,6 +127,9 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
+        if self.get_style('hide', container):
+            return 0, 0, last_descender
+
         top_to_baseline = 0
         state = state or self.initial_state(container)
         if state.initial:
