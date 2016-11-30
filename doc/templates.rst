@@ -3,12 +3,19 @@
 Document Templates
 ==================
 
-Customizing a Template
+When it is not possible to achieve a particular document style using one of the
+existing templates and a custom template configuration, you can create a new
+template. A new template is programmed in Python and therefor it is required
+that you are familiar with Python, or at least with general object-oriented
+programming.
+
+
+Subclassing a Template
 ----------------------
 
 If you need to customize a template beyond what is possible by configuration,
-you can subclass the :class:`Article` (or other) template class and extend it,
-or override document part and page templates with custom templates.
+you can subclass a template class and override document part and page templates
+with custom templates. The following example subclasses :class:`.Article`.
 
 .. testcode:: subclass_article
 
@@ -48,16 +55,16 @@ Creating a Custom Template
 --------------------------
 
 A new template can be created from scratch by subclassing
-:class:`DocumentTemplate`, defining all document parts, their templates and
+:class:`.DocumentTemplate`, defining all document parts, their templates and
 page templates.
 
 The :class:`.Article` and :class:`.Book` templates are examples of templates
-that inherit directly from :class:`DocumentTemplate`. We will briefly discuss
-the article template here. The :class:`.Article` template overrides the default
+that inherit directly from :class:`.DocumentTemplate`. We will briefly discuss
+the article template. The :class:`.Article` template overrides the default
 style sheet and defines the two custom template attributes discussed in
 :ref:`configure_templates`. The document parts :attr:`~.Article.title`,
 :attr:`~.Article.front_matter` and :attr:`~.Article.contents` are listed the in
-:attr:`~.Article.parts` attribute and templates for each of them are provided
+:attr:`~.Article.parts` attribute and part templates for each are provided
 along with page templates:
 
 .. literalinclude:: /../src/rinoh/templates/article.py

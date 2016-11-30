@@ -3,6 +3,12 @@
 Basic Document Styling
 ======================
 
+rinohtype allows for fine-grained control over the style of its output. Most
+aspects of a document's style can be controlled by style sheet files and
+template configuration files which are being introduced in this chapter. These
+files are plain text files that are easy to create, read and modify.
+
+
 .. _basics_stylesheets:
 
 Style Sheets
@@ -29,14 +35,14 @@ which is displayed in an italic font. This is similar to how HTML's cascading
 style sheets work. In rinohtype however, document elements are identified by
 means of a descriptive label (such as *emphasis*) instead of a cryptic
 selector. rinohtype also makes use of selectors, but these are collected in a
-:ref:`matcher <matchers>` which maps them to descriptive names (like
-*emphasis*) to be used by many style sheets. Unless you are using rinohtype as
-a PDF library to create custom documents, the :ref:`default matcher
-<default_matcher>` should cover your needs.
+:ref:`matcher <matchers>` which maps them to descriptive names to be used by
+many style sheets. Unless you are using rinohtype as a PDF library to create
+custom documents, the :ref:`default matcher <default_matcher>` should cover
+your needs.
 
-The following two subsections briefly illustrate how to extend an existing
-style sheet and how to create a new, independent style sheet. For more in-depth
-information on style sheets, please refer to :ref:`stylesheets_advanced`.
+The following two subsections illustrate how to extend an existing style sheet
+and how to create a new, independent style sheet. For more in-depth information
+on style sheets, please refer to :ref:`styling`.
 
 
 Extending an Existing Style Sheet
@@ -68,18 +74,18 @@ from the base style sheet. In this example, emphasized text will be set in an
 italic font (as configured in the `base style sheet`_) and colored blue
 (``#00a``).
 
-It is also possible to completely override the style definition. This can be
-done by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
+It is also possible to completely override a style definition. This can be done
+by setting the ``base`` of a style definition to ``DEFAULT_STYLE`` as
 illustrated by the `strong` style. This causes strongly emphasised text to be
-displayed in red (#a00) but **not** in a bold font as defined in the `base
+displayed in red (#a00) but **not** in a bold font as was defined in the `base
 style sheet`_ (the default for ``font_weight`` is `Medium`; see
 :class:`~rinoh.text.TextStyle`). Refer to :ref:`default_matcher` to find out
-which style attributes each style accepts (by following the hyperlink to the
-style class's documentation).
+which style attributes are accepted by each style (by following the hyperlink
+to the style class's documentation).
 
 The style sheet also redefines the ``mono_typeface`` variable. This variable is
 used in the `base style sheet`_ in all style definitions where a monospaced
-font is desired. Redefining the variable in the derived style sheet, affects
+font is desired. Redefining the variable in the derived style sheet affects
 all of these style definitions.
 
 
@@ -92,10 +98,12 @@ a document style that is not based on an existing style sheet. If the style
 definition for a particular document element is not included in the style
 sheet, the default values for its style properties are used.
 
-Unless a custom :class:`StyledMatcher` is passed to :class:`StyleSheetFile`,
-the :ref:`default matcher <default_matcher>` is used. Providing your own
-matcher offers even more customizability, but it is unlikely you will need
-this. See :ref:`matchers`.
+.. todo:: specifying a custom matcher for an INI style sheet
+
+    Unless a custom :class:`StyledMatcher` is passed to
+    :class:`StyleSheetFile`, the :ref:`default matcher <default_matcher>` is
+    used. Providing your own matcher offers even more customizability, but it
+    is unlikely you will need this. See :ref:`matchers`.
 
 .. note:: In the future, rinohtype will be able to generate an empty INI style
     sheet, listing all styles defined in the matcher with the supported style
@@ -122,9 +130,8 @@ Configuring a Template
 
 rinohtype provides a number of :ref:`standard_templates`. These can be
 customized by means of a template configuration file; a plain text file in the
-INI\ [#ini]_ format with the ``.rtt`` extension. The example from
-:ref:`library_quickstart` above can be customized using the following template
-configuration, for example:
+INI\ [#ini]_ format with the ``.rtt`` extension. Here is an example
+configuration for the article template:
 
 .. literalinclude:: /my_article.rtt
     :language: ini
@@ -197,12 +204,18 @@ configurable. Refer to :ref:`standard_templates` for details.
 
 .. todo:: base for part template?
 
+
+Using a Template Configuration File
+-----------------------------------
+
 A template configuration file can be specified when rendering using the
-command-line :program:`rinoh` tool or :ref:`Sphinx_builder` by passing it to
-the :option:`--template <rinoh --template>` command-line option or setting the
-:confval:`rinoh_template` option in ``conf.py``, respectively. To render a
-document using this template configuration programatically, load the template
-file using :class:`.TemplateConfigurationFile`.
+command-line :program:`rinoh` tool by passing it to the
+:option:`--template <rinoh --template>` command-line option. When using the
+:ref:`Sphinx_builder`, you can set the :confval:`rinoh_template` option in
+``conf.py``.
+
+To render a document using this template configuration programatically, load
+the template file using :class:`.TemplateConfigurationFile`:
 
 .. testcode:: my_document
 
