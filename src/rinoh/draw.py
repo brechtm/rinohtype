@@ -12,10 +12,19 @@ from .style import Style, Styled
 from .dimension import Dimension, PT
 
 
-__all__ = ['Stroke', 'LineStyle', 'Line', 'Shape', 'Polygon', 'Rectangle']
+__all__ = ['Stroke', 'LineStyle', 'Line', 'ShapeStyle', 'Shape',
+           'Polygon', 'Rectangle']
 
 
 class Stroke(AcceptNoneAttributeType):
+    """The display properties of a line
+
+    Args:
+        width (Dimension): the width of the line
+        color (Color): the color of the line
+
+    """
+
     def __init__(self, width, color):
         self.width = width
         self.color = color
@@ -53,6 +62,14 @@ class LineStyle(Style):
 
 
 class Line(Styled):
+    """Draws a line
+
+    Args:
+        start (2-tuple): coordinates for the start point of the line
+        end (2-tuple): coordinates for the end point of the line
+
+    """
+
     style_class = LineStyle
 
     def __init__(self, start, end, style=None, parent=None):
@@ -76,6 +93,8 @@ class ShapeStyle(LineStyle):
 
 
 class Shape(Styled):
+    """Base class for closed shapes"""
+
     style_class = ShapeStyle
 
     def __init__(self, style=None, parent=None):
