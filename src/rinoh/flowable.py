@@ -44,8 +44,6 @@ __all__ = ['Flowable', 'FlowableStyle',
 
 
 class FlowableStyle(Style):
-    """The :class:`Style` for :class:`Flowable` objects."""
-
     space_above = Attribute(Dimension, 0, 'Vertical space preceding the '
                                               'flowable')
     space_below = Attribute(Dimension, 0, 'Vertical space following the '

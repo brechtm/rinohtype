@@ -25,7 +25,8 @@ from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
 
-from .attribute import AttributesDictionary, RuleSet, RuleSetFile
+from .attribute import (WithAttributes, AttributesDictionary,
+                        RuleSet, RuleSetFile)
 from .element import DocumentElement
 from .resource import Resource
 from .util import cached, unique, all_subclasses, NotImplementedAttribute
@@ -64,7 +65,16 @@ class NoStyleException(StyleException):
     :class:`StyleSheet`."""
 
 
-class Style(AttributesDictionary):
+class StyleMeta(WithAttributes):
+    def __new__(mcls, classname, bases, cls_dict):
+        if '__doc__' not in cls_dict:
+            styled_class_name = classname.replace('Style', '')
+            cls_dict['__doc__'] = ('Style class for :class:`.{}`'
+                                   .format(styled_class_name))
+        return super().__new__(mcls, classname, bases, cls_dict)
+
+
+class Style(AttributesDictionary, metaclass=StyleMeta):
     """Dictionary storing style attributes.
 
     The style attributes associated with this :class:`Style` are specified as

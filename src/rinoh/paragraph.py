@@ -337,8 +337,6 @@ class TabStopList(AttributeType, list):
 
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(FlowableStyle, TextStyle):
-    """The :class:`Style` for :class:`Paragraph` objects"""
-
     indent_first = Attribute(Dimension, 0*PT, 'Indentation of the first line '
                                               'of text')
     line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '
