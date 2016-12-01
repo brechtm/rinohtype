@@ -177,8 +177,8 @@ class Flowable(Styled):
         padding_left = self.get_style('padding_left', container)
         padding_right = self.get_style('padding_right', container)
         padding_bottom = float(self.get_style('padding_bottom', container))
-        pad_kwargs = dict(left=padding_left,
-                          right=container.width - padding_right,
+        right = container.width - padding_right
+        pad_kwargs = dict(left=padding_left, right=right,
                           extra_space_below=padding_bottom)
         try:
             container.advance(padding_top)
@@ -189,17 +189,23 @@ class Flowable(Styled):
                                               **pad_kwargs) as pad_cntnr:
                 width, first_line_ascender, descender = \
                     self.render(pad_cntnr, descender, state=state, **kwargs)
-            self.render_frame(container, container.height, top=draw_top)
+            padded_width = padding_left + width + padding_right
+            self.render_frame(container, padded_width, container.height,
+                              top=draw_top)
             top_to_baseline = padding_top + first_line_ascender
-            return width, top_to_baseline, descender
+            return padded_width, top_to_baseline, descender
         except EndOfContainer as eoc:
+            try:
+                width = padding_left + eoc.flowable_state.width + padding_right
+            except AttributeError:
+                width = container.width
             if not eoc.flowable_state.initial:
-                self.render_frame(container, container.max_height,
+                self.render_frame(container, width, container.max_height,
                                   top=draw_top, bottom=False)
             raise
 
-    def render_frame(self, container, container_height, top=True, bottom=True):
-        width, height = float(container.width), - float(container_height)
+    def render_frame(self, container, width, height, top=True, bottom=True):
+        width, height = float(width), - float(height)
         border = self.get_style('border', container)
         border_left = self.get_style('border_left', container) or border
         border_right = self.get_style('border_right', container) or border
