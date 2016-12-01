@@ -668,7 +668,7 @@ class ParagraphBase(Flowable):
         return max_line_width, first_line.advance, descender
 
 
-class Paragraph(ParagraphBase, MixedStyledText):
+class Paragraph(MixedStyledText, ParagraphBase):
     """A paragraph of static text
 
     Args:
@@ -678,11 +678,7 @@ class Paragraph(ParagraphBase, MixedStyledText):
 
     """
 
-    def __init__(self, text_or_items, id=None, style=None, parent=None):
-        MixedStyledText.__init__(self, text_or_items, style=style,
-                                 parent=parent)
-        self.id = id
-        self.annotation = None
+    style_class = ParagraphBase.style_class
 
     def text(self, container):
         return self

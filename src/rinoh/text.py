@@ -408,7 +408,7 @@ class MixedStyledText(MixedStyledTextBase, list):
 
     _assumed_equal = {}
 
-    def __init__(self, text_or_items, style=None, parent=None):
+    def __init__(self, text_or_items, id=None, style=None, parent=None):
         """Initialize this mixed-styled text as the concatenation of
         `text_or_items`, which is either a single text item or an iterable of
         text items. Individual text items can be :class:`StyledText` or
@@ -416,7 +416,7 @@ class MixedStyledText(MixedStyledTextBase, list):
         each of the text items.
 
         See :class:`StyledText` for information on `style`, and `parent`."""
-        super().__init__(style=style, parent=parent)
+        super().__init__(id=id, style=style, parent=parent)
         if isinstance(text_or_items, (str, StyledText)):
             text_or_items = (text_or_items, )
         for item in text_or_items:
