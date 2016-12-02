@@ -454,7 +454,7 @@
                      (0,0,0,0,2) body
                 MixedStyledText('A bullet list')
                   SingleStyledText('A bullet list')
-              List(style='bulleted')   None:None <bullet_list>
+              List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:126 <bullet_list>
                    > (0,0,1,0,2) bulleted list
                 ListItem()
                      x (0,0,1,0,4) bulleted list item
@@ -512,7 +512,7 @@
                      (0,0,0,0,2) body
                 MixedStyledText('Paragraph 2 of item 2.')
                   SingleStyledText('Paragraph 2 of item 2.')
-              List(style='bulleted')   None:None <bullet_list>
+              List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:133 <bullet_list>
                    > (0,0,1,0,2) bulleted list
                 ListItem()
                      x (0,0,1,0,4) bulleted list item
@@ -548,7 +548,7 @@
                            (0,0,0,0,2) body
                       MixedStyledText('Nested item 2.')
                         SingleStyledText('Nested item 2.')
-                    List(style='bulleted')   None:None <bullet_list>
+                    List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:136 <bullet_list>
                          > (0,0,1,0,2) bulleted list
                       ListItem()
                            x (0,0,1,0,4) bulleted list item
@@ -601,14 +601,14 @@
                > fallback to default style
             (continued) StaticGroupedFlowables()   None:None <list_item>
                  > (0,0,0,0,3) list item body
-              (continued) List(style='bulleted')   None:None <bullet_list>
+              (continued) List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:133 <bullet_list>
                    > (0,0,1,0,2) bulleted list
                 (continued) ListItem()
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   (continued) StaticGroupedFlowables()   None:None <list_item>
                        > (0,0,0,0,3) list item body
-                    (continued) List(style='bulleted')   None:None <bullet_list>
+                    (continued) List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:136 <bullet_list>
                          > (0,0,1,0,2) bulleted list
                       ListItem()
                            x (0,0,1,0,4) bulleted list item
@@ -1032,7 +1032,7 @@
              > (0,0,0,0,2) body
           MixedStyledText('For listing command-line options...')
             SingleStyledText('For listing command-line options...')
-        DefinitionList(style='option list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list>
+        DefinitionList(style='option list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:201 <option_list>
              > (0,0,1,0,2) option list
                (0,0,0,0,2) definition list
           LabeledFlowable(style='option')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <option_list_item>
@@ -1365,10 +1365,6 @@
                    (0,0,0,0,2) body
               MixedStyledText('A one, two, a one two three four')
                 SingleStyledText('A one, two, a one two three four')
-            Paragraph('\n', style='line block line')   None:None <line>
-                 > (0,0,1,0,2) line block line
-                   (0,0,0,0,2) body
-              SingleStyledText('\n')
 #### UpExpandingContainer('header')
   Header('2 Body Elements')
        > (0,0,0,0,2) header
@@ -1401,9 +1397,14 @@
           (continued) StaticGroupedFlowables(style='line block')   None:None <line_block>
                x (0,0,1,0,1) line block
                > fallback to default style
+            Paragraph('\n', style='line block line')   None:None <line>
+                 > (0,0,1,0,2) line block line
+                   (0,0,0,0,2) body
             Paragraph('Half a bee, philosophically,', style='line block line')   None:None <line>
                  > (0,0,1,0,2) line block line
                    (0,0,0,0,2) body
+              MixedStyledText('Half a bee, philosophically,')
+                SingleStyledText('Half a bee, philosophically,')
             StaticGroupedFlowables(style='line block')
                  > (0,0,2,0,2) nested line block
                  x (0,0,1,0,1) line block
@@ -1655,7 +1656,7 @@
                 TableCellBackground()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                List(style='bulleted')   None:None <bullet_list>
+                List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:305 <bullet_list>
                      x (0,0,1,0,4) (table) bulleted list
                      > (0,0,1,0,2) bulleted list
                   ListItem()
@@ -2354,7 +2355,7 @@
                    (0,0,1,0,2) title
                    (0,0,0,0,2) body
               SingleStyledText('Important')
-            List(style='bulleted')   None:None <bullet_list>
+            List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:454 <bullet_list>
                  > (0,0,1,0,2) bulleted list
               ListItem()
                    x (0,0,1,0,4) bulleted list item

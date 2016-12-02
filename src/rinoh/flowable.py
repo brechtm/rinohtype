@@ -185,17 +185,26 @@ class Flowable(Styled):
         return margin_left + width + margin_right, top_to_baseline, descender
 
     def flow_inner(self, container, descender, state=None, **kwargs):
+        def border_width(attribute):
+            border = self.get_style(attribute, container)
+            return border.width if border else 0
+
         draw_top = state.initial
         width = self.get_style('width', container)
         padding_top = self.get_style('padding_top', container)
         padding_left = self.get_style('padding_left', container)
         padding_right = self.get_style('padding_right', container)
         padding_bottom = float(self.get_style('padding_bottom', container))
-        right = container.width - padding_right
-        pad_kwargs = dict(left=padding_left, right=right,
-                          extra_space_below=padding_bottom)
+        border = border_width('border')
+        border_left = border_width('border_left') or border
+        border_right = border_width('border_right') or border
+        border_top = border_width('border_top') or border
+        border_bottom = border_width('border_bottom') or border
+        right = container.width - padding_right - border_right
+        pad_kwargs = dict(left=padding_left + border_left, right=right,
+                          extra_space_below=padding_bottom + border_bottom)
         try:
-            container.advance(padding_top)
+            container.advance(padding_top + border_top)
         except ContainerOverflow:
             raise EndOfContainer(state)
         try:
@@ -238,15 +247,23 @@ class Flowable(Styled):
         rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
         rect.render(container)
 
-        def render_border(start, end, stroke):
-            Line(start, end, style=LineStyle(stroke=stroke)).render(container)
+        def offset_border(coord, stroke, corr_x, corr_y):
+            return (coord + corr * float(stroke.width) / 2
+                    for (coord, corr) in zip(coord, (corr_x, corr_y)))
+
+        def render_border(start, end, stroke, corr_x, corr_y):
+            if stroke is None:
+                return
+            Line(offset_border(start, stroke, corr_x, corr_y),
+                 offset_border(end, stroke, corr_x, corr_y),
+                 style=LineStyle(stroke=stroke)).render(container)
 
         if top:
-            render_border((0, 0), (width, 0), border_top)
-        render_border((0, 0), (0, height), border_left)
-        render_border((width, 0), (width, height), border_right)
+            render_border((0, 0), (width, 0), border_top, 0, -1)
+        render_border((0, 0), (0, height), border_left, 1, 0)
+        render_border((width, 0), (width, height), border_right, -1, 0)
         if bottom:
-            render_border((0, height), (width, height), border_bottom)
+            render_border((0, height), (width, height), border_bottom, 0, 1)
 
     def render(self, container, descender, state, **kwargs):
         """Renders the flowable's content to `container`, with the flowable's

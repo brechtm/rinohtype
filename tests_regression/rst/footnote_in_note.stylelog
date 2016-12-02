@@ -9,7 +9,7 @@
            > fallback to default style
         SingleStyledText('1')
     StaticGroupedFlowables()
-      Paragraph('Here it is!')   None:4 <paragraph>
+      Paragraph('Here it is!')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_in_note.rst:7 <paragraph>
            > (0,0,0,0,5) footnote paragraph
              (0,0,0,0,2) body
         MixedStyledText('Here it is!')
