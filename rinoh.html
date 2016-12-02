@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Command-line Renderer &mdash; rinohtype 0.3.0 documentation</title>
+  <title>rinoh &mdash; rinohtype 0.3.0 documentation</title>
   
 
   
@@ -34,8 +34,9 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/>
+        <link rel="up" title="Reference" href="reference.html"/>
         <link rel="next" title="Sphinx Builder" href="sphinx.html"/>
-        <link rel="prev" title="Quickstart" href="quickstart.html"/> 
+        <link rel="prev" title="Reference" href="reference.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,13 +89,16 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-line Renderer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">rinoh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Document Templates</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">rinoh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stylesheets.html">Style Sheets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stdtemplates.html">Standard Document Templates</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="templates.html">Standard Document Templates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
@@ -128,7 +132,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Command-line Renderer</li>
+          <li><a href="reference.html">Reference</a> &raquo;</li>
+      
+    <li>rinoh</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -142,10 +148,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="command-line-renderer">
-<span id="rinoh"></span><h1>Command-line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2>rinoh<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="rinoh">
+<span id="id1"></span><h1>rinoh<a class="headerlink" href="#rinoh" title="Permalink to this headline">¶</a></h1>
 <p>Render a structured document to PDF.</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">usage: rinoh [-h] [-f FORMAT] [-o OPTION=VALUE] [-t NAME OR FILENAME]</span>
 <span class="go">                 [-s NAME OR FILENAME] [-p PAPER] [--list-templates]</span>
@@ -157,7 +161,7 @@
 <dl class="option">
 <dt id="cmdoption-rinoh-arg-input">
 <code class="descname">input</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-arg-input" title="Permalink to this definition">¶</a></dt>
-<dd><p>the reStructuredText document to render</p>
+<dd><p>the document to render</p>
 </dd></dl>
 
 <dl class="option">
@@ -233,7 +237,6 @@
 </dd></dl>
 
 </div>
-</div>
 
 
            </div>
@@ -245,7 +248,7 @@
         <a href="sphinx.html" class="btn btn-neutral float-right" title="Sphinx Builder" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="quickstart.html" class="btn btn-neutral" title="Quickstart" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="reference.html" class="btn btn-neutral" title="Reference" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -89,10 +89,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
@@ -167,7 +167,7 @@
   <span class="target" id="module-rinoh.template"></span><div class="section" id="templates-rinoh-template">
 <span id="template"></span><h1>Templates (<a class="reference internal" href="#module-rinoh.template" title="rinoh.template"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.template</span></code></a>)<a class="headerlink" href="#templates-rinoh-template" title="Permalink to this headline">¶</a></h1>
 <p>Document templates are created by subclassing <a class="reference internal" href="#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code></a>, just
-like the <a class="reference internal" href="../templates.html#document-templates"><span class="std std-ref">standard templates</span></a> shipped with rinohtype.</p>
+like the <a class="reference internal" href="../stdtemplates.html#standard-templates"><span class="std std-ref">standard templates</span></a> shipped with rinohtype.</p>
 <dl class="class">
 <dt id="rinoh.template.DocumentTemplate">
 <em class="property">class </em><code class="descclassname">rinoh.template.</code><code class="descname">DocumentTemplate</code><span class="sig-paren">(</span><em>document_tree</em>, <em>configuration=None</em>, <em>backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.template.DocumentTemplate" title="Permalink to this definition">¶</a></dt>
@@ -205,8 +205,8 @@ like the <a class="reference internal" href="../templates.html#document-template
 <dt id="rinoh.template.DocumentTemplate.stylesheet">
 <code class="descname">stylesheet</code><a class="headerlink" href="#rinoh.template.DocumentTemplate.stylesheet" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal"><span class="pre">StyleSheet</span></code></a> &#8211; The stylesheet to use for styling document elements</p>
-<p>Accepts: the name of an <a class="reference internal" href="style.html#included-style-sheets"><span class="std std-ref">installed style sheet</span></a> or the filename of a stylesheet file (with the <code class="docutils literal"><span class="pre">.rts</span></code> extension)</p>
-<p>Default: <code class="docutils literal"><span class="pre">sphinx</span></code> (= <a class="reference internal" href="style.html#rinoh.stylesheets.sphinx" title="rinoh.stylesheets.sphinx"><code class="xref py py-data docutils literal"><span class="pre">rinoh.stylesheets.sphinx</span></code></a>)</p>
+<p>Accepts: the name of an <a class="reference internal" href="../stylesheets.html#included-style-sheets"><span class="std std-ref">installed style sheet</span></a> or the filename of a stylesheet file (with the <code class="docutils literal"><span class="pre">.rts</span></code> extension)</p>
+<p>Default: <code class="docutils literal"><span class="pre">sphinx</span></code> (= <a class="reference internal" href="../stylesheets.html#rinoh.stylesheets.sphinx" title="rinoh.stylesheets.sphinx"><code class="xref py py-data docutils literal"><span class="pre">rinoh.stylesheets.sphinx</span></code></a>)</p>
 </dd></dl>
 
 <dl class="attribute">

@@ -1,0 +1,7 @@
+TableStyle
+======================
+
+.. currentmodule:: rinoh.table
+
+.. autoclass:: TableStyle
+    :members:

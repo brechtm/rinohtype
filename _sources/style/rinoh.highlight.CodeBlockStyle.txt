@@ -1,0 +1,7 @@
+CodeBlockStyle
+==============================
+
+.. currentmodule:: rinoh.highlight
+
+.. autoclass:: CodeBlockStyle
+    :members:

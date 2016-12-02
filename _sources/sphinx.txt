@@ -1,7 +1,7 @@
 .. _sphinx_builder:
 
 Sphinx Builder
---------------
+==============
 
 The :mod:`rinoh.frontent.sphinx` is a Sphinx extension module. It provides a
 Sphinx builder with the name *rinoh*. The builder recognizes the following

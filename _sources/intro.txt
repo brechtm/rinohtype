@@ -11,11 +11,11 @@ Simply being built with Python makes rinohtype already much easier to approach
 than TeX. Additionally, rinohtype is built around the following core concepts
 to ensure customizability:
 
-Document templates
+Document Templates
     These determine the page layout and (for longer documents) the different
     parts of your document.
 
-Style sheets
+Style Sheets
     The CSS-inspired style sheets determine the look of individual document
     elements. A style sheet assigns style attributes to each type of document
     element. For example, a paragraph's style is determined by the typeface,

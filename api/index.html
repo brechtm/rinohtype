@@ -89,10 +89,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">Command-line Renderer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../templates.html">Standard Document Templates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
@@ -162,155 +162,6 @@
             
   <div class="section" id="module-rinoh.index">
 <span id="index-rinoh-index"></span><span id="index"></span><h1>Index (<a class="reference internal" href="#module-rinoh.index" title="rinoh.index"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.index</span></code></a>)<a class="headerlink" href="#module-rinoh.index" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="rinoh.index.IndexStyle">
-<em class="property">class </em><code class="descclassname">rinoh.index.</code><code class="descname">IndexStyle</code><span class="sig-paren">(</span><em>base=None</em>, <em>**attributes</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.index.IndexStyle" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="rinoh.index.IndexStyle.initials">
-<code class="descname">initials</code><a class="headerlink" href="#rinoh.index.IndexStyle.initials" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; Group index entries based on their first letter</p>
-<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
-<p>Default: <code class="docutils literal"><span class="pre">true</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.title">
-<code class="descname">title</code><a class="headerlink" href="#rinoh.index.IndexStyle.title" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal"><span class="pre">StyledText</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.GroupedFlowablesStyle.title" title="rinoh.flowable.GroupedFlowablesStyle.title"><code class="xref py py-attr docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a>) Title to precede the flowables</p>
-<p>Accepts: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal"><span class="pre">'</span></code> or <code class="docutils literal"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
-<p>Default: (no value)</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.flowable_spacing">
-<code class="descname">flowable_spacing</code><a class="headerlink" href="#rinoh.index.IndexStyle.flowable_spacing" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.GroupedFlowablesStyle.flowable_spacing" title="rinoh.flowable.GroupedFlowablesStyle.flowable_spacing"><code class="xref py py-attr docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a>) Spacing between flowables</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.space_above">
-<code class="descname">space_above</code><a class="headerlink" href="#rinoh.index.IndexStyle.space_above" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.space_above" title="rinoh.flowable.FlowableStyle.space_above"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Vertical space preceding the flowable</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.space_below">
-<code class="descname">space_below</code><a class="headerlink" href="#rinoh.index.IndexStyle.space_below" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.space_below" title="rinoh.flowable.FlowableStyle.space_below"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Vertical space following the flowable</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.margin_left">
-<code class="descname">margin_left</code><a class="headerlink" href="#rinoh.index.IndexStyle.margin_left" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.margin_left" title="rinoh.flowable.FlowableStyle.margin_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Left margin</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.margin_right">
-<code class="descname">margin_right</code><a class="headerlink" href="#rinoh.index.IndexStyle.margin_right" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.margin_right" title="rinoh.flowable.FlowableStyle.margin_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Right margin</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.padding_left">
-<code class="descname">padding_left</code><a class="headerlink" href="#rinoh.index.IndexStyle.padding_left" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_left" title="rinoh.flowable.FlowableStyle.padding_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Left padding</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.padding_right">
-<code class="descname">padding_right</code><a class="headerlink" href="#rinoh.index.IndexStyle.padding_right" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_right" title="rinoh.flowable.FlowableStyle.padding_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Right padding</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.padding_top">
-<code class="descname">padding_top</code><a class="headerlink" href="#rinoh.index.IndexStyle.padding_top" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_top" title="rinoh.flowable.FlowableStyle.padding_top"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Top padding</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.padding_bottom">
-<code class="descname">padding_bottom</code><a class="headerlink" href="#rinoh.index.IndexStyle.padding_bottom" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.padding_bottom" title="rinoh.flowable.FlowableStyle.padding_bottom"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Bottom padding</p>
-<p>Accepts: a numeric value followed by a unit (<code class="docutils literal"><span class="pre">pt</span></code>, <code class="docutils literal"><span class="pre">in</span></code>, <code class="docutils literal"><span class="pre">pc</span></code>, <code class="docutils literal"><span class="pre">mm</span></code>, <code class="docutils literal"><span class="pre">cm</span></code>, <code class="docutils literal"><span class="pre">%</span></code>, <code class="docutils literal"><span class="pre">/4</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">0</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.keep_with_next">
-<code class="descname">keep_with_next</code><a class="headerlink" href="#rinoh.index.IndexStyle.keep_with_next" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Bool</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.keep_with_next" title="rinoh.flowable.FlowableStyle.keep_with_next"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Keep this flowable and the next on the same page</p>
-<p>Accepts: <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code></p>
-<p>Default: <code class="docutils literal"><span class="pre">false</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.border">
-<code class="descname">border</code><a class="headerlink" href="#rinoh.index.IndexStyle.border" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border" title="rinoh.flowable.FlowableStyle.border"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border surrounding the flowable</p>
-<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.border_left">
-<code class="descname">border_left</code><a class="headerlink" href="#rinoh.index.IndexStyle.border_left" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_left" title="rinoh.flowable.FlowableStyle.border_left"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border left of the flowable</p>
-<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.border_right">
-<code class="descname">border_right</code><a class="headerlink" href="#rinoh.index.IndexStyle.border_right" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_right" title="rinoh.flowable.FlowableStyle.border_right"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border right of the flowable</p>
-<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.border_top">
-<code class="descname">border_top</code><a class="headerlink" href="#rinoh.index.IndexStyle.border_top" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_top" title="rinoh.flowable.FlowableStyle.border_top"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border above the flowable</p>
-<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.border_bottom">
-<code class="descname">border_bottom</code><a class="headerlink" href="#rinoh.index.IndexStyle.border_bottom" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Stroke</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.border_bottom" title="rinoh.flowable.FlowableStyle.border_bottom"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Border below the flowable</p>
-<p>Accepts: the width (<a class="reference internal" href="dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a>) and color (<code class="xref py py-class docutils literal"><span class="pre">Color</span></code>) of the stroke, separated by a comma (<code class="docutils literal"><span class="pre">,</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rinoh.index.IndexStyle.background_color">
-<code class="descname">background_color</code><a class="headerlink" href="#rinoh.index.IndexStyle.background_color" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="xref py py-class docutils literal"><span class="pre">Color</span></code> &#8211; (<a class="reference internal" href="flowable.html#rinoh.flowable.FlowableStyle.background_color" title="rinoh.flowable.FlowableStyle.background_color"><code class="xref py py-attr docutils literal"><span class="pre">FlowableStyle</span></code></a>) Color of the area within the flowable&#8217;s borders</p>
-<p>Accepts: HEX string with optional alpha component (<code class="docutils literal"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal"><span class="pre">#RGB</span></code> or <code class="docutils literal"><span class="pre">#RGBA</span></code>)</p>
-<p>Default: <code class="docutils literal"><span class="pre">none</span></code></p>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 
 

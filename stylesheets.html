@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Style Sheets &mdash; rinohtype 0.3.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/>
+        <link rel="up" title="Reference" href="reference.html"/>
+        <link rel="next" title="LineStyle" href="style/rinoh.draw.LineStyle.html"/>
+        <link rel="prev" title="Sphinx Builder" href="sphinx.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Document Templates</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rinoh.html">rinoh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Style Sheets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-rinoh.stylesheets">Included Style Sheets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#default-matcher">Default Matcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#element-style-classes">Element Style Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.draw.LineStyle.html">LineStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.draw.ShapeStyle.html">ShapeStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.flowable.FlowableStyle.html">FlowableStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html">LabeledFlowableStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html">GroupedFlowablesStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.flowable.HorizontallyAlignedFlowableStyle.html">HorizontallyAlignedFlowableStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.flowable.FloatStyle.html">FloatStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.image.CaptionStyle.html">CaptionStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.image.FigureStyle.html">FigureStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.index.IndexStyle.html">IndexStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html">ParagraphStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.highlight.CodeBlockStyle.html">CodeBlockStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.text.TextStyle.html">TextStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.inline.InlineFlowableStyle.html">InlineFlowableStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.reference.ReferencingParagraphStyle.html">ReferencingParagraphStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.reference.NoteMarkerStyle.html">NoteMarkerStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.SectionStyle.html">SectionStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.HeadingStyle.html">HeadingStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.ListStyle.html">ListStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html">ListItemLabelStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.TableOfContentsStyle.html">TableOfContentsStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html">TableOfContentsEntryStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html">AdmonitionStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.structure.HorizontalRuleStyle.html">HorizontalRuleStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.table.TableStyle.html">TableStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.table.TableCellStyle.html">TableCellStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html">TableCellBorderStyle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="style/rinoh.table.TableCellBackgroundStyle.html">TableCellBackgroundStyle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stdtemplates.html">Standard Document Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rinohtype</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="reference.html">Reference</a> &raquo;</li>
+      
+    <li>Style Sheets</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/stylesheets.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="style-sheets">
+<span id="id1"></span><h1>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rinoh.stylesheets">
+<span id="id2"></span><span id="included-style-sheets"></span><h2>Included Style Sheets<a class="headerlink" href="#module-rinoh.stylesheets" title="Permalink to this headline">¶</a></h2>
+<p>These style sheets are included with rinohtype:</p>
+<dl class="data">
+<dt id="rinoh.stylesheets.sphinx">
+<code class="descclassname">rinoh.stylesheets.</code><code class="descname">sphinx</code><a class="headerlink" href="#rinoh.stylesheets.sphinx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mostly a copy of the LaTeX style included with Sphinx</p>
+<p>Entry point name: <code class="docutils literal"><span class="pre">sphinx</span></code></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rinoh.stylesheets.sphinx_article">
+<code class="descclassname">rinoh.stylesheets.</code><code class="descname">sphinx_article</code><a class="headerlink" href="#rinoh.stylesheets.sphinx_article" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Sphinx stylesheet adjusted for the article template</p>
+<p>Entry point name: <code class="docutils literal"><span class="pre">sphinx_article</span></code></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="rinoh.stylesheets.sphinx_base14">
+<code class="descclassname">rinoh.stylesheets.</code><code class="descname">sphinx_base14</code><a class="headerlink" href="#rinoh.stylesheets.sphinx_base14" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Sphinx stylesheet, but using the fonts from the PDF core set
+(yielding smaller PDF files)</p>
+<p>Entry point name: <code class="docutils literal"><span class="pre">sphinx_base14</span></code></p>
+</dd></dl>
+
+<p>Additional style sheets can be installed from PyPI. The installed style sheets
+can be listed using <a class="reference internal" href="rinoh.html#cmdoption-rinoh--list-stylesheets"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>.</p>
+</div>
+<div class="section" id="default-matcher">
+<span id="id3"></span><h2>Default Matcher<a class="headerlink" href="#default-matcher" title="Permalink to this headline">¶</a></h2>
+<p>The default matcher provides the selectors for the styles used in the standard
+style sheets.</p>
+<dl class="data">
+<dt id="rinoh.stylesheets.matcher">
+<code class="descclassname">rinoh.stylesheets.</code><code class="descname">matcher</code><a class="headerlink" href="#rinoh.stylesheets.matcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default matcher defines the following styles</p>
+<ul class="simple">
+<li>title page logo: <a class="reference internal" href="style/rinoh.flowable.HorizontallyAlignedFlowableStyle.html#rinoh.flowable.HorizontallyAlignedFlowableStyle" title="rinoh.flowable.HorizontallyAlignedFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">HorizontallyAlignedFlowableStyle</span></code></a></li>
+<li>title page title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>title page subtitle: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>title page author: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>title page date: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>title page extra: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>front matter section title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>body matter chapter label: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>body matter chapter number: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>body matter chapter title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>fallback: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>italic: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>bold: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>monospaced: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>emphasis: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>strong: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>literal emphasis: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>literal strong: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>quote: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>file path: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>keystrokes: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>regular expression: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>code with variable: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>mail header: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>MIME type: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>newsgroup: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>command: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>make variable: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>program: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>man page: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>window title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>UI control: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>UI control accelerator: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>menu cascade: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>draft comment: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>title reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>error: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>linked reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>unlinked reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>internal hyperlink: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>external hyperlink: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>broken hyperlink: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>body: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>code block: <a class="reference internal" href="style/rinoh.highlight.CodeBlockStyle.html#rinoh.highlight.CodeBlockStyle" title="rinoh.highlight.CodeBlockStyle"><code class="xref py py-class docutils literal"><span class="pre">CodeBlockStyle</span></code></a></li>
+<li>attribution: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>centered: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>block quote: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>line block: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>nested line block: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>line block line: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>subtitle: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>date: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>author: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>affiliation: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>chapter: <a class="reference internal" href="style/rinoh.structure.SectionStyle.html#rinoh.structure.SectionStyle" title="rinoh.structure.SectionStyle"><code class="xref py py-class docutils literal"><span class="pre">SectionStyle</span></code></a></li>
+<li>heading level 1: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>unnumbered heading level 1: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>heading level 2: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>unnumbered heading level 2: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>heading level 3: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>unnumbered heading level 3: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>heading level 4: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>unnumbered heading level 4: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>heading level 5: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>unnumbered heading level 5: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>other heading levels: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>appendix: <a class="reference internal" href="style/rinoh.structure.SectionStyle.html#rinoh.structure.SectionStyle" title="rinoh.structure.SectionStyle"><code class="xref py py-class docutils literal"><span class="pre">SectionStyle</span></code></a></li>
+<li>appendix heading level 1: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>appendix heading level 2: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>appendix heading level 3: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>appendix heading level 4: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>appendix heading level 5: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>prerequisites: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>prerequisites title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>post requirement: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>abstract: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>abstract paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>example: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>example title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>topic: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>topic title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>rubric: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>sidebar: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>sidebar title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>sidebar subtitle: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>enumerated list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>enumerated list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>enumerated list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>nested enumerated list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>(table) enumerated list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>(table) enumerated list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>(table) enumerated list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>bulleted list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>compact bulleted list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>bulleted list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>bulleted list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>nested bulleted list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>(table) bulleted list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>(table) bulleted list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>(table) bulleted list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>steps list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>steps list title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>steps list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>steps list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>choices list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>choices list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>choices list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>list item body: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>list item paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>definition list: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>definition list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>definition term: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>definition term paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>definition term classifier: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>definition: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>definition paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>related links: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>related links section title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>related links list: <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal"><span class="pre">ListStyle</span></code></a></li>
+<li>related links list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>related links list item label: <a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-class docutils literal"><span class="pre">ListItemLabelStyle</span></code></a></li>
+<li>related links list item paragraph: <a class="reference internal" href="style/rinoh.reference.ReferencingParagraphStyle.html#rinoh.reference.ReferencingParagraphStyle" title="rinoh.reference.ReferencingParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ReferencingParagraphStyle</span></code></a></li>
+<li>related link title reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>related link page reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>related link number reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>related link reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>versionmodified: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object description: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>object signatures: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>object signature: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>object name: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>additional name part: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object type: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object returns: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object parentheses: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object parameter list: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object parameter: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object parameter (no emphasis): <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object brackets: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object optional parameter: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object annotation: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>object description content: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>object description content paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>production list: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>production: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>token name: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>token definition: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>field list: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>field list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>field name: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>option list: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>option list item: <a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></li>
+<li>option: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>option string: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>option argument: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>attention admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>attention admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>attention admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>caution admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>caution admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>caution admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>danger admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>danger admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>danger admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>error admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>error admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>error admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>hint admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>hint admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>hint admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>important admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>important admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>important admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>note admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>note admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>note admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>tip admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>tip admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>tip admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>warning admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>warning admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>warning admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>seealso admonition: <a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal"><span class="pre">AdmonitionStyle</span></code></a></li>
+<li>seealso admonition title: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>seealso admonition inline title: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>header: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>footer: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>footnote marker: <a class="reference internal" href="style/rinoh.reference.NoteMarkerStyle.html#rinoh.reference.NoteMarkerStyle" title="rinoh.reference.NoteMarkerStyle"><code class="xref py py-class docutils literal"><span class="pre">NoteMarkerStyle</span></code></a></li>
+<li>citation marker: <a class="reference internal" href="style/rinoh.reference.NoteMarkerStyle.html#rinoh.reference.NoteMarkerStyle" title="rinoh.reference.NoteMarkerStyle"><code class="xref py py-class docutils literal"><span class="pre">NoteMarkerStyle</span></code></a></li>
+<li>footnote paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>footnote label: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>figure: <a class="reference internal" href="style/rinoh.image.FigureStyle.html#rinoh.image.FigureStyle" title="rinoh.image.FigureStyle"><code class="xref py py-class docutils literal"><span class="pre">FigureStyle</span></code></a></li>
+<li>image: <a class="reference internal" href="style/rinoh.flowable.HorizontallyAlignedFlowableStyle.html#rinoh.flowable.HorizontallyAlignedFlowableStyle" title="rinoh.flowable.HorizontallyAlignedFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">HorizontallyAlignedFlowableStyle</span></code></a></li>
+<li>inline image: <a class="reference internal" href="style/rinoh.inline.InlineFlowableStyle.html#rinoh.inline.InlineFlowableStyle" title="rinoh.inline.InlineFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">InlineFlowableStyle</span></code></a></li>
+<li>caption: <a class="reference internal" href="style/rinoh.image.CaptionStyle.html#rinoh.image.CaptionStyle" title="rinoh.image.CaptionStyle"><code class="xref py py-class docutils literal"><span class="pre">CaptionStyle</span></code></a></li>
+<li>figure legend: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>figure legend paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>table of contents section: <a class="reference internal" href="style/rinoh.structure.SectionStyle.html#rinoh.structure.SectionStyle" title="rinoh.structure.SectionStyle"><code class="xref py py-class docutils literal"><span class="pre">SectionStyle</span></code></a></li>
+<li>table of contents title: <a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal"><span class="pre">HeadingStyle</span></code></a></li>
+<li>table of contents: <a class="reference internal" href="style/rinoh.structure.TableOfContentsStyle.html#rinoh.structure.TableOfContentsStyle" title="rinoh.structure.TableOfContentsStyle"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsStyle</span></code></a></li>
+<li>toc level 1: <a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsEntryStyle</span></code></a></li>
+<li>toc level 2: <a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsEntryStyle</span></code></a></li>
+<li>toc level 3: <a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsEntryStyle</span></code></a></li>
+<li>L3 toc level 3: <a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsEntryStyle</span></code></a></li>
+<li>toc linked reference: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+<li>table: <a class="reference internal" href="style/rinoh.table.TableStyle.html#rinoh.table.TableStyle" title="rinoh.table.TableStyle"><code class="xref py py-class docutils literal"><span class="pre">TableStyle</span></code></a></li>
+<li>table with caption: <a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></li>
+<li>choices table: <a class="reference internal" href="style/rinoh.table.TableStyle.html#rinoh.table.TableStyle" title="rinoh.table.TableStyle"><code class="xref py py-class docutils literal"><span class="pre">TableStyle</span></code></a></li>
+<li>table cell: <a class="reference internal" href="style/rinoh.table.TableCellStyle.html#rinoh.table.TableCellStyle" title="rinoh.table.TableCellStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellStyle</span></code></a></li>
+<li>table body cell background on even row: <a class="reference internal" href="style/rinoh.table.TableCellBackgroundStyle.html#rinoh.table.TableCellBackgroundStyle" title="rinoh.table.TableCellBackgroundStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBackgroundStyle</span></code></a></li>
+<li>table body cell background on odd row: <a class="reference internal" href="style/rinoh.table.TableCellBackgroundStyle.html#rinoh.table.TableCellBackgroundStyle" title="rinoh.table.TableCellBackgroundStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBackgroundStyle</span></code></a></li>
+<li>table body cell paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>table first column paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>table body cell list item number: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>table head cell: <a class="reference internal" href="style/rinoh.table.TableCellStyle.html#rinoh.table.TableCellStyle" title="rinoh.table.TableCellStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellStyle</span></code></a></li>
+<li>table head cell paragraph: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>table cell left border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table cell top border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table cell right border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table cell bottom border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table top border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table bottom border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table left border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table right border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table head cell left border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table head cell right border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table head bottom border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table head left border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table head right border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table body top border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table body left border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>table body right border: <a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal"><span class="pre">TableCellBorderStyle</span></code></a></li>
+<li>horizontal rule: <a class="reference internal" href="style/rinoh.structure.HorizontalRuleStyle.html#rinoh.structure.HorizontalRuleStyle" title="rinoh.structure.HorizontalRuleStyle"><code class="xref py py-class docutils literal"><span class="pre">HorizontalRuleStyle</span></code></a></li>
+<li>index: <a class="reference internal" href="style/rinoh.index.IndexStyle.html#rinoh.index.IndexStyle" title="rinoh.index.IndexStyle"><code class="xref py py-class docutils literal"><span class="pre">IndexStyle</span></code></a></li>
+<li>index section label: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>level 1 index entry: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>level 2 index entry: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>level 3 index entry: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>level 4 index entry: <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal"><span class="pre">ParagraphStyle</span></code></a></li>
+<li>domain index entry name: <a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal"><span class="pre">TextStyle</span></code></a></li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="element-style-classes">
+<h2>Element Style Classes<a class="headerlink" href="#element-style-classes" title="Permalink to this headline">¶</a></h2>
+<p>These are the style classes corresponding to each type of document element. For
+each style class, the supported style attributes are listed along with the
+values that can be assigned to them in a style sheet.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.draw.LineStyle.html#rinoh.draw.LineStyle" title="rinoh.draw.LineStyle"><code class="xref py py-obj docutils literal"><span class="pre">draw.LineStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/draw.html#rinoh.draw.Line" title="rinoh.draw.Line"><code class="xref py py-class docutils literal"><span class="pre">Line</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.draw.ShapeStyle.html#rinoh.draw.ShapeStyle" title="rinoh.draw.ShapeStyle"><code class="xref py py-obj docutils literal"><span class="pre">draw.ShapeStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/draw.html#rinoh.draw.Shape" title="rinoh.draw.Shape"><code class="xref py py-class docutils literal"><span class="pre">Shape</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle" title="rinoh.flowable.FlowableStyle"><code class="xref py py-obj docutils literal"><span class="pre">flowable.FlowableStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-obj docutils literal"><span class="pre">flowable.LabeledFlowableStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/flowable.html#rinoh.flowable.LabeledFlowable" title="rinoh.flowable.LabeledFlowable"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowable</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-obj docutils literal"><span class="pre">flowable.GroupedFlowablesStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/flowable.html#rinoh.flowable.GroupedFlowables" title="rinoh.flowable.GroupedFlowables"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowables</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.flowable.HorizontallyAlignedFlowableStyle.html#rinoh.flowable.HorizontallyAlignedFlowableStyle" title="rinoh.flowable.HorizontallyAlignedFlowableStyle"><code class="xref py py-obj docutils literal"><span class="pre">flowable.HorizontallyAlignedFlowableStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/flowable.html#rinoh.flowable.HorizontallyAlignedFlowable" title="rinoh.flowable.HorizontallyAlignedFlowable"><code class="xref py py-class docutils literal"><span class="pre">HorizontallyAlignedFlowable</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle" title="rinoh.flowable.FloatStyle"><code class="xref py py-obj docutils literal"><span class="pre">flowable.FloatStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/flowable.html#rinoh.flowable.Float" title="rinoh.flowable.Float"><code class="xref py py-class docutils literal"><span class="pre">Float</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.image.CaptionStyle.html#rinoh.image.CaptionStyle" title="rinoh.image.CaptionStyle"><code class="xref py py-obj docutils literal"><span class="pre">image.CaptionStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">Caption</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.image.FigureStyle.html#rinoh.image.FigureStyle" title="rinoh.image.FigureStyle"><code class="xref py py-obj docutils literal"><span class="pre">image.FigureStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">Figure</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.index.IndexStyle.html#rinoh.index.IndexStyle" title="rinoh.index.IndexStyle"><code class="xref py py-obj docutils literal"><span class="pre">index.IndexStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">Index</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-obj docutils literal"><span class="pre">paragraph.ParagraphStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal"><span class="pre">Paragraph</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.highlight.CodeBlockStyle.html#rinoh.highlight.CodeBlockStyle" title="rinoh.highlight.CodeBlockStyle"><code class="xref py py-obj docutils literal"><span class="pre">highlight.CodeBlockStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">CodeBlock</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-obj docutils literal"><span class="pre">text.TextStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">Text</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.inline.InlineFlowableStyle.html#rinoh.inline.InlineFlowableStyle" title="rinoh.inline.InlineFlowableStyle"><code class="xref py py-obj docutils literal"><span class="pre">inline.InlineFlowableStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/paragraph.html#rinoh.inline.InlineFlowable" title="rinoh.inline.InlineFlowable"><code class="xref py py-class docutils literal"><span class="pre">InlineFlowable</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.reference.ReferencingParagraphStyle.html#rinoh.reference.ReferencingParagraphStyle" title="rinoh.reference.ReferencingParagraphStyle"><code class="xref py py-obj docutils literal"><span class="pre">reference.ReferencingParagraphStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">ReferencingParagraph</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.reference.NoteMarkerStyle.html#rinoh.reference.NoteMarkerStyle" title="rinoh.reference.NoteMarkerStyle"><code class="xref py py-obj docutils literal"><span class="pre">reference.NoteMarkerStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">NoteMarker</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.structure.SectionStyle.html#rinoh.structure.SectionStyle" title="rinoh.structure.SectionStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.SectionStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.Section" title="rinoh.structure.Section"><code class="xref py py-class docutils literal"><span class="pre">Section</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.HeadingStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.Heading" title="rinoh.structure.Heading"><code class="xref py py-class docutils literal"><span class="pre">Heading</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.ListStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.List" title="rinoh.structure.List"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.structure.ListItemLabelStyle.html#rinoh.structure.ListItemLabelStyle" title="rinoh.structure.ListItemLabelStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.ListItemLabelStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">ListItemLabel</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.structure.TableOfContentsStyle.html#rinoh.structure.TableOfContentsStyle" title="rinoh.structure.TableOfContentsStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.TableOfContentsStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.TableOfContents" title="rinoh.structure.TableOfContents"><code class="xref py py-class docutils literal"><span class="pre">TableOfContents</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.TableOfContentsEntryStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.TableOfContentsEntry" title="rinoh.structure.TableOfContentsEntry"><code class="xref py py-class docutils literal"><span class="pre">TableOfContentsEntry</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.AdmonitionStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.Admonition" title="rinoh.structure.Admonition"><code class="xref py py-class docutils literal"><span class="pre">Admonition</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.structure.HorizontalRuleStyle.html#rinoh.structure.HorizontalRuleStyle" title="rinoh.structure.HorizontalRuleStyle"><code class="xref py py-obj docutils literal"><span class="pre">structure.HorizontalRuleStyle</span></code></a></td>
+<td>Style class for <a class="reference internal" href="api/structure.html#rinoh.structure.HorizontalRule" title="rinoh.structure.HorizontalRule"><code class="xref py py-class docutils literal"><span class="pre">HorizontalRule</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.table.TableStyle.html#rinoh.table.TableStyle" title="rinoh.table.TableStyle"><code class="xref py py-obj docutils literal"><span class="pre">table.TableStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">Table</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.table.TableCellStyle.html#rinoh.table.TableCellStyle" title="rinoh.table.TableCellStyle"><code class="xref py py-obj docutils literal"><span class="pre">table.TableCellStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">TableCell</span></code></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-obj docutils literal"><span class="pre">table.TableCellBorderStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">TableCellBorder</span></code></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="style/rinoh.table.TableCellBackgroundStyle.html#rinoh.table.TableCellBackgroundStyle" title="rinoh.table.TableCellBackgroundStyle"><code class="xref py py-obj docutils literal"><span class="pre">table.TableCellBackgroundStyle</span></code></a></td>
+<td>Style class for <code class="xref py py-class docutils literal"><span class="pre">TableCellBackground</span></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="style/rinoh.draw.LineStyle.html" class="btn btn-neutral float-right" title="LineStyle" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sphinx.html" class="btn btn-neutral" title="Sphinx Builder" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brecht Machiels.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,16 +1,32 @@
-.. _advanced:
+.. _styling:
 
-Advanced Topics
+Element Styling
 ===============
 
-This section serves as a guide to the internal workings of rinohtype, and more
-specifically on how element styling and document templates work. This will be
-helpful if you want to create custom style sheets, design a new document
-template or develop a new frontend.
+This section describes how styles defined in a style sheet are applied to
+document elements. Understanding how this works will help you when designing
+a custom style sheet.
+
+rinohtype's style sheets are heavily inspired by CSS_, but add some additional
+functionality. Similar to CSS, rinohtype makes use of so-called *selectors* to
+select document elements in the *document tree* to style. Unlike CSS however,
+these selectors are not directly specified in a style sheet. Instead, all
+selectors are collected in a *matcher* where they are mapped to descriptive
+labels for the selected elements. A *style sheet* assigns style properties to
+these labels. Besides the usefulness of having these labels instead of the more
+cryptic selectors, a matcher can be reused by multiple style sheets, avoiding
+duplication.
+
+.. note:: This section currently assumes some Python or general object-oriented
+    programming knowledge. A future update will move Python-specific details
+    to another section, making things more accessible for non-programmers.
 
 
-Flowables and Inline Elements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _CSS: https://en.wikipedia.org/wiki/Cascading_Style_Sheets
+
+
+Document Tree
+-------------
 
 A :class:`.Flowable` is a document element that is placed on a page. It is
 usually a part of a document tree. Flowables at one level in a document tree
@@ -71,32 +87,11 @@ Besides :class:`.SingleStyledText` and :class:`.MixedStyledText` elements
 :class:`.InlineImage`.
 
 The common superclass for flowable and inline elements is :class:`.Styled`,
-which indicates that these elements can be styled using the style sheets which
-are discussed next.
-
-
-.. _stylesheets_advanced:
-
-Styling Document Elements
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Rinohtype's style sheets are heavily inspired by CSS_, but add some
-functionality that CSS lacks. Similar to CSS, rinohtype makes use of so-called
-*selectors* to select document elements (flowables and inline elements) to
-style.
-
-Unlike CSS however, these selectors are not directly specified in a style
-sheet. Instead, all selectors are collected in a *matcher* where they are
-mapped to descriptive labels for the selected elements. A *style sheets*
-assigns style properties to these labels. Besides the usefulness of having
-these labels instead of the more cryptic selectors, a matcher can be reused by
-multiple style sheets, avoiding duplication.
-
-.. _CSS: https://en.wikipedia.org/wiki/Cascading_Style_Sheets
+which indicates that these elements can be styled using the style sheets.
 
 
 Selectors
-.........
+---------
 
 Selectors in rinohtype select elements of a particular type. The *class* of a
 document element serves as a selector for all instances of the class (and its
@@ -107,7 +102,7 @@ paragraphs in the document, for example::
 
 As with `CSS selectors`_, elements can also be matched based on their context.
 For example, the following matches any paragraph that is a direct child of a
-list item (the list item label)::
+list item or in other words, a list item label::
 
     ListItem / Paragraph
 
@@ -205,7 +200,7 @@ In general, you can use multiple ``+`` or ``-`` signs to adjust the priority::
 .. _matchers:
 
 Matchers
-........
+--------
 
 At the most basic level, a :class:`.StyledMatcher` is a dictionary that maps
 labels to selectors::
@@ -226,7 +221,7 @@ elements in documents::
 
 
 Style Sheets
-............
+------------
 
 A :class:`.StyleSheet` takes a :class:`.StyledMatcher` to provide element
 labels to assign style properties to::
@@ -247,7 +242,7 @@ possible to simply pass the style properties to the style sheet by calling the
 
 Style sheets are usually loaded from a `.rts` file using
 :class:`.StyleSheetFile`. An example style sheet file is shown in
-:ref:`quickstart_stylesheets` in the :ref:`quickstart` guide.
+:ref:`basics_stylesheets`.
 
 A style sheet file contains a number of sections, denoted by a section title
 enclosed in square brackets. There are two special sections:
@@ -278,18 +273,11 @@ and *label_suffix* are set to produce list items labels of the style *1)*,
 *2)*, .... Other entries control margins and spacing. See :class:`.ListStyle`
 for the full list of accepted style attributes.
 
-.. note:: The supported attributes and format of attribute values have not not
-    yet been fully documented. Please look at the `included style sheets`__ for
-    now.
-
-    __ https://github.com/brechtm/rinohtype/tree/master/rinoh/data/stylesheets
-
-
 .. todo:: base stylesheets are specified by name ... entry points
 
 
 Base Styles
-,,,,,,,,,,,
+~~~~~~~~~~~
 
 It is possible to define styles which are not linked to a selector. These can
 be useful to collect common attributes in a base style for a set of style
@@ -325,7 +313,7 @@ separate it from the style name, optionally surrounded by spaces.
 
 
 Custom Selectors
-,,,,,,,,,,,,,,,,
+~~~~~~~~~~~~~~~~
 
 It is also possible to define new selectors directly in a style sheet file.
 This allows making tweaks to an existing style sheet without having to create a
@@ -371,7 +359,7 @@ in a context selector by enclosing its name in single or double quotes.
 
 
 Variables
-,,,,,,,,,
+~~~~~~~~~
 
 Variables can be used for values that are used in multiple style definitions.
 This example declares a number of typefaces to allow easily replacing the
@@ -410,7 +398,7 @@ fonts in the document by overriding the variables.
 
 
 Style Attribute Resolution
-,,,,,,,,,,,,,,,,,,,,,,,,,,
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The style system makes a distinction between text (inline) elements and
 flowables with respect to how attribute values are resolved.
@@ -419,15 +407,15 @@ flowables with respect to how attribute values are resolved.
 example the *emphasis* style definition from the example above. The value for
 style properties other than *font_slant* (which is defined in the *emphasis*
 style itself) will be looked up in the style definition corresponding to the
-parent element. That can be another :class:`.StyledText` instance, or a
-:class:`.Paragraph`. If that style definition neither defines the style
-attribute, the lookup proceeds recursively, moving up in the document tree.
+parent element, which can be either another :class:`.StyledText` instance, or a
+:class:`.Paragraph`. If the parent element is a :class:`.StyledText` that
+neither defines the style attribute, lookup proceeds recursively, moving up in
+the document tree.
 
 For **flowables**, there is no fall-back to the parent's style by default.
-A base style can be explicitly specified however. If a style attribute is not
+A base style can be specified explicitly however. If a style attribute is not
 present in a particular style definition, it is looked up in the base style.
-
-This can also help avoid duplication of style information and the resulting
+This can help avoid duplication of style information and the resulting
 maintenance difficulties. In the following example, the *unnumbered heading
 level 1* style inherits all properties from *heading level 1*, overriding
 only the *number_format* attribute:
@@ -450,7 +438,7 @@ only the *number_format* attribute:
     number_format=None
 
 When a value for a particular style attribute is set nowhere in the style
-definition lookup hierarchy its default value is returned. The default values
+definition lookup hierarchy, its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
 :class:`.Style` subclasses.
 
@@ -459,15 +447,13 @@ falling back to the parent's style. Setting *base* to the label of a
 :class:`.TextStyle` or :class:`.ParagraphStyle` prevents fallback to the parent
 element's style.
 
-.. todo:: Not possible with INI style sheets
-
-    For flowables, *base* can be set to ``PARENT_STYLE`` to enable fallback,
-    but this requires that the current element type is the same or a subclass
-    of the parent type, so it is not recommended.
+For flowables, *base* can be set to ``PARENT_STYLE`` to enable fallback, but
+this requires that the current element type is the same or a subclass of the
+parent type, so it cannot be used for all styles.
 
 
 Style Logs
-..........
+----------
 
 When rendering a document, rinohtype will create a :index:`style log`. It is
 written to disk using the same base name as the output file, but with a
@@ -523,15 +509,6 @@ Here is an example excerpt from a style log:
               StaticGroupedFlowables()                demo.txt:66 <list_item>
                    > (0,0,0,0,3) list item body
     ...
-
-
-Document Templates
-~~~~~~~~~~~~~~~~~~
-
-.. note:: This section still needs to be written. For now, please refer to the
-    :ref:`templates_quickstart` section in the :ref:`quickstart`, which
-    discusses the configuration of existing templates and the creation of
-    custom templates.
 
 
 .. [#slice] Indexing a list like this ``lst[slice(0, None, 2)]`` is equivalent

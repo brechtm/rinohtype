@@ -1,0 +1,7 @@
+ParagraphStyle
+==============================
+
+.. currentmodule:: rinoh.paragraph
+
+.. autoclass:: ParagraphStyle
+    :members:
