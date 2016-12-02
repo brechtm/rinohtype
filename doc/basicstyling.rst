@@ -217,6 +217,8 @@ command-line :program:`rinoh` tool by passing it to the
 To render a document using this template configuration programatically, load
 the template file using :class:`.TemplateConfigurationFile`:
 
+.. include:: testcode.rst
+
 .. testcode:: my_document
 
     from rinoh.frontend.rst import ReStructuredTextReader
