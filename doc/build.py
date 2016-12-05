@@ -36,11 +36,10 @@ def check_sphinx_build():
         except FileNotFoundError:
             pass
     print("The '{0}' command was not found. Make sure you have Sphinx "
-          "installed, then set the SPHINXBUILD environment variable "
-          "to point to the full path of the '{0}' executable. "
-          "Alternatively you can add the directory with the "
-          "executable to your PATH. If you don't have Sphinx "
-          "installed, grab it from http://sphinx-doc.org/)"
+          "installed, then set the SPHINXBUILD environment variable to point "
+          "to the full path of the '{0}' executable. Alternatively you can "
+          "add the directory with the executable to your PATH. If you don't "
+          "have Sphinx installed, grab it from http://sphinx-doc.org/)"
           .format(SPHINXBUILD))
     sys.exit(1)
 
@@ -252,6 +251,8 @@ def help():
 
 if __name__ == '__main__':
     check_sphinx_build()
+    docdir = os.path.dirname(__file__)
+    os.chdir(docdir)
     args = sys.argv[1:] or ['all']
     for arg in args:
         TARGETS[arg]()
