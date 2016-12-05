@@ -70,6 +70,9 @@ def build(builder, success_msg=None, extra_opts=None, outdir=None,
     print(' '.join(command))
     if subprocess.call(command) == 0:
         print('Build finished. ' + success_msg.format(builddir))
+    else:
+        print('Error running {}. Aborting.'.format(SPHINXBUILD))
+        sys.exit(1)
 
 
 @target
