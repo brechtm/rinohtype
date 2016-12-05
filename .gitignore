@@ -10,5 +10,6 @@
 /coverage.xml
 /build
 /dist
+/pynsist_pkgs
 /src/rinohtype.egg-info
 /MANIFEST
