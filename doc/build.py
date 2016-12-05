@@ -108,8 +108,16 @@ def json():
 @target
 def htmlhelp():
     """make HTML files and a HTML help project"""
-    return build('htmlhelp', 'Now you can run HTML Help Workshop with the '
-                             '.hhp project file in {}.')
+    build('htmlhelp', 'Now you can run HTML Help Workshop with the .hhp '
+                      'project file in {}.')
+    print('Running HTML Help Workshop...')
+    builddir = os.path.join(BUILDDIR, 'htmlhelp')
+    rc = subprocess.call(['hhc', os.path.join(builddir, 'rinohtype.hhp')])
+    if rc != 1:
+        print('Error running HTML Help Workshop. Aborting.')
+        sys.exit(1)
+    print('HTML Help Workshop finished; the CHM file is in {}.'
+          .format(builddir))
 
 
 @target
