@@ -263,7 +263,8 @@ def help():
 if __name__ == '__main__':
     check_sphinx_build()
     docdir = os.path.dirname(__file__)
-    os.chdir(docdir)
+    if docdir:
+        os.chdir(docdir)
     args = sys.argv[1:] or ['all']
     for arg in args:
         TARGETS[arg]()
