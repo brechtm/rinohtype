@@ -13,7 +13,8 @@ Command-Line Renderer
 ~~~~~~~~~~~~~~~~~~~~~
 
 Installing rinohtype places the :program:`rinoh` script in the :envvar:`PATH`.
-This can be used to render reStructuredText_ documents such as `demo.txt`_::
+This can be used to render structured documents such as `demo.txt`_
+(reStructuredText_)::
 
     rinoh --format reStructuredText demo.txt
 

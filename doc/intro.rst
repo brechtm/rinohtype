@@ -45,15 +45,21 @@ available from PyPI and optionally customize it to your needs. Or you can
 create a custom template from scratch. The same goes for the style sheet used
 to style the document elements.
 
+Command-Line Renderer
+~~~~~~~~~~~~~~~~~~~~~
 
-reStructuredText Renderer
-~~~~~~~~~~~~~~~~~~~~~~~~~
+rinohtype includes the :program:`rinoh` command-line tool which renders
+structured text documents. Currently, reStructuredText_ and CommonMark_
+documents are supported in the open-source version. Support for DITA_ is
+available in the commercially supported Pro version.
 
-rinohtype includes the :program:`rinoh` command-line tool that can render
-reStructuredText documents. Rendering the reStructuredText demonstration
-article `demo.txt`_ (using the standard article template and style sheet)
-generates :download:`demo.pdf <../tests_regression/reference/demo.pdf>`.
+Rendering the reStructuredText demonstration article `demo.txt`_ (using the
+standard article template and style sheet) generates :download:`demo.pdf
+<../tests_regression/reference/demo.pdf>`.
 
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+.. _CommonMark: http://commonmark.org
+.. _DITA: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=dita
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
 
