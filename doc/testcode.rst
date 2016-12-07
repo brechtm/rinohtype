@@ -1,8 +1,4 @@
 
-
-:orphan:
-
-
 .. testsetup:: my_document
 
     import os, shutil, tempfile
@@ -18,5 +14,3 @@
 
     os.chdir(lastdir)
     shutil.rmtree(tmpdir)
-
-
