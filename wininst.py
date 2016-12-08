@@ -10,6 +10,8 @@ import pip
 
 from nsist import main as pynsist
 
+from gitlabpypi import gitlab_pypi_server
+
 
 PKGS_DIR = 'pynsist_pkgs'
 
@@ -39,6 +41,8 @@ parser.add_argument('distribution', type=str, nargs='?',
                          'the rinohtype version to include in the installer')
 parser.add_argument('-t', '--use-tox-sdist', action='store_true',
                     help='install the tox-built distribution')
+parser.add_argument('-p', '--pro', action='store_true',
+                    help='build a Pro version installer (with DITA support)')
 
 if __name__ == '__main__':
     args = parser.parse_args()
@@ -55,4 +59,7 @@ if __name__ == '__main__':
         assert args.distribution is not None
         rinohtype_dist = args.distribution
     pip_install('pygments', rinohtype_dist)
+    if args.pro:
+        with gitlab_pypi_server() as index_url:
+            pip_install('--extra-index-url', index_url, 'rinoh-frontend-dita')
     pynsist(['wininst.cfg'])
