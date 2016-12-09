@@ -62,7 +62,7 @@ class TreeNode(object):
 
     @property
     def location(self):
-        source_file, line, tag_name = self._location
+        source_file, line, tag_name = self.node_location(self.node)
         return '{}:{} <{}>'.format(source_file, line, tag_name)
 
     @staticmethod
@@ -77,8 +77,8 @@ class TreeNode(object):
     def node_children(node):
         raise NotImplementedError
 
-    @property
-    def _location(self):
+    @staticmethod
+    def node_location(node):
         raise NotImplementedError
 
     @property
