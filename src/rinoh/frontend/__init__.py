@@ -26,8 +26,10 @@ class TreeNode(object):
         try:
             return cls._mapping[node_name.replace('-', '_')](node)
         except KeyError:
-            raise NotImplementedError("The '{}' node is not yet supported ({})"
-                                      .format(node_name, cls.__module__))
+            filename, line, node_name = cls.node_location(node)
+            raise NotImplementedError("{}:{} the '{}' node is not yet supported "
+                                      "({})" .format(filename, line, node_name,
+                                                     cls.__module__))
 
     def __init__(self, doctree_node):
         self.node = doctree_node
