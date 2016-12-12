@@ -261,21 +261,23 @@ class TitlePage(PageBase):
                          after_break)
         get_option = partial(self.get_option, document=self.document)
         metadata = self.document.metadata
+        get_metadata = self.document.get_metadata
         self.title = DownExpandingContainer('title', CONTENT, self,
                                             self.left_margin, self.top_margin,
                                             self.body_width)
+
         if 'logo' in metadata:
             self.title << HorizontalRule(style='title page rule')
-            self.title << Image(metadata['logo'],
+            self.title << Image(get_metadata('logo'),
                                 style='title page logo',
                                 limit_width=100*PERCENT)
-        self.title << Paragraph(metadata['title'],
+        self.title << Paragraph(get_metadata('title'),
                                 style='title page title')
         if 'subtitle' in metadata:
-            self.title << Paragraph(metadata['subtitle'],
+            self.title << Paragraph(get_metadata('subtitle'),
                                     style='title page subtitle')
         if 'author' in metadata and get_option('show_author'):
-            self.title << Paragraph(metadata['author'],
+            self.title << Paragraph(get_metadata('author'),
                                     style='title page author')
         try:
             abstract_location = self.document.get_option('abstract_location')

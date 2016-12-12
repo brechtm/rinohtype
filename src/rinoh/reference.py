@@ -362,9 +362,9 @@ class Field(MixedStyledTextBase):
             part = container.document_part
             text = format_number(part.number_of_pages, part.page_number_format)
         elif self.type == DOCUMENT_TITLE:
-            text = container.document.metadata['title']
+            text = container.document.get_metadata('title')
         elif self.type == DOCUMENT_SUBTITLE:
-            text = container.document.metadata['subtitle']
+            text = container.document.get_metadata('subtitle')
         elif isinstance(self.type, SectionFieldType):
             doc = container.document
             section = container.page.get_current_section(self.type.level)
@@ -376,7 +376,13 @@ class Field(MixedStyledTextBase):
                 text = '\N{ZERO WIDTH SPACE}'
         else:
             text = '?'
-        yield SingleStyledText(text, parent=self)
+        if text is None:
+            return
+        elif isinstance(text, StyledText):
+            text.parent = self
+            yield text
+        else:
+            yield SingleStyledText(text, parent=self)
 
     RE_FIELD = re.compile('{(' + '|'.join(chain(FieldType.all,
                                                 (r'{}\(\d+\)'.format(name)

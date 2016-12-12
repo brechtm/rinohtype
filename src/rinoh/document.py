@@ -28,6 +28,7 @@ import sys
 import time
 
 from collections import OrderedDict
+from copy import copy
 from itertools import count
 
 from . import __version__, __release_date__
@@ -343,6 +344,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         specified."""
         self._unique_id += 1
         return self._unique_id
+
+    def get_metadata(self, key):
+        return copy(self.metadata.get(key))
 
     def register_element(self, element):
         primary_id = (element.get_id(self, create=False)
