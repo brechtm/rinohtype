@@ -23,7 +23,7 @@ rinohtype also includes support for Sphinx_, which helps writing large
 structured documents and supports a multitude of different output formats
 including searchable HTML. rinohtype adds support to produce PDF output.
 
-.. _DITA: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=dita
+.. _DITA: http://dita.xml.org/standard
 .. _Sphinx: http://sphinx-doc.org
 
 
