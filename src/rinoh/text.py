@@ -372,6 +372,9 @@ class MixedStyledTextBase(StyledText):
             for span in child.spans(container):
                 yield span
 
+    def children(self, flowable_target):
+        raise NotImplementedError
+
 
 class MixedStyledText(MixedStyledTextBase, list):
     """Concatenation of styled text
@@ -448,7 +451,7 @@ class MixedStyledText(MixedStyledTextBase, list):
     def items(self):
         return list(self)
 
-    def children(self, flowable_target, **kwargs):
+    def children(self, flowable_target):
         return self.items
 
 

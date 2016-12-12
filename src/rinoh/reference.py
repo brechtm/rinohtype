@@ -354,7 +354,7 @@ class Field(MixedStyledTextBase):
     def items(self):
         return [self]
 
-    def children(self, container, **kwargs):
+    def children(self, container):
         if container is None:
             text = '${}'.format(self.type)
         elif self.type == PAGE_NUMBER:
