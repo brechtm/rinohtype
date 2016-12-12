@@ -21,9 +21,12 @@ include .bumpversion.cfg
 include .coveragerc
 include .travis.yml
 include appveyor.yml
-include tox.ini
 include coverage.py
 include Dockerfile
+include rinoh.ico
 include run_tests.sh
+include tox.ini
+include wininst.py
+include wininst.cfg
 
 global-exclude *.py[cod] __pycache__ *.so *.dylib .DS_Store
