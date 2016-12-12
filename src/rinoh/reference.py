@@ -269,6 +269,7 @@ PAGE_NUMBER = FieldType('page number')
 NUMBER_OF_PAGES = FieldType('number of pages')
 DOCUMENT_TITLE = FieldType('document title')
 DOCUMENT_SUBTITLE = FieldType('document subtitle')
+DOCUMENT_AUTHOR = FieldType('document author')
 
 
 class SectionFieldTypeMeta(type):
@@ -365,6 +366,8 @@ class Field(MixedStyledTextBase):
             text = container.document.get_metadata('title')
         elif self.type == DOCUMENT_SUBTITLE:
             text = container.document.get_metadata('subtitle')
+        elif self.type == DOCUMENT_AUTHOR:
+            text = container.document.get_metadata('author')
         elif isinstance(self.type, SectionFieldType):
             doc = container.document
             section = container.page.get_current_section(self.type.level)
