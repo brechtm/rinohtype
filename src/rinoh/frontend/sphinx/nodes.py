@@ -37,7 +37,7 @@ __all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
            'Desc_ParameterList', 'Desc_Parameter', 'Desc_Optional',
            'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
            'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
-           'Number_Reference']
+           'Autosummary_ToC', 'Number_Reference']
 
 
 # other paragraph-level nodes
@@ -349,6 +349,10 @@ class Tabular_Col_Spec(DocutilsDummyNode):
 
 class AutoSummary_Table(DocutilsGroupingNode):
     pass
+
+
+class Autosummary_ToC(DocutilsGroupingNode):
+    style = 'autosummary'
 
 
 class Number_Reference(DocutilsInlineNode):

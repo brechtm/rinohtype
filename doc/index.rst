@@ -10,17 +10,21 @@ rinohtype: The Python Document Processor
 
 Release v\ |version|. (:ref:`Release History <changelog>`)
 
-Rinohtype is a high-level PDF library for Python. It helps automating the
-creation of any type of document, ranging from invoices to long, complex
-technical documents.
+rinohtype is a Python library that transforms a structured document into a
+professionally typeset PDF guided by a document template and style sheet. It
+can be used to create any kind of document, but its focus is on complex
+documents such as technical manuals.
 
-Paired with Sphinx_, rinohtype offers a modern alternative to LaTeX_ . Sphinx
-helps writing large structured documents and supports a multitude of different
-output formats including searchable HTML. Rinohtype provides a Sphinx backend
-that allows generating professionally typeset PDF documents.
+Included with rinohtype is the :program:`rinoh` command line tool that renders
+reStructuredText and Markdown (CommonMark) documents. Support for DITA_ is
+available in the commercially supported Pro version.
 
+rinohtype also includes support for Sphinx_, which helps writing large
+structured documents and supports a multitude of different output formats
+including searchable HTML. rinohtype adds support to produce PDF output.
+
+.. _DITA: http://dita.xml.org/standard
 .. _Sphinx: http://sphinx-doc.org
-.. _LaTeX: http://en.wikipedia.org/wiki/LaTeX
 
 
 Here is a list of rinohtype's main features:
@@ -28,9 +32,11 @@ Here is a list of rinohtype's main features:
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
 * figures, large tables and automatically generated table of contents
-* automatic numbering and cross-referencing of headings, figures and tables
-* use one of the included document templates or create your own
-* an intuitive style sheet system inspired by CSS
+* automatic numbering and cross-referencing of sections, figures and tables
+* use one of the highly configurable included document templates or create your
+  own custom template
+* the intuitive style sheets make it easy to change the style of individual
+  document elements
 * modular design allowing for multiple frontends (such as reStructuredText,
   Markdown, DocBook, ...) and backends (PDF, SVG, bitmap, ...)
 * handles OpenType, TrueType and Type1 fonts with support for advanced
@@ -40,16 +46,17 @@ Here is a list of rinohtype's main features:
 * built on Unicode; ready for non-latin languages
 
 
-Rinohtype is currently in a beta phase. We are working toward a first stable
+rinohtype is currently in a beta phase. We are working toward a first stable
 release.
 
-Rinohtype is open source software licensed under the `GNU AGPL 3.0`_.
+rinohtype is open source software licensed under the `GNU AGPL 3.0`_.
 Practically, this means you are free to use it in open-source software, but not
-in (commercial) closed-source software. For this purpose, you need a commercial
-license (see http://www.opqode.com/). We are also available for consultancy
-projects involving rinohtype, so please don't hesitate to contact us.
+in (commercial) closed-source software. For the latter, you need to obtain a
+commercial license (see http://www.opqode.com/rinoh). We are also available for
+consultancy projects involving rinohtype, so don't hesitate to `contact us`_.
 
 .. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
+.. _contact us: info@opqode.com
 
 
 .. toctree::
@@ -58,10 +65,10 @@ projects involving rinohtype, so please don't hesitate to contact us.
     intro
     install
     quickstart
-    rinoh
-    sphinx
+    basicstyling
+    elementstyling
     templates
-    advanced
+    reference
     api/api
     faq
     changelog

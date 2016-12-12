@@ -7,8 +7,6 @@ Flowable (:mod:`rinoh.flowable`)
 
 .. autoclass:: Flowable
 
-.. autoclass:: FlowableStyle
-
 .. autoclass:: FlowableState
 
 
@@ -36,9 +34,6 @@ Labeled Flowables
 .. autoclass:: LabeledFlowable
     :members:
 
-.. autoclass:: LabeledFlowableStyle
-    :members:
-
 .. autoclass:: LabeledFlowableState
     :members:
 
@@ -47,9 +42,6 @@ Grouping Flowables
 ------------------
 
 .. autoclass:: GroupedFlowables
-    :members:
-
-.. autoclass:: GroupedFlowablesStyle
     :members:
 
 .. autoclass:: GroupedFlowablesState
@@ -69,9 +61,6 @@ Horizontally Aligned Flowables
 .. autoclass:: HorizontallyAlignedFlowable
     :members:
 
-.. autoclass:: HorizontallyAlignedFlowableStyle
-    :members:
-
 .. autoclass:: HorizontallyAlignedFlowableState
     :members:
 
@@ -80,7 +69,4 @@ Floating Flowables
 ------------------
 
 .. autoclass:: Float
-    :members:
-
-.. autoclass:: FloatStyle
     :members:

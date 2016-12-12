@@ -78,8 +78,6 @@ class Locale(AttributeType):
 
 
 class TextStyle(Style):
-    """The :class:`Style` for :class:`StyledText` objects"""
-
     typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
     font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
                                                   'outlines relative to their '
