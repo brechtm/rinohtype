@@ -4,9 +4,22 @@ Release History
 Release 0.3.1.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
+* rinoh is now also available as a stand-alone Windows installer that includes
+  its own CPython
+* the 'document author' metadata entry can now be displayed using a Field
+
 Changed:
 
 * more closely mimic the Sphinx LaTeX builder's title page (issue #60)
+* there is no default for PageTemplate.chapter_title_flowables anymore since
+  they are specific to the document template
+
+Fixed:
+
+* handle StyledText metadata (such as document title)
+* Sphinx frontend: support the 'autosummary_toc' node
 
 
 Release 0.3.0 (2016-11-23)
