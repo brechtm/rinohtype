@@ -82,12 +82,6 @@ matcher('line block line', Paragraph.like('line block line'))
 
 #
 
-matcher('title', Paragraph.like('title'))
-matcher('subtitle', Paragraph.like('subtitle'))
-matcher('date', Paragraph.like('date'))
-matcher('author', Paragraph.like('author'))
-matcher('affiliation', Paragraph.like('affiliation'))
-
 matcher('chapter', Section.like(level=1))
 
 for i in range(1, 6):
@@ -100,6 +94,8 @@ matcher('appendix', Section.like('appendix'))
 for i in range(1, 6):
     matcher('appendix heading level {}'.format(i),
             'appendix' / Heading.like(level=i))
+
+matcher('title', Paragraph.like('title'))
 
 matcher('prerequisites', GroupedFlowables.like('prerequisites'))
 matcher('prerequisites title', 'prerequisites' / Paragraph.like('title'))
@@ -151,6 +147,13 @@ matcher('steps list', List.like('steps'))
 matcher('steps list title', 'steps list' / Paragraph.like('title'))
 matcher('steps list item', 'steps list' / ListItem)
 matcher('steps list item label', 'steps list item' / ListItemLabel)
+
+matcher('unordered steps list', List.like('unordered steps'))
+matcher('unordered steps list title', 'unordered steps list'
+                                      / Paragraph.like('title'))
+matcher('unordered steps list item', 'unordered steps list' / ListItem)
+matcher('unordered steps list item label', 'unordered steps list item'
+                                           / ListItemLabel)
 
 matcher('choices list', List.like('choices'))
 matcher('choices list item', 'choices list' / ListItem)

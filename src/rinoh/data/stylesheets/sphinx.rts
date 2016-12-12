@@ -165,34 +165,6 @@ space_below=0pt
 [nested line block]
 margin_left=0.5cm
 
-[title]
-base=default
-typeface=$(serif_typeface)
-font_weight=REGULAR
-font_size=18pt
-line_spacing=Proportional(1.2)
-space_above=6pt
-space_below=6pt
-text_align=CENTER
-
-[subtitle]
-base=title
-font_size=14pt
-
-[date]
-base=title
-font_size=10pt
-line_spacing=Proportional(1.2)
-
-[author]
-base=title
-font_size=12pt
-line_spacing=Proportional(1.2)
-
-[affiliation]
-base=author
-space_below=18pt
-
 [chapter]
 page_break=RIGHT
 
@@ -253,6 +225,13 @@ number_format=None
 [appendix heading level 1]
 base=heading level 1
 number_format=uppercase character
+
+[title]
+base=default
+font_weight=BOLD
+indent_first=0
+space_above=10pt
+space_below=5pt
 
 [topic]
 space_above=5pt
@@ -346,6 +325,12 @@ base=enumerated list
 
 [steps list item label]
 base=enumerated list item label
+
+[unordered steps list]
+base=bulleted list
+
+[unordered steps list item label]
+base=bulleted list item label
 
 [choices list]
 base=bulleted list
