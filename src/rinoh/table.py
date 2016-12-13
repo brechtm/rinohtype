@@ -228,7 +228,7 @@ class Table(HorizontallyAlignedFlowable):
                              if x > 0 and c <= 0))
             if extra_pos + extra_neg < 0:
                 self.warn('Table contents are too wide to fit within the '
-                          'width available for the table', container)
+                          'available width', container)
                 return [width.to_points(container.width)
                         if isinstance(width, DimBase) else width
                         for width in auto_widths]
