@@ -112,6 +112,10 @@ class ElementTreeNode(TreeNode):
         return self.get('id')
 
     @property
+    def _location(self):
+        return self.node_location(self.node)
+
+    @property
     def filename(self):
         return self.node._root._filename
 
