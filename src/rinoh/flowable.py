@@ -486,7 +486,9 @@ class LabeledFlowableState(FlowableState):
         super().__init__(flowable, _initial=_initial)
         self.content_flowable_state = content_flowable_state
 
-    def update(self):
+    def update(self, content_flowable_state=None):
+        if content_flowable_state:
+            self.content_flowable_state = content_flowable_state
         self.initial = self.initial and self.content_flowable_state.initial
 
     def __copy__(self):
@@ -587,6 +589,7 @@ class LabeledFlowable(Flowable):
         top_to_baseline = max(label_baseline, content_baseline)
         offset_label = top_to_baseline - label_baseline
         offset_content = top_to_baseline - content_baseline
+        rendering_content = False
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
@@ -602,14 +605,16 @@ class LabeledFlowable(Flowable):
                 else:
                     label_height = label_descender = 0
                 maybe_container.advance(offset_content)
+                rendering_content = True
                 with inline_container('CONTENT', maybe_container,
                                       left=left) as content_container:
                     width, _, content_descender \
                         = self.flowable.flow(content_container, last_descender,
                                              state=state.content_flowable_state)
                 content_height = content_container.cursor
-        except (ContainerOverflow, EndOfContainer):
-            state.update()
+        except EndOfContainer as eoc:
+            content_state = eoc.flowable_state if rendering_content else None
+            state.update(content_state)
             raise EndOfContainer(state)
         if label_spillover or content_height > label_height:
             container.advance(content_height)
