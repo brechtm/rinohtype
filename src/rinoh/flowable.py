@@ -240,7 +240,7 @@ class DummyFlowable(Flowable):
 
     def get_style(self, attribute, flowable_target):
         if attribute == 'keep_with_next':
-            return False
+            return True
         raise TypeError
 
     def flow(self, container, last_descender, state=None, **kwargs):
@@ -253,11 +253,6 @@ class AnchorFlowable(DummyFlowable):
     Places a destination for the flowable's ID at the current cursor position.
 
     """
-
-    def get_style(self, attribute, flowable_target):
-        if attribute == 'keep_with_next':
-            return True
-        raise TypeError
 
     def flow(self, container, last_descender, state=None, **kwargs):
         self.create_destination(container, True)

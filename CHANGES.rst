@@ -22,6 +22,9 @@ Fixed:
 
 * handle StyledText metadata (such as document title)
 * Sphinx frontend: support the 'autosummary_toc' node
+* DummyFlowable now sticks to the flowable following it (keep_with_next), so
+  that (1) it does not break this behavior of Heading preceding it, and
+  (2) IndexTargets do not get separated from the following flowable
 
 
 Release 0.3.0 (2016-11-23)
