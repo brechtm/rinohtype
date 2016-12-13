@@ -10,6 +10,7 @@ New Features:
   its own CPython
 * index terms can be StyledText now (in addition to str)
 * the 'document author' metadata entry can now be displayed using a Field
+* Sphinx frontend: support the 'desc_signature_line' node (new in Sphinx 1.5)
 
 Changed:
 

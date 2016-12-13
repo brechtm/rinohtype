@@ -33,9 +33,9 @@ __all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
            'Literal_Emphasis', 'Abbreviation', 'Download_Reference', 'SeeAlso',
            'Glossary', 'Start_of_File', 'Todo_Node', 'HighlightLang',
            'Literal_Strong', 'ProductionList', 'Production', 'TermSep', 'Desc',
-           'Desc_Signature', 'Desc_Name', 'Desc_AddName', 'Desc_Type',
-           'Desc_ParameterList', 'Desc_Parameter', 'Desc_Optional',
-           'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
+           'Desc_Signature', 'Desc_Signature_Line', 'Desc_Name',
+           'Desc_AddName', 'Desc_Type', 'Desc_ParameterList', 'Desc_Parameter',
+           'Desc_Optional', 'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
            'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
            'Autosummary_ToC', 'Number_Reference']
 
@@ -277,7 +277,16 @@ class Desc(DocutilsBodyNode):
 
 class Desc_Signature(DocutilsBodyNode):
     def build_flowable(self):
-        return Paragraph(self.process_content())
+        if self.get('is_multiline', False):
+            lines = (line.styled_text() for line in self.desc_signature_line)
+            content = intersperse(lines, '\n')
+        else:
+            content = self.process_content()
+        return Paragraph(content)
+
+
+class Desc_Signature_Line(DocutilsInlineNode):
+    pass
 
 
 class Desc_Name(DocutilsInlineNode):
