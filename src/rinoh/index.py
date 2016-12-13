@@ -55,13 +55,13 @@ class Index(GroupedFlowables):
             for entry in entries:
                 first = entry[0]
                 section = first.upper() if first.isalpha() else 'Symbols'
-                subentries = index_entries[entry]
+                term, subentries = index_entries[entry]
                 if initials and top_level and section != last_section:
                     yield IndexLabel(section)
                     last_section = section
                 target_ids = [target.get_id(document)
                               for term, target in subentries.get(None, ())]
-                yield IndexEntry(entry, level, target_ids)
+                yield IndexEntry(term, level, target_ids)
                 for paragraph in hande_level(subentries, level=level + 1):
                     yield paragraph
 
@@ -107,7 +107,10 @@ class IndexTargetBase(Styled):
         for index_term in self.index_terms:
             level_entries = index_entries
             for term in index_term:
-                level_entries = level_entries.setdefault(term, {})
+                term_str = (term.to_string(flowable_target)
+                            if isinstance(term, StyledText) else term)
+                _, level_entries = level_entries.setdefault(term_str,
+                                                            (term, {}))
             level_entries.setdefault(None, []).append((index_term, self))
 
 

@@ -8,6 +8,7 @@ New Features:
 
 * rinoh is now also available as a stand-alone Windows installer that includes
   its own CPython
+* index terms can be StyledText now (in addition to str)
 * the 'document author' metadata entry can now be displayed using a Field
 
 Changed:
