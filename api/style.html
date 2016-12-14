@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Style (rinoh.style) &mdash; rinohtype 0.3.0 documentation</title>
@@ -153,7 +164,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/style.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/style.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,7 +184,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> (<em>str, Style</em>) &#8211; the style to associate with this element. If
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style"><em>Style</em></a>) &#8211; the style to associate with this element. If
 <cite>style</cite> is a string, the corresponding style is lookup up in the
 document&#8217;s style sheet by means of selectors.</td>
 </tr>
@@ -215,7 +226,7 @@ style by name.</p>
 contained in this style sheet map to. If no matcher is given and
 <cite>base</cite> is specified, the <cite>base</cite>&#8216;s matcher is used. If <cite>base</cite> is
 not set, the default matcher is used.</li>
-<li><strong>base</strong> (<em>StyleSheet or str</em>) &#8211; the style sheet to extend</li>
+<li><strong>base</strong> (<a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><em>StyleSheet</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; the style sheet to extend</li>
 <li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; a short string describing this style sheet</li>
 <li><strong>pygments_style</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; the Pygments style to use for styling code blocks</li>
 </ul>

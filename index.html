@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>rinohtype: The Python Document Processor &mdash; rinohtype 0.3.0 documentation</title>
@@ -128,7 +139,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -146,7 +157,7 @@ professionally typeset PDF guided by a document template and style sheet. It
 can be used to create any kind of document, but its focus is on complex
 documents such as technical manuals.</p>
 <p>Included with rinohtype is the <strong class="program">rinoh</strong> command line tool that renders
-reStructuredText and Markdown (CommonMark) documents. Support for <a class="reference external" href="https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=dita">DITA</a> is
+reStructuredText and Markdown (CommonMark) documents. Support for <a class="reference external" href="http://dita.xml.org/standard">DITA</a> is
 available in the commercially supported Pro version.</p>
 <p>rinohtype also includes support for <a class="reference external" href="http://sphinx-doc.org">Sphinx</a>, which helps writing large
 structured documents and supports a multitude of different output formats

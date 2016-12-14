@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Flowable (rinoh.flowable) &mdash; rinohtype 0.3.0 documentation</title>
@@ -157,7 +168,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/flowable.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/flowable.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -307,7 +318,7 @@ seperated from the flowable that follows it.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flowables</strong> (<em>iterable[Flowable]</em>) &#8211; the flowables to group</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flowables</strong> (<em>iterable</em><em>[</em><a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a><em>]</em><em></em>) &#8211; the flowables to group</td>
 </tr>
 </tbody>
 </table>
@@ -324,7 +335,7 @@ seperated from the flowable that follows it.</p>
 <h2>Horizontally Aligned Flowables<a class="headerlink" href="#horizontally-aligned-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="rinoh.flowable.HorizontallyAlignedFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">HorizontallyAlignedFlowable</code><span class="sig-paren">(</span><em>*args</em>, <em>*</em>, <em>align=None</em>, <em>width=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.HorizontallyAlignedFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">HorizontallyAlignedFlowable</code><span class="sig-paren">(</span><em>*args</em>, <em>align=None</em>, <em>width=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.HorizontallyAlignedFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A flowable with configurable width and horizontal alignment.</p>
 <p>The <cite>width</cite> and <cite>horizontal_align</cite> control the width and horizontal
 alignment of the flowable.</p>

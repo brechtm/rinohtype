@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>rinoh &mdash; rinohtype 0.3.0 documentation</title>
@@ -138,7 +149,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/rinoh.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/rinoh.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,73 +177,73 @@
 
 <dl class="option">
 <dt id="cmdoption-rinoh-h">
-<span id="cmdoption-rinoh--help"></span><code class="descname">-h</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--help</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-h" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-h</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--help</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-h" title="Permalink to this definition">¶</a></dt>
 <dd><p>show this help message and exit</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption-rinoh-f">
-<span id="cmdoption-rinoh--format"></span><code class="descname">-f</code><code class="descclassname"> &lt;format&gt;</code><code class="descclassname">, </code><code class="descname">--format</code><code class="descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-rinoh-f" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-f</code><code class="descclassname"> &lt;format&gt;</code><code class="descclassname">, </code><code class="descname">--format</code><code class="descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-rinoh-f" title="Permalink to this definition">¶</a></dt>
 <dd><p>the format of the input file (default: autodetect)</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption-rinoh-o">
-<span id="cmdoption-rinoh--option"></span><code class="descname">-o</code><code class="descclassname"> &lt;option=value&gt;</code><code class="descclassname">, </code><code class="descname">--option</code><code class="descclassname"> &lt;option=value&gt;</code><a class="headerlink" href="#cmdoption-rinoh-o" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-o</code><code class="descclassname"> &lt;option=value&gt;</code><code class="descclassname">, </code><code class="descname">--option</code><code class="descclassname"> &lt;option=value&gt;</code><a class="headerlink" href="#cmdoption-rinoh-o" title="Permalink to this definition">¶</a></dt>
 <dd><p>options to be passed to the input file reader</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption-rinoh-t">
-<span id="cmdoption-rinoh--template"></span><code class="descname">-t</code><code class="descclassname"> &lt;name or filename&gt;</code><code class="descclassname">, </code><code class="descname">--template</code><code class="descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-t</code><code class="descclassname"> &lt;name or filename&gt;</code><code class="descclassname">, </code><code class="descname">--template</code><code class="descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
 <dd><p>the document template or template configuration file to use (default: article)</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption-rinoh-s">
-<span id="cmdoption-rinoh--stylesheet"></span><code class="descname">-s</code><code class="descclassname"> &lt;name or filename&gt;</code><code class="descclassname">, </code><code class="descname">--stylesheet</code><code class="descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-s" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-s</code><code class="descclassname"> &lt;name or filename&gt;</code><code class="descclassname">, </code><code class="descname">--stylesheet</code><code class="descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-s" title="Permalink to this definition">¶</a></dt>
 <dd><p>the style sheet used to style the document elements  (default: the template&#8217;s default)</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption-rinoh-p">
-<span id="cmdoption-rinoh--paper"></span><code class="descname">-p</code><code class="descclassname"> &lt;paper&gt;</code><code class="descclassname">, </code><code class="descname">--paper</code><code class="descclassname"> &lt;paper&gt;</code><a class="headerlink" href="#cmdoption-rinoh-p" title="Permalink to this definition">¶</a></dt>
+<code class="descname">-p</code><code class="descclassname"> &lt;paper&gt;</code><code class="descclassname">, </code><code class="descname">--paper</code><code class="descclassname"> &lt;paper&gt;</code><a class="headerlink" href="#cmdoption-rinoh-p" title="Permalink to this definition">¶</a></dt>
 <dd><p>the paper size to render to  (default: the template&#8217;s default)</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--list-templates">
-<code class="descname">--list-templates</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--list-templates" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-list-templates">
+<code class="descname">--list-templates</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-templates" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed document templates and exit</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--list-stylesheets">
-<code class="descname">--list-stylesheets</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--list-stylesheets" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-list-stylesheets">
+<code class="descname">--list-stylesheets</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-stylesheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed style sheets and exit</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--list-fonts">
-<code class="descname">--list-fonts</code><code class="descclassname"> &lt;filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh--list-fonts" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-list-fonts">
+<code class="descname">--list-fonts</code><code class="descclassname"> &lt;filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-list-fonts" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed fonts or, if FILENAME is given, write a PDF file displaying all the fonts</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--list-formats">
-<code class="descname">--list-formats</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--list-formats" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-list-formats">
+<code class="descname">--list-formats</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-formats" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the supported input formats and exit</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--list-options">
-<code class="descname">--list-options</code><code class="descclassname"> &lt;frontend&gt;</code><a class="headerlink" href="#cmdoption-rinoh--list-options" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-list-options">
+<code class="descname">--list-options</code><code class="descclassname"> &lt;frontend&gt;</code><a class="headerlink" href="#cmdoption-rinoh-list-options" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the options supported by the given frontend and exit</p>
 </dd></dl>
 
 <dl class="option">
-<dt id="cmdoption-rinoh--version">
-<code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh--version" title="Permalink to this definition">¶</a></dt>
+<dt id="cmdoption-rinoh-version">
+<code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-version" title="Permalink to this definition">¶</a></dt>
 <dd><p>show program&#8217;s version number and exit</p>
 </dd></dl>
 

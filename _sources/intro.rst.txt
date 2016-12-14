@@ -65,7 +65,7 @@ standard article template and style sheet) generates :download:`demo.pdf
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _CommonMark: http://commonmark.org
-.. _DITA: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=dita
+.. _DITA: http://dita.xml.org/standard
 .. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
 

@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Document (rinoh.document) &mdash; rinohtype 0.3.0 documentation</title>
@@ -153,7 +164,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/document.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/document.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -174,7 +185,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>flowables</strong> (<em>list[Flowable]</em>) &#8211; the list of top-level flowables</li>
+<li><strong>flowables</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#list" title="(in Python v3.5)"><em>list</em></a><em>[</em><a class="reference internal" href="flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a><em>]</em><em></em>) &#8211; the list of top-level flowables</li>
 <li><strong>source_file</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; absolute path of the source file, used to locate
 images and include in logging and error and warnings.</li>
 <li><strong>options</strong> (<em>Reader</em>) &#8211; frontend-specific options</li>
@@ -233,7 +244,7 @@ in the document.</p>
 <li><strong>template</strong> (<a class="reference internal" href="template.html#rinoh.template.DocumentPartTemplate" title="rinoh.template.DocumentPartTemplate"><em>DocumentPartTemplate</em></a>) &#8211; the template that determines the
 contents and style of this document part</li>
 <li><strong>document</strong> (<a class="reference internal" href="#rinoh.document.Document" title="rinoh.document.Document"><em>Document</em></a>) &#8211; the document this part belongs to</li>
-<li><strong>flowables</strong> (<em>list[Flowable]</em>) &#8211; the flowables to render in this document
+<li><strong>flowables</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#list" title="(in Python v3.5)"><em>list</em></a><em>[</em><a class="reference internal" href="flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a><em>]</em><em></em>) &#8211; the flowables to render in this document
 part</li>
 </ul>
 </td>

@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Dimension (rinoh.dimension) &mdash; rinohtype 0.3.0 documentation</title>
@@ -150,7 +161,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/dimension.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/dimension.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -182,7 +193,7 @@ total width available to it.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>value</strong> (<em>int or float</em>) &#8211; the magnitude of the dimension</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a><em> or </em><a class="reference internal" href="../style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle.float" title="rinoh.flowable.FloatStyle.float"><em>float</em></a>) &#8211; the magnitude of the dimension</li>
 <li><strong>unit</strong> (<em>DimensionUnit</em>) &#8211; the unit this dimension is expressed in.
 Default: <a class="reference internal" href="#rinoh.dimension.PT" title="rinoh.dimension.PT"><code class="xref py py-data docutils literal"><span class="pre">PT</span></code></a>.</li>
 </ul>
@@ -200,7 +211,7 @@ as this dimension.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int or float</em>) &#8211; the amount to add to the magnitude of this
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a><em> or </em><a class="reference internal" href="../style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle.float" title="rinoh.flowable.FloatStyle.float"><em>float</em></a>) &#8211; the amount to add to the magnitude of this
 dimension</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> &#8211; this (growed) dimension itself</td>

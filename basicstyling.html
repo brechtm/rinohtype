@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Basic Document Styling &mdash; rinohtype 0.3.0 documentation</title>
@@ -141,7 +152,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/basicstyling.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/basicstyling.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -348,7 +359,7 @@ template), and individual parts can optionally be hidden by setting the
 hides the front matter part (commented out using a semicolon), for example.</p>
 <p>The template configuration also specifies which style sheet is used for styling
 document elements. The <code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate.stylesheet</span></code> option takes the
-name of an installed style sheet (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh--list-stylesheets"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>) or
+name of an installed style sheet (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-stylesheets"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>) or
 the filename of a stylesheet file (<code class="docutils literal"><span class="pre">.rts</span></code>).</p>
 <p>The <code class="xref py py-class docutils literal"><span class="pre">language</span></code> option sets the default language for
 the document. It determines which language is used for standard document
@@ -396,7 +407,7 @@ configurable. Refer to <a class="reference internal" href="stdtemplates.html#sta
 <h3>Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>A template configuration file can be specified when rendering using the
 command-line <strong class="program">rinoh</strong> tool by passing it to the
-<a class="reference internal" href="rinoh.html#cmdoption-rinoh--template"><code class="xref std std-option docutils literal"><span class="pre">--template</span></code></a> command-line option. When using the
+<a class="reference internal" href="rinoh.html#cmdoption-rinoh-t"><code class="xref std std-option docutils literal"><span class="pre">--template</span></code></a> command-line option. When using the
 <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a>, you can set the <a class="reference internal" href="sphinx.html#confval-rinoh_template"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_template</span></code></a> option in
 <code class="docutils literal"><span class="pre">conf.py</span></code>.</p>
 <p>To render a document using this template configuration programatically, load

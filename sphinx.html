@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Sphinx Builder &mdash; rinohtype 0.3.0 documentation</title>
@@ -138,7 +149,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/sphinx.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/sphinx.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,7 +183,7 @@ extension stripped from the <cite>targetname</cite>).</p>
 <ul class="simple">
 <li>the filename of a template configuration file,</li>
 <li>a <a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal"><span class="pre">TemplateConfiguration</span></code></a> instance,</li>
-<li>the name of an installed template (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh--list-templates"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-templates</span></code></a>)</li>
+<li>the name of an installed template (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-templates"><code class="xref std std-option docutils literal"><span class="pre">rinoh</span> <span class="pre">--list-templates</span></code></a>)</li>
 <li>a <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code></a> subclass</li>
 </ul>
 <p>The default is <code class="docutils literal"><span class="pre">'book'</span></code>, which resolves to the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal"><span class="pre">Book</span></code></a> template.</p>

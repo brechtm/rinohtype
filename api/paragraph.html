@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Paragraph (rinoh.paragraph) &mdash; rinohtype 0.3.0 documentation</title>
@@ -161,7 +172,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/api/paragraph.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/paragraph.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -199,7 +210,7 @@ rest of the paragraph when this method is called with a new container.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>container</strong> (<em>Container</em>) &#8211; the container to render to</li>
-<li><strong>descender</strong> (<em>float or None</em>) &#8211; descender height of the preceeding line</li>
+<li><strong>descender</strong> (<a class="reference internal" href="../style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle.float" title="rinoh.flowable.FloatStyle.float"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><em>None</em></a>) &#8211; descender height of the preceeding line</li>
 <li><strong>state</strong> (<a class="reference internal" href="#rinoh.paragraph.ParagraphState" title="rinoh.paragraph.ParagraphState"><em>ParagraphState</em></a>) &#8211; the state where rendering will continue</li>
 <li><strong>first_line_only</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><em>bool</em></a>) &#8211; typeset only the first line</li>
 </ul>
@@ -306,7 +317,7 @@ item at a time (used in typesetting).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text_or_items</strong> (<em>str, StyledText or iterable of these</em>) &#8211; mixed styled text</li>
+<li><strong>text_or_items</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a><em> or </em><em>iterable of these</em>) &#8211; mixed styled text</li>
 <li><strong>style</strong> &#8211; see <a class="reference internal" href="style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal"><span class="pre">Styled</span></code></a></li>
 <li><strong>parent</strong> &#8211; see <code class="xref py py-class docutils literal"><span class="pre">DocumentElement</span></code></li>
 </ul>

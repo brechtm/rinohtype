@@ -5,7 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-45391629-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Introduction &mdash; rinohtype 0.3.0 documentation</title>
@@ -137,7 +148,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/intro.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -192,7 +203,7 @@ used to style the document elements.</p>
 <h3>Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h3>
 <p>rinohtype includes the <strong class="program">rinoh</strong> command-line tool which renders
 structured text documents. Currently, <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> and <a class="reference external" href="http://commonmark.org">CommonMark</a>
-documents are supported in the open-source version. Support for <a class="reference external" href="https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=dita">DITA</a> is
+documents are supported in the open-source version. Support for <a class="reference external" href="http://dita.xml.org/standard">DITA</a> is
 available in the commercially supported Pro version.</p>
 <p>Rendering the reStructuredText demonstration article <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a> (using the
 standard article template and style sheet) generates <a class="reference download internal" href="_downloads/demo.pdf" download=""><code class="xref download docutils literal"><span class="pre">demo.pdf</span></code></a>.</p>
