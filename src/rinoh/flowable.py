@@ -379,16 +379,13 @@ class GroupedFlowables(Flowable):
         max_flowable_width = 0
         first_top_to_baseline = None
         item_spacing = self.get_style('flowable_spacing', container)
+        saved_state = copy(state)
         try:
-            saved_state = copy(state)
             while True:
-                try:
-                    width, top_to_baseline, descender = \
-                        self._flow_with_next(state, container, descender,
-                                             first_line_only=first_line_only,
-                                             **kwargs)
-                except StopIteration:
-                    break
+                width, top_to_baseline, descender = \
+                    self._flow_with_next(state, container, descender,
+                                         first_line_only=first_line_only,
+                                         **kwargs)
                 if first_top_to_baseline is None:
                     first_top_to_baseline = top_to_baseline
                 max_flowable_width = max(max_flowable_width, width)
@@ -396,6 +393,8 @@ class GroupedFlowables(Flowable):
                     break
                 saved_state = copy(state)
                 container.advance(item_spacing, True)
+        except LastFlowableException as exc:
+            descender = exc.last_descender
         except KeepWithNextException:
             raise EndOfContainer(saved_state)
         except (EndOfContainer, PageBreakException) as exc:
@@ -405,7 +404,10 @@ class GroupedFlowables(Flowable):
         return max_flowable_width, first_top_to_baseline or 0, descender
 
     def _flow_with_next(self, state, container, descender, **kwargs):
-        flowable = state.next_flowable()
+        try:
+            flowable = state.next_flowable()
+        except StopIteration:
+            raise LastFlowableException(descender)
         flowable.parent = self
         with MaybeContainer(container) as maybe_container:
             width, top_to_baseline, descender = \
@@ -430,6 +432,11 @@ class GroupedFlowables(Flowable):
 
 class KeepWithNextException(Exception):
     pass
+
+
+class LastFlowableException(Exception):
+    def __init__(self, last_descender):
+        self.last_descender = last_descender
 
 
 class StaticGroupedFlowables(GroupedFlowables):

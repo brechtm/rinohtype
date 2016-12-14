@@ -26,6 +26,8 @@ Fixed:
   that (1) it does not break this behavior of Heading preceding it, and
   (2) IndexTargets do not get separated from the following flowable
 * bug in LabeledFlowable that broke keep_with_next behavior
+* the descender size of the last flowable in a GroupedFlowables with
+  keep_with_next=True was getting lost
 
 
 Release 0.3.0 (2016-11-23)
