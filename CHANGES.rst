@@ -28,6 +28,8 @@ Fixed:
 * bug in LabeledFlowable that broke keep_with_next behavior
 * the descender size of the last flowable in a GroupedFlowables with
   keep_with_next=True was getting lost
+* GroupedFlowables should not mark the page non-empty; this caused empty pages
+  before the first chapter if it is preceded by grouped DummyFlowables
 
 
 Release 0.3.0 (2016-11-23)

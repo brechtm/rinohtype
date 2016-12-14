@@ -117,6 +117,10 @@ class Flowable(Styled):
     def initial_state(self, container):
         return FlowableState(self)
 
+    def mark_page_nonempty(self, container):
+        if not self.get_style('keep_with_next', container):
+            container.mark_page_nonempty()
+
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
         consumed.
@@ -159,8 +163,7 @@ class Flowable(Styled):
                     height = float(margin_container.height)
                     margin_container.canvas.annotate(self.annotation,
                                                      0, 0, width, height)
-                if not self.get_style('keep_with_next', container):
-                    container.mark_page_nonempty()
+                self.mark_page_nonempty(container)
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)
@@ -373,6 +376,9 @@ class GroupedFlowables(Flowable):
             title = Paragraph(title_text, style='title')
             flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
+
+    def mark_page_nonempty(self, container):
+        pass   # only the children place content on the page
 
     def render(self, container, descender, state, first_line_only=False,
                **kwargs):
