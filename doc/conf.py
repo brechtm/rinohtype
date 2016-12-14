@@ -45,6 +45,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.autosummary',
+    'sphinx.ext.githubpages',
     'sphinxcontrib.autoprogram',
     'rinoh.frontend.sphinx'
 ]
