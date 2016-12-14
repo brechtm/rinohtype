@@ -45,7 +45,9 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.autosummary',
+    'sphinx.ext.githubpages',
     'sphinxcontrib.autoprogram',
+    'sphinxcontrib.googleanalytics',
     'rinoh.frontend.sphinx'
 ]
 
@@ -127,6 +129,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3.5',
                        'sphinx': ('http://www.sphinx-doc.org/en/1.4.5',
                                   'sphinx-objects.inv')}
 
+googleanalytics_id = 'UA-45391629-1'
 
 # -- Options for HTML output ----------------------------------------------
 
