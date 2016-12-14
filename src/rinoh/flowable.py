@@ -410,7 +410,7 @@ class GroupedFlowables(Flowable):
             raise LastFlowableException(descender)
         flowable.parent = self
         with MaybeContainer(container) as maybe_container:
-            width, top_to_baseline, descender = \
+            max_flowable_width, top_to_baseline, descender = \
                 flowable.flow(maybe_container, descender,
                               state=state.first_flowable_state, **kwargs)
         state.initial = False
@@ -426,8 +426,9 @@ class GroupedFlowables(Flowable):
                     maybe_container.do_place(False)
                     raise KeepWithNextException
                 else:
-                    raise
-        return width, top_to_baseline, descender
+                    raise eoc
+            max_flowable_width = max(max_flowable_width, width)
+        return max_flowable_width, top_to_baseline, descender
 
 
 class KeepWithNextException(Exception):
