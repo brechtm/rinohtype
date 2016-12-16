@@ -264,3 +264,7 @@ def main():
             if not success:
                 raise SystemExit("No '{}' typeface found on PyPI. Aborting."
                                  .format(err.resource_name))
+
+
+if __name__ == '__main__':
+    main()

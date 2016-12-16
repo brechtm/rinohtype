@@ -6,8 +6,8 @@ Release 0.3.1.dev
 
 New Features:
 
-* rinoh is now also available as a stand-alone Windows installer that includes
-  its own CPython
+* rinoh is now also available as a stand-alone application for both Windows
+  (installer) and macOS (app); they include an embedded CPython installation
 * index terms can be StyledText now (in addition to str)
 * the 'document author' metadata entry can now be displayed using a Field
 * Sphinx frontend: support the 'desc_signature_line' node (new in Sphinx 1.5)

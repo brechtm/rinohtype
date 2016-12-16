@@ -11,5 +11,6 @@
 /build
 /dist
 /pynsist_pkgs
+/macapp/macOS
 /src/rinohtype.egg-info
 /MANIFEST
