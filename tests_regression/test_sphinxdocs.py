@@ -14,6 +14,8 @@ from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
 
+from sphinx.application import Sphinx
+
 from rinoh.template import TemplateConfigurationFile
 
 
@@ -23,8 +25,6 @@ SPHINX_DOC_DIR = path.join(TEST_DIR, 'sphinx', 'doc')
 
 
 def test_sphinxdocs(tmpdir):
-    from sphinx.application import Sphinx
-
     template_cfg_path = path.join(TEST_DIR, 'sphinxdocs.rtt')
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,
                     confdir=SPHINX_DOC_DIR,

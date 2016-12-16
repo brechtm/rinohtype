@@ -16,8 +16,11 @@ from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
 
+from sphinx.application import Sphinx
+
 from rinoh.attribute import OverrideDefault, Var
 from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.frontend.sphinx import nodes    # load the Sphinx docutils nodes
 from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
 
 
@@ -36,8 +39,6 @@ class Minimal(DocumentTemplate):
 
 
 def render(source, filename):
-    from rinoh.frontend.sphinx import nodes    # load the Sphinx docutils nodes
-
     file = BytesIO('\n'.join(source).encode('utf-8'))
     reader = ReStructuredTextReader()
     doctree = reader.parse(file)
@@ -46,6 +47,9 @@ def render(source, filename):
     document.render(path.join(tmpdir, filename))
     pdf_filename = '{}.pdf'.format(filename)
     with in_directory(tmpdir):
+        # register Sphinx directives and roles
+        Sphinx(srcdir=tmpdir, confdir=None, outdir=tmpdir, doctreedir=tmpdir,
+               buildername='dummy', status=None)
         _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
         if not diff_pdf(path.join(TEST_DIR, 'reference', pdf_filename),
