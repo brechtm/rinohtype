@@ -34,6 +34,9 @@ def create_app(name, version, requirements):
                 'formal_name': 'rinoh',
                 'bundle': 'com.opqode.rinoh'
             },
+            'macos': {
+                'icon': '../icons/rinoh'
+            },
         },
         install_requires=requirements,
         setup_requires=['briefcase'],

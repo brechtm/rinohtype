@@ -12,6 +12,7 @@ include tests_regression/sphinx/EXAMPLES
 graft tests_regression/sphinx/doc
 graft macapp
 prune macapp/macOS
+graft icons
 
 recursive-include examples *.md *.py *.rtt *.txt *.xml *.jpg *.png
 
