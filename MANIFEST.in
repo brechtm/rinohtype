@@ -1,4 +1,5 @@
 graft doc
+prune doc/style
 prune doc/.eggs
 prune doc/_build
 graft src
@@ -9,6 +10,8 @@ include tests_regression/sphinx/AUTHORS
 include tests_regression/sphinx/CHANGES
 include tests_regression/sphinx/EXAMPLES
 graft tests_regression/sphinx/doc
+graft macapp
+prune macapp/macOS
 
 recursive-include examples *.md *.py *.rtt *.txt *.xml *.jpg *.png
 
@@ -23,6 +26,8 @@ include .travis.yml
 include appveyor.yml
 include coverage.py
 include Dockerfile
+include gitlabpypi.py
+include macapp.py
 include rinoh.ico
 include run_tests.sh
 include tox.ini
