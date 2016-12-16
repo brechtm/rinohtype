@@ -27,11 +27,13 @@ from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
 from rinoh.templates import Article
 
+
+DESCRIPTION = 'Render a structured document to PDF.'
+
 DEFAULT = ' (default: %(default)s)'
 
 
-parser = argparse.ArgumentParser(description='Render a structured document '
-                                             'to PDF.')
+parser = argparse.ArgumentParser('rinoh', description=DESCRIPTION)
 parser.add_argument('input', type=str, nargs='?',
                     help='the document to render')
 parser.add_argument('-f', '--format', type=str,
