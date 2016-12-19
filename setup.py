@@ -28,7 +28,7 @@ def long_description():
 
 setup(
     name='rinohtype',
-    version='0.3.1.dev',
+    version='0.3.1',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,

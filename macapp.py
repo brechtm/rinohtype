@@ -11,7 +11,7 @@ from setuptools import setup
 from gitlabpypi import gitlab_pypi_server
 
 
-APP_VERSION = '0.3.1.dev'
+APP_VERSION = '0.3.1'
 
 TOX_DIST_DIR = os.path.join('.tox', 'dist')
 
