@@ -8,6 +8,7 @@
 
 import argparse
 import os
+import webbrowser
 
 from collections import OrderedDict
 
@@ -29,6 +30,8 @@ from rinoh.templates import Article
 
 
 DESCRIPTION = 'Render a structured document to PDF.'
+
+DOCS_URL = 'http://www.mos6581.org/rinohtype/'
 
 DEFAULT = ' (default: %(default)s)'
 
@@ -69,6 +72,9 @@ parser.add_argument('--list-options', metavar='FRONTEND', type=str,
 parser.add_argument('--version', action='version',
                     version='%(prog)s {} ({})'.format(__version__,
                                                       __release_date__))
+parser.add_argument('--docs', action='store_true',
+                    help='open the online documentation in the default '
+                         'browser')
 
 
 def get_distribution_str(entry_point):
@@ -140,6 +146,9 @@ def main():
     global parser
     args = parser.parse_args()
     do_exit = False
+    if args.docs:
+        webbrowser.open(DOCS_URL)
+        return
     if args.list_templates:
         print('Installed document templates:')
         for name, _ in sorted(DocumentTemplate.installed_resources):
