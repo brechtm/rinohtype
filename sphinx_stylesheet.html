@@ -19,7 +19,7 @@
     </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sphinx style sheet &mdash; rinohtype 0.3.0 documentation</title>
+  <title>Sphinx style sheet &mdash; rinohtype 0.3.1 documentation</title>
   
 
   
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/> 
+    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -317,34 +317,6 @@
 <span class="k">[nested line block]</span>
 <span class="na">margin_left</span><span class="o">=</span><span class="s">0.5cm</span>
 
-<span class="k">[title]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">18pt</span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Proportional(1.2)</span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">6pt</span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span>
-
-<span class="k">[subtitle]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">title</span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span>
-
-<span class="k">[date]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">title</span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Proportional(1.2)</span>
-
-<span class="k">[author]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">title</span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Proportional(1.2)</span>
-
-<span class="k">[affiliation]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">author</span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">18pt</span>
-
 <span class="k">[chapter]</span>
 <span class="na">page_break</span><span class="o">=</span><span class="s">RIGHT</span>
 
@@ -405,6 +377,13 @@
 <span class="k">[appendix heading level 1]</span>
 <span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
 <span class="na">number_format</span><span class="o">=</span><span class="s">uppercase character</span>
+
+<span class="k">[title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
 
 <span class="k">[topic]</span>
 <span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
@@ -498,6 +477,12 @@
 
 <span class="k">[steps list item label]</span>
 <span class="na">base</span><span class="o">=</span><span class="s">enumerated list item label</span>
+
+<span class="k">[unordered steps list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span>
+
+<span class="k">[unordered steps list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list item label</span>
 
 <span class="k">[choices list]</span>
 <span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span>
@@ -889,9 +874,11 @@
 
 <span class="c1"># title page</span>
 
+<span class="k">[title page rule]</span>
+<span class="na">stroke</span><span class="o">=</span><span class="s">1pt,#000</span>
+
 <span class="k">[title page logo]</span>
-<span class="na">width</span><span class="o">=</span><span class="s">100%</span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">horizontal_align</span><span class="o">=</span><span class="s">right</span>
 <span class="na">padding_top</span><span class="o">=</span><span class="s">14pt</span>
 <span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
 
@@ -1022,7 +1009,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.0',
+            VERSION:'0.3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

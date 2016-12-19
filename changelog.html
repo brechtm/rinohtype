@@ -19,7 +19,7 @@
     </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Release History &mdash; rinohtype 0.3.0 documentation</title>
+  <title>Release History &mdash; rinohtype 0.3.1 documentation</title>
   
 
   
@@ -44,7 +44,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.0 documentation" href="index.html"/>
+    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/>
         <link rel="prev" title="Frequenty Asked Questions" href="faq.html"/> 
 
   
@@ -73,7 +73,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -105,6 +105,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#release-0-3-1-2016-12-19">Release 0.3.1 (2016-12-19)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-3-0-2016-11-23">Release 0.3.0 (2016-11-23)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-2-1-2016-08-18">Release 0.2.1 (2016-08-18)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-2-0-2016-08-10">Release 0.2.0 (2016-08-10)</a></li>
@@ -159,6 +160,37 @@
             
   <div class="section" id="release-history">
 <span id="changelog"></span><h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="release-0-3-1-2016-12-19">
+<h2>Release 0.3.1 (2016-12-19)<a class="headerlink" href="#release-0-3-1-2016-12-19" title="Permalink to this headline">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li>rinoh is now also available as a stand-alone application for both Windows
+(installer) and macOS (app); they include an embedded CPython installation</li>
+<li>index terms can be StyledText now (in addition to str)</li>
+<li>the &#8216;document author&#8217; metadata entry can now be displayed using a Field</li>
+<li>Sphinx frontend: support the &#8216;desc_signature_line&#8217; node (new in Sphinx 1.5)</li>
+<li>rinoh &#8211;docs: open the online documentation in the default browser</li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li>more closely mimic the Sphinx LaTeX builder&#8217;s title page (issue #60)</li>
+<li>there is no default for PageTemplate.chapter_title_flowables anymore since
+they are specific to the document template</li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li>handle StyledText metadata (such as document title)</li>
+<li>Sphinx frontend: support the &#8216;autosummary_toc&#8217; node</li>
+<li>DummyFlowable now sticks to the flowable following it (keep_with_next), so
+that (1) it does not break this behavior of Heading preceding it, and
+(2) IndexTargets do not get separated from the following flowable</li>
+<li>bug in LabeledFlowable that broke keep_with_next behavior</li>
+<li>the descender size of the last flowable in a GroupedFlowables with
+keep_with_next=True was getting lost</li>
+<li>GroupedFlowables should not mark the page non-empty; this caused empty pages
+before the first chapter if it is preceded by grouped DummyFlowables</li>
+</ul>
+</div>
 <div class="section" id="release-0-3-0-2016-11-23">
 <h2>Release 0.3.0 (2016-11-23)<a class="headerlink" href="#release-0-3-0-2016-11-23" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
@@ -395,7 +427,7 @@ rinohtype variable is not set</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.0',
+            VERSION:'0.3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
