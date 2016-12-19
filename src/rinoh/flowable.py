@@ -626,7 +626,7 @@ class LabeledFlowable(Flowable):
                         = self.flowable.flow(content_container, last_descender,
                                              state=state.content_flowable_state)
                 content_height = content_container.cursor
-        except EndOfContainer as eoc:
+        except (ContainerOverflow, EndOfContainer) as eoc:
             content_state = eoc.flowable_state if rendering_content else None
             state.update(content_state)
             raise EndOfContainer(state)
