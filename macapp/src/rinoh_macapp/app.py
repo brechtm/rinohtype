@@ -16,14 +16,18 @@ SCRIPT = ('tell app "System Events" to'
           .format(title=DIALOG_TITLE, message=DIALOG_MESSAGE))
 
 
-if __name__ == '__main__':
+def run_apple_script(script):
     with open(os.devnull, 'w') as devnull:
-        rc = subprocess.call(['osascript', '-e', SCRIPT],
-                             stdout=devnull, stderr=devnull)
-    if rc == 0:
+        return subprocess.call(['osascript', '-e', script],
+                               stdout=devnull, stderr=devnull)
+
+
+if __name__ == '__main__':
+    if run_apple_script(SCRIPT) == 0:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         rinoh_path = os.path.join(script_dir, 'rinoh.sh')
         link_path = os.path.join(TARGET_DIR, 'rinoh')
-        if os.path.lexists(link_path):
-            os.remove(link_path)
-        os.symlink(rinoh_path, link_path)
+        create_link = ('mkdir -p {} && ln -sfh {} {}'
+                       .format(TARGET_DIR, rinoh_path, link_path))
+        run_apple_script('do shell script "{}" with administrator privileges'
+                         .format(create_link))
