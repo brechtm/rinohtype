@@ -15,7 +15,7 @@ PORT_NUMBER = 8080
 
 
 class GitLabPyPIRequestHandler(BaseHTTPRequestHandler):
-    RE_MARKDOWNLINK = re.compile(r'^\[(.*)\]\((.*)\)$')
+    RE_MARKDOWNLINK = re.compile(r'\[(.*)\]\((.*)\)')
 
     def do_GET(self):
         package = self.path.strip('/')
@@ -61,8 +61,9 @@ class GitLabPyPIRequestHandler(BaseHTTPRequestHandler):
                 release = tag['release']
                 if release is None:
                     continue
-                for binary in release['description'].split():
-                    fname, link = self.RE_MARKDOWNLINK.match(binary).groups()
+                description = release['description']
+                for match in self.RE_MARKDOWNLINK.finditer(description):
+                    fname, link = match.groups()
                     gitlab_token = self.server.gitlab_token
                     self.wfile.write('<a href="{}/{}?private_token={}">{}</a>'
                                      '<br/>'.format(project_url, link,
