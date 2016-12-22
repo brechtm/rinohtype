@@ -4,6 +4,11 @@ Release History
 Release 0.3.2.dev
 ~~~~~~~~~~~~~~~~~
 
+Changed:
+
+* XML frontend: special case mixed content nodes
+
+
 Release 0.3.1 (2016-12-19)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

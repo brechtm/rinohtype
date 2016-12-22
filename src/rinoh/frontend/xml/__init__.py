@@ -25,7 +25,8 @@ from .. import (TreeNode, InlineNode, BodyNode, BodySubNode, GroupingNode,
 __all__ = ['filter', 'strip_and_filter',
            'ElementTreeNode', 'ElementTreeInlineNode', 'ElementTreeBodyNode',
            'ElementTreeBodySubNode', 'ElementTreeGroupingNode',
-           'ElementTreeDummyNode', 'ElementTreeNodeMeta']
+           'ElementTreeMixedContentNode', 'ElementTreeDummyNode',
+           'ElementTreeNodeMeta']
 
 
 CATALOG_PATH = os.path.join(DATA_PATH, 'xml', 'catalog')
@@ -172,6 +173,10 @@ class ElementTreeBodySubNode(ElementTreeNode, BodySubNode):
 
 
 class ElementTreeGroupingNode(ElementTreeBodyNode, GroupingNode):
+    pass
+
+
+class ElementTreeMixedContentNode(ElementTreeGroupingNode):
     def children_flowables(self):
         strip_leading_ws = True
         paragraph = []
