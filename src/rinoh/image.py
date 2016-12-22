@@ -72,7 +72,7 @@ class Filename(str):
     """str subclass that provides system-independent path comparison"""
 
     def __eq__(self, other):
-        return posix_path(self) == posix_path(other)
+        return posix_path(str(self)) == posix_path(str(other))
 
     def __ne__(self, other):
         return not (self == other)
