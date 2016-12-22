@@ -13,7 +13,7 @@ from functools import partial
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
                         OptionSet, AttributesDictionary)
 from .color import RED
-from .dimension import Dimension
+from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        GroupedFlowablesStyle, HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
@@ -210,7 +210,7 @@ class InlineImage(ImageBase, InlineFlowable):
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, limit_width=None, align=None,
+                 dpi=None, rotate=0, limit_width=100*PERCENT, align=None,
                  id=None, style=None, parent=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, dpi=dpi, rotate=rotate,

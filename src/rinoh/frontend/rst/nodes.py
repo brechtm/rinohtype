@@ -562,8 +562,7 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
         width_string = self.get('width')
         align = self.get('align')
         return rt.Image(self.image_path, scale=self.get('scale', 100) / 100,
-                        width=convert_quantity(width_string), align=align,
-                        limit_width=100*PERCENT)
+                        width=convert_quantity(width_string), align=align)
 
     ALIGN_TO_BASELINE = {'bottom': 0,
                          'middle': 50*PERCENT,
