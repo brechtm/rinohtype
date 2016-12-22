@@ -76,7 +76,7 @@ def unique(iterable):
 
 
 def posix_path(path):
-    return os.path.normpath(path.replace(ntpath.sep, posixpath.sep))
+    return os.path.normpath(path).replace(ntpath.sep, posixpath.sep)
 
 
 # function decorators
