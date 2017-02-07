@@ -665,9 +665,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         docpart_flowables = self._to_insert.setdefault(document_part_name, [])
         docpart_flowables.append((flowable, position))
 
-    def prepare(self):
-        class FakeContainer(object):    # TODO: clean up
-            document = self
-
+    def prepare(self, flowable_target):
         for part_template in self.part_templates:
-            part_template.prepare(FakeContainer)
+            part_template.prepare(flowable_target)

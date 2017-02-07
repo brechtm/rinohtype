@@ -95,3 +95,11 @@ def test_inline_markup():
               ':regexp:        :regexp:`.*`',
               ':samp:          :samp:`print 1+{variable}`')
     render(source, 'inline_markup')
+
+
+def test_footnote_in_note(): # issue #95
+    source = ('.. note::',
+              '    Here is my footnote [#qq]_.',
+              '',
+              '    .. [#qq] Here it is!')
+    render(source, 'footnote_in_note')

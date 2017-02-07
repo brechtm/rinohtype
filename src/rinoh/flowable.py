@@ -291,8 +291,8 @@ class SetMetadataFlowable(DummyFlowable):
         super().__init__(parent=parent)
         self.metadata = metadata
 
-    def build_document(self, document):
-        document.metadata.update(self.metadata)
+    def build_document(self, flowable_target):
+        flowable_target.document.metadata.update(self.metadata)
 
 
 class AddToFrontMatter(DummyFlowable):
@@ -300,8 +300,8 @@ class AddToFrontMatter(DummyFlowable):
         super().__init__(parent=parent)
         self.flowables = flowables
 
-    def build_document(self, document):
-        document.front_matter.append(self.flowables)
+    def build_document(self, flowable_target):
+        flowable_target.document.front_matter.append(self.flowables)
 
 
 # grouping flowables
@@ -473,14 +473,14 @@ class StaticGroupedFlowables(GroupedFlowables):
     def flowables(self, container):
         return iter(self.children)
 
-    def build_document(self, document):
-        super().build_document(document)
-        for flowable in self.flowables(document):
-            flowable.build_document(document)
+    def build_document(self, flowable_target):
+        super().build_document(flowable_target)
+        for flowable in self.flowables(flowable_target):
+            flowable.build_document(flowable_target)
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
-        for flowable in self.flowables(flowable_target.document):
+        for flowable in self.flowables(flowable_target):
             flowable.parent = self
             flowable.prepare(flowable_target)
 

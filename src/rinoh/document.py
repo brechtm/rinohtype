@@ -420,13 +420,14 @@ to the terms of the GNU Affero General Public License version 3.''')
             return (part_page_counts == prev_number_of_pages and
                     self.page_references == prev_page_references)
 
+        fake_container = FakeContainer(self)
         try:
-            self.document_tree.build_document(self)
+            self.document_tree.build_document(fake_container)
             (prev_number_of_pages,
              prev_page_references) = self._load_cache(filename_root)
 
             self.part_page_counts = prev_number_of_pages
-            self.prepare()
+            self.prepare(fake_container)
             self.page_elements.clear()
             self.page_references = prev_page_references.copy()
             self.part_page_counts = self._render_pages()
@@ -521,3 +522,8 @@ to the terms of the GNU Affero General Public License version 3.''')
                                      passed // 60, passed % 60,
                                      container.page.formatted_number))
             sys.stdout.flush()
+
+
+class FakeContainer(object):    # TODO: clean up
+    def __init__(self, document):
+        self.document = document

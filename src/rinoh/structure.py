@@ -321,13 +321,12 @@ class AdmonitionTitles(StringCollection):
     seealso = String('Title for see-also admonitions')
 
 
-class Admonition(GroupedFlowables):
+class Admonition(StaticGroupedFlowables):
     style_class = AdmonitionStyle
 
     def __init__(self, flowables, title=None, type=None,
                  id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        self._flowables = list(flowables)
+        super().__init__(flowables, id=id, style=style, parent=parent)
         self.custom_title = title
         self.admonition_type = type
 
@@ -338,7 +337,7 @@ class Admonition(GroupedFlowables):
 
     def flowables(self, container):
         title = self.title(container.document)
-        flowables = iter(self._flowables)
+        flowables = super().flowables(container)
         first_flowable = next(flowables)
         inline_title = self.get_style('inline_title', container)
         if inline_title and isinstance(first_flowable, Paragraph):

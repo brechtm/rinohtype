@@ -9,6 +9,9 @@ Changed:
 * limit the width of images to the available width by default
 * XML frontend: special case mixed content nodes
 
+Fixed:
+
+* docutils: crash when a footnote is defined in an admonition (issue #95)
 
 Release 0.3.1 (2016-12-19)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

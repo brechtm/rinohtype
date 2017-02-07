@@ -69,7 +69,7 @@ class DocumentElement(object):
     def elements(self):
         yield self
 
-    def build_document(self, document):
+    def build_document(self, flowable_target):
         """Set document metadata and populate front and back matter"""
         pass
 
