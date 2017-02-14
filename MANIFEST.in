@@ -30,7 +30,7 @@ include Dockerfile
 include gitlabpypi.py
 include macapp.py
 include rinoh.ico
-include run_tests.sh
+include run_tests.py
 include tox.ini
 include wininst.py
 include wininst.cfg
