@@ -25,6 +25,7 @@ environment:
     - TOXENV: build-docs
 
 cache:
+  - poppler-0.51_x86.7z
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
