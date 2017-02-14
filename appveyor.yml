@@ -31,7 +31,7 @@ install:
   - bash -lc "pacman --noconfirm --sync --refresh --refresh --sysupgrade --sysupgrade"
   - bash -xlc "pacman --noconfirm -S --needed tar unzip make"
   - if "%TOXENV%" == "regression" bash -xlc "pacman --noconfirm -S --needed mingw-w64-x86_64-poppler"
-  - if "%TOXENV%" == "regression" choco install imagemagick.tool
+  - if "%TOXENV%" == "regression" choco install imagemagick.tool -version 7.0.3.10
   - if "%TOXENV%" == "regression" set PATH=C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;%PATH%
   - if "%TOXENV%" == "regression" git submodule update --init
 
