@@ -22,6 +22,7 @@ from rinoh.backend.pdf import PDFReader
 
 
 DIFF_DIR = 'pdfdiff'
+SHELL = sys.platform == 'win32'
 
 
 def diff_pdf(a_filename, b_filename):
@@ -74,9 +75,10 @@ class CommandFailed(Exception):
 def diff_page(a_filename, b_filename, page_number):
     diff_jpg_path = os.path.join(DIFF_DIR, '{}.jpg'.format(page_number))
     # http://stackoverflow.com/a/28779982/438249
-    diff = Popen(['convert', '-', '(', '-clone', '0-1',
-                  '-compose', 'darken', '-composite', ')',
-                  '-channel', 'RGB', '-combine', diff_jpg_path], stdin=PIPE)
+    diff = Popen(['convert', '-', '(', '-clone', '0-1', '-compose', 'darken',
+                                       '-composite', ')',
+                  '-channel', 'RGB', '-combine', diff_jpg_path],
+                 shell=SHELL, stdin=PIPE)
     a_page = pdf_page_to_grayscale_miff(a_filename, page_number, diff.stdin)
     if a_page.wait() != 0:
         raise CommandFailed(page_number)
@@ -86,15 +88,15 @@ def diff_page(a_filename, b_filename, page_number):
         raise CommandFailed(page_number)
     grayscale = Popen(['convert', diff_jpg_path, '-colorspace', 'HSL',
                        '-channel', 'g', '-separate', '+channel', '-format',
-                       '%[fx:mean]', 'info:'], stdout=PIPE)
+                       '%[fx:mean]', 'info:'], shell=SHELL, stdout=PIPE)
     return Decimal(grayscale.stdout.read().decode('ascii'))
 
 
 def pdf_page_to_grayscale_miff(pdf_path, page_number, stdout):
-    pdftoppm = Popen(['pdftoppm', '-f', str(page_number),
-                      '-singlefile', '-gray', pdf_path], stdout=PIPE)
+    pdftoppm = Popen(['pdftoppm', '-f', str(page_number), '-singlefile',
+                      '-gray', pdf_path], shell=SHELL, stdout=PIPE)
     convert = Popen(['convert', '-', 'miff:-'],
-                    stdin=pdftoppm.stdout, stdout=stdout)
+                    shell=SHELL, stdin=pdftoppm.stdout, stdout=stdout)
     return convert
 
 
