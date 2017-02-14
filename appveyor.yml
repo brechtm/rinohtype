@@ -24,6 +24,9 @@ environment:
     - TOXENV: test-docs
     - TOXENV: build-docs
 
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
   # http://blog.alivate.com.au/poppler-windows/
