@@ -11,6 +11,9 @@
 
 
 environment:
+  global:
+    BASETEMP: '%APPVEYOR_BUILD_FOLDER%\pytest_temp'
+
   matrix:
     - TOXENV: py33,py34,py35
 #      DIST: sdist
@@ -50,3 +53,7 @@ before_test:
 test_script:
   - echo %PATH%
   - py -3.5 -m tox
+
+
+artifacts:
+  - path: pytest_temp
