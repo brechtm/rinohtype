@@ -15,10 +15,10 @@ environment:
     BASETEMP: '%APPVEYOR_BUILD_FOLDER%\pytest_temp'
 
   matrix:
-    - TOXENV: py33,py34,py35
+    - TOXENV: py33,py34,py35,py36
 #      DIST: sdist
 #      WITH_COVERAGE: 1
-#    - TOXENV: py33,py34,py35
+#    - TOXENV: py33,py34,py35,py36
 #      DIST: wheel
 #      WITH_COVERAGE: 0
     - TOXENV: check
