@@ -24,6 +24,8 @@ environment:
     - TOXENV: check
     - TOXENV: regression
 #      WITH_COVERAGE: 1
+    - TOXENV: longrunning
+#      WITH_COVERAGE: 0
     - TOXENV: test-docs
     - TOXENV: build-docs
 
@@ -34,7 +36,7 @@ cache:
 
 install:
   - ps: |
-      If ($env:TOXENV -Match "regression") {
+      If ($env:TOXENV -Match "regression" -Or $env:TOXENV -Match "longrunning") {
           If (!(Test-Path C:\poppler-0.51)) {
               # http://blog.alivate.com.au/poppler-windows/
               appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
@@ -59,7 +61,5 @@ test_script:
 
 on_failure:
   - ps: |
-      If ($env:TOXENV -Match "regression") {
-          7z a pytest_temp.zip pytest_temp
-          appveyor PushArtifact pytest_temp.zip
-      }
+      7z a pytest_temp.zip pytest_temp
+      appveyor PushArtifact pytest_temp.zip

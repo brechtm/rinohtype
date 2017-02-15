@@ -21,6 +21,7 @@ from rinoh.template import TemplateConfigurationFile
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
+@pytest.mark.longrunning
 def test_rstdemo(tmpdir):
     config = TemplateConfigurationFile(os.path.join(TEST_DIR, 'rstdemo.rtt'))
 

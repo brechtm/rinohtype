@@ -24,6 +24,7 @@ TEST_DIR = path.abspath(path.dirname(__file__))
 SPHINX_DOC_DIR = path.join(TEST_DIR, 'sphinx', 'doc')
 
 
+@pytest.mark.longrunning
 def test_sphinxdocs(tmpdir):
     template_cfg_path = path.join(TEST_DIR, 'sphinxdocs.rtt')
     sphinx = Sphinx(srcdir=SPHINX_DOC_DIR,
