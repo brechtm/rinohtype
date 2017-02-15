@@ -25,14 +25,16 @@ environment:
     - TOXENV: build-docs
 
 cache:
-  - poppler-0.51_x86.7z
+  - C:\poppler-0.51 -> appveyor.yml
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
   # http://blog.alivate.com.au/poppler-windows/
-  - appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
-  - 7z x poppler-0.51_x86.7z -oC:\
+  - IF NOT EXIST C:\poppler-0.51 (
+        appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
+      & 7z x poppler-0.51_x86.7z -oC:\
+    )
   - set PATH=C:\poppler-0.51\bin;%PATH%
   - if "%TOXENV%" == "regression" choco install imagemagick.tool
   - if "%TOXENV%" == "regression" set PATH=C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;%PATH%
