@@ -57,5 +57,9 @@ test_script:
   - py -3.5 -m tox
 
 
-artifacts:
-  - path: pytest_temp
+on_failure:
+  - ps: |
+      If ($env:TOXENV -Match "regression") {
+          7z a pytest_temp.zip pytest_temp
+          appveyor PushArtifact pytest_temp.zip
+      }
