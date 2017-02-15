@@ -42,7 +42,7 @@ install:
           }
           choco install imagemagick.tool
           $env:Path = "C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;C:\poppler-0.51\bin;$env:Path"
-          git submodule update --init
+          git submodule update --quiet --init
       }
 
 
