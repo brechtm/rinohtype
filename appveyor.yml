@@ -33,15 +33,17 @@ cache:
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 install:
-  # http://blog.alivate.com.au/poppler-windows/
-  - IF NOT EXIST C:\poppler-0.51 (
-        appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
-      & 7z x poppler-0.51_x86.7z -oC:\
-    )
-  - set PATH=C:\poppler-0.51\bin;%PATH%
-  - if "%TOXENV%" == "regression" choco install imagemagick.tool
-  - if "%TOXENV%" == "regression" set PATH=C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;%PATH%
-  - if "%TOXENV%" == "regression" git submodule update --init
+  - ps: |
+      If ($env:TOXENV -Match "regression") {
+          If (!(Test-Path C:\poppler-0.51)) {
+              # http://blog.alivate.com.au/poppler-windows/
+              appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
+              7z x poppler-0.51_x86.7z -oC:\
+          }
+          choco install imagemagick.tool
+          $env:Path = "C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;C:\poppler-0.51\bin;$env:Path"
+          git submodule update --init
+      }
 
 
 build: off
