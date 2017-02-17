@@ -52,9 +52,9 @@ from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
 from .style import Style, Styled, PARENT_STYLE, StyleException
 
 
-__all__ = ['TextStyle', 'StyledText', 'SingleStyledText', 'MixedStyledText',
-           'ConditionalMixedStyledText', 'Space', 'FixedWidthSpace',
-           'NoBreakSpace', 'Spacer', 'Tab', 'Newline',
+__all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
+           'MixedStyledText', 'ConditionalMixedStyledText', 'Space',
+           'FixedWidthSpace', 'NoBreakSpace', 'Spacer', 'Tab', 'Newline',
            'Superscript', 'Subscript']
 
 
@@ -289,6 +289,30 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
 class StyledTextParseError(Exception):
     pass
+
+
+class WarnInline(StyledText):
+    """Inline element that emits a warning
+
+    Args:
+        message (str): the warning message to emit
+
+    """
+
+    def __init__(self, message, parent=None):
+        super().__init__(parent=parent)
+        self.message = message
+
+    def to_string(self, flowable_target):
+        return ''
+
+    @property
+    def items(self):
+        return [self]
+
+    def spans(self, container):
+        self.warn(self.message, container)
+        return iter([])
 
 
 class SingleStyledTextBase(StyledText):

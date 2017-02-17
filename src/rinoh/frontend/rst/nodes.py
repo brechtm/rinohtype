@@ -673,7 +673,12 @@ class Entry(DocutilsGroupingNode):
         return super().build_flowable(rowspan=rowspan, colspan=colspan)
 
 
-class Raw(DocutilsBodyNode):
+class Raw(DocutilsBodyNode, DocutilsInlineNode):
+    def build_styled_text(self):
+        cls, = self['classes']
+        return rt.WarnInline('{}: raw interpreted text roles are not supported'
+                             .format(cls))
+
     def build_flowable(self):
         if self['format'] == 'pdf':   # rst2pdf
             if self.text == 'PageBreak':
