@@ -18,7 +18,7 @@ PKGS_DIR = 'pynsist_pkgs'
 
 def test_platform():
     if (sys.platform != 'win32' or platform.machine() != 'AMD64'
-            or (sys.version_info.major, sys.version_info.minor) != (3, 5)):
+            or (sys.version_info.major, sys.version_info.minor) != (3, 6)):
         raise SystemExit('Running on wrong platform/interpreter')
 
 
