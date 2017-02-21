@@ -28,6 +28,7 @@ environment:
 #      WITH_COVERAGE: 0
     - TOXENV: test-docs
     - TOXENV: build-docs
+    - TOXENV: wininst
 
 cache:
   - C:\poppler-0.51 -> appveyor.yml
@@ -46,6 +47,10 @@ install:
           $env:Path = "C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;C:\poppler-0.51\bin;$env:Path"
           git submodule update --quiet --init
       }
+      If ($env:TOXENV -Match "wininst") {
+          choco install html-help-workshop
+          $env:Path = "C:\Program Files (x86)\HTML Help Workshop;$env:Path"
+      }
 
 
 build: off
@@ -59,7 +64,15 @@ test_script:
   - py -3.5 -m tox
 
 
+on_success:
+  - ps: |
+      If ($env:TOXENV -Match "wininst") {
+          Get-ChildItem .\build\nsis\rinoh_*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+      }
+
 on_failure:
   - ps: |
-      7z a pytest_temp.zip pytest_temp
-      appveyor PushArtifact pytest_temp.zip
+      If ($env:TOXENV -Match "regression" -Or $env:TOXENV -Match "longrunning") {
+          7z a pytest_temp.zip pytest_temp
+          Push-AppveyorArtifact pytest_temp.zip
+      }
