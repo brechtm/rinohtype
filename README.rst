@@ -109,17 +109,17 @@ reStructuredText Renderer
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The easiest way to get started with rinohtype is to render a reStructuredText
-document (such as `demo.txt`_) using the ``rinoh`` command line tool::
+document (such as ``CHANGES.rst`` from this repository) using the ``rinoh``
+command line tool::
 
-   rinoh demo.txt
+   rinoh CHANGES.rst
 
-When ``rinoh`` finishes, you will find ``demo.pdf`` alongside the input file.
+When ``rinoh`` finishes, you will find ``CHANGES.pdf`` alongside the input
+file.
 
 By default ``rinoh`` renders the input document using the article template. Run
 ``rinoh --help`` to see how you can tell ``rinoh`` which document template and
 style sheet to use.
-
-.. _demo.txt: http://docutils.sourceforge.net/docs/user/rst/demo.txt
 
 
 Sphinx Builder
