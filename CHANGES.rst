@@ -6,6 +6,7 @@ Release 0.3.2.dev
 
 Changed:
 
+* remove the dependency on purepng by embedding it's png.py
 * limit the width of images to the available width by default
 * XML frontend: special case mixed content nodes
 

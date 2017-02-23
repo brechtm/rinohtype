@@ -9,7 +9,7 @@ from io import BytesIO
 from itertools import islice
 from struct import Struct, pack
 
-import png as purepng
+from . import purepng
 
 from ..cos import Array, Integer, Stream, Name, Dictionary, Real
 from ..filter import FlateDecode, FlateDecodeParams
