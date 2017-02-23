@@ -9,7 +9,7 @@ rinohtype
    :target: https://pypi.python.org/pypi/rinohtype
    :alt: Python version
 
-.. image:: https://badges.gitter.im/brechtm/rinohtype.png
+.. image:: https://badges.gitter.im/brechtm/rinohtype.svg
    :target: https://gitter.im/brechtm/rinohtype
    :alt: Gitter chat
 
