@@ -1,6 +1,7 @@
 [run]
 branch = True
 source = rinoh
+omit = src/rinoh/backend/pdf/xobject/purepng.py
 
 [paths]
 source =
