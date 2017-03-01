@@ -45,4 +45,4 @@ class FIFOBuffer(object):
         return out
 
     def close(self):
-        self._source.flush()
+        pass
