@@ -14,6 +14,7 @@ Fixed:
 
 * docutils: crash when a footnote is defined in an admonition (issue #95)
 * docutils: crash on encountering a raw text role (issue #99)
+* Colours of PNG images with gamma (gAMA chunk) set are incorrect (#102)
 
 
 Release 0.3.1 (2016-12-19)

@@ -87,14 +87,8 @@ class PNGReader(XObjectImage):
             icc_profile['Alternate'] = device_color_space
             colorspace = Array([Name('ICCBased'), icc_profile])
         else:
-            cal_colorspace = {}
-            if hasattr(png, 'gamma'):
-                gamma = Real(1 / png.gamma)
-                cal_colorspace['Gamma'] = (gamma
-                                           if device_color_space == DEVICE_GRAY
-                                           else Array([gamma] * 3))
-            if hasattr(png, 'white_point'):
-                xyz = chromaticity_to_XYZ(png.white_point, *png.rgb_points)
+            def cal_chromaticity(cal_colorspace, white, red, green, blue):
+                xyz = chromaticity_to_XYZ(white, red, green, blue)
                 white_xyz, a_xyz, b_xyz, c_xyz = xyz
                 cal_colorspace['WhitePoint'] = Array([Real(value) for value
                                                       in white_xyz])
@@ -102,11 +96,23 @@ class PNGReader(XObjectImage):
                     cal_colorspace['Matrix'] = Array([Real(value) for x_y_z
                                                       in (a_xyz, b_xyz, c_xyz)
                                                       for value in x_y_z])
+
+            cal_colorspace = {}
+            if hasattr(png, 'gamma') and png.gamma != 0:
+                gamma = Real(1 / png.gamma)
+                cal_colorspace['Gamma'] = (Array([gamma] * 3)
+                                           if device_color_space == DEVICE_RGB
+                                           else gamma)
+            if hasattr(png, 'white_point'):
+                cal_chromaticity(cal_colorspace, png.white_point,
+                                 *png.rgb_points)
+            # TODO: assume sRGB if no color profile is set?
             if cal_colorspace:
                 if 'WhitePoint' not in cal_colorspace:
-                    # TODO: warn about white point assumption
-                    cal_colorspace['WhitePoint'] = CCIR_XA11_D65_WHITE_POINT
-                cal_type = (Name('CalGray') if device_color_space == DEVICE_GRAY
+                    # assume sRGB chromaticity
+                    cal_chromaticity(cal_colorspace, *SRGB_CHROMATICITIES)
+                cal_type = (Name('CalGray')
+                            if device_color_space == DEVICE_GRAY
                             else Name('CalRGB'))
                 colorspace = Array([cal_type, Dictionary(**cal_colorspace)])
             else:
@@ -172,8 +178,7 @@ RENDERING_INTENT = {purepng.ABSOLUTE_COLORIMETRIC: ABSOLUTE_COLORIMETRIC,
                     purepng.PERCEPTUAL: PERCEPTUAL}
 
 # from ITU-R Recommendation BT.709-5
-CCIR_XA11_D65_WHITE_POINT = Array([Real(0.9505), Real(1.0000), Real(1.0890)])
-
+SRGB_CHROMATICITIES = (0.3127, 0.329), (0.64, 0.33), (0.3, 0.6), (0.15, 0.06)
 
 def to_8bit_per_pixel(rows, bitdepth, width):
     px_per_byte = 8 // bitdepth
