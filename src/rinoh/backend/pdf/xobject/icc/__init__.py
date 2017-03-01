@@ -21,16 +21,19 @@ UNCALIBRATED = None
 ICC_PATH = os.path.abspath(os.path.dirname(__file__))
 ICC_FILENAME = {SRGB: 'sRGB_IEC61966-2-1_black_scaled.icc',
                 ADOBERGB: None}   # TODO
-ICC_STREAM = {}
+ICC_DATA = {}
 
 
 def get_icc_stream(color_space):
+    icc_stream = Stream(filter=FlateDecode())
     try:
-        return ICC_STREAM[color_space]
+        data = ICC_DATA[color_space]
     except KeyError:
         icc_file_path = os.path.join(ICC_PATH, ICC_FILENAME[color_space])
         stream = Stream(filter=FlateDecode())
         with open(icc_file_path, 'rb') as icc:
             stream.write(icc.read())
-        ICC_STREAM[color_space] = stream
-        return stream
+        stream.reset()
+        data = ICC_DATA[color_space] = stream._data
+    icc_stream._data = data
+    return icc_stream
