@@ -386,9 +386,7 @@ class Stream(Dictionary):
 
     def direct_bytes(self, document):
         out = bytearray()
-        if self._coder:
-            self._coder.close()
-            self.reset()
+        self.reset()
         if not isinstance(self.filter, PassThrough):
             self['Filter'] = self.filter.name
             if self.filter.params:
@@ -423,7 +421,9 @@ class Stream(Dictionary):
         return self._data.write(b)
 
     def reset(self):
-        self._coder = None
+        if self._coder:
+            self._coder.close()
+            self._coder = None
 
     def __getattr__(self, name):
         # almost as good as inheriting from BytesIO (which is not possible)
