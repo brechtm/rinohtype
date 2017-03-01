@@ -128,7 +128,8 @@ class PNGReader(XObjectImage):
     def _icc_profile(self, png):
         if hasattr(png, 'icc_profile'):
             icc_profile = Stream(filter=FlateDecode())
-            icc_profile.write(png.icc_profile)
+            icc_profile_name, icc_profile_data = png.icc_profile
+            icc_profile.write(icc_profile_data)
             return icc_profile
         else:
             return None
