@@ -737,7 +737,7 @@ class HorizontallyAlignedFlowable(Flowable):
                 raise eoc
             finally:
                 self._align(align_container, width)
-        return container.width, top_to_baseline, descender
+        return width, top_to_baseline, descender
 
 
 class FloatStyle(FlowableStyle):
