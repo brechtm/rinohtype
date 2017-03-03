@@ -19,7 +19,7 @@ from rinoh.attribute import OverrideDefault, Var
 from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
 
 
-__all__ = ['render']
+__all__ = ['render_doctree', 'render_rst']
 
 
 TEST_DIR = path.abspath(path.join(path.dirname(__file__), path.pardir))
@@ -38,10 +38,14 @@ class MinimalTemplate(DocumentTemplate):
     contents_page = PageTemplate(base='page')
 
 
-def render(source, filename, tmpdir):
+def render_rst(source, filename, tmpdir):
     file = BytesIO('\n'.join(source).encode('utf-8'))
     reader = ReStructuredTextReader()
     doctree = reader.parse(file)
+    render_doctree(doctree, filename, tmpdir)
+
+
+def render_doctree(doctree, filename, tmpdir):
     document = MinimalTemplate(doctree)
     document.render(tmpdir.join(filename).strpath)
     pdf_filename = '{}.pdf'.format(filename)

@@ -7,7 +7,7 @@
 
 import pytest
 
-from regression import render
+from regression import render_rst
 
 
 def test_footnote_in_note(tmpdir): # issue #95
@@ -15,7 +15,7 @@ def test_footnote_in_note(tmpdir): # issue #95
               '    Here is my footnote [#qq]_.',
               '',
               '    .. [#qq] Here it is!')
-    render(source, 'footnote_in_note', tmpdir)
+    render_rst(source, 'footnote_in_note', tmpdir)
 
 
 def test_raw_role(tmpdir): # issue 99
@@ -23,4 +23,4 @@ def test_raw_role(tmpdir): # issue 99
               '   :format: html latex',
               '',
               'A paragraph containing :raw-role:`raw text`.')
-    render(source, 'raw_role', tmpdir)
+    render_rst(source, 'raw_role', tmpdir)

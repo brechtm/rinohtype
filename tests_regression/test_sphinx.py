@@ -7,7 +7,7 @@
 
 import pytest
 
-from regression import render
+from regression import render_rst
 
 from sphinx.application import Sphinx
 from rinoh.frontend.sphinx import nodes    # load the Sphinx docutils nodes
@@ -17,7 +17,7 @@ def sphinx_render(source, filename, tmpdir):
     # register Sphinx directives and roles
     Sphinx(srcdir=tmpdir.strpath, confdir=None, outdir=tmpdir.strpath,
            doctreedir=tmpdir.strpath, buildername='dummy', status=None)
-    render(source, filename, tmpdir)
+    render_rst(source, filename, tmpdir)
 
 
 
