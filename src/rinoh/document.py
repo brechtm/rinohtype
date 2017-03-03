@@ -68,7 +68,8 @@ class DocumentTree(StaticGroupedFlowables):
 
     @property
     def source_root(self):
-        return os.path.dirname(self.source_file)
+        return (os.path.dirname(self.source_file)
+                if self.source_file else os.path.abspath(os.curdir))
 
 
 class PageOrientation(OptionSet):
