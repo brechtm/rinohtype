@@ -1,0 +1,91 @@
+---------------------------------- page 1 ----------------------------------
+#### ChainedContainer('column1')
+  DocumentTree()
+    List(style='bulleted')   None:None <hlist>
+         x (0,0,1,1,2) compact bulleted list
+         > (0,0,1,0,2) bulleted list
+      ListItem()
+           x (0,0,1,0,4) bulleted list item
+           > fallback to default style
+        ListItemLabel('•')
+             > (0,0,1,0,6) bulleted list item label
+               (0,0,0,0,2) list item label
+            MixedStyledText('•')
+              SingleStyledText('')
+              SingleStyledText('•')
+              SingleStyledText('')
+        StaticGroupedFlowables()   None:None <list_item>
+             > (0,0,0,0,3) list item body
+          Paragraph('A list of')   None:4 <paragraph>
+               > (0,0,0,0,5) list item paragraph
+                 (0,0,0,0,2) body
+            MixedStyledText('A list of')
+              SingleStyledText('A list of')
+      ListItem()
+           x (0,0,1,0,4) bulleted list item
+           > fallback to default style
+        ListItemLabel('•')
+             > (0,0,1,0,6) bulleted list item label
+               (0,0,0,0,2) list item label
+            MixedStyledText('•')
+              SingleStyledText('')
+              SingleStyledText('•')
+              SingleStyledText('')
+        StaticGroupedFlowables()   None:None <list_item>
+             > (0,0,0,0,3) list item body
+          Paragraph('short items')   None:5 <paragraph>
+               > (0,0,0,0,5) list item paragraph
+                 (0,0,0,0,2) body
+            MixedStyledText('short items')
+              SingleStyledText('short items')
+      ListItem()
+           x (0,0,1,0,4) bulleted list item
+           > fallback to default style
+        ListItemLabel('•')
+             > (0,0,1,0,6) bulleted list item label
+               (0,0,0,0,2) list item label
+            MixedStyledText('•')
+              SingleStyledText('')
+              SingleStyledText('•')
+              SingleStyledText('')
+        StaticGroupedFlowables()   None:None <list_item>
+             > (0,0,0,0,3) list item body
+          Paragraph('that should be')   None:6 <paragraph>
+               > (0,0,0,0,5) list item paragraph
+                 (0,0,0,0,2) body
+            MixedStyledText('that should be')
+              SingleStyledText('that should be')
+      ListItem()
+           x (0,0,1,0,4) bulleted list item
+           > fallback to default style
+        ListItemLabel('•')
+             > (0,0,1,0,6) bulleted list item label
+               (0,0,0,0,2) list item label
+            MixedStyledText('•')
+              SingleStyledText('')
+              SingleStyledText('•')
+              SingleStyledText('')
+        StaticGroupedFlowables()   None:None <list_item>
+             > (0,0,0,0,3) list item body
+          Paragraph('displayed')   None:7 <paragraph>
+               > (0,0,0,0,5) list item paragraph
+                 (0,0,0,0,2) body
+            MixedStyledText('displayed')
+              SingleStyledText('displayed')
+      ListItem()
+           x (0,0,1,0,4) bulleted list item
+           > fallback to default style
+        ListItemLabel('•')
+             > (0,0,1,0,6) bulleted list item label
+               (0,0,0,0,2) list item label
+            MixedStyledText('•')
+              SingleStyledText('')
+              SingleStyledText('•')
+              SingleStyledText('')
+        StaticGroupedFlowables()   None:None <list_item>
+             > (0,0,0,0,3) list item body
+          Paragraph('horizontally')   None:8 <paragraph>
+               > (0,0,0,0,5) list item paragraph
+                 (0,0,0,0,2) body
+            MixedStyledText('horizontally')
+              SingleStyledText('horizontally')

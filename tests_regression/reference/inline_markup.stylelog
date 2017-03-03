@@ -246,24 +246,3 @@
                 MixedStyledText('variable', style='emphasis')   None:None <emphasis>
                      > (0,0,1,0,1) emphasis
                   SingleStyledText('variable')
-#### UpExpandingContainer('header')
-  Header('​ ​')
-       > (0,0,0,0,2) header
-         (0,0,0,0,1) body
-    MixedStyledText('​ ​')
-      Field('​')
-        SingleStyledText('​')
-      SingleStyledText(' ')
-      Field('​')
-        SingleStyledText('​')
-#### DownExpandingContainer('footer')
-  Footer('	1/1')
-       > (0,0,0,0,2) footer
-         (0,0,0,0,1) body
-    MixedStyledText('	1/1')
-      Tab('	')
-      Field('1')
-        SingleStyledText('1')
-      SingleStyledText('/')
-      Field('1')
-        SingleStyledText('1')

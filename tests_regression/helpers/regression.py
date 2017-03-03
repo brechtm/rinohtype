@@ -32,7 +32,9 @@ class MinimalTemplate(DocumentTemplate):
     parts = OverrideDefault(['contents'])
     contents = ContentsPartTemplate()
     page = PageTemplate(page_size=Var('paper_size'),
-                        chapter_title_flowables=None)
+                        chapter_title_flowables=None,
+                        header_text=None,
+                        footer_text=None)
     contents_page = PageTemplate(base='page')
 
 

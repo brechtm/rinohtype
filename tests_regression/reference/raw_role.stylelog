@@ -1,0 +1,9 @@
+---------------------------------- page 1 ----------------------------------
+#### ChainedContainer('column1')
+  DocumentTree()
+    Paragraph('A paragraph containing .')   None:4 <paragraph>
+         > (0,0,0,0,2) body
+      MixedStyledText('A paragraph containing .')
+        SingleStyledText('A paragraph containing ')
+        WarnInline('')   None:4 <raw>
+        SingleStyledText('.')

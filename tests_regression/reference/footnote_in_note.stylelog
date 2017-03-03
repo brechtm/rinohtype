@@ -1,0 +1,36 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  Note(id='qq')
+    Paragraph('1')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('1')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('1')
+    StaticGroupedFlowables()
+      Paragraph('Here it is!')   None:4 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('Here it is!')
+          SingleStyledText('Here it is!')
+#### ChainedContainer('column1')
+  DocumentTree()
+    Admonition()   None:None <note>
+         > (0,0,0,1,2) note admonition
+           (0,0,0,0,2) admonition
+      Paragraph('Note Here is my footnote 1.')
+           > (0,0,0,0,2) body
+        MixedStyledText('Note Here is my footnote 1.')
+          MixedStyledText('Note', style='inline title')
+               x (0,0,1,1,3) note admonition inline title
+               > (0,0,1,0,3) admonition inline title
+            SingleStyledText('Note')
+          SingleStyledText(' ')
+          MixedStyledText('Here is my footnote 1.')
+            SingleStyledText('Here is my footnote ')
+            NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
+                 > (0,0,1,0,1) footnote marker
+                   (0,0,0,1,1) linked reference
+              SingleStyledText('1')
+            SingleStyledText('.')
