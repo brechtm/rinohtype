@@ -19,7 +19,7 @@ from rinoh.attribute import OverrideDefault, Var
 from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
 
 
-__all__ = ['render_doctree', 'render_rst']
+__all__ = ['render_doctree', 'render_rst_file']
 
 
 TEST_DIR = path.abspath(path.join(path.dirname(__file__), path.pardir))
@@ -38,22 +38,20 @@ class MinimalTemplate(DocumentTemplate):
     contents_page = PageTemplate(base='page')
 
 
-def render_rst(source, filename, tmpdir):
-    file = BytesIO('\n'.join(source).encode('utf-8'))
+def render_rst_file(rst_path, out_filename, reference_path, tmpdir):
     reader = ReStructuredTextReader()
-    doctree = reader.parse(file)
-    render_doctree(doctree, filename, tmpdir)
+    doctree = reader.parse(rst_path)
+    render_doctree(doctree, out_filename, reference_path, tmpdir)
 
 
-def render_doctree(doctree, filename, tmpdir):
+def render_doctree(doctree, out_filename, reference_path, tmpdir):
     document = MinimalTemplate(doctree)
-    document.render(tmpdir.join(filename).strpath)
-    pdf_filename = '{}.pdf'.format(filename)
+    document.render(tmpdir.join(out_filename).strpath)
+    pdf_filename = '{}.pdf'.format(out_filename)
     with in_directory(tmpdir.strpath):
         _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
-        if not diff_pdf(path.join(TEST_DIR, 'reference', pdf_filename),
-                        pdf_filename):
+        if not diff_pdf(path.join(reference_path, pdf_filename), pdf_filename):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
                         .format(tmpdir.strpath))
