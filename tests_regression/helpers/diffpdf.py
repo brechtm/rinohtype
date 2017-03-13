@@ -79,10 +79,10 @@ def diff_page(a_filename, b_filename, page_number):
                                        '-composite', ')',
                   '-channel', 'RGB', '-combine', diff_jpg_path],
                  shell=SHELL, stdin=PIPE)
-    a_page = pdf_page_to_grayscale_miff(a_filename, page_number, diff.stdin)
+    a_page = pdf_page_to_ppm(a_filename, page_number, diff.stdin)
     if a_page.wait() != 0:
         raise CommandFailed(page_number)
-    b_page = pdf_page_to_grayscale_miff(b_filename, page_number, diff.stdin)
+    b_page = pdf_page_to_ppm(b_filename, page_number, diff.stdin)
     diff.stdin.close()
     if b_page.wait() != 0 or diff.wait() != 0:
         raise CommandFailed(page_number)
@@ -92,12 +92,10 @@ def diff_page(a_filename, b_filename, page_number):
     return Decimal(grayscale.stdout.read().decode('ascii'))
 
 
-def pdf_page_to_grayscale_miff(pdf_path, page_number, stdout):
+def pdf_page_to_ppm(pdf_path, page_number, stdout):
     pdftoppm = Popen(['pdftoppm', '-f', str(page_number), '-singlefile',
-                      '-gray', pdf_path], shell=SHELL, stdout=PIPE)
-    convert = Popen(['convert', '-', 'miff:-'],
-                    shell=SHELL, stdin=pdftoppm.stdout, stdout=stdout)
-    return convert
+                      '-gray', pdf_path], shell=SHELL, stdout=stdout)
+    return pdftoppm
 
 
 if __name__ == '__main__':
