@@ -16,7 +16,7 @@ import sys
 from decimal import Decimal
 from functools import partial
 from multiprocessing import Pool, cpu_count
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, DEVNULL
 
 from rinoh.backend.pdf import PDFReader
 
@@ -73,16 +73,19 @@ class CommandFailed(Exception):
 
 
 def diff_page(a_filename, b_filename, page_number):
+    if compare_page(a_filename, b_filename, page_number):
+        return 0
+
     diff_jpg_path = os.path.join(DIFF_DIR, '{}.jpg'.format(page_number))
     # http://stackoverflow.com/a/28779982/438249
     diff = Popen(['convert', '-', '(', '-clone', '0-1', '-compose', 'darken',
                                        '-composite', ')',
                   '-channel', 'RGB', '-combine', diff_jpg_path],
                  shell=SHELL, stdin=PIPE)
-    a_page = pdf_page_to_ppm(a_filename, page_number, diff.stdin)
+    a_page = pdf_page_to_ppm(a_filename, page_number, diff.stdin, gray=True)
     if a_page.wait() != 0:
         raise CommandFailed(page_number)
-    b_page = pdf_page_to_ppm(b_filename, page_number, diff.stdin)
+    b_page = pdf_page_to_ppm(b_filename, page_number, diff.stdin, gray=True)
     diff.stdin.close()
     if b_page.wait() != 0 or diff.wait() != 0:
         raise CommandFailed(page_number)
@@ -92,9 +95,25 @@ def diff_page(a_filename, b_filename, page_number):
     return Decimal(grayscale.stdout.read().decode('ascii'))
 
 
-def pdf_page_to_ppm(pdf_path, page_number, stdout):
-    pdftoppm = Popen(['pdftoppm', '-f', str(page_number), '-singlefile',
-                      '-gray', pdf_path], shell=SHELL, stdout=stdout)
+def compare_page(a_filename, b_filename, page_number):
+    """Returns ``True`` if the pages at ``page_number`` are identical"""
+    compare = Popen(['compare', '-', '-metric', 'AE', 'null:'],
+                    shell=SHELL, stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL)
+    a_page = pdf_page_to_ppm(a_filename, page_number, compare.stdin)
+    if a_page.wait() != 0:
+        raise CommandFailed(page_number)
+    b_page = pdf_page_to_ppm(b_filename, page_number, compare.stdin)
+    compare.stdin.close()
+    if b_page.wait() != 0:
+        raise CommandFailed(page_number)
+    return compare.wait() == 0
+
+
+def pdf_page_to_ppm(pdf_path, page_number, stdout, gray=False):
+    command = ['pdftoppm', '-f', str(page_number), '-singlefile', pdf_path]
+    if gray:
+        command.insert(-1, '-gray')
+    pdftoppm = Popen(command, shell=SHELL, stdout=stdout)
     return pdftoppm
 
 
