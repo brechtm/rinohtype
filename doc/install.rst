@@ -3,10 +3,8 @@
 Installation
 ============
 
-Rinohtype supports Python 3.3 and up. Depending on demand, it might be
-back-ported to Python 2.7, however\ [1]_.
-
-Use pip_ to install the latest version of rinohtype and its dependencies::
+rinohtype supports Python 3.3 and up. Use pip_ to install the latest version
+of rinohtype and its dependencies::
 
     pip install rinohtype
 
@@ -25,18 +23,14 @@ Sphinx documents with rinohtype.
 Dependencies
 ------------
 
-For parsing reStructuredText documents, rinohtype depends on docutils_. For
-parsing PNG images the pure-Python PurePNG_ package is required. pip takes care
-of these requirements automatically when you install rinohtype.
+For parsing reStructuredText and CommonMark documents, rinohtype depends on
+docutils_ and recommonmark_ respectively. pip takes care of these requirements
+automatically when you install rinohtype.
 
-If you want to include images other than PDF, PNG or JPEG, you will need to
-install Pillow_ additionally.
+If you want to include images other than PDF, PNG or JPEG, you need to install
+Pillow_ additionally.
 
-.. _docutils: http://docutils.sourceforge.net/index.html
 .. _pip: https://pip.pypa.io
-.. _PurePNG: http://purepng.readthedocs.org
+.. _docutils: http://docutils.sourceforge.net/index.html
+.. _recommonmark: https://recommonmark.readthedocs.io
 .. _Pillow: http://python-pillow.github.io
-
-
-.. [1] Be sure to contact us if you are interested in running rinohtype on
-       Python 2.7.
