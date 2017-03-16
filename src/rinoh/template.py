@@ -271,8 +271,9 @@ class TitlePage(PageBase):
             self.title << Image(get_metadata('logo'),
                                 style='title page logo',
                                 limit_width=100*PERCENT)
-        self.title << Paragraph(get_metadata('title'),
-                                style='title page title')
+        if 'title' in metadata:
+            self.title << Paragraph(get_metadata('title'),
+                                    style='title page title')
         if 'subtitle' in metadata:
             self.title << Paragraph(get_metadata('subtitle'),
                                     style='title page subtitle')

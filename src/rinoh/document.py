@@ -320,8 +320,7 @@ class Document(object):
         self._flowables = list(id(element)
                                for element in document_tree.elements)
 
-        self.metadata = dict(title='Document Title',
-                             date=datetime.date.today())
+        self.metadata = dict(date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to flowables
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
