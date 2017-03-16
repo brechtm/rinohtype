@@ -477,7 +477,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         self.style = style
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        return type(self) == type(other) and self.__dict__ == other.__dict__
 
     def __ne__(self, other):
         return not self == other
