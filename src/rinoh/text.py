@@ -49,7 +49,8 @@ from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition)
-from .style import Style, Styled, PARENT_STYLE, StyleException
+from .style import Style, Styled, StyledMeta, PARENT_STYLE, StyleException
+from .util import NotImplementedAttribute
 
 
 __all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
@@ -215,10 +216,15 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        def substitute_html_entities(string, style=None):
-            return SingleStyledText(string.format(**NAME2CHAR), style=style)
+        def substitute_controlchars_htmlentities(string, style=None):
+            try:
+                return ControlCharacter.all[string]()
+            except KeyError:
+                return SingleStyledText(string.format(**NAME2CHAR),
+                                        style=style)
 
-        return Field.substitute(text, substitute_html_entities, style=style)
+        return Field.substitute(text, substitute_controlchars_htmlentities,
+                                style=style)
 
     def __str__(self):
         return self.to_string(None)
@@ -562,14 +568,26 @@ class Box(Character):
         return self.width
 
 
-class ControlCharacter(Character):
+class ControlCharacterMeta(StyledMeta):
+    def __new__(metacls, classname, bases, cls_dict):
+        cls = super().__new__(metacls, classname, bases, cls_dict)
+        try:
+            ControlCharacter.all[cls.character] = cls
+        except NameError:
+            pass
+        return cls
+
+
+class ControlCharacter(Character, metaclass=ControlCharacterMeta):
     """A non-printing character that affects typesetting of the text near it."""
 
+    character = NotImplementedAttribute()
     exception = Exception
+    all = {}
 
-    def __init__(self, char):
+    def __init__(self):
         """Initialize this control character with it's unicode `char`."""
-        super().__init__(char)
+        super().__init__(self.character)
 
     def __repr__(self):
         """A textual representation of this control character."""
@@ -590,20 +608,17 @@ class NewlineException(Exception):
 class Newline(ControlCharacter):
     """Control character ending the current line and starting a new one."""
 
+    character = '\n'
     exception = NewlineException
-
-    def __init__(self, *args, **kwargs):
-        """Initiatize this newline character."""
-        super().__init__('\n')
 
 
 class Tab(ControlCharacter):
-    """Tabulator character, used for vertically aligning text."""
+    """Tabulator character, used for vertically aligning text.
 
-    def __init__(self, *args, **kwargs):
-        """Initialize this tab character. Its attribute :attr:`tab_width` is set
-        a later point in time when context (:class:`TabStop`) is available."""
-        super().__init__('\t')
+    The :attr:`tab_width` attribute is set a later point in time when context
+    (:class:`TabStop`) is available."""
+
+    character = '\t'
 
 
 # predefined text styles
