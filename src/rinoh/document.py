@@ -330,6 +330,7 @@ class Document(object):
         self._sections = []
         self.index_entries = {}
         self._unique_id = 0
+        self.error = False
 
     def _print_version_and_license(self):
         print('rinohtype {} ({})  Copyright (c) Brecht Machiels'
@@ -400,6 +401,7 @@ to the terms of the GNU Affero General Public License version 3.''')
     def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
+        self.error = False
         if filename_root and file is None:
             filename = filename_root + self.backend_document.extension
             file = open(filename, 'wb')
@@ -448,6 +450,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         finally:
             if filename_root:
                 file.close()
+        return not self.error
 
     def create_outlines(self):
         """Create an outline in the output file that allows for easy navigation

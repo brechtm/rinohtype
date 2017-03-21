@@ -150,6 +150,7 @@ class ImageBase(Flowable):
                 filename_or_file = os.path.normpath(abs_filename)
             image = container.document.backend.Image(filename_or_file)
         except OSError as err:
+            container.document.error = True
             message = "Error opening image file: {}".format(err)
             self.warn(message)
             text = SingleStyledText(message, style=TextStyle(font_color=RED))

@@ -4,6 +4,11 @@ Release History
 Release 0.3.2.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
+* rinoh: set a return code of 1 when one or more referenced images could not be
+  found (issue #104)
+
 Changed:
 
 * remove the dependency on purepng by embedding it's png.py

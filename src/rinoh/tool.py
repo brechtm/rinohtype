@@ -265,7 +265,9 @@ def main():
     document = template_cls(document_tree, configuration=configuration)
     while True:
         try:
-            document.render(input_root)
+            success = document.render(input_root)
+            if not success:
+                raise SystemExit("Rendering completed with errors")
             break
         except ResourceNotInstalled as err:
             print("Typeface '{}' not installed. Attempting to install it from "
