@@ -56,6 +56,9 @@ parser.add_argument('-s', '--stylesheet', type=str, metavar='NAME OR FILENAME',
 parser.add_argument('-p', '--paper', type=str,
                     help='the paper size to render to '
                          + DEFAULT % dict(default="the template's default"))
+parser.add_argument('-i', '--install-resources', action='store_true',
+                    help='automatically install missing resources (fonts, '
+                         'templates, style sheets) from PyPI')
 parser.add_argument('--list-templates', action='store_true',
                     help='list the installed document templates and exit')
 parser.add_argument('--list-stylesheets', action='store_true',
@@ -267,16 +270,23 @@ def main():
         try:
             success = document.render(input_root)
             if not success:
-                raise SystemExit("Rendering completed with errors")
+                raise SystemExit('Rendering completed with errors')
             break
         except ResourceNotInstalled as err:
-            print("Typeface '{}' not installed. Attempting to install it from "
-                  "PyPI...".format(err.resource_name))
-            # answer = input()
-            success = Typeface.install_from_pypi(err.entry_point_name)
-            if not success:
-                raise SystemExit("No '{}' typeface found on PyPI. Aborting."
-                                 .format(err.resource_name))
+            not_installed_msg = ("{} '{}' not installed."
+                                 .format(err.resource_type.title(),
+                                         err.resource_name))
+            if args.install_resources:
+                print(not_installed_msg + ' Attempting to install it from '
+                                          'PyPI...')
+                success = Typeface.install_from_pypi(err.entry_point_name)
+                if not success:
+                    raise SystemExit("No '{}' {} found on PyPI. Aborting."
+                                     .format(err.resource_name,
+                                             err.resource_type))
+            else:
+                raise SystemExit(not_installed_msg + " Consider passing the "
+                                 "--install-resources command line option.")
 
 
 if __name__ == '__main__':

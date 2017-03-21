@@ -8,6 +8,8 @@ New Features:
 
 * rinoh: set a return code of 1 when one or more referenced images could not be
   found (issue #104)
+* rinoh: introduce the --install-resources option to control the automatic
+  installation of resources from PyPI
 
 Changed:
 

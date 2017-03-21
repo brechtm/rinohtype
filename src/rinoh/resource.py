@@ -70,12 +70,22 @@ class Resource(AttributeType):
 
 
 class ResourceNotInstalled(Exception):
-    """Exceptions raised when a resource identified by `entry_point_name` was
-    not found."""
-    def __init__(self, resource_type, resource_name, entry_point_name):
-        self.resource_type = resource_type
+    """Exception raised when a resource was not found
+
+    Args:
+        resource_type (): the type of the resource
+        resource_name (str): the name of the resource
+        entry_point_name (str): the entry point name for the resource
+
+    """
+    def __init__(self, resource_class, resource_name, entry_point_name):
+        self.resource_class = resource_class
         self.resource_name = resource_name
         self.entry_point_name = entry_point_name
+
+    @property
+    def resource_type(self):
+        return self.resource_class.resource_type
 
 
 def entry_point_name_to_identifier(entry_point_name):
