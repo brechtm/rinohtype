@@ -20,22 +20,26 @@ def get_version():
     from datetime import date
     from subprocess import check_output, CalledProcessError
 
+    print('Attempting to get commit SHA1 from git...')
+    try:
+        git_sha1 = check_output(['git', 'rev-parse', '--short', 'HEAD'])
+        is_dirty = check_output(['git', 'status', '--porcelain']) != ''
+    except CalledProcessError:
+        print('No. Assume we are running from a source distribution.')
+        is_dirty = False    # assume, since there is no way to know
+        version = version_from_pkginfo()
+    else:
+        version = '{}+{}'.format(VERSION, git_sha1.strip().decode('ascii'))
+        if is_dirty:
+            version += '.dirty{}'.format(date.today().strftime('%Y%m%d'))
+
     if sys.argv[1] == 'develop':
         # 'pip install -e' or 'python setup.py develop'
         print('Installing in develop mode')
         version = 'dev'
-    elif VERSION.endswith('.dev'):
-        print('Attempting to get commit SHA1 from git...')
-        try:
-            git_sha1 = check_output(['git', 'rev-parse', '--short', 'HEAD'])
-            is_dirty = check_output(['git', 'status', '--porcelain']) != ''
-        except CalledProcessError:
-            print('No. Assume we are running from a source distribution.')
-            version = version_from_pkginfo()
-        else:
-            version = '{}+{}'.format(VERSION, git_sha1.strip().decode('ascii'))
-            if is_dirty:
-                version += '.dirty{}'.format(date.today().strftime('%Y%m%d'))
+    elif not VERSION.endswith('.dev'):
+        assert not is_dirty
+        version = VERSION
     return version
 
 
