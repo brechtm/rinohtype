@@ -14,6 +14,53 @@ if sys.version_info < (3, 3):
     sys.exit(1)
 
 
+VERSION = '0.3.2.dev'
+
+def get_version():
+    from datetime import date
+    from subprocess import check_output, CalledProcessError, DEVNULL
+
+    try:
+        is_dirty = check_output(['git', 'status', '--porcelain'],
+                                stderr=DEVNULL) != b''
+    except CalledProcessError:
+        is_dirty = None   # not running from a git checkout
+
+    if sys.argv[1] == 'develop':
+        # 'pip install -e' or 'python setup.py develop'
+        print('Installing in develop mode')
+        version = 'dev'
+    elif VERSION.endswith('.dev'):  # development distribution
+        if is_dirty is None:
+            print('Assume we are running from a source distribution.')
+            version = version_from_pkginfo()
+        else:
+            print('Attempting to get commit SHA1 from git...')
+            git_sha1 = check_output(['git', 'rev-parse', '--short', 'HEAD'])
+            version = '{}+{}'.format(VERSION, git_sha1.strip().decode('ascii'))
+            if is_dirty:
+                version += '.dirty{}'.format(date.today().strftime('%Y%m%d'))
+    else:  # release distribution
+        if is_dirty is None:
+            assert VERSION == version_from_pkginfo()
+        else:
+            assert not is_dirty
+        version = VERSION
+    return version
+
+
+def version_from_pkginfo():
+    from email.parser import HeaderParser
+
+    parser = HeaderParser()
+    try:
+        with open('PKG-INFO') as file:
+            pkg_info = parser.parse(file)
+    except FileNotFoundError:
+        raise SystemExit('Not running from a source distribution! Aborting.')
+    return pkg_info['Version']
+
+
 def long_description():
     import os
 
@@ -28,7 +75,7 @@ def long_description():
 
 setup(
     name='rinohtype',
-    version='0.3.2.dev',
+    version=get_version(),
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
