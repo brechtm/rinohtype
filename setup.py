@@ -14,11 +14,13 @@ if sys.version_info < (3, 3):
     sys.exit(1)
 
 
-VERSION = '0.3.2.dev'
-
 def get_version():
+    import sys
+
     from datetime import date
     from subprocess import check_output, CalledProcessError, DEVNULL
+
+    VERSION = '0.3.2.dev'
 
     try:
         is_dirty = check_output(['git', 'status', '--porcelain'],
@@ -26,14 +28,13 @@ def get_version():
     except CalledProcessError:
         is_dirty = None   # not running from a git checkout
 
-    if sys.argv[1] == 'develop':
+    if len(sys.argv) > 1 and sys.argv[1] == 'develop':
         # 'pip install -e' or 'python setup.py develop'
         print('Installing in develop mode')
         version = 'dev'
     elif VERSION.endswith('.dev'):  # development distribution
         if is_dirty is None:
-            print('Assume we are running from a source distribution.')
-            version = version_from_pkginfo()
+            version = version_from_pkginfo() or VERSION
         else:
             print('Attempting to get commit SHA1 from git...')
             git_sha1 = check_output(['git', 'rev-parse', '--short', 'HEAD'])
@@ -42,7 +43,7 @@ def get_version():
                 version += '.dirty{}'.format(date.today().strftime('%Y%m%d'))
     else:  # release distribution
         if is_dirty is None:
-            assert VERSION == version_from_pkginfo()
+            assert version_from_pkginfo() in (VERSION, None)
         else:
             assert not is_dirty
         version = VERSION
@@ -57,7 +58,9 @@ def version_from_pkginfo():
         with open('PKG-INFO') as file:
             pkg_info = parser.parse(file)
     except FileNotFoundError:
-        raise SystemExit('Not running from a source distribution! Aborting.')
+        print('This is not a regular source distribution!')
+        return None
+    print('Retrieving the distribution version from PKG-SOURCES.')
     return pkg_info['Version']
 
 
