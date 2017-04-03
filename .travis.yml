@@ -105,6 +105,24 @@ matrix:
       env: TOXENV=test-docs
     - python: 3.6-dev
       env: TOXENV=build-docs
+    - os: osx
+      sudo: required
+      language: objective-c
+      cache:
+        pip: false
+        directories:
+          - $HOME/Library/Caches/pip
+          - $HOME/.pyenv
+      env:
+        - TOXENV=macapp
+      before_install:
+        - brew update
+        - brew unlink pyenv
+        - brew install --HEAD pyenv
+        - eval "$(pyenv init -)"
+        - pyenv install --skip-existing 3.5.3
+        - pyenv global 3.5.3
+        - python --version
 
 install:
   - pip install tox-travis wheel
