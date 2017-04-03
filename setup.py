@@ -14,7 +14,7 @@ if sys.version_info < (3, 3):
     sys.exit(1)
 
 
-VERSION = '0.3.2.dev'
+VERSION = '0.3.2'
 
 def get_version():
     from datetime import date
