@@ -7,6 +7,7 @@ Setup script for rinohtype
 import sys
 
 from setuptools import setup, find_packages
+from setuptools.command.build_py import build_py
 
 
 if sys.version_info < (3, 3):
@@ -76,7 +77,27 @@ def long_description():
     return result
 
 
+class BuildPyCommand(build_py):
+    """Write the distribution version to rinoh/version.py"""
+
+    def run(self):
+        build_py.run(self)
+        self.execute(self.set_version, (self.distribution.get_version(), ),
+                     "writing the distribution version to rinoh/version.py")
+
+    def set_version(self, version):
+        ver = self.get_module_outfile(self.build_lib, ('rinoh', ), 'version')
+        with open(ver, 'r') as version_old:
+            contents = version_old.readlines()
+        with open(ver, 'w') as version_new:
+            for line in contents:
+                if line.startswith('__version__'):
+                    line = "__version__ = '{}'\n".format(version)
+                version_new.write(line)
+
+
 setup(
+    cmdclass={'build_py': BuildPyCommand},
     name='rinohtype',
     version=get_version(),
     packages=find_packages('src'),
