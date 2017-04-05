@@ -6,12 +6,11 @@ import re
 import shutil
 import subprocess
 
+from pkg_resources import WorkingSet
 from setuptools import setup
 
 from gitlabpypi import gitlab_pypi_server
 
-
-APP_VERSION = '0.3.2.dev'
 
 TOX_DIST_DIR = os.path.join('.tox', 'dist')
 
@@ -22,13 +21,10 @@ def find_tox_sdist():
     return os.path.join(TOX_DIST_DIR, sdist)
 
 
-def create_app(name, version, requirements):
+def create_app(name, requirements):
     os.environ['MACAPP_NAME'] = name
-    version = os.environ['MACAPP_VERSION'] = version
-    os.chdir('macapp')
     setup(
         name='rinoh_macapp',
-        version=version,
         options = {
             'app': {
                 'formal_name': 'rinoh',
@@ -59,7 +55,9 @@ APP_DIR = os.path.join('macapp', 'macOS')
 
 
 RE_SDIST_VERSION = re.compile(r'^rinohtype-'
-                              r'(?P<version>\d+\.\d+\.\d+(\.dev\d+)?)\.zip$')
+                              r'(?P<version>\d+\.\d+\.\d+'
+                              r'(\.dev\d+)?(\+[a-z0-9]+(\.dirty\d{8})?)?)'
+                              r'\.zip$')
 
 
 if __name__ == '__main__':
@@ -81,16 +79,20 @@ if __name__ == '__main__':
         assert args.distribution is not None
         rinohtype_dist = args.distribution
     requirements = ['pygments', rinohtype_dist]
+    os.chdir('macapp')
     if args.pro:
         requirements.append('rinoh-frontend-dita')
         with gitlab_pypi_server() as index_url:
             os.environ['PIP_EXTRA_INDEX_URL'] = index_url
             app_name = 'rinoh pro'
-            create_app(app_name, APP_VERSION, requirements)
+            create_app(app_name, requirements)
     else:
         app_name = 'rinoh'
-        create_app(app_name, APP_VERSION, requirements)
+        create_app(app_name, requirements)
     print('Creating disk image...')
-    dmg_filename = '{}-{}.dmg'.format(app_name.replace(' ', '_'), APP_VERSION)
+    working_set = WorkingSet([os.path.join('macOS', 'rinoh.app', 'Contents',
+                                           'Resources', 'app_packages')])
+    app_version = working_set.by_key['rinohtype'].version
+    dmg_filename = '{}-{}.dmg'.format(app_name.replace(' ', '_'), app_version)
     subprocess.call(['hdiutil', 'create', '-ov', '-srcfolder', 'macOS',
                      '-volname', app_name, '../dist/{}'.format(dmg_filename)])
