@@ -10,7 +10,7 @@ python:
   - 3.3
   - 3.4
   - 3.5
-  - 3.6-dev
+  - 3.6
   - nightly
   - pypy3.3-5.2-alpha1
 
@@ -87,7 +87,7 @@ matrix:
         - pyenv global 3.6.1
         - python --version
         - python3 --version
-    - python: 3.5
+    - python: 3.6
       env:
         - TOXENV=longrunning
           TIMEOUT=45
@@ -101,9 +101,9 @@ matrix:
         - travis_retry curl -L http://brechtm.github.io/rinohtype-travis/dotlocal.tar.xz | tar xJ -C ~
         - export PATH=$HOME/.local/bin:$PATH
         - export LD_LIBRARY_PATH=$HOME/.local/lib
-    - python: 3.6-dev
+    - python: 3.6
       env: TOXENV=test-docs
-    - python: 3.6-dev
+    - python: 3.6
       env: TOXENV=build-docs
     - os: osx
       sudo: required
