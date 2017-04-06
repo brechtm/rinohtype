@@ -23,9 +23,9 @@ env:
 matrix:
   fast_finish: true
   include:
-    - python: 3.5
+    - python: 3.6
       env: TOXENV=check
-    - python: 3.5
+    - python: 3.6
       env:
         - TOXENV=regression
           WITH_COVERAGE=1
