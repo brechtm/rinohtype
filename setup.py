@@ -112,7 +112,7 @@ setup(
     extras_require = {'bitmap':  ['Pillow']},
     entry_points={
         'console_scripts': [
-            'rinoh = rinoh.tool:main',
+            'rinoh = rinoh.__main__:main',
         ],
         'rinoh.frontends': [
             'CommonMark = rinoh.frontend.commonmark:CommonMarkReader',

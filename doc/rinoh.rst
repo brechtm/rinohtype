@@ -1,4 +1,4 @@
 .. _rinoh:
 
-.. autoprogram:: rinoh.tool:parser
+.. autoprogram:: rinoh.__main__:parser
    :prog: rinoh
