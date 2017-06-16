@@ -172,7 +172,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
                     for token in tokens:
                         if token.exact_type == RPAR:
                             _, end_col = token.start
-                            style = token.line[start_col:end_col]
+                            style = token.line[start_col:end_col].strip()
                             token = next(tokens)
                             break
                         if token.type == NEWLINE:
