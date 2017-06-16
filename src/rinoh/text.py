@@ -36,10 +36,13 @@ Some characters with special properties and are represented by special classes:
 """
 
 import re
+import token
 
 from ast import literal_eval
 from html.entities import name2codepoint
+from io import BytesIO
 from itertools import tee
+from tokenize import tokenize, ENCODING
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -147,49 +150,36 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     @classmethod
     def parse_string(cls, string):
-        def parse_text(chars):
-            text = quote = skip_whitespace(chars)
-            if not quote in ("'", '"'):
-                raise StyledTextParseError
-            escape = False
-            for char in chars:
-                text += char
-                if not escape and char == quote:
-                    return text
-                escape = char == '\\'
-            raise StyledTextParseError('Missing closing quote')
+        tokens = tokenize(BytesIO(string.encode('utf-8')).readline)
+        assert next(tokens)[:2] == (ENCODING, 'utf-8')
+        return cls.from_tokens(tokens)
 
-        def parse_style(chars):
-            chars, saved_chars = tee(chars)
-            try:
-                next_char = skip_whitespace(chars)
-            except StopIteration:
-                return saved_chars, None
-            if next_char != '(':
-                return saved_chars, None
-            style = ''
-            for char in chars:
-                if char == ')':
-                    return chars, style
-                else:
-                    style += char
-            raise StyledTextParseError('Missing closing brace')
-
-        def skip_whitespace(chars):
-            for char in chars:
-                if char not in ' \t':
-                    return char
-            raise StopIteration
-
+    @classmethod
+    def from_tokens(cls, tokens):
         texts = []
-        chars = iter(string.strip())
+        token_type, token_value, start, end, line = next(tokens)
         while True:
-            try:
-                text = literal_eval(parse_text(chars))
-                chars, style = parse_style(chars)
-                texts.append(cls._substitute_variables(text, style))
-            except StopIteration:
+            if token_type == token.ENDMARKER:
                 break
+            elif token_type == token.NAME:      # inline flowable
+                raise NotImplementedError
+            elif token_type == token.STRING:    # text
+                text = literal_eval(token_value)
+                token_type, token_value, start, end, line = next(tokens)
+                if token_type == token.OP and token_value == '(':
+                    style = ''
+                    while True:
+                        (token_type, token_value,
+                         (_, start_col), (_, end_col), line) = next(tokens)
+                        if token_type == token.OP and token_value == ')':
+                            token_type, token_value, start, end, line = next(tokens)
+                            break
+                        style += line[start_col:end_col]
+                else:
+                    style = None
+                texts.append(cls._substitute_variables(text, style))
+            else:
+                raise StyledTextParseError('Expecting text or inline flowable')
 
         if len(texts) > 1:
             return MixedStyledText(texts)
