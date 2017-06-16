@@ -168,13 +168,16 @@ class StyledText(Styled, AcceptNoneAttributeType):
                 text = literal_eval(token.string)
                 token = next(tokens)
                 if token.exact_type == LPAR:
-                    style = ''
-                    while True:
-                        token = next(tokens)
+                    _, start_col = token.end
+                    for token in tokens:
                         if token.exact_type == RPAR:
+                            _, end_col = token.start
+                            style = token.line[start_col:end_col]
                             token = next(tokens)
                             break
-                        style += token.line[token.start[1]:token.end[1]]
+                        if token.type == NEWLINE:
+                            raise StyledTextParseError('No newline allowed in'
+                                                       'style name')
                 else:
                     style = None
                 texts.append(cls._substitute_variables(text, style))

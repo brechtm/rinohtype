@@ -249,6 +249,10 @@ def test_styledtext_from_string():
            == SingleStyledText('one', style='style1')
     assert StyledText.from_string("'one' (style1)") \
            == SingleStyledText('one', style='style1')
+    assert StyledText.from_string("'one'(style 1)") \
+           == SingleStyledText('one', style='style 1')
+    assert StyledText.from_string("'one'(style   1)") \
+           == SingleStyledText('one', style='style   1')
     assert StyledText.from_string("'one'(style1) 'two'") \
            == MixedStyledText([SingleStyledText('one', style='style1'),
                                SingleStyledText('two')])
