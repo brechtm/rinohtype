@@ -36,12 +36,11 @@ Some characters with special properties and are represented by special classes:
 """
 
 import re
-import token
 
 from ast import literal_eval
 from html.entities import name2codepoint
 from io import BytesIO
-from itertools import tee
+from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 from tokenize import tokenize, ENCODING
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
@@ -157,26 +156,25 @@ class StyledText(Styled, AcceptNoneAttributeType):
     @classmethod
     def from_tokens(cls, tokens):
         texts = []
-        token_type, token_value, start, end, line = next(tokens)
+        token = next(tokens)
         while True:
-            if token_type == token.ENDMARKER:
+            if token.type == ENDMARKER:
                 break
-            elif token_type == token.NEWLINE:
-                token_type, token_value, start, end, line = next(tokens)
-            elif token_type == token.NAME:      # inline flowable
+            elif token.type == NEWLINE:
+                token = next(tokens)
+            elif token.type == NAME:      # inline flowable
                 raise NotImplementedError
-            elif token_type == token.STRING:    # text
-                text = literal_eval(token_value)
-                token_type, token_value, start, end, line = next(tokens)
-                if token_type == token.OP and token_value == '(':
+            elif token.type == STRING:    # text
+                text = literal_eval(token.string)
+                token = next(tokens)
+                if token.exact_type == LPAR:
                     style = ''
                     while True:
-                        (token_type, token_value,
-                         (_, start_col), (_, end_col), line) = next(tokens)
-                        if token_type == token.OP and token_value == ')':
-                            token_type, token_value, start, end, line = next(tokens)
+                        token = next(tokens)
+                        if token.exact_type == RPAR:
+                            token = next(tokens)
                             break
-                        style += line[start_col:end_col]
+                        style += token.line[token.start[1]:token.end[1]]
                 else:
                     style = None
                 texts.append(cls._substitute_variables(text, style))
