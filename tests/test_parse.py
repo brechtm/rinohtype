@@ -234,7 +234,15 @@ def test_stroke_from_string():
 def test_styledtext_from_string():
     assert StyledText.from_string("'one'") == SingleStyledText('one')
     assert StyledText.from_string("'on\\'e'") == SingleStyledText("on'e")
+    assert StyledText.from_string("'''with\nnewline'''") \
+           == SingleStyledText('with\nnewline')
     assert StyledText.from_string("'one' 'two'") \
+           == MixedStyledText([SingleStyledText('one'),
+                               SingleStyledText('two')])
+    assert StyledText.from_string("'one''two'") \
+           == MixedStyledText([SingleStyledText('one'),
+                               SingleStyledText('two')])
+    assert StyledText.from_string("'one'\n'two'") \
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('two')])
     assert StyledText.from_string("'one'(style1)") \

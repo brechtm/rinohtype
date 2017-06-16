@@ -161,6 +161,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
         while True:
             if token_type == token.ENDMARKER:
                 break
+            elif token_type == token.NEWLINE:
+                token_type, token_value, start, end, line = next(tokens)
             elif token_type == token.NAME:      # inline flowable
                 raise NotImplementedError
             elif token_type == token.STRING:    # text
