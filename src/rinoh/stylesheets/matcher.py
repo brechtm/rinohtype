@@ -300,6 +300,10 @@ matcher('L3 toc level 3', TableOfContents.like(level=2)
 matcher('toc linked reference', TableOfContentsEntry
                                 / ... / ReferenceBase.like(link=True))
 
+matcher('list of figures section', ListOfFiguresSection)
+matcher('list of figures', ListOfFigures)
+matcher('list of figures entry', ListOfFiguresEntry)
+
 
 # tables
 

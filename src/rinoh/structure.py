@@ -37,6 +37,7 @@ class SectionTitles(StringCollection):
     """Collection of localized titles for common sections"""
 
     contents = String('Title for the table of contents section')
+    list_of_figures = String('Title for the list of figures section')
     chapter = String('Label for top-level sections')
     index = String('Title for the index section')
 
@@ -119,8 +120,8 @@ class Heading(NumberedParagraph):
         return self.section
 
     def __repr__(self):
-        return '{}({}) (style={})'.format(self.__class__.__name__, self.content,
-                                          self.style)
+        return '{}({}) (style={})'.format(self.__class__.__name__,
+                                          self.content, self.style)
 
     def prepare(self, flowable_target):
         document = flowable_target.document

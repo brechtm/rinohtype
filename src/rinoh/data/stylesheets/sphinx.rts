@@ -654,6 +654,16 @@ base=table of contents
 margin_left=0
 tab_stops=0.6cm, 100% RIGHT '. '
 
+[list of figures section]
+base=table of contents section
+
+[list of figures]
+base=table of contents
+
+[list of figures entry]
+base=list of figures
+tab_stops=100% RIGHT '.  '
+
 [table]
 space_above=5pt
 space_below=5pt
