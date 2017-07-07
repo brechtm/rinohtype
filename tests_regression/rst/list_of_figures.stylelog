@@ -1,7 +1,7 @@
 ---------------------------------- page 1 ----------------------------------
 #### ChainedContainer('column1')
   DocumentTree()
-    ListOfFiguresSection(style='list of figures')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:2 <raw>
+    ListOfFiguresSection(style='list of Chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:2 <raw>
          > (0,0,0,1,1) chapter
            (0,0,0,0,2) list of figures section
       Heading('List of Figures', style='unnumbered')
@@ -11,10 +11,10 @@
           MixedStyledText('List of Figures')
             SingleStyledText('')
             StringField('List of Figures')
-      ListOfFigures()   list of figures
+      ListOfFigures()   List of Figures
            > (0,0,0,0,2) list of figures
-        ListOfFiguresEntry('Figure 1: first figure	1')
-             > (0,0,0,0,2) list of figures entry
+        ListOfEntry('Figure 1: first figure	1')
+             > (0,0,0,0,4) list of figures entry
             MixedStyledText('Figure 1: first figure	1')
               ReferenceField('Figure 1')
                    > (0,0,0,1,1) linked reference
@@ -27,8 +27,8 @@
               ReferenceField('1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('1')
-        ListOfFiguresEntry('Figure 1.1: second figure	3')
-             > (0,0,0,0,2) list of figures entry
+        ListOfEntry('Figure 1.1: second figure	3')
+             > (0,0,0,0,4) list of figures entry
             MixedStyledText('Figure 1.1: second figure	3')
               ReferenceField('Figure 1.1')
                    > (0,0,0,1,1) linked reference
@@ -41,8 +41,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfFiguresEntry('Figure 1.2: third figure	3')
-             > (0,0,0,0,2) list of figures entry
+        ListOfEntry('Figure 1.2: third figure	3')
+             > (0,0,0,0,4) list of figures entry
             MixedStyledText('Figure 1.2: third figure	3')
               ReferenceField('Figure 1.2')
                    > (0,0,0,1,1) linked reference
@@ -55,8 +55,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfFiguresEntry('Figure 1.3: fourth figure	3')
-             > (0,0,0,0,2) list of figures entry
+        ListOfEntry('Figure 1.3: fourth figure	3')
+             > (0,0,0,0,4) list of figures entry
             MixedStyledText('Figure 1.3: fourth figure	3')
               ReferenceField('Figure 1.3')
                    > (0,0,0,1,1) linked reference
@@ -69,16 +69,30 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfFiguresEntry('Figure 2.1: fifth figure	5')
-             > (0,0,0,0,2) list of figures entry
-            MixedStyledText('Figure 2.1: fifth figure	5')
-              ReferenceField('Figure 2.1')
+        ListOfEntry('Figure 1.4: fifth figure	4')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 1.4: fifth figure	4')
+              ReferenceField('Figure 1.4')
                    > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 2.1')
+                SingleStyledText('Figure 1.4')
               SingleStyledText(': ')
               ReferenceField('fifth figure')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('fifth figure')
+              Tab('	')
+              ReferenceField('4')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('4')
+        ListOfEntry('Figure 2.1: sixth figure	5')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 2.1: sixth figure	5')
+              ReferenceField('Figure 2.1')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 2.1')
+              SingleStyledText(': ')
+              ReferenceField('sixth figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('sixth figure')
               Tab('	')
               ReferenceField('5')
                    > (0,0,0,1,1) linked reference
@@ -110,11 +124,69 @@
             SingleStyledText('1')
             SingleStyledText(' ')
             SingleStyledText('Section 1')
+      ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:14 <raw>
+           > (0,0,0,0,2) list of figures
+        ListOfEntry('Figure 1.1: second figure	3')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 1.1: second figure	3')
+              ReferenceField('Figure 1.1')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 1.1')
+              SingleStyledText(': ')
+              ReferenceField('second figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('second figure')
+              Tab('	')
+              ReferenceField('3')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('3')
+        ListOfEntry('Figure 1.2: third figure	3')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 1.2: third figure	3')
+              ReferenceField('Figure 1.2')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 1.2')
+              SingleStyledText(': ')
+              ReferenceField('third figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('third figure')
+              Tab('	')
+              ReferenceField('3')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('3')
+        ListOfEntry('Figure 1.3: fourth figure	3')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 1.3: fourth figure	3')
+              ReferenceField('Figure 1.3')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 1.3')
+              SingleStyledText(': ')
+              ReferenceField('fourth figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('fourth figure')
+              Tab('	')
+              ReferenceField('3')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('3')
+        ListOfEntry('Figure 1.4: fifth figure	4')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 1.4: fifth figure	4')
+              ReferenceField('Figure 1.4')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 1.4')
+              SingleStyledText(': ')
+              ReferenceField('fifth figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('fifth figure')
+              Tab('	')
+              ReferenceField('4')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('4')
       Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
            > (0,0,0,0,2) figure
         Image('../images/title.png')   None:None <image>
              > (0,0,0,0,2) image
-        Caption('Figure 1.1. second figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:16 <caption>
+        Caption('Figure 1.1. second figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:21 <caption>
              > (0,0,0,0,2) caption
             MixedStyledText('Figure 1.1. second figure')
               SingleStyledText('Figure ')
@@ -122,19 +194,49 @@
                 SingleStyledText('1.1')
                 SingleStyledText('. ')
               SingleStyledText('second figure')
-      Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:19 <section>
-        Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:19 <title>
+      Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:24 <section>
+        Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:24 <title>
              > (0,0,0,1,2) heading level 2
                (0,0,0,0,2) other heading levels
             MixedStyledText('1.1 Subsection 1')
               SingleStyledText('1.1')
               SingleStyledText(' ')
               SingleStyledText('Subsection 1')
+        ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:26 <raw>
+             > (0,0,0,0,2) list of figures
+          ListOfEntry('Figure 1.2: third figure	3')
+               > (0,0,0,0,4) list of figures entry
+              MixedStyledText('Figure 1.2: third figure	3')
+                ReferenceField('Figure 1.2')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('Figure 1.2')
+                SingleStyledText(': ')
+                ReferenceField('third figure')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('third figure')
+                Tab('	')
+                ReferenceField('3')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('3')
+          ListOfEntry('Figure 1.3: fourth figure	3')
+               > (0,0,0,0,4) list of figures entry
+              MixedStyledText('Figure 1.3: fourth figure	3')
+                ReferenceField('Figure 1.3')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('Figure 1.3')
+                SingleStyledText(': ')
+                ReferenceField('fourth figure')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('fourth figure')
+                Tab('	')
+                ReferenceField('3')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('3')
         Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
              > (0,0,0,0,2) figure
           Image('../images/biohazard.png')   None:None <image>
                > (0,0,0,0,2) image
-          Caption('Figure 1.2. third figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:23 <caption>
+          Caption('Figure 1.2. third figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:33 <caption>
                > (0,0,0,0,2) caption
               MixedStyledText('Figure 1.2. third figure')
                 SingleStyledText('Figure ')
@@ -142,19 +244,11 @@
                   SingleStyledText('1.2')
                   SingleStyledText('. ')
                 SingleStyledText('third figure')
-      Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:27 <section>
-        Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:27 <title>
-             > (0,0,0,1,2) heading level 2
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('1.2 Subsection 2')
-              SingleStyledText('1.2')
-              SingleStyledText(' ')
-              SingleStyledText('Subsection 2')
         Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
              > (0,0,0,0,2) figure
           Image('../images/biohazard.png')   None:None <image>
                > (0,0,0,0,2) image
-          Caption('Figure 1.3. fourth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:31 <caption>
+          Caption('Figure 1.3. fourth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:37 <caption>
                > (0,0,0,0,2) caption
               MixedStyledText('Figure 1.3. fourth figure')
                 SingleStyledText('Figure ')
@@ -162,30 +256,85 @@
                   SingleStyledText('1.3')
                   SingleStyledText('. ')
                 SingleStyledText('fourth figure')
+      Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <section>
+        Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <title>
+             > (0,0,0,1,2) heading level 2
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1.2 Subsection 2')
+              SingleStyledText('1.2')
+              SingleStyledText(' ')
+              SingleStyledText('Subsection 2')
+        ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:43 <raw>
+             > (0,0,0,0,2) list of figures
+          ListOfEntry('Figure 1.4: fifth figure	4')
+               > (0,0,0,0,4) list of figures entry
+              MixedStyledText('Figure 1.4: fifth figure	4')
+                ReferenceField('Figure 1.4')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('Figure 1.4')
+                SingleStyledText(': ')
+                ReferenceField('fifth figure')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('fifth figure')
+                Tab('	')
+                ReferenceField('4')
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('4')
 ---------------------------------- page 4 ----------------------------------
 #### ChainedContainer('column1')
   (continued) DocumentTree()
+    (continued) Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:12 <section>
+         > (0,0,0,1,2) chapter
+      (continued) Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <section>
+        Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
+             > (0,0,0,0,2) figure
+          Image('../images/title.png')   None:None <image>
+               > (0,0,0,0,2) image
+          Caption('Figure 1.4. fifth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:50 <caption>
+               > (0,0,0,0,2) caption
+              MixedStyledText('Figure 1.4. fifth figure')
+                SingleStyledText('Figure ')
+                MixedStyledText('1.4. ')
+                  SingleStyledText('1.4')
+                  SingleStyledText('. ')
+                SingleStyledText('fifth figure')
 ---------------------------------- page 5 ----------------------------------
 #### ChainedContainer('column1')
   (continued) DocumentTree()
-    Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:34 <section>
+    Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:53 <section>
          > (0,0,0,1,2) chapter
-      Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:34 <title>
+      Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:53 <title>
            > (0,0,0,1,2) heading level 1
              (0,0,0,0,2) other heading levels
           MixedStyledText('2 Section 2')
             SingleStyledText('2')
             SingleStyledText(' ')
             SingleStyledText('Section 2')
+      ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:55 <raw>
+           > (0,0,0,0,2) list of figures
+        ListOfEntry('Figure 2.1: sixth figure	5')
+             > (0,0,0,0,4) list of figures entry
+            MixedStyledText('Figure 2.1: sixth figure	5')
+              ReferenceField('Figure 2.1')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Figure 2.1')
+              SingleStyledText(': ')
+              ReferenceField('sixth figure')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('sixth figure')
+              Tab('	')
+              ReferenceField('5')
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('5')
       Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
            > (0,0,0,0,2) figure
         Image('../images/title.png')   None:None <image>
              > (0,0,0,0,2) image
-        Caption('Figure 2.1. fifth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:38 <caption>
+        Caption('Figure 2.1. sixth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:62 <caption>
              > (0,0,0,0,2) caption
-            MixedStyledText('Figure 2.1. fifth figure')
+            MixedStyledText('Figure 2.1. sixth figure')
               SingleStyledText('Figure ')
               MixedStyledText('2.1. ')
                 SingleStyledText('2.1')
                 SingleStyledText('. ')
-              SingleStyledText('fifth figure')
+              SingleStyledText('sixth figure')

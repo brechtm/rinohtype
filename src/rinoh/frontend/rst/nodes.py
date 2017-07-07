@@ -682,10 +682,14 @@ class Raw(DocutilsBodyNode, DocutilsInlineNode):
     def build_flowable(self):
         if self['format'] == 'rinoh':
             # TODO: Flowable.from_text(self.text)
-            if self.text == 'ListOfFiguresSection':
+            if self.text.startswith('ListOfFiguresSection'):
                 return rt.ListOfFiguresSection()
             elif self.text == 'ListOfTablesSection':
                 return rt.ListOfTablesSection()
+            elif self.text == 'ListOfFigures(local=True)':
+                return rt.ListOfFigures(local=True)
+            elif self.text == 'ListOfTables(local=True)':
+                return rt.ListOfTables(local=True)
             return rt.WarnFlowable("Unsupported raw pdf option: '{}'"
                                    .format(self.text))
         elif self['format'] == 'pdf':   # rst2pdf

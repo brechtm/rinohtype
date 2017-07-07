@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from itertools import chain
+
 from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
 from .element import create_destination
@@ -345,14 +347,31 @@ class ListOf(GroupedFlowables):
     def flowables(self, container):
         document = container.document
         category_counters = document.counters.get(self.category, {})
+
+        def limit_items(items, section):
+            for item in items:                # fast-forward `items` to the
+                if item.section is section:   # first sub-section of `section`
+                    yield item
+                    break
+            for item in items:
+                if not (item.section.level > section.level
+                        or item.section is section):
+                    break
+                yield item
+
+        def items_in_section(section):
+            section_id = (section.get_id(document, create=False)
+                          if section else None)
+            yield from category_counters.get(section_id, [])
+
+        items = chain(items_in_section(None),
+                      *(items_in_section(section)
+                        for section in document._sections))
+
         if self.local and self.section:
-            raise NotImplementedError
-        for caption in category_counters.get(None, []):
+            items = limit_items(items, self.section)
+        for caption in items:
             yield ListOfEntry(caption.referenceable, parent=self)
-        for section in document._sections:
-            section_id = section.get_id(document, create=False)
-            for caption in category_counters.get(section_id, []):
-                yield ListOfEntry(caption.referenceable, parent=self)
 
 
 class ListOfEntryStyle(ReferencingParagraphStyle):

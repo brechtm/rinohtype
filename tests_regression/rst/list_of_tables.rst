@@ -13,6 +13,11 @@
 Section 1
 =========
 
+.. raw:: rinoh
+
+   ListOfTables(local=True)
+
+
 .. table:: second table
 
    =====  =========  =========
@@ -22,7 +27,18 @@ Section 1
 Subsection 1
 ------------
 
+.. raw:: rinoh
+
+   ListOfTables(local=True)
+
+
 .. table:: third table
+
+   =====  =========  =========
+     A      Simple     Table
+   =====  =========  =========
+
+.. table:: fourth table
 
    =====  =========  =========
      A      Simple     Table
@@ -31,7 +47,12 @@ Subsection 1
 Subsection 2
 ------------
 
-.. table:: fourth table
+.. raw:: rinoh
+
+   ListOfTables(local=True)
+
+
+.. table:: fifth table
 
    =====  =========  =========
      A      Simple     Table
@@ -40,7 +61,12 @@ Subsection 2
 Section 2
 =========
 
-.. table:: fifth table
+.. raw:: rinoh
+
+   ListOfTables(local=True)
+
+
+.. table:: sixth table
 
    =====  =========  =========
      A      Simple     Table

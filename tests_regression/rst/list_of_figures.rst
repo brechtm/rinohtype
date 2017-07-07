@@ -11,6 +11,11 @@
 Section 1
 =========
 
+.. raw:: rinoh
+
+   ListOfFigures(local=True)
+
+
 .. figure:: ../images/title.png
 
    second figure
@@ -18,21 +23,40 @@ Section 1
 Subsection 1
 ------------
 
+.. raw:: rinoh
+
+   ListOfFigures(local=True)
+
+
 .. figure:: ../images/biohazard.png
 
    third figure
-
-
-Subsection 2
-------------
 
 .. figure:: ../images/biohazard.png
 
    fourth figure
 
-Section 2
-=========
+
+Subsection 2
+------------
+
+.. raw:: rinoh
+
+   ListOfFigures(local=True)
+
 
 .. figure:: ../images/title.png
 
    fifth figure
+
+Section 2
+=========
+
+.. raw:: rinoh
+
+   ListOfFigures(local=True)
+
+
+.. figure:: ../images/title.png
+
+   sixth figure
