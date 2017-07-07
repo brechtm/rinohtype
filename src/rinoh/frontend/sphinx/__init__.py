@@ -29,6 +29,7 @@ from rinoh.style import StyleSheet
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             TemplateConfigurationFile)
 from rinoh.text import SingleStyledText
+from rinoh import __version__ as rinoh_version
 
 from ..rst import ReStructuredTextReader
 
@@ -339,3 +340,4 @@ def setup(app):
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
+    return dict(version=rinoh_version)
