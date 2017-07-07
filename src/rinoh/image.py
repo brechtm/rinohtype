@@ -10,30 +10,28 @@ import os
 
 from functools import partial
 
-from rinoh.strings import StringField
-from rinoh.structure import Section, SectionTitles, Heading, TableOfContents
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
-                        OptionSet, AttributesDictionary, OverrideDefault)
+                        OptionSet, AttributesDictionary)
 from .color import RED
 from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        GroupedFlowablesStyle, HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
-                       HorizontalAlignment, GroupedFlowables)
+                       HorizontalAlignment)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph, NumberedParagraphStyle, format_number
-from .paragraph import Paragraph, ParagraphStyle
-from .reference import (ReferenceType, ReferencingParagraphStyle,
-                        ReferenceField, ReferencingParagraph)
+from .paragraph import Paragraph
+from .reference import ReferenceType
+from .structure import ListOf, ListOfSection
 from .style import CharIterator, parse_string
-from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText, Tab
+from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
 from .util import posix_path, ReadAliasAttribute
 
 
 __all__ = ['Image', 'InlineImage', 'BackgroundImage',
            'Scale', 'Caption', 'CaptionStyle', 'Figure', 'FigureStyle',
-           'ListOfFiguresSection', 'ListOfFigures', 'ListOfFiguresStyle']
+           'ListOfFiguresSection', 'ListOfFigures']
 
 
 class Scale(OptionSet):
@@ -339,54 +337,9 @@ class Figure(Float, InseparableFlowables, StaticGroupedFlowables):
     category = 'Figure'
 
 
-class ListOfFiguresSection(Section):
-    def __init__(self):
-        section_title = StringField(SectionTitles, 'list_of_figures')
-        super().__init__([Heading(section_title, style='unnumbered'),
-                          ListOfFigures()],
-                         style='list of figures')
-
-    def __repr__(self):
-        return '{}()'.format(type(self).__name__)
+class ListOfFigures(ListOf):
+    category = 'Figure'
 
 
-class ListOfFiguresStyle(GroupedFlowablesStyle, ParagraphStyle):
-    pass
-
-
-class ListOfFigures(GroupedFlowables):
-    style_class = ListOfFiguresStyle
-    location = 'list of figures'
-
-    def __init__(self, local=False, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        self.local = local
-        self.source = self
-
-    def __repr__(self):
-        args = ''.join(', {}={}'.format(name, repr(getattr(self, name)))
-                       for name in ('id', 'style')
-                       if getattr(self, name) is not None)
-        return '{}(local={}{})'.format(type(self).__name__, self.local, args)
-
-    def flowables(self, container):
-        document = container.document
-        category_counters = document.counters.get('Figure', {})
-        if self.local and self.section:
-            raise NotImplementedError
-        for caption in category_counters.get(None, []):
-            yield ListOfFiguresEntry(caption.referenceable, parent=self)
-        for section in document._sections:
-            section_id = section.get_id(document, create=False)
-            for caption in category_counters.get(section_id, []):
-                yield ListOfFiguresEntry(caption.referenceable, parent=self)
-
-
-class ListOfFiguresEntryStyle(ReferencingParagraphStyle):
-    text = OverrideDefault(ReferenceField('reference')
-                           + ': ' + ReferenceField('title')
-                           + Tab() + ReferenceField('page'))
-
-
-class ListOfFiguresEntry(ReferencingParagraph):
-    style_class = ListOfFiguresEntryStyle
+class ListOfFiguresSection(ListOfSection):
+    list_class = ListOfFigures

@@ -18,7 +18,8 @@ from .flowable import (HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableStyle,
                        HorizontallyAlignedFlowableState)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
-from .structure import StaticGroupedFlowables, GroupedFlowablesStyle
+from .structure import (StaticGroupedFlowables, GroupedFlowablesStyle,
+                        ListOf, ListOfSection)
 from .style import Styled
 from .util import ReadAliasAttribute
 
@@ -27,7 +28,8 @@ __all__ = ['Table', 'TableStyle', 'TableWithCaption',
            'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle',
            'TableCellBorder', 'TableCellBorderStyle',
-           'TableCellBackground', 'TableCellBackgroundStyle', 'VerticalAlign']
+           'TableCellBackground', 'TableCellBackgroundStyle', 'VerticalAlign',
+           'ListOfTables', 'ListOfTablesSection']
 
 
 class TableState(HorizontallyAlignedFlowableState):
@@ -556,3 +558,11 @@ class TableCellBackgroundStyle(ShapeStyle):
 
 class TableCellBackground(Rectangle):
     style_class = TableCellBackgroundStyle
+
+
+class ListOfTables(ListOf):
+    category = 'Table'
+
+
+class ListOfTablesSection(ListOfSection):
+    list_class = ListOfTables

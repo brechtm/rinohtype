@@ -15,6 +15,7 @@ EN = Language('en', 'English')
 SectionTitles(
     contents='Table of Contents',
     list_of_figures='List of Figures',
+    list_of_tables='List of Tables',
     chapter='Chapter',
     index='Index',
 ) in EN

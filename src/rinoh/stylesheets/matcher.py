@@ -302,7 +302,11 @@ matcher('toc linked reference', TableOfContentsEntry
 
 matcher('list of figures section', ListOfFiguresSection)
 matcher('list of figures', ListOfFigures)
-matcher('list of figures entry', ListOfFiguresEntry)
+matcher('list of figures entry', 'list of figures' / ListOfEntry)
+
+matcher('list of tables section', ListOfTablesSection)
+matcher('list of tables', ListOfTables)
+matcher('list of tables entry', 'list of tables' / ListOfEntry)
 
 
 # tables

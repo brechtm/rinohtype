@@ -2,7 +2,7 @@
 from .annotation import AnnotatedText
 from .draw import Line, Shape, Polygon, Rectangle
 from .image import Figure, Caption
-from .image import ListOfFiguresSection, ListOfFigures, ListOfFiguresEntry
+from .image import ListOfFiguresSection, ListOfFigures
 from .image import Image, InlineImage
 from .flowable import Flowable, Float
 from .flowable import GroupedFlowables, StaticGroupedFlowables
@@ -26,10 +26,12 @@ from .structure import Header, Footer
 from .structure import HorizontalRule
 from .structure import List, ListItem, ListItemLabel, DefinitionList
 from .structure import Section, TableOfContentsSection, Heading
+from .structure import ListOfEntry
 from .structure import Admonition
 from .structure import TableOfContents, TableOfContentsEntry
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody
 from .table import TableRow, TableCell, TableCellBackground, TableCellBorder
+from .table import ListOfTables, ListOfTablesSection
 from .text import Box
 from .text import Character
 from .text import CharacterLike

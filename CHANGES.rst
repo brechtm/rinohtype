@@ -6,7 +6,7 @@ Release 0.3.2.dev
 
 New Features:
 
-* automatically generated list of figures
+* automatically generated lists of figures and tables
 * Sphinx frontend: the rinoh builder can be discovered by entry point
   (no more need to add 'rinoh.frontend.sphinx' to the list of extensions)
 * rinoh: set a return code of 1 when one or more referenced images could not be

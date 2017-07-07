@@ -23,12 +23,14 @@ from .reference import ReferenceType
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
 from .strings import StringCollection, String, StringField
+from .util import NotImplementedAttribute
 
 
 __all__ = ['Section', 'Heading',
            'ListStyle', 'List', 'ListItem', 'ListItemLabel', 'DefinitionList',
            'Header', 'Footer',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
+           'ListOfStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'HorizontalRule', 'HorizontalRuleStyle']
 
@@ -38,6 +40,7 @@ class SectionTitles(StringCollection):
 
     contents = String('Title for the table of contents section')
     list_of_figures = String('Title for the list of figures section')
+    list_of_tables = String('Title for the list of tables section')
     chapter = String('Label for top-level sections')
     index = String('Title for the index section')
 
@@ -300,6 +303,66 @@ class TableOfContentsEntry(ReferencingParagraph):
     @property
     def depth(self):
         return self.target_id_or_flowable.level
+
+
+class ListOfSection(Section):
+    list_class = NotImplementedAttribute()
+
+    def __init__(self):
+        key = 'list_of_{}s'.format(self.list_class.category.lower())
+        section_title = StringField(SectionTitles, key)
+        super().__init__([Heading(section_title, style='unnumbered'),
+                          self.list_class()],
+                         style='list of {}'.format(self.category))
+
+    def __repr__(self):
+        return '{}()'.format(type(self).__name__)
+
+
+class ListOfStyle(GroupedFlowablesStyle, ParagraphStyle):
+    pass
+
+
+class ListOf(GroupedFlowables):
+    category = NotImplementedAttribute()
+    style_class = ListOfStyle
+
+    def __init__(self, local=False, id=None, style=None, parent=None):
+        super().__init__(id=id, style=style, parent=parent)
+        self.local = local
+        self.source = self
+
+    def __repr__(self):
+        args = ''.join(', {}={}'.format(name, repr(getattr(self, name)))
+                       for name in ('id', 'style')
+                       if getattr(self, name) is not None)
+        return '{}(local={}{})'.format(type(self).__name__, self.local, args)
+
+    @property
+    def location(self):
+        return 'List of {}s'.format(self.category)
+
+    def flowables(self, container):
+        document = container.document
+        category_counters = document.counters.get(self.category, {})
+        if self.local and self.section:
+            raise NotImplementedError
+        for caption in category_counters.get(None, []):
+            yield ListOfEntry(caption.referenceable, parent=self)
+        for section in document._sections:
+            section_id = section.get_id(document, create=False)
+            for caption in category_counters.get(section_id, []):
+                yield ListOfEntry(caption.referenceable, parent=self)
+
+
+class ListOfEntryStyle(ReferencingParagraphStyle):
+    text = OverrideDefault(ReferenceField('reference')
+                           + ': ' + ReferenceField('title')
+                           + Tab() + ReferenceField('page'))
+
+
+class ListOfEntry(ReferencingParagraph):
+    style_class = ListOfEntryStyle
 
 
 class AdmonitionStyle(GroupedFlowablesStyle):

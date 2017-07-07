@@ -664,6 +664,15 @@ base=table of contents
 base=list of figures
 tab_stops=100% RIGHT '.  '
 
+[list of tables section]
+base=list of figures section
+
+[list of tables]
+base=list of figures
+
+[list of tables entry]
+base=list of figures entry
+
 [table]
 space_above=5pt
 space_below=5pt
