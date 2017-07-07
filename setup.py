@@ -133,7 +133,10 @@ setup(
             'symbol = rinoh.fonts.adobe14:symbol',
             'times = rinoh.fonts.adobe14:times',
             'itc zapfdingbats = rinoh.fonts.adobe14:zapfdingbats',
-        ]
+        ],
+        'sphinx.builders': [
+            'rinoh = rinoh.frontend.sphinx',
+        ],
     },
     tests_require=['pytest>=2.0.0', 'pytest-assume'],
 
