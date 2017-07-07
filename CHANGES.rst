@@ -19,6 +19,7 @@ Changed:
 
 Fixed:
 
+* incompatibility with Sphinx 1.6.1+ (latex_paper_size)
 * docutils: crash when a footnote is defined in an admonition (issue #95)
 * docutils: crash on encountering a raw text role (issue #99)
 * crash when a table cell contains (only) an image

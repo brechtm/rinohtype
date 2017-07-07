@@ -297,9 +297,10 @@ def fully_qualified_id(docname, id):
 
 
 
-def info_config_conversion(config_option):
+def info_config_conversion(config_option, latex_option=None):
+    latex_option = latex_option or config_option
     print("'rinoh_{0}' config variable not set, automatically converting "
-          "from 'latex_{0}'".format(config_option))
+          "from 'latex_{0}'".format(latex_option))
 
 
 def default_documents(config):
@@ -315,12 +316,9 @@ def default_documents(config):
 
 
 def default_paper_size(config):
-    info_config_conversion('paper_size')
-    try:
-        return dict(a4paper=A4,
-                    letterpaper=LETTER)[config.latex_elements['papersize']]
-    except KeyError:
-        return dict(a4=A4, letter=LETTER)[config.latex_paper_size]
+    info_config_conversion('elements/papersize')
+    latex_paper_size = config.latex_elements.get('papersize', 'letterpaper')
+    return dict(a4paper=A4, letterpaper=LETTER)[latex_paper_size]
 
 
 def default_logo(config):
