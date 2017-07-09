@@ -321,7 +321,8 @@ class Caption(NumberedParagraph):
         for id in self.referenceable.get_ids(document):
             document.set_reference(id, ReferenceType.NUMBER, number)
             document.set_reference(id, ReferenceType.REFERENCE, reference)
-            document.set_reference(id, ReferenceType.TITLE, self.content)
+            document.set_reference(id, ReferenceType.TITLE,
+                                   self.content.to_string(None))
 
     def text(self, container):
         label = self.referenceable.category + ' ' + self.number(container)
