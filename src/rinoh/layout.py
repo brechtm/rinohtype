@@ -609,11 +609,12 @@ class Chain(FlowableTarget):
                 self._rerendering = True
         try:
             self.done = False
-            last_descender=None
+            last_descender = None
             while self._state.flowable_index < len(self.flowables):
                 flowable = self.flowables[self._state.flowable_index]
-                _, _, last_descender = flowable.flow(container, last_descender,
-                                                     self._state.flowable_state)
+                if not flowable.is_hidden(container):
+                    _, _, last_descender = flowable.flow(container, last_descender,
+                                                         self._state.flowable_state)
                 self._state.next_flowable()
             # all flowables have been rendered
             if container == self.last_container:

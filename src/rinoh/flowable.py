@@ -132,9 +132,6 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        if self.is_hidden(container):
-            return 0, 0, last_descender
-
         top_to_baseline = 0
         state = state or self.initial_state(container)
         if state.initial:
@@ -247,6 +244,8 @@ class DummyFlowable(Flowable):
     def get_style(self, attribute, flowable_target):
         if attribute == 'keep_with_next':
             return True
+        elif attribute == 'hide':
+            return False
         raise TypeError
 
     def flow(self, container, last_descender, state=None, **kwargs):
@@ -415,6 +414,8 @@ class GroupedFlowables(Flowable):
     def _flow_with_next(self, state, container, descender, **kwargs):
         try:
             flowable = state.next_flowable()
+            while flowable.is_hidden(container):
+                flowable = state.next_flowable()
         except StopIteration:
             raise LastFlowableException(descender)
         flowable.parent = self

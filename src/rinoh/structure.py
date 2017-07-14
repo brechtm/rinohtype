@@ -94,11 +94,6 @@ class Section(StaticGroupedFlowables, PageBreak):
     def create_destination(self, container, at_top_of_container=False):
         pass    # destination is set by the section's Heading
 
-    def flow(self, container, last_descender, state=None, **kwargs):
-        if self.is_hidden(container) and self in container.document._sections:
-            container.document._sections.remove(self)
-        return super().flow(container, last_descender, state=state, **kwargs)
-
 
 class HeadingStyle(NumberedParagraphStyle):
     number_separator = Attribute(StyledText, '.',
@@ -328,8 +323,11 @@ class ListOfSection(Section):
         return '{}()'.format(type(self).__name__)
 
     def is_hidden(self, container):
-        return (super().is_hidden(container)
-                or self.list_of.is_hidden(container))
+        result = (super().is_hidden(container)
+                  or self.list_of.is_hidden(container))
+        if result and self in container.document._sections:
+            container.document._sections.remove(self)
+        return result
 
 
 class ListOfStyle(GroupedFlowablesStyle, ParagraphStyle):
