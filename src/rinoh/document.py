@@ -460,6 +460,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         current_level = 1
         stack = []
         for section in self._sections:
+            if not section.include_in_outline(self):
+                continue
             section_id = section.get_id(self, create=False)
             section_number = self.get_reference(section_id, 'number')
             section_title = self.get_reference(section_id, 'title')
