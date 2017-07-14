@@ -32,14 +32,7 @@ def test_sphinxdocs(tmpdir):
                     outdir=tmpdir.join('rinoh').strpath,
                     doctreedir=tmpdir.join('doctrees').strpath,
                     buildername='rinoh',
-                    confoverrides=dict(extensions=['sphinx.ext.autodoc',
-                                                   'sphinx.ext.doctest',
-                                                   'sphinx.ext.todo',
-                                                   'sphinx.ext.autosummary',
-                                                   'sphinx.ext.extlinks',
-                                                   'sphinx.ext.viewcode',
-                                                   'rinoh.frontend.sphinx'],
-                                       rinoh_template=template_cfg_path))
+                    confoverrides=dict(rinoh_template=template_cfg_path))
     sphinx.build()
 
     out_file = tmpdir.join('rinoh').join('sphinx.pdf').strpath
