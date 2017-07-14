@@ -48,7 +48,6 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinxcontrib.autoprogram',
     'sphinxcontrib.googleanalytics',
-    'rinoh.frontend.sphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
