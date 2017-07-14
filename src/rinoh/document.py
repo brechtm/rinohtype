@@ -127,12 +127,11 @@ class Page(Container):
 
     def get_current_section(self, level):
         current_section = None
-        for id, section in ((id, element)
-                            for id, element in self.document.elements.items()
-                            if (isinstance(element, Section)
-                                and element.level == level)):
+        for section in (section for section in self.document._sections
+                        if section.level == level):
+            section_id = section.get_id(self.document)
             try:
-                first_page = self.document.page_elements[id]
+                first_page = self.document.page_elements[section_id]
             except KeyError:
                 break
             if first_page.document_part is not self.document_part:
@@ -460,8 +459,6 @@ to the terms of the GNU Affero General Public License version 3.''')
         current_level = 1
         stack = []
         for section in self._sections:
-            if not section.include_in_outline(self):
-                continue
             section_id = section.get_id(self, create=False)
             section_number = self.get_reference(section_id, 'number')
             section_title = self.get_reference(section_id, 'title')

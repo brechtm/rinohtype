@@ -91,11 +91,13 @@ class Section(StaticGroupedFlowables, PageBreak):
         except AttributeError:
             return True
 
-    def include_in_outline(self, document):
-        return True
-
     def create_destination(self, container, at_top_of_container=False):
         pass    # destination is set by the section's Heading
+
+    def flow(self, container, last_descender, state=None, **kwargs):
+        if self.is_hidden(container) and self in container.document._sections:
+            container.document._sections.remove(self)
+        return super().flow(container, last_descender, state=state, **kwargs)
 
 
 class HeadingStyle(NumberedParagraphStyle):
@@ -328,9 +330,6 @@ class ListOfSection(Section):
     def is_hidden(self, container):
         return (super().is_hidden(container)
                 or self.list_of.is_hidden(container))
-
-    def include_in_outline(self, document):
-        return bool(document.counters.get(self.list_class.category))
 
 
 class ListOfStyle(GroupedFlowablesStyle, ParagraphStyle):
