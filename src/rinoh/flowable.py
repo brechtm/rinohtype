@@ -114,6 +114,9 @@ class Flowable(Styled):
         except AttributeError:
             return None
 
+    def is_hidden(self, container):
+        return self.get_style('hide', container)
+
     def initial_state(self, container):
         return FlowableState(self)
 
@@ -129,7 +132,7 @@ class Flowable(Styled):
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
-        if self.get_style('hide', container):
+        if self.is_hidden(container):
             return 0, 0, last_descender
 
         top_to_baseline = 0

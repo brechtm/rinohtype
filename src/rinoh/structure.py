@@ -313,12 +313,17 @@ class ListOfSection(Section):
     def __init__(self):
         key = 'list_of_{}s'.format(self.list_class.category.lower())
         section_title = StringField(SectionTitles, key)
+        self.list_of = self.list_class()
         super().__init__([Heading(section_title, style='unnumbered'),
-                          self.list_class()],
+                          self.list_of],
                          style='list of {}'.format(self.category))
 
     def __repr__(self):
         return '{}()'.format(type(self).__name__)
+
+    def is_hidden(self, container):
+        return (super().is_hidden(container)
+                or self.list_of.is_hidden(container))
 
 
 class ListOfStyle(GroupedFlowablesStyle, ParagraphStyle):
@@ -343,6 +348,13 @@ class ListOf(GroupedFlowables):
     @property
     def location(self):
         return 'List of {}s'.format(self.category)
+
+    def is_hidden(self, container):
+        try:
+            next(self.flowables(container))
+        except StopIteration:
+            return True
+        return False
 
     def flowables(self, container):
         document = container.document
