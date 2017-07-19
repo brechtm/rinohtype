@@ -8,6 +8,7 @@
 
 from ..attribute import OverrideDefault, Var
 from ..dimension import INCH
+from ..image import ListOfFiguresSection
 from ..index import IndexSection
 from ..paragraph import Paragraph
 from ..reference import (Field, PAGE_NUMBER, DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
@@ -15,6 +16,7 @@ from ..reference import (Field, PAGE_NUMBER, DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
 from ..strings import StringField
 from ..structure import TableOfContentsSection, SectionTitles
 from ..stylesheets import sphinx
+from ..table import ListOfTablesSection
 from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
                         TitlePartTemplate, DocumentPartTemplate)
@@ -53,7 +55,9 @@ class Book(DocumentTemplate):
     title = TitlePartTemplate(page_number_format='number',
                               end_at_page='left')
     front_matter = FixedDocumentPartTemplate(
-                       flowables=[TableOfContentsSection()],
+                       flowables=[TableOfContentsSection(),
+                                  ListOfFiguresSection(),
+                                  ListOfTablesSection()],
                        page_number_format='lowercase roman',
                        end_at_page='left')
     contents = ContentsPartTemplate(page_number_format='number',
