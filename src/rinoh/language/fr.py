@@ -14,6 +14,8 @@ FR = Language('fr', 'Français')
 
 SectionTitles(
     contents='Table des Matières',
+    list_of_figures='Liste des Figures',
+    list_of_tables='Liste des Tableaux',
     chapter='Chapitre',
     index='Index',
 ) in FR

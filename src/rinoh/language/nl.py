@@ -14,6 +14,8 @@ NL = Language('nl', 'Nederlands')
 
 SectionTitles(
     contents='Inhoudsopgave',
+    list_of_figures='Lijst van Figuren',
+    list_of_tables='Lijst van Tabellen',
     chapter='Hoofdstuk',
     index='Index',
 ) in NL

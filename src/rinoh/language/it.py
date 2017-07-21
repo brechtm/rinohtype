@@ -14,6 +14,8 @@ IT = Language('it', 'Italiano')
 
 SectionTitles(
     contents='Contenuti',
+    list_of_figures='Elenco delle Figure',
+    list_of_tables='Elenco delle Tabelle',
     chapter='Capitolo',
     index='Indice',
 ) in IT
