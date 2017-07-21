@@ -13,6 +13,7 @@ New Features:
   found (issue #104)
 * rinoh: introduce the --install-resources option to control the automatic
   installation of resources from PyPI
+* German locale (contributed by Michael Kaiser)
 
 Changed:
 

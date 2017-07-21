@@ -10,7 +10,7 @@ from .cls import Language
 from ..structure import SectionTitles, AdmonitionTitles
 
 
-DE = Language('de', 'German')
+DE = Language('de', 'Deutsch')
 
 SectionTitles(
     contents='Inhalt',
