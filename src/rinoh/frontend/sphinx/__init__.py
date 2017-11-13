@@ -222,7 +222,7 @@ class RinohBuilder(Builder):
 
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
-        suffix, = config.source_suffix
+        suffix, = config.source_suffix[0:1]
         source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(source_path, doctree)
