@@ -294,12 +294,19 @@ class Caption(NumberedParagraph):
     @property
     def referenceable(self):
         return self.parent
+      
+    @property
+    def category(self):
+        try:
+            return self.referenceable.category
+        except AttributeError:
+            return "Other"
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         document = flowable_target.document
         get_style = partial(self.get_style, flowable_target=flowable_target)
-        category = self.referenceable.category
+        category = self.category
         numbering_level = get_style('numbering_level')
         section = self.section
         while section and section.level > numbering_level:
@@ -321,7 +328,7 @@ class Caption(NumberedParagraph):
             # document.set_reference(id, ReferenceType.TITLE, caption text)
 
     def text(self, container):
-        label = self.referenceable.category + ' ' + self.number(container)
+        label = self.category + ' ' + self.number(container)
         return MixedStyledText(label + self.content, parent=self)
 
 
