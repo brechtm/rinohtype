@@ -24,3 +24,5 @@ The following languages are supported:
 .. autodata:: IT
 
 .. autodata:: NL
+
+.. autodata:: PL
