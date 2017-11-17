@@ -13,9 +13,10 @@ from .fr import FR
 from .it import IT
 from .nl import NL
 from .de import DE
+from .pl import PL
 
 
-__all__ = ['Language', 'EN', 'FR', 'IT', 'NL', 'DE']
+__all__ = ['Language', 'EN', 'FR', 'IT', 'NL', 'DE', 'PL']
 
 
 # generate docstrings for the Language instances
