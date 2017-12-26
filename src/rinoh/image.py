@@ -8,10 +8,14 @@
 
 import os
 
+from ast import literal_eval
 from functools import partial
+from itertools import takewhile, filterfalse
+from token import LPAR, RPAR, NAME, EQUAL, NUMBER, OP, tok_name, ENDMARKER, \
+    STRING
 
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
-                        OptionSet, AttributesDictionary)
+                        OptionSet, AttributesDictionary, ParseError)
 from .color import RED
 from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
@@ -29,7 +33,7 @@ from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
 from .util import posix_path, ReadAliasAttribute
 
 
-__all__ = ['Image', 'InlineImage', 'BackgroundImage',
+__all__ = ['Image', 'InlineImage', 'BackgroundImage', 'ImageArgs',
            'Scale', 'Caption', 'CaptionStyle', 'Figure', 'FigureStyle',
            'ListOfFiguresSection', 'ListOfFigures']
 
@@ -54,6 +58,17 @@ class Scale(OptionSet):
             value = super().parse_string(string)
         except ValueError:
             value = float(string)
+            if not cls.check_type(value):
+                raise ValueError('Scale factor should be larger than 0')
+        return value
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        token = next(tokens)
+        if token.type == NAME:
+            value = super().parse_string(token.string)
+        elif token.type == NUMBER:
+            value = float(token.string)
             if not cls.check_type(value):
                 raise ValueError('Scale factor should be larger than 0')
         return value
@@ -198,7 +213,43 @@ class ImageBase(Flowable):
         return w, h, 0
 
 
+class RequiredArg(Attribute):
+    def __init__(self, accepted_type, description):
+        super().__init__(accepted_type, None, description)
+
+
+class OptionalArg(Attribute):
+    pass
+
+
+class String(AcceptNoneAttributeType):
+    @classmethod
+    def from_tokens(cls, tokens):
+        token = tokens.pop(0)
+        if token.type != STRING:
+            raise ParseError('Expecting a string')
+        return literal_eval(token.string), tokens
+
+
+class ImageArgsBase(AttributesDictionary):
+    file_or_filename = RequiredArg(String, 'Path to the image file')
+
+    scale = OptionalArg(Scale, 'fit', 'Scaling factor for the image')
+    width = OptionalArg(Dimension, None, 'The width to scale the image to')
+    height = OptionalArg(Dimension, None, 'The height to scale the image to')
+    dpi = OptionalArg(Integer, 0, 'Overrides the DPI value set in the image')
+    rotate = OptionalArg(Integer, 0, 'Angle in degrees to rotate the image')
+
+
+class InlineImageArgs(ImageArgsBase):
+    baseline = OptionalArg(Dimension, 0, "Location of this inline image's "
+                                         "baseline")
+
+
 class InlineImage(ImageBase, InlineFlowable):
+    directive = 'image'
+    arguments = InlineImageArgs
+
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  dpi=None, rotate=0, baseline=None,
                  id=None, style=None, parent=None):
@@ -210,6 +261,39 @@ class InlineImage(ImageBase, InlineFlowable):
     def _width(self, container):
         return self.width
 
+    @classmethod
+    def parse_arguments(cls, tokens):
+        if next(tokens).exact_type != LPAR:
+            raise ParseError('Expecting an opening parenthesis.')
+        argument_tokens = list(takewhile(lambda t: t.exact_type != RPAR,
+                                         tokens))
+
+        arguments = (cls.arguments.attribute_definition(name)
+                     for name in cls.arguments._all_attributes)
+
+        args, kwargs = [], {}
+
+        def not_equal(token):
+            return token.exact_type != EQUAL
+
+        reversed_tokens = reversed(argument_tokens)
+
+        for _ in filterfalse(not_equal, argument_tokens):
+            value_tokens = list(takewhile(not_equal, reversed_tokens))
+            keyword_token = next(reversed_tokens)
+            if keyword_token.type != NAME:
+                raise ParseError('Expecting keyword name.')
+            keyword = keyword_token.string
+            arg_def = cls.arguments.attribute_definition(keyword)
+            string = ''.join(t.string for t in reversed(value_tokens))
+            kwargs[keyword] = arg_def.accepted_type.parse_string(string)
+
+        arg_tokens = list(reversed(list(reversed_tokens)))
+        for argument in (a for a in arguments if isinstance(a, RequiredArg)):
+            value, arg_tokens = argument.accepted_type.from_tokens(arg_tokens)
+            args.append(value)
+
+        return args, kwargs
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
@@ -221,7 +305,6 @@ class _Image(HorizontallyAlignedFlowable, ImageBase):
                          id=id, style=style, parent=parent)
 
 
-
 class Image(_Image):
     pass
 
@@ -230,16 +313,9 @@ class BackgroundImageMeta(type(_Image), type(AttributesDictionary)):
     pass
 
 
-class BackgroundImageArgs(AttributesDictionary):
-    """Arguments accepted by attributes of type :class:`BackgroundImage`"""
-
-    scale = Attribute(Scale, 'fit', 'Scaling factor for the image')
-    width = Attribute(Dimension, None, 'The width to scale the image to')
-    height = Attribute(Dimension, None, 'The height to scale the image to')
-    dpi = Attribute(Integer, 0, 'Overrides the DPI value set in the image')
-    rotate = Attribute(Integer, 0, 'The angle in degrees to rotate the image')
-    limit_width = Attribute(Dimension, None, 'Limit the image width when none '
-                            'of :attr:`scale`, :attr:`width` and '
+class ImageArgs(ImageArgsBase):
+    limit_width = Attribute(Dimension, 100*PERCENT, 'Limit the image width '
+                            'when none of :attr:`scale`, :attr:`width` and '
                             ':attr:`height` are given and the image would '
                             'be wider than the container')
     align = Attribute(HorizontalAlignment, 'left', 'How to align the image '
@@ -259,7 +335,7 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
     def parse_string(cls, string):
         chars = CharIterator(string)
         filename = parse_string(chars)
-        kwargs = BackgroundImageArgs()
+        kwargs = ImageArgs()
         rest = ''.join(chars).strip()
         while rest:
             rest, value_string = (part.strip() for part in rest.rsplit('=', 1))
@@ -268,7 +344,7 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
             except ValueError:
                 rest, keyword = '', rest.strip()
             try:
-                value_type = kwargs._attributes[keyword].accepted_type
+                value_type = kwargs.attribute_definition(keyword).accepted_type
             except KeyError:
                 raise ValueError("'{}' is not a supported keyword argument "
                                  "for {}".format(keyword, cls.__name__))

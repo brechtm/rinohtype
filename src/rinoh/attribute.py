@@ -10,7 +10,9 @@ import re
 
 from collections import OrderedDict
 from configparser import ConfigParser
+from io import BytesIO
 from itertools import chain
+from tokenize import tokenize, ENCODING
 from warnings import warn
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
@@ -19,7 +21,7 @@ from .util import (NamedDescriptor, WithNamedDescriptors,
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
            'OverrideDefault', 'AttributesDictionary', 'RuleSet', 'RuleSetFile',
-           'Bool', 'Integer', 'Var']
+           'Bool', 'Integer', 'ParseError', 'Var']
 
 
 class AttributeType(object):
@@ -39,6 +41,12 @@ class AttributeType(object):
 
     @classmethod
     def parse_string(cls, string):
+        tokens = tokenize(BytesIO(string.encode('utf-8')).readline)
+        assert next(tokens)[:2] == (ENCODING, 'utf-8')
+        return cls.from_tokens(tokens)
+
+    @classmethod
+    def from_tokens(cls, string):
         raise NotImplementedError(cls)
 
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
@@ -242,6 +250,12 @@ class WithAttributes(WithNamedDescriptors):
         return super().__new__(mcls, classname, bases, cls_dict)
 
     @property
+    def _all_attributes(cls):
+        for mro_class in reversed(cls.__mro__):
+            for name in getattr(mro_class, '_attributes', ()):
+                yield name
+
+    @property
     def supported_attributes(cls):
         for mro_class in cls.__mro__:
             for name in getattr(mro_class, '_supported_attributes', ()):
@@ -419,6 +433,10 @@ class Integer(AttributeType):
     @classmethod
     def doc_format(cls):
         return 'a natural number (positive integer)'
+
+
+class ParseError(Exception):
+    pass
 
 
 # variables

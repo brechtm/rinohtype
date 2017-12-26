@@ -39,9 +39,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from io import BytesIO
 from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
-from tokenize import tokenize, ENCODING
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
                         AcceptNoneAttributeType)
@@ -148,12 +146,6 @@ class StyledText(Styled, AcceptNoneAttributeType):
         return super().check_type(value) or isinstance(value, str)
 
     @classmethod
-    def parse_string(cls, string):
-        tokens = tokenize(BytesIO(string.encode('utf-8')).readline)
-        assert next(tokens)[:2] == (ENCODING, 'utf-8')
-        return cls.from_tokens(tokens)
-
-    @classmethod
     def from_tokens(cls, tokens):
         texts = []
         token = next(tokens)
@@ -163,7 +155,12 @@ class StyledText(Styled, AcceptNoneAttributeType):
             elif token.type == NEWLINE:
                 token = next(tokens)
             elif token.type == NAME:      # inline flowable
-                raise NotImplementedError
+                directive = token.string.lower()
+                inline_flowable_class = InlineFlowable.directives[directive]
+                args, kwargs = inline_flowable_class.parse_arguments(tokens)
+                inline_flowable = inline_flowable_class(*args, **kwargs)
+                texts.append(inline_flowable)
+                token = next(tokens)
             elif token.type == STRING:    # text
                 text = literal_eval(token.string)
                 token = next(tokens)
@@ -639,3 +636,4 @@ class Subscript(MixedStyledText):
 
 
 from .reference import Field
+from .inline import InlineFlowable

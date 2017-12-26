@@ -11,6 +11,7 @@ from .dimension import Dimension, PT
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
+from .style import StyledMeta
 
 
 __all__ = ['InlineFlowableException', 'InlineFlowable', 'InlineFlowableStyle']
@@ -26,12 +27,27 @@ class InlineFlowableStyle(FlowableStyle):
                                           "edge")
 
 
-class InlineFlowable(Flowable):
+class InlineFlowableMeta(StyledMeta):
+    def __new__(mcls, classname, bases, cls_dict):
+        cls = super().__new__(mcls, classname, bases, cls_dict)
+        if classname == 'InlineFlowable':
+            cls.directives = {}
+        else:
+            InlineFlowable.directives[cls.directive] = cls
+        return cls
+
+
+class InlineFlowable(Flowable, metaclass=InlineFlowableMeta):
+    directive = None
     style_class = InlineFlowableStyle
 
     def __init__(self, baseline=None, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.baseline = baseline
+
+    @classmethod
+    def parse_arguments(cls, tokens):
+        raise NotImplementedError
 
     def to_string(self, flowable_target):
         return type(self).__name__

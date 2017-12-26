@@ -14,7 +14,7 @@ from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
                              PERCENT, QUARTERS)
 from rinoh.draw import Stroke
 from rinoh.flowable import HorizontalAlignment, Break
-from rinoh.image import BackgroundImage, Scale
+from rinoh.image import BackgroundImage, Scale, InlineImage
 from rinoh.number import NumberFormat
 from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
 from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
@@ -274,7 +274,8 @@ def test_styledtext_from_string():
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('>two', style='style2')])
 
-    # with fields
+
+def test_styledtext_from_string_field():
     assert StyledText.from_string("'{SECTION_NUMBER(7)}' (style)") \
            == Field(SECTION_NUMBER(7), style='style')
     assert StyledText.from_string("'abc {NUMBER_OF_PAGES}' (style)") \
@@ -298,6 +299,24 @@ def test_styledtext_from_string():
            == MixedStyledText([SingleStyledText('1'),
                                StringField(AdmonitionTitles, 'warning'),
                                SingleStyledText('2')], style='style')
+
+def test_styledtext_from_string_inline_image():
+    assert StyledText.from_string("IMAGE('images/image.pdf')") \
+           == InlineImage('images/image.pdf')
+    assert StyledText.from_string("image('images/image.pdf' scale = 2.3)") \
+           == InlineImage('images/image.pdf', scale=2.3)
+    assert StyledText.from_string("iMAGe('images/image.pdf' baseline=10 %)") \
+           == InlineImage('images/image.pdf', baseline=10*PERCENT)
+    assert StyledText.from_string("Image('space image.pdf' baseline=10 % "
+                                  "      scale=0.8 width= 5 in rotate=45)") \
+           == InlineImage('space image.pdf', scale=0.8, baseline=10*PERCENT,
+                          width=5*INCH, rotate=45)
+    assert StyledText.from_string("'Text with an ' (a)  IMAGE('image.png') "
+                                  "' in the middle.'(b)") \
+           == MixedStyledText([SingleStyledText('Text with an ', style='a'),
+                               InlineImage('image.png'),
+                               SingleStyledText(' in the middle.', style='b')])
+
 
 
 def test_referencetext_from_string():
