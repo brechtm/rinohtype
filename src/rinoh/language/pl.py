@@ -17,17 +17,17 @@ SectionTitles(
     list_of_figures='Spis Ilustracji',
     list_of_tables='Spis Tabel',
     chapter='Rozdział',
-    index='Index',
+    index='Skorowidz',
 ) in PL
 
 AdmonitionTitles(
     attention='Uwaga!',
-    caution='Ostrzeżenie!',
-    danger='Uwaga!',
+    caution='Ostrożnie!',
+    danger='!NIEBEZPIECZEŃSTWO!',
     error='Błąd',
     hint='Wskazówka',
     important='Ważne',
-    note='Uwaga',
+    note='Notatka',
     tip='Porada',
     warning='Ostrzeżenie',
     seealso='Zobacz również',
