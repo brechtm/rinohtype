@@ -14,6 +14,8 @@ PL = Language('pl', 'Polski')
 
 SectionTitles(
     contents='Spis Treści',
+    list_of_figures='Spis Ilustracji',
+    list_of_tables='Spis Tabel',
     chapter='Rozdział',
     index='Index',
 ) in PL

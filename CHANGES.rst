@@ -14,6 +14,7 @@ New Features:
 * rinoh: introduce the --install-resources option to control the automatic
   installation of resources from PyPI
 * German locale (contributed by Michael Kaiser)
+* Polish locale (contributed by Mariusz Jamro)
 
 Changed:
 
