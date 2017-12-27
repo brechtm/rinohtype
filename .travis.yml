@@ -7,12 +7,11 @@ cache:
     pip: true
 
 python:
-  - 3.3
   - 3.4
   - 3.5
   - 3.6
   - nightly
-  - pypy3.3-5.2-alpha1
+  - pypy3
 
 env:
   - DIST=sdist
@@ -48,21 +47,19 @@ matrix:
           - $HOME/.pyenv
       env:
         - DIST=sdist
-          TOXENV=py33,py34,py35,py36
+          TOXENV=py34,py35,py36
           WITH_COVERAGE=1
       before_install:
         - brew update
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.3.6
         - pyenv install --skip-existing 3.4.6
         - pyenv install --skip-existing 3.5.3
         - pyenv install --skip-existing 3.6.1
-        - pyenv global 3.6.1 3.3.6 3.4.6 3.5.3
+        - pyenv global 3.6.1 3.4.6 3.5.3
         - python --version
         - python3 --version
-        - python3.3 --version
         - python3.4 --version
         - python3.5 --version
         - python3.6 --version

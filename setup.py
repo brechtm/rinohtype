@@ -10,8 +10,8 @@ from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 
 
-if sys.version_info < (3, 3):
-    print('rinohtype requires Python 3.3 or higher')
+if sys.version_info < (3, 4):
+    print('rinohtype requires Python 3.4 or higher')
     sys.exit(1)
 
 
@@ -103,7 +103,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    python_requires='>= 3.3',
+    python_requires='>= 3.4',
     install_requires=['setuptools', 'pip', 'docutils', 'recommonmark',
                       'rinoh-typeface-texgyrecursor>=0.1.1',
                       'rinoh-typeface-texgyreheros>=0.1.1',
@@ -156,7 +156,6 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
