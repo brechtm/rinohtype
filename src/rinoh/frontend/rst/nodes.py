@@ -19,13 +19,13 @@ from ...dimension import DimensionUnit, INCH, CM, MM, PT, PICA, PERCENT
 from ...util import intersperse
 
 
-# TODO: support for the following nodes is still missing
+# Support for the following nodes is still missing
 # (http://docutils.sourceforge.net/docs/ref/doctree.html)
-# - abbreviation
-# - acronym
+# - abbreviation? (not exposed in default reStructuredText; Sphinx has :abbr:)
+# - acronym (not exposed in default reStructuredText?)
 # - math / math_block
-# - pending
-# - substitution_reference
+# - pending (should not appear in final doctree?)
+# - substitution_reference (should not appear in final doctree?)
 
 
 class Text(DocutilsInlineNode):
