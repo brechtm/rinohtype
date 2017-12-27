@@ -32,9 +32,17 @@ matrix:
         apt:
           packages:
             - imagemagick
+            # poppler dependencies
+            - libfreetype6
+            - libfontconfig1
+            - libopenjpeg2
+            - libjpeg8
+            - libtiff5
+            - liblcms2-2
+            - libcairo2
       before_install:
-        # install poppler 0.41.0 (required by the diffpdf script)
-        - travis_retry curl -L http://brechtm.github.io/rinohtype-travis/dotlocal.tar.xz | tar xJ -C ~
+        # install poppler (required by the diffpdf script)
+        - travis_retry curl -L https://github.com/brechtm/rinohtype-travis/releases/download/v1/dotlocal.tar.xz | tar xJ -C ~
         - export PATH=$HOME/.local/bin:$PATH
         - export LD_LIBRARY_PATH=$HOME/.local/lib
     - os: osx
@@ -93,9 +101,17 @@ matrix:
         apt:
           packages:
             - imagemagick
+            # poppler dependencies
+            - libfreetype6
+            - libfontconfig1
+            - libopenjpeg2
+            - libjpeg8
+            - libtiff5
+            - liblcms2-2
+            - libcairo2
       before_install:
-        # install poppler 0.41.0 (required by the diffpdf script)
-        - travis_retry curl -L http://brechtm.github.io/rinohtype-travis/dotlocal.tar.xz | tar xJ -C ~
+        # install poppler (required by the diffpdf script)
+        - travis_retry curl -L https://github.com/brechtm/rinohtype-travis/releases/download/v1/dotlocal.tar.xz | tar xJ -C ~
         - export PATH=$HOME/.local/bin:$PATH
         - export LD_LIBRARY_PATH=$HOME/.local/lib
     - python: 3.6
