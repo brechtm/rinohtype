@@ -23,7 +23,6 @@ from ...util import intersperse
 # (http://docutils.sourceforge.net/docs/ref/doctree.html)
 # - abbreviation
 # - acronym
-# - decoration / header / footer
 # - math / math_block
 # - pending
 # - substitution_reference
@@ -59,6 +58,22 @@ class DocInfo(DocutilsBodyNode):
     def build_flowable(self):
         doc_info = {field.name: field.value for field in self.getchildren()}
         return rt.SetMetadataFlowable(**doc_info)
+
+
+class Decoration(DocutilsGroupingNode):
+    pass
+
+
+class Header(DocutilsBodyNode):
+    def build_flowable(self):
+        return rt.WarnFlowable('Docutils header nodes are ignored. Please '
+                               'configure your document template instead.')
+
+
+class Footer(DocutilsBodyNode):
+    def build_flowable(self):
+        return rt.WarnFlowable('Docutils footer nodes are ignored. Please '
+                               'configure your document template instead.')
 
 
 # bibliographic elements

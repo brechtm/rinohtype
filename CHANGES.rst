@@ -17,7 +17,7 @@ New Features:
 
 Changed:
 
-* remove the dependency on purepng by embedding it's png.py
+* remove the dependency on purepng by embedding its png.py
 * limit the width of images to the available width by default
 * XML frontend: special case mixed content nodes
 
@@ -26,6 +26,7 @@ Fixed:
 * incompatibility with Sphinx 1.6.1+ (latex_paper_size)
 * docutils: crash when a footnote is defined in an admonition (issue #95)
 * docutils: crash on encountering a raw text role (issue #99)
+* docutils: 'decoration' node (header/footer) is not yet supported (issue #112)
 * crash when a table cell contains (only) an image
 * colours of PNG images with gamma (gAMA chunk) set are incorrect (#102)
 

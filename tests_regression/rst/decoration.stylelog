@@ -1,0 +1,8 @@
+---------------------------------- page 1 ----------------------------------
+#### ChainedContainer('column1')
+  DocumentTree()
+    StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/decoration.rst:4 <decoration>
+    Paragraph('Header and footer nodes are igno...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/decoration.rst:10 <paragraph>
+         > (0,0,0,0,2) body
+      MixedStyledText('Header and footer nodes are igno...')
+        SingleStyledText('Header and footer nodes are igno...')
