@@ -120,7 +120,7 @@ class RinohBuilder(Builder):
         self.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
-        new_tree = docutils.utils.new_document('<rinoh output>')
+        new_tree = docutils.utils.new_document(tree['source'])
         if toctree_only:
             # extract toctree nodes from the tree and put them in a
             # fresh document
@@ -217,20 +217,13 @@ class RinohBuilder(Builder):
             doctree.settings.author = author
             doctree.settings.title = title
             doctree.settings.docname = docname
-            self.write_doc(self.config.master_doc, doctree, docnames,
-                           targetname)
+            self.write_doc(docname, doctree, docnames, targetname)
             self.info("done")
 
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
-        suffix = (
-            config.source_suffix[0]
-            if isinstance(config.source_suffix, list)
-            else config.source_suffix
-        )
-        source_path = os.path.join(self.srcdir, docname + suffix)
         parser = ReStructuredTextReader()
-        rinoh_tree = parser.from_doctree(source_path, doctree)
+        rinoh_tree = parser.from_doctree(doctree['source'], doctree)
         template_cfg = template_from_config(config, self.confdir, self.warn)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))

@@ -25,6 +25,7 @@ Changed:
 
 Fixed:
 
+* Sphinx: handle case when source_suffix is a list (PR #110 by Nick Barrett)
 * incompatibility with Sphinx 1.6.1+ (latex_paper_size)
 * docutils: crash when a footnote is defined in an admonition (issue #95)
 * docutils: crash on encountering a raw text role (issue #99)
