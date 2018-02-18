@@ -212,6 +212,7 @@ class RinohBuilder(Builder):
             self.info("processing " + targetname + "... ", nonl=1)
             doctree, docnames = self.assemble_doctree(docname, toctree_only)
             self.preprocess_tree(doctree)
+            self.post_process_images(doctree)
 
             self.info("rendering... ")
             doctree.settings.author = author

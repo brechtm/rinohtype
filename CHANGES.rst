@@ -32,6 +32,7 @@ Fixed:
 * docutils: 'decoration' node (header/footer) is not yet supported (issue #112)
 * crash when a table cell contains (only) an image
 * colours of PNG images with gamma (gAMA chunk) set are incorrect (#102)
+* Sphinx: image paths with wildcard extension are not supported (#119)
 
 
 Release 0.3.1 (2016-12-19)
