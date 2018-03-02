@@ -11,6 +11,9 @@ import os
 
 from glob import glob
 
+from docutils import nodes
+from docutils.parsers.rst import Directive
+
 from regression import render_rst_file
 
 
@@ -24,6 +27,30 @@ def collect_tests():
         yield test_name
 
 
+class mydirective(nodes.General, nodes.Element):
+    pass
+
+
+def visit_mydirective(self, node):
+    raise NotImplementedError('HERE visit')
+
+
+def depart_mydirective(self, node):
+    raise NotImplementedError('HERE depart')
+
+
+class MyDirective(Directive):
+    has_content = True
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+
+    def run(self):
+        arg, = self.arguments
+        node = mydirective(arg)
+        return [node]
+
+
 @pytest.mark.parametrize('test_name', collect_tests())
 def test(test_name, tmpdir):
     rst_path = os.path.join(RST_PATH, test_name + '.rst')
@@ -31,6 +58,10 @@ def test(test_name, tmpdir):
         from sphinx.application import Sphinx
         from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 
-        Sphinx(srcdir=tmpdir.strpath, confdir=None, outdir=tmpdir.strpath,
-               doctreedir=tmpdir.strpath, buildername='dummy', status=None)
+        app = Sphinx(srcdir=tmpdir.strpath, confdir=None,
+                     outdir=tmpdir.strpath, doctreedir=tmpdir.strpath,
+                     buildername='rinoh', status=None)
+        app.add_node(mydirective, rinoh=(visit_mydirective,
+                                         depart_mydirective))
+        app.add_directive("mydirective", MyDirective)
     render_rst_file(rst_path, test_name, RST_PATH, tmpdir)

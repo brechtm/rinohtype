@@ -36,7 +36,7 @@ from ..rst import ReStructuredTextReader
 from . import nodes
 
 
-class RinohTreePreprocessor(GenericNodeVisitor):
+class RinohTranslator(GenericNodeVisitor):
     """Preprocess the docutils document tree to prepare it for mapping to the
     rinohtype document tree"""
 
@@ -94,6 +94,8 @@ class RinohBuilder(Builder):
     name = 'rinoh'
     format = 'pdf'
     supported_image_types = ['application/pdf', 'image/png', 'image/jpeg']
+    supported_remote_images = False
+    default_translator_class = RinohTranslator
 
     def get_outdated_docs(self):
         return 'all documents'
@@ -108,7 +110,7 @@ class RinohBuilder(Builder):
     def preprocess_tree(self, tree):
         """Transform internal refuri targets in reference nodes to refids and
         transform footnote rubrics so that they do not end up in the output"""
-        visitor = RinohTreePreprocessor(tree, self)
+        visitor = self.create_translator(tree, self)
         tree.walkabout(visitor)
 
     def prepare_writing(self, docnames):

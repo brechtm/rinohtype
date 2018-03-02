@@ -1,0 +1,1 @@
+.. mydirective:: argument
