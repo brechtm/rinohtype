@@ -12,7 +12,7 @@ The :class:`Paper` class and a number of predefined paper formats.
 """
 
 
-from .attribute import AttributeType
+from .attribute import AttributeType, ParseError
 from .dimension import Dimension, INCH, MM
 
 
@@ -53,7 +53,7 @@ class Paper(AttributeType):
                 width, height = (Dimension.from_string(part.strip())
                                  for part in string.split('*'))
             except ValueError:
-                raise ValueError("'{}' is not a valid {} format"
+                raise ParseError("'{}' is not a valid {} format"
                                  .format(string, cls.__name__))
             return cls(string, width, height)
 

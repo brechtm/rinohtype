@@ -8,7 +8,7 @@
 
 import pytest
 
-from rinoh.attribute import OptionSet, Bool, Integer
+from rinoh.attribute import OptionSet, Bool, Integer, ParseError
 from rinoh.color import Color, HexColor
 from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
                              PERCENT, QUARTERS)
@@ -130,19 +130,19 @@ def test_linespacing_from_string():
     assert LineSpacing.from_string('fixed(1pT ,DOUBLE)') \
                == FixedSpacing(1*PT, DOUBLE)
     assert LineSpacing.from_string('leading(3    PT)') == Leading(3*PT)
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('5 pt')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('proportional')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('proportional(1 cm)')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('fixed')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('fixed(2)')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('fixed(2pt, badvalue)')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert LineSpacing.from_string('leading')
 
 
@@ -210,9 +210,9 @@ def test_paper_from_string():
     assert Paper.from_string('2cm * 4 cm') == Paper('2cm * 4 cm', 2*CM, 4*CM)
     assert Paper.from_string('2cm*4cm') == Paper('2cm*4cm', 2*CM, 4*CM)
     assert Paper.from_string('2  cm*4  cm') == Paper('2  cm*4  cm', 2*CM, 4*CM)
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         Paper.from_string('212pt * 5.84in * 6cm')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         Paper.from_string('212pt * 5.84')
 
 
@@ -230,11 +230,11 @@ def test_stroke_from_string():
     assert Stroke.from_string('1pt, #fff') == Stroke(1*PT, HexColor('#FFF'))
     assert Stroke.from_string('99cm,#123456aa') == Stroke(99*CM,
                                                          HexColor('#123456aa'))
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Stroke.from_string('8,#fff')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Stroke.from_string('1pt,1')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Stroke.from_string('xyz')
 
 

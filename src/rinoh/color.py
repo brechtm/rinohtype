@@ -10,8 +10,7 @@ import struct
 
 from itertools import repeat
 
-from .attribute import AcceptNoneAttributeType
-
+from .attribute import AcceptNoneAttributeType, ParseError
 
 __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
            'Gray', 'GRAY10', 'GRAY25', 'GRAY50', 'GRAY75', 'GRAY90']
@@ -48,7 +47,7 @@ class Color(AcceptNoneAttributeType):
         try:
             return HexColor(string)
         except ValueError:
-            raise ValueError("'{}' is not a valid {}. Must be a HEX string."
+            raise ParseError("'{}' is not a valid {}. Must be a HEX string."
                              .format(string, cls.__name__))
 
     @classmethod

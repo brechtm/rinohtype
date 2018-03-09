@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .attribute import Attribute, AcceptNoneAttributeType
+from .attribute import Attribute, AcceptNoneAttributeType, ParseError
 from .color import Color, BLACK, GRAY90
 from .style import Style, Styled
 from .dimension import Dimension, PT
@@ -45,7 +45,11 @@ class Stroke(AcceptNoneAttributeType):
 
     @classmethod
     def parse_string(cls, string):
-        width_str, color_str = (part.strip() for part in string.split(','))
+        try:
+            width_str, color_str = (part.strip() for part in string.split(','))
+        except ValueError:
+            raise ParseError('Expecting stroke width and color separated by a '
+                             'comma')
         width = Dimension.from_string(width_str)
         color = Color.from_string(color_str)
         return cls(width, color)

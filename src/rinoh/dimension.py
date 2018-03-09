@@ -23,11 +23,11 @@ total width available to it.
 
 import inspect
 import re
-
 import sys
 
-from .attribute import AcceptNoneAttributeType
+from .attribute import AcceptNoneAttributeType, ParseError
 from collections import OrderedDict
+from token import PLUS, MINUS, NUMBER, NAME, ENDMARKER, OP
 
 
 __all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM',
@@ -125,24 +125,35 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
                        """, re.IGNORECASE | re.VERBOSE)
 
     @classmethod
-    def parse_string(cls, string):
-        m = cls.REGEX.match(string)
+    def from_tokens(cls, tokens):
+        sign = 1
+        token = next(tokens)
+        if token.exact_type in (PLUS, MINUS):
+            sign = -1 if token.exact_type == MINUS else 1
+            token = next(tokens)
+        if token.type != NUMBER:
+            raise ParseError('Expecting a number')
         try:
-            value, unit = m.groups()
-            if unit == '':
-                assert value == '0'
-                return 0
-            dimension_unit = DimensionUnitBase.all[unit.lower()]
-            _, end = m.span()
-            if string[end:].strip():
-                raise ValueError("{}: trailing characters after dimension"
-                                 .format(string))
-            try:
-                return int(value) * dimension_unit
-            except ValueError:
-                return float(value) * dimension_unit
-        except (AttributeError, KeyError, AssertionError):
-            raise ValueError("'{}' is not a valid dimension".format(string))
+            value = int(token.string)
+        except ValueError:
+            value = float(token.string)
+        token = next(tokens)
+        if token.type == ENDMARKER:
+            if value != 0:
+                raise ParseError('Expecting a dimension unit')
+            return 0
+        if token.type not in (NAME, OP):
+            raise ParseError('Expecting a dimension unit')
+        unit_string = token.string
+        if token.string == '/':
+            token = next(tokens)
+            unit_string += token.string
+        try:
+            unit = DimensionUnitBase.all[unit_string.lower()]
+        except KeyError:
+            raise ValueError("'{}' is not a valid dimension unit"
+                             .format(unit_string))
+        return sign * value * unit
 
     @classmethod
     def doc_format(cls):

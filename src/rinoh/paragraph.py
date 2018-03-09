@@ -21,7 +21,7 @@ from os import path
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
-from .attribute import Attribute, AttributeType, OptionSet
+from .attribute import Attribute, AttributeType, OptionSet, ParseError
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .font import MissingGlyphException
@@ -75,13 +75,13 @@ class LineSpacing(AttributeType):
     def parse_string(cls, string):
         m = cls.REGEX.match(string)
         if not m:
-            raise ValueError("'{}' is not a valid {} type"
+            raise ParseError("'{}' is not a valid {} type"
                              .format(string, cls.__name__))
         spacing_type = m.group('type').lower()
         arg_strings = m.group('arg').split(',') if m.group('arg') else ()
         if spacing_type in PREDEFINED_SPACINGS:
             if arg_strings:
-                raise ValueError("'{}' takes no arguments"
+                raise ParseError("'{}' takes no arguments"
                                  .format(spacing_type))
             return PREDEFINED_SPACINGS[spacing_type]
         for subcls in all_subclasses(cls):
@@ -90,10 +90,10 @@ class LineSpacing(AttributeType):
                 try:
                     args = subcls.parse_arguments(*stripped_args)
                 except TypeError as error:
-                    raise ValueError("Incorrect number or type of arguments "
+                    raise ParseError("Incorrect number or type of arguments "
                                      "passed to '{}'".format(spacing_type))
                 return subcls(*args)
-        raise ValueError("'{}' is not a valid {}".format(string, cls.__name__))
+        raise ParseError("'{}' is not a valid {}".format(string, cls.__name__))
 
     @classmethod
     def parse_arguments(cls, arg_strings):
@@ -152,7 +152,7 @@ class ProportionalSpacing(LineSpacing):
         try:
             return float(factor),
         except ValueError:
-            raise ValueError("'factor' parameter of 'proportional' should be "
+            raise ParseError("'factor' parameter of 'proportional' should be "
                              "a floating point number")
 
     def advance(self, line, last_descender, container):
