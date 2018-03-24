@@ -356,22 +356,26 @@ def test_backgroundimage_from_string():
                == BackgroundImage('image.jpg')
     assert BackgroundImage.from_string("'image.jpg'   ") \
                == BackgroundImage('image.jpg')
-    assert BackgroundImage.from_string("'image.jpg' scale=0.6  ") \
+    assert BackgroundImage.from_string("'image.jpg', scale=0.6  ") \
                == BackgroundImage('image.jpg', scale=0.6)
-    assert BackgroundImage.from_string("'image.jpg' scale=fit  ") \
+    assert BackgroundImage.from_string("'image.jpg' ,scale=fit  ") \
                == BackgroundImage('image.jpg', scale='fit')
-    assert BackgroundImage.from_string("'image.jpg' width=9 cm  ") \
+    assert BackgroundImage.from_string("'image.jpg' , width=9 cm  ") \
                == BackgroundImage('image.jpg', width=9*CM)
-    assert BackgroundImage.from_string("'image.jpg' width=2 cm height=5cm") \
+    assert BackgroundImage.from_string("'image.jpg', width=2 cm, height=5cm") \
                == BackgroundImage('image.jpg', width=2*CM, height=5*CM)
-    assert BackgroundImage.from_string("'image.jpg' scale=fill dpi = 56") \
+    assert BackgroundImage.from_string("'image.jpg', scale=fill, dpi = 56") \
                == BackgroundImage('image.jpg', scale='fill', dpi=56)
-    assert BackgroundImage.from_string("'image.jpg' height=2cm rotate =20 "
-                                       "align=   right limit_width = 5cm") \
+    assert BackgroundImage.from_string("'image.jpg', height=2cm, rotate =20, "
+                                       "align=   right, limit_width = 5cm") \
                == BackgroundImage('image.jpg', height=2*CM, rotate=20,
                                   align='right', limit_width=5*CM)
-    with pytest.raises(ValueError):
-        BackgroundImage.from_string("'image.jpg'  unsupported_keyword=5")
+    with pytest.raises(ParseError):
+        BackgroundImage.from_string("'image.jpg', unsupported_keyword=5")
+    with pytest.raises(ParseError):
+        BackgroundImage.from_string("'image.jpg' dpi=60")
+    with pytest.raises(ParseError):
+        BackgroundImage.from_string('not_a_path')
 
 
 # selectors

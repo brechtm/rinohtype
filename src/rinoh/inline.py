@@ -12,6 +12,7 @@ from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
 from .style import StyledMeta
+from .util import NotImplementedAttribute
 
 
 __all__ = ['InlineFlowableException', 'InlineFlowable', 'InlineFlowableStyle']
@@ -40,14 +41,11 @@ class InlineFlowableMeta(StyledMeta):
 class InlineFlowable(Flowable, metaclass=InlineFlowableMeta):
     directive = None
     style_class = InlineFlowableStyle
+    arguments = NotImplementedAttribute()
 
     def __init__(self, baseline=None, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
         self.baseline = baseline
-
-    @classmethod
-    def parse_arguments(cls, tokens):
-        raise NotImplementedError
 
     def to_string(self, flowable_target):
         return type(self).__name__

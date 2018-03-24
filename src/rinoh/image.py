@@ -10,9 +10,7 @@ import os
 
 from ast import literal_eval
 from functools import partial
-from itertools import takewhile, filterfalse
-from token import LPAR, RPAR, NAME, EQUAL, NUMBER, OP, tok_name, ENDMARKER, \
-    STRING, COMMA
+from token import LPAR, RPAR, NAME, EQUAL, NUMBER, ENDMARKER,  STRING, COMMA
 
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
                         OptionSet, AttributesDictionary, ParseError)
@@ -28,9 +26,8 @@ from .number import NumberedParagraph, NumberedParagraphStyle, format_number
 from .paragraph import Paragraph
 from .reference import ReferenceType
 from .structure import ListOf, ListOfSection
-from .style import CharIterator, parse_string
 from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
-from .util import posix_path, ReadAliasAttribute
+from .util import posix_path, ReadAliasAttribute, PeekIterator
 
 
 __all__ = ['Image', 'InlineImage', 'BackgroundImage', 'ImageArgs',
@@ -95,6 +92,87 @@ class Filename(str):
         return not (self == other)
 
 
+class RequiredArg(Attribute):
+    def __init__(self, accepted_type, description):
+        super().__init__(accepted_type, None, description)
+
+
+class OptionalArg(Attribute):
+    pass
+
+
+class String(AcceptNoneAttributeType):
+    @classmethod
+    def from_tokens(cls, tokens):
+        token = next(tokens)
+        if token.type != STRING:
+            raise ParseError('Expecting a string')
+        return literal_eval(token.string)
+
+
+class ImageArgsBase(AttributesDictionary):
+    file_or_filename = RequiredArg(String, 'Path to the image file')
+
+    scale = OptionalArg(Scale, 'fit', 'Scaling factor for the image')
+    width = OptionalArg(Dimension, None, 'The width to scale the image to')
+    height = OptionalArg(Dimension, None, 'The height to scale the image to')
+    dpi = OptionalArg(Integer, 0, 'Overrides the DPI value set in the image')
+    rotate = OptionalArg(Integer, 0, 'Angle in degrees to rotate the image')
+
+    @staticmethod
+    def _parse_argument(argument_definition, tokens):
+        arg_tokens = []
+        depth = 0
+        for token in tokens:
+            if token.exact_type == LPAR:
+                depth += 1
+            elif token.exact_type == RPAR:
+                depth -= 1
+            arg_tokens.append(token)
+            if depth == 0 and tokens.next.exact_type in (COMMA, RPAR,
+                                                         ENDMARKER):
+                break
+        argument_type = argument_definition.accepted_type
+        arg_tokens_iter = PeekIterator(arg_tokens)
+        argument = argument_type.from_tokens(arg_tokens_iter)
+        if not arg_tokens_iter._at_end:
+            raise ParseError('Syntax error')
+        return argument, tokens.next.exact_type in (RPAR, ENDMARKER)
+
+    @classmethod
+    def parse_arguments(cls, tokens):
+        argument_defs = (cls.attribute_definition(name)
+                         for name in cls._all_attributes)
+        args, kwargs = [], {}
+
+        is_last_arg = False
+        # required arguments
+        for argument_def in (argdef for argdef in argument_defs
+                             if isinstance(argdef, RequiredArg)):
+            argument, is_last_arg = cls._parse_argument(argument_def, tokens)
+            args.append(argument)
+        # optional arguments
+        while not is_last_arg:
+            assert next(tokens).exact_type == COMMA
+            keyword_token = next(tokens)
+            if keyword_token.exact_type != NAME:
+                raise ParseError('Expecting a keyword!')
+            keyword = keyword_token.string
+            equals_token = next(tokens)
+            if equals_token.exact_type != EQUAL:
+                raise ParseError('Expecting the keyword to be followed by an '
+                                 'equals sign.')
+
+            try:
+                argument_def = cls.attribute_definition(keyword)
+            except KeyError:
+                raise ParseError('Unsupported argument keyword: {}'
+                                 .format(keyword))
+            argument, is_last_arg = cls._parse_argument(argument_def, tokens)
+            kwargs[keyword] = argument
+        return args, kwargs
+
+
 class ImageBase(Flowable):
     """Base class for flowables displaying an image
 
@@ -124,6 +202,7 @@ class ImageBase(Flowable):
     If `width` or `height` is given, `scale` or `dpi` may not be specified.
 
     """
+    arguments = ImageArgsBase
 
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  dpi=None, rotate=0, limit_width=None,
@@ -213,34 +292,6 @@ class ImageBase(Flowable):
         return w, h, 0
 
 
-class RequiredArg(Attribute):
-    def __init__(self, accepted_type, description):
-        super().__init__(accepted_type, None, description)
-
-
-class OptionalArg(Attribute):
-    pass
-
-
-class String(AcceptNoneAttributeType):
-    @classmethod
-    def from_tokens(cls, tokens):
-        token = next(tokens)
-        if token.type != STRING:
-            raise ParseError('Expecting a string')
-        return literal_eval(token.string)
-
-
-class ImageArgsBase(AttributesDictionary):
-    file_or_filename = RequiredArg(String, 'Path to the image file')
-
-    scale = OptionalArg(Scale, 'fit', 'Scaling factor for the image')
-    width = OptionalArg(Dimension, None, 'The width to scale the image to')
-    height = OptionalArg(Dimension, None, 'The height to scale the image to')
-    dpi = OptionalArg(Integer, 0, 'Overrides the DPI value set in the image')
-    rotate = OptionalArg(Integer, 0, 'Angle in degrees to rotate the image')
-
-
 class InlineImageArgs(ImageArgsBase):
     baseline = OptionalArg(Dimension, 0, "Location of this inline image's "
                                          "baseline")
@@ -260,57 +311,6 @@ class InlineImage(ImageBase, InlineFlowable):
 
     def _width(self, container):
         return self.width
-
-    @classmethod
-    def parse_arguments(cls, tokens):
-        if next(tokens).exact_type != LPAR:
-            raise ParseError('Expecting an opening parenthesis.')
-        arguments_class = cls.arguments
-        argument_defs = (arguments_class.attribute_definition(name)
-                     for name in arguments_class._all_attributes)
-        args, kwargs = [], {}
-
-        def parse_argument(argument_definition, tokens):
-            arg_tokens = []
-            depth = 0
-            while True:
-                token = next(tokens)
-                if depth == 0 and token.exact_type in (COMMA, RPAR):
-                    break
-                elif token.exact_type == LPAR:
-                    depth += 1
-                elif token.exact_type == RPAR:
-                    depth -= 1
-                arg_tokens.append(token)
-            argument_type = argument_definition.accepted_type
-            argument = argument_type.from_tokens(arg_tokens)
-            return argument, token.exact_type == RPAR
-
-        is_last_arg = False
-        # required arguments
-        for argument_def in (argdef for argdef in argument_defs
-                         if isinstance(argdef, RequiredArg)):
-            argument, is_last_arg = parse_argument(argument_def, tokens)
-            args.append(argument)
-        # optional arguments
-        while not is_last_arg:
-            keyword_token = next(tokens)
-            if keyword_token.exact_type != NAME:
-                raise ParseError('Expecting a keyword!')
-            keyword = keyword_token.string
-            equals_token = next(tokens)
-            if equals_token.exact_type != EQUAL:
-                raise ParseError('Expecting the keyword to be followed by an '
-                                 'equals sign.')
-
-            try:
-                argument_def = arguments_class.attribute_definition(keyword)
-            except KeyError:
-                raise ParseError('Unsupported argument keyword: {}'
-                                 .format(keyword))
-            argument, is_last_arg = parse_argument(argument_def, tokens)
-            kwargs[keyword] = argument
-        return args, kwargs
 
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
@@ -343,32 +343,15 @@ class ImageArgs(ImageArgsBase):
 class BackgroundImage(_Image, AcceptNoneAttributeType):
     """Image to place in the background of a page
 
-    Takes the same arguments as :class:`Image`. :class:`BackgroundImageArgs`
-    details how to set the keyword arguments when specifying a background image
-    in a template configuration.
+    Takes the same arguments as :class:`Image`.
 
     """
+    arguments = ImageArgs
 
     @classmethod
-    def parse_string(cls, string):
-        chars = CharIterator(string)
-        filename = parse_string(chars)
-        kwargs = ImageArgs()
-        rest = ''.join(chars).strip()
-        while rest:
-            rest, value_string = (part.strip() for part in rest.rsplit('=', 1))
-            try:
-                rest, keyword = (p.strip() for p in rest.rsplit(maxsplit=1))
-            except ValueError:
-                rest, keyword = '', rest.strip()
-            try:
-                value_type = kwargs.attribute_definition(keyword).accepted_type
-            except KeyError:
-                raise ValueError("'{}' is not a supported keyword argument "
-                                 "for {}".format(keyword, cls.__name__))
-            value = value_type.from_string(value_string)
-            kwargs[keyword] = value
-        return cls(filename, **kwargs)
+    def from_tokens(cls, tokens):
+        args, kwargs = cls.arguments.parse_arguments(tokens)
+        return cls(*args, **kwargs)
 
     @classmethod
     def doc_format(cls):

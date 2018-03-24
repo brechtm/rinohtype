@@ -42,7 +42,7 @@ from html.entities import name2codepoint
 from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 
 from .attribute import (AttributeType, Attribute, Bool, Integer,
-                        AcceptNoneAttributeType)
+                        AcceptNoneAttributeType, ParseError)
 from .color import Color, BLACK
 from .dimension import Dimension, PT
 from .font import Typeface
@@ -153,7 +153,11 @@ class StyledText(Styled, AcceptNoneAttributeType):
             elif token.type == NAME:      # inline flowable
                 directive = token.string.lower()
                 inline_flowable_class = InlineFlowable.directives[directive]
-                args, kwargs = inline_flowable_class.parse_arguments(tokens)
+                if next(tokens).exact_type != LPAR:
+                    raise ParseError('Expecting an opening parenthesis.')
+                args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens)
+                if next(tokens).exact_type != RPAR:
+                    raise ParseError('Expecting a closing parenthesis.')
                 inline_flowable = inline_flowable_class(*args, **kwargs)
                 texts.append(inline_flowable)
             elif token.type == STRING:    # text
