@@ -12,7 +12,7 @@ from ast import literal_eval
 from functools import partial
 from itertools import takewhile, filterfalse
 from token import LPAR, RPAR, NAME, EQUAL, NUMBER, OP, tok_name, ENDMARKER, \
-    STRING
+    STRING, COMMA
 
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
                         OptionSet, AttributesDictionary, ParseError)
@@ -225,10 +225,10 @@ class OptionalArg(Attribute):
 class String(AcceptNoneAttributeType):
     @classmethod
     def from_tokens(cls, tokens):
-        token = tokens.pop(0)
+        token = next(tokens)
         if token.type != STRING:
             raise ParseError('Expecting a string')
-        return literal_eval(token.string), tokens
+        return literal_eval(token.string)
 
 
 class ImageArgsBase(AttributesDictionary):
@@ -265,35 +265,53 @@ class InlineImage(ImageBase, InlineFlowable):
     def parse_arguments(cls, tokens):
         if next(tokens).exact_type != LPAR:
             raise ParseError('Expecting an opening parenthesis.')
-        argument_tokens = list(takewhile(lambda t: t.exact_type != RPAR,
-                                         tokens))
-
-        arguments = (cls.arguments.attribute_definition(name)
-                     for name in cls.arguments._all_attributes)
-
+        arguments_class = cls.arguments
+        argument_defs = (arguments_class.attribute_definition(name)
+                     for name in arguments_class._all_attributes)
         args, kwargs = [], {}
 
-        def not_equal(token):
-            return token.exact_type != EQUAL
+        def parse_argument(argument_definition, tokens):
+            arg_tokens = []
+            depth = 0
+            while True:
+                token = next(tokens)
+                if depth == 0 and token.exact_type in (COMMA, RPAR):
+                    break
+                elif token.exact_type == LPAR:
+                    depth += 1
+                elif token.exact_type == RPAR:
+                    depth -= 1
+                arg_tokens.append(token)
+            argument_type = argument_definition.accepted_type
+            argument = argument_type.from_tokens(arg_tokens)
+            return argument, token.exact_type == RPAR
 
-        reversed_tokens = reversed(argument_tokens)
-
-        for _ in filterfalse(not_equal, argument_tokens):
-            value_tokens = list(takewhile(not_equal, reversed_tokens))
-            keyword_token = next(reversed_tokens)
-            if keyword_token.type != NAME:
-                raise ParseError('Expecting keyword name.')
+        is_last_arg = False
+        # required arguments
+        for argument_def in (argdef for argdef in argument_defs
+                         if isinstance(argdef, RequiredArg)):
+            argument, is_last_arg = parse_argument(argument_def, tokens)
+            args.append(argument)
+        # optional arguments
+        while not is_last_arg:
+            keyword_token = next(tokens)
+            if keyword_token.exact_type != NAME:
+                raise ParseError('Expecting a keyword!')
             keyword = keyword_token.string
-            arg_def = cls.arguments.attribute_definition(keyword)
-            string = ''.join(t.string for t in reversed(value_tokens))
-            kwargs[keyword] = arg_def.accepted_type.parse_string(string)
+            equals_token = next(tokens)
+            if equals_token.exact_type != EQUAL:
+                raise ParseError('Expecting the keyword to be followed by an '
+                                 'equals sign.')
 
-        arg_tokens = list(reversed(list(reversed_tokens)))
-        for argument in (a for a in arguments if isinstance(a, RequiredArg)):
-            value, arg_tokens = argument.accepted_type.from_tokens(arg_tokens)
-            args.append(value)
-
+            try:
+                argument_def = arguments_class.attribute_definition(keyword)
+            except KeyError:
+                raise ParseError('Unsupported argument keyword: {}'
+                                 .format(keyword))
+            argument, is_last_arg = parse_argument(argument_def, tokens)
+            kwargs[keyword] = argument
         return args, kwargs
+
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,

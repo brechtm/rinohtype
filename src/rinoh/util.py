@@ -30,8 +30,8 @@ from functools import wraps
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'posix_path',
-           'consumer', 'static_variable', 'cached', 'cached_property',
+__all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'PeekIterator',
+           'posix_path', 'consumer', 'cached', 'cached_property',
            'cached_generator', 'class_property', 'timed', 'Decorator',
            'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
            'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary']
@@ -75,6 +75,33 @@ def unique(iterable):
             yield item
 
 
+class PeekIterator(object):
+    """An _iterator that allows inspecting the next element"""
+
+    def __init__(self, iterable):
+        self.next = None
+        self._iterator = iter(iterable)
+        self._at_end = False
+        self._advance()
+
+    def _advance(self):
+        result = self.next
+        try:
+            self.next = next(self._iterator)
+        except StopIteration:
+            self.next = None
+            self._at_end = True
+        return result
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self._at_end:
+            raise StopIteration
+        return self._advance()
+
+
 def posix_path(path):
     return os.path.normpath(path).replace(ntpath.sep, posixpath.sep)
 
@@ -89,15 +116,6 @@ def consumer(function):
         generator = function(*args, **kwargs)
         next(generator)
         return generator
-    return wrapper
-
-
-def static_variable(variable_name, value):
-    """Decorator that sets a static variable `variable_name` with initial value
-    `value` on the decorated function."""
-    def wrapper(function):
-        setattr(function, variable_name, value)
-        return function
     return wrapper
 
 

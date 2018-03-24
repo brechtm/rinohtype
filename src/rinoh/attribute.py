@@ -12,11 +12,12 @@ from collections import OrderedDict
 from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
+from token import NUMBER, ENDMARKER
 from tokenize import tokenize, ENCODING
 from warnings import warn
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
-                   NotImplementedAttribute, class_property)
+                   NotImplementedAttribute, class_property, PeekIterator)
 
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
@@ -41,9 +42,12 @@ class AttributeType(object):
 
     @classmethod
     def parse_string(cls, string):
-        tokens = tokenize(BytesIO(string.encode('utf-8')).readline)
+        encoded_string = BytesIO(string.encode('utf-8'))
+        tokens = PeekIterator(tokenize(encoded_string.readline))
         assert next(tokens)[:2] == (ENCODING, 'utf-8')
-        return cls.from_tokens(tokens)
+        result = cls.from_tokens(tokens)
+        assert next(tokens).type == ENDMARKER
+        return result
 
     @classmethod
     def from_tokens(cls, string):
@@ -429,6 +433,20 @@ class Integer(AttributeType):
         except ValueError:
             raise ValueError("'{}' is not a valid {}"
                              .format(string, cls.__name__))
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        try:
+            token, = tokens
+        except ValueError:
+            raise ParseError('Expecting a single token')
+        if token.type != NUMBER:
+            raise ParseError('Expecting a number')
+        try:
+            value = int(token.string)
+        except ValueError:
+            raise ParseError('Expecting an integer')
+        return value
 
     @classmethod
     def doc_format(cls):

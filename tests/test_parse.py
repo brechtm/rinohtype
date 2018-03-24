@@ -303,12 +303,12 @@ def test_styledtext_from_string_field():
 def test_styledtext_from_string_inline_image():
     assert StyledText.from_string("IMAGE('images/image.pdf')") \
            == InlineImage('images/image.pdf')
-    assert StyledText.from_string("image('images/image.pdf' scale = 2.3)") \
+    assert StyledText.from_string("image('images/image.pdf', scale = 2.3)") \
            == InlineImage('images/image.pdf', scale=2.3)
-    assert StyledText.from_string("iMAGe('images/image.pdf' baseline=10 %)") \
+    assert StyledText.from_string("iMAGe('images/image.pdf' ,baseline=10 %)") \
            == InlineImage('images/image.pdf', baseline=10*PERCENT)
-    assert StyledText.from_string("Image('space image.pdf' baseline=10 % "
-                                  "      scale=0.8 width= 5 in rotate=45)") \
+    assert StyledText.from_string("Image('space image.pdf',baseline=10 %, "
+                                  "      scale=0.8 , width= 5 in, rotate=45)") \
            == InlineImage('space image.pdf', scale=0.8, baseline=10*PERCENT,
                           width=5*INCH, rotate=45)
     assert StyledText.from_string("'Text with an ' (a)  IMAGE('image.png') "

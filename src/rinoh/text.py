@@ -50,8 +50,7 @@ from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition)
 from .style import Style, Styled, StyledMeta, PARENT_STYLE, StyleException
-from .util import NotImplementedAttribute
-
+from .util import NotImplementedAttribute, PeekIterator
 
 __all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
            'MixedStyledText', 'ConditionalMixedStyledText', 'Space',
@@ -148,31 +147,25 @@ class StyledText(Styled, AcceptNoneAttributeType):
     @classmethod
     def from_tokens(cls, tokens):
         texts = []
-        token = next(tokens)
-        while True:
-            if token.type == ENDMARKER:
-                break
-            elif token.type == NEWLINE:
-                token = next(tokens)
+        for token in tokens:
+            if token.type == NEWLINE:
+                continue
             elif token.type == NAME:      # inline flowable
                 directive = token.string.lower()
                 inline_flowable_class = InlineFlowable.directives[directive]
                 args, kwargs = inline_flowable_class.parse_arguments(tokens)
                 inline_flowable = inline_flowable_class(*args, **kwargs)
                 texts.append(inline_flowable)
-                token = next(tokens)
             elif token.type == STRING:    # text
                 text = literal_eval(token.string)
-                token = next(tokens)
-                if token.exact_type == LPAR:
-                    _, start_col = token.end
+                if tokens.next and tokens.next.exact_type == LPAR:
+                    _, start_col = next(tokens).end
                     for token in tokens:
                         if token.exact_type == RPAR:
                             _, end_col = token.start
                             style = token.line[start_col:end_col].strip()
-                            token = next(tokens)
                             break
-                        if token.type == NEWLINE:
+                        elif token.type == NEWLINE:
                             raise StyledTextParseError('No newline allowed in'
                                                        'style name')
                 else:
@@ -180,6 +173,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
                 texts.append(cls._substitute_variables(text, style))
             else:
                 raise StyledTextParseError('Expecting text or inline flowable')
+            if tokens.next.type == ENDMARKER:
+                break
 
         if len(texts) > 1:
             return MixedStyledText(texts)
