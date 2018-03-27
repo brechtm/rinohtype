@@ -12,7 +12,7 @@ from collections import OrderedDict
 from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
-from token import NUMBER, ENDMARKER, NAME
+from token import NUMBER, ENDMARKER, MINUS, PLUS
 from tokenize import tokenize, ENCODING
 from warnings import warn
 
@@ -46,11 +46,12 @@ class AttributeType(object):
         tokens = PeekIterator(tokenize(encoded_string.readline))
         assert next(tokens)[:2] == (ENCODING, 'utf-8')
         result = cls.from_tokens(tokens)
-        assert next(tokens).type == ENDMARKER
+        if next(tokens).type != ENDMARKER:
+            raise ParseError('Syntax error')
         return result
 
     @classmethod
-    def from_tokens(cls, string):
+    def from_tokens(cls, tokens):
         raise NotImplementedError(cls)
 
     RE_VARIABLE = re.compile(r'^\$\(([a-z_ -]+)\)$', re.IGNORECASE)
@@ -416,7 +417,8 @@ class Bool(AttributeType):
         return isinstance(value, bool)
 
     @classmethod
-    def parse_string(cls, string):
+    def from_tokens(cls, tokens):
+        string = next(tokens).string
         lower_string = string.lower()
         if lower_string not in ('true', 'false'):
             raise ValueError("'{}' is not a valid {}. Must be one of 'true' "
@@ -438,26 +440,19 @@ class Integer(AttributeType):
         return isinstance(value, int)
 
     @classmethod
-    def parse_string(cls, string):
-        try:
-            return int(string)
-        except ValueError:
-            raise ValueError("'{}' is not a valid {}"
-                             .format(string, cls.__name__))
-
-    @classmethod
     def from_tokens(cls, tokens):
-        try:
-            token, = tokens
-        except ValueError:
-            raise ParseError('Expecting a single token')
+        token = next(tokens)
+        sign = 1
+        if token.exact_type in (MINUS, PLUS):
+            sign = 1 if token.exact_type == PLUS else -1
+            token = next(tokens)
         if token.type != NUMBER:
             raise ParseError('Expecting a number')
         try:
             value = int(token.string)
         except ValueError:
             raise ParseError('Expecting an integer')
-        return value
+        return sign * value
 
     @classmethod
     def doc_format(cls):

@@ -66,11 +66,12 @@ class Locale(AttributeType):
         return cls.REGEX.match(value) is not None
 
     @classmethod
-    def parse_string(cls, string):
-        if not cls.check_type(string):
+    def from_tokens(cls, tokens):
+        token = next(tokens)
+        if not cls.check_type(token.string):
             raise ValueError("'{}' is not a valid locale. Needs to be of the "
-                             "form 'en_US'.".format(string))
-        return string
+                             "form 'en_US'.".format(token.string))
+        return token.string
 
     @classmethod
     def doc_format(cls):

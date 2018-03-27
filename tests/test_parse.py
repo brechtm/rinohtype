@@ -175,12 +175,11 @@ def test_bool_from_string():
 
 def test_integer_from_string():
     assert Integer.from_string('1') == 1
-    assert Integer.from_string('001') == 1
     assert Integer.from_string('873654354') == 873654354
     assert Integer.from_string('-9') == -9
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Integer.from_string('1e5')
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Integer.from_string('0.5')
 
 
