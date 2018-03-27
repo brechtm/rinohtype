@@ -163,7 +163,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
                 texts.append(inline_flowable)
             elif token.type == STRING:    # text
                 text = literal_eval(token.string)
-                if tokens.next and tokens.next.exact_type == LPAR:
+                if tokens.next.exact_type == LPAR:
                     _, start_col = next(tokens).end
                     for token in tokens:
                         if token.exact_type == RPAR:
