@@ -19,7 +19,7 @@ from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
                        GroupedFlowablesStyle, HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
-                       HorizontalAlignment)
+                       HorizontalAlignment, FlowableWidth)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph, NumberedParagraphStyle, format_number
@@ -244,7 +244,7 @@ class ImageBase(Flowable):
             return Paragraph(text).flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
-        if width is not None:
+        if width != FlowableWidth.AUTO:
             scale_width = width.to_points(container.width) / image.width
         else:
             scale_width = None
@@ -301,7 +301,7 @@ class InlineImage(ImageBase, InlineFlowable):
         self.width = width
 
     def _width(self, container):
-        return self.width
+        return FlowableWidth.AUTO if self.width is None else self.width
 
 
 class _Image(HorizontallyAlignedFlowable, ImageBase):

@@ -22,7 +22,7 @@ from copy import copy
 from itertools import chain, tee
 from token import NAME
 
-from .attribute import Attribute, OptionSet, Bool
+from .attribute import Attribute, OptionSet, Bool, OverrideDefault
 from .color import Color
 from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
@@ -55,8 +55,14 @@ class FlowableWidth(OptionSet):
             return Dimension.from_tokens(tokens)
 
 
+class HorizontalAlignment(OptionSet):
+    values = 'left', 'right', 'center'
+
+
 class FlowableStyle(Style):
     width = Attribute(FlowableWidth, 'fill', 'Width to render the flowable at')
+    horizontal_align = Attribute(HorizontalAlignment, 'left',
+                                 'Horizontal alignment of the flowable')
     space_above = Attribute(Dimension, 0, 'Vertical space preceding the '
                                               'flowable')
     space_below = Attribute(Dimension, 0, 'Vertical space following the '
@@ -112,6 +118,8 @@ class Flowable(Styled):
         `parent` (see :class:`Styled`)."""
         super().__init__(id=id, style=style, parent=parent)
         self.annotation = None
+        self.align = None
+        self.width = None
 
     @property
     def level(self):
@@ -136,6 +144,19 @@ class Flowable(Styled):
     def mark_page_nonempty(self, container):
         if not self.get_style('keep_with_next', container):
             container.mark_page_nonempty()
+
+    def _width(self, container):
+        return self.width or self.get_style('width', container)
+
+    def _align(self, container, bordered_width):
+        align = self.align or self.get_style('horizontal_align', container)
+        if align == HorizontalAlignment.LEFT:
+            return
+        elif align == HorizontalAlignment.CENTER:
+            offset = float(container.width - bordered_width) / 2
+        elif align == HorizontalAlignment.RIGHT:
+            offset = float(container.width - bordered_width)
+        container.left += offset
 
     def flow(self, container, last_descender, state=None, **kwargs):
         """Flow this flowable into `container` and return the vertical space
@@ -162,6 +183,7 @@ class Flowable(Styled):
         with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
                                           right=right) as margin_container:
             initial_before, initial_after = state.initial, True
+            width = None
             try:
                 width, inner_top_to_baseline, descender = \
                     self.flow_inner(margin_container, last_descender,
@@ -170,6 +192,10 @@ class Flowable(Styled):
                 initial_after = False
             except EndOfContainer as eoc:
                 initial_after = eoc.flowable_state.initial
+                try:
+                    width = eoc.flowable_state.width
+                except AttributeError:
+                    width = margin_container.width
                 raise eoc
             finally:
                 if self.annotation:
@@ -180,6 +206,7 @@ class Flowable(Styled):
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)
+                self._align(margin_container, width)
         container.advance(float(self.get_style('space_below', container)), True)
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
@@ -190,7 +217,7 @@ class Flowable(Styled):
             return border.width if border else 0
 
         draw_top = state.initial
-        width = self.get_style('width', container)
+        width = self._width(container)
         padding_top = self.get_style('padding_top', container)
         padding_left = self.get_style('padding_left', container)
         padding_right = self.get_style('padding_right', container)
@@ -731,14 +758,8 @@ class GroupedLabeledFlowables(GroupedFlowables):
             raise
 
 
-class HorizontalAlignment(OptionSet):
-    values = 'left', 'right', 'center'
-
-
 class HorizontallyAlignedFlowableStyle(FlowableStyle):
-    width = Attribute(Dimension, None, 'The width of the flowable')
-    horizontal_align = Attribute(HorizontalAlignment, 'left',
-                                 'Horizontal alignment of the flowable')
+    width = OverrideDefault('auto')
 
 
 class HorizontallyAlignedFlowableState(FlowableState):
@@ -759,34 +780,6 @@ class HorizontallyAlignedFlowable(Flowable):
         super().__init__(*args, **kwargs)
         self.align = align
         self.width = width
-
-    def _align(self, container, width):
-        align = self.align or self.get_style('horizontal_align', container)
-        if align == HorizontalAlignment.LEFT or width is None:
-            return
-        left_extra = float(container.width - width)
-        if align == HorizontalAlignment.CENTER:
-            left_extra /= 2
-        container.left = float(container.left) + left_extra
-
-    def _width(self, container):
-        return self.width or self.get_style('width', container)
-
-    def flow(self, container, last_descender, state=None, **kwargs):
-        width = None
-        with MaybeContainer(container) as align_container:
-            try:
-                width, top_to_baseline, descender = \
-                    super().flow(align_container, last_descender, state)
-            except EndOfContainer as eoc:
-                try:
-                    width = eoc.flowable_state.width
-                except AttributeError:  # image was not found, a Paragraph with
-                    pass                # a warning message was placed instead
-                raise eoc
-            finally:
-                self._align(align_container, width)
-        return width, top_to_baseline, descender
 
 
 class FloatStyle(FlowableStyle):
