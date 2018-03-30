@@ -20,10 +20,11 @@ that make up the content of a document and are rendered onto its pages.
 from contextlib import contextmanager
 from copy import copy
 from itertools import chain, tee
+from token import NAME
 
 from .attribute import Attribute, OptionSet, Bool
 from .color import Color
-from .dimension import Dimension, PT
+from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, discard_state, ContainerOverflow,
@@ -33,7 +34,7 @@ from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
 
 
-__all__ = ['Flowable', 'FlowableStyle',
+__all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
            'SetMetadataFlowable', 'AddToFrontMatter',
            'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
@@ -43,7 +44,19 @@ __all__ = ['Flowable', 'FlowableStyle',
            'PageBreak', 'PageBreakStyle']
 
 
+class FlowableWidth(OptionSet):
+    values = ('auto', 'fill')
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        if tokens.next.type == NAME:
+            return super().from_tokens(tokens)
+        else:
+            return Dimension.from_tokens(tokens)
+
+
 class FlowableStyle(Style):
+    width = Attribute(FlowableWidth, 'fill', 'Width to render the flowable at')
     space_above = Attribute(Dimension, 0, 'Vertical space preceding the '
                                               'flowable')
     space_below = Attribute(Dimension, 0, 'Vertical space following the '
@@ -173,6 +186,7 @@ class Flowable(Styled):
 
     def flow_inner(self, container, descender, state=None, **kwargs):
         draw_top = state.initial
+        width = self.get_style('width', container)
         padding_top = self.get_style('padding_top', container)
         padding_left = self.get_style('padding_left', container)
         padding_right = self.get_style('padding_right', container)
@@ -185,22 +199,30 @@ class Flowable(Styled):
         except ContainerOverflow:
             raise EndOfContainer(state)
         try:
+            if isinstance(width, DimensionBase):
+                raise NotImplementedError
             with InlineDownExpandingContainer('PADDING', container,
                                               **pad_kwargs) as pad_cntnr:
-                width, first_line_ascender, descender = \
+                content_width, first_line_ascender, descender = \
                     self.render(pad_cntnr, descender, state=state, **kwargs)
-            padded_width = padding_left + width + padding_right
-            self.render_frame(container, padded_width, container.height,
+            padded_width = padding_left + content_width + padding_right
+            if width == FlowableWidth.AUTO:
+                frame_width = padded_width
+            elif width == FlowableWidth.FILL:
+                frame_width = container.width
+            else:
+                frame_width = container.width
+            self.render_frame(container, frame_width, container.height,
                               top=draw_top)
             top_to_baseline = padding_top + first_line_ascender
             return padded_width, top_to_baseline, descender
         except EndOfContainer as eoc:
             try:
-                width = padding_left + eoc.flowable_state.width + padding_right
+                padded_width = padding_left + eoc.flowable_state.width + padding_right
             except AttributeError:
-                width = container.width
+                padded_width = container.width
             if not eoc.flowable_state.initial:
-                self.render_frame(container, width, container.max_height,
+                self.render_frame(container, padded_width, container.max_height,
                                   top=draw_top, bottom=False)
             raise
 

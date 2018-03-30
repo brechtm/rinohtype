@@ -13,7 +13,7 @@ from rinoh.color import Color, HexColor
 from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
                              PERCENT, QUARTERS)
 from rinoh.draw import Stroke
-from rinoh.flowable import HorizontalAlignment, Break
+from rinoh.flowable import FlowableWidth, HorizontalAlignment, Break
 from rinoh.image import BackgroundImage, Scale, InlineImage
 from rinoh.number import NumberFormat
 from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
@@ -87,6 +87,12 @@ def test_textalign_from_string():
         assert TextAlign.from_string('none')
     with pytest.raises(ValueError):
         assert TextAlign.from_string('full')
+
+
+def test_flowablewidth_from_string():
+    assert FlowableWidth.from_string('auto') == FlowableWidth.AUTO
+    assert FlowableWidth.from_string('fill') == FlowableWidth.FILL
+    assert FlowableWidth.from_string('12 pt') == 12*PT
 
 
 def test_horizontalalignment_from_string():
