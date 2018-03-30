@@ -50,24 +50,15 @@ class Scale(OptionSet):
         return super().check_type(value) or value > 0
 
     @classmethod
-    def parse_string(cls, string):
-        try:
-            value = super().parse_string(string)
-        except ValueError:
-            value = float(string)
-            if not cls.check_type(value):
-                raise ValueError('Scale factor should be larger than 0')
-        return value
-
-    @classmethod
     def from_tokens(cls, tokens):
-        token = next(tokens)
-        if token.type == NAME:
-            value = super().parse_string(token.string)
-        elif token.type == NUMBER:
-            value = float(token.string)
+        if tokens.next.type == NAME:
+            value = super().from_tokens(tokens)
+        elif tokens.next.type == NUMBER:
+            value = float(next(tokens).string)
             if not cls.check_type(value):
-                raise ValueError('Scale factor should be larger than 0')
+                raise ParseError('Scale factor should be larger than 0')
+        else:
+            raise ParseError('Expecting scale option name or number')
         return value
 
     @classmethod

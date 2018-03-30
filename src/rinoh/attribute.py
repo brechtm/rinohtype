@@ -12,7 +12,7 @@ from collections import OrderedDict
 from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
-from token import NUMBER, ENDMARKER, MINUS, PLUS
+from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME
 from tokenize import tokenize, ENCODING
 from warnings import warn
 
@@ -137,23 +137,20 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
                 for value in cls.values]
 
     @classmethod
-    def parse_string(cls, string):
-        try:
-            index = cls.value_strings.index(string.lower())
-        except ValueError:
-            raise ValueError("'{}' is not a valid {}. Must be one of: '{}'"
-                             .format(string, cls.__name__,
-                                     "', '".join(cls.value_strings)))
-        return cls.values[index]
-
-    @classmethod
     def from_tokens(cls, tokens):
+        if tokens.next.type != NAME:
+            raise ParseError('Expecting a name')
         token = next(tokens)
+        _, start_col = token.start
+        while tokens.next and tokens.next.type == NAME:
+            token = next(tokens)
+        _, end_col = token.end
+        option_string = token.line[start_col:end_col].strip()
         try:
-            index = cls.value_strings.index(token.string.lower())
+            index = cls.value_strings.index(option_string.lower())
         except ValueError:
             raise ValueError("'{}' is not a valid {}. Must be one of: '{}'"
-                             .format(token.string, cls.__name__,
+                             .format(option_string, cls.__name__,
                                      "', '".join(cls.value_strings)))
         return cls.values[index]
 

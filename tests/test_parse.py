@@ -342,11 +342,11 @@ def test_scale_from_string():
     assert Scale.from_string("fill") == Scale.FILL
     with pytest.raises(ValueError):
         Scale.from_string("unknown")
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         Scale.from_string("/")
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         Scale.from_string("0")
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Scale.from_string("-0.5")
 
 
