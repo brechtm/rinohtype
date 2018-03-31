@@ -27,8 +27,8 @@ from .color import Color
 from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
-                     MaybeContainer, discard_state, ContainerOverflow,
-                     EndOfContainer, PageBreakException)
+                     MaybeContainer, ContainerOverflow, EndOfContainer,
+                     PageBreakException)
 from .style import Styled, Style
 from .text import StyledText
 from .util import ReadAliasAttribute, NotImplementedAttribute
@@ -37,7 +37,7 @@ from .util import ReadAliasAttribute, NotImplementedAttribute
 __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
            'SetMetadataFlowable', 'AddToFrontMatter',
-           'InseparableFlowables', 'GroupedFlowables', 'StaticGroupedFlowables',
+           'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
            'Float',
@@ -379,22 +379,6 @@ class AddToFrontMatter(DummyFlowable):
 
 
 # grouping flowables
-
-# TODO: duplicates keep_with_next behavior - remove?
-class InseparableFlowables(Flowable):
-    def render(self, container, last_descender, state, **kwargs):
-        max_flowable_width = 0
-        first_top_to_baseline = None
-        with MaybeContainer(container) as maybe_container, \
-                discard_state(state):
-            for flowable in self.flowables(container.document):
-                width, top_to_baseline, last_descender = \
-                    flowable.flow(maybe_container, last_descender)
-                max_flowable_width = max(max_flowable_width, width)
-                if first_top_to_baseline is None:
-                    first_top_to_baseline = top_to_baseline
-        return max_flowable_width, first_top_to_baseline or 0, last_descender
-
 
 class GroupedFlowablesState(FlowableState):
     def __init__(self, groupedflowables, flowables, first_flowable_state=None,

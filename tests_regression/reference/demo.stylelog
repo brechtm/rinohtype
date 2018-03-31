@@ -2157,6 +2157,18 @@
                > (0,0,0,0,2) body
             MixedStyledText('A figure directive:')
               SingleStyledText('A figure directive:')
+          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <figure>
+               > (0,0,0,0,2) figure
+            Image('images/title.png')   None:None <image>
+                 > (0,0,0,0,2) image
+            Caption('Figure 2.1. A figure is an image...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:426 <caption>
+                 > (0,0,0,0,2) caption
+                MixedStyledText('Figure 2.1. A figure is an image...')
+                  SingleStyledText('Figure ')
+                  MixedStyledText('2.1. ')
+                    SingleStyledText('2.1')
+                    SingleStyledText('. ')
+                  SingleStyledText('A figure is an image with a capt...')
 #### UpExpandingContainer('header')
   Header('2 Body Elements')
        > (0,0,0,0,2) header
@@ -2185,18 +2197,8 @@
          > (0,0,0,1,2) chapter
       (continued) Section(id='directives')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:398 <section>
         (continued) Section(id='images')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:414 <section>
-          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <figure>
+          (continued) Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <figure>
                > (0,0,0,0,2) figure
-            Image('images/title.png')   None:None <image>
-                 > (0,0,0,0,2) image
-            Caption('Figure 2.1. A figure is an image...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:426 <caption>
-                 > (0,0,0,0,2) caption
-                MixedStyledText('Figure 2.1. A figure is an image...')
-                  SingleStyledText('Figure ')
-                  MixedStyledText('2.1. ')
-                    SingleStyledText('2.1')
-                    SingleStyledText('. ')
-                  SingleStyledText('A figure is an image with a capt...')
             StaticGroupedFlowables(style='legend')   None:None <legend>
                  > (0,0,1,0,3) figure legend
               Table()   None:None <table>
@@ -2476,6 +2478,26 @@
                  > (0,0,0,0,2) body
               MixedStyledText('You can make up your own admonit...')
                 SingleStyledText('You can make up your own admonit...')
+        Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
+          Heading('2.15.4 Topics, Sidebars, and Rub...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <title>
+               > (0,0,0,1,2) heading level 3
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.15.4 Topics, Sidebars, and Rub...')
+                SingleStyledText('2.15.4')
+                SingleStyledText(' ')
+                SingleStyledText('Topics, Sidebars, and Rubrics')
+          StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
+               > (0,0,1,0,1) sidebar
+            Paragraph('Sidebar Title', style='title')   None:None <title>
+                 > (0,0,2,0,3) sidebar title
+                   (0,0,1,0,2) title
+                   (0,0,0,0,2) body
+              MixedStyledText('Sidebar Title')
+                SingleStyledText('Sidebar Title')
+            Paragraph('This is a sidebar.  It is for te...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:476 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('This is a sidebar.  It is for te...')
+                SingleStyledText('This is a sidebar.  It is for te...')
 #### UpExpandingContainer('header')
   Header('2 Body Elements')
        > (0,0,0,0,2) header
@@ -2503,31 +2525,12 @@
     (continued) Section(id='body-elements')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:79 <section>
          > (0,0,0,1,2) chapter
       (continued) Section(id='directives')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:398 <section>
-        Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
-          Heading('2.15.4 Topics, Sidebars, and Rub...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <title>
-               > (0,0,0,1,2) heading level 3
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('2.15.4 Topics, Sidebars, and Rub...')
-                SingleStyledText('2.15.4')
-                SingleStyledText(' ')
-                SingleStyledText('Topics, Sidebars, and Rubrics')
-          StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
+        (continued) Section(id='topics-sidebars-and-rubrics')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:471 <section>
+          (continued) StaticGroupedFlowables(style='sidebar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:None <sidebar>
                > (0,0,1,0,1) sidebar
-            Paragraph('Sidebar Title', style='title')   None:None <title>
-                 > (0,0,2,0,3) sidebar title
-                   (0,0,1,0,2) title
-                   (0,0,0,0,2) body
-              MixedStyledText('Sidebar Title')
-                SingleStyledText('Sidebar Title')
-            Paragraph('This is a sidebar.  It is for te...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:476 <paragraph>
-                 > (0,0,0,0,2) body
-              MixedStyledText('This is a sidebar.  It is for te...')
-                SingleStyledText('This is a sidebar.  It is for te...')
             Paragraph('This is a rubric inside a sideba...', style='rubric')   None:None <rubric>
                  > (0,0,1,0,2) rubric
                    (0,0,0,0,2) body
-              MixedStyledText('This is a rubric inside a sideba...')
-                SingleStyledText('This is a rubric inside a sideba...')
             Paragraph('Sidebars often appears beside th...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/demo.txt:481 <paragraph>
                  > (0,0,0,0,2) body
               MixedStyledText('Sidebars often appears beside th...')

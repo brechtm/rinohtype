@@ -16,8 +16,8 @@ from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
                         OptionSet, AttributesDictionary, ParseError)
 from .color import RED
 from .dimension import Dimension, PERCENT
-from .flowable import (Flowable, InseparableFlowables, StaticGroupedFlowables,
-                       GroupedFlowablesStyle, HorizontallyAlignedFlowable,
+from .flowable import (Flowable, StaticGroupedFlowables, GroupedFlowablesStyle,
+                       HorizontallyAlignedFlowable,
                        HorizontallyAlignedFlowableState, Float, FloatStyle,
                        HorizontalAlignment, FlowableWidth)
 from .inline import InlineFlowable
@@ -401,7 +401,7 @@ class FigureStyle(FloatStyle, GroupedFlowablesStyle):
     pass
 
 
-class Figure(Float, InseparableFlowables, StaticGroupedFlowables):
+class Figure(Float, StaticGroupedFlowables):
     style_class = FigureStyle
     category = 'Figure'
 
