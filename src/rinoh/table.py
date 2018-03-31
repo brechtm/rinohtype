@@ -14,14 +14,12 @@ from math import sqrt
 from .attribute import Attribute, OptionSet, OverrideDefault, Integer, Bool
 from .dimension import DimensionBase as DimBase
 from .draw import Line, Rectangle, ShapeStyle, LineStyle
-from .flowable import (HorizontallyAlignedFlowable,
-                       HorizontallyAlignedFlowableStyle,
-                       HorizontallyAlignedFlowableState)
+from .flowable import Flowable, FlowableStyle, FlowableState
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import (StaticGroupedFlowables, GroupedFlowablesStyle,
                         ListOf, ListOfSection)
 from .style import Styled
-from .util import ReadAliasAttribute
+from .util import ReadAliasAttribute, NotImplementedAttribute
 
 
 __all__ = ['Table', 'TableStyle', 'TableWithCaption',
@@ -32,13 +30,14 @@ __all__ = ['Table', 'TableStyle', 'TableWithCaption',
            'ListOfTables', 'ListOfTablesSection']
 
 
-class TableState(HorizontallyAlignedFlowableState):
+class TableState(FlowableState):
+    table = ReadAliasAttribute('flowable')
+    width = NotImplementedAttribute()
+
     def __init__(self, table, column_widths, body_row_index=0):
         super().__init__(table)
         self.column_widths = column_widths
         self.body_row_index = body_row_index
-
-    table = ReadAliasAttribute('flowable')
 
     @property
     def width(self):
@@ -58,7 +57,7 @@ class TableState(HorizontallyAlignedFlowableState):
                               self.body_row_index)
 
 
-class TableStyle(HorizontallyAlignedFlowableStyle):
+class TableStyle(FlowableStyle):
     split_minimum_rows = Attribute(Integer, 0, 'The minimum number of rows to '
                                                'display when the table is '
                                                'split across pages')
@@ -69,7 +68,7 @@ class TableStyle(HorizontallyAlignedFlowableStyle):
 NEVER_SPLIT = float('+inf')
 
 
-class Table(HorizontallyAlignedFlowable):
+class Table(Flowable):
     style_class = TableStyle
 
     def __init__(self, body, head=None, width=None, column_widths=None,

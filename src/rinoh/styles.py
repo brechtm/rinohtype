@@ -2,7 +2,6 @@
 from .decoration import FrameStyle
 from .draw import LineStyle, ShapeStyle
 from .flowable import FlowableStyle, GroupedFlowablesStyle
-from .flowable import HorizontallyAlignedFlowableStyle
 from .flowable import LabeledFlowableStyle
 from .number import LabelStyle
 from .number import NumberStyle, NumberedParagraphStyle

@@ -16,10 +16,9 @@ from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
                         OptionSet, AttributesDictionary, ParseError)
 from .color import RED
 from .dimension import Dimension, PERCENT
-from .flowable import (Flowable, StaticGroupedFlowables, GroupedFlowablesStyle,
-                       HorizontallyAlignedFlowable,
-                       HorizontallyAlignedFlowableState, Float, FloatStyle,
-                       HorizontalAlignment, FlowableWidth)
+from .flowable import (Flowable, FlowableState, HorizontalAlignment,
+                       FlowableWidth, StaticGroupedFlowables,
+                       GroupedFlowablesStyle, Float, FloatStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph, NumberedParagraphStyle, format_number
@@ -68,7 +67,7 @@ class Scale(OptionSet):
                                   for s in cls.value_strings)))
 
 
-class ImageState(HorizontallyAlignedFlowableState):
+class ImageState(FlowableState):
     image = ReadAliasAttribute('flowable')
     width = None
 
@@ -304,7 +303,7 @@ class InlineImage(ImageBase, InlineFlowable):
         return FlowableWidth.AUTO if self.width is None else self.width
 
 
-class _Image(HorizontallyAlignedFlowable, ImageBase):
+class _Image(ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  dpi=None, rotate=0, limit_width=100*PERCENT, align=None,
                  id=None, style=None, parent=None):

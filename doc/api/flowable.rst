@@ -55,16 +55,6 @@ Grouping Flowables
     :members:
 
 
-Horizontally Aligned Flowables
-------------------------------
-
-.. autoclass:: HorizontallyAlignedFlowable
-    :members:
-
-.. autoclass:: HorizontallyAlignedFlowableState
-    :members:
-
-
 Floating Flowables
 ------------------
 

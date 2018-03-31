@@ -55,7 +55,6 @@ values that can be assigned to them in a style sheet.
     flowable.FlowableStyle
     flowable.LabeledFlowableStyle
     flowable.GroupedFlowablesStyle
-    flowable.HorizontallyAlignedFlowableStyle
     flowable.FloatStyle
     image.CaptionStyle
     image.FigureStyle

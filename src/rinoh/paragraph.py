@@ -21,7 +21,8 @@ from os import path
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
-from .attribute import Attribute, AttributeType, OptionSet, ParseError
+from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
+                        OverrideDefault)
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState
 from .font import MissingGlyphException
@@ -337,6 +338,8 @@ class TabStopList(AttributeType, list):
 
 # TODO: look at Word/OpenOffice for more options
 class ParagraphStyle(FlowableStyle, TextStyle):
+    width = OverrideDefault('fill')
+
     indent_first = Attribute(Dimension, 0*PT, 'Indentation of the first line '
                                               'of text')
     line_spacing = Attribute(LineSpacing, DEFAULT, 'Spacing between the '

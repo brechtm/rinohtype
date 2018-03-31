@@ -22,7 +22,7 @@ from copy import copy
 from itertools import chain, tee
 from token import NAME
 
-from .attribute import Attribute, OptionSet, Bool, OverrideDefault
+from .attribute import Attribute, OptionSet, Bool
 from .color import Color
 from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
@@ -39,7 +39,6 @@ __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'SetMetadataFlowable', 'AddToFrontMatter',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
-           'HorizontallyAlignedFlowable', 'HorizontallyAlignedFlowableStyle',
            'Float',
            'PageBreak', 'PageBreakStyle']
 
@@ -60,7 +59,7 @@ class HorizontalAlignment(OptionSet):
 
 
 class FlowableStyle(Style):
-    width = Attribute(FlowableWidth, 'fill', 'Width to render the flowable at')
+    width = Attribute(FlowableWidth, 'auto', 'Width to render the flowable at')
     horizontal_align = Attribute(HorizontalAlignment, 'left',
                                  'Horizontal alignment of the flowable')
     space_above = Attribute(Dimension, 0, 'Vertical space preceding the '
@@ -113,13 +112,14 @@ class Flowable(Styled):
 
     style_class = FlowableStyle
 
-    def __init__(self, id=None, style=None, parent=None):
+    def __init__(self, align=None, width=None,
+                 id=None, style=None, parent=None):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
         super().__init__(id=id, style=style, parent=parent)
         self.annotation = None
-        self.align = None
-        self.width = None
+        self.align = align
+        self.width = width
 
     @property
     def level(self):
@@ -740,30 +740,6 @@ class GroupedLabeledFlowables(GroupedFlowables):
         except EndOfContainer as eoc:
             eoc.flowable_state.max_label_width = max_label_width
             raise
-
-
-class HorizontallyAlignedFlowableStyle(FlowableStyle):
-    width = OverrideDefault('auto')
-
-
-class HorizontallyAlignedFlowableState(FlowableState):
-    width = NotImplementedAttribute()
-
-
-class HorizontallyAlignedFlowable(Flowable):
-    """A flowable with configurable width and horizontal alignment.
-
-    The `width` and `horizontal_align` control the width and horizontal
-    alignment of the flowable.
-
-    """
-
-    style_class = HorizontallyAlignedFlowableStyle
-
-    def __init__(self, *args, align=None, width=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.align = align
-        self.width = width
 
 
 class FloatStyle(FlowableStyle):
