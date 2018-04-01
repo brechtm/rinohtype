@@ -243,9 +243,9 @@ class ImageBase(Flowable):
             return Paragraph(text).flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
-        if width != FlowableWidth.AUTO:
+        try:
             scale_width = width.to_points(container.width) / image.width
-        else:
+        except AttributeError:  # width is a FlowableWidth
             scale_width = None
         if self.height is not None:
             scale_height = self.height.to_points(container.width) / image.height

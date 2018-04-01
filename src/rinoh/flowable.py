@@ -47,6 +47,10 @@ class FlowableWidth(OptionSet):
     values = ('auto', 'fill')
 
     @classmethod
+    def check_type(cls, value):
+        return Dimension.check_type(value) or super().check_type(value)
+
+    @classmethod
     def from_tokens(cls, tokens):
         if tokens.next.type == NAME:
             return super().from_tokens(tokens)
@@ -206,7 +210,8 @@ class Flowable(Styled):
                 if initial_before and not initial_after:
                     if reference_id:
                         self.create_destination(margin_container, True)
-                self._align(margin_container, width)
+                if width is not None:
+                    self._align(margin_container, width)
         container.advance(float(self.get_style('space_below', container)), True)
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
@@ -235,18 +240,15 @@ class Flowable(Styled):
         except ContainerOverflow:
             raise EndOfContainer(state)
         try:
-            if isinstance(width, DimensionBase):
-                raise NotImplementedError
             with InlineDownExpandingContainer('PADDING', container,
                                               **pad_kwargs) as pad_cntnr:
                 content_width, first_line_ascender, descender = \
                     self.render(pad_cntnr, descender, state=state, **kwargs)
             padded_width = padding_left + content_width + padding_right
-            if width == FlowableWidth.AUTO:
+            if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
                 frame_width = padded_width
-            elif width == FlowableWidth.FILL:
-                frame_width = container.width
             else:
+                assert width == FlowableWidth.FILL
                 frame_width = container.width
             self.render_frame(container, frame_width, container.height,
                               top=draw_top)
