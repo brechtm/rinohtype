@@ -299,7 +299,8 @@ class _FlowablesContainer(FlowableTarget, FlowablesContainerBase):
     def _render(self, type, rerender):
         last_descender = None
         for flowable in self.flowables:
-            _, _, last_descender = flowable.flow(self, last_descender)
+            if not flowable.is_hidden(self):
+                _, _, last_descender = flowable.flow(self, last_descender)
 
 
 class FlowablesContainer(_FlowablesContainer):
