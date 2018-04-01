@@ -22,7 +22,7 @@ from copy import copy
 from itertools import chain, tee
 from token import NAME
 
-from .attribute import Attribute, OptionSet, Bool
+from .attribute import Attribute, OptionSet, Bool, OverrideDefault
 from .color import Color
 from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
@@ -409,6 +409,8 @@ class GroupedFlowablesState(FlowableState):
 
 
 class GroupedFlowablesStyle(FlowableStyle):
+    width = OverrideDefault('fill')
+
     title = Attribute(StyledText, None, 'Title to precede the flowables')
     flowable_spacing = Attribute(Dimension, 0, 'Spacing between flowables')
 
