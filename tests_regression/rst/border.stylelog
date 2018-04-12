@@ -1,0 +1,8 @@
+---------------------------------- page 1 ----------------------------------
+#### ChainedContainer('column1')
+  DocumentTree()
+    Paragraph('A Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border.rst:4 <paragraph>
+         > (0,0,0,1,1) flowable with fat border
+           (0,0,0,0,2) body
+      MixedStyledText('A Paragraph.')
+        SingleStyledText('A Paragraph.')
