@@ -46,6 +46,10 @@ def render_rst_file(rst_path, out_filename, reference_path, tmpdir):
 def render_doctree(doctree, out_filename, reference_path, tmpdir):
     document = MinimalTemplate(doctree)
     document.render(tmpdir.join(out_filename).strpath)
+    output_dir = TEST_DIR / 'output' / out_filename
+    if output_dir.is_symlink():
+        output_dir.unlink()
+    output_dir.symlink_to(tmpdir.strpath, target_is_directory=True)
     pdf_filename = '{}.pdf'.format(out_filename)
     with in_directory(tmpdir.strpath):
         _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
