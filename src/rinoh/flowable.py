@@ -72,6 +72,7 @@ class FlowableStyle(Style):
                                               'flowable')
     margin_left = Attribute(Dimension, 0, 'Left margin')
     margin_right = Attribute(Dimension, 0, 'Right margin')
+    padding = Attribute(Dimension, 0, 'Padding')
     padding_left = Attribute(Dimension, 0, 'Left padding')
     padding_right = Attribute(Dimension, 0, 'Right padding')
     padding_top = Attribute(Dimension, 0, 'Top padding')
@@ -223,10 +224,11 @@ class Flowable(Styled):
 
         draw_top = state.initial
         width = self._width(container)
-        padding_top = self.get_style('padding_top', container)
-        padding_left = self.get_style('padding_left', container)
-        padding_right = self.get_style('padding_right', container)
-        padding_bottom = float(self.get_style('padding_bottom', container))
+        padding = self.get_style('padding', container)
+        padding_top = self.get_style('padding_top', container) or padding
+        padding_left = self.get_style('padding_left', container) or padding
+        padding_right = self.get_style('padding_right', container) or padding
+        padding_bottom = self.get_style('padding_bottom', container) or padding
         border = border_width('border')
         border_left = border_width('border_left') or border
         border_right = border_width('border_right') or border
@@ -234,7 +236,8 @@ class Flowable(Styled):
         border_bottom = border_width('border_bottom') or border
         right = container.width - padding_right - border_right
         pad_kwargs = dict(left=padding_left + border_left, right=right,
-                          extra_space_below=padding_bottom + border_bottom)
+                          extra_space_below=float(padding_bottom
+                                                  + border_bottom))
         try:
             container.advance(padding_top + border_top)
         except ContainerOverflow:
