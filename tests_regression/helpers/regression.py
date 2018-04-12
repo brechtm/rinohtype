@@ -15,7 +15,8 @@ from util import in_directory
 
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.attribute import OverrideDefault, Var
-from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
+from rinoh.template import (DocumentTemplate, TemplateConfiguration,
+                            ContentsPartTemplate, PageTemplate)
 
 
 __all__ = ['render_doctree', 'render_rst_file']
@@ -40,11 +41,19 @@ class MinimalTemplate(DocumentTemplate):
 def render_rst_file(rst_path, out_filename, reference_path, tmpdir):
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
-    render_doctree(doctree, out_filename, reference_path, tmpdir)
+    stylesheet_path = rst_path.with_suffix('.rts')
+    config = (TemplateConfiguration('rst', template=MinimalTemplate,
+                                    stylesheet=str(stylesheet_path))
+              if stylesheet_path.exists() else None)
+    render_doctree(doctree, out_filename, reference_path, tmpdir, config)
 
 
-def render_doctree(doctree, out_filename, reference_path, tmpdir):
-    document = MinimalTemplate(doctree)
+def render_doctree(doctree, out_filename, reference_path, tmpdir,
+                   template_configuration=None):
+    if template_configuration:
+        document = template_configuration.document(doctree)
+    else:
+        document = MinimalTemplate(doctree)
     document.render(tmpdir.join(out_filename).strpath)
     output_dir = TEST_DIR / 'output' / out_filename
     if output_dir.is_symlink():
