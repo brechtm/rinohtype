@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from io import SEEK_CUR
+from pathlib import Path
 from struct import Struct, unpack, calcsize
 from warnings import warn
 
@@ -41,11 +42,11 @@ class JPEGReader(XObjectImage):
 
     def __init__(self, file_or_filename):
         try:
-            self._file = open(file_or_filename, 'rb')
-            self.filename = file_or_filename
+            self.filename = Path(file_or_filename)
+            self._file = self.filename.open('rb')
         except TypeError:
-            self._file = file_or_filename
             self.filename = None
+            self._file = file_or_filename
         (width, height, bits_per_component, num_components, exif_color_space,
          icc_profile, adobe_color_transform, dpi) = self._get_metadata()
         if bits_per_component != 8:

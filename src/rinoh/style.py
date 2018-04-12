@@ -24,6 +24,7 @@ from ast import literal_eval
 from collections import OrderedDict, namedtuple
 from itertools import chain
 from operator import attrgetter
+from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile)
@@ -705,7 +706,8 @@ class StyleSheet(RuleSet, Resource):
 
     @classmethod
     def parse_string(cls, filename_or_resource_name):
-        if os.path.isfile(filename_or_resource_name):
+        stylesheet_path = Path(filename_or_resource_name)
+        if stylesheet_path.exists():
             return StyleSheetFile(filename_or_resource_name)
         else:
             return super().parse_string(filename_or_resource_name)

@@ -12,6 +12,7 @@ from collections import OrderedDict
 from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
+from pathlib import Path
 from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME
 from tokenize import tokenize, ENCODING
 from warnings import warn
@@ -378,7 +379,7 @@ class RuleSetFile(RuleSet):
         self.filename = filename
         config = ConfigParser(default_section=None, delimiters=('=',),
                               interpolation=None)
-        with open(filename) as file:
+        with Path(filename).open() as file:
             config.read_file(file)
         options = dict(config[self.main_section]
                        if config.has_section(self.main_section) else {})

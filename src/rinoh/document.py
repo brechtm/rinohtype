@@ -20,6 +20,7 @@ Classes representing a document:
 
 """
 
+from pathlib import Path
 
 import datetime
 import os
@@ -54,7 +55,7 @@ class DocumentTree(StaticGroupedFlowables):
 
     Args:
         flowables (list[Flowable]): the list of top-level flowables
-        source_file (str): absolute path of the source file, used to locate
+        source_file (Path): absolute path of the source file, used to locate
             images and include in logging and error and warnings.
         options (Reader): frontend-specific options
 
@@ -62,14 +63,12 @@ class DocumentTree(StaticGroupedFlowables):
 
     def __init__(self, flowables, source_file=None, options=None):
         super().__init__(flowables)
-        self.source_file = (os.path.abspath(source_file)
-                            if source_file else None)
+        self.source_file = source_file.absolute() if source_file else None
         self.options = options
 
     @property
     def source_root(self):
-        return (os.path.dirname(self.source_file)
-                if self.source_file else os.path.abspath(os.curdir))
+        return self.source_file.parent if self.source_file else Path.cwd()
 
 
 class PageOrientation(OptionSet):

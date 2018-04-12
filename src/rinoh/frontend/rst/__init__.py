@@ -5,6 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from pathlib import Path
 
 from docutils.core import publish_doctree
 from docutils.io import FileInput
@@ -105,14 +106,14 @@ class DocutilsReader(Reader):
     parser_class = None
 
     def parse(self, filename_or_file):
-        if isinstance(filename_or_file, str):
-            filename = filename_or_file
+        try:
+            filename = Path(filename_or_file)
             settings_overrides = dict(input_encoding='utf-8')
-            doctree = publish_doctree(None, source_path=filename,
+            doctree = publish_doctree(None, source_path=str(filename),
                                       source_class=FileInput,
                                       settings_overrides=settings_overrides,
                                       parser=self.parser_class())
-        else:
+        except TypeError:
             filename = getattr(filename_or_file, 'name', None)
             doctree = publish_doctree(filename_or_file,
                                       source_class=FileInput,

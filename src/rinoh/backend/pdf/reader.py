@@ -10,6 +10,7 @@ import struct, time
 
 from binascii import unhexlify
 from io import SEEK_CUR, SEEK_END
+from pathlib import Path
 
 from ...util import all_subclasses
 from . import cos
@@ -29,7 +30,8 @@ FILTER_SUBCLASSES = {cls.name: cls for cls in all_subclasses(Filter)}
 class PDFObjectReader(object):
     def __init__(self, file_or_filename, document=None):
         try:
-            self.file = open(file_or_filename, 'rb')
+            filename = Path(file_or_filename)
+            self.file = filename.open('rb')
         except TypeError:
             self.file = file_or_filename
         self.document = document or self

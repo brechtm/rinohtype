@@ -7,6 +7,7 @@
 
 from io import BytesIO
 from itertools import islice
+from pathlib import Path
 from struct import Struct, pack
 
 from . import purepng
@@ -24,7 +25,9 @@ __all__ = ['PNGReader']
 
 class PNGReader(XObjectImage):
     def __init__(self, file_or_filename):
-        png = purepng.Reader(file_or_filename)
+        png = purepng.Reader(str(file_or_filename)
+                             if isinstance(file_or_filename, Path)
+                             else file_or_filename)
         try:
             png.preamble()
         except purepng.FormatError as format_error:

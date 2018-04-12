@@ -7,8 +7,7 @@
 
 import pytest
 
-from io import BytesIO
-from os import path
+from pathlib import Path
 
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
@@ -22,7 +21,7 @@ from rinoh.template import DocumentTemplate, ContentsPartTemplate, PageTemplate
 __all__ = ['render_doctree', 'render_rst_file']
 
 
-TEST_DIR = path.abspath(path.join(path.dirname(__file__), path.pardir))
+TEST_DIR = Path(__file__).parent.parent.absolute()
 
 
 class MinimalTemplate(DocumentTemplate):
@@ -51,7 +50,7 @@ def render_doctree(doctree, out_filename, reference_path, tmpdir):
     with in_directory(tmpdir.strpath):
         _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
-        if not diff_pdf(path.join(reference_path, pdf_filename), pdf_filename):
+        if not diff_pdf(reference_path / pdf_filename, pdf_filename):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
                         .format(tmpdir.strpath))

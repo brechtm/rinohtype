@@ -232,8 +232,8 @@ class ImageBase(Flowable):
                 filename_or_file = self.filename_or_file
             else:
                 source_root = container.document.document_tree.source_root
-                abs_filename = os.path.join(source_root, posix_filename)
-                filename_or_file = os.path.normpath(abs_filename)
+                abs_filename = source_root / posix_filename
+                filename_or_file = os.path.normpath(str(abs_filename))
             image = container.document.backend.Image(filename_or_file)
         except OSError as err:
             container.document.error = True

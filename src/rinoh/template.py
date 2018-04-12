@@ -12,6 +12,7 @@ import re
 from collections import OrderedDict
 from functools import partial
 from itertools import chain
+from pathlib import Path
 
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
@@ -409,11 +410,14 @@ class TemplateConfiguration(RuleSet):
                 template = DocumentTemplate.from_string(template)
             assert self.template in (None, template)
             self.template = template
-        if isinstance(options.get('stylesheet'), str):
-            filename = os.path.join(self._stylesheet_search_path,
-                                    options['stylesheet'])
-            if os.path.isfile(filename):
-                options['stylesheet'] = filename
+        try:
+            stylesheet_path = Path(options.get('stylesheet'))
+            if not stylesheet_path.is_absolute():
+                stylesheet_path = self._stylesheet_search_path / stylesheet_path
+            if stylesheet_path.exists():
+                options['stylesheet'] = str(stylesheet_path)
+        except TypeError:
+            pass
         tmpl_cls = self.template
         for attr, value in options.items():
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
@@ -428,7 +432,7 @@ class TemplateConfiguration(RuleSet):
 
     @property
     def _stylesheet_search_path(self):
-        return os.getcwd()
+        return Path.cwd()
 
     def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
         if name in self:

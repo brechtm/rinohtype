@@ -110,7 +110,8 @@ def compare_page(a_filename, b_filename, page_number):
 
 
 def pdf_page_to_ppm(pdf_path, page_number, stdout, gray=False):
-    command = ['pdftoppm', '-f', str(page_number), '-singlefile', pdf_path]
+    command = ['pdftoppm', '-f', str(page_number),
+               '-singlefile', str(pdf_path)]
     if gray:
         command.insert(-1, '-gray')
     pdftoppm = Popen(command, shell=SHELL, stdout=stdout)
