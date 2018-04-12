@@ -1,0 +1,21 @@
+---------------------------------- page 1 ----------------------------------
+#### ChainedContainer('column1')
+  DocumentTree()
+    Paragraph('Left-aligned:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:1 <paragraph>
+         > (0,0,0,0,2) body
+      MixedStyledText('Left-aligned:')
+        SingleStyledText('Left-aligned:')
+    Image('../images/title.png')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:None <image>
+         > (0,0,0,0,2) image
+    Paragraph('Center-aligned:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:7 <paragraph>
+         > (0,0,0,0,2) body
+      MixedStyledText('Center-aligned:')
+        SingleStyledText('Center-aligned:')
+    Image('../images/title.png')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:None <image>
+         > (0,0,0,0,2) image
+    Paragraph('Right-aligned:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:13 <paragraph>
+         > (0,0,0,0,2) body
+      MixedStyledText('Right-aligned:')
+        SingleStyledText('Right-aligned:')
+    Image('../images/title.png')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/image.rst:None <image>
+         > (0,0,0,0,2) image
