@@ -476,6 +476,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                                     self.style_class.__name__,
                                     style.__class__.__name__))
         self.style = style
+        self.classes = []
 
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
@@ -582,9 +583,21 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         else:
             return container.document.stylesheet.find_style(self, container)
 
+    @property
+    def has_class(self):
+        return HasClass(self)
+
     def before_placing(self, container):
         if self.parent:
             self.parent.before_placing(container)
+
+
+class HasClass(object):
+    def __init__(self, styled):
+        self.styled = styled
+
+    def __eq__(self, class_name):
+        return class_name in self.styled.classes
 
 
 class InvalidStyledMatcher(Exception):
