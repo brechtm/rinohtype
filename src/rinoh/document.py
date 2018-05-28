@@ -378,8 +378,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         return prev_number_of_pages, prev_page_references
 
     def _save_cache(self, filename, section_number_of_pages, page_references):
-        """Save the current state of the page references to `<filename>.ptc`"""
-        with open(filename + self.CACHE_EXTENSION, 'wb') as file:
+        """Save the current state of the page references to `<filename>.rtc`"""
+        cache_path = Path(filename).with_suffix(self.CACHE_EXTENSION)
+        with cache_path.open('wb') as file:
             cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
@@ -400,9 +401,11 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
         self.error = False
+        filename_root = Path(filename_root) if filename_root else None
         if filename_root and file is None:
-            filename = filename_root + self.backend_document.extension
-            file = open(filename, 'wb')
+            extension = self.backend_document.extension
+            filename = filename_root.with_suffix(extension)
+            file = filename.open('wb')
         elif file and filename_root is None:
             filename = getattr(file, 'name', None)
         else:

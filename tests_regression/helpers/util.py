@@ -8,6 +8,7 @@
 import os
 
 from contextlib import contextmanager
+from pathlib import Path
 
 
 __all__ = ['in_directory']
@@ -15,9 +16,9 @@ __all__ = ['in_directory']
 
 @contextmanager
 def in_directory(path):
-    curdir = os.getcwd()
-    os.chdir(path)
+    curdir = Path.cwd()
+    os.chdir(str(path))
     try:
         yield
     finally:
-        os.chdir(curdir)
+        os.chdir(str(curdir))

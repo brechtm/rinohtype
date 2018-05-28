@@ -123,7 +123,7 @@ class DocutilsReader(Reader):
     def from_doctree(self, filename, doctree):
         mapped_tree = DocutilsNode.map_node(doctree.document)
         flowables = mapped_tree.children_flowables()
-        return DocumentTree(flowables, source_file=filename)
+        return DocumentTree(flowables, source_file=Path(filename))
 
 
 class ReStructuredTextReader(DocutilsReader):
