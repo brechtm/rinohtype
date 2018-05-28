@@ -1,0 +1,367 @@
+[STYLESHEET]
+name = rinohtype
+pygments_style = colorful
+
+[VARIABLES]
+mono_typeface=TeX Gyre Cursor
+serif_typeface=TeX Gyre Pagella
+sans_typeface=Tex Gyre Heros
+fallback_typeface=DejaVu Serif
+thin_black_stroke=0.5pt,#000
+theme_color=#eb3e31
+
+[default:Paragraph]
+typeface=$(serif_typeface)
+font_weight=REGULAR
+font_size=10pt
+line_spacing=fixed(12pt, leading(0))
+indent_first=0
+space_above=0
+space_below=0
+text_align=justify
+kerning=True
+ligatures=True
+hyphen_lang=en_US
+hyphen_chars=4
+
+[body]
+base=default
+space_above=5pt
+space_below=0
+
+[bold]
+font_weight=BOLD
+
+[table of contents section]
+show_in_toc=False
+
+[table of contents]
+base=default
+indent_first=0
+depth=2
+
+[toc level 1]
+base=table of contents
+font_color=$(theme_color)
+font_weight=BOLD
+space_above=14pt
+;margin_left=-2cm
+text = '\t{PAGE}' (bold) '\tChapter {NUMBER}: {TITLE}'
+tab_stops = 1cm right, 1.5cm
+
+[toc level 2]
+base=table of contents
+;margin_left=18pt
+space_above=4pt
+text = '\t{PAGE}' (bold) '\t{TITLE}'
+tab_stops = 1cm right, 1.5cm
+
+[chapter]
+page_break=right
+
+[chapter title : Paragraph('chapter title')]
+background_color = #e8e8e8
+margin_left = -6mm
+margin_right = -1in
+padding_left = 6mm
+padding_right = 1in
+padding_top = 4mm
+padding_bottom = 4mm
+border_top = 1mm,#eb3e31
+
+space_above = 2 cm
+typeface = $(sans_typeface)
+font_size = 24pt
+
+;font_color = #fff
+;font_weight = bold
+text_align = left
+hyphenate = false
+tab_stops = 100% right
+
+[chapter title number : 'chapter title' / Field('number')]
+font_size = 30pt
+
+[heading level 1]
+typeface = $(sans_typeface)
+number_format = NUMBER
+
+[unnumbered heading level 1]
+base=heading level 1
+number_format=None
+
+[heading level 2]
+base = heading level 1
+font_weight = BOLD
+font_size = 12pt
+font_color = $(theme_color)
+space_above = 28pt
+space_below = 8pt
+margin_left = -1cm
+line_spacing = SINGLE
+label_suffix = '\t'
+tab_stops = 1cm
+
+[heading level 3]
+base=heading level 2
+font_size=10pt
+space_above=24pt
+space_below=6pt
+
+[heading level 4]
+base=heading level 3
+font_size=9pt
+space_above=8pt
+space_below=4pt
+number_format=None
+
+[heading level 5]
+base=heading level 2
+font_size=9pt
+font_slant=ITALIC
+font_weight=REGULAR
+line_spacing=Fixed(10pt)
+space_above=2pt
+space_below=2pt
+number_format=None
+
+[other heading levels]
+base=heading level 5
+font_size=9pt
+font_slant=ITALIC
+font_weight=REGULAR
+line_spacing=Fixed(10pt)
+space_above=2pt
+space_below=2pt
+number_format=None
+
+
+[internal hyperlink]
+font_color=#3131eb
+
+[external hyperlink]
+base=internal hyperlink
+
+[broken hyperlink]
+font_color=#ff0000
+
+
+[enumerated list]
+margin_left=8pt
+space_above=5pt
+space_below=5pt
+ordered=True
+flowable_spacing=5pt
+number_format=NUMBER
+label_suffix=')'
+
+[nested enumerated list]
+base=enumerated list
+margin_left=10pt
+
+[bulleted list]
+base=enumerated list
+ordered=False
+label_suffix=None
+
+[nested bulleted list]
+base=bulleted list
+margin_left=10pt
+
+[list item label]
+base=default
+indent_first=0
+text_align=RIGHT
+font_color = $(theme_color)
+
+[bulleted list item label]
+base=list item label
+
+[enumerated list item label]
+base=list item label
+
+
+[definition list]
+
+[definition list item]
+label_min_width=17pt
+label_max_width=none
+
+[definition term]
+space_above=4pt
+keep_with_next=true
+
+[definition term paragraph]
+base=default
+indent_first=0
+font_weight=BOLD
+
+[definition term classifier]
+font_weight=REGULAR
+font_slant=italic
+
+[definition]
+
+[definition paragraph]
+base=body
+space_above=1pt
+
+[code block]
+base = default
+background_color = #f5f5f5
+padding_left = 5pt
+padding_right = 0
+padding_top = 4pt
+padding_bottom = 4pt
+typeface = $(mono_typeface)
+font_size = 9pt
+text_align = LEFT
+indent_first = 0
+space_above = 4pt
+space_below = 4pt
+ligatures = False
+hyphenate = False
+
+[admonition]
+inline_title=false
+space_above=9pt
+space_below=5pt
+padding_top=0
+padding_bottom=6pt
+border_top=$(thin_black_stroke)
+border_bottom=$(thin_black_stroke)
+
+[admonition title]
+base=default
+keep_with_next=true
+font_weight=BOLD
+indent_first=0
+space_above=5pt
+space_below=2pt
+
+[admonition inline title]
+base=admonition title
+
+[builtin admonition:Admonition]
+base=admonition
+inline_title=true
+
+[boxed builtin admonition:Admonition]
+base=builtin admonition
+border=$(thin_black_stroke)
+padding_left=8pt
+padding_right=8pt
+
+[red adminition title:Paragraph]
+base=admonition title
+font_color=#f00
+
+[attention admonition]
+base=boxed builtin admonition
+
+[caution admonition]
+base=boxed builtin admonition
+
+[danger admonition]
+base=boxed builtin admonition
+
+[warning admonition]
+base=boxed builtin admonition
+
+[header]
+base=default
+typeface=$(sans_typeface)
+font_size=10pt
+margin_left = -2.5cm
+margin_right = -1cm
+indent_first = 0pt
+tab_stops = 2.5cm, 18cm RIGHT
+space_below = 2pt
+
+[footer]
+base = header
+
+[footer chapter and number : 'footer' / ... / StyledText('chapter and number')]
+font_weight = bold
+
+[footer chapter title : 'footer' / ... / StyledText('chapter title')]
+font_weight = bold
+font_color = $(theme_color)
+
+[footer section number : 'footer' / ... / StyledText('section number')]
+base = footer chapter and number
+
+[footer section title : 'footer' / ... / StyledText('section title')]
+base = footer chapter title
+
+
+# title page
+
+[title page rule]
+hide = true
+
+[title page logo]
+width = 8cm
+horizontal_align = right
+margin_right = -1in
+padding_left = 6mm
+padding_right = 1in
+padding_top = 4mm
+padding_bottom = 4mm
+background_color = #e8e8e8
+border_top = 1mm,#eb3e31
+
+[title page title]
+hide = true
+
+[title page subtitle]
+typeface=$(sans_typeface)
+font_size=14pt
+text_align=right
+space_above=6pt
+
+[title page author]
+typeface=$(sans_typeface)
+font_weight=bold
+font_size=17pt
+text_align=right
+space_above=110pt
+
+[title page date]
+typeface=$(serif_typeface)
+font_size=12pt
+text_align=right
+space_above=220pt
+
+
+# index
+
+[index]
+
+[index section label]
+typeface=$(sans_typeface)
+font_size=14pt
+space_above=10pt
+space_below=2pt
+keep_with_next=true
+
+[level 1 index entry]
+base=default
+text_align=left
+margin_left=40pt
+indent_first=-40pt
+
+[level 2 index entry]
+base=level 1 index entry
+margin_left=60pt
+indent_first=-40pt
+
+[level 3 index entry]
+base=level 1 index entry
+margin_left=80pt
+indent_first=-40pt
+
+[level 4 index entry]
+base=level 1 index entry
+margin_left=100pt
+indent_first=-40pt

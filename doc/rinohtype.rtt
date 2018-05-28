@@ -1,0 +1,83 @@
+[TEMPLATE_CONFIGURATION]
+name = rinohtype
+template = book
+description =
+
+parts =
+    title
+    front_matter
+    contents
+    back_matter
+stylesheet = rinohtype.rts
+
+
+[SectionTitles]
+contents='Contents'
+
+
+[VARIABLES]
+paper_size = A4
+
+
+[title]
+page_number_format=number
+end_at_page=left
+
+[front_matter]
+page_number_format=number
+end_at_page=any
+
+[contents]
+page_number_format=number
+end_at_page=any
+
+[back_matter]
+page_number_format=number
+end_at_page=any
+
+
+[title_page]
+top_margin = 8cm
+show_date = false
+show_author = false
+
+[front_matter_right_page]
+left_margin = 4cm
+right_margin = 2cm
+
+chapter_title_flowables =
+    Paragraph([Field(SECTION_TITLE(1)),
+               Tab(),
+               Field(SECTION_NUMBER(1), style='number')],
+              style='chapter title'),
+chapter_title_height = 6cm
+
+header_text = none
+footer_text = '\t'
+              '{SECTION_NUMBER(2)}' (section number)
+              '{nbsp}{nbsp}{nbsp}'
+              '{SECTION_TITLE(2)}' (section title)
+              '\t'
+              '{PAGE_NUMBER}'
+chapter_footer_text = '\t\t{PAGE_NUMBER}'
+header_footer_distance = 34pt
+
+[front_matter_left_page]
+base=front_matter_right_page
+footer_text = '{PAGE_NUMBER}'
+              '\t'
+              'Chapter {SECTION_NUMBER(1)}' (chapter and number)
+              '{nbsp}{nbsp}{nbsp}'
+              '{SECTION_TITLE(1)}' (chapter title)
+
+[contents_right_page]
+base=front_matter_right_page
+
+[contents_left_page]
+base=front_matter_left_page
+
+[back_matter_right_page]
+base=front_matter_right_page
+
+[back_matter_left_page]
+base=front_matter_left_page
