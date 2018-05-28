@@ -73,7 +73,7 @@ class DocutilsInlineNode(DocutilsNode, InlineNode):
     def styled_text(self):
         styled_text = super().styled_text()
         try:
-            styled_text.classes = self.get('classes')
+            styled_text.classes.extend(self.get('classes'))
         except AttributeError:
             pass
         return styled_text
@@ -83,7 +83,7 @@ class DocutilsBodyNode(DocutilsNode, BodyNode):
     def flowables(self):
         classes = self.get('classes')
         for flowable in super().flowables():
-            flowable.classes = classes
+            flowable.classes.extend(classes)
             yield flowable
 
 

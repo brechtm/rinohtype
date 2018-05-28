@@ -587,6 +587,10 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     def has_class(self):
         return HasClass(self)
 
+    @property
+    def has_classes(self):
+        return HasClasses(self)
+
     def before_placing(self, container):
         if self.parent:
             self.parent.before_placing(container)
@@ -598,6 +602,14 @@ class HasClass(object):
 
     def __eq__(self, class_name):
         return class_name in self.styled.classes
+
+
+class HasClasses(object):
+    def __init__(self, styled):
+        self.styled = styled
+
+    def __eq__(self, class_names):
+        return set(class_names).issubset(self.styled.classes)
 
 
 class InvalidStyledMatcher(Exception):
