@@ -3,6 +3,7 @@
 *.rtc
 /.python-version
 /.cache
+/.pytest_cache
 /.idea
 /.eggs
 /.tox
