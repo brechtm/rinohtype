@@ -54,16 +54,14 @@ def render_doctree(doctree, out_filename, reference_path, tmpdir,
         document = template_configuration.document(doctree)
     else:
         document = MinimalTemplate(doctree)
-    document.render(tmpdir.join(out_filename).strpath)
     output_dir = TEST_DIR / 'output' / out_filename
-    if output_dir.is_symlink():
-        output_dir.unlink()
-    output_dir.symlink_to(tmpdir.strpath, target_is_directory=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    document.render(output_dir / out_filename)
     pdf_filename = '{}.pdf'.format(out_filename)
-    with in_directory(tmpdir.strpath):
+    with in_directory(output_dir):
         _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
         if not diff_pdf(reference_path / pdf_filename, pdf_filename):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
-                        .format(tmpdir.strpath))
+                        .format(output_dir))
