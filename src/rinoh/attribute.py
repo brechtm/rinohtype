@@ -376,10 +376,10 @@ class RuleSet(OrderedDict):
 
 class RuleSetFile(RuleSet):
     def __init__(self, filename, base=None, **kwargs):
-        self.filename = filename
+        self.filename = Path(filename)
         config = ConfigParser(default_section=None, delimiters=('=',),
                               interpolation=None)
-        with Path(filename).open() as file:
+        with self.filename.open() as file:
             config.read_file(file)
         options = dict(config[self.main_section]
                        if config.has_section(self.main_section) else {})

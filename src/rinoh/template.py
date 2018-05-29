@@ -477,7 +477,7 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
 
     @property
     def _stylesheet_search_path(self):
-        return os.path.dirname(self.filename)
+        return self.filename.parent
 
     def process_section(self, section_name, classifier, items):
         if section_name in StringCollection.subclasses:
