@@ -9,6 +9,8 @@ import pytest
 
 from pathlib import Path
 
+from sphinx.application import Sphinx
+
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
@@ -65,3 +67,27 @@ def render_doctree(doctree, out_filename, reference_path,
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
                         .format(output_dir))
+
+
+def render_sphinx_project(name, project_dir, template_cfg=None, stylesheet=None):
+    project_path = TEST_DIR / project_dir
+    out_path = OUTPUT_DIR / name
+    confoverrides = {}
+    if template_cfg:
+        confoverrides['rinoh_template'] = str(TEST_DIR / template_cfg)
+    if stylesheet:
+        confoverrides['rinoh_stylesheet'] = str(TEST_DIR / stylesheet)
+    sphinx = Sphinx(srcdir=str(project_path),
+                    confdir=str(project_path),
+                    outdir=str(out_path / 'rinoh'),
+                    doctreedir=str(out_path / 'doctrees'),
+                    buildername='rinoh',
+                    confoverrides=confoverrides)
+    sphinx.build()
+    out_filename = '{}.pdf'.format(name)
+    with in_directory(out_path):
+        if not diff_pdf(TEST_DIR / 'reference' / out_filename,
+                        out_path / 'rinoh' / out_filename):
+            pytest.fail('The generated PDF is different from the reference '
+                        'PDF.\nGenerated files can be found in {}'
+                        .format(out_path))
