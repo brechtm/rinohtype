@@ -14,7 +14,7 @@ from math import sqrt
 from .attribute import Attribute, OptionSet, OverrideDefault, Integer, Bool
 from .dimension import DimensionBase as DimBase
 from .draw import Line, Rectangle, ShapeStyle, LineStyle
-from .flowable import Flowable, FlowableStyle, FlowableState
+from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import (StaticGroupedFlowables, GroupedFlowablesStyle,
                         ListOf, ListOfSection)
@@ -32,7 +32,6 @@ __all__ = ['Table', 'TableStyle', 'TableWithCaption',
 
 class TableState(FlowableState):
     table = ReadAliasAttribute('flowable')
-    width = NotImplementedAttribute()
 
     def __init__(self, table, column_widths, body_row_index=0):
         super().__init__(table)
@@ -160,7 +159,7 @@ class Table(Flowable):
         try:
             fixed_width = width.to_points(container.width)
         except AttributeError:
-            fixed_width = width or None
+            fixed_width = width or FlowableWidth.AUTO
         min_column_widths = calculate_column_widths(0)
         max_column_widths = calculate_column_widths(float('+inf'))
 
@@ -196,7 +195,7 @@ class Table(Flowable):
             return max_column_widths
 
         # determine table width
-        if fixed_width:
+        if fixed_width != FlowableWidth.AUTO:
             table_width = fixed_width
         elif total_portions:
             max_factor = max(maximum / width for width, maximum,
