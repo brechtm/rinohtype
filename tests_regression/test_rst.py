@@ -9,7 +9,7 @@ import pytest
 
 from pathlib import Path
 
-from regression import render_rst_file
+from regression import render_rst_file, OUTPUT_DIR
 
 
 RST_PATH = Path(__file__).parent / 'rst'
@@ -21,12 +21,14 @@ def collect_tests():
 
 
 @pytest.mark.parametrize('test_name', collect_tests())
-def test(test_name, tmpdir):
+def test(test_name):
     rst_path = RST_PATH / (test_name + '.rst')
+    test_output_dir = OUTPUT_DIR / test_name
     if test_name.startswith('sphinx_'):
         from sphinx.application import Sphinx
         from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 
-        Sphinx(srcdir=tmpdir.strpath, confdir=None, outdir=tmpdir.strpath,
-               doctreedir=tmpdir.strpath, buildername='dummy', status=None)
-    render_rst_file(rst_path, test_name, RST_PATH, tmpdir)
+        out_dir = str(test_output_dir)
+        Sphinx(srcdir=out_dir, confdir=None, outdir=out_dir,
+               doctreedir=out_dir, buildername='dummy', status=None)
+    render_rst_file(rst_path, test_name, RST_PATH)

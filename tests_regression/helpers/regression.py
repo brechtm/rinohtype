@@ -23,7 +23,7 @@ __all__ = ['render_doctree', 'render_rst_file']
 
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
-
+OUTPUT_DIR = TEST_DIR / 'output'
 
 class MinimalTemplate(DocumentTemplate):
     variables = dict(paper_size='a5')
@@ -38,23 +38,23 @@ class MinimalTemplate(DocumentTemplate):
     contents_page = PageTemplate(base='page')
 
 
-def render_rst_file(rst_path, out_filename, reference_path, tmpdir):
+def render_rst_file(rst_path, out_filename, reference_path):
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
     stylesheet_path = rst_path.with_suffix('.rts')
     config = (TemplateConfiguration('rst', template=MinimalTemplate,
                                     stylesheet=str(stylesheet_path))
               if stylesheet_path.exists() else None)
-    render_doctree(doctree, out_filename, reference_path, tmpdir, config)
+    render_doctree(doctree, out_filename, reference_path, config)
 
 
-def render_doctree(doctree, out_filename, reference_path, tmpdir,
+def render_doctree(doctree, out_filename, reference_path,
                    template_configuration=None):
     if template_configuration:
         document = template_configuration.document(doctree)
     else:
         document = MinimalTemplate(doctree)
-    output_dir = TEST_DIR / 'output' / out_filename
+    output_dir = OUTPUT_DIR / out_filename
     output_dir.mkdir(parents=True, exist_ok=True)
     document.render(output_dir / out_filename)
     pdf_filename = '{}.pdf'.format(out_filename)
