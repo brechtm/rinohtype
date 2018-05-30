@@ -238,10 +238,11 @@ class Flowable(Styled):
         pad_kwargs = dict(left=padding_left + border_left, right=right,
                           extra_space_below=float(padding_bottom
                                                   + border_bottom))
-        try:
-            container.advance(padding_top + border_top)
-        except ContainerOverflow:
-            raise EndOfContainer(state)
+        if draw_top:
+            try:
+                container.advance(padding_top + border_top)
+            except ContainerOverflow:
+                raise EndOfContainer(state)
         try:
             with InlineDownExpandingContainer('PADDING', container,
                                               **pad_kwargs) as pad_cntnr:

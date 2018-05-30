@@ -25,6 +25,8 @@ Changed:
 
 Fixed:
 
+* Border width is also taken into account for flowables that are continued on a
+  new page (#127)
 * Sphinx: handle case when source_suffix is a list (PR #110 by Nick Barrett)
 * incompatibility with Sphinx 1.6.1+ (latex_paper_size)
 * docutils: crash when a footnote is defined in an admonition (issue #95)
