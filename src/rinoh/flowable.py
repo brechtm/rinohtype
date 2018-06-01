@@ -40,7 +40,7 @@ __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float',
-           'PageBreak', 'PageBreakStyle']
+           'PageBreak', 'PageBreakStyle', 'Break']
 
 
 class FlowableWidth(OptionSet):
