@@ -33,7 +33,7 @@ __all__ = ['Table', 'TableStyle', 'TableWithCaption',
 class TableState(FlowableState):
     table = ReadAliasAttribute('flowable')
 
-    def __init__(self, table, column_widths, body_row_index=0):
+    def __init__(self, table, column_widths=None, body_row_index=0):
         super().__init__(table)
         self.column_widths = column_widths
         self.body_row_index = body_row_index
@@ -92,11 +92,13 @@ class Table(Flowable):
         self.column_widths = column_widths
 
     def initial_state(self, container):
-        return TableState(self, self._size_columns(container))
+        return TableState(self)
 
     def render(self, container, last_descender, state, space_below=0,
                **kwargs):
         # TODO: allow data to override style (align)
+        if state.column_widths is None:
+            state.column_widths = self._size_columns(container)
         get_style = partial(self.get_style, flowable_target=container)
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
