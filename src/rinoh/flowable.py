@@ -270,7 +270,7 @@ class Flowable(Styled):
             except AttributeError:
                 frame_width = container.width
             if not eoc.flowable_state.initial:
-                self.render_frame(container, frame_width, container.max_height,
+                self.render_frame(container, frame_width, container.cursor,
                                   top=draw_top, bottom=False)
             raise
 
