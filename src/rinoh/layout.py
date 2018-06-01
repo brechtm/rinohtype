@@ -409,13 +409,13 @@ class _InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
 class InlineDownExpandingContainer(ContextManager):
     """A :class:`DownExpandingContainer` whose top edge is placed at the
     parent's current cursor position. As flowables are flowed in this container,
-    the part's cursor also advances (but this behavior can be suppressed).
+    the parent's cursor also advances (but this behavior can be suppressed).
 
     This container can only be used as a context manager."""
 
     def __init__(self, name, parent, left=None, width=None, right=None,
                  extra_space_below=0, advance_parent=True):
-        """See :class:`Container` about on the `name`, `parent`, `left`, `width`
+        """See :class:`Container` about the `name`, `parent`, `left`, `width`
         and `right` parameters.
 
         `extra_space_below` specifies how much space should be reserved below

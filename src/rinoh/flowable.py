@@ -113,6 +113,10 @@ class Flowable(Styled):
     A flowable can adapt to the width of the container, or it can horizontally
     align itself in the container (see :class:`HorizontallyAlignedFlowable`).
 
+    Args:
+      align (HorizontalAlignment): horizontal alignment of the flowable
+      width (DimensionBase or None): the width of the table. If ``None``,
+          the width of the flowable is automatically determined.
     """
 
     style_class = FlowableStyle
