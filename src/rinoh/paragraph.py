@@ -596,7 +596,8 @@ class ParagraphBase(Flowable):
     def text(self, container):
         raise NotImplementedError('{}.text()'.format(self.__class__.__name__))
 
-    def render(self, container, descender, state, first_line_only=False):
+    def render(self, container, descender, state, space_below=0,
+               first_line_only=False):
         """Typeset the paragraph
 
         The paragraph is typeset in the given container starting below the
@@ -633,6 +634,8 @@ class ParagraphBase(Flowable):
                 max_line_width = max(max_line_width, line.cursor)
                 descender = line.typeset(container, text_align, line_spacing,
                                          descender, last_line, force)
+                if last_line:
+                    container.advance(space_below)
                 state.initial = False
                 saved_state = copy(state)
                 return Line(tab_stops, line_width, container,
@@ -640,8 +643,8 @@ class ParagraphBase(Flowable):
             except ContainerOverflow:
                 raise EndOfContainer(saved_state)
 
-        first_line = line = Line(tab_stops, line_width, container, indent_first,
-                                 self.significant_whitespace)
+        first_line = line = Line(tab_stops, line_width, container,
+                                 indent_first, self.significant_whitespace)
         while True:
             try:
                 word = state.next_word()

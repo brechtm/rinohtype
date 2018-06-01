@@ -391,49 +391,24 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
             super().before_placing()
 
 
-class _InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
+class InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
+    """A :class:`DownExpandingContainer` whose top edge is placed at the
+    parent's current cursor position. As flowables are flowed in this container,
+    the parent's cursor also advances (but this behavior can be suppressed).
+
+    See :class:`Container` about the `name`, `parent`, `left`, `width`
+    and `right` parameters. Setting `advance_parent` to `False` prevents the
+    parent container's cursor being advanced.
+
+    """
+
     def __init__(self, name, parent, left=None, width=None, right=None,
-                 extra_space_below=0, advance_parent=True, place=True):
+                 advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
                          width=width, right=right,
                          max_height=parent.remaining_height, place=place)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
-        self.extra_space_below = extra_space_below
-
-    @property
-    def remaining_height(self):
-        return super().remaining_height - self.extra_space_below
-
-
-class InlineDownExpandingContainer(ContextManager):
-    """A :class:`DownExpandingContainer` whose top edge is placed at the
-    parent's current cursor position. As flowables are flowed in this container,
-    the parent's cursor also advances (but this behavior can be suppressed).
-
-    This container can only be used as a context manager."""
-
-    def __init__(self, name, parent, left=None, width=None, right=None,
-                 extra_space_below=0, advance_parent=True):
-        """See :class:`Container` about the `name`, `parent`, `left`, `width`
-        and `right` parameters.
-
-        `extra_space_below` specifies how much space should be reserved below
-        the flowables.
-
-        Setting `advance_parent` to `False` prevents the parent container's
-        cursor being advanced."""
-        self._container = _InlineDownExpandingContainer(name, parent,
-                                                        left, width, right,
-                                                        extra_space_below,
-                                                        advance_parent)
-
-    def __enter__(self):
-        return self._container
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if exc_value is None:
-            self._container.advance(self._container.extra_space_below, True)
 
 
 class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
@@ -454,7 +429,7 @@ class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
                          right=right, bottom=bottom, max_height=max_height)
 
 
-class _MaybeContainer(_InlineDownExpandingContainer):
+class _MaybeContainer(InlineDownExpandingContainer):
     def __init__(self, parent, left=None, width=None, right=None):
         super().__init__('MAYBE', parent, left=left, width=width, right=right,
                          place=False)

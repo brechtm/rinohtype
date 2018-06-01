@@ -17,7 +17,6 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
-from contextlib import contextmanager
 from copy import copy
 from itertools import chain, tee
 from token import NAME
@@ -31,7 +30,7 @@ from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      PageBreakException)
 from .style import Styled, Style
 from .text import StyledText
-from .util import ReadAliasAttribute, NotImplementedAttribute
+from .util import ReadAliasAttribute
 
 
 __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
@@ -189,34 +188,35 @@ class Flowable(Styled):
         reference_id = self.get_id(container.document, create=False)
         right = container.width - margin_right
         container.register_styled(self, continued=not state.initial)
-        with InlineDownExpandingContainer('MARGIN', container, left=margin_left,
-                                          right=right) as margin_container:
-            initial_before, initial_after = state.initial, True
-            width = None
+        margin_container = InlineDownExpandingContainer('MARGIN', container,
+                                                        left=margin_left,
+                                                        right=right)
+        initial_before, initial_after = state.initial, True
+        width = None
+        try:
+            width, inner_top_to_baseline, descender = \
+                self.flow_inner(margin_container, last_descender,
+                                state=state, **kwargs)
+            top_to_baseline += inner_top_to_baseline
+            initial_after = False
+        except EndOfContainer as eoc:
+            initial_after = eoc.flowable_state.initial
             try:
-                width, inner_top_to_baseline, descender = \
-                    self.flow_inner(margin_container, last_descender,
-                                    state=state, **kwargs)
-                top_to_baseline += inner_top_to_baseline
-                initial_after = False
-            except EndOfContainer as eoc:
-                initial_after = eoc.flowable_state.initial
-                try:
-                    width = eoc.flowable_state.width
-                except AttributeError:
-                    width = margin_container.width
-                raise eoc
-            finally:
-                if self.annotation:
-                    height = float(margin_container.height)
-                    margin_container.canvas.annotate(self.annotation,
-                                                     0, 0, width, height)
-                self.mark_page_nonempty(container)
-                if initial_before and not initial_after:
-                    if reference_id:
-                        self.create_destination(margin_container, True)
-                if width is not None:
-                    self._align(margin_container, width)
+                width = eoc.flowable_state.width
+            except AttributeError:
+                width = margin_container.width
+            raise eoc
+        finally:
+            if self.annotation:
+                height = float(margin_container.height)
+                margin_container.canvas.annotate(self.annotation,
+                                                 0, 0, width, height)
+            self.mark_page_nonempty(container)
+            if initial_before and not initial_after:
+                if reference_id:
+                    self.create_destination(margin_container, True)
+            if width is not None:
+                self._align(margin_container, width)
         container.advance(float(self.get_style('space_below', container)), True)
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
@@ -238,30 +238,30 @@ class Flowable(Styled):
         border_right = border_width('border_right') or border
         border_top = border_width('border_top') or border
         border_bottom = border_width('border_bottom') or border
+        left = padding_left + border_left
         right = container.width - padding_right - border_right
-        pad_kwargs = dict(left=padding_left + border_left, right=right,
-                          extra_space_below=float(padding_bottom
-                                                  + border_bottom))
+        kwargs['space_below'] = float(padding_bottom + border_bottom)
         if draw_top:
             try:
                 container.advance(padding_top + border_top)
             except ContainerOverflow:
                 raise EndOfContainer(state)
         try:
-            with InlineDownExpandingContainer('PADDING', container,
-                                              **pad_kwargs) as pad_cntnr:
-                content_width, first_line_ascender, descender = \
-                    self.render(pad_cntnr, descender, state=state, **kwargs)
+            pad_cntnr = InlineDownExpandingContainer('PADDING', container,
+                                                     left=left, right=right)
+            content_width, first_line_ascender, descender = \
+                self.render(pad_cntnr, descender, state=state, **kwargs)
             padded_width = padding_left + content_width + padding_right
+            bordered_width = border_left + padded_width + border_right
             if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
-                frame_width = padded_width
+                frame_width = bordered_width
             else:
                 assert width == FlowableWidth.FILL
                 frame_width = container.width
             self.render_frame(container, frame_width, container.height,
                               top=draw_top)
             top_to_baseline = padding_top + first_line_ascender
-            return padded_width, top_to_baseline, descender
+            return bordered_width, top_to_baseline, descender
         except EndOfContainer as eoc:
             try:
                 padded_width = padding_left + eoc.flowable_state.width + padding_right
@@ -302,7 +302,7 @@ class Flowable(Styled):
         if bottom:
             render_border((0, height), (width, height), border_bottom, 0, 1)
 
-    def render(self, container, descender, state, **kwargs):
+    def render(self, container, descender, state, space_below=0, **kwargs):
         """Renders the flowable's content to `container`, with the flowable's
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceding line or `None`."""
@@ -679,12 +679,14 @@ class LabeledFlowable(Flowable):
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
-                    with inline_container('LABEL', maybe_container,
-                                  width=label_cntnr_width) as label_container:
-                        label_container.advance(offset_label)
-                        _, _, label_descender = self.label.flow(label_container,
-                                                                last_descender)
-                        label_height = label_container.height
+                    label_container = \
+                        InlineDownExpandingContainer('LABEL', maybe_container,
+                                                     width=label_cntnr_width,
+                                                     advance_parent=False)
+                    label_container.advance(offset_label)
+                    _, _, label_descender = self.label.flow(label_container,
+                                                            last_descender)
+                    label_height = label_container.height
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_descender
@@ -692,11 +694,13 @@ class LabeledFlowable(Flowable):
                     label_height = label_descender = 0
                 maybe_container.advance(offset_content)
                 rendering_content = True
-                with inline_container('CONTENT', maybe_container,
-                                      left=left) as content_container:
-                    width, _, content_descender \
-                        = self.flowable.flow(content_container, last_descender,
-                                             state=state.content_flowable_state)
+                content_container = \
+                    InlineDownExpandingContainer('CONTENT', maybe_container,
+                                                 left=left,
+                                                 advance_parent=False)
+                width, _, content_descender \
+                    = self.flowable.flow(content_container, last_descender,
+                                         state=state.content_flowable_state)
                 content_height = content_container.cursor
         except (ContainerOverflow, EndOfContainer) as eoc:
             content_state = eoc.flowable_state if rendering_content else None
@@ -713,17 +717,11 @@ class LabeledFlowable(Flowable):
 
 def find_baseline(flowable, container, last_descender, state=None, **kwargs):
     virtual_container = VirtualContainer(container)
-    with inline_container('DUMMY', virtual_container, **kwargs) as inline_ctnr:
-        _, baseline, _ = flowable.flow(inline_ctnr, last_descender,
-                                       state=state, first_line_only=True)
+    inline_ctnr = InlineDownExpandingContainer('DUMMY', virtual_container,
+                                               advance_parent=False)
+    _, baseline, _ = flowable.flow(inline_ctnr, last_descender,
+                                   state=state, first_line_only=True)
     return baseline
-
-
-@contextmanager
-def inline_container(name, container, **kwargs):
-    with InlineDownExpandingContainer(name, container, advance_parent=False,
-                                      **kwargs) as container:
-        yield container
 
 
 class GroupedLabeledFlowables(GroupedFlowables):

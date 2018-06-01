@@ -94,16 +94,21 @@ class Table(Flowable):
     def initial_state(self, container):
         return TableState(self, self._size_columns(container))
 
-    def render(self, container, last_descender, state, **kwargs):
+    def render(self, container, last_descender, state, space_below=0,
+               **kwargs):
         # TODO: allow data to override style (align)
         get_style = partial(self.get_style, flowable_target=container)
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
                 rows = section[next_row_index:]
-                for rendered_rows in self._render_section(container, rows,
-                                                          state.column_widths):
+                rendered_spans = self._render_section(container, rows,
+                                                      state.column_widths)
+                for rendered_rows, is_last_span in rendered_spans:
                     sum_row_heights = sum(row.height for row in rendered_rows)
-                    if sum_row_heights > maybe_container.remaining_height:
+                    remaining_height = maybe_container.remaining_height
+                    if isinstance(section, TableBody) and is_last_span:
+                        remaining_height -= space_below
+                    if sum_row_heights > remaining_height:
                         break
                     self._place_rows_and_render_borders(maybe_container,
                                                         rendered_rows)
@@ -122,6 +127,7 @@ class Table(Flowable):
                 if min(next_row_index, rows_left) >= split_minimum_rows:
                     state.body_row_index = next_row_index
                 raise EndOfContainer(state)
+            container.advance(space_below)
         return sum(state.column_widths), 0, 0
 
     def _size_columns(self, container):
@@ -258,7 +264,8 @@ class Table(Flowable):
             rendered_row = cls._render_row(column_widths, container, row)
             rendered_rows.append(rendered_row)
             if rows_left_in_span == 0:
-                yield cls._vertically_size_cells(rendered_rows)
+                is_last_span = row == rows[-1]
+                yield cls._vertically_size_cells(rendered_rows), is_last_span
                 rendered_rows = []
         assert not rendered_rows
 
