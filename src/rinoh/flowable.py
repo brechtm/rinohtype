@@ -233,11 +233,13 @@ class Flowable(Styled):
         padding_left = self.get_style('padding_left', container) or padding
         padding_right = self.get_style('padding_right', container) or padding
         padding_bottom = self.get_style('padding_bottom', container) or padding
+        padding_h = padding_left + padding_right
         border = border_width('border')
         border_left = border_width('border_left') or border
         border_right = border_width('border_right') or border
         border_top = border_width('border_top') or border
         border_bottom = border_width('border_bottom') or border
+        border_h = border_left + border_right
         left = padding_left + border_left
         right = container.width - padding_right - border_right
         kwargs['space_below'] = float(padding_bottom + border_bottom)
@@ -251,8 +253,8 @@ class Flowable(Styled):
                                                      left=left, right=right)
             content_width, first_line_ascender, descender = \
                 self.render(pad_cntnr, descender, state=state, **kwargs)
-            padded_width = padding_left + content_width + padding_right
-            bordered_width = border_left + padded_width + border_right
+            padded_width = content_width + padding_h
+            bordered_width = padded_width + border_h
             if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
                 frame_width = bordered_width
             else:
@@ -264,11 +266,11 @@ class Flowable(Styled):
             return bordered_width, top_to_baseline, descender
         except EndOfContainer as eoc:
             try:
-                padded_width = padding_left + eoc.flowable_state.width + padding_right
+                frame_width = eoc.flowable_state.width + padding_h + border_h
             except AttributeError:
-                padded_width = container.width
+                frame_width = container.width
             if not eoc.flowable_state.initial:
-                self.render_frame(container, padded_width, container.max_height,
+                self.render_frame(container, frame_width, container.max_height,
                                   top=draw_top, bottom=False)
             raise
 
