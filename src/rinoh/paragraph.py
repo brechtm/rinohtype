@@ -626,16 +626,25 @@ class ParagraphBase(Flowable):
         prev_state = copy(state)
         max_line_width = 0
 
-        def typeset_line(line, last_line=False, force=False):
+        def typeset_line(line, last_line=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
-            nonlocal state, saved_state, max_line_width, descender
+            nonlocal state, saved_state, max_line_width, descender, space_below
             try:
                 max_line_width = max(max_line_width, line.cursor)
-                descender = line.typeset(container, text_align, line_spacing,
-                                         descender, last_line, force)
-                if last_line:
-                    container.advance(space_below)
+                if descender is None:
+                    advance = line.ascender(container)
+                else:
+                    advance = line_spacing.advance(line, descender, container)
+                descender = line.descender(container)
+                line.advance = advance
+                total_advance = advance + (space_below if last_line else 0) - descender
+                if container.remaining_height < total_advance:
+                    raise ContainerOverflow(container.page.number)
+                container.advance(advance)
+                advance_below = (space_below if last_line else 0) - descender
+                line.typeset(container, text_align, last_line)
+                container.advance(advance_below)
                 state.initial = False
                 saved_state = copy(state)
                 return Line(tab_stops, line_width, container,
@@ -664,7 +673,7 @@ class ParagraphBase(Flowable):
                     continue
             except NewLineException:
                 line.append(word.glyphs_span)
-                line = typeset_line(line, last_line=True, force=True)
+                line = typeset_line(line, last_line=True)
                 if first_line_only:
                     break
             prev_state = copy(state)
@@ -822,7 +831,6 @@ class Line(list):
         self.indent = indent
         self.container = container
         self.cursor = indent
-        self.advance = 0
         self.significant_whitespace = significant_whitespace
         self._has_tab = False
         self._current_tab = None
@@ -897,8 +905,13 @@ class Line(list):
             self.append(glyphs_span)
         return True
 
-    def typeset(self, container, text_align, line_spacing, last_descender,
-                last_line=False, force=False):
+    def descender(self, container):
+        return min(glyph_span.span.descender(container) for glyph_span in self)
+
+    def ascender(self, container):
+        return max(glyph_span.span.ascender(container) for glyph_span in self)
+
+    def typeset(self, container, text_align, last_line=False):
         """Typeset the line in `container` below its current cursor position.
         Advances the container's cursor to below the descender of this line.
 
@@ -919,22 +932,10 @@ class Line(list):
             else:
                 break
         else:   # abort if the line is empty
-            return last_descender
+            return
 
-        descender = min(glyph_span.span.descender(container)
-                        for glyph_span in self)
-        if last_descender is None:
-            advance = max(glyph_span.span.ascender(container)
-                          for glyph_span in self)
-        else:
-            advance = line_spacing.advance(self, last_descender, container)
-        container.advance(advance)
-        self.advance = advance
-
-        container.advance(- descender)
         for glyph_span in self:
             glyph_span.span.before_placing(container)
-        container.advance(descender)
 
         # horizontal displacement
         left = self.indent
@@ -974,8 +975,6 @@ class Line(list):
             current_annotation.update(span, left, width)
             left += width
         current_annotation.place_if_any()
-        container.advance(- descender)
-        return descender
 
 
 def group_spans(line):
