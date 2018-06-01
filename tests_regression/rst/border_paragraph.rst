@@ -1,3 +1,5 @@
+.. _first:
+
 .. class:: fat-border
 
     A Paragraph split across two pages 1. A Paragraph split across two pages.
@@ -16,6 +18,8 @@
     spacer
 
 
+.. _second:
+
 .. class:: fat-border
 
     A Paragraph split across two pages 1. A Paragraph split across two pages.
@@ -38,6 +42,8 @@
 
     spacer
 
+
+.. _third:
 
 .. class:: fat-border
 
