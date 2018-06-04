@@ -129,7 +129,6 @@ class Table(Flowable):
                 if min(next_row_index, rows_left) >= split_minimum_rows:
                     state.body_row_index = next_row_index
                 raise EndOfContainer(state)
-            container.advance(space_below)
         return sum(state.column_widths), 0, 0
 
     def _size_columns(self, container):

@@ -633,15 +633,14 @@ class ParagraphBase(Flowable):
             max_line_width = max(max_line_width, line.cursor)
             advance = (line.ascender(container) if descender is None
                        else line_spacing.advance(line, descender, container))
-            descender = line.descender(container)
+            descender = line.descender(container)   # descender <= 0
             line.advance = advance
             total_advance = advance + (space_below if last_line else 0) - descender
             if container.remaining_height < total_advance:
                 raise EndOfContainer(saved_state)
             assert container.advance2(advance)
-            advance_below = (space_below if last_line else 0) - descender
             line.typeset(container, text_align, last_line)
-            assert container.advance2(advance_below)
+            assert container.advance2(- descender)
             state.initial = False
             saved_state = copy(state)
             return Line(tab_stops, line_width, container,

@@ -245,7 +245,7 @@ class Flowable(Styled):
         border_h = border_left + border_right
         left = padding_left + border_left
         right = container.width - padding_right - border_right
-        kwargs['space_below'] = float(padding_bottom + border_bottom)
+        space_below = float(padding_bottom + border_bottom)
         if draw_top:
             if not container.advance2(padding_top + border_top):
                 raise EndOfContainer(state)
@@ -253,7 +253,8 @@ class Flowable(Styled):
                                                  left=left, right=right)
         try:
             content_width, first_line_ascender, descender = \
-                self.render(pad_cntnr, descender, state=state, **kwargs)
+                self.render(pad_cntnr, descender, state=state,
+                            space_below=space_below, **kwargs)
         except EndOfContainer as eoc:
             try:
                 frame_width = eoc.flowable_state.width + padding_h + border_h
@@ -270,6 +271,7 @@ class Flowable(Styled):
         else:
             assert width == FlowableWidth.FILL
             frame_width = container.width
+        assert container.advance2(space_below)
         self.render_frame(container, frame_width, container.height,
                           top=draw_top)
         top_to_baseline = padding_top + first_line_ascender
@@ -454,13 +456,14 @@ class GroupedFlowables(Flowable):
         pass   # only the children place content on the page
 
     def render(self, container, descender, state, first_line_only=False,
-               **kwargs):
+               space_below=0, **kwargs):
         max_flowable_width = 0
         first_top_to_baseline = None
         item_spacing = self.get_style('flowable_spacing', container)
         saved_state = copy(state)
         try:
             while True:
+                # TODO: consider space_below for the last flowable
                 width, top_to_baseline, descender = \
                     self._flow_with_next(state, container, descender,
                                          first_line_only=first_line_only,
