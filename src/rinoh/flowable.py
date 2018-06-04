@@ -249,22 +249,11 @@ class Flowable(Styled):
         if draw_top:
             if not container.advance2(padding_top + border_top):
                 raise EndOfContainer(state)
+        pad_cntnr = InlineDownExpandingContainer('PADDING', container,
+                                                 left=left, right=right)
         try:
-            pad_cntnr = InlineDownExpandingContainer('PADDING', container,
-                                                     left=left, right=right)
             content_width, first_line_ascender, descender = \
                 self.render(pad_cntnr, descender, state=state, **kwargs)
-            padded_width = content_width + padding_h
-            bordered_width = padded_width + border_h
-            if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
-                frame_width = bordered_width
-            else:
-                assert width == FlowableWidth.FILL
-                frame_width = container.width
-            self.render_frame(container, frame_width, container.height,
-                              top=draw_top)
-            top_to_baseline = padding_top + first_line_ascender
-            return bordered_width, top_to_baseline, descender
         except EndOfContainer as eoc:
             try:
                 frame_width = eoc.flowable_state.width + padding_h + border_h
@@ -274,6 +263,17 @@ class Flowable(Styled):
                 self.render_frame(container, frame_width, container.cursor,
                                   top=draw_top, bottom=False)
             raise
+        padded_width = content_width + padding_h
+        bordered_width = padded_width + border_h
+        if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
+            frame_width = bordered_width
+        else:
+            assert width == FlowableWidth.FILL
+            frame_width = container.width
+        self.render_frame(container, frame_width, container.height,
+                          top=draw_top)
+        top_to_baseline = padding_top + first_line_ascender
+        return bordered_width, top_to_baseline, descender
 
     def render_frame(self, container, width, height, top=True, bottom=True):
         width, height = float(width), - float(height)
