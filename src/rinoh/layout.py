@@ -264,6 +264,21 @@ class FlowablesContainerBase(Container):
         else:
             raise ContainerOverflow(self.page.number)
 
+    def advance2(self, height, ignore_overflow=False):
+        """Advance the cursor by `height`. Returns `True` on success.
+
+        Returns `False` if this would cause the cursor to point beyond the
+        bottom of the container.
+
+        """
+        if height <= self.remaining_height:
+            self._self_cursor.grow(height)
+        elif ignore_overflow:
+            self._self_cursor.grow(float(self.remaining_height))
+        else:
+            return False
+        return True
+
     def check_overflow(self):
         if self.remaining_height < 0:
             raise ReflowRequired

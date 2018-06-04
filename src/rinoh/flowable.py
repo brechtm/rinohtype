@@ -182,9 +182,7 @@ class Flowable(Styled):
         state = state or self.initial_state(container)
         if state.initial:
             space_above = self.get_style('space_above', container)
-            try:
-                container.advance(float(space_above))
-            except ContainerOverflow:
+            if not container.advance2(float(space_above)):
                 raise EndOfContainer(state)
             top_to_baseline += float(space_above)
         margin_left = self.get_style('margin_left', container)
@@ -221,7 +219,8 @@ class Flowable(Styled):
                     self.create_destination(margin_container, True)
             if width is not None:
                 self._align(margin_container, width)
-        container.advance(float(self.get_style('space_below', container)), True)
+        space_below = self.get_style('space_below', container)
+        container.advance2(float(space_below), ignore_overflow=True)
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
 
@@ -248,9 +247,7 @@ class Flowable(Styled):
         right = container.width - padding_right - border_right
         kwargs['space_below'] = float(padding_bottom + border_bottom)
         if draw_top:
-            try:
-                container.advance(padding_top + border_top)
-            except ContainerOverflow:
+            if not container.advance2(padding_top + border_top):
                 raise EndOfContainer(state)
         try:
             pad_cntnr = InlineDownExpandingContainer('PADDING', container,
@@ -474,7 +471,7 @@ class GroupedFlowables(Flowable):
                 if first_line_only:
                     break
                 saved_state = copy(state)
-                container.advance(item_spacing, True)
+                container.advance2(item_spacing, ignore_overflow=True)
         except LastFlowableException as exc:
             descender = exc.last_descender
         except KeepWithNextException:

@@ -630,27 +630,22 @@ class ParagraphBase(Flowable):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state."""
             nonlocal state, saved_state, max_line_width, descender, space_below
-            try:
-                max_line_width = max(max_line_width, line.cursor)
-                if descender is None:
-                    advance = line.ascender(container)
-                else:
-                    advance = line_spacing.advance(line, descender, container)
-                descender = line.descender(container)
-                line.advance = advance
-                total_advance = advance + (space_below if last_line else 0) - descender
-                if container.remaining_height < total_advance:
-                    raise ContainerOverflow(container.page.number)
-                container.advance(advance)
-                advance_below = (space_below if last_line else 0) - descender
-                line.typeset(container, text_align, last_line)
-                container.advance(advance_below)
-                state.initial = False
-                saved_state = copy(state)
-                return Line(tab_stops, line_width, container,
-                            significant_whitespace=self.significant_whitespace)
-            except ContainerOverflow:
+            max_line_width = max(max_line_width, line.cursor)
+            advance = (line.ascender(container) if descender is None
+                       else line_spacing.advance(line, descender, container))
+            descender = line.descender(container)
+            line.advance = advance
+            total_advance = advance + (space_below if last_line else 0) - descender
+            if container.remaining_height < total_advance:
                 raise EndOfContainer(saved_state)
+            assert container.advance2(advance)
+            advance_below = (space_below if last_line else 0) - descender
+            line.typeset(container, text_align, last_line)
+            assert container.advance2(advance_below)
+            state.initial = False
+            saved_state = copy(state)
+            return Line(tab_stops, line_width, container,
+                        significant_whitespace=self.significant_whitespace)
 
         first_line = line = Line(tab_stops, line_width, container,
                                  indent_first, self.significant_whitespace)
