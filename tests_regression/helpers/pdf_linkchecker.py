@@ -24,7 +24,18 @@ def check_pdf(pdf):
     anchors = [str(key) for key in pdf.catalog['Names']['Dests']['Names'][::2]]
     superfluous_anchors = [x for x in anchors if x not in links]
     badlinks = [x for x in links if x not in anchors]
-    return anchors, links, superfluous_anchors, badlinks, urls, badurls
+    outlines = list(iter_outlines(pdf.catalog['Outlines']))
+    return (anchors, links, superfluous_anchors,
+            badlinks, urls, badurls, outlines)
+
+
+def iter_outlines(outlines, level=0):
+    if 'Title' in outlines:
+        yield level, outlines['Title'], outlines['Dest']
+    if 'First' in outlines:
+        yield from iter_outlines(outlines['First'], level + 1)
+    if 'Next' in outlines:
+        yield from iter_outlines(outlines['Next'], level)
 
 
 def check_pdf_links(filename):
@@ -36,10 +47,10 @@ if __name__ == '__main__':
     fname = sys.argv[1]
     print('Checking %s' % fname)
     (anchors, links, superfluous_anchors,
-     badlinks, urls, badurls) = check_pdf_links(fname)
+     badlinks, urls, badurls, outlines) = check_pdf_links(fname)
     print('urls: ', ', '.join(urls))
     print
-    print( 'anchors: ', ', '.join(anchors))
+    print('anchors: ', ', '.join(anchors))
     print
     print('superfluous_anchors: ', ', '.join(superfluous_anchors))
     print
@@ -51,3 +62,7 @@ if __name__ == '__main__':
     for item in badurls:
         for key, value in item.items():
             print('  {}: {}'.format(key, value))
+    print()
+    print('outlines:')
+    for level, title, dest in iter_outlines(outlines):
+        print('{:4} {!s:20} {}'.format(level, dest, title))

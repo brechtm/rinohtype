@@ -60,9 +60,12 @@ def render_doctree(doctree, out_filename, reference_path,
     output_dir.mkdir(parents=True, exist_ok=True)
     document.render(output_dir / out_filename)
     pdf_filename = '{}.pdf'.format(out_filename)
+    _, _, _, _, _, _, ref_outlines = \
+        check_pdf_links(reference_path / pdf_filename)
     with in_directory(output_dir):
-        _, _, _, badlinks, _, _ = check_pdf_links(pdf_filename)
+        _, _, _, badlinks, _, _, outlines = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
+        pytest.assume(ref_outlines == outlines)
         if not diff_pdf(reference_path / pdf_filename, pdf_filename):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
