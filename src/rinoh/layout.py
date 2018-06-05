@@ -78,7 +78,9 @@ class FlowableTarget(object):
 
         `document_part` is the :class:`Document` this flowable target is part
         of."""
-        self.flowables = flowable.StaticGroupedFlowables([])
+        from .flowable import StaticGroupedFlowables
+
+        self.flowables = StaticGroupedFlowables([])
         document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
@@ -601,6 +603,3 @@ class Chain(FlowableTarget):
         except ReflowRequired:
             self._rerendering = False
             raise
-
-
-from . import flowable
