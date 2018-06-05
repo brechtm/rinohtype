@@ -13,6 +13,21 @@ padding = 5pt
 horizontal_align = center
 
 
+[left-aligned flowable with fat border : Flowable(has_class='fat-border-left')]
+border = 20pt, #000
+border_bottom = 5pt, #00f
+padding = 5pt
+padding_top = 20pt
+horizontal_align = left
+
+[right-aligned flowable with fat border : Flowable(has_class='fat-border-right')]
+border = 20pt, #000
+border_right = 5pt, #f00
+padding = 5pt
+padding_left = 20pt
+horizontal_align = right
+
+
 [spacer : Paragraph(has_class='spacer')]
 border = 1pt, #555
 padding_top = 5.5cm
