@@ -196,9 +196,11 @@ class Flowable(Styled):
         initial_before, initial_after = state.initial, True
         width = None
         try:
-            width, inner_top_to_baseline, descender = \
+            state, width, inner_top_to_baseline, descender = \
                 self.flow_inner(margin_container, last_descender,
                                 state=state, **kwargs)
+            if state is not None:
+                raise EndOfContainer(state)
             top_to_baseline += inner_top_to_baseline
             initial_after = False
         except EndOfContainer as eoc:
@@ -248,22 +250,22 @@ class Flowable(Styled):
         space_below = float(padding_bottom + border_bottom)
         if draw_top:
             if not container.advance2(padding_top + border_top):
-                raise EndOfContainer(state)
+                return state, 0, 0, descender
         pad_cntnr = InlineDownExpandingContainer('PADDING', container,
                                                  left=left, right=right)
         try:
             content_width, first_line_ascender, descender = \
                 self.render(pad_cntnr, descender, state=state,
                             space_below=space_below, **kwargs)
+            state = None
+            assert container.advance2(space_below)
         except EndOfContainer as eoc:
+            state = eoc.flowable_state
+            first_line_ascender = 0
             try:
-                frame_width = eoc.flowable_state.width + padding_h + border_h
+                content_width = state.width
             except AttributeError:
-                frame_width = container.width
-            if not eoc.flowable_state.initial:
-                self.render_frame(container, frame_width, container.cursor,
-                                  top=draw_top, bottom=False)
-            raise
+                content_width = pad_cntnr.width
         padded_width = content_width + padding_h
         bordered_width = padded_width + border_h
         if isinstance(width, DimensionBase) or width == FlowableWidth.AUTO:
@@ -271,11 +273,11 @@ class Flowable(Styled):
         else:
             assert width == FlowableWidth.FILL
             frame_width = container.width
-        assert container.advance2(space_below)
-        self.render_frame(container, frame_width, container.height,
-                          top=draw_top)
-        top_to_baseline = padding_top + first_line_ascender
-        return bordered_width, top_to_baseline, descender
+        if state is None or not state.initial:
+            self.render_frame(container, frame_width, container.height,
+                              top=draw_top, bottom=state is None)
+        top_to_baseline = border_top + padding_top + first_line_ascender
+        return state, bordered_width, top_to_baseline, descender
 
     def render_frame(self, container, width, height, top=True, bottom=True):
         width, height = float(width), - float(height)
