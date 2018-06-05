@@ -354,14 +354,15 @@ class Attribution(Paragraph):
                             style='attribution')
 
 
-class Line_Block(DocutilsGroupingNode):
-    style = 'line block'
-
-
-class Line(DocutilsBodyNode):
+class Line_Block(Paragraph):
     def build_flowable(self):
-        return rt.Paragraph(self.process_content() or '\n',
-                            style='line block line')
+        text = intersperse([line.styled_text() for line in self.line],
+                           rt.Newline())
+        return rt.Paragraph(text)
+
+
+class Line(DocutilsInlineNode):
+    pass
 
 
 class Doctest_Block(DocutilsBodyNode):
