@@ -323,11 +323,8 @@ class ListOfSection(Section):
         return '{}()'.format(type(self).__name__)
 
     def is_hidden(self, container):
-        result = (super().is_hidden(container)
-                  or self.list_of.is_hidden(container))
-        if result and self in container.document._sections:
-            container.document._sections.remove(self)
-        return result
+        return (super().is_hidden(container)
+                or self.list_of.is_hidden(container))
 
 
 class ListOfStyle(GroupedFlowablesStyle, ParagraphStyle):
