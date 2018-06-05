@@ -39,7 +39,8 @@ __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'DownExpandingContainer', 'InlineDownExpandingContainer',
            'UpExpandingContainer', 'VirtualContainer', 'Chain',
            'FootnoteContainer', 'MaybeContainer', 'discard_state',
-           'ContainerOverflow', 'EndOfContainer']
+           'ContainerOverflow', 'EndOfContainer',
+           'PageBreakException']
 
 
 class ContainerOverflow(Exception):
@@ -77,7 +78,7 @@ class FlowableTarget(object):
 
         `document_part` is the :class:`Document` this flowable target is part
         of."""
-        self.flowables = []
+        self.flowables = flowable.StaticGroupedFlowables([])
         document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
@@ -96,8 +97,7 @@ class FlowableTarget(object):
         return self
 
     def prepare(self, document):
-        for flowable in self.flowables:
-            flowable.prepare(self)
+        self.flowables.prepare(self)
 
 
 
@@ -312,10 +312,7 @@ class _FlowablesContainer(FlowableTarget, FlowablesContainerBase):
                          *args, **kwargs)
 
     def _render(self, type, rerender):
-        last_descender = None
-        for flowable in self.flowables:
-            if not flowable.is_hidden(self):
-                _, _, last_descender = flowable.flow(self, last_descender)
+        self.flowables.flow(self, last_descender=None)
 
 
 class FlowablesContainer(_FlowablesContainer):
@@ -549,19 +546,6 @@ class FootnoteContainer(UpExpandingContainer):
         return self._footnote_number
 
 
-class ChainState(object):
-    def __init__(self, flowable_index=0, flowable_state=None):
-        self.flowable_index = flowable_index
-        self.flowable_state = flowable_state
-
-    def __copy__(self):
-        return self.__class__(self.flowable_index, copy(self.flowable_state))
-
-    def next_flowable(self):
-        self.flowable_index += 1
-        self.flowable_state = None
-
-
 class Chain(FlowableTarget):
     """A :class:`FlowableTarget` that renders its flowables to a series of
     containers. Once a container is filled, the chain starts flowing flowables
@@ -581,8 +565,7 @@ class Chain(FlowableTarget):
         """Reset the state of this chain: empty the list of containers, and zero
         the counter keeping track of which flowable needs to be rendered next.
         """
-        self._state = ChainState()
-        self._fresh_page_state = copy(self._state)
+        self._state = self._fresh_page_state = None
         self._rerendering = False
 
     @property
@@ -600,26 +583,24 @@ class Chain(FlowableTarget):
                 self._rerendering = True
         try:
             self.done = False
-            last_descender = None
-            while self._state.flowable_index < len(self.flowables):
-                flowable = self.flowables[self._state.flowable_index]
-                if not flowable.is_hidden(container):
-                    _, _, last_descender = flowable.flow(container, last_descender,
-                                                         self._state.flowable_state)
-                self._state.next_flowable()
+            self.flowables.flow(container, last_descender=None,
+                                state=self._state)
             # all flowables have been rendered
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             self.done = True
         except PageBreakException as exc:
-            self._state.flowable_state = exc.flowable_state
+            self._state = exc.flowable_state
             self._fresh_page_state = copy(self._state)
             raise
         except EndOfContainer as e:
-            self._state.flowable_state = e.flowable_state
+            self._state = e.flowable_state
             if container == self.last_container:
                 # save state for when ReflowRequired occurs
                 self._fresh_page_state = copy(self._state)
         except ReflowRequired:
             self._rerendering = False
             raise
+
+
+from . import flowable
