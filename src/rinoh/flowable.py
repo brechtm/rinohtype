@@ -193,34 +193,26 @@ class Flowable(Styled):
         margin_container = InlineDownExpandingContainer('MARGIN', container,
                                                         left=margin_left,
                                                         right=right)
-        initial_before, initial_after = state.initial, True
-        width = None
-        try:
-            state, width, inner_top_to_baseline, descender = \
-                self.flow_inner(margin_container, last_descender,
-                                state=state, **kwargs)
-            if state is not None:
-                raise EndOfContainer(state)
-            top_to_baseline += inner_top_to_baseline
-            initial_after = False
-        except EndOfContainer as eoc:
-            initial_after = eoc.flowable_state.initial
-            try:
-                width = eoc.flowable_state.width
-            except AttributeError:
-                width = margin_container.width
-            raise eoc
-        finally:
-            if self.annotation:
-                height = float(margin_container.height)
-                margin_container.canvas.annotate(self.annotation,
-                                                 0, 0, width, height)
-            self.mark_page_nonempty(container)
-            if initial_before and not initial_after:
-                if reference_id:
-                    self.create_destination(margin_container, True)
-            if width is not None:
-                self._align(margin_container, width)
+        initial_before = state.initial
+        state, width, inner_top_to_baseline, descender = \
+            self.flow_inner(margin_container, last_descender,
+                            state=state, **kwargs)
+        self._align(margin_container, width)
+        initial_after = state is not None and state.initial
+        top_to_baseline += inner_top_to_baseline
+
+        if self.annotation:
+            height = float(margin_container.height)
+            margin_container.canvas.annotate(self.annotation,
+                                             0, 0, width, height)
+        self.mark_page_nonempty(container)
+        if initial_before and not initial_after:
+            if reference_id:
+                self.create_destination(margin_container, True)
+
+        if state is not None:
+            raise EndOfContainer(state)
+
         space_below = self.get_style('space_below', container)
         container.advance2(float(space_below), ignore_overflow=True)
         container.document.progress(self, container)
