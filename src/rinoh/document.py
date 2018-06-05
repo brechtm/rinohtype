@@ -196,7 +196,6 @@ class DocumentPart(object, metaclass=DocumentLocationType):
     def __init__(self, template, document, flowables):
         self.template = template
         self.document = document
-        self.flowable_targets = []
         self.pages = []
         self.chain = Chain(self)
         for flowable in flowables or []:

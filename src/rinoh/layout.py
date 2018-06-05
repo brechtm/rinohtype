@@ -81,7 +81,6 @@ class FlowableTarget(object):
         from .flowable import StaticGroupedFlowables
 
         self.flowables = StaticGroupedFlowables([])
-        document_part.flowable_targets.append(self)
         super().__init__(*args, **kwargs)
 
     @property
