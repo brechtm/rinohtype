@@ -1,0 +1,17 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[VARIABLES]
+mono_typeface=Courier
+serif_typeface=Times
+sans_typeface=Helvetica
+blue=#000
+
+
+[chapter]
+page_break = none
+
+
+[hidden section : Section(has_class='hide')]
+hide = true
