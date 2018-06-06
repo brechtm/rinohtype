@@ -24,11 +24,11 @@ from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
                         OverrideDefault)
 from .dimension import Dimension, PT
-from .flowable import Flowable, FlowableStyle, FlowableState
+from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
-from .layout import ContainerOverflow, EndOfContainer
+from .layout import EndOfContainer
 from .text import TextStyle, MixedStyledText, SingleStyledText, ESCAPE
 from .util import all_subclasses, ReadAliasAttribute
 
@@ -673,6 +673,13 @@ class ParagraphBase(Flowable):
             prev_state = copy(state)
         if line:
             typeset_line(line, last_line=True)
+
+        # Correct the horizontal text placement for auto-width paragraphs
+        if self._width(container) == FlowableWidth.AUTO:
+            if text_align == TextAlign.CENTER:
+                container.left -= float(container.width - max_line_width) / 2
+            if text_align == TextAlign.RIGHT:
+                container.left -= float(container.width - max_line_width)
 
         return max_line_width, first_line.advance, descender
 

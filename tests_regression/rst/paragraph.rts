@@ -1,0 +1,130 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[VARIABLES]
+mono_typeface=Courier
+serif_typeface=Times
+sans_typeface=Helvetica
+thin_black_stroke=0.5pt,#000
+blue=#00f
+
+
+[chapter]
+page_break = any
+
+[heading level 1]
+number_format = none
+
+
+[paragraph : Paragraph]
+border = 1pt, #000
+padding = 5pt
+space_below = 5pt
+
+
+[auto paragraph : Paragraph]
+base = paragraph
+width = auto
+
+
+[auto-left-left paragraph : Paragraph(has_class='auto-left-left')]
+base = auto paragraph
+horizontal_align = left
+text_align = left
+
+[auto-left-center paragraph : Paragraph(has_class='auto-left-center')]
+base = auto paragraph
+horizontal_align = left
+text_align = center
+
+[auto-left-right paragraph : Paragraph(has_class='auto-left-right')]
+base = auto paragraph
+horizontal_align = left
+text_align = right
+
+
+[auto-center-left paragraph : Paragraph(has_class='auto-center-left')]
+base = auto paragraph
+horizontal_align = center
+text_align = left
+
+[auto-center-center paragraph : Paragraph(has_class='auto-center-center')]
+base = auto paragraph
+horizontal_align = center
+text_align = center
+
+[auto-center-right paragraph : Paragraph(has_class='auto-center-right')]
+base = auto paragraph
+horizontal_align = center
+text_align = right
+
+
+[auto-right-left paragraph : Paragraph(has_class='auto-right-left')]
+base = auto paragraph
+horizontal_align = right
+text_align = left
+
+[auto-right-center paragraph : Paragraph(has_class='auto-right-center')]
+base = auto paragraph
+horizontal_align = right
+text_align = center
+
+[auto-right-right paragraph : Paragraph(has_class='auto-right-right')]
+base = auto paragraph
+horizontal_align = right
+text_align = right
+
+
+
+
+[fill paragraph : Paragraph]
+base = paragraph
+width = fill
+
+
+[fill-left-left paragraph : Paragraph(has_class='fill-left-left')]
+base = fill paragraph
+horizontal_align = left
+text_align = left
+
+[fill-left-center paragraph : Paragraph(has_class='fill-left-center')]
+base = fill paragraph
+horizontal_align = left
+text_align = center
+
+[fill-left-right paragraph : Paragraph(has_class='fill-left-right')]
+base = fill paragraph
+horizontal_align = left
+text_align = right
+
+
+[fill-center-left paragraph : Paragraph(has_class='fill-center-left')]
+base = fill paragraph
+horizontal_align = center
+text_align = left
+
+[fill-center-center paragraph : Paragraph(has_class='fill-center-center')]
+base = fill paragraph
+horizontal_align = center
+text_align = center
+
+[fill-center-right paragraph : Paragraph(has_class='fill-center-right')]
+base = fill paragraph
+horizontal_align = center
+text_align = right
+
+
+[fill-right-left paragraph : Paragraph(has_class='fill-right-left')]
+base = fill paragraph
+horizontal_align = right
+text_align = left
+
+[fill-right-center paragraph : Paragraph(has_class='fill-right-center')]
+base = fill paragraph
+horizontal_align = right
+text_align = center
+
+[fill-right-right paragraph : Paragraph(has_class='fill-right-right')]
+base = fill paragraph
+horizontal_align = right
+text_align = right

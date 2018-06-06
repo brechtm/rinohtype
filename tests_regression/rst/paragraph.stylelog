@@ -1,0 +1,178 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='paragraph-width-is-auto')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:4 <section>
+           > (0,0,0,1,2) chapter
+        Heading('Paragraph width is 'auto'')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:4 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('Paragraph width is 'auto'')
+              SingleStyledText('')
+              MixedStyledText('Paragraph width is 'auto'')
+                SingleStyledText('Paragraph width is 'auto'')
+        Paragraph('Left-aligned paragraph withleft-...')   None:None <line_block>
+             > (0,0,0,1,2) auto-left-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withleft-...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withleft-...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph withcente...')   None:None <line_block>
+             > (0,0,0,1,2) auto-left-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withcente...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withcente...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph withright...')   None:None <line_block>
+             > (0,0,0,1,2) auto-left-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withright...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withright...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withlef...')   None:None <line_block>
+             > (0,0,0,1,2) auto-center-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withlef...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withlef...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withcen...')   None:None <line_block>
+             > (0,0,0,1,2) auto-center-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withcen...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withcen...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withrig...')   None:None <line_block>
+             > (0,0,0,1,2) auto-center-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withrig...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withrig...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withleft...')   None:None <line_block>
+             > (0,0,0,1,2) auto-right-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withleft...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withleft...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withcent...')   None:None <line_block>
+             > (0,0,0,1,2) auto-right-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withcent...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withcent...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withrigh...')   None:None <line_block>
+             > (0,0,0,1,2) auto-right-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withrigh...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withrigh...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      Section(id='paragraph-width-is-fill-default')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:64 <section>
+           > (0,0,0,1,2) chapter
+        Heading('Paragraph width is 'fill' (defau...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:64 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('Paragraph width is 'fill' (defau...')
+              SingleStyledText('')
+              MixedStyledText('Paragraph width is 'fill' (defau...')
+                SingleStyledText('Paragraph width is 'fill' (defau...')
+        Paragraph('Left-aligned paragraph withleft-...')   None:None <line_block>
+             > (0,0,0,1,2) fill-left-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withleft-...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withleft-...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph withcente...')   None:None <line_block>
+             > (0,0,0,1,2) fill-left-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withcente...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withcente...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph withright...')   None:None <line_block>
+             > (0,0,0,1,2) fill-left-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Left-aligned paragraph withright...')   None:None <line>
+            SingleStyledText('Left-aligned paragraph withright...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withlef...')   None:None <line_block>
+             > (0,0,0,1,2) fill-center-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withlef...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withlef...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withcen...')   None:None <line_block>
+             > (0,0,0,1,2) fill-center-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withcen...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withcen...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph withrig...')   None:None <line_block>
+             > (0,0,0,1,2) fill-center-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Center-aligned paragraph withrig...')   None:None <line>
+            SingleStyledText('Center-aligned paragraph withrig...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withleft...')   None:None <line_block>
+             > (0,0,0,1,2) fill-right-left paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withleft...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withleft...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withcent...')   None:None <line_block>
+             > (0,0,0,1,2) fill-right-center paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withcent...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withcent...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph withrigh...')   None:None <line_block>
+             > (0,0,0,1,2) fill-right-right paragraph
+               (0,0,0,0,2) body
+          MixedStyledText('Right-aligned paragraph withrigh...')   None:None <line>
+            SingleStyledText('Right-aligned paragraph withrigh...')
+          Newline('\n')
+          MixedStyledText('A Second line.')   None:None <line>
+            SingleStyledText('A Second line.')
