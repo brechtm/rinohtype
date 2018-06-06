@@ -128,6 +128,8 @@ class Page(Container):
         current_section = None
         for section in (section for section in self.document._sections
                         if section.level == level):
+            if section.is_hidden(self):
+                continue
             section_id = section.get_id(self.document)
             try:
                 first_page = self.document.page_elements[section_id]
