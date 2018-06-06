@@ -1,58 +1,93 @@
 ---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  DocumentTree()
-    Paragraph('A Paragraph split across two pag...', id='first')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:5 <paragraph>
-         > (0,0,0,1,1) flowable with fat border
-           (0,0,0,0,2) body
-      MixedStyledText('A Paragraph split across two pag...')
-        SingleStyledText('A Paragraph split across two pag...')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('A short paragraph.', id='first')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:5 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+        MixedStyledText('A short paragraph.')
+          SingleStyledText('A short paragraph.')
+      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:10 <paragraph>
+           > (0,0,0,1,2) small spacer
+             (0,0,0,0,2) body
+        MixedStyledText('spacer')
+          SingleStyledText('spacer')
+      Paragraph('A Paragraph split across two pag...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:15 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+        MixedStyledText('A Paragraph split across two pag...')
+          SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    PageBreak(style=PageBreakStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:11 <raw>
-    Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:18 <paragraph>
-         > (0,0,0,1,2) spacer
-           (0,0,0,0,2) body
-      MixedStyledText('spacer')
-        SingleStyledText('spacer')
-    Paragraph('A Paragraph split across two pag...', id='second')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:25 <paragraph>
-         > (0,0,0,1,1) flowable with fat border
-           (0,0,0,0,2) body
-      MixedStyledText('A Paragraph split across two pag...')
-        SingleStyledText('A Paragraph split across two pag...')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      PageBreak(style=PageBreakStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:21 <raw>
+      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:28 <paragraph>
+           > (0,0,0,1,2) spacer
+             (0,0,0,0,2) body
+        MixedStyledText('spacer')
+          SingleStyledText('spacer')
+      Paragraph('A Paragraph split across two pag...', id='second')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:35 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+        MixedStyledText('A Paragraph split across two pag...')
+          SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    (continued) Paragraph('A Paragraph split across two pag...', id='second')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:25 <paragraph>
-         > (0,0,0,1,1) flowable with fat border
-           (0,0,0,0,2) body
-    Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:33 <paragraph>
-         > (0,0,0,1,2) spacer
-           (0,0,0,0,2) body
-      MixedStyledText('spacer')
-        SingleStyledText('spacer')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) Paragraph('A Paragraph split across two pag...', id='second')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:35 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:43 <paragraph>
+           > (0,0,0,1,2) spacer
+             (0,0,0,0,2) body
+        MixedStyledText('spacer')
+          SingleStyledText('spacer')
 ---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    PageBreak(style=PageBreakStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:36 <raw>
-    Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:43 <paragraph>
-         > (0,0,0,1,2) spacer
-           (0,0,0,0,2) body
-      MixedStyledText('spacer')
-        SingleStyledText('spacer')
-    Paragraph('A Paragraph split across two pag...', id='third')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:50 <paragraph>
-         > (0,0,0,1,1) flowable with fat border
-           (0,0,0,0,2) body
-      MixedStyledText('A Paragraph split across two pag...')
-        SingleStyledText('A Paragraph split across two pag...')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      PageBreak(style=PageBreakStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:46 <raw>
+      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:53 <paragraph>
+           > (0,0,0,1,2) spacer
+             (0,0,0,0,2) body
+        MixedStyledText('spacer')
+          SingleStyledText('spacer')
+      Paragraph('A Paragraph split across two pag...', id='third')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:60 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+        MixedStyledText('A Paragraph split across two pag...')
+          SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    (continued) Paragraph('A Paragraph split across two pag...', id='third')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:50 <paragraph>
-         > (0,0,0,1,1) flowable with fat border
-           (0,0,0,0,2) body
-    Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:57 <paragraph>
-         > (0,0,0,1,2) spacer
-           (0,0,0,0,2) body
-      MixedStyledText('spacer')
-        SingleStyledText('spacer')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) Paragraph('A Paragraph split across two pag...', id='third')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:60 <paragraph>
+           > (0,0,0,1,1) flowable with fat border
+             (0,0,0,0,2) body
+      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/border_paragraph.rst:67 <paragraph>
+           > (0,0,0,1,2) spacer
+             (0,0,0,0,2) body
+        MixedStyledText('spacer')
+          SingleStyledText('spacer')

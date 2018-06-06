@@ -2,6 +2,16 @@
 
 .. class:: fat-border
 
+    A short paragraph.
+
+
+.. class:: small-spacer
+
+    spacer
+
+
+.. class:: fat-border
+
     A Paragraph split across two pages 1. A Paragraph split across two pages.
     A Paragraph split across two pages 2. A Paragraph split across two pages.
     A Paragraph split across two pages 3. A Paragraph split across two pages.

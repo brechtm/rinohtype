@@ -18,3 +18,9 @@ border = 1pt, #555
 padding_top = 6cm
 padding_bottom = 6cm
 text_align = center
+
+
+[small spacer : Paragraph(has_class='small-spacer')]
+base = spacer
+padding_top = 1cm
+padding_bottom = 1cm
