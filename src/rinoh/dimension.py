@@ -55,7 +55,7 @@ class DimensionType(type):
             float_operator = getattr(float, method_name)
             try:
                 float_other = float(other)
-            except TypeError:
+            except (ValueError, TypeError):
                 return False
             return float_operator(float(self), float_other)
         return operator
