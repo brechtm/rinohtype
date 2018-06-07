@@ -462,12 +462,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         current_level = 1
         stack = []
         fake_container = FakeContainer(self)
-        hide_level = float('+inf')
-        for section in (s for s in self._sections if s.level <= hide_level):
-            if section.is_hidden(fake_container):
-                hide_level = section.level
+        for section in self._sections:
+            if not section.show_in_toc(fake_container):
                 continue
-            hide_level = float('+inf')
             section_id = section.get_id(self, create=False)
             section_number = self.get_reference(section_id, 'number')
             section_title = self.get_reference(section_id, 'title')
