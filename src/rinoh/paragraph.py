@@ -16,7 +16,8 @@ import re
 from ast import literal_eval
 from copy import copy
 from functools import partial
-from itertools import tee, chain, groupby
+from itertools import tee, chain, groupby, count
+from math import floor
 from os import path
 
 from . import DATA_PATH
@@ -537,6 +538,14 @@ def spans_to_words(spans, container):
         yield word
 
 
+class DefaultTabStops(object):
+    def __init__(self, tab_width):
+        self.tab_width = tab_width
+
+    def __iter__(self):
+        return (TabStop(i * self.tab_width) for i in count(1))
+
+
 class ParagraphState(FlowableState):
     def __init__(self, paragraph, words, nested_flowable_state=None,
                  _first_word=None, _initial=True):
@@ -618,6 +627,9 @@ class ParagraphBase(Flowable):
         line_spacing = self.get_style('line_spacing', container)
         text_align = self.get_style('text_align', container)
         tab_stops = self.get_style('tab_stops', container)
+        if not tab_stops:
+            tab_width = 2 * self.get_style('font_size', container)
+            tab_stops = DefaultTabStops(tab_width)
 
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
@@ -839,12 +851,6 @@ class Line(list):
 
     def _handle_tab(self, glyphs_span):
         span = glyphs_span.span
-        if not self.tab_stops:
-            span.warn('No tab stops defined for this paragraph style.',
-                      self.container)
-            self.cursor += glyphs_span.space.width
-            glyphs_span.append_space()
-            return
         self._has_tab = True
         for tab_stop in self.tab_stops:
             tab_position = tab_stop.get_position(self.width)
