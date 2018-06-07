@@ -28,10 +28,14 @@ def test_rstdemo():
     document = config.document(flowables)
     out_dir = OUTPUT_DIR / 'rstdemo'
     out_dir.mkdir(parents=True, exist_ok=True)
+    pdf_filename = 'demo.pdf'
+    _, _, _, _, _, _, ref_outlines = check_pdf_links(TEST_DIR / 'reference'
+                                                     / pdf_filename)
     with in_directory(out_dir):
         document.render('demo')
-        _, _, _, badlinks, _, _ = check_pdf_links('demo.pdf')
+        _, _, _, badlinks, _, _, outlines = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == ['table-of-contents'])
+        pytest.assume(ref_outlines == outlines)
         if not diff_pdf(TEST_DIR / 'reference' / 'demo.pdf', 'demo.pdf'):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
