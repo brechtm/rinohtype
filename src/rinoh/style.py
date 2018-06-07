@@ -900,7 +900,12 @@ def parse_selector(string):
             assert next(chars) + next(chars) + next(chars) == '...'
             selector = EllipsisSelector()
         else:
+            priority = 0
+            while chars.peek() in '+-':
+                priority += 1 if next(chars) == '+' else -1
             selector = parse_class_selector(chars)
+            if priority != 0:
+                selector = selector.pri(priority)
         selectors.append(selector)
         eat_whitespace(chars)
         try:

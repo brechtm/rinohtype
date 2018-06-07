@@ -9,6 +9,7 @@ New Features:
 * automatically generated lists of figures and tables
 * paragraphs now provide default tab stops (proportional to font size) for
   indentation
+* it is now possible to specify selector priority (+-) in style sheets
 * Sphinx frontend: the rinoh builder can be discovered by entry point
   (no more need to add 'rinoh.frontend.sphinx' to the list of extensions)
 * rinoh: set a return code of 1 when one or more referenced images could not be
