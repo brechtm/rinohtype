@@ -83,13 +83,12 @@ class Section(StaticGroupedFlowables, PageBreak):
         return self
 
     def show_in_toc(self, container):
-        show_in_toc = self.get_style('show_in_toc', container)
-        if self.section.is_hidden(container) or not show_in_toc:
-            return False
-        try:
-            return self.parent.show_in_toc(container)
-        except AttributeError:
-            return True
+        parent_show_in_toc = (self.parent is None
+                              or self.parent.section is None
+                              or self.parent.section.show_in_toc(container))
+        return (self.get_style('show_in_toc', container)
+                and not self.is_hidden(container)
+                and parent_show_in_toc)
 
     def create_destination(self, container, at_top_of_container=False):
         pass    # destination is set by the section's Heading
