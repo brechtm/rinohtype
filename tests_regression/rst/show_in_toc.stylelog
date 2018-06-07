@@ -1,0 +1,132 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      StaticGroupedFlowables(id='contents', style='table of contents')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:4 <topic>
+        TableOfContents()   table of contents
+             > (0,0,0,0,2) table of contents
+          TableOfContentsEntry('1	Section 1	1')
+               > (0,0,0,1,2) toc level 1
+              MixedStyledText('1	Section 1	1')
+                ReferenceField('1')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('1')
+                Tab('	')
+                ReferenceField('Section 1')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('Section 1')
+                Tab('	')
+                ReferenceField('1')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('1')
+          TableOfContentsEntry('1.2	Subsection 1B	1')
+               > (0,0,0,1,2) toc level 2
+              MixedStyledText('1.2	Subsection 1B	1')
+                ReferenceField('1.2')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('1.2')
+                Tab('	')
+                ReferenceField('Subsection 1B')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('Subsection 1B')
+                Tab('	')
+                ReferenceField('1')
+                     x (0,0,0,1,3) toc linked reference
+                     > (0,0,0,1,1) linked reference
+                  SingleStyledText('1')
+      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:7 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:7 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 Section 1')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+              SingleStyledText('Section 1')
+        Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:9 <paragraph>
+             > (0,0,0,0,2) body
+          MixedStyledText('Paragraph.')
+            SingleStyledText('Paragraph.')
+        Section(id='subsection-1a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:13 <section>
+             > (0,0,0,1,2) subsection-1a
+          Heading('1.1 Subsection 1A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:13 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1.1 Subsection 1A')
+                SingleStyledText('1.1')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 1A')
+          Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:15 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('Paragraph.')
+              SingleStyledText('Paragraph.')
+        Section(id='subsection-1b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:19 <section>
+          Heading('1.2 Subsection 1B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:19 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1.2 Subsection 1B')
+                SingleStyledText('1.2')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 1B')
+          Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:21 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('Paragraph.')
+              SingleStyledText('Paragraph.')
+      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:25 <section>
+           > (1,0,0,1,2) section-2
+             (0,0,0,1,2) chapter
+        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:25 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2 Section 2')
+              SingleStyledText('2')
+              SingleStyledText(' ')
+              SingleStyledText('Section 2')
+        Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:27 <paragraph>
+             > (0,0,0,0,2) body
+          MixedStyledText('Paragraph.')
+            SingleStyledText('Paragraph.')
+        Section(id='subsection-2a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:31 <section>
+          Heading('2.1 Subsection 2A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:31 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.1 Subsection 2A')
+                SingleStyledText('2.1')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 2A')
+          Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:33 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('Paragraph.')
+              SingleStyledText('Paragraph.')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:25 <section>
+           > (1,0,0,1,2) section-2
+             (0,0,0,1,2) chapter
+        Section(id='subsection-2b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:37 <section>
+          Heading('2.2 Subsection 2B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:37 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.2 Subsection 2B')
+                SingleStyledText('2.2')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 2B')
+          Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/show_in_toc.rst:39 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('Paragraph.')
+              SingleStyledText('Paragraph.')
