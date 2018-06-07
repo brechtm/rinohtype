@@ -73,11 +73,9 @@ matcher('body', Paragraph)
 matcher('code block', +CodeBlock)
 matcher('attribution', Paragraph.like('attribution'))
 matcher('centered', Paragraph.like('centered'))
+matcher('line block', Paragraph.like('line block'))
 
 matcher('block quote', GroupedFlowables.like('block quote'))
-matcher('line block', GroupedFlowables.like('line block'))
-matcher('nested line block', 'line block' / SelectorByName('line block'))
-matcher('line block line', Paragraph.like('line block line'))
 
 
 #

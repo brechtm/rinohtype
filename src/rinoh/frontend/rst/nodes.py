@@ -7,7 +7,6 @@
 
 
 import re
-import unicodedata
 
 from datetime import datetime
 
@@ -205,8 +204,10 @@ class Section(DocutilsGroupingNode):
 
 
 class Paragraph(DocutilsBodyNode):
+    style = None
+
     def build_flowable(self):
-        return rt.Paragraph(super().process_content())
+        return rt.Paragraph(self.process_content(), style=self.style)
 
 
 class Compound(DocutilsGroupingNode):
@@ -349,16 +350,26 @@ class Block_Quote(DocutilsGroupingNode):
 
 
 class Attribution(Paragraph):
-    def build_flowable(self):
-        return rt.Paragraph('\N{EM DASH}' + self.process_content(),
-                            style='attribution')
+    style = 'attribution'
+
+    def process_content(self, style=None):
+        return '\N{EM DASH}' + super().process_content(style)
 
 
 class Line_Block(Paragraph):
-    def build_flowable(self):
-        text = intersperse([line.styled_text() for line in self.line],
-                           rt.Newline())
-        return rt.Paragraph(text)
+    style = 'line block'
+
+    def _process_block(self, line_block):
+        for child in line_block.getchildren():
+            try:
+                yield child.styled_text()
+            except AttributeError:
+                for line in self._process_block(child):
+                    yield rt.Tab() + line
+
+    def process_content(self, style=None):
+        lines = self._process_block(self)
+        return intersperse(lines, rt.Newline())
 
 
 class Line(DocutilsInlineNode):

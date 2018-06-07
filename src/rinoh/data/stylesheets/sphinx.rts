@@ -158,12 +158,9 @@ text_align=CENTER
 font_weight=BOLD
 space_below=4pt
 
-[line block line]
-base=default
-space_below=0pt
-
-[nested line block]
-margin_left=0.5cm
+[line block]
+base=body
+text_align=left
 
 [chapter]
 page_break=RIGHT
