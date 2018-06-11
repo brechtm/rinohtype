@@ -221,10 +221,7 @@ class NoteMarkerBase(ReferenceBase, Label):
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
-        try:
-            container._footnote_space.add_footnote(note)
-        except ReflowRequired:
-            pass
+        container._footnote_space.add_footnote(note)
         super().before_placing(container)
 
 
