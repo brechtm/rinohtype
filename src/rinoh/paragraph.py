@@ -941,8 +941,13 @@ class Line(list):
         else:   # abort if the line is empty
             return
 
+        descender = self.descender(container)
+        # Temporarily advance with descender so that overflow on
+        # before_placing (e.g. footnotes) can be detected
+        assert container.advance2(- descender)
         for glyph_span in self:
             glyph_span.span.before_placing(container)
+        assert container.advance2(descender)
 
         # horizontal displacement
         left = self.indent
