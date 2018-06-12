@@ -14,7 +14,7 @@ from itertools import chain, zip_longest
 from .annotation import NamedDestinationLink, AnnotatedSpan
 from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
-from .layout import ReflowRequired
+from .layout import ReflowRequired, ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
@@ -221,7 +221,8 @@ class NoteMarkerBase(ReferenceBase, Label):
 
     def before_placing(self, container):
         note = container.document.elements[self.target_id(container.document)]
-        container._footnote_space.add_footnote(note)
+        if not container._footnote_space.add_footnote(note):
+            raise ContainerOverflow
         super().before_placing(container)
 
 

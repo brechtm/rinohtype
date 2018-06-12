@@ -1,18 +1,16 @@
 ---------------------------------- page 1 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
-  StaticGroupedFlowables()
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:5 <paragraph>
-           > (0,0,0,1,2) spacer
+      Paragraph('spacer 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:5 <paragraph>
+           > (0,0,0,1,2) spacer1
              (0,0,0,0,2) body
-        MixedStyledText('spacer')
-          SingleStyledText('spacer')
+        MixedStyledText('spacer 1')
+          SingleStyledText('spacer 1')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -25,11 +23,11 @@
            > fallback to default style
         SingleStyledText('1')
     StaticGroupedFlowables()
-      Paragraph('Text of the footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:11 <paragraph>
+      Paragraph('Text of the first footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:11 <paragraph>
            > (0,0,0,0,5) footnote paragraph
              (0,0,0,0,2) body
-        MixedStyledText('Text of the footnote.')
-          SingleStyledText('Text of the footnote.')
+        MixedStyledText('Text of the first footnote.')
+          SingleStyledText('Text of the first footnote.')
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
@@ -37,3 +35,48 @@
     (continued) DocumentTree()
       Paragraph('A Paragraph with a footnote1 at ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:8 <paragraph>
            > (0,0,0,0,2) body
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      PageBreak(style=PageBreakStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:15 <raw>
+      Paragraph('spacer 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:22 <paragraph>
+           > (0,0,0,1,2) spacer2
+             (0,0,0,0,2) body
+        MixedStyledText('spacer 2')
+          SingleStyledText('spacer 2')
+---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+  Note(id='f2')
+    Paragraph('2')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('2')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('2')
+    StaticGroupedFlowables()
+      Paragraph('Text of the second footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:30 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('Text of the second footnote.')
+          SingleStyledText('Text of the second footnote.')
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      Paragraph('This paragraph2 is placed a litt...', id='par2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:27 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('This paragraph2 is placed a litt...')
+          SingleStyledText('This paragraph')
+          NoteMarkerByID('2', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('2')
+          SingleStyledText(' is placed a little bit higher.')

@@ -27,7 +27,7 @@ from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, ContainerOverflow, EndOfContainer,
-                     PageBreakException)
+                     PageBreakException, ReflowRequired)
 from .style import Styled, Style
 from .text import StyledText
 from .util import ReadAliasAttribute
@@ -776,7 +776,8 @@ class Float(Flowable):
             if id not in container.document.floats:
                 super().flow(container.float_space, None)
                 container.document.floats.add(id)
-                container.page.check_overflow()
+                if not container.page.check_overflow():
+                    raise ReflowRequired
             return 0, 0, last_descender
         else:
             return super().flow(container, last_descender, state=state,

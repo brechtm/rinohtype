@@ -186,8 +186,7 @@ class Container(object):
             child.render(type, rerender)
 
     def check_overflow(self):
-        for child in self.children:
-            child.check_overflow()
+        return all(child.check_overflow() for child in self.children)
 
     def place_children(self):
         for child in self.children:
@@ -281,8 +280,7 @@ class FlowablesContainerBase(Container):
         return True
 
     def check_overflow(self):
-        if self.remaining_height < 0:
-            raise ReflowRequired
+        return self.remaining_height > 0
 
     def render(self, type, rerender=False):
         if type in (self.type, None):
@@ -520,27 +518,31 @@ class FootnoteContainer(UpExpandingContainer):
         self.footnote_queue.append(footnote)
         if not self._flowing_footnotes:
             self._flowing_footnotes = True
-            try:
-                self.flow_footnotes()
-            finally:
-                self._flowing_footnotes = False
+            if not self.flow_footnotes():
+                return False
+            self._flowing_footnotes = False
+        return True
 
     def flow_footnotes(self):
         if self._reflowed:
             self._cursor.addends.pop()
             self._descenders.pop()
+        maybe_container = _MaybeContainer(self)
         while self.footnote_queue:
             footnote = self.footnote_queue.popleft()
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in self.document.placed_footnotes:
-                with MaybeContainer(self) as maybe_container:
-                    _, _, descender = footnote.flow(maybe_container,
-                                                    self._descenders[-1])
-                    self._descenders.append(descender)
-                    self._reflowed = True
-                    self.page.check_overflow()
-                    self._reflowed = False
-                    self.document.placed_footnotes.add(footnote_id)
+                _, _, descender = footnote.flow(maybe_container,
+                                                self._descenders[-1])
+                self._descenders.append(descender)
+                self._reflowed = True
+                if not self.page.check_overflow():
+                    return False
+                self._reflowed = False
+                self.document.placed_footnotes.add(footnote_id)
+        maybe_container.do_place()
+        return True
+
     @property
     def next_number(self):
         self._footnote_number += 1
