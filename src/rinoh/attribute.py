@@ -353,8 +353,11 @@ class RuleSet(OrderedDict):
     def __call__(self, name, **kwargs):
         self[name] = self.get_entry_class(name)(**kwargs)
 
-    def __str__(self):
+    def __repr__(self):
         return '{}({})'.format(type(self).__name__, self.name)
+
+    def __str__(self):
+        return repr(self)
 
     def __bool__(self):
         return True

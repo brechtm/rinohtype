@@ -26,7 +26,7 @@ matcher = StyledMatcher({
     'paragraph': paragraph_selector,
 })
 
-ssheet1 = StyleSheet('base', matcher)
+ssheet1 = StyleSheet('ssheet1', matcher)
 
 ssheet1.variables['font-size'] = 5*PT
 ssheet1.variables['text-align'] = 'center'
@@ -43,7 +43,7 @@ ssheet1('paragraph',
         indent_first=2*PT)
 
 
-ssheet2 = StyleSheet('test', base=ssheet1)
+ssheet2 = StyleSheet('ssheet2', base=ssheet1)
 
 ssheet2.variables['font-size'] = 20*PT
 ssheet2.variables['text-align'] = 'right'
