@@ -356,6 +356,9 @@ class RuleSet(OrderedDict):
     def __str__(self):
         return '{}({})'.format(type(self).__name__, self.name)
 
+    def __bool__(self):
+        return True
+
     def get_variable(self, name, accepted_type):
         try:
             return self._get_variable(name, accepted_type)

@@ -1,11 +1,7 @@
 [STYLESHEET]
 base = sphinx_base14
 
-
 [VARIABLES]
-mono_typeface=Courier
-serif_typeface=Times
-sans_typeface=Helvetica
 blue=#000
 
 

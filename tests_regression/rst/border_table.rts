@@ -1,11 +1,6 @@
 [STYLESHEET]
 base = sphinx_base14
 
-[VARIABLES]
-mono_typeface=Courier
-serif_typeface=Times
-sans_typeface=Helvetica
-thin_black_stroke=0.5pt,#000
 
 [flowable with fat border : Flowable(has_class='fat-border')]
 border = 20pt, #000
