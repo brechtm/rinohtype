@@ -8,8 +8,15 @@ sans_typeface=Helvetica
 thin_black_stroke=0.5pt,#000
 
 
-[spacer : Paragraph(has_class='spacer')]
+[spacer1 : Paragraph(has_class='spacer1')]
 border = 1pt, #555
 padding_top = 7cm
 padding_bottom = 7cm
+text_align = center
+
+
+[spacer2 : Paragraph(has_class='spacer2')]
+border = 1pt, #555
+padding_top = 7cm
+padding_bottom = 6.6cm
 text_align = center
