@@ -477,6 +477,9 @@ class Var(object):
     def __str__(self):
         return '$({})'.format(self.name)
 
+    def __eq__(self, other):
+        return self.name == other.name
+
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
 

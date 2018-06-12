@@ -65,14 +65,19 @@ def test_style():
     style1 = ssheet1['emphasized text']
     assert style1.font_width == 'normal'
     assert style1.font_slant == 'italic'
+    assert style1.font_size == Var('font-size')
 
     style2 = ssheet1['paragraph']
     assert style2.space_above == 5*PT
     assert style2.space_below == 0
+    assert style2.text_align == Var('text-align')
+    assert style2.font_color == Var('font-color')
+    assert style2.indent_first == 2*PT
 
     style3 = ssheet2['paragraph']
     assert style3.space_above == 0
     assert style3.space_below == 10*PT
+    assert style3.indent_first == Var('indent-first')
 
 
 def test_get_selector():
