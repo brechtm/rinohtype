@@ -8,7 +8,9 @@
 
 import pytest
 
-from rinoh.dimension import PT
+from rinoh.attribute import Var
+from rinoh.color import HexColor
+from rinoh.dimension import PT, CM
 from rinoh.document import DocumentTree, Document, FakeContainer
 from rinoh.language import EN
 from rinoh.paragraph import Paragraph
@@ -25,11 +27,31 @@ matcher = StyledMatcher({
 })
 
 ssheet1 = StyleSheet('base', matcher)
-ssheet1('emphasized text', font_slant='italic')
-ssheet1('paragraph', space_above=5*PT)
+
+ssheet1.variables['font-size'] = 5*PT
+ssheet1.variables['text-align'] = 'center'
+ssheet1.variables['font-color'] = HexColor('f00')
+
+ssheet1('emphasized text',
+        font_slant='italic',
+        font_size=Var('font-size'))
+ssheet1('paragraph',
+        margin_right=55*PT,
+        space_above=5*PT,
+        text_align=Var('text-align'),
+        font_color=Var('font-color'),
+        indent_first=2*PT)
+
 
 ssheet2 = StyleSheet('test', base=ssheet1)
-ssheet2('paragraph', space_below=10*PT)
+
+ssheet2.variables['font-size'] = 20*PT
+ssheet2.variables['text-align'] = 'right'
+ssheet2.variables['indent-first'] = 0.5*CM
+
+ssheet2('paragraph',
+        space_below=10*PT,
+        indent_first=Var('indent-first'))
 
 emphasized = SingleStyledText('emphasized', style='emphasis')
 paragraph = Paragraph('A paragraph with ' + emphasized + ' text.')
@@ -88,5 +110,14 @@ def test_get_style():
     assert emphasized.get_style('font_slant', container) == 'italic'
 
     assert paragraph.get_style('margin_left', container) == 0
+    assert paragraph.get_style('margin_right', container) == 55*PT
     assert paragraph.get_style('space_above', container) == 5*PT
     assert paragraph.get_style('space_below', container) == 10*PT
+
+
+def test_variable():
+    assert emphasized.get_style('font_size', container) == 20*PT
+
+    assert paragraph.get_style('text_align', container) == 'right'
+    assert paragraph.get_style('font_color', container) == HexColor('f00')
+    assert paragraph.get_style('indent_first', container) == 0.5*CM
