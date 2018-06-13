@@ -27,7 +27,7 @@ from operator import attrgetter
 from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
-                        RuleSet, RuleSetFile)
+                        RuleSet, RuleSetFile, VariableException)
 from .element import DocumentElement
 from .resource import Resource
 from .util import cached, unique, all_subclasses, NotImplementedAttribute
@@ -525,6 +525,12 @@ class Styled(DocumentElement, metaclass=StyledMeta):
     def get_style(self, attribute, flowable_target):
         try:
             return self.get_style_recursive(attribute, flowable_target)
+        except VariableException as exc:
+            attribute_definition = exc.attribute_dict.attribute_definition(attribute)
+            accepted_type = attribute_definition.accepted_type
+            value = exc.variable.get(accepted_type,
+                                     flowable_target.document.stylesheet)
+            return exc.attribute_dict.validate_attribute(attribute, value, False)
         except DefaultStyleException:
             return self.style_class._get_default(attribute)
 
@@ -555,12 +561,11 @@ class Styled(DocumentElement, metaclass=StyledMeta):
             return self.get_base_style_recursive(exc, flowable_target,
                                                  stylesheet)
 
-    def get_style_recursive(self, attribute, flowable_target):
-        stylesheet = flowable_target.document.stylesheet
+    def get_style_recursive(self, attribute, container):
         try:
             try:
-                style = self._style(flowable_target)
-                return style.get_value(attribute, stylesheet)
+                style = self._style(container)
+                return style.get_value(attribute, None)
             except NoStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
                     raise ParentStyleException
@@ -569,12 +574,12 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         except ParentStyleException:
             parent = self.parent
             try:
-                return parent.get_style(attribute, flowable_target)
+                return parent.get_style(attribute, container)
             except KeyError:  # 'attribute' is not supported by the parent
-                return parent.get_style_recursive(attribute, flowable_target)
+                return parent.get_style_recursive(attribute, container)
         except BaseStyleException as exception:
-            return self.get_base_style_recursive(exception, flowable_target,
-                                                 stylesheet)
+            return self.get_base_style_recursive(exception, container,
+                                                 container.document.stylesheet)
 
     @cached
     def _style(self, container):

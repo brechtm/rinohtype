@@ -18,7 +18,7 @@ from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, VariableNotDefined,
-                        OverrideDefault)
+                        OverrideDefault, VariableException)
 from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
@@ -652,6 +652,11 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         for template in self._find_templates(template_name):
             try:
                 return template.get_value(option_name, self)
+            except VariableException as exc:
+                attribute_definition = exc.attribute_dict.attribute_definition(option_name)
+                accepted_type = attribute_definition.accepted_type
+                value = exc.variable.get(accepted_type, self.configuration)
+                return exc.attribute_dict.validate_attribute(option_name, value, False)
             except KeyError:
                 continue
         return template._get_default(option_name)

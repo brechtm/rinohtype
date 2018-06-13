@@ -321,9 +321,7 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
     def get_value(self, attribute, rule_set):
         value = self[attribute]
         if isinstance(value, Var):
-            accepted_type = self.attribute_definition(attribute).accepted_type
-            value = value.get(accepted_type, rule_set)
-            value = self.validate_attribute(attribute, value, False)
+            raise VariableException(self, value)
         return value
 
 
@@ -485,6 +483,12 @@ class Var(object):
 
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
+
+
+class VariableException(Exception):
+    def __init__(self, attribute_dict, variable):
+        self.attribute_dict = attribute_dict
+        self.variable = variable
 
 
 class VariableNotDefined(Exception):
