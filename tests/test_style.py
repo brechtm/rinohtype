@@ -19,11 +19,15 @@ from rinoh.style import StyleSheet, StyledMatcher, Specificity
 
 
 emphasis_selector = StyledText.like('emphasis')
+emphasis_2_selector = StyledText.like('emphasis2')
 paragraph_selector = Paragraph
+paragraph_2_selector = Paragraph.like('paragraph2')
 
 matcher = StyledMatcher({
     'emphasized text': emphasis_selector,
+    'emphasized text 2': emphasis_2_selector,
     'paragraph': paragraph_selector,
+    'paragraph 2': paragraph_2_selector,
 })
 
 ssheet1 = StyleSheet('ssheet1', matcher)
@@ -35,12 +39,17 @@ ssheet1.variables['font-color'] = HexColor('f00')
 ssheet1('emphasized text',
         font_slant='italic',
         font_size=Var('font-size'))
+ssheet1('emphasized text 2',
+        font_slant='oblique')
 ssheet1('paragraph',
         margin_right=55*PT,
         space_above=5*PT,
         text_align=Var('text-align'),
         font_color=Var('font-color'),
         indent_first=2*PT)
+ssheet1('paragraph 2',
+        padding_bottom=3*PT)
+
 
 
 ssheet2 = StyleSheet('ssheet2', base=ssheet1)
@@ -54,7 +63,10 @@ ssheet2('paragraph',
         indent_first=Var('indent-first'))
 
 emphasized = SingleStyledText('emphasized', style='emphasis')
+emphasized2 = SingleStyledText('emphasized 2', style='emphasis2')
 paragraph = Paragraph('A paragraph with ' + emphasized + ' text.')
+paragraph2 = Paragraph('A second paragraph with ' + emphasized + ' text.',
+                       style='paragraph2')
 
 doctree = DocumentTree([paragraph])
 
@@ -67,17 +79,21 @@ def test_style():
     assert style1.font_slant == 'italic'
     assert style1.font_size == Var('font-size')
 
-    style2 = ssheet1['paragraph']
-    assert style2.space_above == 5*PT
-    assert style2.space_below == 0
-    assert style2.text_align == Var('text-align')
-    assert style2.font_color == Var('font-color')
-    assert style2.indent_first == 2*PT
+    style2 = ssheet1['emphasized text 2']
+    assert style2.font_slant == 'oblique'
 
-    style3 = ssheet2['paragraph']
-    assert style3.space_above == 0
-    assert style3.space_below == 10*PT
-    assert style3.indent_first == Var('indent-first')
+    style3 = ssheet1['paragraph']
+    assert style3.space_above == 5*PT
+    assert style3.text_align == Var('text-align')
+    assert style3.font_color == Var('font-color')
+    assert style3.indent_first == 2*PT
+
+    style4 = ssheet2['paragraph']
+    assert style4.space_below == 10*PT
+    assert style4.indent_first == Var('indent-first')
+
+    style5 = ssheet2['paragraph 2']
+    assert style5.padding_bottom == 3*PT
 
 
 def test_get_selector():
