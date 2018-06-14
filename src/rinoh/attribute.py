@@ -318,11 +318,38 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
             pass
         raise KeyError(name)
 
-    def get_value(self, attribute, rule_set):
+    def get_ruleset(self):
+        raise NotImplementedError
+
+    def get_value(self, attribute):
         value = self[attribute]
         if isinstance(value, Var):
             raise VariableException(self, value)
         return value
+
+    def get_value_recursive(self, attribute, document):
+        try:
+            return self.get_value(attribute)
+        except KeyError:
+            bases = []
+            if isinstance(self.base, str):
+                ruleset = self.get_ruleset(document)
+                iter = ruleset.get_entries(self.base, document)
+                try:
+                    bases.extend(iter)
+                except KeyError:
+                    raise ValueError("Could not find the base entry '{}' "
+                                     "for the '{}' entry."
+                                     .format(self.base, self.name))
+            elif self.base is not None:
+                bases.append(self.base)
+            for base_template in bases:
+                try:
+                    return base_template.get_value_recursive(attribute, document)
+                except KeyError:
+                    continue
+        raise KeyError
+
 
 
 class RuleSet(OrderedDict):
@@ -389,7 +416,7 @@ class RuleSet(OrderedDict):
     def get_value(self, name, attribute, document):
         for entry in self.get_entries(name, document):
             try:
-                return entry.get_value(attribute, document)
+                return entry.get_value_recursive(attribute, document)
             except VariableException as exc:
                 attribute_definition = exc.attribute_dict.attribute_definition(attribute)
                 accepted_type = attribute_definition.accepted_type

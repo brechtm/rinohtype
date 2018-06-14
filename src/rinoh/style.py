@@ -142,6 +142,9 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
             raise ValueError("The '{}' style name is reserved.".format(name))
         self._name = name
 
+    def get_ruleset(self, document):
+        return document.stylesheet
+
 
 class SpecialStyle(Style):
     """Special style that delegates attribute lookups by raising an
@@ -534,7 +537,7 @@ class Styled(DocumentElement, metaclass=StyledMeta):
         except DefaultStyleException:
             return self.style_class._get_default(attribute)
 
-    def get_base_style_recursive(self, exception, flowable_target, stylesheet):
+    def get_base_style_recursive(self, exception, container, stylesheet):
         base_name = exception.style.base
         if base_name is None:
             stylesheet = stylesheet.base
@@ -553,19 +556,18 @@ class Styled(DocumentElement, metaclass=StyledMeta):
                                  "style sheets".format(base_name,
                                                        exception.style.name))
         try:
-            return base_style.get_value(exception.attribute, stylesheet)
+            return base_style.get_value(exception.attribute)
         except ParentStyleException:
             return self.parent.get_style_recursive(exception.attribute,
-                                                   flowable_target)
+                                                   container)
         except BaseStyleException as exc:
-            return self.get_base_style_recursive(exc, flowable_target,
-                                                 stylesheet)
+            return self.get_base_style_recursive(exc, container, stylesheet)
 
     def get_style_recursive(self, attribute, container):
         try:
             try:
                 style = self._style(container)
-                return style.get_value(attribute, None)
+                return style.get_value(attribute)
             except NoStyleException:
                 if self.style_class.default_base == PARENT_STYLE:
                     raise ParentStyleException

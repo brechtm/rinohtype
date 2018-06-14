@@ -68,27 +68,8 @@ class Templated(object):
 
 
 class Template(AttributesDictionary, NamedDescriptor):
-    def get_value(self, attribute, document):
-        try:
-            return super().get_value(attribute, document.configuration)
-        except KeyError:
-            bases = []
-            if isinstance(self.base, str):
-                iter = document._find_templates(self.base)
-                try:
-                    bases.extend(iter)
-                except KeyError:
-                    raise ValueError("Could not find the base template '{}' "
-                                     "for the '{}' page template."
-                                     .format(self.base, self.name))
-            elif self.base is not None:
-                bases.append(self.base)
-            for base_template in bases:
-                try:
-                    return base_template.get_value(attribute, document)
-                except KeyError:
-                    continue
-        raise KeyError
+    def get_ruleset(self, document):
+        return document.configuration
 
 
 class PageTemplateBase(Template):
