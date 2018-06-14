@@ -225,7 +225,10 @@ class Selector(object):
     def referenced_selectors(self):
         raise NotImplementedError
 
-    def match(self, styled, container):
+    def flatten(self, document):
+        raise NotImplementedError
+
+    def match(self, styled, document):
         raise NotImplementedError
 
 
@@ -251,12 +254,12 @@ class SelectorWithPriority(Selector):
     def referenced_selectors(self):
         return self.selector.referenced_selectors
 
-    def flatten(self, container):
-        flattened_selector = self.selector.flatten(container)
+    def flatten(self, document):
+        flattened_selector = self.selector.flatten(document)
         return flattened_selector.pri(self.priority)
 
-    def match(self, styled, container):
-        score = self.selector.match(styled, container)
+    def match(self, styled, document):
+        score = self.selector.match(styled, document)
         if score:
             score = Specificity(self.priority, 0, 0, 0, 0) + score
         return score
@@ -272,7 +275,7 @@ class EllipsisSelector(Selector):
         return
         yield
 
-    def flatten(self, container):
+    def flatten(self, document):
         return self
 
 
@@ -290,8 +293,8 @@ class SelectorByName(SingleSelector):
     def referenced_selectors(self):
         yield self.name
 
-    def flatten(self, container):
-        return container.document.stylesheet.get_selector(self.name)
+    def flatten(self, document):
+        return document.stylesheet.get_selector(self.name)
 
     def get_styled_class(self, stylesheet_or_matcher):
         selector = stylesheet_or_matcher.get_selector(self.name)
@@ -301,9 +304,9 @@ class SelectorByName(SingleSelector):
         selector = matcher.by_name[self.name]
         return selector.get_style_name(matcher)
 
-    def match(self, styled, container):
-        selector = container.document.stylesheet.get_selector(self.name)
-        return selector.match(styled, container)
+    def match(self, styled, document):
+        selector = document.stylesheet.get_selector(self.name)
+        return selector.match(styled, document)
 
 
 class ClassSelectorBase(SingleSelector):
@@ -315,13 +318,13 @@ class ClassSelectorBase(SingleSelector):
         return
         yield
 
-    def flatten(self, container):
+    def flatten(self, document):
         return self
 
     def get_style_name(self, matcher):
         return self.style_name
 
-    def match(self, styled, container):
+    def match(self, styled, document):
         if not isinstance(styled, self.cls):
             return None
         class_match = 2 if type(styled) == self.cls else 1
@@ -360,10 +363,10 @@ class ContextSelector(Selector):
             for name in selector.referenced_selectors:
                 yield name
 
-    def flatten(self, container):
+    def flatten(self, document):
         return type(self)(*(child_selector for selector in self.selectors
                             for child_selector
-                            in selector.flatten(container).selectors))
+                            in selector.flatten(document).selectors))
 
     def get_styled_class(self, stylesheet_or_matcher):
         return self.selectors[-1].get_styled_class(stylesheet_or_matcher)
@@ -371,7 +374,7 @@ class ContextSelector(Selector):
     def get_style_name(self, matcher):
         return self.selectors[-1].get_style_name(matcher)
 
-    def match(self, styled, container):
+    def match(self, styled, document):
         def styled_and_parents(element):
             while element is not None:
                 yield element
@@ -386,13 +389,13 @@ class ContextSelector(Selector):
                 element = next(elements)                # NoMoreParentElement
                 if isinstance(selector, EllipsisSelector):
                     selector = next(selectors)          # StopIteration
-                    while not selector.match(element, container):
+                    while not selector.match(element, document):
                         element = next(elements)        # NoMoreParentElement
             except NoMoreParentElement:
                 return None
             except StopIteration:
                 break
-            score = selector.match(element, container)
+            score = selector.match(element, document)
             if not score:
                 return None
             total_score += score
@@ -676,15 +679,15 @@ class StyledMatcher(dict):
         for name, selector in dict(iterable or (), **kwargs).items():
             self[name] = selector
 
-    def match(self, styled, container):
+    def match(self, styled, document):
         for cls in type(styled).__mro__:
             if cls not in self:
                 continue
             style_str = styled.style if isinstance(styled.style, str) else None
             for style in set((style_str, None)):
                 for name, selector in self[cls].get(style, {}).items():
-                    selector = selector.flatten(container)
-                    specificity = selector.match(styled, container)
+                    selector = selector.flatten(document)
+                    specificity = selector.match(styled, document)
                     if specificity:
                         yield Match(name, specificity)
 
@@ -789,15 +792,16 @@ class StyleSheet(RuleSet, Resource):
             else:
                 raise KeyError("No selector found for style '{}'".format(name))
 
-    def find_matches(self, styled, container):
-        for match in self.matcher.match(styled, container):
+    def find_matches(self, styled, document):
+        for match in self.matcher.match(styled, document):
             yield match
         if self.base is not None:
-            for match in self.base.find_matches(styled, container):
+            for match in self.base.find_matches(styled, document):
                 yield match
 
     def find_style(self, styled, container):
-        matches = sorted(self.find_matches(styled, container),
+        document = container.document if container else None
+        matches = sorted(self.find_matches(styled, document),
                          key=attrgetter('specificity'), reverse=True)
         if len(matches) > 1:
             last_match = matches[0]
@@ -1094,7 +1098,7 @@ class StyleLog(object):
         self.entries = []
 
     def log_styled(self, styled, container, continued, custom_message=None):
-        matches = self.stylesheet.find_matches(styled, container)
+        matches = self.stylesheet.find_matches(styled, container.document)
         log_entry = StyleLogEntry(styled, container, matches, continued,
                                   custom_message)
         self.entries.append(log_entry)
