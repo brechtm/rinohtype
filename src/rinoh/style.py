@@ -142,6 +142,7 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
             raise ValueError("The '{}' style name is reserved.".format(name))
         self._name = name
 
+    @classmethod
     def get_ruleset(self, document):
         return document.stylesheet
 

@@ -18,7 +18,7 @@ from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, VariableNotDefined,
-                        OverrideDefault, VariableException)
+                        OverrideDefault, Configurable)
 from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, DocumentPart, Page, PageOrientation, PageType
 from .element import create_destination
@@ -35,8 +35,8 @@ from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
                         PAGE_NUMBER, NUMBER_OF_PAGES)
 from .resource import Resource
 from .text import StyledText, Tab
-from .strings import StringField, StringCollection, Strings
-from .structure import Header, Footer, SectionTitles, HorizontalRule
+from .strings import StringCollection, Strings
+from .structure import Header, Footer, HorizontalRule
 from .style import StyleSheet, CharIterator, parse_string
 from .stylesheets import sphinx
 from .util import NamedDescriptor
@@ -62,14 +62,17 @@ class AbstractLocation(OptionSet):
     values = 'title', 'front matter'
 
 
-class Templated(object):
-    def get_option(self, option, document):
-        return document.get_template_option(self.template_name, option)
-
-
 class Template(AttributesDictionary, NamedDescriptor):
+    @classmethod
     def get_ruleset(self, document):
         return document.configuration
+
+
+class Templated(Configurable):
+    configuration_class = Template
+
+    def configurable_name(self, document):
+        return self.template_name
 
 
 class PageTemplateBase(Template):
@@ -141,7 +144,8 @@ class PageTemplate(PageTemplateBase):
 
 class PageBase(Page, Templated):
     def __init__(self, document_part, template_name, page_number, after_break):
-        get_option = partial(self.get_option, document=document_part.document)
+        get_option = partial(self.get_config_value,
+                             document=document_part.document)
         self.template_name = template_name
         paper = get_option('page_size')
         orientation = get_option('page_orientation')
@@ -167,7 +171,7 @@ class SimplePage(PageBase):
     def __init__(self, document_part, template_name, page_number, chain,
                  new_chapter):
         super().__init__(document_part, template_name, page_number, new_chapter)
-        get_option = partial(self.get_option, document=document_part.document)
+        get_option = partial(self.get_config_value, document=self.document)
         num_cols = get_option('columns')
         header_footer_distance = get_option('header_footer_distance')
         column_spacing = get_option('column_spacing')
@@ -222,8 +226,8 @@ class SimplePage(PageBase):
         create_destination(heading.section, self.chapter_title, False)
         create_destination(heading, self.chapter_title, False)
         descender = None
-        for flowable in self.get_option('chapter_title_flowables',
-                                        self.document):
+        for flowable in self.get_config_value('chapter_title_flowables',
+                                              self.document):
             _, _, descender = flowable.flow(self.chapter_title, descender)
 
 
@@ -241,7 +245,7 @@ class TitlePage(PageBase):
     def __init__(self, document_part, template_name, page_number, after_break):
         super().__init__(document_part, template_name, page_number,
                          after_break)
-        get_option = partial(self.get_option, document=self.document)
+        get_option = partial(self.get_config_value, document=self.document)
         metadata = self.document.metadata
         get_metadata = self.document.get_metadata
         self.title = DownExpandingContainer('title', CONTENT, self,

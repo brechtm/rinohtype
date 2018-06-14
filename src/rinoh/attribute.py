@@ -22,8 +22,8 @@ from .util import (NamedDescriptor, WithNamedDescriptors,
 
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
-           'OverrideDefault', 'AttributesDictionary', 'RuleSet', 'RuleSetFile',
-           'Bool', 'Integer', 'ParseError', 'Var']
+           'OverrideDefault', 'AttributesDictionary', 'Configurable',
+           'RuleSet', 'RuleSetFile', 'Bool', 'Integer', 'ParseError', 'Var']
 
 
 class AttributeType(object):
@@ -318,6 +318,7 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
             pass
         raise KeyError(name)
 
+    @classmethod
     def get_ruleset(self):
         raise NotImplementedError
 
@@ -350,6 +351,16 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
                     continue
         raise KeyError
 
+
+class Configurable(object):
+    configuration_class = NotImplementedAttribute()
+
+    def configurable_name(self, document):
+        raise NotImplementedError
+
+    def get_config_value(self, attribute, document):
+        ruleset = self.configuration_class.get_ruleset(document)
+        return ruleset.get_value_(self, attribute, document)
 
 
 class RuleSet(OrderedDict):
@@ -425,6 +436,10 @@ class RuleSet(OrderedDict):
             except KeyError:
                 continue
         return entry._get_default(attribute)
+
+    def get_value_(self, configurable, attribute, document):
+        name = configurable.configurable_name(document)
+        return self.get_value(name, attribute, document)
 
 
 class RuleSetFile(RuleSet):
