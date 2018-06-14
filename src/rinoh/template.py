@@ -434,12 +434,11 @@ class TemplateConfiguration(RuleSet):
     def _stylesheet_search_path(self):
         return Path.cwd()
 
-    def _find_templates_recursive(self, name): # FIXME: duplicates __getitem__?
-        if name in self:
-            yield self[name]
-        if self.base:
-            for template in self.base._find_templates_recursive(name):
-                yield template
+    def _find_templates_recursive(self, name):
+        return self.get_entries(name, self)
+
+    def get_default(self, name, document):
+        return document.get_default_template(name)
 
     def get_entry_class(self, name):
         try:
@@ -617,9 +616,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         - the default template defined in the DocumentTemplate class
 
         """
-        for template in self.configuration._find_templates_recursive(name):
-            yield template
-        yield self.get_default_template(name)
+        return self.configuration.get_entries(name, self)
 
     RE_PAGE = re.compile('^(.*)_(right|left)_page$')
 
@@ -649,17 +646,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         return self.configuration[option_name]
 
     def get_template_option(self, template_name, option_name):
-        for template in self._find_templates(template_name):
-            try:
-                return template.get_value(option_name, self)
-            except VariableException as exc:
-                attribute_definition = exc.attribute_dict.attribute_definition(option_name)
-                accepted_type = attribute_definition.accepted_type
-                value = exc.variable.get(accepted_type, self.configuration)
-                return exc.attribute_dict.validate_attribute(option_name, value, False)
-            except KeyError:
-                continue
-        return template._get_default(option_name)
+        return self.configuration.get_value(template_name, option_name, self)
 
     def get_entry_class(self, name):
         template = next(self._find_templates(name))

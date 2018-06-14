@@ -376,6 +376,28 @@ class RuleSet(OrderedDict):
     def get_entry_class(self, name):
         raise NotImplementedError
 
+    def get_entries(self, name, document):
+        if name in self:
+            yield self[name]
+        if self.base:
+            yield from self.base.get_entries(name, document)
+        yield self.get_default(name, document)
+
+    def get_default(self, name, document):
+        raise NotImplementedError
+
+    def get_value(self, name, attribute, document):
+        for entry in self.get_entries(name, document):
+            try:
+                return entry.get_value(attribute, document)
+            except VariableException as exc:
+                attribute_definition = exc.attribute_dict.attribute_definition(attribute)
+                accepted_type = attribute_definition.accepted_type
+                value = exc.variable.get(accepted_type, self)
+                return exc.attribute_dict.validate_attribute(attribute, value, False)
+            except KeyError:
+                continue
+        return entry._get_default(attribute)
 
 
 class RuleSetFile(RuleSet):
