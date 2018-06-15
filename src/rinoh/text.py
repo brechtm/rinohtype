@@ -237,8 +237,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
     def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
         try:
-            # FIXME: handle VariableException
-            position = self.get_config_value('position', container.document)
+            position = self.get_config_value('position', container.document,
+                                             parent=False)
             return position != TextPosition.NORMAL
         except StyleException:
             return False
@@ -261,12 +261,12 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     def y_offset(self, container):
         """Vertical baseline offset (up is positive)."""
-        offset = (self.parent.y_offset(container)\
+        offset = (self.parent.y_offset(container)
                   if hasattr(self.parent, 'y_offset') else 0)
         if self.is_script(container):
-            style = self._style(container)
-            offset += (self.parent.height(container) *
-                       self.position[style.position])
+            position = self.get_config_value('position', container.document,
+                                             parent=False)
+            offset += self.parent.height(container) * self.position[position]
             # The Y offset should only change once for the nesting level
             # where the position style is set, hence we don't recursively
             # get the position style using self.get_style('position')

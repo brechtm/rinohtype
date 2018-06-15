@@ -523,14 +523,6 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
                 pass
         return self.get_config_value(attribute, container.document)
 
-    @cached
-    def _style(self, container):
-        if isinstance(self.style, Style):
-            return self.style
-        else:
-            return container.document.stylesheet.find_style(self,
-                                                            container.document)
-
     @property
     def has_class(self):
         return HasClass(self)
