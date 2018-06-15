@@ -7,7 +7,7 @@
 
 import pytest
 
-from rinoh.attribute import Attribute, Bool, Var
+from rinoh.attribute import Attribute, Bool, Var, OverrideDefault
 from rinoh.dimension import PT
 from rinoh.document import DocumentTree
 from rinoh.paper import A5
@@ -19,7 +19,7 @@ class MyDocumentTemplate(DocumentTemplate):
     b = Attribute(Bool, True, 'flag B')
     c = Attribute(Bool, True, 'flag C')
 
-    parts = ['contents']
+    parts = OverrideDefault(['contents'])
 
     contents = ContentsPartTemplate()
 
@@ -36,8 +36,13 @@ def test_template_configuration():
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True
-    assert doc.get_template_option('contents_page', 'columns') == 1
-    assert doc.get_template_option('contents_page', 'column_spacing') == 1*PT
+    part_template, = doc.part_templates
+    part = part_template.document_part(doc)
+    assert part.template_name == 'contents'
+    page = part.new_page(1, new_chapter=False)
+    assert page.template_name == 'contents_page'
+    assert page.get_config_value('columns', doc) == 1
+    assert page.get_config_value('column_spacing', doc) == 1*PT
 
 
 def test_template_configuration_base():
@@ -48,8 +53,13 @@ def test_template_configuration_base():
     assert doc.get_option('a') == False
     assert doc.get_option('b') == False
     assert doc.get_option('c') == True
-    assert doc.get_template_option('contents_page', 'columns') == 1
-    assert doc.get_template_option('contents_page', 'column_spacing') == 10*PT
+    part_template, = doc.part_templates
+    part = part_template.document_part(doc)
+    assert part.template_name == 'contents'
+    page = part.new_page(1, new_chapter=False)
+    assert page.template_name == 'contents_page'
+    assert page.get_config_value('columns', doc) == 1
+    assert page.get_config_value('column_spacing', doc) == 10*PT
 
 
 def test_template_configuration_unsupported_option():
@@ -64,7 +74,12 @@ def test_template_configuration_var():
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True
-    assert doc.get_template_option('contents_page', 'page_size') == A5
+    part_template, = doc.part_templates
+    part = part_template.document_part(doc)
+    assert part.template_name == 'contents'
+    page = part.new_page(1, new_chapter=False)
+    assert page.template_name == 'contents_page'
+    assert page.get_config_value('page_size', doc) == A5
 
 
 def test_template_configuration_var2():
@@ -75,4 +90,9 @@ def test_template_configuration_var2():
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True
-    assert doc.get_template_option('contents_page', 'page_size') == A5
+    part_template, = doc.part_templates
+    part = part_template.document_part(doc)
+    assert part.template_name == 'contents'
+    page = part.new_page(1, new_chapter=False)
+    assert page.template_name == 'contents_page'
+    assert page.get_config_value('page_size', doc) == A5

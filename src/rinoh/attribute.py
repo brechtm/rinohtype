@@ -432,8 +432,7 @@ class RuleSet(OrderedDict):
             return entry.base[attribute]
         elif self.base:
             return self.base.get_value(name, attribute, document)
-        else:
-            return entry._get_default(attribute)
+        raise DefaultValueException
 
     def get_value(self, name, attribute, document):
         if name in self:
@@ -454,7 +453,11 @@ class RuleSet(OrderedDict):
         except ParentConfigurationException:
             value = self.get_value_for(configurable.parent, attribute, document)
         except DefaultValueException:
-            value = configurable.configuration_class._get_default(attribute)
+            default_configuration = self.get_default(name, document)
+            if default_configuration and attribute in default_configuration:
+                value = default_configuration[attribute]
+            else:
+                value = configurable.configuration_class._get_default(attribute)
         if isinstance(value, Var):
             value = self.get_variable(configurable, attribute, value)
         return value

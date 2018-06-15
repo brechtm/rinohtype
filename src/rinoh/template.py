@@ -499,18 +499,19 @@ class TemplateConfiguration(RuleSet):
         self.description = description
         self.variables['paper_size'] = A4
 
-    def __getitem__(self, name):
-        try:
-            return super().__getitem__(name)
-        except KeyError:
-            return self.template._get_default(name)
-
     @property
     def _stylesheet_search_path(self):
         return Path.cwd()
 
     def _find_templates_recursive(self, name):
         return self.get_entries(name, self)
+
+    def get_option(self, name):
+        if name in self:
+            return self[name]
+        elif self.base:
+            return self.base.get_option(name)
+        return self.template._get_default(name)
 
     def get_default(self, name, document):
         return document.get_default_template(name)
@@ -669,7 +670,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         parts = self.get_option('parts')
         self.part_templates = [next(self._find_templates(name))
                                for name in parts]
-        self._defaults = OrderedDict()
         self._to_insert = {}
 
     def _find_templates(self, name):
@@ -707,7 +707,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         raise KeyError("No '{}' template found", template_name)
 
     def get_option(self, option_name):
-        return self.configuration[option_name]
+        return self.configuration.get_option(option_name)
 
     def get_template_option(self, template_name, option_name):
         return self.configuration.get_value(template_name, option_name, self)

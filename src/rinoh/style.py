@@ -701,7 +701,7 @@ class StyleSheet(RuleSet, Resource):
                 '``{}`` extension)'.format(cls.extension))
 
     def get_default(self, name, document):
-        return self.get_entry_class(name)()
+        return None
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
