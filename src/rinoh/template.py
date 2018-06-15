@@ -332,7 +332,7 @@ class DocumentPartTemplate(Template):
             flowables.insert(position, flowable)
         return flowables
 
-    def document_part(self, document, first_page_number):
+    def document_part(self, document):
         flowables = self.all_flowables(document)
         if flowables or not self.drop_if_empty:
             return DocumentPart(self, document, flowables)

@@ -408,7 +408,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         part_page_count = PartPageCount()
         last_number_format = None
         for part_template in self.part_templates:
-            part = part_template.document_part(self, part_page_count.count + 1)
+            part = part_template.document_part(self)
             if part is None:
                 continue
             if part_template.page_number_format != last_number_format:
