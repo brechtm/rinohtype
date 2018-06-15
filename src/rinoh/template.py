@@ -71,7 +71,7 @@ class Template(AttributesDictionary, NamedDescriptor):
 class Templated(Configurable):
     configuration_class = Template
 
-    def configurable_name(self, document):
+    def configuration_name(self, document):
         return self.template_name
 
 

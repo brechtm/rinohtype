@@ -28,8 +28,6 @@ TEST_DIR = Path(__file__).parent.parent.absolute()
 OUTPUT_DIR = TEST_DIR / 'output'
 
 class MinimalTemplate(DocumentTemplate):
-    variables = dict(paper_size='a5')
-
     stylesheet = OverrideDefault('sphinx_base14')
     parts = OverrideDefault(['contents'])
     contents = ContentsPartTemplate()
@@ -44,9 +42,10 @@ def render_rst_file(rst_path, out_filename, reference_path):
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
     stylesheet_path = rst_path.with_suffix('.rts')
-    config = (TemplateConfiguration('rst', template=MinimalTemplate,
-                                    stylesheet=str(stylesheet_path))
-              if stylesheet_path.exists() else None)
+    kwargs = (dict(stylesheet=str(stylesheet_path))
+              if stylesheet_path.exists() else {})
+    config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
+    config.variables['paper_size'] = 'a5'
     render_doctree(doctree, out_filename, reference_path, config)
 
 

@@ -99,7 +99,7 @@ class Table(Flowable):
         # TODO: allow data to override style (align)
         if state.column_widths is None:
             state.column_widths = self._size_columns(container)
-        get_style = partial(self.get_style, flowable_target=container)
+        get_style = partial(self.get_style, container=container)
         with MaybeContainer(container) as maybe_container:
             def render_rows(section, next_row_index=0):
                 rows = section[next_row_index:]

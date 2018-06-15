@@ -368,7 +368,7 @@ class Caption(NumberedParagraph):
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         document = flowable_target.document
-        get_style = partial(self.get_style, flowable_target=flowable_target)
+        get_style = partial(self.get_style, container=flowable_target)
         category = self.referenceable.category
         numbering_level = get_style('numbering_level')
         section = self.section

@@ -322,45 +322,49 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
     def get_ruleset(self):
         raise NotImplementedError
 
-    def get_value(self, attribute):
-        value = self[attribute]
-        if isinstance(value, Var):
-            raise VariableException(self, value)
-        return value
 
-    def get_value_recursive(self, attribute, document):
-        try:
-            return self.get_value(attribute)
-        except KeyError:
-            bases = []
-            if isinstance(self.base, str):
-                ruleset = self.get_ruleset(document)
-                iter = ruleset.get_entries(self.base, document)
-                try:
-                    bases.extend(iter)
-                except KeyError:
-                    raise ValueError("Could not find the base entry '{}' "
-                                     "for the '{}' entry."
-                                     .format(self.base, self.name))
-            elif self.base is not None:
-                bases.append(self.base)
-            for base_template in bases:
-                try:
-                    return base_template.get_value_recursive(attribute, document)
-                except KeyError:
-                    continue
-        raise KeyError
+class SpecialConfiguration(AttributesDictionary):
+    """Special configuration that delegates attribute lookups by raising an
+    exception on each attempt to access an attribute."""
+
+    exception = NotImplementedAttribute()
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+    def __getitem__(self, attribute):
+        raise self.exception
+
+    def __bool__(self):
+        return True
+
+
+class ParentConfigurationException(Exception):
+    """Forward attribute lookups to the parent :class:`Configurable`."""
+
+
+class ParentConfiguration(SpecialConfiguration):
+    exception = ParentConfigurationException
+
+
+PARENT_CONFIG = ParentConfiguration()
+"""Configuration that forwards attribute lookups to the parent of the
+:class:`Configurable` from which the lookup originates."""
 
 
 class Configurable(object):
     configuration_class = NotImplementedAttribute()
 
-    def configurable_name(self, document):
+    def configuration_name(self, document):
         raise NotImplementedError
 
     def get_config_value(self, attribute, document):
         ruleset = self.configuration_class.get_ruleset(document)
-        return ruleset.get_value_(self, attribute, document)
+        return ruleset.get_value_for(self, attribute, document)
+
+
+class DefaultValueException(Exception):
+    pass
 
 
 class RuleSet(OrderedDict):
@@ -372,13 +376,8 @@ class RuleSet(OrderedDict):
         self.base = base
         self.variables = OrderedDict()
 
-    def __getitem__(self, name):
-        try:
-            return super().__getitem__(name)
-        except KeyError:
-            if self.base is not None:
-                return self.base[name]
-            raise
+    def contains(self, name):
+        return name in self or (self.base and self.base.contains(name))
 
     def __setitem__(self, name, style):
         assert name not in self
@@ -424,22 +423,49 @@ class RuleSet(OrderedDict):
     def get_default(self, name, document):
         raise NotImplementedError
 
-    def get_value(self, name, attribute, document):
-        for entry in self.get_entries(name, document):
-            try:
-                return entry.get_value_recursive(attribute, document)
-            except VariableException as exc:
-                attribute_definition = exc.attribute_dict.attribute_definition(attribute)
-                accepted_type = attribute_definition.accepted_type
-                value = exc.variable.get(accepted_type, self)
-                return exc.attribute_dict.validate_attribute(attribute, value, False)
-            except KeyError:
-                continue
-        return entry._get_default(attribute)
+    def get_value_helper(self, name, attribute, document):
+        entry = self[name]
+        if attribute in entry:
+            return entry[attribute]
+        elif isinstance(entry.base, str):
+            return self.get_value(entry.base, attribute, document)
+        elif entry.base is not None:
+            return entry.base[attribute]
+        elif self.base:
+            return self.base.get_value(name, attribute, document)
+        else:
+            return entry._get_default(attribute)
 
-    def get_value_(self, configurable, attribute, document):
-        name = configurable.configurable_name(document)
-        return self.get_value(name, attribute, document)
+    def get_value(self, name, attribute, document):
+        if name in self:
+            value = self.get_value_helper(name, attribute, document)
+        elif self.base:
+            value = self.base.get_value(name, attribute, document)
+        else:
+            raise DefaultValueException
+        if isinstance(value, Var):
+            raise VariableException(value)
+        return value
+
+    def get_value_for(self, configurable, attribute, document):
+        name = configurable.configuration_name(document)
+        try:
+            if name is None:
+                if configurable.configuration_class.default_base == PARENT_CONFIG:
+                    raise ParentConfigurationException
+                else:
+                    raise DefaultValueException
+            return self.get_value(name, attribute, document)
+        except ParentConfigurationException:
+            return self.get_value_for(configurable.parent, attribute, document)
+        except DefaultValueException:
+            return configurable.configuration_class._get_default(attribute)
+        except VariableException as exc:
+            config = configurable.configuration_class
+            attribute_definition = config.attribute_definition(attribute)
+            accepted_type = attribute_definition.accepted_type
+            value = exc.variable.get(accepted_type, self)
+            return config.validate_attribute(attribute, value, False)
 
 
 class RuleSetFile(RuleSet):
@@ -550,8 +576,7 @@ class Var(object):
 
 
 class VariableException(Exception):
-    def __init__(self, attribute_dict, variable):
-        self.attribute_dict = attribute_dict
+    def __init__(self, variable):
         self.variable = variable
 
 

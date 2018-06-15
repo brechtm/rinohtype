@@ -23,12 +23,14 @@ emphasis2_selector = StyledText.like('emphasis2')
 paragraph_selector = Paragraph
 paragraph2_selector = Paragraph.like('paragraph2')
 paragraph3_selector = Paragraph.like('paragraph3')
+missing_selector = Paragraph.like('missing')
 
 matcher = StyledMatcher({
     'emphasized text': emphasis_selector,
     'emphasized text 2': emphasis2_selector,
     'paragraph': paragraph_selector,
     'paragraph 2': paragraph2_selector,
+    'missing style': missing_selector,
 })
 
 ssheet1 = StyleSheet('ssheet1', matcher)
@@ -81,6 +83,8 @@ paragraph2 = Paragraph('A second paragraph with ' + emphasized2 + ' text.',
 emphasized3 = SingleStyledText('emphasized 3', style='emphasis2')
 paragraph3 = Paragraph('A third paragraph with ' + emphasized3 + ' text.',
                        style='paragraph3')
+paragraph4 = Paragraph('A paragraph for which no style is present in the '
+                       'style sheet', style='missing')
 
 doctree = DocumentTree([paragraph])
 
@@ -107,7 +111,7 @@ def test_style():
     assert style.space_below == 10*PT
     assert style.indent_first == Var('indent-first')
 
-    style = ssheet2['paragraph 2']
+    style = ssheet1['paragraph 2']
     assert style.padding_bottom == 3*PT
 
     style = ssheet2['paragraph 3']
@@ -160,14 +164,18 @@ def test_find_matches():
 
 
 def test_find_style():
-    assert ssheet1.find_style(emphasized, None) is ssheet1['emphasized text']
-    assert ssheet1.find_style(emphasized2, None) is ssheet1['emphasized text 2']
-    assert ssheet1.find_style(paragraph, None) is ssheet1['paragraph']
-    assert ssheet2.find_style(paragraph, None) is ssheet2['paragraph']
-    assert ssheet1.find_style(paragraph2, None) is ssheet1['paragraph 2']
-    assert ssheet2.find_style(paragraph2, None) is ssheet2['paragraph 2']
-    assert ssheet1.find_style(paragraph3, None) is ssheet1['paragraph']
-    assert ssheet2.find_style(paragraph3, None) is ssheet2['paragraph 3']
+    assert ssheet2.get_value_for(emphasized, 'font_slant', document) == 'italic'
+    assert ssheet2.get_value_for(paragraph4, 'font_slant', document) == 'upright'
+
+    assert ssheet1.find_style(emphasized, None) == 'emphasized text'
+    assert ssheet1.find_style(emphasized2, None) == 'emphasized text 2'
+    assert ssheet1.find_style(paragraph, None) == 'paragraph'
+    assert ssheet2.find_style(paragraph, None) == 'paragraph'
+    assert ssheet1.find_style(paragraph2, None) == 'paragraph 2'
+    assert ssheet2.find_style(paragraph2, None) == 'paragraph 2'
+    assert ssheet1.find_style(paragraph3, None) == 'paragraph'
+    assert ssheet2.find_style(paragraph3, None) == 'paragraph 3'
+    assert ssheet2.find_style(paragraph4, None) == 'paragraph'
 
 
 def test_get_style():
@@ -213,6 +221,8 @@ def test_get_style():
     assert paragraph3.get_style('font_width', container) == 'normal'
     assert paragraph3.get_style('font_slant', container) == 'upright'
     assert paragraph3.get_style('font_size', container) == 10*PT
+
+    assert paragraph4.get_style('font_slant', container) == 'upright'
 
 
 def test_variable():

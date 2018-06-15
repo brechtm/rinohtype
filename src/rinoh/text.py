@@ -238,7 +238,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
         """Returns `True` if this styled text is super/subscript."""
         try:
             # FIXME: handle VariableException
-            position = self._style(container).get_value('position')
+            position = self.get_config_value('position', container.document)
             return position != TextPosition.NORMAL
         except StyleException:
             return False
