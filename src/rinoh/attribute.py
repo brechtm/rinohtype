@@ -397,18 +397,17 @@ class RuleSet(OrderedDict):
     def __bool__(self):
         return True
 
-    def get_variable(self, name, accepted_type):
+    def get_variable(self, configurable, attribute, variable):
         try:
-            return self._get_variable(name, accepted_type)
+            value =  self.variables[variable.name]
         except KeyError:
             if self.base:
-                return self.base.get_variable(name, accepted_type)
+                return self.base.get_variable(configurable, attribute, variable)
             else:
                 raise VariableNotDefined("Variable '{}' is not defined"
-                                         .format(name))
-
-    def _get_variable(self, name, accepted_type):
-        return self.variables[name]
+                                         .format(variable.name))
+        config = configurable.configuration_class
+        return config.validate_attribute(attribute, value, False)
 
     def get_entry_class(self, name):
         raise NotImplementedError
@@ -438,14 +437,10 @@ class RuleSet(OrderedDict):
 
     def get_value(self, name, attribute, document):
         if name in self:
-            value = self.get_value_helper(name, attribute, document)
+            return self.get_value_helper(name, attribute, document)
         elif self.base:
-            value = self.base.get_value(name, attribute, document)
-        else:
-            raise DefaultValueException
-        if isinstance(value, Var):
-            raise VariableException(value)
-        return value
+            return self.base.get_value(name, attribute, document)
+        raise DefaultValueException
 
     def get_value_for(self, configurable, attribute, document):
         name = configurable.configuration_name(document)
@@ -455,17 +450,14 @@ class RuleSet(OrderedDict):
                     raise ParentConfigurationException
                 else:
                     raise DefaultValueException
-            return self.get_value(name, attribute, document)
+            value = self.get_value(name, attribute, document)
         except ParentConfigurationException:
-            return self.get_value_for(configurable.parent, attribute, document)
+            value = self.get_value_for(configurable.parent, attribute, document)
         except DefaultValueException:
-            return configurable.configuration_class._get_default(attribute)
-        except VariableException as exc:
-            config = configurable.configuration_class
-            attribute_definition = config.attribute_definition(attribute)
-            accepted_type = attribute_definition.accepted_type
-            value = exc.variable.get(accepted_type, self)
-            return config.validate_attribute(attribute, value, False)
+            value = configurable.configuration_class._get_default(attribute)
+        if isinstance(value, Var):
+            value = self.get_variable(configurable, attribute, value)
+        return value
 
 
 class RuleSetFile(RuleSet):

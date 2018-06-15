@@ -408,6 +408,7 @@ class TemplateConfiguration(RuleSet):
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
         super().__init__(name, base=base, **options)
         self.description = description
+        self.variables['paper_size'] = A4
 
     def __getitem__(self, name):
         try:
@@ -432,15 +433,6 @@ class TemplateConfiguration(RuleSet):
             raise ValueError("'{}' is not a template used by {}"
                              .format(name, self.template))
         return type(template)
-
-    def get_variable(self, name, accepted_type):
-        try:
-            return super().get_variable(name, accepted_type)
-        except VariableNotDefined:
-            try:
-                return self.template.variables[name]
-            except KeyError:
-                raise
 
     def document(self, document_tree, backend=None):
         """Create a :class:`DocumentTemplate` object based on the given
@@ -575,8 +567,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
                                                'styling document elements')
 
     parts = Attribute(PartsList, [], 'The parts making up this document')
-
-    variables = dict(paper_size=A4)
 
     def __init__(self, document_tree, configuration=None, backend=None):
         self.configuration = (configuration if configuration is not None
