@@ -6,7 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import os
 import re
 
 from collections import OrderedDict
@@ -17,17 +16,18 @@ from pathlib import Path
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
-                        OptionSet, AcceptNoneAttributeType, VariableNotDefined,
-                        OverrideDefault, Configurable)
+                        OptionSet, AcceptNoneAttributeType, OverrideDefault,
+                        Configurable)
 from .dimension import Dimension, CM, PT, PERCENT
-from .document import Document, DocumentPart, Page, PageOrientation, PageType
+from .document import Document, Page, PageOrientation, PageType
 from .element import create_destination
 from .image import BackgroundImage, Image
 from .flowable import Flowable
 from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
-                     BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE)
+                     BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE,
+                     PageBreakException, Chain)
 from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
@@ -36,8 +36,9 @@ from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
 from .resource import Resource
 from .text import StyledText, Tab
 from .strings import StringCollection, Strings
-from .structure import Header, Footer, HorizontalRule
-from .style import StyleSheet, CharIterator, parse_string
+from .structure import Header, Footer, HorizontalRule, NewChapterException
+from .style import (StyleSheet, CharIterator, parse_string, Specificity,
+                    DocumentLocationType)
 from .stylesheets import sphinx
 from .util import NamedDescriptor
 
@@ -143,6 +144,8 @@ class PageTemplate(PageTemplateBase):
 
 
 class PageBase(Page, Templated):
+    configuration_class = PageTemplateBase
+
     def __init__(self, document_part, template_name, page_number, after_break):
         get_option = partial(self.get_config_value,
                              document=document_part.document)
@@ -168,6 +171,8 @@ class PageBase(Page, Templated):
 
 
 class SimplePage(PageBase):
+    configuration_class = PageTemplate
+
     def __init__(self, document_part, template_name, page_number, chain,
                  new_chapter):
         super().__init__(document_part, template_name, page_number, new_chapter)
@@ -331,6 +336,90 @@ class DocumentPartTemplate(Template):
         flowables = self.all_flowables(document)
         if flowables or not self.drop_if_empty:
             return DocumentPart(self, document, flowables)
+
+
+class DocumentPart(Templated, metaclass=DocumentLocationType):
+    """Part of a document.
+
+    Args:
+        template (DocumentPartTemplate): the template that determines the
+            contents and style of this document part
+        document (Document): the document this part belongs to
+        flowables (list[Flowable]): the flowables to render in this document
+            part
+
+    """
+
+    configuration_class = DocumentPartTemplate
+
+    def __init__(self, template, document, flowables):
+        self.template = template
+        self.template_name = template.name
+        self.document = document
+        self.pages = []
+        self.chain = Chain(self)
+        for flowable in flowables or []:
+                self.chain << flowable
+
+    @property
+    def page_number_format(self):
+        return self.template.page_number_format
+
+    @property
+    def number_of_pages(self):
+        try:
+            return self.document.part_page_counts[self.template.name].count
+        except KeyError:
+            return 0
+
+    def prepare(self):
+        for flowable in self._flowables(self.document):
+            flowable.prepare(self)
+
+    def render(self, first_page_number):
+        self.add_page(self.first_page(first_page_number))
+        for page_number, page in enumerate(self.pages, first_page_number + 1):
+            try:
+                page.render()
+                break_type = None
+            except NewChapterException as nce:
+                break_type = nce.break_type
+            except PageBreakException as pbe:
+                break_type = None
+            page.place()
+            if self.chain and not self.chain.done:
+                next_page_type = 'left' if page.number % 2 else 'right'
+                page = self.new_page(page_number, next_page_type == break_type)
+                self.add_page(page)     # this grows self.pages!
+        next_page_type = 'right' if page_number % 2 else 'left'
+        end_at_page = self.get_config_value('end_at_page', self.document)
+        if next_page_type == end_at_page:
+            self.add_page(self.first_page(page_number + 1))
+        return len(self.pages)
+
+    def add_page(self, page):
+        """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
+        self.pages.append(page)
+
+    def first_page(self, page_number):
+        return self.new_page(page_number, new_chapter=True)
+
+    def new_page(self, page_number, new_chapter, **kwargs):
+        """Called by :meth:`render` with the :class:`Chain`s that need more
+        :class:`Container`s. This method should create a new :class:`Page` which
+        contains a container associated with `chain`."""
+        right_template = self.document.get_page_template(self, 'right')
+        left_template = self.document.get_page_template(self, 'left')
+        page_template = right_template if page_number % 2 else left_template
+        return page_template.page(self, page_number, self.chain, new_chapter,
+                                  **kwargs)
+
+    @classmethod
+    def match(cls, styled, container):
+        if isinstance(container.document_part, cls):
+            return Specificity(0, 1, 0, 0, 0)
+        else:
+            return None
 
 
 class TitlePartTemplate(DocumentPartTemplate):

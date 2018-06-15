@@ -23,7 +23,6 @@ Classes representing a document:
 from pathlib import Path
 
 import datetime
-import os
 import pickle
 import sys
 import time
@@ -37,17 +36,15 @@ from .attribute import OptionSet
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
-from .layout import (Container, ReflowRequired, Chain, PageBreakException,
+from .layout import (Container, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import format_number
-from .structure import NewChapterException, Section
-from .style import DocumentLocationType, Specificity, StyleLog
+from .style import StyleLog
 from .util import RefKeyDictionary
 from .warnings import warn
 
 
-__all__ = ['Page', 'PageOrientation', 'PageType',
-           'DocumentPart', 'Document', 'DocumentTree']
+__all__ = ['Page', 'PageOrientation', 'PageType', 'Document', 'DocumentTree']
 
 
 class DocumentTree(StaticGroupedFlowables):
@@ -181,92 +178,6 @@ class BackendDocumentMetadata(object):
 
     def __set__(self, instance, value):
         return instance.backend_document.set_metadata(self.name, value)
-
-
-class DocumentPart(object, metaclass=DocumentLocationType):
-    """Part of a document.
-
-    Args:
-        template (DocumentPartTemplate): the template that determines the
-            contents and style of this document part
-        document (Document): the document this part belongs to
-        flowables (list[Flowable]): the flowables to render in this document
-            part
-
-    """
-
-    def __init__(self, template, document, flowables):
-        self.template = template
-        self.document = document
-        self.pages = []
-        self.chain = Chain(self)
-        for flowable in flowables or []:
-                self.chain << flowable
-
-    def _get_next_page_number(self):
-        self._last_page_number += 1
-        return self._last_page_number
-
-    @property
-    def page_number_format(self):
-        return self.template.page_number_format
-
-    @property
-    def number_of_pages(self):
-        try:
-            return self.document.part_page_counts[self.template.name].count
-        except KeyError:
-            return 0
-
-    def prepare(self):
-        for flowable in self._flowables(self.document):
-            flowable.prepare(self)
-
-    def render(self, first_page_number):
-        self.add_page(self.first_page(first_page_number))
-        for page_number, page in enumerate(self.pages, first_page_number + 1):
-            try:
-                page.render()
-                break_type = None
-            except NewChapterException as nce:
-                break_type = nce.break_type
-            except PageBreakException as pbe:
-                break_type = None
-            page.place()
-            if self.chain and not self.chain.done:
-                next_page_type = 'left' if page.number % 2 else 'right'
-                page = self.new_page(page_number, next_page_type == break_type)
-                self.add_page(page)     # this grows self.pages!
-        next_page_type = 'right' if page_number % 2 else 'left'
-        end_at_page = self.document.get_template_option(self.template.name,
-                                                        'end_at_page')
-        if next_page_type == end_at_page:
-            self.add_page(self.first_page(page_number + 1))
-        return len(self.pages)
-
-    def add_page(self, page):
-        """Append `page` (:class:`Page`) to this :class:`DocumentPart`."""
-        self.pages.append(page)
-
-    def first_page(self, page_number):
-        return self.new_page(page_number, new_chapter=True)
-
-    def new_page(self, page_number, new_chapter, **kwargs):
-        """Called by :meth:`render` with the :class:`Chain`s that need more
-        :class:`Container`s. This method should create a new :class:`Page` which
-        contains a container associated with `chain`."""
-        right_template = self.document.get_page_template(self, 'right')
-        left_template = self.document.get_page_template(self, 'left')
-        page_template = right_template if page_number % 2 else left_template
-        return page_template.page(self, page_number, self.chain, new_chapter,
-                                  **kwargs)
-
-    @classmethod
-    def match(cls, styled, container):
-        if isinstance(container.document_part, cls):
-            return Specificity(0, 1, 0, 0, 0)
-        else:
-            return None
 
 
 class PartPageCount(object):
