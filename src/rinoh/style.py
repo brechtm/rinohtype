@@ -693,12 +693,13 @@ class StyleSheet(RuleSet, Resource):
                 'sheets>` or the filename of a stylesheet file (with the '
                 '``{}`` extension)'.format(cls.extension))
 
-    def _get_value_for(self, configurable, attribute, document):
+    def _get_value_for(self, styled, attribute, document):
         try:
-            return super()._get_value_for(configurable, attribute, document)
+            return super()._get_value_for(styled, attribute, document)
         except ParentConfigurationException:
-            return self._get_value_for(configurable.parent, attribute,
-                                       document)
+            if attribute == 'position':   # TODO: clean up
+                raise DefaultValueException
+            return self._get_value_for(styled.parent, attribute, document)
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
