@@ -358,9 +358,9 @@ class Configurable(object):
     def configuration_name(self, document):
         raise NotImplementedError
 
-    def get_config_value(self, attribute, document, parent=True):
+    def get_config_value(self, attribute, document):
         ruleset = self.configuration_class.get_ruleset(document)
-        return ruleset.get_value_for(self, attribute, document, parent=parent)
+        return ruleset.get_value_for(self, attribute, document)
 
 
 class DefaultValueException(Exception):
@@ -419,9 +419,6 @@ class RuleSet(OrderedDict):
             yield from self.base.get_entries(name, document)
         yield self.get_default(name, document)
 
-    def get_default(self, name, document):  # TODO: not relevant to styles
-        raise NotImplementedError
-
     def get_value_helper(self, name, attribute, document):
         entry = self[name]
         if attribute in entry:
@@ -441,34 +438,17 @@ class RuleSet(OrderedDict):
             return self.base.get_value(name, attribute, document)
         raise DefaultValueException
 
-    def _get_value_for(self, configurable, attribute, document, parent):
+    def _get_value_for(self, configurable, attribute, document):
         name = configurable.configuration_name(document)
-        try:
-            if name is None:
-                default_base = configurable.configuration_class.default_base
-                if parent and default_base == PARENT_CONFIG:
-                    raise ParentConfigurationException
-                else:
-                    raise DefaultValueException
-            value = self.get_value(name, attribute, document)
-        except ParentConfigurationException:    # TODO: not relevant to templates
-            value = self._get_value_for(configurable.parent, attribute,
-                                        document, parent)
-        return value
+        return self.get_value(name, attribute, document)
 
-    def get_value_for(self, configurable, attribute, document, parent=True):
+    def get_value_for(self, configurable, attribute, document):
         try:
-            value = self._get_value_for(configurable, attribute, document, parent)
+            value = self._get_value_for(configurable, attribute, document)
         except DefaultValueException:
-            name = configurable.configuration_name(document)
-            default_configuration = self.get_default(name, document)
-            if default_configuration and attribute in default_configuration:
-                value = default_configuration[attribute]
-            else:
-                value = configurable.configuration_class._get_default(attribute)
-        if isinstance(value, Var):
-            value = self.get_variable(configurable, attribute, value)
-        return value
+            value = configurable.configuration_class._get_default(attribute)
+        return (self.get_variable(configurable, attribute, value)
+                if isinstance(value, Var) else value)
 
 
 class RuleSetFile(RuleSet):

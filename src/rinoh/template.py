@@ -17,7 +17,7 @@ from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, OverrideDefault,
-                        Configurable)
+                        Configurable, DefaultValueException)
 from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, Page, PageOrientation, PageType
 from .element import create_destination
@@ -515,6 +515,16 @@ class TemplateConfiguration(RuleSet):
 
     def get_default(self, name, document):
         return document.get_default_template(name)
+
+    def _get_value_for(self, configurable, attribute, document):
+        try:
+            return super()._get_value_for(configurable, attribute, document)
+        except DefaultValueException:
+            name = configurable.configuration_name(document)
+            default_configuration = self.get_default(name, document)
+            if default_configuration and attribute in default_configuration:
+                return default_configuration[attribute]
+            raise
 
     def get_entry_class(self, name):
         try:

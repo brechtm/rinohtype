@@ -27,7 +27,8 @@ from operator import attrgetter
 from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
-                        RuleSet, RuleSetFile, Configurable, PARENT_CONFIG)
+                        RuleSet, RuleSetFile, Configurable, PARENT_CONFIG,
+                        ParentConfigurationException, DefaultValueException)
 from .element import DocumentElement
 from .resource import Resource
 from .util import (cached, unique, all_subclasses, NotImplementedAttribute,
@@ -692,8 +693,12 @@ class StyleSheet(RuleSet, Resource):
                 'sheets>` or the filename of a stylesheet file (with the '
                 '``{}`` extension)'.format(cls.extension))
 
-    def get_default(self, name, document):
-        return None
+    def _get_value_for(self, configurable, attribute, document):
+        try:
+            return super()._get_value_for(configurable, attribute, document)
+        except ParentConfigurationException:
+            return self._get_value_for(configurable.parent, attribute,
+                                       document)
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
@@ -742,6 +747,9 @@ class StyleSheet(RuleSet, Resource):
             if self.contains(match.style_name):
                 return match.style_name
             last_match = match
+        default_base = styled.style_class.default_base
+        raise (ParentConfigurationException if default_base == PARENT_CONFIG
+               else DefaultValueException)
 
     def write(self, base_filename):
         from configparser import ConfigParser
