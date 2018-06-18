@@ -419,22 +419,16 @@ class RuleSet(OrderedDict):
             yield from self.base.get_entries(name, document)
         yield self.get_default(name, document)
 
-    def get_value_helper(self, name, attribute, document):
-        entry = self[name]
-        if attribute in entry:
-            return entry[attribute]
-        elif isinstance(entry.base, str):
-            return self.get_value(entry.base, attribute, document)
-        elif entry.base is not None:
-            return entry.base[attribute]
-        elif self.base:
-            return self.base.get_value(name, attribute, document)
-        raise DefaultValueException
-
     def get_value(self, name, attribute, document):
         if name in self:
-            return self.get_value_helper(name, attribute, document)
-        elif self.base:
+            entry = self[name]
+            if attribute in entry:
+                return entry[attribute]
+            elif isinstance(entry.base, str):
+                return self.get_value(entry.base, attribute, document)
+            elif entry.base is not None:
+                return entry.base[attribute]
+        if self.base:
             return self.base.get_value(name, attribute, document)
         raise DefaultValueException
 
