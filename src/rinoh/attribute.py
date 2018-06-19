@@ -367,6 +367,11 @@ class DefaultValueException(Exception):
     pass
 
 
+class BaseConfigurationException(Exception):
+    def __init__(self, base_name):
+        self.name = base_name
+
+
 class RuleSet(OrderedDict):
     main_section = NotImplementedAttribute()
 
@@ -412,27 +417,32 @@ class RuleSet(OrderedDict):
     def get_entry_class(self, name):
         raise NotImplementedError
 
-    def get_value(self, name, attribute, document):
+    def _get_value_recursive(self, name, attribute, document):
         if name in self:
             entry = self[name]
             if attribute in entry:
                 return entry[attribute]
             elif isinstance(entry.base, str):
-                # FIXME: entry.base should be looked upin the top-level RuleSet
-                return self.get_value(entry.base, attribute, document)
+                raise BaseConfigurationException(entry.base)
             elif entry.base is not None:
                 return entry.base[attribute]
         if self.base:
-            return self.base.get_value(name, attribute, document)
+            return self.base._get_value_recursive(name, attribute, document)
         raise DefaultValueException
 
-    def _get_value_for(self, configurable, attribute, document):
+    def _get_value_handle_base(self, name, attribute, document):
+        try:
+            return self._get_value_recursive(name, attribute, document)
+        except BaseConfigurationException as exc:
+            return self._get_value_handle_base(exc.name, attribute, document)
+
+    def _get_value_lookup(self, configurable, attribute, document):
         name = configurable.configuration_name(document)
-        return self.get_value(name, attribute, document)
+        return self._get_value_handle_base(name, attribute, document)
 
     def get_value_for(self, configurable, attribute, document):
         try:
-            value = self._get_value_for(configurable, attribute, document)
+            value = self._get_value_lookup(configurable, attribute, document)
         except DefaultValueException:
             value = configurable.configuration_class._get_default(attribute)
         return (self.get_variable(configurable, attribute, value)
