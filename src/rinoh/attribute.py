@@ -412,13 +412,6 @@ class RuleSet(OrderedDict):
     def get_entry_class(self, name):
         raise NotImplementedError
 
-    def get_entries(self, name, document):
-        if name in self:
-            yield self[name]
-        if self.base:
-            yield from self.base.get_entries(name, document)
-        yield self.get_default(name, document)
-
     def get_value(self, name, attribute, document):
         if name in self:
             entry = self[name]

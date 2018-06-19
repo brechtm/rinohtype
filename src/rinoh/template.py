@@ -495,7 +495,7 @@ class TemplateConfiguration(RuleSet):
         tmpl_cls = self.template
         for attr, value in options.items():
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
-        super().__init__(name, base=base, **options)
+        super().__init__(name, base=base or self.template, **options)
         self.description = description
         self.variables['paper_size'] = A4
 
@@ -503,32 +503,20 @@ class TemplateConfiguration(RuleSet):
     def _stylesheet_search_path(self):
         return Path.cwd()
 
-    def _find_templates_recursive(self, name):
-        return self.get_entries(name, self)
+    def get_entries(self, name, document):
+        if name in self:
+            yield self[name]
+        if self.base:
+            yield from self.base.get_entries(name, document)
 
-    def get_option(self, name):
+    def get_attribute_value(self, name):
         if name in self:
             return self[name]
-        elif self.base:
-            return self.base.get_option(name)
-        return self.template._get_default(name)
-
-    def get_default(self, name, document):
-        return document.get_default_template(name)
-
-    def _get_value_for(self, configurable, attribute, document):
-        try:
-            return super()._get_value_for(configurable, attribute, document)
-        except DefaultValueException:
-            name = configurable.configuration_name(document)
-            default_configuration = self.get_default(name, document)
-            if default_configuration and attribute in default_configuration:
-                return default_configuration[attribute]
-            raise
+        return self.base.get_attribute_value(name)
 
     def get_entry_class(self, name):
         try:
-            template = self.template.get_default_template(name)
+            template = self.template.get_template(name)
         except KeyError:
             raise ValueError("'{}' is not a template used by {}"
                              .format(name, self.template))
@@ -609,6 +597,37 @@ class DocumentTemplateMeta(WithAttributes):
                           dict(template=cls))
         cls.ConfigurationFile = globals()[file_class_name] = file_class
         return cls
+
+    def get_template(cls, name):
+        try:
+            for klass in cls.__mro__:
+                if name in klass._templates:
+                    return klass._templates[name]
+        except AttributeError:
+            pass
+        raise KeyError(name)
+
+    def get_attribute_value(cls, name):
+        return cls._get_default(name)
+
+    def get_entries(cls, name, document):
+        if name in cls._templates:
+            yield cls._templates[name]
+        m = cls.RE_PAGE.match(name)
+        if m:
+            general_template = m.group(1) + '_page'
+            yield cls._templates[general_template]
+
+    def get_value(cls, name, attribute, document):
+        if name in cls._templates:
+            template = cls._templates[name]
+            if attribute in template:
+                return template[attribute]
+            elif isinstance(template.base, str):
+                return cls.get_value(template.base, attribute, document)
+            elif template.base is not None:
+                return template.base[attribute]
+        raise DefaultValueException
 
 
 class PartsList(AttributeType, list):
@@ -694,30 +713,8 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     RE_PAGE = re.compile('^(.*)_(right|left)_page$')
 
-    @classmethod
-    def get_default_template(cls, template_name):
-        try:
-            return cls._get_default_template_recursive(template_name)
-        except KeyError:
-            m = cls.RE_PAGE.match(template_name)
-            if m:
-                general_template = m.group(1) + '_page'
-                return cls._get_default_template_recursive(general_template)
-
-    @classmethod
-    def _get_default_template_recursive(cls, template_name):
-        for mro_cls in cls.__mro__:
-            try:
-                templates = mro_cls._templates
-            except AttributeError:
-                break
-            else:
-                if template_name in templates:
-                    return templates[template_name]
-        raise KeyError("No '{}' template found", template_name)
-
     def get_option(self, option_name):
-        return self.configuration.get_option(option_name)
+        return self.configuration.get_attribute_value(option_name)
 
     def get_template_option(self, template_name, option_name):
         return self.configuration.get_value(template_name, option_name, self)
