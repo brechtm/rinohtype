@@ -418,6 +418,7 @@ class RuleSet(OrderedDict):
             if attribute in entry:
                 return entry[attribute]
             elif isinstance(entry.base, str):
+                # FIXME: entry.base should be looked upin the top-level RuleSet
                 return self.get_value(entry.base, attribute, document)
             elif entry.base is not None:
                 return entry.base[attribute]

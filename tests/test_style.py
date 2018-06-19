@@ -15,7 +15,7 @@ from rinoh.document import DocumentTree, Document, FakeContainer
 from rinoh.language import EN
 from rinoh.paragraph import Paragraph
 from rinoh.text import StyledText, SingleStyledText
-from rinoh.style import StyleSheet, StyledMatcher, Specificity
+from rinoh.style import StyleSheet, StyledMatcher
 
 
 emphasis_selector = StyledText.like('emphasis')
@@ -23,6 +23,7 @@ emphasis2_selector = StyledText.like('emphasis2')
 paragraph_selector = Paragraph
 paragraph2_selector = Paragraph.like('paragraph2')
 paragraph3_selector = Paragraph.like('paragraph3')
+paragraph4_selector = Paragraph.like('paragraph4')
 missing_selector = Paragraph.like('missing')
 
 matcher = StyledMatcher({
@@ -30,6 +31,7 @@ matcher = StyledMatcher({
     'emphasized text 2': emphasis2_selector,
     'paragraph': paragraph_selector,
     'paragraph 2': paragraph2_selector,
+    'paragraph 4': paragraph4_selector,
     'missing style': missing_selector,
 })
 
@@ -54,6 +56,9 @@ ssheet1('paragraph',
         indent_first=2*PT)
 ssheet1('paragraph 2',
         padding_bottom=3*PT)
+ssheet1('paragraph 4',
+        base='paragraph',
+        padding_top=5*PT)
 
 
 
@@ -83,7 +88,8 @@ paragraph2 = Paragraph('A second paragraph with ' + emphasized2 + ' text.',
 emphasized3 = SingleStyledText('emphasized 3', style='emphasis2')
 paragraph3 = Paragraph('A third paragraph with ' + emphasized3 + ' text.',
                        style='paragraph3')
-paragraph4 = Paragraph('A paragraph for which no style is present in the '
+paragraph4 = Paragraph('A fourth paragraph.', style='paragraph4')
+paragraph5 = Paragraph('A paragraph for which no style is present in the '
                        'style sheet', style='missing')
 
 doctree = DocumentTree([paragraph])
@@ -117,6 +123,10 @@ def test_style():
     style = ssheet2['paragraph 3']
     assert style.margin_left == 1*PT
 
+    style = ssheet1['paragraph 4']
+    assert style.base == 'paragraph'
+    assert style.padding_top == 5*PT
+
 
 def test_get_selector():
     assert ssheet2.get_selector('emphasized text') == emphasis_selector
@@ -124,48 +134,12 @@ def test_get_selector():
     assert ssheet2.get_selector('paragraph') == paragraph_selector
     assert ssheet2.get_selector('paragraph 2') == paragraph2_selector
     assert ssheet2.get_selector('paragraph 3') == paragraph3_selector
-
-
-def test_get_styled():
-    assert ssheet2.get_styled('emphasized text') == StyledText
-    assert ssheet2.get_styled('emphasized text 2') == StyledText
-    assert ssheet2.get_styled('paragraph') == Paragraph
-    assert ssheet2.get_styled('paragraph 2') == Paragraph
-    assert ssheet2.get_styled('paragraph 3') == Paragraph
-
-
-def test_find_matches():
-    match, = ssheet1.find_matches(emphasized, None)
-    assert match.specificity == Specificity(0, 0, 1, 0, 1)
-    assert match.style_name == 'emphasized text'
-
-    match, = ssheet1.find_matches(emphasized2, None)
-    assert match.specificity == Specificity(0, 0, 1, 0, 1)
-    assert match.style_name == 'emphasized text 2'
-
-    match, = ssheet1.find_matches(paragraph, None)
-    assert match.specificity == Specificity(0, 0, 0, 0, 2)
-    assert match.style_name == 'paragraph'
-
-    match, = ssheet2.find_matches(paragraph, None)
-    assert match.specificity == Specificity(0, 0, 0, 0, 2)
-    assert match.style_name == 'paragraph'
-
-    match, = ssheet1.find_matches(paragraph3, None)
-    assert match.specificity == Specificity(0, 0, 0, 0, 2)
-    assert match.style_name == 'paragraph'
-
-    match, match2 = ssheet2.find_matches(paragraph3, None)
-    assert match.specificity == Specificity(0, 0, 1, 0, 2)
-    assert match.style_name == 'paragraph 3'
-    assert match2.specificity == Specificity(0, 0, 0, 0, 2)
-    assert match2.style_name == 'paragraph'
-
-
+    assert ssheet2.get_selector('paragraph 4') == paragraph4_selector
+    assert ssheet2.get_selector('missing style') == missing_selector
 
 def test_find_style():
     assert ssheet2.get_value_for(emphasized, 'font_slant', document) == 'italic'
-    assert ssheet2.get_value_for(paragraph4, 'font_slant', document) == 'upright'
+    assert ssheet2.get_value_for(paragraph5, 'font_slant', document) == 'upright'
 
     assert ssheet1.find_style(emphasized, None) == 'emphasized text'
     assert ssheet1.find_style(emphasized2, None) == 'emphasized text 2'
@@ -175,7 +149,9 @@ def test_find_style():
     assert ssheet2.find_style(paragraph2, None) == 'paragraph 2'
     assert ssheet1.find_style(paragraph3, None) == 'paragraph'
     assert ssheet2.find_style(paragraph3, None) == 'paragraph 3'
-    assert ssheet2.find_style(paragraph4, None) == 'paragraph'
+    assert ssheet1.find_style(paragraph4, None) == 'paragraph 4'
+    assert ssheet2.find_style(paragraph4, None) == 'paragraph 4'
+    assert ssheet2.find_style(paragraph5, None) == 'paragraph'
 
 
 def test_get_style():
@@ -222,7 +198,17 @@ def test_get_style():
     assert paragraph3.get_style('font_slant', container) == 'upright'
     assert paragraph3.get_style('font_size', container) == 10*PT
 
-    assert paragraph4.get_style('font_slant', container) == 'upright'
+    # from 'paragraph' in ssheet1
+    assert paragraph4.get_style('margin_right', container) == 55*PT
+    assert paragraph4.get_style('space_above', container) == 5*PT
+    assert paragraph4.get_style('font_size', container) == 8*PT
+    # from 'paragraph' in ssheet2
+    assert paragraph4.get_style('space_below', container) == 10*PT
+    assert paragraph4.get_style('font_width', container) == 'condensed'
+    # from 'paragraph 4' in sheet1
+    assert paragraph4.get_style('padding_top', container) == 5*PT
+
+    assert paragraph5.get_style('font_slant', container) == 'upright'
 
 
 def test_variable():
@@ -233,3 +219,7 @@ def test_variable():
     assert paragraph.get_style('text_align', container) == 'right'
     assert paragraph.get_style('font_color', container) == HexColor('f00')
     assert paragraph.get_style('indent_first', container) == 0.5*CM
+
+    assert paragraph4.get_style('text_align', container) == 'right'
+    assert paragraph4.get_style('font_color', container) == HexColor('f00')
+    assert paragraph4.get_style('indent_first', container) == 0.5*CM
