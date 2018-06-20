@@ -63,15 +63,21 @@ font_weight=BOLD
 
 [file path]
 base=monospaced
+ligatures=False
 
 [keystrokes]
 base=monospaced
+ligatures=False
 
 [regular expression]
 base=monospaced
+ligatures=False
+hyphenate=False
 
 [code with variable]
 base=monospaced
+ligatures=False
+hyphenate=False
 
 [mail header]
 base=literal emphasis
@@ -138,6 +144,8 @@ typeface=$(mono_typeface)
 font_size=9pt
 text_align=LEFT
 indent_first=0
+ligatures=False
+hyphenate=False
 space_above=6pt
 space_below=4pt
 border=$(thin_black_stroke)
@@ -485,6 +493,8 @@ text_align=LEFT
 base=default
 typeface=$(mono_typeface)
 font_size=8pt
+ligatures=False
+hyphenate=False
 
 [option argument]
 base=default
@@ -804,6 +814,8 @@ indent_first=-40pt
 
 [domain index entry name]
 typeface=$(mono_typeface)
+ligatures=False
+hyphenate=False
 
 
 # chapter titles

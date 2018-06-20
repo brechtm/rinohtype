@@ -24,19 +24,12 @@ from .text import SingleStyledText, TextStyle
 from .warnings import warn
 
 
-__all__ = ['CodeBlock', 'CodeBlockStyle', 'Token',
-           'pygments_style_to_stylesheet']
-
-
-class CodeBlockStyle(ParagraphStyle):
-    hyphenate = OverrideDefault(False)
-    ligatures = OverrideDefault(False)
+__all__ = ['CodeBlock', 'Token', 'pygments_style_to_stylesheet']
 
 
 class CodeBlock(Paragraph):
     """Paragraph with syntax highlighting"""
 
-    style_class = CodeBlockStyle
     significant_whitespace = True
 
     def __init__(self, text, language=None, id=None, style=None, parent=None,
