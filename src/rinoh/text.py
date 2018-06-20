@@ -8,21 +8,11 @@
 """
 Classes for describing styled text:
 
+* :class:`StyledText`: Base class for styled text.
 * :class:`SingleStyledText`: Text of a single style.
 * :class:`MixedStyledText`: Text where different substrings can have different
                             styles.
-* :class:`LiteralText`: Text that is typeset as is, including newlines and tabs.
 * :class:`TextStyle`: Style class specifying the font and other styling of text.
-
-A number of :class:`MixedStyledText` subclasses are provided for changing a
-single style attribute of the passed text:
-
-* :class:`Bold`
-* :class:`Italic`
-* :class:`Emphasized`
-* :class:`SmallCaps`
-* :class:`Superscript`
-* :class:`Subscript`
 
 Some characters with special properties and are represented by special classes:
 
