@@ -49,8 +49,9 @@ from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition)
-from .style import Style, Styled, StyledMeta, PARENT_STYLE, StyleException
-from .util import NotImplementedAttribute, PeekIterator
+from .style import Style, Styled, StyledMeta, ParentStyle
+from .util import NotImplementedAttribute
+
 
 __all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
            'MixedStyledText', 'ConditionalMixedStyledText', 'Space',
@@ -79,6 +80,8 @@ class Locale(AttributeType):
 
 
 class TextStyle(Style):
+    default_base = ParentStyle()
+
     typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
     font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
                                                   'outlines relative to their '
@@ -98,8 +101,6 @@ class TextStyle(Style):
     hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
                                              'Accepts locale codes such as '
                                              "'en_US'")
-
-    default_base = PARENT_STYLE
 
 
 class CharacterLike(Styled):
@@ -236,11 +237,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
-        try:
-            position = self.get_config_value('position', container.document)
-            return position != TextPosition.NORMAL
-        except StyleException:
-            return False
+        position = self.get_config_value('position', container.document)
+        return position != TextPosition.NORMAL
 
     def script_level(self, container):
         """Nesting level of super/subscript."""

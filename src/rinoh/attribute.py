@@ -280,7 +280,7 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
     default_base = None
 
     def __init__(self, base=None, **attributes):
-        self.base = base or self.default_base
+        self.base = base
         for name, value in attributes.items():
             attributes[name] = self.validate_attribute(name, value, True)
         super().__init__(attributes)
@@ -339,17 +339,14 @@ class SpecialConfiguration(AttributesDictionary):
         return True
 
 
-class ParentConfigurationException(Exception):
-    """Forward attribute lookups to the parent :class:`Configurable`."""
+class DefaultValueException(Exception):
+    pass
 
 
-class ParentConfiguration(SpecialConfiguration):
-    exception = ParentConfigurationException
-
-
-PARENT_CONFIG = ParentConfiguration()
-"""Configuration that forwards attribute lookups to the parent of the
-:class:`Configurable` from which the lookup originates."""
+class DefaultConfiguration(SpecialConfiguration):
+    """Configuration to use as a base for styles that do not extend the
+    style of the same name in the base style sheet."""
+    exception = DefaultValueException
 
 
 class Configurable(object):
@@ -361,10 +358,6 @@ class Configurable(object):
     def get_config_value(self, attribute, document):
         ruleset = self.configuration_class.get_ruleset(document)
         return ruleset.get_value_for(self, attribute, document)
-
-
-class DefaultValueException(Exception):
-    pass
 
 
 class BaseConfigurationException(Exception):

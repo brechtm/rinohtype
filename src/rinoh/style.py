@@ -27,8 +27,8 @@ from operator import attrgetter
 from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
-                        RuleSet, RuleSetFile, Configurable, PARENT_CONFIG,
-                        ParentConfigurationException, DefaultValueException)
+                        RuleSet, RuleSetFile, Configurable,
+                        SpecialConfiguration, DefaultValueException)
 from .element import DocumentElement
 from .resource import Resource
 from .util import (cached, unique, all_subclasses, NotImplementedAttribute,
@@ -37,35 +37,7 @@ from .warnings import warn
 
 
 __all__ = ['Style', 'Styled', 'StyledMatcher', 'StyleSheet', 'StyleSheetFile',
-           'ClassSelector', 'ContextSelector', 'PARENT_STYLE',
-           'StyleException']
-
-
-class StyleException(Exception):
-    """Style lookup requires special handling."""
-
-
-class ParentStyleException(StyleException):
-    """Style attribute not found. Consult the parent :class:`Styled`."""
-
-
-class BaseStyleException(StyleException):
-    """The `attribute` is not specified in this :class:`Style`. Try to find the
-    attribute in a base style instead."""
-
-    def __init__(self, style, attribute):
-        self.style = style
-        self.attribute = attribute
-
-
-class DefaultStyleException(StyleException):
-    """The attribute is not specified in this :class:`Style` or any of its base
-    styles. Return the default value for the attribute."""
-
-
-class NoStyleException(StyleException):
-    """No style matching the given :class:`Styled` was found in the
-    :class:`StyleSheet`."""
+           'ClassSelector', 'ContextSelector', 'PARENT_STYLE']
 
 
 class StyleMeta(WithAttributes):
@@ -99,7 +71,7 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
         If `base` is a :class:`str`, it is used to look up the base style in
         the :class:`StyleSheet` this style is defined in."""
         super().__init__(base, **attributes)
-        self._name = None
+        self.name = None
 
     def __repr__(self):
         """Return a textual representation of this style."""
@@ -118,50 +90,22 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
         else:
             return super().__getattr__(attribute)
 
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        if name in SPECIAL_STYLES:
-            raise ValueError("The '{}' style name is reserved.".format(name))
-        self._name = name
-
     @classmethod
     def get_ruleset(self, document):
         return document.stylesheet
 
 
-class SpecialStyle(Style):
-    """Special style that delegates attribute lookups by raising an
-    exception on each attempt to access an attribute."""
-
-    exception = NotImplementedAttribute()
-
-    def __repr__(self):
-        return self.__class__.__name__
-
-    def __getitem__(self, attribute):
-        raise self.exception
-
-    def __bool__(self):
-        return True
+class ParentException(Exception):
+    """Forward attribute lookups to the parent :class:`Styled`."""
 
 
-class DefaultStyle(SpecialStyle):
-    exception = DefaultStyleException
+class ParentStyle(SpecialConfiguration):
+    """Style that forwards attribute lookups to the parent of the
+    :class:`Styled` from which the lookup originates."""
+    exception = ParentException
 
 
-PARENT_STYLE = PARENT_CONFIG
-
-DEFAULT_STYLE = DefaultStyle()
-"""Style to use as a base for styles that do not extend the style of the same
-name in the base style sheet."""
-
-
-SPECIAL_STYLES = dict(DEFAULT_STYLE=DEFAULT_STYLE,
-                      PARENT_STYLE=PARENT_STYLE)
+PARENT_STYLE = ParentStyle()
 
 
 class Selector(object):
@@ -696,10 +640,12 @@ class StyleSheet(RuleSet, Resource):
     def _get_value_lookup(self, styled, attribute, document):
         try:
             return super()._get_value_lookup(styled, attribute, document)
-        except ParentConfigurationException:
-            if attribute == 'position':   # TODO: clean up
-                raise DefaultValueException
-            return self._get_value_lookup(styled.parent, attribute, document)
+        except DefaultValueException:
+            if isinstance(styled.style_class.default_base, ParentStyle):
+                if attribute == 'position':   # TODO: clean up
+                    raise DefaultValueException
+                return self._get_value_lookup(styled.parent, attribute, document)
+            raise
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)
@@ -748,9 +694,7 @@ class StyleSheet(RuleSet, Resource):
             if self.contains(match.style_name):
                 return match.style_name
             last_match = match
-        default_base = styled.style_class.default_base
-        raise (ParentConfigurationException if default_base == PARENT_CONFIG
-               else DefaultValueException)
+        raise DefaultValueException
 
     def write(self, base_filename):
         from configparser import ConfigParser
@@ -822,10 +766,7 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
             style_cls = styled_class.style_class
         else:
             style_cls = self.get_entry_class(style_name)
-        attribute_values = {name: SPECIAL_STYLES.get(val.strip(), val.strip())
-                                  if name == 'base' else val
-                            for name, val in items}
-        self[style_name] = style_cls(**attribute_values)
+        self[style_name] = style_cls(**dict(items))
 
 
 class StyleParseError(Exception):
