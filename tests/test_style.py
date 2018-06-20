@@ -20,6 +20,8 @@ from rinoh.style import StyleSheet, StyledMatcher
 
 emphasis_selector = StyledText.like('emphasis')
 emphasis2_selector = StyledText.like('emphasis2')
+highlight_selector = StyledText.like('highlight')
+highlight2_selector = StyledText.like('highlight2')
 paragraph_selector = Paragraph
 paragraph2_selector = Paragraph.like('paragraph2')
 paragraph3_selector = Paragraph.like('paragraph3')
@@ -29,6 +31,8 @@ missing_selector = Paragraph.like('missing')
 matcher = StyledMatcher({
     'emphasized text': emphasis_selector,
     'emphasized text 2': emphasis2_selector,
+    'highlighted text': highlight_selector,
+    'highlighted text 2': highlight2_selector,
     'paragraph': paragraph_selector,
     'paragraph 2': paragraph2_selector,
     'paragraph 4': paragraph4_selector,
@@ -47,6 +51,11 @@ ssheet1('emphasized text',
 ssheet1('emphasized text 2',
         base='emphasized text',
         font_slant='oblique')
+ssheet1('highlighted text',
+        font_color=HexColor('00f'))
+ssheet1('highlighted text 2',
+        base='highlighted text',
+        font_size=12*PT)
 ssheet1('paragraph',
         margin_right=55*PT,
         space_above=5*PT,
@@ -72,6 +81,8 @@ ssheet2.variables['font-size'] = 20*PT
 ssheet2.variables['text-align'] = 'right'
 ssheet2.variables['indent-first'] = 0.5*CM
 
+ssheet2('highlighted text',
+        font_slant='italic')
 ssheet2('paragraph',
         space_below=10*PT,
         indent_first=Var('indent-first'),
@@ -82,6 +93,8 @@ ssheet2('paragraph 3',
 ssheet2('paragraph 4',
         padding_right=2*PT)
 
+highlighted = SingleStyledText('highlighed', style='highlight')
+highlighted2 = SingleStyledText('highlighed 2', style='highlight2')
 emphasized = SingleStyledText('emphasized', style='emphasis')
 emphasized2 = SingleStyledText('emphasized 2', style='emphasis2')
 paragraph = Paragraph('A paragraph with ' + emphasized + ' text.')
@@ -93,8 +106,11 @@ paragraph3 = Paragraph('A third paragraph with ' + emphasized3 + ' text.',
 paragraph4 = Paragraph('A fourth paragraph.', style='paragraph4')
 paragraph5 = Paragraph('A paragraph for which no style is present in the '
                        'style sheet', style='missing')
+paragraph6 = Paragraph('A sixth paragraph with ' + highlighted + ' text.')
+paragraph7 = Paragraph('A seventh paragraph with ' + highlighted2 + ' text.')
 
-doctree = DocumentTree([paragraph])
+doctree = DocumentTree([paragraph, paragraph2, paragraph3, paragraph4,
+                        paragraph5, paragraph6, paragraph7])
 
 document = Document(doctree, ssheet2, EN)
 container = FakeContainer(document)
@@ -168,6 +184,10 @@ def test_get_style():
     assert emphasized3.get_style('font_weight', container) == 'medium'
     assert emphasized3.get_style('font_width', container) == 'normal'
     assert emphasized3.get_style('font_slant', container) == 'oblique'
+
+    assert highlighted2.get_style('font_color', container) == HexColor('00f')
+    assert highlighted2.get_style('font_size', container) == 12*PT
+    assert highlighted2.get_style('font_slant', container) == 'italic'
 
     assert paragraph.get_style('margin_left', container) == 0
     assert paragraph.get_style('margin_right', container) == 55*PT
