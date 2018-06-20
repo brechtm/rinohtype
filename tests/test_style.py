@@ -79,6 +79,8 @@ ssheet2('paragraph',
 ssheet2('paragraph 3',
         base='paragraph 2',
         margin_left=1*PT)
+ssheet2('paragraph 4',
+        padding_right=2*PT)
 
 emphasized = SingleStyledText('emphasized', style='emphasis')
 emphasized2 = SingleStyledText('emphasized 2', style='emphasis2')
@@ -207,6 +209,8 @@ def test_get_style():
     assert paragraph4.get_style('font_width', container) == 'condensed'
     # from 'paragraph 4' in sheet1
     assert paragraph4.get_style('padding_top', container) == 5*PT
+    # from 'paragraph 4' in sheet2
+    assert paragraph4.get_style('padding_right', container) == 2*PT
 
     assert paragraph5.get_style('font_slant', container) == 'upright'
 
