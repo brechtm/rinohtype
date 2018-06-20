@@ -108,12 +108,12 @@ class Flowable(Styled):
     """A document element that can be "flowed" into a container on the page.
 
     A flowable can adapt to the width of the container, or it can horizontally
-    align itself in the container (see :class:`HorizontallyAlignedFlowable`).
+    align itself in the container.
 
     Args:
       align (HorizontalAlignment): horizontal alignment of the flowable
-      width (DimensionBase or None): the width of the table. If ``None``,
-          the width of the flowable is automatically determined.
+      width (FlowableWidth or DimensionBase): the width of the flowable.
+
     """
 
     style_class = FlowableStyle
@@ -321,11 +321,8 @@ class DummyFlowable(Flowable):
         super().__init__(id=id, parent=parent)
 
     def get_style(self, attribute, flowable_target):
-        if attribute == 'keep_with_next':
-            return True
-        elif attribute == 'hide':
-            return False
-        raise TypeError
+        return dict(keep_with_next=True,
+                    hide=False)[attribute]
 
     def flow(self, container, last_descender, state=None, **kwargs):
         return 0, 0, last_descender
