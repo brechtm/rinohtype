@@ -70,8 +70,6 @@ class Locale(AttributeType):
 
 
 class TextStyle(Style):
-    default_base = ParentStyle()
-
     typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
     font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
                                                   'outlines relative to their '
@@ -220,6 +218,9 @@ class StyledText(Styled, AcceptNoneAttributeType):
     @property
     def paragraph(self):
         return self.parent.paragraph
+
+    def fallback_to_parent(self, attribute):
+        return attribute != 'position'
 
     position = {TextPosition.SUPERSCRIPT: 1 / 3,
                 TextPosition.SUBSCRIPT: - 1 / 6}

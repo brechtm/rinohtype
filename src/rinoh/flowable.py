@@ -87,8 +87,6 @@ class FlowableStyle(Style):
                                               "flowable's borders")
     hide = Attribute(Bool, False, 'Suppress rendering the flowable')
 
-    default_base = None
-
 
 class FlowableState(object):
     """Stores a flowable's rendering state, which can be copied.

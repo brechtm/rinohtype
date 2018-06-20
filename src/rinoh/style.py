@@ -28,7 +28,7 @@ from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile, Configurable,
-                        SpecialConfiguration, DefaultValueException)
+                        DefaultValueException)
 from .element import DocumentElement
 from .resource import Resource
 from .util import (cached, unique, all_subclasses, NotImplementedAttribute,
@@ -95,14 +95,9 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
         return document.stylesheet
 
 
-class ParentException(Exception):
-    """Forward attribute lookups to the parent :class:`Styled`."""
-
-
-class ParentStyle(SpecialConfiguration):
+class ParentStyle(Style):
     """Style that forwards attribute lookups to the parent of the
     :class:`Styled` from which the lookup originates."""
-    exception = ParentException
 
 
 PARENT_STYLE = ParentStyle()
@@ -459,6 +454,9 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         ruleset = self.configuration_class.get_ruleset(document)
         return ruleset.find_style(self, document)
 
+    def fallback_to_parent(self, attribute):
+        return isinstance(self.style, ParentStyle)
+
     # @cached
     def get_style(self, attribute, container):
         if isinstance(self.style, Style):
@@ -641,9 +639,7 @@ class StyleSheet(RuleSet, Resource):
         try:
             return super()._get_value_lookup(styled, attribute, document)
         except DefaultValueException:
-            if isinstance(styled.style_class.default_base, ParentStyle):
-                if attribute == 'position':   # TODO: clean up
-                    raise DefaultValueException
+            if styled.fallback_to_parent(attribute):
                 return self._get_value_lookup(styled.parent, attribute, document)
             raise
 
@@ -714,12 +710,11 @@ class StyleSheet(RuleSet, Resource):
                           else ':' + type(style).__name__.replace('Style', ''))
             config.add_section(style_name + classifier)
             section = config[style_name + classifier]
-            if style.base is not style.default_base:
-                section['base'] = str(style.base)
+            section['base'] = str(style.base)
             for name in type(style).supported_attributes:
                 try:
                     section[name] = str(style[name])
-                except StyleException:  # default
+                except KeyError:  # default
                     section[';' + name] = str(style._get_default(name))
         with open(base_filename + self.extension, 'w') as file:
             config.write(file, space_around_delimiters=True)

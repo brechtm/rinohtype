@@ -710,6 +710,7 @@ class Paragraph(MixedStyledText, ParagraphBase):
     """
 
     style_class = ParagraphBase.style_class
+    fallback_to_parent = ParagraphBase.fallback_to_parent
 
     def text(self, container):
         return self

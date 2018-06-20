@@ -277,8 +277,6 @@ class WithAttributes(WithNamedDescriptors):
 
 
 class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
-    default_base = None
-
     def __init__(self, base=None, **attributes):
         self.base = base
         for name, value in attributes.items():
@@ -323,30 +321,8 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
         raise NotImplementedError
 
 
-class SpecialConfiguration(AttributesDictionary):
-    """Special configuration that delegates attribute lookups by raising an
-    exception on each attempt to access an attribute."""
-
-    exception = NotImplementedAttribute()
-
-    def __repr__(self):
-        return self.__class__.__name__
-
-    def __getitem__(self, attribute):
-        raise self.exception
-
-    def __bool__(self):
-        return True
-
-
 class DefaultValueException(Exception):
     pass
-
-
-class DefaultConfiguration(SpecialConfiguration):
-    """Configuration to use as a base for styles that do not extend the
-    style of the same name in the base style sheet."""
-    exception = DefaultValueException
 
 
 class Configurable(object):
@@ -547,11 +523,6 @@ class Var(object):
 
     def get(self, accepted_type, rule_set):
         return rule_set.get_variable(self.name, accepted_type)
-
-
-class VariableException(Exception):
-    def __init__(self, variable):
-        self.variable = variable
 
 
 class VariableNotDefined(Exception):
