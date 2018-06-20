@@ -457,7 +457,7 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
     def fallback_to_parent(self, attribute):
         return isinstance(self.style, ParentStyle)
 
-    # @cached
+    @cached
     def get_style(self, attribute, container):
         if isinstance(self.style, Style):
             try:
