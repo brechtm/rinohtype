@@ -247,6 +247,8 @@ class TitlePageTemplate(PageTemplateBase):
 
 
 class TitlePage(PageBase):
+    configuration_class = TitlePageTemplate
+
     def __init__(self, document_part, template_name, page_number, after_break):
         super().__init__(document_part, template_name, page_number,
                          after_break)
