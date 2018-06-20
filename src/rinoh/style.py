@@ -398,7 +398,7 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         assignment to the `parent` attribute."""
         super().__init__(id=id, parent=parent)
         if (isinstance(style, Style)
-                and not isinstance(style, self.style_class)):
+                and not isinstance(style, (self.style_class, ParentStyle))):
             raise TypeError('the style passed to {} should be of type {} '
                             '(a {} was passed instead)'
                             .format(self.__class__.__name__,
