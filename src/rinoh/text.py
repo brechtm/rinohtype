@@ -39,7 +39,7 @@ from .font import Typeface
 from .fonts import adobe14
 from .font.style import (FontWeight, FontSlant, FontWidth, FontVariant,
                          TextPosition)
-from .style import Style, Styled, StyledMeta, ParentStyle
+from .style import Style, Styled, StyledMeta
 from .util import NotImplementedAttribute
 
 
@@ -228,7 +228,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
 
     def is_script(self, container):
         """Returns `True` if this styled text is super/subscript."""
-        position = self.get_config_value('position', container.document)
+        position = self.get_style('position', container)
         return position != TextPosition.NORMAL
 
     def script_level(self, container):
@@ -252,11 +252,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
         offset = (self.parent.y_offset(container)
                   if hasattr(self.parent, 'y_offset') else 0)
         if self.is_script(container):
-            position = self.get_config_value('position', container.document)
+            position = self.get_style('position', container)
             offset += self.parent.height(container) * self.position[position]
-            # The Y offset should only change once for the nesting level
-            # where the position style is set, hence we don't recursively
-            # get the position style using self.get_style('position')
         return offset
 
     @property
