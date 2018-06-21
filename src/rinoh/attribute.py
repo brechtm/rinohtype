@@ -353,6 +353,14 @@ class RuleSet(OrderedDict):
     def contains(self, name):
         return name in self or (self.base and self.base.contains(name))
 
+    def get_configuration(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            if self.base:
+                return self.base.get_configuration(name)
+            raise
+
     def __setitem__(self, name, style):
         assert name not in self
         if isinstance(style, AttributesDictionary):

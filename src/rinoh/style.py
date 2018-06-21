@@ -1020,15 +1020,15 @@ class StyleLog(object):
                                  key=attrgetter('specificity'))
                 if matches:
                     for match in matches:
-                        try:
-                            _ = self.stylesheet[match.style_name]
+                        if self.stylesheet.contains(match.style_name):
                             if first:
-                                style = _
+                                name = match.style_name
+                                style = self.stylesheet.get_configuration(name)
                                 label = '>'
                                 first = False
                             else:
                                 label = ' '
-                        except KeyError:
+                        else:
                             label = 'x'
                         specificity = ','.join(str(score)
                                                for score in match.specificity)
