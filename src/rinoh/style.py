@@ -615,7 +615,7 @@ class StyleSheet(RuleSet, Resource):
     @classmethod
     def parse_string(cls, filename_or_resource_name):
         stylesheet_path = Path(filename_or_resource_name)
-        if stylesheet_path.exists():
+        if stylesheet_path.is_file():
             return StyleSheetFile(filename_or_resource_name)
         else:
             return super().parse_string(filename_or_resource_name)
