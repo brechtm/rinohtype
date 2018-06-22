@@ -10,24 +10,35 @@ import pytest
 
 from sphinx.application import Sphinx
 
+from rinoh.document import DocumentTree
 from rinoh.frontend.sphinx import template_from_config
 from rinoh.language import IT
 from rinoh.paper import A4, LETTER
-from rinoh.style import StyleSheet
 from rinoh.templates import Book, Article
 
 
 def create_sphinx_app(tmpdir, **confoverrides):
     return Sphinx(srcdir=tmpdir.strpath,
-                 confdir=None,
-                 outdir=tmpdir.strpath,
-                 doctreedir=tmpdir.strpath,
-                 buildername='rinoh',
-                 confoverrides=dict(extensions=['rinoh.frontend.sphinx'],
-                                    **confoverrides))
+                  confdir=None,
+                  outdir=tmpdir.strpath,
+                  doctreedir=tmpdir.strpath,
+                  buildername='rinoh',
+                  # confoverrides=dict(extensions=['rinoh.frontend.sphinx'],
+                  #                    **confoverrides))
+                  confoverrides=confoverrides)
 
 
 CONFIG_DIR = 'confdir'
+
+
+def get_contents_page_size(template_configuration):
+    doctree = DocumentTree([])
+    doc = template_configuration.document(doctree)
+    part_template = doc.part_templates[2]
+    part = part_template.document_part(doc)
+    assert part.template_name == 'contents'
+    page = part.new_page(1, new_chapter=False)
+    return page.get_config_value('page_size', doc)
 
 
 def test_sphinx_config_default(tmpdir):
@@ -36,7 +47,7 @@ def test_sphinx_config_default(tmpdir):
     assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
-    assert template_cfg.get_variable('paper_size', None) == LETTER
+    assert get_contents_page_size(template_cfg) == LETTER
 
 
 def test_sphinx_config_latex_elements_papersize(tmpdir):
@@ -45,7 +56,7 @@ def test_sphinx_config_latex_elements_papersize(tmpdir):
     assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
-    assert template_cfg.get_variable('paper_size', None) == A4
+    assert get_contents_page_size(template_cfg) == A4
 
 
 def test_sphinx_config_rinoh_paper_size(tmpdir):
@@ -55,7 +66,7 @@ def test_sphinx_config_rinoh_paper_size(tmpdir):
     assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
-    assert template_cfg.get_variable('paper_size', None) == A4
+    assert get_contents_page_size(template_cfg) == A4
 
 
 def test_sphinx_config_language(tmpdir):
@@ -85,7 +96,8 @@ def test_sphinx_config_rinoh_template(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_template=template_cfg)
     template_cfg = template_from_config(app.config, CONFIG_DIR, print)
     assert template_cfg.template == Article
-    assert template_cfg['stylesheet'].name == 'Sphinx (article)'
+    assert (template_cfg.get_attribute_value('stylesheet').name
+                == 'Sphinx (article)')
 
 
 def test_sphinx_config_rinoh_template_from_entrypoint(tmpdir):
@@ -93,7 +105,7 @@ def test_sphinx_config_rinoh_template_from_entrypoint(tmpdir):
     template_cfg = template_from_config(app.config, CONFIG_DIR, print)
     assert not template_cfg.keys()
     assert template_cfg.template == Book
-    assert template_cfg['stylesheet'].name == 'Sphinx'
+    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx'
 
 
 def test_sphinx_config_rinoh_template_from_filename(tmpdir):
@@ -105,4 +117,4 @@ def test_sphinx_config_rinoh_template_from_filename(tmpdir):
     template_cfg = template_from_config(app.config, CONFIG_DIR, print)
     assert not template_cfg.keys()
     assert template_cfg.template == Book
-    assert template_cfg['stylesheet'].name == 'Sphinx'
+    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx'
