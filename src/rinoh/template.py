@@ -620,14 +620,13 @@ class DocumentTemplateMeta(WithAttributes):
             general_template = m.group(1) + '_page'
             yield cls._templates[general_template]
 
-    def _get_value_recursive(cls, name, attribute, document):
+    def _get_value_recursive(cls, name, attribute):
         if name in cls._templates:
             template = cls._templates[name]
             if attribute in template:
                 return template[attribute]
             elif isinstance(template.base, str):
-                return cls._get_value_recursive(template.base, attribute,
-                                                document)
+                return cls._get_value_recursive(template.base, attribute)
             elif template.base is not None:
                 return template.base[attribute]
         raise DefaultValueException
@@ -720,7 +719,8 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         return self.configuration.get_attribute_value(option_name)
 
     def get_template_option(self, template_name, option_name):
-        return self.configuration._get_value_recursive(template_name, option_name, self)
+        return self.configuration._get_value_recursive(template_name,
+                                                       option_name)
 
     def get_entry_class(self, name):
         template = next(self._find_templates(name))

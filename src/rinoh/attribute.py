@@ -394,7 +394,7 @@ class RuleSet(OrderedDict):
     def get_entry_class(self, name):
         raise NotImplementedError
 
-    def _get_value_recursive(self, name, attribute, document):
+    def _get_value_recursive(self, name, attribute):
         if name in self:
             entry = self[name]
             if attribute in entry:
@@ -404,18 +404,18 @@ class RuleSet(OrderedDict):
             elif entry.base is not None:
                 return entry.base[attribute]
         if self.base:
-            return self.base._get_value_recursive(name, attribute, document)
+            return self.base._get_value_recursive(name, attribute)
         raise DefaultValueException
 
-    def _get_value_handle_base(self, name, attribute, document):
+    def get_value(self, name, attribute):
         try:
-            return self._get_value_recursive(name, attribute, document)
+            return self._get_value_recursive(name, attribute)
         except BaseConfigurationException as exc:
-            return self._get_value_handle_base(exc.name, attribute, document)
+            return self.get_value(exc.name, attribute)
 
     def _get_value_lookup(self, configurable, attribute, document):
         name = configurable.configuration_name(document)
-        return self._get_value_handle_base(name, attribute, document)
+        return self.get_value(name, attribute)
 
     def get_value_for(self, configurable, attribute, document):
         try:
