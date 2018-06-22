@@ -719,8 +719,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         return self.configuration.get_attribute_value(option_name)
 
     def get_template_option(self, template_name, option_name):
-        return self.configuration._get_value_recursive(template_name,
-                                                       option_name)
+        return self.configuration.get_value(template_name, option_name)
 
     def get_entry_class(self, name):
         template = next(self._find_templates(name))
