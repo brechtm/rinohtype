@@ -81,7 +81,7 @@ class PeekIterator(object):
     def __init__(self, iterable):
         self.next = None
         self._iterator = iter(iterable)
-        self._at_end = False
+        self.at_end = False
         self._advance()
 
     def _advance(self):
@@ -90,14 +90,14 @@ class PeekIterator(object):
             self.next = next(self._iterator)
         except StopIteration:
             self.next = None
-            self._at_end = True
+            self.at_end = True
         return result
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self._at_end:
+        if self.at_end:
             raise StopIteration
         return self._advance()
 

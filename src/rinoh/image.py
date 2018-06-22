@@ -125,7 +125,7 @@ class ImageArgsBase(AttributesDictionary):
         argument_type = argument_definition.accepted_type
         arg_tokens_iter = PeekIterator(arg_tokens)
         argument = argument_type.from_tokens(arg_tokens_iter)
-        if not arg_tokens_iter._at_end:
+        if not arg_tokens_iter.at_end:
             raise ParseError('Syntax error')
         return argument, tokens.next.exact_type in (RPAR, ENDMARKER)
 
