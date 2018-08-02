@@ -703,7 +703,10 @@ class LabeledFlowable(Flowable):
                                          state=state.content_flowable_state)
                 content_height = content_container.cursor
         except (ContainerOverflow, EndOfContainer) as eoc:
-            content_state = eoc.flowable_state if rendering_content else None
+            if isinstance(eoc, ContainerOverflow):
+                content_state = None
+            else:
+                content_state = eoc.flowable_state if rendering_content else None
             state.update(content_state)
             raise EndOfContainer(state)
         if label_spillover or content_height > label_height:
