@@ -395,7 +395,7 @@ class ContextSelector(Selector):
         return total_score
 
 
-class NoMoreParentElement(StopIteration):
+class NoMoreParentElement(IndexError):
     """The top-level element in the document element tree has been reached"""
 
 
