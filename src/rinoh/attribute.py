@@ -360,7 +360,7 @@ class RuleSet(OrderedDict):
         try:
             return self._get_variable(name, accepted_type)
         except KeyError:
-            if self.base:
+            if self.base is not None:
                 return self.base.get_variable(name, accepted_type)
             else:
                 raise VariableNotDefined("Variable '{}' is not defined"
