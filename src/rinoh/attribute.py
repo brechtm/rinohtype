@@ -43,9 +43,7 @@ class AttributeType(object):
 
     @classmethod
     def parse_string(cls, string):
-        encoded_string = BytesIO(string.encode('utf-8'))
-        tokens = TokenIterator(tokenize(encoded_string.readline))
-        assert next(tokens)[:2] == (ENCODING, 'utf-8')
+        tokens = TokenIterator(string)
         result = cls.from_tokens(tokens)
         if next(tokens).type != ENDMARKER:
             raise ParseError('Syntax error')
@@ -510,6 +508,14 @@ class Integer(AttributeType):
 
 
 class TokenIterator(PeekIterator):
+    """Tokenizes `string` and iterates over the tokens"""
+
+    def __init__(self, string):
+        self.string = string
+        encoded_string = BytesIO(string.encode('utf-8'))
+        tokens = tokenize(encoded_string.readline)
+        assert next(tokens)[:2] == (ENCODING, 'utf-8')
+        super().__init__(tokens)
 
     def _advance(self):
         result = super()._advance()
