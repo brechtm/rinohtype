@@ -25,7 +25,8 @@ import os
 import posixpath
 import time
 
-from collections import MutableMapping, OrderedDict
+from collections import OrderedDict
+from collections.abc import MutableMapping
 from functools import wraps
 from weakref import ref
 
@@ -76,7 +77,7 @@ def unique(iterable):
 
 
 class PeekIterator(object):
-    """An _iterator that allows inspecting the next element"""
+    """An iterator that allows inspecting the next element"""
 
     def __init__(self, iterable):
         self.next = None
