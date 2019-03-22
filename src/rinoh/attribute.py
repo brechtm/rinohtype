@@ -13,7 +13,7 @@ from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
 from pathlib import Path
-from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME
+from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME, NEWLINE
 from tokenize import tokenize, ENCODING
 from warnings import warn
 
@@ -44,7 +44,7 @@ class AttributeType(object):
     @classmethod
     def parse_string(cls, string):
         encoded_string = BytesIO(string.encode('utf-8'))
-        tokens = PeekIterator(tokenize(encoded_string.readline))
+        tokens = TokenIterator(tokenize(encoded_string.readline))
         assert next(tokens)[:2] == (ENCODING, 'utf-8')
         result = cls.from_tokens(tokens)
         if next(tokens).type != ENDMARKER:
@@ -507,6 +507,15 @@ class Integer(AttributeType):
     @classmethod
     def doc_format(cls):
         return 'a natural number (positive integer)'
+
+
+class TokenIterator(PeekIterator):
+
+    def _advance(self):
+        result = super()._advance()
+        if self.next and self.next.type == NEWLINE and self.next.string == '':
+            super()._advance()
+        return result
 
 
 class ParseError(Exception):
