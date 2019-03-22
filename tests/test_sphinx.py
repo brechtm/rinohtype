@@ -20,8 +20,8 @@ from rinoh.templates import Book, Article
 def create_sphinx_app(tmpdir, **confoverrides):
     return Sphinx(srcdir=tmpdir.strpath,
                   confdir=None,
-                  outdir=tmpdir.strpath,
-                  doctreedir=tmpdir.strpath,
+                  outdir=(tmpdir / 'output').strpath,
+                  doctreedir=(tmpdir / 'doctrees').strpath,
                   buildername='rinoh',
                   # confoverrides=dict(extensions=['rinoh.frontend.sphinx'],
                   #                    **confoverrides))

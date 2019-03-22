@@ -29,6 +29,6 @@ def test(test_name):
         from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 
         out_dir = str(test_output_dir)
-        Sphinx(srcdir=out_dir, confdir=None, outdir=out_dir,
+        Sphinx(srcdir=str(RST_PATH), confdir=None, outdir=out_dir,
                doctreedir=out_dir, buildername='dummy', status=None)
     render_rst_file(rst_path, test_name, RST_PATH)
