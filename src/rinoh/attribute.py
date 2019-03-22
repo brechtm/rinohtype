@@ -10,11 +10,11 @@ import re
 
 from collections import OrderedDict
 from configparser import ConfigParser
-from io import BytesIO
+from io import StringIO
 from itertools import chain
 from pathlib import Path
 from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME, NEWLINE
-from tokenize import tokenize, ENCODING
+from tokenize import generate_tokens
 from warnings import warn
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
@@ -512,9 +512,7 @@ class TokenIterator(PeekIterator):
 
     def __init__(self, string):
         self.string = string
-        encoded_string = BytesIO(string.encode('utf-8'))
-        tokens = tokenize(encoded_string.readline)
-        assert next(tokens)[:2] == (ENCODING, 'utf-8')
+        tokens = generate_tokens(StringIO(string).readline)
         super().__init__(tokens)
 
     def _advance(self):
