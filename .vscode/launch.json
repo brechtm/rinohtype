@@ -10,8 +10,6 @@
             "request": "launch",
             "module": "pytest",
             "args": [
-                "-x",
-                "--pdb",
                 "-k",
                 "test_sphinx"
             ] //,

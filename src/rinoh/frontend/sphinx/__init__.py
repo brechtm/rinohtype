@@ -19,7 +19,7 @@ from sphinx.locale import _
 from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
-
+from sphinx.util import logging
 from rinoh.flowable import StaticGroupedFlowables
 from rinoh.highlight import pygments_style_to_stylesheet
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
@@ -34,6 +34,8 @@ from rinoh import __version__ as rinoh_version
 from ..rst import ReStructuredTextReader
 
 from . import nodes
+
+logger = logging.getLogger(__name__)
 
 
 class RinohTreePreprocessor(GenericNodeVisitor):
@@ -117,7 +119,7 @@ class RinohBuilder(Builder):
 
     def assemble_doctree(self, indexfile, toctree_only):
         docnames = set([indexfile])
-        self.info(darkgreen(indexfile) + " ", nonl=1)
+        logger.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
         new_tree = docutils.utils.new_document(tree['source'])
@@ -137,8 +139,7 @@ class RinohBuilder(Builder):
         largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
                                         darkgreen, [indexfile])
         largetree['docname'] = indexfile
-        self.info()
-        self.info("resolving references...")
+        logger.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
         # resolve :ref:s to distant tex files -- we can't add a cross-reference,
         # but append the document name
@@ -209,23 +210,23 @@ class RinohBuilder(Builder):
         for entry in document_data:
             docname, targetname, title, author = entry[:4]
             toctree_only = entry[4] if len(entry) > 4 else False
-            self.info("processing " + targetname + "... ", nonl=1)
+            logger.info("processing " + targetname + "... ", nonl=1)
             doctree, docnames = self.assemble_doctree(docname, toctree_only)
             self.preprocess_tree(doctree)
             self.post_process_images(doctree)
 
-            self.info("rendering... ")
+            logger.info("rendering... ")
             doctree.settings.author = author
             doctree.settings.title = title
             doctree.settings.docname = docname
             self.write_doc(docname, doctree, docnames, targetname)
-            self.info("done")
+            logger.info("done")
 
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree['source'], doctree)
-        template_cfg = template_from_config(config, self.confdir, self.warn)
+        template_cfg = template_from_config(config, self.confdir, logger.warn)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
