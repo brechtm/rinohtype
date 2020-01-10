@@ -13,7 +13,7 @@
                 "-x",
                 "--pdb",
                 "-k",
-                "test_highlight"
+                "test_sphinx"
             ] //,
             //"pythonPath": "${workspaceFolder}/.venv35/bin/python"
         }

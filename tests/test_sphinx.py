@@ -18,9 +18,9 @@ from rinoh.templates import Book, Article
 
 
 def create_sphinx_app(tmpdir, **confoverrides):
-    return Sphinx(srcdir=tmpdir.strpath,
+    return Sphinx(srcdir=tmpdir.mkdir("src").strpath,
                  confdir=None,
-                 outdir=tmpdir.strpath,
+                 outdir=tmpdir.mkdir("out").strpath,
                  doctreedir=tmpdir.strpath,
                  buildername='rinoh',
                  confoverrides=dict(extensions=['rinoh.frontend.sphinx'],
