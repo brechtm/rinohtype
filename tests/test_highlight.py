@@ -54,7 +54,7 @@ def test_highlight_block():
            Token('sandwich', Name.Function), Token('(', Punctuation),
            Token('bread', Name), Token(',', Punctuation), Token(' ', Text),
            Token('cheese', Name), Token('=', Operator),
-           Token('True', Name.Builtin.Pseudo), Token('):', Punctuation),
+           Token('True', Keyword.Constant), Token('):', Punctuation),
          Token('\n' + indent + '    ', Text), Token('result', Name),
            Token(' ', Text), Token('=', Operator), Token(' ', Text),
            Token('[]', Punctuation),
