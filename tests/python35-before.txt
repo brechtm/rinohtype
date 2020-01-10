@@ -1,0 +1,572 @@
+. tests/test_color.py::test_components
+. tests/test_color.py::test_bad_value
+. tests/test_color.py::test_hex_color
+. tests/test_color.py::test_short_hex_color
+. tests/test_color.py::test_bad_hex_value
+. tests/test_color.py::test_gray
+. tests/test_dimension.py::test_addition
+. tests/test_dimension.py::test_subtraction
+. tests/test_dimension.py::test_multiplication
+. tests/test_dimension.py::test_division
+. tests/test_dimension.py::test_grow
+. tests/test_dimension.py::test_negation
+. tests/test_dimension.py::test_late_addition
+. tests/test_dimension.py::test_late_subtraction
+. tests/test_dimension.py::test_late_multiplication
+. tests/test_dimension.py::test_late_division
+. tests/test_dimension.py::test_units
+. tests/test_dimension.py::test_fractions
+. tests/test_font.py::test_missingglyph_type1
+F tests/test_highlight.py::test_highlight_block
+ @requires_pygments
+     def test_highlight_block():
+         code = ("""def sandwich(bread, cheese=True):
+                        result = []
+                        result.append(bread.slice())
+                        if cheese:
+                            result.append('cheese')
+                        return result""")
+         indent = 15 * ' '
+         result = highlight_block('python', code, None)
+         reference = \
+             [Token('def', Keyword), Token(' ', Text),
+                Token('sandwich', Name.Function), Token('(', Punctuation),
+                Token('bread', Name), Token(',', Punctuation), Token(' ', Text),
+                Token('cheese', Name), Token('=', Operator),
+                Token('True', Name.Builtin.Pseudo), Token('):', Punctuation),
+              Token('\n' + indent + '    ', Text), Token('result', Name),
+                Token(' ', Text), Token('=', Operator), Token(' ', Text),
+                Token('[]', Punctuation),
+              Token('\n' + indent + '    ', Text), Token('result', Name),
+                Token('.', Operator), Token('append', Name), Token('(', Punctuation),
+                Token('bread', Name), Token('.', Operator), Token('slice', Name),
+                Token('())', Punctuation),
+              Token('\n' + indent + '    ', Text), Token('if', Keyword),
+                Token(' ', Text), Token('cheese', Name), Token(':', Punctuation),
+              Token('\n' + indent + '    ' + '    ', Text), Token('result', Name),
+                Token('.', Operator), Token('append', Name), Token('(', Punctuation),
+                Token("'cheese'", Literal.String), Token(')', Punctuation),
+              Token('\n' + indent + '    ', Text), Token('return', Keyword),
+                Token(' ', Text), Token('result', Name), Token('\n', Text)]
+         for res, ref in zip(result, reference):
+             assert res.text(None) == ref.text(None)
+ >           assert is_token_subtype(res.type, ref.type)
+ E           AssertionError: assert False
+ E            +  where False = is_token_subtype(Token.Keyword.Constant, Token.Name.Builtin.Pseudo)
+ E            +    where Token.Keyword.Constant = Token('True', type=Token.Keyword.Constant).type
+ E            +    and   Token.Name.Builtin.Pseudo = Token('True', type=Token.Name.Builtin.Pseudo).type
+ 
+ test_highlight.py:74: AssertionError
+. tests/test_highlight.py::test_get_pygments_style
+. tests/test_highlight.py::test_get_pygments_style_sphinx
+. tests/test_highlight.py::test_pygments_style_to_stylesheet
+. tests/test_parse.py::test_optionset_from_string
+. tests/test_parse.py::test_numberformat_from_string
+. tests/test_parse.py::test_textalign_from_string
+. tests/test_parse.py::test_flowablewidth_from_string
+. tests/test_parse.py::test_horizontalalignment_from_string
+. tests/test_parse.py::test_break_from_string
+. tests/test_parse.py::test_tabalign_from_string
+. tests/test_parse.py::test_linespacing_from_string
+. tests/test_parse.py::test_verticalalign_from_string
+. tests/test_parse.py::test_bool_from_string
+. tests/test_parse.py::test_integer_from_string
+. tests/test_parse.py::test_dimension_from_string
+. tests/test_parse.py::test_paper_from_string
+. tests/test_parse.py::test_color_from_string
+. tests/test_parse.py::test_stroke_from_string
+. tests/test_parse.py::test_styledtext_from_string
+. tests/test_parse.py::test_styledtext_from_string_field
+. tests/test_parse.py::test_styledtext_from_string_inline_image
+. tests/test_parse.py::test_referencetext_from_string
+. tests/test_parse.py::test_scale_from_string
+. tests/test_parse.py::test_backgroundimage_from_string
+. tests/test_parse.py::test_parse_keyword
+. tests/test_parse.py::test_parse_string
+. tests/test_parse.py::test_parse_number
+. tests/test_parse.py::test_parse_selector_args
+. tests/test_parse.py::test_parse_class_selector
+. tests/test_parse.py::test_parse_selector
+. tests/test_pdf_reader.py::test_read_boolean
+. tests/test_pdf_reader.py::test_read_integer
+. tests/test_pdf_reader.py::test_read_real
+. tests/test_pdf_reader.py::test_read_name
+. tests/test_pdf_reader.py::test_read_dictionary
+. tests/test_selectors.py::test_image
+F tests/test_sphinx.py::test_sphinx_config_default
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_default0')
+ 
+     def test_sphinx_config_default(tmpdir):
+ >       app = create_sphinx_app(tmpdir)
+ 
+ test_sphinx.py:34: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b13914748>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_default0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_default0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_default0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx']}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0, parallel = 0
+ keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_latex_elements_papersize
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_latex_eleme0')
+ 
+     def test_sphinx_config_latex_elements_papersize(tmpdir):
+ >       app = create_sphinx_app(tmpdir, latex_elements=dict(papersize='a4paper'))
+ 
+ test_sphinx.py:43: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b139345f8>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_latex_eleme0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_latex_eleme0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_latex_eleme0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'latex_elements': {'papersize': 'a4paper'}}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None
+ verbosity = 0, parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_rinoh_paper_size
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_paper0')
+ 
+     def test_sphinx_config_rinoh_paper_size(tmpdir):
+         app = create_sphinx_app(tmpdir, rinoh_paper_size=A4,
+ >                               latex_elements=dict(papersize='a4paper'))
+ 
+ test_sphinx.py:53: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b13914b70>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_paper0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_paper0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_paper0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'latex_elements': {'papersize': 'a4paper'}, 'rinoh_paper_size': Paper('A4', width=210*MM, height=297*MM)}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>
+ warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0, parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_language
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_language0')
+ 
+     def test_sphinx_config_language(tmpdir):
+ >       app = create_sphinx_app(tmpdir, language='it')
+ 
+ test_sphinx.py:62: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b1392b080>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_language0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_language0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_language0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'language': 'it'}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0
+ parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_builtin_stylesheet
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_builtin_sty0')
+ 
+     def test_sphinx_config_builtin_stylesheet(tmpdir):
+ >       app = create_sphinx_app(tmpdir, rinoh_stylesheet='sphinx_base14')
+ 
+ test_sphinx.py:69: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b138ff978>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_builtin_sty0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_builtin_sty0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_builtin_sty0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'rinoh_stylesheet': 'sphinx_base14'}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None
+ verbosity = 0, parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_pygments_style
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_pygments_st0')
+ 
+     def test_sphinx_config_pygments_style(tmpdir):
+ >       app = create_sphinx_app(tmpdir, pygments_style='igor')
+ 
+ test_sphinx.py:76: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b142fd9b0>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_pygments_st0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_pygments_st0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_pygments_st0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'pygments_style': 'igor'}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0
+ parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_rinoh_template
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ0')
+ 
+     def test_sphinx_config_rinoh_template(tmpdir):
+         template_cfg = Article.Configuration('test',
+                                              stylesheet='sphinx_article')
+ >       app = create_sphinx_app(tmpdir, rinoh_template=template_cfg)
+ 
+ test_sphinx.py:85: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b13914048>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ0', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ0', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ0'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'rinoh_template': ArticleConfiguration([('stylesheet', StyleSheetFile([('chapter', SectionStyle(chapter) > None)]))])}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>
+ warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0, parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_rinoh_template_from_entrypoint
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ1')
+ 
+     def test_sphinx_config_rinoh_template_from_entrypoint(tmpdir):
+ >       app = create_sphinx_app(tmpdir, rinoh_template='book')
+ 
+ test_sphinx.py:92: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b1394a358>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ1', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ1', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ1'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'rinoh_template': 'book'}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>, warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0
+ parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+F tests/test_sphinx.py::test_sphinx_config_rinoh_template_from_filename
+ tmpdir = local('/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ2')
+ 
+     def test_sphinx_config_rinoh_template_from_filename(tmpdir):
+         template_cfg_path = tmpdir.join('template_cfg.rtt').strpath
+         with open(template_cfg_path, 'w') as template_cfg:
+             print('[TEMPLATE_CONFIGURATION]', file=template_cfg)
+             print('template = book', file=template_cfg)
+ >       app = create_sphinx_app(tmpdir, rinoh_template=template_cfg_path)
+ 
+ test_sphinx.py:104: 
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ test_sphinx.py:27: in create_sphinx_app
+     **confoverrides))
+ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+ 
+ self = <sphinx.application.Sphinx object at 0x7f3b139c5400>, srcdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ2', confdir = None, outdir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ2', doctreedir = '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ2'
+ buildername = 'rinoh', confoverrides = {'extensions': ['rinoh.frontend.sphinx'], 'rinoh_template': '/tmp/pytest-of-norman/pytest-6/test_sphinx_config_rinoh_templ2/template_cfg.rtt'}, status = <_pytest.capture.EncodedFile object at 0x7f3b15cb4e80>
+ warning = <_pytest.capture.EncodedFile object at 0x7f3b15cb4be0>, freshenv = False, warningiserror = False, tags = None, verbosity = 0, parallel = 0, keep_going = False
+ 
+     def __init__(self, srcdir, confdir, outdir, doctreedir, buildername,
+                  confoverrides=None, status=sys.stdout, warning=sys.stderr,
+                  freshenv=False, warningiserror=False, tags=None, verbosity=0,
+                  parallel=0, keep_going=False):
+         # type: (str, str, str, str, str, Dict, IO, IO, bool, bool, List[str], int, int, bool) -> None  # NOQA
+         self.phase = BuildPhase.INITIALIZATION
+         self.verbosity = verbosity
+         self.extensions = {}                    # type: Dict[str, Extension]
+         self.builder = None                     # type: Builder
+         self.env = None                         # type: BuildEnvironment
+         self.project = None                     # type: Project
+         self.registry = SphinxComponentRegistry()
+         self.html_themes = {}                   # type: Dict[str, str]
+     
+         # validate provided directories
+         self.srcdir = abspath(srcdir)
+         self.outdir = abspath(outdir)
+         self.doctreedir = abspath(doctreedir)
+         self.confdir = confdir
+         if self.confdir:  # confdir is optional
+             self.confdir = abspath(self.confdir)
+             if not path.isfile(path.join(self.confdir, 'conf.py')):
+                 raise ApplicationError(__("config directory doesn't contain a "
+                                           "conf.py file (%s)") % confdir)
+     
+         if not path.isdir(self.srcdir):
+             raise ApplicationError(__('Cannot find source directory (%s)') %
+                                    self.srcdir)
+     
+         if self.srcdir == self.outdir:
+ >           raise ApplicationError(__('Source directory and destination '
+                                       'directory cannot be identical'))
+ E           sphinx.errors.ApplicationError: Source directory and destination directory cannot be identical
+ 
+ ../.venv35/lib/python3.5/site-packages/sphinx/application.py:170: ApplicationError
+. tests/test_style.py::test_style
+. tests/test_style.py::test_get_selector
+. tests/test_style.py::test_get_styled
+. tests/test_style.py::test_find_matches
+. tests/test_style.py::test_find_style
+. tests/test_style.py::test_get_style
+. tests/test_template.py::test_template_configuration
+. tests/test_template.py::test_template_configuration_base
+. tests/test_template.py::test_template_configuration_unsupported_option
+. tests/test_template.py::test_template_configuration_var
+. tests/test_template.py::test_template_configuration_var2
