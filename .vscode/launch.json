@@ -11,8 +11,9 @@
             "module": "pytest",
             "args": [
                 "-k",
-                "test_sphinx"
-            ] //,
+                "test_styledtext_from_string"
+            ]
+            ""
             //"pythonPath": "${workspaceFolder}/.venv35/bin/python"
         }
     ]
