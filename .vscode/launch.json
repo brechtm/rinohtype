@@ -11,7 +11,7 @@
             "module": "pytest",
             "args": [
                 "-k",
-                "test_styledtext_from_string"
+                "test_parse"
             ]
             ""
             //"pythonPath": "${workspaceFolder}/.venv35/bin/python"
