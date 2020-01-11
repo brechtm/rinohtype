@@ -82,7 +82,7 @@ class StringCollection(dict, metaclass=StringCollectionMeta):
 
 
 class Strings(AcceptNoneAttributeType, dict):
-    """Stores several :class:`StringCollection`\ s"""
+    r"""Stores several :class:`StringCollection`\ s"""
 
     def __init__(self, *string_collections):
         for string_collection in string_collections:
