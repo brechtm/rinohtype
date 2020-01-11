@@ -386,7 +386,7 @@ class ContextSelector(Selector):
                         element = next(elements)        # NoMoreParentElement
             except NoMoreParentElement:
                 return None
-            except StopIteration:
+            except RuntimeError:
                 break
             score = selector.match(element, container)
             if not score:
@@ -682,7 +682,7 @@ class StyledMatcher(dict):
 
 
 class StyleSheet(RuleSet, Resource):
-    """Dictionary storing a collection of related styles by name.
+    r"""Dictionary storing a collection of related styles by name.
 
     :class:`Style`\ s stored in a :class:`StyleSheet` can refer to their base
     style by name.
