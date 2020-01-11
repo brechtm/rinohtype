@@ -5,7 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-"""
+r"""
 The layout engine. The container classes allow defining rectangular areas on a
 page to which :class:`Flowable`\ s can be rendered.
 
@@ -71,7 +71,7 @@ class ReflowRequired(Exception):
 
 
 class FlowableTarget(object):
-    """Something that takes :class:`Flowable`\ s to be rendered."""
+    r"""Something that takes :class:`Flowable`\ s to be rendered."""
 
     def __init__(self, document_part, *args, **kwargs):
         """Initialize this flowable target.
@@ -211,7 +211,7 @@ CHAPTER_TITLE = 'chapter_title'
 
 
 class FlowablesContainerBase(Container):
-    """A :class:`Container` that renders :class:`Flowable`\ s to a rectangular
+    r"""A :class:`Container` that renders :class:`Flowable`\ s to a rectangular
     area on a page. The first flowable is rendered at the top of the container.
     The next flowable is rendered below the first one, and so on."""
 

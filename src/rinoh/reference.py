@@ -300,7 +300,7 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.level)
 
-    REGEX = re.compile('(?P<name>[a-z_]+)\((?P<level>\d+)\)', re.IGNORECASE)
+    REGEX = re.compile(r'(?P<name>[a-z_]+)\((?P<level>\d+)\)', re.IGNORECASE)
 
     @classmethod
     def from_string(cls, string):
