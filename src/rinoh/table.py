@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from collections import Iterable
+from collections.abc import Iterable
 from itertools import chain
 from functools import partial
 from math import sqrt

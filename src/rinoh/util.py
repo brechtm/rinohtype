@@ -25,7 +25,8 @@ import os
 import posixpath
 import time
 
-from collections import MutableMapping, OrderedDict
+from collections import OrderedDict
+from collections.abc import MutableMapping
 from functools import wraps
 from weakref import ref
 
