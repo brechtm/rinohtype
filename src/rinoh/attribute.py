@@ -13,7 +13,7 @@ from configparser import ConfigParser
 from io import BytesIO
 from itertools import chain
 from pathlib import Path
-from token import NUMBER, ENDMARKER, MINUS, PLUS, NAME
+from token import NUMBER, NEWLINE, ENDMARKER, MINUS, PLUS, NAME
 from tokenize import tokenize, ENCODING
 from warnings import warn
 
@@ -47,7 +47,7 @@ class AttributeType(object):
         tokens = PeekIterator(tokenize(encoded_string.readline))
         assert next(tokens)[:2] == (ENCODING, 'utf-8')
         result = cls.from_tokens(tokens)
-        if next(tokens).type != ENDMARKER:
+        if next(tokens).type not in [NEWLINE, ENDMARKER]:
             raise ParseError('Syntax error')
         return result
 
