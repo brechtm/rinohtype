@@ -31,7 +31,7 @@ from rinoh.template import (DocumentTemplate, TemplateConfiguration,
 from rinoh.text import SingleStyledText
 from rinoh import __version__ as rinoh_version
 
-from ..rst import ReStructuredTextReader
+from rinoh.frontend.rst import ReStructuredTextReader
 
 from . import nodes
 
@@ -188,7 +188,7 @@ class RinohBuilder(Builder):
         preliminary_document_data = [list(entry)
                                      for entry in self.config.rinoh_documents]
         if not preliminary_document_data:
-            self.warn('no "rinoh_documents" config value found; '
+            logger.warning('no "rinoh_documents" config value found; '
                       'no documents will be written')
             return
         # assign subdirs to titles
@@ -196,7 +196,7 @@ class RinohBuilder(Builder):
         for entry in preliminary_document_data:
             docname = entry[0]
             if docname not in self.env.all_docs:
-                self.warn('"rinoh_documents" config value references unknown '
+                logger.warning('"rinoh_documents" config value references unknown '
                           'document %s' % docname)
                 continue
             document_data.append(entry)
@@ -226,7 +226,7 @@ class RinohBuilder(Builder):
         config = self.config
         parser = ReStructuredTextReader()
         rinoh_tree = parser.from_doctree(doctree['source'], doctree)
-        template_cfg = template_from_config(config, self.confdir, logger.warn)
+        template_cfg = template_from_config(config, self.confdir, logger.warning)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
