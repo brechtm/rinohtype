@@ -15,4 +15,5 @@ def test_missingglyph_type1():
     times = Typeface('Times')
     font = times.get_font(weight='regular')
     with pytest.raises(MissingGlyphException):
-        font.get_glyph('\u2024', 'normal')
+        with pytest.warns(UserWarning):
+            font.get_glyph('\u2024', 'normal')

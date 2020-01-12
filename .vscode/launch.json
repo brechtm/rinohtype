@@ -11,9 +11,8 @@
             "module": "pytest",
             "args": [
                 "-k",
-                "test_parse"
+                "test_rst"
             ]
-            ""
             //"pythonPath": "${workspaceFolder}/.venv35/bin/python"
         }
     ]
