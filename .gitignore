@@ -16,3 +16,4 @@
 /src/rinohtype.egg-info
 /MANIFEST
 .venv*
+*.log
