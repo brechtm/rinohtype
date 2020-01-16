@@ -10,8 +10,8 @@
             "request": "launch",
             "module": "pytest",
             "args": [
-                "-k",
-                "test_rst"
+                "-s",
+                "${relativeFile}"
             ]
             //"pythonPath": "${workspaceFolder}/.venv35/bin/python"
         }
