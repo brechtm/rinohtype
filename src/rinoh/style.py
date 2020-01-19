@@ -30,7 +30,7 @@ from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile)
 from .element import DocumentElement
 from .resource import Resource
-from .util import cached, unique, all_subclasses, NotImplementedAttribute
+from .util import cached, all_subclasses, NotImplementedAttribute
 from .warnings import warn
 
 
@@ -641,7 +641,7 @@ class StyledMatcher(dict):
     def __setitem__(self, name, selector):
         assert name not in self
         is_pending = False
-        for referenced_name in unique(selector.referenced_selectors):
+        for referenced_name in set(selector.referenced_selectors):
             if referenced_name not in self.by_name:
                 pending_selectors = self._pending.setdefault(referenced_name, {})
                 pending_selectors[name] = selector
