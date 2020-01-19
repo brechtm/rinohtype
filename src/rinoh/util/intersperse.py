@@ -4,6 +4,9 @@ def intersperse(iterable, element):
     iterable = iter(iterable)
     yield next(iterable)
     while True:
-        next_from_iterable = next(iterable)
-        yield element
-        yield next_from_iterable
+        try:
+            next_from_iterable = next(iterable)
+            yield element
+            yield next_from_iterable
+        except StopIteration:
+            return
