@@ -1,5 +1,6 @@
 from .etc import *
 from .rkd import RefKeyDictionary
+from .time import timed
 
 
 __all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'PeekIterator',

@@ -14,7 +14,6 @@ Collection of miscellaneous classes, functions and decorators:
 * :func:`intersperse`: Generator inserting an element between every two elements
                        of a given iterable
 * :class:`cached_property`: Caching property decorator
-* :func:`timed`: Method decorator printing the time the method call took
 * :class:`ReadAliasAttribute`: Descriptor creates a read-only alias for another
                                attribute
 """
@@ -23,7 +22,6 @@ Collection of miscellaneous classes, functions and decorators:
 import ntpath
 import os
 import posixpath
-import time
 
 from collections import OrderedDict
 from functools import wraps
@@ -173,6 +171,7 @@ def cached_generator(function):
     return function_wrapper
 
 
+
 class class_property(object):
     """A read-only class property"""
     def __init__(self, function):
@@ -182,17 +181,6 @@ class class_property(object):
         return self.function(owner)
 
 
-def timed(function):
-    """Decorator timing the method call and printing the result to `stdout`"""
-    @wraps(function)
-    def function_wrapper(obj, *args, **kwargs):
-        """Wrapper function printing the time taken by the call to `function`"""
-        name = obj.__class__.__name__ + '.' + function.__name__
-        start = time.time()
-        result = function(obj, *args, **kwargs)
-        print('{}: {:.4f} seconds'.format(name, time.time() - start))
-        return result
-    return function_wrapper
 
 
 class Decorator(object):
