@@ -31,7 +31,7 @@ from functools import wraps
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'PeekIterator',
+__all__ = ['all_subclasses', 'intersperse', 'last', 'PeekIterator',
            'posix_path', 'consumer', 'cached', 'cached_property',
            'cached_generator', 'class_property', 'timed', 'Decorator',
            'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
@@ -65,15 +65,6 @@ def last(iterable):
     for item in iterable:
         result = item
     return result
-
-
-def unique(iterable):
-    """Filter out duplicate items from an iterable"""
-    seen = set()
-    for item in iterable:
-        if item not in seen:
-            seen.add(item)
-            yield item
 
 
 class PeekIterator(object):
