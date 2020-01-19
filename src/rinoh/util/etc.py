@@ -26,16 +26,10 @@ import posixpath
 import time
 
 from collections import OrderedDict
-from collections.abc import MutableMapping
 from functools import wraps
-from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'PeekIterator',
-           'posix_path', 'consumer', 'cached', 'cached_property',
-           'cached_generator', 'class_property', 'timed', 'Decorator',
-           'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
-           'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary']
+
 
 
 # functions
@@ -282,29 +276,3 @@ class ContextManager(object):
         raise NotImplementedError
 
 
-# http://stackoverflow.com/a/3387975/438249
-class RefKeyDictionary(MutableMapping):
-    """A dictionary that compares keys based on their id (address). Hence, the
-    keys can be mutable."""
-
-    def __init__(self, *args, **kwargs):
-        self.store = dict()
-        self.update(dict(*args, **kwargs))
-
-    def __getitem__(self, obj):
-        obj_weakref, value = self.store[id(obj)]
-        assert obj_weakref() is obj
-        return value
-
-    def __setitem__(self, obj, value):
-        self.store[id(obj)] = ref(obj), value
-
-    def __delitem__(self, obj):
-        self[obj]   # check the weakref
-        del self.store[id(obj)]
-
-    def __iter__(self):
-        return iter(self.store)
-
-    def __len__(self):
-        return len(self.store)
