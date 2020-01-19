@@ -31,10 +31,10 @@ from functools import wraps
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'last', 'PeekIterator',
-           'posix_path', 'consumer', 'cached', 'cached_property',
-           'cached_generator', 'class_property', 'timed', 'Decorator',
-           'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
+__all__ = ['all_subclasses', 'intersperse', 'PeekIterator', 'posix_path',
+           'consumer', 'cached', 'cached_property', 'cached_generator',
+           'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
+           'NotImplementedAttribute', 'NamedDescriptor',
            'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary',
            'VersionError']
 
@@ -57,14 +57,6 @@ def intersperse(iterable, element):
     for next_from_iterable in iterable:
         yield element
         yield next_from_iterable
-
-
-def last(iterable):
-    """Return an iterable's last item"""
-    result = None
-    for item in iterable:
-        result = item
-    return result
 
 
 class PeekIterator(object):
