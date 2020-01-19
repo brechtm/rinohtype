@@ -51,15 +51,6 @@ def intersperse(iterable, element):
         yield next_from_iterable
 
 
-def last(iterable):
-    """Return an iterable's last item"""
-    result = None
-    for item in iterable:
-        result = item
-    return result
-
-
-
 class PeekIterator(object):
     """An _iterator that allows inspecting the next element"""
 
