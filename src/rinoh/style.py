@@ -386,7 +386,7 @@ class ContextSelector(Selector):
                         element = next(elements)        # NoMoreParentElement
             except NoMoreParentElement:
                 return None
-            except RuntimeError:
+            except StopIteration:
                 break
             score = selector.match(element, container)
             if not score:
@@ -395,7 +395,7 @@ class ContextSelector(Selector):
         return total_score
 
 
-class NoMoreParentElement(StopIteration):
+class NoMoreParentElement(Exception):   
     """The top-level element in the document element tree has been reached"""
 
 
