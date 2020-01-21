@@ -53,8 +53,7 @@ def intersperse(iterable, element):
     inserted between each two consecutive elements"""
     iterable = iter(iterable)
     yield next(iterable)
-    while True:
-        next_from_iterable = next(iterable)
+    for next_from_iterable in iterable:
         yield element
         yield next_from_iterable
 
