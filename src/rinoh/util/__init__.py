@@ -2,6 +2,8 @@ from .etc import *
 from .rkd import RefKeyDictionary
 from .time import timed
 from .intersperse import intersperse
+from .peekiterator import PeekIterator
+
 
 
 __all__ = [

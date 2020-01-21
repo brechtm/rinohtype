@@ -42,33 +42,6 @@ def all_subclasses(cls):
 
 
 
-class PeekIterator(object):
-    """An _iterator that allows inspecting the next element"""
-
-    def __init__(self, iterable):
-        self.next = None
-        self._iterator = iter(iterable)
-        self._at_end = False
-        self._advance()
-
-    def _advance(self):
-        result = self.next
-        try:
-            self.next = next(self._iterator)
-        except StopIteration:
-            self.next = None
-            self._at_end = True
-        return result
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self._at_end:
-            raise StopIteration
-        return self._advance()
-
-
 def posix_path(path):
     return os.path.normpath(path).replace(ntpath.sep, posixpath.sep)
 
