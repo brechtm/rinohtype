@@ -114,7 +114,7 @@ class FlowablesList(AcceptNoneAttributeType):
     @classmethod
     def doc_format(cls):
         return ('Python source code that represents a list of '
-                ':class:`.Flowable`\ s')
+                ':class:`.Flowable`\\ s')
 
 
 class PageTemplate(PageTemplateBase):
@@ -323,7 +323,7 @@ class DocumentPartTemplate(Template):
             flowable.prepare(fake_container)
 
     def _flowables(self, document):
-        """Return a list of :class:`rinoh.flowable.Flowable`\ s that make up
+        """Return a list of :class:`rinoh.flowable.Flowable`\\ s that make up
         the document part"""
         raise NotImplementedError
 
@@ -658,7 +658,7 @@ class PartsList(AttributeType, list):
 
     @classmethod
     def doc_repr(cls, value):
-        space = '\ ``\N{NO-BREAK SPACE}``\ '
+        space = '\\ ``\N{NO-BREAK SPACE}``\\ '
         return space.join(':attr:`{}`'.format(part)
                           for part in value) or '(empty list)'
 
@@ -704,7 +704,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         self._to_insert = {}
 
     def _find_templates(self, name):
-        """Yields all :class:`Template`\ s in the template hierarchy:
+        """Yields all :class:`Template`\\ s in the template hierarchy:
 
         - template matching `name` in this TemplateConfiguration
         - templates in base TemplateConfigurations (recursively)

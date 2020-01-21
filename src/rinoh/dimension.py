@@ -227,7 +227,7 @@ class DimensionAddition(DimensionBase):
     """The sum of a set of dimensions
 
     Args:
-        addends (Dimension\ s):
+        addends (`Dimension`\\ s):
 
     """
 

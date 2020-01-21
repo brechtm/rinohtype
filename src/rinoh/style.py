@@ -567,14 +567,14 @@ class StyledMatcher(dict):
 class StyleSheet(RuleSet, Resource):
     """Dictionary storing a collection of related styles by name.
 
-    :class:`Style`\ s stored in a :class:`StyleSheet` can refer to their base
+    :class:`Style`\\ s stored in a :class:`StyleSheet` can refer to their base
     style by name.
 
     Args:
         name (str): a label for this style sheet
         matcher (StyledMatcher): the matcher providing the selectors the styles
             contained in this style sheet map to. If no matcher is given and
-            `base` is specified, the `base`\ 's matcher is used. If `base` is
+            `base` is specified, the `base`\\ 's matcher is used. If `base` is
             not set, the default matcher is used.
         base (StyleSheet or str): the style sheet to extend
         description (str): a short string describing this style sheet
