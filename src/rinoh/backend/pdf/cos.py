@@ -145,11 +145,8 @@ class Integer(Object, int):
     def __init__(self, value, base=10, indirect=False):
         Object.__init__(self, indirect)
 
-    # def _repr(self):
-    #     return int.__repr__(self)   #  https://bugs.python.org/issue36793
     def __repr__(self):
         return int.__repr__(self)
-        # return '{}({})'.format(self.__class__.__name__, self._repr())
 
     def _bytes(self, document):
         return int.__str__(self).encode('utf_8')
