@@ -149,7 +149,12 @@ class StyledText(Styled, AcceptNoneAttributeType):
     def from_tokens(cls, tokens):
         texts = []
         for token in tokens:
-            if token.type == NAME:      # inline flowable
+            if token.type == NEWLINE:
+                if tokens.next.type == ENDMARKER:
+                    break
+                else:
+                    continue
+            elif token.type == NAME:      # inline flowable
                 directive = token.string.lower()
                 inline_flowable_class = InlineFlowable.directives[directive]
                 if next(tokens).exact_type != LPAR:
@@ -175,8 +180,8 @@ class StyledText(Styled, AcceptNoneAttributeType):
                     style = None
                 texts.append(cls._substitute_variables(text, style))
             else:
-                raise StyledTextParseError('Expecting text or inline flowable')
-            if tokens.next.type in [ ENDMARKER, NEWLINE]:
+                raise StyledTextParseError('Expecting text or inline flowable')            
+            if tokens.next.type == ENDMARKER:
                 break
 
         if len(texts) > 1:
