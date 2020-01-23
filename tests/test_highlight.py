@@ -102,7 +102,7 @@ def test_get_pygments_style_sphinx():
 @requires_pygments
 def test_pygments_style_to_stylesheet():
     def matching_style(style_sheet, token_type):
-        match, = style_sheet.find_matches(Token('text', token_type), None)
+        match, = style_sheet.find_matches(Token('text', token_type))
         return style_sheet[match.style_name]
 
     class SimpleStyle(Style):

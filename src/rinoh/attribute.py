@@ -18,7 +18,8 @@ from tokenize import generate_tokens
 from warnings import warn
 
 from .util import (NamedDescriptor, WithNamedDescriptors,
-                   NotImplementedAttribute, class_property, PeekIterator)
+                   NotImplementedAttribute, class_property, PeekIterator,
+                   cached)
 
 
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
@@ -377,17 +378,14 @@ class RuleSet(OrderedDict):
     def __bool__(self):
         return True
 
-    def get_variable(self, configurable, attribute, variable):
+    def get_variable(self, variable):
         try:
-            value =  self.variables[variable.name]
+            return self.variables[variable.name]
         except KeyError:
             if self.base:
-                return self.base.get_variable(configurable, attribute, variable)
-            else:
-                raise VariableNotDefined("Variable '{}' is not defined"
-                                         .format(variable.name))
-        config = configurable.configuration_class
-        return config.validate_attribute(attribute, value, False)
+                return self.base.get_variable(variable)
+            raise VariableNotDefined("Variable '{}' is not defined"
+                                     .format(variable.name))
 
     def get_entry_class(self, name):
         raise NotImplementedError
@@ -405,6 +403,7 @@ class RuleSet(OrderedDict):
             return self.base._get_value_recursive(name, attribute)
         raise DefaultValueException
 
+    @cached
     def get_value(self, name, attribute):
         try:
             return self._get_value_recursive(name, attribute)
@@ -420,8 +419,11 @@ class RuleSet(OrderedDict):
             value = self._get_value_lookup(configurable, attribute, document)
         except DefaultValueException:
             value = configurable.configuration_class._get_default(attribute)
-        return (self.get_variable(configurable, attribute, value)
-                if isinstance(value, Var) else value)
+        if isinstance(value, Var):
+            config = configurable.configuration_class
+            value = config.validate_attribute(attribute,
+                                              self.get_variable(value), False)
+        return value
 
 
 class RuleSetFile(RuleSet):
@@ -448,12 +450,6 @@ class RuleSetFile(RuleSet):
             else:
                 name, classifier = section_name.strip(), None
             self.process_section(name, classifier, section_body.items())
-
-    def _get_variable(self, name, accepted_type):
-        variable = super()._get_variable(name, accepted_type)
-        if isinstance(variable, str):
-            variable = accepted_type.from_string(variable)
-        return variable
 
     def process_section(self, section_name, classifier, items):
         raise NotImplementedError

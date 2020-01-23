@@ -25,6 +25,7 @@ Changed:
 * remove the dependency on purepng by embedding its png.py
 * limit the width of images to the available width by default
 * XML frontend: special case mixed content nodes
+* fixes in the design of stylesheet/template code
 
 Fixed:
 
