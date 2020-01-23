@@ -510,11 +510,9 @@ border_top=$(thin_black_stroke)
 border_bottom=$(thin_black_stroke)
 
 [admonition title]
-base=default
+base=body
 keep_with_next=true
 font_weight=BOLD
-indent_first=0
-space_above=5pt
 space_below=2pt
 
 [admonition inline title]
