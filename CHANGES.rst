@@ -29,7 +29,7 @@ Changed:
 
 Fixed:
 
-* Border width is also taken into account for flowables that are continued on a
+* border width is also taken into account for flowables that are continued on a
   new page (#127)
 * Sphinx: handle case when source_suffix is a list (PR #110 by Nick Barrett)
 * incompatibility with Sphinx 1.6.1+ (latex_paper_size)
@@ -39,9 +39,10 @@ Fixed:
 * crash when a table cell contains (only) an image
 * colours of PNG images with gamma (gAMA chunk) set are incorrect (#102)
 * Sphinx: image paths with wildcard extension are not supported (#119)
-* Adapt to PEP 479 (Change StopIteration handling inside generators), the
+* GroupedFlowables: space_below should only be considered at the end
+* adapt to PEP 479 (Change StopIteration handling inside generators), the
   default in Python 3.7 (issue #133)
-* Fix compatiblity with Python 3.6.7 and 3.7.1 (tokenizer changes)
+* fix compatibility with Python 3.6.7 and 3.7.1 (tokenizer changes)
 
 
 Release 0.3.1 (2016-12-19)

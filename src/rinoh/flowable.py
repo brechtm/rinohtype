@@ -216,7 +216,8 @@ class Flowable(Styled):
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
 
-    def flow_inner(self, container, descender, state=None, **kwargs):
+    def flow_inner(self, container, descender, state=None, space_below=0,
+                   **kwargs):
         def border_width(attribute):
             border = self.get_style(attribute, container)
             return border.width if border else 0
@@ -237,7 +238,8 @@ class Flowable(Styled):
         border_h = border_left + border_right
         left = padding_left + border_left
         right = container.width - padding_right - border_right
-        space_below = float(padding_bottom + border_bottom)
+        padding_border_bottom = float(padding_bottom + border_bottom)
+        total_space_below = space_below + padding_border_bottom
         if draw_top:
             if not container.advance2(padding_top + border_top):
                 return state, 0, 0, descender
@@ -246,9 +248,9 @@ class Flowable(Styled):
         try:
             content_width, first_line_ascender, descender = \
                 self.render(pad_cntnr, descender, state=state,
-                            space_below=space_below, **kwargs)
+                            space_below=total_space_below, **kwargs)
             state = None
-            assert container.advance2(space_below)
+            assert container.advance2(padding_border_bottom)
         except EndOfContainer as eoc:
             state = eoc.flowable_state
             first_line_ascender = 0
@@ -386,25 +388,35 @@ class AddToFrontMatter(DummyFlowable):
 
 class GroupedFlowablesState(FlowableState):
     def __init__(self, groupedflowables, flowables, first_flowable_state=None,
-                 _initial=True):
+                 _initial=True, _index=0):
         super().__init__(groupedflowables, _initial)
-        self.flowables = flowables
+        self.flowables = list(flowables)
         self.first_flowable_state = first_flowable_state
+        self._index = _index
 
     groupedflowables = ReadAliasAttribute('flowable')
 
+    @property
+    def at_end(self):
+        return self._index == len(self.flowables) - 1
+
     def __copy__(self):
-        copy_flowables, self.flowables = tee(self.flowables)
+        copy_flowables = copy(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
         return self.__class__(self.groupedflowables, copy_flowables,
-                              copy_first_flowable_state, _initial=self.initial)
+                              copy_first_flowable_state, _initial=self.initial,
+                              _index=self._index)
 
     def next_flowable(self):
-        return next(self.flowables)
+        try:
+            result = self.flowables[self._index]
+        except IndexError:
+            raise StopIteration
+        self._index += 1
+        return result
 
     def prepend(self, first_flowable_state):
-        first_flowable = first_flowable_state.flowable
-        self.flowables = chain((first_flowable, ), self.flowables)
+        self._index -= 1
         if first_flowable_state:
             self.first_flowable_state = first_flowable_state
             self.initial = self.initial and first_flowable_state.initial
@@ -445,14 +457,13 @@ class GroupedFlowables(Flowable):
         pass   # only the children place content on the page
 
     def render(self, container, descender, state, first_line_only=False,
-               space_below=0, **kwargs):
+               **kwargs):
         max_flowable_width = 0
         first_top_to_baseline = None
         item_spacing = self.get_style('flowable_spacing', container)
         saved_state = copy(state)
         try:
             while True:
-                # TODO: consider space_below for the last flowable
                 width, top_to_baseline, descender = \
                     self._flow_with_next(state, container, descender,
                                          first_line_only=first_line_only,
@@ -474,7 +485,8 @@ class GroupedFlowables(Flowable):
             raise exc
         return max_flowable_width, first_top_to_baseline or 0, descender
 
-    def _flow_with_next(self, state, container, descender, **kwargs):
+    def _flow_with_next(self, state, container, descender, space_below=0,
+                        **kwargs):
         try:
             flowable = state.next_flowable()
             while flowable.is_hidden(container):
@@ -482,10 +494,12 @@ class GroupedFlowables(Flowable):
         except StopIteration:
             raise LastFlowableException(descender)
         flowable.parent = self
+        space_below = space_below if state.at_end else 0
         with MaybeContainer(container) as maybe_container:
             max_flowable_width, top_to_baseline, descender = \
                 flowable.flow(maybe_container, descender,
-                              state=state.first_flowable_state, **kwargs)
+                              state=state.first_flowable_state,
+                              space_below=space_below, **kwargs)
         state.initial = False
         state.first_flowable_state = None
         if flowable.get_style('keep_with_next', container):
