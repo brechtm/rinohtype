@@ -16,7 +16,7 @@ RST_PATH = Path(__file__).parent / 'rst'
 
 
 def collect_tests():
-    for rst_path in RST_PATH.glob('*.rst'):
+    for rst_path in sorted(RST_PATH.glob('*.rst')):
         yield rst_path.stem
 
 
