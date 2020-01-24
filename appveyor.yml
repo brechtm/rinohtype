@@ -15,7 +15,7 @@ environment:
     BASETEMP: '%APPVEYOR_BUILD_FOLDER%\pytest_temp'
 
   matrix:
-    - TOXENV: py34,py35,py36
+    - TOXENV: py35,py36,py37,py38
 #      DIST: sdist
 #      WITH_COVERAGE: 1
 #    - TOXENV: py34,py35,py36
@@ -52,11 +52,11 @@ build: off
 
 
 before_test:
-  - py -3.5 -m pip install tox-travis
+  - py -3.8 -m pip install tox-travis
 
 test_script:
   - echo %PATH%
-  - py -3.5 -m tox
+  - py -3.8 -m tox
 
 
 on_failure:

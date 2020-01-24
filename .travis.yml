@@ -7,9 +7,11 @@ cache:
     pip: true
 
 python:
-  - 3.4
   - 3.5
   - 3.6
+  - 3.7
+  - 3.8
+  - 3.8-dev
   - nightly
   - pypy3
 
@@ -22,9 +24,9 @@ env:
 matrix:
   fast_finish: true
   include:
-    - python: 3.6
+    - python: 3.8
       env: TOXENV=check
-    - python: 3.6
+    - python: 3.8
       env:
         - TOXENV=regression
           WITH_COVERAGE=1
@@ -55,22 +57,24 @@ matrix:
           - $HOME/.pyenv
       env:
         - DIST=sdist
-          TOXENV=py34,py35,py36
+          TOXENV=py35,py36,py37,py38
           WITH_COVERAGE=1
       before_install:
         - brew update
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.4.6
-        - pyenv install --skip-existing 3.5.3
-        - pyenv install --skip-existing 3.6.1
-        - pyenv global 3.6.1 3.4.6 3.5.3
+        - pyenv install --skip-existing 3.5.9
+        - pyenv install --skip-existing 3.6.10
+        - pyenv install --skip-existing 3.7.6
+        - pyenv install --skip-existing 3.8.1
+        - pyenv global 3.8.1 3.7.6 3.6.10 3.5.9
         - python --version
         - python3 --version
-        - python3.4 --version
         - python3.5 --version
         - python3.6 --version
+        - python3.7 --version
+        - python3.8 --version
     - os: osx
       sudo: required
       language: objective-c
@@ -88,11 +92,11 @@ matrix:
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.6.1
-        - pyenv global 3.6.1
+        - pyenv install --skip-existing 3.8.1
+        - pyenv global 3.8.1
         - python --version
         - python3 --version
-    - python: 3.6
+    - python: 3.8
       env:
         - TOXENV=longrunning
           TIMEOUT=45
@@ -114,9 +118,9 @@ matrix:
         - travis_retry curl -L https://github.com/brechtm/rinohtype-travis/releases/download/v1/dotlocal.tar.xz | tar xJ -C ~
         - export PATH=$HOME/.local/bin:$PATH
         - export LD_LIBRARY_PATH=$HOME/.local/lib
-    - python: 3.6
+    - python: 3.8
       env: TOXENV=test-docs
-    - python: 3.6
+    - python: 3.8
       env: TOXENV=build-docs
     - os: osx
       sudo: required
