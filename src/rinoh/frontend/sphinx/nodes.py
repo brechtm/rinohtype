@@ -10,9 +10,12 @@ import unicodedata
 from itertools import chain
 
 from pygments.lexers import get_lexer_by_name, guess_lexer
+from pygments.lexers.c_cpp import CLexer
+from pygments.lexers.markup import RstLexer
+from pygments.lexers.python import (PythonLexer, Python3Lexer,
+                                    PythonConsoleLexer)
+from pygments.lexers.special import TextLexer
 from pygments.util import ClassNotFound
-
-from sphinx.highlighting import lexers
 
 from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable, StaticGroupedFlowables
@@ -128,6 +131,19 @@ class Literal_Strong(rst.Literal):
 
 class ManPage(rst.Inline):
     style = 'man page'
+
+
+lexers = dict(
+    none = TextLexer(stripnl=False),
+    python = PythonLexer(stripnl=False),
+    python3 = Python3Lexer(stripnl=False),
+    pycon = PythonConsoleLexer(stripnl=False),
+    pycon3 = PythonConsoleLexer(python3=True, stripnl=False),
+    rest = RstLexer(stripnl=False),
+    c = CLexer(stripnl=False),
+)  # type: Dict[unicode, Lexer]
+for _lexer in lexers.values():
+    _lexer.add_filter('raiseonerror')
 
 
 class Literal_Block(rst.Literal_Block):
