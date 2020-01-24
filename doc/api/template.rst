@@ -28,6 +28,10 @@ the :class:`~TemplateConfiguration.document` method, however.
 Document Parts
 ~~~~~~~~~~~~~~
 
+.. autoclass:: DocumentPart
+    :members:
+
+
 The document part templates which are listed by name in
 :attr:`DocumentTemplate.parts` are looked up as attributes of the
 :class:`DocumentTemplate` subclass. They are instances of
