@@ -1,3 +1,2 @@
 sphinx
 sphinxcontrib-autoprogram
-robpol86-sphinxcontrib-googleanalytics

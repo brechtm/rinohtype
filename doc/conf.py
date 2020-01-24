@@ -47,7 +47,6 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.githubpages',
     'sphinxcontrib.autoprogram',
-    'sphinxcontrib.googleanalytics',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -127,8 +126,6 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3.5',
                                   'python-objects.inv'),
                        'sphinx': ('http://www.sphinx-doc.org/en/1.4.5',
                                   'sphinx-objects.inv')}
-
-googleanalytics_id = 'UA-45391629-1'
 
 # -- Options for HTML output ----------------------------------------------
 
