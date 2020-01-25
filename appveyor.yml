@@ -63,3 +63,11 @@ on_failure:
   - ps: |
       7z a pytest_temp.zip pytest_temp
       appveyor PushArtifact pytest_temp.zip
+
+
+notifications:
+ - provider: Webhook
+   url: https://webhooks.gitter.im/e/0fd17d2c154e08cdbc81
+   on_build_success: false
+   on_build_failure: true
+   on_build_status_changed: true
