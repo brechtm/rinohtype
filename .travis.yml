@@ -137,8 +137,8 @@ matrix:
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.5.3
-        - pyenv global 3.5.3
+        - pyenv install --skip-existing 3.7.6
+        - pyenv global 3.7.6
         - python --version
 
 install:
