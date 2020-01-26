@@ -1,3 +1,4 @@
+dist: bionic
 language: python
 
 sudo: false
@@ -34,19 +35,7 @@ matrix:
         apt:
           packages:
             - imagemagick
-            # poppler dependencies
-            - libfreetype6
-            - libfontconfig1
-            - libopenjpeg2
-            - libjpeg8
-            - libtiff5
-            - liblcms2-2
-            - libcairo2
-      before_install:
-        # install poppler (required by the diffpdf script)
-        - travis_retry curl -L https://github.com/brechtm/rinohtype-travis/releases/download/v1/dotlocal.tar.xz | tar xJ -C ~
-        - export PATH=$HOME/.local/bin:$PATH
-        - export LD_LIBRARY_PATH=$HOME/.local/lib
+            - poppler-utils
     - os: osx
       sudo: required
       language: objective-c
@@ -105,19 +94,7 @@ matrix:
         apt:
           packages:
             - imagemagick
-            # poppler dependencies
-            - libfreetype6
-            - libfontconfig1
-            - libopenjpeg2
-            - libjpeg8
-            - libtiff5
-            - liblcms2-2
-            - libcairo2
-      before_install:
-        # install poppler (required by the diffpdf script)
-        - travis_retry curl -L https://github.com/brechtm/rinohtype-travis/releases/download/v1/dotlocal.tar.xz | tar xJ -C ~
-        - export PATH=$HOME/.local/bin:$PATH
-        - export LD_LIBRARY_PATH=$HOME/.local/lib
+            - poppler-utils
     - python: 3.8
       env: TOXENV=test-docs
     - python: 3.8
