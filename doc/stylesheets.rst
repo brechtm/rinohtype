@@ -60,7 +60,6 @@ values that can be assigned to them in a style sheet.
     image.FigureStyle
     index.IndexStyle
     paragraph.ParagraphStyle
-    highlight.CodeBlockStyle
     text.TextStyle
     inline.InlineFlowableStyle
     reference.ReferencingParagraphStyle
