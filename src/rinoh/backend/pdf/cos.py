@@ -149,7 +149,7 @@ class Integer(Object, int):
         return int.__repr__(self)
 
     def _bytes(self, document):
-        return int.__str__(self).encode('utf_8')
+        return self._repr().encode('utf_8')
 
 
 class Real(Object, float):

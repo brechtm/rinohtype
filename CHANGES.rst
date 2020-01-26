@@ -43,6 +43,7 @@ Fixed:
 * adapt to PEP 479 (Change StopIteration handling inside generators), the
   default in Python 3.7 (issue #133)
 * fix compatibility with Python 3.6.7 and 3.7.1 (tokenizer changes)
+* fix crash caused by Python 3.8's changes to int.__str__
 
 
 Release 0.3.1 (2016-12-19)
