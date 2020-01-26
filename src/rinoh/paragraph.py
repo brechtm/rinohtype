@@ -616,7 +616,7 @@ class ParagraphBase(Flowable):
 
         Args:
             container (Container): the container to render to
-            descender (float or None): descender height of the preceeding line
+            descender (float or None): descender height of the preceding line
             state (ParagraphState): the state where rendering will continue
             first_line_only (bool): typeset only the first line
 
@@ -640,9 +640,16 @@ class ParagraphBase(Flowable):
 
         def typeset_line(line, last_line=False):
             """Typeset `line` and, if no exception is raised, update the
-            paragraph's internal rendering state."""
+            paragraph's internal rendering state.
+
+            Args:
+                line (Line): the line to typeset
+                last_line (bool): True if this is the paragraph's last line
+
+            """
             nonlocal state, saved_state, max_line_width, descender, space_below
             max_line_width = max(max_line_width, line.cursor)
+            # descender is None when this is the first line in the container
             advance = (line.ascender(container) if descender is None
                        else line_spacing.advance(line, descender, container))
             descender = line.descender(container)   # descender <= 0
@@ -848,6 +855,7 @@ class Line(list):
         self.indent = indent
         self.container = container
         self.cursor = indent
+        self.advance = 0
         self.significant_whitespace = significant_whitespace
         self._has_tab = False
         self._current_tab = None
