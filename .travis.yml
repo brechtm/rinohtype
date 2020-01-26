@@ -65,6 +65,8 @@ matrix:
         - python3.6 --version
         - python3.7 --version
         - python3.8 --version
+      before_cache:
+        - brew cleanup
     - os: osx
       sudo: required
       language: objective-c
@@ -88,6 +90,8 @@ matrix:
         - pyenv global 3.8.1
         - python --version
         - python3 --version
+      before_cache:
+        - brew cleanup
     - python: 3.8
       env:
         - TOXENV=longrunning
@@ -121,6 +125,8 @@ matrix:
         - pyenv install --skip-existing 3.7.6
         - pyenv global 3.7.6
         - python --version
+      before_cache:
+        - brew cleanup
 
 install:
   - pip install tox-travis wheel
