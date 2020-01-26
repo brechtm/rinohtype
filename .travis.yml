@@ -79,6 +79,7 @@ matrix:
           HOMEBREW_NO_AUTO_UPDATE=1
       before_install:
         - brew update
+        - brew unlink python@2
         - brew bundle --verbose
         - brew unlink pyenv
         - brew install --HEAD pyenv
