@@ -25,6 +25,7 @@ include .bumpversion.cfg
 include .coveragerc
 include .travis.yml
 include appveyor.yml
+include Brewfile
 include coverage.py
 include Dockerfile
 include gitlabpypi.py

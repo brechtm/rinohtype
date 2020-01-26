@@ -1,6 +1,7 @@
 *.pyc
 *~
 *.rtc
+Brewfile.lock.json
 /.python-version
 /.cache
 /.pytest_cache

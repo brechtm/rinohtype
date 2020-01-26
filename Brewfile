@@ -1,0 +1,2 @@
+brew "imagemagick"
+brew "poppler"
