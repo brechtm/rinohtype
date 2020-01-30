@@ -26,7 +26,7 @@ environment:
 #      WITH_COVERAGE: 1
     - TOXENV: longrunning
 #      WITH_COVERAGE: 0
-    - TOXENV: test-docs
+    - TOXENV: check-docs
     - TOXENV: build-docs
 
 cache:

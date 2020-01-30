@@ -103,7 +103,7 @@ matrix:
             - imagemagick
             - poppler-utils
     - python: 3.8
-      env: TOXENV=test-docs
+      env: TOXENV=check-docs
     - python: 3.8
       env: TOXENV=build-docs
     - os: osx
