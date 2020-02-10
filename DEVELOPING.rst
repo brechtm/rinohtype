@@ -33,33 +33,27 @@ Environments
     - we didn't forget to include any files in the source distribution
 
 ``regression``
-
     Runs "unit-like" regression tests that finish in a short amount of time.
     These tests render small documents whose PDF output is compared to a
     reference PDF.
 
 ``longrunning``
-
     Runs regressions tests that render larger documents. These tests take
     several minutes to complete.
 
 ``check-docs``
-
     Perform checks on the documentation source files using doc8_ and
     sphinx-doctest_.
 
 ``build-docs``
-
     Build the rinohtype documentation using Sphinx, both in HTML and PDF
     formats.
 
 ``macapp``
-
     Build a stand-alone macOS application bundle using briefcase_. This task
     can only be run on macOS.
 
 ``wininst``
-
     Build a stand-alone rinohtype installer for the Windows platform with the
     help of pynsist_. This task also can be run on other platforms than
     Windows.
