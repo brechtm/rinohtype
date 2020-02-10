@@ -421,10 +421,10 @@ CODE_TO_CHAR = {}
 
 def _code_to_char(code):
     if code < 32 or code > 127:
-        char = '\{:03o}'.format(code)
+        char = r'\{:03o}'.format(code)
     else:
         char = chr(code)
-        if char in ('\\', '(', ')'):
+        if char in r'\()':
             char = '\\' + char
     return char
 

@@ -61,7 +61,7 @@ class Paper(AttributeType):
     def doc_format(cls):
         return ('the name of a :ref:`predefined paper format <paper>` '
                 'or ``<width> * <height>`` where ``width`` and ``height`` are '
-                ':class:`.Dimension`\ s')
+                ':class:`.Dimension`\\ s')
 
 
 # International (DIN 476 / ISO 216)
