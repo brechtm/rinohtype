@@ -18,6 +18,7 @@ recursive-include examples *.md *.py *.rtt *.txt *.xml *.jpg *.png
 
 include CHANGES.rst
 include CONTRIBUTING.rst
+include DEVELOPING.rst
 include LICENSE
 include README.rst
 

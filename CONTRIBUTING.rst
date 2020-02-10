@@ -1,7 +1,9 @@
 Contributing
 ============
 
-Thank you for considering contributing to rinohtype!
+Thank you for considering contributing to rinohtype! This document contains
+some general information with respect to contributions. Please refer to
+DEVELOPING.rst for specific information on running tests etc.
 
 
 Contributor License Agreement
