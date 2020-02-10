@@ -24,6 +24,7 @@ include README.rst
 
 include .bumpversion.cfg
 include .coveragerc
+include .python-version
 include .travis.yml
 include appveyor.yml
 include Brewfile
