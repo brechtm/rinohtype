@@ -87,7 +87,7 @@ matrix:
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
         - pyenv install --skip-existing 3.8.1
-        - pyenv global 3.8.1
+        - pyenv shell 3.8.1
         - python --version
         - python3 --version
       before_cache:
@@ -123,7 +123,7 @@ matrix:
         - brew install --HEAD pyenv
         - eval "$(pyenv init -)"
         - pyenv install --skip-existing 3.7.6
-        - pyenv global 3.7.6
+        - pyenv shell 3.7.6
         - python --version
       before_cache:
         - brew cleanup
