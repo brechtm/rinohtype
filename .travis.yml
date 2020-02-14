@@ -53,18 +53,18 @@ matrix:
       before_install:
         - brew unlink pyenv
         - brew install --HEAD pyenv
+        - brew install --HEAD pyenv-virtualenv
         - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.5.9
-        - pyenv install --skip-existing 3.6.10
-        - pyenv install --skip-existing 3.7.6
-        - pyenv install --skip-existing 3.8.1
-        - pyenv global 3.8.1 3.7.6 3.6.10 3.5.9
+        - eval "$(pyenv virtualenv-init -)"
+        - /usr/bin/python pyenv_setup.py
+        - pyenv virtualenv --force 3.8.1 rinoh-tox
         - python --version
         - python3 --version
         - python3.5 --version
         - python3.6 --version
         - python3.7 --version
         - python3.8 --version
+        - pip install -r rinoh-tox.txt
       before_cache:
         - brew cleanup
     - os: osx

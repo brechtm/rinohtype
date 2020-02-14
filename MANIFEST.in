@@ -32,7 +32,9 @@ include coverage.py
 include Dockerfile
 include gitlabpypi.py
 include macapp.py
+include pyenv_setup.py
 include rinoh.ico
+include rinoh-tox.txt
 include run_tests.py
 include tox.ini
 include wininst.py
