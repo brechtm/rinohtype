@@ -48,8 +48,8 @@ matrix:
           - $HOME/.pyenv
       env:
         - DIST=sdist
-          TOXENV=py35,py36,py37,py38
           WITH_COVERAGE=1
+        # don't set TOXENV; run all envs listed in tox.ini's envlist
       before_install:
         - brew unlink pyenv
         - brew install --HEAD pyenv
@@ -65,31 +65,6 @@ matrix:
         - python3.7 --version
         - python3.8 --version
         - pip install -r rinoh-tox.txt
-      before_cache:
-        - brew cleanup
-    - os: osx
-      sudo: required
-      language: objective-c
-      cache:
-        pip: false
-        directories:
-          - /usr/local/Homebrew
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
-          - $HOME/.pyenv
-      env:
-        - TOXENV=regression
-          WITH_COVERAGE=1
-      before_install:
-        - brew unlink python@2
-        - brew bundle --verbose
-        - brew unlink pyenv
-        - brew install --HEAD pyenv
-        - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.8.1
-        - pyenv shell 3.8.1
-        - python --version
-        - python3 --version
       before_cache:
         - brew cleanup
     - python: 3.8
