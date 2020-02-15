@@ -65,6 +65,7 @@ matrix:
         - python3.7 --version
         - python3.8 --version
         - pip install -r rinoh-tox.txt
+      install:
       before_cache:
         - brew cleanup
     - python: 3.8
