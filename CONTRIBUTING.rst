@@ -1,6 +1,6 @@
 
-Contributing
-============
+Contributing daz
+================
 
 Thank you for considering contributing to rinohtype! This document
 contains some general information with respect to contributions.
