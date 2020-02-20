@@ -26,7 +26,7 @@ Environments
     environment.
 
 ``check``
-    Performs various using distutils_ and check-manifest_ to see whether
+    Performs various checks using distutils_ and check-manifest_ to see whether
 
     - the package's meta-data is not missing any parts,
     - the package's long description is valid reStructuredText, and
@@ -81,7 +81,7 @@ these. For example, to install CPython 3.8.1, you can run
 
     pyenv install 3.8.1
 
-and pyenv will download, build and install this version for you.
+and pyenv will download, build and install this version of CPython for you.
 
 Note that pyenv will install the different Python versions in an isolated
 location (typically under ``~/.penv``), so they will not interfere with your
@@ -91,18 +91,16 @@ The file ``.python-version`` in the root of the repository specifies which
 Python versions pyenv should make available whenever we are inside the
 repository. The file lists specific versions of CPython 3.5 to 3.9 and a
 recent PyPy3 version (Ideally, we should closely track the latest releases).
-Make sure you ``pyenv install`` the versions listed in ``.python-version``.
+The ``pyenv_install.py`` script will install the interpreters listed in
+``.python-version`` for you.
 
 In addition to these versions, the first entry of the ``.python-version``
-specifies ``rinoh-tox``. This is a virtual environment that has tox installed.
-Create this virtual environment using pyenv-virtualenv_ like this::
+specifies ``rinoh-tox``. This is a virtual environment that has tox installed
+along with some other tools required for making a new rinohtype release. The
+``pyenv_install.py`` script instructs you how to set up this virtual
+environment. This requires pyenv-virtualenv_, a pyenv plugin.
 
-    pyenv virtualenv 3.8.1 rinoh-tox
-
-The presence of ``.python-version`` should have pyenv activate this environment
-automatically. Now you can install tox in this environment::
-
-    pip install tox
+.. _pyenv-virtualenv: https://github.com/pyenv/pyenv-virtualenv
 
 
 Executing tox environments
