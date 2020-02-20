@@ -35,7 +35,8 @@ __all__ = ['all_subclasses', 'intersperse', 'last', 'unique', 'PeekIterator',
            'posix_path', 'consumer', 'cached', 'cached_property',
            'cached_generator', 'class_property', 'timed', 'Decorator',
            'ReadAliasAttribute', 'NotImplementedAttribute', 'NamedDescriptor',
-           'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary']
+           'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary',
+           'VersionError']
 
 
 # functions
@@ -307,3 +308,9 @@ class RefKeyDictionary(MutableMapping):
 
     def __len__(self):
         return len(self.store)
+
+
+# exceptions
+
+class VersionError(Exception):
+    """An incompatible version of a dependency is installed"""

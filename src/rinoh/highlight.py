@@ -5,7 +5,23 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from distutils.version import LooseVersion
+
+from .color import HexColor
+from .font.style import FontWeight, FontSlant
+from .paragraph import Paragraph
+from .style import StyledMatcher, StyleSheet
+from .text import SingleStyledText, TextStyle
+from .util import VersionError
+from .warnings import warn
+
+MIN_PYGMENTS_VERSION = '2.5.1'
+
 try:
+    from pygments import __version__ as _pygments_version
+    if LooseVersion(_pygments_version) < MIN_PYGMENTS_VERSION:
+        raise VersionError('rinohtype requires pygments >= {}'
+                           .format(MIN_PYGMENTS_VERSION))
     from pygments import lex
     from pygments.filters import ErrorToken
     from pygments.lexers import get_lexer_by_name
@@ -14,14 +30,6 @@ try:
     PYGMENTS_AVAILABLE = True
 except ImportError:
     PYGMENTS_AVAILABLE = False
-
-from .attribute import OverrideDefault
-from .color import HexColor
-from .font.style import FontWeight, FontSlant
-from .paragraph import Paragraph, ParagraphStyle
-from .style import StyledMatcher, StyleSheet
-from .text import SingleStyledText, TextStyle
-from .warnings import warn
 
 
 __all__ = ['CodeBlock', 'Token', 'pygments_style_to_stylesheet']
