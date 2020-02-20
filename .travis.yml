@@ -54,6 +54,8 @@ matrix:
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - brew install --HEAD pyenv-virtualenv
+        - brew install imagemagick
+        - brew install poppler
         - eval "$(pyenv init -)"
         - eval "$(pyenv virtualenv-init -)"
         - /usr/bin/python pyenv_setup.py
