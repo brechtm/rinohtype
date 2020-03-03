@@ -437,12 +437,13 @@ class Admonition(StaticGroupedFlowables):
         inline_title = self.get_style('inline_title', container)
         if inline_title and isinstance(first_flowable, Paragraph):
             title = MixedStyledText(title, style='inline title')
-            kwargs = dict(id=first_flowable.id, style=first_flowable.style)
+            kwargs = dict(id=first_flowable.id, style=first_flowable.style,
+                          parent=self)
             paragraph = Paragraph(title + ' ' + first_flowable, **kwargs)
             paragraph.secondary_ids = first_flowable.secondary_ids
             yield paragraph
         else:
-            yield Paragraph(title, style='title')
+            yield Paragraph(title, style='title', parent=self)
             yield first_flowable
         for flowable in flowables:
             yield flowable
