@@ -1,0 +1,100 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:None <hint>
+           > (0,0,0,1,2) hint admonition
+             (0,0,0,0,2) admonition
+        Paragraph('Hint It's bigger than a bread bo...')
+             > (0,0,0,0,2) body
+          MixedStyledText('Hint It's bigger than a bread bo...')
+            MixedStyledText('Hint', style='inline title')
+                 x (0,0,1,1,3) hint admonition inline title
+                 > (0,0,1,0,3) admonition inline title
+              SingleStyledText('Hint')
+            SingleStyledText(' ')
+            MixedStyledText('It's bigger than a bread box.')
+              SingleStyledText('It's bigger than a bread box.')
+      Admonition()   None:None <important>
+           > (0,0,0,1,2) important admonition
+             (0,0,0,0,2) admonition
+        Paragraph('Important', style='title')
+             x (0,0,1,1,4) important admonition title
+             > (0,0,1,0,4) admonition title
+               (0,0,1,0,2) title
+               (0,0,0,0,2) body
+          SingleStyledText('Important')
+        List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:4 <bullet_list>
+             > (0,0,1,0,2) bulleted list
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Wash behind your ears.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:4 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Wash behind your ears.')
+                  SingleStyledText('Wash behind your ears.')
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Clean up your room.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:5 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Clean up your room.')
+                  SingleStyledText('Clean up your room.')
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Call your mother.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:6 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Call your mother.')
+                  SingleStyledText('Call your mother.')
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Back up your data.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:7 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Back up your data.')
+                  SingleStyledText('Back up your data.')
