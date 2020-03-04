@@ -270,9 +270,8 @@ class RefKeyDictionary(MutableMapping):
     """A dictionary that compares keys based on their id (address). Hence, the
     keys can be mutable."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.store = dict()
-        self.update(dict(*args, **kwargs))
 
     def __getitem__(self, obj):
         obj_weakref, value = self.store[id(obj)]
