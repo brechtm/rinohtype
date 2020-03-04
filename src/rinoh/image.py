@@ -91,7 +91,7 @@ class OptionalArg(Attribute):
     pass
 
 
-class String(AcceptNoneAttributeType):
+class ImagePath(AcceptNoneAttributeType):
     @classmethod
     def from_tokens(cls, tokens):
         token = next(tokens)
@@ -101,7 +101,7 @@ class String(AcceptNoneAttributeType):
 
 
 class ImageArgsBase(AttributesDictionary):
-    file_or_filename = RequiredArg(String, 'Path to the image file')
+    file_or_filename = RequiredArg(ImagePath, 'Path to the image file')
 
     scale = OptionalArg(Scale, 'fit', 'Scaling factor for the image')
     width = OptionalArg(Dimension, None, 'The width to scale the image to')
