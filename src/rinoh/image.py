@@ -99,6 +99,10 @@ class ImagePath(AcceptNoneAttributeType):
             raise ParseError('Expecting a string')
         return literal_eval(token.string)
 
+    @classmethod
+    def doc_format(cls):
+        return ('path to an image file enclosed in quotes')
+
 
 class ImageArgsBase(AttributesDictionary):
     file_or_filename = RequiredArg(ImagePath, 'Path to the image file')
