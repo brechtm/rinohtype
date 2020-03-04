@@ -194,9 +194,9 @@ def timed(function):
     def function_wrapper(obj, *args, **kwargs):
         """Wrapper function printing the time taken by the call to `function`"""
         name = obj.__class__.__name__ + '.' + function.__name__
-        start = time.clock()
+        start = time.process_time()
         result = function(obj, *args, **kwargs)
-        print('{}: {:.4f} seconds'.format(name, time.clock() - start))
+        print('{}: {:.4f} seconds'.format(name, time.process_time() - start))
         return result
     return function_wrapper
 
