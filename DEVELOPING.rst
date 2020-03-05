@@ -166,7 +166,8 @@ This is a list of steps to follow when making a new release of rinohtype:
 8. Build and commit the documentation
 
    * ``tox --installpkg dist/*.whl -e build-docs``
-   * ``git commit -am "$VERSION_NUMBER docs" doc/_build/html``
+   * ``git commit -am "v$VERSION_NUMBER docs" doc/_build/html``
+   * check the generated documentation (HTML and PDF)
 
 9. Upload the distribution files to TestPyPI_ using twine_
 
