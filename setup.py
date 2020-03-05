@@ -10,8 +10,8 @@ from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 
 
-if sys.version_info < (3, 4):
-    print('rinohtype requires Python 3.4 or higher')
+if sys.version_info < (3, 5):
+    print('rinohtype requires Python 3.5 or higher')
     sys.exit(1)
 
 
@@ -156,9 +156,13 @@ setup(
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Printing',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing :: Fonts',

@@ -18,7 +18,7 @@ PDFs produced by rinohtype contain mostly empty pages. What's up?
     .. _poppler: http://poppler.freedesktop.org
 
 
-Installing rinohtype using pip fails with *rinohtype requires Python 3.3 or higher*
-    rinohtype only works on Python 3.3 or higher. Make sure the `pip` you are
-    using is one from a Python 3.3+ installation using ``pip --version``. On
+Installing rinohtype using pip fails with *rinohtype requires Python 3.5 or higher*
+    rinohtype only works on Python 3.5 or higher. Make sure the `pip` you are
+    using is one from a Python 3.5+ installation using ``pip --version``. On
     some operating systems, you may need to use ``pip3``.
