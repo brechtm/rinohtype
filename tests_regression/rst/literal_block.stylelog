@@ -1,0 +1,13 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      CodeBlock('if literal_block:\n    text = 'is...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/literal_block.rst:3 <literal_block>
+           > (1,0,0,0,2) code block
+             (0,0,0,0,1) body
+        Token('if literal_block:\n    text = 'is...', type=Token.Text)
+             > (0,0,0,1,2) (pygments)Token.Text
