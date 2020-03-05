@@ -25,7 +25,7 @@ def get_version():
 
     try:
         is_dirty = check_output(['git', 'status', '--porcelain'],
-                                stderr=DEVNULL) != b''
+                                stderr=DEVNULL).decode('utf-8')
     except CalledProcessError:
         is_dirty = None   # not running from a git checkout
 
@@ -45,8 +45,9 @@ def get_version():
     else:  # release distribution
         if is_dirty is None:
             assert version_from_pkginfo() in (VERSION, None)
-        else:
-            assert not is_dirty
+        elif is_dirty:
+            print(is_dirty)
+            assert False
         version = VERSION
     return version
 
