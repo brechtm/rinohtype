@@ -1,7 +1,2 @@
 ReferencingParagraphStyle
 =========================================
-
-.. currentmodule:: rinoh.reference
-
-.. autoclass:: ReferencingParagraphStyle
-    :members:

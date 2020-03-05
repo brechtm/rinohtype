@@ -13,10 +13,6 @@ Document (:mod:`rinoh.document`)
     :members:
 
 
-.. autoclass:: DocumentPart
-    :members:
-
-
 Pages
 ~~~~~
 

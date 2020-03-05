@@ -1,7 +1,2 @@
 HorizontalRuleStyle
 ===================================
-
-.. currentmodule:: rinoh.structure
-
-.. autoclass:: HorizontalRuleStyle
-    :members:

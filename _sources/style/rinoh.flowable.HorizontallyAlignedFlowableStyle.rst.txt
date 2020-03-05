@@ -1,7 +1,0 @@
-HorizontallyAlignedFlowableStyle
-===============================================
-
-.. currentmodule:: rinoh.flowable
-
-.. autoclass:: HorizontallyAlignedFlowableStyle
-    :members:

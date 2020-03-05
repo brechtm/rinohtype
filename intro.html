@@ -5,62 +5,48 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; rinohtype 0.3.1 documentation</title>
+  <title>Introduction &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/>
-        <link rel="next" title="Installation" href="install.html"/>
-        <link rel="prev" title="rinohtype: The Python Document Processor" href="index.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" />
+    <link rel="prev" title="rinohtype: The Python Document Processor" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -74,7 +60,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -95,7 +81,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#command-line-renderer">Command-Line Renderer</a></li>
@@ -125,34 +114,54 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Introduction</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -162,33 +171,33 @@
 <span id="id1"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>rinohtype was initially conceived as a modern replacement for <a class="reference external" href="http://en.wikipedia.org/wiki/LaTeX">LaTeX</a>. An
 important goal in the design of rinohtype is for documents to be much easier to
-customize than in LaTeX. By today&#8217;s standards, the arcane TeX macro language
+customize than in LaTeX. By today’s standards, the arcane TeX macro language
 upon which LaTeX is built makes customization unnecessarily difficult for one.
 Simply being built with Python makes rinohtype already much easier to approach
 than TeX. Additionally, rinohtype is built around the following core concepts
 to ensure customizability:</p>
-<dl class="docutils">
-<dt>Document Templates</dt>
-<dd>These determine the page layout and (for longer documents) the different
+<dl class="simple">
+<dt>Document Templates</dt><dd><p>These determine the page layout and (for longer documents) the different
 parts of your document. The templates included with rinohtype are highly
 configurable and allow changing margins, headers, footers, chapter titles,
-etc. If this is not sufficient, a custom template can be created.</dd>
-<dt>Style Sheets</dt>
-<dd>The CSS-inspired style sheets determine the look of individual document
+etc. If this is not sufficient, a custom template can be created.</p>
+</dd>
+<dt>Style Sheets</dt><dd><p>The CSS-inspired style sheets determine the look of individual document
 elements. A style sheet assigns style attributes to each type of document
-element. For example, a paragraph&#8217;s style is determined by the typeface,
-font weight, size and color, horizontal alignment of text etc.</dd>
-<dt>Structured Input</dt>
-<dd>rinohtype renders a document from a document tree that does not describe
+element. For example, a paragraph’s style is determined by the typeface,
+font weight, size and color, horizontal alignment of text etc.</p>
+</dd>
+<dt>Structured Input</dt><dd><p>rinohtype renders a document from a document tree that does not describe
 any style aspects but only semantics. The style sheet maps specific style
 properties to the elements in this document tree. The document tree can be
 automatically generated from a structured document format such as
 reStructuredText and CommonMark using one of the included frontends, or it
-can be constructed manually.</dd>
+can be constructed manually.</p>
+</dd>
 </dl>
 <p>rinohtype is implemented as a Python package and doubles as a high-level PDF
 library. Its modular design makes it easy to to customize and extend for
-specific applications. Moreover, because rinotype&#8217;s source code is open, all of
+specific applications. Moreover, because rinotype’s source code is open, all of
 its internals can be inspected and even modified, making it customizable at all
 levels.</p>
 <div class="section" id="usage-examples">
@@ -206,14 +215,14 @@ structured text documents. Currently, <a class="reference external" href="http:/
 documents are supported in the open-source version. Support for <a class="reference external" href="http://dita.xml.org/standard">DITA</a> is
 available in the commercially supported Pro version.</p>
 <p>Rendering the reStructuredText demonstration article <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a> (using the
-standard article template and style sheet) generates <a class="reference download internal" href="_downloads/demo.pdf" download=""><code class="xref download docutils literal"><span class="pre">demo.pdf</span></code></a>.</p>
+standard article template and style sheet) generates <a class="reference download internal" download="" href="_downloads/431110f8b314032458f7ce6be14d92b7/demo.pdf"><code class="xref download docutils literal notranslate"><span class="pre">demo.pdf</span></code></a>.</p>
 </div>
 <div class="section" id="sphinx-builder">
 <h3>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h3>
 <p>Configuring rinohtype as a builder for Sphinx allows
 rendering a Sphinx project to PDF without the need for a
 LaTeX installation. This documentation was rendered by rinohtype to
-<a class="reference download internal" href="_downloads/rinohtype.pdf" download=""><code class="xref download docutils literal"><span class="pre">rinohtype.pdf</span></code></a>.</p>
+<a class="reference download internal" download="" href="_downloads/cc8bb3ec0357396958ad856a90d03812/rinohtype.pdf"><code class="xref download docutils literal notranslate"><span class="pre">rinohtype.pdf</span></code></a>.</p>
 </div>
 <div class="section" id="high-level-pdf-library">
 <h3>High-level PDF library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h3>
@@ -234,15 +243,16 @@ structured document format, a templating engine like <a class="reference externa
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="rinohtype: The Python Document Processor" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="rinohtype: The Python Document Processor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -251,11 +261,11 @@ structured document format, a templating engine like <a class="reference externa
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -268,35 +278,15 @@ structured document format, a templating engine like <a class="reference externa
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

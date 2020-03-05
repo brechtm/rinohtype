@@ -1,7 +1,2 @@
 TableCellBackgroundStyle
 ====================================
-
-.. currentmodule:: rinoh.table
-
-.. autoclass:: TableCellBackgroundStyle
-    :members:

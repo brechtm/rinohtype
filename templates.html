@@ -5,62 +5,48 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Document Templates &mdash; rinohtype 0.3.1 documentation</title>
+  <title>Document Templates &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/>
-        <link rel="next" title="Reference" href="reference.html"/>
-        <link rel="prev" title="Element Styling" href="elementstyling.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Element Styling" href="elementstyling.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -74,7 +60,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -95,7 +81,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
@@ -121,34 +110,54 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Document Templates</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Document Templates</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/templates.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -165,10 +174,10 @@ programming.</p>
 <h2>Subclassing a Template<a class="headerlink" href="#subclassing-a-template" title="Permalink to this headline">¶</a></h2>
 <p>If you need to customize a template beyond what is possible by configuration,
 you can subclass a template class and override document part and page templates
-with custom templates. The following example subclasses <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">Article</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.attribute</span> <span class="k">import</span> <span class="n">OverrideDefault</span>
-<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="k">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">PageTemplate</span>
-<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="k">import</span> <span class="n">Article</span>
+with custom templates. The following example subclasses <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.attribute</span> <span class="kn">import</span> <span class="n">OverrideDefault</span>
+<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">PageTemplate</span>
+<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="kn">import</span> <span class="n">Article</span>
 
 
 <span class="k">class</span> <span class="nc">BibliographyPartTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
@@ -190,27 +199,27 @@ with custom templates. The following example subclasses <a class="reference inte
     <span class="n">bibliography_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="xref py py-class docutils literal"><span class="pre">MyArticle</span></code> extends the <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">Article</span></code></a> template, adding the extra
-<code class="xref py py-attr docutils literal"><span class="pre">bibliography</span></code> document part, along with the page template
-<code class="xref py py-attr docutils literal"><span class="pre">bibliography_page</span></code>. The new document part is included in
-<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts"><code class="xref py py-attr docutils literal"><span class="pre">parts</span></code></a>, while also leaving out
-<a class="reference internal" href="article.html#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal"><span class="pre">front_matter</span></code></a> by default. Finally, the template also replaces
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">MyArticle</span></code> extends the <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template, adding the extra
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">bibliography</span></code> document part, along with the page template
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">bibliography_page</span></code>. The new document part is included in
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a>, while also leaving out
+<a class="reference internal" href="article.html#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code></a> by default. Finally, the template also replaces
 the title page template with a custom one.</p>
 </div>
 <div class="section" id="creating-a-custom-template">
 <h2>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this headline">¶</a></h2>
 <p>A new template can be created from scratch by subclassing
-<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code></a>, defining all document parts, their templates and
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>, defining all document parts, their templates and
 page templates.</p>
-<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">Article</span></code></a> and <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal"><span class="pre">Book</span></code></a> templates are examples of templates
-that inherit directly from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal"><span class="pre">DocumentTemplate</span></code></a>. We will briefly discuss
-the article template. The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">Article</span></code></a> template overrides the default
+<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> and <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> templates are examples of templates
+that inherit directly from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>. We will briefly discuss
+the article template. The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template overrides the default
 style sheet and defines the two custom template attributes discussed in
-<a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">Configuring a Template</span></a>. The document parts <a class="reference internal" href="article.html#rinoh.templates.article.Article.title" title="rinoh.templates.article.Article.title"><code class="xref py py-attr docutils literal"><span class="pre">title</span></code></a>,
-<a class="reference internal" href="article.html#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal"><span class="pre">front_matter</span></code></a> and <a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents"><code class="xref py py-attr docutils literal"><span class="pre">contents</span></code></a> are listed the in
-<a class="reference internal" href="article.html#rinoh.templates.article.Article.parts" title="rinoh.templates.article.Article.parts"><code class="xref py py-attr docutils literal"><span class="pre">parts</span></code></a> attribute and part templates for each are provided
+<a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">Configuring a Template</span></a>. The document parts <a class="reference internal" href="article.html#rinoh.templates.article.Article.title" title="rinoh.templates.article.Article.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a>,
+<a class="reference internal" href="article.html#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code></a> and <a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a> are listed the in
+<a class="reference internal" href="article.html#rinoh.templates.article.Article.parts" title="rinoh.templates.article.Article.parts"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> attribute and part templates for each are provided
 along with page templates:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
     <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx_article</span><span class="p">)</span>
     <span class="n">table_of_contents</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">Bool</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
                                   <span class="s1">&#39;Show or hide the table of contents&#39;</span><span class="p">)</span>
@@ -232,10 +241,10 @@ along with page templates:</p>
     <span class="n">contents_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The custom <code class="xref py py-class docutils literal"><span class="pre">ArticleFrontMatter</span></code> template reads the values for the
-two custom template attributes defined in <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal"><span class="pre">Article</span></code></a> to determine which
+<p>The custom <code class="xref py py-class docutils literal notranslate"><span class="pre">ArticleFrontMatter</span></code> template reads the values for the
+two custom template attributes defined in <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> to determine which
 flowables are included in the front matter:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ArticleFrontMatter</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ArticleFrontMatter</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
     <span class="n">toc_section</span> <span class="o">=</span> <span class="n">TableOfContentsSection</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_flowables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
@@ -255,15 +264,16 @@ template that defines separate templates for left and right pages.</p>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="elementstyling.html" class="btn btn-neutral" title="Element Styling" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="elementstyling.html" class="btn btn-neutral float-left" title="Element Styling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -272,11 +282,11 @@ template that defines separate templates for left and right pages.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -289,35 +299,15 @@ template that defines separate templates for left and right pages.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

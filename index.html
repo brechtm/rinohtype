@@ -5,61 +5,47 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>rinohtype: The Python Document Processor &mdash; rinohtype 0.3.1 documentation</title>
+  <title>rinohtype: The Python Document Processor &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="#"/>
-        <link rel="next" title="Introduction" href="intro.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -73,7 +59,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -94,7 +80,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
@@ -116,34 +105,54 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
-      
-    <li>rinohtype: The Python Document Processor</li>
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>rinohtype: The Python Document Processor</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -151,7 +160,7 @@
             
   <div class="section" id="rinohtype-the-python-document-processor">
 <h1>rinohtype: The Python Document Processor<a class="headerlink" href="#rinohtype-the-python-document-processor" title="Permalink to this headline">¶</a></h1>
-<p>Release v0.3.1. (<a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">Release History</span></a>)</p>
+<p>Release v0.4.0. (<a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">Release History</span></a>)</p>
 <p>rinohtype is a Python library that transforms a structured document into a
 professionally typeset PDF guided by a document template and style sheet. It
 can be used to create any kind of document, but its focus is on complex
@@ -162,23 +171,23 @@ available in the commercially supported Pro version.</p>
 <p>rinohtype also includes support for <a class="reference external" href="http://sphinx-doc.org">Sphinx</a>, which helps writing large
 structured documents and supports a multitude of different output formats
 including searchable HTML. rinohtype adds support to produce PDF output.</p>
-<p>Here is a list of rinohtype&#8217;s main features:</p>
+<p>Here is a list of rinohtype’s main features:</p>
 <ul class="simple">
-<li>a powerful page layout system supporting columns, running headers/footers,
-floatable elements and footnotes</li>
-<li>figures, large tables and automatically generated table of contents</li>
-<li>automatic numbering and cross-referencing of sections, figures and tables</li>
-<li>use one of the highly configurable included document templates or create your
-own custom template</li>
-<li>the intuitive style sheets make it easy to change the style of individual
-document elements</li>
-<li>modular design allowing for multiple frontends (such as reStructuredText,
-Markdown, DocBook, ...) and backends (PDF, SVG, bitmap, ...)</li>
-<li>handles OpenType, TrueType and Type1 fonts with support for advanced
-typographic features such as kerning, ligatures and small capitals</li>
-<li>embeds PDF, PNG and JPEG images, preserving transparency and color profiles</li>
-<li>easy to deploy; pure-Python with few dependencies</li>
-<li>built on Unicode; ready for non-latin languages</li>
+<li><p>a powerful page layout system supporting columns, running headers/footers,
+floatable elements and footnotes</p></li>
+<li><p>figures, large tables and automatically generated table of contents</p></li>
+<li><p>automatic numbering and cross-referencing of sections, figures and tables</p></li>
+<li><p>use one of the highly configurable included document templates or create your
+own custom template</p></li>
+<li><p>the intuitive style sheets make it easy to change the style of individual
+document elements</p></li>
+<li><p>modular design allowing for multiple frontends (such as reStructuredText,
+Markdown, DocBook, …) and backends (PDF, SVG, bitmap, …)</p></li>
+<li><p>handles OpenType, TrueType and Type1 fonts with support for advanced
+typographic features such as kerning, ligatures and small capitals</p></li>
+<li><p>embeds PDF, PNG and JPEG images, preserving transparency and color profiles</p></li>
+<li><p>easy to deploy; pure-Python with few dependencies</p></li>
+<li><p>built on Unicode; ready for non-latin languages</p></li>
 </ul>
 <p>rinohtype is currently in a beta phase. We are working toward a first stable
 release.</p>
@@ -186,7 +195,7 @@ release.</p>
 Practically, this means you are free to use it in open-source software, but not
 in (commercial) closed-source software. For the latter, you need to obtain a
 commercial license (see <a class="reference external" href="http://www.opqode.com/rinoh">http://www.opqode.com/rinoh</a>). We are also available for
-consultancy projects involving rinohtype, so don&#8217;t hesitate to <a class="reference external" href="mailto:info&#37;&#52;&#48;opqode&#46;com">contact us</a>.</p>
+consultancy projects involving rinohtype, so don’t hesitate to <a class="reference external" href="mailto:info&#37;&#52;&#48;opqode&#46;com">contact us</a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
@@ -229,26 +238,27 @@ consultancy projects involving rinohtype, so don&#8217;t hesitate to <a class="r
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/draw.html">Drawing Primitives (<code class="docutils literal"><span class="pre">rinoh.draw</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/flowable.html">Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/font.html">Fonts and Typefaces (<code class="docutils literal"><span class="pre">rinoh.font</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/image.html">Images and Figures (<code class="docutils literal"><span class="pre">rinoh.image</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/index.html">Index (<code class="docutils literal"><span class="pre">rinoh.index</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/language.html">Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/paper.html">Paper sizes (<code class="docutils literal"><span class="pre">rinoh.paper</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/paragraph.html">Paragraph (<code class="docutils literal"><span class="pre">rinoh.paragraph</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/reference.html">Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/structure.html">Structure (<code class="docutils literal"><span class="pre">rinoh.structure</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/strings.html">Strings (<code class="docutils literal"><span class="pre">rinoh.strings</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/style.html">Style (<code class="docutils literal"><span class="pre">rinoh.style</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/table.html">Tables (<code class="docutils literal"><span class="pre">rinoh.table</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/template.html">Templates (<code class="docutils literal"><span class="pre">rinoh.template</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-4-0-2020-03-05">Release 0.4.0 (2020-03-05)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-3-1-2016-12-19">Release 0.3.1 (2016-12-19)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-3-0-2016-11-23">Release 0.3.0 (2016-11-23)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#release-0-2-1-2016-08-18">Release 0.2.1 (2016-08-18)</a></li>
@@ -264,19 +274,20 @@ consultancy projects involving rinohtype, so don&#8217;t hesitate to <a class="r
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 </ul>
 </div>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -286,11 +297,11 @@ consultancy projects involving rinohtype, so don&#8217;t hesitate to <a class="r
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -303,35 +314,15 @@ consultancy projects involving rinohtype, so don&#8217;t hesitate to <a class="r
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

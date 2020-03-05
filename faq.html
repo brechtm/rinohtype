@@ -5,62 +5,48 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frequenty Asked Questions &mdash; rinohtype 0.3.1 documentation</title>
+  <title>Frequenty Asked Questions &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/>
-        <link rel="next" title="Release History" href="changelog.html"/>
-        <link rel="prev" title="Templates (rinoh.template)" href="api/template.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release History" href="changelog.html" />
+    <link rel="prev" title="Templates (rinoh.template)" href="api/template.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -74,7 +60,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -95,7 +81,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
@@ -117,34 +106,54 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Frequenty Asked Questions</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Frequenty Asked Questions</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/faq.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -152,30 +161,35 @@
             
   <div class="section" id="frequenty-asked-questions">
 <span id="faq"></span><h1>Frequenty Asked Questions<a class="headerlink" href="#frequenty-asked-questions" title="Permalink to this headline">¶</a></h1>
-<dl class="docutils">
-<dt>PDFs produced by rinohtype contain mostly empty pages. What&#8217;s up?</dt>
-<dd><p class="first">Old versions of some PDF viewers do not support the way rinohtype embeds
+<p>This is a list of commonly encountered problems and solutions to them.</p>
+<dl class="simple">
+<dt>PDFs produced by rinohtype contain mostly empty pages. What’s up?</dt><dd><p>Old versions of some PDF viewers do not support the way rinohtype embeds
 fonts in a PDF (see <a class="reference external" href="https://github.com/brechtm/rinohtype/issues/2">issue 2</a>). PDF viewers that are known to be affected
 are:</p>
-<ul class="last simple">
-<li>pre-37.0 Firefox&#8217;s built-in PDF viewer (pdf.js)</li>
-<li>pre-0.41 <a class="reference external" href="http://poppler.freedesktop.org">poppler</a>-based applications such as Evince</li>
+<ul class="simple">
+<li><p>pre-37.0 Firefox’s built-in PDF viewer (pdf.js)</p></li>
+<li><p>pre-0.41 <a class="reference external" href="http://poppler.freedesktop.org">poppler</a>-based applications such as Evince</p></li>
 </ul>
+</dd>
+<dt>Installing rinohtype using pip fails with <em>rinohtype requires Python 3.5 or higher</em></dt><dd><p>rinohtype only works on Python 3.5 or higher. Make sure the <cite>pip</cite> you are
+using is one from a Python 3.5+ installation using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">--version</span></code>. On
+some operating systems, you may need to use <code class="docutils literal notranslate"><span class="pre">pip3</span></code>.</p>
 </dd>
 </dl>
 </div>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="changelog.html" class="btn btn-neutral float-right" title="Release History" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="api/template.html" class="btn btn-neutral" title="Templates (rinoh.template)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="api/template.html" class="btn btn-neutral float-left" title="Templates (rinoh.template)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -184,11 +198,11 @@ are:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -201,35 +215,15 @@ are:</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

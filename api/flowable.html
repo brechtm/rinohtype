@@ -5,63 +5,48 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Flowable (rinoh.flowable) &mdash; rinohtype 0.3.1 documentation</title>
+  <title>Flowable (rinoh.flowable) &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="../index.html"/>
-        <link rel="up" title="API Documentation" href="api.html"/>
-        <link rel="next" title="Fonts and Typefaces (rinoh.font)" href="font.html"/>
-        <link rel="prev" title="Drawing Primitives (rinoh.draw)" href="draw.html"/> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fonts and Typefaces (rinoh.font)" href="font.html" />
+    <link rel="prev" title="Drawing Primitives (rinoh.draw)" href="draw.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -75,7 +60,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -96,7 +81,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
@@ -105,29 +93,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="docutils literal"><span class="pre">rinoh.dimension</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="docutils literal"><span class="pre">rinoh.document</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="docutils literal"><span class="pre">rinoh.draw</span></code>)</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#no-output-flowables">No-Output Flowables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#labeled-flowables">Labeled Flowables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#grouping-flowables">Grouping Flowables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#horizontally-aligned-flowables">Horizontally Aligned Flowables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#floating-flowables">Floating Flowables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="docutils literal"><span class="pre">rinoh.font</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="docutils literal"><span class="pre">rinoh.image</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="docutils literal"><span class="pre">rinoh.index</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="docutils literal"><span class="pre">rinoh.language</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="docutils literal"><span class="pre">rinoh.paper</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="docutils literal"><span class="pre">rinoh.paragraph</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="docutils literal"><span class="pre">rinoh.reference</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="docutils literal"><span class="pre">rinoh.structure</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="docutils literal"><span class="pre">rinoh.strings</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="docutils literal"><span class="pre">rinoh.style</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="docutils literal"><span class="pre">rinoh.table</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="docutils literal"><span class="pre">rinoh.template</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
@@ -143,55 +130,83 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="api.html">API Documentation</a> &raquo;</li>
-      
-    <li>Flowable (<code class="docutils literal"><span class="pre">rinoh.flowable</span></code>)</li>
+        
+      <li>Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../_sources/api/flowable.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <span class="target" id="module-rinoh.flowable"></span><div class="section" id="flowable-rinoh-flowable">
-<span id="flowables"></span><h1>Flowable (<a class="reference internal" href="#module-rinoh.flowable" title="rinoh.flowable"><code class="xref py py-mod docutils literal"><span class="pre">rinoh.flowable</span></code></a>)<a class="headerlink" href="#flowable-rinoh-flowable" title="Permalink to this headline">¶</a></h1>
+<span id="flowables"></span><h1>Flowable (<a class="reference internal" href="#module-rinoh.flowable" title="rinoh.flowable"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code></a>)<a class="headerlink" href="#flowable-rinoh-flowable" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="rinoh.flowable.Flowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">Flowable</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Flowable" title="Permalink to this definition">¶</a></dt>
-<dd><p>A document element that can be &#8220;flowed&#8221; into a container on the page.</p>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">Flowable</code><span class="sig-paren">(</span><em class="sig-param">align=None</em>, <em class="sig-param">width=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Flowable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A document element that can be “flowed” into a container on the page.</p>
 <p>A flowable can adapt to the width of the container, or it can horizontally
-align itself in the container (see <a class="reference internal" href="#rinoh.flowable.HorizontallyAlignedFlowable" title="rinoh.flowable.HorizontallyAlignedFlowable"><code class="xref py py-class docutils literal"><span class="pre">HorizontallyAlignedFlowable</span></code></a>).</p>
+align itself in the container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>align</strong> (<em>HorizontalAlignment</em>) – horizontal alignment of the flowable</p></li>
+<li><p><strong>width</strong> (<em>FlowableWidth</em><em> or </em><em>DimensionBase</em>) – the width of the flowable.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.FlowableState">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">FlowableState</code><span class="sig-paren">(</span><em>flowable</em>, <em>_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.FlowableState" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores a flowable&#8217;s rendering state, which can be copied.</p>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">FlowableState</code><span class="sig-paren">(</span><em class="sig-param">flowable</em>, <em class="sig-param">_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.FlowableState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a flowable’s rendering state, which can be copied.</p>
 <p>This enables saving the rendering state at certain points in the rendering
 process, so rendering can later be resumed at those points, if needed.</p>
 </dd></dl>
@@ -199,25 +214,25 @@ process, so rendering can later be resumed at those points, if needed.</p>
 <div class="section" id="no-output-flowables">
 <h2>No-Output Flowables<a class="headerlink" href="#no-output-flowables" title="Permalink to this headline">¶</a></h2>
 <p>These flowables do not directly place anything on the page. All except
-<a class="reference internal" href="#rinoh.flowable.DummyFlowable" title="rinoh.flowable.DummyFlowable"><code class="xref py py-class docutils literal"><span class="pre">DummyFlowable</span></code></a> do have side-effects however. Some of these side-effects
+<a class="reference internal" href="#rinoh.flowable.DummyFlowable" title="rinoh.flowable.DummyFlowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DummyFlowable</span></code></a> do have side-effects however. Some of these side-effects
 affect the rendering of the document in an indirect way.</p>
 <dl class="class">
 <dt id="rinoh.flowable.DummyFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">DummyFlowable</code><span class="sig-paren">(</span><em>id=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.DummyFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">DummyFlowable</code><span class="sig-paren">(</span><em class="sig-param">id=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.DummyFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A flowable that does not directly place anything on the page.</p>
 <p>Subclasses can produce side-effects to affect the output in another way.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.AnchorFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">AnchorFlowable</code><span class="sig-paren">(</span><em>id=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.AnchorFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">AnchorFlowable</code><span class="sig-paren">(</span><em class="sig-param">id=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.AnchorFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dummy flowable that registers a destination anchor.</p>
-<p>Places a destination for the flowable&#8217;s ID at the current cursor position.</p>
+<p>Places a destination for the flowable’s ID at the current cursor position.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.SetMetadataFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">SetMetadataFlowable</code><span class="sig-paren">(</span><em>parent=None</em>, <em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.SetMetadataFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">SetMetadataFlowable</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.SetMetadataFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dummy flowable that stores metadata in the document.</p>
 <p>The metadata is passed as keyword arguments. It will be available to other
 flowables during the rendering stage.</p>
@@ -225,23 +240,20 @@ flowables during the rendering stage.</p>
 
 <dl class="class">
 <dt id="rinoh.flowable.WarnFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">WarnFlowable</code><span class="sig-paren">(</span><em>message</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.WarnFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">WarnFlowable</code><span class="sig-paren">(</span><em class="sig-param">message</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.WarnFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dummy flowable that emits a warning during the rendering stage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; the warning message to emit</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – the warning message to emit</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.PageBreak">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">PageBreak</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.PageBreak" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">PageBreak</code><span class="sig-paren">(</span><em class="sig-param">align=None</em>, <em class="sig-param">width=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.PageBreak" title="Permalink to this definition">¶</a></dt>
 <dd><p>A flowable that optionally triggers a page break before rendering.</p>
-<p>If this flowable&#8217;s <cite>page_break</cite> style attribute is not <code class="docutils literal"><span class="pre">None</span></code>, it breaks
+<p>If this flowable’s <cite>page_break</cite> style attribute is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, it breaks
 to the page of the type indicated by <cite>page_break</cite> before starting
 rendering.</p>
 </dd></dl>
@@ -251,34 +263,44 @@ rendering.</p>
 <h2>Labeled Flowables<a class="headerlink" href="#labeled-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="rinoh.flowable.LabeledFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">LabeledFlowable</code><span class="sig-paren">(</span><em>label</em>, <em>flowable</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">LabeledFlowable</code><span class="sig-paren">(</span><em class="sig-param">label</em>, <em class="sig-param">flowable</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A flowable with a label.</p>
 <p>The flowable and the label are rendered side-by-side. If the label exceeds
 the <cite>label_max_width</cite> style attribute value, the flowable is rendered below
 the label.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>label</strong> (<a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a>) &#8211; the label for the flowable</li>
-<li><strong>flowable</strong> (<a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a>) &#8211; the flowable to label</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a>) – the label for the flowable</p></li>
+<li><p><strong>flowable</strong> (<a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a>) – the flowable to label</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="rinoh.flowable.LabeledFlowable.style_class">
-<code class="descname">style_class</code><a class="headerlink" href="#rinoh.flowable.LabeledFlowable.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">LabeledFlowableStyle</span></code></a></p>
+<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.flowable.LabeledFlowable.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">LabeledFlowableStyle</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.flowable.LabeledFlowable.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">flowable_target</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.flowable.LabeledFlowable.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">container</em>, <em class="sig-param">last_descender</em>, <em class="sig-param">state</em>, <em class="sig-param">label_column_width=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the flowable’s content to <cite>container</cite>, with the flowable’s
+top edge lining up with the container’s cursor. <cite>descender</cite> is the
+descender height of the preceding line or <cite>None</cite>.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.LabeledFlowableState">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">LabeledFlowableState</code><span class="sig-paren">(</span><em>flowable</em>, <em>content_flowable_state</em>, <em>_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableState" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">LabeledFlowableState</code><span class="sig-paren">(</span><em class="sig-param">flowable</em>, <em class="sig-param">content_flowable_state</em>, <em class="sig-param">_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableState" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -286,85 +308,105 @@ the label.</p>
 <h2>Grouping Flowables<a class="headerlink" href="#grouping-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="rinoh.flowable.GroupedFlowables">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">GroupedFlowables</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">GroupedFlowables</code><span class="sig-paren">(</span><em class="sig-param">align=None</em>, <em class="sig-param">width=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups a list of flowables and renders them one below the other.</p>
 <p>Makes sure that a flowable for which <cite>keep_with_next</cite> is enabled is not
 seperated from the flowable that follows it.</p>
-<p>Subclasses should implement <a class="reference internal" href="#rinoh.flowable.GroupedFlowables.flowables" title="rinoh.flowable.GroupedFlowables.flowables"><code class="xref py py-meth docutils literal"><span class="pre">flowables()</span></code></a>.</p>
+<p>Subclasses should implement <a class="reference internal" href="#rinoh.flowable.GroupedFlowables.flowables" title="rinoh.flowable.GroupedFlowables.flowables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flowables()</span></code></a>.</p>
 <dl class="attribute">
 <dt id="rinoh.flowable.GroupedFlowables.style_class">
-<code class="descname">style_class</code><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal"><span class="pre">GroupedFlowablesStyle</span></code></a></p>
+<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">GroupedFlowablesStyle</span></code></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="rinoh.flowable.GroupedFlowables.flowables">
-<code class="descname">flowables</code><span class="sig-paren">(</span><em>container</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.flowables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generator yielding the <a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code></a>s to group</p>
+<code class="sig-name descname">flowables</code><span class="sig-paren">(</span><em class="sig-param">container</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.flowables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator yielding the <a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code></a>s to group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.flowable.GroupedFlowables.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">container</em>, <em class="sig-param">descender</em>, <em class="sig-param">state</em>, <em class="sig-param">first_line_only=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the flowable’s content to <cite>container</cite>, with the flowable’s
+top edge lining up with the container’s cursor. <cite>descender</cite> is the
+descender height of the preceding line or <cite>None</cite>.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.GroupedFlowablesState">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">GroupedFlowablesState</code><span class="sig-paren">(</span><em>groupedflowables</em>, <em>flowables</em>, <em>first_flowable_state=None</em>, <em>_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowablesState" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">GroupedFlowablesState</code><span class="sig-paren">(</span><em class="sig-param">groupedflowables</em>, <em class="sig-param">flowables</em>, <em class="sig-param">first_flowable_state=None</em>, <em class="sig-param">_initial=True</em>, <em class="sig-param">_index=0</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowablesState" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.StaticGroupedFlowables">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">StaticGroupedFlowables</code><span class="sig-paren">(</span><em>flowables</em>, <em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.StaticGroupedFlowables" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">StaticGroupedFlowables</code><span class="sig-paren">(</span><em class="sig-param">flowables</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.StaticGroupedFlowables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups a static list of flowables.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flowables</strong> (<em>iterable</em><em>[</em><a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a><em>]</em><em></em>) &#8211; the flowables to group</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flowables</strong> (<em>iterable</em><em>[</em><a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><em>Flowable</em></a><em>]</em>) – the flowables to group</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="rinoh.flowable.StaticGroupedFlowables.flowables">
+<code class="sig-name descname">flowables</code><span class="sig-paren">(</span><em class="sig-param">container</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.StaticGroupedFlowables.flowables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator yielding the <a class="reference internal" href="#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code></a>s to group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.flowable.StaticGroupedFlowables.build_document">
+<code class="sig-name descname">build_document</code><span class="sig-paren">(</span><em class="sig-param">flowable_target</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.StaticGroupedFlowables.build_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set document metadata and populate front and back matter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rinoh.flowable.StaticGroupedFlowables.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param">flowable_target</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.StaticGroupedFlowables.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="rinoh.flowable.GroupedLabeledFlowables">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">GroupedLabeledFlowables</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedLabeledFlowables" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">GroupedLabeledFlowables</code><span class="sig-paren">(</span><em class="sig-param">align=None</em>, <em class="sig-param">width=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedLabeledFlowables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups a list of labeled flowables, lining them up.</p>
-</dd></dl>
-
-</div>
-<div class="section" id="horizontally-aligned-flowables">
-<h2>Horizontally Aligned Flowables<a class="headerlink" href="#horizontally-aligned-flowables" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="rinoh.flowable.HorizontallyAlignedFlowable">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">HorizontallyAlignedFlowable</code><span class="sig-paren">(</span><em>*args</em>, <em>align=None</em>, <em>width=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.HorizontallyAlignedFlowable" title="Permalink to this definition">¶</a></dt>
-<dd><p>A flowable with configurable width and horizontal alignment.</p>
-<p>The <cite>width</cite> and <cite>horizontal_align</cite> control the width and horizontal
-alignment of the flowable.</p>
-<dl class="attribute">
-<dt id="rinoh.flowable.HorizontallyAlignedFlowable.style_class">
-<code class="descname">style_class</code><a class="headerlink" href="#rinoh.flowable.HorizontallyAlignedFlowable.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.HorizontallyAlignedFlowableStyle.html#rinoh.flowable.HorizontallyAlignedFlowableStyle" title="rinoh.flowable.HorizontallyAlignedFlowableStyle"><code class="xref py py-class docutils literal"><span class="pre">HorizontallyAlignedFlowableStyle</span></code></a></p>
+<dl class="method">
+<dt id="rinoh.flowable.GroupedLabeledFlowables.render">
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">container</em>, <em class="sig-param">descender</em>, <em class="sig-param">state</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedLabeledFlowables.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the flowable’s content to <cite>container</cite>, with the flowable’s
+top edge lining up with the container’s cursor. <cite>descender</cite> is the
+descender height of the preceding line or <cite>None</cite>.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="class">
-<dt id="rinoh.flowable.HorizontallyAlignedFlowableState">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">HorizontallyAlignedFlowableState</code><span class="sig-paren">(</span><em>flowable</em>, <em>_initial=True</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.HorizontallyAlignedFlowableState" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 <div class="section" id="floating-flowables">
 <h2>Floating Flowables<a class="headerlink" href="#floating-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="rinoh.flowable.Float">
-<em class="property">class </em><code class="descclassname">rinoh.flowable.</code><code class="descname">Float</code><span class="sig-paren">(</span><em>id=None</em>, <em>style=None</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Float" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">Float</code><span class="sig-paren">(</span><em class="sig-param">align=None</em>, <em class="sig-param">width=None</em>, <em class="sig-param">id=None</em>, <em class="sig-param">style=None</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Float" title="Permalink to this definition">¶</a></dt>
 <dd><p>A flowable that can optionally be placed elsewhere on the page.</p>
-<p>If this flowable&#8217;s <cite>float</cite> style attribute is set to <code class="docutils literal"><span class="pre">True</span></code>, it is not
+<p>If this flowable’s <cite>float</cite> style attribute is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, it is not
 flowed in line with the surrounding flowables, but it is instead flowed
-into another container pointed to by the former&#8217;s
-<code class="xref py py-attr docutils literal"><span class="pre">Container.float_space</span></code> attribute.</p>
+into another container pointed to by the former’s
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">Container.float_space</span></code> attribute.</p>
 <p>This is typically used to place figures and tables at the top or bottom of
 a page, instead of in between paragraphs.</p>
+<dl class="method">
+<dt id="rinoh.flowable.Float.flow">
+<code class="sig-name descname">flow</code><span class="sig-paren">(</span><em class="sig-param">container</em>, <em class="sig-param">last_descender</em>, <em class="sig-param">state=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Float.flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flow this flowable into <cite>container</cite> and return the vertical space
+consumed.</p>
+<p>The flowable’s contents is preceded by a vertical space with a height
+as specified in its style’s <cite>space_above</cite> attribute. Similarly, the
+flowed content is followed by a vertical space with a height given
+by the <cite>space_below</cite> style attribute.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -372,15 +414,16 @@ a page, instead of in between paragraphs.</p>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="font.html" class="btn btn-neutral float-right" title="Fonts and Typefaces (rinoh.font)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="font.html" class="btn btn-neutral float-right" title="Fonts and Typefaces (rinoh.font)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="draw.html" class="btn btn-neutral" title="Drawing Primitives (rinoh.draw)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="draw.html" class="btn btn-neutral float-left" title="Drawing Primitives (rinoh.draw)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -389,11 +432,11 @@ a page, instead of in between paragraphs.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -406,35 +449,15 @@ a page, instead of in between paragraphs.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

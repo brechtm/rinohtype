@@ -107,7 +107,7 @@ frontend, a document template and a style sheet:
 This basic application can be customized to your specific requirements by
 customizing the document template, the style sheet and the way the document's
 content tree is built. The basics of document templates and style sheets are
-covered the the sections below.
+covered in later sections.
 
 The document tree returned by the :class:`ReStructuredTextReader` in the
 example above can also be built manually. A :class:`DocumentTree` is simply a

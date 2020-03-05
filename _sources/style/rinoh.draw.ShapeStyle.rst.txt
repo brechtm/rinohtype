@@ -1,7 +1,2 @@
 ShapeStyle
 =====================
-
-.. currentmodule:: rinoh.draw
-
-.. autoclass:: ShapeStyle
-    :members:

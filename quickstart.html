@@ -5,62 +5,48 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-45391629-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; rinohtype 0.3.1 documentation</title>
+  <title>Quickstart &mdash; rinohtype 0.4.0 documentation</title>
   
 
   
   
+  
+  
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rinohtype 0.3.1 documentation" href="index.html"/>
-        <link rel="next" title="Basic Document Styling" href="basicstyling.html"/>
-        <link rel="prev" title="Installation" href="install.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic Document Styling" href="basicstyling.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -74,7 +60,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.4.0
               </div>
             
           
@@ -95,7 +81,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
@@ -122,34 +111,54 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">rinohtype</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rinohtype</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Quickstart</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quickstart</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -163,14 +172,14 @@ of the PDF document, please refer to <a class="reference internal" href="basicst
 style sheets and document templates.</p>
 <div class="section" id="command-line-renderer">
 <h2>Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h2>
-<p>Installing rinohtype places the <strong class="program">rinoh</strong> script in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">PATH</span></code>.
+<p>Installing rinohtype places the <strong class="program">rinoh</strong> script in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PATH</span></code>.
 This can be used to render structured documents such as <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a>
 (<a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rinoh</span> <span class="o">--</span><span class="nb">format</span> <span class="n">reStructuredText</span> <span class="n">demo</span><span class="o">.</span><span class="n">txt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rinoh</span> <span class="o">--</span><span class="nb">format</span> <span class="n">reStructuredText</span> <span class="n">demo</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
 <p>After rendering finishes, you will find
-<a class="reference download internal" href="_downloads/demo.pdf" download=""><code class="xref download docutils literal"><span class="pre">demo.pdf</span></code></a> alongside the
+<a class="reference download internal" download="" href="_downloads/431110f8b314032458f7ce6be14d92b7/demo.pdf"><code class="xref download docutils literal notranslate"><span class="pre">demo.pdf</span></code></a> alongside the
 input file.</p>
 <p><strong class="program">rinoh</strong> allows specifying the document template and style sheet to use
 when rendering the reStructuredText document. See its <a class="reference internal" href="rinoh.html#rinoh"><span class="std std-ref">command-line
@@ -178,19 +187,19 @@ options</span></a> for details.</p>
 <p id="rendering-passes">Two rendering passes are required to make sure that cross-references to page
 numbers are correct. After a document has been rendered, rinohtype will save
 the page reference data to a <cite>.rtc</cite> file. Provided the document (or the
-template or style sheet) doesn&#8217;t change a lot, this can prevent the need to
+template or style sheet) doesn’t change a lot, this can prevent the need to
 perform a second rendering pass.</p>
 </div>
 <div class="section" id="sphinx-builder">
 <span id="sphinx-quickstart"></span><h2>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h2>
 <p>To use rinohtype to render Sphinx documents, at a minimum you need to add
-<code class="docutils literal"><span class="pre">'rinoh.frontend.sphinx'</span></code> to the <code class="docutils literal"><span class="pre">extensions</span></code> list in the Sphinx
-project&#8217;s <code class="docutils literal"><span class="pre">conf.py</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">'rinoh.frontend.sphinx'</span></code> to the <code class="docutils literal notranslate"><span class="pre">extensions</span></code> list in the Sphinx
+project’s <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
 <p>If your Sphinx project is already configured for rendering with LaTeX,
-rinohtype will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal"><span class="pre">latex_documents</span></code></a> and other
+rinohtype will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a> and other
 options for the LaTeX builder. Otherwise, you need to set the
-<a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>            <span class="c1"># top-level file (index.rst)</span>
+<a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>            <span class="c1"># top-level file (index.rst)</span>
                     <span class="s1">&#39;target&#39;</span><span class="p">,</span>           <span class="c1"># output (target.pdf)</span>
                     <span class="s1">&#39;Document Title&#39;</span><span class="p">,</span>   <span class="c1"># document title</span>
                     <span class="s1">&#39;John A. Uthor&#39;</span><span class="p">)]</span>   <span class="c1"># document author</span>
@@ -199,8 +208,8 @@ options for the LaTeX builder. Otherwise, you need to set the
 <p>Other configuration variables are optional and allow configuring the style of
 the generated PDF document. See <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a> for details.</p>
 <p>When building the documentation, select the <cite>rinoh</cite> builder by passing it to
-<code class="xref std std-option docutils literal"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code> option:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
+<code class="xref std std-option docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
 </pre></div>
 </div>
 <p>Just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder requires
@@ -209,15 +218,15 @@ two <a class="reference internal" href="#rendering-passes"><span class="std std-
 <div class="section" id="high-level-pdf-library">
 <span id="library-quickstart"></span><h2>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The focus of rinohtype development is currently on the
+<p class="admonition-title">Note</p>
+<p>The focus of rinohtype development is currently on the
 <strong class="program">rinoh</strong> tool and Sphinx builder. Use as a Python library is
 possible, but documentation may be lacking. Please be patient.</p>
 </div>
 <p>The most basic way to use rinohtype in an application is to hook up an included
 frontend, a document template and a style sheet:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="k">import</span> <span class="n">ReStructuredTextReader</span>
-<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="k">import</span> <span class="n">Article</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
+<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="kn">import</span> <span class="n">Article</span>
 
 <span class="c1"># the parser builds a rinohtype document tree</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextReader</span><span class="p">()</span>
@@ -230,16 +239,16 @@ frontend, a document template and a style sheet:</p>
 </pre></div>
 </div>
 <p>This basic application can be customized to your specific requirements by
-customizing the document template, the style sheet and the way the document&#8217;s
+customizing the document template, the style sheet and the way the document’s
 content tree is built. The basics of document templates and style sheets are
-covered the the sections below.</p>
-<p>The document tree returned by the <code class="xref py py-class docutils literal"><span class="pre">ReStructuredTextReader</span></code> in the
-example above can also be built manually. A <code class="xref py py-class docutils literal"><span class="pre">DocumentTree</span></code> is simply a
-list of <code class="xref py py-class docutils literal"><span class="pre">Flowable</span></code>s, which can have child elements. These children in
+covered in later sections.</p>
+<p>The document tree returned by the <code class="xref py py-class docutils literal notranslate"><span class="pre">ReStructuredTextReader</span></code> in the
+example above can also be built manually. A <code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTree</span></code> is simply a
+list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code>s, which can have child elements. These children in
 turn can also have children, and so on; together they form a tree.</p>
 <p>Here is an example document tree of a short article:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.document</span> <span class="k">import</span> <span class="n">DocumentTree</span>
-<span class="kn">from</span> <span class="nn">rinoh.styleds</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.document</span> <span class="kn">import</span> <span class="n">DocumentTree</span>
+<span class="kn">from</span> <span class="nn">rinoh.styleds</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">document_tree</span> <span class="o">=</span> <span class="n">DocumentTree</span><span class="p">(</span>
                     <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="s1">&#39;My Document&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;title&#39;</span><span class="p">),</span> <span class="c1"># metadata!</span>
@@ -269,15 +278,16 @@ well suited for short, custom documents however.</p>
 
 
            </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="basicstyling.html" class="btn btn-neutral float-right" title="Basic Document Styling" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="basicstyling.html" class="btn btn-neutral float-right" title="Basic Document Styling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -286,11 +296,11 @@ well suited for short, custom documents however.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Brecht Machiels.
+        &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -303,35 +313,15 @@ well suited for short, custom documents however.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.3.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -1,7 +1,2 @@
 FloatStyle
 =========================
-
-.. currentmodule:: rinoh.flowable
-
-.. autoclass:: FloatStyle
-    :members:
