@@ -73,7 +73,7 @@ matrix:
     - python: 3.8
       env:
         - TOXENV=longrunning
-          TIMEOUT=45
+          TIMEOUT=45m
           WITH_COVERAGE=0
       addons:
         apt:
@@ -107,11 +107,12 @@ matrix:
         - brew cleanup
 
 install:
+  - pip install travis-wait-improved
   - pip install tox-travis wheel
   - python setup.py bdist_wheel
 
 script:
-  - function timeout { [ -z $TIMEOUT ] || echo "travis_wait $TIMEOUT"; }
+  - function timeout { [ -z $TIMEOUT ] || echo "travis-wait-improved --timeout $TIMEOUT"; }
   - function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
   - $(timeout) tox -v $(installpkg)
 
