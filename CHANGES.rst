@@ -9,12 +9,14 @@ New Features:
 * automatically generated lists of figures and tables
 * paragraphs now provide default tab stops (proportional to font size) for
   indentation
+* stylesheet (.rts) and template configuration (.rtt) files now support
+  specifying inline and background images (#107 and #108); to be documented
 * it is now possible to specify selector priority (+-) in style sheets
 * Sphinx frontend: the rinoh builder can be discovered by entry point
   (no more need to add 'rinoh.frontend.sphinx' to the list of extensions)
 * rinoh: set a return code of 1 when one or more referenced images could not be
   found (issue #104)
-* rinoh: introduce the --install-resources option to control the automatic
+* rinoh: introduce the ``--install-resources`` option to control the automatic
   installation of resources from PyPI
 * German locale (contributed by Michael Kaiser)
 * Polish locale (contributed by Mariusz Jamro)
@@ -29,6 +31,9 @@ Changed:
 
 Fixed:
 
+* various regressions (PR #142 by Norman Lorrain)
+* fix issues with variables defined in a base style sheet/template config
+* various footnote rendering issues
 * border width is also taken into account for flowables that are continued on a
   new page (#127)
 * Sphinx: handle case when source_suffix is a list (PR #110 by Nick Barrett)
