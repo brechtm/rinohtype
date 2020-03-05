@@ -62,8 +62,8 @@ test_script:
 
 on_failure:
   - ps: |
-      7z a pytest_temp.zip pytest_temp
-      appveyor PushArtifact pytest_temp.zip
+      7z a tests_regression_output.zip tests_regression/output
+      appveyor PushArtifact tests_regression_output.zip
 
 
 notifications:
