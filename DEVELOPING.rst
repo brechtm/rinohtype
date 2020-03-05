@@ -126,7 +126,7 @@ Continuous Integration
 We make use of Travis CI and AppVeyor to automatically execute the tox
 environments when new commits are pushed to the repository. Travis CI covers
 the Linux and macOS platforms, while AppVeyor covers Windows. See the
-configuration files ``.travis.yml`` and ``appveyol.yml`` for details.
+configuration files ``.travis.yml`` and ``appveyor.yml`` for details.
 
 
 Making a release
