@@ -142,8 +142,7 @@ This is a list of steps to follow when making a new release of rinohtype:
 
 3. Set release version
 
-   * ``bumpversion release``
-   * ``export VERSION_NUMBER=$(bumpversion --dry-run --list patch | grep current_version | sed s/"^.*="//)``
+   * ``export VERSION_NUMBER=$(bumpversion --list release | grep current_version | sed s/"^.*="//)``
    * change release date in ``rinoh/version.py`` and ``CHANGES.rst``
 
 4. Commit these changes and run all tests
@@ -180,8 +179,7 @@ This is a list of steps to follow when making a new release of rinohtype:
 
 12. Set the new development version
 
-    * ``bumpversion patch``
-    * ``export VERSION_NUMBER=$(bumpversion --dry-run --list patch | grep current_version | sed s/"^.*="//)``
+    * ``export VERSION_NUMBER=$(bumpversion --list patch | grep current_version | sed s/"^.*="//)``
     * set the date in ``version.py`` to 'unreleased'
     * ``git commit -am "Bump version to $VERSION_NUMBER"``
 
