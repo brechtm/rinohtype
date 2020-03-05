@@ -1,4 +1,4 @@
-bumpversion
+bump2version
 restview
 tox
 twine
