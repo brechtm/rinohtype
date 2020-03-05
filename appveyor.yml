@@ -41,6 +41,7 @@ install:
               # http://blog.alivate.com.au/poppler-windows/
               appveyor DownloadFile http://blog.alivate.com.au/wp-content/uploads/2017/01/poppler-0.51_x86.7z
               7z x poppler-0.51_x86.7z -oC:\
+              Remove-Item poppler-0.51_x86.7z
           }
           choco install imagemagick.tool
           $env:Path = "C:\ProgramData\chocolatey\lib\imagemagick.tool\tools;C:\poppler-0.51\bin;$env:Path"
