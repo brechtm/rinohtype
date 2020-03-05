@@ -39,18 +39,19 @@ the main features:
 
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
-* support for figures, and (large) tables
-* automatically generated table of contents and index
+* support for figures and (large) tables
+* automatic generation of table of contents and index
 * automatic numbering and cross-referencing of section headings, figures and
   tables
-* use one of the included document templates or create your own
+* configure one of the included document templates or create your own
 * an intuitive style sheet system inspired by CSS
 * modular design allowing for multiple frontends (such as reStructuredText,
   Markdown, DocBook, ...)
 * handles OpenType, TrueType and Type1 fonts with support for advanced
-  typographic features such as kerning, ligatures and small capitals
+  typographic features such as kerning, ligatures, small capitals and old style
+  figures
 * embeds PDF, PNG and JPEG images, preserving transparency and color profiles
-* easy to deploy; pure-Python with few dependencies
+* easy to install and deploy; pure-Python with few dependencies
 * built on Unicode; ready for non-latin languages
 
 rinohtype's primary input format is reStructuredText_. The ``rinoh`` command
