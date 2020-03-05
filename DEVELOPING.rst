@@ -134,22 +134,28 @@ Making a release
 
 This is a list of steps to follow when making a new release of rinohtype:
 
-1. restview_ ``README.rst`` and ``CHANGES.rst`` to check for issues
-
-2. Make sure the git clone is clean (``git status`` returns nothing)
+1. Make sure the git clone is clean (``git status`` returns nothing)
 
    * you can ``git stash`` uncommited changes
 
+2. Perform checks and run tests locally
+
+  * restview_ ``README.rst`` and ``CHANGES.rst`` to check for issues
+  * run ``tox`` to run the quick-running checks/tests
+  * run the longer-running tox environments: ``longrunning``, ``check-docs``,
+    ``build-docs``, ``wininst`` and (if you're on macOS) ``macapp``
+
 3. Set release version
 
-   * ``export VERSION_NUMBER=$(bumpversion --list release | grep current_version | sed s/"^.*="//)``
+   * ``export VERSION_NUMBER=$(bumpversion --list release
+     | grep current_version | sed s/"^.*="//)``
    * change release date in ``rinoh/version.py`` and ``CHANGES.rst``
 
 4. Commit these changes and run all tests
 
    * ``git commit -am "Bump version to $VERSION_NUMBER"``
    * ``git push``
-   * wait for Travis CI and AppVeyor results
+   * wait for Travis CI and AppVeyor results and verify that all checks passed
 
 5. Remove build and dist directories: ``rm -rf build dist``
 
@@ -166,11 +172,17 @@ This is a list of steps to follow when making a new release of rinohtype:
 
    * ``twine upload -r testpypi dist/*``
    * check whether the new release's description (which is a concatenation of
-     ``README.rst`` and ``CHANGES.rst``) is rendered properly
+     ``README.rst`` and ``CHANGES.rst``) is rendered properly at
+     https://test.pypi.org/project/rinohtype/
+   * verify that you can install rinohtype from TestPyPI::
+
+         pip install -i https://test.pypi.org/simple/ rinohtype
+
+   * check whether this installed version can render a reStructuredText file
 
 10. Tag the release in version control
 
-    * ``git tag $VERSION_NUMBER``
+    * ``git tag v$VERSION_NUMBER``
     * ``git push --tags``
 
 11. Upload the distribution files to PyPI_ using twine_
@@ -179,7 +191,8 @@ This is a list of steps to follow when making a new release of rinohtype:
 
 12. Set the new development version
 
-    * ``export VERSION_NUMBER=$(bumpversion --list patch | grep current_version | sed s/"^.*="//)``
+    * ``export VERSION_NUMBER=$(bumpversion --list patch
+      | grep current_version | sed s/"^.*="//)``
     * set the date in ``version.py`` to 'unreleased'
     * ``git commit -am "Bump version to $VERSION_NUMBER"``
 
