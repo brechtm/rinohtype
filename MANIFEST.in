@@ -6,6 +6,7 @@ graft src
 graft tests
 graft tests_regression
 prune tests_regression/sphinx
+prune tests_regression/output
 include tests_regression/sphinx/AUTHORS
 include tests_regression/sphinx/CHANGES
 include tests_regression/sphinx/EXAMPLES
