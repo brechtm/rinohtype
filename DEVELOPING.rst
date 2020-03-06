@@ -148,7 +148,7 @@ This is a list of steps to follow when making a new release of rinohtype:
 3. Set release version
 
    * ``export VERSION_NUMBER=$(bumpversion --list release
-     | grep current_version | sed s/"^.*="//)``
+     | grep new_version | sed s/"^.*="//)``
    * change release date in ``rinoh/version.py`` and ``CHANGES.rst``
 
 4. Commit these changes and run all tests
@@ -161,17 +161,30 @@ This is a list of steps to follow when making a new release of rinohtype:
 
 6. Build distribution files: ``python setup.py sdist bdist_wheel``
 
-7. Make sure the ``doc/_build/html`` submodule is checked out
+7. Prepare the ``doc/_build/html`` submodule
+
+   * make sure the ``doc/_build/html`` submodule is checked out
+   * clear the output directory so no obsolete files are left behind::
+
+        rm -rf doc/_build/html/* && rm -rf doc/_build/html/.buildinfo
+
+   * commit the empty directory so that the working dir is clean::
+
+        git -C doc/_build/html commit -am "clean HTML output directory"
+        git commit -am "clean HTML output directory"
 
 8. Build and commit the documentation
 
    * ``tox --installpkg dist/*.whl -e build-docs``
-   * ``git commit -am "v$VERSION_NUMBER docs" doc/_build/html``
+   * ``git -C doc/_build/html add --all``
+   * ``git -C doc/_build/html commit --amend -am "v$VERSION_NUMBER docs"``
+   * ``git -C doc/_build/html checkout -B gh-pages``
+   * ``git commit --amend -am "Update the docs submodule"``
    * check the generated documentation (HTML and PDF)
 
 9. Upload the distribution files to TestPyPI_ using twine_
 
-   * ``twine upload -r testpypi dist/*``
+   * ``twine upload --repository-url https://test.pypi.org/legacy/ dist/*``
    * check whether the new release's description (which is a concatenation of
      ``README.rst`` and ``CHANGES.rst``) is rendered properly at
      https://test.pypi.org/project/rinohtype/
@@ -179,21 +192,25 @@ This is a list of steps to follow when making a new release of rinohtype:
 
          pip install -i https://test.pypi.org/simple/ rinohtype
 
-   * check whether this installed version can render a reStructuredText file
+   * check whether this installed version can render a reStructuredText file::
 
-10. Tag the release in version control
+        # create virtualenv for testing
+        pip install --extra-index-url https://test.pypi.org/simple/ rinohtype
 
+10. Tag the release in and push commits
+
+    * ``git -C doc/_build/html push``
     * ``git tag v$VERSION_NUMBER``
-    * ``git push --tags``
+    * ``git push && git push --tags``
 
 11. Upload the distribution files to PyPI_ using twine_
 
-    * ``twine upload dist/*``
+    * ``twine upload --repository-url https://upload.pypi.org/legacy/ dist/*``
 
 12. Set the new development version
 
     * ``export VERSION_NUMBER=$(bumpversion --list patch
-      | grep current_version | sed s/"^.*="//)``
+      | grep new_version | sed s/"^.*="//)``
     * set the date in ``version.py`` to 'unreleased'
     * ``git commit -am "Bump version to $VERSION_NUMBER"``
 
