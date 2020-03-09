@@ -31,11 +31,37 @@ to PDF based on a document template and a style sheet. An important design goal
 of rinohtype is make document layout and style customization user-friendly. See
 the documentation_ to learn how to customize the style of your document.
 
+
+Call for Contributions
+----------------------
+
+Since rinohtype is a fairly sizable project and currently being maintained by a
+single person, your contribution can make a big difference. Specifically, the
+following things can help move rinohtype forward:
+
+* development of professional-looking stylesheets and document templates
+* volunteering to be a maintainer: fix issues that pop up when new versions of
+  dependencies are released (Python, Sphinx, ...)
+* development of new features, e.g. widow/orphan handling, Knuth-Plass line
+  breaking, mathematics typesetting, performance improvements, ...
+* companies might be interested in funding the development of particular
+  features that would benefit them
+
+So if you are interested in helping with any of these items, please don't
+hesitate to get in touch via brecht@opqode.com, `GitHub issues`_ or Gitter_!
+
+.. _GitHub issues: https://github.com/brechtm/rinohtype/issues
+.. _Gitter: https://gitter.im/brechtm/rinohtype
+
+
+Features
+--------
+
 rinohtype is still in beta, so you might run into some issues when using it.
 I'd highly appreciate it if you could `create a ticket`_ for any bugs you may
-encounter. That said, it's already quite capable. For example, it should be
-able to replace Sphinx_'s LaTeX builder in most cases. Here is an overview of
-the main features:
+encounter. That said, rinohtype is already quite capable. For example, it
+should be able to replace Sphinx_'s LaTeX builder in most cases. Here is an
+overview of the main features:
 
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
