@@ -20,6 +20,8 @@ from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 from sphinx.util import logging
+from sphinx.util.i18n import format_date
+
 from rinoh.flowable import StaticGroupedFlowables
 from rinoh.highlight import pygments_style_to_stylesheet
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
@@ -237,6 +239,9 @@ class RinohBuilder(Builder):
         rinoh_document.metadata['subtitle'] = ('Release {}'
                                                .format(config.release))
         rinoh_document.metadata['author'] = doctree.settings.author
+        date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
+                                           language=config.language)
+        rinoh_document.metadata['date'] = date
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)

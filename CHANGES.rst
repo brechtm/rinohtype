@@ -4,6 +4,12 @@ Release History
 Release 0.4.1.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
+* Sphinx frontend: use the `today` and `today_fmt` configuration variables for
+  the date on the title page
+
+
 Release 0.4.0 (2020-03-05)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
