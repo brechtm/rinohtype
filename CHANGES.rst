@@ -9,6 +9,10 @@ New Features:
 * Sphinx frontend: use the `today` and `today_fmt` configuration variables for
   the date on the title page
 
+Fixed:
+
+* Regression in handling images that don't fit on the current page (issue #153)
+
 
 Release 0.4.0 (2020-03-05)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

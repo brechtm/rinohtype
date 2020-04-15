@@ -69,7 +69,6 @@ class Scale(OptionSet):
 
 class ImageState(FlowableState):
     image = ReadAliasAttribute('flowable')
-    width = None
 
 
 class Filename(str):
