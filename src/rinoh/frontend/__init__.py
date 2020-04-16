@@ -21,18 +21,19 @@ class TreeNode(object):
     node_name = None
 
     @classmethod
-    def map_node(cls, node):
+    def map_node(cls, node, **context):
         node_name = cls.node_tag_name(node)
         try:
-            return cls._mapping[node_name.replace('-', '_')](node)
+            return cls._mapping[node_name.replace('-', '_')](node, **context)
         except KeyError:
             filename, line, node_name = cls.node_location(node)
             raise NotImplementedError("{}:{} the '{}' node is not yet supported "
                                       "({})" .format(filename, line, node_name,
                                                      cls.__module__))
 
-    def __init__(self, doctree_node):
+    def __init__(self, doctree_node, **context):
         self.node = doctree_node
+        self.context = context
 
     def __getattr__(self, name):
         for child in self.getchildren():
@@ -57,10 +58,11 @@ class TreeNode(object):
     def parent(self):
         node_parent = self.node_parent(self.node)
         if node_parent is not None:
-            return self.map_node(node_parent)
+            return self.map_node(node_parent, **self.context)
 
     def getchildren(self):
-        return [self.map_node(child) for child in self.node_children(self.node)]
+        return [self.map_node(child, **self.context)
+                for child in self.node_children(self.node)]
 
     @property
     def location(self):

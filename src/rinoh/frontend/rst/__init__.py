@@ -105,7 +105,7 @@ from . import nodes
 class DocutilsReader(Reader):
     parser_class = None
 
-    def parse(self, filename_or_file):
+    def parse(self, filename_or_file, **context):
         try:
             filename = Path(filename_or_file)
             settings_overrides = dict(input_encoding='utf-8')
@@ -118,10 +118,10 @@ class DocutilsReader(Reader):
             doctree = publish_doctree(filename_or_file,
                                       source_class=FileInput,
                                       parser=self.parser_class())
-        return self.from_doctree(filename, doctree)
+        return self.from_doctree(filename, doctree, **context)
 
-    def from_doctree(self, filename, doctree):
-        mapped_tree = DocutilsNode.map_node(doctree.document)
+    def from_doctree(self, filename, doctree, **context):
+        mapped_tree = DocutilsNode.map_node(doctree.document, **context)
         flowables = mapped_tree.children_flowables()
         return DocumentTree(flowables, source_file=Path(filename))
 
