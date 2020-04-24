@@ -1,0 +1,18 @@
+[TEMPLATE_CONFIGURATION]
+name=stringfield
+template=book
+
+parts=contents
+stylesheet=sphinx_base14
+language=nl
+
+[VARIABLES]
+paper_size=A5
+
+[UserStrings]
+my_string='my string'
+
+
+[contents_left_page]
+footer_text=
+  '{UserStrings.my_string} \t \t {SECTION_NUMBER(1)}.  {SECTION_TITLE(1)}'

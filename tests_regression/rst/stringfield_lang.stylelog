@@ -1,0 +1,123 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('HOOFDSTUK 1', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+    MixedStyledText('HOOFDSTUK 1')
+      MixedStyledText('HOOFDSTUK ')
+        StringField('HOOFDSTUK')
+        SingleStyledText(' ')
+      Field('1', style='number')
+           > (0,0,2,0,3) body matter chapter number
+        SingleStyledText('1')
+  Paragraph('Eerste hoofdstuk', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+    Field('Eerste hoofdstuk')
+      SingleStyledText('Eerste hoofdstuk')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='eerste-hoofdstuk')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:4 <section>
+           > (0,0,0,1,2) chapter
+        Paragraph('Een paragraaf.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:6 <paragraph>
+             > (0,0,0,0,2) body
+          MixedStyledText('Een paragraaf.')
+            SingleStyledText('Een paragraaf.')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('		1')
+        Tab('	')
+        Tab('	')
+        Field('1')
+          SingleStyledText('1')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header(', ')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+      MixedStyledText(', ')
+        Field('')
+        SingleStyledText(', ')
+        Field('')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('my string 	 	 1.  Eerste hoofdst...')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('my string 	 	 1.  Eerste hoofdst...')
+        StringField('my string')
+        SingleStyledText(' 	 	 ')
+        Field('1')
+          SingleStyledText('1')
+        SingleStyledText('.  ')
+        Field('Eerste hoofdstuk')
+          SingleStyledText('Eerste hoofdstuk')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('HOOFDSTUK 2', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+    MixedStyledText('HOOFDSTUK 2')
+      MixedStyledText('HOOFDSTUK ')
+        StringField('HOOFDSTUK')
+        SingleStyledText(' ')
+      Field('2', style='number')
+           > (0,0,2,0,3) body matter chapter number
+        SingleStyledText('2')
+  Paragraph('Tweede hoofdstuk', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+    Field('Tweede hoofdstuk')
+      SingleStyledText('Tweede hoofdstuk')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      Section(id='tweede-hoofdstuk')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:10 <section>
+           > (0,0,0,1,2) chapter
+        Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:None <warning>
+             > (0,0,0,1,2) warning admonition
+               (0,0,0,0,2) admonition
+          Paragraph('Waarschuwing Veeg je voeten.')
+               > (0,0,0,0,2) body
+            MixedStyledText('Waarschuwing Veeg je voeten.')
+              MixedStyledText('Waarschuwing', style='inline title')
+                   x (0,0,1,1,3) warning admonition inline title
+                   > (0,0,1,0,3) admonition inline title
+                SingleStyledText('Waarschuwing')
+              SingleStyledText(' ')
+              MixedStyledText('Veeg je voeten.')
+                SingleStyledText('Veeg je voeten.')
+        Paragraph('Een paragraaf in het tweede hoof...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:14 <paragraph>
+             > (0,0,0,0,2) body
+          MixedStyledText('Een paragraaf in het tweede hoof...')
+            SingleStyledText('Een paragraaf in het tweede hoof...')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('		3')
+        Tab('	')
+        Tab('	')
+        Field('3')
+          SingleStyledText('3')
