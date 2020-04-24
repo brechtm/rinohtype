@@ -19,5 +19,6 @@ my_string='my string'
 
 
 [contents_left_page]
+header_text='{UserStrings.my_subst}'
 footer_text='{UserStrings.my_string}' (monospaced)
             '\t \t {SECTION_NUMBER(1)}.  {SECTION_TITLE(1)}'

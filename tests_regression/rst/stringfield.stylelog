@@ -24,9 +24,9 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      Section(id='first-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:4 <section>
+      Section(id='first-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:7 <section>
            > (0,0,0,1,2) chapter
-        Paragraph('A paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:6 <paragraph>
+        Paragraph('A paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:9 <paragraph>
              > (0,0,0,0,2) body
           MixedStyledText('A paragraph.')
             SingleStyledText('A paragraph.')
@@ -50,13 +50,19 @@
     (continued) DocumentTree()
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
-    Header(', ')
+    Header('a UserString defined using a sub...')
          > (0,0,0,0,2) header
            (0,0,0,0,1) body
-      MixedStyledText(', ')
-        Field('')
-        SingleStyledText(', ')
-        Field('')
+      StringField('a UserString defined using a sub...')
+        MixedStyledText('a UserString defined using a sub...')
+          SingleStyledText('a ')
+          MixedStyledText('UserString', style='monospaced')   None:None <literal>
+               > (0,0,1,0,1) monospaced
+            SingleStyledText('UserString')
+          SingleStyledText(' defined using a ')
+          MixedStyledText('substitition definition', style='emphasis')   None:None <emphasis>
+               > (0,0,1,0,1) emphasis
+            SingleStyledText('substitition definition')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('my string	 	 1.  First Chapter')
@@ -99,7 +105,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()
-      Section(id='second-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:10 <section>
+      Section(id='second-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:13 <section>
            > (0,0,0,1,2) chapter
         Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:None <warning>
              > (0,0,0,1,2) warning admonition
@@ -114,7 +120,7 @@
               SingleStyledText(' ')
               MixedStyledText('Wipe your feet.')
                 SingleStyledText('Wipe your feet.')
-        Paragraph('A paragraph in the second sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:14 <paragraph>
+        Paragraph('A paragraph in the second sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:17 <paragraph>
              > (0,0,0,0,2) body
           MixedStyledText('A paragraph in the second sectio...')
             SingleStyledText('A paragraph in the second sectio...')

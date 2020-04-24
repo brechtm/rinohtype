@@ -28,6 +28,7 @@ from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, ContainerOverflow, EndOfContainer,
                      PageBreakException, ReflowRequired)
+from .strings import UserStrings
 from .style import Styled, Style
 from .text import StyledText
 from .util import ReadAliasAttribute
@@ -35,7 +36,7 @@ from .util import ReadAliasAttribute
 
 __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
-           'SetMetadataFlowable', 'AddToFrontMatter',
+           'SetMetadataFlowable', 'SetUserStringFlowable', 'AddToFrontMatter',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float',
@@ -373,6 +374,18 @@ class SetMetadataFlowable(DummyFlowable):
 
     def build_document(self, flowable_target):
         flowable_target.document.metadata.update(self.metadata)
+
+
+class SetUserStringFlowable(DummyFlowable):
+    """Add an entry to the document's :class:`UserStrings`"""
+    def __init__(self, label, content, parent=None):
+        super().__init__(parent=parent)
+        self.label = label
+        self.content = content
+
+    def build_document(self, flowable_target):
+        doc = flowable_target.document
+        doc.set_string(UserStrings, self.label, self.content)
 
 
 class AddToFrontMatter(DummyFlowable):

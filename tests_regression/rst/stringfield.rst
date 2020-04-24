@@ -1,4 +1,7 @@
 
+.. |my_subst| replace::
+    a ``UserString`` defined using a *substitition definition*
+
 
 First Chapter
 -------------

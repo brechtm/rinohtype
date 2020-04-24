@@ -296,6 +296,9 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = (section_number_of_pages, page_references)
             pickle.dump(cache, file)
 
+    def set_string(self, strings_class, key, value):
+        self._strings[strings_class][key] = value
+
     def get_string(self, strings_class, key):
         if (strings_class in self._strings
                 and key in self._strings[strings_class]):

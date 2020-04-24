@@ -7,7 +7,7 @@ Release 0.4.1.dev
 New Features:
 
 * UserStrings: arbitrary user-defined strings that can be defined in the
-  template configuration
+  template configuration or as a substitution definition in reStructuredText
 * strings in a StringCollection can now be styled text
 * Sphinx frontend: use the `today` and `today_fmt` configuration variables for
   the date on the title page

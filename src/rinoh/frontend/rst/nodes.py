@@ -439,7 +439,9 @@ class Citation_Reference(Footnote_Reference):
 
 class Substitution_Definition(DocutilsBodyNode):
     def build_flowable(self):
-        return rt.DummyFlowable()
+        label, = self.node.attributes['names']
+        content = self.process_content()
+        return rt.SetUserStringFlowable(label, content)
 
 
 class Target(DocutilsBodyNode, DocutilsInlineNode):
