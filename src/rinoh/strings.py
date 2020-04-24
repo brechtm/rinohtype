@@ -121,7 +121,7 @@ class StringField(MixedStyledTextBase):
 
     The displayed string is either the localized string as determined by the
     language set for the document or the user-supplied string passed to the
-    :class:`TemplateConfiguration`.
+    :class:`.TemplateConfiguration`.
 
     """
     def __init__(self, strings_class, key, style=None, parent=None):
@@ -146,10 +146,6 @@ class StringField(MixedStyledTextBase):
     def parse_string(cls, string, style=None):
         collection, key = string.split('.')
         return cls(StringCollection.subclasses[collection], key, style=style)
-
-    @property
-    def items(self):
-        return [self]
 
     def children(self, container):
         text = container.document.get_string(self.strings_class, self.key)

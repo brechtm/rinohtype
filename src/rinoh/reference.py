@@ -59,10 +59,6 @@ class ReferenceBase(MixedStyledTextBase):
     def target_id(self, document):
         raise NotImplementedError
 
-    @property
-    def items(self):
-        return [self]
-
     def children(self, container):
         if container is None:
             return '$REF({})'.format(self.type)
@@ -345,10 +341,6 @@ class Field(MixedStyledTextBase):
         except KeyError:
             field = SectionFieldType.from_string(string)
         return cls(field, style=style)
-
-    @property
-    def items(self):
-        return [self]
 
     def children(self, container):
         if container is None:

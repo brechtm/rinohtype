@@ -260,7 +260,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
     @property
     def items(self):
         """The list of items in this StyledText."""
-        raise NotImplementedError
+        return [self]
 
     def spans(self, container):
         """Generator yielding all spans in this styled text, one
@@ -286,10 +286,6 @@ class WarnInline(StyledText):
 
     def to_string(self, flowable_target):
         return ''
-
-    @property
-    def items(self):
-        return [self]
 
     def spans(self, container):
         self.warn(self.message, container)
@@ -335,10 +331,6 @@ class SingleStyledTextBase(StyledText):
     def line_gap(self, container):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
-
-    @property
-    def items(self):
-        return [self]
 
     def spans(self, container):
         yield self
