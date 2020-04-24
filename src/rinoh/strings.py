@@ -81,6 +81,21 @@ class StringCollection(dict, metaclass=StringCollectionMeta):
         return getattr(self, name)
 
 
+class UserStrings(dict, metaclass=StringCollectionMeta):
+    """Collection of user-specified strings
+
+    Unlike other string collections, these are not limited to a predefined set.
+
+    """
+
+    def __init__(self, **strings):
+        for name, value in strings.items():
+            if not StyledText.check_type(value):
+                raise TypeError('String attributes only accept styled text'
+                                .format(self.name))
+            self[name] = value
+
+
 class Strings(AcceptNoneAttributeType, dict):
     """Stores several :class:`StringCollection`\\ s"""
 

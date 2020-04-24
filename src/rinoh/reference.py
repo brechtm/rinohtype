@@ -319,11 +319,9 @@ class SECTION_TITLE(SectionFieldType):
 
 from . import structure    # fills StringCollection.subclasses
 
-RE_STRINGFIELD = ('|'.join(r'{}\.(?:{})'
-                           .format(collection_name, '|'.join(s.name for s
-                                                             in cls._strings))
-                           for collection_name, cls
-                           in StringCollection.subclasses.items()))
+RE_STRINGFIELD = ('|'.join(r'{}\.(?:[a-z_][a-z0-9_]*)'
+                           .format(collection_name)
+                           for collection_name in StringCollection.subclasses))
 
 
 class Field(MixedStyledTextBase):

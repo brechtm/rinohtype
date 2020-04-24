@@ -22,7 +22,7 @@ from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import (ReferenceField, ReferenceText, Field, PAGE_NUMBER,
                              NUMBER_OF_PAGES, SECTION_TITLE, SECTION_NUMBER)
-from rinoh.strings import StringField
+from rinoh.strings import StringField, UserStrings
 from rinoh.structure import SectionTitles, AdmonitionTitles
 from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
                          parse_class_selector, parse_keyword, parse_string,
@@ -304,6 +304,10 @@ def test_styledtext_from_string_field():
            == MixedStyledText([SingleStyledText('1'),
                                StringField(AdmonitionTitles, 'warning'),
                                SingleStyledText('2')], style='style')
+    assert StyledText.from_string("'{UserStrings.my_string}abc' (style)") \
+           == MixedStyledText([StringField(UserStrings, 'my_string'),
+                               SingleStyledText('abc')], style='style')
+
 
 def test_styledtext_from_string_inline_image():
     assert StyledText.from_string("IMAGE('images/image.pdf')") \
