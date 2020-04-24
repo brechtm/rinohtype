@@ -18,7 +18,8 @@ from util import in_directory
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.attribute import OverrideDefault, Var
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
-                            ContentsPartTemplate, PageTemplate)
+                            ContentsPartTemplate, PageTemplate,
+                            TemplateConfigurationFile)
 
 
 __all__ = ['render_doctree', 'render_rst_file']
@@ -41,11 +42,16 @@ class MinimalTemplate(DocumentTemplate):
 def render_rst_file(rst_path, out_filename, reference_path):
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
+    kwargs = {}
     stylesheet_path = rst_path.with_suffix('.rts')
-    kwargs = (dict(stylesheet=str(stylesheet_path))
-              if stylesheet_path.exists() else {})
-    config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
-    config.variables['paper_size'] = 'a5'
+    if stylesheet_path.exists():
+        kwargs['stylesheet'] = str(stylesheet_path)
+    templconf_path = rst_path.with_suffix('.rtt')
+    if templconf_path.exists():
+        config = TemplateConfigurationFile(str(templconf_path))
+    else:
+        config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
+        config.variables['paper_size'] = 'a5'
     render_doctree(doctree, out_filename, reference_path, config)
 
 
