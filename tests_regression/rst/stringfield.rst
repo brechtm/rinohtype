@@ -11,4 +11,4 @@ Second Chapter
 
 .. warning:: Wipe your feet.
 
-A Paragraph in the second section.
+A paragraph in the second section.

@@ -4,12 +4,14 @@
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
-  Paragraph('CH. 1', style='body matter chapter label')
+  Paragraph('Ch. 1', style='body matter chapter label')
        > (0,0,1,0,2) body matter chapter label
          (0,0,0,0,2) body
-    MixedStyledText('CH. 1')
-      MixedStyledText('CH. ')
-        StringField('CH.')
+    MixedStyledText('Ch. 1')
+      MixedStyledText('Ch. ')
+        StringField('Ch.')
+          SingleStyledText('Ch.', style='emphasis')
+               > (0,0,1,0,1) emphasis
         SingleStyledText(' ')
       Field('1', style='number')
            > (0,0,2,0,3) body matter chapter number
@@ -57,29 +59,34 @@
         Field('')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
-    Footer('my string 	 	 1.  First Chapter')
+    Footer('my string	 	 1.  First Chapter')
          > (0,0,0,0,2) footer
            (0,0,0,0,1) body
-      MixedStyledText('my string 	 	 1.  First Chapter')
-        StringField('my string')
-        SingleStyledText(' 	 	 ')
-        Field('1')
-          SingleStyledText('1')
-        SingleStyledText('.  ')
-        Field('First Chapter')
-          SingleStyledText('First Chapter')
+      MixedStyledText('my string	 	 1.  First Chapter')
+        StringField('my string', style='monospaced')
+             > (0,0,1,0,1) monospaced
+          SingleStyledText('my string')
+        MixedStyledText('	 	 1.  First Chapter')
+          SingleStyledText('	 	 ')
+          Field('1')
+            SingleStyledText('1')
+          SingleStyledText('.  ')
+          Field('First Chapter')
+            SingleStyledText('First Chapter')
 ---------------------------------- page 3 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
-  Paragraph('CH. 2', style='body matter chapter label')
+  Paragraph('Ch. 2', style='body matter chapter label')
        > (0,0,1,0,2) body matter chapter label
          (0,0,0,0,2) body
-    MixedStyledText('CH. 2')
-      MixedStyledText('CH. ')
-        StringField('CH.')
+    MixedStyledText('Ch. 2')
+      MixedStyledText('Ch. ')
+        StringField('Ch.')
+          SingleStyledText('Ch.', style='emphasis')
+               > (0,0,1,0,1) emphasis
         SingleStyledText(' ')
       Field('2', style='number')
            > (0,0,2,0,3) body matter chapter number
@@ -107,10 +114,10 @@
               SingleStyledText(' ')
               MixedStyledText('Wipe your feet.')
                 SingleStyledText('Wipe your feet.')
-        Paragraph('A Paragraph in the second sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:14 <paragraph>
+        Paragraph('A paragraph in the second sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:14 <paragraph>
              > (0,0,0,0,2) body
-          MixedStyledText('A Paragraph in the second sectio...')
-            SingleStyledText('A Paragraph in the second sectio...')
+          MixedStyledText('A paragraph in the second sectio...')
+            SingleStyledText('A paragraph in the second sectio...')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')

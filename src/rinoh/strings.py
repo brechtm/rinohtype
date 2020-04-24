@@ -9,7 +9,7 @@
 from itertools import chain
 
 from .attribute import AcceptNoneAttributeType
-from .text import StyledText, SingleStyledTextBase
+from .text import StyledText, SingleStyledText, MixedStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
@@ -116,19 +116,18 @@ class Strings(AcceptNoneAttributeType, dict):
                 ':class:`.StringCollection` subclasses')
 
 
-class StringField(SingleStyledTextBase):
+class StringField(MixedStyledTextBase):
     """Styled text that will be substituted with a configured string
 
-    The configured string is either the localized string as determined by the
+    The displayed string is either the localized string as determined by the
     language set for the document or the user-supplied string passed to the
-    :class:`TemplateConfiguration`
+    :class:`TemplateConfiguration`.
 
     """
-    def __init__(self, strings_class, key, case=None, style=None, parent=None):
+    def __init__(self, strings_class, key, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self.strings_class = strings_class
         self.key = key
-        self.case = case
 
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
@@ -148,31 +147,14 @@ class StringField(SingleStyledTextBase):
         collection, key = string.split('.')
         return cls(StringCollection.subclasses[collection], key, style=style)
 
-    def string(self, document):
-        return document.get_string(self.strings_class, self.key)
+    @property
+    def items(self):
+        return [self]
 
-    def text(self, flowable_target):
-        if flowable_target is None:
-            return repr(self)
-        string = self.string(flowable_target.document)
-        try:
-            string = string.to_string(flowable_target)
-        except AttributeError:
-            pass
-        return self.case(string) if self.case else string
-
-    def _case(self, case_function):
-        return type(self)(self.strings_class, self.key, case=case_function,
-                          style=self.style, parent=self.parent)
-
-    def lower(self):
-        return self._case(str.lower)
-
-    def upper(self):
-        return self._case(str.upper)
-
-    def capitalize(self):
-        return self._case(str.capitalize)
-
-    def title(self):
-        return self._case(str.title)
+    def children(self, container):
+        text = container.document.get_string(self.strings_class, self.key)
+        if isinstance(text, StyledText):
+            text.parent = self
+            yield text
+        else:
+            yield SingleStyledText(text, parent=self)

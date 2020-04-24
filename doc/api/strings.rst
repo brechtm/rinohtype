@@ -13,6 +13,10 @@ Strings (:mod:`rinoh.strings`)
     :members:
 
 
+.. autoclass:: UserStrings
+    :members:
+
+
 .. autoclass:: Strings
     :members:
 

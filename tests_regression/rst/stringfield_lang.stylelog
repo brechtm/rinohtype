@@ -4,12 +4,13 @@
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
-  Paragraph('HOOFDSTUK 1', style='body matter chapter label')
+  Paragraph('Hoofdstuk 1', style='body matter chapter label')
        > (0,0,1,0,2) body matter chapter label
          (0,0,0,0,2) body
-    MixedStyledText('HOOFDSTUK 1')
-      MixedStyledText('HOOFDSTUK ')
-        StringField('HOOFDSTUK')
+    MixedStyledText('Hoofdstuk 1')
+      MixedStyledText('Hoofdstuk ')
+        StringField('Hoofdstuk')
+          SingleStyledText('Hoofdstuk')
         SingleStyledText(' ')
       Field('1', style='number')
            > (0,0,2,0,3) body matter chapter number
@@ -62,6 +63,7 @@
            (0,0,0,0,1) body
       MixedStyledText('my string 	 	 1.  Eerste hoofdst...')
         StringField('my string')
+          SingleStyledText('my string')
         SingleStyledText(' 	 	 ')
         Field('1')
           SingleStyledText('1')
@@ -74,12 +76,13 @@
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
-  Paragraph('HOOFDSTUK 2', style='body matter chapter label')
+  Paragraph('Hoofdstuk 2', style='body matter chapter label')
        > (0,0,1,0,2) body matter chapter label
          (0,0,0,0,2) body
-    MixedStyledText('HOOFDSTUK 2')
-      MixedStyledText('HOOFDSTUK ')
-        StringField('HOOFDSTUK')
+    MixedStyledText('Hoofdstuk 2')
+      MixedStyledText('Hoofdstuk ')
+        StringField('Hoofdstuk')
+          SingleStyledText('Hoofdstuk')
         SingleStyledText(' ')
       Field('2', style='number')
            > (0,0,2,0,3) body matter chapter number

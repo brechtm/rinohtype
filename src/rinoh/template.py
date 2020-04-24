@@ -549,7 +549,7 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
         if section_name in StringCollection.subclasses:
             collection_cls = StringCollection.subclasses[section_name]
             strings = self.setdefault('strings', Strings())
-            collection_items = {name: parse_string(CharIterator(value))
+            collection_items = {name: StyledText.from_string(value)
                                 for name, value in items}
             strings[collection_cls] = collection_cls(**collection_items)
         else:

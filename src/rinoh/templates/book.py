@@ -27,7 +27,7 @@ FRONT_MATTER_TITLE = [Paragraph(Field(SECTION_TITLE(1)),
                                 style='front matter section title')]
 
 
-BODY_TITLE = [Paragraph(StringField(SectionTitles, 'chapter').upper() + ' '
+BODY_TITLE = [Paragraph(StringField(SectionTitles, 'chapter') + ' '
                         + Field(SECTION_NUMBER(1), style='number'),
                         style='body matter chapter label'),
               Paragraph(Field(SECTION_TITLE(1)),

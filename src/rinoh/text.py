@@ -79,6 +79,7 @@ class TextStyle(Style):
     font_size = Attribute(Dimension, 10*PT, 'Height of characters')
     font_color = Attribute(Color, BLACK, 'Color of the font')
     font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
+    # TODO: text_case = Attribute(TextCase, None, 'Change text casing')
     position = Attribute(TextPosition, 'normal', 'Vertical text position')
     kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
     ligatures = Attribute(Bool, True, 'Run letters together where possible')
