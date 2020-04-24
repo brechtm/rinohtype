@@ -39,6 +39,7 @@ from .language import EN
 from .layout import (Container, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import format_number
+from .strings import Strings
 from .style import StyleLog
 from .util import RefKeyDictionary
 from .warnings import warn
@@ -224,7 +225,7 @@ class Document(object):
         self.document_tree = document_tree
         self.stylesheet = stylesheet
         self.language = language
-        self._strings = strings or ()
+        self._strings = strings or Strings()
         self.backend = backend or pdf
         self.backend_document = self.backend.Document(self.CREATOR)
         self._flowables = list(id(element)

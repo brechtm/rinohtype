@@ -110,6 +110,11 @@ class Strings(AcceptNoneAttributeType, dict):
                                      type(self).__name__))
         super().__setitem__(string_collection_class, string_collection)
 
+    def __missing__(self, string_collection_class):
+        instance = string_collection_class()
+        self[string_collection_class] = instance
+        return instance
+
     @classmethod
     def doc_format(cls):
         return ('strings need to be entered in INI sections named after the '
