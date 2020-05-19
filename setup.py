@@ -6,6 +6,8 @@ Setup script for rinohtype
 
 import sys
 
+import pkg_resources
+
 from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 
@@ -49,7 +51,7 @@ def get_version():
             print(is_dirty)
             assert False
         version = VERSION
-    return version
+    return pkg_resources.safe_version(version)
 
 
 def version_from_pkginfo():
