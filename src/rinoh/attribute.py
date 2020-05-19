@@ -180,7 +180,7 @@ class Attribute(NamedDescriptor):
     def __set__(self, style, value):
         if not self.accepted_type.check_type(value):
             raise TypeError('The {} attribute only accepts {} instances'
-                            .format(self.name, self.accepted_type))
+                            .format(self.name, self.accepted_type.__name__))
         style[self.name] = value
 
 
