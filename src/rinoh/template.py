@@ -658,9 +658,8 @@ class PartsList(AttributeType, list):
 
     @classmethod
     def doc_repr(cls, value):
-        space = '\\ ``\N{NO-BREAK SPACE}``\\ '
-        return space.join(':attr:`{}`'.format(part)
-                          for part in value) or '(empty list)'
+        return ' '.join(':attr:`{}`'.format(part)
+                        for part in value) or '(empty list)'
 
     @classmethod
     def doc_format(cls):

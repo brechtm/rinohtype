@@ -180,8 +180,8 @@ class Container(object):
     def render(self, type, rerender=False):
         """Render the contents of this container to its canvas.
 
-        Note that the rendered contents need to be :meth:`place`d on the parent
-        container's canvas before they become visible."""
+        Note that the rendered contents need to be :meth:`place`\\ d on the
+        parent container's canvas before they become visible."""
         for child in self.children:
             child.render(type, rerender)
 
