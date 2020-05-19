@@ -70,7 +70,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
     :class:`float`.
 
     The internal representation is in terms of PostScript points. A PostScript
-    point is equal to one 72th of an inch.
+    point is equal to one 72nd of an inch.
 
     """
 

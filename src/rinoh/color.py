@@ -17,6 +17,16 @@ __all__ = ['Color', 'HexColor', 'BLACK', 'WHITE', 'RED', 'GREEN', 'BLUE',
 
 
 class Color(AcceptNoneAttributeType):
+    """Color defined by component values
+
+    Args:
+        red (float): red component (0 .. 1)
+        blue (float): blue component (0 .. 1)
+        green (float): green component (0 .. 1)
+        alpha (float): opacity (0 .. 1)
+
+    """
+
     def __init__(self, red, green, blue, alpha=1):
         for value in (red, green, blue, alpha):
             if not 0 <= value <= 1:
@@ -57,6 +67,12 @@ class Color(AcceptNoneAttributeType):
 
 
 class HexColor(Color):
+    """Color defined as a hexadecimal string
+
+    Args:
+        string (str): ``#RGBA`` or ``#RRGGBBAA`` (``#`` and ``A`` are optional)
+
+    """
     def __init__(self, string):
         if string.startswith('#'):
             string = string[1:]
@@ -77,6 +93,13 @@ class HexColor(Color):
 
 
 class Gray(Color):
+    """Shade of gray
+
+    Args:
+        luminance (float): brightness (0 .. 1)
+        alpha (float): opacity (0 .. 1)
+
+    """
     def __init__(self, luminance, alpha=1):
         super().__init__(luminance, luminance, luminance, alpha)
 

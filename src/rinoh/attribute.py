@@ -86,6 +86,8 @@ class AttributeType(object):
 
 
 class AcceptNoneAttributeType(AttributeType):
+    """Accepts 'none' (besides other values)"""
+
     @classmethod
     def check_type(cls, value):
         return (isinstance(value, type(None))
@@ -165,6 +167,7 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
 
 class Attribute(NamedDescriptor):
     """Descriptor used to describe a style attribute"""
+
     def __init__(self, accepted_type, default_value, description):
         self.name = None
         self.accepted_type = accepted_type
@@ -186,6 +189,7 @@ class Attribute(NamedDescriptor):
 
 class OverrideDefault(Attribute):
     """Overrides the default value of an attribute defined in a superclass"""
+
     def __init__(self, default_value):
         self._default_value = default_value
 
@@ -225,18 +229,16 @@ class WithAttributes(WithNamedDescriptors):
                         pass
                 else:
                     raise NotImplementedError
-                doc.append('{0} (:class:`.{1}`): Overrides the default '
-                           'set in :attr:`{2} <.{2}.{0}>`'
-                           .format(name, attr.accepted_type.__name__,
-                                   mro_cls.__name__))
+                doc.append('{0}: Overrides the default '
+                           'set in :attr:`{1} <.{1}.{0}>`'
+                           .format(name, mro_cls.__name__))
             else:
-                doc.append('{} (:class:`.{}`): {}'
-                           .format(name, attr.accepted_type.__name__,
-                                   attr.description))
+                doc.append('{}: {}'.format(name, attr.description))
             format = attr.accepted_type.doc_format()
             default = attr.accepted_type.doc_repr(attr.default_value)
-            doc.append('\n            Accepts: {}\n'.format(format))
-            doc.append('\n            Default: {}\n'.format(default))
+            doc.append('\n            *Accepts* :class:`.{}`: {}\n'
+                       .format(attr.accepted_type.__name__, format))
+            doc.append('\n            *Default*: {}\n'.format(default))
         supported_attributes = list(name for name in attributes)
         documented = set(supported_attributes)
         for base_class in bases:
@@ -248,14 +250,14 @@ class WithAttributes(WithNamedDescriptors):
                 for name, attr in getattr(mro_cls, '_attributes', {}).items():
                     if name in documented:
                         continue
-                    doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) {}'
-                               .format(name, attr.accepted_type.__name__,
-                                       mro_cls.__name__, mro_cls.__name__,
-                                       name, attr.description))
+                    doc.append('{0}: {1} (inherited from :attr:`{2} <.{2}.{0}>`)'
+                               .format(name, attr.description,
+                                       mro_cls.__name__))
                     format = attr.accepted_type.doc_format()
                     default = attr.accepted_type.doc_repr(attr.default_value)
-                    doc.append('\n            Accepts: {}\n'.format(format))
-                    doc.append('\n            Default: {}\n'.format(default))
+                    doc.append('\n            *Accepts* :class:`.{}`: {}\n'
+                               .format(attr.accepted_type.__name__, format))
+                    doc.append('\n            *Default*: {}\n'.format(default))
                     documented.add(name)
         if doc:
             attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
@@ -458,6 +460,8 @@ class RuleSetFile(RuleSet):
 
 
 class Bool(AttributeType):
+    """Expresses a binary choice"""
+
     @classmethod
     def check_type(cls, value):
         return isinstance(value, bool)
@@ -481,6 +485,8 @@ class Bool(AttributeType):
 
 
 class Integer(AttributeType):
+    """Accepts natural numbers"""
+
     @classmethod
     def check_type(cls, value):
         return isinstance(value, int)

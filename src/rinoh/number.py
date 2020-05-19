@@ -18,10 +18,13 @@ from .style import Style
 from .text import StyledText
 
 
-__all__ = ['NumberStyle', 'Label', 'NumberedParagraph', 'format_number']
+__all__ = ['NumberFormat', 'NumberStyle', 'Label', 'NumberedParagraph',
+           'format_number']
 
 
 class NumberFormat(OptionSet):
+    """How (or if) numbers are displayed"""
+
     values = (None, 'number', 'symbol', 'lowercase character',
               'uppercase character', 'lowercase roman', 'uppercase roman')
 

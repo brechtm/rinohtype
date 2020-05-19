@@ -42,6 +42,8 @@ __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
 # Text justification
 
 class TextAlign(OptionSet):
+    """Text justification"""
+
     values = 'left', 'right', 'center', 'justify'
 
 
@@ -249,19 +251,23 @@ PREDEFINED_SPACINGS = dict(default=DEFAULT,
 
 
 class TabAlign(OptionSet):
+    """Alignment of text with respect to a tab stop"""
+
     values = 'left', 'right', 'center'
 
 
 class TabStop(object):
-    """Horizontal position for aligning text of successive lines."""
+    """Horizontal position for aligning text of successive lines
+
+    Args:
+        position (:class:`Dimension` or :class:`Fraction`): tab stop position
+        align (TabAlign): the alignment of text with respect to the tab stop
+            positon
+        fill (str): string pattern to fill the empty tab space with
+
+    """
 
     def __init__(self, position, align='left', fill=None):
-        """`position` can be an absolute position (:class:`Dimension`) or can
-        be relative to the line width (:class:`Fraction`).
-        The alignment of text with respect to the tab stop is determined by
-        `align`, which can be :const:`LEFT`, :const:`RIGHT` or :const:`CENTER`.
-        Optionally, `fill` specifies a string pattern to fill the empty tab
-        space with."""
         self._position = position
         self.align = align
         self.fill = fill
@@ -283,6 +289,8 @@ class TabStop(object):
 
 
 class TabStopList(AttributeType, list):
+    """List of tab stop positions (with alignment and fill string)"""
+
     def __str__(self):
         return ', '.join(str(tab_stop) for tab_stop in self)
 
@@ -332,7 +340,7 @@ class TabStopList(AttributeType, list):
     def doc_format(cls):
         return ('a comma-seperated list of tab stops. A tab stop is specified '
                 'as ``<position> [align] [fill string]``, where '
-                '``<position>`` (:class:`.Dimension`) is required and '
+                '``position`` (:class:`.Dimension`) is required and '
                 '``align`` (:class:`.TabAlign`) and ``fill string`` '
                 '(string enclosed in quotes) are optional.')
 

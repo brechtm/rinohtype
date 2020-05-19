@@ -50,6 +50,8 @@ __all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
 
 
 class Locale(AttributeType):
+    """Selects a language"""
+
     REGEX = re.compile(r'^[a-z]{2}_[A-Z]{2}$')
 
     @classmethod
@@ -342,6 +344,8 @@ ESCAPE = str.maketrans({"'": r"\'",
 
 
 class SingleStyledText(SingleStyledTextBase):
+    """Text with a single style applied"""
+
     def __init__(self, text, style=None, parent=None):
         super().__init__(style=style, parent=parent)
         self._text = text

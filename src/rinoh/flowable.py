@@ -44,6 +44,8 @@ __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
 
 
 class FlowableWidth(OptionSet):
+    """Controls the width of a flowable"""
+
     values = ('auto', 'fill')
 
     @classmethod
@@ -57,8 +59,14 @@ class FlowableWidth(OptionSet):
         else:
             return Dimension.from_tokens(tokens)
 
+    @classmethod
+    def doc_format(cls):
+        return super().doc_format() + ' or ' + Dimension.doc_format()
+
 
 class HorizontalAlignment(OptionSet):
+    """Controls horizontal placement"""
+
     values = 'left', 'right', 'center'
 
 
