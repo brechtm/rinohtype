@@ -238,6 +238,7 @@ class WithAttributes(WithNamedDescriptors):
             doc.append('\n            Accepts: {}\n'.format(format))
             doc.append('\n            Default: {}\n'.format(default))
         supported_attributes = list(name for name in attributes)
+        documented = set(supported_attributes)
         for base_class in bases:
             try:
                 supported_attributes.extend(base_class._supported_attributes)
@@ -245,7 +246,7 @@ class WithAttributes(WithNamedDescriptors):
                 continue
             for mro_cls in base_class.__mro__:
                 for name, attr in getattr(mro_cls, '_attributes', {}).items():
-                    if name in attributes:
+                    if name in documented:
                         continue
                     doc.append('{} (:class:`.{}`): (:attr:`{} <.{}.{}>`) {}'
                                .format(name, attr.accepted_type.__name__,
@@ -255,6 +256,7 @@ class WithAttributes(WithNamedDescriptors):
                     default = attr.accepted_type.doc_repr(attr.default_value)
                     doc.append('\n            Accepts: {}\n'.format(format))
                     doc.append('\n            Default: {}\n'.format(default))
+                    documented.add(name)
         if doc:
             attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
             cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'
