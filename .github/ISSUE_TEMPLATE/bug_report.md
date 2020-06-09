@@ -16,4 +16,6 @@ In **both cases**, please provide a link to the **source files** (e.g. Sphinx pr
 
 Please also provide the following information:
 * rinohtype version: (output from `rinoh --version`)
+* Sphinx version: (output from `sphinx-build --version`)
+* Python version: (output from `python --version`)
 * operating system:
