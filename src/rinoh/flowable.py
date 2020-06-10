@@ -18,7 +18,7 @@ that make up the content of a document and are rendered onto its pages.
 
 
 from copy import copy
-from itertools import chain, tee
+from itertools import chain
 from token import NAME
 
 from .attribute import Attribute, OptionSet, Bool, OverrideDefault
@@ -61,7 +61,7 @@ class FlowableWidth(OptionSet):
 
     @classmethod
     def doc_format(cls):
-        return super().doc_format() + ' or ' + Dimension.doc_format()
+        return super(cls, cls).doc_format() + ' or ' + Dimension.doc_format()
 
 
 class HorizontalAlignment(OptionSet):
