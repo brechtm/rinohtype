@@ -42,6 +42,7 @@ following things can help move rinohtype forward:
 * development of professional-looking stylesheets and document templates
 * volunteering to be a maintainer: fix issues that pop up when new versions of
   dependencies are released (Python, Sphinx, ...)
+* help with maintaining and improving the documentation
 * development of new features, e.g. widow/orphan handling, Knuth-Plass line
   breaking, mathematics typesetting, performance improvements, ...
 * companies might be interested in funding the development of particular
