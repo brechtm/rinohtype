@@ -277,11 +277,13 @@ class TableOfContents(GroupedFlowables):
             while next(items) is not section:  # fast-forward `items` to the
                 pass                           # first sub-section of `section`
             for item in items:
-                if item.level == section.level:
+                if item.level <= section.level:
                     break
                 yield item
 
         depth = self.get_style('depth', container)
+        if self.local and self.section:
+            depth += self.level - 1
         items = (section for section in container.document._sections
                  if section.show_in_toc(container) and section.level <= depth)
         if self.local and self.section:

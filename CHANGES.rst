@@ -16,6 +16,7 @@ New Features:
 Fixed:
 
 * Regression in handling images that don't fit on the current page (issue #153)
+* Fix crash when rendering local table of contents (issue #160)
 
 
 Release 0.4.0 (2020-03-05)
