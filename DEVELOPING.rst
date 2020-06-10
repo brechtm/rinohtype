@@ -21,7 +21,7 @@ interpreters.
 Environments
 ------------
 
-``py35``, ``py36``, ``py37``, ``py38``, ``py39``, ``pypy3``
+``py35``, ``py36``, ``py37``, ``py38``, ``py39``, ``py310``, ``pypy3``
     Runs the unit tests in the interpreter corresponding to the name of the
     environment.
 
@@ -89,10 +89,10 @@ system-default Python versions.
 
 The file ``.python-version`` in the root of the repository specifies which
 Python versions pyenv should make available whenever we are inside the
-repository. The file lists specific versions of CPython 3.5 to 3.9 and a
-recent PyPy3 version (Ideally, we should closely track the latest releases).
-The ``pyenv_install.py`` script will install the interpreters listed in
-``.python-version`` for you.
+repository checkout. The file lists specific versions of CPython 3.5 to 3.10
+and a recent PyPy3 version (Ideally, we should closely track the latest
+releases). The ``pyenv_install.py`` script will install the interpreters listed
+in ``.python-version`` for you.
 
 In addition to these versions, the first entry of the ``.python-version``
 specifies ``rinoh-tox``. This is a virtual environment that has tox installed
