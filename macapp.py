@@ -1,5 +1,8 @@
 # Build an application bundle for macOS
 
+# FIXME: briefcase changed how it is configured and run
+# https://briefcase.readthedocs.io/en/latest/how-to/upgrade-from-v0.2.html
+
 import argparse
 import os
 import re

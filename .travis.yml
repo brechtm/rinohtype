@@ -84,27 +84,27 @@ matrix:
       env: TOXENV=check-docs
     - python: 3.8
       env: TOXENV=build-docs
-    - os: osx
-      sudo: required
-      language: objective-c
-      cache:
-        pip: false
-        directories:
-          - /usr/local/Homebrew
-          - $HOME/Library/Caches/Homebrew
-          - $HOME/Library/Caches/pip
-          - $HOME/.pyenv
-      env:
-        - TOXENV=macapp
-      before_install:
-        - brew unlink pyenv
-        - brew install --HEAD pyenv
-        - eval "$(pyenv init -)"
-        - pyenv install --skip-existing 3.7.6
-        - pyenv shell 3.7.6
-        - python --version
-      before_cache:
-        - brew cleanup
+#    - os: osx
+#      sudo: required
+#      language: objective-c
+#      cache:
+#        pip: false
+#        directories:
+#          - /usr/local/Homebrew
+#          - $HOME/Library/Caches/Homebrew
+#          - $HOME/Library/Caches/pip
+#          - $HOME/.pyenv
+#      env:
+#        - TOXENV=macapp
+#      before_install:
+#        - brew unlink pyenv
+#        - brew install --HEAD pyenv
+#        - eval "$(pyenv init -)"
+#        - pyenv install --skip-existing 3.7.6
+#        - pyenv shell 3.7.6
+#        - python --version
+#      before_cache:
+#        - brew cleanup
 
 install:
   - pip install travis-wait-improved
