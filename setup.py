@@ -106,7 +106,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    python_requires='>= 3.4',
+    python_requires='>= 3.5',
     install_requires=['setuptools', 'pip', 'docutils', 'recommonmark',
                       'rinoh-typeface-texgyrecursor>=0.1.1',
                       'rinoh-typeface-texgyreheros>=0.1.1',
