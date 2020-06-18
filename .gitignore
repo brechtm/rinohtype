@@ -8,6 +8,7 @@ Brewfile.lock.json
 /.eggs
 /.tox
 /.coverage
+/.venv
 /coverage.xml
 /build
 /dist

@@ -75,9 +75,7 @@ Managing multiple Python interpreter versions
 
 To be able to test rinohtype against multiple Python interpreter versions,
 these need to be available on your machine. pyenv_ can help you easily manage
-these. For example, to install CPython 3.8.1, you can run
-
-::
+these. For example, to install CPython 3.8.1, you can run::
 
     pyenv install 3.8.1
 
@@ -94,13 +92,23 @@ and a recent PyPy3 version (Ideally, we should closely track the latest
 releases). The ``pyenv_install.py`` script will install the interpreters listed
 in ``.python-version`` for you.
 
-In addition to these versions, the first entry of the ``.python-version``
-specifies ``rinoh-tox``. This is a virtual environment that has tox installed
-along with some other tools required for making a new rinohtype release. The
+With these Python versions installed, you can set up a virtual environment
+with tox and some other development tools. The repository comes with a Poetry_
+``pyproject.toml`` file to help set up this virtualenv [#]_. The
 ``pyenv_install.py`` script instructs you how to set up this virtual
-environment. This requires pyenv-virtualenv_, a pyenv plugin.
+environment. Activate the virtualenv like this::
 
-.. _pyenv-virtualenv: https://github.com/pyenv/pyenv-virtualenv
+    source .venv/bin/activate
+
+If you install direnv_, the virtual environment can be automatically activated
+when you enter the rinohtype reposutory checkout (see the ``.envrc`` file).
+
+.. [#] Note that we only use Poetry for the tox virtualenv for now. It would be
+       good if Poetry could replace ``setup.py`` and tools like bump2version
+       and twine, but that will require quite some work.
+
+.. _Poetry: https://python-poetry.org/
+.. _direnv: https://direnv.net/
 
 
 Executing tox environments

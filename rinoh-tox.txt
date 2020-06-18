@@ -1,5 +1,0 @@
-bump2version
-restview
-tox
-twine
-wheel
