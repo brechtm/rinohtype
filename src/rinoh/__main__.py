@@ -46,13 +46,18 @@ parser.add_argument('-o', '--option', type=str, action='append', nargs=1,
                     default=[], metavar='OPTION=VALUE',
                     help='options to be passed to the input file reader')
 parser.add_argument('-t', '--template', type=str, default='article',
-                    metavar='NAME OR FILENAME',
+                    metavar='NAME or FILENAME',
                     help='the document template or template configuration '
                          'file to use' + DEFAULT)
-parser.add_argument('-s', '--stylesheet', type=str, metavar='NAME OR FILENAME',
+parser.add_argument('-s', '--stylesheet', type=str, metavar='NAME or FILENAME',
                     help='the style sheet used to style the document '
                          'elements '
                          + DEFAULT % dict(default="the template's default"))
+parser.add_argument('-O', '--output', type=str,
+                    metavar='FILENAME or DIRECTORY',
+                    help='write the PDF output to FILENAME or to an existing '
+                         'DIRECTORY with a filename derived from the input '
+                         'filename (default: the current working directory)')
 parser.add_argument('-p', '--paper', type=str,
                     help='the paper size to render to '
                          + DEFAULT % dict(default="the template's default"))
@@ -238,6 +243,15 @@ def main():
         raise SystemExit('{}: No such file'.format(args.input))
     input_dir, input_filename = os.path.split(args.input)
     input_root, input_ext = os.path.splitext(input_filename)
+
+    if args.output:
+        if os.path.isdir(args.output):
+            output_path = os.path.join(args.output, input_root)
+        else:
+            output_path = args.output
+    else:
+        output_path = input_root
+
     reader_name, reader_cls = (get_reader_by_name(args.format) if args.format
                                else get_reader_by_extension(input_ext[1:]))
     str_options = dict((part.strip() for part in option.split('=', maxsplit=1))
@@ -268,7 +282,7 @@ def main():
     document = template_cls(document_tree, configuration=configuration)
     while True:
         try:
-            success = document.render(input_root)
+            success = document.render(output_path)
             if not success:
                 raise SystemExit('Rendering completed with errors')
             break

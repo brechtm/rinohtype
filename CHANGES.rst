@@ -12,6 +12,7 @@ New Features:
 * Sphinx frontend: use the `today` and `today_fmt` configuration variables for
   the date on the title page
 * Sphinx frontend: allow extensions access to the builder object (issue #155)
+* rinoh --output: write the output PDF to a specified location
 
 Fixed:
 
