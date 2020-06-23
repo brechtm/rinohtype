@@ -17,7 +17,8 @@ from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, OverrideDefault,
-                        Configurable, DefaultValueException)
+                        Configurable, DefaultValueException,
+                        VariableNotDefined)
 from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, Page, PageOrientation, PageType
 from .element import create_destination
@@ -499,7 +500,6 @@ class TemplateConfiguration(RuleSet):
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
         super().__init__(name, base=base or self.template, **options)
         self.description = description
-        self.variables['paper_size'] = A4
 
     @property
     def _stylesheet_search_path(self):
@@ -688,6 +688,8 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     parts = Attribute(PartsList, [], 'The parts making up this document')
 
+    variables = {'paper_size': A4}      # default variable values
+
     def __init__(self, document_tree, configuration=None, backend=None):
         self.configuration = (configuration if configuration is not None
                               else self.Configuration('empty'))
@@ -713,6 +715,14 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         return self.configuration.get_entries(name, self)
 
     RE_PAGE = re.compile('^(.*)_(right|left)_page$')
+
+    @classmethod
+    def get_variable(cls, variable):
+        try:
+            return cls.variables[variable.name]
+        except KeyError:
+            raise VariableNotDefined("Document template provides no default "
+                                     "for variable '{}'".format(variable.name))
 
     def get_option(self, option_name):
         return self.configuration.get_attribute_value(option_name)
