@@ -53,20 +53,21 @@ matrix:
       before_install:
         - brew unlink pyenv
         - brew install --HEAD pyenv
-        - brew install --HEAD pyenv-virtualenv
+        - brew install poetry
         - brew install imagemagick
         - brew install poppler
         - eval "$(pyenv init -)"
-        - eval "$(pyenv virtualenv-init -)"
         - /usr/bin/python pyenv_setup.py
-        - pyenv virtualenv --force 3.8.1 rinoh-tox
         - python --version
         - python3 --version
         - python3.5 --version
         - python3.6 --version
         - python3.7 --version
         - python3.8 --version
-        - pip install -r rinoh-tox.txt
+        - python3.9 --version
+        - python3.10 --version
+        - poetry install --no-root
+        - source .venv/bin/activate
       install:
       before_cache:
         - brew cleanup
