@@ -7,6 +7,12 @@ assignees: ''
 
 ---
 
+Sometimes bugs have already been fixed in the master branch. Please try to
+reproduce the crash with the current master version of rinohtype before you
+file a bug report. You can install it directly from GitHub like this:
+
+    pip install git+https://github.com/brechtm/rinohtype.git@master
+
 Please provide the following information to make your bug report as useful as
 possible.
 
