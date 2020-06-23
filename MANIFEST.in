@@ -25,6 +25,7 @@ include README.rst
 
 include .bumpversion.cfg
 include .coveragerc
+include .envrc
 include .python-version
 include .travis.yml
 include appveyor.yml
@@ -33,7 +34,10 @@ include coverage.py
 include Dockerfile
 include gitlabpypi.py
 include macapp.py
+include poetry.lock
+include poetry.toml
 include pyenv_setup.py
+include pyproject.toml
 include rinoh.ico
 include rinoh-tox.txt
 include run_tests.py
