@@ -1,0 +1,8 @@
+[TEMPLATE_CONFIGURATION]
+name=My Article
+template=article
+
+parts=contents
+
+[VARIABLES]
+paper_size=A5

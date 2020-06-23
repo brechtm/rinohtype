@@ -1,0 +1,35 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('This is a paragraph.')   template_paper_size.rst:4 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('This is a paragraph.')
+          SingleStyledText('This is a paragraph.')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('​ ​')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+      MixedStyledText('​ ​')
+        Field('​')
+          SingleStyledText('​')
+        SingleStyledText(' ')
+        Field('​')
+          SingleStyledText('​')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	1/1')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('	1/1')
+        Tab('	')
+        Field('1')
+          SingleStyledText('1')
+        SingleStyledText('/')
+        Field('1')
+          SingleStyledText('1')
