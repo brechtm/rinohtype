@@ -4,10 +4,9 @@
 
 # requirements:
 # - ImageMagick (convert)
-# - Poppler's pdftoppm and pdfinfo tools (works with 0.18.4 and 0.41.0,
-#                                         fails with 0.42.0)
-#   (could be replaced with Ghostscript if speed is
-#    not important - see commented commands below)
+# - MuPDF's mutool >= 1.13.0
+#   or poppler's pdftoppm (known to work: 0.18.4, 0.41.0, 0.85.0, 0.89.0;
+#                          known to fail: 0.42.0)
 
 import os
 import shutil
@@ -16,6 +15,7 @@ import sys
 from decimal import Decimal
 from functools import partial
 from multiprocessing import Pool, cpu_count
+from shutil import which
 from subprocess import Popen, PIPE, DEVNULL
 
 from rinoh.backend.pdf import PDFReader
@@ -55,8 +55,8 @@ def diff_pdf(a_filename, b_filename):
     try:
         pool_outputs = pool.map(perform_diff, page_numbers)
     except CommandFailed as exc:
-        raise SystemExit('Problem running pdftoppm or convert (page {})!'
-                         .format(exc.page_number))
+        raise SystemExit('Problem running mutool/pdftoppm'
+                         ' or convert (page {})!'.format(exc.page_number))
     pool.close() # no more tasks
     pool.join()  # wrap up current tasks
 
@@ -109,13 +109,30 @@ def compare_page(a_filename, b_filename, page_number):
     return compare.wait() == 0
 
 
-def pdf_page_to_ppm(pdf_path, page_number, stdout, gray=False):
+def pdftoppm(pdf_path, page_number, stdout, gray=False):
     command = ['pdftoppm', '-f', str(page_number),
                '-singlefile', str(pdf_path)]
     if gray:
         command.insert(-1, '-gray')
-    pdftoppm = Popen(command, shell=SHELL, stdout=stdout)
-    return pdftoppm
+    return Popen(command, shell=SHELL, stdout=stdout)
+
+
+def mutool(pdf_path, page_number, stdout, gray=False):
+    command = ['mutool', 'draw', '-r', '150', '-F', 'ppm', '-o', '-',
+               str(pdf_path), str(page_number)]
+    if gray:
+        command.insert(-2, '-c')
+        command.insert(-2, 'gray')
+    return Popen(command, shell=SHELL, stdout=stdout)
+
+
+if which('mutool'):
+    pdf_page_to_ppm = mutool
+elif which('pdftoppm'):
+    pdf_page_to_ppm = pdftoppm
+else:
+    print("mutool or poppler's pdftoppm is required", file=sys.stderr)
+    raise SystemExit(2)
 
 
 if __name__ == '__main__':
