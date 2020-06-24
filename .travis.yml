@@ -51,6 +51,7 @@ matrix:
           WITH_COVERAGE=1
         # don't set TOXENV; run all envs listed in tox.ini's envlist
       before_install:
+        - brew update
         - brew unlink pyenv
         - brew install --HEAD pyenv
         - brew install poetry
