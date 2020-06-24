@@ -1,0 +1,54 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      CodeBlockWithCaption(id='decoration-rst')   :None <container>
+        Caption('Listing 1. Decoration test')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:1 <caption>
+             > (0,0,0,0,2) caption
+            MixedStyledText('Listing 1. Decoration test')
+              SingleStyledText('Listing ')
+              MixedStyledText('1. ')
+                SingleStyledText('1')
+                SingleStyledText('. ')
+              SingleStyledText('Decoration test')
+        CodeBlock('def hello(name):\n    print(f"Hel...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:1 <literal_block>
+             > (1,0,0,0,2) code block
+               (0,0,0,0,1) body
+          Token('def', type=Token.Keyword)
+               > (0,0,0,1,2) (pygments)Token.Keyword
+          Token(' ', type=Token.Text)
+               > (0,0,0,1,2) (pygments)Token.Text
+          Token('hello', type=Token.Name.Function)
+               > (0,0,0,1,2) (pygments)Token.Name.Function
+          Token('(', type=Token.Punctuation)
+               > (0,0,0,1,2) (pygments)Token.Punctuation
+          Token('name', type=Token.Name)
+               > (0,0,0,1,2) (pygments)Token.Name
+          Token('):', type=Token.Punctuation)
+               > (0,0,0,1,2) (pygments)Token.Punctuation
+          Token('\n    ', type=Token.Text)
+               > (0,0,0,1,2) (pygments)Token.Text
+          Token('print', type=Token.Name.Builtin)
+               > (0,0,0,1,2) (pygments)Token.Name.Builtin
+          Token('(', type=Token.Punctuation)
+               > (0,0,0,1,2) (pygments)Token.Punctuation
+          Token('f', type=Token.Literal.String.Affix)
+               > (0,0,0,1,2) (pygments)Token.Literal.String.Affix
+          Token('"Hello ', type=Token.Literal.String.Double)
+               > (0,0,0,1,2) (pygments)Token.Literal.String.Double
+          Token('{', type=Token.Literal.String.Interpol)
+               > (0,0,0,1,2) (pygments)Token.Literal.String.Interpol
+          Token('name', type=Token.Name)
+               > (0,0,0,1,2) (pygments)Token.Name
+          Token('}', type=Token.Literal.String.Interpol)
+               > (0,0,0,1,2) (pygments)Token.Literal.String.Interpol
+          Token('!"', type=Token.Literal.String.Double)
+               > (0,0,0,1,2) (pygments)Token.Literal.String.Double
+          Token(')', type=Token.Punctuation)
+               > (0,0,0,1,2) (pygments)Token.Punctuation
+          Token('\n', type=Token.Text)
+               > (0,0,0,1,2) (pygments)Token.Text

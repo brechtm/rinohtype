@@ -18,6 +18,7 @@ Fixed:
 
 * Regression in handling images that don't fit on the current page (issue #153)
 * Fix crash when rendering local table of contents (issue #160)
+* Sphinx frontend: support code-block/literalinclude with caption (issue #128)
 * rinoh: variables set in a template configuration file are sometimes ignored
   (issue #164)
 

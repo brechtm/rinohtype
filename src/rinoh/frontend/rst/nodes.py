@@ -731,4 +731,9 @@ class Raw(DocutilsBodyNode, DocutilsInlineNode):
 
 
 class Container(DocutilsGroupingNode):
-    pass
+    def build_flowable(self, style=None, **kwargs):
+        classes = self.get('classes')
+        if 'literal-block-wrapper' in classes:
+            return rt.CodeBlockWithCaption(self.children_flowables(),
+                                           style=style or self.style, **kwargs)
+        return super().build_flowable(style, **kwargs)

@@ -1,3 +1,3 @@
 .. literalinclude:: decoration.rst
-   :caption: decoration test
+   :caption: Decoration test
    :name: decoration-rst

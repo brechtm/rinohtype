@@ -8,6 +8,7 @@
 from distutils.version import LooseVersion
 
 from .color import HexColor
+from .flowable import StaticGroupedFlowables
 from .font.style import FontWeight, FontSlant
 from .paragraph import Paragraph
 from .style import StyledMatcher, StyleSheet
@@ -32,7 +33,8 @@ except ImportError:
     PYGMENTS_AVAILABLE = False
 
 
-__all__ = ['CodeBlock', 'Token', 'pygments_style_to_stylesheet']
+__all__ = ['CodeBlock', 'CodeBlockWithCaption', 'Token',
+           'pygments_style_to_stylesheet']
 
 
 class CodeBlock(Paragraph):
@@ -48,6 +50,10 @@ class CodeBlock(Paragraph):
             warn("The 'pygments' package is not available; cannot perform "
                  "syntax highlighting of {}s.".format(type(self).__name__))
         super().__init__(text, id=id, style=style, parent=parent)
+
+
+class CodeBlockWithCaption(StaticGroupedFlowables):
+    category = 'Listing'
 
 
 def highlight_block(language, text, lexer_getter):

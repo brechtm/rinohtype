@@ -1,0 +1,22 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      CodeBlockWithCaption(id='decoration-rst')   :None <container>
+        Caption('Listing 1. Decoration test')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:1 <caption>
+             > (0,0,0,0,2) caption
+            MixedStyledText('Listing 1. Decoration test')
+              SingleStyledText('Listing ')
+              MixedStyledText('1. ')
+                SingleStyledText('1')
+                SingleStyledText('. ')
+              SingleStyledText('Decoration test')
+        CodeBlock('.. header::\n\n    Header\n\n.. foot...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:1 <literal_block>
+             > (1,0,0,0,2) code block
+               (0,0,0,0,1) body
+          Token('.. header::\n\n    Header\n\n.. foot...', type=Token.Text)
+               > (0,0,0,1,2) (pygments)Token.Text
