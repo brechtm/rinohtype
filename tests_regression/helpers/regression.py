@@ -10,12 +10,15 @@ import pytest
 from pathlib import Path
 
 from sphinx.application import Sphinx
+from sphinx.util.docutils import docutils_namespace
+from sphinx.testing.restructuredtext import parse as sphinx_parse
 
 from diffpdf import diff_pdf
 from pdf_linkchecker import check_pdf_links
 from util import in_directory
 
-from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
+from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 from rinoh.attribute import OverrideDefault, Var
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             ContentsPartTemplate, PageTemplate,
@@ -39,9 +42,7 @@ class MinimalTemplate(DocumentTemplate):
     contents_page = PageTemplate(base='page')
 
 
-def render_rst_file(rst_path, out_filename, reference_path):
-    reader = ReStructuredTextReader()
-    doctree = reader.parse(rst_path)
+def _render_rst(rst_path, doctree, out_filename, reference_path):
     kwargs = {}
     stylesheet_path = rst_path.with_suffix('.rts')
     if stylesheet_path.exists():
@@ -53,6 +54,25 @@ def render_rst_file(rst_path, out_filename, reference_path):
         config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
         config.variables['paper_size'] = 'a5'
     render_doctree(doctree, out_filename, reference_path, config)
+
+
+def render_rst_file(rst_path, out_filename, reference_path):
+    reader = ReStructuredTextReader()
+    doctree = reader.parse(rst_path)
+    return _render_rst(rst_path, doctree, out_filename, reference_path)
+
+
+def render_sphinx_rst_file(rst_path, out_filename, reference_path,
+                           test_output_dir):
+    with docutils_namespace():
+        out_dir = str(test_output_dir)
+        app = Sphinx(srcdir=str(rst_path.parent), confdir=None, outdir=out_dir,
+                     doctreedir=out_dir, buildername='dummy', status=None)
+        with open(rst_path) as rst_file:
+            contents = rst_file.read()
+        sphinx_doctree = sphinx_parse(app, contents)
+    doctree = from_doctree(rst_path.name, sphinx_doctree)
+    return _render_rst(rst_path, doctree, out_filename, reference_path)
 
 
 def render_doctree(doctree, out_filename, reference_path,
