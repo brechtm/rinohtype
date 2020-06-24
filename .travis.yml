@@ -50,13 +50,13 @@ matrix:
         - DIST=sdist
           WITH_COVERAGE=1
         # don't set TOXENV; run all envs listed in tox.ini's envlist
+      addons:
+        homebrew:
+          update: true
+          brewfile: Brewfile
       before_install:
-        - brew update
         - brew unlink pyenv
         - brew install --HEAD pyenv
-        - brew install poetry
-        - brew install imagemagick
-        - brew install poppler
         - eval "$(pyenv init -)"
         - /usr/bin/python pyenv_setup.py
         - python --version
