@@ -33,7 +33,7 @@ from rinoh.template import (DocumentTemplate, TemplateConfiguration,
 from rinoh.text import SingleStyledText
 from rinoh import __version__ as rinoh_version
 
-from rinoh.frontend.rst import ReStructuredTextReader
+from rinoh.frontend.rst import from_doctree
 
 from . import nodes
 
@@ -226,9 +226,8 @@ class RinohBuilder(Builder):
 
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
-        parser = ReStructuredTextReader()
-        rinoh_tree = parser.from_doctree(doctree['source'], doctree,
-                                         sphinx_builder=self)
+        rinoh_tree = from_doctree(doctree['source'], doctree,
+                                  sphinx_builder=self)
         template_cfg = template_from_config(config, self.confdir, logger.warning)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
