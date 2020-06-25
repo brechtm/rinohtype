@@ -91,10 +91,11 @@ class SingleAdjustmentSubtable(MultiFormatTable):
     entries = [('PosFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('ValueFormat', ValueFormat)]
-    formats = {1: [('Value', context(ValueRecord, 'ValueFormat'))],
+    formats = {1: [('ValueRecord', context(ValueRecord, 'ValueFormat'))],
                2: [('ValueCount', uint16),
-                   ('Value', context_array(ValueRecord, 'ValueCount',
-                                           'ValueFormat'))]}
+                   ('ValueRecord', context_array(context(ValueRecord,
+                                                         'ValueFormat'),
+                                                 'ValueCount'))]}
 
 
 class PairSetTable(OpenTypeTable):
