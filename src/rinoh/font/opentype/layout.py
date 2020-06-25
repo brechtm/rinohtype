@@ -127,6 +127,15 @@ class ClassDefinition(MultiFormatTable):
         return 0
 
 
+def subtables(subtable_type, file, file_offset, offsets):
+    """Skip lookup types/subtables that are not yet implemented"""
+    for subtable_offset in offsets:
+        try:
+            yield subtable_type(file, file_offset + subtable_offset)
+        except KeyError:
+            continue
+
+
 class LookupTable(OpenTypeTable):
     entries = [('LookupType', uint16),
                ('LookupFlag', LookupFlag),
@@ -138,8 +147,8 @@ class LookupTable(OpenTypeTable):
         if self['LookupFlag']['UseMarkFilteringSet']:
             self['MarkFilteringSet'] = uint16(file)
         subtable_type = subtable_types[self['LookupType']]
-        self['SubTable'] = [subtable_type(file, file_offset + subtable_offset)
-                            for subtable_offset in offsets]
+        self['SubTable'] = list(subtables(subtable_type, file, file_offset,
+                                          offsets))
 
     def lookup(self, *args, **kwargs):
         for subtable in self['SubTable']:

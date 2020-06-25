@@ -21,6 +21,7 @@ Fixed:
 * Sphinx frontend: support code-block/literalinclude with caption (issue #128)
 * rinoh: variables set in a template configuration file are sometimes ignored
   (issue #164)
+* Crash when using a font that contains unsupported lookups (issue #141)
 
 
 Release 0.4.0 (2020-03-05)
