@@ -358,6 +358,8 @@ class Dictionary(Container, OrderedDict):
 
     get = convert_key_to_name(OrderedDict.get)
 
+    setdefault = convert_key_to_name(OrderedDict.setdefault)
+
     def _bytes(self, document):
         return b' '.join(key.bytes(document) + b' ' + value.bytes(document)
                          for key, value in self.items())
