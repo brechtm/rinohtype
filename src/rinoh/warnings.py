@@ -13,14 +13,14 @@ from warnings import formatwarning as standard_formatwarning
 from warnings import showwarning as standard_showwarning
 
 
-class RinohWarning(Warning):
+class RinohWarning(UserWarning):
     @property
     def message(self):
         return self.args[0]
 
 
 def warn(message):
-    warnings.warn(RinohWarning(message))
+    warnings.warn(message, category=RinohWarning, stacklevel=2)
 
 
 def formatwarning(warning, category, filename, lineno, line=None):

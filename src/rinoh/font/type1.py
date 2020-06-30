@@ -19,7 +19,7 @@ from . import Font, GlyphMetrics, LeafGetter, MissingGlyphException
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
 from ..font.style import FontVariant
 from ..util import cached
-from ..warnings import RinohWarning
+from ..warnings import warn
 
 
 def string(string):
@@ -219,9 +219,8 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
                 yield name
             # TODO: map to uniXXXX or uXXXX names
         except KeyError:
-            warn('Don\'t know how to map unicode index 0x{:04x} ({}) to a '
-                 'PostScript glyph name.'.format(unicode, chr(unicode),
-                                                 RinohWarning))
+            warn("Don't know how to map unicode index 0x{:04x} ({}) to a "
+                 "PostScript glyph name.".format(unicode, chr(unicode)))
 
     def _char_to_glyph_names(self, char, variant):
         suffix = self._find_suffix(char, variant) if char != ' ' else ''
@@ -235,12 +234,11 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
                 return self._glyphs[name]
         if variant != FontVariant.NORMAL:
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
-                 'back to the standard glyph.'.format(variant, ord(char), char),
-                 RinohWarning)
+                 'back to the standard glyph.'.format(variant, ord(char), char))
             return self.get_glyph(char, FontVariant.NORMAL)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
-                 .format(self.name, ord(char), char), RinohWarning)
+                 .format(self.name, ord(char), char))
             raise MissingGlyphException
 
     def get_ligature(self, glyph, successor_glyph):
