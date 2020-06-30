@@ -94,7 +94,7 @@ def render_doctree(doctree, out_filename, reference_path,
         warnings = chain(warnings_node.rawsource.split('\n'), warnings)
     for warning in warnings:
         if not any(re.search(warning, str(w.message)) for w in recorded_warnings):
-            pytest.fail("Expected warning matching {}".format(warning))
+            pytest.fail('Expected warning matching "{}"'.format(warning))
     verify_output(out_filename, output_dir, reference_path)
 
 
