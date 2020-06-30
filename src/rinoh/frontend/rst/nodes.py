@@ -520,7 +520,7 @@ class Field_List(DocutilsGroupingNode):
 class Field(DocutilsBodyNode):
     @property
     def name(self):
-        return str(self.field_name.styled_text())
+        return self.field_name.text
 
     @property
     def value(self):

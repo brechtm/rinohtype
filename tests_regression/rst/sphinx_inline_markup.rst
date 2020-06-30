@@ -1,3 +1,6 @@
+:warnings:
+    No definition given for 'FIFO' glossary term
+
 Inline Markup roles:
 
 :abbr:          :abbr:`LIFO (last-in, first-out)`; :abbr:`FIFO`;

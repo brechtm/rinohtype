@@ -1,0 +1,16 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Missing glyphs: ⌭ and ∇.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/missing_glyphs.rst:9 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('Missing glyphs: ⌭ and ∇.')
+          SingleStyledText('Missing glyphs: ')
+          SingleStyledText('⌭')
+          SingleStyledText(' and ')
+          SingleStyledText('∇')
+          SingleStyledText('.')
