@@ -24,9 +24,10 @@ if sys.version_info < (3, 3):
 
 
 CORE_MODULES = ['annotation', 'attribute', 'color', 'dimension', 'document',
-                'draw', 'element', 'flowable', 'highlight', 'image', 'index',
-                'inline', 'layout', 'number', 'paper', 'paragraph',
-                'reference', 'structure', 'style', 'table', 'template', 'text']
+                'draw', 'element', 'flowable', 'glossary', 'highlight',
+                'image', 'index', 'inline', 'layout', 'number', 'paper',
+                'paragraph', 'reference', 'structure', 'style', 'table',
+                'template', 'text']
 
 __all__ = CORE_MODULES + ['font', 'fonts', 'frontend', 'backend', 'resource',
                           'styleds', 'styles', 'stylesheets', 'templates',

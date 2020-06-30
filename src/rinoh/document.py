@@ -240,6 +240,8 @@ class Document(object):
         self.page_references = {}      # mapping id's to page numbers
         self._sections = []
         self.index_entries = {}
+        self._glossary = {}
+        self._glossary_first = {}
         self._unique_id = 0
         self.error = False
 
@@ -280,6 +282,22 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type):
         return self.references[id][reference_type]
+
+    def set_glossary(self, term, definition):
+        try:
+            existing_definition = self._glossary[term]
+            return definition == existing_definition
+        except KeyError:
+            self._glossary[term] = definition
+            return True
+
+    def get_glossary(self, term, id):
+        try:
+            first_id = self._glossary_first[term]
+        except KeyError:
+            self._glossary_first[term] = id
+            return self._glossary[term], id
+        return self._glossary[term], first_id
 
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""

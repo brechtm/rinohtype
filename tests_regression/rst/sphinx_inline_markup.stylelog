@@ -1,248 +1,259 @@
 ---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  DocumentTree()
-    Paragraph('Inline Markup roles:')   None:1 <paragraph>
-         > (0,0,0,0,2) body
-      MixedStyledText('Inline Markup roles:')
-        SingleStyledText('Inline Markup roles:')
-    DefinitionList(style='field list')   None:3 <field_list>
-         > (0,0,1,0,2) field list
-           (0,0,0,0,2) definition list
-      LabeledFlowable()   None:3 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('abbr', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('abbr')   None:None <field_name>
-            SingleStyledText('abbr')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('LIFO (last-in, first-out) KISS')   None:3 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('LIFO (last-in, first-out) KISS')
-              MixedStyledText('LIFO (last-in, first-out)')   None:None <abbreviation>
-                MixedStyledText('LIFO', style='abbreviation')
-                  SingleStyledText('LIFO')
-                SingleStyledText(' (last-in, first-out)')
-              SingleStyledText(' ')
-              MixedStyledText('KISS', style='abbreviation')   None:None <abbreviation>
-                SingleStyledText('KISS')
-      LabeledFlowable()   None:4 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('command', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('command')   None:None <field_name>
-            SingleStyledText('command')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('rm')   None:4 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('rm')
-              MixedStyledText('rm', style='command')   None:None <literal_strong>
-                   > (0,0,1,0,1) command
-                SingleStyledText('rm')
-      LabeledFlowable()   None:5 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('dfn', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('dfn')   None:None <field_name>
-            SingleStyledText('dfn')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('definition')   None:5 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('definition')
-              MixedStyledText('definition', style='emphasis')   None:None <emphasis>
-                   > (0,0,1,0,1) emphasis
-                SingleStyledText('definition')
-      LabeledFlowable()   None:6 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('file', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('file')   None:None <field_name>
-            SingleStyledText('file')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('README.txt Makefile')   None:6 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('README.txt Makefile')
-              MixedStyledText('README.txt', style='file path')   None:None <literal>
-                   > (0,0,1,0,1) file path
-                SingleStyledText('README.txt')
-              SingleStyledText(' ')
-              MixedStyledText('Makefile', style='file path')   None:None <literal>
-                   > (0,0,1,0,1) file path
-                SingleStyledText('Makefile')
-      LabeledFlowable()   None:7 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('guilabel', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('guilabel')   None:None <field_name>
-            SingleStyledText('guilabel')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('Cancel')   None:7 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('Cancel')
-              MixedStyledText('Cancel', style='UI control')   None:None <inline>
-                   > (0,0,1,0,1) UI control
-                MixedStyledText('C', style='accelerator')
-                     > (0,0,2,0,2) UI control accelerator
-                  SingleStyledText('C')
-                SingleStyledText('ancel')
-      LabeledFlowable()   None:8 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('kbd', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('kbd')   None:None <field_name>
-            SingleStyledText('kbd')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('Control-x')   None:8 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('Control-x')
-              MixedStyledText('Control-x', style='keystrokes')   None:None <literal>
-                   > (0,0,1,0,1) keystrokes
-                SingleStyledText('Control-x')
-      LabeledFlowable()   None:9 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('mailheader', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('mailheader')   None:None <field_name>
-            SingleStyledText('mailheader')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('Content-Type')   None:9 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('Content-Type')
-              MixedStyledText('Content-Type', style='mail header')   None:None <literal_emphasis>
-                   > (0,0,1,0,1) mail header
-                SingleStyledText('Content-Type')
-      LabeledFlowable()   None:10 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('makevar', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('makevar')   None:None <field_name>
-            SingleStyledText('makevar')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('var')   None:10 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('var')
-              MixedStyledText('var', style='make variable')   None:None <literal_strong>
-                   > (0,0,1,0,1) make variable
-                SingleStyledText('var')
-      LabeledFlowable()   None:11 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('manpage', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('manpage')   None:None <field_name>
-            SingleStyledText('manpage')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('ls(1)')   None:11 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('ls(1)')
-              MixedStyledText('ls(1)', style='man page')   None:None <manpage>
-                   > (0,0,1,0,1) man page
-                SingleStyledText('ls(1)')
-      LabeledFlowable()   None:12 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('menuselection', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('menuselection')   None:None <field_name>
-            SingleStyledText('menuselection')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('Menu ‣ Item')   None:12 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('Menu ‣ Item')
-              MixedStyledText('Menu ‣ Item')   None:None <inline>
-                SingleStyledText('Menu ‣ Item')
-      LabeledFlowable()   None:13 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('mimetype', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('mimetype')   None:None <field_name>
-            SingleStyledText('mimetype')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('png')   None:13 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('png')
-              MixedStyledText('png', style='MIME type')   None:None <literal_emphasis>
-                   > (0,0,1,0,1) MIME type
-                SingleStyledText('png')
-      LabeledFlowable()   None:14 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('newsgroup', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('newsgroup')   None:None <field_name>
-            SingleStyledText('newsgroup')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('comp.lang.python')   None:14 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('comp.lang.python')
-              MixedStyledText('comp.lang.python', style='newsgroup')   None:None <literal_emphasis>
-                   > (0,0,1,0,1) newsgroup
-                SingleStyledText('comp.lang.python')
-      LabeledFlowable()   None:15 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('program', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('program')   None:None <field_name>
-            SingleStyledText('program')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('rinoh')   None:15 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('rinoh')
-              MixedStyledText('rinoh', style='program')   None:None <literal_strong>
-                   > (0,0,1,0,1) program
-                SingleStyledText('rinoh')
-      LabeledFlowable()   None:16 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('regexp', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('regexp')   None:None <field_name>
-            SingleStyledText('regexp')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('.*')   None:16 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('.*')
-              MixedStyledText('.*', style='regular expression')   None:None <literal>
-                   > (0,0,1,0,1) regular expression
-                SingleStyledText('.*')
-      LabeledFlowable()   None:17 <field>
-           > (0,0,1,0,4) field list item
-             (0,0,0,0,4) definition list item
-        Paragraph('samp', style='field name')
-             > (0,0,2,0,6) field name
-               (0,0,0,0,2) body
-          MixedStyledText('samp')   None:None <field_name>
-            SingleStyledText('samp')
-        StaticGroupedFlowables()   None:None <field_body>
-          Paragraph('print 1+variable')   None:17 <paragraph>
-               > (0,0,0,0,2) body
-            MixedStyledText('print 1+variable')
-              MixedStyledText('print 1+variable', style='code with variable')   None:None <literal>
-                   > (0,0,1,0,1) code with variable
-                SingleStyledText('print 1+')
-                MixedStyledText('variable', style='emphasis')   None:None <emphasis>
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Inline Markup roles:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:4 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('Inline Markup roles:')
+          SingleStyledText('Inline Markup roles:')
+      DefinitionList(style='field list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:6 <field_list>
+           > (0,0,1,0,2) field list
+             (0,0,0,0,2) definition list
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:6 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('abbr', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('abbr')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('abbr')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('LIFO (last-in, first-out); FIFO;...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:6 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('LIFO (last-in, first-out); FIFO;...')
+                GlossaryTerm('LIFO (last-in, first-out)', style='abbreviation')   None:None <abbreviation>
+                    SingleStyledText('LIFO')
+                  SingleStyledText(' (last-in, first-out)')
+                SingleStyledText('; ')
+                GlossaryTerm('FIFO', style='abbreviation')   None:None <abbreviation>
+                    SingleStyledText('FIFO')
+                SingleStyledText('; ')
+                GlossaryTerm('KISS (keep it simple, stupid)', style='abbreviation')   None:None <abbreviation>
+                    SingleStyledText('KISS')
+                  SingleStyledText(' (keep it simple, stupid)')
+                SingleStyledText('; ')
+                GlossaryTerm('LIFO', style='abbreviation')   None:None <abbreviation>
+                    SingleStyledText('LIFO')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:8 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('command', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('command')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('command')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('rm')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:8 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('rm')
+                MixedStyledText('rm', style='command')   None:None <literal_strong>
+                     > (0,0,1,0,1) command
+                  SingleStyledText('rm')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('dfn', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('dfn')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('dfn')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('definition')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('definition')
+                MixedStyledText('definition', style='emphasis')   None:None <emphasis>
                      > (0,0,1,0,1) emphasis
-                  SingleStyledText('variable')
+                  SingleStyledText('definition')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:10 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('file', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('file')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('file')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('README.txt Makefile')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:10 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('README.txt Makefile')
+                MixedStyledText('README.txt', style='file path')   None:None <literal>
+                     > (0,0,1,0,1) file path
+                  SingleStyledText('README.txt')
+                SingleStyledText(' ')
+                MixedStyledText('Makefile', style='file path')   None:None <literal>
+                     > (0,0,1,0,1) file path
+                  SingleStyledText('Makefile')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:11 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('guilabel', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('guilabel')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('guilabel')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('Cancel')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:11 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('Cancel')
+                MixedStyledText('Cancel', style='UI control')   None:None <inline>
+                     > (0,0,1,0,1) UI control
+                  MixedStyledText('C', style='accelerator')
+                       > (0,0,2,0,2) UI control accelerator
+                    SingleStyledText('C')
+                  SingleStyledText('ancel')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:12 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('kbd', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('kbd')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('kbd')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('Control-x')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:12 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('Control-x')
+                MixedStyledText('Control-x', style='keystrokes')   None:None <literal>
+                     > (0,0,1,0,1) keystrokes
+                  SingleStyledText('Control-x')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:13 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('mailheader', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('mailheader')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('mailheader')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('Content-Type')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:13 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('Content-Type')
+                MixedStyledText('Content-Type', style='mail header')   None:None <literal_emphasis>
+                     > (0,0,1,0,1) mail header
+                  SingleStyledText('Content-Type')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:14 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('makevar', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('makevar')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('makevar')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('var')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:14 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('var')
+                MixedStyledText('var', style='make variable')   None:None <literal_strong>
+                     > (0,0,1,0,1) make variable
+                  SingleStyledText('var')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:15 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('manpage', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('manpage')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('manpage')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('ls(1)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:15 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('ls(1)')
+                MixedStyledText('ls(1)', style='man page')   None:None <manpage>
+                     > (0,0,1,0,1) man page
+                  SingleStyledText('ls(1)')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:16 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('menuselection', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('menuselection')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('menuselection')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('Menu ‣ Item')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:16 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('Menu ‣ Item')
+                MixedStyledText('Menu ‣ Item')   None:None <inline>
+                  SingleStyledText('Menu ‣ Item')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:17 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('mimetype', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('mimetype')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('mimetype')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('png')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:17 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('png')
+                MixedStyledText('png', style='MIME type')   None:None <literal_emphasis>
+                     > (0,0,1,0,1) MIME type
+                  SingleStyledText('png')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:18 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('newsgroup', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('newsgroup')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('newsgroup')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('comp.lang.python')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:18 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('comp.lang.python')
+                MixedStyledText('comp.lang.python', style='newsgroup')   None:None <literal_emphasis>
+                     > (0,0,1,0,1) newsgroup
+                  SingleStyledText('comp.lang.python')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:19 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('program', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('program')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('program')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('rinoh')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:19 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('rinoh')
+                MixedStyledText('rinoh', style='program')   None:None <literal_strong>
+                     > (0,0,1,0,1) program
+                  SingleStyledText('rinoh')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:20 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('regexp', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('regexp')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('regexp')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('.*')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:20 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('.*')
+                MixedStyledText('.*', style='regular expression')   None:None <literal>
+                     > (0,0,1,0,1) regular expression
+                  SingleStyledText('.*')
+        LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:21 <field>
+             > (0,0,1,0,4) field list item
+               (0,0,0,0,4) definition list item
+          Paragraph('samp', style='field name')
+               > (0,0,2,0,6) field name
+                 (0,0,0,0,2) body
+            MixedStyledText('samp')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+              SingleStyledText('samp')
+          StaticGroupedFlowables()   None:None <field_body>
+            Paragraph('print 1+variable')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:21 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('print 1+variable')
+                MixedStyledText('print 1+variable', style='code with variable')   None:None <literal>
+                     > (0,0,1,0,1) code with variable
+                  SingleStyledText('print 1+')
+                  MixedStyledText('variable', style='emphasis')   None:None <emphasis>
+                       > (0,0,1,0,1) emphasis
+                    SingleStyledText('variable')

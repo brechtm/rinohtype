@@ -19,6 +19,7 @@ from pygments.util import ClassNotFound
 
 from ...annotation import HyperLink, AnnotatedText
 from ...flowable import LabeledFlowable, StaticGroupedFlowables
+from ...glossary import GlossaryTerm
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference
@@ -193,12 +194,10 @@ class Literal_Block(rst.Literal_Block):
 
 class Abbreviation(DocutilsInlineNode):
     def build_styled_text(self):
-        result = self.process_content(style='abbreviation')
-        # TODO: only show the explanation the first time
-        # (needs support at Document level)
-        if 'explanation' in self.attributes:
-            result += ' (' + self.get('explanation') + ')'
-        return result
+        term = self.process_content()
+        kwargs = (dict(definition=self.get('explanation'))
+                  if 'explanation' in self.attributes else {})
+        return GlossaryTerm(term, style='abbreviation', **kwargs)
 
 
 class Download_Reference(DocutilsInlineNode):
