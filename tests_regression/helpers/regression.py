@@ -76,7 +76,7 @@ def render_sphinx_rst_file(rst_path, out_filename, reference_path,
     doctree = from_doctree(rst_path.name, sphinx_doctree)
     docinfo = sphinx_doctree.settings.env.metadata['index']
     return _render_rst(rst_path, doctree, out_filename, reference_path,
-                       warnings=docinfo['warnings'].split('\n'))
+                       warnings=docinfo.get('warnings', '').splitlines())
 
 
 def render_doctree(doctree, out_filename, reference_path,
@@ -91,7 +91,7 @@ def render_doctree(doctree, out_filename, reference_path,
         document.render(output_dir / out_filename)
     if 'warnings' in document.metadata:
         warnings_node = document.metadata['warnings'].source.node
-        warnings = chain(warnings_node.rawsource.split('\n'), warnings)
+        warnings = chain(warnings_node.rawsource.splitlines(), warnings)
     for warning in warnings:
         if not any(re.search(warning, str(w.message)) for w in recorded_warnings):
             pytest.fail('Expected warning matching "{}"'.format(warning))
