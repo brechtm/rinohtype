@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Document (rinoh.document) &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Document (rinoh.document) &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Drawing Primitives (rinoh.draw)" href="draw.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> rinohtype
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,6 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pages">Pages</a></li>
@@ -104,6 +108,7 @@
 <li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
@@ -121,6 +126,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -159,7 +165,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="api.html">API Documentation</a> &raquo;</li>
         
@@ -184,9 +190,9 @@
             
   <span class="target" id="module-rinoh.document"></span><div class="section" id="document-rinoh-document">
 <span id="document"></span><h1>Document (<a class="reference internal" href="#module-rinoh.document" title="rinoh.document"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code></a>)<a class="headerlink" href="#document-rinoh-document" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.document.DocumentTree">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">DocumentTree</code><span class="sig-paren">(</span><em class="sig-param">flowables</em>, <em class="sig-param">source_file=None</em>, <em class="sig-param">options=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentTree" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">DocumentTree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowables</span></em>, <em class="sig-param"><span class="n">source_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">options</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentTree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Holds the document’s contents as a tree of flowables</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -200,9 +206,9 @@ images and include in logging and error and warnings.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.document.Document">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">Document</code><span class="sig-paren">(</span><em class="sig-param">document_tree</em>, <em class="sig-param">stylesheet</em>, <em class="sig-param">language</em>, <em class="sig-param">strings=None</em>, <em class="sig-param">backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">Document</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document_tree</span></em>, <em class="sig-param"><span class="n">stylesheet</span></em>, <em class="sig-param"><span class="n">language</span></em>, <em class="sig-param"><span class="n">strings</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">backend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Renders a document tree to pages</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -215,14 +221,14 @@ images and include in logging and error and warnings.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="rinoh.document.Document.render">
-<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">filename_root=None</em>, <em class="sig-param">file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.render" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename_root</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.render" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render the document repeatedly until the output no longer changes due
 to cross-references that need some iterations to converge.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="rinoh.document.Document.create_outlines">
 <code class="sig-name descname">create_outlines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.create_outlines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an outline in the output file that allows for easy navigation
@@ -234,9 +240,9 @@ in the document.</p>
 
 <div class="section" id="pages">
 <h2>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.document.Page">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">Page</code><span class="sig-paren">(</span><em class="sig-param">document_part</em>, <em class="sig-param">number</em>, <em class="sig-param">paper</em>, <em class="sig-param">orientation='portrait'</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">Page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document_part</span></em>, <em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">paper</span></em>, <em class="sig-param"><span class="n">orientation</span><span class="o">=</span><span class="default_value">'portrait'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Permalink to this definition">¶</a></dt>
 <dd><p>A single page in a document.</p>
 <p>A <a class="reference internal" href="#rinoh.document.Page" title="rinoh.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code>, so other containers can be added
 as children.</p>
@@ -250,21 +256,21 @@ as children.</p>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="rinoh.document.Page.page">
 <em class="property">property </em><code class="sig-name descname">page</code><a class="headerlink" href="#rinoh.document.Page.page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the page itself.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="rinoh.document.Page.render">
 <code class="sig-name descname">render</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page.render" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render the contents of this container to its canvas.</p>
-<p>Note that the rendered contents need to be :meth:<a href="#id1"><span class="problematic" id="id2">`</span></a>place`d on the parent
-container’s canvas before they become visible.</p>
+<p>Note that the rendered contents need to be <a class="reference internal" href="#rinoh.document.Page.place" title="rinoh.document.Page.place"><code class="xref py py-meth docutils literal notranslate"><span class="pre">place()</span></code></a>d on the
+parent container’s canvas before they become visible.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="rinoh.document.Page.place">
 <code class="sig-name descname">place</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page.place" title="Permalink to this definition">¶</a></dt>
 <dd><p>Place this container’s canvas onto the parent container’s canvas.</p>
@@ -272,13 +278,13 @@ container’s canvas before they become visible.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.document.PageOrientation">
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">PageOrientation</code><a class="headerlink" href="#rinoh.document.PageOrientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">portrait</span></code>, <code class="docutils literal notranslate"><span class="pre">landscape</span></code></p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.document.PageType">
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.document.</code><code class="sig-name descname">PageType</code><a class="headerlink" href="#rinoh.document.PageType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span></code></p>
@@ -307,11 +313,19 @@ container’s canvas before they become visible.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -322,7 +336,6 @@ container’s canvas before they become visible.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

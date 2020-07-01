@@ -7,6 +7,8 @@ API Documentation
 .. toctree::
     :maxdepth: 2
 
+    attribute
+    color
     dimension
     document
     draw
@@ -15,6 +17,7 @@ API Documentation
     image
     index
     language
+    number
     paper
     paragraph
     reference

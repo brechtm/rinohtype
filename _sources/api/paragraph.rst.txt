@@ -29,6 +29,9 @@ Styled Text (:mod:`rinoh.text`)
 .. autoclass:: MixedStyledText
     :members:
 
+.. autoclass:: Locale
+    :members:
+
 
 .. module:: rinoh.inline
 
@@ -42,11 +45,14 @@ Inline Elements (:mod:`rinoh.inline`)
 Styling Properties
 ------------------
 
+.. currentmodule:: rinoh.paragraph
+
+.. autoclass:: TextAlign
+    :members:
+
 
 Line Spacing
 ............
-
-.. currentmodule:: rinoh.paragraph
 
 .. autoclass:: LineSpacing
     :members:
@@ -80,7 +86,13 @@ The following standard line spacings have been predefined:
 Tabulation
 ..........
 
+.. autoclass:: TabAlign
+    :members:
+
 .. autoclass:: TabStop
+    :members:
+
+.. autoclass:: TabStopList
     :members:
 
 

@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sphinx Builder &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Sphinx Builder &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Style Sheets" href="stylesheets.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> rinohtype
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -106,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -144,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="reference.html">Reference</a> &raquo;</li>
         
@@ -173,7 +176,7 @@
 Sphinx builder with the name <em>rinoh</em>. The builder recognizes the following
 <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> options. Of these, only <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>
 (or <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>) is required:</p>
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_documents">
 <code class="sig-name descname">rinoh_documents</code><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines how to group the document tree into PDF output files. Its format
@@ -184,7 +187,7 @@ the extension. If it is not specified, the value of
 extension stripped from the <cite>targetname</cite>).</p>
 </dd></dl>
 
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_template">
 <code class="sig-name descname">rinoh_template</code><a class="headerlink" href="#confval-rinoh_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines the template used to render the document. It takes:</p>
@@ -197,7 +200,7 @@ extension stripped from the <cite>targetname</cite>).</p>
 <p>The default is <code class="docutils literal notranslate"><span class="pre">'book'</span></code>, which resolves to the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template.</p>
 </dd></dl>
 
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_stylesheet">
 <code class="sig-name descname">rinoh_stylesheet</code><a class="headerlink" href="#confval-rinoh_stylesheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_template_configuration</span></code> does not specify a style sheet,
@@ -209,7 +212,7 @@ document template.</p>
 highlighting style for the specified or default style sheet.</p>
 </dd></dl>
 
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_paper_size">
 <code class="sig-name descname">rinoh_paper_size</code><a class="headerlink" href="#confval-rinoh_paper_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>This overrides paper size defined in the template or template
@@ -228,7 +231,7 @@ specified for <a class="reference external" href="http://www.sphinx-doc.org/en/1
 <a class="reference internal" href="#confval-rinoh_stylesheet"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_stylesheet</span></code></a> and <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-pygments_style" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">pygments_style</span></code></a> are fairly
 complex, this behavior may be changed (simplified) in the future.</p>
 </div>
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_logo">
 <code class="sig-name descname">rinoh_logo</code><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path (relative to the configuration directory) to an image file to use at
@@ -236,7 +239,7 @@ the top of the title page. If not specified, the
 <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_logo" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_logo</span></code></a> value is used.</p>
 </dd></dl>
 
-<dl class="confval">
+<dl class="std confval">
 <dt id="confval-rinoh_domain_indices">
 <code class="sig-name descname">rinoh_domain_indices</code><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Controls the generation of domain-specific indices. Identical to
@@ -266,11 +269,19 @@ the top of the title page. If not specified, the
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -281,7 +292,6 @@ the top of the title page. If not specified, the
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

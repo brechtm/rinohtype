@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Number (rinoh.number) &mdash; rinohtype 0.4.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Paper sizes (rinoh.paper)" href="paper.html" />
+    <link rel="prev" title="Language (rinoh.language)" href="language.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+        
+      <li>Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/number.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-rinoh.number">
+<span id="number-rinoh-number"></span><span id="number"></span><h1>Number (<a class="reference internal" href="#module-rinoh.number" title="rinoh.number"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code></a>)<a class="headerlink" href="#module-rinoh.number" title="Permalink to this headline">¶</a></h1>
+<p>Functions for formatting numbers:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#rinoh.number.format_number" title="rinoh.number.format_number"><code class="xref py py-func docutils literal notranslate"><span class="pre">format_number()</span></code></a>: Format a number according to a given style.</p></li>
+</ul>
+<dl class="py class">
+<dt id="rinoh.number.NumberFormat">
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">NumberFormat</code><a class="headerlink" href="#rinoh.number.NumberFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>How (or if) numbers are displayed</p>
+<p>Accepts: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="rinoh.number.NumberStyle">
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">NumberStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.NumberStyle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Style class for <code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></p>
+<dl class="py attribute">
+<dt id="rinoh.number.NumberStyle.number_format">
+<code class="sig-name descname">number_format</code><a class="headerlink" href="#rinoh.number.NumberStyle.number_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>How numbers are formatted</p>
+<p><em>Accepts</em> <a class="reference internal" href="#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="rinoh.number.NumberStyle.label_prefix">
+<code class="sig-name descname">label_prefix</code><a class="headerlink" href="#rinoh.number.NumberStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to prepend to the label (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="rinoh.number.NumberStyle.label_suffix">
+<code class="sig-name descname">label_suffix</code><a class="headerlink" href="#rinoh.number.NumberStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to append to the label (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="rinoh.number.NumberStyle.custom_label">
+<code class="sig-name descname">custom_label</code><a class="headerlink" href="#rinoh.number.NumberStyle.custom_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a custom label if specified (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="rinoh.number.NumberedParagraph">
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">NumberedParagraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content</span></em>, <em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.NumberedParagraph" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="rinoh.number.NumberedParagraph.style_class">
+<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.number.NumberedParagraph.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">NumberedParagraphStyle</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="rinoh.number.format_number">
+<code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">format_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.format_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format <cite>number</cite> according the given <cite>format</cite> (<a class="reference internal" href="#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>)</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="paper.html" class="btn btn-neutral float-right" title="Paper sizes (rinoh.paper)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="language.html" class="btn btn-neutral float-left" title="Language (rinoh.language)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Brecht Machiels
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

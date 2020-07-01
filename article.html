@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Article &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Article &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Book" href="book.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> rinohtype
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +112,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -148,7 +151,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="reference.html">Reference</a> &raquo;</li>
         
@@ -178,88 +181,58 @@
 <p>The article template consists of a title page, an optional table of contents
 and the body text. By default, it uses a single numbering style for all pages
 and the same template for even and odd pages.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.templates.article.Article">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.templates.article.</code><code class="sig-name descname">Article</code><span class="sig-paren">(</span><em class="sig-param">document_tree</em>, <em class="sig-param">configuration=None</em>, <em class="sig-param">backend=None</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.Article" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.templates.article.</code><code class="sig-name descname">Article</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document_tree</span></em>, <em class="sig-param"><span class="n">configuration</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">backend</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.Article" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
 <dt id="rinoh.templates.article.Article.stylesheet">
 <code class="sig-name descname">stylesheet</code><a class="headerlink" href="#rinoh.templates.article.Article.stylesheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overrides the default set in <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a></p>
-<p>Accepts: the name of an <a class="reference internal" href="stylesheets.html#included-style-sheets"><span class="std std-ref">installed style sheet</span></a> or the filename of a stylesheet file (with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension)</p>
-<p>Default: <code class="docutils literal notranslate"><span class="pre">sphinx_article</span></code> (= <a class="reference internal" href="stylesheets.html#rinoh.stylesheets.sphinx_article" title="rinoh.stylesheets.sphinx_article"><code class="xref py py-data docutils literal notranslate"><span class="pre">rinoh.stylesheets.sphinx_article</span></code></a>)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a></p>
-</dd>
-</dl>
+<p><em>Accepts</em> <a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a>: the name of an <a class="reference internal" href="stylesheets.html#included-style-sheets"><span class="std std-ref">installed style sheet</span></a> or the filename of a stylesheet file (with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">sphinx_article</span></code> (= <a class="reference internal" href="stylesheets.html#rinoh.stylesheets.sphinx_article" title="rinoh.stylesheets.sphinx_article"><code class="xref py py-data docutils literal notranslate"><span class="pre">rinoh.stylesheets.sphinx_article</span></code></a>)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.table_of_contents">
 <code class="sig-name descname">table_of_contents</code><a class="headerlink" href="#rinoh.templates.article.Article.table_of_contents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show or hide the table of contents</p>
-<p>Accepts: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
-<p>Default: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></p>
-</dd>
-</dl>
+<p><em>Accepts</em> <a class="reference internal" href="api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.abstract_location">
 <code class="sig-name descname">abstract_location</code><a class="headerlink" href="#rinoh.templates.article.Article.abstract_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Where to place the abstract</p>
-<p>Accepts: <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">front</span> <span class="pre">matter</span></code></p>
-<p>Default: <code class="docutils literal notranslate"><span class="pre">front</span> <span class="pre">matter</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#rinoh.templates.article.AbstractLocation" title="rinoh.templates.article.AbstractLocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLocation</span></code></a></p>
-</dd>
-</dl>
+<p><em>Accepts</em> <a class="reference internal" href="#rinoh.templates.article.AbstractLocation" title="rinoh.templates.article.AbstractLocation"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLocation</span></code></a>: <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">front</span> <span class="pre">matter</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">front</span> <span class="pre">matter</span></code></p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.parts">
 <code class="sig-name descname">parts</code><a class="headerlink" href="#rinoh.templates.article.Article.parts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overrides the default set in <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a></p>
-<p>Accepts: a space-separated list of document part template names</p>
-<p>Default: <a class="reference internal" href="#rinoh.templates.article.Article.title" title="rinoh.templates.article.Article.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a>`` <a href="#id1"><span class="problematic" id="id2">``</span></a><a class="reference internal" href="#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code></a>`` <a href="#id3"><span class="problematic" id="id4">``</span></a><a class="reference internal" href="#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="api/template.html#rinoh.template.PartsList" title="rinoh.template.PartsList"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartsList</span></code></a></p>
-</dd>
-</dl>
+<p><em>Accepts</em> <a class="reference internal" href="api/template.html#rinoh.template.PartsList" title="rinoh.template.PartsList"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartsList</span></code></a>: a space-separated list of document part template names</p>
+<p><em>Default</em>: <a class="reference internal" href="#rinoh.templates.article.Article.title" title="rinoh.templates.article.Article.title"><code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code></a> <a class="reference internal" href="#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code></a> <a class="reference internal" href="#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a></p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.language">
 <code class="sig-name descname">language</code><a class="headerlink" href="#rinoh.templates.article.Article.language" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>) The main language of the document</p>
-<p>Accepts: the code of one of the <a class="reference internal" href="api/language.html#supported-languages"><span class="std std-ref">supported languages</span></a></p>
-<p>Default: <a class="reference internal" href="api/language.html#rinoh.language.EN" title="rinoh.language.EN"><code class="xref py py-data docutils literal notranslate"><span class="pre">EN</span></code></a> (English)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="api/language.html#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a></p>
-</dd>
-</dl>
+<dd><p>The main language of the document (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="api/language.html#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>: the code of one of the <a class="reference internal" href="api/language.html#supported-languages"><span class="std std-ref">supported languages</span></a></p>
+<p><em>Default</em>: <a class="reference internal" href="api/language.html#rinoh.language.EN" title="rinoh.language.EN"><code class="xref py py-data docutils literal notranslate"><span class="pre">EN</span></code></a> (English)</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.strings">
 <code class="sig-name descname">strings</code><a class="headerlink" href="#rinoh.templates.article.Article.strings" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.strings" title="rinoh.template.DocumentTemplate.strings"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>) Strings to override standard element names</p>
-<p>Accepts: strings need to be entered in INI sections named after the <a class="reference internal" href="api/strings.html#rinoh.strings.StringCollection" title="rinoh.strings.StringCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringCollection</span></code></a> subclasses</p>
-<p>Default: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="api/strings.html#rinoh.strings.Strings" title="rinoh.strings.Strings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strings</span></code></a></p>
-</dd>
-</dl>
+<dd><p>Strings to override standard element names (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.strings" title="rinoh.template.DocumentTemplate.strings"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="api/strings.html#rinoh.strings.Strings" title="rinoh.strings.Strings"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strings</span></code></a>: strings need to be entered in INI sections named after the <a class="reference internal" href="api/strings.html#rinoh.strings.StringCollection" title="rinoh.strings.StringCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringCollection</span></code></a> subclasses</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.title">
 <code class="sig-name descname">title</code><a class="headerlink" href="#rinoh.templates.article.Article.title" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -270,7 +243,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.front_matter">
 <code class="sig-name descname">front_matter</code><a class="headerlink" href="#rinoh.templates.article.Article.front_matter" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -281,7 +254,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.contents">
 <code class="sig-name descname">contents</code><a class="headerlink" href="#rinoh.templates.article.Article.contents" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -292,7 +265,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.page">
 <code class="sig-name descname">page</code><a class="headerlink" href="#rinoh.templates.article.Article.page" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -309,7 +282,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.title_page">
 <code class="sig-name descname">title_page</code><a class="headerlink" href="#rinoh.templates.article.Article.title_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <a class="reference internal" href="#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a></p>
@@ -326,7 +299,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.front_matter_page">
 <code class="sig-name descname">front_matter_page</code><a class="headerlink" href="#rinoh.templates.article.Article.front_matter_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <a class="reference internal" href="#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a></p>
@@ -337,7 +310,7 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.contents_page">
 <code class="sig-name descname">contents_page</code><a class="headerlink" href="#rinoh.templates.article.Article.contents_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>base: <a class="reference internal" href="#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a></p>
@@ -348,13 +321,13 @@ and the same template for even and odd pages.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.Configuration">
 <code class="sig-name descname">Configuration</code><a class="headerlink" href="#rinoh.templates.article.Article.Configuration" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.template.ArticleConfiguration</span></code></p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.templates.article.Article.ConfigurationFile">
 <code class="sig-name descname">ConfigurationFile</code><a class="headerlink" href="#rinoh.templates.article.Article.ConfigurationFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.template.ArticleConfigurationFile</span></code></p>
@@ -362,7 +335,7 @@ and the same template for even and odd pages.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.templates.article.AbstractLocation">
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.templates.article.</code><code class="sig-name descname">AbstractLocation</code><a class="headerlink" href="#rinoh.templates.article.AbstractLocation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Where to place the article’s abstract</p>
@@ -391,11 +364,19 @@ and the same template for even and odd pages.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -406,7 +387,6 @@ and the same template for even and odd pages.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

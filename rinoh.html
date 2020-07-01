@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>rinoh &mdash; rinohtype 0.4.0 documentation</title>
+  <title>rinoh &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Sphinx Builder" href="sphinx.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> rinohtype
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -106,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -144,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="reference.html">Reference</a> &raquo;</li>
         
@@ -170,98 +173,104 @@
   <div class="section" id="rinoh">
 <span id="id1"></span><h1>rinoh<a class="headerlink" href="#rinoh" title="Permalink to this headline">¶</a></h1>
 <p>Render a structured document to PDF.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: rinoh [-h] [-f FORMAT] [-o OPTION=VALUE] [-t NAME OR FILENAME]</span>
-<span class="go">             [-s NAME OR FILENAME] [-p PAPER] [-i] [--list-templates]</span>
-<span class="go">             [--list-stylesheets] [--list-fonts [FILENAME]] [--list-formats]</span>
-<span class="go">             [--list-options FRONTEND] [--version] [--docs]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: rinoh [-h] [-f FORMAT] [-o OPTION=VALUE] [-t NAME or FILENAME]</span>
+<span class="go">             [-s NAME or FILENAME] [-O FILENAME or DIRECTORY] [-p PAPER] [-i]</span>
+<span class="go">             [--list-templates] [--list-stylesheets] [--list-fonts [FILENAME]]</span>
+<span class="go">             [--list-formats] [--list-options FRONTEND] [--version] [--docs]</span>
 <span class="go">             [input]</span>
 </pre></div>
 </div>
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-arg-input">
 <code class="sig-name descname">input</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-arg-input" title="Permalink to this definition">¶</a></dt>
 <dd><p>the document to render</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-h">
-<code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--help</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-h" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-help"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--help</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-h" title="Permalink to this definition">¶</a></dt>
 <dd><p>show this help message and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-f">
-<code class="sig-name descname">-f</code><code class="sig-prename descclassname"> &lt;format&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--format</code><code class="sig-prename descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-rinoh-f" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-format"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"> &lt;format&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--format</code><code class="sig-prename descclassname"> &lt;format&gt;</code><a class="headerlink" href="#cmdoption-rinoh-f" title="Permalink to this definition">¶</a></dt>
 <dd><p>the format of the input file (default: autodetect)</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-o">
-<code class="sig-name descname">-o</code><code class="sig-prename descclassname"> &lt;option=value&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--option</code><code class="sig-prename descclassname"> &lt;option=value&gt;</code><a class="headerlink" href="#cmdoption-rinoh-o" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-option"></span><code class="sig-name descname">-o</code><code class="sig-prename descclassname"> &lt;option=value&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--option</code><code class="sig-prename descclassname"> &lt;option=value&gt;</code><a class="headerlink" href="#cmdoption-rinoh-o" title="Permalink to this definition">¶</a></dt>
 <dd><p>options to be passed to the input file reader</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-t">
-<code class="sig-name descname">-t</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--template</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-template"></span><code class="sig-name descname">-t</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--template</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-t" title="Permalink to this definition">¶</a></dt>
 <dd><p>the document template or template configuration file to use (default: article)</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-s">
-<code class="sig-name descname">-s</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--stylesheet</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-s" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-stylesheet"></span><code class="sig-name descname">-s</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--stylesheet</code><code class="sig-prename descclassname"> &lt;name or filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-s" title="Permalink to this definition">¶</a></dt>
 <dd><p>the style sheet used to style the document elements  (default: the template’s default)</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
+<dt id="cmdoption-rinoh-O">
+<span id="cmdoption-rinoh-output"></span><code class="sig-name descname">-O</code><code class="sig-prename descclassname"> &lt;filename or directory&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--output</code><code class="sig-prename descclassname"> &lt;filename or directory&gt;</code><a class="headerlink" href="#cmdoption-rinoh-O" title="Permalink to this definition">¶</a></dt>
+<dd><p>write the PDF output to FILENAME or to an existing DIRECTORY with a filename derived from the input filename (default: the current working directory)</p>
+</dd></dl>
+
+<dl class="std option">
 <dt id="cmdoption-rinoh-p">
-<code class="sig-name descname">-p</code><code class="sig-prename descclassname"> &lt;paper&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--paper</code><code class="sig-prename descclassname"> &lt;paper&gt;</code><a class="headerlink" href="#cmdoption-rinoh-p" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-paper"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"> &lt;paper&gt;</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--paper</code><code class="sig-prename descclassname"> &lt;paper&gt;</code><a class="headerlink" href="#cmdoption-rinoh-p" title="Permalink to this definition">¶</a></dt>
 <dd><p>the paper size to render to  (default: the template’s default)</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-i">
-<code class="sig-name descname">-i</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--install-resources</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-i" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-rinoh-install-resources"></span><code class="sig-name descname">-i</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--install-resources</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-i" title="Permalink to this definition">¶</a></dt>
 <dd><p>automatically install missing resources (fonts, templates, style sheets) from PyPI</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-list-templates">
 <code class="sig-name descname">--list-templates</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-templates" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed document templates and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-list-stylesheets">
 <code class="sig-name descname">--list-stylesheets</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-stylesheets" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed style sheets and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-list-fonts">
 <code class="sig-name descname">--list-fonts</code><code class="sig-prename descclassname"> &lt;filename&gt;</code><a class="headerlink" href="#cmdoption-rinoh-list-fonts" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the installed fonts or, if FILENAME is given, write a PDF file displaying all the fonts</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-list-formats">
 <code class="sig-name descname">--list-formats</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-list-formats" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the supported input formats and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-list-options">
 <code class="sig-name descname">--list-options</code><code class="sig-prename descclassname"> &lt;frontend&gt;</code><a class="headerlink" href="#cmdoption-rinoh-list-options" title="Permalink to this definition">¶</a></dt>
 <dd><p>list the options supported by the given frontend and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-version">
 <code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-version" title="Permalink to this definition">¶</a></dt>
 <dd><p>show program’s version number and exit</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-rinoh-docs">
 <code class="sig-name descname">--docs</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rinoh-docs" title="Permalink to this definition">¶</a></dt>
 <dd><p>open the online documentation in the default browser</p>
@@ -289,11 +298,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -304,7 +321,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

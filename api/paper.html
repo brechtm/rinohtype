@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Paper sizes (rinoh.paper) &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Paper sizes (rinoh.paper) &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,14 +34,10 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Paragraph (rinoh.paragraph)" href="paragraph.html" />
-    <link rel="prev" title="Language (rinoh.language)" href="language.html" /> 
+    <link rel="prev" title="Number (rinoh.number)" href="number.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> rinohtype
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,6 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
@@ -101,6 +105,7 @@
 <li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
@@ -118,6 +123,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -156,7 +162,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="api.html">API Documentation</a> &raquo;</li>
         
@@ -182,9 +188,9 @@
   <div class="section" id="module-rinoh.paper">
 <span id="paper-sizes-rinoh-paper"></span><span id="paper"></span><h1>Paper sizes (<a class="reference internal" href="#module-rinoh.paper" title="rinoh.paper"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code></a>)<a class="headerlink" href="#module-rinoh.paper" title="Permalink to this headline">¶</a></h1>
 <p>The <a class="reference internal" href="#rinoh.paper.Paper" title="rinoh.paper.Paper"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paper</span></code></a> class and a number of predefined paper formats.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.paper.Paper">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">Paper</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">width</em>, <em class="sig-param">height</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paper.Paper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">Paper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paper.Paper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines a paper size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,82 +203,82 @@
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A0">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A0</code><em class="property"> = Paper('A0', width=841*MM, height=1189*MM)</em><a class="headerlink" href="#rinoh.paper.A0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A1">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A1</code><em class="property"> = Paper('A1', width=594*MM, height=841*MM)</em><a class="headerlink" href="#rinoh.paper.A1" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A2">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A2</code><em class="property"> = Paper('A2', width=420*MM, height=594*MM)</em><a class="headerlink" href="#rinoh.paper.A2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A3">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A3</code><em class="property"> = Paper('A3', width=297*MM, height=420*MM)</em><a class="headerlink" href="#rinoh.paper.A3" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A4">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A4</code><em class="property"> = Paper('A4', width=210*MM, height=297*MM)</em><a class="headerlink" href="#rinoh.paper.A4" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A5">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A5</code><em class="property"> = Paper('A5', width=148*MM, height=210*MM)</em><a class="headerlink" href="#rinoh.paper.A5" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A6">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A6</code><em class="property"> = Paper('A6', width=105*MM, height=148*MM)</em><a class="headerlink" href="#rinoh.paper.A6" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A7">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A7</code><em class="property"> = Paper('A7', width=74*MM, height=105*MM)</em><a class="headerlink" href="#rinoh.paper.A7" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A8">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A8</code><em class="property"> = Paper('A8', width=52*MM, height=74*MM)</em><a class="headerlink" href="#rinoh.paper.A8" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A9">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A9</code><em class="property"> = Paper('A9', width=37*MM, height=52*MM)</em><a class="headerlink" href="#rinoh.paper.A9" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.A10">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">A10</code><em class="property"> = Paper('A10', width=26*MM, height=37*MM)</em><a class="headerlink" href="#rinoh.paper.A10" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.LETTER">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">LETTER</code><em class="property"> = Paper('letter', width=8.5*INCH, height=11*INCH)</em><a class="headerlink" href="#rinoh.paper.LETTER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.LEGAL">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">LEGAL</code><em class="property"> = Paper('legal', width=8.5*INCH, height=14*INCH)</em><a class="headerlink" href="#rinoh.paper.LEGAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.JUNIOR_LEGAL">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">JUNIOR_LEGAL</code><em class="property"> = Paper('junior legal', width=8*INCH, height=5*INCH)</em><a class="headerlink" href="#rinoh.paper.JUNIOR_LEGAL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.LEDGER">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">LEDGER</code><em class="property"> = Paper('ledger', width=17*INCH, height=11*INCH)</em><a class="headerlink" href="#rinoh.paper.LEDGER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.paper.TABLOID">
 <code class="sig-prename descclassname">rinoh.paper.</code><code class="sig-name descname">TABLOID</code><em class="property"> = Paper('tabloid', width=11*INCH, height=17*INCH)</em><a class="headerlink" href="#rinoh.paper.TABLOID" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -290,7 +296,7 @@
         <a href="paragraph.html" class="btn btn-neutral float-right" title="Paragraph (rinoh.paragraph)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="language.html" class="btn btn-neutral float-left" title="Language (rinoh.language)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="number.html" class="btn btn-neutral float-left" title="Number (rinoh.number)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -299,11 +305,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -314,7 +328,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

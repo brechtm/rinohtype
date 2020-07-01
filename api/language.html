@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Language (rinoh.language) &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Language (rinoh.language) &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -29,13 +34,9 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Paper sizes (rinoh.paper)" href="paper.html" />
+    <link rel="next" title="Number (rinoh.number)" href="number.html" />
     <link rel="prev" title="Index (rinoh.index)" href="index.html" /> 
 </head>
 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> rinohtype
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -93,6 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
@@ -101,6 +105,7 @@
 <li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
@@ -118,6 +123,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -156,7 +162,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="api.html">API Documentation</a> &raquo;</li>
         
@@ -181,9 +187,9 @@
             
   <span class="target" id="module-rinoh.language"></span><div class="section" id="language-rinoh-language">
 <span id="language"></span><h1>Language (<a class="reference internal" href="#module-rinoh.language" title="rinoh.language"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code></a>)<a class="headerlink" href="#language-rinoh-language" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="rinoh.language.Language">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">Language</code><span class="sig-paren">(</span><em class="sig-param">code</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">Language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collects localized strings for a particular language</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -193,7 +199,7 @@
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="rinoh.language.Language.languages">
 <code class="sig-name descname">languages</code><a class="headerlink" href="#rinoh.language.Language.languages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary mapping codes to <a class="reference internal" href="#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>s</p>
@@ -202,7 +208,7 @@
 </dd></dl>
 
 <p id="supported-languages">The following languages are supported:</p>
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.language.EN">
 <code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">EN</code><em class="property"> = Language('en', 'English')</em><a class="headerlink" href="#rinoh.language.EN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for English</p>
@@ -259,7 +265,7 @@
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.language.FR">
 <code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">FR</code><em class="property"> = Language('fr', 'Français')</em><a class="headerlink" href="#rinoh.language.FR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Français</p>
@@ -316,7 +322,7 @@
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.language.IT">
 <code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">IT</code><em class="property"> = Language('it', 'Italiano')</em><a class="headerlink" href="#rinoh.language.IT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Italiano</p>
@@ -373,7 +379,7 @@
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.language.NL">
 <code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">NL</code><em class="property"> = Language('nl', 'Nederlands')</em><a class="headerlink" href="#rinoh.language.NL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Nederlands</p>
@@ -430,7 +436,7 @@
 </dl>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="rinoh.language.PL">
 <code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">PL</code><em class="property"> = Language('pl', 'Polski')</em><a class="headerlink" href="#rinoh.language.PL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Polski</p>
@@ -497,7 +503,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="paper.html" class="btn btn-neutral float-right" title="Paper sizes (rinoh.paper)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="number.html" class="btn btn-neutral float-right" title="Number (rinoh.number)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Index (rinoh.index)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -509,11 +515,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -524,7 +538,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

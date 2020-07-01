@@ -1,2 +1,7 @@
 GroupedFlowablesStyle
 ====================================
+
+.. currentmodule:: rinoh.flowable
+
+.. autoclass:: GroupedFlowablesStyle
+    :members:

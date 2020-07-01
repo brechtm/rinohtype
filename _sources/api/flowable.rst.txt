@@ -60,3 +60,13 @@ Floating Flowables
 
 .. autoclass:: Float
     :members:
+
+
+Styling Properties
+------------------
+
+.. autoclass:: HorizontalAlignment
+    :members:
+
+.. autoclass:: FlowableWidth
+    :members:

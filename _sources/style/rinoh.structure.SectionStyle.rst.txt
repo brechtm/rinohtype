@@ -1,2 +1,7 @@
 SectionStyle
 ============================
+
+.. currentmodule:: rinoh.structure
+
+.. autoclass:: SectionStyle
+    :members:

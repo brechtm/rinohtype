@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Element Styling &mdash; rinohtype 0.4.0 documentation</title>
+  <title>Element Styling &mdash; rinohtype 0.4.1 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,10 +34,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Document Templates" href="templates.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> rinohtype
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> rinohtype
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
             
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -113,6 +115,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -151,7 +154,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Element Styling</li>
     
@@ -380,7 +383,7 @@ labels to assign style properties to:</p>
 </pre></div>
 </div>
 <p>Each <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a> has a <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> class associated with it. For
-<a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paragraph</span></code></a>, this is <code class="xref py py-class docutils literal notranslate"><span class="pre">ParagraphStyle</span></code>. These style classes
+<a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paragraph</span></code></a>, this is <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParagraphStyle</span></code></a>. These style classes
 determine which style attributes are accepted for the styled element. Because
 the style class can automatically be determined from the selector, it is
 possible to simply pass the style properties to the style sheet by calling the
@@ -412,7 +415,7 @@ attribute. The style for enumerated lists is defined like this, for example:</p>
 </div>
 <p>Since this is an enumerated list, <em>ordered</em> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>. <em>number_format</em>
 and <em>label_suffix</em> are set to produce list items labels of the style <em>1)</em>,
-<em>2)</em>, …. Other entries control margins and spacing. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ListStyle</span></code>
+<em>2)</em>, …. Other entries control margins and spacing. See <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListStyle</span></code></a>
 for the full list of accepted style attributes.</p>
 <div class="section" id="base-styles">
 <h3>Base Styles<a class="headerlink" href="#base-styles" title="Permalink to this headline">¶</a></h3>
@@ -558,7 +561,7 @@ for all style properties are defined in the class definition for each of the
 <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> subclasses.</p>
 <p>For text elements, it is possible to override the default behavior of
 falling back to the parent’s style. Setting <em>base</em> to the label of a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ParagraphStyle</span></code> prevents fallback to the parent
+<a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a> or <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParagraphStyle</span></code></a> prevents fallback to the parent
 element’s style.</p>
 <p>For flowables, <em>base</em> can be set to <code class="docutils literal notranslate"><span class="pre">PARENT_STYLE</span></code> to enable fallback, but
 this requires that the current element type is the same or a subclass of the
@@ -647,11 +650,19 @@ to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Brecht Machiels
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -662,7 +673,6 @@ to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
