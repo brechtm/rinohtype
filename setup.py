@@ -23,7 +23,7 @@ def get_version():
     from datetime import date
     from subprocess import check_output, CalledProcessError, DEVNULL
 
-    VERSION = '0.4.1'
+    VERSION = '0.4.2.dev'
 
     try:
         is_dirty = check_output(['git', 'status', '--porcelain'],
