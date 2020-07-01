@@ -61,7 +61,7 @@ class AnnotatedText(MixedStyledText):
         super().__init__(text_or_items, style=style, parent=parent)
         self.annotation = annotation
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         ann = self.annotation
         anchor = ann if isinstance(ann, AnchorAnnotation) else None
         link = ann if isinstance(ann, LinkAnnotation) else None

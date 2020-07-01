@@ -71,29 +71,6 @@ class Locale(AttributeType):
         return 'locale identifier in the ``<language ID>_<region ID>`` format'
 
 
-class TextStyle(Style):
-    typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
-    font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
-                                                  'outlines relative to their '
-                                                  'height')
-    font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
-    font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
-    font_size = Attribute(Dimension, 10*PT, 'Height of characters')
-    font_color = Attribute(Color, BLACK, 'Color of the font')
-    font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
-    # TODO: text_case = Attribute(TextCase, None, 'Change text casing')
-    position = Attribute(TextPosition, 'normal', 'Vertical text position')
-    kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
-    ligatures = Attribute(Bool, True, 'Run letters together where possible')
-    # TODO: character spacing
-    hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
-    hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
-                                         'hyphenated part of a word')
-    hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
-                                             'Accepts locale codes such as '
-                                             "'en_US'")
-
-
 class CharacterLike(Styled):
     def __repr__(self):
         return "{0}(style={1})".format(self.__class__.__name__, self.style)
@@ -115,8 +92,6 @@ NAME2CHAR = {name: chr(codepoint)
 
 class StyledText(Styled, AcceptNoneAttributeType):
     """Base class for text that has a :class:`TextStyle` associated with it."""
-
-    style_class = TextStyle
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
@@ -223,7 +198,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
         return self.parent.paragraph
 
     def fallback_to_parent(self, attribute):
-        return attribute != 'position'
+        return attribute not in ('position', 'replace')
 
     position = {TextPosition.SUPERSCRIPT: 1 / 3,
                 TextPosition.SUBSCRIPT: - 1 / 6}
@@ -264,14 +239,50 @@ class StyledText(Styled, AcceptNoneAttributeType):
         """The list of items in this StyledText."""
         return [self]
 
-    def spans(self, container):
+    def spans(self, container, replace_self=None):
         """Generator yielding all spans in this styled text, one
         item at a time (used in typesetting)."""
+        replace = self.get_style('replace', container)
+        if replace is not None and replace_self is not self:
+            replace.parent = self
+            yield from replace.spans(container, replace_self=self)
+        else:
+            yield from self._spans(container, replace_self=replace_self)
+
+    def _spans(self, container, replace_self=None):
         raise NotImplementedError
 
 
 class StyledTextParseError(Exception):
     pass
+
+
+class TextStyle(Style):
+    typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
+    font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
+                                                  'outlines relative to their '
+                                                  'height')
+    font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
+    font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
+    font_size = Attribute(Dimension, 10*PT, 'Height of characters')
+    font_color = Attribute(Color, BLACK, 'Color of the font')
+    font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
+    # TODO: text_case = Attribute(TextCase, None, 'Change text casing')
+    position = Attribute(TextPosition, 'normal', 'Vertical text position')
+    kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
+    ligatures = Attribute(Bool, True, 'Run letters together where possible')
+    # TODO: character spacing
+    hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
+    hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
+                                         'hyphenated part of a word')
+    hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
+                                             'Accepts locale codes such as '
+                                             "'en_US'")
+    replace = Attribute(StyledText, None, 'Text to replace this styled text '
+                                          'with')
+
+
+StyledText.style_class = TextStyle
 
 
 class WarnInline(StyledText):
@@ -289,7 +300,7 @@ class WarnInline(StyledText):
     def to_string(self, flowable_target):
         return ''
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         self.warn(self.message, container)
         return iter([])
 
@@ -308,7 +319,7 @@ class SingleStyledTextBase(StyledText):
 
     def to_string(self, flowable_target):
         return self.text(flowable_target)
-
+    # TODO: this method is being called many times (cache!)
     def font(self, container):
         """The :class:`Font` described by this single-styled text's style.
 
@@ -334,7 +345,7 @@ class SingleStyledTextBase(StyledText):
         return (self.font(container).line_gap_in_pt
                 * float(self.get_style('font_size', container)))
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         yield self
 
 
@@ -365,15 +376,15 @@ class MixedStyledTextBase(StyledText):
         return ''.join(item.to_string(flowable_target)
                        for item in self.children(flowable_target))
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         """Recursively yield all the :class:`SingleStyledText` items in this
         mixed-styled text."""
-        for child in self.children(container):
+        for child in self.children(container, replace_self=replace_self):
             container.register_styled(child)
-            for span in child.spans(container):
+            for span in child.spans(container, replace_self=replace_self):
                 yield span
 
-    def children(self, flowable_target):
+    def children(self, flowable_target, replace_self=None):
         raise NotImplementedError
 
 
@@ -452,7 +463,7 @@ class MixedStyledText(MixedStyledTextBase, list):
     def items(self):
         return list(self)
 
-    def children(self, flowable_target):
+    def children(self, flowable_target, replace_self=None):
         return self.items
 
 
@@ -461,7 +472,7 @@ class ConditionalMixedStyledText(MixedStyledText):
         super().__init__(text_or_items, style=style, parent=parent)
         self.document_option = document_option
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         if container.document.options[self.document_option]:
             for span in super().spans(container):
                 yield span

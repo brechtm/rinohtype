@@ -1,0 +1,7 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[replace_this : StyledText(has_class='replace')]
+font_color = #f00
+replace = 'before' (strong) ' {SELF} ' 'after' (emphasis)

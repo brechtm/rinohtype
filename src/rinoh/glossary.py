@@ -37,7 +37,7 @@ class GlossaryTerm(MixedStyledTextBase):
         self.term = term
         self.definition = definition
 
-    def children(self, container):
+    def children(self, container, replace_self=None):
         doc = container.document
         id = self.get_id(container.document)
         term_str = self.term.to_string(container)

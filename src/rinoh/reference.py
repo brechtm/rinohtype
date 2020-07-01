@@ -14,7 +14,7 @@ from itertools import chain, zip_longest
 from .annotation import NamedDestinationLink, AnnotatedSpan
 from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
-from .layout import ReflowRequired, ContainerOverflow
+from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
@@ -59,7 +59,7 @@ class ReferenceBase(MixedStyledTextBase):
     def target_id(self, document):
         raise NotImplementedError
 
-    def children(self, container):
+    def children(self, container, replace_self=None):
         if container is None:
             return '$REF({})'.format(self.type)
         target_id = self.target_id(container.document)
@@ -98,7 +98,7 @@ class ReferenceBase(MixedStyledTextBase):
         else:
             yield SingleStyledText(text, parent=self)
 
-    def spans(self, container):
+    def _spans(self, container, replace_self=None):
         spans = super().spans(container)
         if self.link:
             target_id = self.target_id(container.document)
@@ -264,6 +264,7 @@ NUMBER_OF_PAGES = FieldType('number of pages')
 DOCUMENT_TITLE = FieldType('document title')
 DOCUMENT_SUBTITLE = FieldType('document subtitle')
 DOCUMENT_AUTHOR = FieldType('document author')
+SELF = FieldType('self')
 
 
 class SectionFieldTypeMeta(type):
@@ -334,6 +335,9 @@ class Field(MixedStyledTextBase):
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, self.type)
 
+    def to_string(self, flowable_target):
+        return '{{{}}}'.format(self.type.key)
+
     @classmethod
     def parse_string(cls, string, style=None):
         try:
@@ -342,7 +346,7 @@ class Field(MixedStyledTextBase):
             field = SectionFieldType.from_string(string)
         return cls(field, style=style)
 
-    def children(self, container):
+    def children(self, container, replace_self=None):
         if container is None:
             text = '${}'.format(self.type)
         elif self.type == PAGE_NUMBER:
@@ -356,6 +360,9 @@ class Field(MixedStyledTextBase):
             text = container.document.get_metadata('subtitle')
         elif self.type == DOCUMENT_AUTHOR:
             text = container.document.get_metadata('author')
+        elif self.type == SELF:
+            yield replace_self
+            return
         elif isinstance(self.type, SectionFieldType):
             doc = container.document
             section = container.page.get_current_section(self.type.level)

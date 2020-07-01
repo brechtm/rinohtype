@@ -152,7 +152,7 @@ class StringField(MixedStyledTextBase):
         collection, key = string.split('.')
         return cls(StringCollection.subclasses[collection], key, style=style)
 
-    def children(self, container):
+    def children(self, container, replace_self=None):
         text = container.document.get_string(self.strings_class, self.key)
         if isinstance(text, StyledText):
             text.parent = self
