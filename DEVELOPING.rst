@@ -148,10 +148,10 @@ This is a list of steps to follow when making a new release of rinohtype:
 
 2. Perform checks and run tests locally
 
-  * restview_ ``README.rst`` and ``CHANGES.rst`` to check for issues
-  * run ``tox`` to run the quick-running checks/tests
-  * run the longer-running tox environments: ``longrunning``, ``check-docs``,
-    ``build-docs``, ``wininst`` and (if you're on macOS) ``macapp``
+   * restview_ ``README.rst`` and ``CHANGES.rst`` to check for issues
+   * run ``tox`` to run the quick-running checks/tests
+   * run the longer-running tox environments: ``longrunning``, ``check-docs``,
+     ``build-docs``, ``wininst`` and (if you're on macOS) ``macapp``
 
 3. Set release version
 
@@ -172,6 +172,9 @@ This is a list of steps to follow when making a new release of rinohtype:
 7. Prepare the ``doc/_build/html`` submodule
 
    * make sure the ``doc/_build/html`` submodule is checked out
+
+        git submodule status doc/_build/html
+
    * clear the output directory so no obsolete files are left behind::
 
         rm -rf doc/_build/html/* && rm -rf doc/_build/html/.buildinfo
@@ -196,14 +199,13 @@ This is a list of steps to follow when making a new release of rinohtype:
    * check whether the new release's description (which is a concatenation of
      ``README.rst`` and ``CHANGES.rst``) is rendered properly at
      https://test.pypi.org/project/rinohtype/
-   * verify that you can install rinohtype from TestPyPI::
+   * check whether you can install this version and that it can render a
+     reStructuredText file::
 
-         pip install -i https://test.pypi.org/simple/ rinohtype
-
-   * check whether this installed version can render a reStructuredText file::
-
-        # create virtualenv for testing
+        python -m venv /tmp/rinohtest
+        source /tmp/rinohtest/bin/activate
         pip install --extra-index-url https://test.pypi.org/simple/ rinohtype
+        rinoh DEVELOPING.rst
 
 10. Tag the release in and push commits
 
