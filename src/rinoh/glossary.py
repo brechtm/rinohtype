@@ -6,10 +6,9 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .attribute import OptionSet, Attribute
+from .attribute import OptionSet, Attribute, OverrideDefault
 from .flowable import GroupedFlowables
-from .text import SingleStyledText, MixedStyledTextBase, TextStyle
-
+from .text import StyledText, MixedStyledText, MixedStyledTextBase, TextStyle
 
 __all__ = ['ShowDefinition', 'GlossaryTermStyle', 'GlossaryTerm', 'Glossary']
 
@@ -24,7 +23,14 @@ class GlossaryTermStyle(TextStyle):
     show_definition = Attribute(ShowDefinition, ShowDefinition.FIRST,
                                 'When to show the definition together with the'
                                 ' glossary term in the text')
-    # definition_format = Attribute()
+
+
+class GlossaryDefinitionStyle(TextStyle):
+    replace = OverrideDefault(StyledText.from_string("' ({SELF})'"))
+
+
+class GlossaryDefinition(MixedStyledText):
+    style_class = GlossaryDefinitionStyle
 
 
 # TODO: inherit from Reference(Base) to hyperlink to the glossary entry
@@ -54,8 +60,7 @@ class GlossaryTerm(MixedStyledTextBase):
             self.warn("No definition given for '{}' glossary term"
                       .format(term_str), container)
             return
-        definition_text = SingleStyledText(' ({})'.format(definition),
-                                           parent=self)
+        definition_text = GlossaryDefinition(definition, parent=self)
         if show_definition == ShowDefinition.FIRST:
             if first_id == id:
                 yield definition_text
