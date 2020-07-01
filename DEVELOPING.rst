@@ -217,7 +217,17 @@ This is a list of steps to follow when making a new release of rinohtype:
 
     * ``twine upload --repository-url https://upload.pypi.org/legacy/ dist/*``
 
-12. Set the new development version
+12. Create a new [release on GitHub](https://github.com/brechtm/rinohtype/releases/new)
+
+    * Tag version: the release's tag *vx.y.z*
+    * Release title: *Release x.y.z (date)*
+    * Add a link to the release on PyPI::
+
+          Install from [PyPI](https://pypi.org/project/rinohtype/x.y.z/)
+
+    * Copy the release notes from the change log
+
+13. Set the new development version
 
     * ``export VERSION_NUMBER=$(bumpversion --list patch
       | grep new_version | sed s/"^.*="//)``
