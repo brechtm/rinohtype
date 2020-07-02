@@ -36,7 +36,8 @@ from .util import (cached, all_subclasses, NotImplementedAttribute,
 from .warnings import warn
 
 
-__all__ = ['Style', 'Styled', 'StyledMatcher', 'StyleSheet', 'StyleSheetFile',
+__all__ = ['Style', 'Styled', 'StyledMeta',
+           'StyledMatcher', 'StyleSheet', 'StyleSheetFile',
            'ClassSelector', 'ContextSelector', 'PARENT_STYLE']
 
 

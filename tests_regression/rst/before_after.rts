@@ -1,0 +1,8 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[wrap : StyledText(has_class='wrap')]
+font_color = #f00
+before = 'before ' (strong)
+after = ' after' (emphasis)

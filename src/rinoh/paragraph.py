@@ -600,7 +600,7 @@ class ParagraphBase(Flowable):
         return self
 
     def initial_state(self, container):
-        spans = self.text(container).spans(container)
+        spans = self.text(container).wrapped_spans(container)
         return ParagraphState(self, spans_to_words(spans, container))
 
     def _short_repr_args(self, flowable_target):

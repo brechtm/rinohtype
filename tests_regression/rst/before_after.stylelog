@@ -1,0 +1,16 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('We'll be wrapping this with styl...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/before_after.rst:5 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('We'll be wrapping this with styl...')
+          SingleStyledText('We'll be wrapping ')
+          MixedStyledText('this')   None:None <inline>
+               > (0,0,0,1,1) wrap
+            SingleStyledText('this')
+          SingleStyledText(' with styled text configured in ...')

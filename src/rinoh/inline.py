@@ -6,12 +6,15 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .attribute import Attribute
+from token import LPAR, RPAR
+
+from .attribute import Attribute, ParseError
 from .dimension import Dimension, PT
 from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
 from .style import StyledMeta
+from .text import InlineStyle, InlineStyled
 from .util import NotImplementedAttribute
 
 
@@ -22,7 +25,7 @@ class InlineFlowableException(Exception):
     pass
 
 
-class InlineFlowableStyle(FlowableStyle):
+class InlineFlowableStyle(FlowableStyle, InlineStyle):
     baseline = Attribute(Dimension, 0*PT, "The location of the flowable's "
                                           "baseline relative to the bottom "
                                           "edge")
@@ -38,7 +41,7 @@ class InlineFlowableMeta(StyledMeta):
         return cls
 
 
-class InlineFlowable(Flowable, metaclass=InlineFlowableMeta):
+class InlineFlowable(Flowable, InlineStyled, metaclass=InlineFlowableMeta):
     directive = None
     style_class = InlineFlowableStyle
     arguments = NotImplementedAttribute()
@@ -59,6 +62,17 @@ class InlineFlowable(Flowable, metaclass=InlineFlowableMeta):
     @property
     def items(self):
         return [self]
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        directive = next(tokens).string.lower()
+        inline_flowable_class = InlineFlowable.directives[directive]
+        if next(tokens).exact_type != LPAR:
+            raise ParseError('Expecting an opening parenthesis.')
+        args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens)
+        if next(tokens).exact_type != RPAR:
+            raise ParseError('Expecting a closing parenthesis.')
+        return inline_flowable_class(*args, **kwargs)
 
     def spans(self, document):
         yield self

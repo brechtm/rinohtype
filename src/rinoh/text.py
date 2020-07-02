@@ -31,8 +31,8 @@ from ast import literal_eval
 from html.entities import name2codepoint
 from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 
-from .attribute import (AttributeType, Attribute, Bool, Integer,
-                        AcceptNoneAttributeType, ParseError)
+from .attribute import (AttributeType, AcceptNoneAttributeType, Attribute,
+                        Bool, Integer)
 from .color import Color, BLACK
 from .dimension import Dimension, PT
 from .font import Typeface
@@ -43,10 +43,11 @@ from .style import Style, Styled, StyledMeta
 from .util import NotImplementedAttribute
 
 
-__all__ = ['TextStyle', 'StyledText', 'WarnInline', 'SingleStyledText',
-           'MixedStyledText', 'ConditionalMixedStyledText', 'Space',
-           'FixedWidthSpace', 'NoBreakSpace', 'Spacer', 'Tab', 'Newline',
-           'Superscript', 'Subscript']
+__all__ = ['InlineStyle', 'InlineStyled', 'TextStyle', 'StyledText',
+           'WarnInline', 'SingleStyledText', 'MixedStyledText',
+           'ConditionalMixedStyledText',
+           'Space', 'FixedWidthSpace', 'NoBreakSpace', 'Spacer', 'Tab',
+           'Newline', 'Superscript', 'Subscript']
 
 
 class Locale(AttributeType):
@@ -71,27 +72,23 @@ class Locale(AttributeType):
         return 'locale identifier in the ``<language ID>_<region ID>`` format'
 
 
-class TextStyle(Style):
-    typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
-    font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
-                                                  'outlines relative to their '
-                                                  'height')
-    font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
-    font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
-    font_size = Attribute(Dimension, 10*PT, 'Height of characters')
-    font_color = Attribute(Color, BLACK, 'Color of the font')
-    font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
-    # TODO: text_case = Attribute(TextCase, None, 'Change text casing')
-    position = Attribute(TextPosition, 'normal', 'Vertical text position')
-    kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
-    ligatures = Attribute(Bool, True, 'Run letters together where possible')
-    # TODO: character spacing
-    hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
-    hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
-                                         'hyphenated part of a word')
-    hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
-                                             'Accepts locale codes such as '
-                                             "'en_US'")
+class InlineStyled(Styled):
+    """"""
+
+    def wrapped_spans(self, container):
+        """Generator yielding all spans in this inline element (flattened)"""
+        before = self.get_style('before', container)
+        if before is not None:
+            before.parent = self.parent
+            yield from before.wrapped_spans(container)
+        yield from self.spans(container)
+        after = self.get_style('after', container)
+        if after is not None:
+            after.parent = self.parent
+            yield from after.wrapped_spans(container)
+
+    def spans(self, container):
+        raise NotImplementedError
 
 
 class CharacterLike(Styled):
@@ -113,10 +110,8 @@ NAME2CHAR = {name: chr(codepoint)
              for name, codepoint in name2codepoint.items()}
 
 
-class StyledText(Styled, AcceptNoneAttributeType):
+class StyledText(InlineStyled, AcceptNoneAttributeType):
     """Base class for text that has a :class:`TextStyle` associated with it."""
-
-    style_class = TextStyle
 
     def __add__(self, other):
         """Return the concatenation of this styled text and `other`. If `other`
@@ -133,51 +128,31 @@ class StyledText(Styled, AcceptNoneAttributeType):
         is `None`, this styled text itself is returned."""
         return self + other
 
+    def copy(self, id=None, style=None, parent=None):
+        raise NotImplementedError
+
     @classmethod
     def check_type(cls, value):
         return super().check_type(value) or isinstance(value, str)
 
     @classmethod
     def from_tokens(cls, tokens):
-        texts = []
-        for token in tokens:
-            if token.type == NEWLINE:
-                continue
-            elif token.type == NAME:      # inline flowable
-                directive = token.string.lower()
-                inline_flowable_class = InlineFlowable.directives[directive]
-                if next(tokens).exact_type != LPAR:
-                    raise ParseError('Expecting an opening parenthesis.')
-                args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens)
-                if next(tokens).exact_type != RPAR:
-                    raise ParseError('Expecting a closing parenthesis.')
-                inline_flowable = inline_flowable_class(*args, **kwargs)
-                texts.append(inline_flowable)
-            elif token.type == STRING:    # text
-                text = literal_eval(token.string)
-                if tokens.next.exact_type == LPAR:
-                    _, start_col = next(tokens).end
-                    for token in tokens:
-                        if token.exact_type == RPAR:
-                            _, end_col = token.start
-                            style = token.line[start_col:end_col].strip()
-                            break
-                        elif token.type == NEWLINE:
-                            raise StyledTextParseError('No newline allowed in'
-                                                       'style name')
-                else:
-                    style = None
-                texts.append(cls._substitute_variables(text, style))
+        items = []
+        while tokens.next.type:
+            if tokens.next.type == NAME:
+                items.append(InlineFlowable.from_tokens(tokens))
+            elif tokens.next.type == STRING:
+                items.append(SingleStyledText.from_tokens(tokens))
+            elif tokens.next.type == NEWLINE:
+                next(tokens)
+            elif tokens.next.type == ENDMARKER:
+                break
             else:
                 raise StyledTextParseError('Expecting text or inline flowable')
-            if tokens.next.type == ENDMARKER:
-                break
-
-        if len(texts) > 1:
-            return MixedStyledText(texts)
-        else:
-            first, = texts
+        if len(items) == 1:
+            first, = items
             return first
+        return MixedStyledText(items)
 
     @classmethod
     def doc_repr(cls, value):
@@ -196,18 +171,6 @@ class StyledText(Styled, AcceptNoneAttributeType):
             value = SingleStyledText(value)
         return super().validate(value, accept_variables, attribute_name)
 
-    @classmethod
-    def _substitute_variables(cls, text, style):
-        def substitute_controlchars_htmlentities(string, style=None):
-            try:
-                return ControlCharacter.all[string]()
-            except KeyError:
-                return SingleStyledText(string.format(**NAME2CHAR),
-                                        style=style)
-
-        return Field.substitute(text, substitute_controlchars_htmlentities,
-                                style=style)
-
     def __str__(self):
         return self.to_string(None)
 
@@ -223,7 +186,7 @@ class StyledText(Styled, AcceptNoneAttributeType):
         return self.parent.paragraph
 
     def fallback_to_parent(self, attribute):
-        return attribute != 'position'
+        return attribute not in ('position', 'before', 'after')
 
     position = {TextPosition.SUPERSCRIPT: 1 / 3,
                 TextPosition.SUBSCRIPT: - 1 / 6}
@@ -264,14 +227,43 @@ class StyledText(Styled, AcceptNoneAttributeType):
         """The list of items in this StyledText."""
         return [self]
 
-    def spans(self, container):
-        """Generator yielding all spans in this styled text, one
-        item at a time (used in typesetting)."""
-        raise NotImplementedError
-
 
 class StyledTextParseError(Exception):
     pass
+
+
+class InlineStyle(Style):
+    before = Attribute(StyledText, None, 'Item to insert before this one')
+    after = Attribute(StyledText, None, 'Item to insert after this one')
+
+
+InlineStyled.style_class = InlineStyle
+
+
+class TextStyle(InlineStyle):
+    typeface = Attribute(Typeface, adobe14.times, 'Typeface to set the text in')
+    font_weight = Attribute(FontWeight, 'medium', 'Thickness of character '
+                                                  'outlines relative to their '
+                                                  'height')
+    font_slant = Attribute(FontSlant, 'upright', 'Slope style of the font')
+    font_width = Attribute(FontWidth, 'normal', 'Stretch of the characters')
+    font_size = Attribute(Dimension, 10*PT, 'Height of characters')
+    font_color = Attribute(Color, BLACK, 'Color of the font')
+    font_variant = Attribute(FontVariant, 'normal', 'Variant of the font')
+    # TODO: text_case = Attribute(TextCase, None, 'Change text casing')
+    position = Attribute(TextPosition, 'normal', 'Vertical text position')
+    kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
+    ligatures = Attribute(Bool, True, 'Run letters together where possible')
+    # TODO: character spacing
+    hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
+    hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
+                                         'hyphenated part of a word')
+    hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
+                                             'Accepts locale codes such as '
+                                             "'en_US'")
+
+
+StyledText.style_class = TextStyle
 
 
 class WarnInline(StyledText):
@@ -356,6 +348,35 @@ class SingleStyledText(SingleStyledTextBase):
             result += ' ({})'.format(self.style)
         return result
 
+    @classmethod
+    def from_tokens(cls, tokens):
+        text = literal_eval(next(tokens).string)
+        if tokens.next.exact_type == LPAR:
+            _, start_col = next(tokens).end
+            for token in tokens:
+                if token.exact_type == RPAR:
+                    _, end_col = token.start
+                    style = token.line[start_col:end_col].strip()
+                    break
+                elif token.type == NEWLINE:
+                    raise StyledTextParseError('No newline allowed in '
+                                               'style name')
+        else:
+            style = None
+        return cls._substitute_variables(text, style)
+
+    @classmethod
+    def _substitute_variables(cls, text, style):
+        def substitute_controlchars_htmlentities(string, style=None):
+            try:
+                return ControlCharacter.all[string]()
+            except KeyError:
+                return SingleStyledText(string.format(**NAME2CHAR),
+                                        style=style)
+
+        return Field.substitute(text, substitute_controlchars_htmlentities,
+                                style=style)
+
     def text(self, container, **kwargs):
         return self._text
 
@@ -370,8 +391,7 @@ class MixedStyledTextBase(StyledText):
         mixed-styled text."""
         for child in self.children(container):
             container.register_styled(child)
-            for span in child.spans(container):
-                yield span
+            yield from child.wrapped_spans(container)
 
     def children(self, flowable_target):
         raise NotImplementedError

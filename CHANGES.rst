@@ -6,6 +6,7 @@ Release 0.4.2.dev
 
 New Features:
 
+* before/after style attributes for StyledText (issue #158)
 * docutils/Sphinx frontend: don't abort on encountering math/math_block, output
   the (LaTeX) math markup instead, along with printing a warning.
 * docutils frontend: raw inline text (with ``:format: 'rinoh'``) is parsed as
