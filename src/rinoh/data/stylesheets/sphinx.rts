@@ -142,6 +142,10 @@ font_color=#376f62
 [broken hyperlink]
 font_color=#7f7f7f
 
+[glossary inline definition]
+before=' ('
+after=')'
+
 [code block]
 typeface=$(mono_typeface)
 font_size=9pt

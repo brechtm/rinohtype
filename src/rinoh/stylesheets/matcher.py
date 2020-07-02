@@ -67,6 +67,8 @@ matcher('internal hyperlink', StyledText.like('internal link'))
 matcher('external hyperlink', StyledText.like('external link'))
 matcher('broken hyperlink', StyledText.like('broken link'))
 
+matcher('glossary inline definition',
+        StyledText.like('glossary inline definition'))
 
 # paragraphs
 
