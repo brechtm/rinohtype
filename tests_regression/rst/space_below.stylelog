@@ -1,0 +1,70 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Sed ut perspiciatis, unde omnis ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/space_below.rst:1 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+          SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+      Admonition()   None:None <important>
+           > (0,0,0,1,2) important admonition
+             (0,0,0,0,2) admonition
+        Paragraph('Important', style='title')
+             x (0,0,1,1,4) important admonition title
+             > (0,0,1,0,4) admonition title
+               (0,0,1,0,2) title
+               (0,0,0,0,2) body
+          SingleStyledText('Important')
+        List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/space_below.rst:26 <bullet_list>
+             > (0,0,1,0,2) bulleted list
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Wash behind your ears.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/space_below.rst:26 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Wash behind your ears.')
+                  SingleStyledText('Wash behind your ears.')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) Admonition()   None:None <important>
+           > (0,0,0,1,2) important admonition
+             (0,0,0,0,2) admonition
+        (continued) List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/space_below.rst:26 <bullet_list>
+             > (0,0,1,0,2) bulleted list
+          ListItem()
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()   None:None <list_item>
+                 > (0,0,0,0,3) list item body
+              Paragraph('Clean up your room.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/space_below.rst:27 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Clean up your room.')
+                  SingleStyledText('Clean up your room.')

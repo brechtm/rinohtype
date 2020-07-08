@@ -4,6 +4,11 @@ Release History
 Release 0.4.2.dev
 ~~~~~~~~~~~~~~~~~
 
+Fixed:
+
+* Fix some issues with space_below handling
+
+
 Release 0.4.1 (2020-07-01)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -12,10 +17,10 @@ New Features:
 * UserStrings: arbitrary user-defined strings that can be defined in the
   template configuration or as a substitution definition in reStructuredText
 * strings in a StringCollection can now be styled text
-* Sphinx frontend: use the `today` and `today_fmt` configuration variables for
-  the date on the title page
+* Sphinx frontend: use the ``today`` and ``today_fmt`` configuration variables
+  for the date on the title page
 * Sphinx frontend: allow extensions access to the builder object (issue #155)
-* rinoh --output: write the output PDF to a specified location
+* rinoh: ``--output`` writes the output PDF to a specified location
 
 Fixed:
 
