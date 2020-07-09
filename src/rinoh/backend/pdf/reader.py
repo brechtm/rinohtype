@@ -442,23 +442,22 @@ class PDFReader(PDFObjectReader, cos.Document):
             Iterator[(int, String, Object)]: entry depth, title and destination
 
         """
+        stack = [self.catalog['Outlines']]
         entry = self.catalog['Outlines']['First']
-        entry_depth = 0
         while True:
+            entry_depth = len(stack) - 1
             yield entry_depth, entry['Title'], entry['Dest']
             if 'First' in entry and depth > entry_depth:
+                stack.append(entry)
                 entry = entry['First']
-                entry_depth += 1
             elif 'Next' in entry:
                 entry = entry['Next']
             else:
-                parent = entry['Parent']
-                while 'Parent' in parent:
-                    entry_depth -= 1
+                while stack:
+                    parent = stack.pop()
                     if 'Next' in parent:
                         entry = parent['Next']
                         break
-                    parent = parent['Parent']
                 else:
                     break
 
