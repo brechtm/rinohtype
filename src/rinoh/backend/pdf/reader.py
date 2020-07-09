@@ -432,6 +432,36 @@ class PDFReader(PDFObjectReader, cos.Document):
             offset -= 1
         return int(xref_offset)
 
+    def iter_outlines(self, depth=float('+inf')):
+        """Iterate over the outline entries up to a given depth
+
+        Args:
+            depth (int): the maximum depth of outline entries to yield
+
+        Returns:
+            Iterator[(int, String, Object)]: entry depth, title and destination
+
+        """
+        entry = self.catalog['Outlines']['First']
+        entry_depth = 0
+        while True:
+            yield entry_depth, entry['Title'], entry['Dest']
+            if 'First' in entry and depth > entry_depth:
+                entry = entry['First']
+                entry_depth += 1
+            elif 'Next' in entry:
+                entry = entry['Next']
+            else:
+                parent = entry['Parent']
+                while 'Parent' in parent:
+                    entry_depth -= 1
+                    if 'Next' in parent:
+                        entry = parent['Next']
+                        break
+                    parent = parent['Parent']
+                else:
+                    break
+
 
 class XRefTable(dict):
     def __init__(self, document, prev=None):
