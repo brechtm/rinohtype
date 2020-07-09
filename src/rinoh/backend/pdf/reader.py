@@ -292,7 +292,7 @@ class PDFReader(PDFObjectReader, cos.Document):
         self.id = trailer['ID'] if 'ID' in trailer else None
         self._max_identifier_in_file = int(trailer['Size']) - 1
         self.catalog = trailer['Root']
-        self.dests = {}
+        self.dests = cos.Dictionary()
         try:
             dests_names = iter(self.catalog['Names']['Dests']['Names'])
             for name in dests_names:
@@ -439,14 +439,16 @@ class PDFReader(PDFObjectReader, cos.Document):
             depth (int): the maximum depth of outline entries to yield
 
         Returns:
-            Iterator[(int, String, Object)]: entry depth, title and destination
+            Iterator[(int, String, Array)]: entry depth, title and destination
 
         """
         stack = [self.catalog['Outlines']]
         entry = self.catalog['Outlines']['First']
         while True:
             entry_depth = len(stack) - 1
-            yield entry_depth, entry['Title'], entry['Dest']
+            dest = entry['Dest']
+            yield (entry_depth, entry['Title'],
+                   dest if isinstance(dest, cos.Array) else self.dests[dest])
             if 'First' in entry and depth > entry_depth:
                 stack.append(entry)
                 entry = entry['First']
