@@ -442,8 +442,12 @@ class PDFReader(PDFObjectReader, cos.Document):
             Iterator[(int, String, Array)]: entry depth, title and destination
 
         """
-        stack = [self.catalog['Outlines']]
-        entry = self.catalog['Outlines']['First']
+        try:
+            outlines = self.catalog['Outlines']
+            entry = outlines['First']
+        except KeyError:
+            return
+        stack = [outlines]
         while True:
             entry_depth = len(stack) - 1
             dest = entry['Dest']
