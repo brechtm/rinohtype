@@ -1,0 +1,24 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('The area of a circle is A_\text{...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/math.rst:5 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('The area of a circle is A_\text{...')
+          SingleStyledText('The area of a circle is ')
+          MixedStyledText('A_\text{c} = (\pi/4) d^2')   None:None <math>
+            WarnInline('')
+            MixedStyledText('A_\text{c} = (\pi/4) d^2', style='math')
+                 > (0,0,1,0,1) inline math
+              SingleStyledText('A_\text{c} = (\pi/4) d^2')
+          SingleStyledText('.')
+      Paragraph('\alpha_t(i) = P(O_1, O_2, ... O_...', style='math')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/math.rst:9 <math_block>
+           > (0,0,1,0,2) math block
+             (0,0,1,0,1) inline math
+             (0,0,0,0,2) body
+        MixedStyledText('\alpha_t(i) = P(O_1, O_2, ... O_...')
+          SingleStyledText('\alpha_t(i) = P(O_1, O_2, ... O_...')

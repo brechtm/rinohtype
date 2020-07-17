@@ -52,6 +52,9 @@ typeface=$(mono_typeface)
 hyphenate=False
 ligatures=False
 
+[inline math]
+base=monospaced
+
 [quote]
 font_slant=italic
 
@@ -152,6 +155,10 @@ border=$(thin_black_stroke)
 padding_left=5pt
 padding_top=1pt
 padding_bottom=3pt
+
+[math block]
+base=code block
+border=none
 
 [block quote]
 margin_left=1cm

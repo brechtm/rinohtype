@@ -4,6 +4,11 @@ Release History
 Release 0.4.2.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
+* docutils/Sphinx frontend: don't abort on encountering math/math_block, output
+  the (LaTeX) math markup instead, along with printing a warning.
+
 Fixed:
 
 * Fix some issues with space_below handling

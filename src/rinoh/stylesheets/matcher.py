@@ -35,6 +35,7 @@ matcher = StyledMatcher({
     'strong': StyledText.like('strong'),
     'literal emphasis': StyledText.like('literal emphasis'),
     'literal strong': StyledText.like('literal strong'),
+    'inline math': StyledText.like('math'),
 
     'quote': StyledText.like('quote'),
     'file path': StyledText.like('file path'),
@@ -71,6 +72,7 @@ matcher('broken hyperlink', StyledText.like('broken link'))
 
 matcher('body', Paragraph)
 matcher('code block', +CodeBlock)
+matcher('math block', Paragraph.like('math'))
 matcher('attribution', Paragraph.like('attribution'))
 matcher('centered', Paragraph.like('centered'))
 matcher('line block', Paragraph.like('line block'))

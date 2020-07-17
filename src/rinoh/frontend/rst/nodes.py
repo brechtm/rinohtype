@@ -22,7 +22,6 @@ from ...util import intersperse
 # (http://docutils.sourceforge.net/docs/ref/doctree.html)
 # - abbreviation? (not exposed in default reStructuredText; Sphinx has :abbr:)
 # - acronym (not exposed in default reStructuredText?)
-# - math / math_block
 # - pending (should not appear in final doctree?)
 # - substitution_reference (should not appear in final doctree?)
 
@@ -233,6 +232,14 @@ class Subtitle(DocutilsBodyNode):
         return rt.SetMetadataFlowable(subtitle=self.process_content())
 
 
+class Math_Block(DocutilsBodyNode):
+    style = 'math'
+
+    def build_flowables(self):
+        yield rt.WarnFlowable("The 'math' directive is not yet supported")
+        yield rt.Paragraph(self.process_content(), style=self.style)
+
+
 class Admonition(DocutilsGroupingNode):
     grouped_flowables_class = rt.Admonition
 
@@ -310,6 +317,14 @@ class Title_Reference(DocutilsInlineNode):
 
 class Literal(Inline):
     style = 'monospaced'
+
+
+class Math(Inline):
+    style = 'math'
+
+    def build_styled_text(self):
+        return (rt.WarnInline("The 'math' role is not yet supported")
+                + super().build_styled_text())
 
 
 class Superscript(DocutilsInlineNode):
