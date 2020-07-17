@@ -1,0 +1,18 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Here are some  and rinohtype raw...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/inline_raw.rst:9 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('Here are some  and rinohtype raw...')
+          SingleStyledText('Here are some ')
+          SingleStyledText(' and ')
+          MixedStyledText('rinohtype')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/inline_raw.rst:9 <raw>
+            SingleStyledText('rinoh')
+            SingleStyledText('type', style='strong')
+                 > (0,0,1,0,1) strong
+          SingleStyledText(' raw inline text roles.')

@@ -719,9 +719,8 @@ class Entry(DocutilsGroupingNode):
 
 class Raw(DocutilsBodyNode, DocutilsInlineNode):
     def build_styled_text(self):
-        cls, = self['classes']
-        return rt.WarnInline('{}: raw interpreted text roles are not supported'
-                             .format(cls))
+        if self['format'] == 'rinoh':
+            return rt.StyledText.from_string(self.text)
 
     def build_flowable(self):
         if self['format'] == 'rinoh':
