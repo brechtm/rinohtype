@@ -160,7 +160,7 @@ def mutool(pdf_path, page_number, stdout, gray=False):
     if gray:
         command.insert(-2, '-c')
         command.insert(-2, 'gray')
-    return Popen(command, shell=SHELL, stdout=stdout)
+    return Popen(command, shell=SHELL, stdout=stdout, stderr=DEVNULL)
 
 
 if which('mutool'):
