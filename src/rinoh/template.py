@@ -38,8 +38,7 @@ from .resource import Resource
 from .text import StyledText, Tab
 from .strings import StringCollection, Strings
 from .structure import Header, Footer, HorizontalRule, NewChapterException
-from .style import (StyleSheet, CharIterator, parse_string, Specificity,
-                    DocumentLocationType)
+from .style import StyleSheet, Specificity, DocumentLocationType
 from .stylesheets import sphinx
 from .util import NamedDescriptor
 

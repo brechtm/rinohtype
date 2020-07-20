@@ -6,12 +6,12 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import string
-from warnings import warn
-from xmlrpc.client import ServerProxy
-
 import pip
 import pkg_resources
+import string
+
+from warnings import warn
+from xmlrpc.client import ServerProxy
 from pkg_resources import iter_entry_points
 
 from .util import NotImplementedAttribute, class_property

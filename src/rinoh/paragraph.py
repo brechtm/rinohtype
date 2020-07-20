@@ -17,7 +17,6 @@ from ast import literal_eval
 from copy import copy
 from functools import partial
 from itertools import tee, chain, groupby, count
-from math import floor
 from os import path
 
 from . import DATA_PATH
