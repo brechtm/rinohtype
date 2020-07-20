@@ -143,7 +143,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
             if tokens.next.type == NAME:
                 items.append(InlineFlowable.from_tokens(tokens))
             elif tokens.next.type == STRING:
-                items.append(SingleStyledText.from_tokens(tokens))
+                items.append(cls.text_from_tokens(tokens))
             elif tokens.next.type == NEWLINE:
                 next(tokens)
             elif tokens.next.type == ENDMARKER:
@@ -154,6 +154,23 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
             first, = items
             return first
         return MixedStyledText(items)
+
+    @classmethod
+    def text_from_tokens(cls, tokens):
+        text = literal_eval(next(tokens).string)
+        if tokens.next.exact_type == LPAR:
+            _, start_col = next(tokens).end
+            for token in tokens:
+                if token.exact_type == RPAR:
+                    _, end_col = token.start
+                    style = token.line[start_col:end_col].strip()
+                    break
+                elif token.type == NEWLINE:
+                    raise StyledTextParseError('No newline allowed in '
+                                               'style name')
+        else:
+            style = None
+        return cls._substitute_variables(text, style)
 
     @classmethod
     def doc_repr(cls, value):
@@ -171,6 +188,18 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         if attribute_name is None and isinstance(value, str):
             value = SingleStyledText(value)
         return super().validate(value, accept_variables, attribute_name)
+
+    @classmethod
+    def _substitute_variables(cls, text, style):
+        def substitute_controlchars_htmlentities(string, style=None):
+            try:
+                return ControlCharacter.all[string]()
+            except KeyError:
+                return SingleStyledText(string.format(**NAME2CHAR),
+                                        style=style)
+
+        return Field.substitute(text, substitute_controlchars_htmlentities,
+                                style=style)
 
     def __str__(self):
         return self.to_string(None)
@@ -348,35 +377,6 @@ class SingleStyledText(SingleStyledTextBase):
         if self.style is not None:
             result += ' ({})'.format(self.style)
         return result
-
-    @classmethod
-    def from_tokens(cls, tokens):
-        text = literal_eval(next(tokens).string)
-        if tokens.next.exact_type == LPAR:
-            _, start_col = next(tokens).end
-            for token in tokens:
-                if token.exact_type == RPAR:
-                    _, end_col = token.start
-                    style = token.line[start_col:end_col].strip()
-                    break
-                elif token.type == NEWLINE:
-                    raise StyledTextParseError('No newline allowed in '
-                                               'style name')
-        else:
-            style = None
-        return cls._substitute_variables(text, style)
-
-    @classmethod
-    def _substitute_variables(cls, text, style):
-        def substitute_controlchars_htmlentities(string, style=None):
-            try:
-                return ControlCharacter.all[string]()
-            except KeyError:
-                return SingleStyledText(string.format(**NAME2CHAR),
-                                        style=style)
-
-        return Field.substitute(text, substitute_controlchars_htmlentities,
-                                style=style)
 
     def text(self, container, **kwargs):
         return self._text

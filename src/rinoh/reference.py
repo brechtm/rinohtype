@@ -145,11 +145,12 @@ class ReferenceText(StyledText):
 
     @classmethod
     def _substitute_variables(cls, text, style):
-        def create_reference_field(key, style=None):
-            return ReferenceField(key.lower(), style=style)
-
         return substitute_variables(text, cls.RE_TYPES, create_reference_field,
                                     super()._substitute_variables, style)
+
+
+def create_reference_field(key, style=None):
+    return ReferenceField(key.lower(), style=style)
 
 
 class ReferencingParagraphStyle(ParagraphStyle):
