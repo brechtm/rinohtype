@@ -29,13 +29,13 @@ SHELL = sys.platform == 'win32'
 def diff_pdf(a_filename, b_filename, depth=None):
     a = PDFReader(a_filename)
     b = PDFReader(b_filename)
-    a_numpages = a.catalog['Pages']['Count']
-    b_numpages = b.catalog['Pages']['Count']
+    a_numpages = int(a.catalog['Pages']['Count'])
+    b_numpages = int(b.catalog['Pages']['Count'])
 
     success = True
     if a_numpages != b_numpages:
         print('PDF files have different lengths ({} and {})'
-              .format(int(a_numpages), int(b_numpages)))
+              .format(a_numpages, b_numpages))
         success = False
 
     sync_points = []
@@ -59,6 +59,7 @@ def diff_pdf(a_filename, b_filename, depth=None):
                       .format(**locals()))
                 success = False
                 sync_points.append((a_page, b_page))
+    sync_points.append((a_numpages + 1, b_numpages + 1))
 
     if os.path.exists(DIFF_DIR):
         for item in os.listdir(DIFF_DIR):
@@ -70,12 +71,14 @@ def diff_pdf(a_filename, b_filename, depth=None):
     else:
         os.mkdir(DIFF_DIR)
 
-    min_pages = min(a_numpages, b_numpages)
-    sync_points.append((min_pages, min_pages))
-
     a_start = b_start = 1
     for a_end, b_end in sync_points:
-        print('Syncing at page {}/{}'.format(a_start, b_start))
+        print('Diffing pages {}..{} / {}..{}'.format(a_start, a_end - 1,
+                                                     b_start, b_end - 1))
+        if (a_end - a_start) != (b_end - b_start):
+            print('Page ranges have a different length! Some pages will not '
+                  'be compared.')
+            success = False
         a_numbers = range(a_start, a_end)
         b_numbers = range(b_start, b_end)
         page_numbers = list(zip(a_numbers, b_numbers))
