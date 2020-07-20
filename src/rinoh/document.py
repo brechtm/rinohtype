@@ -185,6 +185,9 @@ class PartPageCount(object):
     def __init__(self):
         self.count = 0
 
+    def __repr__(self):
+        return repr(self.count)
+
     def __eq__(self, other):
         return self.count == other.count
 
@@ -301,9 +304,11 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
+        cache_path = filename.with_suffix(self.CACHE_EXTENSION)
         try:
-            with open(filename + self.CACHE_EXTENSION, 'rb') as file:
+            with cache_path.open('rb') as file:
                 prev_number_of_pages, prev_page_references = pickle.load(file)
+            print('References cache read from {}'.format(cache_path))
         except (IOError, TypeError):
             prev_number_of_pages, prev_page_references = {}, {}
         return prev_number_of_pages, prev_page_references

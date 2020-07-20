@@ -15,6 +15,7 @@ New Features:
 
 Fixed:
 
+* Fix loading of the references cache (issue #170)
 * Fix some issues with space_below handling
 
 
