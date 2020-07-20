@@ -1,9 +1,12 @@
 
+.. role:: hide
+   :class: hide
+
 
 Section One
 -----------
 
-Paragraph in section 1.
+Paragraph in section 1. :hide:`HIDDEN`
 
 
 Subsection A

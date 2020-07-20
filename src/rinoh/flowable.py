@@ -94,7 +94,6 @@ class FlowableStyle(Style):
     border_bottom = Attribute(Stroke, None, 'Border below the flowable')
     background_color = Attribute(Color, None, "Color of the area within the "
                                               "flowable's borders")
-    hide = Attribute(Bool, False, 'Suppress rendering the flowable')
 
 
 class FlowableState(object):

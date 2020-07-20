@@ -28,7 +28,7 @@ from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile, Configurable,
-                        DefaultValueException)
+                        DefaultValueException, Attribute, Bool)
 from .element import DocumentElement
 from .resource import Resource
 from .util import (cached, all_subclasses, NotImplementedAttribute,
@@ -59,6 +59,8 @@ class Style(AttributesDictionary, metaclass=StyleMeta):
     Style attributes can also be accessed as object attributes.
 
     """
+
+    hide = Attribute(Bool, False, 'Suppress rendering this element')
 
     def __init__(self, base=None, **attributes):
         """Style attributes are as passed as keyword arguments. Supported

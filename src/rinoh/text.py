@@ -81,7 +81,8 @@ class InlineStyled(Styled):
         if before is not None:
             before.parent = self.parent
             yield from before.wrapped_spans(container)
-        yield from self.spans(container)
+        if not self.get_style('hide', container):
+            yield from self.spans(container)
         after = self.get_style('after', container)
         if after is not None:
             after.parent = self.parent
