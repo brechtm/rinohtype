@@ -179,8 +179,7 @@ class Topic(DocutilsGroupingNode):
                 return rt.StaticGroupedFlowables(flowables,
                                                  style='table of contents')
             else:
-                toc_id, = self.get('ids')
-                return rt.SetMetadataFlowable(toc_id=toc_id)
+                return rt.SetMetadataFlowable(toc_ids=self.get('ids'))
         elif 'dedication' in classes:
             return self._process_topic('dedication')
         elif 'abstract' in classes:

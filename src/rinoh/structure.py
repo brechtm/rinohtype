@@ -252,9 +252,13 @@ class TableOfContentsSection(Section):
 
     def get_id(self, document, create=True):
         try:
-            return document.metadata['toc_id']
-        except KeyError:
+            return document.metadata['toc_id'][0]
+        except IndexError:
             return super().get_id(document, create)
+
+    def get_ids(self, document):
+        yield self.get_id()
+        yield from document.metadata.get('toc_ids', [])[1:]
 
 
 class TableOfContents(GroupedFlowables):

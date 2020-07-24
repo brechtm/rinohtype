@@ -1,0 +1,21 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='section')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/contents.rst:7 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 Section')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/contents.rst:7 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 Section')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+              SingleStyledText('Section')
+        Paragraph('Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/contents.rst:9 <paragraph>
+             > (0,0,0,0,2) body
+          MixedStyledText('Paragraph.')
+            SingleStyledText('Paragraph.')

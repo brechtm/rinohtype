@@ -15,8 +15,9 @@ New Features:
 
 Fixed:
 
-* Fix loading of the references cache (issue #170)
-* Fix some issues with space_below handling
+* crash when the 'contents' topic has multiple IDs (issue #173)
+* loading of the references cache (issue #170)
+* some issues with space_below handling
 
 
 Release 0.4.1 (2020-07-01)
