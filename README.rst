@@ -87,7 +87,7 @@ makes it possible to output large documents with your own style applied. Have
 a look at the `rinohtype documentation`_ for an example of the output.
 
 .. _documentation: http://www.mos6581.org/rinohtype/
-.. _create a ticket: https://github.com/brechtm/rinohtype/issues
+.. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
 .. _rinohtype documentation: http://www.mos6581.org/rinohtype/_downloads/rinohtype.pdf
