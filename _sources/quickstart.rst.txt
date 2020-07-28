@@ -43,14 +43,9 @@ perform a second rendering pass.
 Sphinx Builder
 ~~~~~~~~~~~~~~
 
-To use rinohtype to render Sphinx documents, at a minimum you need to add
-``'rinoh.frontend.sphinx'`` to the ``extensions`` list in the Sphinx
-project's ``conf.py``.
-
-If your Sphinx project is already configured for rendering with LaTeX,
-rinohtype will happily interpret :confval:`sphinx:latex_documents` and other
-options for the LaTeX builder. Otherwise, you need to set the
-:confval:`rinoh_documents` configuration option::
+If your Sphinx project is already configured for the LaTeX builder, rinohtype
+will happily interpret :confval:`sphinx:latex_documents`. Otherwise, you need
+to set the :confval:`rinoh_documents` configuration option::
 
     rinoh_documents = [('index',            # top-level file (index.rst)
                         'target',           # output (target.pdf)
@@ -61,12 +56,12 @@ Other configuration variables are optional and allow configuring the style of
 the generated PDF document. See :ref:`sphinx_builder` for details.
 
 When building the documentation, select the `rinoh` builder by passing it to
-:option:`sphinx:sphinx-build -b` option::
+the :option:`sphinx:sphinx-build -b` option::
 
     sphinx-build -b rinoh . _build/rinoh
 
-Just like the :program:`rinoh` command line tool, the Sphinx builder requires
-two :ref:`rendering passes <rendering_passes>`.
+Note that, just like the :program:`rinoh` command line tool, the Sphinx builder
+requires two :ref:`rendering passes <rendering_passes>`.
 
 
 .. _library_quickstart:

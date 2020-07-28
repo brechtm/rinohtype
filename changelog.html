@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Release History &mdash; rinohtype 0.4.1 documentation</title>
+  <title>Release History &mdash; rinohtype 0.4.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.4.1
+                0.4.2
               </div>
             
           
@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#release-0-4-2-2020-07-28">Release 0.4.2 (2020-07-28)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-1-2020-07-01">Release 0.4.1 (2020-07-01)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-0-2020-03-05">Release 0.4.0 (2020-03-05)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-3-1-2016-12-19">Release 0.3.1 (2016-12-19)</a></li>
@@ -174,6 +175,23 @@
             
   <div class="section" id="release-history">
 <span id="changelog"></span><h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="release-0-4-2-2020-07-28">
+<h2>Release 0.4.2 (2020-07-28)<a class="headerlink" href="#release-0-4-2-2020-07-28" title="Permalink to this headline">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>before/after style attributes for StyledText (issue #158)</p></li>
+<li><p>docutils/Sphinx frontend: don’t abort on encountering math/math_block, output
+the (LaTeX) math markup instead, along with printing a warning.</p></li>
+<li><p>docutils frontend: raw inline text (with <code class="docutils literal notranslate"><span class="pre">:format:</span> <span class="pre">'rinoh'</span></code>) is parsed as
+styled text</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>crash when the ‘contents’ topic has multiple IDs (issue #173)</p></li>
+<li><p>loading of the references cache (issue #170)</p></li>
+<li><p>some issues with space_below handling</p></li>
+</ul>
+</div>
 <div class="section" id="release-0-4-1-2020-07-01">
 <h2>Release 0.4.1 (2020-07-01)<a class="headerlink" href="#release-0-4-1-2020-07-01" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
@@ -181,10 +199,10 @@
 <li><p>UserStrings: arbitrary user-defined strings that can be defined in the
 template configuration or as a substitution definition in reStructuredText</p></li>
 <li><p>strings in a StringCollection can now be styled text</p></li>
-<li><p>Sphinx frontend: use the <cite>today</cite> and <cite>today_fmt</cite> configuration variables for
-the date on the title page</p></li>
+<li><p>Sphinx frontend: use the <code class="docutils literal notranslate"><span class="pre">today</span></code> and <code class="docutils literal notranslate"><span class="pre">today_fmt</span></code> configuration variables
+for the date on the title page</p></li>
 <li><p>Sphinx frontend: allow extensions access to the builder object (issue #155)</p></li>
-<li><p>rinoh –output: write the output PDF to a specified location</p></li>
+<li><p>rinoh: <code class="docutils literal notranslate"><span class="pre">--output</span></code> writes the output PDF to a specified location</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">

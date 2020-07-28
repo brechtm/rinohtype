@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Paragraph (rinoh.paragraph) &mdash; rinohtype 0.4.1 documentation</title>
+  <title>Paragraph (rinoh.paragraph) &mdash; rinohtype 0.4.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.4.1
+                0.4.2
               </div>
             
           
@@ -264,12 +264,6 @@ rest of the paragraph when this method is called with a new container.</p>
 <dt id="rinoh.text.StyledText">
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.text.</code><code class="sig-name descname">StyledText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for text that has a <a class="reference internal" href="../style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a> associated with it.</p>
-<dl class="py attribute">
-<dt id="rinoh.text.StyledText.style_class">
-<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.text.StyledText.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a></p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="rinoh.text.StyledText.to_string">
 <code class="sig-name descname">to_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.to_string" title="Permalink to this definition">¶</a></dt>
@@ -306,11 +300,10 @@ rest of the paragraph when this method is called with a new container.</p>
 <dd><p>The list of items in this StyledText.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="rinoh.text.StyledText.spans">
-<code class="sig-name descname">spans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">container</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.StyledText.spans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generator yielding all spans in this styled text, one
-item at a time (used in typesetting).</p>
+<dl class="py attribute">
+<dt id="rinoh.text.StyledText.style_class">
+<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.text.StyledText.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a></p>
 </dd></dl>
 
 </dd></dl>

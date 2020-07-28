@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; rinohtype 0.4.1 documentation</title>
+  <title>Quickstart &mdash; rinohtype 0.4.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.4.1
+                0.4.2
               </div>
             
           
@@ -195,13 +195,9 @@ perform a second rendering pass.</p>
 </div>
 <div class="section" id="sphinx-builder">
 <span id="sphinx-quickstart"></span><h2>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h2>
-<p>To use rinohtype to render Sphinx documents, at a minimum you need to add
-<code class="docutils literal notranslate"><span class="pre">'rinoh.frontend.sphinx'</span></code> to the <code class="docutils literal notranslate"><span class="pre">extensions</span></code> list in the Sphinx
-project’s <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
-<p>If your Sphinx project is already configured for rendering with LaTeX,
-rinohtype will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a> and other
-options for the LaTeX builder. Otherwise, you need to set the
-<a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
+<p>If your Sphinx project is already configured for the LaTeX builder, rinohtype
+will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
+to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>            <span class="c1"># top-level file (index.rst)</span>
                     <span class="s1">&#39;target&#39;</span><span class="p">,</span>           <span class="c1"># output (target.pdf)</span>
                     <span class="s1">&#39;Document Title&#39;</span><span class="p">,</span>   <span class="c1"># document title</span>
@@ -211,12 +207,12 @@ options for the LaTeX builder. Otherwise, you need to set the
 <p>Other configuration variables are optional and allow configuring the style of
 the generated PDF document. See <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a> for details.</p>
 <p>When building the documentation, select the <cite>rinoh</cite> builder by passing it to
-<code class="xref std std-option docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code> option:</p>
+the <code class="xref std std-option docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code> option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
 </pre></div>
 </div>
-<p>Just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder requires
-two <a class="reference internal" href="#rendering-passes"><span class="std std-ref">rendering passes</span></a>.</p>
+<p>Note that, just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder
+requires two <a class="reference internal" href="#rendering-passes"><span class="std std-ref">rendering passes</span></a>.</p>
 </div>
 <div class="section" id="high-level-pdf-library">
 <span id="library-quickstart"></span><h2>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h2>
