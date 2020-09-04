@@ -4,6 +4,12 @@ Release History
 Release 0.4.3.dev
 ~~~~~~~~~~~~~~~~~
 
+New Features:
+
+Fixed:
+
+* items inside a table cannot be referenced (issue #174)
+
 Release 0.4.2 (2020-07-28)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

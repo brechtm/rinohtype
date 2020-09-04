@@ -91,6 +91,12 @@ class Table(Flowable):
         body.parent = self
         self.column_widths = column_widths
 
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        if self.head:
+            self.head.prepare(flowable_target)
+        self.body.prepare(flowable_target)
+
     def initial_state(self, container):
         return TableState(self)
 
@@ -317,7 +323,7 @@ class Table(Flowable):
         for r, rendered_row in enumerate(rendered_rows):
             container.advance(rendered_row.height)
             if rendered_row.index == 0:
-                container.register_styled(rendered_row.row.section)
+                container.register_styled(rendered_row.row.parent)
             container.register_styled(rendered_row.row)
             for c, rendered_cell in enumerate(rendered_row):
                 cell_height = sum(rendered_row.height for rendered_row in
@@ -371,8 +377,6 @@ class TableBody(TableSection):
 
 
 class TableRow(Styled, list):
-    section = ReadAliasAttribute('parent')
-
     def __init__(self, cells, style=None, parent=None):
         Styled.__init__(self, style=style, parent=parent)
         list.__init__(self, cells)
@@ -389,16 +393,17 @@ class TableRow(Styled, list):
 
     @property
     def _index(self):
-        return next(i for i, item in enumerate(self.section) if item is self)
+        return next(i for i, item in enumerate(self.parent) if item is self)
 
     def get_rowspanned_columns(self):
         """Return a dictionary mapping column indices to the number of columns
         spanned."""
+        section = self.parent
         spanned_columns = {}
         current_row_index = self._index
         current_row_cols = sum(cell.colspan for cell in self)
-        prev_rows = iter(reversed(self.section[:current_row_index]))
-        while current_row_cols < self.section.num_columns:
+        prev_rows = iter(reversed(section[:current_row_index]))
+        while current_row_cols < section.num_columns:
             row = next(prev_rows)
             min_rowspan = current_row_index - int(row._index)
             if row.maximum_rowspan > min_rowspan:
@@ -448,8 +453,8 @@ class Index(object):
         return self.cell.parent
 
     @property
-    def section(self):
-        return self.row.section
+    def table_section(self):
+        return self.row.parent
 
     def __eq__(self, other):
         if isinstance(other, slice):
@@ -470,7 +475,8 @@ class Index(object):
 
 class RowIndex(Index):
     def __int__(self):
-        return next(i for i, row in enumerate(self.section) if row is self.row)
+        return next(i for i, row in enumerate(self.table_section)
+                    if row is self.row)
 
     def __iter__(self):
         index = int(self)
@@ -478,7 +484,7 @@ class RowIndex(Index):
 
     @property
     def num_items(self):
-        return len(self.section)
+        return len(self.table_section)
 
 
 class ColumnIndex(Index):
@@ -486,7 +492,7 @@ class ColumnIndex(Index):
         spanned_columns = self.row.get_rowspanned_columns()
         column_index = 0
         cells = iter(self.row)
-        for col_index in range(self.cell.row.section.num_columns):
+        for col_index in range(self.cell.row.parent.num_columns):
             if col_index in spanned_columns:
                 column_index += spanned_columns[col_index]
             else:
@@ -501,7 +507,7 @@ class ColumnIndex(Index):
 
     @property
     def num_items(self):
-        return self.row.section.num_columns
+        return self.row.parent.num_columns
 
 
 class RenderedCell(object):
