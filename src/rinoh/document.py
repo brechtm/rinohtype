@@ -53,20 +53,16 @@ class DocumentTree(StaticGroupedFlowables):
 
     Args:
         flowables (list[Flowable]): the list of top-level flowables
-        source_file (Path): absolute path of the source file, used to locate
-            images and include in logging and error and warnings.
+        source_root (Path): path used to locate images and include in logging
+            and error and warnings.
         options (Reader): frontend-specific options
 
     """
 
-    def __init__(self, flowables, source_file=None, options=None):
+    def __init__(self, flowables, source_root=None, options=None):
         super().__init__(flowables)
-        self.source_file = source_file.absolute() if source_file else None
+        self.source_root = source_root.absolute() if source_root else Path.cwd()
         self.options = options
-
-    @property
-    def source_root(self):
-        return self.source_file.parent if self.source_file else Path.cwd()
 
 
 class PageOrientation(OptionSet):

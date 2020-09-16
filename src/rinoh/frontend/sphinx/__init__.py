@@ -8,6 +8,7 @@
 
 import os
 from os import path
+from pathlib import Path
 
 import docutils
 
@@ -227,6 +228,7 @@ class RinohBuilder(Builder):
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
         rinoh_tree = from_doctree(doctree['source'], doctree,
+                                  source_root=Path(self.srcdir),
                                   sphinx_builder=self)
         template_cfg = template_from_config(config, self.confdir, logger.warning)
         rinoh_document = template_cfg.document(rinoh_tree)

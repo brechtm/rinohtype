@@ -126,7 +126,8 @@ class ReStructuredTextReader(DocutilsReader):
     parser_class = ReStructuredTextParser
 
 
-def from_doctree(filename, doctree, **context):
+def from_doctree(filename, doctree, source_root=None, **context):
     mapped_tree = DocutilsNode.map_node(doctree.document, **context)
     flowables = mapped_tree.children_flowables()
-    return DocumentTree(flowables, source_file=Path(filename))
+    source_root = source_root or Path(filename).parent
+    return DocumentTree(flowables, source_root=source_root)

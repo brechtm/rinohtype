@@ -9,6 +9,9 @@ New Features:
 Fixed:
 
 * items inside a table cannot be referenced (issue #174)
+* Sphinx frontend: fix handling of relative image paths in .rst files inside
+  a directory in the Sphinx project root
+
 
 Release 0.4.2 (2020-07-28)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
