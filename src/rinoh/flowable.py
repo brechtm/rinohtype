@@ -36,7 +36,7 @@ from .util import ReadAliasAttribute
 
 __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
-           'SetMetadataFlowable', 'SetUserStringFlowable', 'AddToFrontMatter',
+           'SetMetadataFlowable', 'SetUserStringFlowable',
            'SetSupportingMatter',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
@@ -396,15 +396,6 @@ class SetUserStringFlowable(DummyFlowable):
     def build_document(self, flowable_target):
         doc = flowable_target.document
         doc.set_string(UserStrings, self.label, self.content)
-
-
-class AddToFrontMatter(DummyFlowable):
-    def __init__(self, flowables, parent=None):
-        super().__init__(parent=parent)
-        self.flowables = flowables
-
-    def build_document(self, flowable_target):
-        flowable_target.document.front_matter.append(self.flowables)
 
 
 class SetSupportingMatter(DummyFlowable):

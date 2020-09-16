@@ -8,8 +8,7 @@ from .flowable import Flowable, Float
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import DummyFlowable, AnchorFlowable, WarnFlowable
-from .flowable import SetMetadataFlowable, AddToFrontMatter
-from .flowable import SetSupportingMatter
+from .flowable import SetMetadataFlowable, SetSupportingMatter
 from .highlight import CodeBlock, Token
 from .index import IndexSection, Index, IndexLabel, IndexEntry
 from .index import InlineIndexTarget, IndexTarget
