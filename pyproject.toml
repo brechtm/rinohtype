@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rinohtype"
-version = "0.4.1.dev"
+version = "0.4.3.dev"
 description = "The Python document processor"
 authors = ["Brecht Machiels <brecht@mos6581.org>"]
 license = "AGPL-3.0-only"
