@@ -4,6 +4,9 @@ version = "0.4.3.dev"
 description = "The Python document processor"
 authors = ["Brecht Machiels <brecht@mos6581.org>"]
 license = "AGPL-3.0-only"
+packages = [
+    { include = "rinoh", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.5"
