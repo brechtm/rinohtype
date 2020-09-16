@@ -1,0 +1,29 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Table()   None:None <table>
+           > (0,0,0,0,2) table
+        TableBody()
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Figure()   None:None <figure>
+                   > (0,0,0,0,2) figure
+                Image('../images/title.png')   None:None <image>
+                     > (0,0,0,0,2) image
+                Caption('Figure 1. Caption')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/figure_in_table.rst:5 <caption>
+                     > (0,0,0,0,2) caption
+                    MixedStyledText('Figure 1. Caption')
+                      SingleStyledText('Figure ')
+                      MixedStyledText('1. ')
+                        SingleStyledText('1')
+                        SingleStyledText('. ')
+                      SingleStyledText('Caption')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
