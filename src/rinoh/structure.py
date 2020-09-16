@@ -34,7 +34,7 @@ __all__ = ['Section', 'Heading',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'ListOfStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
-           'HorizontalRule', 'HorizontalRuleStyle']
+           'HorizontalRule', 'HorizontalRuleStyle', 'SupportingMatter']
 
 
 class SectionTitles(StringCollection):
@@ -56,14 +56,7 @@ class NewChapterException(PageBreakException):
     pass
 
 
-class Section(StaticGroupedFlowables, PageBreak):
-    """A subdivision of a document
-
-    A section usually has a heading associated with it, which is optionally
-    numbered.
-
-    """
-
+class SectionBase(GroupedFlowables, PageBreak):
     style_class = SectionStyle
     exception_class = NewChapterException
 
@@ -92,6 +85,15 @@ class Section(StaticGroupedFlowables, PageBreak):
 
     def create_destination(self, container, at_top_of_container=False):
         pass    # destination is set by the section's Heading
+
+
+class Section(StaticGroupedFlowables, SectionBase):
+    """A subdivision of a document
+
+    A section usually has a heading associated with it, which is optionally
+    numbered.
+
+    """
 
 
 class HeadingStyle(NumberedParagraphStyle):
@@ -467,3 +469,12 @@ class HorizontalRule(Flowable):
         line = Line((0, 0), (width, 0), style=PARENT_STYLE, parent=self)
         line.render(container)
         return width, 0, 0
+
+
+class SupportingMatter(SectionBase):
+    def __init__(self, id, align=None, width=None, style=None, parent=None):
+        super().__init__(id=id, align=align, width=width, style=style,
+                         parent=parent)
+
+    def flowables(self, container):
+        return container.document.supporting_matter[self.id]

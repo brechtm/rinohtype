@@ -12,3 +12,9 @@ def test_minimal(app, verify):
 def test_subdir(app, verify):
     app.build()
     verify()
+
+
+@pytest.mark.sphinx(buildername='rinoh', testroot='supportingmatter')
+def test_supportingmatter(app, verify):
+    app.build()
+    verify()

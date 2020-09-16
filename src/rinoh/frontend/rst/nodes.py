@@ -749,4 +749,13 @@ class Container(DocutilsGroupingNode):
         if 'literal-block-wrapper' in classes:
             return rt.CodeBlockWithCaption(self.children_flowables(),
                                            style=style or self.style, **kwargs)
+        if 'supporting-matter' in classes:
+            if not self._ids:
+                raise MissingName('supporting-matter container is missing a'
+                                  ' :name: to reference it by')
+            return rt.SetSupportingMatter(self.children_flowables(), **kwargs)
         return super().build_flowable(style, **kwargs)
+
+
+class MissingName(Exception):
+    pass

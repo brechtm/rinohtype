@@ -9,6 +9,7 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import DummyFlowable, AnchorFlowable, WarnFlowable
 from .flowable import SetMetadataFlowable, AddToFrontMatter
+from .flowable import SetSupportingMatter
 from .highlight import CodeBlock, Token
 from .index import IndexSection, Index, IndexLabel, IndexEntry
 from .index import InlineIndexTarget, IndexTarget
@@ -27,6 +28,7 @@ from .structure import Section, TableOfContentsSection, Heading
 from .structure import ListOfEntry
 from .structure import Admonition
 from .structure import TableOfContents, TableOfContentsEntry
+from .structure import SupportingMatter
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody
 from .table import TableRow, TableCell, TableCellBackground, TableCellBorder
 from .table import ListOfTables, ListOfTablesSection

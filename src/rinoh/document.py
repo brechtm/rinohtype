@@ -221,6 +221,7 @@ class Document(object):
         super().__init__()
         self._print_version_and_license()
         self.front_matter = []
+        self.supporting_matter = {}
         self.document_tree = document_tree
         self.stylesheet = stylesheet
         self.language = language

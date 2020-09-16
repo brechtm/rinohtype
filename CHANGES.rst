@@ -6,6 +6,11 @@ Release 0.4.3.dev
 
 New Features:
 
+* It's now possible to add arbitrary sections to the front/back matter by
+  adding a container with the 'supporting-matter' class and a name to reference
+  it by in the document template configuration, e.g. in the list of front
+  matter flowables (to be documented).
+
 Fixed:
 
 * items inside a table cannot be referenced (issue #174)
@@ -23,7 +28,6 @@ New Features:
   the (LaTeX) math markup instead, along with printing a warning.
 * docutils frontend: raw inline text (with ``:format: 'rinoh'``) is parsed as
   styled text
-
 
 Fixed:
 

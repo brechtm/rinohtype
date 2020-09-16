@@ -37,6 +37,7 @@ from .util import ReadAliasAttribute
 __all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
            'SetMetadataFlowable', 'SetUserStringFlowable', 'AddToFrontMatter',
+           'SetSupportingMatter',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float',
@@ -406,6 +407,15 @@ class AddToFrontMatter(DummyFlowable):
         flowable_target.document.front_matter.append(self.flowables)
 
 
+class SetSupportingMatter(DummyFlowable):
+    def __init__(self, flowables, parent=None):
+        super().__init__(id=id, parent=parent)
+        self.flowables = flowables
+
+    def build_document(self, flowable_target):
+        flowable_target.document.supporting_matter[self.id] = self.flowables
+
+
 # grouping flowables
 
 class GroupedFlowablesState(FlowableState):
@@ -559,8 +569,10 @@ class StaticGroupedFlowables(GroupedFlowables):
 
     """
 
-    def __init__(self, flowables, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
+    def __init__(self, flowables, align=None, width=None,
+                 id=None, style=None, parent=None):
+        super().__init__(align=align, width=width,
+                         id=id, style=style, parent=parent)
         self.children = []
         for flowable in flowables:
             self.append(flowable)
