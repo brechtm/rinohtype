@@ -23,22 +23,14 @@ def warn(message):
     warnings.warn(message, category=RinohWarning, stacklevel=2)
 
 
-def formatwarning(warning, category, filename, lineno, line=None):
-    if category == RinohWarning:
-        return '{}\n'.format(warning.message)
-    else:
-        return standard_formatwarning(warning, category, filename, lineno, line)
-
-
 def showwarning(warning, category, filename, lineno, file=None, line=None):
     if category == RinohWarning:
         if file is None:
             file = sys.stderr
-        file.write('\r' + formatwarning(warning, category, filename, line))
+        file.write('\r{}\n'.format(warning.message))
     else:
         return standard_showwarning(warning, category, filename, lineno, file,
                                     line)
 
 
-warnings.formatwarning = formatwarning
 warnings.showwarning = showwarning
