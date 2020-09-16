@@ -1,0 +1,4 @@
+Title
+=====
+
+.. image:: img/biohazard.*
