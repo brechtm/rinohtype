@@ -31,11 +31,7 @@ def get_version():
     except CalledProcessError:
         is_dirty = None   # not running from a git checkout
 
-    if len(sys.argv) > 1 and sys.argv[1] == 'develop':
-        # 'pip install -e' or 'python setup.py develop'
-        print('Installing in develop mode')
-        version = 'dev'
-    elif VERSION.endswith('.dev'):  # development distribution
+    if VERSION.endswith('.dev'):  # development distribution
         if is_dirty is None:
             version = version_from_pkginfo() or VERSION
         else:
