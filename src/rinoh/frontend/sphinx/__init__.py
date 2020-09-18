@@ -235,20 +235,28 @@ class RinohBuilder(Builder):
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
-        rinoh_logo = config.rinoh_logo
-        if rinoh_logo:
-            rinoh_document.metadata['logo'] = rinoh_logo
-        rinoh_document.metadata['title'] = doctree.settings.title
-        rinoh_document.metadata['subtitle'] = (_('Release') + ' {}'
-                                               .format(config.release))
-        rinoh_document.metadata['author'] = doctree.settings.author
-        date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
-                                           language=config.language)
-        rinoh_document.metadata['date'] = date
+
+        rinoh_document = set_document_metadata(config, rinoh_document)
+
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
 
+def set_document_metadata(config, rinoh_document):
+    doctree = rinoh_document.document_tree
+    rinoh_logo = config.rinoh_logo
+    if rinoh_logo:
+        rinoh_document.metadata['logo'] = rinoh_logo
+    rinoh_document.metadata['title'] = doctree.settings.title
+    rinoh_document.metadata['subtitle'] = ('Release {}'
+                                            .format(config.release))
+    rinoh_document.metadata['author'] = doctree.settings.author
+    date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
+                                        language=config.language)
+    rinoh_document.metadata['date'] = date
+    rinoh_document.metadata.update(config.rinoh_metadata)
+
+    return rinoh_document
 
 def template_from_config(config, confdir, warn):
     template_cfg = {}
@@ -290,7 +298,8 @@ def template_from_config(config, confdir, warn):
             warn('The language "{}" is not supported by rinohtype.'
                  .format(language))
 
-    variables = {}
+    variables = config.rinoh_metadata
+
     if config.rinoh_paper_size:
         variables['paper_size'] = config.rinoh_paper_size
 
@@ -348,4 +357,5 @@ def setup(app):
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
+    app.add_config_value('rinoh_metadata', dict(), 'html')
     return dict(version=rinoh_version)
