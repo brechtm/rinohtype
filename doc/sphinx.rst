@@ -65,3 +65,8 @@ Sphinx builder with the name *rinoh*. The builder recognizes the following
     Controls the generation of domain-specific indices. Identical to
     :confval:`sphinx:latex_domain_indices`, which is used when
     :confval:`rinoh_domain_indices` is not specified.
+
+.. confval:: rinoh_metadata
+
+    A dictionary instance that provides additional configuration values to the
+    document template. Supported keys: `subtitle`.
