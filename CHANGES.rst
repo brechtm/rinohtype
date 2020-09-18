@@ -6,6 +6,8 @@ Release 0.4.3.dev
 
 New Features:
 
+* Table column widths can be specified in the style sheet, which take effect
+  when these haven't been specified in the source document.
 * It's now possible to add arbitrary sections to the front/back matter by
   adding a container with the 'supporting-matter' class and a name to reference
   it by in the document template configuration, e.g. in the list of front

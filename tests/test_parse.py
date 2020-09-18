@@ -27,7 +27,7 @@ from rinoh.structure import SectionTitles, AdmonitionTitles
 from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
                          parse_class_selector, parse_keyword, parse_string,
                          parse_number, StyleParseError, CharIterator)
-from rinoh.table import VerticalAlign
+from rinoh.table import ColumnWidths, VerticalAlign
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
 
@@ -385,6 +385,19 @@ def test_backgroundimage_from_string():
         BackgroundImage.from_string("'image.jpg' dpi=60")
     with pytest.raises(ParseError):
         BackgroundImage.from_string('not_a_path')
+
+
+def test_column_widths_from_string():
+    assert ColumnWidths.from_string('none') == None
+    assert ColumnWidths.from_string('1 2 3') == [1, 2, 3]
+    assert ColumnWidths.from_string('1 0 9') == [1, 0, 9]
+    assert ColumnWidths.from_string('2      4  6') == [2, 4, 6]
+    assert ColumnWidths.from_string('6  5   4   ') == [6, 5, 4]
+    assert ColumnWidths.from_string('1pt 2cm 3in') == [1*PT, 2*CM, 3*INCH]
+    assert ColumnWidths.from_string('4 pt 5 cm 6 in') == [4*PT, 5*CM, 6*INCH]
+    assert ColumnWidths.from_string('7pt 8 cm 9in') == [7*PT, 8*CM, 9*INCH]
+    with pytest.raises(ParseError):
+        assert ColumnWidths.from_string('1.5 3 1cm')
 
 
 # selectors
