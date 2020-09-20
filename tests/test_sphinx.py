@@ -18,17 +18,19 @@ from rinoh.frontend.sphinx import template_from_config, set_document_metadata
 from rinoh.language import IT
 from rinoh.paper import A4, LETTER
 from rinoh.templates import Book, Article
+from rinoh.template import DocumentTemplate
 
 from docutils.frontend import OptionParser
 
 
 def create_sphinx_app(tmpdir, **confoverrides):
-    return Sphinx(srcdir=tmpdir.strpath,
+    app = Sphinx(srcdir=tmpdir.strpath,
                   confdir=None,
                   outdir=(tmpdir / 'output').strpath,
                   doctreedir=(tmpdir / 'doctrees').strpath,
                   buildername='rinoh',
                   confoverrides=confoverrides)
+    return app
 
 def create_doctree(title="A Title", author="Ann Other", docname="a_name"):
     doctree = DocumentTree([])
@@ -137,11 +139,11 @@ def test_sphinx_config_rinoh_metadata(tmpdir):
     assert test_value == template_cfg.variables[test_key]
 
 def test_sphinx_set_document_metadata(tmpdir):
-    app = create_sphinx_app(tmpdir, rinoh_metadata={})
+    app = create_sphinx_app(tmpdir, rinoh_metadata={}, rinoh_template='book')
     template_cfg = template_from_config(app.config, CONFIG_DIR, print)
     doctree = create_doctree()
     rinoh_doc = template_cfg.document(doctree)
-    set_document_metadata(app.config, rinoh_doc)
+    set_document_metadata(rinoh_doc, app.config, doctree)
 
     assert 'date' in rinoh_doc.metadata
     assert 'title' in rinoh_doc.metadata
@@ -155,6 +157,6 @@ def test_sphinx_set_document_metadata_subtitle(tmpdir):
     template_cfg = template_from_config(app.config, CONFIG_DIR, print)
     doctree = create_doctree()
     rinoh_doc = template_cfg.document(doctree)
-    set_document_metadata(app.config, rinoh_doc)
+    set_document_metadata(rinoh_doc, app.config, doctree)
 
     assert expected_subtitle == rinoh_doc.metadata['subtitle']

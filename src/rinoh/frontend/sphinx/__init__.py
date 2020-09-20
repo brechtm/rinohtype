@@ -236,25 +236,30 @@ class RinohBuilder(Builder):
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
 
-        rinoh_document = set_document_metadata(config, rinoh_document)
+        rinoh_document = set_document_metadata(rinoh_document, config, doctree)
 
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
 
-def set_document_metadata(config, rinoh_document):
-    doctree = rinoh_document.document_tree
+def set_document_metadata(rinoh_document, config, doctree):
+    metadata = rinoh_document.metadata
+    metadata.update(rinoh_document.configuration.variables)
+
     rinoh_logo = config.rinoh_logo
     if rinoh_logo:
-        rinoh_document.metadata['logo'] = rinoh_logo
+        metadata['logo'] = rinoh_logo
+
     rinoh_document.metadata['title'] = doctree.settings.title
-    rinoh_document.metadata['subtitle'] = ('Release {}'
-                                            .format(config.release))
+
+    if 'subtitle' not in metadata:
+        metadata['subtitle'] = 'Release {}'.format(config.release)
+
     rinoh_document.metadata['author'] = doctree.settings.author
+
     date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
-                                        language=config.language)
-    rinoh_document.metadata['date'] = date
-    rinoh_document.metadata.update(config.rinoh_metadata)
+                                    language=config.language)
+    metadata['date'] = date
 
     return rinoh_document
 
