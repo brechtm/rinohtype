@@ -13,6 +13,8 @@ New Features:
   it by in the document template configuration, e.g. in the list of front
   matter flowables (to be documented).
 * Selectors in style sheet files (.rts) now support boolean and 'None' values.
+  For example, you can select StaticGroupedFlowables based on whether they have
+  any children or not: e.g ``TableCell(empty=true)`` selects empty table cells.
 
 Fixed:
 

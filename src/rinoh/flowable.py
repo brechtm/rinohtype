@@ -592,6 +592,10 @@ class StaticGroupedFlowables(GroupedFlowables):
             flowable.parent = self
             flowable.prepare(flowable_target)
 
+    @property
+    def empty(self):
+        return bool(self.children)
+
 
 class LabeledFlowableStyle(FlowableStyle):
     label_min_width = Attribute(Dimension, 12*PT, 'Minimum label width')
