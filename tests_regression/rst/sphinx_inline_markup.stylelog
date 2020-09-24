@@ -22,21 +22,29 @@
             MixedStyledText('abbr')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
               SingleStyledText('abbr')
           StaticGroupedFlowables()   None:None <field_body>
-            Paragraph('LIFO (last-in, first-out); FIFO;...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:6 <paragraph>
+            Paragraph('LIFOlast-in, first-out; FIFO; KI...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:6 <paragraph>
                  > (0,0,0,0,2) body
-              MixedStyledText('LIFO (last-in, first-out); FIFO;...')
-                GlossaryTerm('LIFO (last-in, first-out)', style='abbreviation')   None:None <abbreviation>
+              MixedStyledText('LIFOlast-in, first-out; FIFO; KI...')
+                GlossaryTerm('LIFOlast-in, first-out', style='abbreviation')   None:None <abbreviation>
+                  MixedStyledText('LIFO')
                     SingleStyledText('LIFO')
-                  SingleStyledText(' (last-in, first-out)')
+                  MixedStyledText('last-in, first-out', style='glossary inline definition')
+                       > (0,0,1,0,1) glossary inline definition
+                    SingleStyledText('last-in, first-out')
                 SingleStyledText('; ')
                 GlossaryTerm('FIFO', style='abbreviation')   None:None <abbreviation>
+                  MixedStyledText('FIFO')
                     SingleStyledText('FIFO')
                 SingleStyledText('; ')
-                GlossaryTerm('KISS (keep it simple, stupid)', style='abbreviation')   None:None <abbreviation>
+                GlossaryTerm('KISSkeep it simple, stupid', style='abbreviation')   None:None <abbreviation>
+                  MixedStyledText('KISS')
                     SingleStyledText('KISS')
-                  SingleStyledText(' (keep it simple, stupid)')
+                  MixedStyledText('keep it simple, stupid', style='glossary inline definition')
+                       > (0,0,1,0,1) glossary inline definition
+                    SingleStyledText('keep it simple, stupid')
                 SingleStyledText('; ')
                 GlossaryTerm('LIFO', style='abbreviation')   None:None <abbreviation>
+                  MixedStyledText('LIFO')
                     SingleStyledText('LIFO')
         LabeledFlowable()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:8 <field>
              > (0,0,1,0,4) field list item
