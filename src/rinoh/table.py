@@ -79,6 +79,12 @@ class ColumnWidths(AcceptNoneAttributeType):
             items.append(item)
         return items
 
+    @classmethod
+    def doc_format(cls):
+        return ('a whitespace-delimited list of column widths; '
+                ':class:`.Dimension`\\ s (absolute width) and/or integers '
+                '(relative width)')
+
 
 class TableStyle(FlowableStyle):
     column_widths = Attribute(ColumnWidths, None, 'Absolute or relative widths'
