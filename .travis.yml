@@ -22,23 +22,20 @@ env:
   - DIST=wheel
     WITH_COVERAGE=0
 
+stages:
+  - dependencies
+  - test
+
 matrix:
   fast_finish: true
   include:
-    - python: 3.8
-      env: TOXENV=check
-    - python: 3.8
-      env:
-        - TOXENV=regression
-          WITH_COVERAGE=1
-      addons:
-        apt:
-          packages:
-            - imagemagick
-            - poppler-utils
-    - os: osx
+    - stage: dependencies
+      os: osx
       sudo: required
       language: objective-c
+      env:
+        - DIST=sdist
+          WITH_COVERAGE=1
       cache:
         pip: false
         directories:
@@ -46,10 +43,6 @@ matrix:
           - $HOME/Library/Caches/Homebrew
           - $HOME/Library/Caches/pip
           - $HOME/.pyenv
-      env:
-        - DIST=sdist
-          WITH_COVERAGE=1
-        # don't set TOXENV; run all envs listed in tox.ini's envlist
       addons:
         homebrew:
           update: true
@@ -68,46 +61,29 @@ matrix:
         - python3.9 --version
         - python3.10 --version
         - pypy3 --version
-        - poetry install --no-root
-        - source .venv/bin/activate
       install:
+      script:
+        - true
       before_cache:
         - brew cleanup
-    - python: 3.8
+    - stage: test
+      os: osx
+      sudo: required
+      language: objective-c
       env:
-        - TOXENV=longrunning
-          TIMEOUT=45m
-          WITH_COVERAGE=0
-      addons:
-        apt:
-          packages:
-            - imagemagick
-            - poppler-utils
-    - python: 3.8
-      env: TOXENV=check-docs
-    - python: 3.8
-      env: TOXENV=build-docs
-#    - os: osx
-#      sudo: required
-#      language: objective-c
-#      cache:
-#        pip: false
-#        directories:
-#          - /usr/local/Homebrew
-#          - $HOME/Library/Caches/Homebrew
-#          - $HOME/Library/Caches/pip
-#          - $HOME/.pyenv
-#      env:
-#        - TOXENV=macapp
-#      before_install:
-#        - brew unlink pyenv
-#        - brew install --HEAD pyenv
-#        - eval "$(pyenv init -)"
-#        - pyenv install --skip-existing 3.7.6
-#        - pyenv shell 3.7.6
-#        - python --version
-#      before_cache:
-#        - brew cleanup
+        - DIST=sdist
+          WITH_COVERAGE=1
+        # don't set TOXENV; run all envs listed in tox.ini's envlist
+      cache:
+        pip: false
+        directories:
+          - /usr/local/Homebrew
+          - $HOME/Library/Caches/Homebrew
+          - $HOME/Library/Caches/pip
+          - $HOME/.pyenv
+      install:
+        - poetry install --no-root
+        - source .venv/bin/activate
 
 install:
   - pip install travis-wait-improved
