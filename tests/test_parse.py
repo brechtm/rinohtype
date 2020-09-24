@@ -405,17 +405,17 @@ def test_column_widths_from_string():
 def test_parse_keyword():
     def helper(string):
         chars = CharIterator(string)
-        return parse_keyword(chars), ''.join(chars)
+        keyword, unknown_keyword = parse_keyword(chars)
+        return keyword, unknown_keyword, ''.join(chars)
 
-    assert helper('style=') == ('style', '')
-    assert helper('row =') == ('row', '')
-    assert helper('UPPERCASE=') == ('UPPERCASE', '')
-    assert helper('miXeDCaSE=') == ('miXeDCaSE', '')
-    assert helper('key =  efzef') == ('key', '  efzef')
-    with pytest.raises(StyleParseError):
-        helper('bad key =')
-    with pytest.raises(StyleParseError):
-        helper('bad')
+    assert helper('None') == (None, False, '')
+    assert helper('trUE =') == (True, False, ' =')
+    assert helper('FALSE doh!') == (False, False, ' doh!')
+    assert helper('style') == ('style', True, '')
+    assert helper('row ') == ('row', True, ' ')
+    assert helper('UPPERCASE') == ('UPPERCASE', True, '')
+    assert helper('miXeDCaSE') == ('miXeDCaSE', True, '')
+    assert helper('key   efzef') == ('key', True, '   efzef')
 
 
 def test_parse_string():
