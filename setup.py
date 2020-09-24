@@ -34,20 +34,24 @@ def get_version():
         assert is_dirty is None
         return version
 
-    # assuming git checkout
-    tag = git('describe', '--exact-match', '--tags', 'HEAD')
-    if tag:
-        print('Working directory is a git tag checkout...')
-        assert tag[0] == 'v'
-        version = tag[1:]
+    exact_tag = git('describe', '--exact-match', '--tags', 'HEAD')
+    describe = git('describe', '--tags', '--always', 'HEAD')
+    if exact_tag:
+        print('Working directory is a checkout of git tag {}...'
+              .format(exact_tag))
+        assert exact_tag[0] == 'v'
+        version = exact_tag[1:]
         assert (version.startswith(VERSION) if VERSION.endswith('.dev')
                 else version == VERSION)
+    elif describe:
+        print('Working directory is a git checkout: {}...'.format(describe))
+        assert describe[0] == 'v'
+        version = describe[1:].replace('-', '+', 1)
     else:
-        last_tag = git('describe', '--tags', '--always', 'HEAD')
-        assert last_tag[0] == 'v'
-        version = last_tag[1:].replace('-', '+', 1)
+        print('Missing specific version information...')
+        version = VERSION
     if is_dirty:
-        print('Checkout is dirty, adding timestamp to version string...')
+        print('Git checkout is dirty, adding timestamp to version string...')
         now = datetime.utcnow()
         sep = '-' if '+' in version else '+'
         version += '{}dirty{}'.format(sep, now.strftime('%Y%m%d%H%M%S'))
