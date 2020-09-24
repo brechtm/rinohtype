@@ -831,25 +831,34 @@ def parse_class_selector(chars):
 
 def parse_selector_args(chars):
     args, kwargs = [], {}
-    assert next(chars) == '('
+    if next(chars) != '(':
+        raise StyleParseError('Expecting an opening brace')
     eat_whitespace(chars)
     while chars.peek() not in (None, ')'):
-        argument = parse_value(chars)
-        if argument is not None:
-            assert not kwargs
-            args.append(argument)
-        else:
-            keyword = parse_keyword(chars)
+        argument, unknown_keyword = parse_value(chars)
+        eat_whitespace(chars)
+        if chars.peek() == '=':
+            next(chars)
+            keyword = argument
+            if not unknown_keyword:
+                raise StyleParseError("'{}' is not a valid keyword argument"
+                                      .format(keyword))
             eat_whitespace(chars)
-            kwargs[keyword] = parse_value(chars)
+            argument, unknown_keyword = parse_value(chars)
+            kwargs[keyword] = argument
+        elif kwargs:
+            raise StyleParseError('Non-keyword argument cannot follow a '
+                                  'keyword argument')
+        else:
+            args.append(argument)
+        if unknown_keyword:
+            raise StyleParseError("Unknown keyword '{}'".format(argument))
         eat_whitespace(chars)
-        char = next(chars)
-        if char == ')':
-            break
-        assert char == ','
-        eat_whitespace(chars)
-    else:
-        assert next(chars) == ')'
+        if chars.peek() == ',':
+            next(chars)
+            eat_whitespace(chars)
+    if next(chars) != ')':
+        raise StyleParseError('Expecting a closing brace')
     return args, kwargs
 
 
@@ -889,24 +898,16 @@ class CharIterator(str):
             return None
 
 
-def parse_keyword(chars):
-    keyword = chars.match(string.ascii_letters + string.digits + '_')
-    eat_whitespace(chars)
-    if chars.peek() != '=':
-        raise StyleParseError('Expecting an equals sign to follow a keyword')
-    next(chars)
-    return keyword
-
-
 def parse_value(chars):
+    unknown_keyword = False
     first_char = chars.peek()
     if first_char in ("'", '"'):
         value = parse_string(chars)
     elif first_char.isnumeric() or first_char in '+-':
         value = parse_number(chars)
     else:
-        value = None
-    return value
+        value, unknown_keyword = parse_keyword(chars)
+    return value, unknown_keyword
 
 
 def parse_string(chars):
@@ -930,6 +931,17 @@ def parse_string(chars):
 
 def parse_number(chars):
     return literal_eval(chars.match('0123456789.e+-'))
+
+
+def parse_keyword(chars):
+    keyword = chars.match(string.ascii_letters + string.digits + '_')
+    try:
+        return KEYWORDS[keyword.lower()], False
+    except KeyError:
+        return keyword, True
+
+
+KEYWORDS = dict(true=True, false=False, none=None)
 
 
 class Specificity(namedtuple('Specificity',

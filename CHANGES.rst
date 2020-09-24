@@ -12,6 +12,7 @@ New Features:
   adding a container with the 'supporting-matter' class and a name to reference
   it by in the document template configuration, e.g. in the list of front
   matter flowables (to be documented).
+* Selectors in style sheet files (.rts) now support boolean and 'None' values.
 
 Fixed:
 

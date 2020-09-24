@@ -461,6 +461,9 @@ def test_parse_selector_args():
     assert helper("666") == ([666], {})
     assert helper("'baboo', ") == (['baboo'], {})
     assert helper("22, ") == ([22], {})
+    assert helper("true") == ([True], {})
+    assert helper("False,") == ([False], {})
+    assert helper("nOnE") == ([None], {})
     assert helper("'style name', 666") == (['style name', 666], {})
     assert helper("'style name' ,666") == (['style name', 666], {})
     assert helper("'style name',666") == (['style name', 666], {})
@@ -472,6 +475,12 @@ def test_parse_selector_args():
     assert helper("key_9='value'") == ([], dict(key_9='value'))
     assert helper("'arg', key='value'") == (['arg'], dict(key='value'))
     assert helper("22, key='value'") == ([22], dict(key='value'))
+    assert helper("key =true") == ([], dict(key=True))
+    assert helper("42, key=falSe") == ([42], dict(key=False))
+    with pytest.raises(StyleParseError):
+        assert helper("key=bad")
+    with pytest.raises(StyleParseError):
+        assert helper("key='good', 33")
 
 
 def test_parse_class_selector():
