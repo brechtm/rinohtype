@@ -45,8 +45,9 @@ def get_version():
                 else version == VERSION)
     elif describe:
         print('Working directory is a git checkout: {}...'.format(describe))
-        assert describe[0] == 'v'
-        version = describe[1:].replace('-', '+', 1)
+        version = describe
+        if describe[0] == 'v':
+            version = version[1:].replace('-', '+', 1)
     else:
         print('Missing specific version information...')
         version = VERSION
