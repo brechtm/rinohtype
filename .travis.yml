@@ -39,6 +39,7 @@ matrix:
       cache:
         pip: false
         directories:
+          - /usr/local/Cellar
           - /usr/local/Homebrew
           - $HOME/Library/Caches/Homebrew
           - $HOME/Library/Caches/pip
@@ -77,6 +78,7 @@ matrix:
       cache:
         pip: false
         directories:
+          - /usr/local/Cellar
           - /usr/local/Homebrew
           - $HOME/Library/Caches/Homebrew
           - $HOME/Library/Caches/pip
