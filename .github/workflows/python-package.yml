@@ -10,13 +10,20 @@ on:
     branches: [ master ]
 
 jobs:
-  ci:
+  build:
     strategy:
       fail-fast: false
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9.0-alpha - 3.9.0, pypy3]
         poetry-version: [1.0.10]
         os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            activate_venv: source $(poetry env info -p)/bin/activate
+          - os: macos-latest
+            activate_venv: source $(poetry env info -p)/bin/activate
+          - os: windows-latest
+            activate_venv: . "$(poetry env info -p)\Scripts\Activate.ps1"
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -33,6 +40,6 @@ jobs:
         poetry install --no-root
     - name: Test with tox
       run: |
-        source .venv/bin/activate
-        pip install tox tox-gh-actions
+        ${{ matrix.activate_venv }}
+        pip install tox-gh-actions
         tox -v
