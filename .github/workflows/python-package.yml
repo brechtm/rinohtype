@@ -98,5 +98,4 @@ jobs:
     - name: Test with tox
       run: |
         ${{ env.ACTIVATE_VENV }}
-        pip install tox-gh-actions
         tox -v ${{ env.INSTALLPKG }} -- -s
