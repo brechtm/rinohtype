@@ -13,6 +13,9 @@ rinohtype
    :target: https://gitter.im/brechtm/rinohtype
    :alt: Gitter chat
 
+.. image:: https://github.com/brechtm/rinohtype/workflows/Tests/badge.svg?branch=master&event=push
+   :target: https://github.com/brechtm/rinohtype/actions?query=workflow%3ATests+branch%3Amaster+event%3Apush
+
 .. image:: https://travis-ci.org/brechtm/rinohtype.svg?branch=master
    :target: https://travis-ci.org/brechtm/rinohtype
    :alt: Build status
