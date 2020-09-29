@@ -76,7 +76,6 @@ jobs:
         echo '::set-env name=INSTALLPKG::--installpkg ./dist/rinohtype-*.whl'
     - name: Test with tox
       run: |
-        echo $INSTALLPKG
         ${{ matrix.activate_venv }}
         pip install tox-gh-actions
-        tox -v $INSTALLPKG -- -s
+        tox -v ${{ env.INSTALLPKG }} -- -s
