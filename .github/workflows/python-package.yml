@@ -69,18 +69,40 @@ jobs:
       uses: abatilo/actions-poetry@v2.0.0
       with:
         poetry-version: ${{ matrix.poetry-version }}
-    - name: Get cache dirs
+    - name: Get Poetry/pip cache dirs
       id: cache-dirs
       run: |
         echo "::set-output name=poetry::$(poetry config cache-dir)"
         echo "::set-output name=pip::$(pip cache dir)"
-    - name: Cache multiple paths
+    - name: Cache Poetry/pip downloads
       uses: actions/cache@v2
       with:
         path: |
           ${{ steps.cache-dirs.outputs.poetry }}
           ${{ steps.cache-dirs.outputs.pip }}
         key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+    - name: Get apt-get dir (Linux)
+      id: cache-dirs-os
+      if: startsWith(runner.os, 'Linux')
+      run: |
+        echo "::set-output name=dir::/var/cache/apt/archives"
+    - name: Get Homebrew caceh dir (macOS)
+      id: cache-dirs-os
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        echo "::set-output name=dir::$(brew --cache)"
+    - name: Get Chocolatey cache dir (Windows)
+      id: cache-dirs-os
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
+    - name: Cache package manager downloads
+      if: env.TOXENV == 'regression'
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ steps.cache-dirs-os.outputs.dir }}
+        key: ${{ runner.os }}-pkgmanager
     - name: Install dependencies
       run: |
         poetry install --no-root
