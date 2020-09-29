@@ -80,7 +80,7 @@ jobs:
         path: |
           ${{ steps.cache-dirs.outputs.poetry }}
           ${{ steps.cache-dirs.outputs.pip }}
-        key: ${{ runner.os }}-python${{ matrix.python-version }}-poetry${{ matrix.poetry-version }}
+        key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
     - name: Install dependencies
       run: |
         poetry install --no-root
