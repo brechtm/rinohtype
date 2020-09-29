@@ -54,6 +54,7 @@ jobs:
           - os: windows-latest
             activate_venv: . "$(poetry env info -p)\Scripts\Activate.ps1"
     runs-on: ${{ matrix.os }}
+    env: ${{ matrix.env }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
