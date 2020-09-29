@@ -22,10 +22,24 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Install Poetry
-      uses: abatilo/actions-poetry@v2.0.0
+
+    - name: Install Poetry ${{ matrix.poetry-version }}
+      uses: Gr1N/setup-poetry@v3
+    - name: Get Poetry/pip cache dirs
+      id: cache-dirs
+      run: |
+        echo "::set-output name=poetry::$(poetry config cache-dir)"
+        echo "::set-output name=pip::$(pip cache dir)"
+    - name: Cache Poetry/pip downloads
+      uses: actions/cache@v2
       with:
-        poetry-version: 1.0.10
+        path: |
+          ${{ steps.cache-dirs.outputs.poetry }}
+          ${{ steps.cache-dirs.outputs.pip }}
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
+
     - name: Install dependencies
       run: |
         poetry install --no-root
