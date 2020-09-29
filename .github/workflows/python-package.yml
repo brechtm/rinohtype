@@ -82,18 +82,18 @@ jobs:
           ${{ steps.cache-dirs.outputs.pip }}
         key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
     - name: Get apt-get dir (Linux)
-      id: cache-dirs-os
+      id: cache-dirs-linux
       if: startsWith(runner.os, 'Linux')
       run: |
         echo "::set-output name=dir::/var/cache/apt/archives"
     - name: Get Homebrew caceh dir (macOS)
-      id: cache-dirs-os
-      if: startsWith(runner.os, 'macOS')
+      id: cache-dirs-macos
+      if: startsWith(runner.macos, 'macOS')
       run: |
         echo "::set-output name=dir::$(brew --cache)"
     - name: Get Chocolatey cache dir (Windows)
-      id: cache-dirs-os
-      if: startsWith(runner.os, 'Windows')
+      id: cache-dirs-windows
+      if: startsWith(runner.windows, 'Windows')
       run: |
         echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
     - name: Cache package manager downloads
@@ -101,7 +101,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ${{ steps.cache-dirs-os.outputs.dir }}
+          ${{ steps.cache-dirs-linux.outputs.dir }}
+          ${{ steps.cache-dirs-macos.outputs.dir }}
+          ${{ steps.cache-dirs-windows.outputs.dir }}
         key: ${{ runner.os }}-pkgmanager
     - name: Install dependencies
       run: |
