@@ -33,36 +33,31 @@ jobs:
       run: |
         source $(poetry env info -p)/bin/activate
         tox -v
+
   test:
-    name: ${{ matrix.os }} / ${{ matrix.python-version }} / ${{ matrix.env.DIST }} / ${{ matrix.env.TOXENV }}
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
     strategy:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
-        python-version: [3.8]
-#        python-version: [3.6, 3.7, 3.8, 3.9.0-alpha - 3.9.0, pypy3]
+        python-version: [3.6, 3.7, 3.8, 3.9.0-alpha - 3.9.0, pypy3]
         poetry-version: [1.0.10]
         env:
           - DIST: sdist
             WITH_COVERAGE: 1
           - DIST: wheel
             WITH_COVERAGE: 0
-          - TOXENV: regression
-            DIST: wheel
-            WITH_COVERAGE: 1
     runs-on: ${{ matrix.os }}-latest
-    env: ${{ matrix.env }}
+    env: ${{ matrix.env}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Poetry ${{ matrix.poetry-version }}
-      uses: abatilo/actions-poetry@v2.0.0
-      with:
-        poetry-version: ${{ matrix.poetry-version }}
 
+    - name: Install Poetry ${{ matrix.poetry-version }}
+      uses: Gr1N/setup-poetry@v3
     - name: Get Poetry/pip cache dirs
       id: cache-dirs
       run: |
@@ -74,7 +69,62 @@ jobs:
         path: |
           ${{ steps.cache-dirs.outputs.poetry }}
           ${{ steps.cache-dirs.outputs.pip }}
-        key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
+
+    - name: Install dependencies
+      run: |
+        poetry install --no-root
+    - name: Install tox-gh-actions
+      run: |
+        poetry run pip install tox-gh-actions
+    - name: Create wheel
+      if: env.DIST == 'wheel'
+      run: |
+        poetry run python setup.py bdist_wheel
+        python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
+    - name: Test with tox
+      run: |
+        poetry run tox -v ${{ env.INSTALLPKG }} -- -s
+
+
+  regression:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests (${{ env.DIST }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu, MacOS, Windows]
+        python-version: [3.8]
+        poetry-version: [1.0.10]
+    runs-on: ${{ matrix.os }}-latest
+    env:
+      TOXENV: regression
+      DIST: wheel
+      WITH_COVERAGE: 1
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry ${{ matrix.poetry-version }}
+      uses: Gr1N/setup-poetry@v3
+    - name: Get Poetry/pip cache dirs
+      id: cache-dirs
+      run: |
+        echo "::set-output name=poetry::$(poetry config cache-dir)"
+        echo "::set-output name=pip::$(pip cache dir)"
+    - name: Cache Poetry/pip downloads
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ steps.cache-dirs.outputs.poetry }}
+          ${{ steps.cache-dirs.outputs.pip }}
+        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
 
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
@@ -117,10 +167,6 @@ jobs:
       run: |
         choco install mupdf imagemagick.tool
 
-    - name: Install tox-gh-actions
-      if: env.TOXENV == ''    # tox-gh-actions breaks regular usage
-      run: |
-        poetry run pip install tox-gh-actions
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
