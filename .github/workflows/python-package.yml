@@ -79,11 +79,11 @@ jobs:
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
-        ${{ matrix.env.ACTIVATE_VENV }}
+        ${{ env.ACTIVATE_VENV }}
         python setup.py bdist_wheel
-        echo '::set-env name=INSTALLPKG::--installpkg ${{ matrix.env.WHEEL_PATH }}'
+        echo '::set-env name=INSTALLPKG::--installpkg ${{ env.WHEEL_PATH }}'
     - name: Test with tox
       run: |
-        ${{ matrix.env.ACTIVATE_VENV }}
+        ${{ env.ACTIVATE_VENV }}
         pip install tox-gh-actions
         tox -v ${{ env.INSTALLPKG }} -- -s
