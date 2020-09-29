@@ -124,7 +124,7 @@ jobs:
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
       run: |
-        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F unittests"
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F unittests
 
   regression:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests (${{ matrix.dist }})
@@ -220,4 +220,4 @@ jobs:
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
       run: |
-        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }}"
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }}
