@@ -84,6 +84,18 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install --no-root
+    - name: Install tools required by the regression tests (Linux)
+      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Linux')
+      run: |
+        sudo apt-get install mupdf-tools imagemagick
+    - name: Install tools required by the regression tests (macOS)
+      if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
+      run: |
+        brew install mupdf-tools imagemagick
+    - name: Install tools required by the regression tests (Windows)
+      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
+      run: |
+        choco install mupdf imagemagick.tool
     - name: Install tox-gh-actions
       if: env.TOXENV == ''    # tox-gh-actions breaks regular usage
       run: |
