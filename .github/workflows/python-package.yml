@@ -117,7 +117,7 @@ jobs:
       if: env.DIST == 'wheel'
       run: |
         poetry run python setup.py bdist_wheel
-        echo ::set-env name=INSTALLPKG::--installpkg $(python -c "from pathlib import Path; print(next(Path('dist').glob('*.whl')))")
+        python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Test with tox
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
