@@ -73,10 +73,10 @@ jobs:
       run: |
         ${{ matrix.activate_venv }}
         python setup.py bdist_wheel
+        echo '::set-env name=INSTALLPKG::--installpkg ./dist/rinohtype-*.whl'
     - name: Test with tox
       run: |
-        function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
-        echo $(installpkg)
+        echo $INSTALLPKG
         ${{ matrix.activate_venv }}
         pip install tox-gh-actions
-        tox -v $(installpkg)
+        tox -v $INSTALLPKG
