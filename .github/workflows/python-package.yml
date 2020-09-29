@@ -56,7 +56,7 @@ jobs:
     env: ${{ matrix.env }}
     steps:
     - name: Windows-specific settings
-      if: ${{ matrix.os == 'windows-latest' }}
+      if: startsWith(runner.os, 'Windows')
       run: |
         echo '::set-env name=ACTIVATE_VENV::. "$(poetry env info -p)\Scripts\Activate.ps1"'
         echo '::set-env name=WHEEL_PATH::(Get-Item ./dist/rinohtype-*.whl)'
