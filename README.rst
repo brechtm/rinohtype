@@ -13,13 +13,9 @@ rinohtype
    :target: https://gitter.im/brechtm/rinohtype
    :alt: Gitter chat
 
-.. image:: https://travis-ci.org/brechtm/rinohtype.svg?branch=master
-   :target: https://travis-ci.org/brechtm/rinohtype
-   :alt: Build status
-
-.. image:: https://ci.appveyor.com/api/projects/status/qobpfyha7g4k109e/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/brechtm/rinohtype
-   :alt: Windows Build status
+.. image:: https://github.com/brechtm/rinohtype/workflows/Tests/badge.svg?branch=master&event=push
+   :target: https://github.com/brechtm/rinohtype/actions?query=workflow%3ATests+branch%3Amaster+event%3Apush
+   :alt: Tests
 
 .. image:: https://codecov.io/gh/brechtm/rinohtype/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/brechtm/rinohtype
