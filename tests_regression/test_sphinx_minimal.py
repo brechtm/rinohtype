@@ -7,7 +7,7 @@
 
 import pytest
 
-from regression import render_sphinx_project
+from helpers.regression import render_sphinx_project
 
 
 def test_sphinx_minimal():

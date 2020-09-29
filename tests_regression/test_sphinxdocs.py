@@ -10,7 +10,7 @@ import pytest
 
 from pathlib import Path
 
-from regression import render_sphinx_project
+from helpers.regression import render_sphinx_project
 
 
 @pytest.mark.longrunning
