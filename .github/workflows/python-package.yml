@@ -222,4 +222,4 @@ jobs:
       if: env.WITH_COVERAGE == 1
       shell: bash
       run: |
-        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }}${{ matrix.python-version }},${{ runner.os }}
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }},${{ matrix.python-version }},${{ runner.os }}
