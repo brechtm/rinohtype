@@ -69,6 +69,9 @@ jobs:
         poetry install --no-root
     - name: Test with tox
       run: |
+        echo $DIST
+        echo $TOXENV
         ${{ matrix.activate_venv }}
         pip install tox-gh-actions
-        tox -v
+        function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
+        tox -v $(installpkg)
