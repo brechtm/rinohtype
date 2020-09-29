@@ -85,7 +85,7 @@ jobs:
       run: |
         poetry install --no-root
     - name: Install tox-gh-actions
-      if: env.TOXENV != ''    # tox-gh-actions breaks regular usage
+      if: env.TOXENV    # tox-gh-actions breaks regular usage
       run: |
         ${{ env.ACTIVATE_VENV }}
         pip install tox-gh-actions
