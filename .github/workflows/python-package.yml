@@ -79,6 +79,7 @@ jobs:
     - name: Install tox-gh-actions
       run: |
         poetry run pip install tox-gh-actions
+
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
@@ -90,17 +91,18 @@ jobs:
 
 
   regression:
-    name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests (${{ env.DIST }})
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests (${{ matrix.dist }})
     strategy:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.8]
         poetry-version: [1.0.10]
+        dist: [wheel]
     runs-on: ${{ matrix.os }}-latest
     env:
       TOXENV: regression
-      DIST: wheel
+      DIST: ${{ matrix.dist }}
       WITH_COVERAGE: 1
     steps:
     - uses: actions/checkout@v2
