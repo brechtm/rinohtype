@@ -86,14 +86,14 @@ jobs:
       if: startsWith(runner.os, 'Linux')
       run: |
         echo "::set-output name=dir::/var/cache/apt/archives"
-    - name: Get Homebrew caceh dir (macOS)
+    - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
-      if: startsWith(runner.macos, 'macOS')
+      if: startsWith(runner.os, 'macOS')
       run: |
         echo "::set-output name=dir::$(brew --cache)"
     - name: Get Chocolatey cache dir (Windows)
       id: cache-dirs-windows
-      if: startsWith(runner.windows, 'Windows')
+      if: startsWith(runner.os, 'Windows')
       run: |
         echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
     - name: Cache package manager downloads
