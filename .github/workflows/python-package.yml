@@ -51,11 +51,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry install --no-root
+        poetry install -vv --no-root
     - name: Test with tox
       run: |
-        source $(poetry env info -p)/bin/activate
-        tox -v
+        poetry run tox -v
 
   test:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
@@ -98,7 +97,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry install --no-root
+        poetry install -vv --no-root
     - name: Install tox-gh-actions
       run: |
         poetry run pip install tox-gh-actions
@@ -181,7 +180,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry install --no-root
+        poetry install -vv --no-root
     - name: Install tools required by the regression tests (Linux)
       if: env.TOXENV == 'regression' && startsWith(runner.os, 'Linux')
       run: |
