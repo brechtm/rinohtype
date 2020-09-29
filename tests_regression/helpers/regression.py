@@ -15,9 +15,9 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
 
-from diffpdf import diff_pdf
-from pdf_linkchecker import check_pdf_links
-from util import in_directory
+from .diffpdf import diff_pdf
+from .pdf_linkchecker import check_pdf_links
+from .util import in_directory
 
 from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
