@@ -50,7 +50,7 @@ jobs:
             WITH_COVERAGE: 1
           - DIST: wheel
             WITH_COVERAGE: 0
-          - TOXENV: regrezzion
+          - TOXENV: regression
             WITH_COVERAGE: 1
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
