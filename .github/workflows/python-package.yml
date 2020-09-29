@@ -60,6 +60,15 @@ jobs:
       run: |
         echo '::set-env name=ACTIVATE_VENV::. "$(poetry env info -p)\Scripts\Activate.ps1"'
         echo '::set-env name=WHEEL_PATH::(Get-Item ./dist/rinohtype-*.whl)'
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Poetry ${{ matrix.poetry-version }}
+      uses: abatilo/actions-poetry@v2.0.0
+      with:
+        poetry-version: ${{ matrix.poetry-version }}
     - name: Get cache dirs
       id: cache-dirs
       run: |
@@ -72,15 +81,6 @@ jobs:
           ${{ steps.cache-dirs.outputs.poetry }}
           ${{ steps.cache-dirs.outputs.pip }}
         key: ${{ runner.os }}-python${{ matrix.python-version }}-poetry${{ matrix.poetry-version }}
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Poetry ${{ matrix.poetry-version }}
-      uses: abatilo/actions-poetry@v2.0.0
-      with:
-        poetry-version: ${{ matrix.poetry-version }}
     - name: Install dependencies
       run: |
         poetry install --no-root
