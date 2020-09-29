@@ -61,8 +61,6 @@ jobs:
         echo '::set-env name=ACTIVATE_VENV::. "$(poetry env info -p)\Scripts\Activate.ps1"'
         echo '::set-env name=WHEEL_PATH::(Get-Item ./dist/rinohtype-*.whl)'
     - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -86,6 +84,11 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install --no-root
+    - name: Install tox-gh-actions
+      if: env.TOXENV != ''    # tox-gh-actions breaks regular usage
+      run: |
+        ${{ env.ACTIVATE_VENV }}
+        python setup.py bdist_wheel
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
