@@ -88,7 +88,7 @@ jobs:
       if: env.TOXENV != ''    # tox-gh-actions breaks regular usage
       run: |
         ${{ env.ACTIVATE_VENV }}
-        python setup.py bdist_wheel
+        pip install tox-gh-actions
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
