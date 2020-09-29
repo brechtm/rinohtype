@@ -68,11 +68,15 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install --no-root
+    - name: Create wheel
+      if: env.DIST == 'wheel'
+      run: |
+        ${{ matrix.activate_venv }}
+        python setup.py bdist_wheel
     - name: Test with tox
       run: |
-        echo $DIST
-        echo $TOXENV
+        function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
+        echo $(installpkg)
         ${{ matrix.activate_venv }}
         pip install tox-gh-actions
-        function installpkg { [[ $DIST == "wheel" ]] && echo "--installpkg ./dist/rinohtype-*.whl"; }
         tox -v $(installpkg)
