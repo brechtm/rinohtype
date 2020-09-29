@@ -79,4 +79,4 @@ jobs:
         echo $INSTALLPKG
         ${{ matrix.activate_venv }}
         pip install tox-gh-actions
-        tox -v $INSTALLPKG
+        tox -v $INSTALLPKG -- -s
