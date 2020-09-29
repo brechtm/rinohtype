@@ -147,12 +147,16 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: |
         echo "::set-output name=dir::$(brew --cache)"
+    - name: Delete Homebrew cache dir to minimize cache size (macOS)
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        rm -vrf "$(brew --cache)"
     - name: Cache Homebrew downloads
       if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
-        key: ${{ runner.os }}-homebrew
+        key: ${{ runner.os }}-homebrew-1
 
     - name: Get Chocolatey cache dir (Windows)
       id: cache-dirs-windows
@@ -176,7 +180,6 @@ jobs:
     - name: Install tools required by the regression tests (macOS)
       if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
       run: |
-        rm -rf "$(brew --cache)"    # reduce cache size
         brew install mupdf-tools imagemagick
     - name: Install tools required by the regression tests (Windows)
       if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
