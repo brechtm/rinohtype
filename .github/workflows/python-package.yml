@@ -11,11 +11,12 @@ on:
 
 jobs:
   check:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} ${{ matrix.env.TOXENV }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [Ubuntu, MacOS, Windows]
+        os: [Ubuntu]
         python-version: [3.8]
         env:
           - TOXENV: check
