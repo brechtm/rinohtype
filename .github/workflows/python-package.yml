@@ -81,30 +81,28 @@ jobs:
           ${{ steps.cache-dirs.outputs.poetry }}
           ${{ steps.cache-dirs.outputs.pip }}
         key: ${{ runner.os }}-${{ hashFiles('poetry.lock') }}
-    - name: Get apt-get dir (Linux)
-      id: cache-dirs-linux
-      if: startsWith(runner.os, 'Linux')
-      run: |
-        echo "::set-output name=dir::/var/cache/apt/archives"
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
       if: startsWith(runner.os, 'macOS')
       run: |
         echo "::set-output name=dir::$(brew --cache)"
+    - name: Cache Homebrew downloads
+      if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.cache-dirs-macos.outputs.dir }}
+        key: ${{ runner.os }}-homebrew
     - name: Get Chocolatey cache dir (Windows)
       id: cache-dirs-windows
       if: startsWith(runner.os, 'Windows')
       run: |
         echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
-    - name: Cache package manager downloads
-      if: env.TOXENV == 'regression'
+    - name: Cache Cholocatey downloads
+      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
       with:
-        path: |
-          ${{ steps.cache-dirs-linux.outputs.dir }}
-          ${{ steps.cache-dirs-macos.outputs.dir }}
-          ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-pkgmanager
+        path: ${{ steps.cache-dirs-windows.outputs.dir }}
+        key: ${{ runner.os }}-chocolatey
     - name: Install dependencies
       run: |
         poetry install --no-root
