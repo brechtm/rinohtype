@@ -64,6 +64,7 @@ jobs:
         path: |
           ~/.poetry
           .venv
+        key: ${{ runner.os }}-python${{ matrix.python-version }}-poetry${{ matrix.poetry-version }}
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
