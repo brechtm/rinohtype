@@ -52,6 +52,16 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install -vv --no-root
+
+    - name: Cache docs references cache
+      if: env.TOXENV == 'build-docs'
+      uses: actions/cache@v2
+      with:
+        path: doc/_build/rinoh/rinohtype.rtc
+        key: ${{ env.TOXENV }}-references-${{ hashFiles('doc/_build/rinoh/rinohtype.rtc') }}
+        restore-keys: |
+          ${{ env.TOXENV }}-references-
+
     - name: Test with tox
       run: |
         poetry run tox -v
