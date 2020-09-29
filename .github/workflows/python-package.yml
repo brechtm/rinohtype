@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  ACTIVATE_VENV: source $(poetry env info -p)/bin/activate
+  WHEEL_PATH: ./dist/rinohtype-*.whl
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -46,16 +50,14 @@ jobs:
             WITH_COVERAGE: 0
           - TOXENV: regression
             WITH_COVERAGE: 1
-        include:
-          - os: ubuntu-latest
-            activate_venv: source $(poetry env info -p)/bin/activate
-          - os: macos-latest
-            activate_venv: source $(poetry env info -p)/bin/activate
-          - os: windows-latest
-            activate_venv: . "$(poetry env info -p)\Scripts\Activate.ps1"
     runs-on: ${{ matrix.os }}
     env: ${{ matrix.env }}
     steps:
+    - name: Windows-specific settings
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        echo '::set-env name=ACTIVATE_VENV::. "$(poetry env info -p)\Scripts\Activate.ps1"'
+        echo '::set-env name=WHEEL_PATH::(Get-Item ./dist/rinohtype-*.whl)'
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -71,11 +73,11 @@ jobs:
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
-        ${{ matrix.activate_venv }}
+        ${{ matrix.env.ACTIVATE_VENV }}
         python setup.py bdist_wheel
-        echo '::set-env name=INSTALLPKG::--installpkg ./dist/rinohtype-*.whl'
+        echo '::set-env name=INSTALLPKG::--installpkg ${{ matrix.env.WHEEL_PATH }}'
     - name: Test with tox
       run: |
-        ${{ matrix.activate_venv }}
+        ${{ matrix.env.ACTIVATE_VENV }}
         pip install tox-gh-actions
         tox -v ${{ env.INSTALLPKG }} -- -s
