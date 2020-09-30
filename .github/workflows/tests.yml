@@ -116,6 +116,11 @@ jobs:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.8]
         dist: [wheel]
+        include:
+          - { os: Ubuntu, dist: wheel, python-version: 3.6 }
+          - { os: Ubuntu, dist: wheel, python-version: 3.7 }
+          - { os: Ubuntu, dist: wheel, python-version: 3.9.0-alpha - 3.9.0 }
+          - { os: Ubuntu, dist: wheel, python-version: pypy3 }
     runs-on: ${{ matrix.os }}-latest
     env:
       TOXENV: regression
