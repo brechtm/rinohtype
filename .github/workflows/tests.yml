@@ -149,7 +149,7 @@ jobs:
       run: |
         rm -vrf "$(brew --cache)"
     - name: Cache Homebrew downloads
-      if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
+      if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
@@ -165,7 +165,7 @@ jobs:
       run: |
         Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }}\* -Verbose -Recurse -Force
     - name: Cache Cholocatey downloads
-      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
+      if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
@@ -175,15 +175,15 @@ jobs:
       run: |
         poetry install -vv --no-root
     - name: Install tools required by the regression tests (Linux)
-      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Linux')
+      if: startsWith(runner.os, 'Linux')
       run: |
         sudo apt-get install mupdf-tools imagemagick
     - name: Install tools required by the regression tests (macOS)
-      if: env.TOXENV == 'regression' && startsWith(runner.os, 'macOS')
+      if: startsWith(runner.os, 'macOS')
       run: |
         brew install mupdf-tools imagemagick
     - name: Install tools required by the regression tests (Windows)
-      if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
+      if: startsWith(runner.os, 'Windows')
       run: |
         choco install mupdf imagemagick.tool
 
