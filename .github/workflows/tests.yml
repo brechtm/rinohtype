@@ -28,23 +28,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
-    - name: Install Poetry ${{ matrix.poetry-version }}
+    - name: Install Poetry
       uses: Gr1N/setup-poetry@v3
-    - name: Get Poetry/pip cache dirs
-      id: cache-dirs
-      run: |
-        echo "::set-output name=poetry::$(poetry config cache-dir)"
-        echo "::set-output name=pip::$(pip cache dir)"
-    - name: Cache Poetry/pip downloads
+    - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
-        path: |
-          ${{ steps.cache-dirs.outputs.poetry }}
-          ${{ steps.cache-dirs.outputs.pip }}
-        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-poetry-
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
       run: |
@@ -59,7 +53,7 @@ jobs:
         restore-keys: |
           ${{ env.TOXENV }}-references-
 
-    - name: Test with tox
+    - name: Run tox
       run: |
         poetry run tox -v
 
@@ -70,7 +64,6 @@ jobs:
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.6, 3.7, 3.8, 3.9.0-alpha - 3.9.0, pypy3]
-        poetry-version: [1.0.10]
         env:
           - DIST: sdist
             WITH_COVERAGE: 1
@@ -84,23 +77,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
-    - name: Install Poetry ${{ matrix.poetry-version }}
+    - name: Install Poetry
       uses: Gr1N/setup-poetry@v3
-    - name: Get Poetry/pip cache dirs
-      id: cache-dirs
-      run: |
-        echo "::set-output name=poetry::$(poetry config cache-dir)"
-        echo "::set-output name=pip::$(pip cache dir)"
-    - name: Cache Poetry/pip downloads
+    - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
-        path: |
-          ${{ steps.cache-dirs.outputs.poetry }}
-          ${{ steps.cache-dirs.outputs.pip }}
-        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-poetry-
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
       run: |
@@ -114,7 +101,7 @@ jobs:
       run: |
         poetry run python setup.py bdist_wheel
         python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
-    - name: Test with tox
+    - name: Run tox
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
 
@@ -131,7 +118,6 @@ jobs:
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.8]
-        poetry-version: [1.0.10]
         dist: [wheel]
     runs-on: ${{ matrix.os }}-latest
     env:
@@ -144,23 +130,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
-    - name: Install Poetry ${{ matrix.poetry-version }}
+    - name: Install Poetry
       uses: Gr1N/setup-poetry@v3
-    - name: Get Poetry/pip cache dirs
-      id: cache-dirs
-      run: |
-        echo "::set-output name=poetry::$(poetry config cache-dir)"
-        echo "::set-output name=pip::$(pip cache dir)"
-    - name: Cache Poetry/pip downloads
+    - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
-        path: |
-          ${{ steps.cache-dirs.outputs.poetry }}
-          ${{ steps.cache-dirs.outputs.pip }}
-        key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-poetry-
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
@@ -211,7 +191,7 @@ jobs:
       run: |
         poetry run python setup.py bdist_wheel
         python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
-    - name: Test with tox
+    - name: Run tox
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
 
