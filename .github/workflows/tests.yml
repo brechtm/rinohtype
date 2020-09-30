@@ -40,7 +40,7 @@ jobs:
         path: .venv
         key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Install dependencies
+    - name: Install development dependencies
       run: |
         poetry install -vv --no-root
 
@@ -89,12 +89,9 @@ jobs:
         path: .venv
         key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Install dependencies
+    - name: Install development dependencies
       run: |
         poetry install -vv --no-root
-    - name: Install tox-gh-actions
-      run: |
-        poetry run pip install tox-gh-actions
 
     - name: Create wheel
       if: env.DIST == 'wheel'
@@ -170,7 +167,7 @@ jobs:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
         key: ${{ runner.os }}-chocolatey
 
-    - name: Install dependencies
+    - name: Install development dependencies
       run: |
         poetry install -vv --no-root
     - name: Install tools required by the regression tests (Linux)
