@@ -26,3 +26,4 @@ wheel = "^0.34.2"
 pytest = "^5.4.3"
 pytest-assume = "^2.2.1"
 pytest-console-scripts = "^0.2.0"
+tox-gh-actions = {git = "https://github.com/baztian/tox-gh-actions.git", rev = "allow-env-override"}
