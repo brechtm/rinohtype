@@ -160,6 +160,10 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
+    - name: Delete Chocolatey cache dir to minimize cache size (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }}\* -Verbose -Recurse -Force
     - name: Cache Cholocatey downloads
       if: env.TOXENV == 'regression' && startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
