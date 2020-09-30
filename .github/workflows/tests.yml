@@ -163,7 +163,7 @@ jobs:
     - name: Delete Chocolatey cache dir to minimize cache size (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
-        Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }}\* -Verbose -Recurse -Force
+        Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }} -Verbose -Recurse -Force -ErrorAction Continue
     - name: Cache Cholocatey downloads
       if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
