@@ -96,7 +96,7 @@ jobs:
       if: env.DIST == 'wheel'
       run: |
         poetry run python setup.py bdist_wheel
-        python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
+        python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
@@ -195,7 +195,7 @@ jobs:
       if: env.DIST == 'wheel'
       run: |
         poetry run python setup.py bdist_wheel
-        python -c "from pathlib import Path; print('::set-env name=INSTALLPKG::--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
+        python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
