@@ -327,7 +327,7 @@ pytest = ">=2.7"
 
 [[package]]
 name = "pytest-console-scripts"
-version = "0.2.0"
+version = "1.0.0"
 description = "Pytest plugin for testing console scripts"
 category = "dev"
 optional = false
@@ -336,19 +336,6 @@ python-versions = "*"
 [package.dependencies]
 mock = ">=2.0.0"
 pytest = ">=4.0.0"
-pytest-runner = "*"
-
-[[package]]
-name = "pytest-runner"
-version = "5.2"
-description = "Invoke py.test as distutils command with dependency resolution"
-category = "dev"
-optional = false
-python-versions = ">=2.7"
-
-[package.extras]
-docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pytest-black-multipy", "pytest-cov", "pytest-virtualenv"]
 
 [[package]]
 name = "pytz"
@@ -731,7 +718,7 @@ testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.5"
-content-hash = "5e50be8c0f6c1027899585b00efe0c32fcf5d2e5755501727d5ad368a2124433"
+content-hash = "6b4a7b79e754aa4d773c498ed7b7ecc35c598340976d3cf8af7ebde29e3aca04"
 
 [metadata.files]
 alabaster = [
@@ -890,11 +877,7 @@ pytest-assume = [
     {file = "pytest_assume-2.3.2-py3-none-any.whl", hash = "sha256:aa4ba2546beb57660744e88ef06129e8a1d754d322b9d208e3fc957b7b600ae3"},
 ]
 pytest-console-scripts = [
-    {file = "pytest-console-scripts-0.2.0.tar.gz", hash = "sha256:a88ac15d663b88ef8fd5d4929a1b50e782dd25eb84443de849ad78636ad3e699"},
-]
-pytest-runner = [
-    {file = "pytest-runner-5.2.tar.gz", hash = "sha256:96c7e73ead7b93e388c5d614770d2bae6526efd997757d3543fe17b557a0942b"},
-    {file = "pytest_runner-5.2-py2.py3-none-any.whl", hash = "sha256:5534b08b133ef9a5e2c22c7886a8f8508c95bb0b0bdc6cc13214f269c3c70d51"},
+    {file = "pytest-console-scripts-1.0.0.tar.gz", hash = "sha256:3e0dfec982d098ae5aaade45e0b196a0acc1606e907f01ecb3dbddea1f1073c3"},
 ]
 pytz = [
     {file = "pytz-2020.1-py2.py3-none-any.whl", hash = "sha256:a494d53b6d39c3c6e44c3bec237336e14305e4f29bbf800b599253057fbb79ed"},
