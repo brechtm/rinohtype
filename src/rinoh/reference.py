@@ -18,6 +18,7 @@ from .layout import ReflowRequired, ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
+from .style import HasClass, HasClasses
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
                    StyledText, SingleStyledText, MixedStyledText)
 from .util import NotImplementedAttribute
@@ -168,6 +169,26 @@ class ReferencingParagraph(ParagraphBase):
     def text(self, container):
         return MixedStyledText(self.get_style('text', container), parent=self)
 
+    def _target_id(self, document):
+        target_id_or_flowable = self.target_id_or_flowable
+        return (target_id_or_flowable.get_id(document)
+                if isinstance(target_id_or_flowable, Flowable)
+                else target_id_or_flowable)
+
+    def _target_flowable(self, document):
+        return document.elements[self._target_id(document)]
+
+    def target_style(self, document):
+        """Filter selection on the ``style`` attribute of the target flowable"""
+        return self._target_flowable(document).style
+
+    def target_has_class(self, document):
+        """Filter selection on a class of the target flowable"""
+        return HasClass(self._target_flowable(document))
+
+    def target_has_classes(self, document):
+        """Filter selection on a set of classes of the target flowable"""
+        return HasClasses(self._target_flowable(document))
 
 
 class Note(LabeledFlowable):

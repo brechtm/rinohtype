@@ -149,7 +149,7 @@ class Selector(object):
     def flatten(self, stylesheet):
         raise NotImplementedError
 
-    def match(self, styled, stylesheet):
+    def match(self, styled, stylesheet, document):
         raise NotImplementedError
 
 
@@ -179,8 +179,8 @@ class SelectorWithPriority(Selector):
         flattened_selector = self.selector.flatten(stylesheet)
         return flattened_selector.pri(self.priority)
 
-    def match(self, styled, stylesheet):
-        score = self.selector.match(styled, stylesheet)
+    def match(self, styled, stylesheet, document):
+        score = self.selector.match(styled, stylesheet, document)
         if score:
             score = Specificity(self.priority, 0, 0, 0, 0) + score
         return score
@@ -225,9 +225,9 @@ class SelectorByName(SingleSelector):
         selector = matcher.by_name[self.name]
         return selector.get_style_name(matcher)
 
-    def match(self, styled, stylesheet):
+    def match(self, styled, stylesheet, document):
         selector = stylesheet.get_selector(self.name)
-        return selector.match(styled, stylesheet)
+        return selector.match(styled, stylesheet, document)
 
 
 class ClassSelectorBase(SingleSelector):
@@ -245,7 +245,7 @@ class ClassSelectorBase(SingleSelector):
     def get_style_name(self, matcher):
         return self.style_name
 
-    def match(self, styled, document):
+    def match(self, styled, stylesheet, document):
         if not isinstance(styled, self.cls):
             return None
         class_match = 2 if type(styled) == self.cls else 1
@@ -258,7 +258,12 @@ class ClassSelectorBase(SingleSelector):
 
         attributes_match = 0
         for attr, value in self.attributes.items():
-            if not hasattr(styled, attr) or getattr(styled, attr) != value:
+            if not hasattr(styled, attr):
+                return None
+            attr = getattr(styled, attr)
+            if callable(attr):
+                attr = attr(document)
+            if attr != value:
                 return None
             attributes_match += 1
 
@@ -295,7 +300,7 @@ class ContextSelector(Selector):
     def get_style_name(self, matcher):
         return self.selectors[-1].get_style_name(matcher)
 
-    def match(self, styled, stylesheet):
+    def match(self, styled, stylesheet, document):
         def styled_and_parents(element):
             while element is not None:
                 yield element
@@ -310,13 +315,13 @@ class ContextSelector(Selector):
                 element = next(elements)                # NoMoreParentElement
                 if isinstance(selector, EllipsisSelector):
                     selector = next(selectors)          # StopIteration
-                    while not selector.match(element, stylesheet):
+                    while not selector.match(element, stylesheet, document):
                         element = next(elements)        # NoMoreParentElement
             except NoMoreParentElement:
                 return None
             except StopIteration:
                 break
-            score = selector.match(element, stylesheet)
+            score = selector.match(element, stylesheet, document)
             if not score:
                 return None
             total_score += score
@@ -459,7 +464,7 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
             return self._style_name
         except AttributeError:
             ruleset = self.configuration_class.get_ruleset(document)
-            self._style_name = ruleset.find_style(self)
+            self._style_name = ruleset.find_style(self, document)
             return self._style_name
 
     def fallback_to_parent(self, attribute):
@@ -476,10 +481,12 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
 
     @property
     def has_class(self):
+        """Filter selection on a class of this :class:`Styled`"""
         return HasClass(self)
 
     @property
     def has_classes(self):
+        """Filter selection on a set of classes of this :class:`Styled`"""
         return HasClasses(self)
 
     def before_placing(self, container):
@@ -559,7 +566,7 @@ class StyledMatcher(dict):
         for name, selector in dict(iterable or (), **kwargs).items():
             self[name] = selector
 
-    def match(self, styled, stylesheet):
+    def match(self, styled, stylesheet, document):
         for cls in type(styled).__mro__:
             if cls not in self:
                 continue
@@ -567,7 +574,7 @@ class StyledMatcher(dict):
             for style in set((style_str, None)):
                 for name, selector in self[cls].get(style, {}).items():
                     selector = selector.flatten(stylesheet)
-                    specificity = selector.match(styled, stylesheet)
+                    specificity = selector.match(styled, stylesheet, document)
                     if specificity:
                         yield Match(name, specificity)
 
@@ -680,14 +687,14 @@ class StyleSheet(RuleSet, Resource):
             else:
                 raise KeyError("No selector found for style '{}'".format(name))
 
-    def find_matches(self, styled):
-        for match in self.matcher.match(styled, self):
+    def find_matches(self, styled, document):
+        for match in self.matcher.match(styled, self, document):
             yield match
         if self.base is not None:
-            yield from self.base.find_matches(styled)
+            yield from self.base.find_matches(styled, document)
 
-    def find_style(self, styled):
-        matches = sorted(self.find_matches(styled),
+    def find_style(self, styled, document):
+        matches = sorted(self.find_matches(styled, document),
                          key=attrgetter('specificity'), reverse=True)
         last_match = Match(None, ZERO_SPECIFICITY)
         for match in matches:
@@ -991,7 +998,7 @@ class StyleLog(object):
         self.entries = []
 
     def log_styled(self, styled, container, continued, custom_message=None):
-        matches = self.stylesheet.find_matches(styled)
+        matches = self.stylesheet.find_matches(styled, container.document)
         log_entry = StyleLogEntry(styled, container, matches, continued,
                                   custom_message)
         self.entries.append(log_entry)
