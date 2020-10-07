@@ -32,7 +32,7 @@ jobs:
       run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
     - name: Install Poetry
-      uses: Gr1N/setup-poetry@v3
+      uses: Gr1N/setup-poetry@v4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
@@ -81,7 +81,7 @@ jobs:
       run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
     - name: Install Poetry
-      uses: Gr1N/setup-poetry@v3
+      uses: Gr1N/setup-poetry@v4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
@@ -136,7 +136,7 @@ jobs:
       run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
 
     - name: Install Poetry
-      uses: Gr1N/setup-poetry@v3
+      uses: Gr1N/setup-poetry@v4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
