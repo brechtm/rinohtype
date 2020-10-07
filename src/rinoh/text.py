@@ -456,6 +456,7 @@ class MixedStyledText(MixedStyledTextBase, list):
             assumed_equal.remove(other_id)
 
     def prepare(self, flowable_target):
+        super().prepare(flowable_target)
         for item in self:
             item.prepare(flowable_target)
 
