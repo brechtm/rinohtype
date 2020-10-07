@@ -8,6 +8,8 @@ New Features:
 
 * Table column widths can be specified in the style sheet, which take effect
   when these haven't been specified in the source document.
+* The ``page_break`` style attribute is no longer reserved for sections; a
+  page break can be forced before any flowable.
 * It's now possible to add arbitrary sections to the front/back matter by
   adding a container with the 'supporting-matter' class and a name to reference
   it by in the document template configuration, e.g. in the list of front
