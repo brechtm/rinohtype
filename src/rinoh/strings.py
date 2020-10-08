@@ -144,8 +144,9 @@ class StringField(MixedStyledTextBase):
         return result
 
     def __repr__(self):
-        return "{}({}, '{}')".format(type(self).__name__,
-                                     self.strings_class, self.key)
+        return ("{}({}, '{}', style={})"
+                .format(type(self).__name__, self.strings_class.__name__,
+                        self.key, self.style))
 
     @classmethod
     def parse_string(cls, string, style=None):

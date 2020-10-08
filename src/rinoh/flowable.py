@@ -176,7 +176,7 @@ class Flowable(Styled):
             return
         if self._width(container) == FlowableWidth.FILL:
             self.warn("horizontal_align has no effect on flowables for which "
-                      "width is set to 'full'", container)
+                      "width is set to 'fill'", container)
             return
         if align == HorizontalAlignment.CENTER:
             offset = float(container.width - bordered_width) / 2

@@ -286,7 +286,8 @@ def template_from_config(config, confdir, warn):
         try:
             template_cfg['language'] = Language.from_string(language)
         except KeyError:
-            warn('The language "{}" is not supported by rinohtype.')
+            warn('The language "{}" is not supported by rinohtype.'
+                 .format(language))
 
     variables = {}
     if config.rinoh_paper_size:
