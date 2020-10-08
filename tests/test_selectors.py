@@ -9,16 +9,32 @@
 import pytest
 
 from rinoh.document import DocumentTree, FakeContainer
+from rinoh.flowable import StaticGroupedFlowables
 from rinoh.image import Image
 from rinoh.paragraph import Paragraph
 from rinoh.reference import ReferencingParagraph
 from rinoh.templates import Article
 
 
-def test_image():
-    stylesheet = None
-    document = None
+stylesheet = None
+document = None
 
+
+def test_select_groupedflowables():
+    empty = StaticGroupedFlowables([])
+    not_empty = StaticGroupedFlowables([empty])
+
+    empty_selector = StaticGroupedFlowables.like(empty=True)
+    not_empty_selector = StaticGroupedFlowables.like(empty=False)
+
+    assert empty_selector.match(empty, stylesheet, document)
+    assert not_empty_selector.match(not_empty, stylesheet, document)
+
+    assert not empty_selector.match(not_empty, stylesheet, document)
+    assert not not_empty_selector.match(empty, stylesheet, document)
+
+
+def test_image():
     nix_image1 = Image('dir/image.png')
     nix_image2 = Image('dir/subdir/image.png')
     win_image1 = Image(r'dir\image.png')

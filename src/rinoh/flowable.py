@@ -611,7 +611,7 @@ class StaticGroupedFlowables(GroupedFlowables):
 
     @property
     def empty(self):
-        return bool(self.children)
+        return not self.children
 
 
 class LabeledFlowableStyle(FlowableStyle):
