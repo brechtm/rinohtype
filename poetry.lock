@@ -335,7 +335,7 @@ description = "A pytest plugin that allows multiple failures per test"
 name = "pytest-assume"
 optional = false
 python-versions = "*"
-version = "2.3.2"
+version = "2.3.3"
 
 [package.dependencies]
 pytest = ">=2.7"
@@ -754,7 +754,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "29ddc979c02818977b25ac66f34348bead2744ab3e2f2c3823acf4dfbb691100"
+content-hash = "59a902e46ce8adad6712dae9d3d7bbe3ba2db7e30185a5a91dd8d93cd74e64cc"
 lock-version = "1.0"
 python-versions = "^3.5"
 
@@ -911,8 +911,8 @@ pytest = [
     {file = "pytest-5.4.3.tar.gz", hash = "sha256:7979331bfcba207414f5e1263b5a0f8f521d0f457318836a7355531ed1a4c7d8"},
 ]
 pytest-assume = [
-    {file = "pytest-assume-2.3.2.tar.gz", hash = "sha256:d53cc95658701dab439aa20d3ca98c5a09bc8705a6ba94f1893501f19763e7ec"},
-    {file = "pytest_assume-2.3.2-py3-none-any.whl", hash = "sha256:aa4ba2546beb57660744e88ef06129e8a1d754d322b9d208e3fc957b7b600ae3"},
+    {file = "pytest-assume-2.3.3.tar.gz", hash = "sha256:5e6e01432374a79f0cd79f0bb09f9ee7c8d5d7e9c648980ecb246bce095cd491"},
+    {file = "pytest_assume-2.3.3-py3-none-any.whl", hash = "sha256:44f07c4cf28d433fcd84c7515c658e924c8e4428a148bd0278946d8c9187d0ea"},
 ]
 pytest-console-scripts = [
     {file = "pytest-console-scripts-1.0.0.tar.gz", hash = "sha256:3e0dfec982d098ae5aaade45e0b196a0acc1606e907f01ecb3dbddea1f1073c3"},
