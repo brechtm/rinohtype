@@ -489,7 +489,7 @@ class GroupedFlowables(Flowable):
         flowables_iter = self.flowables(container)
         title_text = self.get_style('title', container)
         if title_text:
-            title = Paragraph(title_text, style='title')
+            title = Paragraph(title_text.copy(), style='title')
             flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
 

@@ -459,8 +459,7 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
             return 0
 
     def configuration_name(self, document):
-        try:
-            # raise AttributeError
+        try:    # TODO: make document hashable so @cached can be used?
             return self._style_name
         except AttributeError:
             ruleset = self.configuration_class.get_ruleset(document)

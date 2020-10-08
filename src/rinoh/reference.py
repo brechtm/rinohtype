@@ -57,6 +57,10 @@ class ReferenceBase(MixedStyledTextBase):
             result += ' ({})'.format(self.style)
         return result
 
+    def copy(self, parent=None):
+        return type(self)(self.type, self.link, self.quiet,
+                          style=self.style, parent=parent)
+
     def target_id(self, document):
         raise NotImplementedError
 
@@ -167,7 +171,7 @@ class ReferencingParagraph(ParagraphBase):
         self.target_id_or_flowable = target_id_or_flowable
 
     def text(self, container):
-        return MixedStyledText(self.get_style('text', container), parent=self)
+        return self.get_style('text', container).copy(parent=self)
 
     def _target_id(self, document):
         target_id_or_flowable = self.target_id_or_flowable

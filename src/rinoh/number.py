@@ -11,6 +11,7 @@ Functions for formatting numbers:
 * :func:`format_number`: Format a number according to a given style.
 
 """
+from copy import copy
 
 from .attribute import Attribute, OptionSet, Bool
 from .paragraph import ParagraphBase, ParagraphStyle
@@ -100,7 +101,7 @@ class Label(object):
     def format_label(self, label, container):
         prefix = self.get_style('label_prefix', container) or ''
         suffix = self.get_style('label_suffix', container) or ''
-        return prefix + label + suffix
+        return copy(prefix) + copy(label) + copy(suffix)
 
 
 class NumberStyle(LabelStyle):
