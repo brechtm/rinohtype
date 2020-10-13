@@ -145,7 +145,6 @@ def test_sphinx_set_document_metadata(tmpdir):
     assert 'title' in rinoh_doc.metadata
     assert 'subtitle' in rinoh_doc.metadata
     assert 'author' in rinoh_doc.metadata
-    assert 'paper_size' in rinoh_doc.metadata
 
 
 def test_sphinx_set_document_metadata_subtitle(tmpdir):

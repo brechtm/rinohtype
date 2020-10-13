@@ -245,7 +245,7 @@ class RinohBuilder(Builder):
 
 def set_document_metadata(rinoh_document, config, doctree):
     metadata = rinoh_document.metadata
-    metadata.update(rinoh_document.configuration.variables)
+    metadata.update(config.rinoh_metadata)
     rinoh_logo = config.rinoh_logo
     if rinoh_logo:
         metadata['logo'] = rinoh_logo
@@ -299,7 +299,7 @@ def template_from_config(config, confdir, warn):
             warn('The language "{}" is not supported by rinohtype.'
                  .format(language))
 
-    variables = config.rinoh_metadata
+    variables = {}
 
     if config.rinoh_paper_size:
         variables['paper_size'] = config.rinoh_paper_size
