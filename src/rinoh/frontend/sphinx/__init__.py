@@ -249,12 +249,13 @@ def set_document_metadata(rinoh_document, config, doctree):
     rinoh_logo = config.rinoh_logo
     if rinoh_logo:
         metadata['logo'] = rinoh_logo
-    rinoh_document.metadata['title'] = doctree.settings.title
+    metadata['title'] = doctree.settings.title
     if 'subtitle' not in metadata:
-        metadata['subtitle'] = 'Release {}'.format(config.release)
-    rinoh_document.metadata['author'] = doctree.settings.author
+        metadata['subtitle'] = (_('Release') + ' {}'
+                                               .format(config.release))
+    metadata['author'] = doctree.settings.author
     date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
-                                    language=config.language)
+                                       language=config.language)
     metadata['date'] = date
     return rinoh_document
 
