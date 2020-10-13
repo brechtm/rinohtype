@@ -242,26 +242,22 @@ class RinohBuilder(Builder):
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
 
+
 def set_document_metadata(rinoh_document, config, doctree):
     metadata = rinoh_document.metadata
     metadata.update(rinoh_document.configuration.variables)
-
     rinoh_logo = config.rinoh_logo
     if rinoh_logo:
         metadata['logo'] = rinoh_logo
-
     rinoh_document.metadata['title'] = doctree.settings.title
-
     if 'subtitle' not in metadata:
         metadata['subtitle'] = 'Release {}'.format(config.release)
-
     rinoh_document.metadata['author'] = doctree.settings.author
-
     date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
                                     language=config.language)
     metadata['date'] = date
-
     return rinoh_document
+
 
 def template_from_config(config, confdir, warn):
     template_cfg = {}
