@@ -12,7 +12,6 @@ from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
 from .element import create_destination
 from .flowable import GroupedFlowables, StaticGroupedFlowables
-from .flowable import PageBreak, PageBreakStyle
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .layout import PageBreakException
@@ -47,7 +46,7 @@ class SectionTitles(StringCollection):
     index = String('Title for the index section')
 
 
-class SectionStyle(GroupedFlowablesStyle, PageBreakStyle):
+class SectionStyle(GroupedFlowablesStyle):
     show_in_toc = Attribute(Bool, True, 'List this section in the table of '
                                         'contents')
 
@@ -56,9 +55,9 @@ class NewChapterException(PageBreakException):
     pass
 
 
-class SectionBase(GroupedFlowables, PageBreak):
+class SectionBase(GroupedFlowables):
     style_class = SectionStyle
-    exception_class = NewChapterException
+    break_exception = NewChapterException
 
     @property
     def category(self):

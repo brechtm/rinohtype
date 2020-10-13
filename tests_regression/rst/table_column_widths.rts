@@ -1,0 +1,6 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[table-cls1 : Table(has_class='cls1')]
+column_widths = 50pt 70pt 100pt

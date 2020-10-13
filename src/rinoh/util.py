@@ -28,6 +28,7 @@ import time
 from collections import OrderedDict
 from collections.abc import MutableMapping
 from functools import wraps
+from itertools import tee
 from weakref import ref
 
 
@@ -67,6 +68,24 @@ class PeekIterator(object):
         self._iterator = iter(iterable)
         self.at_end = False
         self._advance()
+        self._saved_states = []
+
+    def push_state(self):
+        """Save the current state on a stack"""
+        self._iterator, saved_iter = tee(self._iterator)
+        state = saved_iter, self.next, self.at_end
+        self._saved_states.append(state)
+
+    def pop_state(self, discard=False):
+        """Restore or discard the last saved state
+
+        Args:
+            discard (bool): if True, discard the last saved state
+
+        """
+        state = self._saved_states.pop()
+        if not discard:
+            self._iterator, self.next, self.at_end = state
 
     def _advance(self):
         result = self.next

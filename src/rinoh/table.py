@@ -11,8 +11,9 @@ from itertools import chain
 from functools import partial
 from math import sqrt
 
-from .attribute import Attribute, OptionSet, OverrideDefault, Integer, Bool
-from .dimension import DimensionBase as DimBase
+from .attribute import (Attribute, OptionSet, OverrideDefault, Integer, Bool,
+                        AcceptNoneAttributeType, ParseError)
+from .dimension import DimensionBase as DimBase, Dimension
 from .draw import Line, Rectangle, ShapeStyle, LineStyle
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
@@ -56,7 +57,38 @@ class TableState(FlowableState):
                               self.body_row_index)
 
 
+class ColumnWidths(AcceptNoneAttributeType):
+    @classmethod
+    def check_type(cls, value):
+        return (super().check_type(value)
+                or (isinstance(value, list)
+                    and all(isinstance(item, (Dimension, int))
+                            for item in value)))
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        items = []
+        while tokens.next.type:
+            try:
+                tokens.push_state()
+                item = Dimension.from_tokens(tokens)
+                tokens.pop_state(discard=True)
+            except ParseError:
+                tokens.pop_state()
+                item = Integer.from_tokens(tokens)
+            items.append(item)
+        return items
+
+    @classmethod
+    def doc_format(cls):
+        return ('a whitespace-delimited list of column widths; '
+                ':class:`.Dimension`\\ s (absolute width) and/or integers '
+                '(relative width)')
+
+
 class TableStyle(FlowableStyle):
+    column_widths = Attribute(ColumnWidths, None, 'Absolute or relative widths'
+                                                  ' of each column')
     split_minimum_rows = Attribute(Integer, 0, 'The minimum number of rows to '
                                                'display when the table is '
                                                'split across pages')
@@ -179,7 +211,9 @@ class Table(Flowable):
         # calculate relative column widths for auto-sized columns
         auto_rel_colwidths = [sqrt(minimum * maximum) for minimum, maximum
                               in zip(min_column_widths, max_column_widths)]
-        column_widths = self.column_widths or [None for _ in max_column_widths]
+        column_widths = (self.column_widths
+                         or self.get_style('column_widths', container)
+                         or [None for _ in max_column_widths])
         try:          # TODO: max() instead of min()?
             relative_factor = min(auto_relative_width / width
                                   for width, auto_relative_width

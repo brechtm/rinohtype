@@ -27,7 +27,7 @@ from rinoh.structure import SectionTitles, AdmonitionTitles
 from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
                          parse_class_selector, parse_keyword, parse_string,
                          parse_number, StyleParseError, CharIterator)
-from rinoh.table import VerticalAlign
+from rinoh.table import ColumnWidths, VerticalAlign
 from rinoh.text import StyledText, SingleStyledText, MixedStyledText, Tab
 
 
@@ -387,22 +387,35 @@ def test_backgroundimage_from_string():
         BackgroundImage.from_string('not_a_path')
 
 
+def test_column_widths_from_string():
+    assert ColumnWidths.from_string('none') == None
+    assert ColumnWidths.from_string('1 2 3') == [1, 2, 3]
+    assert ColumnWidths.from_string('1 0 9') == [1, 0, 9]
+    assert ColumnWidths.from_string('2      4  6') == [2, 4, 6]
+    assert ColumnWidths.from_string('6  5   4   ') == [6, 5, 4]
+    assert ColumnWidths.from_string('1pt 2cm 3in') == [1*PT, 2*CM, 3*INCH]
+    assert ColumnWidths.from_string('4 pt 5 cm 6 in') == [4*PT, 5*CM, 6*INCH]
+    assert ColumnWidths.from_string('7pt 8 cm 9in') == [7*PT, 8*CM, 9*INCH]
+    with pytest.raises(ParseError):
+        assert ColumnWidths.from_string('1.5 3 1cm')
+
+
 # selectors
 
 def test_parse_keyword():
     def helper(string):
         chars = CharIterator(string)
-        return parse_keyword(chars), ''.join(chars)
+        keyword, unknown_keyword = parse_keyword(chars)
+        return keyword, unknown_keyword, ''.join(chars)
 
-    assert helper('style=') == ('style', '')
-    assert helper('row =') == ('row', '')
-    assert helper('UPPERCASE=') == ('UPPERCASE', '')
-    assert helper('miXeDCaSE=') == ('miXeDCaSE', '')
-    assert helper('key =  efzef') == ('key', '  efzef')
-    with pytest.raises(StyleParseError):
-        helper('bad key =')
-    with pytest.raises(StyleParseError):
-        helper('bad')
+    assert helper('None') == (None, False, '')
+    assert helper('trUE =') == (True, False, ' =')
+    assert helper('FALSE doh!') == (False, False, ' doh!')
+    assert helper('style') == ('style', True, '')
+    assert helper('row ') == ('row', True, ' ')
+    assert helper('UPPERCASE') == ('UPPERCASE', True, '')
+    assert helper('miXeDCaSE') == ('miXeDCaSE', True, '')
+    assert helper('key   efzef') == ('key', True, '   efzef')
 
 
 def test_parse_string():
@@ -448,6 +461,9 @@ def test_parse_selector_args():
     assert helper("666") == ([666], {})
     assert helper("'baboo', ") == (['baboo'], {})
     assert helper("22, ") == ([22], {})
+    assert helper("true") == ([True], {})
+    assert helper("False,") == ([False], {})
+    assert helper("nOnE") == ([None], {})
     assert helper("'style name', 666") == (['style name', 666], {})
     assert helper("'style name' ,666") == (['style name', 666], {})
     assert helper("'style name',666") == (['style name', 666], {})
@@ -459,6 +475,12 @@ def test_parse_selector_args():
     assert helper("key_9='value'") == ([], dict(key_9='value'))
     assert helper("'arg', key='value'") == (['arg'], dict(key='value'))
     assert helper("22, key='value'") == ([22], dict(key='value'))
+    assert helper("key =true") == ([], dict(key=True))
+    assert helper("42, key=falSe") == ([42], dict(key=False))
+    with pytest.raises(StyleParseError):
+        assert helper("key=bad")
+    with pytest.raises(StyleParseError):
+        assert helper("key='good', 33")
 
 
 def test_parse_class_selector():

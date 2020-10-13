@@ -79,14 +79,12 @@ class InlineStyled(Styled):
         """Generator yielding all spans in this inline element (flattened)"""
         before = self.get_style('before', container)
         if before is not None:
-            before.parent = self.parent
-            yield from before.wrapped_spans(container)
+            yield from before.copy(self.parent).wrapped_spans(container)
         if not self.get_style('hide', container):
             yield from self.spans(container)
         after = self.get_style('after', container)
         if after is not None:
-            after.parent = self.parent
-            yield from after.wrapped_spans(container)
+            yield from after.copy(self.parent).wrapped_spans(container)
 
     def spans(self, container):
         raise NotImplementedError
@@ -129,7 +127,10 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         is `None`, this styled text itself is returned."""
         return self + other
 
-    def copy(self, id=None, style=None, parent=None):
+    def __copy__(self):
+        return self.copy()
+
+    def copy(self, parent=None):
         raise NotImplementedError
 
     @classmethod
@@ -381,6 +382,9 @@ class SingleStyledText(SingleStyledTextBase):
     def text(self, container, **kwargs):
         return self._text
 
+    def copy(self, parent=None):
+        return type(self)(self._text, style=self.style, parent=parent)
+
 
 class MixedStyledTextBase(StyledText):
     def to_string(self, flowable_target):
@@ -456,6 +460,7 @@ class MixedStyledText(MixedStyledTextBase, list):
             assumed_equal.remove(other_id)
 
     def prepare(self, flowable_target):
+        super().prepare(flowable_target)
         for item in self:
             item.prepare(flowable_target)
 
@@ -475,6 +480,10 @@ class MixedStyledText(MixedStyledTextBase, list):
 
     def children(self, flowable_target):
         return self.items
+
+    def copy(self, parent=None):
+        items = [item.copy() for item in self.items]
+        return type(self)(items, style=self.style, parent=parent)
 
 
 class ConditionalMixedStyledText(MixedStyledText):
@@ -577,13 +586,16 @@ class ControlCharacter(Character, metaclass=ControlCharacterMeta):
     exception = Exception
     all = {}
 
-    def __init__(self):
+    def __init__(self, style=None, parent=None):
         """Initialize this control character with it's unicode `char`."""
-        super().__init__(self.character)
+        super().__init__(self.character, style=style, parent=parent)
 
     def __repr__(self):
         """A textual representation of this control character."""
         return self.__class__.__name__
+
+    def copy(self, parent=None):
+        return type(self)(style=self.style, parent=parent)
 
     @property
     def width(self):

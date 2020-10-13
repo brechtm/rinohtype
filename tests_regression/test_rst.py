@@ -9,7 +9,8 @@ import pytest
 
 from pathlib import Path
 
-from regression import render_rst_file, render_sphinx_rst_file, OUTPUT_DIR
+from helpers.regression import (render_rst_file, render_sphinx_rst_file,
+                                OUTPUT_DIR)
 
 
 RST_PATH = Path(__file__).parent / 'rst'

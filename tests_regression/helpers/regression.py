@@ -15,9 +15,9 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
 
-from diffpdf import diff_pdf
-from pdf_linkchecker import check_pdf_links
-from util import in_directory
+from .diffpdf import diff_pdf
+from .pdf_linkchecker import check_pdf_links
+from .util import in_directory
 
 from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
@@ -106,13 +106,14 @@ def render_sphinx_project(name, project_dir, template_cfg=None, stylesheet=None)
         confoverrides['rinoh_template'] = str(TEST_DIR / template_cfg)
     if stylesheet:
         confoverrides['rinoh_stylesheet'] = str(TEST_DIR / stylesheet)
-    sphinx = Sphinx(srcdir=str(project_path),
-                    confdir=str(project_path),
-                    outdir=str(out_path / 'rinoh'),
-                    doctreedir=str(out_path / 'doctrees'),
-                    buildername='rinoh',
-                    confoverrides=confoverrides)
-    sphinx.build()
+    with docutils_namespace():
+        sphinx = Sphinx(srcdir=str(project_path),
+                        confdir=str(project_path),
+                        outdir=str(out_path / 'rinoh'),
+                        doctreedir=str(out_path / 'doctrees'),
+                        buildername='rinoh',
+                        confoverrides=confoverrides)
+        sphinx.build()
     out_filename = '{}.pdf'.format(name)
     with in_directory(out_path):
         if not diff_pdf(TEST_DIR / 'reference' / out_filename,

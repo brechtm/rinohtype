@@ -1,0 +1,213 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  check:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} ${{ matrix.env.TOXENV }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu]
+        python-version: [3.8]
+        env:
+          - TOXENV: check
+          - TOXENV: check-docs
+          - TOXENV: build-docs
+    env: ${{ matrix.env}}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: 1.0.10
+    - name: Cache Poetry venv
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install development dependencies
+      run: |
+        poetry install -vv --no-root
+
+    - name: Cache docs references cache
+      if: env.TOXENV == 'build-docs'
+      uses: actions/cache@v2
+      with:
+        path: doc/_build/rinoh/rinohtype.rtc
+        key: ${{ env.TOXENV }}-references-${{ hashFiles('doc/_build/rinoh/rinohtype.rtc') }}
+        restore-keys: |
+          ${{ env.TOXENV }}-references-
+
+    - name: Run tox
+      run: |
+        poetry run tox -v
+
+  test:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu, MacOS, Windows]
+        python-version: [3.6, 3.7, 3.8, 3.9.0-alpha - 3.9.0, pypy3]
+        env:
+          - DIST: sdist
+            WITH_COVERAGE: 1
+          - DIST: wheel
+            WITH_COVERAGE: 0
+    runs-on: ${{ matrix.os }}-latest
+    env: ${{ matrix.env}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: 1.0.10
+    - name: Cache Poetry venv
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install development dependencies
+      run: |
+        poetry install -vv --no-root
+
+    - name: Create wheel
+      if: env.DIST == 'wheel'
+      run: |
+        poetry run python setup.py bdist_wheel
+        python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
+    - name: Run tox
+      run: |
+        poetry run tox -v ${{ env.INSTALLPKG }} -- -s
+
+    - name: Upload coverage statistics to codecov.io
+      if: env.WITH_COVERAGE == 1
+      shell: bash
+      run: |
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F unittests,${{ matrix.python-version }},${{ runner.os }}
+
+  regression:
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests (${{ matrix.dist }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu, MacOS, Windows]
+        python-version: [3.8]
+        dist: [wheel]
+        include:
+          - { os: Ubuntu, dist: wheel, python-version: 3.6 }
+          - { os: Ubuntu, dist: wheel, python-version: 3.7 }
+          - { os: Ubuntu, dist: wheel, python-version: 3.9.0-alpha - 3.9.0 }
+          - { os: Ubuntu, dist: wheel, python-version: pypy3 }
+    runs-on: ${{ matrix.os }}-latest
+    env:
+      TOXENV: regression
+      DIST: ${{ matrix.dist }}
+      WITH_COVERAGE: 1
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get full Python version
+      id: full-python-version
+      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: 1.0.10
+    - name: Cache Poetry venv
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Get Homebrew cache dir (macOS)
+      id: cache-dirs-macos
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        echo "::set-output name=dir::$(brew --cache)"
+    - name: Delete Homebrew cache dir to minimize cache size (macOS)
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        rm -vrf "$(brew --cache)"
+    - name: Cache Homebrew downloads
+      if: startsWith(runner.os, 'macOS')
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.cache-dirs-macos.outputs.dir }}
+        key: ${{ runner.os }}-homebrew-1
+
+    - name: Get Chocolatey cache dir (Windows)
+      id: cache-dirs-windows
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
+    - name: Delete Chocolatey cache dir to minimize cache size (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }} -Verbose -Recurse -Force -ErrorAction Continue
+    - name: Cache Cholocatey downloads
+      if: startsWith(runner.os, 'Windows')
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.cache-dirs-windows.outputs.dir }}
+        key: ${{ runner.os }}-chocolatey
+
+    - name: Install development dependencies
+      run: |
+        poetry install -vv --no-root
+    - name: Install tools required by the regression tests (Linux)
+      if: startsWith(runner.os, 'Linux')
+      run: |
+        sudo apt-get install mupdf-tools imagemagick
+    - name: Install tools required by the regression tests (macOS)
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        brew install mupdf-tools imagemagick
+    - name: Install tools required by the regression tests (Windows)
+      if: startsWith(runner.os, 'Windows')
+      run: |
+        choco install mupdf imagemagick.tool
+
+    - name: Create wheel
+      if: env.DIST == 'wheel'
+      run: |
+        poetry run python setup.py bdist_wheel
+        python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
+    - name: Run tox
+      run: |
+        poetry run tox -v ${{ env.INSTALLPKG }} -- -s
+
+    - name: Upload coverage statistics to codecov.io
+      if: env.WITH_COVERAGE == 1
+      shell: bash
+      run: |
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }},${{ matrix.python-version }},${{ runner.os }}

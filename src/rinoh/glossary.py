@@ -43,7 +43,7 @@ class GlossaryTerm(MixedStyledTextBase):
         if self.definition and not doc.set_glossary(term_str, self.definition):
             self.warn("The definition for '{}' doesn't match the first"
                       " definition".format(term_str), container)
-        yield from self.term.children(container)
+        yield self.term
         show_definition = self.get_style('show_definition', container)
         if show_definition == ShowDefinition.NEVER:
             return

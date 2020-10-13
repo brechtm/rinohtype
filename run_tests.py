@@ -12,7 +12,7 @@ SHELL = sys.platform == 'win32'
 
 
 if __name__ == '__main__':
-    command = ['py.test']
+    command = ['py.test', '-n', 'auto']
     if os.environ.get('WITH_COVERAGE') == '1':
         command.extend(['--cov=rinoh', '--cov-report='])
     if os.environ.get('BASETEMP'):

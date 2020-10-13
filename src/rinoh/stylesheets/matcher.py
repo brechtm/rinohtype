@@ -294,6 +294,7 @@ matcher('table of contents section', Section.like('table of contents'))
 matcher('table of contents title', 'table of contents section'
                                    / Heading.like(level=1))
 matcher('table of contents', TableOfContents)
+matcher('local table of contents', TableOfContents.like(local=True))
 matcher('toc level 1', TableOfContentsEntry.like(depth=1))
 matcher('toc level 2', TableOfContentsEntry.like(depth=2))
 matcher('toc level 3', TableOfContentsEntry.like(depth=3))

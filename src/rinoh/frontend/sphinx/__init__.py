@@ -99,6 +99,7 @@ class RinohBuilder(Builder):
     name = 'rinoh'
     format = 'pdf'
     supported_image_types = ['application/pdf', 'image/png', 'image/jpeg']
+    supported_remote_images = False
 
     def get_outdated_docs(self):
         return 'all documents'
@@ -238,7 +239,7 @@ class RinohBuilder(Builder):
         if rinoh_logo:
             rinoh_document.metadata['logo'] = rinoh_logo
         rinoh_document.metadata['title'] = doctree.settings.title
-        rinoh_document.metadata['subtitle'] = ('Release {}'
+        rinoh_document.metadata['subtitle'] = (_('Release') + ' {}'
                                                .format(config.release))
         rinoh_document.metadata['author'] = doctree.settings.author
         date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
@@ -286,7 +287,8 @@ def template_from_config(config, confdir, warn):
         try:
             template_cfg['language'] = Language.from_string(language)
         except KeyError:
-            warn('The language "{}" is not supported by rinohtype.')
+            warn('The language "{}" is not supported by rinohtype.'
+                 .format(language))
 
     variables = {}
     if config.rinoh_paper_size:

@@ -34,14 +34,14 @@ from .text import StyledText
 from .util import ReadAliasAttribute
 
 
-__all__ = ['Flowable', 'FlowableStyle', 'FlowableWidth',
+__all__ = ['Flowable', 'FlowableStyle',
+           'FlowableWidth', 'HorizontalAlignment', 'Break',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
            'SetMetadataFlowable', 'SetUserStringFlowable',
            'SetSupportingMatter',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
-           'Float',
-           'PageBreak', 'PageBreakStyle', 'Break']
+           'Float', 'PageBreak']
 
 
 class FlowableWidth(OptionSet):
@@ -71,6 +71,10 @@ class HorizontalAlignment(OptionSet):
     values = 'left', 'right', 'center'
 
 
+class Break(OptionSet):
+    values = None, 'any', 'left', 'right'
+
+
 class FlowableStyle(Style):
     width = Attribute(FlowableWidth, 'auto', 'Width to render the flowable at')
     horizontal_align = Attribute(HorizontalAlignment, 'left',
@@ -95,6 +99,8 @@ class FlowableStyle(Style):
     border_bottom = Attribute(Stroke, None, 'Border below the flowable')
     background_color = Attribute(Color, None, "Color of the area within the "
                                               "flowable's borders")
+    page_break = Attribute(Break, None, 'Type of page break to insert '
+                                        'before rendering this flowable')
 
 
 class FlowableState(object):
@@ -126,6 +132,7 @@ class Flowable(Styled):
     """
 
     style_class = FlowableStyle
+    break_exception = PageBreakException
 
     def __init__(self, align=None, width=None,
                  id=None, style=None, parent=None):
@@ -169,7 +176,7 @@ class Flowable(Styled):
             return
         if self._width(container) == FlowableWidth.FILL:
             self.warn("horizontal_align has no effect on flowables for which "
-                      "width is set to 'full'", container)
+                      "width is set to 'fill'", container)
             return
         if align == HorizontalAlignment.CENTER:
             offset = float(container.width - bordered_width) / 2
@@ -182,13 +189,23 @@ class Flowable(Styled):
         """Flow this flowable into `container` and return the vertical space
         consumed.
 
-        The flowable's contents is preceded by a vertical space with a height
+        The flowable's contents are preceded by a vertical space with a height
         as specified in its style's `space_above` attribute. Similarly, the
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
         top_to_baseline = 0
+        page_break = self.get_style('page_break', container)
         state = state or self.initial_state(container)
         if state.initial:
+            if page_break:
+                page_number = container.page.number
+                this_page_type = 'left' if page_number % 2 == 0 else 'right'
+                if not (container.page._empty
+                        and page_break in (Break.ANY, this_page_type)):
+                    if page_break == Break.ANY:
+                        page_break = 'left' if page_number % 2 else 'right'
+                    chain = container.top_level_container.chain
+                    raise self.break_exception(page_break, chain, state)
             space_above = self.get_style('space_above', container)
             if not container.advance2(float(space_above)):
                 raise EndOfContainer(state)
@@ -472,7 +489,7 @@ class GroupedFlowables(Flowable):
         flowables_iter = self.flowables(container)
         title_text = self.get_style('title', container)
         if title_text:
-            title = Paragraph(title_text, style='title')
+            title = Paragraph(title_text.copy(), style='title')
             flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
 
@@ -591,6 +608,10 @@ class StaticGroupedFlowables(GroupedFlowables):
         for flowable in self.flowables(flowable_target):
             flowable.parent = self
             flowable.prepare(flowable_target)
+
+    @property
+    def empty(self):
+        return not self.children
 
 
 class LabeledFlowableStyle(FlowableStyle):
@@ -822,43 +843,13 @@ class Float(Flowable):
                                 **kwargs)
 
 
-class Break(OptionSet):
-    values = None, 'any', 'left', 'right'
-
-
-class PageBreakStyle(FlowableStyle):
-    page_break = Attribute(Break, None, 'Type of page break to insert '
-                                        'before rendering this flowable')
-
-
 class PageBreak(Flowable):
-    """A flowable that optionally triggers a page break before rendering.
+    def __init__(self, page_break=Break.ANY):
+        style = FlowableStyle(page_break=page_break)
+        super().__init__(style=style)
 
-    If this flowable's `page_break` style attribute is not ``None``, it breaks
-    to the page of the type indicated by `page_break` before starting
-    rendering.
-
-    """
-
-    style_class = PageBreakStyle
-    exception_class = PageBreakException
-
-    def flow(self, container, last_descender, state=None, **kwargs):
-        state = state or self.initial_state(container)
-        page_number = container.page.number
-        this_page_type = 'left' if page_number % 2 == 0 else 'right'
-        page_break = self.get_style('page_break', container)
-        if state.initial and page_break:
-            if not (container.page._empty
-                    and page_break in (Break.ANY, this_page_type)):
-                if page_break == Break.ANY:
-                    page_break = 'left' if page_number % 2 else 'right'
-                chain = container.top_level_container.chain
-                raise self.exception_class(page_break, chain, state)
-        return super().flow(container, last_descender, state)
-
-    def render(self, container, descender, state, **kwargs):
-        return 0, 0, descender
+    def render(self, container, last_descender, state=None, **kwargs):
+        return 0, 0, last_descender
 
 
 from .paragraph import Paragraph

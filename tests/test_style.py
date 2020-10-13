@@ -159,17 +159,17 @@ def test_find_style():
     assert ssheet2.get_value_for(emphasized, 'font_slant', document) == 'italic'
     assert ssheet2.get_value_for(paragraph5, 'font_slant', document) == 'upright'
 
-    assert ssheet1.find_style(emphasized) == 'emphasized text'
-    assert ssheet1.find_style(emphasized2) == 'emphasized text 2'
-    assert ssheet1.find_style(paragraph) == 'paragraph'
-    assert ssheet2.find_style(paragraph) == 'paragraph'
-    assert ssheet1.find_style(paragraph2) == 'paragraph 2'
-    assert ssheet2.find_style(paragraph2) == 'paragraph 2'
-    assert ssheet1.find_style(paragraph3) == 'paragraph'
-    assert ssheet2.find_style(paragraph3) == 'paragraph 3'
-    assert ssheet1.find_style(paragraph4) == 'paragraph 4'
-    assert ssheet2.find_style(paragraph4) == 'paragraph 4'
-    assert ssheet2.find_style(paragraph5) == 'paragraph'
+    assert ssheet1.find_style(emphasized, document) == 'emphasized text'
+    assert ssheet1.find_style(emphasized2, document) == 'emphasized text 2'
+    assert ssheet1.find_style(paragraph, document) == 'paragraph'
+    assert ssheet2.find_style(paragraph, document) == 'paragraph'
+    assert ssheet1.find_style(paragraph2, document) == 'paragraph 2'
+    assert ssheet2.find_style(paragraph2, document) == 'paragraph 2'
+    assert ssheet1.find_style(paragraph3, document) == 'paragraph'
+    assert ssheet2.find_style(paragraph3, document) == 'paragraph 3'
+    assert ssheet1.find_style(paragraph4, document) == 'paragraph 4'
+    assert ssheet2.find_style(paragraph4, document) == 'paragraph 4'
+    assert ssheet2.find_style(paragraph5, document) == 'paragraph'
 
 
 def test_get_style():

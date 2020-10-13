@@ -6,8 +6,7 @@ Setup script for rinohtype
 
 import sys
 
-import pkg_resources
-
+from pkg_resources import safe_version
 from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 
@@ -20,41 +19,49 @@ if sys.version_info < (3, 5):
 def get_version():
     import sys
 
-    from datetime import date
-    from subprocess import check_output, CalledProcessError, DEVNULL
+    from datetime import datetime
 
     VERSION = '0.4.3.dev'
-
-    try:
-        is_dirty = check_output(['git', 'status', '--porcelain'],
-                                stderr=DEVNULL).decode('utf-8')
-    except CalledProcessError:
-        is_dirty = None   # not running from a git checkout
 
     if len(sys.argv) > 1 and sys.argv[1] == 'develop':
         # 'pip install -e' or 'python setup.py develop'
         print('Installing in develop mode')
-        version = 'dev'
-    elif VERSION.endswith('.dev'):  # development distribution
-        if is_dirty is None:
-            version = version_from_pkginfo() or VERSION
-        else:
-            print('Attempting to get commit SHA1 from git...')
-            git_sha1 = check_output(['git', 'rev-parse', '--short', 'HEAD'])
-            version = '{}+{}'.format(VERSION, git_sha1.strip().decode('ascii'))
-            if is_dirty:
-                version += '.dirty{}'.format(date.today().strftime('%Y%m%d'))
-    else:  # release distribution
-        if is_dirty is None:
-            assert version_from_pkginfo() in (VERSION, None)
-        elif is_dirty:
-            print(is_dirty)
-            assert False
+        return '0.0.0.dev'
+
+    version = version_from_pkginfo()
+    is_dirty = git('status', '--porcelain')
+    if version:     # source distribution
+        assert is_dirty is None
+        return version
+
+    exact_tag = git('describe', '--exact-match', '--tags', 'HEAD')
+    describe = git('describe', '--tags', '--always', 'HEAD')
+    if exact_tag:
+        print('Working directory is a checkout of git tag {}...'
+              .format(exact_tag))
+        assert exact_tag[0] == 'v'
+        version = exact_tag[1:]
+        assert (version.startswith(VERSION) if VERSION.endswith('.dev')
+                else version == VERSION)
+    elif describe:
+        print('Working directory is a git checkout: {}...'.format(describe))
+        version = describe
+        if describe[0] == 'v':
+            version = version[1:].replace('-', '+', 1)
+    else:
+        print('Missing specific version information...')
         version = VERSION
-    return pkg_resources.safe_version(version)
+    if is_dirty:
+        print('Git checkout is dirty, adding timestamp to version string...')
+        now = datetime.utcnow()
+        sep = '-' if '+' in version else '+'
+        version += '{}dirty{}'.format(sep, now.strftime('%Y%m%d%H%M%S'))
+
+    return safe_version(version)
 
 
 def version_from_pkginfo():
+    """Retrieve the version from an sdist's PKG-INFO file or None on failure"""
     from email.parser import HeaderParser
 
     parser = HeaderParser()
@@ -62,10 +69,20 @@ def version_from_pkginfo():
         with open('PKG-INFO') as file:
             pkg_info = parser.parse(file)
     except FileNotFoundError:
-        print('This is not a regular source distribution!')
         return None
-    print('Retrieving the distribution version from PKG-SOURCES.')
+    print('Retrieving the distribution version from PKG-INFO.')
     return pkg_info['Version']
+
+
+def git(*args):
+    """Run git and return its stripped output or None on failure"""
+    from subprocess import check_output, CalledProcessError, DEVNULL
+
+    try:
+        stdout = check_output(['git', *args], stderr=DEVNULL)
+    except CalledProcessError:
+        return None
+    return stdout.strip().decode('utf-8')
 
 
 def long_description():

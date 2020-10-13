@@ -1,15 +1,10 @@
-import sys
-import os
 
 import pytest
 
 from sphinx.testing.path import path
 
 
-sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
-
-
-from regression import verify_output
+from helpers.regression import verify_output
 
 
 pytest_plugins = 'sphinx.testing.fixtures'

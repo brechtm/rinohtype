@@ -736,8 +736,7 @@ class Raw(DocutilsBodyNode, DocutilsInlineNode):
                                    .format(self.text))
         elif self['format'] == 'pdf':   # rst2pdf
             if self.text == 'PageBreak':
-                style = rt.PageBreakStyle(page_break=rt.Break.ANY)
-                return rt.PageBreak(style=style)
+                return rt.PageBreak()
             return rt.WarnFlowable("Unsupported raw pdf option: '{}'"
                                    .format(self.text))
         return rt.DummyFlowable()
