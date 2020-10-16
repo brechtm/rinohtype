@@ -20,6 +20,27 @@ stylesheet = None
 document = None
 
 
+def test_select_by_id():
+    paragraph1 = Paragraph('A paragraph with an ID.', id='par')
+    paragraph2 = Paragraph('A paragraph with another ID.', id='another')
+    paragraph3 = Paragraph('A paragraph without ID.')
+
+    selector1 = Paragraph.like(id='par')
+    selector2 = Paragraph.like(id='another')
+    selector3 = Paragraph
+
+    assert selector1.match(paragraph1, stylesheet, document)
+    assert selector2.match(paragraph2, stylesheet, document)
+    assert selector3.match(paragraph1, stylesheet, document)
+    assert selector3.match(paragraph2, stylesheet, document)
+    assert selector3.match(paragraph3, stylesheet, document)
+
+    assert not selector1.match(paragraph2, stylesheet, document)
+    assert not selector1.match(paragraph3, stylesheet, document)
+    assert not selector2.match(paragraph1, stylesheet, document)
+    assert not selector2.match(paragraph3, stylesheet, document)
+
+
 def test_select_groupedflowables():
     empty = StaticGroupedFlowables([])
     not_empty = StaticGroupedFlowables([empty])
@@ -34,7 +55,7 @@ def test_select_groupedflowables():
     assert not not_empty_selector.match(empty, stylesheet, document)
 
 
-def test_image():
+def test_select_image():
     nix_image1 = Image('dir/image.png')
     nix_image2 = Image('dir/subdir/image.png')
     win_image1 = Image(r'dir\image.png')
