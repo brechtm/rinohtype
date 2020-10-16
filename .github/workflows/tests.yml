@@ -160,12 +160,18 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: |
         rm -vrf "$(brew --cache)"
+    - name: Get Homebrew package versions (macOS)
+      id: homebrew-versions
+      if: startsWith(runner.os, 'macOS')
+      run: |
+        echo "::set-output name=mupdftools::$(brew info --json mupdf-tools | jq -r '.[0].versions.stable')"
+        echo "::set-output name=imagemagick::$(brew info --json imagemagick | jq -r '.[0].versions.stable')"
     - name: Cache Homebrew downloads
       if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
-        key: ${{ runner.os }}-homebrew-1
+        key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}
 
     - name: Get Chocolatey cache dir (Windows)
       id: cache-dirs-windows
