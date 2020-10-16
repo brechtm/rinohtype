@@ -195,7 +195,8 @@ jobs:
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
-        choco install mupdf imagemagick.tool
+        choco install mupdf
+        choco install imagemagick.tool --version=7.0.10.29
 
     - name: Create wheel
       if: env.DIST == 'wheel'
