@@ -129,6 +129,8 @@ jobs:
       TOXENV: regression
       DIST: ${{ matrix.dist }}
       WITH_COVERAGE: 1
+      MUPDF_VERSION: 1.18.0
+      IMAGEMAGICK_VERSION: 7.0.10.29
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -179,7 +181,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-chocolatey
+        key: ${{ runner.os }}-chocolatey-mupdf${{ env.MUPDF_VERSION}}-im${{ env.IMAGEMAGICK_VERSION }}
 
     - name: Install development dependencies
       run: |
@@ -195,8 +197,8 @@ jobs:
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
-        choco install mupdf
-        choco install imagemagick.tool --version=7.0.10.29
+        choco install mupdf --version=${{ env.MUPDF_VERSION}}
+        choco install imagemagick.tool --version=${{ env.IMAGEMAGICK_VERSION }}
 
     - name: Create wheel
       if: env.DIST == 'wheel'
