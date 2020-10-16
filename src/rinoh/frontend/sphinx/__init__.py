@@ -235,9 +235,7 @@ class RinohBuilder(Builder):
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
-
-        rinoh_document = set_document_metadata(rinoh_document, config, doctree)
-
+        set_document_metadata(rinoh_document, config, doctree)
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
@@ -245,19 +243,16 @@ class RinohBuilder(Builder):
 
 def set_document_metadata(rinoh_document, config, doctree):
     metadata = rinoh_document.metadata
-    metadata.update(config.rinoh_metadata)
     rinoh_logo = config.rinoh_logo
     if rinoh_logo:
         metadata['logo'] = rinoh_logo
     metadata['title'] = doctree.settings.title
-    if 'subtitle' not in metadata:
-        metadata['subtitle'] = (_('Release') + ' {}'
-                                               .format(config.release))
+    metadata['subtitle'] = _('Release') + ' {}'.format(config.release)
     metadata['author'] = doctree.settings.author
     date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
                                        language=config.language)
     metadata['date'] = date
-    return rinoh_document
+    metadata.update(config.rinoh_metadata)
 
 
 def template_from_config(config, confdir, warn):
@@ -301,7 +296,6 @@ def template_from_config(config, confdir, warn):
                  .format(language))
 
     variables = {}
-
     if config.rinoh_paper_size:
         variables['paper_size'] = config.rinoh_paper_size
 
@@ -311,10 +305,8 @@ def template_from_config(config, confdir, warn):
     return sphinx_config
 
 
-
 def fully_qualified_id(docname, id):
     return id if id.startswith('%') else '%' + docname + '#' + id
-
 
 
 def info_config_conversion(config_option, latex_option=None):

@@ -3,10 +3,10 @@
 Sphinx Builder
 ==============
 
-The :mod:`rinoh.frontent.sphinx` is a Sphinx extension module. It provides a
-Sphinx builder with the name *rinoh*. The builder recognizes the following
-``conf.py`` options. Of these, only :confval:`rinoh_documents`
-(or :confval:`sphinx:latex_documents`) is required:
+:mod:`rinoh.frontent.sphinx` is a Sphinx extension module. It provides a Sphinx
+builder with the name *rinoh*. The builder recognizes the following ``conf.py``
+options. Of these, only :confval:`rinoh_documents` (or
+:confval:`sphinx:latex_documents`) is required:
 
 .. confval:: rinoh_documents
 
@@ -69,4 +69,19 @@ Sphinx builder with the name *rinoh*. The builder recognizes the following
 .. confval:: rinoh_metadata
 
     A dictionary instance that provides additional configuration values to the
-    document template. Supported keys: `subtitle`.
+    document template, typically used on the title page and in page headers and
+    footers (depending on the template and its configuration). The values
+    supplied can be plain text or :class:`~.StyledText`. They are normally
+    derived from other Sphinx configuration variables, but it can be useful to
+    override them for PDF output. Supported keys:
+
+    title
+        Overrides :confval:`sphinx:project`
+    subtitle
+        Overrides the default Sphinx subtitle containing the project's
+        :confval:`sphinx:release` string
+    author
+        Overrides :confval:`sphinx:author`
+    date
+        Overrides the default date determined from :confval:`sphinx:today` and
+        :confval:`sphinx:today_fmt`
