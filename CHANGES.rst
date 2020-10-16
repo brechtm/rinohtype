@@ -6,6 +6,9 @@ Release 0.4.3.dev
 
 New Features:
 
+* Sphinx frontend: the ``rinoh_metadata`` configuration variable allows
+  overriding the document's subtitle (and other strings) that are used on the
+  title page and elsewhere in the document template (PR #182 by Alex Fargus).
 * Table column widths can be specified in the style sheet, which take effect
   when these haven't been specified in the source document.
 * The ``page_break`` style attribute is no longer reserved for sections; a
