@@ -235,19 +235,24 @@ class RinohBuilder(Builder):
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
-        rinoh_logo = config.rinoh_logo
-        if rinoh_logo:
-            rinoh_document.metadata['logo'] = rinoh_logo
-        rinoh_document.metadata['title'] = doctree.settings.title
-        rinoh_document.metadata['subtitle'] = (_('Release') + ' {}'
-                                               .format(config.release))
-        rinoh_document.metadata['author'] = doctree.settings.author
-        date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
-                                           language=config.language)
-        rinoh_document.metadata['date'] = date
+        set_document_metadata(rinoh_document, config, doctree)
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
+
+
+def set_document_metadata(rinoh_document, config, doctree):
+    metadata = rinoh_document.metadata
+    rinoh_logo = config.rinoh_logo
+    if rinoh_logo:
+        metadata['logo'] = rinoh_logo
+    metadata['title'] = doctree.settings.title
+    metadata['subtitle'] = _('Release') + ' {}'.format(config.release)
+    metadata['author'] = doctree.settings.author
+    date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
+                                       language=config.language)
+    metadata['date'] = date
+    metadata.update(config.rinoh_metadata)
 
 
 def template_from_config(config, confdir, warn):
@@ -300,10 +305,8 @@ def template_from_config(config, confdir, warn):
     return sphinx_config
 
 
-
 def fully_qualified_id(docname, id):
     return id if id.startswith('%') else '%' + docname + '#' + id
-
 
 
 def info_config_conversion(config_option, latex_option=None):
@@ -348,4 +351,5 @@ def setup(app):
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
+    app.add_config_value('rinoh_metadata', dict(), 'html')
     return dict(version=rinoh_version)

@@ -8,23 +8,33 @@
 
 import pytest
 
+from docutils.utils import new_document
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
 from rinoh.document import DocumentTree
-from rinoh.frontend.sphinx import template_from_config
+from rinoh.frontend.sphinx import template_from_config, set_document_metadata
 from rinoh.language import IT
 from rinoh.paper import A4, LETTER
 from rinoh.templates import Book, Article
 
 
 def create_sphinx_app(tmpdir, **confoverrides):
-    return Sphinx(srcdir=tmpdir.strpath,
+    app = Sphinx(srcdir=tmpdir.strpath,
                   confdir=None,
                   outdir=(tmpdir / 'output').strpath,
                   doctreedir=(tmpdir / 'doctrees').strpath,
                   buildername='rinoh',
                   confoverrides=confoverrides)
+    return app
+
+
+def create_document(title='A Title', author='Ann Other', docname='a_name'):
+    document = new_document('/path/to/document.rst')
+    document.settings.title = title
+    document.settings.author = author
+    document.settings.docname = docname
+    return document
 
 
 CONFIG_DIR = 'confdir'
@@ -115,3 +125,27 @@ def test_sphinx_config_rinoh_template_from_filename(tmpdir):
     assert not template_cfg.keys()
     assert template_cfg.template == Book
     assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx'
+
+
+def test_sphinx_set_document_metadata(tmpdir):
+    app = create_sphinx_app(tmpdir, release='1.0', rinoh_template='book')
+    template_cfg = template_from_config(app.config, CONFIG_DIR, print)
+    docutils_tree = create_document()
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    set_document_metadata(rinoh_doc, app.config, docutils_tree)
+    assert rinoh_doc.metadata['title'] == 'A Title'
+    assert rinoh_doc.metadata['subtitle'] == 'Release 1.0'
+    assert rinoh_doc.metadata['author'] == 'Ann Other'
+    assert 'date' in rinoh_doc.metadata
+
+
+def test_sphinx_set_document_metadata_subtitle(tmpdir):
+    expected_subtitle = 'A subtitle'
+    app = create_sphinx_app(tmpdir, rinoh_metadata={'subtitle': expected_subtitle})
+    template_cfg = template_from_config(app.config, CONFIG_DIR, print)
+    docutil_tree = create_document()
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    set_document_metadata(rinoh_doc, app.config, docutil_tree)
+    assert expected_subtitle == rinoh_doc.metadata['subtitle']
