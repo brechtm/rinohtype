@@ -295,13 +295,8 @@ def template_from_config(config, confdir, warn):
             warn('The language "{}" is not supported by rinohtype.'
                  .format(language))
 
-    variables = {}
-    if config.rinoh_paper_size:
-        variables['paper_size'] = config.rinoh_paper_size
-
     sphinx_config = template_cls.Configuration('Sphinx conf.py options',
                                                **template_cfg)
-    sphinx_config.variables.update(variables)
     return sphinx_config
 
 
@@ -347,7 +342,6 @@ def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
     app.add_config_value('rinoh_stylesheet', None, 'html')
-    app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')

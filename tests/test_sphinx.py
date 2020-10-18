@@ -62,7 +62,7 @@ def test_sphinx_config_default(tmpdir):
     assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert template_cfg.variables.keys() == set(['paper_size'])
-    assert get_contents_page_size(template_cfg) == LETTER
+    assert get_contents_page_size(template_cfg) == A4
 
 
 def test_sphinx_config_latex_elements_papersize(tmpdir):
