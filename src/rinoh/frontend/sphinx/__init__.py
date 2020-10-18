@@ -279,13 +279,8 @@ def template_from_config(config, confdir, warn):
             warn('The language "{}" is not supported by rinohtype.'
                  .format(language))
 
-    variables = {}
-    if config.rinoh_paper_size:
-        variables['paper_size'] = config.rinoh_paper_size
-
     sphinx_config = template_cls.Configuration('Sphinx conf.py options',
                                                **template_cfg)
-    sphinx_config.variables.update(variables)
     return sphinx_config
 
 
