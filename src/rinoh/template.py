@@ -497,9 +497,10 @@ class TemplateConfiguration(RuleSet):
         tmpl_cls = self.template
         for attr, value in options.items():
             options[attr] = tmpl_cls.validate_attribute(attr, value, True)
-        super().__init__(name, base=base or self.template, **options)
+        base = base or self.template
+        super().__init__(name, base=base, **options)
         self.description = description
-        self.variables.update(tmpl_cls.variables)
+        self.variables.update(base.variables)
 
     @property
     def _stylesheet_search_path(self):
