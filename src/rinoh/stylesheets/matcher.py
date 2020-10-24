@@ -123,11 +123,14 @@ matcher('sidebar subtitle', 'sidebar' / Paragraph.like('subtitle'))
 # lists
 
 matcher('list item label', ListItemLabel)
+matcher('list item body', ListItem / GroupedFlowables)
+matcher('list item paragraph', 'list item body' / Paragraph)
 
 matcher('enumerated list', List.like('enumerated'))
 matcher('enumerated list item', 'enumerated list' / ListItem)
 matcher('enumerated list item label', 'enumerated list item' / ListItemLabel)
-matcher('nested enumerated list', ListItem / 'enumerated list')
+matcher('nested enumerated list', SelectorByName('list item body')
+                                  / 'enumerated list')
 
 matcher('(table) enumerated list', TableCell / ... / 'enumerated list')
 matcher('(table) enumerated list item', '(table) enumerated list' / ListItem)
@@ -138,7 +141,8 @@ matcher('bulleted list', List.like('bulleted'))
 matcher('compact bulleted list', List.like('bulleted', compact=True))
 matcher('bulleted list item', 'bulleted list' / ListItem)
 matcher('bulleted list item label', 'bulleted list item' / ListItemLabel)
-matcher('nested bulleted list', ListItem / 'bulleted list')
+matcher('nested bulleted list', SelectorByName('list item body')
+                                / 'bulleted list')
 
 matcher('(table) bulleted list', TableCell / ... / 'bulleted list')
 matcher('(table) bulleted list item', '(table) bulleted list' / ListItem)
@@ -160,9 +164,6 @@ matcher('unordered steps list item label', 'unordered steps list item'
 matcher('choices list', List.like('choices'))
 matcher('choices list item', 'choices list' / ListItem)
 matcher('choices list item label', 'choices list item' / ListItemLabel)
-
-matcher('list item body', ListItem / GroupedFlowables)
-matcher('list item paragraph', 'list item body' / Paragraph)
 
 matcher('definition list', DefinitionList)
 matcher('definition list item', 'definition list' / LabeledFlowable)

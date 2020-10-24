@@ -24,6 +24,8 @@ New Features:
 
 Fixed:
 
+* the 'nested bulleted/enumerated list' selectors were broken; their
+  corresponding styles were never applied
 * items inside a table cannot be referenced (issue #174)
 * Sphinx frontend: fix handling of relative image paths in .rst files inside
   a directory in the Sphinx project root
