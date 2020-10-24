@@ -14,6 +14,8 @@ New Features:
   when these haven't been specified in the source document.
 * The ``page_break`` style attribute is no longer reserved for sections; a
   page break can be forced before any flowable.
+* Enumerated list items with a hidden label ('hide' style attribute) are no
+  longer counted in the numbering.
 * It's now possible to add arbitrary sections to the front/back matter by
   adding a container with the 'supporting-matter' class and a name to reference
   it by in the document template configuration, e.g. in the list of front

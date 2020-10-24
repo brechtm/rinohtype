@@ -1,0 +1,8 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[unnumbered list item : +ListItem(has_class='hide-label')]
+
+[hidden list item label : 'unnumbered list item' / +ListItemLabel]
+hide = true

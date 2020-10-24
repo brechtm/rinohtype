@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from itertools import chain
+from itertools import chain, takewhile
 
 from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
@@ -24,7 +24,7 @@ from .reference import ReferenceType
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
 from .strings import StringCollection, String, StringField
-from .util import NotImplementedAttribute
+from .util import NotImplementedAttribute, itemcount
 
 
 __all__ = ['Section', 'Heading',
@@ -193,6 +193,11 @@ class List(GroupedLabeledFlowables, StaticGroupedFlowables):
         super().__init__(list_items, id=id, style=style, parent=parent)
         self.start_index = start_index
 
+    def index(self, item, container):
+        items = filter(lambda itm: not itm.label.get_style('hide', container),
+                       takewhile(lambda li: li != item, self.children))
+        return self.start_index + itemcount(items)
+
 
 class ListItem(LabeledFlowable):
     def __init__(self, flowable, id=None, style=None, parent=None):
@@ -211,7 +216,7 @@ class ListItemLabel(ParagraphBase, Label):
         list_item = self.parent
         list = list_item.parent
         if list.get_style('ordered', container):
-            index = list.start_index + list.children.index(list_item)
+            index = list.index(list_item, container)
             number_format = list.get_style('number_format', container)
             label = format_number(index, number_format)
         else:

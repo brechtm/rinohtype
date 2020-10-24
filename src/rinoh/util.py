@@ -60,6 +60,11 @@ def intersperse(iterable, element):
         yield next_from_iterable
 
 
+def itemcount(iterable):
+    """Count the number of items in `iterable`"""
+    return sum(1 for _ in iterable)
+
+
 class PeekIterator(object):
     """An iterator that allows inspecting the next element"""
 
