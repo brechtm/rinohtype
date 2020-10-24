@@ -138,10 +138,10 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
             value = float(token.string)
         if tokens.next and tokens.next.type in (NAME, OP):
             unit_string = next(tokens).string
-        elif value != 0:
-            raise ParseError('Expecting a dimension unit')
+        elif value == 0:
+            return Dimension(0)
         else:
-            return value
+            raise ParseError('Expecting a dimension unit')
         if unit_string == '/':
             unit_string += next(tokens).string
         try:
