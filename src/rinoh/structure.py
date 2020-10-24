@@ -185,19 +185,18 @@ class ListStyle(GroupedFlowablesStyle, NumberStyle):
                        'Bullet to use in unordered lists')
 
 
-class List(StaticGroupedFlowables, Label):
+class List(GroupedLabeledFlowables, StaticGroupedFlowables):
     style_class = ListStyle
 
-    def __init__(self, flowables, start_index=1,
+    def __init__(self, list_items, start_index=1,
                  id=None, style=None, parent=None):
-        items = [ListItem(i, flowable, parent=self)
-                 for i, flowable in enumerate(flowables, start_index)]
-        super().__init__(items, id=id, style=style, parent=parent)
+        super().__init__(list_items, id=id, style=style, parent=parent)
+        self.start_index = start_index
 
 
 class ListItem(LabeledFlowable):
-    def __init__(self, index, flowable, id=None, style=None, parent=None):
-        label = ListItemLabel(index)
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        label = ListItemLabel()
         super().__init__(label, flowable, id=id, style=style, parent=parent)
 
 
@@ -208,15 +207,13 @@ class ListItemLabelStyle(ParagraphStyle, LabelStyle):
 class ListItemLabel(ParagraphBase, Label):
     style_class = ListItemLabelStyle
 
-    def __init__(self, index, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
-        self.index = index
-
     def text(self, container):
-        list = self.parent.parent
+        list_item = self.parent
+        list = list_item.parent
         if list.get_style('ordered', container):
+            index = list.start_index + list.children.index(list_item)
             number_format = list.get_style('number_format', container)
-            label = format_number(self.index, number_format)
+            label = format_number(index, number_format)
         else:
             label = list.get_style('bullet', container)
         return MixedStyledText(self.format_label(label, container), parent=self)

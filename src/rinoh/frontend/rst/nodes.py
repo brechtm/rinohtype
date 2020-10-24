@@ -471,25 +471,29 @@ class Target(DocutilsBodyNode, DocutilsInlineNode):
         return rt.AnchorFlowable()
 
 
-class Enumerated_List(DocutilsBodyNode):
+class Enumerated_List(DocutilsGroupingNode):
+    style = 'enumerated'
+    grouped_flowables_class = rt.List
+
     def build_flowable(self):
         # TODO: handle different numbering styles
         start = self.attributes.get('start', 1)
-        return rt.List([item.flowable() for item in self.list_item],
-                       start_index=start, style='enumerated')
+        return super().build_flowable(start_index=start)
 
+class Bullet_List(DocutilsGroupingNode):
+    style = 'bulleted'
+    grouped_flowables_class = rt.List
 
-class Bullet_List(DocutilsBodyNode):
     def build_flowable(self):
         try:
-            return rt.List([item.flowable() for item in self.list_item],
-                           style='bulleted')
+            return super().build_flowable()
         except AttributeError:  # empty list
             return rt.DummyFlowable()
 
 
 class List_Item(DocutilsGroupingNode):
-    pass
+    def build_flowable(self):
+        return rt.ListItem(super().build_flowable())
 
 
 class Definition_List(DocutilsGroupingNode):
