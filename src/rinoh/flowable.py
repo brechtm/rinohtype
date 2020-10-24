@@ -718,12 +718,12 @@ class LabeledFlowable(Flowable):
                 label_spillover = True
 
         left = label_width + label_spacing
-        label_cntnr_width = None if label_spillover else label_width
+        max_label_width = None if label_spillover else label_width
 
         if align_baselines and (state.initial and not label_spillover):
             label_baseline = find_baseline(self.label, container,
                                            last_descender,
-                                           width=label_cntnr_width)
+                                           width=max_label_width)
             content_state_copy = copy(state.content_flowable_state)
             content_baseline = find_baseline(self.flowable, container,
                                              last_descender, left=left,
@@ -737,15 +737,10 @@ class LabeledFlowable(Flowable):
         try:
             with MaybeContainer(container) as maybe_container:
                 if state.initial:
-                    label_container = \
-                        InlineDownExpandingContainer('LABEL', maybe_container,
-                                                     width=label_cntnr_width,
-                                                     advance_parent=False)
-                    label_container.advance(offset_label)
-                    _, _, label_descender = \
-                        self.label.flow(label_container, last_descender,
-                                        space_below=space_below)
-                    label_height = label_container.height
+                    label_height, label_descender = \
+                        self._flow_label(maybe_container, last_descender,
+                                         max_label_width, offset_label,
+                                         space_below)
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_descender
@@ -753,15 +748,9 @@ class LabeledFlowable(Flowable):
                     label_height = label_descender = 0
                 maybe_container.advance(offset_content)
                 rendering_content = True
-                content_container = \
-                    InlineDownExpandingContainer('CONTENT', maybe_container,
-                                                 left=left,
-                                                 advance_parent=False)
-                width, _, content_descender \
-                    = self.flowable.flow(content_container, last_descender,
-                                         state=state.content_flowable_state,
-                                         space_below=space_below)
-                content_height = content_container.cursor
+                content_height, content_descender, width = \
+                    self._flow_content(maybe_container, last_descender, state,
+                                       left, space_below)
         except (ContainerOverflow, EndOfContainer) as eoc:
             content_state = eoc.flowable_state if rendering_content else None
             state.update(content_state)
@@ -773,6 +762,27 @@ class LabeledFlowable(Flowable):
             container.advance(label_height)
             descender = label_descender
         return left + width, label_baseline, descender
+
+    def _flow_label(self, container, last_descender, max_width, y_offset,
+                    space_below):
+        label_container = \
+            InlineDownExpandingContainer('LABEL', container, width=max_width,
+                                         advance_parent=False)
+        label_container.advance(y_offset)
+        _, _, label_descender = \
+            self.label.flow(label_container, last_descender, None, space_below)
+        return label_container.height, label_descender
+
+    def _flow_content(self, container, last_descender, state, left,
+                      space_below):
+        content_container = \
+            InlineDownExpandingContainer('CONTENT', container, left=left,
+                                         advance_parent=False)
+        width, _, content_descender \
+            = self.flowable.flow(content_container, last_descender,
+                                 state=state.content_flowable_state,
+                                 space_below=space_below)
+        return content_container.cursor, content_descender, width
 
 
 def find_baseline(flowable, container, last_descender, state=None, **kwargs):
