@@ -666,12 +666,13 @@ class LabeledFlowable(Flowable):
         self.flowable.prepare(flowable_target)
 
     def label_width(self, container):
+        label_min_width = self.get_style('label_min_width', container)
         label_max_width = self.get_style('label_max_width', container)
         virtual_container = VirtualContainer(container)
         label_width, _, _ = self.label.flow(virtual_container, 0)
         spillover = (label_width > label_max_width.to_points(container.width)
                      if label_max_width else True)
-        return label_width, spillover
+        return max(label_width, label_min_width), spillover
 
     def initial_state(self, container):
         initial_content_state = self.flowable.initial_state(container)
@@ -805,7 +806,7 @@ class GroupedLabeledFlowables(GroupedFlowables):
             max_label_width = state.max_label_width
         try:
             return super().render(container, descender, state=state,
-                                  label_column_width=max_label_width)
+                                  label_column_width=max_label_width, **kwargs)
         except EndOfContainer as eoc:
             eoc.flowable_state.max_label_width = max_label_width
             raise
