@@ -31,7 +31,7 @@ from .layout import (InlineDownExpandingContainer, VirtualContainer,
 from .strings import UserStrings
 from .style import Styled, Style
 from .text import StyledText
-from .util import ReadAliasAttribute
+from .util import clamp, ReadAliasAttribute
 
 
 __all__ = ['Flowable', 'FlowableStyle',
@@ -684,29 +684,20 @@ class LabeledFlowable(Flowable):
             return self.get_style(name, container)
 
         label_min_width = style('label_min_width').to_points(container.width)
-        label_max_width = style('label_max_width')
-        if label_max_width:
-            label_max_width = label_max_width.to_points(container.width)
-        label_spacing = style('label_spacing')
-        wrap_label = style('wrap_label')
+        label_max_width_ = style('label_max_width')
+        label_max_width = (label_max_width_.to_points(container.width)
+                           if label_max_width_ else float('+inf'))
         align_baselines = style('align_baselines')
 
         free_label_width, _ = self.label_width(container)
-
         label_spillover = False
-        if label_column_width:  # part of a GroupedLabeledFlowables
-            label_width = label_column_width
-        elif free_label_width < label_min_width:
-            label_width = label_min_width
-        elif label_max_width and free_label_width <= label_max_width:
-            label_width = free_label_width
-        else:
-            label_width = label_min_width
-
-        if not label_max_width:
+        label_width = label_column_width or clamp(label_min_width,
+                                                  free_label_width,
+                                                  label_max_width)
+        if label_max_width is None:
             label_spillover = True
         elif free_label_width > label_width:
-            if wrap_label:
+            if style('wrap_label'):
                 vcontainer = VirtualContainer(container, width=label_max_width)
                 wrapped_width, _, _ = self.label.flow(vcontainer, 0)
                 if wrapped_width < label_max_width:
@@ -717,7 +708,7 @@ class LabeledFlowable(Flowable):
             else:
                 label_spillover = True
 
-        left = label_width + label_spacing
+        left = label_width + style('label_spacing')
         max_label_width = None if label_spillover else label_width
 
         if align_baselines and (state.initial and not label_spillover):
@@ -744,7 +735,7 @@ class LabeledFlowable(Flowable):
                     if label_spillover:
                         maybe_container.advance(label_height)
                         last_descender = label_descender
-                else:
+                else:   # label was placed on previous page
                     label_height = label_descender = 0
                 maybe_container.advance(offset_content)
                 rendering_content = True

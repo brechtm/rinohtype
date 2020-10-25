@@ -32,7 +32,8 @@ from itertools import tee
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'intersperse', 'PeekIterator', 'posix_path',
+__all__ = ['all_subclasses', 'clamp', 'intersperse', 'itemcount',
+           'PeekIterator', 'posix_path',
            'consumer', 'cached', 'cached_property', 'cached_generator',
            'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
            'NotImplementedAttribute', 'NamedDescriptor',
@@ -48,6 +49,11 @@ def all_subclasses(cls):
         yield subcls
         for subsubcls in all_subclasses(subcls):
             yield subsubcls
+
+
+def clamp(min_value, value, max_value):
+    """Limit `value` to a range between `min_value` and `max_value`"""
+    return max(min_value, min(value, max_value))
 
 
 def intersperse(iterable, element):
