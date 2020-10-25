@@ -269,23 +269,6 @@ def template_from_config(config, confdir, warn):
         template_cls = config.rinoh_template.template
     else:
         template_cls = config.rinoh_template
-    if isinstance(config.rinoh_stylesheet, str):
-        stylesheet_path = path.join(confdir, config.rinoh_stylesheet)
-        stylesheet = StyleSheet.from_string(stylesheet_path
-                                            if path.isfile(stylesheet_path)
-                                            else config.rinoh_stylesheet)
-    else:
-        stylesheet = config.rinoh_stylesheet
-    if config.pygments_style is not None:
-        if stylesheet is not None:
-            base = stylesheet
-        elif 'base' in template_cfg:
-            base = template_cfg['base']['stylesheet']
-        else:
-            base = template_cls.stylesheet.default_value
-        stylesheet = pygments_style_to_stylesheet(config.pygments_style, base)
-    if stylesheet is not None:
-        template_cfg['stylesheet'] = stylesheet
 
     language = config.language
     if language:
@@ -346,7 +329,6 @@ def default_domain_indices(config):
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
-    app.add_config_value('rinoh_stylesheet', None, 'html')
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')

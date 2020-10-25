@@ -88,18 +88,6 @@ def test_sphinx_config_language(tmpdir):
     assert template_cfg['language'] == IT
 
 
-def test_sphinx_config_builtin_stylesheet(tmpdir):
-    template_cfg = get_template_cfg(tmpdir, rinoh_stylesheet='sphinx_base14')
-    assert template_cfg.template == Book
-    assert template_cfg['stylesheet'].name == 'Sphinx (PDF Core Fonts)'
-
-
-def test_sphinx_config_pygments_style(tmpdir):
-    template_cfg = get_template_cfg(tmpdir, pygments_style='igor')
-    assert template_cfg.template == Book
-    assert template_cfg['stylesheet'].base is not None
-
-
 def test_sphinx_config_rinoh_template(tmpdir):
     template_cfg = Article.Configuration('test',
                                          stylesheet='sphinx_article')
