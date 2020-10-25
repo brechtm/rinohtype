@@ -28,8 +28,15 @@
 
 A list with numbers going into two digits:
 
-8. eight
 9. nine
 10. ten
 11. eleven
-12. twelve
+
+
+And the same with alternative styling:
+
+.. class:: other-style
+
+9. nine
+10. ten
+11. eleven

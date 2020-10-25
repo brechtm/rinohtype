@@ -1,0 +1,16 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[alt enumerated list : List('enumerated', has_class='other-style')]
+base = enumerated list
+
+[alt enumerated list item : 'alt enumerated list' / ListItem]
+label_min_width = 0
+label_max_width = None
+
+; It is not strictly necessary to override the list item label style
+; The output is the same with RIGHT text alignment
+[alt enumerated list item label : 'alt enumerated list item' / ListItemLabel]
+base = enumerated list item label
+text_align = LEFT

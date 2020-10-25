@@ -243,23 +243,7 @@
           SingleStyledText('A list with numbers going into t...')
       List(style='enumerated')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:31 <enumerated_list>
            > (0,0,1,0,2) enumerated list
-        ListItem()
-             x (0,0,1,0,4) enumerated list item
-             > fallback to default style
-          ListItemLabel('8.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
-              MixedStyledText('8.')
-                SingleStyledText('8')
-                SingleStyledText('.')
-          StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
-               > (0,0,0,0,3) list item body
-            Paragraph('eight')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:31 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('eight')
-                SingleStyledText('eight')
-        ListItem()
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
              x (0,0,1,0,4) enumerated list item
              > fallback to default style
           ListItemLabel('9.')
@@ -268,14 +252,14 @@
               MixedStyledText('9.')
                 SingleStyledText('9')
                 SingleStyledText('.')
-          StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+          StaticGroupedFlowables()
                > (0,0,0,0,3) list item body
-            Paragraph('nine')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:32 <paragraph>
+            Paragraph('nine')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:31 <paragraph>
                  > (0,0,0,0,5) list item paragraph
                    (0,0,0,0,2) body
               MixedStyledText('nine')
                 SingleStyledText('nine')
-        ListItem()
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
              x (0,0,1,0,4) enumerated list item
              > fallback to default style
           ListItemLabel('10.')
@@ -284,14 +268,14 @@
               MixedStyledText('10.')
                 SingleStyledText('10')
                 SingleStyledText('.')
-          StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+          StaticGroupedFlowables()
                > (0,0,0,0,3) list item body
-            Paragraph('ten')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:33 <paragraph>
+            Paragraph('ten')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:32 <paragraph>
                  > (0,0,0,0,5) list item paragraph
                    (0,0,0,0,2) body
               MixedStyledText('ten')
                 SingleStyledText('ten')
-        ListItem()
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
              x (0,0,1,0,4) enumerated list item
              > fallback to default style
           ListItemLabel('11.')
@@ -300,26 +284,68 @@
               MixedStyledText('11.')
                 SingleStyledText('11')
                 SingleStyledText('.')
-          StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+          StaticGroupedFlowables()
                > (0,0,0,0,3) list item body
-            Paragraph('eleven')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:34 <paragraph>
+            Paragraph('eleven')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:33 <paragraph>
                  > (0,0,0,0,5) list item paragraph
                    (0,0,0,0,2) body
               MixedStyledText('eleven')
                 SingleStyledText('eleven')
-        ListItem()
+      Paragraph('And the same with alternative st...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:36 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('And the same with alternative st...')
+          SingleStyledText('And the same with alternative st...')
+      List(style='enumerated')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:40 <enumerated_list>
+           > (0,0,1,1,2) alt enumerated list
+             (0,0,1,0,2) enumerated list
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+             > (0,0,1,1,4) alt enumerated list item
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
-          ListItemLabel('12.')
-               > (0,0,1,0,6) enumerated list item label
+          ListItemLabel('9.')
+               > (0,0,1,1,6) alt enumerated list item label
+                 (0,0,1,0,6) enumerated list item label
                  (0,0,0,0,2) list item label
-              MixedStyledText('12.')
-                SingleStyledText('12')
+              MixedStyledText('9.')
+                SingleStyledText('9')
                 SingleStyledText('.')
-          StaticGroupedFlowables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+          StaticGroupedFlowables()
                > (0,0,0,0,3) list item body
-            Paragraph('twelve')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:35 <paragraph>
+            Paragraph('nine')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:40 <paragraph>
                  > (0,0,0,0,5) list item paragraph
                    (0,0,0,0,2) body
-              MixedStyledText('twelve')
-                SingleStyledText('twelve')
+              MixedStyledText('nine')
+                SingleStyledText('nine')
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+             > (0,0,1,1,4) alt enumerated list item
+             x (0,0,1,0,4) enumerated list item
+          ListItemLabel('10.')
+               > (0,0,1,1,6) alt enumerated list item label
+                 (0,0,1,0,6) enumerated list item label
+                 (0,0,0,0,2) list item label
+              MixedStyledText('10.')
+                SingleStyledText('10')
+                SingleStyledText('.')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body
+            Paragraph('ten')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:41 <paragraph>
+                 > (0,0,0,0,5) list item paragraph
+                   (0,0,0,0,2) body
+              MixedStyledText('ten')
+                SingleStyledText('ten')
+        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+             > (0,0,1,1,4) alt enumerated list item
+             x (0,0,1,0,4) enumerated list item
+          ListItemLabel('11.')
+               > (0,0,1,1,6) alt enumerated list item label
+                 (0,0,1,0,6) enumerated list item label
+                 (0,0,0,0,2) list item label
+              MixedStyledText('11.')
+                SingleStyledText('11')
+                SingleStyledText('.')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body
+            Paragraph('eleven')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:42 <paragraph>
+                 > (0,0,0,0,5) list item paragraph
+                   (0,0,0,0,2) body
+              MixedStyledText('eleven')
+                SingleStyledText('eleven')
