@@ -6,6 +6,7 @@ Release 0.4.3.dev
 
 New Features:
 
+* The starting number of enumerated lists in reStructuredText is respected.
 * Sphinx frontend: the ``rinoh_metadata`` configuration variable allows
   overriding the document's subtitle (and other strings) that are used on the
   title page and elsewhere in the document template (PR #182 by Alex Fargus).

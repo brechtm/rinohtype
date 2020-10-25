@@ -188,9 +188,10 @@ class ListStyle(GroupedFlowablesStyle, NumberStyle):
 class List(StaticGroupedFlowables, Label):
     style_class = ListStyle
 
-    def __init__(self, flowables, id=None, style=None, parent=None):
-        items = [ListItem(i + 1, flowable, parent=self)
-                 for i, flowable in enumerate(flowables)]
+    def __init__(self, flowables, start_index=1,
+                 id=None, style=None, parent=None):
+        items = [ListItem(i, flowable, parent=self)
+                 for i, flowable in enumerate(flowables, start_index)]
         super().__init__(items, id=id, style=style, parent=parent)
 
 

@@ -474,8 +474,9 @@ class Target(DocutilsBodyNode, DocutilsInlineNode):
 class Enumerated_List(DocutilsBodyNode):
     def build_flowable(self):
         # TODO: handle different numbering styles
+        start = self.attributes.get('start', 1)
         return rt.List([item.flowable() for item in self.list_item],
-                       style='enumerated')
+                       start_index=start, style='enumerated')
 
 
 class Bullet_List(DocutilsBodyNode):
