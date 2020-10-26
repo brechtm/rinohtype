@@ -373,7 +373,7 @@ indent_first=0pt
 
 [definition list item]
 label_min_width=17pt
-label_max_width=none
+label_max_width=0
 
 [definition term]
 space_above=4pt
