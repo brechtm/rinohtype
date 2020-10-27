@@ -78,5 +78,4 @@ rinoh_documents = [(
     author,               # document author
 )]
 
-rinoh_template = 'book'
-rinoh_stylesheet = 'stylesheet.rts'
+rinoh_template = 'template.rtt'

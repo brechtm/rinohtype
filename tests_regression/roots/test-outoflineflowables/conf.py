@@ -79,4 +79,3 @@ rinoh_documents = [(
 )]
 
 rinoh_template = 'template.rtt'
-rinoh_stylesheet = 'stylesheet.rts'
