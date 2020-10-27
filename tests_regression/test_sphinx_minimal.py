@@ -12,4 +12,4 @@ from helpers.regression import render_sphinx_project
 
 def test_sphinx_minimal():
     render_sphinx_project('sphinx_minimal', 'sphinx_minimal',
-                          stylesheet='sphinx_minimal.rts')
+                          template_cfg='sphinx_minimal.rtt')

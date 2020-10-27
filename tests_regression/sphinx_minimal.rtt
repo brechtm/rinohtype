@@ -1,0 +1,5 @@
+[TEMPLATE_CONFIGURATION]
+name=sphinxMinimal
+template=book
+
+stylesheet=sphinx_minimal.rts

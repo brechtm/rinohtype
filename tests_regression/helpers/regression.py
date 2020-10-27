@@ -98,14 +98,12 @@ def render_doctree(doctree, out_filename, reference_path,
     verify_output(out_filename, output_dir, reference_path)
 
 
-def render_sphinx_project(name, project_dir, template_cfg=None, stylesheet=None):
+def render_sphinx_project(name, project_dir, template_cfg=None):
     project_path = TEST_DIR / project_dir
     out_path = OUTPUT_DIR / name
     confoverrides = {}
     if template_cfg:
         confoverrides['rinoh_template'] = str(TEST_DIR / template_cfg)
-    if stylesheet:
-        confoverrides['rinoh_stylesheet'] = str(TEST_DIR / stylesheet)
     with docutils_namespace():
         sphinx = Sphinx(srcdir=str(project_path),
                         confdir=str(project_path),
