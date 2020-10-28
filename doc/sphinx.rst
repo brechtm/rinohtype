@@ -38,7 +38,7 @@ options. Of these, only :confval:`rinoh_documents` (or
     the equivalent :class:`Paper`. If this is not specified either, the value
     specified for :confval:`sphinx:latex_paper_size` is used.
 
-.. note:: Since the interactions between 
+.. note:: Since the interactions between
     :confval:`rinoh_template` and :confval:`rinoh_paper_size`,
     are fairly complex, this behavior may be changed (simplified) in the
     future.
