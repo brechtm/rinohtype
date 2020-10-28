@@ -28,6 +28,8 @@ New Features:
 
 Fixed:
 
+* font weights with hyphens in them are broken; hyphens have been replaced with
+  spaces (e.g. "ultra light", "semi bold")
 * the 'nested bulleted/enumerated list' selectors were broken; their
   corresponding styles were never applied
 * items inside a table cannot be referenced (issue #174)

@@ -13,9 +13,10 @@ __all__ = ['FontWeight', 'FontSlant', 'FontWidth', 'FontVariant',
 
 
 class FontWeight(OptionSet):
-    values = ('hairline', 'thin', 'ultra-light', 'extra-light', 'light',
-              'book', 'regular', 'medium', 'demi-bold', 'bold', 'extra-bold',
-              'heavy', 'black', 'extra-black', 'ultra-black')
+    values = ('hairline', 'thin', 'ultra light', 'extra light', 'light',
+              'book', 'regular', 'medium', 'semi bold', 'demi bold', 'bold',
+              'extra bold', 'ultra bold', 'heavy', 'black', 'extra black',
+              'ultra black')
 
 
 class FontSlant(OptionSet):
@@ -43,4 +44,4 @@ class TextPosition(OptionSet):
 # for backward compatibility
 for option_set in (FontWeight, FontSlant, FontWidth):
     for value in option_set.values:
-        globals()[value.replace('-', '_').upper()] = value
+        globals()[value.replace(' ', '_').upper()] = value
