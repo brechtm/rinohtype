@@ -210,6 +210,7 @@ class RinohBuilder(Builder):
         return document_data
 
     def write(self, *ignored):
+        deprecation_warnings(self.config, logger)
         document_data = self.init_document_data()
         for entry in document_data:
             docname, targetname, title, author = entry[:4]
@@ -326,6 +327,12 @@ def default_domain_indices(config):
     return config.latex_domain_indices
 
 
+def deprecation_warnings(config, logger):
+    if config.rinoh_stylesheet:
+        logger.warning("'rinoh_stylesheet' has been deprecated. Configure"
+                       " the stylesheet in the document template")
+
+
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
@@ -334,4 +341,5 @@ def setup(app):
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
+    app.add_config_value('rinoh_stylesheet', None, 'html')
     return dict(version=rinoh_version)
