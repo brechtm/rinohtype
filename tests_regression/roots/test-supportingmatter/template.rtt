@@ -6,10 +6,12 @@ template = book
 page_number_format = lowercase roman
 end_at_page = left
 flowables = [
-        SupportingMatter('dedication'),
+        Section([Heading(SingleStyledText('Dedication'),
+                         style='unnumbered'),
+                 SupportingMatter('dedication')],
+                id='dedication'),
         TableOfContentsSection(),
         ListOfFiguresSection(),
         ListOfTablesSection(),
-        SupportingMatter('epigraph'),
+        Section([SupportingMatter('epigraph')]),
     ]
-

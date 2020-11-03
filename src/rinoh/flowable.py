@@ -416,12 +416,14 @@ class SetUserStringFlowable(DummyFlowable):
 
 
 class SetSupportingMatter(DummyFlowable):
-    def __init__(self, flowables, parent=None):
-        super().__init__(id=id, parent=parent)
+    def __init__(self, names, flowables, parent=None):
+        super().__init__(parent=parent)
+        self.names = names
         self.flowables = flowables
 
     def build_document(self, flowable_target):
-        flowable_target.document.supporting_matter[self.id] = self.flowables
+        for name in self.names:
+            flowable_target.document.supporting_matter[name] = self.flowables
 
 
 # grouping flowables

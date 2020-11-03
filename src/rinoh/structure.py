@@ -473,10 +473,12 @@ class HorizontalRule(Flowable):
         return width, 0, 0
 
 
-class SupportingMatter(SectionBase):
-    def __init__(self, id, align=None, width=None, style=None, parent=None):
-        super().__init__(id=id, align=align, width=width, style=style,
+class SupportingMatter(GroupedFlowables):
+    def __init__(self, name, align=None, width=None, id=None, style=None,
+                 parent=None):
+        super().__init__(align=align, width=width, id=id, style=style,
                          parent=parent)
+        self.name = name
 
     def flowables(self, container):
-        return container.document.supporting_matter[self.id]
+        return container.document.supporting_matter[self.name]

@@ -748,16 +748,22 @@ class Raw(DocutilsBodyNode, DocutilsInlineNode):
 
 
 class Container(DocutilsGroupingNode):
+    @property
+    def set_id(self):
+        return 'supporting-matter' not in self['classes']
+
     def build_flowable(self, style=None, **kwargs):
         classes = self.get('classes')
         if 'literal-block-wrapper' in classes:
             return rt.CodeBlockWithCaption(self.children_flowables(),
                                            style=style or self.style, **kwargs)
         if 'supporting-matter' in classes:
-            if not self._ids:
+            names = self['names']
+            if not names:
                 raise MissingName('supporting-matter container is missing a'
                                   ' :name: to reference it by')
-            return rt.SetSupportingMatter(self.children_flowables(), **kwargs)
+            return rt.SetSupportingMatter(names, self.children_flowables(),
+                                          **kwargs)
         return super().build_flowable(style, **kwargs)
 
 
