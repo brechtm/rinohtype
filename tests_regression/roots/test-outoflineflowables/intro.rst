@@ -1,7 +1,7 @@
 Introduction
 ============
 
-.. container:: supporting-matter
+.. container:: out-of-line
    :name: epigraph
 
    | Gloomy eventide

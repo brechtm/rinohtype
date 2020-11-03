@@ -13,6 +13,6 @@ page_break = right
 [table of contents section]
 page_break = right
 
-[epigraph : SupportingMatter(id='epigraph')]
+[epigraph : OutOfLineFlowables(name='epigraph')]
 title = 'Epigraph'
 page_break = right

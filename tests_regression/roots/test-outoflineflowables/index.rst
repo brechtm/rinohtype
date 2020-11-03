@@ -1,7 +1,7 @@
-Supporting Matter
-=================
+Out-of-line Flowables
+=====================
 
-.. container:: supporting-matter
+.. container:: out-of-line
    :name: dedication
 
    For mommy

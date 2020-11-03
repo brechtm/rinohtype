@@ -38,7 +38,7 @@ __all__ = ['Flowable', 'FlowableStyle',
            'FlowableWidth', 'HorizontalAlignment', 'Break',
            'DummyFlowable', 'AnchorFlowable', 'WarnFlowable',
            'SetMetadataFlowable', 'SetUserStringFlowable',
-           'SetSupportingMatter',
+           'SetOutOfLineFlowables',
            'GroupedFlowables', 'StaticGroupedFlowables',
            'LabeledFlowable', 'GroupedLabeledFlowables',
            'Float', 'PageBreak']
@@ -415,7 +415,7 @@ class SetUserStringFlowable(DummyFlowable):
         doc.set_string(UserStrings, self.label, self.content)
 
 
-class SetSupportingMatter(DummyFlowable):
+class SetOutOfLineFlowables(DummyFlowable):
     def __init__(self, names, flowables, parent=None):
         super().__init__(parent=parent)
         self.names = names

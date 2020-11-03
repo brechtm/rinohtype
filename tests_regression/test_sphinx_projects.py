@@ -14,7 +14,7 @@ def test_subdir(app, verify):
     verify()
 
 
-@pytest.mark.sphinx(buildername='rinoh', testroot='supportingmatter')
-def test_supportingmatter(app, verify):
+@pytest.mark.sphinx(buildername='rinoh', testroot='outoflineflowables')
+def test_outoflineflowables(app, verify):
     app.build()
     verify()

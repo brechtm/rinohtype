@@ -73,7 +73,7 @@ pygments_style = 'sphinx'
 
 rinoh_documents = [(
     master_doc,           # top-level file (index.rst)
-    'supportingmatter',   # output (target.pdf)
+    'outoflineflowables', # output (target.pdf)
     project,              # document title
     author,               # document author
 )]

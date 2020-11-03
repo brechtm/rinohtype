@@ -8,10 +8,10 @@ end_at_page = left
 flowables = [
         Section([Heading(SingleStyledText('Dedication'),
                          style='unnumbered'),
-                 SupportingMatter('dedication')],
+                 OutOfLineFlowables('dedication')],
                 id='dedication'),
         TableOfContentsSection(),
         ListOfFiguresSection(),
         ListOfTablesSection(),
-        Section([SupportingMatter('epigraph')]),
+        Section([OutOfLineFlowables('epigraph')]),
     ]

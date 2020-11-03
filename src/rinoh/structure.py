@@ -33,7 +33,7 @@ __all__ = ['Section', 'Heading',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'ListOfStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
-           'HorizontalRule', 'HorizontalRuleStyle', 'SupportingMatter']
+           'HorizontalRule', 'HorizontalRuleStyle', 'OutOfLineFlowables']
 
 
 class SectionTitles(StringCollection):
@@ -473,7 +473,7 @@ class HorizontalRule(Flowable):
         return width, 0, 0
 
 
-class SupportingMatter(GroupedFlowables):
+class OutOfLineFlowables(GroupedFlowables):
     def __init__(self, name, align=None, width=None, id=None, style=None,
                  parent=None):
         super().__init__(align=align, width=width, id=id, style=style,

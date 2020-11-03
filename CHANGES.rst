@@ -16,10 +16,10 @@ New Features:
   page break can be forced before any flowable.
 * Enumerated list items with a hidden label ('hide' style attribute) are no
   longer counted in the numbering.
-* It's now possible to add arbitrary sections to the front/back matter by
-  adding a container with the 'supporting-matter' class and a name to reference
-  it by in the document template configuration, e.g. in the list of front
-  matter flowables (to be documented).
+* It's now possible to add arbitrary reStructuredText content to the front/back
+  matter or  elsewhere by adding a ``.. container::`` with the 'out-of-line'
+  class and a ``:name:`` to reference it by in the document template
+  configuration, e.g. in the list of front matter flowables (to be documented).
 * Selectors in style sheet files (.rts) now support boolean and 'None' values.
   For example, you can select StaticGroupedFlowables based on whether they have
   any children or not: e.g ``TableCell(empty=true)`` selects empty table cells.
