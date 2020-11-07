@@ -163,5 +163,5 @@ def test_sphinx_rinoh_stylesheet_deprecation_warning(tmpdir):
     logger = create_logger()
     deprecation_warnings(app.config, logger)
     stylesheet_warning = ("'rinoh_stylesheet' has been deprecated. " +
-                          "Configure the stylesheet in the document template")
+        "Configure the stylesheet in the document template configuration.")
     assert logger.warnings == [stylesheet_warning]
