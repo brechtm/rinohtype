@@ -329,8 +329,9 @@ def default_domain_indices(config):
 
 def deprecation_warnings(config, logger):
     if config.rinoh_stylesheet:
-        logger.warning("'rinoh_stylesheet' has been deprecated. Configure"
-                       " the stylesheet in the document template")
+        logger.warning("'rinoh_stylesheet' has been deprecated."
+                       " Configure the stylesheet in the document template"
+                       " configuration.")
 
 
 def setup(app):
