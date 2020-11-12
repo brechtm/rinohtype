@@ -22,9 +22,10 @@ from .util import (NamedDescriptor, WithNamedDescriptors,
                    cached)
 
 
-__all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet', 'Attribute',
-           'OverrideDefault', 'AttributesDictionary', 'Configurable',
-           'RuleSet', 'RuleSetFile', 'Bool', 'Integer', 'ParseError', 'Var']
+__all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet',
+           'OptionSetMeta', 'Attribute', 'OverrideDefault',
+           'AttributesDictionary', 'Configurable', 'RuleSet', 'RuleSetFile',
+           'Bool', 'Integer', 'ParseError', 'Var']
 
 
 class AttributeType(object):
@@ -139,15 +140,19 @@ class OptionSet(AttributeType, metaclass=OptionSetMeta):
                 for value in cls.values]
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def _value_from_tokens(cls, tokens):
         if tokens.next.type != NAME:
             raise ParseError('Expecting a name')
         token = next(tokens)
         _, start_col = token.start
-        while tokens.next and tokens.next.type == NAME:
+        while tokens.next and tokens.next.exact_type in (NAME, MINUS):
             token = next(tokens)
         _, end_col = token.end
-        option_string = token.line[start_col:end_col].strip()
+        return token.line[start_col:end_col].strip()
+
+    @classmethod
+    def from_tokens(cls, tokens):
+        option_string = cls._value_from_tokens(tokens)
         try:
             index = cls.value_strings.index(option_string.lower())
         except ValueError:

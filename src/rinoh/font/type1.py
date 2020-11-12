@@ -17,7 +17,7 @@ from warnings import warn
 
 from . import Font, GlyphMetrics, LeafGetter, MissingGlyphException
 from .mapping import UNICODE_TO_GLYPH_NAME, ENCODINGS
-from ..font.style import FontVariant
+from ..font.style import FontVariant, FontWeight, FontSlant, FontWidth
 from ..util import cached
 from ..warnings import warn
 
@@ -166,8 +166,8 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
     x_height = LeafGetter('FontMetrics', 'XHeight', default=500)
     stem_v = LeafGetter('FontMetrics', 'StdVW', default=50)
 
-    def __init__(self, file_or_filename, weight='medium', slant='upright',
-                 width='normal', unicode_mapping=None):
+    def __init__(self, file_or_filename, weight, slant, width,
+                 unicode_mapping=None):
         try:
             filename = file_or_filename
             file = open(file_or_filename, 'rt', encoding='ascii')
@@ -330,8 +330,9 @@ class PrinterFontBinary(PrinterFont):
 
 
 class Type1Font(AdobeFontMetrics):
-    def __init__(self, filename, weight='medium', slant='upright',
-                 width='normal', unicode_mapping=None, core=False):
+    def __init__(self, filename, weight=FontWeight.MEDIUM,
+                 slant=FontSlant.UPRIGHT, width=FontWidth.NORMAL,
+                 unicode_mapping=None, core=False):
         super().__init__(filename + '.afm', weight, slant, width,
                          unicode_mapping)
         self.core = core

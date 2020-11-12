@@ -19,7 +19,7 @@ from rinoh import __version__, __release_date__
 from rinoh.dimension import PT
 from rinoh.document import DocumentTree
 from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
-from rinoh.font import Typeface, FontSlant
+from rinoh.font import Typeface, FontSlant, FontWeight, FontWidth
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.paragraph import ParagraphStyle, Paragraph
 from rinoh.resource import ResourceNotInstalled
@@ -125,8 +125,10 @@ def display_fonts(filename):
         style = ParagraphStyle(typeface=typeface, font_width=font.width,
                                font_slant=font.slant, font_weight=font.weight)
         return Paragraph('{} {} {} {}'
-                         .format(typeface.name, font.width.title(),
-                                 font.slant.title(), font.weight.title()),
+                         .format(typeface.name,
+                                 FontWidth.to_name(font.width).title(),
+                                 font.slant.title(),
+                                 FontWeight.to_name(font.weight).title()),
                          style=style)
 
     def typeface_section(typeface, distribution):
@@ -199,11 +201,12 @@ def main():
                 for width, fonts in widths.items():
                     styles = []
                     for font in fonts:
-                        style = font.weight.title()
+                        style = FontWeight.to_name(font.weight)
                         if font.slant != FontSlant.UPRIGHT:
-                            style = '{}-{}'.format(font.slant.title(), style)
+                            style = '{}-{}'.format(font.slant, style)
                         styles.append(style)
-                    print('   {}: {}'.format(width.title(), ', '.join(styles)))
+                    print('   {}: {}'.format(FontWidth.to_name(width),
+                                             ', '.join(styles)))
         else:
             display_fonts(args.list_fonts)
         do_exit = True

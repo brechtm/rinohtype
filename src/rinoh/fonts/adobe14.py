@@ -16,38 +16,34 @@ from ..font.type1 import Type1Font
 from ..font.style import REGULAR, BOLD, OBLIQUE, ITALIC
 
 
-
-def path(name):
-    return os.path.join(FONTS_PATH, 'adobe14', name)
+def type1(name, **kwargs):
+    path = os.path.join(FONTS_PATH, 'adobe14', name)
+    return Type1Font(path, core=True, **kwargs)
 
 
 courier = Typeface('Courier',
-                   Type1Font(path('Courier'), core=True),
-                   Type1Font(path('Courier-Oblique'), slant=OBLIQUE, core=True),
-                   Type1Font(path('Courier-Bold'), weight=BOLD, core=True),
-                   Type1Font(path('Courier-BoldOblique'), weight=BOLD,
-                             slant=OBLIQUE, core=True))
+                   type1('Courier'),
+                   type1('Courier-Oblique', slant=OBLIQUE),
+                   type1('Courier-Bold', weight=BOLD),
+                   type1('Courier-BoldOblique', weight=BOLD, slant=OBLIQUE))
 
 helvetica = Typeface('Helvetica',
-                     Type1Font(path('Helvetica'), core=True),
-                     Type1Font(path('Helvetica-Oblique'), slant=OBLIQUE,
-                               core=True),
-                     Type1Font(path('Helvetica-Bold'), weight=BOLD, core=True),
-                     Type1Font(path('Helvetica-BoldOblique'), weight=BOLD,
-                               slant=OBLIQUE, core=True))
+                     type1('Helvetica'),
+                     type1('Helvetica-Oblique', slant=OBLIQUE),
+                     type1('Helvetica-Bold', weight=BOLD),
+                     type1('Helvetica-BoldOblique', weight=BOLD, slant=OBLIQUE))
 
-symbol = Typeface('Symbol', Type1Font(path('Symbol'), core=True))
+symbol = Typeface('Symbol', type1('Symbol'))
 
 times = Typeface('Times',
-                 Type1Font(path('Times-Roman'), weight=REGULAR, core=True),
-                 Type1Font(path('Times-Italic'), slant=ITALIC, core=True),
-                 Type1Font(path('Times-Bold'), weight=BOLD, core=True),
-                 Type1Font(path('Times-BoldItalic'), weight=BOLD, slant=ITALIC,
-                           core=True))
+                 type1('Times-Roman', weight=REGULAR),
+                 type1('Times-Italic', slant=ITALIC),
+                 type1('Times-Bold', weight=BOLD),
+                 type1('Times-BoldItalic', weight=BOLD, slant=ITALIC))
 
 zapfdingbats = Typeface('ITC ZapfDingbats',
-                        Type1Font(path('ZapfDingbats'), core=True,
-                                  unicode_mapping=UNICODE_TO_DINGBATS_NAME))
+                        type1('ZapfDingbats',
+                              unicode_mapping=UNICODE_TO_DINGBATS_NAME))
 
 # 'Adobe PDF Core Font Set'
 pdf_family = TypeFamily(serif=times, sans=helvetica, mono=courier,

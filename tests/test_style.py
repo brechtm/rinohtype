@@ -12,6 +12,7 @@ from rinoh.attribute import Var
 from rinoh.color import HexColor
 from rinoh.dimension import PT, CM
 from rinoh.document import DocumentTree, Document, FakeContainer
+from rinoh.font import FontWeight, FontSlant, FontWidth
 from rinoh.language import EN
 from rinoh.paragraph import Paragraph
 from rinoh.text import StyledText, SingleStyledText
@@ -117,17 +118,17 @@ container = FakeContainer(document)
 
 def test_style():
     style = ssheet1['emphasized text']
-    assert style.font_width == 'normal'
-    assert style.font_slant == 'italic'
+    assert style.font_width == FontWidth.NORMAL
+    assert style.font_slant == FontSlant.ITALIC
     assert style.font_size == Var('font-size')
 
     style = ssheet1['emphasized text 2']
-    assert style.font_slant == 'oblique'
+    assert style.font_slant == FontSlant.OBLIQUE
 
     style = ssheet1['paragraph']
     assert style.space_above == 5*PT
     assert style.text_align == Var('text-align')
-    assert style.font_width == 'normal'
+    assert style.font_width == FontWidth.NORMAL
     assert style.font_color == Var('font-color')
     assert style.indent_first == 2*PT
 
@@ -156,8 +157,8 @@ def test_get_selector():
     assert ssheet2.get_selector('missing style') == missing_selector
 
 def test_find_style():
-    assert ssheet2.get_value_for(emphasized, 'font_slant', document) == 'italic'
-    assert ssheet2.get_value_for(paragraph5, 'font_slant', document) == 'upright'
+    assert ssheet2.get_value_for(emphasized, 'font_slant', document) == FontSlant.ITALIC
+    assert ssheet2.get_value_for(paragraph5, 'font_slant', document) == FontSlant.UPRIGHT
 
     assert ssheet1.find_style(emphasized, document) == 'emphasized text'
     assert ssheet1.find_style(emphasized2, document) == 'emphasized text 2'
@@ -173,29 +174,29 @@ def test_find_style():
 
 
 def test_get_style():
-    assert emphasized.get_style('font_weight', container) == 'medium'
-    assert emphasized.get_style('font_width', container) == 'condensed'
-    assert emphasized.get_style('font_slant', container) == 'italic'
+    assert emphasized.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert emphasized.get_style('font_width', container) == FontWidth.CONDENSED
+    assert emphasized.get_style('font_slant', container) == FontSlant.ITALIC
 
-    assert emphasized2.get_style('font_weight', container) == 'medium'
-    assert emphasized2.get_style('font_width', container) == 'normal'
-    assert emphasized2.get_style('font_slant', container) == 'oblique'
+    assert emphasized2.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert emphasized2.get_style('font_width', container) == FontWidth.NORMAL
+    assert emphasized2.get_style('font_slant', container) == FontSlant.OBLIQUE
 
-    assert emphasized3.get_style('font_weight', container) == 'medium'
-    assert emphasized3.get_style('font_width', container) == 'normal'
-    assert emphasized3.get_style('font_slant', container) == 'oblique'
+    assert emphasized3.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert emphasized3.get_style('font_width', container) == FontWidth.NORMAL
+    assert emphasized3.get_style('font_slant', container) == FontSlant.OBLIQUE
 
     assert highlighted2.get_style('font_color', container) == HexColor('00f')
     assert highlighted2.get_style('font_size', container) == 12*PT
-    assert highlighted2.get_style('font_slant', container) == 'italic'
+    assert highlighted2.get_style('font_slant', container) == FontSlant.ITALIC
 
     assert paragraph.get_style('margin_left', container) == 0
     assert paragraph.get_style('margin_right', container) == 55*PT
     assert paragraph.get_style('space_above', container) == 5*PT
     assert paragraph.get_style('space_below', container) == 10*PT
-    assert paragraph.get_style('font_weight', container) == 'medium'
-    assert paragraph.get_style('font_width', container) == 'condensed'
-    assert paragraph.get_style('font_slant', container) == 'upright'
+    assert paragraph.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert paragraph.get_style('font_width', container) == FontWidth.CONDENSED
+    assert paragraph.get_style('font_slant', container) == FontSlant.UPRIGHT
     assert paragraph.get_style('font_size', container) == 8*PT
 
     assert paragraph2.get_style('margin_left', container) == 0
@@ -204,9 +205,9 @@ def test_get_style():
     assert paragraph2.get_style('space_below', container) == 0
     assert paragraph2.get_style('padding_top', container) == 0
     assert paragraph2.get_style('padding_bottom', container) == 3*PT
-    assert paragraph2.get_style('font_weight', container) == 'medium'
-    assert paragraph2.get_style('font_width', container) == 'normal'
-    assert paragraph2.get_style('font_slant', container) == 'upright'
+    assert paragraph2.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert paragraph2.get_style('font_width', container) == FontWidth.NORMAL
+    assert paragraph2.get_style('font_slant', container) == FontSlant.UPRIGHT
     assert paragraph2.get_style('font_size', container) == 10*PT
 
     assert paragraph3.get_style('margin_left', container) == 1*PT
@@ -215,9 +216,9 @@ def test_get_style():
     assert paragraph3.get_style('space_below', container) == 0
     assert paragraph3.get_style('padding_top', container) == 0
     assert paragraph3.get_style('padding_bottom', container) == 3*PT
-    assert paragraph3.get_style('font_weight', container) == 'medium'
-    assert paragraph3.get_style('font_width', container) == 'normal'
-    assert paragraph3.get_style('font_slant', container) == 'upright'
+    assert paragraph3.get_style('font_weight', container) == FontWeight.MEDIUM
+    assert paragraph3.get_style('font_width', container) == FontWidth.NORMAL
+    assert paragraph3.get_style('font_slant', container) == FontSlant.UPRIGHT
     assert paragraph3.get_style('font_size', container) == 10*PT
 
     # from 'paragraph' in ssheet1
@@ -226,13 +227,13 @@ def test_get_style():
     assert paragraph4.get_style('font_size', container) == 8*PT
     # from 'paragraph' in ssheet2
     assert paragraph4.get_style('space_below', container) == 10*PT
-    assert paragraph4.get_style('font_width', container) == 'condensed'
+    assert paragraph4.get_style('font_width', container) == FontWidth.CONDENSED
     # from 'paragraph 4' in sheet1
     assert paragraph4.get_style('padding_top', container) == 5*PT
     # from 'paragraph 4' in sheet2
     assert paragraph4.get_style('padding_right', container) == 2*PT
 
-    assert paragraph5.get_style('font_slant', container) == 'upright'
+    assert paragraph5.get_style('font_slant', container) == FontSlant.UPRIGHT
 
 
 def test_variable():

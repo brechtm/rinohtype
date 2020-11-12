@@ -26,6 +26,13 @@ New Features:
 * "0" is now accepted as a valid value for Dimension-type attributes in style
   sheets and template configurations
 
+Changed:
+
+* Font weights and widths are now internally represented by integer classes.
+  In addition to integer values, string values are still accepted (mapped to
+  classes).
+
+
 Fixed:
 
 * font weights with hyphens in them are broken; hyphens have been replaced with

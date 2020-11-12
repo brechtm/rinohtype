@@ -14,6 +14,7 @@ from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
                              PERCENT, QUARTERS)
 from rinoh.draw import Stroke
 from rinoh.flowable import FlowableWidth, HorizontalAlignment, Break
+from rinoh.font.style import ClassSet, FontWeight, FontSlant, FontWidth
 from rinoh.image import BackgroundImage, Scale, InlineImage
 from rinoh.number import NumberFormat
 from rinoh.paper import Paper, A4, A5, JUNIOR_LEGAL
@@ -35,13 +36,17 @@ def test_optionset_from_string():
     ONE = 'one'
     TWO = 'two'
     THREE = 'three'
+    WITH_SPACE = 'with space'
+    DOUBLE_SPACE = 'double  space'
 
     class TestSet1(OptionSet):
-        values = ONE, TWO, THREE
+        values = ONE, TWO, THREE, WITH_SPACE, DOUBLE_SPACE
 
     assert TestSet1.from_string('one') == ONE
     assert TestSet1.from_string('TWO') == TWO
     assert TestSet1.from_string('tHRee') == THREE
+    assert TestSet1.from_string('With Space') == WITH_SPACE
+    assert TestSet1.from_string('double  SPACE') == DOUBLE_SPACE
     with pytest.raises(ValueError):
         TestSet1.from_string('four')
     with pytest.raises(ValueError):
@@ -58,6 +63,62 @@ def test_optionset_from_string():
         TestSet2.from_string('one')
     with pytest.raises(ValueError):
         TestSet2.from_string('False')
+
+
+def test_classset_from_string():
+    class TestClassSet(ClassSet):
+        classes = {
+            1: ['one', 'uno'],
+            3: ['number three', 'tres'],
+            4: ['four', 'numero-quattro']
+        }
+
+    assert TestClassSet.from_string('one') == 1
+    assert TestClassSet.from_string('uNo') == 1
+    assert TestClassSet.from_string('number Three') == 3
+    assert TestClassSet.from_string('tres') == 3
+    assert TestClassSet.from_string('fOUr') == 4
+    assert TestClassSet.from_string('numero-quattro') == 4
+    assert TestClassSet.from_string('numero quattro') == 4
+    assert TestClassSet.from_string('Numero Quattro') == 4
+    assert TestClassSet.from_string('numeroquattro') == 4
+    assert TestClassSet.from_string('numeroQuattro') == 4
+    with pytest.raises(ValueError):
+        TestClassSet.from_string('number-three')
+
+
+def test_fontweight_from_string():
+    assert FontWeight.from_string('regular') == FontWeight.REGULAR
+    assert FontWeight.from_string('normal') == FontWeight.REGULAR
+    assert FontWeight.from_string('semibold') == FontWeight.SEMI_BOLD
+    assert FontWeight.from_string('semi-bold') == FontWeight.SEMI_BOLD
+    assert FontWeight.from_string('semi bold') == FontWeight.SEMI_BOLD
+    assert FontWeight.from_string('400') == FontWeight.REGULAR
+    assert FontWeight.from_string('123') == 123
+    with pytest.raises(ValueError):
+        FontWeight.from_string('1299')
+
+
+def test_fontslant_from_string():
+    assert FontSlant.from_string('upright') == FontSlant.UPRIGHT
+    assert FontSlant.from_string('obLIQUE') == FontSlant.OBLIQUE
+    assert FontSlant.from_string('Italic') == FontSlant.ITALIC
+    with pytest.raises(ValueError):
+        FontSlant.from_string('somewhat-oblique')
+
+
+def test_fontwidth_from_string():
+    assert FontWidth.from_string('normal') == FontWidth.NORMAL
+    assert FontWidth.from_string('Medium') == FontWidth.MEDIUM
+    assert FontWidth.from_string('condenSED') == FontWidth.CONDENSED
+    assert FontWidth.from_string('semi-expanded') == FontWidth.SEMI_EXPANDED
+    assert FontWidth.from_string('ultra eXpanded') == FontWidth.ULTRA_EXPANDED
+    assert FontWidth.from_string('UltraCondensed') == FontWidth.ULTRA_CONDENSED
+    assert FontWidth.from_string('5') == FontWidth.NORMAL
+    with pytest.raises(ValueError):
+        FontWidth.from_string('0')
+    with pytest.raises(ValueError):
+        FontWidth.from_string('11')
 
 
 def test_numberformat_from_string():
