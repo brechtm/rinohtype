@@ -40,6 +40,31 @@ class HeadTable(OpenTypeTable):
     def bounding_box(self):
         return (self['xMin'], self['yMin'], self['xMax'], self['yMax'])
 
+    @property
+    def bold(self):
+        return bool(self['macStyle'] & MACSTYLE_BOLD)
+
+    @property
+    def italic(self):
+        return bool(self['macStyle'] & MACSTYLE_ITALIC)
+
+    @property
+    def condensed(self):
+        return bool(self['macStyle'] & MACSTYLE_CONDENSED)
+
+    @property
+    def extended(self):
+        return bool(self['macStyle'] & MACSTYLE_EXTENDED)
+
+
+MACSTYLE_BOLD = 0x1
+MACSTYLE_ITALIC = 0x2
+MACSTYLE_UNDERLINE = 0x4
+MACSTYLE_OUTLINE = 0x8
+MACSTYLE_SHADOW = 0x10
+MACSTYLE_CONDENSED = 0x20
+MACSTYLE_EXTENDED = 0x40
+
 
 class HheaTable(OpenTypeTable):
     """Horizontal header"""
@@ -145,6 +170,34 @@ class OS2Table(OpenTypeTable):
                ('usDefaultChar', ushort),
                ('usBreakChar', ushort),
                ('usMaxContext', ushort)]
+
+    @property
+    def italic(self):
+        return bool(self['fsSelection'] & FSSELECTION_ITALIC)
+
+    @property
+    def bold(self):
+        return bool(self['fsSelection'] & FSSELECTION_BOLD)
+
+    @property
+    def regular(self):
+        return bool(self['fsSelection'] & FSSELECTION_REGULAR)
+
+    @property
+    def oblique(self):
+        return bool(self['fsSelection'] & FSSELECTION_OBLIQUE)
+
+
+FSSELECTION_ITALIC = 0x1
+FSSELECTION_UNDERSCORE = 0x2
+FSSELECTION_NEGATIVE = 0x4
+FSSELECTION_OUTLINED = 0x8
+FSSELECTION_STRIKEOUT = 0x10
+FSSELECTION_BOLD = 0x20
+FSSELECTION_REGULAR = 0x40
+FSSELECTION_USE_TYPO_METRICS = 0x80
+FSSELECTION_WWS = 0x100
+FSSELECTION_OBLIQUE = 0x200
 
 
 class PostTable(MultiFormatTable):

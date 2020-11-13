@@ -6,9 +6,10 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from logging import warning
 from warnings import warn
 
-from ...font.style import FontVariant
+from ...font.style import FontVariant, FontWeight, FontSlant, FontWidth
 from ...util import cached
 from ...warnings import RinohWarning
 from .. import Font, GlyphMetrics, LeafGetter, MissingGlyphException
@@ -39,15 +40,31 @@ class OpenTypeFont(Font, OpenTypeParser):
     x_height = LeafGetter('OS/2', 'sxHeight')
     stem_v = 50
 
-    def __init__(self, filename,
-                 weight='medium', slant='upright', width='normal'):
+    def __init__(self, filename, weight=None, slant=None, width=None):
         OpenTypeParser.__init__(self, filename)
+        slant_ = (self['OS/2'].oblique and FontSlant.OBLIQUE
+                  or self['OS/2'].italic and FontSlant.ITALIC
+                  or FontSlant.UPRIGHT)
+        weight = self._check('weight', weight, self['OS/2']['usWeightClass'],
+                             FontWeight.to_name)
+        slant = self._check('slant', slant, slant_)
+        width = self._check('width', width, self['OS/2']['usWidthClass'],
+                            FontWidth.to_name)
         super().__init__(filename, weight, slant, width)
         self._glyphs_by_code = self._create_glyph_metrics()
         self._glyphs = self._create_glyphs_by_char(self._glyphs_by_code)
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
+
+    def _check(self, attr, specified, determined, convert=lambda value: value):
+        if specified and specified != determined:
+            warning("{name}: specified font {attr} '{spec}' does not "
+                    "match the {attr} reported by the font file ({rep})"
+                    .format(name=self.name, attr=attr, spec=convert(specified),
+                            rep=convert(determined)))
+            return specified
+        return determined
 
     def _create_glyph_metrics(self):
         glyphs_by_code = {}

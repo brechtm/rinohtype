@@ -82,8 +82,7 @@ class Font(object):
     x_height = NotImplementedAttribute()
     stem_v = NotImplementedAttribute()
 
-    def __init__(self, filename,
-                 weight='medium', slant='upright', width='normal'):
+    def __init__(self, filename, weight, slant, width):
         self.filename = filename
         self.weight = FontWeight.validate(weight)
         self.slant = FontSlant.validate(slant)

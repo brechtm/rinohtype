@@ -31,7 +31,9 @@ Changed:
 * Font weights and widths are now internally represented by integer classes.
   In addition to integer values, string values are still accepted (mapped to
   classes).
-
+* OpenTypeFont now determines the font weight, slant and width from the file.
+  For backward compatibility, it still accepts these as arguments on
+  instantiation but warns when they don't match the values stored in the font.
 
 Fixed:
 
