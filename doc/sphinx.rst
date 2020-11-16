@@ -28,17 +28,6 @@ options. Of these, only :confval:`rinoh_documents` (or
 
     The default is ``'book'``, which resolves to the :class:`.Book` template.
 
-.. confval:: rinoh_stylesheet
-
-    If :confval:`rinoh_template_configuration` does not specify a style sheet,
-    this variable specifies the style sheet used to style the document
-    elements. It can be a :class:`StyleSheet` instance or a string identifying
-    an installed style sheet. Default: the default style sheet for the chosen
-    document template.
-
-    If :confval:`sphinx:pygments_style` is specified, it overrides the code
-    highlighting style for the specified or default style sheet.
-
 .. confval:: rinoh_paper_size
 
     This overrides paper size defined in the template or template
@@ -50,9 +39,9 @@ options. Of these, only :confval:`rinoh_documents` (or
     specified for :confval:`sphinx:latex_paper_size` is used.
 
 .. note:: Since the interactions between
-    :confval:`rinoh_template`, :confval:`rinoh_paper_size`,
-    :confval:`rinoh_stylesheet` and :confval:`sphinx:pygments_style` are fairly
-    complex, this behavior may be changed (simplified) in the future.
+    :confval:`rinoh_template` and :confval:`rinoh_paper_size`,
+    are fairly complex, this behavior may be changed (simplified) in the
+    future.
 
 .. confval:: rinoh_logo
 

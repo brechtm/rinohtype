@@ -210,6 +210,7 @@ class RinohBuilder(Builder):
         return document_data
 
     def write(self, *ignored):
+        deprecation_warnings(self.config, logger)
         document_data = self.init_document_data()
         for entry in document_data:
             docname, targetname, title, author = entry[:4]
@@ -269,23 +270,6 @@ def template_from_config(config, confdir, warn):
         template_cls = config.rinoh_template.template
     else:
         template_cls = config.rinoh_template
-    if isinstance(config.rinoh_stylesheet, str):
-        stylesheet_path = path.join(confdir, config.rinoh_stylesheet)
-        stylesheet = StyleSheet.from_string(stylesheet_path
-                                            if path.isfile(stylesheet_path)
-                                            else config.rinoh_stylesheet)
-    else:
-        stylesheet = config.rinoh_stylesheet
-    if config.pygments_style is not None:
-        if stylesheet is not None:
-            base = stylesheet
-        elif 'base' in template_cfg:
-            base = template_cfg['base']['stylesheet']
-        else:
-            base = template_cls.stylesheet.default_value
-        stylesheet = pygments_style_to_stylesheet(config.pygments_style, base)
-    if stylesheet is not None:
-        template_cfg['stylesheet'] = stylesheet
 
     language = config.language
     if language:
@@ -343,13 +327,20 @@ def default_domain_indices(config):
     return config.latex_domain_indices
 
 
+def deprecation_warnings(config, logger):
+    if config.rinoh_stylesheet:
+        logger.warning("'rinoh_stylesheet' has been deprecated."
+                       " Configure the stylesheet in the document template"
+                       " configuration.")
+
+
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
-    app.add_config_value('rinoh_stylesheet', None, 'html')
     app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
+    app.add_config_value('rinoh_stylesheet', None, 'html')
     return dict(version=rinoh_version)
