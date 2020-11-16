@@ -4,29 +4,79 @@ version = "0.4.3.dev"
 description = "The Python document processor"
 authors = ["Brecht Machiels <brecht@mos6581.org>"]
 license = "AGPL-3.0-only"
+readme = "README.rst"
+repository = "https://github.com/brechtm/rinohtype"
+homepage = "https://github.com/brechtm/rinohtype"
+keywords = ["typesetting", "rst", "pdf", "opentype"]
+classifiers = [
+    "Environment :: Console",
+    "Environment :: Other Environment",
+    "Environment :: Web Environment",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Printing",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Fonts",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: XML"
+]
 packages = [
     { include = "rinoh", from = "src" }
 ]
+
+[tool.poetry.scripts]
+rinoh = "rinoh.__main__:main"
+
+[tool.poetry.plugins."rinoh.frontends"]
+CommonMark = "rinoh.frontend.commonmark:CommonMarkReader"
+reStructuredText = "rinoh.frontend.rst:ReStructuredTextReader"
+
+[tool.poetry.plugins."rinoh.templates"]
+article = "rinoh.templates:Article"
+book = "rinoh.templates:Book"
+
+[tool.poetry.plugins."rinoh.stylesheets"]
+sphinx = "rinoh.stylesheets:sphinx"
+sphinx_article = "rinoh.stylesheets:sphinx_article"
+sphinx_base14 = "rinoh.stylesheets:sphinx_base14"
+
+[tool.poetry.plugins."rinoh.typefaces"]
+courier = "rinoh.fonts.adobe14:courier"
+helvetica = "rinoh.fonts.adobe14:helvetica"
+symbol = "rinoh.fonts.adobe14:symbol"
+times = "rinoh.fonts.adobe14:times"
+"itc zapfdingbats" = "rinoh.fonts.adobe14:zapfdingbats"
+
+[tool.poetry.plugins."sphinx.builders"]
+rinoh = "rinoh.frontend.sphinx"
 
 [tool.poetry.dependencies]
 python = "^3.5"
 appdirs = "^1.4.4"
 docutils = "^0.16"
 importlib-metadata = {version = ">=0.21", python = "<3.8"}
+pip = ">=8.0.3"
 recommonmark = "^0.6.0"
 rinoh-typeface-texgyrecursor = "^0.1.1"
 rinoh-typeface-texgyreheros = "^0.1.1"
 rinoh-typeface-texgyrepagella = "^0.1.1"
 rinoh-typeface-dejavuserif = "^0.1.3"
+setuptools = ">=19.2"
 
 [tool.poetry.dev-dependencies]
 bump2version = "^1.0.0"
 restview = "^2.9.2"
 tox = "^3.15.2"
-twine = "^1.15.0"
 pytest = "^6.1.1"
 pytest-assume = "^2.3.3"
 pytest-console-scripts = "^1.0.0"
-tox-gh-actions = "^2.0.0"
-wheel = "^0.35.1"
 pytest-xdist = "^2.1.0"
+tox-gh-actions = "^2.0.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

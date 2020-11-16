@@ -11,16 +11,13 @@
 """
 
 import os
-import sys
 
 from importlib import import_module
 
-from .version import __version__, __release_date__
-
-
-if sys.version_info < (3, 3):
-    print('rinohtype requires Python 3.3 or higher')
-    sys.exit(1)
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
 
 
 CORE_MODULES = ['annotation', 'attribute', 'color', 'dimension', 'document',
@@ -35,6 +32,10 @@ __all__ = CORE_MODULES + ['font', 'fonts', 'frontend', 'backend', 'resource',
 
 
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
+
+
+__version__ = importlib_metadata.version('rinohtype')
+__release_date__ = 'unreleased'
 
 
 from . import resource
