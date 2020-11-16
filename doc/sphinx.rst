@@ -6,7 +6,9 @@ Sphinx Builder
 :mod:`rinoh.frontent.sphinx` is a Sphinx extension module. It provides a Sphinx
 builder with the name *rinoh*. The builder recognizes the following ``conf.py``
 options. Of these, only :confval:`rinoh_documents` (or
-:confval:`sphinx:latex_documents`) is required:
+:confval:`sphinx:latex_documents`) is required.
+
+Note that
 
 .. confval:: rinoh_documents
 
@@ -21,12 +23,27 @@ options. Of these, only :confval:`rinoh_documents` (or
 
     Determines the template used to render the document. It takes:
 
-    * the filename of a template configuration file,
+    * the filename of a :ref:`template configuration file <configure_templates>`,
     * a :class:`.TemplateConfiguration` instance,
     * the name of an installed template (see :option:`rinoh --list-templates`)
     * a :class:`.DocumentTemplate` subclass
 
     The default is ``'book'``, which resolves to the :class:`.Book` template.
+
+.. confval:: rinoh_stylesheet
+
+    This configuration variable is **no longer supported** since it was not
+    obvious which style sheet was being used when the template configuration
+    (:confval:`rinoh_template`) also specified a style sheet. Please specify
+    the style sheet to use in your :ref:`template configuration file
+    <configure_templates>`:
+
+    .. code-block:: ini
+
+        [TEMPLATE_CONFIGURATION]
+        name = My Book
+        template = book
+        stylesheet = my_stylesheet.rts
 
 .. confval:: rinoh_paper_size
 

@@ -4,6 +4,8 @@
 #
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
+
+
 from collections import namedtuple
 
 import pytest
@@ -11,7 +13,6 @@ import pytest
 from docutils.utils import new_document
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
-from sphinx.util import logging
 
 from rinoh.document import DocumentTree
 from rinoh.frontend.sphinx import (template_from_config, set_document_metadata,
@@ -162,6 +163,5 @@ def test_sphinx_rinoh_stylesheet_deprecation_warning(tmpdir):
     app = create_sphinx_app(tmpdir, rinoh_stylesheet="sphinx")
     logger = create_logger()
     deprecation_warnings(app.config, logger)
-    stylesheet_warning = ("'rinoh_stylesheet' has been deprecated. " +
-        "Configure the stylesheet in the document template configuration.")
-    assert logger.warnings == [stylesheet_warning]
+    the_warning, = logger.warnings
+    assert "Support for 'rinoh_stylesheet' has been removed" in the_warning
