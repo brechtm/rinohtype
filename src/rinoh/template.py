@@ -500,7 +500,7 @@ class TemplateConfiguration(RuleSet):
         base = base or self.template
         super().__init__(name, base=base, **options)
         self.description = description
-        self.variables.update(base.variables)
+
 
     @property
     def _stylesheet_search_path(self):

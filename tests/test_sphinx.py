@@ -72,25 +72,12 @@ def test_sphinx_config_default(tmpdir):
     template_cfg = get_template_cfg(tmpdir)
     assert template_cfg.template == Book
     assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
     assert get_contents_page_size(template_cfg) == A4
 
 
-def test_sphinx_config_latex_elements_papersize(tmpdir):
+def test_sphinx_config_latex_elements_papersize_no_effect(tmpdir):
     template_cfg = get_template_cfg(
-        tmpdir, latex_elements=dict(papersize='a4paper'))
-    assert template_cfg.template == Book
-    assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
-    assert get_contents_page_size(template_cfg) == A4
-
-
-def test_sphinx_config_rinoh_paper_size(tmpdir):
-    template_cfg = get_template_cfg(tmpdir, rinoh_paper_size=A4,
-                                    latex_elements=dict(papersize='a4paper'))
-    assert template_cfg.template == Book
-    assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
+        tmpdir, latex_elements=dict(papersize='a5paper'))
     assert get_contents_page_size(template_cfg) == A4
 
 
