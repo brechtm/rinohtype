@@ -306,12 +306,6 @@ def default_documents(config):
             for entry in config.latex_documents]
 
 
-def default_paper_size(config):
-    info_config_conversion('elements/papersize')
-    latex_paper_size = config.latex_elements.get('papersize', 'letterpaper')
-    return dict(a4paper=A4, letterpaper=LETTER)[latex_paper_size]
-
-
 def default_logo(config):
     info_config_conversion('logo')
     return config.latex_logo
@@ -323,19 +317,21 @@ def default_domain_indices(config):
 
 
 def deprecation_warnings(config, logger):
+    warning = ("Support for '{variable}' has been removed. Instead,"
+               " please specify the stylesheet to use in your template"
+               " configuration.")
     if config.rinoh_stylesheet:
-        logger.warning("Support for 'rinoh_stylesheet' has been removed."
-                       " Instead, please specify the stylesheet to use in your"
-                       " template configuration.")
-
+        logger.warning(warning.format(variable="rinoh_stylesheet"))
+    if config.rinoh_paper_size:
+        logger.warning(warning.format(variable="rinoh_paper_size"))
 
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
-    app.add_config_value('rinoh_paper_size', default_paper_size, 'html')
     app.add_config_value('rinoh_logo', default_logo, 'html')
     app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')
+    app.add_config_value('rinoh_paper_size', None, 'html')
     return dict(version=rinoh_version)

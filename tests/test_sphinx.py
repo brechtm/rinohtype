@@ -165,3 +165,11 @@ def test_sphinx_rinoh_stylesheet_deprecation_warning(tmpdir):
     deprecation_warnings(app.config, logger)
     the_warning, = logger.warnings
     assert "Support for 'rinoh_stylesheet' has been removed" in the_warning
+
+
+def test_sphinx_rinoh_paper_size_deprecation_warning(tmpdir):
+    app = create_sphinx_app(tmpdir, rinoh_paper_size="A4")
+    logger = create_logger()
+    deprecation_warnings(app.config, logger)
+    the_warning, = logger.warnings
+    assert "Support for 'rinoh_paper_size' has been removed" in the_warning
