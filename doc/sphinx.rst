@@ -47,18 +47,20 @@ Note that
 
 .. confval:: rinoh_paper_size
 
-    This overrides paper size defined in the template or template
-    configuration (:confval:`rinoh_template`). This should be a :class:`Paper`
-    instance. A set of predefined paper sizes can be found in the
-    :mod:`rinoh.paper` module. If not specified, the value of the
-    ``'papersize'`` entry in :confval:`sphinx:latex_elements` is converted to
-    the equivalent :class:`Paper`. If this is not specified either, the value
-    specified for :confval:`sphinx:latex_paper_size` is used.
+    This configuration variable is **no longer supported** since it was not
+    obvious which paper size was being used when the template configuration
+    (:confval:`rinoh_template`) also specified a paper size. Please specify
+    the paper_size to use in your :ref:`template configuration file
+    <configure_templates>`:
 
-.. note:: Since the interactions between
-    :confval:`rinoh_template` and :confval:`rinoh_paper_size`,
-    are fairly complex, this behavior may be changed (simplified) in the
-    future.
+    .. code-block:: ini
+
+        [TEMPLATE_CONFIGURATION]
+        name = My Book
+        template = book
+
+        [VARIABLES]
+        paper_size = A5
 
 .. confval:: rinoh_logo
 
