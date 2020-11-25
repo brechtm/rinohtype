@@ -40,6 +40,7 @@ class AttributeType(object):
         return isinstance(value, cls)
 
     @classmethod
+    @cached
     def from_string(cls, string):
         return cls.parse_string(string)
 
