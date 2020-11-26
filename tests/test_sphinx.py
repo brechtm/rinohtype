@@ -61,10 +61,10 @@ def get_contents_page_size(template_configuration):
     return page.get_config_value('page_size', doc)
 
 
-def get_template_cfg(tmpdir, **confoverrides):
+def get_template_cfg(tmpdir, warn=print, **confoverrides):
     with docutils_namespace():
         app = create_sphinx_app(tmpdir, **confoverrides)
-        template_cfg = template_from_config(app.config, CONFIG_DIR, print)
+        template_cfg = template_from_config(app.config, CONFIG_DIR, warn)
     return template_cfg
 
 
@@ -72,25 +72,12 @@ def test_sphinx_config_default(tmpdir):
     template_cfg = get_template_cfg(tmpdir)
     assert template_cfg.template == Book
     assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
-    assert get_contents_page_size(template_cfg) == LETTER
-
-
-def test_sphinx_config_latex_elements_papersize(tmpdir):
-    template_cfg = get_template_cfg(
-        tmpdir, latex_elements=dict(papersize='a4paper'))
-    assert template_cfg.template == Book
-    assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
     assert get_contents_page_size(template_cfg) == A4
 
 
-def test_sphinx_config_rinoh_paper_size(tmpdir):
-    template_cfg = get_template_cfg(tmpdir, rinoh_paper_size=A4,
-                                    latex_elements=dict(papersize='a4paper'))
-    assert template_cfg.template == Book
-    assert not template_cfg.keys()
-    assert template_cfg.variables.keys() == set(['paper_size'])
+def test_sphinx_config_latex_elements_papersize_no_effect(tmpdir):
+    template_cfg = get_template_cfg(
+        tmpdir, latex_elements=dict(papersize='a5paper'))
     assert get_contents_page_size(template_cfg) == A4
 
 
@@ -98,6 +85,15 @@ def test_sphinx_config_language(tmpdir):
     template_cfg = get_template_cfg(tmpdir, language='it')
     assert template_cfg.template == Book
     assert template_cfg['language'] == IT
+
+
+def test_sphinx_config_language_not_supported(tmpdir):
+    logger = create_logger()
+    template_cfg = get_template_cfg(tmpdir, warn=logger.warning, language='not_supported')
+    assert template_cfg.template == Book
+    assert 'language' not in template_cfg
+    the_warning, = logger.warnings
+    assert 'The language "not_supported" is not supported by rinohtype' in the_warning
 
 
 def test_sphinx_config_rinoh_template(tmpdir):
@@ -137,6 +133,7 @@ def test_sphinx_set_document_metadata(tmpdir):
     assert rinoh_doc.metadata['title'] == 'A Title'
     assert rinoh_doc.metadata['subtitle'] == 'Release 1.0'
     assert rinoh_doc.metadata['author'] == 'Ann Other'
+    assert 'logo' not in rinoh_doc.metadata
     assert 'date' in rinoh_doc.metadata
 
 
@@ -152,6 +149,17 @@ def test_sphinx_set_document_metadata_subtitle(tmpdir):
     assert expected_subtitle == rinoh_doc.metadata['subtitle']
 
 
+def test_sphinx_set_document_metadata_logo(tmpdir):
+    expected_logo = 'logo.png'
+    app = create_sphinx_app(tmpdir, rinoh_logo="logo.png")
+    template_cfg = template_from_config(app.config, CONFIG_DIR, print)
+    docutil_tree = create_document()
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    set_document_metadata(rinoh_doc, app.config, docutil_tree)
+    assert expected_logo == rinoh_doc.metadata['logo']
+
+
 def test_sphinx_default_deprecation_warning(tmpdir):
     app = create_sphinx_app(tmpdir)
     logger = create_logger()
@@ -165,3 +173,11 @@ def test_sphinx_rinoh_stylesheet_deprecation_warning(tmpdir):
     deprecation_warnings(app.config, logger)
     the_warning, = logger.warnings
     assert "Support for 'rinoh_stylesheet' has been removed" in the_warning
+
+
+def test_sphinx_rinoh_paper_size_deprecation_warning(tmpdir):
+    app = create_sphinx_app(tmpdir, rinoh_paper_size="A4")
+    logger = create_logger()
+    deprecation_warnings(app.config, logger)
+    the_warning, = logger.warnings
+    assert "Support for 'rinoh_paper_size' has been removed" in the_warning
