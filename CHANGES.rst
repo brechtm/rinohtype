@@ -28,9 +28,10 @@ New Features:
 
 Changed:
 
-* Sphinx frontend: support for the 'rinoh_stylesheet' was removed. You need to
-  specify the style sheet to use in the template configuration now (PR #195
-  by Alex Fargus)
+* Sphinx frontend: support for the 'rinoh_stylesheet' and 'rinoh_paper_size'
+  configuration variables was removed. You can specify the style sheet and
+  paper size to use in the template configuration (PR #195 and #192 by Alex
+  Fargus)
 * Font weights and widths are now internally represented by integer classes.
   In addition to integer values, string values are still accepted (mapped to
   classes).

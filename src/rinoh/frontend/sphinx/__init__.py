@@ -7,6 +7,7 @@
 
 
 import os
+
 from os import path
 from pathlib import Path
 
@@ -24,11 +25,8 @@ from sphinx.util import logging
 from sphinx.util.i18n import format_date
 
 from rinoh.flowable import StaticGroupedFlowables
-from rinoh.highlight import pygments_style_to_stylesheet
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.language import Language
-from rinoh.paper import A4, LETTER
-from rinoh.style import StyleSheet
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             TemplateConfigurationFile)
 from rinoh.text import SingleStyledText
@@ -37,6 +35,7 @@ from rinoh import __version__ as rinoh_version
 from rinoh.frontend.rst import from_doctree
 
 from . import nodes
+
 
 logger = logging.getLogger(__name__)
 
@@ -210,7 +209,7 @@ class RinohBuilder(Builder):
         return document_data
 
     def write(self, *ignored):
-        deprecation_warnings(self.config, logger)
+        variable_removed_warnings(self.config, logger)
         document_data = self.init_document_data()
         for entry in document_data:
             docname, targetname, title, author = entry[:4]
@@ -232,7 +231,7 @@ class RinohBuilder(Builder):
         rinoh_tree = from_doctree(doctree['source'], doctree,
                                   source_root=Path(self.srcdir),
                                   sphinx_builder=self)
-        template_cfg = template_from_config(config, self.confdir, logger.warning)
+        template_cfg = template_from_config(config, self.confdir, logger)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)
@@ -256,7 +255,7 @@ def set_document_metadata(rinoh_document, config, doctree):
     metadata.update(config.rinoh_metadata)
 
 
-def template_from_config(config, confdir, warn):
+def template_from_config(config, confdir, logger):
     template_cfg = {}
     if isinstance(config.rinoh_template, str):
         tmpl_path = path.join(confdir, config.rinoh_template)
@@ -276,8 +275,8 @@ def template_from_config(config, confdir, warn):
         try:
             template_cfg['language'] = Language.from_string(language)
         except KeyError:
-            warn('The language "{}" is not supported by rinohtype.'
-                 .format(language))
+            logger.warning("The language '{}' is not supported by rinohtype."
+                           .format(language))
 
     sphinx_config = template_cls.Configuration('Sphinx conf.py options',
                                                **template_cfg)
@@ -316,14 +315,15 @@ def default_domain_indices(config):
     return config.latex_domain_indices
 
 
-def deprecation_warnings(config, logger):
-    warning = ("Support for '{variable}' has been removed. Instead,"
+def variable_removed_warnings(config, logger):
+    message = ("Support for '{variable}' has been removed. Instead,"
                " please specify the stylesheet to use in your template"
                " configuration.")
     if config.rinoh_stylesheet:
-        logger.warning(warning.format(variable="rinoh_stylesheet"))
+        logger.warning(message.format(variable='rinoh_stylesheet'))
     if config.rinoh_paper_size:
-        logger.warning(warning.format(variable="rinoh_paper_size"))
+        logger.warning(message.format(variable='rinoh_paper_size'))
+
 
 def setup(app):
     app.add_builder(RinohBuilder)
