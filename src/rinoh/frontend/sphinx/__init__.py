@@ -311,11 +311,6 @@ def default_documents(config):
             for entry in config.latex_documents]
 
 
-def default_domain_indices(config):
-    info_config_conversion('domain_indices')
-    return config.latex_domain_indices
-
-
 def variable_removed_warnings(config, logger):
     message = ("Support for '{}' has been removed. Instead, please specify"
                " the {} to use in your template configuration.")
@@ -329,7 +324,7 @@ def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', default_documents, 'env')
     app.add_config_value('rinoh_logo', None, 'html')
-    app.add_config_value('rinoh_domain_indices', default_domain_indices, 'html')
+    app.add_config_value('rinoh_domain_indices', None, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')
