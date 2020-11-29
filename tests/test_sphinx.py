@@ -78,8 +78,15 @@ def test_sphinx_config_latex_elements_papersize_no_effect(tmp_path):
     assert get_contents_page_size(template_cfg) == A4
 
 
-def test_sphinx_config_language(tmp_path):
-    template_cfg = get_template_cfg(tmp_path, language='it')
+def test_sphinx_config_latex_logo_no_effect(caplog, tmpdir):
+    expected_logo = "logo.png"
+    app = create_sphinx_app(tmpdir, latex_logo=expected_logo)
+    assert app.config.latex_logo == expected_logo
+    assert app.config.rinoh_logo is None
+
+
+def test_sphinx_config_language(tmpdir):
+    template_cfg = get_template_cfg(tmpdir, language='it')
     assert template_cfg.template == Book
     assert template_cfg['language'] == IT
 
@@ -147,8 +154,8 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
 
 def test_sphinx_set_document_metadata_logo(tmp_path):
     expected_logo = 'logo.png'
-    app = create_sphinx_app(tmp_path, rinoh_logo='logo.png')
-    template_cfg = app.builder.template_from_config(LOGGER)
+    app = create_sphinx_app(tmpdir, rinoh_logo=expected_logo)
+    template_cfg = template_from_config(app.config, CONFIG_DIR, LOGGER)
     docutil_tree = create_document()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
