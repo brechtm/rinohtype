@@ -636,11 +636,10 @@ class StyleSheet(RuleSet, Resource):
 
     @classmethod
     def doc_repr(cls, value):
-        for name, entry_point in cls.installed_resources:
-            if value is entry_point.load():
-                object_name, = entry_point.attrs
+        for name, ep in cls.installed_resources:
+            if value is ep.load():
                 return ('``{}`` (= :data:`{}.{}`)'
-                        .format(name, entry_point.module_name, object_name))
+                        .format(name, *ep.value.split(':')))
         raise NotImplementedError
 
     @classmethod

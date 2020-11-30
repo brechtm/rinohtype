@@ -16,6 +16,10 @@ New Features:
   page break can be forced before any flowable.
 * Enumerated list items with a hidden label ('hide' style attribute) are no
   longer counted in the numbering.
+* Templates and typefaces can be registered by name at runtime. This makes them
+  referencable from template configuration and style sheet files. For example,
+  custom templates/typefaces can be imported in a Sphinx project's `conf.py`
+  (to be documented).
 * It's now possible to add arbitrary reStructuredText content to the front/back
   matter or  elsewhere by adding a ``.. container::`` with the 'out-of-line'
   class and a ``:name:`` to reference it by in the document template

@@ -7,15 +7,19 @@
 
 
 import pip
-import pkg_resources
 import string
+import sys
 
+from collections import namedtuple
+try:
+    from importlib import metadata as ilm
+except ImportError:     # Python < 3.8
+    import importlib_metadata as ilm
 from warnings import warn
 from xmlrpc.client import ServerProxy
-from pkg_resources import iter_entry_points
 
-from .util import NotImplementedAttribute, class_property
 from .attribute import AttributeType
+from .util import NotImplementedAttribute, class_property
 
 
 __all__ = ['Resource', 'ResourceNotInstalled']
@@ -25,14 +29,14 @@ class Resource(AttributeType):
     resource_type = NotImplementedAttribute()
 
     @class_property
-    def entry_point_group_name(cls):
+    def entry_point_group(cls):
         return 'rinoh.{}s'.format(cls.resource_type)
 
     @classmethod
     def parse_string(cls, resource_name):
         entry_point_name = resource_name.lower()
-        entry_points = iter_entry_points(cls.entry_point_group_name,
-                                         entry_point_name)
+        entry_points = (ep for ep in ilm.entry_points()[cls.entry_point_group]
+                        if ep.name == entry_point_name)
         try:
             entry_point = next(entry_points)
         except StopIteration:
@@ -48,7 +52,7 @@ class Resource(AttributeType):
 
     @class_property
     def installed_resources(cls):
-        for entry_point in iter_entry_points(cls.entry_point_group_name):
+        for entry_point in ilm.entry_points()[cls.entry_point_group]:
             yield entry_point.name, entry_point
 
     @classmethod
@@ -63,7 +67,6 @@ class Resource(AttributeType):
                 print("Installing {} package '{}' using pip..."
                       .format(cls.resource_type, package_name))
                 pip.main(['install', package_name])
-                pkg_resources.working_set.__init__()  # rescan entry points
                 success = True
                 break
         return success
@@ -98,3 +101,99 @@ def entry_point_name_to_identifier(entry_point_name):
         ascii_name = entry_point_name.encode('punycode').decode('ascii')
     return ''.join(char for char in ascii_name
                    if char in string.ascii_lowercase + string.digits)
+
+
+# dynamic entry point creation
+
+GROUPS = ('rinoh.templates', 'rinoh.typefaces')
+
+_installed_entry_points = {(ep.group, ep.name): dist
+                           for dist in ilm.distributions()
+                           for ep in dist.entry_points
+                           if ep.group in GROUPS}
+
+
+DynamicEntryPointBase = namedtuple('DynamicEntryPointBase', 'name value group')
+
+
+class DynamicEntryPoint(DynamicEntryPointBase):
+    """An entry point defined by value instead of by module:attribute"""
+
+    def load(self):
+        return self.value
+
+
+class DynamicRinohDistribution(ilm.Distribution):
+    """Distribution for registering resource entry points to at runtime"""
+
+    def __init__(self):
+        self._templates = {}
+        self._typefaces = {}
+
+    def register_template(self, name, template_class):
+        """Register a template by (entry point) name at runtime"""
+        self._check_existing_entry_point('template', name)
+        try:
+            assert issubclass(template_class, DocumentTemplate)
+        except (TypeError, AssertionError):
+            raise ValueError("The template '{}' you are trying to register "
+                             "is not a DocumentTemplate subclass".format(name))
+        self._templates[name] = template_class
+
+    def register_typeface(self, name, typeface):
+        """Register a typeface by (entry point) name at runtime"""
+        self._check_existing_entry_point('typeface', name)
+        if not isinstance(typeface, Typeface):
+            raise ValueError("The typeface '{}' you are trying to register "
+                             "is not a Typeface instance".format(name))
+        self._typefaces[name] = typeface
+
+    def _check_existing_entry_point(self, resource_type, name):
+        group = 'rinoh.{}s'.format(resource_type)
+        try:
+            dist = _installed_entry_points[(group, name)]
+            existing = "by the distribution '{}'".format(dist.metadata['Name'])
+        except KeyError:
+            if name in self._entry_point_groups[group]:
+                existing = "using 'register_{}'".format(resource_type)
+            else:
+                return
+        raise ValueError("A {} named '{}' has already been registered {}"
+                         .format(resource_type, name, existing))
+
+    @property
+    def _entry_point_groups(self):
+        return {
+            'rinoh.templates': self._templates,
+            'rinoh.typefaces': self._typefaces,
+        }
+
+    @property
+    def entry_points(self):
+        return [DynamicEntryPoint(name, value, group)
+                for group, entry_points in self._entry_point_groups.items()
+                for name, value in entry_points.items()]
+
+
+_DISTRIBUTION = DynamicRinohDistribution()
+
+
+class DynamicDistributionFinder(ilm.DistributionFinder):
+    """Makes the dynamic rinohtype distribution discoverable"""
+
+    @classmethod
+    def find_distributions(cls, context=ilm.DistributionFinder.Context()):
+        if context.name and context.name != 'rinohtype.dynamic':
+            return
+        yield _DISTRIBUTION
+
+    @classmethod
+    def find_module(cls, fullname, path=None):
+        return None
+
+
+sys.meta_path.append(DynamicDistributionFinder)
+
+
+from .font import Typeface
+from .template import DocumentTemplate

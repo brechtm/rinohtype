@@ -37,6 +37,8 @@ __all__ = CORE_MODULES + ['font', 'fonts', 'frontend', 'backend', 'resource',
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
+from . import resource
+
 # create proxies for the core classes/constants at the top level for easy access
 for name in CORE_MODULES:
     module = import_module('.' + name, __name__)
@@ -44,6 +46,9 @@ for name in CORE_MODULES:
     globals().update({name: module_dict[name] for name in module_all})
     __all__ += module_all
 
+
+register_template = resource._DISTRIBUTION.register_template
+register_typeface = resource._DISTRIBUTION.register_typeface
 
 # list all StringCollection subclasses in its docstring
 _ = ['* :class:`.{}`'.format(subclass_name)
