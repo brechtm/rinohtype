@@ -124,7 +124,7 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     python_requires='>= 3.5',
-    install_requires=['importlib-metadata>=2.0;python_version<"3.8"',
+    install_requires=['importlib-metadata>=0.21;python_version<"3.8"',
                       'pip', 'docutils', 'recommonmark',
                       'rinoh-typeface-texgyrecursor>=0.1.1',
                       'rinoh-typeface-texgyreheros>=0.1.1',

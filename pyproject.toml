@@ -11,7 +11,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.5"
 docutils = "^0.16"
-importlib-metadata = {version = "^2.0", python = "<3.8"}
+importlib-metadata = {version = ">=0.21", python = "<3.8"}
 recommonmark = "^0.6.0"
 rinoh-typeface-texgyrecursor = "^0.1.1"
 rinoh-typeface-texgyreheros = "^0.1.1"
