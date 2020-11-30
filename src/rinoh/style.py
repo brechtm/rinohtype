@@ -863,7 +863,7 @@ def parse_selector_args(chars):
         if chars.peek() == ',':
             next(chars)
             eat_whitespace(chars)
-    if next(chars) != ')':
+    if chars.peek() is None or next(chars) != ')':
         raise StyleParseError('Expecting a closing brace')
     return args, kwargs
 
