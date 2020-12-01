@@ -54,11 +54,11 @@ class FlowableWidth(OptionSet):
         return Dimension.check_type(value) or super().check_type(value)
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         if tokens.next.type == NAME:
-            return super().from_tokens(tokens)
+            return super().from_tokens(tokens, source)
         else:
-            return Dimension.from_tokens(tokens)
+            return Dimension.from_tokens(tokens, source)
 
     @classmethod
     def doc_format(cls):
@@ -135,10 +135,10 @@ class Flowable(Styled):
     break_exception = PageBreakException
 
     def __init__(self, align=None, width=None,
-                 id=None, style=None, parent=None):
+                 id=None, style=None, parent=None, source=None):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
-        super().__init__(id=id, style=style, parent=parent)
+        super().__init__(id=id, style=style, parent=parent, source=source)
         self.annotation = None
         self.align = align
         self.width = width
@@ -580,9 +580,9 @@ class StaticGroupedFlowables(GroupedFlowables):
     """
 
     def __init__(self, flowables, align=None, width=None,
-                 id=None, style=None, parent=None):
+                 id=None, style=None, parent=None, source=None):
         super().__init__(align=align, width=width,
-                         id=id, style=style, parent=parent)
+                         id=id, style=style, parent=parent, source=source)
         self.children = []
         for flowable in flowables:
             self.append(flowable)

@@ -45,8 +45,8 @@ class ReferenceType(OptionSet):
 
 class ReferenceBase(MixedStyledTextBase):
     def __init__(self, type='number', link=True, quiet=False, style=None,
-                 parent=None):
-        super().__init__(style=style, parent=parent)
+                 parent=None, source=None):
+        super().__init__(style=style, parent=parent, source=source)
         self.type = type
         self.link = link
         self.quiet = quiet

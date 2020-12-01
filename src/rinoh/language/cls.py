@@ -43,7 +43,7 @@ class Language(AttributeType):
         self.strings[strings_class] = item
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         return cls.languages[string]()
 
     @classmethod

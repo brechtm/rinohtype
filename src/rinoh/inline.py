@@ -46,8 +46,9 @@ class InlineFlowable(Flowable, InlineStyled, metaclass=InlineFlowableMeta):
     style_class = InlineFlowableStyle
     arguments = NotImplementedAttribute()
 
-    def __init__(self, baseline=None, id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
+    def __init__(self, baseline=None, id=None, style=None, parent=None,
+                 source=None):
+        super().__init__(id=id, style=style, parent=parent, source=source)
         self.baseline = baseline
 
     def to_string(self, flowable_target):
@@ -64,15 +65,16 @@ class InlineFlowable(Flowable, InlineStyled, metaclass=InlineFlowableMeta):
         return [self]
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         directive = next(tokens).string.lower()
         inline_flowable_class = InlineFlowable.directives[directive]
         if next(tokens).exact_type != LPAR:
             raise ParseError('Expecting an opening parenthesis.')
-        args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens)
+        args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens,
+                                                                       source)
         if next(tokens).exact_type != RPAR:
             raise ParseError('Expecting a closing parenthesis.')
-        return inline_flowable_class(*args, **kwargs)
+        return inline_flowable_class(*args, source=source, **kwargs)
 
     def spans(self, document):
         yield self

@@ -33,7 +33,7 @@ class Resource(AttributeType):
         return 'rinoh.{}s'.format(cls.resource_type)
 
     @classmethod
-    def parse_string(cls, resource_name):
+    def parse_string(cls, resource_name, source):
         entry_point_name = resource_name.lower()
         entry_points = find_entry_points(entry_point_name,
                                          cls.entry_point_group)

@@ -66,16 +66,16 @@ class ColumnWidths(AcceptNoneAttributeType):
                             for item in value)))
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         items = []
         while tokens.next.type:
             try:
                 tokens.push_state()
-                item = Dimension.from_tokens(tokens)
+                item = Dimension.from_tokens(tokens, source)
                 tokens.pop_state(discard=True)
             except ParseError:
                 tokens.pop_state()
-                item = Integer.from_tokens(tokens)
+                item = Integer.from_tokens(tokens, source)
             items.append(item)
         return items
 

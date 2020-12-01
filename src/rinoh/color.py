@@ -53,7 +53,7 @@ class Color(AcceptNoneAttributeType):
         return self.r, self.g, self.b, self.a
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         try:
             return HexColor(string)
         except ValueError:

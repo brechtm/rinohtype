@@ -44,7 +44,7 @@ class Stroke(AcceptNoneAttributeType):
         return super().check_type(value)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         try:
             width_str, color_str = (part.strip() for part in string.split(','))
         except ValueError:

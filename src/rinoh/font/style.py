@@ -60,7 +60,7 @@ class ClassSet(OptionSet, metaclass=ClassSetMeta):
         return [name for names in cls.classes.values() for name in names]
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         try:
             if tokens.next.type == NUMBER:
                 option_string = next(tokens).string

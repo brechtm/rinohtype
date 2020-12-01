@@ -73,7 +73,7 @@ def render_sphinx_rst_file(rst_path, out_filename, reference_path,
         with open(rst_path) as rst_file:
             contents = rst_file.read()
         sphinx_doctree = sphinx_parse(app, contents)
-    doctree = from_doctree(rst_path.name, sphinx_doctree)
+    doctree = from_doctree(sphinx_doctree)
     docinfo = sphinx_doctree.settings.env.metadata['index']
     return _render_rst(rst_path, doctree, out_filename, reference_path,
                        warnings=docinfo.get('warnings', '').splitlines())

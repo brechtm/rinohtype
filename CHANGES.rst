@@ -12,6 +12,10 @@ New Features:
   title page and elsewhere in the document template (PR #182 by Alex Fargus).
 * Table column widths can be specified in the style sheet, which take effect
   when these haven't been specified in the source document.
+* Document elements now store where they have been defined (document tree,
+  style sheet file or template configuration file); when you specify relative
+  paths (e.g. for images), they are interpreted relative to the location of
+  their source. This should make things more intuitive.
 * The ``page_break`` style attribute is no longer reserved for sections; a
   page break can be forced before any flowable.
 * Enumerated list items with a hidden label ('hide' style attribute) are no

@@ -11,7 +11,6 @@ import re
 from collections import OrderedDict
 from functools import partial
 from itertools import chain
-from pathlib import Path
 
 from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
@@ -23,7 +22,7 @@ from .dimension import Dimension, CM, PT, PERCENT
 from .document import Document, Page, PageOrientation, PageType
 from .element import create_destination
 from .image import BackgroundImage, Image
-from .flowable import Flowable
+from .flowable import Flowable, StaticGroupedFlowables
 from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
@@ -105,11 +104,12 @@ class FlowablesList(AcceptNoneAttributeType):
         return value is None or all(isinstance(val, Flowable) for val in value)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         locals = {}
         locals.update(reference.__dict__)
         locals.update(styleds.__dict__)
-        return eval(string, {'__builtins__':{}}, locals)
+        flowables = eval(string, {'__builtins__':{}}, locals)    # TODO: parse!
+        return [StaticGroupedFlowables(flowables, source=source)]
 
     @classmethod
     def doc_format(cls):
@@ -312,7 +312,7 @@ class DocumentPartTemplate(Template):
 
     @property
     def doc_repr(self):
-        doc = ('**{}** (:class:`{}.{}`)\n\n'\
+        doc = ('**{}** (:class:`{}.{}`)\n\n'
                .format(self.name, type(self).__module__, type(self).__name__))
         for name, default_value in self.items():
             doc += '  - *{}*: ``{}``\n'.format(name, default_value)
@@ -479,30 +479,19 @@ class TemplateConfiguration(RuleSet):
     template = None
     """The :class:`.DocumentTemplate` subclass to configure"""
 
-    def __init__(self, name, base=None, template=None, description=None,
-                 **options):
+    def __init__(self, name, base=None, source=None,
+                 template=None, description=None, **options):
         if template:
             if isinstance(template, str):
                 template = DocumentTemplate.from_string(template)
             assert self.template in (None, template)
             self.template = template
-        try:
-            stylesheet_path = Path(options.get('stylesheet'))
-            if not stylesheet_path.is_absolute():
-                stylesheet_path = self._stylesheet_search_path / stylesheet_path
-            if stylesheet_path.exists():
-                options['stylesheet'] = str(stylesheet_path)
-        except TypeError:
-            pass
         tmpl_cls = self.template
-        for attr, value in options.items():
-            options[attr] = tmpl_cls.validate_attribute(attr, value, True)
-        super().__init__(name, base=base or self.template, **options)
+        for attr, val in options.items():
+            options[attr] = self._validate_attribute(tmpl_cls, attr, val)
+        base = base or self.template
+        super().__init__(name, base=base, source=source, **options)
         self.description = description
-
-    @property
-    def _stylesheet_search_path(self):
-        return Path.cwd()
 
     def get_entries(self, name, document):
         if name in self:
@@ -539,10 +528,6 @@ class TemplateConfiguration(RuleSet):
 class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
 
     main_section = 'TEMPLATE_CONFIGURATION'
-
-    @property
-    def _stylesheet_search_path(self):
-        return self.filename.parent
 
     def process_section(self, section_name, classifier, items):
         if section_name in StringCollection.subclasses:
@@ -652,7 +637,7 @@ class PartsList(AttributeType, list):
         return all(isinstance(item, str) for item in value)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         return cls(*string.split())
 
     @classmethod

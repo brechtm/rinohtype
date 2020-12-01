@@ -75,7 +75,7 @@ class LineSpacing(AttributeType):
     REGEX = re.compile(r'^(?P<type>[a-z]+)(\((?P<arg>.*)\))?$', re.I)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         m = cls.REGEX.match(string)
         if not m:
             raise ParseError("'{}' is not a valid {} type"
@@ -319,7 +319,7 @@ class TabStopList(AttributeType, list):
                        re.IGNORECASE | re.VERBOSE)
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         tabstops = []
         i = 0
         while string[i:]:

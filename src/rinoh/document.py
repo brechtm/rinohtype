@@ -59,9 +59,8 @@ class DocumentTree(StaticGroupedFlowables):
 
     """
 
-    def __init__(self, flowables, source_root=None, options=None):
+    def __init__(self, flowables, options=None):
         super().__init__(flowables)
-        self.source_root = source_root.absolute() if source_root else Path.cwd()
         self.options = options
 
 

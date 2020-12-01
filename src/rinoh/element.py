@@ -10,32 +10,33 @@ from .annotation import NamedDestination
 from .warnings import warn
 
 
-__all__ = ['DocumentElement', 'Location']
-
-
-class Location(object):
-    def __init__(self, document_element):
-        self.location = document_element.__class__.__name__
+__all__ = ['DocumentElement']
 
 
 class DocumentElement(object):
-    """An element that is directly or indirectly part of a :class:`Document`
-    and is eventually rendered to the output."""
+    """A element part of the document to be rendered
+
+    Args:
+        id (str): unique identifier for referencing this element
+        parent (DocumentElement): element of which this element is a child
+        source (Source): object identifying where this document element is
+            defined; used for resolving relative paths, logging or error
+            reporting
+
+    """
 
     def __init__(self, id=None, parent=None, source=None):
-        """Initialize this document element as as a child of `parent`
-        (:class:`DocumentElement`) if it is not a top-level :class:`Flowable`
-        element. `source` should point to a node in the input's document tree
-        corresponding to this document element. It is used to point to a
-        location in the input file when warnings or errors are generated (see
-        the :meth:`warn` method).
-
-        Both parameters are optional, and can be set at a later point by
-        assigning to the identically named instance attributes."""
         self.id = id
         self.secondary_ids = []
         self.parent = parent
         self.source = source
+
+    @property
+    def source_root(element):
+        while element.parent:
+            if element.source:
+                return element.source.root
+            element = element.parent
 
     def get_id(self, document, create=True):
         try:
@@ -49,21 +50,6 @@ class DocumentElement(object):
         yield primary_id
         for id in self.secondary_ids:
             yield id
-
-    @property
-    def source(self):
-        """The source element this document element was created from."""
-        if self._source is not None:
-            return self._source
-        elif self.parent is not None:
-            return self.parent.source
-        else:
-            return Location(self)
-
-    @source.setter
-    def source(self, source):
-        """Set `source` as the source element of this document element."""
-        self._source = source
 
     @property
     def elements(self):

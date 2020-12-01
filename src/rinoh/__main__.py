@@ -11,11 +11,13 @@ import os
 import webbrowser
 
 from collections import OrderedDict
+from pathlib import Path
 
 from pkg_resources import get_distribution, iter_entry_points
 
 from rinoh import __version__, __release_date__
 
+from rinoh.attribute import Source
 from rinoh.dimension import PT
 from rinoh.document import DocumentTree
 from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
@@ -219,9 +221,11 @@ def main():
 
     template_cfg = {}
     variables = {}
+    cwd_source = CwdSource()
     if args.stylesheet:
         if os.path.isfile(args.stylesheet):
-            stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher)
+            stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher,
+                                        source=cwd_source)
         else:
             try:
                 stylesheet = StyleSheet.from_string(args.stylesheet)
@@ -273,7 +277,8 @@ def main():
     reader = reader_cls(**options)
 
     if os.path.isfile(args.template):
-        template_cfg['base'] = TemplateConfigurationFile(args.template)
+        template_cfg['base'] = TemplateConfigurationFile(args.template,
+                                                         source=cwd_source)
         template_cls = template_cfg['base'].template
     else:
         template_cls = DocumentTemplate.from_string(args.template)
@@ -304,6 +309,16 @@ def main():
             else:
                 raise SystemExit(not_installed_msg + " Consider passing the "
                                  "--install-resources command line option.")
+
+
+class CwdSource(Source):
+    @property
+    def location(self):
+        return 'current working directory'
+
+    @property
+    def root(self):
+        return Path.cwd()
 
 
 if __name__ == '__main__':

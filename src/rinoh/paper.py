@@ -45,7 +45,7 @@ class Paper(AttributeType):
         return self.name
 
     @classmethod
-    def parse_string(cls, string):
+    def parse_string(cls, string, source):
         try:
             return PAPER_BY_NAME[string.lower()]
         except KeyError:

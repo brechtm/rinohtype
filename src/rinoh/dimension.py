@@ -125,7 +125,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
                        """, re.IGNORECASE | re.VERBOSE)
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         sign = 1
         if tokens.next.exact_type in (PLUS, MINUS):
             sign = -1 if next(tokens).exact_type == MINUS else 1

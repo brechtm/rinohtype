@@ -22,6 +22,7 @@ import string
 
 from ast import literal_eval
 from collections import OrderedDict, namedtuple
+from contextlib import suppress
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
@@ -30,7 +31,7 @@ from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile, Configurable,
                         DefaultValueException, Attribute, Bool)
 from .element import DocumentElement
-from .resource import Resource
+from .resource import Resource, ResourceNotFound
 from .util import (cached, all_subclasses, NotImplementedAttribute,
                    class_property)
 from .warnings import warn
@@ -398,13 +399,13 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
     """The :class:`Style` subclass that corresponds to this :class:`Styled`
     subclass."""
 
-    def __init__(self, id=None, style=None, parent=None):
+    def __init__(self, id=None, style=None, parent=None, source=None):
         """Associates `style` with this element. If `style` is `None`, an empty
         :class:`Style` is create, effectively using the defaults defined for the
         associated :class:`Style` class).
         A `parent` can be passed on object initialization, or later by
         assignment to the `parent` attribute."""
-        super().__init__(id=id, parent=parent)
+        super().__init__(id=id, parent=parent, source=source)
         if (isinstance(style, Style)
                 and not isinstance(style, (self.style_class, ParentStyle))):
             raise TypeError('the style passed to {} should be of type {} '
@@ -600,19 +601,19 @@ class StyleSheet(RuleSet, Resource):
     main_section = 'STYLESHEET'
     extension = '.rts'
 
-    def __init__(self, name, matcher=None, base=None, description=None,
-                 pygments_style=None, **user_options):
+    def __init__(self, name, matcher=None, base=None, source=None,
+                 description=None, pygments_style=None, **user_options):
         from .highlight import pygments_style_to_stylesheet
         from .stylesheets import matcher as default_matcher
 
-        base = self.from_string(base) if isinstance(base, str) else base
+        base = self.from_string(base, self) if isinstance(base, str) else base
         if matcher is None:
             matcher = default_matcher if base is None else StyledMatcher()
         if matcher is not None:
             matcher.check_validity()
         if pygments_style:
             base = pygments_style_to_stylesheet(pygments_style, base)
-        super().__init__(name, base=base)
+        super().__init__(name, base=base, source=source)
         self.description = description
         self.matcher = matcher
         if user_options:
@@ -627,12 +628,10 @@ class StyleSheet(RuleSet, Resource):
         raise NotImplementedError
 
     @classmethod
-    def parse_string(cls, filename_or_resource_name):
-        stylesheet_path = Path(filename_or_resource_name)
-        if stylesheet_path.is_file():
-            return StyleSheetFile(filename_or_resource_name)
-        else:
-            return super().parse_string(filename_or_resource_name)
+    def parse_string(cls, string, source):
+        with suppress(ResourceNotFound):
+            return super().parse_string(string, source)
+        return StyleSheetFile(string, source=source)
 
     @classmethod
     def doc_repr(cls, value):
@@ -1025,11 +1024,8 @@ class StyleLog(object):
                 attrs = OrderedDict()
                 style = None
                 indent = '  ' * level
-                if styled.parent and (styled.source.location
-                                      != styled.parent.source.location):
-                    location = '   ' + styled.source.location
-                else:
-                    location = ''
+                location = ('   ' + styled.source.location if styled.source
+                            else '')
                 continued_text = '(continued) ' if entry.continued else ''
                 log.write('  {}{}{}{}'
                           .format(indent, continued_text,

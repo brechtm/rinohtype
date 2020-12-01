@@ -60,7 +60,7 @@ class Locale(AttributeType):
         return cls.REGEX.match(value) is not None
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         token = next(tokens)
         if not cls.check_type(token.string):
             raise ValueError("'{}' is not a valid locale. Needs to be of the "
@@ -85,6 +85,9 @@ class InlineStyled(Styled):
         after = self.get_style('after', container)
         if after is not None:
             yield from after.copy(self.parent).wrapped_spans(container)
+
+    def copy(self, parent=None):
+        raise NotImplementedError
 
     def spans(self, container):
         raise NotImplementedError
@@ -127,22 +130,16 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         is `None`, this styled text itself is returned."""
         return self + other
 
-    def __copy__(self):
-        return self.copy()
-
-    def copy(self, parent=None):
-        raise NotImplementedError
-
     @classmethod
     def check_type(cls, value):
         return super().check_type(value) or isinstance(value, str)
 
     @classmethod
-    def from_tokens(cls, tokens):
+    def from_tokens(cls, tokens, source):
         items = []
         while tokens.next.type:
             if tokens.next.type == NAME:
-                items.append(InlineFlowable.from_tokens(tokens))
+                items.append(InlineFlowable.from_tokens(tokens, source))
             elif tokens.next.type == STRING:
                 items.append(cls.text_from_tokens(tokens))
             elif tokens.next.type == NEWLINE:
@@ -154,7 +151,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         if len(items) == 1:
             first, = items
             return first
-        return MixedStyledText(items)
+        return MixedStyledText(items, source=source)
 
     @classmethod
     def text_from_tokens(cls, tokens):
@@ -185,10 +182,10 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
                 "``'text string' (style name)``")
 
     @classmethod
-    def validate(cls, value, accept_variables=False, attribute_name=None):
-        if attribute_name is None and isinstance(value, str):
+    def validate(cls, value):
+        if isinstance(value, str):
             value = SingleStyledText(value)
-        return super().validate(value, accept_variables, attribute_name)
+        return super().validate(value)
 
     @classmethod
     def _substitute_variables(cls, text, style):
@@ -369,8 +366,8 @@ ESCAPE = str.maketrans({"'": r"\'",
 class SingleStyledText(SingleStyledTextBase):
     """Text with a single style applied"""
 
-    def __init__(self, text, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, text, style=None, parent=None, source=None):
+        super().__init__(style=style, parent=parent, source=source)
         self._text = text
 
     def __str__(self):
@@ -383,7 +380,8 @@ class SingleStyledText(SingleStyledTextBase):
         return self._text
 
     def copy(self, parent=None):
-        return type(self)(self._text, style=self.style, parent=parent)
+        return type(self)(self._text, style=self.style, parent=parent,
+                          source=self.source)
 
 
 class MixedStyledTextBase(StyledText):
@@ -414,7 +412,8 @@ class MixedStyledText(MixedStyledTextBase, list):
 
     _assumed_equal = {}
 
-    def __init__(self, text_or_items, id=None, style=None, parent=None):
+    def __init__(self, text_or_items, id=None, style=None, parent=None,
+                 source=None):
         """Initialize this mixed-styled text as the concatenation of
         `text_or_items`, which is either a single text item or an iterable of
         text items. Individual text items can be :class:`StyledText` or
@@ -422,7 +421,7 @@ class MixedStyledText(MixedStyledTextBase, list):
         each of the text items.
 
         See :class:`StyledText` for information on `style`, and `parent`."""
-        super().__init__(id=id, style=style, parent=parent)
+        super().__init__(id=id, style=style, parent=parent, source=source)
         if isinstance(text_or_items, (str, StyledText)):
             text_or_items = (text_or_items, )
         for item in text_or_items:
@@ -483,7 +482,8 @@ class MixedStyledText(MixedStyledTextBase, list):
 
     def copy(self, parent=None):
         items = [item.copy() for item in self.items]
-        return type(self)(items, style=self.style, parent=parent)
+        return type(self)(items, style=self.style, parent=parent,
+                          source=self.source)
 
 
 class ConditionalMixedStyledText(MixedStyledText):
@@ -586,16 +586,17 @@ class ControlCharacter(Character, metaclass=ControlCharacterMeta):
     exception = Exception
     all = {}
 
-    def __init__(self, style=None, parent=None):
+    def __init__(self, style=None, parent=None, source=None):
         """Initialize this control character with it's unicode `char`."""
-        super().__init__(self.character, style=style, parent=parent)
+        super().__init__(self.character, style=style, parent=parent,
+                         source=source)
 
     def __repr__(self):
         """A textual representation of this control character."""
         return self.__class__.__name__
 
     def copy(self, parent=None):
-        return type(self)(style=self.style, parent=parent)
+        return type(self)(style=self.style, parent=parent, source=self.source)
 
     @property
     def width(self):
@@ -634,19 +635,21 @@ SUBSCRIPT_STYLE = TextStyle(position='subscript')
 class Superscript(MixedStyledText):
     """Superscript."""
 
-    def __init__(self, text, parent=None):
+    def __init__(self, text, parent=None, source=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUPERSCRIPT_STYLE, parent=parent)
+        super().__init__(text, style=SUPERSCRIPT_STYLE, parent=parent,
+                         source=source)
 
 
 class Subscript(MixedStyledText):
     """Subscript."""
 
-    def __init__(self, text, parent=None):
+    def __init__(self, text, parent=None, source=None):
         """Accepts a single instance of :class:`str` or :class:`StyledText`, or
         an iterable of these."""
-        super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent)
+        super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent,
+                         source=source)
 
 
 from .reference import Field

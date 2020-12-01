@@ -228,9 +228,7 @@ class RinohBuilder(Builder):
 
     def write_doc(self, docname, doctree, docnames, targetname):
         config = self.config
-        rinoh_tree = from_doctree(doctree['source'], doctree,
-                                  source_root=Path(self.srcdir),
-                                  sphinx_builder=self)
+        rinoh_tree = from_doctree(doctree, sphinx_builder=self)
         template_cfg = template_from_config(config, self.confdir, logger)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))

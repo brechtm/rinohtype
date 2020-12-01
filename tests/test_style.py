@@ -14,7 +14,7 @@ from rinoh.dimension import PT, CM
 from rinoh.document import DocumentTree, Document, FakeContainer
 from rinoh.font import FontWeight, FontSlant, FontWidth
 from rinoh.language import EN
-from rinoh.paragraph import Paragraph
+from rinoh.paragraph import Paragraph, ParagraphStyle
 from rinoh.text import StyledText, SingleStyledText
 from rinoh.style import StyleSheet, StyledMatcher
 
@@ -68,7 +68,8 @@ ssheet1('paragraph 2',
         padding_bottom=3*PT)
 ssheet1('paragraph 4',
         base='paragraph',
-        padding_top=5*PT)
+        padding_top=5*PT,
+        before=SingleStyledText('before p4'))
 
 
 
@@ -91,8 +92,9 @@ ssheet2('paragraph',
 ssheet2('paragraph 3',
         base='paragraph 2',
         margin_left=1*PT)
-ssheet2('paragraph 4',
-        padding_right=2*PT)
+ssheet2['paragraph 4'] = ParagraphStyle(padding_right=2*PT,
+                                        after=SingleStyledText('after p4'))
+
 
 highlighted = SingleStyledText('highlighed', style='highlight')
 highlighted2 = SingleStyledText('highlighed 2', style='highlight2')
@@ -155,6 +157,7 @@ def test_get_selector():
     assert ssheet2.get_selector('paragraph 3') == paragraph3_selector
     assert ssheet2.get_selector('paragraph 4') == paragraph4_selector
     assert ssheet2.get_selector('missing style') == missing_selector
+
 
 def test_find_style():
     assert ssheet2.get_value_for(emphasized, 'font_slant', document) == FontSlant.ITALIC
@@ -234,6 +237,12 @@ def test_get_style():
     assert paragraph4.get_style('padding_right', container) == 2*PT
 
     assert paragraph5.get_style('font_slant', container) == FontSlant.UPRIGHT
+
+    before_p4 = paragraph4.get_style('before', container)
+    assert before_p4 == SingleStyledText('before p4', source=ssheet1)
+
+    after_p4 = paragraph4.get_style('after', container)
+    assert after_p4 == SingleStyledText('after p4', source=ssheet2)
 
 
 def test_variable():
