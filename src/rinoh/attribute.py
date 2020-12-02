@@ -351,7 +351,7 @@ class Source(object):
         return None
 
 
-class RuleSet(Source, OrderedDict):
+class RuleSet(OrderedDict, Source):
     main_section = NotImplementedAttribute()
 
     def __init__(self, name, base=None, source=None, **kwargs):

@@ -24,6 +24,7 @@ from sphinx.util.osutil import ensuredir, os_path, SEP
 from sphinx.util import logging
 from sphinx.util.i18n import format_date
 
+from rinoh.attribute import Source
 from rinoh.flowable import StaticGroupedFlowables
 from rinoh.index import IndexSection, IndexLabel, IndexEntry
 from rinoh.language import Language
@@ -92,13 +93,17 @@ class RinohTreePreprocessor(GenericNodeVisitor):
             node.attributes['language'] = self.highlight_stack[-1]
 
 
-class RinohBuilder(Builder):
+class RinohBuilder(Builder, Source):
     """Renders to a PDF using rinohtype."""
 
     name = 'rinoh'
     format = 'pdf'
     supported_image_types = ['application/pdf', 'image/png', 'image/jpeg']
     supported_remote_images = False
+
+    @property
+    def root(self):
+        return Path(self.confdir)
 
     def get_outdated_docs(self):
         return 'all documents'
@@ -227,16 +232,45 @@ class RinohBuilder(Builder):
             logger.info("done")
 
     def write_doc(self, docname, doctree, docnames, targetname):
-        config = self.config
         rinoh_tree = from_doctree(doctree, sphinx_builder=self)
-        template_cfg = template_from_config(config, self.confdir, logger)
+        template_cfg = self.template_from_config(logger)
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
-        rinoh_document.insert('back_matter', extra_indices, 0)
-        set_document_metadata(rinoh_document, config, doctree)
+        rinoh_document.insert('back_matter', extra_indices, 0)  # TODO: use out-of-line flowables?
+        set_document_metadata(rinoh_document, self.config, doctree)
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
+
+    def template_from_config(self, logger):
+        config = self.config
+        template_cfg = {}
+        if isinstance(config.rinoh_template, str):
+            tmpl_path = path.join(self.confdir, config.rinoh_template)
+            if path.isfile(tmpl_path):
+                base = TemplateConfigurationFile(config.rinoh_template,
+                                                 source=self)
+                template_cfg['base'] = base
+                template_cls = template_cfg['base'].template
+            else:
+                template_cls = DocumentTemplate.from_string(config.rinoh_template)
+        elif isinstance(config.rinoh_template, TemplateConfiguration):
+            template_cfg['base'] = config.rinoh_template
+            template_cls = config.rinoh_template.template
+        else:
+            template_cls = config.rinoh_template
+
+        language = config.language
+        if language:
+            try:
+                template_cfg['language'] = Language.from_string(language)
+            except KeyError:
+                logger.warning("The language '{}' is not supported by rinohtype."
+                               .format(language))
+
+        sphinx_config = template_cls.Configuration('Sphinx conf.py options',
+                                                   **template_cfg)
+        return sphinx_config
 
 
 def set_document_metadata(rinoh_document, config, doctree):
@@ -251,34 +285,6 @@ def set_document_metadata(rinoh_document, config, doctree):
                                        language=config.language)
     metadata['date'] = date
     metadata.update(config.rinoh_metadata)
-
-
-def template_from_config(config, confdir, logger):
-    template_cfg = {}
-    if isinstance(config.rinoh_template, str):
-        tmpl_path = path.join(confdir, config.rinoh_template)
-        if path.isfile(tmpl_path):
-            template_cfg['base'] = TemplateConfigurationFile(tmpl_path)
-            template_cls = template_cfg['base'].template
-        else:
-           template_cls = DocumentTemplate.from_string(config.rinoh_template)
-    elif isinstance(config.rinoh_template, TemplateConfiguration):
-        template_cfg['base'] = config.rinoh_template
-        template_cls = config.rinoh_template.template
-    else:
-        template_cls = config.rinoh_template
-
-    language = config.language
-    if language:
-        try:
-            template_cfg['language'] = Language.from_string(language)
-        except KeyError:
-            logger.warning("The language '{}' is not supported by rinohtype."
-                           .format(language))
-
-    sphinx_config = template_cls.Configuration('Sphinx conf.py options',
-                                               **template_cfg)
-    return sphinx_config
 
 
 def fully_qualified_id(docname, id):
