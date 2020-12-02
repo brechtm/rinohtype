@@ -17,7 +17,8 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
 from rinoh.document import DocumentTree
-from rinoh.frontend.sphinx import variable_removed_warnings
+from rinoh.frontend.sphinx import (template_from_config, set_document_metadata,
+                                   variable_removed_warnings, preliminary_document_data)
 from rinoh.language import IT
 from rinoh.paper import A4
 from rinoh.templates import Book, Article
@@ -87,6 +88,29 @@ def test_sphinx_config_latex_option_no_effect(latex_option, value, tmpdir):
     assert getattr(app.config, latex_option) == value
     assert getattr(app.config, rinoh_option) is None
 
+
+def test_sphinx_config_latex_documents_fallback(caplog, tmpdir):
+    latex_documents = [('index', 'doc.tex', 'Title', 'Author', 'manual', True)]
+    rinoh_documents = [('index', 'doc', 'Title', 'Author', True)]
+    app = create_sphinx_app(tmpdir, latex_documents=latex_documents)
+    with caplog.at_level(logging.WARNING):
+        documents = preliminary_document_data(app.config, LOGGER)
+    assert documents == rinoh_documents
+    assert ("'rinoh_documents' config variable not set, automatically"
+            " converting from 'latex_documents'") in caplog.text
+
+
+def test_sphinx_config_latex_documents_ignored(capsys, tmpdir):
+    latex_documents = [('index', 'doc.tex', 'Title', 'Author', 'manual', True)]
+    rinoh_documents = [('index', 'rinoh_doc', 'Title', 'Author', False)]
+    app = create_sphinx_app(
+        tmpdir, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
+    stdout, stderr = capsys.readouterr()
+    assert app.config.rinoh_documents == rinoh_documents
+    assert ("'rinoh_documents' config variable not set, automatically"
+            " converting from 'latex_documents'") not in stdout
+    assert ("'rinoh_documents' config variable not set, automatically"
+            " converting from 'latex_documents'") not in stderr
 
 def test_sphinx_config_language(tmpdir):
     template_cfg = get_template_cfg(tmpdir, language='it')

@@ -193,19 +193,13 @@ class RinohBuilder(Builder, Source):
 
     def init_document_data(self):
         document_data = []
-        preliminary_document_data = [list(entry)
-                                     for entry in self.config.rinoh_documents]
-        if not preliminary_document_data:
-            logger.warning('no "rinoh_documents" config value found; '
-                      'no documents will be written')
-            return
         # assign subdirs to titles
         self.titles = []
-        for entry in preliminary_document_data:
+        for entry in preliminary_document_data(self.config, logger):
             docname = entry[0]
             if docname not in self.env.all_docs:
                 logger.warning('"rinoh_documents" config value references unknown '
-                          'document %s' % docname)
+                               'document %s' % docname)
                 continue
             document_data.append(entry)
             if docname.endswith(SEP + 'index'):
@@ -293,22 +287,25 @@ def fully_qualified_id(docname, id):
     return id if id.startswith('%') else '%' + docname + '#' + id
 
 
-def info_config_conversion(config_option, latex_option=None):
-    latex_option = latex_option or config_option
-    print("'rinoh_{0}' config variable not set, automatically converting "
-          "from 'latex_{0}'".format(latex_option))
+def preliminary_document_data(config, logger):
+    if config.rinoh_documents:
+        return [list(entry) for entry in config.rinoh_documents]
+    elif config.latex_documents:
+        return [latex_document_to_rinoh_document(entry, logger) for
+                entry in config.latex_documents]
+    else:
+        logger.warning('no "rinoh_documents" config value found; '
+                       'no documents will be written')
+        return []
 
 
-def default_documents(config):
-    def latex_document_to_rinoh_document(entry):
-        startdocname, targetname, title, author, documentclass = entry[:5]
-        toctree_only = entry[5] if len(entry) > 5 else False
-        targetname_root, _ = os.path.splitext(targetname)
-        return startdocname, targetname_root, title, author, toctree_only
-
-    info_config_conversion('documents')
-    return [latex_document_to_rinoh_document(entry)
-            for entry in config.latex_documents]
+def latex_document_to_rinoh_document(entry, logger):
+    logger.warning("'rinoh_documents' config variable not set, automatically converting "
+                   "from 'latex_documents'")
+    startdocname, targetname, title, author, documentclass = entry[:5]
+    toctree_only = entry[5] if len(entry) > 5 else False
+    targetname_root, _ = os.path.splitext(targetname)
+    return startdocname, targetname_root, title, author, toctree_only
 
 
 def variable_removed_warnings(config, logger):
@@ -322,7 +319,7 @@ def variable_removed_warnings(config, logger):
 
 def setup(app):
     app.add_builder(RinohBuilder)
-    app.add_config_value('rinoh_documents', default_documents, 'env')
+    app.add_config_value('rinoh_documents', None, 'env')
     app.add_config_value('rinoh_logo', None, 'html')
     app.add_config_value('rinoh_domain_indices', None, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
