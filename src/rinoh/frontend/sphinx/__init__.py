@@ -316,13 +316,12 @@ def default_domain_indices(config):
 
 
 def variable_removed_warnings(config, logger):
-    message = ("Support for '{variable}' has been removed. Instead,"
-               " please specify the stylesheet to use in your template"
-               " configuration.")
+    message = ("Support for '{}' has been removed. Instead, please specify"
+               " the {} to use in your template configuration.")
     if config.rinoh_stylesheet:
-        logger.warning(message.format(variable='rinoh_stylesheet'))
+        logger.warning(message.format('rinoh_stylesheet', 'style sheet'))
     if config.rinoh_paper_size:
-        logger.warning(message.format(variable='rinoh_paper_size'))
+        logger.warning(message.format('rinoh_paper_size', 'paper size'))
 
 
 def setup(app):
