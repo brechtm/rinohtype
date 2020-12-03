@@ -30,9 +30,15 @@ class MyDocumentTemplate(DocumentTemplate):
 document_tree = DocumentTree([])
 
 
+def create_document(configuration):
+    doc = MyDocumentTemplate(document_tree, configuration=configuration)
+    doc.backend_document = doc.backend.Document(doc.CREATOR)
+    return doc
+
+
 def test_template_configuration():
     conf = MyDocumentTemplate.Configuration('test', a=False)
-    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    doc = create_document(conf)
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True
@@ -49,7 +55,7 @@ def test_template_configuration_base():
     base_conf = MyDocumentTemplate.Configuration('base', a=False)
     conf = MyDocumentTemplate.Configuration('test', base=base_conf, b=False)
     conf('contents_page', column_spacing=10*PT)
-    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    doc = create_document(conf)
     assert doc.get_option('a') == False
     assert doc.get_option('b') == False
     assert doc.get_option('c') == True
@@ -70,7 +76,7 @@ def test_template_configuration_unsupported_option():
 def test_template_configuration_var():
     conf = MyDocumentTemplate.Configuration('test', a=False)
     conf.variables['paper_size'] = A5
-    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    doc = create_document(conf)
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True
@@ -86,7 +92,7 @@ def test_template_configuration_var2():
     conf = MyDocumentTemplate.Configuration('test', a=False)
     conf('contents_page', columns=2)
     conf.variables['paper_size'] = A5
-    doc = MyDocumentTemplate(document_tree, configuration=conf)
+    doc = create_document(conf)
     assert doc.get_option('a') == False
     assert doc.get_option('b') == True
     assert doc.get_option('c') == True

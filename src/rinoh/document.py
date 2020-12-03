@@ -166,17 +166,6 @@ class Page(Container):
         self.canvas.place_annotations()
 
 
-class BackendDocumentMetadata(object):
-    def __init__(self, name):
-        self.name = name
-
-    def __get__(self, instance, object_type):
-        return instance.backend_document.get_metadata(self.name)
-
-    def __set__(self, instance, value):
-        return instance.backend_document.set_metadata(self.name, value)
-
-
 class PartPageCount(object):
     def __init__(self):
         self.count = 0
@@ -209,12 +198,6 @@ class Document(object):
 
     CACHE_EXTENSION = '.rtc'
 
-    # FIXME: get backend document metadata from Document metadata
-    title = BackendDocumentMetadata('title')
-    author = BackendDocumentMetadata('author')
-    subject = BackendDocumentMetadata('subject')
-    keywords = BackendDocumentMetadata('keywords')
-
     def __init__(self, document_tree, stylesheet, language, strings=None,
                  backend=None):
         """`backend` specifies the backend to use for rendering the document."""
@@ -227,7 +210,6 @@ class Document(object):
         self.language = language
         self._strings = strings or Strings()
         self.backend = backend or pdf
-        self.backend_document = self.backend.Document(self.CREATOR)
         self._flowables = list(id(element)
                                for element in document_tree.elements)
 
@@ -304,17 +286,17 @@ to the terms of the GNU Affero General Public License version 3.''')
         cache_path = filename.with_suffix(self.CACHE_EXTENSION)
         try:
             with cache_path.open('rb') as file:
-                prev_number_of_pages, prev_page_references = pickle.load(file)
+                part_page_counts, page_references = pickle.load(file)
             print('References cache read from {}'.format(cache_path))
         except (IOError, TypeError):
-            prev_number_of_pages, prev_page_references = {}, {}
-        return prev_number_of_pages, prev_page_references
+            part_page_counts, page_references = {}, {}
+        return part_page_counts, page_references
 
-    def _save_cache(self, filename, section_number_of_pages, page_references):
+    def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.rtc`"""
         cache_path = Path(filename).with_suffix(self.CACHE_EXTENSION)
         with cache_path.open('wb') as file:
-            cache = (section_number_of_pages, page_references)
+            cache = (self.part_page_counts, self.page_references)
             pickle.dump(cache, file)
 
     def set_string(self, strings_class, key, value):
@@ -339,7 +321,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.error = False
         filename_root = Path(filename_root) if filename_root else None
         if filename_root and file is None:
-            extension = self.backend_document.extension
+            extension = self.backend.Document.extension
             filename = filename_root.with_suffix(extension)
             file = filename.open('wb')
         elif file and filename_root is None:
@@ -348,39 +330,27 @@ to the terms of the GNU Affero General Public License version 3.''')
             raise ValueError("You need to specify either 'filename_root' or "
                              "'file'.")
 
-        def has_converged(part_page_counts):
-            """Return `True` if the last rendering iteration converged to a
-            stable result.
-
-            Practically, this tests whether the total number of pages and page
-            references to document elements have changed since the previous
-            rendering iteration."""
-            nonlocal prev_number_of_pages, prev_page_references
-            return (part_page_counts == prev_number_of_pages and
-                    self.page_references == prev_page_references)
-
         fake_container = FakeContainer(self)
+        prev_page_counts, prev_page_refs = self._load_cache(filename_root)
         try:
             self.document_tree.build_document(fake_container)
-            (prev_number_of_pages,
-             prev_page_references) = self._load_cache(filename_root)
-
-            self.part_page_counts = prev_number_of_pages
             self.prepare(fake_container)
             self.page_elements.clear()
-            self.page_references = prev_page_references.copy()
-            self.part_page_counts = self._render_pages()
-            while not has_converged(self.part_page_counts):
-                prev_number_of_pages = self.part_page_counts
-                prev_page_references = self.page_references.copy()
-                print('Not yet converged, rendering again...')
-                del self.backend_document
+            self.part_page_counts = prev_page_counts
+            self.page_references = prev_page_refs.copy()
+            while True:
                 self.backend_document = self.backend.Document(self.CREATOR)
                 self.part_page_counts = self._render_pages()
-            self.create_outlines()
+                if (self.part_page_counts == prev_page_counts
+                        and self.page_references == prev_page_refs):
+                    break
+                print('Not yet converged, rendering again...')
+                prev_page_counts = self.part_page_counts
+                prev_page_refs = self.page_references.copy()
+                del self.backend_document
+            self._create_outlines(self.backend_document)
             if filename:
-                self._save_cache(filename_root, self.part_page_counts,
-                                 self.page_references)
+                self._save_cache(filename_root)
                 self.style_log.write_log(filename_root)
                 print('Writing output: {}'.format(filename))
             self.backend_document.write(file)
@@ -389,7 +359,30 @@ to the terms of the GNU Affero General Public License version 3.''')
                 file.close()
         return not self.error
 
-    def create_outlines(self):
+    def _render_pages(self):
+        """Render the complete document once and return the number of pages
+        rendered."""
+        self.style_log = StyleLog(self.stylesheet)
+        self.floats = set()
+        self.placed_footnotes = set()
+        self._start_time = time.time()
+
+        part_page_counts = {}
+        part_page_count = PartPageCount()
+        last_number_format = None
+        for part_template in self.part_templates:
+            part = part_template.document_part(self)
+            if part is None:
+                continue
+            if part_template.page_number_format != last_number_format:
+                part_page_count = PartPageCount()
+            part_page_count += part.render(part_page_count.count + 1)
+            part_page_counts[part_template.name] = part_page_count
+            last_number_format = part_template.page_number_format
+        sys.stdout.write('\n')     # for the progress indicator
+        return part_page_counts
+
+    def _create_outlines(self, backend_document):
         """Create an outline in the output file that allows for easy navigation
         of the document. The outline is a hierarchical tree of all the sections
         in the document."""
@@ -418,30 +411,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             item = (str(section_id), section_number, section_title, current)
             parent.append(item)
             current_level = section.level
-        self.backend_document.create_outlines(sections)
-
-    def _render_pages(self):
-        """Render the complete document once and return the number of pages
-        rendered."""
-        self.style_log = StyleLog(self.stylesheet)
-        self.floats = set()
-        self.placed_footnotes = set()
-        self._start_time = time.time()
-
-        part_page_counts = {}
-        part_page_count = PartPageCount()
-        last_number_format = None
-        for part_template in self.part_templates:
-            part = part_template.document_part(self)
-            if part is None:
-                continue
-            if part_template.page_number_format != last_number_format:
-                part_page_count = PartPageCount()
-            part_page_count += part.render(part_page_count.count + 1)
-            part_page_counts[part_template.name] = part_page_count
-            last_number_format = part_template.page_number_format
-        sys.stdout.write('\n')     # for the progress indicator
-        return part_page_counts
+        backend_document.create_outlines(sections)
 
     PROGRESS_TEMPLATE = \
         '\r{:3d}% [{}{}] ETA {:02d}:{:02d} ({:02d}:{:02d}) page {}'

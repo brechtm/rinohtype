@@ -50,6 +50,7 @@ CONFIG_DIR = 'confdir'
 def get_contents_page_size(template_configuration):
     doctree = DocumentTree([])
     doc = template_configuration.document(doctree)
+    doc.backend_document = doc.backend.Document(doc.CREATOR)
     part_template = doc.part_templates[2]
     part = part_template.document_part(doc)
     assert part.template_name == 'contents'
