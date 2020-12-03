@@ -458,7 +458,8 @@ class Document(dict):
     PRODUCER = 'rinohtype v{} PDF backend ({})'.format(__version__,
                                                        __release_date__)
 
-    def __init__(self, creator):
+    def __init__(self, creator,
+                 title=None, author=None, subject=None, keywords=None):
         self.catalog = Catalog()
         self.catalog['PageLabels'] = Dictionary(indirect=True)
         self.catalog['PageLabels']['Nums'] = Array()
@@ -466,6 +467,10 @@ class Document(dict):
         self.timestamp = time.time()
         self.set_info('Creator', creator)
         self.set_info('Producer', self.PRODUCER)
+        self.set_info('Title', title)
+        self.set_info('Author', author)
+        self.set_info('Subject', subject)
+        self.set_info('Keywords', keywords)
         self.info['CreationDate'] = Date(self.timestamp)
         self.id = None
         self.dests = {}

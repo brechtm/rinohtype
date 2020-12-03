@@ -27,8 +27,9 @@ New Features:
 * Selectors in style sheet files (.rts) now support boolean and 'None' values.
   For example, you can select StaticGroupedFlowables based on whether they have
   any children or not: e.g ``TableCell(empty=true)`` selects empty table cells.
+* The document's title and author are now stored in the PDF metadata.
 * "0" is now accepted as a valid value for Dimension-type attributes in style
-  sheets and template configurations
+  sheets and template configurations.
 
 Changed:
 

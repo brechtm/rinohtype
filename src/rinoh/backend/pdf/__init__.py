@@ -24,8 +24,10 @@ from ...font.opentype import OpenTypeFont
 class Document(object):
     extension = '.pdf'
 
-    def __init__(self, creator):
-        self.cos_document = cos.Document(creator)
+    def __init__(self, creator,
+                 title=None, author=None, subject=None, keywords=None):
+        self.cos_document = cos.Document(creator, title, author, subject,
+                                         keywords)
         self.pages = []
         self.fonts = {}
         self._font_number = 0

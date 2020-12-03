@@ -332,6 +332,8 @@ to the terms of the GNU Affero General Public License version 3.''')
 
         fake_container = FakeContainer(self)
         prev_page_counts, prev_page_refs = self._load_cache(filename_root)
+        metadata_args = {key: self.get_metadata(key)
+                         for key in ('title', 'author')}
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
@@ -339,7 +341,8 @@ to the terms of the GNU Affero General Public License version 3.''')
             self.part_page_counts = prev_page_counts
             self.page_references = prev_page_refs.copy()
             while True:
-                self.backend_document = self.backend.Document(self.CREATOR)
+                self.backend_document = self.backend.Document(self.CREATOR,
+                                                              **metadata_args)
                 self.part_page_counts = self._render_pages()
                 if (self.part_page_counts == prev_page_counts
                         and self.page_references == prev_page_refs):
