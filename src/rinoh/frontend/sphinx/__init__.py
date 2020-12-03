@@ -333,4 +333,5 @@ def setup(app):
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')
     app.add_config_value('rinoh_paper_size', None, 'html')
-    return dict(version=rinoh_version)
+    return dict(version=rinoh_version,
+                parallel_read_safe=True)
