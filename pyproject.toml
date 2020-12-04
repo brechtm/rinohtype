@@ -21,7 +21,7 @@ rinoh-typeface-dejavuserif = "^0.1.1"
 [tool.poetry.dev-dependencies]
 bump2version = "^1.0.0"
 restview = "^2.9.2"
-tox = "^3.15.2"
+tox = "^3.20.1"
 twine = "^1.15.0"
 pytest = "^6.1.1"
 pytest-assume = "^2.3.3"
