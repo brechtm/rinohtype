@@ -1,0 +1,7 @@
+[STYLESHEET]
+name = Sphinx minimal
+base = base.rts
+
+
+[here : StyledText(has_class='here')]
+before = '' IMAGE('stylesheet.png')

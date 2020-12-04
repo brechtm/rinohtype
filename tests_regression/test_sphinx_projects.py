@@ -14,6 +14,12 @@ def test_subdir(app, verify):
     verify()
 
 
+@pytest.mark.sphinx(buildername='rinoh', testroot='relativepaths')
+def test_relativepaths(app, verify):
+    app.build()
+    verify()
+
+
 @pytest.mark.sphinx(buildername='rinoh', testroot='outoflineflowables')
 def test_outoflineflowables(app, verify):
     app.build()
