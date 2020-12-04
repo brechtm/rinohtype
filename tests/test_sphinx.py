@@ -17,8 +17,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
 from rinoh.document import DocumentTree
-from rinoh.frontend.sphinx import (set_document_metadata,
-                                   variable_removed_warnings)
+from rinoh.frontend.sphinx import variable_removed_warnings
 from rinoh.language import IT
 from rinoh.paper import A4
 from rinoh.templates import Book, Article
@@ -126,7 +125,7 @@ def test_sphinx_set_document_metadata(tmp_path):
     docutils_tree = create_document()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    set_document_metadata(rinoh_doc, app.config, docutils_tree)
+    app.builder.set_document_metadata(rinoh_doc, docutils_tree)
     assert rinoh_doc.metadata['title'] == 'A Title'
     assert rinoh_doc.metadata['subtitle'] == 'Release 1.0'
     assert rinoh_doc.metadata['author'] == 'Ann Other'
@@ -142,7 +141,7 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
     docutil_tree = create_document()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    set_document_metadata(rinoh_doc, app.config, docutil_tree)
+    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
     assert expected_subtitle == rinoh_doc.metadata['subtitle']
 
 
@@ -153,8 +152,8 @@ def test_sphinx_set_document_metadata_logo(tmp_path):
     docutil_tree = create_document()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    set_document_metadata(rinoh_doc, app.config, docutil_tree)
-    assert expected_logo == rinoh_doc.metadata['logo']
+    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
+    assert Path(app.confdir) / expected_logo == rinoh_doc.metadata['logo']
 
 
 def test_sphinx_default_deprecation_warning(caplog, tmp_path):

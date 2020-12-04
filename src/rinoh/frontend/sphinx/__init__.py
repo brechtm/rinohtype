@@ -237,7 +237,7 @@ class RinohBuilder(Builder, Source):
         rinoh_document = template_cfg.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         rinoh_document.insert('back_matter', extra_indices, 0)  # TODO: use out-of-line flowables?
-        set_document_metadata(rinoh_document, self.config, doctree)
+        self.set_document_metadata(rinoh_document, doctree)
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
@@ -272,19 +272,21 @@ class RinohBuilder(Builder, Source):
                                                    **template_cfg)
         return sphinx_config
 
-
-def set_document_metadata(rinoh_document, config, doctree):
-    metadata = rinoh_document.metadata
-    rinoh_logo = config.rinoh_logo
-    if rinoh_logo:
-        metadata['logo'] = rinoh_logo
-    metadata['title'] = doctree.settings.title
-    metadata['subtitle'] = _('Release') + ' {}'.format(config.release)
-    metadata['author'] = doctree.settings.author
-    date = config.today or format_date(config.today_fmt or _('%b %d, %Y'),
-                                       language=config.language)
-    metadata['date'] = date
-    metadata.update(config.rinoh_metadata)
+    def set_document_metadata(self, rinoh_document, doctree):
+        metadata = rinoh_document.metadata
+        if self.config.rinoh_logo:
+            rinoh_logo = Path(self.config.rinoh_logo)
+            if not rinoh_logo.is_absolute():
+                rinoh_logo = self.confdir / rinoh_logo
+            metadata['logo'] = rinoh_logo
+        metadata['title'] = doctree.settings.title
+        metadata['subtitle'] = _('Release') + ' {}'.format(self.config.release)
+        metadata['author'] = doctree.settings.author
+        date = (self.config.today
+                or format_date(self.config.today_fmt or _('%b %d, %Y'),
+                               language=self.config.language))
+        metadata['date'] = date
+        metadata.update(self.config.rinoh_metadata)
 
 
 def fully_qualified_id(docname, id):
