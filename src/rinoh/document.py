@@ -32,7 +32,7 @@ from copy import copy
 from itertools import count
 
 from . import __version__, __release_date__
-from .attribute import OptionSet
+from .attribute import OptionSet, Source
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
@@ -180,6 +180,25 @@ class PartPageCount(object):
         return self
 
 
+class Metadata(dict, Source):
+    def __init__(self, document, **items):
+        super().__init__(**items)
+        self._document = document
+
+    def __setitem__(self, key, value):
+        try:
+            value.source = self
+        except AttributeError:
+            pass
+        super().__setitem__(key, value)
+
+    def __getitem__(self, key):
+        return copy(super().__getitem__(key))
+
+    @property
+    def location(self):
+        return 'document metadata'
+
 
 class Document(object):
     """Renders a document tree to pages
@@ -212,7 +231,7 @@ class Document(object):
         self._flowables = list(id(element)
                                for element in document_tree.elements)
 
-        self.metadata = dict(date=datetime.date.today())
+        self.metadata = Metadata(self, date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to flowables
         self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
@@ -241,7 +260,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         return self._unique_id
 
     def get_metadata(self, key):
-        return copy(self.metadata.get(key))
+        return self.metadata.get(key)
 
     def register_element(self, element):
         primary_id = (element.get_id(self, create=False)
