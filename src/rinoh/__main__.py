@@ -22,7 +22,7 @@ from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
 from rinoh.font import Typeface, FontSlant, FontWeight, FontWidth
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.paragraph import ParagraphStyle, Paragraph
-from rinoh.resource import ResourceNotInstalled
+from rinoh.resource import ResourceNotFound
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
@@ -225,7 +225,7 @@ def main():
         else:
             try:
                 stylesheet = StyleSheet.from_string(args.stylesheet)
-            except ResourceNotInstalled as err:
+            except ResourceNotFound as err:
                 raise SystemExit("Could not find the Style sheet '{}'. "
                                  "Aborting.\n"
                                  "Run `{} --list-stylesheets` to find out "
@@ -289,7 +289,7 @@ def main():
             if not success:
                 raise SystemExit('Rendering completed with errors')
             break
-        except ResourceNotInstalled as err:
+        except ResourceNotFound as err:
             not_installed_msg = ("{} '{}' not installed."
                                  .format(err.resource_type.title(),
                                          err.resource_name))

@@ -22,7 +22,7 @@ from .attribute import AttributeType
 from .util import NotImplementedAttribute, class_property
 
 
-__all__ = ['Resource', 'ResourceNotInstalled']
+__all__ = ['Resource', 'ResourceNotFound']
 
 
 class Resource(AttributeType):
@@ -35,19 +35,19 @@ class Resource(AttributeType):
     @classmethod
     def parse_string(cls, resource_name):
         entry_point_name = resource_name.lower()
-        entry_points = (ep for ep in ilm.entry_points()[cls.entry_point_group]
-                        if ep.name == entry_point_name)
+        entry_points = find_entry_points(entry_point_name,
+                                         cls.entry_point_group)
         try:
-            entry_point = next(entry_points)
+            entry_point, dist = next(entry_points)
         except StopIteration:
-            raise ResourceNotInstalled(cls, resource_name, entry_point_name)
-        other_distributions = [repr(ep.dist) for ep in entry_points]
+            raise ResourceNotFound(cls, resource_name, entry_point_name)
+        other_distributions = [dist for _, dist in entry_points]
         if other_distributions:
             warn("The {} '{}' is also provided by:\n".format(cls.resource_type,
                                                              resource_name)
-                 + ''.join('* {}\n'.format(dist)
+                 + ''.join('* {}\n'.format(dist.metadata['Name'])
                            for dist in other_distributions)
-                 + 'Using ' + repr(entry_point.dist))
+                 + "Using the one from '{}'".format(dist.metadata['Name']))
         return entry_point.load()
 
     @class_property
@@ -72,11 +72,11 @@ class Resource(AttributeType):
         return success
 
 
-class ResourceNotInstalled(Exception):
+class ResourceNotFound(Exception):
     """Exception raised when a resource was not found
 
     Args:
-        resource_type (): the type of the resource
+        resource_type (type): the type of the resource
         resource_name (str): the name of the resource
         entry_point_name (str): the entry point name for the resource
 
@@ -101,6 +101,19 @@ def entry_point_name_to_identifier(entry_point_name):
         ascii_name = entry_point_name.encode('punycode').decode('ascii')
     return ''.join(char for char in ascii_name
                    if char in string.ascii_lowercase + string.digits)
+
+
+def find_entry_points(name, group):
+    """Find all `name` entry points with in `group`
+
+    Returns:
+        Iterator[(EntryPoint, Distribution)]: entry point and distribution
+            it belongs to
+
+    """
+    yield from ((ep, dist) for dist in ilm.distributions()
+                for ep in dist.entry_points
+                if ep.group == group and ep.name == name)
 
 
 # dynamic entry point creation
