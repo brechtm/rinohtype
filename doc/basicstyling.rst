@@ -221,6 +221,9 @@ the template file using :class:`.TemplateConfigurationFile`:
 
 .. testcode:: my_document
 
+    import sys
+    from pathlib import Path
+
     from rinoh.frontend.rst import ReStructuredTextReader
     from rinoh.template import TemplateConfigurationFile
 
@@ -230,7 +233,8 @@ the template file using :class:`.TemplateConfigurationFile`:
         document_tree = parser.parse(file)
 
     # load the article template configuration file
-    config = TemplateConfigurationFile('my_article.rtt')
+    script_path = Path(sys.path[0]).resolve()
+    config = TemplateConfigurationFile(script_path / 'my_article.rtt')
 
     # render the document to 'my_document.pdf'
     document = config.document(document_tree)
