@@ -191,7 +191,7 @@ class RinohBuilder(Builder, Source):
                     yield IndexSection(SingleStyledText(index_section_label),
                                        index_flowables(content))
 
-    def init_document_data(self):
+    def init_document_data(self, logger):
         document_data = []
         # assign subdirs to titles
         self.titles = []
@@ -209,7 +209,7 @@ class RinohBuilder(Builder, Source):
 
     def write(self, *ignored):
         variable_removed_warnings(self.config, logger)
-        document_data = self.init_document_data()
+        document_data = self.init_document_data(logger)
         for entry in document_data:
             docname, targetname, title, author = entry[:4]
             toctree_only = entry[4] if len(entry) > 4 else False
@@ -305,7 +305,7 @@ def latex_document_to_rinoh_document(entry, logger):
     startdocname, targetname, title, author, documentclass = entry[:5]
     toctree_only = entry[5] if len(entry) > 5 else False
     targetname_root, _ = os.path.splitext(targetname)
-    return startdocname, targetname_root, title, author, toctree_only
+    return [startdocname, targetname_root, title, author, toctree_only]
 
 
 def variable_removed_warnings(config, logger):

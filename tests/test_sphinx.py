@@ -39,6 +39,7 @@ def create_sphinx_app(tmp_path, **confoverrides):
                      doctreedir=str(tmp_path / 'doctrees'),
                      buildername='rinoh',
                      confoverrides=confoverrides)
+        app.env.all_docs['index'] = 0
     return app
 
 
@@ -87,30 +88,6 @@ def test_sphinx_config_latex_option_no_effect(latex_option, value, tmp_path):
     rinoh_option = latex_option.replace("latex", "rinoh")
     assert getattr(app.config, latex_option) == value
     assert getattr(app.config, rinoh_option) is None
-
-
-def test_sphinx_config_latex_documents_fallback(caplog, tmp_path):
-    latex_documents = [('index', 'doc.tex', 'Title', 'Author', 'manual', True)]
-    rinoh_documents = [('index', 'doc', 'Title', 'Author', True)]
-    app = create_sphinx_app(tmp_path, latex_documents=latex_documents)
-    with caplog.at_level(logging.WARNING):
-        documents = preliminary_document_data(app.config, LOGGER)
-    assert documents == rinoh_documents
-    assert ("'rinoh_documents' config variable not set, automatically"
-            " converting from 'latex_documents'") in caplog.text
-
-
-def test_sphinx_config_latex_documents_ignored(capsys, tmp_path):
-    latex_documents = [('index', 'doc.tex', 'Title', 'Author', 'manual', True)]
-    rinoh_documents = [('index', 'rinoh_doc', 'Title', 'Author', False)]
-    app = create_sphinx_app(
-        tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
-    stdout, stderr = capsys.readouterr()
-    assert app.config.rinoh_documents == rinoh_documents
-    assert ("'rinoh_documents' config variable not set, automatically"
-            " converting from 'latex_documents'") not in stdout
-    assert ("'rinoh_documents' config variable not set, automatically"
-            " converting from 'latex_documents'") not in stderr
 
 
 def test_sphinx_config_language(tmp_path):
@@ -191,6 +168,17 @@ def test_sphinx_set_document_metadata_logo(tmp_path):
     assert Path(app.confdir) / expected_logo == rinoh_doc.metadata['logo']
 
 
+def test_sphinx_set_document_metadata_logo_absolute(tmp_path):
+    expected_logo = tmp_path / 'confdir' / 'logo.png'
+    app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
+    template_cfg = app.builder.template_from_config(LOGGER)
+    docutil_tree = create_document()
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
+    assert expected_logo == rinoh_doc.metadata['logo']
+
+
 def test_sphinx_default_deprecation_warning(caplog, tmp_path):
     app = create_sphinx_app(tmp_path)
     with caplog.at_level(logging.WARNING):
@@ -210,3 +198,51 @@ def test_sphinx_rinoh_paper_size_removed(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
     assert "Support for 'rinoh_paper_size' has been removed" in caplog.text
+
+
+def test_sphinx_init_document_data_rinoh_documents(tmp_path):
+    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
+    document_data = app.builder.init_document_data(LOGGER)
+    assert document_data == rinoh_documents
+
+
+def test_sphinx_init_document_data_rinoh_documents_unknown(caplog, tmp_path):
+    rinoh_documents = [['not_here', 'rinoh_doc', 'Title', 'Author', False]]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
+    with caplog.at_level(logging.WARNING):
+        document_data = app.builder.init_document_data(LOGGER)
+    assert not document_data
+    assert ('"rinoh_documents" config value references unknown document '
+            'not_here') in caplog.text
+
+@pytest.mark.this_one
+def test_sphinx_init_document_data_no_rinoh_documents(caplog, tmp_path):
+    app = create_sphinx_app(tmp_path, latex_documents=None)
+    with caplog.at_level(logging.WARNING):
+        document_data = app.builder.init_document_data(LOGGER)
+    assert not document_data
+    assert ('no "rinoh_documents" config value found; no documents will be'
+            ' written') in caplog.text
+
+
+def test_sphinx_init_document_data_latex_documents_fallback(caplog, tmp_path):
+    latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
+    rinoh_documents = [['index', 'doc', 'Title', 'Author', True]]
+    app = create_sphinx_app(tmp_path, latex_documents=latex_documents)
+    with caplog.at_level(logging.WARNING):
+        document_data = app.builder.init_document_data(LOGGER)
+    assert document_data == rinoh_documents
+    assert ("'rinoh_documents' config variable not set, automatically"
+            " converting from 'latex_documents'") in caplog.text
+
+
+def test_sphinx_init_document_data_latex_documents_ignored(caplog, tmp_path):
+    latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
+    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
+    with caplog.at_level(logging.WARNING):
+        document_data = app.builder.init_document_data(LOGGER)
+    assert document_data == rinoh_documents
+    assert ("'rinoh_documents' config variable not set, automatically"
+            " converting from 'latex_documents'") not in caplog.text
