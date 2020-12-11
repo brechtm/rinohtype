@@ -199,49 +199,51 @@ def test_sphinx_rinoh_paper_size_removed(caplog, tmp_path):
     assert "Support for 'rinoh_paper_size' has been removed" in caplog.text
 
 
-def test_sphinx_init_document_data_rinoh_documents(tmp_path):
+def test_sphinx_document_data_rinoh_documents(tmp_path):
     rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
-    document_data = app.builder.init_document_data(LOGGER)
+    document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
 
 
-def test_sphinx_init_document_data_rinoh_documents_unknown(caplog, tmp_path):
+def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
     rinoh_documents = [['not_here', 'rinoh_doc', 'Title', 'Author', False]]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     with caplog.at_level(logging.WARNING):
-        document_data = app.builder.init_document_data(LOGGER)
+        document_data = app.builder.document_data(LOGGER)
     assert not document_data
     assert ('"rinoh_documents" config value references unknown document '
             'not_here') in caplog.text
 
+
 @pytest.mark.this_one
-def test_sphinx_init_document_data_no_rinoh_documents(caplog, tmp_path):
+def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):
     app = create_sphinx_app(tmp_path, latex_documents=None)
     with caplog.at_level(logging.WARNING):
-        document_data = app.builder.init_document_data(LOGGER)
+        document_data = app.builder.document_data(LOGGER)
     assert not document_data
     assert ('no "rinoh_documents" config value found; no documents will be'
             ' written') in caplog.text
 
 
-def test_sphinx_init_document_data_latex_documents_fallback(caplog, tmp_path):
+def test_sphinx_document_data_latex_documents_fallback(caplog, tmp_path):
     latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
     rinoh_documents = [['index', 'doc', 'Title', 'Author', True]]
     app = create_sphinx_app(tmp_path, latex_documents=latex_documents)
     with caplog.at_level(logging.WARNING):
-        document_data = app.builder.init_document_data(LOGGER)
+        document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
     assert ("'rinoh_documents' config variable not set, automatically"
             " converting from 'latex_documents'") in caplog.text
 
 
-def test_sphinx_init_document_data_latex_documents_ignored(caplog, tmp_path):
+def test_sphinx_document_data_latex_documents_ignored(caplog, tmp_path):
     latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
     rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
-    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
+    app = create_sphinx_app(
+        tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
     with caplog.at_level(logging.WARNING):
-        document_data = app.builder.init_document_data(LOGGER)
+        document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
     assert ("'rinoh_documents' config variable not set, automatically"
             " converting from 'latex_documents'") not in caplog.text
@@ -249,10 +251,9 @@ def test_sphinx_init_document_data_latex_documents_ignored(caplog, tmp_path):
 
 def test_sphinx_titles(caplog, tmp_path):
     rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False],
-    ['other/index', 'rinoh_doc', 'Other Title', 'Other Author']]
+                       ['other/index', 'rinoh_doc', 'Other Title', 'Other Author']]
     all_docs = [doc[0] for doc in rinoh_documents]
-    app = create_sphinx_app(tmp_path, all_docs=all_docs, rinoh_documents=rinoh_documents)
-    with caplog.at_level(logging.WARNING):
-        _ = app.builder.init_document_data(LOGGER)
-        titles = app.builder.titles
+    app = create_sphinx_app(tmp_path, all_docs=all_docs,
+                            rinoh_documents=rinoh_documents)
+    titles = app.builder.titles
     assert titles == [('index', "Title"), ('other/', "Other Title")]
