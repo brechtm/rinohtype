@@ -17,8 +17,7 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
 from rinoh.document import DocumentTree
-from rinoh.frontend.sphinx import (
-    variable_removed_warnings, preliminary_document_data)
+from rinoh.frontend.sphinx import variable_removed_warnings
 from rinoh.language import IT
 from rinoh.paper import A4
 from rinoh.templates import Book, Article
@@ -27,7 +26,7 @@ from rinoh.templates import Book, Article
 LOGGER = logging.getLogger(__name__)
 
 
-def create_sphinx_app(tmp_path, **confoverrides):
+def create_sphinx_app(tmp_path, all_docs=('index',), **confoverrides):
     with docutils_namespace():
         confdir = tmp_path / 'confdir'
         confdir.mkdir()
@@ -39,7 +38,7 @@ def create_sphinx_app(tmp_path, **confoverrides):
                      doctreedir=str(tmp_path / 'doctrees'),
                      buildername='rinoh',
                      confoverrides=confoverrides)
-        app.env.all_docs['index'] = 0
+        app.env.all_docs.update({doc: 0 for doc in all_docs})
     return app
 
 
@@ -246,3 +245,14 @@ def test_sphinx_init_document_data_latex_documents_ignored(caplog, tmp_path):
     assert document_data == rinoh_documents
     assert ("'rinoh_documents' config variable not set, automatically"
             " converting from 'latex_documents'") not in caplog.text
+
+
+def test_sphinx_titles(caplog, tmp_path):
+    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False],
+    ['other/index', 'rinoh_doc', 'Other Title', 'Other Author']]
+    all_docs = [doc[0] for doc in rinoh_documents]
+    app = create_sphinx_app(tmp_path, all_docs=all_docs, rinoh_documents=rinoh_documents)
+    with caplog.at_level(logging.WARNING):
+        _ = app.builder.init_document_data(LOGGER)
+        titles = app.builder.titles
+    assert titles == [('index', "Title"), ('other/', "Other Title")]
