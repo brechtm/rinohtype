@@ -132,7 +132,7 @@ class Selector(object):
         return self.pri(-1)
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        return type(self) == type(other) and self.__dict__ == other.__dict__
 
     def pri(self, priority):
         return SelectorWithPriority(self, priority)
