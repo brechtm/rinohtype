@@ -79,14 +79,13 @@ def test_sphinx_config_latex_elements_papersize_no_effect(tmp_path):
     assert get_contents_page_size(template_cfg) == A4
 
 
-@pytest.mark.parametrize('latex_option, value', (('latex_logo', 'logo.png'),
-                                                 ('latex_domain_indices', True)))
-def test_sphinx_config_latex_option_no_effect(latex_option, value, tmp_path):
-    confoverrides = {latex_option: value}
+def test_sphinx_config_latex_option_no_effect(tmp_path):
+    confoverrides = dict(latex_logo='logo.png', latex_domain_indices=False)
     app = create_sphinx_app(tmp_path, **confoverrides)
-    rinoh_option = latex_option.replace("latex", "rinoh")
-    assert getattr(app.config, latex_option) == value
-    assert getattr(app.config, rinoh_option) is None
+    assert app.config.latex_logo == 'logo.png'
+    assert app.config.rinoh_logo is None
+    assert app.config.latex_domain_indices == False
+    assert app.config.rinoh_domain_indices is True
 
 
 def test_sphinx_config_language(tmp_path):

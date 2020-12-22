@@ -8,8 +8,6 @@ builder with the name *rinoh*. The builder recognizes the following ``conf.py``
 options. Of these, only :confval:`rinoh_documents` (or
 :confval:`sphinx:latex_documents`) is required.
 
-Note that
-
 .. confval:: rinoh_documents
 
     Determines how to group the document tree into PDF output files. Its format
@@ -45,6 +43,11 @@ Note that
         template = book
         stylesheet = my_stylesheet.rts
 
+.. note:: For some of the configuration variables listed below, rinohtype used
+    to fall back to the corresponding variable for the LaTeX builder. This
+    behavior was removed to make the configuration more transparent. Make sure
+    to set the rinoh variables if you relied on this.
+
 .. confval:: rinoh_paper_size
 
     This configuration variable is **no longer supported** since it was not
@@ -65,14 +68,14 @@ Note that
 .. confval:: rinoh_logo
 
     Path (relative to the configuration directory) to an image file to use at
-    the top of the title page. If not specified, the
-    :confval:`sphinx:latex_logo` value is used.
+    the top of the title page.
 
 .. confval:: rinoh_domain_indices
 
-    Controls the generation of domain-specific indices. Identical to
-    :confval:`sphinx:latex_domain_indices`, which is used when
-    :confval:`rinoh_domain_indices` is not specified.
+    If true, generate domain-specific indices in addition to the general index.
+    It is equivalent to the :confval:`sphinx:html_domain_indices` and
+    :confval:`sphinx:latex_domain_indices` configuration variables. Default:
+    ``True``.
 
 .. confval:: rinoh_metadata
 

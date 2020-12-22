@@ -114,6 +114,7 @@ class RinohBuilder(Builder, Source):
                 docname = docname[:-5]
             title = document_entry[2]
             return docname, title
+
         document_data = self.document_data(logger)
         return [title_mapping(entry) for entry in document_data]
 
@@ -125,13 +126,16 @@ class RinohBuilder(Builder, Source):
                                'document %s' % docname)
                 return False
             return True
+
         config = self.config
         if config.rinoh_documents:
             document_data = [rinoh_document_to_document_data(entry, logger)
-                             for entry in config.rinoh_documents if known_document_reference(entry[0])]
+                             for entry in config.rinoh_documents
+                             if known_document_reference(entry[0])]
         elif config.latex_documents:
-            document_data = [latex_document_to_document_data(entry, logger) for
-                             entry in config.latex_documents if known_document_reference(entry[0])]
+            document_data = [latex_document_to_document_data(entry, logger)
+                             for entry in config.latex_documents
+                             if known_document_reference(entry[0])]
         else:
             logger.warning('no "rinoh_documents" config value found; '
                            'no documents will be written')
@@ -332,7 +336,7 @@ def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', None, 'env')
     app.add_config_value('rinoh_logo', None, 'html')
-    app.add_config_value('rinoh_domain_indices', None, 'html')
+    app.add_config_value('rinoh_domain_indices', True, 'html')
     app.add_config_value('rinoh_template', 'book', 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')

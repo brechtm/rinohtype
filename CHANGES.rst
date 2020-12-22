@@ -42,6 +42,9 @@ Changed:
   configuration variables was removed. You can specify the style sheet and
   paper size to use in the template configuration (PR #195 and #192 by Alex
   Fargus)
+* Sphinx frontend: there is no more fallback to the corresponding LaTeX
+  builder's configuration variables when the these configuration variables are
+  not set: 'rinoh_logo', 'rinoh_domain_indices'.
 * Font weights and widths are now internally represented by integer classes.
   In addition to integer values, string values are still accepted (mapped to
   classes).
