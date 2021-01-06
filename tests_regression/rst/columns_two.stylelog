@@ -1,0 +1,385 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+  Note(id='id5')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:46 <footnote>
+    Paragraph('1')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('1')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('1')
+    StaticGroupedFlowables()
+      Paragraph('A footnote contains body element...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:46 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('A footnote contains body element...')
+          SingleStyledText('A footnote contains body element...')
+  Note(id='id7')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:52 <footnote>
+    Paragraph('2')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('2')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('2')
+    StaticGroupedFlowables()
+      Paragraph('This footnote is numbered automa...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:52 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('This footnote is numbered automa...')
+          SingleStyledText('This footnote is numbered automa...')
+  Note(id='label')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:49 <footnote>
+    Paragraph('3')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('3')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('3')
+    StaticGroupedFlowables()
+      Paragraph('Footnotes may be numbered, eithe...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:49 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('Footnotes may be numbered, eithe...')
+          SingleStyledText('Footnotes may be numbered, eithe...')
+          NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('1')
+          SingleStyledText(') or automatically using a "#"-p...')
+  Note(id='id8')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:55 <footnote>
+    Paragraph('4')
+         > (0,0,0,0,4) footnote label
+           (0,0,0,0,2) body
+      DirectReference('4')
+           x (0,0,0,1,1) unlinked reference
+           > fallback to default style
+        SingleStyledText('4')
+    StaticGroupedFlowables()
+      Paragraph('Footnotes may also use symbols, ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:55 <paragraph>
+           > (0,0,0,0,5) footnote paragraph
+             (0,0,0,0,2) body
+        MixedStyledText('Footnotes may also use symbols, ...')
+          SingleStyledText('Footnotes may also use symbols, ...')
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Paragraphs contain text and may ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:1 <paragraph>
+           > (0,0,0,0,2) body
+          InlineImage('../images/biohazard.png')   None:None <image>
+               x (0,0,0,0,2) inline image
+               > fallback to default style
+        MixedStyledText('Paragraphs contain text and may ...')
+          SingleStyledText('Paragraphs contain text and may ...')
+          MixedStyledText('emphasis', style='emphasis')   None:None <emphasis>
+               > (0,0,1,0,1) emphasis
+            SingleStyledText('emphasis')
+          SingleStyledText(', ')
+          MixedStyledText('strong emphasis', style='strong')   None:None <strong>
+               > (0,0,1,0,1) strong
+            SingleStyledText('strong emphasis')
+          SingleStyledText(', ')
+          MixedStyledText('inline literals', style='monospaced')   None:None <literal>
+               > (0,0,1,0,1) monospaced
+            SingleStyledText('inline literals')
+          SingleStyledText(', standalone hyperlinks (')
+          AnnotatedText('http://www.python.org', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('http://www.python.org')
+              SingleStyledText('http://www.python.org')
+          SingleStyledText('), external hyperlinks (')
+          AnnotatedText('Python', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('Python')
+              SingleStyledText('Python')
+          SingleStyledText('), internal cross-references (')
+          AnnotatedText('example', style='internal link')   None:None <reference>
+               > (0,0,1,0,1) internal hyperlink
+            MixedStyledText('example')
+              SingleStyledText('example')
+          SingleStyledText('), external hyperlinks with embe...')
+          AnnotatedText('Python web site', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('Python web site')
+              SingleStyledText('Python web site')
+          SingleStyledText('), footnote references (manually...')
+          NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('1')
+          SingleStyledText(', anonymous auto-numbered')
+          NoteMarkerByID('2', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('2')
+          SingleStyledText(', labeled auto-numbered')
+          NoteMarkerByID('3', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('3')
+          SingleStyledText(', or symbolic')
+          NoteMarkerByID('4', style='footnote')   None:None <footnote_reference>
+               > (0,0,1,0,1) footnote marker
+                 (0,0,0,1,1) linked reference
+            SingleStyledText('4')
+          SingleStyledText('), and substitution references (')
+          InlineImage('../images/biohazard.png')   None:None <image>
+               x (0,0,0,0,2) inline image
+               > fallback to default style
+          SingleStyledText('). Character-level inline markup...')
+          MixedStyledText('re', style='emphasis')   None:None <emphasis>
+               > (0,0,1,0,1) emphasis
+            SingleStyledText('re')
+          MixedStyledText('Structured', style='monospaced')   None:None <literal>
+               > (0,0,1,0,1) monospaced
+            SingleStyledText('Structured')
+          MixedStyledText('Text', style='emphasis')   None:None <emphasis>
+               > (0,0,1,0,1) emphasis
+            SingleStyledText('Text')
+          SingleStyledText('.  Problems are indicated by ')
+          SingleStyledText('|problematic|', style='error')   None:None <problematic>
+               > (0,0,1,0,1) error
+          SingleStyledText(' text (generated by processing e...')
+      Paragraph('The default role for interpreted...', id='example')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:16 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('The default role for interpreted...')
+          SingleStyledText('The default role for interpreted...')
+          MixedStyledText('Title Reference', style='title reference')   None:None <title_reference>
+               > (0,0,1,0,1) title reference
+            SingleStyledText('Title Reference')
+          SingleStyledText('.  Here are some explicit interp...')
+          AnnotatedText('PEP 287', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('PEP 287')
+              SingleStyledText('PEP 287')
+          SingleStyledText('); an RFC reference (')
+          AnnotatedText('RFC 2822', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('RFC 2822')
+              SingleStyledText('RFC 2822')
+          SingleStyledText('); a ')
+          Subscript('subscript', style=TextStyle)   None:None <subscript>
+            MixedStyledText('subscript')
+              SingleStyledText('subscript')
+          SingleStyledText('; a ')
+          Superscript('superscript', style=TextStyle)   None:None <superscript>
+            MixedStyledText('superscript')
+              SingleStyledText('superscript')
+          SingleStyledText('; and explicit roles for ')
+          MixedStyledText('standard', style='emphasis')   None:None <emphasis>
+               > (0,0,1,0,1) emphasis
+            SingleStyledText('standard')
+          SingleStyledText(' ')
+          MixedStyledText('inline', style='strong')   None:None <strong>
+               > (0,0,1,0,1) strong
+            SingleStyledText('inline')
+          SingleStyledText(' ')
+          MixedStyledText('markup', style='monospaced')   None:None <literal>
+               > (0,0,1,0,1) monospaced
+            SingleStyledText('markup')
+          SingleStyledText('.')
+      List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:23 <bullet_list>
+           > (0,0,1,0,2) bulleted list
+        ListItem()   None:None <list_item>
+             x (0,0,1,0,4) bulleted list item
+             > fallback to default style
+          ListItemLabel('•')
+               > (0,0,1,0,6) bulleted list item label
+                 (0,0,0,0,2) list item label
+              MixedStyledText('•')
+                SingleStyledText('')
+                SingleStyledText('•')
+                SingleStyledText('')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body
+            Paragraph('A bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:23 <paragraph>
+                 > (0,0,0,0,5) list item paragraph
+                   (0,0,0,0,2) body
+              MixedStyledText('A bullet list')
+                SingleStyledText('A bullet list')
+#### ChainedContainer('column2')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:23 <bullet_list>
+           > (0,0,1,0,2) bulleted list
+        (continued) ListItem()   None:None <list_item>
+             x (0,0,1,0,4) bulleted list item
+             > fallback to default style
+          (continued) StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body
+            List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:25 <bullet_list>
+                 > (0,0,1,0,5) nested bulleted list
+                   (0,0,1,0,2) bulleted list
+              ListItem()   None:None <list_item>
+                   x (0,0,1,0,4) bulleted list item
+                   > fallback to default style
+                ListItemLabel('•')
+                     > (0,0,1,0,6) bulleted list item label
+                       (0,0,0,0,2) list item label
+                    MixedStyledText('•')
+                      SingleStyledText('')
+                      SingleStyledText('•')
+                      SingleStyledText('')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body
+                  Paragraph('Nested bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:25 <paragraph>
+                       > (0,0,0,0,5) list item paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Nested bullet list')
+                      SingleStyledText('Nested bullet list')
+              ListItem()   None:None <list_item>
+                   x (0,0,1,0,4) bulleted list item
+                   > fallback to default style
+                ListItemLabel('•')
+                     > (0,0,1,0,6) bulleted list item label
+                       (0,0,0,0,2) list item label
+                    MixedStyledText('•')
+                      SingleStyledText('')
+                      SingleStyledText('•')
+                      SingleStyledText('')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body
+                  Paragraph('Nested item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:26 <paragraph>
+                       > (0,0,0,0,5) list item paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Nested item 2')
+                      SingleStyledText('Nested item 2')
+        ListItem()   None:None <list_item>
+             x (0,0,1,0,4) bulleted list item
+             > fallback to default style
+          ListItemLabel('•')
+               > (0,0,1,0,6) bulleted list item label
+                 (0,0,0,0,2) list item label
+              MixedStyledText('•')
+                SingleStyledText('')
+                SingleStyledText('•')
+                SingleStyledText('')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body
+            Paragraph('Item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:28 <paragraph>
+                 > (0,0,0,0,5) list item paragraph
+                   (0,0,0,0,2) body
+              MixedStyledText('Item 2')
+                SingleStyledText('Item 2')
+            Paragraph('Paragraph 2 of item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:30 <paragraph>
+                 > (0,0,0,0,5) list item paragraph
+                   (0,0,0,0,2) body
+              MixedStyledText('Paragraph 2 of item 2')
+                SingleStyledText('Paragraph 2 of item 2')
+            List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:32 <bullet_list>
+                 > (0,0,1,0,5) nested bulleted list
+                   (0,0,1,0,2) bulleted list
+              ListItem()   None:None <list_item>
+                   x (0,0,1,0,4) bulleted list item
+                   > fallback to default style
+                ListItemLabel('•')
+                     > (0,0,1,0,6) bulleted list item label
+                       (0,0,0,0,2) list item label
+                    MixedStyledText('•')
+                      SingleStyledText('')
+                      SingleStyledText('•')
+                      SingleStyledText('')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body
+                  Paragraph('Nested bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:32 <paragraph>
+                       > (0,0,0,0,5) list item paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Nested bullet list')
+                      SingleStyledText('Nested bullet list')
+              ListItem()   None:None <list_item>
+                   x (0,0,1,0,4) bulleted list item
+                   > fallback to default style
+                ListItemLabel('•')
+                     > (0,0,1,0,6) bulleted list item label
+                       (0,0,0,0,2) list item label
+                    MixedStyledText('•')
+                      SingleStyledText('')
+                      SingleStyledText('•')
+                      SingleStyledText('')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body
+                  Paragraph('Nested item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:33 <paragraph>
+                       > (0,0,0,0,5) list item paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Nested item 2')
+                      SingleStyledText('Nested item 2')
+                  List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:35 <bullet_list>
+                       > (0,0,1,0,5) nested bulleted list
+                         (0,0,1,0,2) bulleted list
+                    ListItem()   None:None <list_item>
+                         x (0,0,1,0,4) bulleted list item
+                         > fallback to default style
+                      ListItemLabel('•')
+                           > (0,0,1,0,6) bulleted list item label
+                             (0,0,0,0,2) list item label
+                          MixedStyledText('•')
+                            SingleStyledText('')
+                            SingleStyledText('•')
+                            SingleStyledText('')
+                      StaticGroupedFlowables()
+                           > (0,0,0,0,3) list item body
+                        Paragraph('Third level')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:35 <paragraph>
+                             > (0,0,0,0,5) list item paragraph
+                               (0,0,0,0,2) body
+                          MixedStyledText('Third level')
+                            SingleStyledText('Third level')
+                    ListItem()   None:None <list_item>
+                         x (0,0,1,0,4) bulleted list item
+                         > fallback to default style
+                      ListItemLabel('•')
+                           > (0,0,1,0,6) bulleted list item label
+                             (0,0,0,0,2) list item label
+                          MixedStyledText('•')
+                            SingleStyledText('')
+                            SingleStyledText('•')
+                            SingleStyledText('')
+                      StaticGroupedFlowables()
+                           > (0,0,0,0,3) list item body
+                        Paragraph('Item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:36 <paragraph>
+                             > (0,0,0,0,5) list item paragraph
+                               (0,0,0,0,2) body
+                          MixedStyledText('Item 2')
+                            SingleStyledText('Item 2')
+              ListItem()   None:None <list_item>
+                   x (0,0,1,0,4) bulleted list item
+                   > fallback to default style
+                ListItemLabel('•')
+                     > (0,0,1,0,6) bulleted list item label
+                       (0,0,0,0,2) list item label
+                    MixedStyledText('•')
+                      SingleStyledText('')
+                      SingleStyledText('•')
+                      SingleStyledText('')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body
+                  Paragraph('Nested item 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/columns_two.rst:38 <paragraph>
+                       > (0,0,0,0,5) list item paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Nested item 3')
+                      SingleStyledText('Nested item 3')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('​ ​')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+      MixedStyledText('​ ​')
+        Field('​')
+          SingleStyledText('​')
+        SingleStyledText(' ')
+        Field('​')
+          SingleStyledText('​')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	1/1')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('	1/1')
+        Tab('	')
+        Field('1')
+          SingleStyledText('1')
+        SingleStyledText('/')
+        Field('1')
+          SingleStyledText('1')

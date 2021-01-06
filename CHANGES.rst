@@ -54,13 +54,15 @@ Changed:
 
 Fixed:
 
-* the 'nested bulleted/enumerated list' selectors were broken; their
+* The 'nested bulleted/enumerated list' selectors were broken; their
   corresponding styles were never applied
-* items inside a table cannot be referenced (issue #174)
+* Items inside a table cannot be referenced (issue #174)
 * Sphinx frontend: fix handling of relative image paths in .rst files inside
   a directory in the Sphinx project root
 * GroupedLabeledFlowables: respect label_min_width and fix a crash with respect
   to space_below handling
+* Duplicate rendering of content in columns; if content was too small to fill
+  the first column, it was rendered again in subsequent columns.
 
 
 Release 0.4.2 (2020-07-28)

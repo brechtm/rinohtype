@@ -589,6 +589,8 @@ class Chain(FlowableTarget):
             self.flowables.flow(container, last_descender=None,
                                 state=self._state)
             # all flowables have been rendered
+            from .flowable import GroupedFlowablesState
+            self._state = GroupedFlowablesState(None, [])
             if container == self.last_container:
                 self._init_state()    # reset state for the next rendering loop
             self.done = True

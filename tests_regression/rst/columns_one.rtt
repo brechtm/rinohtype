@@ -1,0 +1,14 @@
+[TEMPLATE_CONFIGURATION]
+name=columns
+template=article
+stylesheet=columns.rts
+
+parts=contents
+
+[VARIABLES]
+paper_size=A5
+
+[contents_page]
+left_margin = 2cm
+right_margin = 2cm
+columns = 2
