@@ -7,6 +7,7 @@
 
 
 import os
+import re
 
 from os import path
 from pathlib import Path
@@ -108,15 +109,12 @@ class RinohBuilder(Builder, Source):
 
     @property
     def titles(self):
-        def title_mapping(document_entry):
-            docname = document_entry[0]
-            if docname.endswith(SEP + 'index'):
-                docname = docname[:-5]
-            title = document_entry[2]
-            return docname, title
-
+        def entry_mapping(entry):
+            doc = re.sub(SEP + 'index$', SEP, entry['doc'])
+            title = entry['title']
+            return doc, title
         document_data = self.document_data(logger)
-        return [title_mapping(entry) for entry in document_data]
+        return [entry_mapping(entry) for entry in document_data]
 
     @cached  # cached to avoid logging duplicate warnings
     def document_data(self, logger):
@@ -130,16 +128,17 @@ class RinohBuilder(Builder, Source):
         config = self.config
         if config.rinoh_documents:
             document_data = [rinoh_document_to_document_data(entry, logger)
-                             for entry in config.rinoh_documents
-                             if known_document_reference(entry[0])]
+                             for entry in config.rinoh_documents]
         elif config.latex_documents:
             document_data = [latex_document_to_document_data(entry, logger)
-                             for entry in config.latex_documents
-                             if known_document_reference(entry[0])]
+                             for entry in config.latex_documents]
         else:
             logger.warning('no "rinoh_documents" config value found; '
                            'no documents will be written')
             document_data = []
+        document_data = [entry
+                         for entry in document_data
+                         if known_document_reference(entry['doc'])]
         return document_data
 
     def get_outdated_docs(self):
@@ -311,7 +310,18 @@ def fully_qualified_id(docname, id):
 
 
 def rinoh_document_to_document_data(entry, logger):
-    return list(entry)
+    if type(entry) in (list, tuple):
+        return list_to_document_data(entry, logger)
+    return dict(entry)
+
+
+def list_to_document_data(entry, logger):
+    logger.warning(
+        "'rinoh_documents' converted from list. In future versions this shall be deprecated.")
+    keys = ("doc", "target", "title", "author", "toctree_only")
+    document_data = dict(zip(keys, entry))
+    document_data['template'] = 'book'
+    return document_data
 
 
 def latex_document_to_document_data(entry, logger):
@@ -320,7 +330,7 @@ def latex_document_to_document_data(entry, logger):
     startdocname, targetname, title, author, documentclass = entry[:5]
     toctree_only = entry[5] if len(entry) > 5 else False
     targetname_root, _ = os.path.splitext(targetname)
-    return [startdocname, targetname_root, title, author, toctree_only]
+    return list_to_document_data([startdocname, targetname_root, title, author, toctree_only], logger)
 
 
 def variable_removed_warnings(config, logger):

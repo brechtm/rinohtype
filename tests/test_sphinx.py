@@ -50,6 +50,13 @@ def create_document(title='A Title', author='Ann Other', docname='a_name'):
     return document
 
 
+def document_data_dict(**kwargs):
+    document_data = {'doc': 'index', 'target': 'rinoh_doc', 'template': 'book',
+                     'title': 'Title', 'author': 'Author', 'toctree_only': False}
+    document_data.update(kwargs)
+    return document_data
+
+
 def get_contents_page_size(template_configuration):
     doctree = DocumentTree([])
     doc = template_configuration.document(doctree)
@@ -199,7 +206,7 @@ def test_sphinx_rinoh_paper_size_removed(caplog, tmp_path):
 
 
 def test_sphinx_document_data_rinoh_documents(tmp_path):
-    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
+    rinoh_documents = [document_data_dict()]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
@@ -215,7 +222,15 @@ def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
             'not_here') in caplog.text
 
 
-@pytest.mark.this_one
+def test_sphinx_document_data_rinoh_documents_list(caplog, tmp_path):
+    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
+    with caplog.at_level(logging.WARNING):
+        document_data = app.builder.document_data(LOGGER)
+    assert document_data == [document_data_dict()]
+    assert ("'rinoh_documents' converted from list. In future versions this shall be deprecated.") in caplog.text
+
+
 def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):
     app = create_sphinx_app(tmp_path, latex_documents=None)
     with caplog.at_level(logging.WARNING):
@@ -227,18 +242,19 @@ def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):
 
 def test_sphinx_document_data_latex_documents_fallback(caplog, tmp_path):
     latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
-    rinoh_documents = [['index', 'doc', 'Title', 'Author', True]]
+    rinoh_documents = [document_data_dict(target='doc', toctree_only=True)]
     app = create_sphinx_app(tmp_path, latex_documents=latex_documents)
     with caplog.at_level(logging.WARNING):
         document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
     assert ("'rinoh_documents' config variable not set, automatically"
             " converting from 'latex_documents'") in caplog.text
+    assert ("'rinoh_documents' converted from list. In future versions this shall be deprecated.") in caplog.text
 
 
 def test_sphinx_document_data_latex_documents_ignored(caplog, tmp_path):
     latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
-    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
+    rinoh_documents = [document_data_dict()]
     app = create_sphinx_app(
         tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
     with caplog.at_level(logging.WARNING):
@@ -249,9 +265,9 @@ def test_sphinx_document_data_latex_documents_ignored(caplog, tmp_path):
 
 
 def test_sphinx_titles(caplog, tmp_path):
-    rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False],
-                       ['other/index', 'rinoh_doc', 'Other Title', 'Other Author']]
-    all_docs = [doc[0] for doc in rinoh_documents]
+    rinoh_documents = [document_data_dict(),
+                    document_data_dict(doc='other/index', title="Other Title")]
+    all_docs = [doc['doc'] for doc in rinoh_documents]
     app = create_sphinx_app(tmp_path, all_docs=all_docs,
                             rinoh_documents=rinoh_documents)
     titles = app.builder.titles
