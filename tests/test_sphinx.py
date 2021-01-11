@@ -42,14 +42,6 @@ def create_sphinx_app(tmp_path, all_docs=('index',), **confoverrides):
     return app
 
 
-def create_document(title='A Title', author='Ann Other', docname='a_name'):
-    document = new_document('/path/to/document.rst')
-    document.settings.title = title
-    document.settings.author = author
-    document.settings.docname = docname
-    return document
-
-
 def document_data_dict(**kwargs):
     document_data = {'doc': 'index', 'target': 'rinoh_doc', 'template': 'book',
                      'title': 'Title', 'author': 'Author', 'toctree_only': False}
@@ -139,10 +131,10 @@ def test_sphinx_config_rinoh_template_from_filename(tmp_path):
 def test_sphinx_set_document_metadata(tmp_path):
     app = create_sphinx_app(tmp_path, release='1.0', rinoh_template='book')
     template_cfg = app.builder.template_from_config(LOGGER)
-    docutils_tree = create_document()
+    document_data = document_data_dict(title='A Title', author="Ann Other")
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, docutils_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
     assert rinoh_doc.metadata['title'] == 'A Title'
     assert rinoh_doc.metadata['subtitle'] == 'Release 1.0'
     assert rinoh_doc.metadata['author'] == 'Ann Other'
@@ -155,10 +147,10 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
     app = create_sphinx_app(tmp_path, rinoh_metadata={
                             'subtitle': expected_subtitle})
     template_cfg = app.builder.template_from_config(LOGGER)
-    docutil_tree = create_document()
+    document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
     assert expected_subtitle == rinoh_doc.metadata['subtitle']
 
 
@@ -166,10 +158,10 @@ def test_sphinx_set_document_metadata_logo(tmp_path):
     expected_logo = 'logo.png'
     app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
     template_cfg = app.builder.template_from_config(LOGGER)
-    docutil_tree = create_document()
+    document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
     assert Path(app.confdir) / expected_logo == rinoh_doc.metadata['logo']
 
 
@@ -177,10 +169,10 @@ def test_sphinx_set_document_metadata_logo_absolute(tmp_path):
     expected_logo = tmp_path / 'confdir' / 'logo.png'
     app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
     template_cfg = app.builder.template_from_config(LOGGER)
-    docutil_tree = create_document()
+    document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, docutil_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
     assert expected_logo == rinoh_doc.metadata['logo']
 
 

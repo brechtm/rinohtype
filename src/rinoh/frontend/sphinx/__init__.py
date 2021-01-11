@@ -231,34 +231,29 @@ class RinohBuilder(Builder, Source):
         variable_removed_warnings(self.config, logger)
         document_data = self.document_data(logger)
         for entry in document_data:
-            docname = entry['doc']
-            targetname = entry['target']
-            title = entry['title']
-            author = entry['author']
-            toctree_only = entry.get('toctree_only', False)
-            logger.info("processing " + targetname + "... ", nonl=1)
-            doctree, docnames = self.assemble_doctree(docname, toctree_only)
-            self.preprocess_tree(doctree)
-            self.post_process_images(doctree)
+            self.write_document(entry)
 
-            logger.info("rendering... ")
-            doctree.settings.author = author
-            doctree.settings.title = title
-            doctree.settings.docname = docname
-            self.write_doc(docname, doctree, docnames, targetname)
-            logger.info("done")
+    def write_document(self, document_data):
+        targetname = document_data['target']
+        logger.info("processing " + targetname + "... ", nonl=1)
+        doctree, docnames = self.assemble_doctree(document_data['doc'],
+                                document_data.get('toctree_only', False))
+        self.preprocess_tree(doctree)
+        self.post_process_images(doctree)
 
-    def write_doc(self, docname, doctree, docnames, targetname):
+        logger.info("rendering... ")
         rinoh_tree = from_doctree(doctree, sphinx_builder=self)
-        template_cfg = self.template_from_config(logger)
-        rinoh_document = template_cfg.document(rinoh_tree)
+        rinoh_template = self.template_from_config(logger)
+        rinoh_document = rinoh_template.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         # TODO: use out-of-line flowables?
         rinoh_document.insert('back_matter', extra_indices, 0)
-        self.set_document_metadata(rinoh_document, doctree)
+        self.set_document_metadata(rinoh_document, document_data)
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
+
+        logger.info("done")
 
     def template_from_config(self, logger):
         config = self.config
@@ -291,16 +286,16 @@ class RinohBuilder(Builder, Source):
                                                    **template_cfg)
         return sphinx_config
 
-    def set_document_metadata(self, rinoh_document, doctree):
+    def set_document_metadata(self, rinoh_document, document_data):
         metadata = rinoh_document.metadata
         if self.config.rinoh_logo:
             rinoh_logo = Path(self.config.rinoh_logo)
             if not rinoh_logo.is_absolute():
                 rinoh_logo = self.confdir / rinoh_logo
             metadata['logo'] = rinoh_logo
-        metadata['title'] = doctree.settings.title
-        metadata['subtitle'] = _('Release') + ' {}'.format(self.config.release)
-        metadata['author'] = doctree.settings.author
+        metadata['title'] = document_data.get('title')
+        metadata['subtitle'] = document_data.get('subtitle', _('Release') + ' {}'.format(self.config.release))
+        metadata['author'] = document_data.get('author')
         date = (self.config.today
                 or format_date(self.config.today_fmt or _('%b %d, %Y'),
                                language=self.config.language))
