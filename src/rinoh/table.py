@@ -102,8 +102,8 @@ NEVER_SPLIT = float('+inf')
 class Table(Flowable):
     style_class = TableStyle
 
-    def __init__(self, body, head=None, width=None, column_widths=None,
-                 id=None, style=None, parent=None):
+    def __init__(self, body, head=None, align=None, width=None,
+                 column_widths=None, id=None, style=None, parent=None):
         """
 
         Args:
@@ -115,7 +115,8 @@ class Table(Flowable):
               auto-sizes all columns.
 
         """
-        super().__init__(width=width, id=id, style=style, parent=parent)
+        super().__init__(align=align, width=width,
+                         id=id, style=style, parent=parent)
         self.head = head
         if head:
             head.parent = self

@@ -675,7 +675,8 @@ class Table(DocutilsBodyNode):
             head = None
         body = tgroup.tbody.get_table_section()
         width_string = self.get('width')
-        table = rt.Table(body, head=head, width=convert_quantity(width_string),
+        table = rt.Table(body, head=head, align=self.get('align'),
+                         width=convert_quantity(width_string),
                          column_widths=column_widths)
         try:
             caption = rt.Caption(self.title.process_content())

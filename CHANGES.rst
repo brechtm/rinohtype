@@ -6,6 +6,8 @@ Release 0.4.3.dev
 
 New Features:
 
+* docutils frontend: support the ``:align:`` option to table directives, which
+  will override the alignment set for the table in the style sheet.
 * The starting number of enumerated lists in reStructuredText is respected.
 * Sphinx frontend: the ``rinoh_metadata`` configuration variable allows
   overriding the document's subtitle (and other strings) that are used on the
