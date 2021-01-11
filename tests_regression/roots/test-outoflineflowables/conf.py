@@ -71,11 +71,12 @@ pygments_style = 'sphinx'
 
 # -- Options for rinohtype PDF output ----------------------------------------
 
-rinoh_documents = [(
-    master_doc,           # top-level file (index.rst)
-    'outoflineflowables', # output (target.pdf)
-    project,              # document title
-    author,               # document author
-)]
+rinoh_documents = [{
+    'doc': master_doc,              # top-level file (index.rst)
+    'target': 'outoflineflowables', # output (target.pdf)
+    'title': project,               # document title
+    'author': author,               # document author
+}]
+
 
 rinoh_template = 'template.rtt'

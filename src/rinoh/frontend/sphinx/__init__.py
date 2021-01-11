@@ -231,8 +231,11 @@ class RinohBuilder(Builder, Source):
         variable_removed_warnings(self.config, logger)
         document_data = self.document_data(logger)
         for entry in document_data:
-            docname, targetname, title, author = entry[:4]
-            toctree_only = entry[4] if len(entry) > 4 else False
+            docname = entry['doc']
+            targetname = entry['target']
+            title = entry['title']
+            author = entry['author']
+            toctree_only = entry.get('toctree_only', False)
             logger.info("processing " + targetname + "... ", nonl=1)
             doctree, docnames = self.assemble_doctree(docname, toctree_only)
             self.preprocess_tree(doctree)

@@ -19,6 +19,7 @@ import time
 from distutils.core import run_setup
 
 import pkg_resources
+from sphinx.addnodes import toctree
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -365,8 +366,13 @@ epub_exclude_files = ['search.html']
 
 # -- Options for rinohtype PDF output -------------------------------------
 
-rinoh_documents = [('index', 'rinohtype', 'rinohtype',
-                    'Brecht Machiels', False)]
+rinoh_documents = [{
+    'doc': 'index',
+    'target': 'rinohtype',
+    'title': 'rinohtype',
+    'author': 'Brecht Machiels',
+    'toctree_only': False
+}]
 
 rinoh_template = 'rinohtype.rtt'
 rinoh_logo = '_static/rinohtype_logo.pdf'
