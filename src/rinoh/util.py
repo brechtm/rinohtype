@@ -32,13 +32,18 @@ from itertools import tee
 from weakref import ref
 
 
-__all__ = ['all_subclasses', 'clamp', 'intersperse', 'itemcount',
+__all__ = ['INF', 'all_subclasses', 'clamp', 'intersperse', 'itemcount',
            'PeekIterator', 'posix_path',
            'consumer', 'cached', 'cached_property', 'cached_generator',
            'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
            'NotImplementedAttribute', 'NamedDescriptor',
            'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary',
            'VersionError']
+
+
+# constants
+
+INF = float('+inf')
 
 
 # functions

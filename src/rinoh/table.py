@@ -13,7 +13,7 @@ from math import sqrt
 
 from .attribute import (Attribute, OptionSet, OverrideDefault, Integer, Bool,
                         AcceptNoneAttributeType, ParseError)
-from .dimension import DimensionBase as DimBase, Dimension
+from .dimension import DimensionBase as DimBase, Dimension, PERCENT
 from .draw import Line, Rectangle, ShapeStyle, LineStyle
 from .flowable import (Flowable, FlowableStyle, FlowableState, FlowableWidth,
                        Float, FloatStyle)
@@ -21,7 +21,7 @@ from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import (StaticGroupedFlowables, GroupedFlowablesStyle,
                         ListOf, ListOfSection)
 from .style import Styled
-from .util import ReadAliasAttribute, NotImplementedAttribute
+from .util import ReadAliasAttribute, INF
 
 
 __all__ = ['Table', 'TableStyle', 'TableWithCaption',
@@ -136,7 +136,6 @@ class Table(Flowable):
 
     def render(self, container, last_descender, state, space_below=0,
                **kwargs):
-        # TODO: allow data to override style (align)
         if state.column_widths is None:
             state.column_widths = self._size_columns(container)
         get_style = partial(self.get_style, container=container)
@@ -174,129 +173,143 @@ class Table(Flowable):
     def _size_columns(self, container):
         """Calculate the table's column sizes constrained by:
 
-        - requested (absolute, relative and automatic) column widths
-        - container width (= available width)
+        - given (absolute, relative and automatic) column widths
+        - full table width: fixed or automatic (container width max)
         - cell contents
 
         """
-        def calculate_column_widths(max_cell_width):
-            """Calculate required column widths given a maximum cell width"""
-            def cell_content_width(cell):
-                buffer = VirtualContainer(container, width=max_cell_width)
-                width, _, _ = cell.flow(buffer, None)
-                return float(width)
-
-            widths = [0] * self.body.num_columns
-            for row in chain(self.head or [], self.body):
-                for cell in (cell for cell in row if cell.colspan == 1):
-                    col = int(cell.column_index)
-                    widths[col] = max(widths[col], cell_content_width(cell))
-            for row in chain(self.head or [], self.body):
-                for cell in (cell for cell in row if cell.colspan > 1):
-                    c = int(cell.column_index)
-                    c_end = c + cell.colspan
-                    padding = cell_content_width(cell) - sum(widths[c:c_end])
-                    if padding > 0:
-                        per_column_padding = padding / cell.colspan
-                        for i in range(cell.colspan):
-                            widths[c + i] += per_column_padding
-            return widths
-
+        num_cols = self.body.num_columns
         width = self._width(container)
-        try:
-            fixed_width = width.to_points(container.width)
-        except AttributeError:
-            fixed_width = width or FlowableWidth.AUTO
-        min_column_widths = calculate_column_widths(0)
-        max_column_widths = calculate_column_widths(float('+inf'))
-
-        # calculate relative column widths for auto-sized columns
-        auto_rel_colwidths = [sqrt(minimum * maximum) for minimum, maximum
-                              in zip(min_column_widths, max_column_widths)]
+        if width == FlowableWidth.FILL:
+            width = 100 * PERCENT
+        available_width = (float(container.width)
+                           if width == FlowableWidth.AUTO
+                           else width.to_points(container.width))
         column_widths = (self.column_widths
                          or self.get_style('column_widths', container)
-                         or [None for _ in max_column_widths])
-        try:          # TODO: max() instead of min()?
-            relative_factor = min(auto_relative_width / width
-                                  for width, auto_relative_width
-                                  in zip(column_widths, auto_rel_colwidths)
-                                  if width and not isinstance(width, DimBase))
-        except ValueError:
-            relative_factor = 1
-        column_widths = [auto_relative_width * relative_factor
-                         if width is None else width
-                         for width, auto_relative_width
-                         in zip(column_widths, auto_rel_colwidths)]
+                         or [None for _ in range(num_cols)])     # auto widths
+        if len(column_widths) != num_cols:
+            raise ValueError("'column_widths' length doesn't match the number"
+                             " of table columns")
 
-        # set min = max for columns with a fixed width
-        total_fixed_cols_width = 0
-        total_portions = 0
-        for i, column_width in enumerate(column_widths):
-            if isinstance(column_width, DimBase):
-                width_in_pt = column_width.to_points(container.width)
-                min_column_widths[i] = max_column_widths[i] = width_in_pt
-                total_fixed_cols_width += width_in_pt
-            else:
-                total_portions += column_width
+        # indices for fixed, relative and auto width columns
+        fixed_cols = [i for i, width in enumerate(column_widths)
+                      if isinstance(width, DimBase)]
+        rel_cols = [i for i, width in enumerate(column_widths)
+                    if width and i not in fixed_cols]
+        auto_cols = [i for i, width in enumerate(column_widths)
+                     if width is None]
+
+        # fixed-width columns
+        final = [width.to_points(container.width) if i in fixed_cols else None
+                 for i, width in enumerate(column_widths)]
+        fixed_total_width = sum(width or 0 for width in final)
+        if fixed_total_width > available_width:
+            self.warn('Total width of fixed-width columns exceeds the'
+                      ' available width')
+
+        # minimum (wrap content) and maximum (non wrapping) column widths
+        min_widths = self._widths_from_content(final, 0, container)
+        max_widths = self._widths_from_content(final, INF, container)
+
+        # calculate max column widths respecting the specified relative
+        #   column widths (padding columns with whitespace)
+        rel_max_widths = [max(max(column_widths[i] / column_widths[j]
+                                  * max_widths[j] for j in rel_cols if j != i),
+                              max_widths[i]) if i in rel_cols else width
+                          for i, width in enumerate(max_widths)]
 
         # does the table fit within the available width without wrapping?
-        if sum(max_column_widths) <= container.width:
-            return max_column_widths
+        if sum(rel_max_widths) < available_width:  # no content wrapping needed
+            if width == FlowableWidth.AUTO:        # -> use maximum widths
+                return rel_max_widths
+            rel_widths = rel_max_widths
+        else:                                      # content needs wrapping
+            rel_widths = [sqrt(mini * maxi)        # -> use weighted widths
+                          for mini, maxi in zip(min_widths, max_widths)]
 
-        # determine table width
-        if fixed_width != FlowableWidth.AUTO:
-            table_width = fixed_width
-        elif total_portions:
-            max_factor = max(maximum / width for width, maximum,
-                             in zip(column_widths, max_column_widths)
-                             if not isinstance(width, DimBase))
-            no_wrap_rel_cols_width = total_portions * max_factor
-            table_width = min(total_fixed_cols_width + no_wrap_rel_cols_width,
-                              float(container.width))
-        else:
-            table_width = total_fixed_cols_width
+        # transform auto-width columns to relative-width columns
+        if auto_cols:
+            # scaling factor between supplied relative column widths and the
+            #   relative widths determined for auto-sized columns
+            # TODO: instead of min, use max or avg?
+            auto_rel_factor = min(rel_widths[i] / column_widths[i]
+                                  for i in rel_cols) if rel_cols else 1
+            for i in auto_cols:
+                column_widths[i] = rel_widths[i] * auto_rel_factor
+            rel_cols = sorted(rel_cols + auto_cols)
 
-        # TODO: warn when a column's fixed width < min width
+        # scale relative-width columns to fill the specified/available width
+        if rel_cols:
+            rel_sum = sum(column_widths[i] for i in rel_cols)
+            total_relative_cols_width = available_width - fixed_total_width
+            rel_factor = total_relative_cols_width / rel_sum
+            for i in rel_cols:
+                final[i] = column_widths[i] * rel_factor
 
-        # determine absolute width of columns with relative widths
-        if total_portions:
-            total_relative_cols_width = table_width - total_fixed_cols_width
-            portion_width = total_relative_cols_width / total_portions
-            auto_widths = [width if isinstance(width, DimBase)
-                           else width * portion_width
-                           for width in column_widths]
-            extra = [0 if isinstance(width, DimBase)
-                     else auto_width - min_column_widths[index]
-                     for index, auto_width in enumerate(auto_widths)]
-            excess = [0 if isinstance(width, DimBase)
-                      else auto_width - max_column_widths[index]
-                      for index, auto_width in enumerate(auto_widths)]
-            excess_pos = sum(x for x in excess if x > 0)
-            extra_neg = sum(x for x in extra if x <= 0) + excess_pos
-            extra_pos = (sum(x for x, c in zip(extra, excess)
-                             if x > 0 and c <= 0))
-            if extra_pos + extra_neg < 0:
-                self.warn('Table contents are too wide to fit within the '
-                          'available width', container)
-                return [width.to_points(container.width)
-                        if isinstance(width, DimBase) else width
-                        for width in auto_widths]
+        return self._optimize_auto_columns(auto_cols, final, min_widths,
+                                                max_widths, container)
 
-            def final_column_width(index, width):
-                if isinstance(width, DimBase):
-                    return width.to_points(container.width)
-                elif excess[index] > 0:
-                    return max_column_widths[index]
-                elif extra[index] <= 0:
-                    return min_column_widths[index]
-                else:
-                    return width + (extra_neg * extra[index] / extra_pos)
+    def _optimize_auto_columns(self, auto_cols, final, min_widths,
+                               max_widths, container):
+        """Adjust auto-sized columns to prevent content overflowing cells"""
+        extra = [final[i] - min_widths[i] for i in auto_cols]
+        excess = [final[i] - max_widths[i] for i in auto_cols]
+        neg_extra = sum(x for x in extra if x < 0)  # width to be compensated
+        if neg_extra == 0:  # everything fits within in the given column widths
+            return final
+        # increase width of overfilled columns to the minimum width
+        for i in (i for i in auto_cols if extra[i] < 0):
+            final[i] = min_widths[i]
+        surplus = neg_extra + sum(x for x in excess if x > 0)
+        if surplus >= 0:  # using only the unused space (padding) is enough
+            for i in (i for i in auto_cols if excess[i] > 0):
+                final[i] = max_widths[i]
+        else:             # that isn't enough; wrap non-wrapped content instead
+            surplus = neg_extra + sum(x for x in extra if x > 0)
+            for i in (i for i in auto_cols if extra[i] > 0):
+                final[i] = min_widths[i]
+        if surplus < 0:
+            self.warn('Table contents are too wide to fit within the available'
+                      ' width', container)
+        # divide surplus space among all auto-sized columns
+        per_column_surplus = surplus / len(auto_cols)
+        for i in auto_cols:
+            final[i] += per_column_surplus
+        return final
 
-            return [final_column_width(i, width)
-                    for i, width in enumerate(auto_widths)]
-        else:
-            return [width.to_points(container.width)
-                    for width in column_widths]
+    def _widths_from_content(self, fixed, max_cell_width, container):
+        """Calculate required column widths given a maximum cell width"""
+        def cell_content_width(cell):
+            buffer = VirtualContainer(container, width=max_cell_width)
+            width, _, _ = cell.flow(buffer, None)
+            return float(width)
+
+        widths = [width if width else 0 for width in fixed]
+        fixed_width_cols = set(i for i, width in enumerate(widths) if width)
+
+        # find the maximum content width for all non-column-spanning cells for
+        #   each non-fixed-width column
+        for row in chain(self.head or [], self.body):
+            for cell in (cell for cell in row if cell.colspan == 1):
+                col = int(cell.column_index)
+                if col not in fixed_width_cols:
+                    widths[col] = max(widths[col], cell_content_width(cell))
+
+        # divide the extra space needed for column-spanning cells equally over
+        #   the spanned columns (skipping fixed-width columns)
+        for row in chain(self.head or [], self.body):
+            for cell in (cell for cell in row if cell.colspan > 1):
+                c = int(cell.column_index)
+                c_end = c + cell.colspan
+                extra = cell_content_width(cell) - sum(widths[c:c_end])
+                non_fixed_cols = [i for i in range(c, c_end)
+                                  if i not in fixed_width_cols]
+                if extra > 0 and non_fixed_cols:
+                    per_column_extra = extra / len(non_fixed_cols)
+                    for i in non_fixed_cols:
+                        widths[i] += per_column_extra
+        return widths
 
     @classmethod
     def _render_section(cls, container, rows, column_widths):

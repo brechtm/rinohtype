@@ -58,6 +58,8 @@ Changed:
 
 Fixed:
 
+* Table column width determination was overhauled. Now fixed-width tables are
+  supported and automatic-width columns should be handled better.
 * The 'nested bulleted/enumerated list' selectors were broken; their
   corresponding styles were never applied
 * Items inside a table cannot be referenced (issue #174)

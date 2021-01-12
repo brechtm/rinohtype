@@ -1,0 +1,7 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[table-mixed-widths : Table(has_class='mixed-widths')]
+base = table
+column_widths = 3 50pt 4
