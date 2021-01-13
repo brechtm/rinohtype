@@ -235,15 +235,17 @@ class RinohBuilder(Builder, Source):
 
     def write_document(self, document_data):
         targetname = document_data['target']
+        indexfile = document_data['doc']
+        toctree_only = document_data.get('toctree_only', False)
+        template = document_data.get('template', 'book')
+
         logger.info("processing " + targetname + "... ", nonl=1)
-        doctree, docnames = self.assemble_doctree(document_data['doc'],
-                                document_data.get('toctree_only', False))
+        doctree, docnames = self.assemble_doctree(indexfile, toctree_only)
         self.preprocess_tree(doctree)
         self.post_process_images(doctree)
-
         logger.info("rendering... ")
         rinoh_tree = from_doctree(doctree, sphinx_builder=self)
-        rinoh_template = self.template_from_config(logger)
+        rinoh_template = self.template_configuration(template, logger)
         rinoh_document = rinoh_template.document(rinoh_tree)
         extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
         # TODO: use out-of-line flowables?
@@ -252,38 +254,37 @@ class RinohBuilder(Builder, Source):
         outfilename = path.join(self.outdir, os_path(targetname))
         ensuredir(path.dirname(outfilename))
         rinoh_document.render(outfilename)
-
         logger.info("done")
 
-    def template_from_config(self, logger):
+    def template_configuration(self, template, logger):
         config = self.config
-        template_cfg = {}
-        if isinstance(config.rinoh_template, str):
-            tmpl_path = path.join(self.confdir, config.rinoh_template)
+        contructor_args = {}
+        if isinstance(template, str):
+            tmpl_path = path.join(self.confdir, template)
             if path.isfile(tmpl_path):
-                base = TemplateConfigurationFile(config.rinoh_template,
+                base = TemplateConfigurationFile(template,
                                                  source=self)
-                template_cfg['base'] = base
-                template_cls = template_cfg['base'].template
+                contructor_args['base'] = base
+                template_cls = contructor_args['base'].template
             else:
                 template_cls = DocumentTemplate.from_string(
-                    config.rinoh_template)
-        elif isinstance(config.rinoh_template, TemplateConfiguration):
-            template_cfg['base'] = config.rinoh_template
-            template_cls = config.rinoh_template.template
+                    template)
+        elif isinstance(template, TemplateConfiguration):
+            contructor_args['base'] = template
+            template_cls = template.template
         else:
-            template_cls = config.rinoh_template
+            template_cls = template
 
         language = config.language
         if language:
             try:
-                template_cfg['language'] = Language.from_string(language)
+                contructor_args['language'] = Language.from_string(language)
             except KeyError:
                 logger.warning("The language '{}' is not supported by rinohtype."
                                .format(language))
 
         sphinx_config = template_cls.Configuration('Sphinx conf.py options',
-                                                   **template_cfg)
+                                                   **contructor_args)
         return sphinx_config
 
     def set_document_metadata(self, rinoh_document, document_data):
@@ -294,7 +295,8 @@ class RinohBuilder(Builder, Source):
                 rinoh_logo = self.confdir / rinoh_logo
             metadata['logo'] = rinoh_logo
         metadata['title'] = document_data.get('title')
-        metadata['subtitle'] = document_data.get('subtitle', _('Release') + ' {}'.format(self.config.release))
+        metadata['subtitle'] = document_data.get(
+            'subtitle', _('Release') + ' {}'.format(self.config.release))
         metadata['author'] = document_data.get('author')
         date = (self.config.today
                 or format_date(self.config.today_fmt or _('%b %d, %Y'),
@@ -333,11 +335,16 @@ def latex_document_to_document_data(entry, logger):
 
 def variable_removed_warnings(config, logger):
     message = ("Support for '{}' has been removed. Instead, please specify"
-               " the {} to use in your template configuration.")
+               " the {} to use in your {}.")
     if config.rinoh_stylesheet:
-        logger.warning(message.format('rinoh_stylesheet', 'style sheet'))
+        logger.warning(message.format('rinoh_stylesheet',
+                                      'style sheet', 'template configuration'))
     if config.rinoh_paper_size:
-        logger.warning(message.format('rinoh_paper_size', 'paper size'))
+        logger.warning(message.format('rinoh_paper_size',
+                                      'paper size', 'template configuration'))
+    if config.rinoh_template:
+        logger.warning(message.format('rinoh_template',
+                                      'template', "'rinoh_documents'"))
 
 
 def setup(app):
@@ -345,7 +352,7 @@ def setup(app):
     app.add_config_value('rinoh_documents', None, 'env')
     app.add_config_value('rinoh_logo', None, 'html')
     app.add_config_value('rinoh_domain_indices', True, 'html')
-    app.add_config_value('rinoh_template', 'book', 'html')
+    app.add_config_value('rinoh_template', None, 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')
     app.add_config_value('rinoh_paper_size', None, 'html')

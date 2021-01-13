@@ -72,10 +72,9 @@ pygments_style = 'sphinx'
 # -- Options for rinohtype PDF output ----------------------------------------
 
 rinoh_documents = [{
-    'doc': master_doc,      # top-level file (index.rst)
-    'target': 'minimal',    # output (target.pdf)
-    'title': project,       # document title
-    'author': author,       # document author
+    'doc': master_doc,          # top-level file (index.rst)
+    'target': 'minimal',        # output (target.pdf)
+    'title': project,           # document title
+    'author': author,           # document author
+    'template': 'template.rtt'  # document template
 }]
-
-rinoh_template = 'template.rtt'

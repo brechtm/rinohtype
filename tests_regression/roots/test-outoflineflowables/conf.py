@@ -76,7 +76,5 @@ rinoh_documents = [{
     'target': 'outoflineflowables', # output (target.pdf)
     'title': project,               # document title
     'author': author,               # document author
+    'template': 'template.rtt'      # document template
 }]
-
-
-rinoh_template = 'template.rtt'

@@ -60,20 +60,20 @@ def get_contents_page_size(template_configuration):
     return page.get_config_value('page_size', doc)
 
 
-def get_template_cfg(tmp_path, **confoverrides):
-    app = create_sphinx_app(tmp_path, **confoverrides)
-    return app.builder.template_from_config(LOGGER)
+def get_template_configuration(tmp_path, template='book', **sphinx_config_overrides):
+    app = create_sphinx_app(tmp_path, **sphinx_config_overrides)
+    return app.builder.template_configuration(template, LOGGER)
 
 
 def test_sphinx_config_default(tmp_path):
-    template_cfg = get_template_cfg(tmp_path)
+    template_cfg = get_template_configuration(tmp_path)
     assert template_cfg.template == Book
     assert not template_cfg.keys()
     assert get_contents_page_size(template_cfg) == A4
 
 
 def test_sphinx_config_latex_elements_papersize_no_effect(tmp_path):
-    template_cfg = get_template_cfg(
+    template_cfg = get_template_configuration(
         tmp_path, latex_elements=dict(papersize='a5paper'))
     assert get_contents_page_size(template_cfg) == A4
 
@@ -88,49 +88,55 @@ def test_sphinx_config_latex_option_no_effect(tmp_path):
 
 
 def test_sphinx_config_language(tmp_path):
-    template_cfg = get_template_cfg(tmp_path, language='it')
+    template_cfg = get_template_configuration(tmp_path, language='it')
     assert template_cfg.template == Book
     assert template_cfg['language'] == IT
 
 
 def test_sphinx_config_language_not_supported(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
-        template_cfg = get_template_cfg(tmp_path, language='not_supported')
+        template_cfg = get_template_configuration(tmp_path, language='not_supported')
     assert "The language 'not_supported' is not supported" in caplog.text
     assert template_cfg.template == Book
     assert 'language' not in template_cfg
 
 
-def test_sphinx_config_rinoh_template(tmp_path):
-    template_cfg = Article.Configuration('test',
-                                         stylesheet='sphinx_article')
-    template_cfg = get_template_cfg(tmp_path, rinoh_template=template_cfg)
+def test_sphinx_config_template_from_instance(tmp_path):
+    base = Article.Configuration('test', stylesheet='sphinx_base14')
+    template_cfg = get_template_configuration(tmp_path, template=base)
+    assert template_cfg.template == Article
+    assert (template_cfg.get_attribute_value('stylesheet').name
+            == 'Sphinx (PDF Core Fonts)')
+
+
+def test_sphinx_config_template_from_entrypoint(tmp_path):
+    template_cfg = get_template_configuration(tmp_path, template='article')
+    assert not template_cfg.keys()
+    assert template_cfg.template == Article
+    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx (article)'
+
+
+def test_sphinx_config_template_from_filename(tmp_path):
+    template_cfg_path = str(tmp_path / 'template_cfg.rtt')
+    with open(template_cfg_path, 'w') as template_cfg:
+        print('[TEMPLATE_CONFIGURATION]', file=template_cfg)
+        print('template = article', file=template_cfg)
+    template_cfg = get_template_configuration(tmp_path, template_cfg_path)
+    assert not template_cfg.keys()
+    assert template_cfg.template == Article
+    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx (article)'
+
+
+def test_sphinx_config_template_from_class(tmp_path):
+    template_cfg = get_template_configuration(tmp_path, template=Article)
     assert template_cfg.template == Article
     assert (template_cfg.get_attribute_value('stylesheet').name
             == 'Sphinx (article)')
 
 
-def test_sphinx_config_rinoh_template_from_entrypoint(tmp_path):
-    template_cfg = get_template_cfg(tmp_path, rinoh_template='book')
-    assert not template_cfg.keys()
-    assert template_cfg.template == Book
-    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx'
-
-
-def test_sphinx_config_rinoh_template_from_filename(tmp_path):
-    template_cfg_path = str(tmp_path / 'template_cfg.rtt')
-    with open(template_cfg_path, 'w') as template_cfg:
-        print('[TEMPLATE_CONFIGURATION]', file=template_cfg)
-        print('template = book', file=template_cfg)
-    template_cfg = get_template_cfg(tmp_path, rinoh_template=template_cfg_path)
-    assert not template_cfg.keys()
-    assert template_cfg.template == Book
-    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx'
-
-
 def test_sphinx_set_document_metadata(tmp_path):
-    app = create_sphinx_app(tmp_path, release='1.0', rinoh_template='book')
-    template_cfg = app.builder.template_from_config(LOGGER)
+    app = create_sphinx_app(tmp_path, release='1.0')
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict(title='A Title', author="Ann Other")
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
@@ -146,7 +152,7 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
     expected_subtitle = 'A subtitle'
     app = create_sphinx_app(tmp_path, rinoh_metadata={
                             'subtitle': expected_subtitle})
-    template_cfg = app.builder.template_from_config(LOGGER)
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
@@ -157,7 +163,7 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
 def test_sphinx_set_document_metadata_logo(tmp_path):
     expected_logo = 'logo.png'
     app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
-    template_cfg = app.builder.template_from_config(LOGGER)
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
@@ -168,7 +174,7 @@ def test_sphinx_set_document_metadata_logo(tmp_path):
 def test_sphinx_set_document_metadata_logo_absolute(tmp_path):
     expected_logo = tmp_path / 'confdir' / 'logo.png'
     app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
-    template_cfg = app.builder.template_from_config(LOGGER)
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict()
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
@@ -181,6 +187,13 @@ def test_sphinx_default_deprecation_warning(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
     assert caplog.text == ''
+
+
+def test_sphinx_rinoh_template_removed(caplog, tmp_path):
+    app = create_sphinx_app(tmp_path, rinoh_template="article")
+    with caplog.at_level(logging.WARNING):
+        variable_removed_warnings(app.config, LOGGER)
+    assert "Support for 'rinoh_template' has been removed" in caplog.text
 
 
 def test_sphinx_rinoh_stylesheet_removed(caplog, tmp_path):

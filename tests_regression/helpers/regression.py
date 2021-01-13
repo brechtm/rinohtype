@@ -102,8 +102,6 @@ def render_sphinx_project(name, project_dir, template_cfg=None):
     project_path = TEST_DIR / project_dir
     out_path = OUTPUT_DIR / name
     confoverrides = {}
-    if template_cfg:
-        confoverrides['rinoh_template'] = str(TEST_DIR / template_cfg)
     with docutils_namespace():
         sphinx = Sphinx(srcdir=str(project_path),
                         confdir=str(project_path),
@@ -111,6 +109,9 @@ def render_sphinx_project(name, project_dir, template_cfg=None):
                         doctreedir=str(out_path / 'doctrees'),
                         buildername='rinoh',
                         confoverrides=confoverrides)
+        if template_cfg:
+            for document_data in sphinx.config.rinoh_documents:
+                document_data['template'] = str(TEST_DIR / template_cfg)
         sphinx.build()
     out_filename = '{}.pdf'.format(name)
     with in_directory(out_path):
