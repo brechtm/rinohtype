@@ -15,7 +15,8 @@ from .attribute import (Attribute, OptionSet, OverrideDefault, Integer, Bool,
                         AcceptNoneAttributeType, ParseError)
 from .dimension import DimensionBase as DimBase, Dimension
 from .draw import Line, Rectangle, ShapeStyle, LineStyle
-from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
+from .flowable import (Flowable, FlowableStyle, FlowableState, FlowableWidth,
+                       Float, FloatStyle)
 from .layout import MaybeContainer, VirtualContainer, EndOfContainer
 from .structure import (StaticGroupedFlowables, GroupedFlowablesStyle,
                         ListOf, ListOfSection)
@@ -383,7 +384,12 @@ class Table(Flowable):
             y_cursor += rendered_row.height
 
 
-class TableWithCaption(StaticGroupedFlowables):
+class TableWithCaptionStyle(FloatStyle, GroupedFlowablesStyle):
+    pass
+
+
+class TableWithCaption(Float, StaticGroupedFlowables):
+    style_class = TableWithCaptionStyle
     category = 'Table'
 
 
