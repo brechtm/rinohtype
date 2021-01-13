@@ -39,8 +39,7 @@ class DimensionType(type):
 
     def __new__(mcs, name, bases, cls_dict):
         """Return a new class with predefined comparison operators"""
-        for method_name in ('__lt__', '__le__', '__gt__', '__ge__',
-                            '__eq__', '__ne__'):
+        for method_name in ('__lt__', '__le__', '__gt__', '__ge__'):
             if method_name not in cls_dict:
                 cls_dict[method_name] = mcs._make_operator(method_name)
         return type.__new__(mcs, name, bases, cls_dict)
@@ -53,11 +52,7 @@ class DimensionType(type):
         def operator(self, other):
             """Operator delegating to the :class:`float` method `method_name`"""
             float_operator = getattr(float, method_name)
-            try:
-                float_other = float(other)
-            except (ValueError, TypeError):
-                return False
-            return float_operator(float(self), float_other)
+            return float_operator(float(self), float(other))
         return operator
 
 
@@ -108,6 +103,12 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
     def __float__(self):
         """Evaluate the value of this dimension in points."""
         raise NotImplementedError
+
+    def __eq__(self, other):
+        try:
+            return float(self) == float(other)
+        except TypeError:
+            return False
 
     @classmethod
     def check_type(cls, value):
