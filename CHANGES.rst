@@ -6,6 +6,9 @@ Release 0.4.3.dev
 
 New Features:
 
+* Table: in addition to fixed and relative-width columns, you can indicate
+  columns to be automatically sized by specifying a value of 'auto' in the
+  'column_widths' style parameter in yout style sheet.
 * docutils frontend: support the ``:align:`` option to table directives, which
   will override the alignment set for the table in the style sheet.
 * The starting number of enumerated lists in reStructuredText is respected.

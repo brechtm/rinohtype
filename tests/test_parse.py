@@ -262,7 +262,7 @@ def test_dimension_from_string():
     assert Dimension.from_string('21%') == 21*PERCENT
     assert Dimension.from_string('-16.12%') == -16.12*PERCENT
     assert Dimension.from_string('3/4') == 3*QUARTERS
-    with pytest.raises(ValueError):
+    with pytest.raises(ParseError):
         assert Dimension.from_string('20inch')
 
 
@@ -449,7 +449,8 @@ def test_backgroundimage_from_string():
 
 
 def test_column_widths_from_string():
-    assert ColumnWidths.from_string('none') == None
+    assert ColumnWidths.from_string('none') is None
+    assert ColumnWidths.from_string('auto') == [None]
     assert ColumnWidths.from_string('1 2 3') == [1, 2, 3]
     assert ColumnWidths.from_string('1 0 9') == [1, 0, 9]
     assert ColumnWidths.from_string('2      4  6') == [2, 4, 6]
@@ -457,6 +458,13 @@ def test_column_widths_from_string():
     assert ColumnWidths.from_string('1pt 2cm 3in') == [1*PT, 2*CM, 3*INCH]
     assert ColumnWidths.from_string('4 pt 5 cm 6 in') == [4*PT, 5*CM, 6*INCH]
     assert ColumnWidths.from_string('7pt 8 cm 9in') == [7*PT, 8*CM, 9*INCH]
+    assert ColumnWidths.from_string('10 20 1cm 30') == [10, 20, 1*CM, 30]
+    assert ColumnWidths.from_string('1 2cm auto') == [1, 2*CM, None]
+    assert ColumnWidths.from_string('2 auto 5') == [2, None, 5]
+    with pytest.raises(ParseError):
+        assert ColumnWidths.from_string('autoo')
+    with pytest.raises(ParseError):
+        assert ColumnWidths.from_string('1 none')
     with pytest.raises(ParseError):
         assert ColumnWidths.from_string('1.5 3 1cm')
 

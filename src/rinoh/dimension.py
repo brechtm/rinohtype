@@ -148,7 +148,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
         try:
             unit = DimensionUnitBase.all[unit_string.lower()]
         except KeyError:
-            raise ValueError("'{}' is not a valid dimension unit"
+            raise ParseError("'{}' is not a valid dimension unit"
                              .format(unit_string))
         return sign * value * unit
 

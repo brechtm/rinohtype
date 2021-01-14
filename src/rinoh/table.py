@@ -10,6 +10,7 @@ from collections.abc import Iterable
 from itertools import chain
 from functools import partial
 from math import sqrt
+from token import NAME
 
 from .attribute import (Attribute, OptionSet, OverrideDefault, Integer, Bool,
                         AcceptNoneAttributeType, ParseError)
@@ -58,33 +59,44 @@ class TableState(FlowableState):
                               self.body_row_index)
 
 
+class Auto:
+    @classmethod
+    def from_tokens(cls, tokens, source):
+        token = next(tokens)
+        if token.type != NAME or token.string.lower() != 'auto':
+            raise ParseError("Expecting the 'auto' keyword")
+        return None
+
+
 class ColumnWidths(AcceptNoneAttributeType):
     @classmethod
     def check_type(cls, value):
         return (super().check_type(value)
                 or (isinstance(value, list)
-                    and all(isinstance(item, (Dimension, int))
+                    and all(item is None or isinstance(item, (Dimension, int))
                             for item in value)))
 
     @classmethod
     def from_tokens(cls, tokens, source):
         items = []
         while tokens.next.type:
-            try:
+            for cls in (Dimension, Integer, Auto):
                 tokens.push_state()
-                item = Dimension.from_tokens(tokens, source)
-                tokens.pop_state(discard=True)
-            except ParseError:
-                tokens.pop_state()
-                item = Integer.from_tokens(tokens, source)
-            items.append(item)
+                try:
+                    items.append(cls.from_tokens(tokens, source))
+                    tokens.pop_state(discard=True)
+                    break
+                except ParseError:
+                    tokens.pop_state(discard=False)
+            else:
+                raise ParseError("Expecting a dimension, integer or 'auto'")
         return items
 
     @classmethod
     def doc_format(cls):
-        return ('a whitespace-delimited list of column widths; '
-                ':class:`.Dimension`\\ s (absolute width) and/or integers '
-                '(relative width)')
+        return ("a whitespace-delimited list of column widths;"
+                " :class:`.Dimension`\\ s (absolute width), integers (relative"
+                " width) and/or 'auto' (automatic width)")
 
 
 class TableStyle(FlowableStyle):
