@@ -1,0 +1,1028 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 1. automatic column widths...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 1. automatic column widths...')
+              SingleStyledText('Table ')
+              MixedStyledText('1. ')
+                SingleStyledText('1')
+                SingleStyledText('. ')
+              SingleStyledText('automatic column widths (default...')
+        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:None <table>
+             > (0,0,0,0,2) table
+          TableHead()
+            TableRow()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header row, column 1 (header row...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:4 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header row, column 1 (header row...')
+                    SingleStyledText('Header row, column 1 (header row...')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:4 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 2')
+                    SingleStyledText('Header 2')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:4 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 3')
+                    SingleStyledText('Header 3')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:4 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 4')
+                    SingleStyledText('Header 4')
+                TableCellBackground()
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 1, column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:7 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 1, column 1')
+                    SingleStyledText('body row 1, column 1')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:7 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 2')
+                    SingleStyledText('column 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:7 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 3')
+                    SingleStyledText('column 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:7 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 4')
+                    SingleStyledText('column 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:9 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 2')
+                    SingleStyledText('body row 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span columns.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:9 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span columns.')
+                    SingleStyledText('Cells may span columns.')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:11 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 3')
+                    SingleStyledText('body row 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span rows.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:11 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span rows.')
+                    SingleStyledText('Cells may span rows.')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:11 <bullet_list>
+                     x (0,0,1,0,4) (table) bulleted list
+                     > (0,0,1,0,2) bulleted list
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('Table cells')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:11 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('Table cells')
+                          SingleStyledText('Table cells')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('contain')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:12 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('contain')
+                          SingleStyledText('contain')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('body elements.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:13 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('body elements.')
+                          SingleStyledText('body elements.')
+                TableCellBackground()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:13 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 4')
+                    SingleStyledText('body row 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 5')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:15 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 5')
+                    SingleStyledText('body row 5')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may also be empty: -->')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:15 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may also be empty: -->')
+                    SingleStyledText('Cells may also be empty: ')
+                    MixedStyledText('-->', style='monospaced')   None:None <literal>
+                         > (0,0,1,0,1) monospaced
+                      SingleStyledText('-->')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 2. grid-based column width...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 2. grid-based column width...')
+              SingleStyledText('Table ')
+              MixedStyledText('2. ')
+                SingleStyledText('2')
+                SingleStyledText('. ')
+              SingleStyledText('grid-based column widths (24, 12...')
+        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:None <table>
+             > (0,0,0,0,2) table
+          TableHead()
+            TableRow()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header row, column 1 (header row...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:23 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header row, column 1 (header row...')
+                    SingleStyledText('Header row, column 1 (header row...')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:23 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 2')
+                    SingleStyledText('Header 2')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:23 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 3')
+                    SingleStyledText('Header 3')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:23 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 4')
+                    SingleStyledText('Header 4')
+                TableCellBackground()
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 1, column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:26 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 1, column 1')
+                    SingleStyledText('body row 1, column 1')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:26 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 2')
+                    SingleStyledText('column 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:26 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 3')
+                    SingleStyledText('column 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:26 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 4')
+                    SingleStyledText('column 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:28 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 2')
+                    SingleStyledText('body row 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span columns.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:28 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span columns.')
+                    SingleStyledText('Cells may span columns.')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:30 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 3')
+                    SingleStyledText('body row 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span rows.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:30 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span rows.')
+                    SingleStyledText('Cells may span rows.')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:30 <bullet_list>
+                     x (0,0,1,0,4) (table) bulleted list
+                     > (0,0,1,0,2) bulleted list
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('Table cells')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:30 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('Table cells')
+                          SingleStyledText('Table cells')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('contain')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:31 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('contain')
+                          SingleStyledText('contain')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('body elements.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:32 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('body elements.')
+                          SingleStyledText('body elements.')
+                TableCellBackground()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:32 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 4')
+                    SingleStyledText('body row 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 5')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:34 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 5')
+                    SingleStyledText('body row 5')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may also be empty: -->')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:34 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may also be empty: -->')
+                    SingleStyledText('Cells may also be empty: ')
+                    MixedStyledText('-->', style='monospaced')   None:None <literal>
+                         > (0,0,1,0,1) monospaced
+                      SingleStyledText('-->')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 3. relative column widths ...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 3. relative column widths ...')
+              SingleStyledText('Table ')
+              MixedStyledText('3. ')
+                SingleStyledText('3')
+                SingleStyledText('. ')
+              SingleStyledText('relative column widths (10, 5, 5...')
+        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:None <table>
+             > (0,0,0,0,2) table
+          TableHead()
+            TableRow()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header row, column 1 (header row...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:43 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header row, column 1 (header row...')
+                    SingleStyledText('Header row, column 1 (header row...')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:43 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 2')
+                    SingleStyledText('Header 2')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:43 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 3')
+                    SingleStyledText('Header 3')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('Header 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:43 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Header 4')
+                    SingleStyledText('Header 4')
+                TableCellBackground()
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 1, column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:46 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 1, column 1')
+                    SingleStyledText('body row 1, column 1')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:46 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 2')
+                    SingleStyledText('column 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:46 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 3')
+                    SingleStyledText('column 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:46 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 4')
+                    SingleStyledText('column 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:48 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 2')
+                    SingleStyledText('body row 2')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span columns.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:48 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span columns.')
+                    SingleStyledText('Cells may span columns.')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:50 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 3')
+                    SingleStyledText('body row 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may span rows.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:50 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may span rows.')
+                    SingleStyledText('Cells may span rows.')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:50 <bullet_list>
+                     x (0,0,1,0,4) (table) bulleted list
+                     > (0,0,1,0,2) bulleted list
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('Table cells')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:50 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('Table cells')
+                          SingleStyledText('Table cells')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('contain')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:51 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('contain')
+                          SingleStyledText('contain')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,6) (table) bulleted list item
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         x (0,0,1,0,8) (table) bulleted list item label
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('body elements.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:52 <paragraph>
+                           > (0,0,0,0,9) table body cell paragraph
+                             (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                        MixedStyledText('body elements.')
+                          SingleStyledText('body elements.')
+                TableCellBackground()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:52 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 4')
+                    SingleStyledText('body row 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('body row 5')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:54 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('body row 5')
+                    SingleStyledText('body row 5')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Cells may also be empty: -->')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:54 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Cells may also be empty: -->')
+                    SingleStyledText('Cells may also be empty: ')
+                    MixedStyledText('-->', style='monospaced')   None:None <literal>
+                         > (0,0,1,0,1) monospaced
+                      SingleStyledText('-->')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+      Paragraph('No caption:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:59 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('No caption:')
+          SingleStyledText('No caption:')
+      Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:None <table>
+           > (0,0,0,0,2) table
+        TableHead()
+          TableRow()
+            TableCell()   None:None <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell
+              Paragraph('Inputs')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:62 <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Inputs')
+                  SingleStyledText('Inputs')
+              TableCellBackground()
+            TableCell()   None:None <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell
+              Paragraph('Output')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:62 <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('Output')
+                  SingleStyledText('Output')
+              TableCellBackground()
+          TableRow()
+            TableCell()   None:None <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell
+              Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:64 <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('A')
+                  SingleStyledText('A')
+              TableCellBackground()
+            TableCell()   None:None <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell
+              Paragraph('B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:64 <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('B')
+                  SingleStyledText('B')
+              TableCellBackground()
+            TableCell()   None:None <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell
+              Paragraph('A or B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:64 <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('A or B')
+                  SingleStyledText('A or B')
+              TableCellBackground()
+        TableBody()
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:66 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('False')
+                  SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:66 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('False')
+                  SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:66 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('False')
+                  SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:67 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:67 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('False')
+                  SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:67 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:68 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('False')
+                  SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:68 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:68 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:69 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:69 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:69 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                MixedStyledText('True')
+                  SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+                   > fallback to default style
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 4. Truth table for "not"')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 4. Truth table for "not"')
+              SingleStyledText('Table ')
+              MixedStyledText('4. ')
+                SingleStyledText('4')
+                SingleStyledText('. ')
+              SingleStyledText('Truth table for "not"')
+        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:None <table>
+             > (0,0,0,0,2) table
+          TableHead()
+            TableRow()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:77 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('A')
+                    SingleStyledText('A')
+                TableCellBackground()
+              TableCell()   None:None <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell
+                Paragraph('not A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:77 <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('not A')
+                    SingleStyledText('not A')
+                TableCellBackground()
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:79 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('False')
+                    SingleStyledText('False')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:79 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('True')
+                    SingleStyledText('True')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('True')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:80 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('True')
+                    SingleStyledText('True')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('False')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table.rst:80 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('False')
+                    SingleStyledText('False')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style

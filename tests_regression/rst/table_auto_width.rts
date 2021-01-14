@@ -2,6 +2,10 @@
 base = sphinx_base14
 
 
+[table-rel-widths : Table(has_class='rel-widths')]
+base = table
+column_widths = 30 20 15
+
 [table-mixed-widths : Table(has_class='mixed-widths')]
 base = table
-column_widths = 2 50pt 1
+column_widths = 2 35pt 1 auto

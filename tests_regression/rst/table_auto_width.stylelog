@@ -10,7 +10,7 @@
            x (0,0,0,0,2) table with caption
            > fallback to default style
         Caption('Table 1. auto column widths')
-             > (0,0,0,0,2) caption
+             > (0,0,0,0,4) table caption
             MixedStyledText('Table 1. auto column widths')
               SingleStyledText('Table ')
               MixedStyledText('1. ')
@@ -87,99 +87,21 @@
       TableWithCaption()
            x (0,0,0,0,2) table with caption
            > fallback to default style
-        Caption('Table 2. auto column widths')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 2. auto column widths')
+        Caption('Table 2. relative column widths ...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 2. relative column widths ...')
               SingleStyledText('Table ')
               MixedStyledText('2. ')
                 SingleStyledText('2')
                 SingleStyledText('. ')
-              SingleStyledText('auto column widths')
+              SingleStyledText('relative column widths A')
         Table()   None:None <table>
              > (0,0,0,0,2) table
           TableBody()
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:12 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('short')
-                    SingleStyledText('short')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:13 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('a bit longer')
-                    SingleStyledText('a bit longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:14 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('much, much longer')
-                    SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-            TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:15 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('A')
-                    SingleStyledText('A')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on even row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:16 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('B')
-                    SingleStyledText('B')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on even row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:17 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('C')
-                    SingleStyledText('C')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on even row
-                     > fallback to default style
-      TableWithCaption()
-           x (0,0,0,0,2) table with caption
-           > fallback to default style
-        Caption('Table 3. relative column widths')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 3. relative column widths')
-              SingleStyledText('Table ')
-              MixedStyledText('3. ')
-                SingleStyledText('3')
-                SingleStyledText('. ')
-              SingleStyledText('relative column widths')
-        Table()   None:None <table>
-             > (0,0,0,0,2) table
-          TableBody()
-            TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:22 <paragraph>
+                Paragraph('column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:13 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -190,7 +112,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:23 <paragraph>
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:14 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('column 2')
@@ -200,7 +122,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:24 <paragraph>
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:15 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('column 3')
@@ -211,7 +133,7 @@
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('A (15)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:25 <paragraph>
+                Paragraph('A (15)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:16 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -222,7 +144,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('B (20)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:26 <paragraph>
+                Paragraph('B (20)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:17 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('B (20)')
@@ -232,7 +154,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('C (30)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:27 <paragraph>
+                Paragraph('C (30)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:18 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('C (30)')
@@ -243,22 +165,100 @@
       TableWithCaption()
            x (0,0,0,0,2) table with caption
            > fallback to default style
-        Caption('Table 4. mixed column widths')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 4. mixed column widths')
+        Caption('Table 3. relative columns widths...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 3. relative columns widths...')
+              SingleStyledText('Table ')
+              MixedStyledText('3. ')
+                SingleStyledText('3')
+                SingleStyledText('. ')
+              SingleStyledText('relative columns widths B')
+        Table()   None:None <table>
+             > (0,0,0,0,2) table
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:24 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('short')
+                    SingleStyledText('short')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:25 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('a bit longer')
+                    SingleStyledText('a bit longer')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:26 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('much, much longer')
+                    SingleStyledText('much, much longer')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('A (10)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:27 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('A (10)')
+                    SingleStyledText('A (10)')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('B (5)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:28 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('B (5)')
+                    SingleStyledText('B (5)')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('C (3)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:29 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('C (3)')
+                    SingleStyledText('C (3)')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 4. relative column widths ...')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 4. relative column widths ...')
               SingleStyledText('Table ')
               MixedStyledText('4. ')
                 SingleStyledText('4')
                 SingleStyledText('. ')
-              SingleStyledText('mixed column widths')
+              SingleStyledText('relative column widths set in th...')
         Table()   None:None <table>
-             > (0,0,0,1,2) table-mixed-widths
+             > (0,0,0,1,2) table-rel-widths
                (0,0,0,0,2) table
           TableBody()
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:33 <paragraph>
+                Paragraph('column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:35 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -269,7 +269,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:34 <paragraph>
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:36 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('column 2')
@@ -279,7 +279,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:35 <paragraph>
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:37 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('column 3')
@@ -290,110 +290,131 @@
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('A (3)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:36 <paragraph>
+                Paragraph('A (30)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:38 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('A (3)')
-                    SingleStyledText('A (3)')
+                  MixedStyledText('A (30)')
+                    SingleStyledText('A (30)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('B (50pt)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:37 <paragraph>
+                Paragraph('B (20)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:39 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('B (50pt)')
-                    SingleStyledText('B (50pt)')
+                  MixedStyledText('B (20)')
+                    SingleStyledText('B (20)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('C (4)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:38 <paragraph>
+                Paragraph('C (15)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:40 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('C (4)')
-                    SingleStyledText('C (4)')
+                  MixedStyledText('C (15)')
+                    SingleStyledText('C (15)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
       TableWithCaption()
            x (0,0,0,0,2) table with caption
            > fallback to default style
-        Caption('Table 5. auto column widths, cen...')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 5. auto column widths, cen...')
+        Caption('Table 5. mixed column widths')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 5. mixed column widths')
               SingleStyledText('Table ')
               MixedStyledText('5. ')
                 SingleStyledText('5')
                 SingleStyledText('. ')
-              SingleStyledText('auto column widths, center align...')
+              SingleStyledText('mixed column widths')
         Table()   None:None <table>
-             > (0,0,0,0,2) table
+             > (0,0,0,1,2) table-mixed-widths
+               (0,0,0,0,2) table
           TableBody()
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:43 <paragraph>
+                Paragraph('column 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:46 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('col 1')
-                    SingleStyledText('col 1')
+                  MixedStyledText('column 1')
+                    SingleStyledText('column 1')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:44 <paragraph>
+                Paragraph('column 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:47 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('col 2')
-                    SingleStyledText('col 2')
+                  MixedStyledText('column 2')
+                    SingleStyledText('column 2')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:45 <paragraph>
+                Paragraph('column 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:48 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('col 3')
-                    SingleStyledText('col 3')
+                  MixedStyledText('column 3')
+                    SingleStyledText('column 3')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('column 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:49 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('column 4')
+                    SingleStyledText('column 4')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
                      > fallback to default style
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:46 <paragraph>
+                Paragraph('A (2)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:50 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('A')
-                    SingleStyledText('A')
+                  MixedStyledText('A (2)')
+                    SingleStyledText('A (2)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:47 <paragraph>
+                Paragraph('B (35pt)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:51 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('B')
-                    SingleStyledText('B')
+                  MixedStyledText('B (35pt)')
+                    SingleStyledText('B (35pt)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:48 <paragraph>
+                Paragraph('C (1)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:52 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('C')
-                    SingleStyledText('C')
+                  MixedStyledText('C (1)')
+                    SingleStyledText('C (1)')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('D (auto)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:53 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('D (auto)')
+                    SingleStyledText('D (auto)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
@@ -401,7 +422,7 @@
            x (0,0,0,0,2) table with caption
            > fallback to default style
         Caption('Table 6. relative column widths,...')
-             > (0,0,0,0,2) caption
+             > (0,0,0,0,4) table caption
             MixedStyledText('Table 6. relative column widths,...')
               SingleStyledText('Table ')
               MixedStyledText('6. ')
@@ -414,7 +435,7 @@
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:55 <paragraph>
+                Paragraph('col 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:60 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -425,7 +446,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:56 <paragraph>
+                Paragraph('col 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:61 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('col 2')
@@ -435,7 +456,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:57 <paragraph>
+                Paragraph('col 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:62 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('col 3')
@@ -446,7 +467,7 @@
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('A (60)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:58 <paragraph>
+                Paragraph('A (60)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:63 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -457,7 +478,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('B (30)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:59 <paragraph>
+                Paragraph('B (30)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:64 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('B (30)')
@@ -467,7 +488,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('C (20)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:60 <paragraph>
+                Paragraph('C (20)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:65 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('C (20)')
@@ -479,7 +500,7 @@
            x (0,0,0,0,2) table with caption
            > fallback to default style
         Caption('Table 7. mixed column widths, ri...')
-             > (0,0,0,0,2) caption
+             > (0,0,0,0,4) table caption
             MixedStyledText('Table 7. mixed column widths, ri...')
               SingleStyledText('Table ')
               MixedStyledText('7. ')
@@ -493,7 +514,7 @@
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:67 <paragraph>
+                Paragraph('col 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:72 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -504,7 +525,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:68 <paragraph>
+                Paragraph('col 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:73 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('col 2')
@@ -514,7 +535,7 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('col 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:69 <paragraph>
+                Paragraph('col 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:74 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('col 3')
@@ -522,10 +543,20 @@
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
                      > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('col 4')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:75 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('col 4')
+                    SingleStyledText('col 4')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
             TableRow()
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('A (2)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:70 <paragraph>
+                Paragraph('A (2)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:76 <paragraph>
                      > (0,0,0,1,8) table first column paragraph
                        (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
@@ -536,21 +567,31 @@
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('B (50pt)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:71 <paragraph>
+                Paragraph('B (35pt)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:77 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
-                  MixedStyledText('B (50pt)')
-                    SingleStyledText('B (50pt)')
+                  MixedStyledText('B (35pt)')
+                    SingleStyledText('B (35pt)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
               TableCell()   None:None <entry>
                    > (0,0,0,0,7) table cell
-                Paragraph('C (1)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:72 <paragraph>
+                Paragraph('C (1)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:78 <paragraph>
                      > (0,0,0,0,9) table body cell paragraph
                        (0,0,0,0,2) body
                   MixedStyledText('C (1)')
                     SingleStyledText('C (1)')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('D (auto)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_width.rst:79 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('D (auto)')
+                    SingleStyledText('D (auto)')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
                      > fallback to default style
