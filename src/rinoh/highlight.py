@@ -8,7 +8,8 @@
 from distutils.version import LooseVersion
 
 from .color import HexColor
-from .flowable import StaticGroupedFlowables
+from .flowable import (StaticGroupedFlowables, GroupedFlowablesStyle,
+                       Float, FloatStyle)
 from .font.style import FontWeight, FontSlant
 from .paragraph import Paragraph
 from .style import StyledMatcher, StyleSheet
@@ -52,7 +53,12 @@ class CodeBlock(Paragraph):
         super().__init__(text, id=id, style=style, parent=parent)
 
 
-class CodeBlockWithCaption(StaticGroupedFlowables):
+class CodeBlockWithCaptionStyle(FloatStyle, GroupedFlowablesStyle):
+    pass
+
+
+class CodeBlockWithCaption(Float, StaticGroupedFlowables):
+    style_class = CodeBlockWithCaptionStyle
     category = 'Listing'
 
 
