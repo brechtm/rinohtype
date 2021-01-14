@@ -498,6 +498,7 @@ class TemplateConfiguration(RuleSet):
             yield self[name]
         if self.base:
             yield from self.base.get_entries(name, document)
+        raise KeyError(name)
 
     def get_attribute_value(self, name):
         if name in self:
@@ -684,8 +685,12 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         super().__init__(document_tree, stylesheet, language, strings=strings,
                          backend=backend)
         parts = self.get_option('parts')
-        self.part_templates = [next(self._find_templates(name))
-                               for name in parts]
+        try:
+            self.part_templates = [next(self._find_templates(name))
+                                   for name in parts]
+        except KeyError as exc:
+            raise ValueError("The '{}' document template has no part named"
+                             " '{}'".format(type(self).__name__, *exc.args))
         self._to_insert = {}
 
     def _find_templates(self, name):
