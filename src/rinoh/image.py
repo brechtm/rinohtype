@@ -337,7 +337,7 @@ class _Image(ImageBase):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, dpi=dpi, rotate=rotate,
                          limit_width=limit_width, align=align,
-                         id=id, style=style, parent=parent, source=None)
+                         id=id, style=style, parent=parent, source=source)
 
 
 class Image(_Image):
