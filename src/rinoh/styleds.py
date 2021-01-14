@@ -9,7 +9,7 @@ from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import DummyFlowable, AnchorFlowable, WarnFlowable
 from .flowable import SetMetadataFlowable, SetOutOfLineFlowables
-from .highlight import CodeBlock, Token
+from .highlight import CodeBlock, CodeBlockWithCaption, Token
 from .index import IndexSection, Index, IndexLabel, IndexEntry
 from .index import InlineIndexTarget, IndexTarget
 from .inline import InlineFlowable

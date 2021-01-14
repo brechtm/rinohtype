@@ -74,6 +74,7 @@ matcher('glossary inline definition',
 
 matcher('body', Paragraph)
 matcher('code block', +CodeBlock)
+matcher('code block caption', CodeBlockWithCaption / Caption)
 matcher('math block', Paragraph.like('math'))
 matcher('attribution', Paragraph.like('attribution'))
 matcher('centered', Paragraph.like('centered'))
@@ -281,10 +282,11 @@ matcher('footnote label', Note / Paragraph)
 
 # images & figures
 
-matcher('figure', Figure)
 matcher('image', Image)
 matcher('inline image', InlineImage)
-matcher('caption', Caption)
+matcher('figure', Figure)
+matcher('figure image', 'figure' / Image)
+matcher('figure caption', 'figure' / Caption)
 matcher('figure legend', 'figure' / GroupedFlowables.like('legend'))
 matcher('figure legend paragraph', 'figure legend' / Paragraph)
 
@@ -317,6 +319,7 @@ matcher('list of tables entry', 'list of tables' / ListOfEntry)
 
 matcher('table', Table)
 matcher('table with caption', TableWithCaption)
+matcher('table caption', 'table with caption' / Caption)
 matcher('choices table', Table.like('choice'))
 matcher('table cell', Table / TableSection / TableRow / TableCell)
 matcher('table body cell background on even row',

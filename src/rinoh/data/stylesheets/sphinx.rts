@@ -160,6 +160,10 @@ padding_left=5pt
 padding_top=1pt
 padding_bottom=3pt
 
+[code block caption]
+base=caption
+keep_with_next=true
+
 [math block]
 base=code block
 border=none
@@ -616,16 +620,20 @@ line_spacing=Fixed(10pt)
 base=footnote paragraph
 text_align=RIGHT
 
-[figure]
-space_above=10pt
-space_below=12pt
-
 
 [image]
 space_above=10pt
 horizontal_align=CENTER
 
-[caption]
+[figure]
+space_above=10pt
+space_below=12pt
+
+[figure image]
+base=image
+keep_with_next=true
+
+[caption : Caption]
 base=default
 font_size=9pt
 line_spacing=Fixed(10pt)
@@ -634,6 +642,9 @@ space_above=4pt
 space_below=0pt
 text_align=CENTER
 label_suffix='. '
+
+[figure caption]
+base=caption
 
 [figure legend]
 margin_left=30pt
@@ -695,6 +706,10 @@ base=list of figures entry
 space_above=5pt
 space_below=5pt
 horizontal_align=CENTER
+
+[table caption]
+base=caption
+keep_with_next=true
 
 [table cell]
 space_above=2pt

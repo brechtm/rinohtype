@@ -40,6 +40,8 @@ New Features:
 Changed:
 
 * Rendering speed was more than doubled (caching)! (PR #197 by Alex Fargus)
+* The default stylesheet ('Sphinx') now prevents captions from being separated
+  from their image/table/code block (across pages).
 * Sphinx frontend: support for the 'rinoh_stylesheet' and 'rinoh_paper_size'
   configuration variables was removed. You can specify the style sheet and
   paper size to use in the template configuration (PR #195 and #192 by Alex
