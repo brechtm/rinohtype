@@ -674,8 +674,10 @@ class Table(DocutilsBodyNode):
         except AttributeError:
             head = None
         body = tgroup.tbody.get_table_section()
+        align = self.get('align')
         width_string = self.get('width')
-        return rt.Table(body, head=head, align=self.get('align'),
+        return rt.Table(body, head=head,
+                        align=None if align == 'default' else align,
                         width=convert_quantity(width_string),
                         column_widths=column_widths)
 
