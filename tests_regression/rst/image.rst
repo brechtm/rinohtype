@@ -1,3 +1,8 @@
+Default alignment:
+
+.. image:: ../images/title.png
+
+
 Left-aligned:
 
 .. image:: ../images/title.png
