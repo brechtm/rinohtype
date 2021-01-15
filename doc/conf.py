@@ -369,7 +369,6 @@ rinoh_documents = [('index', 'rinohtype', 'rinohtype',
                     'Brecht Machiels', False)]
 
 rinoh_template = 'rinohtype.rtt'
-rinoh_paper_size = None  # determined by the template configuration
 rinoh_logo = '_static/rinohtype_logo.pdf'
 
 # -- Extension interface -------------------------------------------------------
