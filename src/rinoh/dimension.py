@@ -107,7 +107,7 @@ class DimensionBase(AcceptNoneAttributeType, metaclass=DimensionType):
     def __eq__(self, other):
         try:
             return float(self) == float(other)
-        except TypeError:
+        except (ValueError, TypeError):
             return False
 
     @classmethod
