@@ -14,12 +14,13 @@ from pathlib import Path
 from token import LPAR, RPAR, NAME, EQUAL, NUMBER, ENDMARKER,  STRING, COMMA
 
 from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
-                        OptionSet, AttributesDictionary, ParseError)
+                        OptionSet, AttributesDictionary, ParseError,
+                        OverrideDefault)
 from .color import RED
 from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, FlowableState, HorizontalAlignment,
                        FlowableWidth, StaticGroupedFlowables,
-                       GroupedFlowablesStyle, Float, FloatStyle)
+                       GroupedFlowablesStyle, Float, FloatStyle, FlowableStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberedParagraph, NumberedParagraphStyle, format_number
@@ -236,7 +237,7 @@ class ImageBase(Flowable):
         yield "'{}'".format(self.filename)
 
     def initial_state(self, container):
-         return ImageState(self)
+        return ImageState(self)
 
     def _absolute_path_or_file(self):
         try:
@@ -340,12 +341,12 @@ class _Image(ImageBase):
                          id=id, style=style, parent=parent, source=source)
 
 
+class ImageStyle(FlowableStyle):
+    width = OverrideDefault('auto')
+
+
 class Image(_Image):
-    pass
-
-
-class BackgroundImageMeta(type(_Image), type(AttributesDictionary)):
-    pass
+    style_class = ImageStyle
 
 
 class ImageArgs(ImageArgsBase):
@@ -379,6 +380,8 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
 
 
 class CaptionStyle(NumberedParagraphStyle):
+    width = OverrideDefault('auto')
+
     numbering_level = Attribute(Integer, 1, 'At which section level to '
                                             'restart numbering')
     number_separator = Attribute(StyledText, '.', 'Characters inserted between'
@@ -424,7 +427,7 @@ class Caption(NumberedParagraph):
 
 
 class FigureStyle(FloatStyle, GroupedFlowablesStyle):
-    pass
+    width = OverrideDefault('auto')
 
 
 class Figure(Float, StaticGroupedFlowables):

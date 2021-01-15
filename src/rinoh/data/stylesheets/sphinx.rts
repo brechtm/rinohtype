@@ -635,6 +635,7 @@ keep_with_next=true
 
 [caption : Caption]
 base=default
+horizontal_align=CENTER
 font_size=9pt
 line_spacing=Fixed(10pt)
 indent_first=0pt

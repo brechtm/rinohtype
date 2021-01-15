@@ -8,6 +8,12 @@ def test_minimal(app, verify):
     verify()
 
 
+@pytest.mark.sphinx(buildername='rinoh', testroot='align')
+def test_align(app, verify):
+    app.build()
+    verify()
+
+
 @pytest.mark.sphinx(buildername='rinoh', testroot='subdir')
 def test_subdir(app, verify):
     app.build()
