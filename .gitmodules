@@ -2,7 +2,3 @@
 	path = doc/_build/html
 	url = https://github.com/brechtm/rinohtype.git
 	branch = gh-pages
-[submodule "tests_regression/sphinx"]
-	path = tests_regression/sphinx
-	url = https://github.com/sphinx-doc/sphinx.git
-	branch = master
