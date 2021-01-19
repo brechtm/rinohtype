@@ -8,6 +8,7 @@
 
 from pathlib import Path
 from shutil import unpack_archive
+from tempfile import TemporaryDirectory
 from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.request import urlopen
@@ -24,11 +25,7 @@ __all__ = ['google_fonts']
 DOWNLOAD_URL = 'https://fonts.google.com/download?family={}'
 
 APPDIRS = AppDirs("rinohtype", "opqode")
-USER_DATA_DIR = Path(APPDIRS.user_data_dir)
-USER_CACHE_DIR = Path(APPDIRS.user_cache_dir)
-
-DOWNLOAD_PATH = USER_CACHE_DIR / 'google_fonts'
-STORAGE_PATH = USER_DATA_DIR / 'google_fonts'
+STORAGE_PATH = Path(APPDIRS.user_data_dir) / 'google_fonts'
 STORAGE_PATH.mkdir(parents=True, exist_ok=True)
 
 
@@ -85,13 +82,18 @@ def try_install_family(name, family_path):
         return True
 
 
+download_dir = None
+
+
 def download_file(name, url):
-    DOWNLOAD_PATH.mkdir(parents=True, exist_ok=True)
+    global download_dir
+    if not download_dir:
+        download_dir = TemporaryDirectory(prefix='rinohtype_')
     try:
         with urlopen(url) as response:
             print("Found '{}': downloading...".format(name), end='')
             filename = response.headers.get_filename()
-            download_path = DOWNLOAD_PATH / filename
+            download_path = Path(download_dir.name) / filename
             with download_path.open('wb') as f:
                 while True:
                     buffer = response.read(8192)
