@@ -776,7 +776,9 @@ class StyleSheetFile(RuleSetFile, StyleSheet):
                 style_cls = self.get_entry_class(style_name)
             except KeyError:
                 warn("The style definition '{}' will be ignored since there"
-                     " is no selector defined for it in the matcher.")
+                     " is no selector defined for it in the matcher."
+                     .format(style_name))
+                return
         self[style_name] = style_cls(**dict(items))
 
 

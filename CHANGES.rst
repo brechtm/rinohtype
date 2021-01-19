@@ -72,6 +72,7 @@ Fixed:
   to space_below handling
 * Duplicate rendering of content in columns; if content was too small to fill
   the first column, it was rendered again in subsequent columns.
+* Crash on encountering a style for which no selector is defined.
 
 
 Release 0.4.2 (2020-07-28)
