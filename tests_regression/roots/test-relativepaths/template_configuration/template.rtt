@@ -4,6 +4,11 @@ template=my_document_template
 stylesheet=../stylesheet/stylesheet.rts
 
 
+[VARIABLES]
+header_text = '{SECTION_NUMBER(1)} {SECTION_TITLE(1)}'
+              '\t'
+              '\t' IMAGE('template_configuration.png')
+
 [front_matter]
 flowables = [Paragraph('front matter'),
              HorizontalRule(),
@@ -11,6 +16,7 @@ flowables = [Paragraph('front matter'),
             ]
 
 [contents_page]
+header_text = $(header_text)
 footer_text = IMAGE('template_configuration.png')
               '\t'
               '{PAGE_NUMBER} / {NUMBER_OF_PAGES}'

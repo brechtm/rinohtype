@@ -423,7 +423,7 @@ class RuleSet(OrderedDict, Source):
 
     def get_variable(self, variable):
         try:
-            return self.variables[variable.name]
+            return self.variables[variable.name], self
         except KeyError:
             if self.base:
                 return self.base.get_variable(variable)
@@ -463,9 +463,10 @@ class RuleSet(OrderedDict, Source):
         except DefaultValueException:
             value = configurable.configuration_class._get_default(attribute)
         if isinstance(value, Var):
-            variable = self.get_variable(value)
-            value = self._validate_attribute(configurable.configuration_class,
-                                             attribute, variable)
+            var_value, var_source = self.get_variable(value)
+            source = var_source or self
+            value = source._validate_attribute(configurable.configuration_class,
+                                               attribute, var_value)
         return value
 
 
@@ -602,9 +603,6 @@ class Var(object):
 
     def __eq__(self, other):
         return self.name == other.name
-
-    def get(self, accepted_type, rule_set):
-        return rule_set.get_variable(self.name, accepted_type)
 
 
 class VariableNotDefined(Exception):

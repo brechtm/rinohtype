@@ -708,7 +708,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
     @classmethod
     def get_variable(cls, variable):
         try:
-            return cls.variables[variable.name]
+            return cls.variables[variable.name], None
         except KeyError:
             raise VariableNotDefined("Document template provides no default "
                                      "for variable '{}'".format(variable.name))
