@@ -280,15 +280,6 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
         super().__init__(attributes)
 
     @classmethod
-    def validate_attribute(cls, name, value):
-        try:
-            attribute_type = cls.attribute_definition(name).accepted_type
-        except KeyError:
-            raise TypeError('{} is not a supported attribute for {}'
-                            .format(name, cls.__name__))
-        return attribute_type.validate(value)
-
-    @classmethod
     def _get_default(cls, attribute):
         """Return the default value for `attribute`.
 
@@ -311,6 +302,14 @@ class AttributesDictionary(OrderedDict, metaclass=WithAttributes):
         except AttributeError:
             pass
         raise KeyError(name)
+
+    @classmethod
+    def attribute_type(cls, name):
+        try:
+            return cls.attribute_definition(name).accepted_type
+        except KeyError:
+            raise TypeError('{} is not a supported attribute for {}'
+                            .format(name, cls.__name__))
 
     @classmethod
     def get_ruleset(self):
@@ -399,16 +398,13 @@ class RuleSet(OrderedDict, Source):
             attr_dict[key] = self._validate_attribute(attr_dict, key, val)
 
     def _validate_attribute(self, attr_dict, name, value):
-        try:
-            attribute_type = attr_dict.attribute_definition(name).accepted_type
-        except KeyError:
-            raise TypeError('{} is not a supported attribute for {}'
-                            .format(name, type(attr_dict).__name__))
+        attribute_type = attr_dict.attribute_type(name)
         if isinstance(value, str):
             stripped = value.replace('\n', ' ').strip()
             m = self.RE_VARIABLE.match(stripped)
-            value = (Var(m.group(1)) if m
-                     else self._attribute_from_string(attribute_type, stripped))
+            if m:
+                return Var(m.group(1))
+            value = self._attribute_from_string(attribute_type, stripped)
         elif hasattr(value, 'source'):
             value.source = self
         if not isinstance(value, Var) and not attribute_type.check_type(value):
@@ -421,14 +417,16 @@ class RuleSet(OrderedDict, Source):
     def _attribute_from_string(self, attribute_type, string):
         return attribute_type.from_string(string, self)
 
-    def get_variable(self, variable):
+    def get_variable(self, configuration_class, attribute, variable):
         try:
-            return self.variables[variable.name], self
+            value = self.variables[variable.name]
         except KeyError:
-            if self.base:
-                return self.base.get_variable(variable)
-            raise VariableNotDefined("Variable '{}' is not defined"
-                                     .format(variable.name))
+            if not self.base:
+                raise VariableNotDefined("Variable '{}' is not defined"
+                                         .format(variable.name))
+            return self.base.get_variable(configuration_class, attribute,
+                                          variable)
+        return self._validate_attribute(configuration_class, attribute, value)
 
     def get_entry_class(self, name):
         raise NotImplementedError
@@ -463,10 +461,8 @@ class RuleSet(OrderedDict, Source):
         except DefaultValueException:
             value = configurable.configuration_class._get_default(attribute)
         if isinstance(value, Var):
-            var_value, var_source = self.get_variable(value)
-            source = var_source or self
-            value = source._validate_attribute(configurable.configuration_class,
-                                               attribute, var_value)
+            configuration_class = configurable.configuration_class
+            value = self.get_variable(configuration_class, attribute, value)
         return value
 
 

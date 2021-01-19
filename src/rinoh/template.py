@@ -706,12 +706,13 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
     RE_PAGE = re.compile('^(.*)_(right|left)_page$')
 
     @classmethod
-    def get_variable(cls, variable):
+    def get_variable(cls, configuration_class, attribute, variable):
         try:
-            return cls.variables[variable.name], None
+            value = cls.variables[variable.name]
         except KeyError:
             raise VariableNotDefined("Document template provides no default "
                                      "for variable '{}'".format(variable.name))
+        return configuration_class.attribute_type(attribute).validate(value)
 
     def get_option(self, option_name):
         return self.configuration.get_attribute_value(option_name)
