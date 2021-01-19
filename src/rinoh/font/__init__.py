@@ -182,8 +182,9 @@ class Typeface(Resource, dict):
         try:
             typeface = super().parse_string(name, source)
         except ResourceNotFound as rni:
-            typeface = google_typeface(name)
-            if typeface is None:
+            try:
+                typeface = google_typeface(name)
+            except GoogleFontNotFound:
                 raise rni
         return typeface
 
@@ -294,4 +295,4 @@ class MissingGlyphException(Exception):
     """The font does not contain a glyph for the given unicode character"""
 
 
-from .google import google_typeface
+from .google import google_typeface, GoogleFontNotFound

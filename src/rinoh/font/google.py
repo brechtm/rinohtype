@@ -5,6 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import sys
 
 from pathlib import Path
 from shutil import unpack_archive
@@ -48,6 +49,9 @@ def google_fonts(name):
             break
     else:
         fonts_path = STORAGE_PATH / name
+        sys.stdout.write("\r"); sys.stdout.flush()  # clear progress indicator
+        print("Typeface '{}' is not installed; searching Google Fonts."
+              .format(name))
         if not try_install_family(name, fonts_path):
             raise GoogleFontNotFound(name)
     return [OpenTypeFont(font_path)
@@ -78,8 +82,9 @@ def try_install_family(name, family_path):
         print(" unpacking...", end='')
         family_path.mkdir(parents=True, exist_ok=True)
         unpack_archive(download_path, family_path)
-        print(" done")
+        print(" done!")
         return True
+    print("-> not found: please check the typeface name (case-sensitive!)")
 
 
 download_dir = None
@@ -91,7 +96,7 @@ def download_file(name, url):
         download_dir = TemporaryDirectory(prefix='rinohtype_')
     try:
         with urlopen(url) as response:
-            print("Found '{}': downloading...".format(name), end='')
+            print("-> success: downloading...".format(name), end='')
             filename = response.headers.get_filename()
             download_path = Path(download_dir.name) / filename
             with download_path.open('wb') as f:
