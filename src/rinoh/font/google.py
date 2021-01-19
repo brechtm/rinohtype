@@ -6,9 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import json
-
-from itertools import chain
 from pathlib import Path
 from shutil import unpack_archive
 from urllib.error import HTTPError
@@ -32,7 +29,7 @@ USER_CACHE_DIR = Path(APPDIRS.user_cache_dir)
 
 DOWNLOAD_PATH = USER_CACHE_DIR / 'google_fonts'
 STORAGE_PATH = USER_DATA_DIR / 'google_fonts'
-MANIFEST_PATH = STORAGE_PATH / 'fonts.json'
+STORAGE_PATH.mkdir(parents=True, exist_ok=True)
 
 
 GOOGLE_TYPEFACES = {}
@@ -48,30 +45,16 @@ def google_typeface(name):
 
 
 def google_fonts(name):
-    lc_name = name.lower()
-    if lc_name.endswith('condensed') or lc_name.endswith('extended'):
-        raise Exception
-
-    manifest = Manifest(MANIFEST_PATH)
-    if name not in manifest:
-        print("Looking for typeface '{}' on Google Fonts".format(name))
-        manifest_record = manifest[name] = {}
-        for fonts_name in font_widths(name):
-            fonts_path = STORAGE_PATH / fonts_name
-            if try_install_family(fonts_name, fonts_path):
-                manifest_record[fonts_name] = None
-        if not manifest_record:
+    for item in STORAGE_PATH.iterdir():
+        if item.is_dir() and item.name == name:
+            fonts_path = item
+            break
+    else:
+        fonts_path = STORAGE_PATH / name
+        if not try_install_family(name, fonts_path):
             raise GoogleFontNotFound(name)
-        manifest.save()
-    paths = [STORAGE_PATH / fonts_name for fonts_name in manifest[name]]
-    return [OpenTypeFont(font_path) for path in paths
-            for font_path in find_static_font_files(path)]
-
-
-def font_widths(name):
-    for var in chain([''], (a + b for b in (' Condensed', ' Expanded')
-                            for a in (' Semi', '', ' Extra', ' Ultra'))):
-        yield name + var
+    return [OpenTypeFont(font_path)
+            for font_path in find_static_font_files(fonts_path)]
 
 
 class GoogleFontNotFound(Exception):
@@ -79,30 +62,10 @@ class GoogleFontNotFound(Exception):
         self.typeface_name = typeface_name
 
 
-# TODO: add font version/last-checked field
-class Manifest(dict):
-    VERSION = 1
-    VERSION_KEY = '_manifest_version'
-
-    def __init__(self, file_path):
-        self.file_path = file_path
-        if self.file_path.exists():
-            with open(MANIFEST_PATH) as f:
-                self.update(json.load(f))
-            if self[self.VERSION_KEY] != self.VERSION:
-                raise NotImplementedError
-            del self[self.VERSION_KEY]
-
-    def save(self):
-        self[self.VERSION_KEY] = self.VERSION
-        with open(self.file_path, 'w') as f:
-            json.dump(self, f)
-
-
 def installed_google_fonts_typefaces():
-    manifest = Manifest(MANIFEST_PATH)
-    for name in manifest:
-        yield google_typeface(name)
+    for item in STORAGE_PATH.iterdir():
+        if item.is_dir():
+            yield google_typeface(item.name)
 
 
 def find_static_font_files(path):
