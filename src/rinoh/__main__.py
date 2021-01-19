@@ -22,6 +22,7 @@ from rinoh.dimension import PT
 from rinoh.document import DocumentTree
 from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
 from rinoh.font import Typeface, FontSlant, FontWeight, FontWidth
+from rinoh.font.google import installed_google_fonts_typefaces
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.paragraph import ParagraphStyle, Paragraph
 from rinoh.resource import ResourceNotFound
@@ -120,6 +121,8 @@ def get_reader_by_extension(file_extension):
 def installed_typefaces():
     for entry_point in iter_entry_points('rinoh.typefaces'):
         yield entry_point.load(), get_distribution_str(entry_point)
+    for typeface in installed_google_fonts_typefaces():
+        yield typeface, 'Google Fonts'
 
 
 def display_fonts(filename):

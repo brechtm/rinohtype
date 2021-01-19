@@ -10,6 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.5"
+appdirs = "^1.4.4"
 docutils = "^0.16"
 importlib-metadata = {version = ">=0.21", python = "<3.8"}
 recommonmark = "^0.6.0"

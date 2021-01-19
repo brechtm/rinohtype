@@ -6,6 +6,10 @@ Release 0.4.3.dev
 
 New Features:
 
+* Google Fonts: if a specified typeface is not installed, rinohtype attempts
+  to download the corresponding fonts from Google Fonts. Simply supply the font
+  name as listed on https://fonts.google.com as a value for the ``typeface``
+  style property.
 * Table: in addition to fixed and relative-width columns, you can indicate
   columns to be automatically sized by specifying a value of 'auto' in the
   'column_widths' style parameter in yout style sheet.

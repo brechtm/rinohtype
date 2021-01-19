@@ -13,7 +13,7 @@ Classes for fonts and typefaces.
 from warnings import warn
 
 from .style import FontWeight, FontSlant, FontWidth
-from ..resource import Resource
+from ..resource import Resource, ResourceNotFound
 from ..util import NotImplementedAttribute
 from ..warnings import warn
 
@@ -178,6 +178,16 @@ class Typeface(Resource, dict):
         return self.name
 
     @classmethod
+    def parse_string(cls, name, source):
+        try:
+            typeface = super().parse_string(name, source)
+        except ResourceNotFound as rni:
+            typeface = google_typeface(name)
+            if typeface is None:
+                raise rni
+        return typeface
+
+    @classmethod
     def check_type(cls, value):
         return isinstance(value, cls)
 
@@ -282,3 +292,6 @@ class LeafGetter(object):
 
 class MissingGlyphException(Exception):
     """The font does not contain a glyph for the given unicode character"""
+
+
+from .google import google_typeface
