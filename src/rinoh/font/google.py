@@ -81,7 +81,7 @@ def try_install_family(name, family_path):
     if download_path:
         print(" unpacking...", end='')
         family_path.mkdir(parents=True, exist_ok=True)
-        unpack_archive(download_path, family_path)
+        unpack_archive(str(download_path), str(family_path))
         print(" done!")
         return True
     print("-> not found: please check the typeface name (case-sensitive!)")
