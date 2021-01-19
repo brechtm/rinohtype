@@ -1,0 +1,12 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[VARIABLES]
+serif_typeface = Noto Serif
+sans_typeface = Asap
+mono_typeface = Roboto Mono
+
+
+[chapter]
+page_break = none
