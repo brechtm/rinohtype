@@ -162,9 +162,9 @@ def test_sphinx_set_document_metadata_subtitle(tmp_path):
 
 def test_sphinx_set_document_metadata_logo(tmp_path):
     expected_logo = 'logo.png'
-    app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
+    app = create_sphinx_app(tmp_path)
     template_cfg = app.builder.template_configuration('book', LOGGER)
-    document_data = document_data_dict()
+    document_data = document_data_dict(logo=expected_logo)
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
     app.builder.set_document_metadata(rinoh_doc, document_data)
@@ -173,9 +173,9 @@ def test_sphinx_set_document_metadata_logo(tmp_path):
 
 def test_sphinx_set_document_metadata_logo_absolute(tmp_path):
     expected_logo = tmp_path / 'confdir' / 'logo.png'
-    app = create_sphinx_app(tmp_path, rinoh_logo=expected_logo)
+    app = create_sphinx_app(tmp_path)
     template_cfg = app.builder.template_configuration('book', LOGGER)
-    document_data = document_data_dict()
+    document_data = document_data_dict(logo=expected_logo)
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
     app.builder.set_document_metadata(rinoh_doc, document_data)
@@ -208,6 +208,13 @@ def test_sphinx_rinoh_paper_size_removed(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
     assert "Support for 'rinoh_paper_size' has been removed" in caplog.text
+
+
+def test_sphinx_rinoh_logo_removed(caplog, tmp_path):
+    app = create_sphinx_app(tmp_path, rinoh_logo='logo.png')
+    with caplog.at_level(logging.WARNING):
+        variable_removed_warnings(app.config, LOGGER)
+    assert "Support for 'rinoh_logo' has been removed" in caplog.text
 
 
 def test_sphinx_document_data_rinoh_documents(tmp_path):

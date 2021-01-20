@@ -289,8 +289,8 @@ class RinohBuilder(Builder, Source):
 
     def set_document_metadata(self, rinoh_document, document_data):
         metadata = rinoh_document.metadata
-        if self.config.rinoh_logo:
-            rinoh_logo = Path(self.config.rinoh_logo)
+        if 'logo' in document_data:
+            rinoh_logo = Path(document_data['logo'])
             if not rinoh_logo.is_absolute():
                 rinoh_logo = self.confdir / rinoh_logo
             metadata['logo'] = rinoh_logo
@@ -345,6 +345,9 @@ def variable_removed_warnings(config, logger):
     if config.rinoh_template:
         logger.warning(message.format('rinoh_template',
                                       'template', "'rinoh_documents'"))
+    if config.rinoh_logo:
+        logger.warning(message.format('rinoh_logo',
+                                      'logo', "'rinoh_documents'"))
 
 
 def setup(app):

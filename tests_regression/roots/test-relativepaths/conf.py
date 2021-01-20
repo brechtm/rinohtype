@@ -81,9 +81,6 @@ rinoh_documents = [{
     'target': 'relativepaths',                          # output (target.pdf)
     'title': project,                                   # document title
     'author': author,                                   # document author
-    'template': 'template_configuration/template.rtt'   # document template
+    'template': 'template_configuration/template.rtt',  # document template
+    'logo': 'logo.png'                                  # document logo
 }]
-
-rinoh_template = 'template_configuration/template.rtt'
-
-rinoh_logo = 'logo.png'

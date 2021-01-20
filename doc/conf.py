@@ -372,10 +372,9 @@ rinoh_documents = [{
     'title': 'rinohtype',
     'author': 'Brecht Machiels',
     'toctree_only': False,
-    'template': 'rinohtype.rtt'
+    'template': 'rinohtype.rtt',
+    'logo': '_static/rinohtype_logo.pdf'
 }]
-
-rinoh_logo = '_static/rinohtype_logo.pdf'
 
 # -- Extension interface -------------------------------------------------------
 
