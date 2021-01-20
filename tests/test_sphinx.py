@@ -84,7 +84,7 @@ def test_sphinx_config_latex_option_no_effect(tmp_path):
     assert app.config.latex_logo == 'logo.png'
     assert app.config.rinoh_logo is None
     assert app.config.latex_domain_indices == False
-    assert app.config.rinoh_domain_indices is True
+    assert app.config.rinoh_domain_indices is None
 
 
 def test_sphinx_config_language(tmp_path):
@@ -215,6 +215,13 @@ def test_sphinx_rinoh_logo_removed(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
     assert "Support for 'rinoh_logo' has been removed" in caplog.text
+
+
+def test_sphinx_rinoh_domain_indices_removed(caplog, tmp_path):
+    app = create_sphinx_app(tmp_path, rinoh_domain_indices=False)
+    with caplog.at_level(logging.WARNING):
+        variable_removed_warnings(app.config, LOGGER)
+    assert "Support for 'rinoh_domain_indices' has been removed" in caplog.text
 
 
 def test_sphinx_document_data_rinoh_documents(tmp_path):

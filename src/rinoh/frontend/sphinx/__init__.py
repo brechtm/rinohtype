@@ -202,7 +202,7 @@ class RinohBuilder(Builder, Source):
             pendingnode.replace_self(newnodes)
         return largetree, docnames
 
-    def generate_indices(self, docnames):
+    def generate_indices(self, docnames, indices_config):
         def index_flowables(content):
             for section, entries in content:
                 yield IndexLabel(str(section))
@@ -212,7 +212,6 @@ class RinohBuilder(Builder, Source):
                     yield IndexEntry(entry_name, level=2 if subtype == 2 else 1,
                                      target_ids=target_ids)
 
-        indices_config = self.config.rinoh_domain_indices
         if indices_config:
             for domain in self.env.domains.values():
                 for indexcls in domain.indices:
@@ -238,6 +237,7 @@ class RinohBuilder(Builder, Source):
         indexfile = document_data['doc']
         toctree_only = document_data.get('toctree_only', False)
         template = document_data.get('template', 'book')
+        domain_indicies = document_data.get('domain_indices', True)
 
         logger.info("processing " + targetname + "... ", nonl=1)
         doctree, docnames = self.assemble_doctree(indexfile, toctree_only)
@@ -247,7 +247,7 @@ class RinohBuilder(Builder, Source):
         rinoh_tree = from_doctree(doctree, sphinx_builder=self)
         rinoh_template = self.template_configuration(template, logger)
         rinoh_document = rinoh_template.document(rinoh_tree)
-        extra_indices = StaticGroupedFlowables(self.generate_indices(docnames))
+        extra_indices = StaticGroupedFlowables(self.generate_indices(docnames, domain_indicies))
         # TODO: use out-of-line flowables?
         rinoh_document.insert('back_matter', extra_indices, 0)
         self.set_document_metadata(rinoh_document, document_data)
@@ -336,25 +336,28 @@ def latex_document_to_document_data(entry, logger):
 def variable_removed_warnings(config, logger):
     message = ("Support for '{}' has been removed. Instead, please specify"
                " the {} to use in your {}.")
-    if config.rinoh_stylesheet:
+    if config.rinoh_stylesheet is not None:
         logger.warning(message.format('rinoh_stylesheet',
                                       'style sheet', 'template configuration'))
-    if config.rinoh_paper_size:
+    if config.rinoh_paper_size is not None:
         logger.warning(message.format('rinoh_paper_size',
                                       'paper size', 'template configuration'))
-    if config.rinoh_template:
+    if config.rinoh_template is not None:
         logger.warning(message.format('rinoh_template',
-                                      'template', "'rinoh_documents'"))
-    if config.rinoh_logo:
+                                      "'template'", "'rinoh_documents'"))
+    if config.rinoh_logo is not None:
         logger.warning(message.format('rinoh_logo',
-                                      'logo', "'rinoh_documents'"))
+                                      "'logo'", "'rinoh_documents'"))
+    if config.rinoh_domain_indices is not None:
+        logger.warning(message.format('rinoh_domain_indices',
+                                      "'domain_indices'", "'rinoh_documents'"))
 
 
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', None, 'env')
     app.add_config_value('rinoh_logo', None, 'html')
-    app.add_config_value('rinoh_domain_indices', True, 'html')
+    app.add_config_value('rinoh_domain_indices', None, 'html')
     app.add_config_value('rinoh_template', None, 'html')
     app.add_config_value('rinoh_metadata', dict(), 'html')
     app.add_config_value('rinoh_stylesheet', None, 'html')
