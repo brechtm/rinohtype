@@ -34,7 +34,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.0.10
+        poetry-version: 1.1.4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
@@ -85,7 +85,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.0.10
+        poetry-version: 1.1.4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
@@ -144,7 +144,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.0.10
+        poetry-version: 1.1.4
     - name: Cache Poetry venv
       uses: actions/cache@v2
       with:
