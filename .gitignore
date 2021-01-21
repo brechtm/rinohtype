@@ -1,7 +1,6 @@
 *.pyc
 *~
 *.rtc
-Brewfile.lock.json
 /.cache
 /.pytest_cache
 /.idea
