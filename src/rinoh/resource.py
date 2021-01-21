@@ -21,7 +21,7 @@ from .attribute import AttributeType
 from .util import NotImplementedAttribute, class_property
 
 
-__all__ = ['Resource', 'ResourceNotFound']
+__all__ = ['Resource', 'ResourceNotFound', 'find_entry_points']
 
 
 class Resource(AttributeType):
@@ -34,8 +34,8 @@ class Resource(AttributeType):
     @classmethod
     def parse_string(cls, resource_name, source):
         entry_point_name = resource_name.lower()
-        entry_points = find_entry_points(entry_point_name,
-                                         cls.entry_point_group)
+        entry_points = find_entry_points(cls.entry_point_group,
+                                         entry_point_name)
         try:
             entry_point, dist = next(entry_points)
         except StopIteration:
@@ -97,17 +97,16 @@ def entry_point_name_to_identifier(entry_point_name):
                    if char in string.ascii_lowercase + string.digits)
 
 
-def find_entry_points(name, group):
-    """Find all `name` entry points with in `group`
+def find_entry_points(group, name=None):
+    """Find all entry points with in `group`, optionally filtered by `name`
 
-    Returns:
-        Iterator[(EntryPoint, Distribution)]: entry point and distribution
-            it belongs to
+    Yields:
+        (EntryPoint, Distribution): entry point and distribution it belongs to
 
     """
     yield from ((ep, dist) for dist in ilm.distributions()
                 for ep in dist.entry_points
-                if ep.group == group and ep.name == name)
+                if ep.group == group and (name is None or ep.name == name))
 
 
 # dynamic entry point creation
