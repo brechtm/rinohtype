@@ -13,8 +13,6 @@ import webbrowser
 from collections import OrderedDict
 from pathlib import Path
 
-from pkg_resources import get_distribution, iter_entry_points
-
 from rinoh import __version__, __release_date__
 
 from rinoh.attribute import Source
@@ -25,7 +23,7 @@ from rinoh.font import Typeface, FontSlant, FontWeight, FontWidth
 from rinoh.font.google import installed_google_fonts_typefaces
 from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.paragraph import ParagraphStyle, Paragraph
-from rinoh.resource import ResourceNotFound
+from rinoh.resource import find_entry_points, ResourceNotFound
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
@@ -88,30 +86,27 @@ parser.add_argument('--docs', action='store_true',
                          'browser')
 
 
-def get_distribution_str(entry_point):
-    dist = entry_point.dist
-    return ('built-in' if dist == get_distribution('rinohtype')
-            else '{0.project_name} {0.version}'.format(dist))
+def get_distribution_name(dist):
+    return ('built-in' if dist.metadata['Name'] == 'rinohtype'
+            else '{0[Name]} {0[Version]}'.format(dist.metadata))
 
 
 def get_reader_by_name(format_name):
-    for entry_point in iter_entry_points('rinoh.frontends'):
-        if format_name.lower() == entry_point.name.lower():
-            return entry_point.name, entry_point.load()
+    for entry_point, _ in find_entry_points('rinoh.frontends',
+                                            format_name.lower()):
+        return entry_point.name, entry_point.load()
     raise SystemExit("Unknown format '{}'. Run `{} --list-formats` to "
                      "find out which formats are supported."
                      .format(format_name, parser.prog))
 
 
 def get_reader_by_extension(file_extension):
-    for entry_point in iter_entry_points('rinoh.frontends'):
+    for entry_point, dist in find_entry_points('rinoh.frontends'):
         reader_cls = entry_point.load()
-        for reader_extension in reader_cls.extensions:
-            if reader_extension == file_extension:
-                print('Using the {} frontend [{}]'
-                      .format(entry_point.name,
-                              get_distribution_str(entry_point)))
-                return entry_point.name, reader_cls
+        if file_extension in reader_cls.extensions:
+            print('Using the {} frontend [{}]'
+                  .format(entry_point.name, get_distribution_name(dist)))
+            return entry_point.name, reader_cls
     raise SystemExit("Cannot determine input format from extension '{}'. "
                      "Specify the format using the `--format` option. Run "
                      "`{} --list-formats` to find out which formats are "
@@ -119,8 +114,8 @@ def get_reader_by_extension(file_extension):
 
 
 def installed_typefaces():
-    for entry_point in iter_entry_points('rinoh.typefaces'):
-        yield entry_point.load(), get_distribution_str(entry_point)
+    for entry_point, dist in find_entry_points('rinoh.typefaces'):
+        yield entry_point.load(), get_distribution_name(dist)
     for typeface in installed_google_fonts_typefaces():
         yield typeface, 'Google Fonts'
 
@@ -176,12 +171,11 @@ def main():
         do_exit = True
     if args.list_formats:
         print('Supported input file formats:')
-        for entry_point in iter_entry_points('rinoh.frontends'):
+        for entry_point, dist in find_entry_points('rinoh.frontends'):
             reader_cls = entry_point.load()
-            distribution = get_distribution_str(entry_point)
             print('- {} (.{}) [{}]'
                   .format(entry_point.name, ', .'.join(reader_cls.extensions),
-                          distribution))
+                          get_distribution_name(dist)))
         do_exit = True
     if args.list_options:
         reader_name, reader_cls = get_reader_by_name(args.list_options)
