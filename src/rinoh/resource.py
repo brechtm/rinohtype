@@ -5,18 +5,17 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-
-import pip
 import string
 import sys
 
 from collections import namedtuple
+from subprocess import Popen, PIPE
+
 try:
     from importlib import metadata as ilm
 except ImportError:     # Python < 3.8
     import importlib_metadata as ilm
 from warnings import warn
-from xmlrpc.client import ServerProxy
 
 from .attribute import AttributeType
 from .util import NotImplementedAttribute, class_property
@@ -57,19 +56,14 @@ class Resource(AttributeType):
 
     @classmethod
     def install_from_pypi(cls, entry_point_name):
-        success = False
-        pypi = ServerProxy('https://pypi.python.org/pypi')
         resource_id = entry_point_name_to_identifier(entry_point_name)
-        distribution_name_parts = ['rinoh', cls.resource_type, resource_id]
-        for pkg in pypi.search(dict(name=distribution_name_parts)):
-            if pkg['name'] == '-'.join(distribution_name_parts):
-                package_name = pkg['name']
-                print("Installing {} package '{}' using pip..."
-                      .format(cls.resource_type, package_name))
-                pip.main(['install', package_name])
-                success = True
-                break
-        return success
+        package_name = '-'.join(['rinoh', cls.resource_type, resource_id])
+        pip = Popen([sys.executable, '-m', 'pip', 'install', package_name],
+                    stdout=PIPE, universal_newlines=True)
+        for line in pip.stdout:
+            if not line.startswith('Requirement already satisfied'):
+                sys.stdout.write(line)
+        return pip.wait() == 0
 
 
 class ResourceNotFound(Exception):

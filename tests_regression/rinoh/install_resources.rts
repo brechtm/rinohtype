@@ -1,0 +1,11 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[VARIABLES]
+serif_typeface = TeX Gyre Schola
+sans_typeface = DejaVu Sans
+
+
+[chapter]
+page_break = none

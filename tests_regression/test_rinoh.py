@@ -30,7 +30,7 @@ def collect_tests():
 @pytest.mark.parametrize('test_name', collect_tests())
 def test_rinoh(script_runner, test_name):
     rst_path = Path(test_name + '.rst')
-    args = []
+    args = ['--install-resources']
     templconf_path = rst_path.with_suffix('.rtt')
     if (RINOH_PATH / templconf_path).exists():
         args += ['--template', str(templconf_path)]

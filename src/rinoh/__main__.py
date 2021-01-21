@@ -298,20 +298,19 @@ def main():
                 raise SystemExit('Rendering completed with errors')
             break
         except ResourceNotFound as err:
-            not_installed_msg = ("{} '{}' not installed."
-                                 .format(err.resource_type.title(),
-                                         err.resource_name))
             if args.install_resources:
-                print(not_installed_msg + ' Attempting to install it from '
-                                          'PyPI...')
+                print("Attempting to the install the '{}' {} from PyPI:"
+                      .format(err.resource_name, err.resource_type.title()))
                 success = Typeface.install_from_pypi(err.entry_point_name)
                 if not success:
                     raise SystemExit("No '{}' {} found on PyPI. Aborting."
                                      .format(err.resource_name,
                                              err.resource_type))
             else:
-                raise SystemExit(not_installed_msg + " Consider passing the "
-                                 "--install-resources command line option.")
+                raise SystemExit("{} '{}' not installed. Consider passing the "
+                                 "--install-resources command line option."
+                                 .format(err.resource_type.title(),
+                                         err.resource_name))
 
 
 class CwdSource(Source):
