@@ -22,6 +22,15 @@ def test_version(script_runner):
     assert ret.stderr == ''
 
 
+def test_list_formats(script_runner):
+    ret = script_runner.run('rinoh', '--list-formats')
+    assert ret.success
+    assert ret.stderr == ''
+    assert '[built-in]' in ret.stdout
+    assert 'CommonMark' in ret.stdout
+    assert 'reStructuredText' in ret.stdout
+
+
 def collect_tests():
     for rst_path in sorted(RINOH_PATH.glob('*.rst')):
         yield rst_path.stem
