@@ -27,6 +27,32 @@ classifiers = [
 packages = [
     { include = "rinoh", from = "src" }
 ]
+include = [
+    { path = ".coveragerc", format = "sdist" },
+    { path = ".envrc", format = "sdist" },
+    { path = ".python-version", format = "sdist" },
+    { path = "CHANGES.rst", format = "sdist" },
+    { path = "CONTRIBUTING.rst", format = "sdist" },
+    { path = "coverage.py", format = "sdist" },
+    { path = "DEVELOPING.rst", format = "sdist" },
+    { path = "doc", format = "sdist" },
+    { path = "gitlabpypi.py", format = "sdist" },
+    { path = "icons", format = "sdist" },
+    { path = "macapp", format = "sdist" },
+    { path = "macapp.py", format = "sdist" },
+    { path = "poetry.lock", format = "sdist" },
+    { path = "poetry.toml", format = "sdist" },
+    { path = "pyenv_setup.py", format = "sdist" },
+    { path = "run_tests.py", format = "sdist" },
+    { path = "tests", format = "sdist" },
+    { path = "tests_regression", format = "sdist" },
+    { path = "tox.ini", format = "sdist" },
+    { path = "wininst.py", format = "sdist" },
+    { path = "wininst.cfg", format = "sdist" },
+]
+exclude = [
+    "doc/_build",  # the entry in doc/.gitignore is ignored (html submodule)
+]
 
 [tool.poetry.scripts]
 rinoh = "rinoh.__main__:main"
