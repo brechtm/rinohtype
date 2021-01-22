@@ -701,7 +701,7 @@ testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.5"
-content-hash = "02eab65417bde850b1048dde93a8f4881d8d86c53965ebb9002959bf4107f2bd"
+content-hash = "47cb75c9f6fae7c0899eb27849276b4bb1e52ecce246fe8a10d2286b4a84d85c"
 
 [metadata.files]
 alabaster = [

@@ -91,7 +91,6 @@ rinoh-typeface-texgyrecursor = "^0.1.1"
 rinoh-typeface-texgyreheros = "^0.1.1"
 rinoh-typeface-texgyrepagella = "^0.1.1"
 rinoh-typeface-dejavuserif = "^0.1.3"
-setuptools = ">=19.2"
 
 [tool.poetry.dev-dependencies]
 restview = "^2.9.2"
