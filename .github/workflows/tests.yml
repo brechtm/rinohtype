@@ -64,7 +64,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10.0-alpha - 3.10, pypy3]
+        python-version: [3.6, 3.7, 3.8, 3.9, pypy3]
         env:
           - DIST: sdist
             WITH_COVERAGE: 1
@@ -123,7 +123,6 @@ jobs:
           - { os: Ubuntu, dist: wheel, python-version: 3.6 }
           - { os: Ubuntu, dist: wheel, python-version: 3.7 }
           - { os: Ubuntu, dist: wheel, python-version: 3.8 }
-          - { os: Ubuntu, dist: wheel, python-version: 3.10.0-alpha - 3.10 }
           - { os: Ubuntu, dist: wheel, python-version: pypy3 }
           - { os: Ubuntu, dist: sdist, python-version: 3.9 }
     runs-on: ${{ matrix.os }}-latest
