@@ -33,7 +33,8 @@ def test_list_formats(script_runner):
 
 def collect_tests():
     for rst_path in sorted(RINOH_PATH.glob('*.rst')):
-        yield rst_path.stem
+        yield (pytest.param(rst_path.stem, marks=pytest.mark.xfail)
+               if rst_path.stem == 'install_resources' else rst_path.stem)
 
 
 @pytest.mark.parametrize('test_name', collect_tests())
