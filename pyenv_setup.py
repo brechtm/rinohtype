@@ -22,4 +22,4 @@ for version in versions:
     echo_and_run('pyenv', 'install', '--skip-existing', version)
 
 print("Now you can set up the development virtualenv:")
-print('  poetry install --no-root')
+print('  poetry install')
