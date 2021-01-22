@@ -99,7 +99,7 @@ jobs:
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
-        poetry run python setup.py bdist_wheel
+        poetry build -f wheel
         python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
       run: |
@@ -209,7 +209,7 @@ jobs:
     - name: Create wheel
       if: env.DIST == 'wheel'
       run: |
-        poetry run python setup.py bdist_wheel
+        poetry build -f wheel
         python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
       run: |
