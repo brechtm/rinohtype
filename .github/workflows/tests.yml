@@ -124,6 +124,7 @@ jobs:
           - { os: Ubuntu, dist: wheel, python-version: 3.7 }
           - { os: Ubuntu, dist: wheel, python-version: 3.9.0-alpha - 3.9.0 }
           - { os: Ubuntu, dist: wheel, python-version: pypy3 }
+          - { os: Ubuntu, dist: sdist, python-version: 3.8 }
     runs-on: ${{ matrix.os }}-latest
     env:
       TOXENV: regression
