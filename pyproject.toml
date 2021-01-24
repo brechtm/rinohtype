@@ -93,7 +93,7 @@ rinoh-typeface-texgyrepagella = "^0.1.1"
 
 [tool.poetry.dev-dependencies]
 doc8 = "^0.8.1"
-pytest = "^6.1.1"
+pytest = "^6.2.1"
 pytest-assume = "^2.4.2"
 pytest-console-scripts = "^1.0.0"
 pytest-cov = "^2.11.1"
