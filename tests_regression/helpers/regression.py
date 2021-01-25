@@ -53,7 +53,8 @@ def _render_rst(rst_path, doctree, out_filename, reference_path, warnings=[]):
     if templconf_path.exists():
         config = TemplateConfigurationFile(str(templconf_path))
     else:
-        config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
+        config = TemplateConfiguration('rst', template=MinimalTemplate,
+                                       **kwargs)
         config.variables['paper_size'] = 'a5'
     render_doctree(doctree, out_filename, reference_path, config, warnings)
 
@@ -93,7 +94,8 @@ def render_doctree(doctree, out_filename, reference_path,
         warnings_node = document.metadata['warnings'].source.node
         warnings = chain(warnings_node.rawsource.splitlines(), warnings)
     for warning in warnings:
-        if not any(re.search(warning, str(w.message)) for w in recorded_warnings):
+        if not any(re.search(warning, str(w.message))
+                   for w in recorded_warnings):
             pytest.fail('Expected warning matching "{}"'.format(warning))
     verify_output(out_filename, output_dir, reference_path)
 
@@ -102,8 +104,6 @@ def render_sphinx_project(name, project_dir, template_cfg=None):
     project_path = TEST_DIR / project_dir
     out_path = OUTPUT_DIR / name
     confoverrides = {}
-    if template_cfg:
-        confoverrides['rinoh_template'] = str(TEST_DIR / template_cfg)
     with docutils_namespace():
         sphinx = Sphinx(srcdir=str(project_path),
                         confdir=str(project_path),
@@ -111,6 +111,9 @@ def render_sphinx_project(name, project_dir, template_cfg=None):
                         doctreedir=str(out_path / 'doctrees'),
                         buildername='rinoh',
                         confoverrides=confoverrides)
+        if template_cfg:
+            for document_data in sphinx.config.rinoh_documents:
+                document_data['template'] = str(TEST_DIR / template_cfg)
         sphinx.build()
     out_filename = '{}.pdf'.format(name)
     with in_directory(out_path):

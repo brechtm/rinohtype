@@ -10,23 +10,45 @@ options. Of these, only :confval:`rinoh_documents` (or
 
 .. confval:: rinoh_documents
 
-    Determines how to group the document tree into PDF output files. Its format
-    is identical to that of :confval:`sphinx:latex_documents`, with the
-    exception that `targetname` should specify the name of the PDF file without
-    the extension. If it is not specified, the value of
-    :confval:`sphinx:latex_documents` is used instead (with the ``.tex``
-    extension stripped from the `targetname`).
+    Determines which PDF documents to build. Its format is a list of
+    dictionaries, one for each document to be generated. Supported keys are:
+
+    doc (required)
+        String that specifies the name of the master document (typically
+        ``index``).
+    target (required)
+        The name of the target PDF file without the extension.
+    title (required)
+        The title of the document.
+    author (required)
+        The author of the document.
+    toctree_only (default: ``False``)
+        Must be ``True`` or ``False``. If true, the document itself is not
+        included in the output, only the documents referenced by it via TOC
+        trees.
+    logo (default: ``None``)
+        Path (relative to the configuration directory) to an image file to use
+        at the top of the title page.
+    domain_indices (default: ``True``)
+        If true, generate domain-specific indices in addition to the general
+        index. It is equivalent to the :confval:`sphinx:html_domain_indices`
+        and :confval:`sphinx:latex_domain_indices` configuration variables.
+    template (default: :class:`.Book`)
+        Determines the template used to render the document. It takes:
+
+        * the filename of a :ref:`template configuration file
+          <configure_templates>`,
+        * a :class:`.TemplateConfiguration` instance,
+        * the name of an installed template
+          (see :option:`rinoh --list-templates`)
+        * a :class:`.DocumentTemplate` subclass
+
 
 .. confval:: rinoh_template
 
-    Determines the template used to render the document. It takes:
+    This configuration variable is **no longer supported** since the
+    document template can be specified in :confval:`rinoh_documents`.
 
-    * the filename of a :ref:`template configuration file <configure_templates>`,
-    * a :class:`.TemplateConfiguration` instance,
-    * the name of an installed template (see :option:`rinoh --list-templates`)
-    * a :class:`.DocumentTemplate` subclass
-
-    The default is ``'book'``, which resolves to the :class:`.Book` template.
 
 .. confval:: rinoh_stylesheet
 
@@ -67,15 +89,13 @@ options. Of these, only :confval:`rinoh_documents` (or
 
 .. confval:: rinoh_logo
 
-    Path (relative to the configuration directory) to an image file to use at
-    the top of the title page.
+    This configuration variable is **no longer supported** since the logo can
+    be specified in the :confval:`rinoh_documents`.
 
 .. confval:: rinoh_domain_indices
 
-    If true, generate domain-specific indices in addition to the general index.
-    It is equivalent to the :confval:`sphinx:html_domain_indices` and
-    :confval:`sphinx:latex_domain_indices` configuration variables. Default:
-    ``True``.
+    This configuration variable is **no longer supported** since the
+    domain_indices can be specified in the :confval:`rinoh_documents`.
 
 .. confval:: rinoh_metadata
 

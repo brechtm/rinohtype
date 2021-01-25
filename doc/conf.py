@@ -357,11 +357,15 @@ epub_exclude_files = ['search.html']
 
 # -- Options for rinohtype PDF output -------------------------------------
 
-rinoh_documents = [('index', 'rinohtype', 'rinohtype',
-                    'Brecht Machiels', False)]
-
-rinoh_template = 'rinohtype.rtt'
-rinoh_logo = '_static/rinohtype_logo.pdf'
+rinoh_documents = [{
+    'doc': 'index',
+    'target': 'rinohtype',
+    'title': 'rinohtype',
+    'author': 'Brecht Machiels',
+    'toctree_only': False,
+    'template': 'rinohtype.rtt',
+    'logo': '_static/rinohtype_logo.pdf'
+}]
 
 # -- Extension interface -------------------------------------------------------
 
