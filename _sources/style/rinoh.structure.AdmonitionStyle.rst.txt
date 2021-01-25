@@ -1,7 +1,0 @@
-AdmonitionStyle
-===============================
-
-.. currentmodule:: rinoh.structure
-
-.. autoclass:: AdmonitionStyle
-    :members:

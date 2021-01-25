@@ -1,7 +1,0 @@
-LineStyle
-====================
-
-.. currentmodule:: rinoh.draw
-
-.. autoclass:: LineStyle
-    :members:

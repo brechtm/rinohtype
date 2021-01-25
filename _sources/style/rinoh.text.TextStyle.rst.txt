@@ -1,7 +1,0 @@
-TextStyle
-====================
-
-.. currentmodule:: rinoh.text
-
-.. autoclass:: TextStyle
-    :members:

@@ -1,7 +1,0 @@
-FlowableStyle
-============================
-
-.. currentmodule:: rinoh.flowable
-
-.. autoclass:: FlowableStyle
-    :members:

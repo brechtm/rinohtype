@@ -1,7 +1,0 @@
-NoteMarkerStyle
-===============================
-
-.. currentmodule:: rinoh.reference
-
-.. autoclass:: NoteMarkerStyle
-    :members:

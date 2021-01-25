@@ -1,7 +1,0 @@
-CaptionStyle
-========================
-
-.. currentmodule:: rinoh.image
-
-.. autoclass:: CaptionStyle
-    :members:

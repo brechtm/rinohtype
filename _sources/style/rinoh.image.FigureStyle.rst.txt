@@ -1,7 +1,0 @@
-FigureStyle
-=======================
-
-.. currentmodule:: rinoh.image
-
-.. autoclass:: FigureStyle
-    :members:

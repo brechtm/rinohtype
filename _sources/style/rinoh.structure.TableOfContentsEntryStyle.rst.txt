@@ -1,7 +1,0 @@
-TableOfContentsEntryStyle
-=========================================
-
-.. currentmodule:: rinoh.structure
-
-.. autoclass:: TableOfContentsEntryStyle
-    :members:
