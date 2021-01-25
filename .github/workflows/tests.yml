@@ -58,6 +58,15 @@ jobs:
       run: |
         poetry run tox -v
 
+    - name: Publish docs to GitHub pages
+      if: env.TOXENV == 'build-docs'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: doc/_build/html
+        destination_dir: master
+        keep_files: true
+
   test:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
     strategy:
