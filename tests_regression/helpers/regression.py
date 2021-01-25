@@ -53,7 +53,8 @@ def _render_rst(rst_path, doctree, out_filename, reference_path, warnings=[]):
     if templconf_path.exists():
         config = TemplateConfigurationFile(str(templconf_path))
     else:
-        config = TemplateConfiguration('rst', template=MinimalTemplate, **kwargs)
+        config = TemplateConfiguration('rst', template=MinimalTemplate,
+                                       **kwargs)
         config.variables['paper_size'] = 'a5'
     render_doctree(doctree, out_filename, reference_path, config, warnings)
 
@@ -93,7 +94,8 @@ def render_doctree(doctree, out_filename, reference_path,
         warnings_node = document.metadata['warnings'].source.node
         warnings = chain(warnings_node.rawsource.splitlines(), warnings)
     for warning in warnings:
-        if not any(re.search(warning, str(w.message)) for w in recorded_warnings):
+        if not any(re.search(warning, str(w.message))
+                   for w in recorded_warnings):
             pytest.fail('Expected warning matching "{}"'.format(warning))
     verify_output(out_filename, output_dir, reference_path)
 

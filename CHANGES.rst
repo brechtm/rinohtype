@@ -47,15 +47,14 @@ New Features:
 Changed:
 
 * Rendering speed was more than doubled (caching)! (PR #197 by Alex Fargus)
+* Sphinx frontend: ``rinoh_documents`` now takes a list of dictionaries, one
+  for each PDF document to be built. This allows selecting e.g. the template
+  and logo on a per-document level. Support for ``rinoh_template``,
+  ``rinoh_stylesheet``, ``rinoh_paper_size``, ``rinoh_domain_indices`` and
+  ``rinoh_logo`` was removed. Also, only fallback to ```latex_documents`` is
+  retained. (PR #192, #195, #208 and #216 by Alex Fargus)
 * The default stylesheet ('Sphinx') now prevents captions from being separated
   from their image/table/code block (across pages).
-* Sphinx frontend: support for the 'rinoh_stylesheet' and 'rinoh_paper_size'
-  configuration variables was removed. You can specify the style sheet and
-  paper size to use in the template configuration (PR #195 and #192 by Alex
-  Fargus)
-* Sphinx frontend: there is no more fallback to the corresponding LaTeX
-  builder's configuration variables when the these configuration variables are
-  not set: 'rinoh_logo', 'rinoh_domain_indices' (PR #208 by Alex Fargus).
 * Font weights and widths are now internally represented by integer classes.
   In addition to integer values, string values are still accepted (mapped to
   classes).

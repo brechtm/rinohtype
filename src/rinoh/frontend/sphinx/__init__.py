@@ -120,8 +120,8 @@ class RinohBuilder(Builder, Source):
     def document_data(self, logger):
         def known_document_reference(docname):
             if docname not in self.env.all_docs:
-                logger.warning('"rinoh_documents" config value references unknown '
-                               'document %s' % docname)
+                logger.warning("'rinoh_documents' config value references"
+                               " unknown document '{}'".format(docname))
                 return False
             return True
 
@@ -133,11 +133,10 @@ class RinohBuilder(Builder, Source):
             document_data = [latex_document_to_document_data(entry, logger)
                              for entry in config.latex_documents]
         else:
-            logger.warning('no "rinoh_documents" config value found; '
-                           'no documents will be written')
+            logger.warning("No 'rinoh_documents' config value found; no"
+                           " documents will be written")
             document_data = []
-        document_data = [entry
-                         for entry in document_data
+        document_data = [entry for entry in document_data
                          if known_document_reference(entry['doc'])]
         return document_data
 
@@ -185,7 +184,7 @@ class RinohBuilder(Builder, Source):
         largetree['docname'] = indexfile
         logger.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
-        # resolve :ref:s to distant tex files -- we can't add a cross-reference,
+        # resolve :ref:s to other PDF files -- we can't add a cross-reference,
         # but append the document name
         for pendingnode in largetree.traverse(addnodes.pending_xref):
             docname = pendingnode['refdocname']
@@ -209,7 +208,8 @@ class RinohBuilder(Builder, Source):
                 for (name, subtype, docname, anchor, _, _, _) in entries:
                     target_ids = ([anchor] if anchor else None)
                     entry_name = SingleStyledText(name, style='domain')
-                    yield IndexEntry(entry_name, level=2 if subtype == 2 else 1,
+                    yield IndexEntry(entry_name,
+                                     level=2 if subtype == 2 else 1,
                                      target_ids=target_ids)
 
         if indices_config:
@@ -237,7 +237,7 @@ class RinohBuilder(Builder, Source):
         indexfile = document_data['doc']
         toctree_only = document_data.get('toctree_only', False)
         template = document_data.get('template', 'book')
-        domain_indicies = document_data.get('domain_indices', True)
+        domain_indices = document_data.get('domain_indices', True)
 
         logger.info("processing " + targetname + "... ", nonl=1)
         doctree, docnames = self.assemble_doctree(indexfile, toctree_only)
@@ -247,7 +247,8 @@ class RinohBuilder(Builder, Source):
         rinoh_tree = from_doctree(doctree, sphinx_builder=self)
         rinoh_template = self.template_configuration(template, logger)
         rinoh_document = rinoh_template.document(rinoh_tree)
-        extra_indices = StaticGroupedFlowables(self.generate_indices(docnames, domain_indicies))
+        extra_indices = StaticGroupedFlowables(
+            self.generate_indices(docnames, domain_indices))
         # TODO: use out-of-line flowables?
         rinoh_document.insert('back_matter', extra_indices, 0)
         self.set_document_metadata(rinoh_document, document_data)
@@ -262,13 +263,11 @@ class RinohBuilder(Builder, Source):
         if isinstance(template, str):
             tmpl_path = path.join(self.confdir, template)
             if path.isfile(tmpl_path):
-                base = TemplateConfigurationFile(template,
-                                                 source=self)
+                base = TemplateConfigurationFile(template, source=self)
                 contructor_args['base'] = base
                 template_cls = contructor_args['base'].template
             else:
-                template_cls = DocumentTemplate.from_string(
-                    template)
+                template_cls = DocumentTemplate.from_string(template)
         elif isinstance(template, TemplateConfiguration):
             contructor_args['base'] = template
             template_cls = template.template
@@ -280,8 +279,8 @@ class RinohBuilder(Builder, Source):
             try:
                 contructor_args['language'] = Language.from_string(language)
             except KeyError:
-                logger.warning("The language '{}' is not supported by rinohtype."
-                               .format(language))
+                logger.warning("The language '{}' is not supported by"
+                               " rinohtype.".format(language))
 
         sphinx_config = template_cls.Configuration('Sphinx conf.py options',
                                                    **contructor_args)
@@ -294,10 +293,11 @@ class RinohBuilder(Builder, Source):
             if not rinoh_logo.is_absolute():
                 rinoh_logo = self.confdir / rinoh_logo
             metadata['logo'] = rinoh_logo
-        metadata['title'] = document_data.get('title')
-        metadata['subtitle'] = document_data.get(
-            'subtitle', _('Release') + ' {}'.format(self.config.release))
-        metadata['author'] = document_data.get('author')
+        metadata['title'] = document_data['title']
+        metadata['subtitle'] = \
+            document_data.get('subtitle',
+                              _('Release') + ' {}'.format(self.config.release))
+        metadata['author'] = document_data['author']
         date = (self.config.today
                 or format_date(self.config.today_fmt or _('%b %d, %Y'),
                                language=self.config.language))
@@ -316,41 +316,39 @@ def rinoh_document_to_document_data(entry, logger):
 
 
 def list_to_document_data(entry, logger):
-    logger.warning(
-        "'rinoh_documents' converted from list. In future versions this shall be deprecated.")
-    keys = ("doc", "target", "title", "author", "toctree_only")
+    logger.warning("'rinoh_documents' entry converted from list. In future"
+                   " versions this shall be deprecated.")
+    keys = ('doc', 'target', 'title', 'author', 'toctree_only')
     document_data = dict(zip(keys, entry))
     document_data['template'] = 'book'
     return document_data
 
 
 def latex_document_to_document_data(entry, logger):
-    logger.warning("'rinoh_documents' config variable not set, automatically converting "
-                   "from 'latex_documents'")
+    logger.warning("'rinoh_documents' config variable not set, automatically"
+                   " converting from 'latex_documents'")
     startdocname, targetname, title, author, documentclass = entry[:5]
     toctree_only = entry[5] if len(entry) > 5 else False
     targetname_root, _ = os.path.splitext(targetname)
-    return list_to_document_data([startdocname, targetname_root, title, author, toctree_only], logger)
+    return list_to_document_data([startdocname, targetname_root, title, author,
+                                  toctree_only], logger)
 
 
 def variable_removed_warnings(config, logger):
-    message = ("Support for '{}' has been removed. Instead, please specify"
-               " the {} to use in your {}.")
+    def warn(variable, thing, where):
+        message = ("Support for '{}' has been removed. Instead, please specify"
+                   " the {} to use in your {}.")
+        logger.warning(message.format(variable, thing, where))
     if config.rinoh_stylesheet is not None:
-        logger.warning(message.format('rinoh_stylesheet',
-                                      'style sheet', 'template configuration'))
+        warn('rinoh_stylesheet', 'style sheet', 'template configuration')
     if config.rinoh_paper_size is not None:
-        logger.warning(message.format('rinoh_paper_size',
-                                      'paper size', 'template configuration'))
+        warn('rinoh_paper_size', 'paper size', 'template configuration')
     if config.rinoh_template is not None:
-        logger.warning(message.format('rinoh_template',
-                                      "'template'", "'rinoh_documents'"))
+        warn('rinoh_template', 'template', "'rinoh_documents'")
     if config.rinoh_logo is not None:
-        logger.warning(message.format('rinoh_logo',
-                                      "'logo'", "'rinoh_documents'"))
+        warn('rinoh_logo', 'logo', "'rinoh_documents'")
     if config.rinoh_domain_indices is not None:
-        logger.warning(message.format('rinoh_domain_indices',
-                                      "'domain_indices'", "'rinoh_documents'"))
+        warn('rinoh_domain_indices', 'domain indices', "'rinoh_documents'")
 
 
 def setup(app):

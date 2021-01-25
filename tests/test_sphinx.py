@@ -12,7 +12,6 @@ from pathlib import Path
 
 import pytest
 
-from docutils.utils import new_document
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 
@@ -44,7 +43,8 @@ def create_sphinx_app(tmp_path, all_docs=('index',), **confoverrides):
 
 def document_data_dict(**kwargs):
     document_data = {'doc': 'index', 'target': 'rinoh_doc', 'template': 'book',
-                     'title': 'Title', 'author': 'Author', 'toctree_only': False}
+                     'title': 'Title', 'author': 'Author',
+                     'toctree_only': False}
     document_data.update(kwargs)
     return document_data
 
@@ -60,7 +60,8 @@ def get_contents_page_size(template_configuration):
     return page.get_config_value('page_size', doc)
 
 
-def get_template_configuration(tmp_path, template='book', **sphinx_config_overrides):
+def get_template_configuration(tmp_path, template='book',
+                               **sphinx_config_overrides):
     app = create_sphinx_app(tmp_path, **sphinx_config_overrides)
     return app.builder.template_configuration(template, LOGGER)
 
@@ -95,7 +96,8 @@ def test_sphinx_config_language(tmp_path):
 
 def test_sphinx_config_language_not_supported(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
-        template_cfg = get_template_configuration(tmp_path, language='not_supported')
+        template_cfg = get_template_configuration(tmp_path,
+                                                  language='not_supported')
     assert "The language 'not_supported' is not supported" in caplog.text
     assert template_cfg.template == Book
     assert 'language' not in template_cfg
@@ -113,7 +115,8 @@ def test_sphinx_config_template_from_entrypoint(tmp_path):
     template_cfg = get_template_configuration(tmp_path, template='article')
     assert not template_cfg.keys()
     assert template_cfg.template == Article
-    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx (article)'
+    assert (template_cfg.get_attribute_value('stylesheet').name
+            == 'Sphinx (article)')
 
 
 def test_sphinx_config_template_from_filename(tmp_path):
@@ -124,7 +127,8 @@ def test_sphinx_config_template_from_filename(tmp_path):
     template_cfg = get_template_configuration(tmp_path, template_cfg_path)
     assert not template_cfg.keys()
     assert template_cfg.template == Article
-    assert template_cfg.get_attribute_value('stylesheet').name == 'Sphinx (article)'
+    assert (template_cfg.get_attribute_value('stylesheet').name
+            == 'Sphinx (article)')
 
 
 def test_sphinx_config_template_from_class(tmp_path):
@@ -237,8 +241,8 @@ def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         document_data = app.builder.document_data(LOGGER)
     assert not document_data
-    assert ('"rinoh_documents" config value references unknown document '
-            'not_here') in caplog.text
+    assert ("'rinoh_documents' config value references unknown document"
+            " 'not_here'") in caplog.text
 
 
 def test_sphinx_document_data_rinoh_documents_list(caplog, tmp_path):
@@ -247,7 +251,7 @@ def test_sphinx_document_data_rinoh_documents_list(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         document_data = app.builder.document_data(LOGGER)
     assert document_data == [document_data_dict()]
-    assert ("'rinoh_documents' converted from list. In future versions this shall be deprecated.") in caplog.text
+    assert "'rinoh_documents' entry converted from list" in caplog.text
 
 
 def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):
@@ -255,8 +259,7 @@ def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         document_data = app.builder.document_data(LOGGER)
     assert not document_data
-    assert ('no "rinoh_documents" config value found; no documents will be'
-            ' written') in caplog.text
+    assert "No 'rinoh_documents' config value found" in caplog.text
 
 
 def test_sphinx_document_data_latex_documents_fallback(caplog, tmp_path):
@@ -268,14 +271,14 @@ def test_sphinx_document_data_latex_documents_fallback(caplog, tmp_path):
     assert document_data == rinoh_documents
     assert ("'rinoh_documents' config variable not set, automatically"
             " converting from 'latex_documents'") in caplog.text
-    assert ("'rinoh_documents' converted from list. In future versions this shall be deprecated.") in caplog.text
+    assert "'rinoh_documents' entry converted from list." in caplog.text
 
 
 def test_sphinx_document_data_latex_documents_ignored(caplog, tmp_path):
     latex_documents = [['index', 'doc.tex', 'Title', 'Author', 'manual', True]]
     rinoh_documents = [document_data_dict()]
-    app = create_sphinx_app(
-        tmp_path, rinoh_documents=rinoh_documents, latex_documents=latex_documents)
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents,
+                            latex_documents=latex_documents)
     with caplog.at_level(logging.WARNING):
         document_data = app.builder.document_data(LOGGER)
     assert document_data == rinoh_documents
@@ -285,7 +288,8 @@ def test_sphinx_document_data_latex_documents_ignored(caplog, tmp_path):
 
 def test_sphinx_titles(caplog, tmp_path):
     rinoh_documents = [document_data_dict(),
-                    document_data_dict(doc='other/index', title="Other Title")]
+                       document_data_dict(doc='other/index',
+                                          title="Other Title")]
     all_docs = [doc['doc'] for doc in rinoh_documents]
     app = create_sphinx_app(tmp_path, all_docs=all_docs,
                             rinoh_documents=rinoh_documents)
