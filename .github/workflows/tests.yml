@@ -36,11 +36,15 @@ jobs:
       uses: Gr1N/setup-poetry@v4
       with:
         poetry-version: 1.1.4
-    - name: Cache Poetry venv
+    - name: Get Poetry cache-dir
+      id: cache-dirs-poetry
+      run: |
+        echo "::set-output name=dir::$(poetry config cache-dir)"
+    - name: Cache Poetry cache-dir
       uses: actions/cache@v2
       with:
-        path: .venv
-        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+        path: ${{ steps.cache-dirs-poetry.outputs.dir }}
+        key: ${{ env.TOXENV }}-${{ runner.os }}-${{ matrix.python-version }}-${{ steps.full-python-version.outputs.version }}-poetry-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install development dependencies
       run: |
@@ -96,11 +100,15 @@ jobs:
       uses: Gr1N/setup-poetry@v4
       with:
         poetry-version: 1.1.4
-    - name: Cache Poetry venv
+    - name: Get Poetry cache dir
+      id: cache-dirs-poetry
+      run: |
+        echo "::set-output name=dir::$(poetry config cache-dir)"
+    - name: Cache Poetry cache-dir
       uses: actions/cache@v2
       with:
-        path: .venv
-        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+        path: ${{ steps.cache-dirs-poetry.outputs.dir }}
+        key: test-${{ runner.os }}-${{ matrix.python-version }}-${{ steps.full-python-version.outputs.version }}-poetry-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install development dependencies
       run: |
@@ -156,11 +164,15 @@ jobs:
       uses: Gr1N/setup-poetry@v4
       with:
         poetry-version: 1.1.4
-    - name: Cache Poetry venv
+    - name: Get Poetry cache dir
+      id: cache-dirs-poetry
+      run: |
+        echo "::set-output name=dir::$(poetry config cache-dir)"
+    - name: Cache Poetry cache-dir
       uses: actions/cache@v2
       with:
-        path: .venv
-        key: ${{ runner.os }}-venv-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+        path: ${{ steps.cache-dirs-poetry.outputs.dir }}
+        key: ${{ env.TOXENV }}-${{ runner.os }}-${{ matrix.python-version }}-${{ steps.full-python-version.outputs.version }}-poetry-${{ hashFiles('**/poetry.lock') }}
 
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
