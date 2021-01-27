@@ -1,8 +1,10 @@
-name: Tests
+name: Test & Publish
 
 on:
   push:
     branches: [ master ]
+    tags:
+      - '*'
   pull_request:
     branches: [ master ]
 
@@ -245,3 +247,103 @@ jobs:
       shell: bash
       run: |
         bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }},${{ matrix.python-version }},${{ runner.os }}
+
+  check-tag:
+    needs: [check, test, regression]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Get tag
+      uses: olegtarasov/get-tag@v2.1
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: ${{ env.poetry_version }}
+    - name: Get package version from Poetry
+      run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
+    - name: Check whether the tag matches the package version
+      run: python -c "import os, sys;
+                      tag_version = os.getenv('GIT_TAG_NAME');
+                      pkg_version = os.getenv('PKG_VERSION');
+                      exit(0 if (tag_version == 'v' + pkg_version) else 1)"
+
+    - name: Check whether the tag matches a stable version
+      id: check-stable
+      run: python -c "import os, re;
+                      tag = os.environ.get('GIT_TAG_NAME');
+                      match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+$', tag);
+                      output = 'true' if match else 'false';
+                      print(f'::set-output name=stable::{output}')"
+    - name: Check whether the tag matches a development version
+      id: check-develop
+      run: python -c "import os, re;
+                      tag = os.environ.get('GIT_TAG_NAME');
+                      match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+$', tag);
+                      output = 'true' if match else 'false';
+                      print(f'::set-output name=develop::{output}')"
+
+    - name: Print outputs
+      run: |
+        echo "stable: ${{ steps.check-stable.outputs.stable }}"
+        echo "develop: ${{ steps.check-develop.outputs.develop }}"
+    outputs:
+      stable: ${{ steps.check-stable.outputs.stable }}
+      develop: ${{ steps.check-develop.outputs.develop }}
+
+  publish-develop:
+    needs: check-tag
+    if: needs.check-tag.outputs.develop == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: ${{ env.poetry_version }}
+
+    - name: Build the wheel
+      run: poetry build --format wheel
+    - name: Publish the wheel as a prerelease on GitHub
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "dist/rinohtype-*.whl"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+
+  publish-release:
+    needs: check-tag
+    if: needs.check-tag.outputs.stable == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install Poetry
+      uses: Gr1N/setup-poetry@v4
+      with:
+        poetry-version: ${{ env.poetry_version }}
+
+    - name: Publish to PyPI
+      env:
+        PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        TESTPYPI_TOKEN: ${{ secrets.TESTPYPI_TOKEN }}
+      run: |
+        poetry config repositories.testpypi https://test.pypi.org/legacy/
+        poetry publish --build --repository testpypi --username __token__ --password "$TESTPYPI_TOKEN"
