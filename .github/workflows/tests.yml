@@ -132,6 +132,7 @@ jobs:
 
     - name: Install development dependencies
       run: |
+        poetry run python -V
         poetry install -vv --no-root
 
     - name: Create wheel
