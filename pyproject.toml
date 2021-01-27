@@ -103,7 +103,7 @@ Sphinx = "^3.4.3"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.5"
 tox = "^3.15.2"
-tox-gh-actions = "^2.0.0"
+tox-gh-actions = "^2.4.0"
 tox-poetry-installer = {extras = ["poetry"], version = "^0.6.2"}
 
 [build-system]
