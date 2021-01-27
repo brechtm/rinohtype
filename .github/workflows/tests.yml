@@ -140,6 +140,7 @@ jobs:
         poetry build -f wheel
         python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
 
@@ -256,6 +257,7 @@ jobs:
         poetry build -f wheel
         python -c "import os; from pathlib import Path; open(os.getenv('GITHUB_ENV'), 'a').write('INSTALLPKG=--installpkg ' + str(next(Path('dist').glob('*.whl'))))"
     - name: Run tox
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
       run: |
         poetry run tox -v ${{ env.INSTALLPKG }} -- -s
 
