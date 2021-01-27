@@ -90,7 +90,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: doc/_build/html
         destination_dir: ${{ steps.docs-publish-dir.outputs.target }}
-        keep_files: true
+        keep_files: false
 
   test:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
