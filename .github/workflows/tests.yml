@@ -68,13 +68,28 @@ jobs:
       run: |
         poetry run tox -v
 
-    - name: Publish docs to GitHub pages
+    - name: Determine directory to publish docs to
+      id: docs-publish-dir
       if: env.TOXENV == 'build-docs'
+      run: |
+        python -c "
+        import os, re
+        github_ref = os.environ.get('GITHUB_REF')
+        if github_ref == 'refs/heads/master':
+          target = 'master'
+        elif github_ref.startswith('refs/tags/'):
+          m = re.match(r'^refs/tags/v([0-9]+\.[0-9]+\.[0-9]+)$', github_ref);
+          target = m.group(1)
+        else:
+          target = ''
+        print(f'::set-output name=target::{target}')"
+    - name: Publish docs to GitHub pages
+      if: env.TOXENV == 'build-docs' && steps.docs-publish-dir.outputs.target != ''
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: doc/_build/html
-        destination_dir: master
+        destination_dir: ${{ steps.docs-publish-dir.outputs.target }}
         keep_files: true
 
   test:
