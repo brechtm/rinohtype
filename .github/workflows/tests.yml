@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  poetry_version: '1.1.4'
 jobs:
   check:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} ${{ matrix.env.TOXENV }}
@@ -35,7 +37,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.1.4
+        poetry-version: ${{ env.poetry_version }}
     - name: Get Poetry cache-dir
       id: cache-dirs-poetry
       run: |
@@ -99,7 +101,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.1.4
+        poetry-version: ${{ env.poetry_version }}
     - name: Get Poetry cache dir
       id: cache-dirs-poetry
       run: |
@@ -163,7 +165,7 @@ jobs:
     - name: Install Poetry
       uses: Gr1N/setup-poetry@v4
       with:
-        poetry-version: 1.1.4
+        poetry-version: ${{ env.poetry_version }}
     - name: Get Poetry cache dir
       id: cache-dirs-poetry
       run: |
