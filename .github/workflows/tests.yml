@@ -210,9 +210,6 @@ jobs:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
         key: ${{ runner.os }}-chocolatey-mupdf${{ env.MUPDF_VERSION}}-im${{ env.IMAGEMAGICK_VERSION }}
 
-    - name: Install development dependencies
-      run: |
-        poetry install -vv --no-root
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
       run: |
@@ -265,11 +262,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
-    - name: Install Poetry
-      uses: Gr1N/setup-poetry@v4
-      with:
-        poetry-version: ${{ env.poetry_version }}
+        python-version: ${{ env.current_python }}
+    - name: Install tox & co
+      run: |
+        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
@@ -318,11 +314,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
-    - name: Install Poetry
-      uses: Gr1N/setup-poetry@v4
-      with:
-        poetry-version: ${{ env.poetry_version }}
+        python-version: ${{ env.current_python }}
+    - name: Install tox & co
+      run: |
+        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
 
     - name: Build the wheel
       run: poetry build --format wheel
@@ -344,11 +339,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
-    - name: Install Poetry
-      uses: Gr1N/setup-poetry@v4
-      with:
-        poetry-version: ${{ env.poetry_version }}
+        python-version: ${{ env.current_python }}
+    - name: Install tox & co
+      run: |
+        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
 
     - name: Publish to PyPI
       env:
