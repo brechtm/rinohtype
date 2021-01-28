@@ -42,8 +42,8 @@ jobs:
                      '3.8':      'py38',
                      '3.9':      'py39',
                      '3.10':     'py310',
-                     'pypy-3.6': 'pypy36',
-                     'pypy-3.7': 'pypy37'}
+                     'pypy-3.6': 'pypy3',
+                     'pypy-3.7': 'pypy3'}
           toxenv = mapping['${{ matrix.python-version }}']
           with open(os.getenv('GITHUB_ENV'), 'a') as env:
               print(f'TOXENV={toxenv}', file=env)
