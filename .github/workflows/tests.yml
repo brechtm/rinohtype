@@ -119,7 +119,13 @@ jobs:
           with open(os.getenv('GITHUB_ENV'), 'a') as env:
               print(f'INSTALLPKG=--installpkg {wheel_path}', file=env)
     - name: Run tox
-      continue-on-error: ${{ startsWith(runner.os, 'Windows') && startsWith(matrix.python-version, 'pypy') }}
+      # Windows: https://github.com/python-poetry/poetry/issues/3545
+      # Linux/macOS: https://github.com/pytest-dev/pytest-xdist/issues/622
+      continue-on-error: ${{ (runner.os == 'Windows'
+                              && startsWith(matrix.python-version, 'pypy')
+                              && env.DIST == 'sdist')
+                          || ((runner.os == 'Linux' || runner.os == 'macOS')
+                              && matrix.python-version == 'pypy-3.7') }}
       run: tox -v ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
@@ -236,6 +242,9 @@ jobs:
           with open(os.getenv('GITHUB_ENV'), 'a') as env:
               print(f'INSTALLPKG=--installpkg {wheel_path}', file=env)
     - name: Run tox
+      # https://github.com/pytest-dev/pytest-xdist/issues/622
+      continue-on-error: ${{ runner.os == 'Linux'
+                             && matrix.python-version == 'pypy-3.7' }}
       run: tox -v ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
