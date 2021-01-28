@@ -1013,20 +1013,6 @@ docs = ["pygments-github-lexers (>=0.0.5)", "sphinx (>=2.0.0)", "sphinxcontrib-a
 testing = ["flaky (>=3.4.0)", "freezegun (>=0.3.11)", "psutil (>=5.6.1)", "pytest (>=4.0.0)", "pytest-cov (>=2.5.1)", "pytest-mock (>=1.10.0)", "pytest-randomly (>=1.0.0)", "pytest-xdist (>=1.22.2)", "pathlib2 (>=2.3.3)"]
 
 [[package]]
-name = "tox-gh-actions"
-version = "2.4.0"
-description = "Seamless integration of tox into GitHub Actions"
-category = "dev"
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
-
-[package.dependencies]
-tox = ">=3.12"
-
-[package.extras]
-testing = ["flake8 (>=3,<4)", "pytest (>=4.0.0,<6)", "pytest-cov (>=2,<3)", "pytest-mock (>=2,<3)", "black", "pytest-randomly (>=3)"]
-
-[[package]]
 name = "tox-poetry-installer"
 version = "0.6.2"
 description = "Tox plugin to install Tox environment dependencies using the Poetry backend and lockfile"
@@ -1098,7 +1084,7 @@ testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "8b0d703f7c8aacbb3e423798a58795be2432e00a83dd291c058c511c69ecb9c4"
+content-hash = "d6597b4f0ede72f814e1b7fe3be710f3a5cce164b6a632adb135aeb7ed39ebea"
 
 [metadata.files]
 alabaster = [
@@ -1592,10 +1578,6 @@ tomlkit = [
 tox = [
     {file = "tox-3.21.2-py2.py3-none-any.whl", hash = "sha256:0aa777ee466f2ef18e6f58428c793c32378779e0a321dbb8934848bc3e78998c"},
     {file = "tox-3.21.2.tar.gz", hash = "sha256:f501808381c01c6d7827c2f17328be59c0a715046e94605ddca15fb91e65827d"},
-]
-tox-gh-actions = [
-    {file = "tox-gh-actions-2.4.0.tar.gz", hash = "sha256:0cc846f1feb85a4f56179244f20dfb358410988efed3dbcdecf4b33e274c200c"},
-    {file = "tox_gh_actions-2.4.0-py2.py3-none-any.whl", hash = "sha256:54d8388e433ca07cc4d980bcd7b1516e165103d87a27ca2e916c5cad961dbcb3"},
 ]
 tox-poetry-installer = [
     {file = "tox-poetry-installer-0.6.2.tar.gz", hash = "sha256:3884b4f71b2456b6aaef6cfb713cd25ea571f8f9f30173dbe8975715c2da8584"},
