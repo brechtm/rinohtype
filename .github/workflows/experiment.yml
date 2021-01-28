@@ -18,12 +18,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install tox & co
-      run: |
-        pip3.9 install --requirement .github/workflows/requirements.txt
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Install tox & co
+      run: |
+        pip3.9 install --requirement .github/workflows/requirements.txt
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != '3.9'
       uses: actions/setup-python@v2
