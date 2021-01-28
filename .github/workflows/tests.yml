@@ -125,7 +125,7 @@ jobs:
                               && startsWith(matrix.python-version, 'pypy')
                               && env.DIST == 'sdist')
                           || ((runner.os == 'Linux' || runner.os == 'macOS')
-                              && matrix.python-version == 'pypy-3.7') }}
+                              && startsWith(matrix.python-version, 'pypy')) }}
       run: tox -v -e unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
@@ -240,7 +240,7 @@ jobs:
     - name: Run tox
       # https://github.com/pytest-dev/pytest-xdist/issues/622
       continue-on-error: ${{ runner.os == 'Linux'
-                             && matrix.python-version == 'pypy-3.7' }}
+                             && startsWith(matrix.python-version, 'pypy') }}
       run: tox -v -e regression-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
