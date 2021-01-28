@@ -13,9 +13,7 @@ mapping = {'3.6':                 'py36',
            'pypy-3.6':            'pypy3',
            'pypy-3.7':            'pypy3'}
 
-toxenv = os.getenv('TOXENV')
-factor = mapping[github_python_version]
-toxenv = f'{toxenv}-{factor}' if toxenv else factor
+pyfactor = mapping[github_python_version]
 
 with open(os.getenv('GITHUB_ENV'), 'a') as env:
-    print(f'TOXENV={toxenv}', file=env)
+    print(f'TOXPY={pyfactor}', file=env)

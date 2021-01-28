@@ -74,7 +74,7 @@ jobs:
         destination_dir: ${{ steps.docs-publish-dir.outputs.target }}
         keep_files: false
 
-  test:
+  unit:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
     strategy:
       fail-fast: false
@@ -102,8 +102,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Set TOXENV based on Python ${{ matrix.python-version }}
-      run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
+    - name: Set TOXPY for Python ${{ matrix.python-version }}
+      run: python .github/workflows/toxpy.py "${{ matrix.python-version }}"
 
     - name: Create wheel
       if: env.DIST == 'wheel'
@@ -126,7 +126,7 @@ jobs:
                               && env.DIST == 'sdist')
                           || ((runner.os == 'Linux' || runner.os == 'macOS')
                               && matrix.python-version == 'pypy-3.7') }}
-      run: tox -v -e unit-${{ env.TOXENV }}-gh ${{ env.INSTALLPKG }} -- -s
+      run: tox -v -e unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
@@ -151,7 +151,6 @@ jobs:
           - { os: Ubuntu, dist: sdist, python-version: 3.9 }
     runs-on: ${{ matrix.os }}-latest
     env:
-      TOXENV: regression
       DIST: ${{ matrix.dist }}
       WITH_COVERAGE: 1
       MUPDF_VERSION: 1.18.0
@@ -170,8 +169,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Adjust TOXENV to use Python ${{ matrix.python-version }}
-      run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
+    - name: Set TOXPY for Python ${{ matrix.python-version }}
+      run: python .github/workflows/toxpy.py "${{ matrix.python-version }}"
 
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
@@ -245,16 +244,16 @@ jobs:
       # https://github.com/pytest-dev/pytest-xdist/issues/622
       continue-on-error: ${{ runner.os == 'Linux'
                              && matrix.python-version == 'pypy-3.7' }}
-      run: tox -v -e ${{ env.TOXENV }}-gh ${{ env.INSTALLPKG }} -- -s
+      run: tox -v -e regression-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
       shell: bash
       run: |
-        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.TOXENV }},${{ matrix.python-version }},${{ runner.os }}
+        bash <(curl -s https://codecov.io/bash) -f coverage.xml -F regression,${{ matrix.python-version }},${{ runner.os }}
 
   check-tag:
-    needs: [check, test, regression]
+    needs: [check, unit, regression]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
