@@ -33,14 +33,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Get full Python version
-      id: full-python-version
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import sys
-          full_version = '-'.join(str(v) for v in sys.version_info)
-          print(f'::set-output name=version::{full_version}')
     - name: Install tox & co
       run: |
         pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
@@ -110,14 +102,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Get full Python version
-      id: full-python-version
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import sys
-          full_version = '-'.join(str(v) for v in sys.version_info)
-          print(f'::set-output name=version::{full_version}')
     - name: Set TOXENV based on Python ${{ matrix.python-version }}
       run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
 
@@ -180,14 +164,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Get full Python version
-      id: full-python-version
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import sys
-          full_version = '-'.join(str(v) for v in sys.version_info)
-          print(f'::set-output name=version::{full_version}')
     - name: Adjust TOXENV to use Python ${{ matrix.python-version }}
       run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
 
