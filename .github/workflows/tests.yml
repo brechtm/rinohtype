@@ -132,6 +132,8 @@ jobs:
 
     - name: Install development dependencies
       run: |
+        poetry env use python
+        poetry env info
         poetry run python -V
         poetry install -vv --no-root
 
