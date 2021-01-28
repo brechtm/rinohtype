@@ -18,7 +18,7 @@ html5lib==1.1
 idna==2.10
 keyring==21.8.0
 lockfile==0.12.2
-msgpack==0.6.2  # https://github.com/python-poetry/poetry/issues/3607
+msgpack==1.0.2  # https://github.com/python-poetry/poetry/issues/3607
 packaging==20.8
 pastel==0.2.1
 pexpect==4.8.0
