@@ -18,12 +18,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install Poetry & tox
+    - name: Install tox & co
       run: |
-        pip3.9 install wheel
-        pip3.9 install poetry==${{ env.poetry_version }}
-        pip3.9 install tox
-        pip3.9 install tox-poetry-installer[poetry]
+        pip3.9 install --requirement .github/workflows/requirements.txt
     - uses: actions/checkout@v2
       with:
         submodules: true
