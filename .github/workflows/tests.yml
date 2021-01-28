@@ -35,7 +35,12 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Get full Python version
       id: full-python-version
-      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import sys
+          full_version = '-'.join(str(v) for v in sys.version_info)
+          print(f'::set-output name=version::{full_version}')
     - name: Install tox & co
       run: |
         pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
@@ -55,18 +60,19 @@ jobs:
     - name: Determine directory to publish docs to
       id: docs-publish-dir
       if: env.TOXENV == 'build-docs'
-      run: |
-        python -c "
-        import os, re
-        github_ref = os.environ.get('GITHUB_REF')
-        if github_ref == 'refs/heads/master':
-          target = 'master'
-        elif github_ref.startswith('refs/tags/'):
-          m = re.match(r'^refs/tags/v([0-9]+\.[0-9]+\.[0-9]+)$', github_ref);
-          target = m.group(1)
-        else:
-          target = ''
-        print(f'::set-output name=target::{target}')"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import os, re
+          github_ref = os.environ.get('GITHUB_REF')
+          if github_ref == 'refs/heads/master':
+              target = 'master'
+          elif github_ref.startswith('refs/tags/'):
+              m = re.match(r'^refs/tags/v([0-9]+\.[0-9]+\.[0-9]+)$', github_ref)
+              target = m.group(1)
+          else:
+              target = ''
+          print(f'::set-output name=target::{target}')
     - name: Publish docs to GitHub pages
       if: env.TOXENV == 'build-docs' && steps.docs-publish-dir.outputs.target != ''
       uses: peaceiris/actions-gh-pages@v3
@@ -106,7 +112,12 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Get full Python version
       id: full-python-version
-      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import sys
+          full_version = '-'.join(str(v) for v in sys.version_info)
+          print(f'::set-output name=version::{full_version}')
     - name: Set TOXENV based on Python ${{ matrix.python-version }}
       run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
 
@@ -171,7 +182,12 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Get full Python version
       id: full-python-version
-      run: python -c "import sys; print('::set-output name=version::' + '-'.join(str(v) for v in sys.version_info))"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import sys
+          full_version = '-'.join(str(v) for v in sys.version_info)
+          print(f'::set-output name=version::{full_version}')
     - name: Adjust TOXENV to use Python ${{ matrix.python-version }}
       run: python .github/workflows/toxenv.py "${{ matrix.python-version }}"
 
@@ -280,18 +296,24 @@ jobs:
 
     - name: Check whether the tag matches a stable version
       id: check-stable
-      run: python -c "import os, re;
-                      tag = os.environ.get('GIT_TAG_NAME');
-                      match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+$', tag);
-                      output = 'true' if match else 'false';
-                      print(f'::set-output name=stable::{output}')"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import os, re
+          tag = os.environ.get('GIT_TAG_NAME')
+          match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+$', tag)
+          output = 'true' if match else 'false'
+          print(f'::set-output name=stable::{output}')
     - name: Check whether the tag matches a development version
       id: check-develop
-      run: python -c "import os, re;
-                      tag = os.environ.get('GIT_TAG_NAME');
-                      match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+$', tag);
-                      output = 'true' if match else 'false';
-                      print(f'::set-output name=develop::{output}')"
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import os, re
+          tag = os.environ.get('GIT_TAG_NAME')
+          match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+$', tag)
+          output = 'true' if match else 'false'
+          print(f'::set-output name=develop::{output}')
 
     - name: Print outputs
       run: |
