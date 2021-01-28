@@ -183,25 +183,46 @@ options. Of these, only <a class="reference internal" href="#confval-rinoh_docum
 <dl class="std confval">
 <dt id="confval-rinoh_documents">
 <code class="sig-name descname">rinoh_documents</code><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines how to group the document tree into PDF output files. Its format
-is identical to that of <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>, with the
-exception that <cite>targetname</cite> should specify the name of the PDF file without
-the extension. If it is not specified, the value of
-<a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a> is used instead (with the <code class="docutils literal notranslate"><span class="pre">.tex</span></code>
-extension stripped from the <cite>targetname</cite>).</p>
+<dd><p>Determines which PDF documents to build. Its format is a list of
+dictionaries, one for each document to be generated. Supported keys are:</p>
+<dl class="simple">
+<dt>doc (required)</dt><dd><p>String that specifies the name of the master document (typically
+<code class="docutils literal notranslate"><span class="pre">index</span></code>).</p>
+</dd>
+<dt>target (required)</dt><dd><p>The name of the target PDF file without the extension.</p>
+</dd>
+<dt>title (required)</dt><dd><p>The title of the document.</p>
+</dd>
+<dt>author (required)</dt><dd><p>The author of the document.</p>
+</dd>
+<dt>toctree_only (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</dt><dd><p>Must be <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. If true, the document itself is not
+included in the output, only the documents referenced by it via TOC
+trees.</p>
+</dd>
+<dt>logo (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>Path (relative to the configuration directory) to an image file to use
+at the top of the title page.</p>
+</dd>
+<dt>domain_indices (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</dt><dd><p>If true, generate domain-specific indices in addition to the general
+index. It is equivalent to the <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-html_domain_indices" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">html_domain_indices</span></code></a>
+and <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_domain_indices" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_domain_indices</span></code></a> configuration variables.</p>
+</dd>
+<dt>template (default: <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a>)</dt><dd><p>Determines the template used to render the document. It takes:</p>
+<ul class="simple">
+<li><p>the filename of a <a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">template configuration file</span></a>,</p></li>
+<li><p>a <a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfiguration</span></code></a> instance,</p></li>
+<li><p>the name of an installed template
+(see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-templates"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-templates</span></code></a>)</p></li>
+<li><p>a <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a> subclass</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="std confval">
 <dt id="confval-rinoh_template">
 <code class="sig-name descname">rinoh_template</code><a class="headerlink" href="#confval-rinoh_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines the template used to render the document. It takes:</p>
-<ul class="simple">
-<li><p>the filename of a <a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">template configuration file</span></a>,</p></li>
-<li><p>a <a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfiguration</span></code></a> instance,</p></li>
-<li><p>the name of an installed template (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-templates"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-templates</span></code></a>)</p></li>
-<li><p>a <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a> subclass</p></li>
-</ul>
-<p>The default is <code class="docutils literal notranslate"><span class="pre">'book'</span></code>, which resolves to the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template.</p>
+<dd><p>This configuration variable is <strong>no longer supported</strong> since the
+document template can be specified in <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 </dd></dl>
 
 <dl class="std confval">
@@ -246,17 +267,15 @@ the paper_size to use in your <a class="reference internal" href="basicstyling.h
 <dl class="std confval">
 <dt id="confval-rinoh_logo">
 <code class="sig-name descname">rinoh_logo</code><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path (relative to the configuration directory) to an image file to use at
-the top of the title page.</p>
+<dd><p>This configuration variable is <strong>no longer supported</strong> since the logo can
+be specified in the <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 </dd></dl>
 
 <dl class="std confval">
 <dt id="confval-rinoh_domain_indices">
 <code class="sig-name descname">rinoh_domain_indices</code><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
-<dd><p>If true, generate domain-specific indices in addition to the general index.
-It is equivalent to the <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-html_domain_indices" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">html_domain_indices</span></code></a> and
-<a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_domain_indices" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_domain_indices</span></code></a> configuration variables. Default:
-<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dd><p>This configuration variable is <strong>no longer supported</strong> since the
+domain_indices can be specified in the <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 </dd></dl>
 
 <dl class="std confval">

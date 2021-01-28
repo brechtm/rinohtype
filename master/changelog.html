@@ -225,15 +225,14 @@ sheets and template configurations.</p></li>
 <p>Changed:</p>
 <ul class="simple">
 <li><p>Rendering speed was more than doubled (caching)! (PR #197 by Alex Fargus)</p></li>
+<li><p>Sphinx frontend: <code class="docutils literal notranslate"><span class="pre">rinoh_documents</span></code> now takes a list of dictionaries, one
+for each PDF document to be built. This allows selecting e.g. the template
+and logo on a per-document level. Support for <code class="docutils literal notranslate"><span class="pre">rinoh_template</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rinoh_stylesheet</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_paper_size</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_domain_indices</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Also, only fallback to <code class="docutils literal notranslate"><span class="pre">`latex_documents</span></code> is
+retained. (PR #192, #195, #208 and #216 by Alex Fargus)</p></li>
 <li><p>The default stylesheet (‘Sphinx’) now prevents captions from being separated
 from their image/table/code block (across pages).</p></li>
-<li><p>Sphinx frontend: support for the ‘rinoh_stylesheet’ and ‘rinoh_paper_size’
-configuration variables was removed. You can specify the style sheet and
-paper size to use in the template configuration (PR #195 and #192 by Alex
-Fargus)</p></li>
-<li><p>Sphinx frontend: there is no more fallback to the corresponding LaTeX
-builder’s configuration variables when the these configuration variables are
-not set: ‘rinoh_logo’, ‘rinoh_domain_indices’ (PR #208 by Alex Fargus).</p></li>
 <li><p>Font weights and widths are now internally represented by integer classes.
 In addition to integer values, string values are still accepted (mapped to
 classes).</p></li>
