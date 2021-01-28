@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [Ubuntu, Windows]
-        python-version: [3.6, pypy-3.7]
+        python-version: [3.6, 3.10, pypy-3.7]
     runs-on: ${{ matrix.os }}-latest
     steps:
     - name: Install Python 3.9
@@ -41,6 +41,7 @@ jobs:
                      '3.7':      'py37',
                      '3.8':      'py38',
                      '3.9':      'py39',
+                     '3.10':     'py310',
                      'pypy-3.6': 'pypy36',
                      'pypy-3.7': 'pypy37'}
           toxenv = mapping['${{ matrix.python-version }}']
