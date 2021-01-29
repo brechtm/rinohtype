@@ -8,8 +8,8 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "pip"
     directory: "/.github/workflows"
     schedule:
-      interval: "daily"
+      interval: "monthly"
