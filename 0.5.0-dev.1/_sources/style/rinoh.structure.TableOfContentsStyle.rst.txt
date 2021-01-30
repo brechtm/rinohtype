@@ -1,0 +1,7 @@
+﻿TableOfContentsStyle
+====================================
+
+.. currentmodule:: rinoh.structure
+
+.. autoclass:: TableOfContentsStyle
+    :members:

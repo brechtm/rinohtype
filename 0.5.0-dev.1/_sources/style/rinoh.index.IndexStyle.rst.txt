@@ -1,0 +1,7 @@
+﻿IndexStyle
+======================
+
+.. currentmodule:: rinoh.index
+
+.. autoclass:: IndexStyle
+    :members:
