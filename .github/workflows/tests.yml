@@ -65,7 +65,7 @@ jobs:
               target = 'master'
           else:
               target = ''
-          print(f'::set-output name=target::{target}')
+          set_output('target', target)
     - name: Publish docs to GitHub pages
       if: env.TOXENV == 'build-docs' && steps.docs-publish-dir.outputs.target != ''
       uses: peaceiris/actions-gh-pages@v3
@@ -114,11 +114,9 @@ jobs:
       uses: jannekem/run-python-script-action@v1
       with:
         script: |
-          import os
-          from pathlib import Path
-          wheel_path = str(next(Path('dist').glob('*.whl')))
-          with open(os.getenv('GITHUB_ENV'), 'a') as env:
-              print(f'INSTALLPKG=--installpkg {wheel_path}', file=env)
+          import os, pathlib
+          wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
+          set_env('INSTALLPKG', f'--installpkg {wheel_path}')
     - name: Run tox
       # Windows: https://github.com/python-poetry/poetry/issues/3545
       # Linux/macOS: https://github.com/pytest-dev/pytest-xdist/issues/622
@@ -233,11 +231,9 @@ jobs:
       uses: jannekem/run-python-script-action@v1
       with:
         script: |
-          import os
-          from pathlib import Path
-          wheel_path = str(next(Path('dist').glob('*.whl')))
-          with open(os.getenv('GITHUB_ENV'), 'a') as env:
-              print(f'INSTALLPKG=--installpkg {wheel_path}', file=env)
+          import os, pathlib
+          wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
+          set_env('INSTALLPKG', f'--installpkg {wheel_path}')
     - name: Run tox
       # https://github.com/pytest-dev/pytest-xdist/issues/622
       continue-on-error: ${{ runner.os == 'Linux'
@@ -260,7 +256,7 @@ jobs:
         submodules: true
     - name: Get tag
       uses: olegtarasov/get-tag@v2.1
-    - name: Set up Python
+    - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
@@ -270,10 +266,12 @@ jobs:
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
-      run: python -c "import os, sys;
-                      tag_version = os.getenv('GIT_TAG_NAME');
-                      pkg_version = os.getenv('PKG_VERSION');
-                      exit(0 if (tag_version == 'v' + pkg_version) else 1)"
+      uses: jannekem/run-python-script-action@utilities
+      with:
+        script: |
+          if '${{ env.GIT_TAG_NAME }}' != 'v${{ env.PKG_VERSION }}':
+              error("Git tag doesn't match the package version! Aborting.")
+              exit(1)
 
     - name: Check whether the tag matches a stable version
       id: check-stable
@@ -284,7 +282,8 @@ jobs:
           tag = os.environ.get('GIT_TAG_NAME')
           match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+$', tag)
           output = 'true' if match else 'false'
-          print(f'::set-output name=stable::{output}')
+          print(f'stable = {output}')
+          set_output('stable', output)
     - name: Check whether the tag matches a development version
       id: check-develop
       uses: jannekem/run-python-script-action@v1
@@ -294,12 +293,8 @@ jobs:
           tag = os.environ.get('GIT_TAG_NAME')
           match = re.match(r'^v[0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+$', tag)
           output = 'true' if match else 'false'
-          print(f'::set-output name=develop::{output}')
-
-    - name: Print outputs
-      run: |
-        echo "stable: ${{ steps.check-stable.outputs.stable }}"
-        echo "develop: ${{ steps.check-develop.outputs.develop }}"
+          print(f'develop = {output}')
+          set_output('develop', output)
     outputs:
       stable: ${{ steps.check-stable.outputs.stable }}
       develop: ${{ steps.check-develop.outputs.develop }}
@@ -312,7 +307,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: Set up Python
+    - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
@@ -337,7 +332,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: Set up Python
+    - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
