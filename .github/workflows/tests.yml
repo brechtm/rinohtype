@@ -57,11 +57,12 @@ jobs:
         script: |
           import os, re
           github_ref = os.environ.get('GITHUB_REF')
-          if github_ref == 'refs/heads/master':
-              target = 'master'
-          elif github_ref.startswith('refs/tags/'):
-              m = re.match(r'^refs/tags/v([0-9]+\.[0-9]+\.[0-9]+)$', github_ref)
+          m = re.match(r'^refs/tags/v([0-9]+\.[0-9]+\.[0-9]+(-dev\.[0-9]+)?)$',
+                       github_ref)
+          if m:
               target = m.group(1)
+          elif github_ref == 'refs/heads/master':
+              target = 'master'
           else:
               target = ''
           print(f'::set-output name=target::{target}')
