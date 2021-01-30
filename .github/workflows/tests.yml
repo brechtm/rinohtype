@@ -52,7 +52,7 @@ jobs:
     - name: Determine directory to publish docs to
       id: docs-publish-dir
       if: env.TOXENV == 'build-docs'
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@utilities
       with:
         script: |
           import os, re
@@ -111,7 +111,7 @@ jobs:
       run: poetry build --format wheel
     - name: Find path to wheel
       if: env.DIST == 'wheel'
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@utilities
       with:
         script: |
           import os, pathlib
@@ -228,7 +228,7 @@ jobs:
       run: poetry build --format wheel
     - name: Find path to wheel
       if: env.DIST == 'wheel'
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@utilities
       with:
         script: |
           import os, pathlib
@@ -273,7 +273,7 @@ jobs:
 
     - name: Check whether the tag matches a stable version
       id: check-stable
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@utilities
       with:
         script: |
           import os, re
@@ -284,7 +284,7 @@ jobs:
           set_output(stable, output)
     - name: Check whether the tag matches a development version
       id: check-develop
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@utilities
       with:
         script: |
           import os, re
