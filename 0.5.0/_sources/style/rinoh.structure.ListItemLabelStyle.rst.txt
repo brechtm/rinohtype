@@ -1,0 +1,7 @@
+﻿ListItemLabelStyle
+==================================
+
+.. currentmodule:: rinoh.structure
+
+.. autoclass:: ListItemLabelStyle
+    :members:

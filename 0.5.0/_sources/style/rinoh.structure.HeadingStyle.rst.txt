@@ -1,0 +1,7 @@
+﻿HeadingStyle
+============================
+
+.. currentmodule:: rinoh.structure
+
+.. autoclass:: HeadingStyle
+    :members:
