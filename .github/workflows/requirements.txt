@@ -19,7 +19,7 @@ idna==2.10
 keyring==21.8.0
 lockfile==0.12.2
 msgpack==1.0.2
-packaging==20.8
+packaging==20.9
 pastel==0.2.1
 pexpect==4.8.0
 pkginfo==1.7.0
