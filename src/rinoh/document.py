@@ -246,8 +246,8 @@ class Document(object):
         self.error = False
 
     def _print_version_and_license(self):
-        print('rinohtype {} ({})  Copyright (c) Brecht Machiels'
-              .format(__version__, __release_date__))
+        print('rinohtype {} ({})  Copyright (c) Brecht Machiels and'
+              ' contributors'.format(__version__, __release_date__))
         print('''\
 This program comes with ABSOLUTELY NO WARRANTY. Its use is subject
 to the terms of the GNU Affero General Public License version 3.''')
