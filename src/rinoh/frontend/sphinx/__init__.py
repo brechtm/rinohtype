@@ -294,11 +294,12 @@ class RinohBuilder(Builder, Source):
             if not rinoh_logo.is_absolute():
                 rinoh_logo = self.confdir / rinoh_logo
             metadata['logo'] = rinoh_logo
-        metadata['title'] = document_data['title']
+        metadata['title'] = \
+            document_data.get('title', self.config.project + ' documentation')
         metadata['subtitle'] = \
             document_data.get('subtitle',
                               _('Release') + ' {}'.format(self.config.release))
-        metadata['author'] = document_data['author']
+        metadata['author'] = document_data.get('author', self.config.author)
         date = (self.config.today
                 or format_date(self.config.today_fmt or _('%b %d, %Y'),
                                language=self.config.language))

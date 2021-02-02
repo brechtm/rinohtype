@@ -245,6 +245,20 @@ def test_sphinx_document_data_rinoh_documents_missing_target(tmp_path):
     assert "'target' key is missing from rinoh_documents entry" in str(error)
 
 
+def test_sphinx_document_data_rinoh_documents_no_title_and_author(tmp_path):
+    rinoh_documents = [dict(doc='index', target='target')]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents,
+                            project='Project', release='1.2', author='Georgie')
+    template_cfg = app.builder.template_configuration('book', LOGGER)
+    document_data, = app.builder.document_data(LOGGER)
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
+    assert rinoh_doc.metadata['title'] == 'Project documentation'
+    assert rinoh_doc.metadata['subtitle'] == 'Release 1.2'
+    assert rinoh_doc.metadata['author'] == 'Georgie'
+
+
 def test_sphinx_document_data_rinoh_documents(tmp_path):
     rinoh_documents = [document_data_dict()]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
