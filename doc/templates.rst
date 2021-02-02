@@ -51,6 +51,8 @@ with custom templates. The following example subclasses :class:`.Article`.
 the title page template with a custom one.
 
 
+.. _custom-template:
+
 Creating a Custom Template
 --------------------------
 

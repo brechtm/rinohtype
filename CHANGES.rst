@@ -16,9 +16,6 @@ New Features:
 * docutils frontend: support the ``:align:`` option to table directives, which
   will override the alignment set for the table in the style sheet.
 * The starting number of enumerated lists in reStructuredText is respected.
-* Sphinx frontend: the ``rinoh_metadata`` configuration variable allows
-  overriding the document's subtitle (and other strings) that are used on the
-  title page and elsewhere in the document template (PR #182 by Alex Fargus).
 * Table column widths can be specified in the style sheet, which take effect
   when these haven't been specified in the source document.
 * Document elements now store where they have been defined (document tree,
@@ -51,8 +48,8 @@ Changed:
   for each PDF document to be built. This allows selecting e.g. the template
   and logo on a per-document level. Support for ``rinoh_template``,
   ``rinoh_stylesheet``, ``rinoh_paper_size``, ``rinoh_domain_indices`` and
-  ``rinoh_logo`` was removed. Also, only fallback to ```latex_documents`` is
-  retained. (PR #192, #195, #208 and #216 by Alex Fargus)
+  ``rinoh_logo`` was removed. Fallback to ``latex_documents`` is retained.
+  (PR #182, #192, #195, #208 and #216 by Alex Fargus)
 * The default stylesheet ('Sphinx') now prevents captions from being separated
   from their image/table/code block (across pages).
 * Font weights and widths are now internally represented by integer classes.

@@ -15,6 +15,7 @@ import pytest
 from sphinx.application import Sphinx
 from sphinx.errors import SphinxError
 from sphinx.util.docutils import docutils_namespace
+from sphinx.util.i18n import format_date
 
 from rinoh.document import DocumentTree
 from rinoh.frontend.sphinx import variable_removed_warnings
@@ -139,55 +140,29 @@ def test_sphinx_config_template_from_class(tmp_path):
             == 'Sphinx (article)')
 
 
-def test_sphinx_set_document_metadata(tmp_path):
-    app = create_sphinx_app(tmp_path, release='1.0')
-    template_cfg = app.builder.template_configuration('book', LOGGER)
-    document_data = document_data_dict(title='A Title', author="Ann Other")
-    rinoh_tree = DocumentTree([])
-    rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, document_data)
-    assert rinoh_doc.metadata['title'] == 'A Title'
-    assert rinoh_doc.metadata['subtitle'] == 'Release 1.0'
-    assert rinoh_doc.metadata['author'] == 'Ann Other'
-    assert 'logo' not in rinoh_doc.metadata
-    assert 'date' in rinoh_doc.metadata
-
-
-def test_sphinx_set_document_metadata_subtitle(tmp_path):
-    expected_subtitle = 'A subtitle'
-    app = create_sphinx_app(tmp_path, rinoh_metadata={
-                            'subtitle': expected_subtitle})
-    template_cfg = app.builder.template_configuration('book', LOGGER)
-    document_data = document_data_dict()
-    rinoh_tree = DocumentTree([])
-    rinoh_doc = template_cfg.document(rinoh_tree)
-    app.builder.set_document_metadata(rinoh_doc, document_data)
-    assert expected_subtitle == rinoh_doc.metadata['subtitle']
-
-
-def test_sphinx_set_document_metadata_logo(tmp_path):
+def test_sphinx_document_data_rinoh_documents_logo(tmp_path):
     expected_logo = 'logo.png'
-    app = create_sphinx_app(tmp_path)
-    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict(logo=expected_logo)
+    app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
     app.builder.set_document_metadata(rinoh_doc, document_data)
     assert Path(app.confdir) / expected_logo == rinoh_doc.metadata['logo']
 
 
-def test_sphinx_set_document_metadata_logo_absolute(tmp_path):
+def test_sphinx_document_data_rinoh_documents_logo_absolute(tmp_path):
     expected_logo = tmp_path / 'confdir' / 'logo.png'
-    app = create_sphinx_app(tmp_path)
-    template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data = document_data_dict(logo=expected_logo)
+    app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
+    template_cfg = app.builder.template_configuration('book', LOGGER)
     rinoh_tree = DocumentTree([])
     rinoh_doc = template_cfg.document(rinoh_tree)
     app.builder.set_document_metadata(rinoh_doc, document_data)
     assert expected_logo == rinoh_doc.metadata['logo']
 
 
-def test_sphinx_default_deprecation_warning(caplog, tmp_path):
+def test_sphinx_default_removed_warning(caplog, tmp_path):
     app = create_sphinx_app(tmp_path)
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
@@ -229,6 +204,13 @@ def test_sphinx_rinoh_domain_indices_removed(caplog, tmp_path):
     assert "Support for 'rinoh_domain_indices' has been removed" in caplog.text
 
 
+def test_sphinx_rinoh_metadata_removed(caplog, tmp_path):
+    app = create_sphinx_app(tmp_path, rinoh_metadata=dict(bla=5))
+    with caplog.at_level(logging.WARNING):
+        variable_removed_warnings(app.config, LOGGER)
+    assert "Support for 'rinoh_metadata' has been removed" in caplog.text
+
+
 def test_sphinx_document_data_rinoh_documents_missing_doc(tmp_path):
     rinoh_documents = [dict(target='target')]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
@@ -245,10 +227,13 @@ def test_sphinx_document_data_rinoh_documents_missing_target(tmp_path):
     assert "'target' key is missing from rinoh_documents entry" in str(error)
 
 
-def test_sphinx_document_data_rinoh_documents_no_title_and_author(tmp_path):
+def test_sphinx_document_data_rinoh_documents_defaults(tmp_path):
     rinoh_documents = [dict(doc='index', target='target')]
+    today_fmt = '%b %d, %Y'
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents,
-                            project='Project', release='1.2', author='Georgie')
+                            project='Project', release='1.2', author='Georgie',
+                            today_fmt=today_fmt, language='en-US')
+
     template_cfg = app.builder.template_configuration('book', LOGGER)
     document_data, = app.builder.document_data(LOGGER)
     rinoh_tree = DocumentTree([])
@@ -257,13 +242,45 @@ def test_sphinx_document_data_rinoh_documents_no_title_and_author(tmp_path):
     assert rinoh_doc.metadata['title'] == 'Project documentation'
     assert rinoh_doc.metadata['subtitle'] == 'Release 1.2'
     assert rinoh_doc.metadata['author'] == 'Georgie'
+    assert rinoh_doc.metadata['date'] == format_date(today_fmt,
+                                                     language='en-US')
+
+
+def test_sphinx_document_data_rinoh_documents_override(tmp_path):
+    expected = dict(title='Title', subtitle='A subtitle',
+                    author='Me', date='Today')
+    document_data = document_data_dict(**expected)
+    app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
+    template_cfg = app.builder.template_configuration('book', LOGGER)
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
+    for key, value in expected.items():
+        assert rinoh_doc.metadata[key] == value
+
+
+def test_sphinx_document_data_rinoh_documents_extra(tmp_path):
+    expected_extra = 'Extra'
+    document_data = document_data_dict(extra=expected_extra)
+    app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
+    template_cfg = app.builder.template_configuration('book', LOGGER)
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
+    assert expected_extra == rinoh_doc.metadata['extra']
 
 
 def test_sphinx_document_data_rinoh_documents(tmp_path):
-    rinoh_documents = [document_data_dict()]
-    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
-    document_data = app.builder.document_data(LOGGER)
-    assert document_data == rinoh_documents
+    rinoh_document = document_data_dict()
+    app = create_sphinx_app(tmp_path, rinoh_documents=[rinoh_document])
+    document_data, = app.builder.document_data(LOGGER)
+    assert document_data == rinoh_document
+    template_cfg = app.builder.template_configuration('book', LOGGER)
+    rinoh_tree = DocumentTree([])
+    rinoh_doc = template_cfg.document(rinoh_tree)
+    app.builder.set_document_metadata(rinoh_doc, document_data)
+    assert 'logo' not in rinoh_doc.metadata
+    assert 'date' in rinoh_doc.metadata
 
 
 def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
