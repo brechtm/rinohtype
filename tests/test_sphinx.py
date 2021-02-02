@@ -140,7 +140,7 @@ def test_sphinx_config_template_from_class(tmp_path):
             == 'Sphinx (article)')
 
 
-def test_sphinx_document_data_rinoh_documents_logo(tmp_path):
+def test_sphinx_rinoh_documents_logo_relative(tmp_path):
     expected_logo = 'logo.png'
     document_data = document_data_dict(logo=expected_logo)
     app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
@@ -151,7 +151,7 @@ def test_sphinx_document_data_rinoh_documents_logo(tmp_path):
     assert Path(app.confdir) / expected_logo == rinoh_doc.metadata['logo']
 
 
-def test_sphinx_document_data_rinoh_documents_logo_absolute(tmp_path):
+def test_sphinx_rinoh_documents_logo_absolute(tmp_path):
     expected_logo = tmp_path / 'confdir' / 'logo.png'
     document_data = document_data_dict(logo=expected_logo)
     app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
@@ -211,7 +211,7 @@ def test_sphinx_rinoh_metadata_removed(caplog, tmp_path):
     assert "Support for 'rinoh_metadata' has been removed" in caplog.text
 
 
-def test_sphinx_document_data_rinoh_documents_missing_doc(tmp_path):
+def test_sphinx_rinoh_documents_missing_doc(tmp_path):
     rinoh_documents = [dict(target='target')]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     with pytest.raises(SphinxError) as error:
@@ -219,7 +219,7 @@ def test_sphinx_document_data_rinoh_documents_missing_doc(tmp_path):
     assert "'doc' key is missing from rinoh_documents entry" in str(error)
 
 
-def test_sphinx_document_data_rinoh_documents_missing_target(tmp_path):
+def test_sphinx_rinoh_documents_missing_target(tmp_path):
     rinoh_documents = [dict(doc='index')]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     with pytest.raises(SphinxError) as error:
@@ -227,7 +227,7 @@ def test_sphinx_document_data_rinoh_documents_missing_target(tmp_path):
     assert "'target' key is missing from rinoh_documents entry" in str(error)
 
 
-def test_sphinx_document_data_rinoh_documents_defaults(tmp_path):
+def test_sphinx_rinoh_documents_defaults(tmp_path):
     rinoh_documents = [dict(doc='index', target='target')]
     today_fmt = '%b %d, %Y'
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents,
@@ -246,7 +246,7 @@ def test_sphinx_document_data_rinoh_documents_defaults(tmp_path):
                                                      language='en-US')
 
 
-def test_sphinx_document_data_rinoh_documents_override(tmp_path):
+def test_sphinx_rinoh_documents_override_defaults(tmp_path):
     expected = dict(title='Title', subtitle='A subtitle',
                     author='Me', date='Today')
     document_data = document_data_dict(**expected)
@@ -259,7 +259,7 @@ def test_sphinx_document_data_rinoh_documents_override(tmp_path):
         assert rinoh_doc.metadata[key] == value
 
 
-def test_sphinx_document_data_rinoh_documents_extra(tmp_path):
+def test_sphinx_rinoh_documents_extra(tmp_path):
     expected_extra = 'Extra'
     document_data = document_data_dict(extra=expected_extra)
     app = create_sphinx_app(tmp_path, rinoh_documents=[document_data])
@@ -270,7 +270,7 @@ def test_sphinx_document_data_rinoh_documents_extra(tmp_path):
     assert expected_extra == rinoh_doc.metadata['extra']
 
 
-def test_sphinx_document_data_rinoh_documents(tmp_path):
+def test_sphinx_rinoh_documents(tmp_path):
     rinoh_document = document_data_dict()
     app = create_sphinx_app(tmp_path, rinoh_documents=[rinoh_document])
     document_data, = app.builder.document_data(LOGGER)
@@ -283,7 +283,7 @@ def test_sphinx_document_data_rinoh_documents(tmp_path):
     assert 'date' in rinoh_doc.metadata
 
 
-def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
+def test_sphinx_rinoh_documents_unknown_document(caplog, tmp_path):
     rinoh_documents = [['not_here', 'rinoh_doc', 'Title', 'Author', False]]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     with caplog.at_level(logging.WARNING):
@@ -293,7 +293,7 @@ def test_sphinx_document_data_rinoh_documents_unknown(caplog, tmp_path):
             " 'not_here'") in caplog.text
 
 
-def test_sphinx_document_data_rinoh_documents_list(caplog, tmp_path):
+def test_sphinx_rinoh_documents_list(caplog, tmp_path):
     rinoh_documents = [['index', 'rinoh_doc', 'Title', 'Author', False]]
     app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
     with caplog.at_level(logging.WARNING):
