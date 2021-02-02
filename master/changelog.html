@@ -194,9 +194,6 @@ columns to be automatically sized by specifying a value of ‘auto’ in the
 <li><p>docutils frontend: support the <code class="docutils literal notranslate"><span class="pre">:align:</span></code> option to table directives, which
 will override the alignment set for the table in the style sheet.</p></li>
 <li><p>The starting number of enumerated lists in reStructuredText is respected.</p></li>
-<li><p>Sphinx frontend: the <code class="docutils literal notranslate"><span class="pre">rinoh_metadata</span></code> configuration variable allows
-overriding the document’s subtitle (and other strings) that are used on the
-title page and elsewhere in the document template (PR #182 by Alex Fargus).</p></li>
 <li><p>Table column widths can be specified in the style sheet, which take effect
 when these haven’t been specified in the source document.</p></li>
 <li><p>Document elements now store where they have been defined (document tree,
@@ -229,8 +226,8 @@ sheets and template configurations.</p></li>
 for each PDF document to be built. This allows selecting e.g. the template
 and logo on a per-document level. Support for <code class="docutils literal notranslate"><span class="pre">rinoh_template</span></code>,
 <code class="docutils literal notranslate"><span class="pre">rinoh_stylesheet</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_paper_size</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_domain_indices</span></code> and
-<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Also, only fallback to <code class="docutils literal notranslate"><span class="pre">`latex_documents</span></code> is
-retained. (PR #192, #195, #208 and #216 by Alex Fargus)</p></li>
+<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Fallback to <code class="docutils literal notranslate"><span class="pre">latex_documents</span></code> is retained.
+(PR #182, #192, #195, #208 and #216 by Alex Fargus)</p></li>
 <li><p>The default stylesheet (‘Sphinx’) now prevents captions from being separated
 from their image/table/code block (across pages).</p></li>
 <li><p>Font weights and widths are now internally represented by integer classes.
