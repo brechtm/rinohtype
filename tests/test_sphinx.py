@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 from sphinx.application import Sphinx
+from sphinx.errors import SphinxError
 from sphinx.util.docutils import docutils_namespace
 
 from rinoh.document import DocumentTree
@@ -226,6 +227,22 @@ def test_sphinx_rinoh_domain_indices_removed(caplog, tmp_path):
     with caplog.at_level(logging.WARNING):
         variable_removed_warnings(app.config, LOGGER)
     assert "Support for 'rinoh_domain_indices' has been removed" in caplog.text
+
+
+def test_sphinx_document_data_rinoh_documents_missing_doc(tmp_path):
+    rinoh_documents = [dict(target='target')]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
+    with pytest.raises(SphinxError) as error:
+        app.builder.document_data(LOGGER)
+    assert "'doc' key is missing from rinoh_documents entry" in str(error)
+
+
+def test_sphinx_document_data_rinoh_documents_missing_target(tmp_path):
+    rinoh_documents = [dict(doc='index')]
+    app = create_sphinx_app(tmp_path, rinoh_documents=rinoh_documents)
+    with pytest.raises(SphinxError) as error:
+        app.builder.document_data(LOGGER)
+    assert "'target' key is missing from rinoh_documents entry" in str(error)
 
 
 def test_sphinx_document_data_rinoh_documents(tmp_path):

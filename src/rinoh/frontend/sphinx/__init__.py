@@ -18,6 +18,7 @@ from docutils.nodes import GenericNodeVisitor, SkipNode
 
 from sphinx import addnodes
 from sphinx.builders import Builder
+from sphinx.errors import SphinxError
 from sphinx.locale import _
 from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
@@ -311,8 +312,13 @@ def fully_qualified_id(docname, id):
 
 def rinoh_document_to_document_data(entry, logger):
     if type(entry) in (list, tuple):
-        return list_to_document_data(entry, logger)
-    return dict(entry)
+        entry = list_to_document_data(entry, logger)
+    else:
+        for key in ('doc', 'target'):
+            if key not in entry:
+                raise SphinxError("'{}' key is missing from rinoh_documents"
+                                  " entry".format(key))
+    return entry
 
 
 def list_to_document_data(entry, logger):
@@ -353,7 +359,7 @@ def variable_removed_warnings(config, logger):
 
 def setup(app):
     app.add_builder(RinohBuilder)
-    app.add_config_value('rinoh_documents', None, 'env')
+    app.add_config_value('rinoh_documents', None, 'env', (dict, list))
     app.add_config_value('rinoh_logo', None, 'html')
     app.add_config_value('rinoh_domain_indices', None, 'html')
     app.add_config_value('rinoh_template', None, 'html')
