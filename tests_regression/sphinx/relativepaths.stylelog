@@ -1,0 +1,231 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Image('/private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/logo.png', style='title page logo')
+         > (0,0,1,0,2) title page logo
+           (0,0,0,0,2) image
+    Image('None')
+         > (0,0,0,0,2) image
+    Image('None')
+         > (0,0,0,0,2) image
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+      Paragraph('front matter')
+           > (0,0,0,0,2) body
+        SingleStyledText('front matter')
+      HorizontalRule()
+           > (0,0,0,0,2) horizontal rule
+      Image('template_configuration.png')
+           > (0,0,0,0,2) image
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('​ ​')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+      MixedStyledText('​ ​')
+        Field('​')
+          SingleStyledText('​')
+        SingleStyledText(' ')
+        Field('​')
+          SingleStyledText('​')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	2/5')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+      MixedStyledText('	2/5')
+        Tab('	')
+        Field('2')
+          SingleStyledText('2')
+        SingleStyledText('/')
+        Field('5')
+          SingleStyledText('5')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/index.rst:0 <compound>
+        StaticGroupedFlowables(id='%intro')   None:None <start_of_file>
+          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/intro.rst:2 <section>
+               > (0,0,0,1,2) chapter
+            Heading('1 Introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/intro.rst:2 <title>
+                 > (0,0,0,1,2) heading level 1
+                   (0,0,0,0,2) other heading levels
+                MixedStyledText('1 Introduction')
+                  SingleStyledText('1')
+                  SingleStyledText(' ')
+                  SingleStyledText('Introduction')
+            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/intro.rst:6 <paragraph>
+                 > (0,0,0,0,2) body
+                  InlineImage('stylesheet.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/stylesheet/stylesheet.rts
+                       x (0,0,0,0,2) inline image
+                       > fallback to default style
+              MixedStyledText('This is the introduction.')
+                SingleStyledText('This is the ')
+                MixedStyledText('introduction')   None:None <inline>
+                     > (0,0,0,1,1) here
+                  SingleStyledText('')
+                  InlineImage('stylesheet.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/stylesheet/stylesheet.rts
+                       x (0,0,0,0,2) inline image
+                       > fallback to default style
+                  SingleStyledText('introduction')
+                SingleStyledText('.')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('1 Introduction		InlineImage')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('1 Introduction		InlineImage')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        MixedStyledText('1 Introduction')
+          Field('1')
+            SingleStyledText('1')
+          SingleStyledText(' ')
+          Field('Introduction')
+            SingleStyledText('Introduction')
+        Tab('	')
+        Tab('	')
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('InlineImage	3 / 5')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('InlineImage	3 / 5')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+        Tab('	')
+        MixedStyledText('3 / 5')
+          Field('3')
+            SingleStyledText('3')
+          SingleStyledText(' / ')
+          Field('5')
+            SingleStyledText('5')
+---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/index.rst:0 <compound>
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('1 Introduction		InlineImage')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('1 Introduction		InlineImage')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        MixedStyledText('1 Introduction')
+          Field('1')
+            SingleStyledText('1')
+          SingleStyledText(' ')
+          Field('Introduction')
+            SingleStyledText('Introduction')
+        Tab('	')
+        Tab('	')
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('InlineImage	4 / 5')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('InlineImage	4 / 5')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+        Tab('	')
+        MixedStyledText('4 / 5')
+          Field('4')
+            SingleStyledText('4')
+          SingleStyledText(' / ')
+          Field('5')
+            SingleStyledText('5')
+---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/index.rst:0 <compound>
+        StaticGroupedFlowables(id='%conclusion')   None:None <start_of_file>
+          Section(id='%conclusion#conclusion')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/conclusion.rst:2 <section>
+               > (0,0,0,1,2) chapter
+            Heading('2 Conclusion')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/conclusion.rst:2 <title>
+                 > (0,0,0,1,2) heading level 1
+                   (0,0,0,0,2) other heading levels
+                MixedStyledText('2 Conclusion')
+                  SingleStyledText('2')
+                  SingleStyledText(' ')
+                  SingleStyledText('Conclusion')
+            Paragraph('Concluding words go here.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/conclusion.rst:4 <paragraph>
+                 > (0,0,0,0,2) body
+              MixedStyledText('Concluding words go here.')
+                SingleStyledText('Concluding words go here.')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('2 Conclusion		InlineImage')
+         > (0,0,0,0,2) header
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('2 Conclusion		InlineImage')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        MixedStyledText('2 Conclusion')
+          Field('2')
+            SingleStyledText('2')
+          SingleStyledText(' ')
+          Field('Conclusion')
+            SingleStyledText('Conclusion')
+        Tab('	')
+        Tab('	')
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('InlineImage	5 / 5')
+         > (0,0,0,0,2) footer
+           (0,0,0,0,1) body
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+      MixedStyledText('InlineImage	5 / 5')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+        InlineImage('template_configuration.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-57/relativepaths/template_configuration/template.rtt
+             x (0,0,0,0,2) inline image
+             > fallback to default style
+        Tab('	')
+        MixedStyledText('5 / 5')
+          Field('5')
+            SingleStyledText('5')
+          SingleStyledText(' / ')
+          Field('5')
+            SingleStyledText('5')

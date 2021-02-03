@@ -1,0 +1,7 @@
+[TEMPLATE_CONFIGURATION]
+name=minimal
+template=book
+stylesheet=stylesheet.rts
+
+[VARIABLES]
+paper_size = A5

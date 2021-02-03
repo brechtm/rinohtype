@@ -8,12 +8,12 @@ from helpers.regression import verify_output
 
 
 pytest_plugins = 'sphinx.testing.fixtures'
-collect_ignore = ['roots']
+collect_ignore = ['sphinx']
 
 
 @pytest.fixture(scope='session')
 def rootdir():
-    return path(__file__).parent.abspath() / 'roots'
+    return path(__file__).parent.abspath() / 'sphinx'
 
 
 @pytest.fixture(scope='function')

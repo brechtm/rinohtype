@@ -1,0 +1,18 @@
+[TEMPLATE_CONFIGURATION]
+name = supportingmatter
+template = book
+stylesheet=stylesheet.rts
+
+[front_matter]
+page_number_format = lowercase roman
+end_at_page = left
+flowables = [
+        Section([Heading(SingleStyledText('Dedication'),
+                         style='unnumbered'),
+                 OutOfLineFlowables('dedication')],
+                id='dedication'),
+        TableOfContentsSection(),
+        ListOfFiguresSection(),
+        ListOfTablesSection(),
+        Section([OutOfLineFlowables('epigraph')]),
+    ]

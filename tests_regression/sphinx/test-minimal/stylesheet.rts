@@ -1,0 +1,7 @@
+[STYLESHEET]
+name = Sphinx minimal
+base = sphinx_base14
+
+
+[title page date : Paragraph('title page date')]
+hide = true

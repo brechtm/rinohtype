@@ -9,8 +9,7 @@ import pytest
 
 from pathlib import Path
 
-from helpers.regression import (render_rst_file, render_sphinx_rst_file,
-                                OUTPUT_DIR)
+from helpers.regression import render_rst_file, render_sphinx_rst_file
 
 
 RST_PATH = Path(__file__).parent / 'rst'
@@ -22,10 +21,9 @@ def collect_tests():
 
 
 @pytest.mark.parametrize('test_name', collect_tests())
-def test(test_name):
+def test_rst(test_name):
     rst_path = RST_PATH / (test_name + '.rst')
     if test_name.startswith('sphinx_'):
-        test_output_dir = OUTPUT_DIR / test_name
-        render_sphinx_rst_file(rst_path, test_name, RST_PATH, test_output_dir)
+        render_sphinx_rst_file(rst_path, test_name, RST_PATH)
     else:
         render_rst_file(rst_path, test_name, RST_PATH)

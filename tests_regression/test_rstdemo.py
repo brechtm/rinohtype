@@ -12,7 +12,7 @@ import pytest
 
 from helpers.diffpdf import diff_pdf
 from helpers.pdf_linkchecker import check_pdf_links
-from helpers.regression import TEST_DIR, OUTPUT_DIR
+from helpers.regression import TEST_DIR
 from helpers.util import in_directory
 
 from rinoh.frontend.rst import ReStructuredTextReader
@@ -26,7 +26,7 @@ def test_rstdemo():
     parser = ReStructuredTextReader()
     flowables = parser.parse(TEST_DIR / 'demo.txt')
     document = config.document(flowables)
-    out_dir = OUTPUT_DIR / 'rstdemo'
+    out_dir = TEST_DIR / 'rstdemo_output'
     out_dir.mkdir(parents=True, exist_ok=True)
     pdf_filename = 'demo.pdf'
     _, _, _, _, _, _, ref_outlines = check_pdf_links(TEST_DIR / 'reference'

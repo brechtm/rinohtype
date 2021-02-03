@@ -13,7 +13,7 @@ from helpers.regression import verify_output
 
 
 RINOH_PATH = Path(__file__).parent / 'rinoh'
-OUTPUT_PATH = Path(__file__).parent / 'output'
+OUTPUT_PATH = Path(__file__).parent / 'rinoh_output'
 
 
 def test_version(script_runner):

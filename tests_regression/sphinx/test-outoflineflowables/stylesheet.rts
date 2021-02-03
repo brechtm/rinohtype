@@ -1,0 +1,18 @@
+[STYLESHEET]
+name = Sphinx minimal
+base = sphinx_base14
+
+
+[title page date : Paragraph('title page date')]
+hide = true
+
+[dedication section : Section(id='dedication')]
+show_in_toc = false
+page_break = right
+
+[table of contents section]
+page_break = right
+
+[epigraph : OutOfLineFlowables(name='epigraph')]
+title = 'Epigraph'
+page_break = right

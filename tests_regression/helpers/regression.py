@@ -19,6 +19,7 @@ from .diffpdf import diff_pdf
 from .pdf_linkchecker import check_pdf_links
 from .util import in_directory
 
+from rinoh.frontend.commonmark import CommonMarkReader
 from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 from rinoh.attribute import OverrideDefault, Var
@@ -27,11 +28,11 @@ from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             TemplateConfigurationFile)
 
 
-__all__ = ['render_doctree', 'render_rst_file']
+__all__ = ['render_doctree', 'render_md_file', 'render_rst_file']
 
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
-OUTPUT_DIR = TEST_DIR / 'output'
+
 
 class MinimalTemplate(DocumentTemplate):
     stylesheet = OverrideDefault('sphinx_base14')
@@ -44,31 +45,24 @@ class MinimalTemplate(DocumentTemplate):
     contents_page = PageTemplate(base='page')
 
 
-def _render_rst(rst_path, doctree, out_filename, reference_path, warnings=[]):
-    kwargs = {}
-    stylesheet_path = rst_path.with_suffix('.rts')
-    if stylesheet_path.exists():
-        kwargs['stylesheet'] = str(stylesheet_path)
-    templconf_path = rst_path.with_suffix('.rtt')
-    if templconf_path.exists():
-        config = TemplateConfigurationFile(str(templconf_path))
-    else:
-        config = TemplateConfiguration('rst', template=MinimalTemplate,
-                                       **kwargs)
-        config.variables['paper_size'] = 'a5'
-    render_doctree(doctree, out_filename, reference_path, config, warnings)
+def render_md_file(md_path, out_filename, reference_path):
+    reader = CommonMarkReader()
+    doctree = reader.parse(md_path)
+    return _render_file(md_path, doctree, TEST_DIR / 'md_output',
+                        out_filename, reference_path)
 
 
 def render_rst_file(rst_path, out_filename, reference_path):
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
-    return _render_rst(rst_path, doctree, out_filename, reference_path)
+    return _render_file(rst_path, doctree, TEST_DIR / 'rst_output',
+                        out_filename, reference_path)
 
 
-def render_sphinx_rst_file(rst_path, out_filename, reference_path,
-                           test_output_dir):
+def render_sphinx_rst_file(rst_path, out_filename, reference_path):
+    output_dir = TEST_DIR / 'rst_output'
     with docutils_namespace():
-        out_dir = str(test_output_dir)
+        out_dir = str(output_dir / out_filename)
         app = Sphinx(srcdir=str(rst_path.parent), confdir=None, outdir=out_dir,
                      doctreedir=out_dir, buildername='dummy', status=None)
         with open(rst_path) as rst_file:
@@ -76,17 +70,35 @@ def render_sphinx_rst_file(rst_path, out_filename, reference_path,
         sphinx_doctree = sphinx_parse(app, contents)
     doctree = from_doctree(sphinx_doctree)
     docinfo = sphinx_doctree.settings.env.metadata['index']
-    return _render_rst(rst_path, doctree, out_filename, reference_path,
-                       warnings=docinfo.get('warnings', '').splitlines())
+    warnings = docinfo.get('warnings', '').splitlines()
+    return _render_file(rst_path, doctree, output_dir, out_filename,
+                        reference_path, warnings=warnings)
 
 
-def render_doctree(doctree, out_filename, reference_path,
+def _render_file(file_path, doctree, out_dir, out_filename, reference_path,
+                 warnings=[]):
+    kwargs = {}
+    stylesheet_path = file_path.with_suffix('.rts')
+    if stylesheet_path.exists():
+        kwargs['stylesheet'] = str(stylesheet_path)
+    templconf_path = file_path.with_suffix('.rtt')
+    if templconf_path.exists():
+        config = TemplateConfigurationFile(str(templconf_path))
+    else:
+        config = TemplateConfiguration('rst', template=MinimalTemplate,
+                                       **kwargs)
+        config.variables['paper_size'] = 'a5'
+    render_doctree(doctree, out_dir, out_filename, reference_path, config,
+                   warnings)
+
+
+def render_doctree(doctree, out_dir, out_filename, reference_path,
                    template_configuration=None, warnings=[]):
     if template_configuration:
         document = template_configuration.document(doctree)
     else:
         document = MinimalTemplate(doctree)
-    output_dir = OUTPUT_DIR / out_filename
+    output_dir = out_dir / out_filename
     output_dir.mkdir(parents=True, exist_ok=True)
     with pytest.warns(None) as recorded_warnings:
         document.render(output_dir / out_filename)
@@ -98,30 +110,6 @@ def render_doctree(doctree, out_filename, reference_path,
                    for w in recorded_warnings):
             pytest.fail('Expected warning matching "{}"'.format(warning))
     verify_output(out_filename, output_dir, reference_path)
-
-
-def render_sphinx_project(name, project_dir, template_cfg=None):
-    project_path = TEST_DIR / project_dir
-    out_path = OUTPUT_DIR / name
-    confoverrides = {}
-    with docutils_namespace():
-        sphinx = Sphinx(srcdir=str(project_path),
-                        confdir=str(project_path),
-                        outdir=str(out_path / 'rinoh'),
-                        doctreedir=str(out_path / 'doctrees'),
-                        buildername='rinoh',
-                        confoverrides=confoverrides)
-        if template_cfg:
-            for document_data in sphinx.config.rinoh_documents:
-                document_data['template'] = str(TEST_DIR / template_cfg)
-        sphinx.build()
-    out_filename = '{}.pdf'.format(name)
-    with in_directory(out_path):
-        if not diff_pdf(TEST_DIR / 'reference' / out_filename,
-                        out_path / 'rinoh' / out_filename):
-            pytest.fail('The generated PDF is different from the reference '
-                        'PDF.\nGenerated files can be found in {}'
-                        .format(out_path))
 
 
 def verify_output(out_filename, output_dir, reference_path):
