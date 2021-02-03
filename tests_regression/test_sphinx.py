@@ -32,5 +32,7 @@ def collect_tests():
 def test_sphinx(test_name, app, verify):
     app.build()
     output_dir = OUTPUT_PATH / test_name
-    shutil.copytree(app.outdir, output_dir, dirs_exist_ok=True)
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+    shutil.copytree(app.outdir, output_dir)
     verify_output(test_name, output_dir, ROOTS_PATH)
