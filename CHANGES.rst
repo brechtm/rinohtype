@@ -1,8 +1,8 @@
 Release History
 ---------------
 
-Release 0.5.0 (upcoming)
-~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.0 (2021-02-03)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
