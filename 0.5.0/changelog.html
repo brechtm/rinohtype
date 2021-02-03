@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Release History &mdash; rinohtype 0.5.0.dev1 documentation</title>
+  <title>Release History &mdash; rinohtype 0.5.0 documentation</title>
   
 
   
@@ -38,7 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Frequenty Asked Questions" href="faq.html" /> 
+    <link rel="prev" title="Developing" href="developing.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.5.0.dev1
+                0.5.0
               </div>
             
           
@@ -97,8 +97,10 @@
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#release-0-5-0-dev">Release 0.5.0-dev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-0-5-0-2021-02-03">Release 0.5.0 (2021-02-03)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-2-2020-07-28">Release 0.4.2 (2020-07-28)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-1-2020-07-01">Release 0.4.1 (2020-07-01)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-0-2020-03-05">Release 0.4.0 (2020-03-05)</a></li>
@@ -180,8 +182,8 @@
             
   <div class="section" id="release-history">
 <span id="changelog"></span><h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="release-0-5-0-dev">
-<h2>Release 0.5.0-dev<a class="headerlink" href="#release-0-5-0-dev" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="release-0-5-0-2021-02-03">
+<h2>Release 0.5.0 (2021-02-03)<a class="headerlink" href="#release-0-5-0-2021-02-03" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
 <li><p>Google Fonts: if a specified typeface is not installed, rinohtype attempts
@@ -194,9 +196,6 @@ columns to be automatically sized by specifying a value of ‘auto’ in the
 <li><p>docutils frontend: support the <code class="docutils literal notranslate"><span class="pre">:align:</span></code> option to table directives, which
 will override the alignment set for the table in the style sheet.</p></li>
 <li><p>The starting number of enumerated lists in reStructuredText is respected.</p></li>
-<li><p>Sphinx frontend: the <code class="docutils literal notranslate"><span class="pre">rinoh_metadata</span></code> configuration variable allows
-overriding the document’s subtitle (and other strings) that are used on the
-title page and elsewhere in the document template (PR #182 by Alex Fargus).</p></li>
 <li><p>Table column widths can be specified in the style sheet, which take effect
 when these haven’t been specified in the source document.</p></li>
 <li><p>Document elements now store where they have been defined (document tree,
@@ -229,8 +228,8 @@ sheets and template configurations.</p></li>
 for each PDF document to be built. This allows selecting e.g. the template
 and logo on a per-document level. Support for <code class="docutils literal notranslate"><span class="pre">rinoh_template</span></code>,
 <code class="docutils literal notranslate"><span class="pre">rinoh_stylesheet</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_paper_size</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_domain_indices</span></code> and
-<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Also, only fallback to <code class="docutils literal notranslate"><span class="pre">`latex_documents</span></code> is
-retained. (PR #192, #195, #208 and #216 by Alex Fargus)</p></li>
+<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Fallback to <code class="docutils literal notranslate"><span class="pre">latex_documents</span></code> is retained.
+(PR #182, #192, #195, #208 and #216 by Alex Fargus)</p></li>
 <li><p>The default stylesheet (‘Sphinx’) now prevents captions from being separated
 from their image/table/code block (across pages).</p></li>
 <li><p>Font weights and widths are now internally represented by integer classes.
@@ -256,6 +255,8 @@ to space_below handling</p></li>
 the first column, it was rendered again in subsequent columns.</p></li>
 <li><p>Crash on encountering a style for which no selector is defined.</p></li>
 </ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
 </div>
 <div class="section" id="release-0-4-2-2020-07-28">
 <h2>Release 0.4.2 (2020-07-28)<a class="headerlink" href="#release-0-4-2-2020-07-28" title="Permalink to this headline">¶</a></h2>
@@ -581,7 +582,7 @@ rinohtype variable is not set</p></li>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="faq.html" class="btn btn-neutral float-left" title="Frequenty Asked Questions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="developing.html" class="btn btn-neutral float-left" title="Developing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
