@@ -3,240 +3,180 @@ Developing
 
 This project makes use of tox_ to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
-tests. ``tox.ini`` defines "environments" that configure these tasks. Each of
-these are described below. The unit and integration tests make use of the
-pytest_ framework.
+(integration) tests. ``tox.ini`` defines "environments" that configure these
+tasks. Each of these are described in the next section. The unit and regression
+tests make use of pytest_.
 
-Tox facilitates running tests on multiple Python interpreter versions. This
-requires these versions to be available on your machine. We recommend you use
-pyenv_ (or pyenv-win_) to manage the installation of different Python
-interpreters.
+The repository includes a Poetry_ ``pyproject.toml`` file to help you set up a
+virtual environment with tox and other development dependencies. From the
+repository checkout root directory execute::
+
+    poetry install
+
+Poetry will create a virtual environment in *.venv*, which you can activate
+like this\ [#]_::
+
+    source .venv/bin/activate
+
+Now tox is available for running the tests. Starting ``tox`` without any
+arguments will run the *check*, *unit* and *regression* environments. Refer to
+the next section for an overview of all environments.
+
+.. [#] If you install direnv_, the virtual environment can be automatically
+       activated when you enter the rinohtype repository checkout (see the
+       ``.envrc`` file).
 
 .. _tox: https://tox.readthedocs.io
 .. _pytest: https://www.pytest.org
-.. _pyenv: https://github.com/pyenv/pyenv
-.. _pyenv-win: https://github.com/pyenv-win/pyenv-win
+.. _Poetry: https://python-poetry.org/
+.. _direnv: https://direnv.net/
 
 
-Environments
-------------
+Tox Environments
+----------------
 
-``py35``, ``py36``, ``py37``, ``py38``, ``py39``, ``py310``, ``pypy3``
-    Runs the unit tests in the interpreter corresponding to the name of the
-    environment.
+The following environments execute unit tests and regression tests:
 
-``check``
-    Performs various checks using distutils_ and check-manifest_ to see whether
-
-    - the package's meta-data is not missing any parts,
-    - the package's long description is valid reStructuredText, and
-    - we didn't forget to include any files in the source distribution
+``unit``
+    Runs the unit tests.
 
 ``regression``
-    Runs "unit-like" regression tests that finish in a short amount of time.
-    These tests render small documents whose PDF output is compared to a
-    reference PDF.
+    Runs integration/regression tests. Each of these tests render a tiny
+    document (often a single page) focusing on a specific feature, which means
+    they also execute quickly. Their PDF output is compared to a reference PDF
+    that is known to be good.
 
-``longrunning``
+``longrunning`` (not maintained, broken)
     Runs regressions tests that render larger documents. These tests take
     several minutes to complete.
 
+The other environments run checks, build documentation and build "binary"
+distributions for Mac and Windows:
+
+``check``
+    Performs basic checks; just ``poetry check`` at this point.
+
 ``check-docs``
     Perform checks on the documentation source files using doc8_ and
-    sphinx-doctest_.
+    sphinx-doctest_. restview_ can be useful when fixing syntax errors in
+    ``README.rst``, ``CHANGES.rst``, ...
 
 ``build-docs``
     Build the rinohtype documentation using Sphinx, both in HTML and PDF
     formats.
 
-``macapp``
+``macapp`` (not maintained, broken?)
     Build a stand-alone macOS application bundle using briefcase_. This task
     can only be run on macOS.
 
-``wininst``
+``wininst`` (not maintained, broken?)
     Build a stand-alone rinohtype installer for the Windows platform with the
     help of pynsist_. This task also can be run on other platforms than
     Windows.
 
-Customization settings for check-manifest_, doc8_ and pytest_ are stored in
-``setup.cfg``.
+Customization settings for doc8_ and pytest_ are stored in ``setup.cfg``.
 
 
 .. _distutils: https://docs.python.org/3/distutils/examples.html#checking-a-package
-.. _check-manifest: https://github.com/mgedmin/check-manifest
 .. _doc8: https://github.com/PyCQA/doc8
 .. _sphinx-doctest: https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html
+.. _restview: https://mg.pov.lt/restview/
 .. _briefcase: https://beeware.org/briefcase/
 .. _pynsist: https://pynsist.readthedocs.io/en/latest/
 
 
-Managing multiple Python interpreter versions
----------------------------------------------
+Testing against multiple Python interpreter versions
+----------------------------------------------------
 
-To be able to test rinohtype against multiple Python interpreter versions,
-these need to be available on your machine. pyenv_ can help you easily manage
-these. For example, to install CPython 3.8.1, you can run::
+Tox facilitates running tests on multiple Python interpreter versions. You can
+combine the test environment names with a factor_ to execute them on a specific
+Python interpreter version. For example, to run the unit tests on CPython 3.8::
+
+    tox -e unit-py38
+
+While it is typically sufficient to test on a single Python version during
+development, it can be useful to run tests on a set of Python versions before
+pushing your commits. Of course, this requires these versions to be available
+on your machine. It is highly recommended you use pyenv_ (or pyenv-win_) to
+install and manage these. For example, to install CPython 3.8.1, you can run::
 
     pyenv install 3.8.1
 
 and pyenv will download, build and install this version of CPython for you.
-
-Note that pyenv will install the different Python versions in an isolated
-location (typically under ``~/.penv``), so they will not interfere with your
+pyenv will install the different Python versions in an isolated location
+(typically under ``~/.penv``), so they will not interfere with your
 system-default Python versions.
 
 The file ``.python-version`` in the root of the repository specifies which
 Python versions pyenv should make available whenever we are inside the
-repository checkout. The file lists specific versions of CPython 3.5 to 3.10
-and a recent PyPy3 version (Ideally, we should closely track the latest
-releases). The ``pyenv_install.py`` script will install the interpreters listed
-in ``.python-version`` for you.
+repository checkout directory. The file lists specific the versions of CPython
+rinohtype aims to support plus recent PyPy3 versions (ideally, we should
+closely track the latest releases). The ``pyenv_install.py`` script can install
+these for you (skipping any that are already installed).
 
-With these Python versions installed, you can set up a virtual environment
-with tox and some other development tools. The repository comes with a Poetry_
-``pyproject.toml`` file to help set up this virtualenv [#]_. The
-``pyenv_install.py`` script instructs you how to set up this virtual
-environment. Activate the virtualenv like this::
-
-    source .venv/bin/activate
-
-If you install direnv_, the virtual environment can be automatically activated
-when you enter the rinohtype reposutory checkout (see the ``.envrc`` file).
-
-.. [#] Note that we only use Poetry for the tox virtualenv for now. It would be
-       good if Poetry could replace ``setup.py`` and tools like bump2version
-       and twine, but that will require quite some work.
-
-.. _Poetry: https://python-poetry.org/
-.. _direnv: https://direnv.net/
+.. _factor: https://tox.readthedocs.io/en/latest/config.html#tox-environments
+.. _pyenv: https://github.com/pyenv/pyenv
+.. _pyenv-win: https://github.com/pyenv-win/pyenv-win
 
 
-Executing tox environments
---------------------------
-
-With all this in place, you can now run tox to execute the environments.
-Invoking tox without any options will run all tox environments listed in
-``tox.ini``'s ``envlist``. You can specify specific environments by passing
-them to the ``-e`` argument::
-
-    tox -e py35,py38        # no spaces!
-
-For each environment, tox will create virtual environments (under ``.tox``) and
-install rinohtype (from sdist) in these. Additionally, it will install other
-dependencies specified by ``tox.ini`` before running tests.
-
-.. _pyenv-virtualenv: https://github.com/pyenv/pyenv-virtualenv
-
-
-Continuous Integration
+Continuous integration
 ----------------------
 
-We make use of Travis CI and AppVeyor to automatically execute the tox
-environments when new commits are pushed to the repository. Travis CI covers
-the Linux and macOS platforms, while AppVeyor covers Windows. See the
-configuration files ``.travis.yml`` and ``appveyor.yml`` for details.
+`GitHub Actions`_ automatically executes the tox environments when new commits
+are pushed to the repository. The tox environments are run on Linux, macOS and
+Windows, and run the tests on an array of Python versions to make sure that we
+don't break any corner cases. See ``.github/workflows`` for details.
+
+.. _GitHub Actions: https://github.com/brechtm/rinohtype/actions
 
 
 Making a release
 ----------------
 
-This is a list of steps to follow when making a new release of rinohtype:
+This is a list of steps to follow when making a new release of rinohtype.
+Publishing the new release to PyPI_ and uploading the documentation to GitHub
+Pages is handled by the GitHub Actions workflow.
 
-1. Make sure the git clone is clean (``git status`` returns nothing)
+1. Make sure your checkout is clean.
 
-   * you can ``git stash`` uncommited changes
+2. Run run tests and checks locally::
 
-2. Perform checks and run tests locally
+    tox -e check,check-docs,build-docs,unit,regression
 
-   * restview_ ``README.rst`` and ``CHANGES.rst`` to check for issues
-   * run ``tox`` to run the quick-running checks/tests
-   * run the longer-running tox environments: ``longrunning``, ``check-docs``,
-     ``build-docs``, ``wininst`` and (if you're on macOS) ``macapp``
+3. Push your commits to master on GitHub. Don't create a tag yet!
 
-3. Set release version
+4. Check whether all tests on `GitHub Actions`_ are green.
 
-   * ``export VERSION_NUMBER=$(bumpversion --list release
-     | grep new_version | sed s/"^.*="//)``
-   * change release date in ``rinoh/version.py`` and ``CHANGES.rst``
+5. Set the release date.
 
-4. Commit these changes and run all tests
+   * set ``__release_date__`` in *src/rinoh/__init__.py* (``YYYY-MM-DD``)
+   * add release date to this release's section (see other sections for
+     examples)
 
-   * ``git commit -am "Bump version to $VERSION_NUMBER"``
-   * ``git push``
-   * wait for Travis CI and AppVeyor results and verify that all checks passed
+6. Create a git tag: ``git tag v$(poetry version --short)``
 
-5. Remove build and dist directories: ``rm -rf build dist``
+7. Push the new tag: ``git push origin v$(poetry version --short)``
 
-6. Build distribution files: ``python setup.py sdist bdist_wheel``
+8. The GitHub workflow will run all tox environments and upload the new version
+   to PyPI if all checks were successful.
 
-7. Prepare the ``doc/_build/html`` submodule
+9. Create a `new release on GitHub`_. Include the relevant section of the
+   changelog. Use previous releases as a template.
 
-   * make sure the ``doc/_build/html`` submodule is checked out
-
-        git submodule status doc/_build/html
-
-   * clear the output directory so no obsolete files are left behind::
-
-        rm -rf doc/_build/html/* && rm -rf doc/_build/html/.buildinfo
-
-   * commit the empty directory so that the working dir is clean::
-
-        git -C doc/_build/html commit -am "clean HTML output directory"
-        git commit -am "clean HTML output directory"
-
-8. Build and commit the documentation
-
-   * ``tox --installpkg dist/*.whl -e build-docs``
-   * ``git -C doc/_build/html add --all``
-   * ``git -C doc/_build/html commit --amend -am "v$VERSION_NUMBER docs"``
-   * ``git -C doc/_build/html checkout -B gh-pages``
-   * ``git commit --amend -am "Update the docs submodule"``
-   * check the generated documentation (HTML and PDF)
-
-9. Upload the distribution files to TestPyPI_ using twine_
-
-   * ``twine upload --repository-url https://test.pypi.org/legacy/ dist/*``
-   * check whether the new release's description (which is a concatenation of
-     ``README.rst`` and ``CHANGES.rst``) is rendered properly at
-     https://test.pypi.org/project/rinohtype/
-   * check whether you can install this version and that it can render a
-     reStructuredText file::
-
-        python -m venv /tmp/rinohtest
-        source /tmp/rinohtest/bin/activate
-        pip install --extra-index-url https://test.pypi.org/simple/ rinohtype
-        rinoh DEVELOPING.rst
-
-10. Tag the release in and push commits
-
-    * ``git -C doc/_build/html push``
-    * ``git tag v$VERSION_NUMBER``
-    * ``git push && git push --tags``
-
-11. Upload the distribution files to PyPI_ using twine_
-
-    * ``twine upload --repository-url https://upload.pypi.org/legacy/ dist/*``
-
-12. Create a new [release on GitHub](https://github.com/brechtm/rinohtype/releases/new)
-
-    * Tag version: the release's tag *vx.y.z*
-    * Release title: *Release x.y.z (date)*
-    * Add a link to the release on PyPI::
+   * Tag version: the release's tag *vx.y.z*
+   * Release title: *Release x.y.z (date)*
+   * Add a link to the release on PyPI::
 
           Install from [PyPI](https://pypi.org/project/rinohtype/x.y.z/)
 
-    * Copy the release notes from the change log
+   * Copy the release notes from the change log
 
-13. Set the new development version
+10. Bump version number and reset the release date to "upcoming".
 
-    * ``export VERSION_NUMBER=$(bumpversion --list patch
-      | grep new_version | sed s/"^.*="//)``
-    * set the date in ``version.py`` to 'unreleased'
-    * ``git commit -am "Bump version to $VERSION_NUMBER"``
+    * ``poetry version patch  # or 'minor'``
+    * add new section at the top of the changelog
+    * set ``__release_date__`` in *src/rinoh/__init__.py* to ``'upcoming'``
 
 
-.. _bumpversion: https://pypi.org/project/bumpversion/
-.. _restview: https://mg.pov.lt/restview/
-.. _twine: https://pypi.org/project/twine/
-.. _TestPyPI: https://test.pypi.org/
 .. _PyPI: https://pypi.org/
+.. _new release on GitHub: https://github.com/brechtm/rinohtype/releases/new
