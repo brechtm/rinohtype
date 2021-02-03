@@ -50,9 +50,6 @@ include = [
     { path = "wininst.py", format = "sdist" },
     { path = "wininst.cfg", format = "sdist" },
 ]
-exclude = [
-    "doc/_build",  # the entry in doc/.gitignore is ignored (html submodule)
-]
 
 [tool.poetry.scripts]
 rinoh = "rinoh.__main__:main"
