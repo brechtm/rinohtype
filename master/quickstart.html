@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Quickstart &mdash; rinohtype 0.5.0.dev1 documentation</title>
+  <title>Quickstart &mdash; rinohtype 0.5.0 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.5.0.dev1
+                0.5.0
               </div>
             
           
@@ -103,6 +103,8 @@
 <li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
 
@@ -200,7 +202,7 @@ perform a second rendering pass.</p>
 <div class="section" id="sphinx-builder">
 <span id="sphinx-quickstart"></span><h2>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h2>
 <p>If your Sphinx project is already configured for the LaTeX builder, rinohtype
-will happily interpret <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.5/config.html#confval-latex_documents" title="(in Sphinx v1.4.5)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
+will happily interpret <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v4.0.0+)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
 to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>            <span class="c1"># top-level file (index.rst)</span>
                     <span class="s1">&#39;target&#39;</span><span class="p">,</span>           <span class="c1"># output (target.pdf)</span>
@@ -211,7 +213,7 @@ to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documen
 <p>Other configuration variables are optional and allow configuring the style of
 the generated PDF document. See <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a> for details.</p>
 <p>When building the documentation, select the <cite>rinoh</cite> builder by passing it to
-the <code class="xref std std-option docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code> option:</p>
+the <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-b" title="(in Sphinx v4.0.0+)"><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code></a> option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
 </pre></div>
 </div>

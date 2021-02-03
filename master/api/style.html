@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Style (rinoh.style) &mdash; rinohtype 0.5.0.dev1 documentation</title>
+  <title>Style (rinoh.style) &mdash; rinohtype 0.5.0 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.5.0.dev1
+                0.5.0
               </div>
             
           
@@ -122,6 +122,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
 
@@ -200,7 +202,7 @@
 <dd><p>A document element who’s style can be configured.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style"><em>Style</em></a>) – the style to associate with this element. If
+<dd class="field-odd"><p><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style"><em>Style</em></a>) – the style to associate with this element. If
 <cite>style</cite> is a string, the corresponding style is lookup up in the
 document’s style sheet by means of selectors.</p>
 </dd>
@@ -254,14 +256,14 @@ style by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – a label for this style sheet</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – a label for this style sheet</p></li>
 <li><p><strong>matcher</strong> (<a class="reference internal" href="#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><em>StyledMatcher</em></a>) – the matcher providing the selectors the styles
 contained in this style sheet map to. If no matcher is given and
 <cite>base</cite> is specified, the <cite>base</cite>‘s matcher is used. If <cite>base</cite> is
 not set, the default matcher is used.</p></li>
-<li><p><strong>base</strong> (<a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><em>StyleSheet</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – the style sheet to extend</p></li>
-<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – a short string describing this style sheet</p></li>
-<li><p><strong>pygments_style</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – the Pygments style to use for styling code blocks</p></li>
+<li><p><strong>base</strong> (<a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><em>StyleSheet</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the style sheet to extend</p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – a short string describing this style sheet</p></li>
+<li><p><strong>pygments_style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the Pygments style to use for styling code blocks</p></li>
 </ul>
 </dd>
 </dl>
@@ -271,13 +273,13 @@ not set, the default matcher is used.</p></li>
 <dd><p>Find a selector mapped to a style in this or a base style sheet.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – a style name</p>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – a style name</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Selector</span></code> – the selector mapped to the style <cite>name</cite></p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.5/library/exceptions.html#KeyError" title="(in Python v3.5)"><strong>KeyError</strong></a> – if the style <cite>name</cite> was not found in this or a base
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.9)"><strong>KeyError</strong></a> – if the style <cite>name</cite> was not found in this or a base
     style sheet</p>
 </dd>
 </dl>
@@ -291,7 +293,7 @@ not set, the default matcher is used.</p></li>
 <dd><p>Loads styles defined in a <cite>.rts</cite> file (INI format).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – the path to the style sheet file</p>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – the path to the style sheet file</p>
 </dd>
 </dl>
 <p><a class="reference internal" href="#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheetFile</span></code></a> takes the same optional arguments as
@@ -305,7 +307,7 @@ style sheet file.</p>
 <dt id="rinoh.style.StyledMatcher">
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.style.</code><code class="sig-name descname">StyledMatcher</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mapping_or_iterable</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyledMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary mapping labels to selectors.</p>
-<p>This matcher can be initialized in the same way as a <a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.5)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>
+<p>This matcher can be initialized in the same way as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>
 by passing a mapping, an interable and/or keyword arguments.</p>
 <dl class="py method">
 <dt id="rinoh.style.StyledMatcher.update">

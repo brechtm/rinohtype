@@ -52,8 +52,8 @@ release.
 rinohtype is open source software licensed under the `GNU AGPL 3.0`_.
 Practically, this means you are free to use it in open-source software, but not
 in (commercial) closed-source software. For the latter, you need to obtain a
-commercial license (see http://www.opqode.com/rinoh). We are also available for
-consultancy projects involving rinohtype, so don't hesitate to `contact us`_.
+commercial license. We are also available for consultancy projects involving
+rinohtype, so don't hesitate to `contact us`_.
 
 .. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
 .. _contact us: info@opqode.com
@@ -71,6 +71,8 @@ consultancy projects involving rinohtype, so don't hesitate to `contact us`_.
     reference
     api/api
     faq
+    contributing
+    developing
     changelog
 
 
