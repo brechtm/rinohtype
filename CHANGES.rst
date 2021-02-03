@@ -75,6 +75,9 @@ Fixed:
   the first column, it was rendered again in subsequent columns.
 * Crash on encountering a style for which no selector is defined.
 
+Part of the work included in this release was kindly sponsored by `Joby
+Aviation <https://www.jobyaviation.com>`_.
+
 
 Release 0.4.2 (2020-07-28)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
