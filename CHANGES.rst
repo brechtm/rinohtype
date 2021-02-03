@@ -1,6 +1,22 @@
 Release History
 ---------------
 
+Release 0.5.1 (in development)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+New Features:
+
+*
+
+Changed:
+
+*
+
+Fixed:
+
+*
+
+
 Release 0.5.0 (2021-02-03)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
