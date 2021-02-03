@@ -345,5 +345,4 @@ jobs:
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         TESTPYPI_TOKEN: ${{ secrets.TESTPYPI_TOKEN }}
       run: |
-        poetry config repositories.testpypi https://test.pypi.org/legacy/
-        poetry publish --build --repository testpypi --username __token__ --password "$TESTPYPI_TOKEN"
+        poetry publish --build --username __token__ --password "$PYPI_TOKEN"
