@@ -74,6 +74,10 @@ class SectionBase(GroupedFlowables):
     def section(self):
         return self
 
+    @property
+    def position(self):
+        return self.parent.index(self)
+
     def show_in_toc(self, container):
         parent_show_in_toc = (self.parent is None
                               or self.parent.section is None
@@ -166,6 +170,7 @@ class Heading(NumberedParagraph):
         return MixedStyledText(number + self.content, parent=self)
 
     def flow(self, container, last_descender, state=None, **kwargs):
+        print('\n>>>>>>', self.section.position, self.to_string(container))
         if self.level == 1 and container.page.chapter_title:
             container.page.create_chapter_title(self)
             result = 0, 0, None

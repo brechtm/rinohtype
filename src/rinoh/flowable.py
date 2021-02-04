@@ -597,6 +597,9 @@ class StaticGroupedFlowables(GroupedFlowables):
         flowable.parent = self
         self.children.append(flowable)
 
+    def index(self, flowable):
+        return self.children.index(flowable)
+
     def flowables(self, container):
         return iter(self.children)
 
