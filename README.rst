@@ -13,8 +13,8 @@ rinohtype
    :target: https://gitter.im/brechtm/rinohtype
    :alt: Gitter chat
 
-.. image:: https://github.com/brechtm/rinohtype/workflows/Tests/badge.svg?branch=master&event=push
-   :target: https://github.com/brechtm/rinohtype/actions?query=workflow%3ATests+branch%3Amaster+event%3Apush
+.. image:: https://github.com/brechtm/rinohtype/workflows/Test%20&%20Publish/badge.svg
+   :target: https://github.com/brechtm/rinohtype/actions?query=workflow%3A%22Test+%26+Publish%22
    :alt: Tests
 
 .. image:: https://codecov.io/gh/brechtm/rinohtype/branch/master/graph/badge.svg
