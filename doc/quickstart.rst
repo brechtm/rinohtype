@@ -48,7 +48,7 @@ will happily interpret :confval:`sphinx:latex_documents`. Otherwise, you need
 to set the :confval:`rinoh_documents` configuration option::
                         
     rinoh_documents = [dict(doc='index',        # top-level file (index.rst)
-                            target='manual')]    # output file (target.pdf)
+                            target='manual')]   # output file (target.pdf)
 
 Other configuration variables are optional and allow configuring the style of
 the generated PDF document. See :ref:`sphinx_builder` for details.
