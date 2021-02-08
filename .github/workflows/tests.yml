@@ -109,16 +109,14 @@ jobs:
           wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
           set_env('INSTALLPKG', f'--installpkg {wheel_path}')
     - name: Run tox (sdist)
-      continue-on-error: ${{ ((runner.os == 'Linux' || runner.os == 'macOS')
-                              && startsWith(matrix.python-version, 'pypy')) }}
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
                         # https://github.com/pytest-dev/pytest-xdist/issues/622
       env:
         WITH_COVERAGE: 1
       run: tox -v -re unit-${{ env.TOXPY }}-gh -- -s
     - name: Run tox (wheel)
       if: ${{ success() || failure() }}   # also run when sdist run fails
-      continue-on-error: ${{ ((runner.os == 'Linux' || runner.os == 'macOS')
-                              && startsWith(matrix.python-version, 'pypy')) }}
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
       env:
         WITH_COVERAGE: 0
       run: tox -v -re unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
