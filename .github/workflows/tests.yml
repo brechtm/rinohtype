@@ -109,9 +109,9 @@ jobs:
           wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
           set_env('INSTALLPKG', f'--installpkg {wheel_path}')
     - name: Run tox (sdist)
-      # Windows: https://github.com/python-poetry/poetry/issues/3545
-      # Linux/macOS: https://github.com/pytest-dev/pytest-xdist/issues/622
-      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
+      continue-on-error: ${{ ((runner.os == 'Linux' || runner.os == 'macOS')
+                              && startsWith(matrix.python-version, 'pypy')) }}
+                        # https://github.com/pytest-dev/pytest-xdist/issues/622
       env:
         WITH_COVERAGE: 1
       run: tox -v -re unit-${{ env.TOXPY }}-gh -- -s
