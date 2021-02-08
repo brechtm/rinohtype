@@ -13,13 +13,12 @@ env:
   current_python: '3.9'
 jobs:
   check:
-    name: ${{ matrix.os }} / ${{ matrix.python-version }} ${{ matrix.env.TOXENV }}
+    name: ${{ matrix.env.TOXENV }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: [Ubuntu]
-        python-version: [3.9]
         env:
           - TOXENV: check
           - TOXENV: check-docs
@@ -76,19 +75,13 @@ jobs:
         keep_files: false
 
   unit:
-    name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests (${{ matrix.env.DIST }})
+    name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests
     strategy:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.6, 3.7, 3.8, 3.9, 3.10.0-alpha - 3.10, pypy-3.6, pypy-3.7]
-        env:
-          - DIST: sdist
-            WITH_COVERAGE: 1
-          - DIST: wheel
-            WITH_COVERAGE: 0
     runs-on: ${{ matrix.os }}-latest
-    env: ${{ matrix.env}}
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
@@ -107,28 +100,30 @@ jobs:
       run: python .github/workflows/toxpy.py "${{ matrix.python-version }}"
 
     - name: Create wheel
-      if: env.DIST == 'wheel'
       run: poetry build --format wheel
     - name: Find path to wheel
-      if: env.DIST == 'wheel'
       uses: jannekem/run-python-script-action@v1
       with:
         script: |
           import os, pathlib
           wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
           set_env('INSTALLPKG', f'--installpkg {wheel_path}')
-    - name: Run tox
+    - name: Run tox (sdist)
       # Windows: https://github.com/python-poetry/poetry/issues/3545
       # Linux/macOS: https://github.com/pytest-dev/pytest-xdist/issues/622
-      continue-on-error: ${{ (runner.os == 'Windows'
-                              && startsWith(matrix.python-version, 'pypy')
-                              && env.DIST == 'sdist')
-                          || ((runner.os == 'Linux' || runner.os == 'macOS')
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
+      env:
+        WITH_COVERAGE: 1
+      run: tox -v -re unit-${{ env.TOXPY }}-gh -- -s
+    - name: Run tox (wheel)
+      if: ${{ success() || failure() }}   # also run when sdist run fails
+      continue-on-error: ${{ ((runner.os == 'Linux' || runner.os == 'macOS')
                               && startsWith(matrix.python-version, 'pypy')) }}
-      run: tox -v -e unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
+      env:
+        WITH_COVERAGE: 0
+      run: tox -v -re unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
 
     - name: Upload coverage statistics to codecov.io
-      if: env.WITH_COVERAGE == 1
       shell: bash
       run: |
         bash <(curl -s https://codecov.io/bash) -f coverage.xml -F unittests,${{ matrix.python-version }},${{ runner.os }}
