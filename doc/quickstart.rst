@@ -50,8 +50,8 @@ to set the :confval:`rinoh_documents` configuration option::
     rinoh_documents = [dict(doc='index',        # top-level file (index.rst)
                             target='manual')]   # output file (manual.pdf)
 
-The dictionary accepts optional keys besides the required *doc* and *target*
-keys. See :ref:`sphinx_builder` for details.
+The dictionary accepts optional keys in addition to the required *doc* and
+*target* keys. See :ref:`sphinx_builder` for details.
 
 When building the documentation, select the `rinoh` builder by passing it to
 the :option:`sphinx:sphinx-build -b` option::
