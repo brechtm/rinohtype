@@ -14,7 +14,7 @@ Changed:
 
 Fixed:
 
-*
+* Handling of base template specified as string in a template configuration
 
 
 Release 0.5.0 (2021-02-03)

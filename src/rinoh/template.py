@@ -486,9 +486,13 @@ class TemplateConfiguration(RuleSet):
                 template = DocumentTemplate.from_string(template)
             assert self.template in (None, template)
             self.template = template
-        tmpl_cls = self.template
+        if base:
+            if isinstance(base, str):
+                base = TemplateConfigurationFile(base, source=self)
+            assert self.template in (None, base.template)
+            self.template = self.template or base.template
         for attr, val in options.items():
-            options[attr] = self._validate_attribute(tmpl_cls, attr, val)
+            options[attr] = self._validate_attribute(self.template, attr, val)
         base = base or self.template
         super().__init__(name, base=base, source=source, **options)
         self.description = description

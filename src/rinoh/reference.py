@@ -317,6 +317,9 @@ class SectionFieldType(FieldTypeBase, metaclass=SectionFieldTypeMeta):
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
 
+    def __str__(self):
+        return '{{{key}({level})}}'.format(key=self.key, level=self.level)
+
     def __repr__(self):
         return "{}({})".format(type(self).__name__, self.level)
 
@@ -358,7 +361,7 @@ class Field(MixedStyledTextBase):
         return result
 
     def __repr__(self):
-        return "{0}({1})".format(self.__class__.__name__, self.type)
+        return "{0}({1})".format(self.__class__.__name__, repr(self.type))
 
     @classmethod
     def parse_string(cls, string, style=None):
