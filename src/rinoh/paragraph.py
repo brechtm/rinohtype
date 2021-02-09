@@ -515,18 +515,19 @@ def spans_to_words(spans, container):
         try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             groups = groupby(iter(span.text(container)), WHITESPACE.get)
-            for special, characters in groups:
+            for special, chars in groups:
                 if special:
                     if word:
                         yield word
-                    for _ in characters:
+                    for _ in chars:
                         yield special(span, lig_kern)
                     word = Word()
                 else:
-                    part = ''.join(characters)
+                    part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
                     try:
                         glyphs = [get_glyph(char) for char in part]
                     except MissingGlyphException:
+                        # FIXME: span annotations are lost here
                         rest = ''.join(char for _, group in groups
                                        for char in group)
                         rest_of_span = SingleStyledText(part + rest,

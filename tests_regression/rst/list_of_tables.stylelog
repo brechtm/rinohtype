@@ -1,21 +1,26 @@
 ---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  DocumentTree()
-    ListOfTablesSection(style='list of Chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:2 <raw>
-         > (0,0,0,1,1) chapter
-           (0,0,0,0,2) list of tables section
-      Heading('List of Tables', style='unnumbered')
-           > (0,0,1,1,2) unnumbered heading level 1
-             (0,0,0,1,2) heading level 1
-             (0,0,0,0,2) other heading levels
-          MixedStyledText('List of Tables')
-            SingleStyledText('')
-            StringField('List of Tables')
-      ListOfTables()   List of Tables
-           > (0,0,0,0,2) list of tables
-        ListOfEntry('Table 1: first table	1')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1: first table	1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      ListOfTablesSection(style='list of Chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:2 <raw>
+           > (0,0,0,1,1) chapter
+             (0,0,0,0,2) list of tables section
+        Heading('List of Tables', style='unnumbered')
+             > (0,0,1,1,2) unnumbered heading level 1
+               (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('List of Tables')
+              SingleStyledText('')
+              StringField('List of Tables')
+                SingleStyledText('List of Tables')
+        ListOfTables()   List of Tables
+             > (0,0,0,0,2) list of tables
+          ListOfEntry('Table 1: first table	1')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1')
@@ -27,9 +32,8 @@
               ReferenceField('1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('1')
-        ListOfEntry('Table 1.1: second table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.1: second table	3')
+          ListOfEntry('Table 1.1: second table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.1')
@@ -41,9 +45,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.2: third table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.2: third table	3')
+          ListOfEntry('Table 1.2: third table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.2')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.2')
@@ -55,9 +58,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.3: fourth table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.3: fourth table	3')
+          ListOfEntry('Table 1.3: fourth table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.3')
@@ -69,9 +71,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.4: fifth table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.4: fifth table	3')
+          ListOfEntry('Table 1.4: fifth table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.4')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.4')
@@ -83,9 +84,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 2.1: sixth table	5')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 2.1: sixth table	5')
+          ListOfEntry('Table 2.1: sixth table	5')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 2.1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 2.1')
@@ -97,72 +97,81 @@
               ReferenceField('5')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('5')
-    TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-         x (0,0,0,0,2) table with caption
-         > fallback to default style
-      Caption('Table 1. first table')
-           > (0,0,0,0,2) caption
-          MixedStyledText('Table 1. first table')
-            SingleStyledText('Table ')
-            MixedStyledText('1. ')
-              SingleStyledText('1')
-              SingleStyledText('. ')
-            SingleStyledText('first table')
-      Table()
-           > (0,0,0,0,2) table
-        TableBody()
-          TableRow()
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                   > (0,0,0,1,8) table first column paragraph
-                     (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('A')
-                  SingleStyledText('A')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                   > (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Simple')
-                  SingleStyledText('Simple')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                   > (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Table')
-                  SingleStyledText('Table')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
+      TableWithCaption()
+           x (0,0,0,0,2) table with caption
+           > fallback to default style
+        Caption('Table 1. first table')
+             > (0,0,0,0,4) table caption
+            MixedStyledText('Table 1. first table')
+              SingleStyledText('Table ')
+              MixedStyledText('1. ')
+                SingleStyledText('1')
+                SingleStyledText('. ')
+              SingleStyledText('first table')
+        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+             > (0,0,0,0,2) table
+          TableBody()
+            TableRow()
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
+                     > (0,0,0,1,8) table first column paragraph
+                       (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('A')
+                    SingleStyledText('A')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Simple')
+                    SingleStyledText('Simple')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
+              TableCell()   None:None <entry>
+                   > (0,0,0,0,7) table cell
+                Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph
+                       (0,0,0,0,2) body
+                  MixedStyledText('Table')
+                    SingleStyledText('Table')
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                     > fallback to default style
 ---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
 ---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <section>
-         > (0,0,0,1,2) chapter
-      Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <title>
-           > (0,0,0,1,2) heading level 1
-             (0,0,0,0,2) other heading levels
-          MixedStyledText('1 Section 1')
-            SingleStyledText('1')
-            SingleStyledText(' ')
-            SingleStyledText('Section 1')
-      ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:16 <raw>
-           > (0,0,0,0,2) list of tables
-        ListOfEntry('Table 1.1: second table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.1: second table	3')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 Section 1')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+              SingleStyledText('Section 1')
+        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:16 <raw>
+             > (0,0,0,0,2) list of tables
+          ListOfEntry('Table 1.1: second table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.1')
@@ -174,9 +183,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.2: third table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.2: third table	3')
+          ListOfEntry('Table 1.2: third table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.2')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.2')
@@ -188,9 +196,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.3: fourth table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.3: fourth table	3')
+          ListOfEntry('Table 1.3: fourth table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.3')
@@ -202,9 +209,8 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-        ListOfEntry('Table 1.4: fifth table	3')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 1.4: fifth table	3')
+          ListOfEntry('Table 1.4: fifth table	3')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 1.4')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 1.4')
@@ -216,65 +222,64 @@
               ReferenceField('3')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('3')
-      TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-           x (0,0,0,0,2) table with caption
-           > fallback to default style
-        Caption('Table 1.1. second table')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 1.1. second table')
-              SingleStyledText('Table ')
-              MixedStyledText('1.1. ')
+        TableWithCaption()
+             x (0,0,0,0,2) table with caption
+             > fallback to default style
+          Caption('Table 1.1. second table')
+               > (0,0,0,0,4) table caption
+              MixedStyledText('Table 1.1. second table')
+                SingleStyledText('Table ')
+                MixedStyledText('1.1. ')
+                  SingleStyledText('1.1')
+                  SingleStyledText('. ')
+                SingleStyledText('second table')
+          Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+               > (0,0,0,0,2) table
+            TableBody()
+              TableRow()
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
+                       > (0,0,0,1,8) table first column paragraph
+                         (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('A')
+                      SingleStyledText('A')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Simple')
+                      SingleStyledText('Simple')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Table')
+                      SingleStyledText('Table')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style
+        Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <section>
+          Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1.1 Subsection 1')
                 SingleStyledText('1.1')
-                SingleStyledText('. ')
-              SingleStyledText('second table')
-        Table()
-             > (0,0,0,0,2) table
-          TableBody()
-            TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('A')
-                    SingleStyledText('A')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Simple')
-                    SingleStyledText('Simple')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Table')
-                    SingleStyledText('Table')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <section>
-        Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <title>
-             > (0,0,0,1,2) heading level 2
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('1.1 Subsection 1')
-              SingleStyledText('1.1')
-              SingleStyledText(' ')
-              SingleStyledText('Subsection 1')
-        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:30 <raw>
-             > (0,0,0,0,2) list of tables
-          ListOfEntry('Table 1.2: third table	3')
-               > (0,0,0,0,4) list of tables entry
-              MixedStyledText('Table 1.2: third table	3')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 1')
+          ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:30 <raw>
+               > (0,0,0,0,2) list of tables
+            ListOfEntry('Table 1.2: third table	3')
+                 > (0,0,0,0,4) list of tables entry
                 ReferenceField('Table 1.2')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('Table 1.2')
@@ -286,9 +291,8 @@
                 ReferenceField('3')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('3')
-          ListOfEntry('Table 1.3: fourth table	3')
-               > (0,0,0,0,4) list of tables entry
-              MixedStyledText('Table 1.3: fourth table	3')
+            ListOfEntry('Table 1.3: fourth table	3')
+                 > (0,0,0,0,4) list of tables entry
                 ReferenceField('Table 1.3')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('Table 1.3')
@@ -300,111 +304,110 @@
                 ReferenceField('3')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('3')
-        TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-             x (0,0,0,0,2) table with caption
-             > fallback to default style
-          Caption('Table 1.2. third table')
-               > (0,0,0,0,2) caption
-              MixedStyledText('Table 1.2. third table')
-                SingleStyledText('Table ')
-                MixedStyledText('1.2. ')
-                  SingleStyledText('1.2')
-                  SingleStyledText('. ')
-                SingleStyledText('third table')
-          Table()
-               > (0,0,0,0,2) table
-            TableBody()
-              TableRow()
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                       > (0,0,0,1,8) table first column paragraph
-                         (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('A')
-                      SingleStyledText('A')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Simple')
-                      SingleStyledText('Simple')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Table')
-                      SingleStyledText('Table')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-        TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-             x (0,0,0,0,2) table with caption
-             > fallback to default style
-          Caption('Table 1.3. fourth table')
-               > (0,0,0,0,2) caption
-              MixedStyledText('Table 1.3. fourth table')
-                SingleStyledText('Table ')
-                MixedStyledText('1.3. ')
-                  SingleStyledText('1.3')
-                  SingleStyledText('. ')
-                SingleStyledText('fourth table')
-          Table()
-               > (0,0,0,0,2) table
-            TableBody()
-              TableRow()
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                       > (0,0,0,1,8) table first column paragraph
-                         (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('A')
-                      SingleStyledText('A')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Simple')
-                      SingleStyledText('Simple')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Table')
-                      SingleStyledText('Table')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-      Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <section>
-        Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <title>
-             > (0,0,0,1,2) heading level 2
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('1.2 Subsection 2')
-              SingleStyledText('1.2')
-              SingleStyledText(' ')
-              SingleStyledText('Subsection 2')
-        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:50 <raw>
-             > (0,0,0,0,2) list of tables
-          ListOfEntry('Table 1.4: fifth table	3')
-               > (0,0,0,0,4) list of tables entry
-              MixedStyledText('Table 1.4: fifth table	3')
+          TableWithCaption()
+               x (0,0,0,0,2) table with caption
+               > fallback to default style
+            Caption('Table 1.2. third table')
+                 > (0,0,0,0,4) table caption
+                MixedStyledText('Table 1.2. third table')
+                  SingleStyledText('Table ')
+                  MixedStyledText('1.2. ')
+                    SingleStyledText('1.2')
+                    SingleStyledText('. ')
+                  SingleStyledText('third table')
+            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+                 > (0,0,0,0,2) table
+              TableBody()
+                TableRow()
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
+                         > (0,0,0,1,8) table first column paragraph
+                           (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('A')
+                        SingleStyledText('A')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Simple')
+                        SingleStyledText('Simple')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Table')
+                        SingleStyledText('Table')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+          TableWithCaption()
+               x (0,0,0,0,2) table with caption
+               > fallback to default style
+            Caption('Table 1.3. fourth table')
+                 > (0,0,0,0,4) table caption
+                MixedStyledText('Table 1.3. fourth table')
+                  SingleStyledText('Table ')
+                  MixedStyledText('1.3. ')
+                    SingleStyledText('1.3')
+                    SingleStyledText('. ')
+                  SingleStyledText('fourth table')
+            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+                 > (0,0,0,0,2) table
+              TableBody()
+                TableRow()
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
+                         > (0,0,0,1,8) table first column paragraph
+                           (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('A')
+                        SingleStyledText('A')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Simple')
+                        SingleStyledText('Simple')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Table')
+                        SingleStyledText('Table')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+        Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <section>
+          Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1.2 Subsection 2')
+                SingleStyledText('1.2')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection 2')
+          ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:50 <raw>
+               > (0,0,0,0,2) list of tables
+            ListOfEntry('Table 1.4: fifth table	3')
+                 > (0,0,0,0,4) list of tables entry
                 ReferenceField('Table 1.4')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('Table 1.4')
@@ -416,72 +419,81 @@
                 ReferenceField('3')
                      > (0,0,0,1,1) linked reference
                   SingleStyledText('3')
-        TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-             x (0,0,0,0,2) table with caption
-             > fallback to default style
-          Caption('Table 1.4. fifth table')
-               > (0,0,0,0,2) caption
-              MixedStyledText('Table 1.4. fifth table')
-                SingleStyledText('Table ')
-                MixedStyledText('1.4. ')
-                  SingleStyledText('1.4')
-                  SingleStyledText('. ')
-                SingleStyledText('fifth table')
-          Table()
-               > (0,0,0,0,2) table
-            TableBody()
-              TableRow()
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                       > (0,0,0,1,8) table first column paragraph
-                         (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('A')
-                      SingleStyledText('A')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Simple')
-                      SingleStyledText('Simple')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Table')
-                      SingleStyledText('Table')
-                  TableCellBackground()
-                       x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
+          TableWithCaption()
+               x (0,0,0,0,2) table with caption
+               > fallback to default style
+            Caption('Table 1.4. fifth table')
+                 > (0,0,0,0,4) table caption
+                MixedStyledText('Table 1.4. fifth table')
+                  SingleStyledText('Table ')
+                  MixedStyledText('1.4. ')
+                    SingleStyledText('1.4')
+                    SingleStyledText('. ')
+                  SingleStyledText('fifth table')
+            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+                 > (0,0,0,0,2) table
+              TableBody()
+                TableRow()
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
+                         > (0,0,0,1,8) table first column paragraph
+                           (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('A')
+                        SingleStyledText('A')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Simple')
+                        SingleStyledText('Simple')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
+                  TableCell()   None:None <entry>
+                       > (0,0,0,0,7) table cell
+                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph
+                           (0,0,0,0,2) body
+                      MixedStyledText('Table')
+                        SingleStyledText('Table')
+                    TableCellBackground()
+                         x (0,0,0,2,8) table body cell background on odd row
+                         > fallback to default style
 ---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
 ---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
 #### ChainedContainer('column1')
-  (continued) DocumentTree()
-    Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <section>
-         > (0,0,0,1,2) chapter
-      Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <title>
-           > (0,0,0,1,2) heading level 1
-             (0,0,0,0,2) other heading levels
-          MixedStyledText('2 Section 2')
-            SingleStyledText('2')
-            SingleStyledText(' ')
-            SingleStyledText('Section 2')
-      ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:64 <raw>
-           > (0,0,0,0,2) list of tables
-        ListOfEntry('Table 2.1: sixth table	5')
-             > (0,0,0,0,4) list of tables entry
-            MixedStyledText('Table 2.1: sixth table	5')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <section>
+           > (0,0,0,1,2) chapter
+        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2 Section 2')
+              SingleStyledText('2')
+              SingleStyledText(' ')
+              SingleStyledText('Section 2')
+        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:64 <raw>
+             > (0,0,0,0,2) list of tables
+          ListOfEntry('Table 2.1: sixth table	5')
+               > (0,0,0,0,4) list of tables entry
               ReferenceField('Table 2.1')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('Table 2.1')
@@ -493,49 +505,49 @@
               ReferenceField('5')
                    > (0,0,0,1,1) linked reference
                 SingleStyledText('5')
-      TableWithCaption()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-           x (0,0,0,0,2) table with caption
-           > fallback to default style
-        Caption('Table 2.1. sixth table')
-             > (0,0,0,0,2) caption
-            MixedStyledText('Table 2.1. sixth table')
-              SingleStyledText('Table ')
-              MixedStyledText('2.1. ')
-                SingleStyledText('2.1')
-                SingleStyledText('. ')
-              SingleStyledText('sixth table')
-        Table()
-             > (0,0,0,0,2) table
-          TableBody()
-            TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('A')
-                    SingleStyledText('A')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Simple')
-                    SingleStyledText('Simple')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Table')
-                    SingleStyledText('Table')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
+        TableWithCaption()
+             x (0,0,0,0,2) table with caption
+             > fallback to default style
+          Caption('Table 2.1. sixth table')
+               > (0,0,0,0,4) table caption
+              MixedStyledText('Table 2.1. sixth table')
+                SingleStyledText('Table ')
+                MixedStyledText('2.1. ')
+                  SingleStyledText('2.1')
+                  SingleStyledText('. ')
+                SingleStyledText('sixth table')
+          Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
+               > (0,0,0,0,2) table
+            TableBody()
+              TableRow()
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
+                       > (0,0,0,1,8) table first column paragraph
+                         (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('A')
+                      SingleStyledText('A')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Simple')
+                      SingleStyledText('Simple')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style
+                TableCell()   None:None <entry>
+                     > (0,0,0,0,7) table cell
+                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph
+                         (0,0,0,0,2) body
+                    MixedStyledText('Table')
+                      SingleStyledText('Table')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                       > fallback to default style

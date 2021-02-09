@@ -1,0 +1,29 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/nobreak_space.rst:6 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('One two three four five six seve...')
+          SingleStyledText('One two three four five six seve...')
+      Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/nobreak_space.rst:8 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('One two three four five six seve...')
+          SingleStyledText('One two three four five six seve...')
+          SingleStyledText(' ')
+          SingleStyledText('thirteen.')
+      Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/nobreak_space.rst:13 <paragraph>
+           > (0,0,0,0,2) body
+        MixedStyledText('One two three four five six seve...')
+          SingleStyledText('One two three four five six seve...')
+          AnnotatedText('twelve thirteen', style='external link')   None:None <reference>
+               > (0,0,1,0,1) external hyperlink
+            MixedStyledText('twelve thirteen')
+              SingleStyledText('twelve')
+              SingleStyledText(' ')
+              SingleStyledText('thirteen')
+          SingleStyledText('.')
