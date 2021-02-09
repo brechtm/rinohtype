@@ -1,0 +1,19 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[heading level 1]
+number_format = none
+space_above=6pt
+space_below=4pt
+
+[heading level 2]
+number_format = number
+space_above=6pt
+space_below=4pt
+
+[figure caption]
+numbering_level = 1

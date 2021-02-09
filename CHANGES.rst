@@ -14,6 +14,8 @@ Changed:
 
 Fixed:
 
+* When a caption occurs in an unnumbered chapter, an exception aborts rendering
+  (even when ``number_separator`` style attribute is set to ``None``)
 * Handling of base template specified as string in a template configuration
 
 

@@ -110,7 +110,11 @@ class NumberStyle(LabelStyle):
 
 
 class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
-    pass
+    number_separator = Attribute(StyledText, '.',
+                                 "Characters inserted between the number label"
+                                 " of this element's parent and this element's"
+                                 " own number label. If ``None``, only show"
+                                 " this section's number label.")
 
 
 class NumberedParagraph(ParagraphBase, Label):
@@ -129,6 +133,19 @@ class NumberedParagraph(ParagraphBase, Label):
     @property
     def referenceable(self):
         raise NotImplementedError
+
+    def prepare_label(self, number, parent_section, container):
+        document = container.document
+        number_format = self.get_style('number_format', container)
+        label = format_number(number, number_format)
+        separator = self.get_style('number_separator', container)
+        if separator is not None and parent_section and parent_section.level > 0:
+            parent_id = parent_section.get_id(document)
+            parent_ref = document.get_reference(parent_id, 'number')
+            if parent_ref:
+                separator_string = separator.to_string(container)
+                label = parent_ref + separator_string + label
+        return label
 
     def number(self, container):
         document = container.document

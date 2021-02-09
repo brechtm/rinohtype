@@ -381,8 +381,6 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
 class CaptionStyle(NumberedParagraphStyle):
     numbering_level = Attribute(Integer, 1, 'At which section level to '
                                             'restart numbering')
-    number_separator = Attribute(StyledText, '.', 'Characters inserted between'
-                                 ' the section number and the caption number')
 
 
 class Caption(NumberedParagraph):
@@ -405,15 +403,11 @@ class Caption(NumberedParagraph):
         category_counters = document.counters.setdefault(category, {})
         category_counter = category_counters.setdefault(section_id, [])
         category_counter.append(self)
-        number_format = get_style('number_format')
-        number = format_number(len(category_counter), number_format)
-        if section_id:
-            section_number = document.get_reference(section_id, 'number')
-            sep = get_style('number_separator') or SingleStyledText('')
-            number = section_number + sep.to_string(flowable_target) + number
-        reference = '{} {}'.format(category, number)
+        number = len(category_counter)
+        label = self.prepare_label(number, section, flowable_target)
+        reference = '{} {}'.format(category, label)
         for id in self.referenceable.get_ids(document):
-            document.set_reference(id, ReferenceType.NUMBER, number)
+            document.set_reference(id, ReferenceType.NUMBER, label)
             document.set_reference(id, ReferenceType.REFERENCE, reference)
             document.set_reference(id, ReferenceType.TITLE,
                                    self.content.to_string(None))

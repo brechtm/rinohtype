@@ -1,0 +1,107 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:None <figure>
+           > (0,0,0,0,2) figure
+        Image('../images/biohazard.png', id='a')   None:None <image>
+             > (0,0,0,0,4) figure image
+               (0,0,0,0,2) image
+        Caption('Figure 1. Image A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:6 <caption>
+             > (0,0,0,0,4) figure caption
+            MixedStyledText('Figure 1. Image A')
+              SingleStyledText('Figure ')
+              MixedStyledText('1. ')
+                SingleStyledText('1')
+                SingleStyledText('. ')
+              SingleStyledText('Image A')
+      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:10 <section>
+           > (0,0,0,1,2) chapter
+        Heading('Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:10 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('Section 1')
+              SingleStyledText('')
+              MixedStyledText('Section 1')
+                SingleStyledText('Section 1')
+        Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:None <figure>
+             > (0,0,0,0,2) figure
+          Image('../images/biohazard.png', id='b')   None:None <image>
+               > (0,0,0,0,4) figure image
+                 (0,0,0,0,2) image
+          Caption('Figure 1. Image B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:15 <caption>
+               > (0,0,0,0,4) figure caption
+              MixedStyledText('Figure 1. Image B')
+                SingleStyledText('Figure ')
+                MixedStyledText('1. ')
+                  SingleStyledText('1')
+                  SingleStyledText('. ')
+                SingleStyledText('Image B')
+        Section(id='subsection-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:19 <section>
+          Heading('1 Subsection A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:19 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1 Subsection A')
+                SingleStyledText('1')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection A')
+          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:None <figure>
+               > (0,0,0,0,2) figure
+            Image('../images/biohazard.png', id='c')   None:None <image>
+                 > (0,0,0,0,4) figure image
+                   (0,0,0,0,2) image
+            Caption('Figure 2. Image C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:24 <caption>
+                 > (0,0,0,0,4) figure caption
+                MixedStyledText('Figure 2. Image C')
+                  SingleStyledText('Figure ')
+                  MixedStyledText('2. ')
+                    SingleStyledText('2')
+                    SingleStyledText('. ')
+                  SingleStyledText('Image C')
+      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:28 <section>
+           > (0,0,0,1,2) chapter
+        Heading('Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:28 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('Section 2')
+              SingleStyledText('')
+              MixedStyledText('Section 2')
+                SingleStyledText('Section 2')
+        Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:None <figure>
+             > (0,0,0,0,2) figure
+          Image('../images/biohazard.png', id='d')   None:None <image>
+               > (0,0,0,0,4) figure image
+                 (0,0,0,0,2) image
+          Caption('Figure 1. Image D')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:33 <caption>
+               > (0,0,0,0,4) figure caption
+              MixedStyledText('Figure 1. Image D')
+                SingleStyledText('Figure ')
+                MixedStyledText('1. ')
+                  SingleStyledText('1')
+                  SingleStyledText('. ')
+                SingleStyledText('Image D')
+        Section(id='subsection-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:37 <section>
+          Heading('1 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:37 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1 Subsection B')
+                SingleStyledText('1')
+                SingleStyledText(' ')
+                SingleStyledText('Subsection B')
+          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:None <figure>
+               > (0,0,0,0,2) figure
+            Image('../images/biohazard.png', id='e')   None:None <image>
+                 > (0,0,0,0,4) figure image
+                   (0,0,0,0,2) image
+            Caption('Figure 2. Image E')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/caption_none_num_1.rst:42 <caption>
+                 > (0,0,0,0,4) figure caption
+                MixedStyledText('Figure 2. Image E')
+                  SingleStyledText('Figure ')
+                  MixedStyledText('2. ')
+                    SingleStyledText('2')
+                    SingleStyledText('. ')
+                  SingleStyledText('Image E')

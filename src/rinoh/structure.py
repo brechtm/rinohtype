@@ -96,11 +96,6 @@ class Section(StaticGroupedFlowables, SectionBase):
 
 
 class HeadingStyle(NumberedParagraphStyle):
-    number_separator = Attribute(StyledText, '.',
-                                 "Characters inserted between the number "
-                                 "label of the parent section and this "
-                                 "section. If ``None``, only show this "
-                                 "section's number label.")
     keep_with_next = OverrideDefault(True)
 
 
@@ -133,11 +128,11 @@ class Heading(NumberedParagraph):
         document = flowable_target.document
         document._sections.append(self.section)
         section_id = self.section.get_id(document)
-        numbering_style = self.get_style('number_format', flowable_target)
+        number_format = self.get_style('number_format', flowable_target)
         if self.get_style('custom_label', flowable_target):
             assert self.custom_label is not None
             label = str(self.custom_label)
-        elif numbering_style:
+        elif number_format:
             try:
                 parent_section_id = self.section.parent.section.get_id(document)
             except AttributeError:
@@ -147,14 +142,8 @@ class Heading(NumberedParagraph):
             section_counter = section_counters.setdefault(parent_section_id, [])
             section_counter.append(self)
             number = len(section_counter)
-            label = format_number(number, numbering_style)
-            separator = self.get_style('number_separator', flowable_target)
-            if separator is not None and self.level > 1:
-                parent_id = self.section.parent.section.get_id(document)
-                parent_ref = document.get_reference(parent_id, 'number')
-                if parent_ref:
-                    separator_string = separator.to_string(flowable_target)
-                    label = parent_ref + separator_string + label
+            label = self.prepare_label(number, self.section.parent.section,
+                                       flowable_target)
         else:
             label = None
         title_string = self.content.to_string(flowable_target)
