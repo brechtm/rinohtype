@@ -26,14 +26,15 @@
       SingleStyledText('Dedication')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    Section(id='dedication')
-         > (0,0,0,1,2) dedication section
-           (0,0,0,1,2) chapter
-      OutOfLineFlowables()
-        Paragraph('For mommy')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/index.rst:7 <paragraph>
-             > (0,0,0,0,2) body
-          MixedStyledText('For mommy')
-            SingleStyledText('For mommy')
+    StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/template.rtt
+      Section(id='dedication')
+           > (0,0,0,1,2) dedication section
+             (0,0,0,1,2) chapter
+        OutOfLineFlowables()
+          Paragraph('For mommy')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/index.rst:7 <paragraph>
+               > (0,0,0,0,2) body
+            MixedStyledText('For mommy')
+              SingleStyledText('For mommy')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		i')
@@ -51,6 +52,7 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/template.rtt
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('ii')
@@ -71,43 +73,44 @@
       SingleStyledText('Table of Contents')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    TableOfContentsSection(style='table of contents')
-         > (0,0,1,0,1) table of contents section
-           (0,0,0,1,1) chapter
-      TableOfContents()   table of contents
-           > (0,0,0,0,2) table of contents
-        TableOfContentsEntry('1	Introduction	1')
-             > (0,0,0,1,2) toc level 1
-            ReferenceField('1')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('1')
-            Tab('	')
-            ReferenceField('Introduction')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('Introduction')
-            Tab('	')
-            ReferenceField('1')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('1')
-        TableOfContentsEntry('2	Conclusion	3')
-             > (0,0,0,1,2) toc level 1
-            ReferenceField('2')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('2')
-            Tab('	')
-            ReferenceField('Conclusion')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('Conclusion')
-            Tab('	')
-            ReferenceField('3')
-                 x (0,0,0,1,3) toc linked reference
-                 > (0,0,0,1,1) linked reference
-              SingleStyledText('3')
+    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/template.rtt
+      TableOfContentsSection(style='table of contents')
+           > (0,0,1,0,1) table of contents section
+             (0,0,0,1,1) chapter
+        TableOfContents()   table of contents
+             > (0,0,0,0,2) table of contents
+          TableOfContentsEntry('1	Introduction	1')
+               > (0,0,0,1,2) toc level 1
+              ReferenceField('1')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('1')
+              Tab('	')
+              ReferenceField('Introduction')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Introduction')
+              Tab('	')
+              ReferenceField('1')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('1')
+          TableOfContentsEntry('2	Conclusion	3')
+               > (0,0,0,1,2) toc level 1
+              ReferenceField('2')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('2')
+              Tab('	')
+              ReferenceField('Conclusion')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('Conclusion')
+              Tab('	')
+              ReferenceField('3')
+                   x (0,0,0,1,3) toc linked reference
+                   > (0,0,0,1,1) linked reference
+                SingleStyledText('3')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		iii')
@@ -125,6 +128,7 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/template.rtt
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('iv')
@@ -139,25 +143,26 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    Section()
-         > (0,0,0,1,2) chapter
-      OutOfLineFlowables()
-           > (0,0,0,1,2) epigraph
-        Paragraph('Epigraph', style='title')
-             > (0,0,1,0,2) title
-               (0,0,0,0,2) body
-          SingleStyledText('Epigraph')
-        Paragraph('Gloomy eventide\nbefore evil syma...', style='line block')   None:None <line_block>
-             > (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Gloomy eventide')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/intro.rst:0 <line>
-            SingleStyledText('Gloomy eventide')
-          Newline('\n')
-          MixedStyledText('before evil symantics writes')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/intro.rst:0 <line>
-            SingleStyledText('before evil symantics writes')
-          Newline('\n')
-          MixedStyledText('into the despair')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/intro.rst:0 <line>
-            SingleStyledText('into the despair')
+    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/template.rtt
+      Section()
+           > (0,0,0,1,2) chapter
+        OutOfLineFlowables()
+             > (0,0,0,1,2) epigraph
+          Paragraph('Epigraph', style='title')
+               > (0,0,1,0,2) title
+                 (0,0,0,0,2) body
+            SingleStyledText('Epigraph')
+          Paragraph('Gloomy eventide\nbefore evil syma...', style='line block')   None:None <line_block>
+               > (0,0,1,0,2) line block
+                 (0,0,0,0,2) body
+            MixedStyledText('Gloomy eventide')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/intro.rst:0 <line>
+              SingleStyledText('Gloomy eventide')
+            Newline('\n')
+            MixedStyledText('before evil symantics writes')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/intro.rst:0 <line>
+              SingleStyledText('before evil symantics writes')
+            Newline('\n')
+            MixedStyledText('into the despair')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/intro.rst:0 <line>
+              SingleStyledText('into the despair')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		v')
@@ -193,11 +198,11 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/index.rst:0 <compound>
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/index.rst:0 <compound>
         StaticGroupedFlowables(id='%intro')   None:None <start_of_file>
-          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/intro.rst:2 <section>
+          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/intro.rst:2 <section>
                > (0,0,0,1,2) chapter
-            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/intro.rst:12 <paragraph>
+            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/intro.rst:12 <paragraph>
                  > (0,0,0,0,2) body
               MixedStyledText('This is the introduction.')
                 SingleStyledText('This is the introduction.')
@@ -219,7 +224,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/index.rst:0 <compound>
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/index.rst:0 <compound>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Supporting Matter, Release ')
@@ -274,11 +279,11 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/index.rst:0 <compound>
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/index.rst:0 <compound>
         StaticGroupedFlowables(id='%conclusion')   None:None <start_of_file>
-          Section(id='%conclusion#conclusion')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/conclusion.rst:2 <section>
+          Section(id='%conclusion#conclusion')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/conclusion.rst:2 <section>
                > (0,0,0,1,2) chapter
-            Paragraph('Concluding words go here.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-29/outoflineflowables/conclusion.rst:4 <paragraph>
+            Paragraph('Concluding words go here.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-439/popen-gw1/outoflineflowables/conclusion.rst:4 <paragraph>
                  > (0,0,0,0,2) body
               MixedStyledText('Concluding words go here.')
                 SingleStyledText('Concluding words go here.')
@@ -302,7 +307,6 @@
     StaticGroupedFlowables()
 #### ChainedContainer('column2')
   StaticGroupedFlowables()
-    StaticGroupedFlowables()
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		5')

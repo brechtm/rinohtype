@@ -102,6 +102,17 @@ def diff_pdf(a_filename, b_filename, depth=None):
                 success = False
 
         a_start, b_start = a_end, b_end
+    success = success and diff_info(a, b)
+    return success
+
+
+def diff_info(a, b):
+    success = True
+    for key in ('Title', 'Author', 'Subject', 'Keywords'):
+        a_value, b_value = (x.info.get(key) for x in (a, b))
+        if a_value != b_value:
+            print(f"PDF Info '{key}' entries differ: {a_value} / {b_value}")
+            success = False
     return success
 
 

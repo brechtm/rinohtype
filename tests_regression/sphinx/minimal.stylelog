@@ -49,7 +49,7 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-137/minimal/index.rst:0 <compound>
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-440/popen-gw1/minimal/index.rst:0 <compound>
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
@@ -70,7 +70,6 @@
     StaticGroupedFlowables()
 #### ChainedContainer('column2')
   StaticGroupedFlowables()
-    StaticGroupedFlowables()
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
