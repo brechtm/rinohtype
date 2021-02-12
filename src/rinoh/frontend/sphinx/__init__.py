@@ -301,9 +301,8 @@ class RinohBuilder(Builder, Source):
             if not logo_path.is_absolute():
                 rinoh_document.metadata['logo'] = self.confdir / logo_path
         for key, default in METADATA_DEFAULTS.items():
-            if key in rinoh_document.metadata:
-                continue
-            rinoh_document.metadata[key] = default(self.config)
+            if key not in rinoh_document.metadata:
+                rinoh_document.metadata[key] = default(self.config)
 
 
 METADATA_DEFAULTS = dict(

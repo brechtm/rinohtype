@@ -14,6 +14,7 @@ Changed:
 
 Fixed:
 
+* Fix issues with metadata (title, author) stored in the PDF Info dictionary
 * Fix handling of no-break spaces (they were rendered using the fallback font)
 * When a caption occurs in an unnumbered chapter, an exception aborts rendering
   (even when ``number_separator`` style attribute is set to ``None``)

@@ -24,6 +24,7 @@ from pathlib import Path
 
 import datetime
 import pickle
+import re
 import sys
 import time
 
@@ -41,6 +42,7 @@ from .layout import (Container, ReflowRequired,
 from .number import format_number
 from .strings import Strings
 from .style import StyleLog
+from .text import StyledText
 from .util import RefKeyDictionary
 from .warnings import warn
 
@@ -350,17 +352,16 @@ to the terms of the GNU Affero General Public License version 3.''')
 
         fake_container = FakeContainer(self)
         prev_page_counts, prev_page_refs = self._load_cache(filename_root)
-        metadata_args = {key: self.get_metadata(key)
-                         for key in ('title', 'author')}
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
+            backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
             self.part_page_counts = prev_page_counts
             self.page_references = prev_page_refs.copy()
             while True:
-                self.backend_document = self.backend.Document(self.CREATOR,
-                                                              **metadata_args)
+                self.backend_document = \
+                    self.backend.Document(self.CREATOR, **backend_metadata)
                 self.part_page_counts = self._render_pages()
                 if (self.part_page_counts == prev_page_counts
                         and self.page_references == prev_page_refs):
@@ -433,6 +434,16 @@ to the terms of the GNU Affero General Public License version 3.''')
             parent.append(item)
             current_level = section.level
         backend_document.create_outlines(sections)
+
+    def _get_backend_metadata(self):
+        """Transforms document metadata to sanitized plain text strings"""
+        result = {}
+        for key in (k for k in ('title', 'author') if k in self.metadata):
+            value = self.get_metadata(key)
+            if isinstance(value, StyledText):
+                value = value.to_string(None)
+            result[key] = re.sub(r"\s+", ' ', value.replace('\b', ''))
+        return result
 
     PROGRESS_TEMPLATE = \
         '\r{:3d}% [{}{}] ETA {:02d}:{:02d} ({:02d}:{:02d}) page {}'
