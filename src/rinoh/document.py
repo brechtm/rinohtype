@@ -430,7 +430,8 @@ to the terms of the GNU Affero General Public License version 3.''')
                 for i in range(current_level - section.level):
                     parent = stack.pop()
             current = []
-            item = (str(section_id), section_number, section_title, current)
+            title_str = section_title.to_string(None)
+            item = (str(section_id), section_number, title_str, current)
             parent.append(item)
             current_level = section.level
         backend_document.create_outlines(sections)

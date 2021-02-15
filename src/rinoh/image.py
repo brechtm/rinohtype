@@ -22,8 +22,8 @@ from .flowable import (Flowable, FlowableState, HorizontalAlignment,
                        GroupedFlowablesStyle, Float, FloatStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
-from .number import NumberedParagraph, NumberedParagraphStyle, format_number
-from .paragraph import Paragraph
+from .number import format_number
+from .paragraph import ParagraphBase, Paragraph, ParagraphStyle
 from .reference import ReferenceType
 from .structure import ListOf, ListOfSection
 from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
@@ -378,12 +378,12 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
                 'displayed')
 
 
-class CaptionStyle(NumberedParagraphStyle):
+class CaptionStyle(ParagraphStyle):
     numbering_level = Attribute(Integer, 1, 'At which section level to '
                                             'restart numbering')
 
 
-class Caption(NumberedParagraph):
+class Caption(Paragraph):
     style_class = CaptionStyle
 
     @property

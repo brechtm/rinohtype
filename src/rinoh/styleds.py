@@ -13,7 +13,6 @@ from .highlight import CodeBlock, CodeBlockWithCaption, Token
 from .index import IndexSection, Index, IndexLabel, IndexEntry
 from .index import InlineIndexTarget, IndexTarget
 from .inline import InlineFlowable
-from .number import NumberedParagraph
 from .paragraph import ParagraphBase, Paragraph
 from .reference import ReferenceBase, Reference, DirectReference
 from .reference import ReferenceField, ReferenceText, ReferencingParagraph

@@ -16,8 +16,7 @@ from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
-from .number import NumberedParagraph, NumberedParagraphStyle
-from .paragraph import ParagraphStyle, ParagraphBase, Paragraph
+from .paragraph import ParagraphBase, Paragraph, ParagraphStyle
 from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
 from .reference import ReferenceType
@@ -95,11 +94,11 @@ class Section(StaticGroupedFlowables, SectionBase):
     """
 
 
-class HeadingStyle(NumberedParagraphStyle):
+class HeadingStyle(ParagraphStyle):
     keep_with_next = OverrideDefault(True)
 
 
-class Heading(NumberedParagraph):
+class Heading(Paragraph):
     """The title for a section
 
     Args:
@@ -111,18 +110,9 @@ class Heading(NumberedParagraph):
 
     style_class = HeadingStyle
 
-    def __init__(self, title, custom_label=None,
-                 id=None, style=None, parent=None):
-        super().__init__(title, id=id, style=style, parent=parent)
-        self.custom_label = custom_label
-
     @property
     def referenceable(self):
         return self.section
-
-    def __repr__(self):
-        return '{}({}) (style={})'.format(self.__class__.__name__,
-                                          self.content, self.style)
 
     def prepare(self, flowable_target):
         document = flowable_target.document
@@ -152,7 +142,8 @@ class Heading(NumberedParagraph):
 
     def text(self, container):
         number = self.number(container)
-        return MixedStyledText(number + self.content, parent=self)
+        content = MixedStyledText(self.items)
+        return MixedStyledText(number + content, parent=self)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         if self.level == 1 and container.page.chapter_title:

@@ -14,13 +14,11 @@ Functions for formatting numbers:
 from copy import copy
 
 from .attribute import Attribute, OptionSet, Bool
-from .paragraph import ParagraphBase, ParagraphStyle
 from .style import Style
 from .text import StyledText
 
 
-__all__ = ['NumberFormat', 'NumberStyle', 'Label', 'NumberedParagraph',
-           'format_number']
+__all__ = ['NumberFormat', 'NumberStyle', 'Label', 'format_number']
 
 
 class NumberFormat(OptionSet):
@@ -107,54 +105,3 @@ class Label(object):
 class NumberStyle(LabelStyle):
     number_format = Attribute(NumberFormat, 'number',
                               'How numbers are formatted')
-
-
-class NumberedParagraphStyle(ParagraphStyle, NumberStyle):
-    number_separator = Attribute(StyledText, '.',
-                                 "Characters inserted between the number label"
-                                 " of this element's parent and this element's"
-                                 " own number label. If ``None``, only show"
-                                 " this section's number label.")
-
-
-class NumberedParagraph(ParagraphBase, Label):
-    style_class = NumberedParagraphStyle
-
-    def __init__(self, content, custom_label=None,
-                 id=None, style=None, parent=None):
-        super().__init__(id=id, style=style, parent=parent)
-        Label.__init__(self, custom_label=custom_label)
-        self.content = content
-
-    def to_string(self, flowable_target):
-        text = self.text(flowable_target)
-        return ''.join(item.to_string(flowable_target) for item in text)
-
-    @property
-    def referenceable(self):
-        raise NotImplementedError
-
-    def prepare_label(self, number, parent_section, container):
-        document = container.document
-        number_format = self.get_style('number_format', container)
-        label = format_number(number, number_format)
-        separator = self.get_style('number_separator', container)
-        if separator is not None and parent_section and parent_section.level > 0:
-            parent_id = parent_section.get_id(document)
-            parent_ref = document.get_reference(parent_id, 'number')
-            if parent_ref:
-                separator_string = separator.to_string(container)
-                label = parent_ref + separator_string + label
-        return label
-
-    def number(self, container):
-        document = container.document
-        target_id = self.referenceable.get_id(document)
-        formatted_number = document.get_reference(target_id, 'number')
-        if formatted_number:
-            return self.format_label(formatted_number, container)
-        else:
-            return ''
-
-    def text(self, container):
-        raise NotImplementedError

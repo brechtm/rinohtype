@@ -19,6 +19,8 @@ from functools import partial
 from itertools import tee, chain, groupby, count
 from os import path
 
+from rinoh.number import NumberStyle, Label, format_number
+
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
@@ -29,7 +31,8 @@ from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer, ContainerOverflow
-from .text import TextStyle, MixedStyledText, SingleStyledText, ESCAPE
+from .text import TextStyle, MixedStyledText, SingleStyledText, ESCAPE, \
+    StyledText
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -345,7 +348,7 @@ class TabStopList(AttributeType, list):
 
 
 # TODO: look at Word/OpenOffice for more options
-class ParagraphStyle(FlowableStyle, TextStyle):
+class ParagraphStyle(FlowableStyle, NumberStyle, TextStyle):
     width = OverrideDefault('fill')
 
     indent_first = Attribute(Dimension, 0*PT, 'Indentation of the first line '
@@ -355,6 +358,11 @@ class ParagraphStyle(FlowableStyle, TextStyle):
     text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '
                                                  'margins')
     tab_stops = Attribute(TabStopList, TabStopList(), 'List of tab positions')
+    number_separator = Attribute(StyledText, '.',
+                                 "Characters inserted between the number label"
+                                 " of this element's parent and this element's"
+                                 " own number label. If ``None``, only show"
+                                 " this section's number label.")
 
 
 class Glyph(object):
@@ -584,7 +592,7 @@ class ParagraphState(FlowableState):
         self._first_word = word
 
 
-class ParagraphBase(Flowable):
+class ParagraphBase(Flowable, Label):
     """Base class for paragraphs
 
     A paragraph is a collection of mixed-styled text that can be flowed into a
@@ -592,8 +600,45 @@ class ParagraphBase(Flowable):
 
     """
 
+    category = 'Paragraph'
     style_class = ParagraphStyle
     significant_whitespace = False
+
+    def __init__(self, custom_label=None, align=None, width=None,
+                 id=None, style=None, parent=None, source=None):
+        super().__init__(align=align, width=width,
+                         id=id, style=style, parent=parent, source=source)
+        Label.__init__(self, custom_label=custom_label)
+
+    @property
+    def referenceable(self):
+        return self
+
+    def prepare_label(self, number, parent_section, container):
+        document = container.document
+        number_format = self.get_style('number_format', container)
+        label = format_number(number, number_format)
+        separator = self.get_style('number_separator', container)
+        if separator is not None and parent_section and parent_section.level > 0:
+            parent_id = parent_section.get_id(document)
+            parent_ref = document.get_reference(parent_id, 'number')
+            if parent_ref:
+                separator_string = separator.to_string(container)
+                label = parent_ref + separator_string + label
+        return label
+
+    def number(self, container):
+        document = container.document
+        target_id = self.referenceable.get_id(document)
+        formatted_number = document.get_reference(target_id, 'number')
+        if formatted_number:
+            return self.format_label(formatted_number, container)
+        else:
+            return ''
+
+    def text(self, container):
+        label = self.referenceable.category + ' ' + '1' # self.number(container)
+        return MixedStyledText([label, *self.items], parent=self)
 
     @property
     def paragraph(self):
@@ -610,7 +655,7 @@ class ParagraphBase(Flowable):
         return ''.join(item.to_string(flowable_target) for
                        item in self.text(flowable_target))
 
-    def text(self, container):
+    def _text(self, container):
         raise NotImplementedError('{}.text()'.format(self.__class__.__name__))
 
     def render(self, container, descender, state, space_below=0,
@@ -727,7 +772,14 @@ class Paragraph(MixedStyledText, ParagraphBase):
     style_class = ParagraphBase.style_class
     fallback_to_parent = ParagraphBase.fallback_to_parent
 
-    def text(self, container):
+    def __init__(self, text_or_items, custom_label=None, align=None, width=None,
+                 id=None, style=None, parent=None, source=None):
+        super().__init__(text_or_items)
+        ParagraphBase.__init__(self, custom_label=custom_label, align=align,
+                               width=width, id=id, style=style, parent=parent,
+                               source=source)
+
+    def _text(self, container):
         return self
 
 
