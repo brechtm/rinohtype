@@ -430,7 +430,10 @@ to the terms of the GNU Affero General Public License version 3.''')
                 for i in range(current_level - section.level):
                     parent = stack.pop()
             current = []
-            title_str = section_title.to_string(None)
+            try:
+                title_str = section_title.to_string(None)
+            except AttributeError:
+                title_str = section_title
             item = (str(section_id), section_number, title_str, current)
             parent.append(item)
             current_level = section.level

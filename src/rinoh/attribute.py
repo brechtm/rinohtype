@@ -218,7 +218,7 @@ class WithAttributes(WithNamedDescriptors):
                     try:
                         attr.overrides = mro_cls._attributes[name]
                         break
-                    except KeyError:
+                    except (AttributeError, KeyError):
                         pass
                 else:
                     raise NotImplementedError

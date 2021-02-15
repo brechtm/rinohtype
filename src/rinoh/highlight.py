@@ -13,7 +13,7 @@ from .flowable import (StaticGroupedFlowables, GroupedFlowablesStyle,
 from .font.style import FontWeight, FontSlant
 from .paragraph import Paragraph
 from .style import StyledMatcher, StyleSheet
-from .text import SingleStyledText, TextStyle
+from .text import SingleStyledText, MixedStyledText, TextStyle
 from .util import VersionError
 from .warnings import warn
 
@@ -79,7 +79,7 @@ def highlight_block(language, text, lexer_getter):
                  'Highlighting skipped.' % language)
         else:
             raise exc
-    return text
+    return MixedStyledText(text)
 
 
 class Token(SingleStyledText):

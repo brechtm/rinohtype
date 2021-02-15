@@ -383,7 +383,7 @@ class Line_Block(Paragraph):
 
     def process_content(self, style=None):
         lines = self._process_block(self)
-        return intersperse(lines, rt.Newline())
+        return rt.MixedStyledText(intersperse(lines, rt.Newline()))
 
 
 class Line(DocutilsInlineNode):

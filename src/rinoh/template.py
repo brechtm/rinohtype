@@ -170,6 +170,13 @@ class PageBase(Page, Templated):
             self.background << background
 
 
+def try_copy(obj, parent=None):
+    try:
+        return obj.copy(parent=parent)
+    except AttributeError:
+        return obj
+
+
 class SimplePage(PageBase):
     configuration_class = PageTemplate
 
@@ -195,13 +202,13 @@ class SimplePage(PageBase):
                                                     CHAPTER_TITLE, self.body,
                                                     0, 0, height=height)
             column_top = self.chapter_title.bottom
-            header = get_option('chapter_header_text')
-            footer = get_option('chapter_footer_text')
+            header = try_copy(get_option('chapter_header_text'))
+            footer = try_copy(get_option('chapter_footer_text'))
         else:
             self.chapter_title = None
             column_top = float_space.bottom
-            header = get_option('header_text')
-            footer = get_option('footer_text')
+            header = try_copy(get_option('header_text'))
+            footer = try_copy(get_option('footer_text'))
         self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
                                          self.body, chain,
                                          left=i * (column_width

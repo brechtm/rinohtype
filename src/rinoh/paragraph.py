@@ -14,12 +14,11 @@ Classes for representing and typesetting paragraphs
 import re
 
 from ast import literal_eval
+from collections.abc import Iterable
 from copy import copy
 from functools import partial
 from itertools import tee, chain, groupby, count
 from os import path
-
-from rinoh.number import NumberStyle, Label, format_number
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
@@ -31,8 +30,9 @@ from .font import MissingGlyphException
 from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer, ContainerOverflow
-from .text import TextStyle, MixedStyledText, SingleStyledText, ESCAPE, \
-    StyledText
+from .number import NumberStyle, Label, format_number
+from .text import (TextStyle, StyledText, SingleStyledText, MixedStyledText,
+                   ESCAPE)
 from .util import all_subclasses, ReadAliasAttribute
 
 
@@ -358,7 +358,8 @@ class ParagraphStyle(FlowableStyle, NumberStyle, TextStyle):
     text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '
                                                  'margins')
     tab_stops = Attribute(TabStopList, TabStopList(), 'List of tab positions')
-    number_separator = Attribute(StyledText, '.',
+    number_format = OverrideDefault(None)
+    number_separator = Attribute(StyledText, None,
                                  "Characters inserted between the number label"
                                  " of this element's parent and this element's"
                                  " own number label. If ``None``, only show"
@@ -614,6 +615,29 @@ class ParagraphBase(Flowable, Label):
     def referenceable(self):
         return self
 
+    def prepare(self, flowable_target):
+        super().prepare(flowable_target)
+        document = flowable_target.document
+        referenceable_id = self.referenceable.get_id(document)
+        number_format = self.get_style('number_format', flowable_target)
+        if self.get_style('custom_label', flowable_target):
+            assert self.custom_label is not None
+            label = str(self.custom_label)
+        elif number_format:
+            try:
+                section_id = self.section.get_id(document)
+            except AttributeError:
+                section_id = None
+            ref_category = self.referenceable.category
+            section_counters = document.counters.setdefault(ref_category, {})
+            section_counter = section_counters.setdefault(section_id, [])
+            section_counter.append(self)
+            number = len(section_counter)
+            label = self.prepare_label(number, self.section, flowable_target)
+        else:
+            label = None
+        document.set_reference(referenceable_id, 'number', label)
+
     def prepare_label(self, number, parent_section, container):
         document = container.document
         number_format = self.get_style('number_format', container)
@@ -637,8 +661,9 @@ class ParagraphBase(Flowable, Label):
             return ''
 
     def text(self, container):
-        label = self.referenceable.category + ' ' + '1' # self.number(container)
-        return MixedStyledText([label, *self.items], parent=self)
+        number_format = self.get_style('number_format', container)
+        number = [self.number(container)] if number_format else []
+        return MixedStyledText(number + [self.content], parent=self)
 
     @property
     def paragraph(self):
@@ -759,28 +784,34 @@ class ParagraphBase(Flowable, Label):
         return max_line_width, first_line.advance, descender
 
 
-class Paragraph(MixedStyledText, ParagraphBase):
+class Paragraph(ParagraphBase):
     """A paragraph of static text
 
     Args:
-        text_or_items: see :class:`.MixedStyledText`
+        content: see :class:`.MixedStyledText`
         style: see :class:`.Styled`
         parent: see :class:`.DocumentElement`
 
     """
 
-    style_class = ParagraphBase.style_class
-    fallback_to_parent = ParagraphBase.fallback_to_parent
-
-    def __init__(self, text_or_items, custom_label=None, align=None, width=None,
+    def __init__(self, content, custom_label=None, align=None, width=None,
                  id=None, style=None, parent=None, source=None):
-        super().__init__(text_or_items)
-        ParagraphBase.__init__(self, custom_label=custom_label, align=align,
-                               width=width, id=id, style=style, parent=parent,
-                               source=source)
+        super().__init__(custom_label=custom_label, align=align, width=width,
+                         id=id, style=style, parent=parent, source=source)
+        if isinstance(content, str):
+            content = SingleStyledText(content)
+        elif isinstance(content, Iterable):
+            content = MixedStyledText(content)
+        assert content.parent is None
+        content.parent = self
+        self.content = content
+
+    def prepare(self, container):
+        super().prepare(container)
+        self.content.prepare(container)
 
     def _text(self, container):
-        return self
+        return self.content
 
 
 class HyphenatorStore(dict):
@@ -923,7 +954,6 @@ class Line(list):
 
     def _handle_tab(self, glyphs_span):
         span = glyphs_span.span
-        self._has_tab = True
         for tab_stop in self.tab_stops:
             tab_position = tab_stop.get_position(self.width)
             if self.cursor < tab_position:
@@ -1024,7 +1054,7 @@ class Line(list):
         # horizontal displacement
         left = self.indent
 
-        if self._has_tab or text_align == TextAlign.JUSTIFY and last_line:
+        if self._current_tab or text_align == TextAlign.JUSTIFY and last_line:
             text_align = 'left'
         extra_space = self.width - self.cursor
         if text_align == TextAlign.JUSTIFY:

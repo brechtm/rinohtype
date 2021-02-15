@@ -76,14 +76,14 @@ class IndexLabel(Paragraph):
 
 
 class IndexEntry(Paragraph):
-    def __init__(self, text_or_items, level, target_ids=None,
+    def __init__(self, content, level, target_ids=None,
                  id=None, style=None, parent=None):
         if target_ids:
             refs = intersperse((Reference(id, 'page')
                                 for id in target_ids), ', ')
-            entry_text = text_or_items + ', ' + MixedStyledText(refs)
+            entry_text = content + ', ' + MixedStyledText(refs)
         else:
-            entry_text = text_or_items
+            entry_text = content
         super().__init__(entry_text, id=id, style=style, parent=parent)
         self.index_level = level
 

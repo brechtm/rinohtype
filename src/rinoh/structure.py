@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from contextlib import suppress
 from itertools import chain, takewhile
 
 from .attribute import Attribute, Bool, Integer, OverrideDefault
@@ -139,11 +140,6 @@ class Heading(Paragraph):
         title_string = self.content.to_string(flowable_target)
         document.set_reference(section_id, ReferenceType.NUMBER, label)
         document.set_reference(section_id, ReferenceType.TITLE, title_string)
-
-    def text(self, container):
-        number = self.number(container)
-        content = MixedStyledText(self.items)
-        return MixedStyledText(number + content, parent=self)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         if self.level == 1 and container.page.chapter_title:
@@ -417,11 +413,12 @@ class Admonition(StaticGroupedFlowables):
 
     def title(self, document):
         return (self.custom_title
-                or document.get_string(AdmonitionTitles,
-                                       self.admonition_type))
+                or document.get_string(AdmonitionTitles, self.admonition_type))
 
     def flowables(self, container):
         title = self.title(container.document)
+        with suppress(AttributeError):
+            title = title.copy()
         flowables = super().flowables(container)
         first_flowable = next(flowables)
         inline_title = self.get_style('inline_title', container)
@@ -429,7 +426,8 @@ class Admonition(StaticGroupedFlowables):
             title = MixedStyledText(title, style='inline title')
             kwargs = dict(id=first_flowable.id, style=first_flowable.style,
                           parent=self)
-            paragraph = Paragraph(title + ' ' + first_flowable, **kwargs)
+            title_plus_content = title + ' ' + first_flowable.content
+            paragraph = Paragraph(title_plus_content, **kwargs)
             paragraph.secondary_ids = first_flowable.secondary_ids
             yield paragraph
         else:

@@ -350,8 +350,8 @@ RE_STRINGFIELD = ('|'.join(r'{}\.(?:[a-z_][a-z0-9_]*)'
 
 
 class Field(MixedStyledTextBase):
-    def __init__(self, type, style=None):
-        super().__init__(style=style)
+    def __init__(self, type, id=None, style=None, parent=None, source=None):
+        super().__init__(id=id, style=style, parent=parent, source=source)
         self.type = type
 
     def __str__(self):
@@ -370,6 +370,10 @@ class Field(MixedStyledTextBase):
         except KeyError:
             field = SectionFieldType.from_string(string)
         return cls(field, style=style)
+
+    def copy(self, parent=None):
+        return type(self)(self.type, style=self.style, parent=parent,
+                          source=self.source)
 
     def children(self, container):
         if container is None:

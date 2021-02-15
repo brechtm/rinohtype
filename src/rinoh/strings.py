@@ -129,8 +129,9 @@ class StringField(MixedStyledTextBase):
     :class:`.TemplateConfiguration`.
 
     """
-    def __init__(self, strings_class, key, style=None, parent=None):
-        super().__init__(style=style, parent=parent)
+    def __init__(self, strings_class, key,
+                 style=None, parent=None, source=None):
+        super().__init__(style=style, parent=parent, source=source)
         self.strings_class = strings_class
         self.key = key
 
@@ -152,6 +153,10 @@ class StringField(MixedStyledTextBase):
     def parse_string(cls, string, style=None):
         collection, key = string.split('.')
         return cls(StringCollection.subclasses[collection], key, style=style)
+
+    def copy(self, parent=None):
+        return type(self)(self.strings_class, self.key, style=self.style,
+                          parent=self.parent, source=self.source)
 
     def children(self, container):
         text = container.document.get_string(self.strings_class, self.key)
