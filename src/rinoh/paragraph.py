@@ -598,7 +598,7 @@ class ParagraphState(FlowableState):
 class ParagraphBase(Flowable, Label):
     """Base class for paragraphs
 
-    A paragraph is a collection of mixed-styled text that can be flowed into a
+    A paragraph holds styled text and other line elements to be flowed into a
     container.
 
     """
@@ -791,9 +791,7 @@ class StaticParagraph(ParagraphBase):
     """A paragraph of static text
 
     Args:
-        content: see :class:`.MixedStyledText`
-        style: see :class:`.Styled`
-        parent: see :class:`.DocumentElement`
+        content (StyledText): the paragraph's text content
 
     """
 
@@ -939,14 +937,20 @@ class Word(LinePart, list):
 
 class Line(list):
     """Helper class for building and typesetting a single line of text within
-    a :class:`Paragraph`."""
+    a paragraph.
+
+    Args:
+        tab_stops (TabStopList): as given in the paragraph style
+        width (float): the available line width
+        container (Container); the render target for this line
+        indent (float): left indent width (positive or negative)
+        significant_whitespace (bool): whether to typeset whitespace as-is or
+            consider them as tokens separating words
+
+    """
 
     def __init__(self, tab_stops, width, container, indent=0,
                  significant_whitespace=False):
-        """`tab_stops` is a list of tab stops, as given in the paragraph style.
-        `width` is the available line width.
-        `indent` specifies the left indent width.
-        `container` passes the :class:`Container` that wil hold this line."""
         super().__init__()
         self.tab_stops = tab_stops
         self.width = width

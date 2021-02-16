@@ -104,9 +104,7 @@ class Heading(StaticParagraph):
     """The title for a section
 
     Args:
-        title (StyledText): the title text
-        custom_label (StyledText): a frontend can supply a custom label to use
-            instead of an automatically determined section number
+        title (StyledText): this heading's text
 
     """
 

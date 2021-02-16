@@ -93,6 +93,14 @@ class LabelStyle(Style):
 
 
 class Label(object):
+    """Mixin class that formats a label
+
+    Args:
+        custom_label (StyledText): a frontend can supply a custom label to use
+            instead of an automatically determined label (typically a number)
+
+    """
+
     def __init__(self, custom_label=None):
         self.custom_label = custom_label
 
