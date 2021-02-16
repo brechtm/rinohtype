@@ -787,7 +787,7 @@ class ParagraphBase(Flowable, Label):
         return max_line_width, first_line.advance, descender
 
 
-class Paragraph(ParagraphBase):
+class StaticParagraph(ParagraphBase):
     """A paragraph of static text
 
     Args:
@@ -815,6 +815,10 @@ class Paragraph(ParagraphBase):
 
     def _text(self, container):
         return self.content
+
+
+class Paragraph(StaticParagraph):
+    pass
 
 
 class HyphenatorStore(dict):

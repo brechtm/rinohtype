@@ -17,7 +17,8 @@ from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .layout import PageBreakException
 from .number import NumberStyle, Label, LabelStyle, format_number
-from .paragraph import ParagraphBase, Paragraph, ParagraphStyle
+from .paragraph import (ParagraphBase, StaticParagraph, Paragraph,
+                        ParagraphStyle)
 from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
 from .reference import ReferenceType
@@ -99,7 +100,7 @@ class HeadingStyle(ParagraphStyle):
     keep_with_next = OverrideDefault(True)
 
 
-class Heading(Paragraph):
+class Heading(StaticParagraph):
     """The title for a section
 
     Args:
@@ -204,11 +205,11 @@ class DefinitionList(GroupedLabeledFlowables, StaticGroupedFlowables):
     pass
 
 
-class Header(Paragraph):
+class Header(StaticParagraph):
     pass
 
 
-class Footer(Paragraph):
+class Footer(StaticParagraph):
     pass
 
 

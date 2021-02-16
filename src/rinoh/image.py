@@ -23,8 +23,8 @@ from .flowable import (Flowable, FlowableState, HorizontalAlignment,
                        GroupedFlowablesStyle, Float, FloatStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
-from .number import NumberFormat, format_number
-from .paragraph import ParagraphBase, Paragraph, ParagraphStyle
+from .number import NumberFormat
+from .paragraph import StaticParagraph, ParagraphStyle
 from .reference import ReferenceType
 from .structure import ListOf, ListOfSection
 from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
@@ -384,7 +384,7 @@ class CaptionStyle(ParagraphStyle):
     numbering_level = OverrideDefault(1)
 
 
-class Caption(Paragraph):
+class Caption(StaticParagraph):
     style_class = CaptionStyle
 
     @property
