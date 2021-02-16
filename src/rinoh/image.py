@@ -13,8 +13,9 @@ from functools import partial
 from pathlib import Path
 from token import LPAR, RPAR, NAME, EQUAL, NUMBER, ENDMARKER,  STRING, COMMA
 
-from .attribute import (Attribute, AcceptNoneAttributeType, Integer,
-                        OptionSet, AttributesDictionary, ParseError)
+from .attribute import (Attribute, AttributesDictionary, OverrideDefault,
+                        AcceptNoneAttributeType, OptionSet, Integer,
+                        ParseError)
 from .color import RED
 from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, FlowableState, HorizontalAlignment,
@@ -22,7 +23,7 @@ from .flowable import (Flowable, FlowableState, HorizontalAlignment,
                        GroupedFlowablesStyle, Float, FloatStyle)
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
-from .number import format_number
+from .number import NumberFormat, format_number
 from .paragraph import ParagraphBase, Paragraph, ParagraphStyle
 from .reference import ReferenceType
 from .structure import ListOf, ListOfSection
@@ -379,8 +380,8 @@ class BackgroundImage(_Image, AcceptNoneAttributeType):
 
 
 class CaptionStyle(ParagraphStyle):
-    numbering_level = Attribute(Integer, 1, 'At which section level to '
-                                            'restart numbering')
+    number_format = OverrideDefault(NumberFormat.NUMBER)
+    numbering_level = OverrideDefault(1)
 
 
 class Caption(Paragraph):
@@ -391,7 +392,6 @@ class Caption(Paragraph):
         return self.parent
 
     def prepare(self, flowable_target):
-        super().prepare(flowable_target)
         document = flowable_target.document
         get_style = partial(self.get_style, container=flowable_target)
         category = self.referenceable.category

@@ -23,7 +23,7 @@ from os import path
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
-                        OverrideDefault)
+                        OverrideDefault, Integer)
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
@@ -359,11 +359,13 @@ class ParagraphStyle(FlowableStyle, NumberStyle, TextStyle):
                                                  'margins')
     tab_stops = Attribute(TabStopList, TabStopList(), 'List of tab positions')
     number_format = OverrideDefault(None)
-    number_separator = Attribute(StyledText, None,
+    number_separator = Attribute(StyledText, '.',
                                  "Characters inserted between the number label"
                                  " of this element's parent and this element's"
                                  " own number label. If ``None``, only show"
-                                 " this section's number label.")
+                                 " this item's number label.")
+    numbering_level = Attribute(Integer, 0, 'At which section level to '
+                                            'restart numbering')
 
 
 class Glyph(object):
@@ -624,16 +626,17 @@ class ParagraphBase(Flowable, Label):
             assert self.custom_label is not None
             label = str(self.custom_label)
         elif number_format:
-            try:
-                section_id = self.section.get_id(document)
-            except AttributeError:
-                section_id = None
+            numbering_level = self.get_style('numbering_level', flowable_target)
+            section = self.section
+            while section and section.level > numbering_level:
+                section = section.parent.section
+            section_id = section.get_id(document, False) if section else None
             ref_category = self.referenceable.category
             section_counters = document.counters.setdefault(ref_category, {})
             section_counter = section_counters.setdefault(section_id, [])
             section_counter.append(self)
             number = len(section_counter)
-            label = self.prepare_label(number, self.section, flowable_target)
+            label = self.prepare_label(number, section, flowable_target)
         else:
             label = None
         document.set_reference(referenceable_id, 'number', label)
