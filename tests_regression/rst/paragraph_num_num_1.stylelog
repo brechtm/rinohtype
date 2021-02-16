@@ -1,0 +1,95 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:3 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:3 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('Section 1')
+              SingleStyledText('Section 1')
+        Paragraph('	1.1	Alice was beginning to get ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:5 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	1.1	')
+              Tab('	')
+              SingleStyledText('1.1')
+              Tab('	')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+        Section(id='subsection-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:11 <section>
+          Heading('1.1 Subsection A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:11 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('1.1 ')
+                SingleStyledText('1.1')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection A')
+                SingleStyledText('Subsection A')
+          Paragraph('	1.2	So she was considering in h...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:13 <paragraph>
+               > (0,0,0,0,2) body
+              MixedStyledText('	1.2	')
+                Tab('	')
+                SingleStyledText('1.2')
+                Tab('	')
+              MixedStyledText('So she was considering in her ow...')
+                SingleStyledText('So she was considering in her ow...')
+      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:19 <section>
+           > (0,0,0,1,2) chapter
+        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:19 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2 ')
+              SingleStyledText('2')
+              SingleStyledText(' ')
+            MixedStyledText('Section 2')
+              SingleStyledText('Section 2')
+        Paragraph('	2.1	There was nothing very rema...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:21 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	2.1	')
+              Tab('	')
+              SingleStyledText('2.1')
+              Tab('	')
+            MixedStyledText('There was nothing very remarkabl...')
+              SingleStyledText('There was nothing very remarkabl...')
+        Section(id='subsection-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:28 <section>
+          Heading('2.1 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:28 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.1 ')
+                SingleStyledText('2.1')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection B')
+                SingleStyledText('Subsection B')
+          Paragraph('	2.2	But when the rabbit actuall...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:30 <paragraph>
+               > (0,0,0,0,2) body
+              MixedStyledText('	2.2	')
+                Tab('	')
+                SingleStyledText('2.2')
+                Tab('	')
+              MixedStyledText('But when the rabbit actually too...')
+                SingleStyledText('But when the rabbit actually too...')
+        Section(id='subsection-c')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:39 <section>
+          Heading('2.2 Subsection C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:39 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2.2 ')
+                SingleStyledText('2.2')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection C')
+                SingleStyledText('Subsection C')
+          Paragraph('	2.3	In a moment down went Alice...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_1.rst:41 <paragraph>
+               > (0,0,0,0,2) body
+              MixedStyledText('	2.3	')
+                Tab('	')
+                SingleStyledText('2.3')
+                Tab('	')
+              MixedStyledText('In a moment down went Alice afte...')
+                SingleStyledText('In a moment down went Alice afte...')

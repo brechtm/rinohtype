@@ -1,0 +1,24 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[heading level 1]
+number_format = none
+space_above=6pt
+space_below=0
+
+[heading level 2]
+number_format = number
+space_above=6pt
+space_below=0
+
+[body]
+indent_first = -2cm
+label_prefix = '\t'
+label_suffix = '\t'
+tab_stops = -3mm RIGHT, 0cm LEFT
+number_format = number
+numbering_level = 1

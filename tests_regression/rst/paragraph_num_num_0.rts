@@ -1,0 +1,9 @@
+[STYLESHEET]
+base = paragraph_none_num_1.rts
+
+
+[heading level 1]
+number_format = number
+
+[body]
+numbering_level = 0

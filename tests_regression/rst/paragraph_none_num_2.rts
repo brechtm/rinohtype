@@ -1,0 +1,6 @@
+[STYLESHEET]
+base = paragraph_none_num_1.rts
+
+
+[body]
+numbering_level = 2
