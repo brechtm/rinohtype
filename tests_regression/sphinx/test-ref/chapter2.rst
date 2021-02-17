@@ -1,0 +1,25 @@
+.. rst-class:: numbered-paragraphs
+
+.. _chapter-2:
+
+Chapter 2
+=========
+
+.. figure:: biohazard.png
+   :name: fig-2
+
+   Another image
+
+
+.. _section-c:
+
+Section C
+---------
+
+.. _par-c:
+
+Paragraph C.
+
+.. _par-d:
+
+Paragraph D.

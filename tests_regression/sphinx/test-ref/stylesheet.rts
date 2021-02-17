@@ -1,0 +1,17 @@
+[STYLESHEET]
+name = Sphinx ref
+base = sphinx_base14
+
+
+[title page date : Paragraph('title page date')]
+hide = true
+
+[numbered paragraph : Section(has_class='numbered-paragraphs') / ... / Paragraph]
+base = body
+indent_first = -2cm
+label_prefix = '\t'
+label_suffix = '\t'
+tab_stops = -3mm RIGHT, 0cm LEFT
+number_format = number
+numbering_level = 0
+
