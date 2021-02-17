@@ -118,7 +118,7 @@ autodoc_member_order = 'bysource'
 autosummary_generate = True
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
-                       'sphinx': ('http://www.sphinx-doc.org/en/master', None)}
+                       'sphinx': ('https://www.sphinx-doc.org/en/master', None)}
 
 # -- Options for HTML output ----------------------------------------------
 
