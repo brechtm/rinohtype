@@ -82,11 +82,11 @@ line tool renders reStructuredText documents and the included Sphinx_ builder
 makes it possible to output large documents with your own style applied. Have
 a look at the `rinohtype documentation`_ for an example of the output.
 
-.. _documentation: http://www.mos6581.org/rinohtype/
+.. _documentation: http://www.mos6581.org/rinohtype/master/
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
-.. _rinohtype documentation: http://www.mos6581.org/rinohtype/_downloads/rinohtype.pdf
+.. _rinohtype documentation: http://www.mos6581.org/rinohtype/master/_downloads/cc8bb3ec0357396958ad856a90d03812/rinohtype.pdf
 
 
 Requirements
