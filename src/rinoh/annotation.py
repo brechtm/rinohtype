@@ -38,6 +38,9 @@ class NamedDestinationLink(LinkAnnotation):
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return f"{type(self).__name__}('{self.name}')"
+
 
 class HyperLink(LinkAnnotation):
     type = 'URI'
@@ -59,20 +62,7 @@ from .text import MixedStyledText
 class AnnotatedText(MixedStyledText):
     def __init__(self, text_or_items, annotation, style=None, parent=None):
         super().__init__(text_or_items, style=style, parent=parent)
-        self.annotation = annotation
+        self._annotation = annotation
 
-    def spans(self, container):
-        ann = self.annotation
-        anchor = ann if isinstance(ann, AnchorAnnotation) else None
-        link = ann if isinstance(ann, LinkAnnotation) else None
-        for span in super().spans(container):
-            if isinstance(span, AnnotatedSpan):
-                if anchor:
-                    assert span.anchor_annotation is None
-                    span.anchor_annotation = anchor
-                elif link:
-                    assert span.link_annotation is None
-                    span.link_annotation = link
-                yield span
-            else:
-                yield AnnotatedSpan(span, anchor=anchor, link=link)
+    def get_annotation(self, container):
+        return self._annotation

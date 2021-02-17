@@ -396,27 +396,25 @@ class Doctest_Block(DocutilsBodyNode):
 
 
 class Reference(DocutilsBodyNode, DocutilsInlineNode):
-    @property
-    def annotation(self):
-        if self.get('refid'):
-            return rt.NamedDestinationLink(self.get('refid'))
-        elif self.get('refuri'):
-            return rt.HyperLink(self.get('refuri'))
-
     def build_styled_text(self):
-        annotation = self.annotation
         content = self.process_content()
-        if annotation is None:
+        if self.get('refid'):
+            return rt.Reference(self.get('refid'), type='reference',
+                                style='internal link')
+        elif self.get('refuri'):
+            annotation = rt.HyperLink(self.get('refuri'))
+            return rt.AnnotatedText(content, annotation, style='external link')
+        else:
             return rt.MixedStyledText(content, style='broken link')
-        style = ('external link' if annotation.type == 'URI'
-                 else 'internal link')
-        return rt.AnnotatedText(content, annotation, style=style)
 
     def build_flowable(self):
         children = self.getchildren()
         assert len(children) == 1
         image = self.image.flowable()
-        image.annotation = self.annotation
+        if self.get('refid'):
+            image.annotation = rt.NamedDestinationLink(self.get('refid'))
+        elif self.get('refuri'):
+            image.annotation = rt.HyperLink(self.get('refuri'))
         return image
 
 

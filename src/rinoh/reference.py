@@ -11,10 +11,10 @@ import re
 from copy import copy
 from itertools import chain, zip_longest
 
-from .annotation import NamedDestinationLink, AnnotatedSpan
+from .annotation import NamedDestinationLink
 from .attribute import Attribute, OptionSet
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
-from .layout import ReflowRequired, ContainerOverflow
+from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
@@ -58,7 +58,7 @@ class ReferenceBase(MixedStyledTextBase):
         return result
 
     def copy(self, parent=None):
-        return type(self)(self.type, self.link, self.quiet,
+        return type(self)(self.type, self.custom_title, self.link, self.quiet,
                           style=self.style, parent=parent)
 
     def target_id(self, document):
@@ -103,13 +103,10 @@ class ReferenceBase(MixedStyledTextBase):
         else:
             yield SingleStyledText(text, parent=self)
 
-    def spans(self, container):
-        spans = super().spans(container)
+    def get_annotation(self, container):
         if self.link:
             target_id = self.target_id(container.document)
-            annotation = NamedDestinationLink(str(target_id))
-            spans = (AnnotatedSpan(span, annotation) for span in spans)
-        return spans
+            return NamedDestinationLink(str(target_id))
 
 
 class Reference(ReferenceBase):

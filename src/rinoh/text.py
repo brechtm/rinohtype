@@ -31,6 +31,7 @@ from ast import literal_eval
 from html.entities import name2codepoint
 from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 
+from .annotation import AnchorAnnotation, LinkAnnotation, AnnotatedSpan
 from .attribute import (AttributeType, AcceptNoneAttributeType, Attribute,
                         Bool, Integer)
 from .color import Color, BLACK
@@ -75,13 +76,36 @@ class Locale(AttributeType):
 class InlineStyled(Styled):
     """"""
 
+    def get_annotation(self, container):
+        return None
+
+    def _annotated_spans(self, container):
+        spans = self.spans(container)
+        ann = self.get_annotation(container)
+        if not ann:
+            yield from spans
+            return
+        anchor = ann if isinstance(ann, AnchorAnnotation) else None
+        link = ann if isinstance(ann, LinkAnnotation) else None
+        for span in spans:
+            if isinstance(span, AnnotatedSpan):
+                if anchor:
+                    assert span.anchor_annotation is None
+                    span.anchor_annotation = anchor
+                elif link:
+                    assert span.link_annotation is None
+                    span.link_annotation = link
+                yield span
+            else:
+                yield AnnotatedSpan(span, anchor=anchor, link=link)
+
     def wrapped_spans(self, container):
         """Generator yielding all spans in this inline element (flattened)"""
         before = self.get_style('before', container)
         if before is not None:
             yield from before.copy(self.parent).wrapped_spans(container)
         if not self.get_style('hide', container):
-            yield from self.spans(container)
+            yield from self._annotated_spans(container)
         after = self.get_style('after', container)
         if after is not None:
             yield from after.copy(self.parent).wrapped_spans(container)
