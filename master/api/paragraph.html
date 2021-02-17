@@ -206,14 +206,20 @@
 <span id="paragraph"></span><h1>Paragraph (<a class="reference internal" href="#module-rinoh.paragraph" title="rinoh.paragraph"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code></a>)<a class="headerlink" href="#paragraph-rinoh-paragraph" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="rinoh.paragraph.ParagraphBase">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.paragraph.</code><code class="sig-name descname">ParagraphBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.paragraph.</code><code class="sig-name descname">ParagraphBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for paragraphs</p>
-<p>A paragraph is a collection of mixed-styled text that can be flowed into a
+<p>A paragraph holds styled text and other line elements to be flowed into a
 container.</p>
 <dl class="py attribute">
 <dt id="rinoh.paragraph.ParagraphBase.style_class">
 <code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.paragraph.ParagraphBase.style_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="../style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.paragraph.ParagraphStyle</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rinoh.paragraph.ParagraphBase.prepare">
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.ParagraphBase.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
 <dl class="py method">
@@ -240,24 +246,8 @@ rest of the paragraph when this method is called with a new container.</p>
 
 <dl class="py class">
 <dt id="rinoh.paragraph.Paragraph">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.paragraph.</code><code class="sig-name descname">Paragraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text_or_items</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Paragraph" title="Permalink to this definition">¶</a></dt>
-<dd><p>A paragraph of static text</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text_or_items</strong> – see <a class="reference internal" href="#rinoh.text.MixedStyledText" title="rinoh.text.MixedStyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixedStyledText</span></code></a></p></li>
-<li><p><strong>style</strong> – see <a class="reference internal" href="style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a></p></li>
-<li><p><strong>parent</strong> – see <code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentElement</span></code></p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt id="rinoh.paragraph.Paragraph.style_class">
-<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.paragraph.Paragraph.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.paragraph.ParagraphStyle</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.paragraph.</code><code class="sig-name descname">Paragraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content</span></em>, <em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Paragraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="rinoh.paragraph.ParagraphState">

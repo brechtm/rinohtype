@@ -187,7 +187,8 @@
 <h2>Release 0.5.1 (in development)<a class="headerlink" href="#release-0-5-1-in-development" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
-<li></li>
+<li><p>Paragraphs can now be numbered. rinohtype also allows for referencing them by
+number, but docutils/Sphinx doesn’t offer the means for this.</p></li>
 </ul>
 <p>Changed:</p>
 <ul class="simple">
@@ -195,7 +196,11 @@
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
-<li></li>
+<li><p>Fix issues with metadata (title, author) stored in the PDF Info dictionary</p></li>
+<li><p>Fix handling of no-break spaces (they were rendered using the fallback font)</p></li>
+<li><p>When a caption occurs in an unnumbered chapter, an exception aborts rendering
+(even when <code class="docutils literal notranslate"><span class="pre">number_separator</span></code> style attribute is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p>Handling of base template specified as string in a template configuration</p></li>
 </ul>
 </div>
 <div class="section" id="release-0-5-0-2021-02-03">

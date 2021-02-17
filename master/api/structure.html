@@ -212,15 +212,11 @@ numbered.</p>
 
 <dl class="py class">
 <dt id="rinoh.structure.Heading">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.structure.</code><code class="sig-name descname">Heading</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Heading" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.structure.</code><code class="sig-name descname">Heading</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content</span></em>, <em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">align</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Heading" title="Permalink to this definition">¶</a></dt>
 <dd><p>The title for a section</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>title</strong> (<a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a>) – the title text</p></li>
-<li><p><strong>custom_label</strong> (<a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a>) – a frontend can supply a custom label to use
-instead of an automatically determined section number</p></li>
-</ul>
+<dd class="field-odd"><p><strong>title</strong> (<a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a>) – this heading’s text</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -231,7 +227,7 @@ instead of an automatically determined section number</p></li>
 
 <dl class="py method">
 <dt id="rinoh.structure.Heading.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Heading.prepare" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">container</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Heading.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
