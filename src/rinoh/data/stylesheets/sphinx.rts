@@ -132,10 +132,6 @@ font_color=#f00
 [linked reference]
 font_color=#355f7c
 
-[internal hyperlink]
-font_slant=italic
-font_color=#355f7b
-
 [external hyperlink]
 font_color=#376f62
 
@@ -602,6 +598,7 @@ border_top=$(thin_black_stroke)
 space_above=18pt
 
 [footnote marker]
+base=linked reference
 position=SUPERSCRIPT
 number_format=number
 
@@ -682,6 +679,10 @@ tab_stops=1.4cm, 100% RIGHT '.  '
 base=table of contents
 margin_left=0
 tab_stops=0.6cm, 100% RIGHT '. '
+
+[toc entry number reference field]
+base = linked reference
+quiet = True
 
 [list of figures section]
 base=table of contents section

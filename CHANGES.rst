@@ -10,7 +10,9 @@ New Features:
 
 Changed:
 
-*
+* docutils/Sphinx frontend: will default to referencing targets by number if
+  possible, even if a custom label is explicitly set. This behaviour can be
+  overridden in the style sheet (*custom_title* style property).
 
 Fixed:
 

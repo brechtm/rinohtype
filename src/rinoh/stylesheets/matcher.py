@@ -60,10 +60,7 @@ matcher = StyledMatcher({
 
 })
 
-matcher('linked reference', ReferenceBase.like(link=True))
-matcher('unlinked reference', ReferenceBase.like(link=False))
-
-matcher('internal hyperlink', StyledText.like('internal link'))
+matcher('linked reference', ReferenceBase)
 matcher('external hyperlink', StyledText.like('external link'))
 matcher('broken hyperlink', StyledText.like('broken link'))
 
@@ -303,8 +300,8 @@ matcher('toc level 2', TableOfContentsEntry.like(depth=2))
 matcher('toc level 3', TableOfContentsEntry.like(depth=3))
 matcher('L3 toc level 3', TableOfContents.like(level=2)
                           / TableOfContentsEntry.like(depth=3))
-matcher('toc linked reference', TableOfContentsEntry
-                                / ... / ReferenceBase.like(link=True))
+matcher('toc entry number reference field',
+        TableOfContentsEntry / ... / ReferenceField.like(type='number'))
 
 matcher('list of figures section', ListOfFiguresSection)
 matcher('list of figures', ListOfFigures)

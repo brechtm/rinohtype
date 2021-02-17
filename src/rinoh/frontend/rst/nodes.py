@@ -399,8 +399,7 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
     def build_styled_text(self):
         content = self.process_content()
         if self.get('refid'):
-            return rt.Reference(self.get('refid'), type='reference',
-                                custom_title=content, style='internal link')
+            return rt.Reference(self.get('refid'), custom_title=content)
         elif self.get('refuri'):
             content.annotation = rt.HyperLink(self.get('refuri'))
             content.style = 'external link'

@@ -1,9 +1,7 @@
 ---------------------------------- page 1 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
-  StaticGroupedFlowables()
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
@@ -11,25 +9,26 @@
       Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:5 <paragraph>
            > (0,0,0,1,2) spacer
              (0,0,0,0,2) body
-        MixedStyledText('spacer')
-          SingleStyledText('spacer')
+          MixedStyledText('spacer')
+            MixedStyledText('spacer')
+              SingleStyledText('spacer')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='f1')
+  Note(id='f1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:11 <footnote>
     Paragraph('1')
          > (0,0,0,0,4) footnote label
            (0,0,0,0,2) body
-      DirectReference('1')
-           x (0,0,0,1,1) unlinked reference
-           > fallback to default style
-        SingleStyledText('1')
+        DirectReference('1')
+             > (0,0,0,0,1) linked reference
+          SingleStyledText('1')
     StaticGroupedFlowables()
       Paragraph('Text of the footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:11 <paragraph>
            > (0,0,0,0,5) footnote paragraph
              (0,0,0,0,2) body
-        MixedStyledText('Text of the footnote.')
-          SingleStyledText('Text of the footnote.')
+          MixedStyledText('Text of the footnote.')
+            MixedStyledText('Text of the footnote.')
+              SingleStyledText('Text of the footnote.')
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')

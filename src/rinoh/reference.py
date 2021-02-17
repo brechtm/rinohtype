@@ -12,7 +12,7 @@ from copy import copy
 from itertools import chain, zip_longest
 
 from .annotation import NamedDestinationLink
-from .attribute import Attribute, OptionSet
+from .attribute import Attribute, Bool, OptionSet, OverrideDefault
 from .flowable import Flowable, LabeledFlowable, DummyFlowable
 from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
@@ -43,14 +43,26 @@ class ReferenceType(OptionSet):
 # page:      <number of the page on which section 3.2 starts>
 
 
+class ReferenceStyle(TextStyle, NumberStyle):
+    type = Attribute(ReferenceType, ReferenceType.REFERENCE,
+                     'How the reference should be displayed')
+    link = Attribute(Bool, True, 'Create a hyperlink to the reference target')
+    quiet = Attribute(Bool, False, 'If the given reference type does not exist'
+                                   'for the target, resolve to an empty string'
+                                   'instead of making a fuss about it')
+    custom_title = Attribute(Bool, False, 'Override the reference text '
+                                          'with a custom string supplied by'
+                                          'the frontend')
+
+
 class ReferenceBase(MixedStyledTextBase):
-    def __init__(self, type='number', custom_title=None, link=True,
-                 quiet=False, style=None, parent=None, source=None):
+    style_class = ReferenceStyle
+
+    def __init__(self, type=None, custom_title=None, style=None, parent=None,
+                 source=None):
         super().__init__(style=style, parent=parent, source=source)
         self.type = type
         self.custom_title = custom_title
-        self.link = link
-        self.quiet = quiet
 
     def __str__(self):
         result = "'{{{}}}'".format(self.type.upper())
@@ -59,24 +71,25 @@ class ReferenceBase(MixedStyledTextBase):
         return result
 
     def copy(self, parent=None):
-        return type(self)(self.type, self.custom_title, self.link, self.quiet,
-                          style=self.style, parent=parent)
+        return type(self)(self.type, self.custom_title, style=self.style,
+                          parent=parent, source=self.source)
 
     def target_id(self, document):
         raise NotImplementedError
 
     def children(self, container):
+        type = self.type or self.get_style('type', container)
         if container is None:
-            return '$REF({})'.format(self.type)
+            return '$REF({})'.format(type)
         target_id = self.target_id(container.document)
         if target_id not in container.document.elements:
             self.warn("Unknown target '{}'".format(target_id), container)
             yield ErrorText('??', parent=self)
             return
         try:
-            text = container.document.get_reference(target_id, self.type)
+            text = container.document.get_reference(target_id, type)
         except KeyError:
-            if self.quiet:
+            if self.get_style('quiet', container):
                 text = ''
             else:
                 self.warn(f"Target '{target_id}' has no '{type}' reference",
@@ -95,16 +108,14 @@ class ReferenceBase(MixedStyledTextBase):
 
     def get_annotation(self, container):
         assert self.annotation is None
-        if self.link:
+        if self.get_style('link', container):
             target_id = self.target_id(container.document)
             return NamedDestinationLink(str(target_id))
 
 
 class Reference(ReferenceBase):
-    def __init__(self, target_id, type='number', link=True, style=None,
-                 quiet=False, **kwargs):
-        super().__init__(type=type, link=link, style=style, quiet=quiet,
-                         **kwargs)
+    def __init__(self, target_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._target_id = target_id
 
     def target_id(self, document):
@@ -112,9 +123,8 @@ class Reference(ReferenceBase):
 
 
 class DirectReference(ReferenceBase):
-    def __init__(self, referenceable, type='number', link=False, style=None,
-                 **kwargs):
-        super().__init__(type=type, link=link, style=style, **kwargs)
+    def __init__(self, referenceable, type='number', **kwargs):
+        super().__init__(type=type, **kwargs)
         self.referenceable = referenceable
 
     def target_id(self, document):
@@ -200,15 +210,14 @@ class RegisterNote(DummyFlowable):
         self.note.prepare(flowable_target)
 
 
-class NoteMarkerStyle(TextStyle, NumberStyle):
-    pass
+class NoteMarkerStyle(ReferenceStyle):
+    type = OverrideDefault(ReferenceType.NUMBER)
 
 
 class NoteMarkerBase(ReferenceBase, Label):
     style_class = NoteMarkerStyle
 
     def __init__(self, custom_label=None, **kwargs):
-        kwargs.update(type='number', link=True)
         super().__init__(**kwargs)
         Label.__init__(self, custom_label=custom_label)
 

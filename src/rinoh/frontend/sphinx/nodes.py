@@ -381,7 +381,7 @@ class Autosummary_ToC(DocutilsGroupingNode):
 
 class Number_Reference(DocutilsInlineNode):
     def build_styled_text(self):
-        return Reference(self.get('refid'), 'reference', style='link')
+        return Reference(self.get('refid'), 'reference')
 
 
 class Footnotes_Rubric(DocutilsDummyNode):
