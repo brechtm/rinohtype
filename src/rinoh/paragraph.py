@@ -365,7 +365,8 @@ class ParagraphStyle(FlowableStyle, NumberStyle, TextStyle):
                                  " own number label. If ``None``, only show"
                                  " this item's number label.")
     numbering_level = Attribute(Integer, 0, 'At which section level to '
-                                            'restart numbering')
+                                            'restart numbering (positive: '
+                                            'absolute, negative: relative)')
 
 
 class Glyph(object):
@@ -620,7 +621,6 @@ class ParagraphBase(Flowable, Label):
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         document = flowable_target.document
-        referenceable_id = self.referenceable.get_id(document)
         number_format = self.get_style('number_format', flowable_target)
         if self.get_style('custom_label', flowable_target):
             assert self.custom_label is not None
@@ -628,6 +628,8 @@ class ParagraphBase(Flowable, Label):
         elif number_format:
             numbering_level = self.get_style('numbering_level', flowable_target)
             section = self.section
+            if numbering_level < 0:
+                numbering_level = section.level + numbering_level
             while section and section.level > numbering_level:
                 section = section.parent.section
             section_id = section.get_id(document, False) if section else None
@@ -639,7 +641,11 @@ class ParagraphBase(Flowable, Label):
             label = self.prepare_label(number, section, flowable_target)
         else:
             label = None
-        document.set_reference(referenceable_id, 'number', label)
+        category = self.referenceable.category
+        reference = '{} {}'.format(category, label)
+        for id in self.referenceable.get_ids(document):
+            document.set_reference(id, 'number', label)
+            document.set_reference(id, 'reference', reference)
 
     def prepare_label(self, number, parent_section, container):
         document = container.document
@@ -810,6 +816,9 @@ class StaticParagraph(ParagraphBase):
     def prepare(self, container):
         super().prepare(container)
         self.content.prepare(container)
+        title = self.content.to_string(container)
+        for id in self.referenceable.get_ids(container.document):
+            container.document.set_reference(id, 'title', title)
 
     def _text(self, container):
         return self.content

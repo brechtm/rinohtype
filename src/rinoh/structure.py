@@ -21,12 +21,10 @@ from .paragraph import (ParagraphBase, StaticParagraph, Paragraph,
                         ParagraphStyle)
 from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
-from .reference import ReferenceType
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .style import PARENT_STYLE
 from .strings import StringCollection, String, StringField
 from .util import NotImplementedAttribute, itemcount
-
 
 __all__ = ['Section', 'Heading',
            'ListStyle', 'List', 'ListItem', 'ListItemLabel', 'DefinitionList',
@@ -98,6 +96,7 @@ class Section(StaticGroupedFlowables, SectionBase):
 
 class HeadingStyle(ParagraphStyle):
     keep_with_next = OverrideDefault(True)
+    numbering_level = OverrideDefault(-1)
 
 
 class Heading(StaticParagraph):
@@ -114,31 +113,9 @@ class Heading(StaticParagraph):
     def referenceable(self):
         return self.section
 
-    def prepare(self, flowable_target):
-        document = flowable_target.document
-        document._sections.append(self.section)
-        section_id = self.section.get_id(document)
-        number_format = self.get_style('number_format', flowable_target)
-        if self.get_style('custom_label', flowable_target):
-            assert self.custom_label is not None
-            label = str(self.custom_label)
-        elif number_format:
-            try:
-                parent_section_id = self.section.parent.section.get_id(document)
-            except AttributeError:
-                parent_section_id = None
-            ref_category = self.referenceable.category
-            section_counters = document.counters.setdefault(ref_category, {})
-            section_counter = section_counters.setdefault(parent_section_id, [])
-            section_counter.append(self)
-            number = len(section_counter)
-            label = self.prepare_label(number, self.section.parent.section,
-                                       flowable_target)
-        else:
-            label = None
-        title_string = self.content.to_string(flowable_target)
-        document.set_reference(section_id, ReferenceType.NUMBER, label)
-        document.set_reference(section_id, ReferenceType.TITLE, title_string)
+    def prepare(self, container):
+        super().prepare(container)
+        container.document._sections.append(self.section)
 
     def flow(self, container, last_descender, state=None, **kwargs):
         if self.level == 1 and container.page.chapter_title:

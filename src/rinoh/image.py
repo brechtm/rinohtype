@@ -9,7 +9,6 @@
 import os
 
 from ast import literal_eval
-from functools import partial
 from pathlib import Path
 from token import LPAR, RPAR, NAME, EQUAL, NUMBER, ENDMARKER,  STRING, COMMA
 
@@ -24,10 +23,9 @@ from .flowable import (Flowable, FlowableState, HorizontalAlignment,
 from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberFormat
-from .paragraph import StaticParagraph, ParagraphStyle
-from .reference import ReferenceType
+from .paragraph import StaticParagraph, Paragraph, ParagraphStyle
 from .structure import ListOf, ListOfSection
-from .text import MixedStyledText, SingleStyledText, TextStyle, StyledText
+from .text import MixedStyledText, SingleStyledText, TextStyle
 from .util import posix_path, ReadAliasAttribute, PeekIterator
 
 
@@ -390,27 +388,6 @@ class Caption(StaticParagraph):
     @property
     def referenceable(self):
         return self.parent
-
-    def prepare(self, flowable_target):
-        document = flowable_target.document
-        get_style = partial(self.get_style, container=flowable_target)
-        category = self.referenceable.category
-        numbering_level = get_style('numbering_level')
-        section = self.section
-        while section and section.level > numbering_level:
-            section = section.parent.section
-        section_id = section.get_id(document, False) if section else None
-        category_counters = document.counters.setdefault(category, {})
-        category_counter = category_counters.setdefault(section_id, [])
-        category_counter.append(self)
-        number = len(category_counter)
-        label = self.prepare_label(number, section, flowable_target)
-        reference = '{} {}'.format(category, label)
-        for id in self.referenceable.get_ids(document):
-            document.set_reference(id, ReferenceType.NUMBER, label)
-            document.set_reference(id, ReferenceType.REFERENCE, reference)
-            document.set_reference(id, ReferenceType.TITLE,
-                                   self.content.to_string(None))
 
     def text(self, container):
         label = self.referenceable.category + ' ' + self.number(container)
