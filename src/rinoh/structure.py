@@ -253,7 +253,7 @@ class TableOfContents(GroupedFlowables):
 
 
 class TableOfContentsEntryStyle(ReferencingParagraphStyle):
-    text = OverrideDefault(ReferenceField('number')
+    text = OverrideDefault(ReferenceField('number', quiet=True)
                            + Tab() + ReferenceField('title')
                            + Tab() + ReferenceField('page'))
 

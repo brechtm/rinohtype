@@ -40,10 +40,11 @@ from .language import EN
 from .layout import (Container, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import format_number
+from .reference import ReferenceType
 from .strings import Strings
 from .style import StyleLog
 from .text import StyledText
-from .util import RefKeyDictionary
+from .util import DEFAULT, RefKeyDictionary
 from .warnings import warn
 
 
@@ -282,8 +283,15 @@ to the terms of the GNU Affero General Public License version 3.''')
         id_references = self.references.setdefault(id, {})
         id_references[reference_type] = value
 
-    def get_reference(self, id, reference_type):
-        return self.references[id][reference_type]
+    def get_reference(self, id, reference_type, default=DEFAULT):
+        if reference_type == ReferenceType.PAGE:
+            return self.page_references[id]
+        try:
+            return self.references[id][reference_type]
+        except KeyError:
+            if default is DEFAULT:
+                raise
+            return default
 
     def set_glossary(self, term, definition):
         try:
@@ -416,7 +424,7 @@ to the terms of the GNU Affero General Public License version 3.''')
             if not section.show_in_toc(fake_container):
                 continue
             section_id = section.get_id(self, create=False)
-            section_number = self.get_reference(section_id, 'number')
+            section_number = self.get_reference(section_id, 'number', None)
             section_title = self.get_reference(section_id, 'title')
             if section.level > current_level:
                 if section.level != current_level + 1:

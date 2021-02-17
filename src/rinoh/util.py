@@ -44,6 +44,7 @@ __all__ = ['INF', 'all_subclasses', 'clamp', 'intersperse', 'itemcount',
 # constants
 
 INF = float('+inf')
+DEFAULT = object()
 
 
 # functions

@@ -33,8 +33,8 @@ from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 
 from .annotation import AnchorAnnotation, LinkAnnotation, AnnotatedSpan
 from .attribute import (AttributeType, AcceptNoneAttributeType, Attribute,
-                        Bool, Integer)
-from .color import Color, BLACK
+                        Bool, Integer, ParseError)
+from .color import Color, BLACK, RED
 from .dimension import Dimension, PT
 from .font import Typeface
 from .fonts import adobe14
@@ -105,6 +105,7 @@ class InlineStyled(Styled):
         if before is not None:
             yield from before.copy(self.parent).wrapped_spans(container)
         if not self.get_style('hide', container):
+            # yield from self.spans(container)
             yield from self._annotated_spans(container)
         after = self.get_style('after', container)
         if after is not None:
@@ -674,6 +675,14 @@ class Subscript(MixedStyledText):
         an iterable of these."""
         super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent,
                          source=source)
+
+
+ERROR_STYLE = TextStyle(font_color=RED)
+
+
+class ErrorText(SingleStyledText):
+    def __init__(self, text, style=ERROR_STYLE, parent=None, source=None):
+        super().__init__(text, style=style, parent=parent, source=source)
 
 
 from .reference import Field

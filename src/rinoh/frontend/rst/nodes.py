@@ -400,7 +400,7 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
         content = self.process_content()
         if self.get('refid'):
             return rt.Reference(self.get('refid'), type='reference',
-                                style='internal link')
+                                custom_title=content, style='internal link')
         elif self.get('refuri'):
             annotation = rt.HyperLink(self.get('refuri'))
             return rt.AnnotatedText(content, annotation, style='external link')

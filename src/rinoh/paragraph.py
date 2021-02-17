@@ -640,7 +640,7 @@ class ParagraphBase(Flowable, Label):
             number = len(section_counter)
             label = self.prepare_label(number, section, flowable_target)
         else:
-            label = None
+            return
         category = self.referenceable.category
         reference = '{} {}'.format(category, label)
         for id in self.referenceable.get_ids(document):
@@ -654,7 +654,7 @@ class ParagraphBase(Flowable, Label):
         separator = self.get_style('number_separator', container)
         if separator is not None and parent_section and parent_section.level > 0:
             parent_id = parent_section.get_id(document)
-            parent_ref = document.get_reference(parent_id, 'number')
+            parent_ref = document.get_reference(parent_id, 'number', None)
             if parent_ref:
                 separator_string = separator.to_string(container)
                 label = parent_ref + separator_string + label

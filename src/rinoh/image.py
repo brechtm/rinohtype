@@ -25,7 +25,7 @@ from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberFormat
 from .paragraph import StaticParagraph, Paragraph, ParagraphStyle
 from .structure import ListOf, ListOfSection
-from .text import MixedStyledText, SingleStyledText, TextStyle
+from .text import MixedStyledText, SingleStyledText, TextStyle, ErrorText
 from .util import posix_path, ReadAliasAttribute, PeekIterator
 
 
@@ -257,8 +257,8 @@ class ImageBase(Flowable):
             container.document.error = True
             message = "Error opening image file: {}".format(err)
             self.warn(message)
-            text = SingleStyledText(message, style=TextStyle(font_color=RED))
-            return Paragraph(text).flow(container, last_descender)
+            error = ErrorText(message)
+            return Paragraph(error).flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
         try:

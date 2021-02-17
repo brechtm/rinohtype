@@ -20,7 +20,7 @@ from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
 from .style import HasClass, HasClasses
 from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
-                   StyledText, SingleStyledText, MixedStyledText)
+                   StyledText, SingleStyledText, MixedStyledText, ErrorText)
 from .util import NotImplementedAttribute
 
 
@@ -44,10 +44,11 @@ class ReferenceType(OptionSet):
 
 
 class ReferenceBase(MixedStyledTextBase):
-    def __init__(self, type='number', link=True, quiet=False, style=None,
-                 parent=None, source=None):
+    def __init__(self, type='number', custom_title=None, link=True,
+                 quiet=False, style=None, parent=None, source=None):
         super().__init__(style=style, parent=parent, source=source)
         self.type = type
+        self.custom_title = custom_title
         self.link = link
         self.quiet = quiet
 
@@ -68,30 +69,19 @@ class ReferenceBase(MixedStyledTextBase):
         if container is None:
             return '$REF({})'.format(self.type)
         target_id = self.target_id(container.document)
+        if target_id not in container.document.elements:
+            self.warn("Unknown target '{}'".format(target_id), container)
+            yield ErrorText('??', parent=self)
+            return
         try:
-            if self.type == ReferenceType.REFERENCE:
-                category = container.document.elements[target_id].category
-                number = container.document.get_reference(target_id, 'number')
-                text = '{}\N{No-BREAK SPACE}{}'.format(category, number)
-            elif self.type == ReferenceType.NUMBER:
-                text = container.document.get_reference(target_id, self.type)
-                if text is None:
-                    if not self.quiet:
-                        self.warn('Cannot reference "{}"'.format(target_id),
-                                  container)
-                    text = ''
-            elif self.type == ReferenceType.PAGE:
-                try:
-                    text = str(container.document.page_references[target_id])
-                except KeyError:
-                    text = '??'
-            elif self.type == ReferenceType.TITLE:
-                text = container.document.get_reference(target_id, self.type)
-            else:
-                raise NotImplementedError(self.type)
+            text = container.document.get_reference(target_id, self.type)
         except KeyError:
-            self.warn("Unknown label '{}'".format(target_id), container)
-            text = "??".format(target_id)
+            if self.quiet:
+                text = ''
+            else:
+                self.warn(f"Target '{target_id}' has no '{type}' reference",
+                          container)
+                text = self.custom_title or ErrorText('??', parent=self)
         # TODO: clean up
         if isinstance(text, MixedStyledTextBase):
             for child in text.children(container):
@@ -99,7 +89,7 @@ class ReferenceBase(MixedStyledTextBase):
                 child_copy.parent = self
                 yield child_copy
         elif isinstance(text, SingleStyledTextBase):
-            yield text
+            yield text.copy(parent=self)
         else:
             yield SingleStyledText(text, parent=self)
 
@@ -391,8 +381,8 @@ class Field(MixedStyledTextBase):
             section = container.page.get_current_section(self.type.level)
             section_id = section.get_id(doc) if section else None
             if section_id:
-                text = (doc.get_reference(section_id, self.type.reference_type)\
-                        or '\N{ZERO WIDTH SPACE}')
+                text = doc.get_reference(section_id, self.type.reference_type,
+                                         '\N{ZERO WIDTH SPACE}')
             else:
                 text = '\N{ZERO WIDTH SPACE}'
         else:
