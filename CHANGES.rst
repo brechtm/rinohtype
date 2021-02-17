@@ -6,7 +6,8 @@ Release 0.5.1 (in development)
 
 New Features:
 
-*
+* Paragraphs can now be numbered. rinohtype also allows for referencing them by
+  number, but docutils/Sphinx doesn't offer the means for this.
 
 Changed:
 
