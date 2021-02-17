@@ -17,7 +17,7 @@ from pygments.lexers.python import (PythonLexer, Python3Lexer,
 from pygments.lexers.special import TextLexer
 from pygments.util import ClassNotFound
 
-from ...annotation import HyperLink, AnnotatedText
+from ...annotation import HyperLink
 from ...flowable import LabeledFlowable, StaticGroupedFlowables
 from ...glossary import GlossaryTerm
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
@@ -202,13 +202,13 @@ class Abbreviation(DocutilsInlineNode):
 
 class Download_Reference(DocutilsInlineNode):
     def build_styled_text(self):
+        content = self.process_content(style='download link')
         try:
             # TODO: (optionally) embed the file in the PDF
-            link = HyperLink(self.get('reftarget'))
-            return AnnotatedText(self.process_content(), link,
-                                 style='download link')
+            content.annotation = HyperLink(self.get('reftarget'))
         except KeyError:
-            return super().build_styled_text()
+            pass
+        return content
 
 
 # admonitions

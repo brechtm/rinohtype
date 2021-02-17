@@ -76,9 +76,6 @@ class Locale(AttributeType):
 class InlineStyled(Styled):
     """"""
 
-    def get_annotation(self, container):
-        return None
-
     def _annotated_spans(self, container):
         spans = self.spans(container)
         ann = self.get_annotation(container)

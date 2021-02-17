@@ -1,5 +1,12 @@
 
-from .annotation import AnnotatedText
+from .text import Box
+from .text import Character
+from .text import CharacterLike
+from .text import ControlCharacter, Newline, Tab
+from .text import StyledText, SingleStyledText, MixedStyledText
+from .text import ConditionalMixedStyledText
+from .text import Space, FixedWidthSpace, NoBreakSpace, Spacer
+from .text import Subscript, Superscript
 from .draw import Line, Shape, Polygon, Rectangle
 from .image import Figure, Caption
 from .image import ListOfFiguresSection, ListOfFigures
@@ -30,11 +37,3 @@ from .structure import OutOfLineFlowables
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody
 from .table import TableRow, TableCell, TableCellBackground, TableCellBorder
 from .table import ListOfTables, ListOfTablesSection
-from .text import Box
-from .text import Character
-from .text import CharacterLike
-from .text import ControlCharacter, Newline, Tab
-from .text import StyledText, SingleStyledText, MixedStyledText
-from .text import ConditionalMixedStyledText
-from .text import Space, FixedWidthSpace, NoBreakSpace, Spacer
-from .text import Subscript, Superscript

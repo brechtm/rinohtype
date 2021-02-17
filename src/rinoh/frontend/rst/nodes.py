@@ -402,10 +402,11 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
             return rt.Reference(self.get('refid'), type='reference',
                                 custom_title=content, style='internal link')
         elif self.get('refuri'):
-            annotation = rt.HyperLink(self.get('refuri'))
-            return rt.AnnotatedText(content, annotation, style='external link')
+            content.annotation = rt.HyperLink(self.get('refuri'))
+            content.style = 'external link'
         else:
-            return rt.MixedStyledText(content, style='broken link')
+            content.style = 'broken link'
+        return content
 
     def build_flowable(self):
         children = self.getchildren()
@@ -459,11 +460,12 @@ class Substitution_Definition(DocutilsBodyNode):
 class Target(DocutilsBodyNode, DocutilsInlineNode):
     def build_styled_text(self):
         # TODO: what about refid?
+        content = self.process_content()
         try:
-            destination = rt.NamedDestination(*self._ids)
-            return rt.AnnotatedText(self.process_content(), destination)
+            content.annotation = rt.NamedDestination(*self._ids)
         except IndexError:
-            return self.process_content()   # TODO: use refname?
+            pass
+        return content
 
     def build_flowable(self):
         return rt.AnchorFlowable()
@@ -515,8 +517,7 @@ class Term(DocutilsInlineNode):
     def build_styled_text(self):
         content = self.process_content()
         if self._ids:
-            destination = rt.NamedDestination(*self._ids)
-            content = rt.AnnotatedText(content, destination)
+            content.annotation = rt.NamedDestination(*self._ids)
         return content
 
 

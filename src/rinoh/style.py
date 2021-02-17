@@ -414,6 +414,7 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
                                     self.style_class.__name__,
                                     style.__class__.__name__))
         self.style = style
+        self.annotation = None
         self.classes = []
 
     def __eq__(self, other):
@@ -469,6 +470,9 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
 
     def fallback_to_parent(self, attribute):
         return isinstance(self.style, ParentStyle)
+
+    def get_annotation(self, container):
+        return self.annotation
 
     @cached
     def get_style(self, attribute, container):

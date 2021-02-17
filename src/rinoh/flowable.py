@@ -139,7 +139,6 @@ class Flowable(Styled):
         """Initialize this flowable and associate it with the given `style` and
         `parent` (see :class:`Styled`)."""
         super().__init__(id=id, style=style, parent=parent, source=source)
-        self.annotation = None
         self.align = align
         self.width = width
 
@@ -228,10 +227,10 @@ class Flowable(Styled):
         initial_after = state is not None and state.initial
         top_to_baseline += inner_top_to_baseline
 
-        if self.annotation:
+        annotation = self.get_annotation(container)
+        if annotation:
             height = float(margin_container.height)
-            margin_container.canvas.annotate(self.annotation,
-                                             0, 0, width, height)
+            margin_container.canvas.annotate(annotation, 0, 0, width, height)
         self.mark_page_nonempty(container)
         if initial_before and not initial_after:
             if reference_id:

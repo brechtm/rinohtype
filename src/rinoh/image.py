@@ -15,7 +15,6 @@ from token import LPAR, RPAR, NAME, EQUAL, NUMBER, ENDMARKER,  STRING, COMMA
 from .attribute import (Attribute, AttributesDictionary, OverrideDefault,
                         AcceptNoneAttributeType, OptionSet, Integer,
                         ParseError)
-from .color import RED
 from .dimension import Dimension, PERCENT
 from .flowable import (Flowable, FlowableState, HorizontalAlignment,
                        FlowableWidth, StaticGroupedFlowables,

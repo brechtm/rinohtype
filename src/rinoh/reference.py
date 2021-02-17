@@ -94,6 +94,7 @@ class ReferenceBase(MixedStyledTextBase):
             yield SingleStyledText(text, parent=self)
 
     def get_annotation(self, container):
+        assert self.annotation is None
         if self.link:
             target_id = self.target_id(container.document)
             return NamedDestinationLink(str(target_id))

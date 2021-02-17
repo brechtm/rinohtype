@@ -146,8 +146,9 @@ class A(EPubBodyNode, EPubInlineNode):
         # else:
         #     return styleds.MixedStyledText(self.process_content(),
         #                               style='broken link')
-        return styleds.AnnotatedText(self.process_content(), annotation,
-                                     style=style)
+        content = self.process_content(style=style)
+        content.annotation = annotation
+        return content
 
     def build_flowables(self):
         children = self.getchildren()
