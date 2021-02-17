@@ -1,0 +1,14 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[body]
+indent_first = 0
+space_below = 5mm
+
+[positive-indent : Paragraph(has_class='positive-indent')]
+base = body
+indent_first = 1cm
+
+[negative-indent : Paragraph(has_class='negative-indent')]
+base = body
+indent_first = -1cm
