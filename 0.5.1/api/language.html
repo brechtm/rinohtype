@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Language (rinoh.language) &mdash; rinohtype 0.5.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Number (rinoh.number)" href="number.html" />
+    <link rel="prev" title="Index (rinoh.index)" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+        
+      <li>Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/language.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-rinoh.language"></span><div class="section" id="language-rinoh-language">
+<span id="language"></span><h1>Language (<a class="reference internal" href="#module-rinoh.language" title="rinoh.language"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code></a>)<a class="headerlink" href="#language-rinoh-language" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="rinoh.language.Language">
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">Language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects localized strings for a particular language</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – short code identifying the language</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – native name of the language</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="rinoh.language.Language.languages">
+<code class="sig-name descname">languages</code><a class="headerlink" href="#rinoh.language.Language.languages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary mapping codes to <a class="reference internal" href="#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>s</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="supported-languages">The following languages are supported:</p>
+<dl class="py data">
+<dt id="rinoh.language.EN">
+<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">EN</code><em class="property"> = Language('en', 'English')</em><a class="headerlink" href="#rinoh.language.EN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for English</p>
+<p class="rubric">SectionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Contents</dt>
+<dd class="field-odd"><p>Table of Contents</p>
+</dd>
+<dt class="field-even">List_of_figures</dt>
+<dd class="field-even"><p>List of Figures</p>
+</dd>
+<dt class="field-odd">List_of_tables</dt>
+<dd class="field-odd"><p>List of Tables</p>
+</dd>
+<dt class="field-even">Chapter</dt>
+<dd class="field-even"><p>Chapter</p>
+</dd>
+<dt class="field-odd">Index</dt>
+<dd class="field-odd"><p>Index</p>
+</dd>
+</dl>
+<p class="rubric">AdmonitionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attention</dt>
+<dd class="field-odd"><p>Attention!</p>
+</dd>
+<dt class="field-even">Caution</dt>
+<dd class="field-even"><p>Caution!</p>
+</dd>
+<dt class="field-odd">Danger</dt>
+<dd class="field-odd"><p>!DANGER!</p>
+</dd>
+<dt class="field-even">Error</dt>
+<dd class="field-even"><p>Error</p>
+</dd>
+<dt class="field-odd">Hint</dt>
+<dd class="field-odd"><p>Hint</p>
+</dd>
+<dt class="field-even">Important</dt>
+<dd class="field-even"><p>Important</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Note</p>
+</dd>
+<dt class="field-even">Tip</dt>
+<dd class="field-even"><p>Tip</p>
+</dd>
+<dt class="field-odd">Warning</dt>
+<dd class="field-odd"><p>Warning</p>
+</dd>
+<dt class="field-even">Seealso</dt>
+<dd class="field-even"><p>See also</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="rinoh.language.FR">
+<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">FR</code><em class="property"> = Language('fr', 'Français')</em><a class="headerlink" href="#rinoh.language.FR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Français</p>
+<p class="rubric">SectionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Contents</dt>
+<dd class="field-odd"><p>Table des Matières</p>
+</dd>
+<dt class="field-even">List_of_figures</dt>
+<dd class="field-even"><p>Liste des Figures</p>
+</dd>
+<dt class="field-odd">List_of_tables</dt>
+<dd class="field-odd"><p>Liste des Tableaux</p>
+</dd>
+<dt class="field-even">Chapter</dt>
+<dd class="field-even"><p>Chapitre</p>
+</dd>
+<dt class="field-odd">Index</dt>
+<dd class="field-odd"><p>Index</p>
+</dd>
+</dl>
+<p class="rubric">AdmonitionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attention</dt>
+<dd class="field-odd"><p>Attention!</p>
+</dd>
+<dt class="field-even">Caution</dt>
+<dd class="field-even"><p>Prudence!</p>
+</dd>
+<dt class="field-odd">Danger</dt>
+<dd class="field-odd"><p>!DANGER!</p>
+</dd>
+<dt class="field-even">Error</dt>
+<dd class="field-even"><p>Erreur</p>
+</dd>
+<dt class="field-odd">Hint</dt>
+<dd class="field-odd"><p>Conseil</p>
+</dd>
+<dt class="field-even">Important</dt>
+<dd class="field-even"><p>Important</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Note</p>
+</dd>
+<dt class="field-even">Tip</dt>
+<dd class="field-even"><p>Astuce</p>
+</dd>
+<dt class="field-odd">Warning</dt>
+<dd class="field-odd"><p>Avertissement</p>
+</dd>
+<dt class="field-even">Seealso</dt>
+<dd class="field-even"><p>Voir aussi</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="rinoh.language.IT">
+<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">IT</code><em class="property"> = Language('it', 'Italiano')</em><a class="headerlink" href="#rinoh.language.IT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Italiano</p>
+<p class="rubric">SectionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Contents</dt>
+<dd class="field-odd"><p>Contenuti</p>
+</dd>
+<dt class="field-even">List_of_figures</dt>
+<dd class="field-even"><p>Elenco delle Figure</p>
+</dd>
+<dt class="field-odd">List_of_tables</dt>
+<dd class="field-odd"><p>Elenco delle Tabelle</p>
+</dd>
+<dt class="field-even">Chapter</dt>
+<dd class="field-even"><p>Capitolo</p>
+</dd>
+<dt class="field-odd">Index</dt>
+<dd class="field-odd"><p>Indice</p>
+</dd>
+</dl>
+<p class="rubric">AdmonitionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attention</dt>
+<dd class="field-odd"><p>Attenzione!</p>
+</dd>
+<dt class="field-even">Caution</dt>
+<dd class="field-even"><p>Prudenza!</p>
+</dd>
+<dt class="field-odd">Danger</dt>
+<dd class="field-odd"><p>!PERICOLO!</p>
+</dd>
+<dt class="field-even">Error</dt>
+<dd class="field-even"><p>Errore</p>
+</dd>
+<dt class="field-odd">Hint</dt>
+<dd class="field-odd"><p>Consiglio</p>
+</dd>
+<dt class="field-even">Important</dt>
+<dd class="field-even"><p>Importante</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Nota</p>
+</dd>
+<dt class="field-even">Tip</dt>
+<dd class="field-even"><p>Suggerimento</p>
+</dd>
+<dt class="field-odd">Warning</dt>
+<dd class="field-odd"><p>Avvertimento</p>
+</dd>
+<dt class="field-even">Seealso</dt>
+<dd class="field-even"><p>Vedi anche</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="rinoh.language.NL">
+<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">NL</code><em class="property"> = Language('nl', 'Nederlands')</em><a class="headerlink" href="#rinoh.language.NL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Nederlands</p>
+<p class="rubric">SectionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Contents</dt>
+<dd class="field-odd"><p>Inhoudsopgave</p>
+</dd>
+<dt class="field-even">List_of_figures</dt>
+<dd class="field-even"><p>Lijst van Figuren</p>
+</dd>
+<dt class="field-odd">List_of_tables</dt>
+<dd class="field-odd"><p>Lijst van Tabellen</p>
+</dd>
+<dt class="field-even">Chapter</dt>
+<dd class="field-even"><p>Hoofdstuk</p>
+</dd>
+<dt class="field-odd">Index</dt>
+<dd class="field-odd"><p>Index</p>
+</dd>
+</dl>
+<p class="rubric">AdmonitionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attention</dt>
+<dd class="field-odd"><p>Opgelet!</p>
+</dd>
+<dt class="field-even">Caution</dt>
+<dd class="field-even"><p>Pas op!</p>
+</dd>
+<dt class="field-odd">Danger</dt>
+<dd class="field-odd"><p>!GEVAAR!</p>
+</dd>
+<dt class="field-even">Error</dt>
+<dd class="field-even"><p>Fout</p>
+</dd>
+<dt class="field-odd">Hint</dt>
+<dd class="field-odd"><p>Hint</p>
+</dd>
+<dt class="field-even">Important</dt>
+<dd class="field-even"><p>Belangrijk</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Noot</p>
+</dd>
+<dt class="field-even">Tip</dt>
+<dd class="field-even"><p>Tip</p>
+</dd>
+<dt class="field-odd">Warning</dt>
+<dd class="field-odd"><p>Waarschuwing</p>
+</dd>
+<dt class="field-even">Seealso</dt>
+<dd class="field-even"><p>Zie ook</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt id="rinoh.language.PL">
+<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">PL</code><em class="property"> = Language('pl', 'Polski')</em><a class="headerlink" href="#rinoh.language.PL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Localized strings for Polski</p>
+<p class="rubric">SectionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Contents</dt>
+<dd class="field-odd"><p>Spis Treści</p>
+</dd>
+<dt class="field-even">List_of_figures</dt>
+<dd class="field-even"><p>Spis Ilustracji</p>
+</dd>
+<dt class="field-odd">List_of_tables</dt>
+<dd class="field-odd"><p>Spis Tabel</p>
+</dd>
+<dt class="field-even">Chapter</dt>
+<dd class="field-even"><p>Rozdział</p>
+</dd>
+<dt class="field-odd">Index</dt>
+<dd class="field-odd"><p>Skorowidz</p>
+</dd>
+</dl>
+<p class="rubric">AdmonitionTitles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attention</dt>
+<dd class="field-odd"><p>Uwaga!</p>
+</dd>
+<dt class="field-even">Caution</dt>
+<dd class="field-even"><p>Ostrożnie!</p>
+</dd>
+<dt class="field-odd">Danger</dt>
+<dd class="field-odd"><p>!NIEBEZPIECZEŃSTWO!</p>
+</dd>
+<dt class="field-even">Error</dt>
+<dd class="field-even"><p>Błąd</p>
+</dd>
+<dt class="field-odd">Hint</dt>
+<dd class="field-odd"><p>Wskazówka</p>
+</dd>
+<dt class="field-even">Important</dt>
+<dd class="field-even"><p>Ważne</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Notatka</p>
+</dd>
+<dt class="field-even">Tip</dt>
+<dd class="field-even"><p>Porada</p>
+</dd>
+<dt class="field-odd">Warning</dt>
+<dd class="field-odd"><p>Ostrzeżenie</p>
+</dd>
+<dt class="field-even">Seealso</dt>
+<dd class="field-even"><p>Zobacz również</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="number.html" class="btn btn-neutral float-right" title="Number (rinoh.number)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Index (rinoh.index)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Brecht Machiels.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

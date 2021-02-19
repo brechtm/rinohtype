@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Developing &mdash; rinohtype 0.5.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release History" href="changelog.html" />
+    <link rel="prev" title="Contributing" href="contributing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tox-environments">Tox Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-against-multiple-python-interpreter-versions">Testing against multiple Python interpreter versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-a-release">Making a release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Developing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/developing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developing">
+<span id="id1"></span><h1>Developing<a class="headerlink" href="#developing" title="Permalink to this headline">¶</a></h1>
+<p>This project makes use of <a class="reference external" href="https://tox.readthedocs.io">tox</a> to manage running tests and other tasks. The
+tests can be divided into three categories: checks, unit tests and regression
+(integration) tests. <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> defines “environments” that configure these
+tasks. Each of these are described in the next section. The unit and regression
+tests make use of <a class="reference external" href="https://www.pytest.org">pytest</a>.</p>
+<p>The repository includes a <a class="reference external" href="https://python-poetry.org/">Poetry</a> <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file to help you set up a
+virtual environment with tox and other development dependencies. From the
+repository checkout root directory execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Poetry will create a virtual environment in <em>.venv</em>, which you can activate
+like this<a class="footnote-reference brackets" href="#id3" id="id2">1</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+</pre></div>
+</div>
+<p>Now tox is available for running the tests. Starting <code class="docutils literal notranslate"><span class="pre">tox</span></code> without any
+arguments will run the <em>check</em>, <em>unit</em> and <em>regression</em> environments. Refer to
+the next section for an overview of all environments.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>If you install <a class="reference external" href="https://direnv.net/">direnv</a>, the virtual environment can be automatically
+activated when you enter the rinohtype repository checkout (see the
+<code class="docutils literal notranslate"><span class="pre">.envrc</span></code> file).</p>
+</dd>
+</dl>
+<div class="section" id="tox-environments">
+<h2>Tox Environments<a class="headerlink" href="#tox-environments" title="Permalink to this headline">¶</a></h2>
+<p>The following environments execute unit tests and regression tests:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">unit</span></code></dt><dd><p>Runs the unit tests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">regression</span></code></dt><dd><p>Runs integration/regression tests. Each of these tests render a tiny
+document (often a single page) focusing on a specific feature, which means
+they also execute quickly. Their PDF output is compared to a reference PDF
+that is known to be good.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">longrunning</span></code> (not maintained, broken)</dt><dd><p>Runs regressions tests that render larger documents. These tests take
+several minutes to complete.</p>
+</dd>
+</dl>
+<p>The other environments run checks, build documentation and build “binary”
+distributions for Mac and Windows:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">check</span></code></dt><dd><p>Performs basic checks; just <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">check</span></code> at this point.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check-docs</span></code></dt><dd><p>Perform checks on the documentation source files using <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html">sphinx-doctest</a>. <a class="reference external" href="https://mg.pov.lt/restview/">restview</a> can be useful when fixing syntax errors in
+<code class="docutils literal notranslate"><span class="pre">README.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">CHANGES.rst</span></code>, …</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">build-docs</span></code></dt><dd><p>Build the rinohtype documentation using Sphinx, both in HTML and PDF
+formats.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">macapp</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone macOS application bundle using <a class="reference external" href="https://beeware.org/briefcase/">briefcase</a>. This task
+can only be run on macOS.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wininst</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone rinohtype installer for the Windows platform with the
+help of <a class="reference external" href="https://pynsist.readthedocs.io/en/latest/">pynsist</a>. This task also can be run on other platforms than
+Windows.</p>
+</dd>
+</dl>
+<p>Customization settings for <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and <a class="reference external" href="https://www.pytest.org">pytest</a> are stored in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p>
+</div>
+<div class="section" id="testing-against-multiple-python-interpreter-versions">
+<h2>Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this headline">¶</a></h2>
+<p>Tox facilitates running tests on multiple Python interpreter versions. You can
+combine the test environment names with a <a class="reference external" href="https://tox.readthedocs.io/en/latest/config.html#tox-environments">factor</a> to execute them on a specific
+Python interpreter version. For example, to run the unit tests on CPython 3.8:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="n">py38</span>
+</pre></div>
+</div>
+<p>While it is typically sufficient to test on a single Python version during
+development, it can be useful to run tests on a set of Python versions before
+pushing your commits. Of course, this requires these versions to be available
+on your machine. It is highly recommended you use <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> (or <a class="reference external" href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a>) to
+install and manage these. For example, to install CPython 3.8.1, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.8</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>and pyenv will download, build and install this version of CPython for you.
+pyenv will install the different Python versions in an isolated location
+(typically under <code class="docutils literal notranslate"><span class="pre">~/.penv</span></code>), so they will not interfere with your
+system-default Python versions.</p>
+<p>The file <code class="docutils literal notranslate"><span class="pre">.python-version</span></code> in the root of the repository specifies which
+Python versions pyenv should make available whenever we are inside the
+repository checkout directory. The file lists specific the versions of CPython
+rinohtype aims to support plus recent PyPy3 versions (ideally, we should
+closely track the latest releases). The <code class="docutils literal notranslate"><span class="pre">pyenv_install.py</span></code> script can install
+these for you (skipping any that are already installed).</p>
+</div>
+<div class="section" id="continuous-integration">
+<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the tox environments when new commits
+are pushed to the repository. The tox environments are run on Linux, macOS and
+Windows, and run the tests on an array of Python versions to make sure that we
+don’t break any corner cases. See <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
+</div>
+<div class="section" id="making-a-release">
+<h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
+<p>This is a list of steps to follow when making a new release of rinohtype.
+Publishing the new release to <a class="reference external" href="https://pypi.org/">PyPI</a> and uploading the documentation to GitHub
+Pages is handled by the GitHub Actions workflow.</p>
+<ol class="arabic">
+<li><p>Make sure your checkout is clean.</p></li>
+<li><p>Run run tests and checks locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">check</span><span class="p">,</span><span class="n">check</span><span class="o">-</span><span class="n">docs</span><span class="p">,</span><span class="n">build</span><span class="o">-</span><span class="n">docs</span><span class="p">,</span><span class="n">unit</span><span class="p">,</span><span class="n">regression</span>
+</pre></div>
+</div>
+</li>
+<li><p>Push your commits to master on GitHub. Don’t create a tag yet!</p></li>
+<li><p>Check whether all tests on <a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> are green.</p></li>
+<li><p>Set the release date.</p>
+<ul class="simple">
+<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>)</p></li>
+<li><p>add release date to this release’s section (see other sections for
+examples)</p></li>
+</ul>
+</li>
+<li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
+<li><p>Push the new tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
+<li><p>The GitHub workflow will run all tox environments and upload the new version
+to PyPI if all checks were successful.</p></li>
+<li><p>Create a <a class="reference external" href="https://github.com/brechtm/rinohtype/releases/new">new release on GitHub</a>. Include the relevant section of the
+changelog. Use previous releases as a template.</p>
+<ul>
+<li><p>Tag version: the release’s tag <em>vx.y.z</em></p></li>
+<li><p>Release title: <em>Release x.y.z (date)</em></p></li>
+<li><p>Add a link to the release on PyPI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Install</span> <span class="kn">from</span> <span class="p">[</span><span class="n">PyPI</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">rinohtype</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Copy the release notes from the change log</p></li>
+</ul>
+</li>
+<li><p>Bump version number and reset the release date to “upcoming”.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">version</span> <span class="pre">patch</span>&#160; <span class="pre">#</span> <span class="pre">or</span> <span class="pre">'minor'</span></code></p></li>
+<li><p>add new section at the top of the changelog</p></li>
+<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> to <code class="docutils literal notranslate"><span class="pre">'upcoming'</span></code></p></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="contributing.html" class="btn btn-neutral float-left" title="Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Brecht Machiels.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
