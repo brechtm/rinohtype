@@ -59,21 +59,9 @@ rinohtype, so don't hesitate to `contact us`_.
 .. _contact us: info@opqode.com
 
 
-.. toctree::
-    :maxdepth: 2
+.. include:: manual.rst
 
-    intro
-    install
-    quickstart
-    basicstyling
-    elementstyling
-    templates
-    reference
-    api/api
-    faq
-    contributing
-    developing
-    changelog
+.. include:: reference.rst
 
 
 .. only:: html

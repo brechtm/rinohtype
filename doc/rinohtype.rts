@@ -312,7 +312,10 @@ background_color = #e8e8e8
 border_top = 1mm,#eb3e31
 
 [title page title]
-hide = true
+typeface=$(sans_typeface)
+font_size=24pt
+text_align=right
+space_above=6pt
 
 [title page subtitle]
 typeface=$(sans_typeface)

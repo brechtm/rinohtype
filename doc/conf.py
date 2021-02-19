@@ -355,15 +355,14 @@ epub_exclude_files = ['search.html']
 
 # -- Options for rinohtype PDF output -------------------------------------
 
-rinoh_documents = [{
-    'doc': 'index',
-    'target': 'rinohtype',
-    'title': 'rinohtype',
-    'author': 'Brecht Machiels',
-    'toctree_only': False,
-    'template': 'rinohtype.rtt',
-    'logo': '_static/rinohtype_logo.pdf'
-}]
+rinoh_documents = [
+    dict(doc='manual', target='manual', title='User Manual',
+         author='Brecht Machiels', toctree_only=False,
+         template='rinohtype.rtt', logo='_static/rinohtype_logo.pdf'),
+    dict(doc='reference', target='reference', title='Reference Guide',
+         author='Brecht Machiels', toctree_only=False,
+         template='rinohtype.rtt', logo='_static/rinohtype_logo.pdf'),
+]
 
 # -- Extension interface -------------------------------------------------------
 
