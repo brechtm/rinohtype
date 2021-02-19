@@ -100,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#release-0-5-1-in-development">Release 0.5.1 (in development)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-0-5-1-2021-02-19">Release 0.5.1 (2021-02-19)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-5-0-2021-02-03">Release 0.5.0 (2021-02-03)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-2-2020-07-28">Release 0.4.2 (2020-07-28)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-0-4-1-2020-07-01">Release 0.4.1 (2020-07-01)</a></li>
@@ -183,16 +183,13 @@
             
   <div class="section" id="release-history">
 <span id="changelog"></span><h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="release-0-5-1-in-development">
-<h2>Release 0.5.1 (in development)<a class="headerlink" href="#release-0-5-1-in-development" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="release-0-5-1-2021-02-19">
+<h2>Release 0.5.1 (2021-02-19)<a class="headerlink" href="#release-0-5-1-2021-02-19" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
 <li><p>Paragraphs can now be numbered. rinohtype also allows for referencing them by
-number, but docutils/Sphinx doesn’t offer the means for this.</p></li>
-</ul>
-<p>Changed:</p>
-<ul class="simple">
-<li></li>
+number, but docutils/Sphinx doesn’t readily offer the means express that. A
+workaround for this will be included in a future release.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
@@ -201,7 +198,10 @@ number, but docutils/Sphinx doesn’t offer the means for this.</p></li>
 <li><p>When a caption occurs in an unnumbered chapter, an exception aborts rendering
 (even when <code class="docutils literal notranslate"><span class="pre">number_separator</span></code> style attribute is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
 <li><p>Handling of base template specified as string in a template configuration</p></li>
+<li><p>Table column widths entries now also accept fractions</p></li>
 </ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
 </div>
 <div class="section" id="release-0-5-0-2021-02-03">
 <h2>Release 0.5.0 (2021-02-03)<a class="headerlink" href="#release-0-5-0-2021-02-03" title="Permalink to this headline">¶</a></h2>
@@ -213,7 +213,7 @@ name as listed on <a class="reference external" href="https://fonts.google.com">
 style property.</p></li>
 <li><p>Table: in addition to fixed and relative-width columns, you can indicate
 columns to be automatically sized by specifying a value of ‘auto’ in the
-‘column_widths’ style parameter in yout style sheet.</p></li>
+‘column_widths’ style parameter in your style sheet.</p></li>
 <li><p>docutils frontend: support the <code class="docutils literal notranslate"><span class="pre">:align:</span></code> option to table directives, which
 will override the alignment set for the table in the style sheet.</p></li>
 <li><p>The starting number of enumerated lists in reStructuredText is respected.</p></li>
