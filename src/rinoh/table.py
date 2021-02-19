@@ -73,7 +73,7 @@ class ColumnWidths(AcceptNoneAttributeType):
     def check_type(cls, value):
         return (super().check_type(value)
                 or (isinstance(value, list)
-                    and all(item is None or isinstance(item, (Dimension, int))
+                    and all(item is None or isinstance(item, (DimBase, int))
                             for item in value)))
 
     @classmethod

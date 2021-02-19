@@ -20,6 +20,7 @@ Fixed:
 * When a caption occurs in an unnumbered chapter, an exception aborts rendering
   (even when ``number_separator`` style attribute is set to ``None``)
 * Handling of base template specified as string in a template configuration
+* Table column widths entries now also accept fractions
 
 
 Release 0.5.0 (2021-02-03)
@@ -33,7 +34,7 @@ New Features:
   style property.
 * Table: in addition to fixed and relative-width columns, you can indicate
   columns to be automatically sized by specifying a value of 'auto' in the
-  'column_widths' style parameter in yout style sheet.
+  'column_widths' style parameter in your style sheet.
 * docutils frontend: support the ``:align:`` option to table directives, which
   will override the alignment set for the table in the style sheet.
 * The starting number of enumerated lists in reStructuredText is respected.

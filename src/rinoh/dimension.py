@@ -353,4 +353,5 @@ class FractionUnit(DimensionUnitBase):
 
 
 PERCENT = FractionUnit(100, '%')            #: fraction of 100
+HALVES = FractionUnit(2, '/2')              #: fraction of 2
 QUARTERS = FractionUnit(4, '/4')            #: fraction of 4

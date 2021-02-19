@@ -11,7 +11,7 @@ import pytest
 from rinoh.attribute import OptionSet, Bool, Integer, ParseError
 from rinoh.color import Color, HexColor
 from rinoh.dimension import (Dimension, PT, PICA, INCH, MM, CM,
-                             PERCENT, QUARTERS)
+                             PERCENT, HALVES, QUARTERS)
 from rinoh.draw import Stroke
 from rinoh.flowable import FlowableWidth, HorizontalAlignment, Break
 from rinoh.font.style import ClassSet, FontWeight, FontSlant, FontWidth
@@ -261,6 +261,8 @@ def test_dimension_from_string():
     assert Dimension.from_string('-2.1 cm') == -2.1*CM
     assert Dimension.from_string('21%') == 21*PERCENT
     assert Dimension.from_string('-16.12%') == -16.12*PERCENT
+    assert Dimension.from_string('1/2') == 1*HALVES
+    assert Dimension.from_string('3/2') == 3*HALVES
     assert Dimension.from_string('3/4') == 3*QUARTERS
     with pytest.raises(ParseError):
         assert Dimension.from_string('20inch')
@@ -456,6 +458,10 @@ def test_column_widths_from_string():
     assert ColumnWidths.from_string('2      4  6') == [2, 4, 6]
     assert ColumnWidths.from_string('6  5   4   ') == [6, 5, 4]
     assert ColumnWidths.from_string('1pt 2cm 3in') == [1*PT, 2*CM, 3*INCH]
+    assert ColumnWidths.from_string('20% 30%') == [20*PERCENT, 30*PERCENT]
+    assert ColumnWidths.from_string('1/2 3/4') == [1*HALVES, 3*QUARTERS]
+    assert ColumnWidths.from_string('1/2 auto 20%') == [1*HALVES, None,
+                                                        20*PERCENT]
     assert ColumnWidths.from_string('4 pt 5 cm 6 in') == [4*PT, 5*CM, 6*INCH]
     assert ColumnWidths.from_string('7pt 8 cm 9in') == [7*PT, 8*CM, 9*INCH]
     assert ColumnWidths.from_string('10 20 1cm 30') == [10, 20, 1*CM, 30]
