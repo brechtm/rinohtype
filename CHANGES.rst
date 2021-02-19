@@ -1,17 +1,14 @@
 Release History
 ---------------
 
-Release 0.5.1 (in development)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.1 (2021-02-19)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
 * Paragraphs can now be numbered. rinohtype also allows for referencing them by
-  number, but docutils/Sphinx doesn't offer the means for this.
-
-Changed:
-
-*
+  number, but docutils/Sphinx doesn't readily offer the means express that. A
+  workaround for this will be included in a future release.
 
 Fixed:
 
@@ -21,6 +18,9 @@ Fixed:
   (even when ``number_separator`` style attribute is set to ``None``)
 * Handling of base template specified as string in a template configuration
 * Table column widths entries now also accept fractions
+
+Part of the work included in this release was kindly sponsored by `Joby
+Aviation <https://www.jobyaviation.com>`_.
 
 
 Release 0.5.0 (2021-02-03)
