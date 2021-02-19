@@ -27,7 +27,7 @@ from rinoh.templates import Book, Article
 LOGGER = logging.getLogger(__name__)
 
 
-def create_sphinx_app(tmp_path, all_docs=('index',), **confoverrides):
+def create_sphinx_app(tmp_path, all_docs=('index', 'a', 'b'), **confoverrides):
     with docutils_namespace():
         confdir = tmp_path / 'confdir'
         confdir.mkdir()
@@ -300,6 +300,46 @@ def test_sphinx_rinoh_documents_list(caplog, tmp_path):
         document_data = app.builder.document_data(LOGGER)
     assert document_data == [document_data_dict()]
     assert "'rinoh_documents' entry converted from list" in caplog.text
+
+
+def test_sphinx_rinoh_targets_list_single(tmp_path):
+    rinoh_doc_a = document_data_dict(doc='a', target='a')
+    rinoh_doc_b = document_data_dict(doc='b', target='b')
+    app = create_sphinx_app(tmp_path, rinoh_targets=['a'],
+                            rinoh_documents=[rinoh_doc_a, rinoh_doc_b])
+    document_data = app.builder.document_data(LOGGER)
+    assert document_data == [rinoh_doc_a]
+
+
+def test_sphinx_rinoh_targets_list_multi(tmp_path):
+    rinoh_doc_index = document_data_dict(doc='index', target='index')
+    rinoh_doc_a = document_data_dict(doc='a', target='a')
+    rinoh_doc_b = document_data_dict(doc='b', target='b')
+    app = create_sphinx_app(tmp_path, rinoh_targets=['a', 'b'],
+                            rinoh_documents=[rinoh_doc_index,
+                                             rinoh_doc_a, rinoh_doc_b])
+    document_data = app.builder.document_data(LOGGER)
+    assert document_data == [rinoh_doc_a, rinoh_doc_b]
+
+
+def test_sphinx_rinoh_targets_string_single(tmp_path):
+    rinoh_doc_a = document_data_dict(doc='a', target='a')
+    rinoh_doc_b = document_data_dict(doc='b', target='b')
+    app = create_sphinx_app(tmp_path, rinoh_targets='  a ',
+                            rinoh_documents=[rinoh_doc_a, rinoh_doc_b])
+    document_data = app.builder.document_data(LOGGER)
+    assert document_data == [rinoh_doc_a]
+
+
+def test_sphinx_rinoh_targets_string_multi(tmp_path):
+    rinoh_doc_index = document_data_dict(doc='index', target='index')
+    rinoh_doc_a = document_data_dict(doc='a', target='a')
+    rinoh_doc_b = document_data_dict(doc='b', target='b')
+    app = create_sphinx_app(tmp_path, rinoh_targets='b, a   ',
+                            rinoh_documents=[rinoh_doc_index,
+                                             rinoh_doc_a, rinoh_doc_b])
+    document_data = app.builder.document_data(LOGGER)
+    assert document_data == [rinoh_doc_a, rinoh_doc_b]
 
 
 def test_sphinx_document_data_no_rinoh_documents(caplog, tmp_path):

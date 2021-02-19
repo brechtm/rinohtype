@@ -6,7 +6,9 @@ Release 0.5.2 (in development)
 
 New Features:
 
-* The 'number_format' style property can now also accepts styled text strings
+* Sphinx builder: the ``rinoh_targets`` configuration variable allows limiting
+  the documents to a subset of those listed in ``rinoh_documents``.
+* The 'number_format' style property can now also accept styled text strings
   which replace the auto-numbered label.
 * Document elements (Styled objects) can more easily be matched based on their
   ID (or 'name' in docutils terms) by means of the *has_id* selector property.

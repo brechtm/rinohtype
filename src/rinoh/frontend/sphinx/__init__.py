@@ -140,6 +140,12 @@ class RinohBuilder(Builder, Source):
             document_data = []
         document_data = [entry for entry in document_data
                          if known_document_reference(entry['doc'])]
+        targets = config.rinoh_targets
+        if targets:
+            if isinstance(targets, str):
+                targets = [target.strip() for target in targets.split(',')]
+            document_data = [entry for entry in document_data
+                             if entry['target'] in targets]
         return document_data
 
     def get_outdated_docs(self):
@@ -370,7 +376,8 @@ def variable_removed_warnings(config, logger):
 def setup(app):
     app.add_builder(RinohBuilder)
     app.add_config_value('rinoh_documents', None, 'env', (dict, list))
-    # the following are no longer supported and have are ignored
+    app.add_config_value('rinoh_targets', None, 'env', (list, str))
+    # the following are no longer supported and have no effect
     app.add_config_value('rinoh_logo', None, 'html')
     app.add_config_value('rinoh_domain_indices', None, 'html')
     app.add_config_value('rinoh_template', None, 'html')

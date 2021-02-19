@@ -78,6 +78,22 @@ options. Of these, only :confval:`rinoh_documents` (or
                  template='reference.rtt', stamp='DRAFT'),
         ]
 
+.. confval:: rinoh_targets
+
+    Limits rendering to the specified set of targets. This variable accepts
+    either a list of strings or a string containing comma-separated values. The
+    target names should match those set in :confval:`rinoh_documents`.
+
+    To render only the 'manual' target, you can set the following in
+    ``conf.py``::
+
+        rinoh_targets = ['manual']
+
+    The same can be achieved from the command line using the by using the
+    string form with :option:`sphinx:sphinx-build -D`::
+
+        spinx-build -b rinoh -D rinoh_targets="manual" source build
+
 
 Legacy Configuration Variables
 ------------------------------
