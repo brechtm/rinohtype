@@ -62,12 +62,3 @@ rinohtype, so don't hesitate to `contact us`_.
 .. include:: manual.rst
 
 .. include:: reference.rst
-
-
-.. only:: html
-
-    Indices and tables
-    ==================
-
-    * :ref:`genindex`
-    * :ref:`modindex`
