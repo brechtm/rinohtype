@@ -92,14 +92,16 @@ a look at the `rinohtype documentation`_ for an example of the output.
 Requirements
 ------------
 
-rinohtype supports Python 3.5 and up. For parsing reStructuredText and
-CommonMark documents, rinohtype depends on docutils_ and recommonmark_
-respectively. pip_ takes care of these requirements when you install rinohtype.
+rinohtype supports all stable Python 3 versions that have not reached
+end-of-life_ status. For parsing reStructuredText and CommonMark documents,
+rinohtype depends on docutils_ and recommonmark_ respectively. pip_ takes care
+of installing these requirements when you install rinohtype.
 
 Syntax highlighting of code blocks is eneabled if Pygments_ is installed, which
 will be installed automatically with Sphinx_. If you want to include images
 other than PDF, PNG or JPEG, you also need to install Pillow_.
 
+.. _end-of-life: https://devguide.python.org/#status-of-python-branches
 .. _docutils: http://docutils.sourceforge.net/index.html
 .. _recommonmark: https://recommonmark.readthedocs.io
 .. _pip: https://pip.pypa.io
