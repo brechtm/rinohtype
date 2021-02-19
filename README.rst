@@ -154,7 +154,8 @@ License
 -------
 
 All of rinohtype's source code is licensed under the `Affero GPL 3.0`_, unless
-indicated otherwise in the source file (such as ``hyphenator.py``).
+indicated otherwise in the source file (such as ``hyphenator.py`` and
+``purepng.py``).
 
 The Affero GPL requires for software that builds on rinohtype to also be
 released as open source under this license. For building closed-source
