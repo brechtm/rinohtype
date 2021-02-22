@@ -29,6 +29,7 @@ import sys
 import time
 
 from collections import OrderedDict
+from contextlib import suppress
 from copy import copy
 from itertools import count
 
@@ -438,11 +439,11 @@ to the terms of the GNU Affero General Public License version 3.''')
                 for i in range(current_level - section.level):
                     parent = stack.pop()
             current = []
-            try:
-                title_str = section_title.to_string(None)
-            except AttributeError:
-                title_str = section_title
-            item = (str(section_id), section_number, title_str, current)
+            with suppress(AttributeError):
+                section_title = section_title.to_string(None)
+            with suppress(AttributeError):
+                section_number = section_number.to_string(None)
+            item = (str(section_id), section_number, section_title, current)
             parent.append(item)
             current_level = section.level
         backend_document.create_outlines(sections)

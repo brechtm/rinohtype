@@ -642,7 +642,7 @@ class ParagraphBase(Flowable, Label):
         else:
             return
         category = self.referenceable.category
-        reference = '{} {}'.format(category, label)
+        reference = MixedStyledText([category, ' ', label])
         for id in self.referenceable.get_ids(document):
             document.set_reference(id, 'number', label)
             document.set_reference(id, 'reference', reference)

@@ -278,7 +278,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         return [self]
 
 
-class StyledTextParseError(Exception):
+class StyledTextParseError(ParseError):
     pass
 
 

@@ -67,7 +67,10 @@ class InlineFlowable(Flowable, InlineStyled, metaclass=InlineFlowableMeta):
     @classmethod
     def from_tokens(cls, tokens, source):
         directive = next(tokens).string.lower()
-        inline_flowable_class = InlineFlowable.directives[directive]
+        try:
+            inline_flowable_class = InlineFlowable.directives[directive]
+        except KeyError:
+            raise ParseError(f"Unknown inline flowable type '{directive}'")
         if next(tokens).exact_type != LPAR:
             raise ParseError('Expecting an opening parenthesis.')
         args, kwargs = inline_flowable_class.arguments.parse_arguments(tokens,

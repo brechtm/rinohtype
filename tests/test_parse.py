@@ -133,6 +133,12 @@ def test_numberformat_from_string():
     assert NumberFormat.from_string('uppercase roman') \
                == NumberFormat.UPPERCASE_ROMAN
     assert NumberFormat.from_string('sYMBOl') == NumberFormat.SYMBOL
+    assert NumberFormat.from_string("'1'") == SingleStyledText('1')
+    assert NumberFormat.from_string("'2' (strong)") \
+               == SingleStyledText('2', style='strong')
+    assert NumberFormat.from_string("'3' (strong) 'A'") \
+               == MixedStyledText([SingleStyledText('3', style='strong'),
+                                   SingleStyledText('A')])
     with pytest.raises(ValueError):
         NumberFormat.from_string('Character')
     with pytest.raises(ValueError):

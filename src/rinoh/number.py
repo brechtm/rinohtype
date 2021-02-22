@@ -13,7 +13,7 @@ Functions for formatting numbers:
 """
 from copy import copy
 
-from .attribute import Attribute, OptionSet, Bool
+from .attribute import Attribute, OptionSet, Bool, ParseError
 from .style import Style
 from .text import StyledText
 
@@ -22,10 +22,28 @@ __all__ = ['NumberFormat', 'NumberStyle', 'Label', 'format_number']
 
 
 class NumberFormat(OptionSet):
-    """How (or if) numbers are displayed"""
+    """How (or if) numbers are displayed
+
+    Instead of a numbering format, it's possible to supply a custom label
+    (:class:`StyledText`) to show instead of the number.
+
+    """
 
     values = (None, 'number', 'symbol', 'lowercase character',
               'uppercase character', 'lowercase roman', 'uppercase roman')
+
+    @classmethod
+    def check_type(cls, value):
+        return super().check_type(value) or StyledText.check_type(value)
+
+    @classmethod
+    def from_tokens(cls, tokens, source):
+        tokens.push_state()
+        try:
+            return super().from_tokens(tokens, source)
+        except ParseError:
+            tokens.pop_state(discard=False)
+            return StyledText.from_tokens(tokens, source)
 
 
 # number: plain arabic numbers (1, 2, 3, ...)
@@ -38,29 +56,21 @@ class NumberFormat(OptionSet):
 
 def format_number(number, format):
     """Format `number` according the given `format` (:class:`NumberFormat`)"""
-    if format == NumberFormat.NUMBER:
-        return str(number)
-    elif format == NumberFormat.LOWERCASE_CHARACTER:
-        string = ''
-        while number > 0:
-            number, ordinal = divmod(number, 26)
-            if ordinal == 0:
-                ordinal = 26
-                number -= 1
-            string = chr(ord('a') - 1 + ordinal) + string
-        return string
-    elif format == NumberFormat.UPPERCASE_CHARACTER:
-        return format_number(number, 'lowercase character').upper()
-    elif format == NumberFormat.LOWERCASE_ROMAN:
-        return romanize(number).lower()
-    elif format == NumberFormat.UPPERCASE_ROMAN:
-        return romanize(number)
-    elif format == NumberFormat.SYMBOL:
-        return symbolize(number)
-    elif format == NumberFormat.NONE:
-        return ''
-    else:
-        raise ValueError("Unknown number format '{}'".format(format))
+    try:
+        return FORMAT_NUMBER[format](number)
+    except TypeError:   # 'number' is a custom label (StyledText)
+        return format
+
+
+def characterize(number):
+    string = ''
+    while number > 0:
+        number, ordinal = divmod(number, 26)
+        if ordinal == 0:
+            ordinal = 26
+            number -= 1
+        string = chr(ord('a') - 1 + ordinal) + string
+    return string
 
 
 # romanize by Kay Schluehr - from http://billmill.org/python_roman.html
@@ -84,6 +94,17 @@ def symbolize(number):
     """Convert `number` to a foot/endnote symbol."""
     repeat, index = divmod(number - 1, len(SYMBOLS))
     return SYMBOLS[index] * (1 + repeat)
+
+
+FORMAT_NUMBER = {
+    NumberFormat.NUMBER: str,
+    NumberFormat.LOWERCASE_CHARACTER: characterize,
+    NumberFormat.UPPERCASE_CHARACTER: lambda num: characterize(num).upper(),
+    NumberFormat.LOWERCASE_ROMAN: lambda number: romanize(number).lower(),
+    NumberFormat.UPPERCASE_ROMAN: romanize,
+    NumberFormat.SYMBOL: symbolize,
+    NumberFormat.NONE: lambda number: ''
+}
 
 
 class LabelStyle(Style):

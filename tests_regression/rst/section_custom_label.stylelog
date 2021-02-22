@@ -1,0 +1,342 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='section-one')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:3 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 Section One')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:3 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('Section One')
+              MixedStyledText('Section One')
+                SingleStyledText('Section One')
+        Paragraph('	1.1	References:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:5 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	1.1	')
+              Tab('	')
+              SingleStyledText('1.1')
+              Tab('	')
+            MixedStyledText('References:')
+              MixedStyledText('References:')
+                SingleStyledText('References:')
+        List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:7 <bullet_list>
+             > (0,0,1,0,2) bulleted list
+          ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:None <list_item>
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body
+              Paragraph('Chapter 2A, Section 2A.1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:7 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('Chapter 2A, Section 2A.1')
+                    MixedStyledText('Chapter 2A, Section 2A.1')
+                      Reference('Chapter 2A')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Chapter')
+                        SingleStyledText(' ')
+                        SingleStyledText('2A')
+                      SingleStyledText(', ')
+                      Reference('Section 2A.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Section')
+                        SingleStyledText(' ')
+                        MixedStyledText('2A.1')
+                          SingleStyledText('2A')
+                          SingleStyledText('.')
+                          SingleStyledText('1')
+          ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:None <list_item>
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body
+              Paragraph('Chapter 2B, Section 2B.1, Sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:8 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('Chapter 2B, Section 2B.1, Sectio...')
+                    MixedStyledText('Chapter 2B, Section 2B.1, Sectio...')
+                      Reference('Chapter 2B')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Chapter')
+                        SingleStyledText(' ')
+                        SingleStyledText('2B')
+                      SingleStyledText(', ')
+                      Reference('Section 2B.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Section')
+                        SingleStyledText(' ')
+                        MixedStyledText('2B.1')
+                          SingleStyledText('2B')
+                          SingleStyledText('.')
+                          SingleStyledText('1')
+                      SingleStyledText(', ')
+                      Reference('Section 4.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Section')
+                        SingleStyledText(' ')
+                        SingleStyledText('4.1')
+          ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:None <list_item>
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body
+              Paragraph('Section 2B.1.1, paragraph')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:9 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('Section 2B.1.1, paragraph')
+                    MixedStyledText('Section 2B.1.1, paragraph')
+                      Reference('Section 2B.1.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Section')
+                        SingleStyledText(' ')
+                        MixedStyledText('2B.1.1')
+                          SingleStyledText('2B')
+                          SingleStyledText('.')
+                          SingleStyledText('1')
+                          SingleStyledText('.')
+                          SingleStyledText('1')
+                      SingleStyledText(', ')
+                      MixedStyledText('paragraph', style='external link')   None:None <reference>
+                           > (0,0,1,0,1) external hyperlink
+                        SingleStyledText('paragraph')
+          ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:None <list_item>
+               x (0,0,1,0,4) bulleted list item
+               > fallback to default style
+            ListItemLabel('•')
+                 > (0,0,1,0,6) bulleted list item label
+                   (0,0,0,0,2) list item label
+                MixedStyledText('•')
+                  SingleStyledText('')
+                  SingleStyledText('•')
+                  SingleStyledText('')
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body
+              Paragraph('Chapter 4, Section 4.1, Figure 2...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:10 <paragraph>
+                   > (0,0,0,0,5) list item paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('Chapter 4, Section 4.1, Figure 2...')
+                    MixedStyledText('Chapter 4, Section 4.1, Figure 2...')
+                      Reference('Chapter 4')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Chapter')
+                        SingleStyledText(' ')
+                        SingleStyledText('4')
+                      SingleStyledText(', ')
+                      Reference('Section 4.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Section')
+                        SingleStyledText(' ')
+                        SingleStyledText('4.1')
+                      SingleStyledText(', ')
+                      Reference('Figure 2B.1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        SingleStyledText('Figure')
+                        SingleStyledText(' ')
+                        MixedStyledText('2B.1')
+                          SingleStyledText('2B')
+                          SingleStyledText('.')
+                          SingleStyledText('1')
+      Section(id='section-two-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:14 <section>
+           > (0,0,0,1,2) chapter
+        Heading('2A Section Two A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:14 <title>
+             > (0,0,0,1,4) section 2a heading
+               (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2A ')
+              SingleStyledText('')
+              SingleStyledText('2A')
+              SingleStyledText(' ')
+            MixedStyledText('Section Two A')
+              MixedStyledText('Section Two A')
+                SingleStyledText('Section Two A')
+        Paragraph('	2A.1	Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:16 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	2A.1	')
+              Tab('	')
+              MixedStyledText('2A.1')
+                SingleStyledText('2A')
+                SingleStyledText('.')
+                SingleStyledText('1')
+              Tab('	')
+            MixedStyledText('Paragraph.')
+              MixedStyledText('Paragraph.')
+                SingleStyledText('Paragraph.')
+        Section(id='subsection-x')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:20 <section>
+          Heading('2A.1 Subsection X')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:20 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2A.1 ')
+                SingleStyledText('')
+                MixedStyledText('2A.1')
+                  SingleStyledText('2A')
+                  SingleStyledText('.')
+                  SingleStyledText('1')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection X')
+                MixedStyledText('Subsection X')
+                  SingleStyledText('Subsection X')
+          Paragraph('	2A.2	Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:22 <paragraph>
+               > (0,0,0,0,2) body
+              MixedStyledText('	2A.2	')
+                Tab('	')
+                MixedStyledText('2A.2')
+                  SingleStyledText('2A')
+                  SingleStyledText('.')
+                  SingleStyledText('2')
+                Tab('	')
+              MixedStyledText('Paragraph.')
+                MixedStyledText('Paragraph.')
+                  SingleStyledText('Paragraph.')
+      Section(id='section-two-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:26 <section>
+           > (0,0,0,1,2) chapter
+        Heading('2B Section Two B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:26 <title>
+             > (0,0,0,1,4) section 2b heading
+               (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2B ')
+              SingleStyledText('')
+              SingleStyledText('2B')
+              SingleStyledText(' ')
+            MixedStyledText('Section Two B')
+              MixedStyledText('Section Two B')
+                SingleStyledText('Section Two B')
+        Paragraph('	2B.1	Paragraph.', id='par')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:30 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	2B.1	')
+              Tab('	')
+              MixedStyledText('2B.1')
+                SingleStyledText('2B')
+                SingleStyledText('.')
+                SingleStyledText('1')
+              Tab('	')
+            MixedStyledText('Paragraph.')
+              MixedStyledText('Paragraph.')
+                SingleStyledText('Paragraph.')
+        Section(id='subsection-y')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:34 <section>
+          Heading('2B.1 Subsection Y')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:34 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('2B.1 ')
+                SingleStyledText('')
+                MixedStyledText('2B.1')
+                  SingleStyledText('2B')
+                  SingleStyledText('.')
+                  SingleStyledText('1')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection Y')
+                MixedStyledText('Subsection Y')
+                  SingleStyledText('Subsection Y')
+          Figure(id='fig')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:None <figure>
+               > (0,0,0,0,2) figure
+            Image('../images/biohazard.png', id='fig')   None:None <image>
+                 > (0,0,0,0,4) figure image
+                   (0,0,0,0,2) image
+            Caption('Figure 2B.1. Biohazard')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:39 <caption>
+                 > (0,0,0,0,4) figure caption
+                SingleStyledText('Figure')
+                SingleStyledText(' ')
+                MixedStyledText('2B.1. ')
+                  SingleStyledText('')
+                  MixedStyledText('2B.1')
+                    SingleStyledText('2B')
+                    SingleStyledText('.')
+                    SingleStyledText('1')
+                  SingleStyledText('. ')
+                MixedStyledText('Biohazard')
+                  MixedStyledText('Biohazard')
+                    SingleStyledText('Biohazard')
+          Section(id='subsubsection-alpha')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:43 <section>
+            Heading('2B.1.1 SubSubsection alpha')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:43 <title>
+                 > (0,0,0,1,2) heading level 3
+                   (0,0,0,0,2) other heading levels
+                MixedStyledText('2B.1.1 ')
+                  SingleStyledText('')
+                  MixedStyledText('2B.1.1')
+                    SingleStyledText('2B')
+                    SingleStyledText('.')
+                    SingleStyledText('1')
+                    SingleStyledText('.')
+                    SingleStyledText('1')
+                  SingleStyledText(' ')
+                MixedStyledText('SubSubsection alpha')
+                  MixedStyledText('SubSubsection alpha')
+                    SingleStyledText('SubSubsection alpha')
+            Paragraph('	2B.2	Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:45 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('	2B.2	')
+                  Tab('	')
+                  MixedStyledText('2B.2')
+                    SingleStyledText('2B')
+                    SingleStyledText('.')
+                    SingleStyledText('2')
+                  Tab('	')
+                MixedStyledText('Paragraph.')
+                  MixedStyledText('Paragraph.')
+                    SingleStyledText('Paragraph.')
+      Section(id='section-three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:49 <section>
+           > (0,0,0,1,2) chapter
+        Heading('4 Section Three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:49 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('4 ')
+              SingleStyledText('4')
+              SingleStyledText(' ')
+            MixedStyledText('Section Three')
+              MixedStyledText('Section Three')
+                SingleStyledText('Section Three')
+        Paragraph('	4.1	Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:51 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('	4.1	')
+              Tab('	')
+              SingleStyledText('4.1')
+              Tab('	')
+            MixedStyledText('Paragraph.')
+              MixedStyledText('Paragraph.')
+                SingleStyledText('Paragraph.')
+        Section(id='subsection-z')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:54 <section>
+          Heading('4.1 Subsection Z')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:54 <title>
+               > (0,0,0,1,2) heading level 2
+                 (0,0,0,0,2) other heading levels
+              MixedStyledText('4.1 ')
+                SingleStyledText('4.1')
+                SingleStyledText(' ')
+              MixedStyledText('Subsection Z')
+                MixedStyledText('Subsection Z')
+                  SingleStyledText('Subsection Z')
+          Paragraph('	4.2	Paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/section_custom_label.rst:56 <paragraph>
+               > (0,0,0,0,2) body
+              MixedStyledText('	4.2	')
+                Tab('	')
+                SingleStyledText('4.2')
+                Tab('	')
+              MixedStyledText('Paragraph.')
+                MixedStyledText('Paragraph.')
+                  SingleStyledText('Paragraph.')

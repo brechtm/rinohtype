@@ -1,0 +1,37 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[heading level 1]
+number_format = number
+space_above=6pt
+space_below=0
+
+[section 2a heading : Section(has_id='section-two-a') / Heading]
+base = heading level 1
+number_format = '2A'
+
+[section 2b heading : Section(has_id='section-two-b') / Heading]
+base = heading level 1
+number_format = '2B'
+
+[heading level 2]
+number_format = number
+space_above=6pt
+space_below=0
+
+[heading level 3]
+number_format = number
+space_above=4pt
+space_below=0
+
+[body]
+indent_first = -2cm
+label_prefix = '\t'
+label_suffix = '\t'
+tab_stops = -3mm RIGHT, 0cm LEFT
+number_format = number
+numbering_level = 1

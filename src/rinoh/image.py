@@ -389,8 +389,9 @@ class Caption(StaticParagraph):
         return self.parent
 
     def text(self, container):
-        label = self.referenceable.category + ' ' + self.number(container)
-        return MixedStyledText(label + self.content, parent=self)
+        cat = self.referenceable.category
+        number = self.number(container)
+        return MixedStyledText([cat, ' ', number, self.content], parent=self)
 
 
 class FigureStyle(FloatStyle, GroupedFlowablesStyle):
