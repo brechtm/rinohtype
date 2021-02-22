@@ -62,7 +62,7 @@ master_doc = 'index'
 # General information about the project.
 project = distribution.metadata['Name']
 author = distribution.metadata['Author']
-copyright = '{}, {}'.format(time.strftime('%Y'), author)
+copyright = '{}, {} and contributors'.format(time.strftime('%Y'), author)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
