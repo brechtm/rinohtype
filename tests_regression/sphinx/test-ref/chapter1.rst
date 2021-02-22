@@ -21,6 +21,7 @@ Paragraph A with some references:
 - :ref:`par-d`, :ref:`yet another paragraph <par-d>`, :numref:`par-d`
 - :ref:`fig-1`, :ref:`this figure <fig-1>`, :numref:`fig-1`
 - :ref:`fig-2`, :ref:`that figure <fig-2>`, :numref:`fig-2`
+- :ref:`table-1`, :ref:`that table <table-1>`, :numref:`table-1`
 - broken reference: :ref:`nonexisting`
 
 
@@ -37,3 +38,18 @@ Paragraph B.
    :name: fig-1
 
    Biohazard!
+
+
+.. table:: Input-output
+   :name: table-1
+
+   =====  =====  ======
+      Inputs     Output
+   ------------  ------
+     A      B    A or B
+   =====  =====  ======
+   False  False  False
+   True   False  True
+   False  True   True
+   True   True   True
+   =====  =====  ======

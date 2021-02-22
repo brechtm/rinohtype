@@ -674,20 +674,26 @@ class Table(DocutilsBodyNode):
         body = tgroup.tbody.get_table_section()
         align = self.get('align')
         width_string = self.get('width')
-        return rt.Table(body, head=head,
-                        align=None if align == 'default' else align,
-                        width=convert_quantity(width_string),
-                        column_widths=column_widths)
-
-    def flowables(self):
-        table, = super().flowables()
+        table = rt.Table(body, head=head,
+                         align=None if align == 'default' else align,
+                         width=convert_quantity(width_string),
+                         column_widths=column_widths)
         try:
             caption = rt.Caption(self.title.process_content())
-            table_with_caption = rt.TableWithCaption([caption, table])
-            table_with_caption.classes.extend(self.get('classes'))
-            yield table_with_caption
         except AttributeError:
-            yield table
+            return table
+        table_with_caption = rt.TableWithCaption([caption, table])
+        return table_with_caption
+
+    def flowables(self):
+        classes = self.get('classes')
+        flowable, = super(DocutilsBodyNode, self).flowables()
+        try:
+            caption, table = flowable.children
+        except AttributeError:
+            table = flowable
+        table.classes.extend(classes)
+        yield flowable
 
 
 class TGroup(DocutilsNode):
