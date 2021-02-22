@@ -1,0 +1,235 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Reference', style='title page title')
+         > (0,0,1,0,2) title page title
+           (0,0,0,0,2) body
+        SingleStyledText('Reference')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle
+           (0,0,0,0,2) body
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author
+           (0,0,0,0,2) body
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title
+         (0,0,0,0,2) body
+      Field('Table of Contents')
+        SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section
+           (0,0,0,1,1) chapter
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents
+        TableOfContentsEntry('1	Command Line	1')
+             > (0,0,0,1,2) toc level 1
+            ReferenceField('1')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('1')
+            Tab('	')
+            ReferenceField('Command Line')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('Command Line')
+            Tab('	')
+            ReferenceField('1')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('1')
+        TableOfContentsEntry('2	API	3')
+             > (0,0,0,1,2) toc level 1
+            ReferenceField('2')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('2')
+            Tab('	')
+            ReferenceField('API')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('API')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('3')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 1', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+      MixedStyledText('Chapter 1')
+        MixedStyledText('Chapter 1')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('1', style='number')
+               > (0,0,2,0,3) body matter chapter number
+            SingleStyledText('1')
+  Paragraph('Command Line', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+      Field('Command Line')
+        SingleStyledText('Command Line')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/reference.rst:0 <compound>
+        StaticGroupedFlowables(id='%command')   None:None <start_of_file>
+          Section(id='%command#command-line')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/command.rst:4 <section>
+               > (0,0,0,1,2) chapter
+            Paragraph('Command line usage reference doc...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/command.rst:6 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Command line usage reference doc...')
+                  MixedStyledText('Command line usage reference doc...')
+                    SingleStyledText('Command line usage reference doc...')
+            Paragraph('Link to intro.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/command.rst:8 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Link to intro.')
+                  MixedStyledText('Link to intro.')
+                    SingleStyledText('Link to ')
+                    MixedStyledText('intro')   None:None <inline>
+                      SingleStyledText('intro')
+                    SingleStyledText('.')
+            Paragraph('Link to installation.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/command.rst:10 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Link to installation.')
+                  MixedStyledText('Link to installation.')
+                    SingleStyledText('Link to ')
+                    MixedStyledText('installation')   None:None <inline>
+                      SingleStyledText('installation')
+                    SingleStyledText('.')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/reference.rst:0 <compound>
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('Reference, Release ')
+         > (0,0,0,0,2) header
+        MixedStyledText('Reference, Release ')
+          MixedStyledText('Reference, Release ')
+            Field('Reference')
+              SingleStyledText('Reference')
+            SingleStyledText(', ')
+            Field('Release ')
+              SingleStyledText('Release ')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('2		Chapter 1.  Command Line')
+         > (0,0,0,0,2) footer
+        MixedStyledText('2		Chapter 1.  Command Line')
+          MixedStyledText('2		Chapter 1.  Command Line')
+            Field('2')
+              SingleStyledText('2')
+            Tab('	')
+            Tab('	')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('.  ')
+            Field('Command Line')
+              SingleStyledText('Command Line')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 2', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+      MixedStyledText('Chapter 2')
+        MixedStyledText('Chapter 2')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('2', style='number')
+               > (0,0,2,0,3) body matter chapter number
+            SingleStyledText('2')
+  Paragraph('API', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+      Field('API')
+        SingleStyledText('API')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/reference.rst:0 <compound>
+        StaticGroupedFlowables(id='%api')   None:None <start_of_file>
+          Section(id='%api#api')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/api.rst:2 <section>
+               > (0,0,0,1,2) chapter
+            Paragraph('API reference.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/api.rst:4 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('API reference.')
+                  MixedStyledText('API reference.')
+                    SingleStyledText('API reference.')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
+---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+#### ChainedContainer('column2')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		5')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		5')
+          MixedStyledText('		5')
+            Tab('	')
+            Tab('	')
+            Field('5')
+              SingleStyledText('5')

@@ -1,0 +1,237 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Manual', style='title page title')
+         > (0,0,1,0,2) title page title
+           (0,0,0,0,2) body
+        SingleStyledText('Manual')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle
+           (0,0,0,0,2) body
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author
+           (0,0,0,0,2) body
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title
+         (0,0,0,0,2) body
+      Field('Table of Contents')
+        SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section
+           (0,0,0,1,1) chapter
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents
+        TableOfContentsEntry('1	Introduction	1')
+             > (0,0,0,1,2) toc level 1
+            ReferenceField('1')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('1')
+            Tab('	')
+            ReferenceField('Introduction')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('Introduction')
+            Tab('	')
+            ReferenceField('1')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('1')
+        TableOfContentsEntry('2	Installation	3')
+             > (0,0,0,1,2) toc level 1
+            ReferenceField('2')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('2')
+            Tab('	')
+            ReferenceField('Installation')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('Installation')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('3')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 1', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+      MixedStyledText('Chapter 1')
+        MixedStyledText('Chapter 1')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('1', style='number')
+               > (0,0,2,0,3) body matter chapter number
+            SingleStyledText('1')
+  Paragraph('Introduction', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+      Field('Introduction')
+        SingleStyledText('Introduction')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
+        StaticGroupedFlowables(id='%intro')   None:None <start_of_file>
+          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:4 <section>
+               > (0,0,0,1,2) chapter
+            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:6 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('This is the introduction.')
+                  MixedStyledText('This is the introduction.')
+                    SingleStyledText('This is the introduction.')
+            Paragraph('Link to command.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:8 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Link to command.')
+                  MixedStyledText('Link to command.')
+                    SingleStyledText('Link to ')
+                    MixedStyledText('command')   None:None <inline>
+                      SingleStyledText('command')
+                    SingleStyledText('.')
+            Paragraph('Link to command-line.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:10 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Link to command-line.')
+                  MixedStyledText('Link to command-line.')
+                    SingleStyledText('Link to ')
+                    MixedStyledText('command-line')   None:None <inline>
+                      SingleStyledText('command-line')
+                    SingleStyledText('.')
+        StaticGroupedFlowables(id='%install')   None:None <start_of_file>
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
+        (continued) StaticGroupedFlowables(id='%install')   None:None <start_of_file>
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('Manual, Release ')
+         > (0,0,0,0,2) header
+        MixedStyledText('Manual, Release ')
+          MixedStyledText('Manual, Release ')
+            Field('Manual')
+              SingleStyledText('Manual')
+            SingleStyledText(', ')
+            Field('Release ')
+              SingleStyledText('Release ')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('2		Chapter 1.  Introduction')
+         > (0,0,0,0,2) footer
+        MixedStyledText('2		Chapter 1.  Introduction')
+          MixedStyledText('2		Chapter 1.  Introduction')
+            Field('2')
+              SingleStyledText('2')
+            Tab('	')
+            Tab('	')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('.  ')
+            Field('Introduction')
+              SingleStyledText('Introduction')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 2', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label
+         (0,0,0,0,2) body
+      MixedStyledText('Chapter 2')
+        MixedStyledText('Chapter 2')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('2', style='number')
+               > (0,0,2,0,3) body matter chapter number
+            SingleStyledText('2')
+  Paragraph('Installation', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title
+         (0,0,0,0,2) body
+      Field('Installation')
+        SingleStyledText('Installation')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
+        (continued) StaticGroupedFlowables(id='%install')   None:None <start_of_file>
+          Section(id='%install#installation')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/install.rst:5 <section>
+               > (0,0,0,1,2) chapter
+            Paragraph('Here would go installation instr...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/install.rst:7 <paragraph>
+                 > (0,0,0,0,2) body
+                MixedStyledText('Here would go installation instr...')
+                  MixedStyledText('Here would go installation instr...')
+                    SingleStyledText('Here would go installation instr...')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
+---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+#### ChainedContainer('column2')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		5')
+         > (0,0,0,0,2) footer
+        MixedStyledText('		5')
+          MixedStyledText('		5')
+            Tab('	')
+            Tab('	')
+            Field('5')
+              SingleStyledText('5')

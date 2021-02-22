@@ -35,4 +35,8 @@ def test_sphinx(test_name, app, verify):
     if output_dir.exists():
         shutil.rmtree(output_dir)
     shutil.copytree(app.outdir, output_dir)
-    verify_output(test_name, output_dir, ROOTS_PATH)
+    if test_name == 'twotargets':
+        verify_output('manual', output_dir, ROOTS_PATH)
+        verify_output('reference', output_dir, ROOTS_PATH)
+    else:
+        verify_output(test_name, output_dir, ROOTS_PATH)

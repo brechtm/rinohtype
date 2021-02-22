@@ -1,0 +1,4 @@
+[TEMPLATE_CONFIGURATION]
+name = two targets
+template = book
+stylesheet=stylesheet.rts

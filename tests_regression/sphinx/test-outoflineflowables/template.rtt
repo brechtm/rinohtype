@@ -1,5 +1,5 @@
 [TEMPLATE_CONFIGURATION]
-name = supportingmatter
+name = out-of-line flowables
 template = book
 stylesheet=stylesheet.rts
 

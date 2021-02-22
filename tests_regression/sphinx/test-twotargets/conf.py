@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Out-of-line Flowables'
+project = 'Two targets'
 copyright = '1999, Author'
 author = 'Author'
 
@@ -71,10 +71,9 @@ pygments_style = 'sphinx'
 
 # -- Options for rinohtype PDF output ----------------------------------------
 
-rinoh_documents = [{
-    'doc': master_doc,              # top-level file (index.rst)
-    'target': 'outoflineflowables', # output (target.pdf)
-    'title': project,               # document title
-    'author': author,               # document author
-    'template': 'template.rtt'      # document template
-}]
+rinoh_documents = [
+    dict(doc='manual', target='manual', title='Manual',
+         template='template.rtt'),
+    dict(doc='reference', target='reference', title='Reference',
+         template='template.rtt'),
+]

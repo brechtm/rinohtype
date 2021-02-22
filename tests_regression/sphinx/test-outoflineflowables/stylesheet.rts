@@ -1,5 +1,5 @@
 [STYLESHEET]
-name = Sphinx minimal
+name = Sphinx out-of-line flowables
 base = sphinx_base14
 
 

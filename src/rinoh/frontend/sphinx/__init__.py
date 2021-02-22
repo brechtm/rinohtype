@@ -19,7 +19,7 @@ from docutils.nodes import GenericNodeVisitor, SkipNode
 
 from sphinx import addnodes
 from sphinx.builders import Builder
-from sphinx.errors import SphinxError
+from sphinx.errors import SphinxError, NoUri
 from sphinx.locale import _
 from sphinx.util.console import bold, darkgreen, brown
 from sphinx.util.nodes import inline_all_toctrees
@@ -152,7 +152,12 @@ class RinohBuilder(Builder, Source):
         return 'all documents'
 
     def get_target_uri(self, docname, typ=None):
-        return '%' + docname
+        if docname not in self._docnames:
+            # TODO: check whether docname is included in another target
+            #  document and somehow link to it
+            raise NoUri(docname, typ)
+        else:
+            return '%' + docname
 
     def get_relative_uri(self, from_, to, typ=None):
         # ignore source
@@ -169,7 +174,7 @@ class RinohBuilder(Builder, Source):
         pass
 
     def assemble_doctree(self, indexfile, toctree_only):
-        docnames = set([indexfile])
+        self._docnames = set([indexfile])
         logger.info(darkgreen(indexfile) + " ", nonl=1)
         tree = self.env.get_doctree(indexfile)
         tree['docname'] = indexfile
@@ -187,8 +192,8 @@ class RinohBuilder(Builder, Source):
                             new_tree += child
                 else:
                     new_tree += node
-        largetree = inline_all_toctrees(self, docnames, indexfile, new_tree,
-                                        darkgreen, [indexfile])
+        largetree = inline_all_toctrees(self, self._docnames, indexfile,
+                                        new_tree, darkgreen, [indexfile])
         largetree['docname'] = indexfile
         logger.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
@@ -207,7 +212,7 @@ class RinohBuilder(Builder, Source):
             else:
                 pass
             pendingnode.replace_self(newnodes)
-        return largetree, docnames
+        return largetree, self._docnames
 
     def generate_indices(self, docnames, indices_config):
         def index_flowables(content):
