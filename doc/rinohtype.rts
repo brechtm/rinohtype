@@ -97,10 +97,10 @@ font_size = 12pt
 font_color = $(theme_color)
 space_above = 28pt
 space_below = 8pt
-margin_left = -1cm
+margin_left = -12mm
 line_spacing = SINGLE
 label_suffix = '\t'
-tab_stops = 1cm
+tab_stops = 12mm
 
 [heading level 3]
 base=heading level 2
@@ -148,10 +148,10 @@ font_color=#ff0000
 
 [enumerated list]
 margin_left=8pt
-space_above=5pt
+space_above=1pt
 space_below=5pt
 ordered=True
-flowable_spacing=5pt
+flowable_spacing=1pt
 number_format=NUMBER
 label_suffix=')'
 
@@ -174,6 +174,10 @@ indent_first=0
 text_align=RIGHT
 font_color = $(theme_color)
 
+[list item paragraph]
+base=body
+space_above=0
+
 [bulleted list item label]
 base=list item label
 
@@ -185,7 +189,7 @@ base=list item label
 
 [definition list item]
 label_min_width=17pt
-label_max_width=none
+label_max_width=0
 
 [definition term]
 space_above=4pt
@@ -293,6 +297,28 @@ base = footer chapter and number
 
 [footer section title : 'footer' / ... / StyledText('section title')]
 base = footer chapter title
+
+
+# footnotes & citations
+
+[footnote marker]
+position=SUPERSCRIPT
+number_format=number
+
+[citation marker]
+label_prefix='['
+label_suffix=']'
+custom_label=True
+
+[footnote paragraph]
+base=default
+font_size=8pt
+indent_first=0
+line_spacing=Fixed(10pt)
+
+[footnote label]
+base=footnote paragraph
+text_align=RIGHT
 
 
 # title page
