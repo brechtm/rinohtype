@@ -6,7 +6,8 @@ Release 0.5.2 (in development)
 
 New Features:
 
-*
+* Document elements (Styled objects) can more easily be matched based on their
+  ID (or 'name' in docutils terms) by means of the *has_id* selector property.
 
 Changed:
 

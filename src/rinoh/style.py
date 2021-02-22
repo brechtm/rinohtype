@@ -484,6 +484,11 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         return self.get_config_value(attribute, container.document)
 
     @property
+    def has_id(self):
+        """Filter selection on an ID of this :class:`Styled`"""
+        return HasID(self)
+
+    @property
     def has_class(self):
         """Filter selection on a class of this :class:`Styled`"""
         return HasClass(self)
@@ -496,6 +501,14 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
     def before_placing(self, container):
         if self.parent:
             self.parent.before_placing(container)
+
+
+class HasID(object):
+    def __init__(self, styled):
+        self.styled = styled
+
+    def __eq__(self, id):
+        return id == self.styled.id or id in self.styled.secondary_ids
 
 
 class HasClass(object):
