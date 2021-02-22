@@ -406,7 +406,7 @@ font_slant=ITALIC
 base=definition list item
 space_above=3pt
 space_below=3pt
-label_max_width=none
+label_max_width=0
 
 [object signatures]
 base=definition term

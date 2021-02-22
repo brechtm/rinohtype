@@ -1,0 +1,147 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      LabeledFlowable(style='object description')   None:None <desc>
+           > (0,0,1,0,2) object description
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures
+          Paragraph('$.getJSON ( href, callback [, er...', id='getJSON')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:2 <desc_signature>
+               > (0,0,2,0,5) object signature
+                 (0,0,0,0,2) body
+              MixedStyledText('$.getJSON ( href, callback [, er...')
+                MixedStyledText('$.getJSON ( href, callback [, er...')
+                  MixedStyledText('$.', style='additional name part')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <desc_addname>
+                       > (0,0,3,0,6) additional name part
+                    SingleStyledText('$.')
+                  MixedStyledText('getJSON', style='main object name')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <desc_name>
+                       > (0,0,3,0,6) object name
+                    SingleStyledText('getJSON')
+                  MixedStyledText(' ( href, callback [, errback ]  ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <desc_parameterlist>
+                    MixedStyledText(' ( href, callback [, errback ] ')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses
+                      MixedStyledText('href, callback [, errback ] ', style='parameter list')
+                           > (0,0,3,0,6) object parameter list
+                        MixedStyledText('href', style='parameter')   None:None <desc_parameter>
+                             > (0,0,3,0,6) object parameter
+                          SingleStyledText('href')
+                        SingleStyledText(', ')
+                        MixedStyledText('callback', style='parameter')   None:None <desc_parameter>
+                             > (0,0,3,0,6) object parameter
+                          SingleStyledText('callback')
+                        MixedStyledText(' [, errback ] ')   None:None <desc_optional>
+                          MixedStyledText(' [, errback')
+                            SingleStyledText(' [, ', style='brackets')
+                                 > (0,0,3,0,6) object brackets
+                            MixedStyledText('errback', style='optional')
+                                 > (0,0,3,0,6) object optional parameter
+                              MixedStyledText('errback', style='parameter')   None:None <desc_parameter>
+                                   > (0,0,3,0,6) object parameter
+                                SingleStyledText('errback')
+                          SingleStyledText(' ] ', style='brackets')
+                               > (0,0,3,0,6) object brackets
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses
+        StaticGroupedFlowables(style='content')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:9 <desc_content>
+             > (0,0,2,0,3) object description content
+          DefinitionList(style='field list')   None:None <field_list>
+               > (0,0,1,0,2) field list
+                 (0,0,0,0,2) definition list
+            LabeledFlowable()   None:None <field>
+                 > (0,0,1,0,4) field list item
+                   (0,0,0,0,4) definition list item
+              Paragraph('Arguments', style='field name')
+                   > (0,0,2,0,6) field name
+                     (0,0,0,0,2) body
+                  MixedStyledText('Arguments')
+                    MixedStyledText('Arguments')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+                      SingleStyledText('Arguments')
+              StaticGroupedFlowables()   None:None <field_body>
+                List(style='bulleted')   None:None <bullet_list>
+                     > (0,0,1,0,2) bulleted list
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('href -- An URI to the location o...')   None:None <paragraph>
+                           > (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('href -- An URI to the location o...')
+                            MixedStyledText('href -- An URI to the location o...')
+                              MixedStyledText('href', style='literal strong')   None:None <literal_strong>
+                                   > (0,0,1,0,1) literal strong
+                                SingleStyledText('href')
+                              SingleStyledText(' -- ')
+                              SingleStyledText('An URI to the location of the re...')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('callback -- Gets called with the...')   None:None <paragraph>
+                           > (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('callback -- Gets called with the...')
+                            MixedStyledText('callback -- Gets called with the...')
+                              MixedStyledText('callback', style='literal strong')   None:None <literal_strong>
+                                   > (0,0,1,0,1) literal strong
+                                SingleStyledText('callback')
+                              SingleStyledText(' -- ')
+                              SingleStyledText('Gets called with the object.')
+                  ListItem()   None:None <list_item>
+                       x (0,0,1,0,4) bulleted list item
+                       > fallback to default style
+                    ListItemLabel('•')
+                         > (0,0,1,0,6) bulleted list item label
+                           (0,0,0,0,2) list item label
+                        MixedStyledText('•')
+                          SingleStyledText('')
+                          SingleStyledText('•')
+                          SingleStyledText('')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body
+                      Paragraph('errback -- Gets called in case t...')   None:None <paragraph>
+                           > (0,0,0,0,5) list item paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('errback -- Gets called in case t...')
+                            MixedStyledText('errback -- Gets called in case t...')
+                              MixedStyledText('errback', style='literal strong')   None:None <literal_strong>
+                                   > (0,0,1,0,1) literal strong
+                                SingleStyledText('errback')
+                              SingleStyledText(' -- ')
+                              SingleStyledText('Gets called in case the request ...')
+            LabeledFlowable()   None:None <field>
+                 > (0,0,1,0,4) field list item
+                   (0,0,0,0,4) definition list item
+              Paragraph('Returns', style='field name')
+                   > (0,0,2,0,6) field name
+                     (0,0,0,0,2) body
+                  MixedStyledText('Returns')
+                    MixedStyledText('Returns')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/index.rst:0 <field_name>
+                      SingleStyledText('Returns')
+              StaticGroupedFlowables()   None:None <field_body>
+                Paragraph('Something.')   None:None <paragraph>
+                     > (0,0,0,0,2) body
+                    MixedStyledText('Something.')
+                      MixedStyledText('Something.')
+                        SingleStyledText('Something.')
