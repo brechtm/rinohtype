@@ -129,6 +129,34 @@
             ReferenceField('3')
                  > (0,0,0,0,1) linked reference
               SingleStyledText('3')
+        TableOfContentsEntry('2.2	Glossary	3')
+             > (0,0,0,1,2) toc level 2
+            ReferenceField('2.2')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('2.2')
+            Tab('	')
+            ReferenceField('Glossary')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('Glossary')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('3')
+        TableOfContentsEntry('	Index	5')
+             > (0,0,0,1,2) toc level 1
+            ReferenceField('')
+                 > (0,0,0,1,4) toc entry number reference field
+                   (0,0,0,0,1) linked reference
+              SingleStyledText('')
+            Tab('	')
+            ReferenceField('Index')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('Index')
+            Tab('	')
+            ReferenceField('5')
+                 > (0,0,0,0,1) linked reference
+              SingleStyledText('5')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		i')
@@ -174,7 +202,9 @@
              > (0,0,0,0,4) list of figures entry
             ReferenceField('Figure 1.1')
                  > (0,0,0,0,1) linked reference
-              SingleStyledText('Figure 1.1')
+              SingleStyledText('Figure')
+              SingleStyledText(' ')
+              SingleStyledText('1.1')
             SingleStyledText(': ')
             ReferenceField('Biohazard!')
                  > (0,0,0,0,1) linked reference
@@ -187,7 +217,9 @@
              > (0,0,0,0,4) list of figures entry
             ReferenceField('Figure 2.1')
                  > (0,0,0,0,1) linked reference
-              SingleStyledText('Figure 2.1')
+              SingleStyledText('Figure')
+              SingleStyledText(' ')
+              SingleStyledText('2.1')
             SingleStyledText(': ')
             ReferenceField('Another image')
                  > (0,0,0,0,1) linked reference
@@ -241,7 +273,9 @@
              > (0,0,0,0,4) list of tables entry
             ReferenceField('Table 1.1')
                  > (0,0,0,0,1) linked reference
-              SingleStyledText('Table 1.1')
+              SingleStyledText('Table')
+              SingleStyledText(' ')
+              SingleStyledText('1.1')
             SingleStyledText(': ')
             ReferenceField('Input-output')
                  > (0,0,0,0,1) linked reference
@@ -286,12 +320,12 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/index.rst:0 <compound>
+      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/index.rst:0 <compound>
         StaticGroupedFlowables(id='%chapter1')   None:None <start_of_file>
-          Section(id='%chapter1#chapter-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:4 <section>
+          Section(id='%chapter1#chapter-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:4 <section>
                > (0,0,0,1,2) chapter
-            Section(id='%chapter1#section-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:9 <section>
-              Heading('1.1 Section A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:9 <title>
+            Section(id='%chapter1#section-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:9 <section>
+              Heading('1.1 Section A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:9 <title>
                    > (0,0,0,1,2) heading level 2
                      (0,0,0,0,2) other heading levels
                   MixedStyledText('1.1 ')
@@ -300,14 +334,14 @@
                   MixedStyledText('Section A')
                     MixedStyledText('Section A')
                       SingleStyledText('Section A')
-              Paragraph('Paragraph A with some references...', id='%chapter1#par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:13 <paragraph>
+              Paragraph('Paragraph A with some references...', id='%chapter1#par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:13 <paragraph>
                    > (0,0,0,0,2) body
                   MixedStyledText('Paragraph A with some references...')
                     MixedStyledText('Paragraph A with some references...')
                       SingleStyledText('Paragraph A with some references...')
-              List(style='bulleted')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:15 <bullet_list>
+              List(style='bulleted')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:15 <bullet_list>
                    > (0,0,1,0,2) bulleted list
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -319,23 +353,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Chapter 1, Chapter 1, Chapter 1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:15 <paragraph>
+                    Paragraph('Chapter 1, Chapter 1, Chapter 1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:15 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Chapter 1, Chapter 1, Chapter 1')
                           MixedStyledText('Chapter 1, Chapter 1, Chapter 1')
                             Reference('Chapter 1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Chapter 1')
+                              SingleStyledText('Chapter')
+                              SingleStyledText(' ')
+                              SingleStyledText('1')
                             SingleStyledText(', ')
                             Reference('Chapter 1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Chapter 1')
+                              SingleStyledText('Chapter')
+                              SingleStyledText(' ')
+                              SingleStyledText('1')
                             SingleStyledText(', ')
                             Reference('Chapter 1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Chapter 1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Chapter')
+                              SingleStyledText(' ')
+                              SingleStyledText('1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -347,23 +387,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Section 1.1, Section 1.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:16 <paragraph>
+                    Paragraph('Section 1.1, Section 1.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:16 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Section 1.1, Section 1.1, Sectio...')
                           MixedStyledText('Section 1.1, Section 1.1, Sectio...')
                             Reference('Section 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 1.1')
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Section 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 1.1')
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Section 1.1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -375,23 +421,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Section 2.1, Section 2.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:17 <paragraph>
+                    Paragraph('Section 2.1, Section 2.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:17 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Section 2.1, Section 2.1, Sectio...')
                           MixedStyledText('Section 2.1, Section 2.1, Sectio...')
                             Reference('Section 2.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 2.1')
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
                             SingleStyledText(', ')
                             Reference('Section 2.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 2.1')
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
                             SingleStyledText(', ')
                             Reference('Section 2.1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Section 2.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Section')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -403,7 +455,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('par-a, this paragraph, par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:18 <paragraph>
+                    Paragraph('par-a, this paragraph, par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:18 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('par-a, this paragraph, par-a')
@@ -419,7 +471,7 @@
                             MixedStyledText('par-a', style='monospaced')   None:None <literal>
                                  > (0,0,1,0,1) monospaced
                               SingleStyledText('par-a')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -431,7 +483,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('par-b, that paragraph, par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:19 <paragraph>
+                    Paragraph('par-b, that paragraph, par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:19 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('par-b, that paragraph, par-b')
@@ -447,7 +499,7 @@
                             MixedStyledText('par-b', style='monospaced')   None:None <literal>
                                  > (0,0,1,0,1) monospaced
                               SingleStyledText('par-b')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -459,7 +511,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('par-c, Paragraph 1, par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:20 <paragraph>
+                    Paragraph('par-c, Paragraph 1, par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:20 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('par-c, Paragraph 1, par-c')
@@ -469,12 +521,14 @@
                             SingleStyledText(', ')
                             Reference('Paragraph 1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Paragraph 1')
+                              SingleStyledText('Paragraph')
+                              SingleStyledText(' ')
+                              SingleStyledText('1')
                             SingleStyledText(', ')
                             MixedStyledText('par-c', style='monospaced')   None:None <literal>
                                  > (0,0,1,0,1) monospaced
                               SingleStyledText('par-c')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -486,7 +540,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('par-d, Paragraph 2, par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:21 <paragraph>
+                    Paragraph('par-d, Paragraph 2, par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:21 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('par-d, Paragraph 2, par-d')
@@ -496,12 +550,14 @@
                             SingleStyledText(', ')
                             Reference('Paragraph 2')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Paragraph 2')
+                              SingleStyledText('Paragraph')
+                              SingleStyledText(' ')
+                              SingleStyledText('2')
                             SingleStyledText(', ')
                             MixedStyledText('par-d', style='monospaced')   None:None <literal>
                                  > (0,0,1,0,1) monospaced
                               SingleStyledText('par-d')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -513,23 +569,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Figure 1.1, Figure 1.1, Figure 1...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:22 <paragraph>
+                    Paragraph('Figure 1.1, Figure 1.1, Figure 1...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:22 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Figure 1.1, Figure 1.1, Figure 1...')
                           MixedStyledText('Figure 1.1, Figure 1.1, Figure 1...')
                             Reference('Figure 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 1.1')
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Figure 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 1.1')
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Figure 1.1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -541,23 +603,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Figure 2.1, Figure 2.1, Figure 2...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:23 <paragraph>
+                    Paragraph('Figure 2.1, Figure 2.1, Figure 2...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:23 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Figure 2.1, Figure 2.1, Figure 2...')
                           MixedStyledText('Figure 2.1, Figure 2.1, Figure 2...')
                             Reference('Figure 2.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 2.1')
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
                             SingleStyledText(', ')
                             Reference('Figure 2.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 2.1')
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
                             SingleStyledText(', ')
                             Reference('Figure 2.1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Figure 2.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Figure')
+                              SingleStyledText(' ')
+                              SingleStyledText('2.1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -569,23 +637,29 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('Table 1.1, Table 1.1, Table 1.1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:24 <paragraph>
+                    Paragraph('Table 1.1, Table 1.1, Table 1.1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:24 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('Table 1.1, Table 1.1, Table 1.1')
                           MixedStyledText('Table 1.1, Table 1.1, Table 1.1')
                             Reference('Table 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Table 1.1')
+                              SingleStyledText('Table')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Table 1.1')   None:None <reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Table 1.1')
+                              SingleStyledText('Table')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
                             SingleStyledText(', ')
                             Reference('Table 1.1')   None:None <number_reference>
                                  > (0,0,0,0,1) linked reference
-                              SingleStyledText('Table 1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <list_item>
+                              SingleStyledText('Table')
+                              SingleStyledText(' ')
+                              SingleStyledText('1.1')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
                      x (0,0,1,0,4) bulleted list item
                      > fallback to default style
                   ListItemLabel('•')
@@ -597,7 +671,33 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body
-                    Paragraph('broken reference: nonexisting')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:25 <paragraph>
+                    Paragraph('&&, SOS')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:25 <paragraph>
+                         > (0,0,0,0,5) list item paragraph
+                           (0,0,0,0,2) body
+                        MixedStyledText('&&, SOS')
+                          MixedStyledText('&&, SOS')
+                            Reference('&&')   None:None <reference>
+                                 > (0,0,0,0,1) linked reference
+                              MixedStyledText('&&')   None:None <inline>
+                                SingleStyledText('&&')
+                            SingleStyledText(', ')
+                            Reference('SOS')   None:None <reference>
+                                 > (0,0,0,0,1) linked reference
+                              MixedStyledText('SOS')   None:None <inline>
+                                SingleStyledText('SOS')
+                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <list_item>
+                     x (0,0,1,0,4) bulleted list item
+                     > fallback to default style
+                  ListItemLabel('•')
+                       > (0,0,1,0,6) bulleted list item label
+                         (0,0,0,0,2) list item label
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body
+                    Paragraph('broken reference: nonexisting')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:26 <paragraph>
                          > (0,0,0,0,5) list item paragraph
                            (0,0,0,0,2) body
                         MixedStyledText('broken reference: nonexisting')
@@ -605,8 +705,8 @@
                             SingleStyledText('broken reference: ')
                             MixedStyledText('nonexisting')   None:None <inline>
                               SingleStyledText('nonexisting')
-            Section(id='%chapter1#section-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:31 <section>
-              Heading('1.2 Section B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:31 <title>
+            Section(id='%chapter1#section-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:32 <section>
+              Heading('1.2 Section B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:32 <title>
                    > (0,0,0,1,2) heading level 2
                      (0,0,0,0,2) other heading levels
                   MixedStyledText('1.2 ')
@@ -615,35 +715,37 @@
                   MixedStyledText('Section B')
                     MixedStyledText('Section B')
                       SingleStyledText('Section B')
-              Paragraph('Paragraph B.', id='%chapter1#par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:35 <paragraph>
+              Paragraph('Paragraph B.', id='%chapter1#par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:36 <paragraph>
                    > (0,0,0,0,2) body
                   MixedStyledText('Paragraph B.')
                     MixedStyledText('Paragraph B.')
                       SingleStyledText('Paragraph B.')
-              Figure(id='%chapter1#fig-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:40 <figure>
+              Figure(id='%chapter1#fig-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:41 <figure>
                    > (0,0,0,0,2) figure
-                Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:40 <image>
+                Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:41 <image>
                      > (0,0,0,0,4) figure image
                        (0,0,0,0,2) image
-                Caption('Figure 1.1. Biohazard!')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:40 <caption>
+                Caption('Figure 1.1. Biohazard!')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:41 <caption>
                      > (0,0,0,0,4) figure caption
-                    MixedStyledText('Figure 1.1. Biohazard!')
-                      SingleStyledText('Figure ')
-                      MixedStyledText('1.1. ')
-                        SingleStyledText('1.1')
-                        SingleStyledText('. ')
+                    SingleStyledText('Figure')
+                    SingleStyledText(' ')
+                    MixedStyledText('1.1. ')
+                      SingleStyledText('1.1')
+                      SingleStyledText('. ')
+                    MixedStyledText('Biohazard!')
                       MixedStyledText('Biohazard!')
                         SingleStyledText('Biohazard!')
-              TableWithCaption(id='%chapter1#table-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:None <table>
+              TableWithCaption(id='%chapter1#table-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:None <table>
                    x (0,0,0,0,2) table with caption
                    > fallback to default style
                 Caption('Table 1.1. Input-output')
                      > (0,0,0,0,4) table caption
-                    MixedStyledText('Table 1.1. Input-output')
-                      SingleStyledText('Table ')
-                      MixedStyledText('1.1. ')
-                        SingleStyledText('1.1')
-                        SingleStyledText('. ')
+                    SingleStyledText('Table')
+                    SingleStyledText(' ')
+                    MixedStyledText('1.1. ')
+                      SingleStyledText('1.1')
+                      SingleStyledText('. ')
+                    MixedStyledText('Input-output')
                       MixedStyledText('Input-output')
                         SingleStyledText('Input-output')
                 Table()
@@ -653,7 +755,7 @@
                       TableCell()   None:None <entry>
                            x (0,0,0,0,8) table head cell
                            > (0,0,0,0,7) table cell
-                        Paragraph('Inputs')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:47 <paragraph>
+                        Paragraph('Inputs')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:48 <paragraph>
                              > (0,0,0,0,10) table head cell paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -664,7 +766,7 @@
                       TableCell()   None:None <entry>
                            x (0,0,0,0,8) table head cell
                            > (0,0,0,0,7) table cell
-                        Paragraph('Output')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:47 <paragraph>
+                        Paragraph('Output')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:48 <paragraph>
                              > (0,0,0,0,10) table head cell paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -676,7 +778,7 @@
                       TableCell()   None:None <entry>
                            x (0,0,0,0,8) table head cell
                            > (0,0,0,0,7) table cell
-                        Paragraph('A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:49 <paragraph>
+                        Paragraph('A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:50 <paragraph>
                              > (0,0,0,0,10) table head cell paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -687,7 +789,7 @@
                       TableCell()   None:None <entry>
                            x (0,0,0,0,8) table head cell
                            > (0,0,0,0,7) table cell
-                        Paragraph('B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:49 <paragraph>
+                        Paragraph('B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:50 <paragraph>
                              > (0,0,0,0,10) table head cell paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -698,7 +800,7 @@
                       TableCell()   None:None <entry>
                            x (0,0,0,0,8) table head cell
                            > (0,0,0,0,7) table cell
-                        Paragraph('A or B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:49 <paragraph>
+                        Paragraph('A or B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:50 <paragraph>
                              > (0,0,0,0,10) table head cell paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -710,7 +812,7 @@
                     TableRow()
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:51 <paragraph>
+                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:52 <paragraph>
                              > (0,0,0,1,8) table first column paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -722,7 +824,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:51 <paragraph>
+                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:52 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('False')
@@ -733,7 +835,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:51 <paragraph>
+                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:52 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('False')
@@ -745,7 +847,7 @@
                     TableRow()
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:52 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:53 <paragraph>
                              > (0,0,0,1,8) table first column paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -757,7 +859,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:52 <paragraph>
+                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:53 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('False')
@@ -768,7 +870,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:52 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:53 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('True')
@@ -780,7 +882,7 @@
                     TableRow()
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:53 <paragraph>
+                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:54 <paragraph>
                              > (0,0,0,1,8) table first column paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -792,7 +894,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:53 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:54 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('True')
@@ -803,7 +905,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:53 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:54 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('True')
@@ -815,7 +917,7 @@
                     TableRow()
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:54 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:55 <paragraph>
                              > (0,0,0,1,8) table first column paragraph
                                (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
@@ -827,7 +929,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:54 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:55 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('True')
@@ -838,7 +940,7 @@
                              > fallback to default style
                       TableCell()   None:None <entry>
                            > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter1.rst:54 <paragraph>
+                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter1.rst:55 <paragraph>
                              > (0,0,0,0,9) table body cell paragraph
                                (0,0,0,0,2) body
                             MixedStyledText('True')
@@ -866,7 +968,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/index.rst:0 <compound>
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/index.rst:0 <compound>
         (continued) StaticGroupedFlowables(id='%chapter2')   None:None <start_of_file>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
@@ -923,26 +1025,27 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/index.rst:0 <compound>
+      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/index.rst:0 <compound>
         (continued) StaticGroupedFlowables(id='%chapter2')   None:None <start_of_file>
-          Section(id='%chapter2#chapter-2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:6 <section>
+          Section(id='%chapter2#chapter-2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:6 <section>
                > (0,0,0,1,2) chapter
-            Figure(id='%chapter2#fig-2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:11 <figure>
+            Figure(id='%chapter2#fig-2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:11 <figure>
                  > (0,0,0,0,2) figure
-              Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:11 <image>
+              Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:11 <image>
                    > (0,0,0,0,4) figure image
                      (0,0,0,0,2) image
-              Caption('Figure 2.1. Another image')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:11 <caption>
+              Caption('Figure 2.1. Another image')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:11 <caption>
                    > (0,0,0,0,4) figure caption
-                  MixedStyledText('Figure 2.1. Another image')
-                    SingleStyledText('Figure ')
-                    MixedStyledText('2.1. ')
-                      SingleStyledText('2.1')
-                      SingleStyledText('. ')
+                  SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  MixedStyledText('2.1. ')
+                    SingleStyledText('2.1')
+                    SingleStyledText('. ')
+                  MixedStyledText('Another image')
                     MixedStyledText('Another image')
                       SingleStyledText('Another image')
-            Section(id='%chapter2#section-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:17 <section>
-              Heading('2.1 Section C')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:17 <title>
+            Section(id='%chapter2#section-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:17 <section>
+              Heading('2.1 Section C')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:17 <title>
                    > (0,0,0,1,2) heading level 2
                      (0,0,0,0,2) other heading levels
                   MixedStyledText('2.1 ')
@@ -951,7 +1054,7 @@
                   MixedStyledText('Section C')
                     MixedStyledText('Section C')
                       SingleStyledText('Section C')
-              Paragraph('	1	Paragraph C.', id='%chapter2#par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:21 <paragraph>
+              Paragraph('	1	Paragraph C.', id='%chapter2#par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:21 <paragraph>
                    > (0,0,0,1,4) numbered paragraph
                      (0,0,0,0,2) body
                   MixedStyledText('	1	')
@@ -961,7 +1064,7 @@
                   MixedStyledText('Paragraph C.')
                     MixedStyledText('Paragraph C.')
                       SingleStyledText('Paragraph C.')
-              Paragraph('	2	Paragraph D.', id='%chapter2#par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-604/ref/chapter2.rst:25 <paragraph>
+              Paragraph('	2	Paragraph D.', id='%chapter2#par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:25 <paragraph>
                    > (0,0,0,1,4) numbered paragraph
                      (0,0,0,0,2) body
                   MixedStyledText('	2	')
@@ -971,6 +1074,61 @@
                   MixedStyledText('Paragraph D.')
                     MixedStyledText('Paragraph D.')
                       SingleStyledText('Paragraph D.')
+            Section(id='%chapter2#glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:29 <section>
+              Heading('2.2 Glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:29 <title>
+                   > (0,0,0,1,2) heading level 2
+                     (0,0,0,0,2) other heading levels
+                  MixedStyledText('2.2 ')
+                    SingleStyledText('2.2')
+                    SingleStyledText(' ')
+                  MixedStyledText('Glossary')
+                    MixedStyledText('Glossary')
+                      SingleStyledText('Glossary')
+              StaticGroupedFlowables(style='glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:None <glossary>
+                DefinitionList()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:None <definition_list>
+                     > (0,0,0,0,2) definition list
+                  LabeledFlowable()   None:None <definition_list_item>
+                       > (0,0,0,0,4) definition list item
+                    StaticGroupedFlowables(style='definition term')
+                         > (0,0,1,0,5) definition term
+                      Paragraph('&&')
+                           > (0,0,1,0,7) definition term paragraph
+                             (0,0,0,1,4) numbered paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('&&')
+                            MixedStyledText('&&', id='%chapter2#term-0')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:32 <term>
+                              SingleStyledText('&&')
+                              InlineIndexTarget('')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:32 <index>
+                    StaticGroupedFlowables(style='definition')   None:None <definition>
+                         > (0,0,1,0,5) definition
+                      Paragraph('bit-wise AND')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:34 <paragraph>
+                           > (0,0,1,0,7) definition paragraph
+                             (0,0,0,1,4) numbered paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('bit-wise AND')
+                            MixedStyledText('bit-wise AND')
+                              SingleStyledText('bit-wise AND')
+                  LabeledFlowable()   None:None <definition_list_item>
+                       > (0,0,0,0,4) definition list item
+                    StaticGroupedFlowables(style='definition term')
+                         > (0,0,1,0,5) definition term
+                      Paragraph('SOS')
+                           > (0,0,1,0,7) definition term paragraph
+                             (0,0,0,1,4) numbered paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('SOS')
+                            MixedStyledText('SOS', id='%chapter2#term-SOS')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:35 <term>
+                              SingleStyledText('SOS')
+                              InlineIndexTarget('')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:35 <index>
+                    StaticGroupedFlowables(style='definition')   None:None <definition>
+                         > (0,0,1,0,5) definition
+                      Paragraph('save our souls')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-639/ref/chapter2.rst:37 <paragraph>
+                           > (0,0,1,0,7) definition paragraph
+                             (0,0,0,1,4) numbered paragraph
+                             (0,0,0,0,2) body
+                          MixedStyledText('save our souls')
+                            MixedStyledText('save our souls')
+                              SingleStyledText('save our souls')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
@@ -986,9 +1144,47 @@
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Index', style='front matter section title')
+       > (0,0,1,0,2) front matter section title
+         (0,0,0,0,2) body
+      Field('Index')
+        SingleStyledText('Index')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     StaticGroupedFlowables()
+    IndexSection()
+         > (0,0,0,1,1) chapter
+      Index()   index
+           > (0,0,0,0,2) index
+        IndexLabel('Symbols')
+             > (0,0,0,0,2) index section label
+               (0,0,0,0,1) body
+            SingleStyledText('Symbols')
+        IndexEntry('&&, 3')
+             > (0,0,0,1,2) level 1 index entry
+               (0,0,0,0,1) body
+            MixedStyledText('&&, 3')
+              MixedStyledText('&&, 3')
+                SingleStyledText('&&, ')
+                MixedStyledText('3')
+                  Reference('3')
+                       > (0,0,0,0,1) linked reference
+                    SingleStyledText('3')
+        IndexLabel('S')
+             > (0,0,0,0,2) index section label
+               (0,0,0,0,1) body
+            SingleStyledText('S')
+        IndexEntry('SOS, 3')
+             > (0,0,0,1,2) level 1 index entry
+               (0,0,0,0,1) body
+            MixedStyledText('SOS, 3')
+              MixedStyledText('SOS, 3')
+                SingleStyledText('SOS, ')
+                MixedStyledText('3')
+                  Reference('3')
+                       > (0,0,0,0,1) linked reference
+                    SingleStyledText('3')
 #### ChainedContainer('column2')
   StaticGroupedFlowables()
 #### DownExpandingContainer('footer')

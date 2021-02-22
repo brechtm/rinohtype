@@ -23,3 +23,15 @@ Paragraph C.
 .. _par-d:
 
 Paragraph D.
+
+
+Glossary
+--------
+
+.. glossary::
+
+   &&
+      bit-wise AND
+
+   SOS
+      save our souls

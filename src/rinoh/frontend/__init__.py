@@ -105,9 +105,15 @@ class TreeNode(object):
 
 class InlineNode(TreeNode):
     style = None
+    set_id = True
 
     def styled_text(self, **kwargs):
         styled_text = self.build_styled_text(**kwargs)
+        ids = iter(self._ids)
+        if self.set_id and self._ids:
+            styled_text.id = next(ids)
+            for id in ids:
+                styled_text.secondary_ids.append(id)
         try:
             styled_text.source = self
         except AttributeError:   # styled_text is None
