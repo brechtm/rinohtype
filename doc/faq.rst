@@ -1,7 +1,7 @@
 .. _faq:
 
-Frequenty Asked Questions
-=========================
+Frequently Asked Questions
+==========================
 
 Below is the start of a list of commonly encountered problems and solutions to
 them. You can also find answers to usage questions on rinohtype on
