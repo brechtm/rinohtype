@@ -286,7 +286,7 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type, default=DEFAULT):
         if reference_type == ReferenceType.PAGE:
-            return self.page_references[id]
+            return self.page_references.get(id, 'XX')
         try:
             return self.references[id][reference_type]
         except KeyError:

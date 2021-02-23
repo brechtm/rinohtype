@@ -89,12 +89,14 @@ class ReferenceBase(MixedStyledTextBase):
         try:
             text = container.document.get_reference(target_id, type)
         except KeyError:
-            if self.get_style('quiet', container):
+            if self.custom_title:
+                text = self.custom_title
+            elif self.get_style('quiet', container):
                 text = ''
             else:
                 self.warn(f"Target '{target_id}' has no '{type}' reference",
                           container)
-                text = self.custom_title or ErrorText('??', parent=self)
+                text = ErrorText('??', parent=self)
         # TODO: clean up
         if isinstance(text, MixedStyledTextBase):
             for child in text.children(container):

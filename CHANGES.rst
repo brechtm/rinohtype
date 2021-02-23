@@ -21,6 +21,7 @@ Fixed:
 
 * Sphinx style sheet: the object description is always rendered to the right
   of the signature, no matter how wide the signature is.
+* Incorrect/useless warnings that popped up with release 0.5.1.
 
 
 Release 0.5.1 (2021-02-19)

@@ -108,6 +108,7 @@ class Heading(StaticParagraph):
     """
 
     style_class = HeadingStyle
+    has_title = True
 
     @property
     def referenceable(self):

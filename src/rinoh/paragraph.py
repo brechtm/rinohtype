@@ -800,6 +800,7 @@ class StaticParagraph(ParagraphBase):
         content (StyledText): the paragraph's text content
 
     """
+    has_title = False
 
     def __init__(self, content, custom_label=None, align=None, width=None,
                  id=None, style=None, parent=None, source=None):
@@ -816,9 +817,10 @@ class StaticParagraph(ParagraphBase):
     def prepare(self, container):
         super().prepare(container)
         self.content.prepare(container)
-        title = self.content.to_string(container)
-        for id in self.referenceable.get_ids(container.document):
-            container.document.set_reference(id, 'title', title)
+        if self.has_title:
+            title = self.content.to_string(container)
+            for id in self.referenceable.get_ids(container.document):
+                container.document.set_reference(id, 'title', title)
 
     def _text(self, container):
         return self.content

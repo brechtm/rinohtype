@@ -383,6 +383,7 @@ class CaptionStyle(ParagraphStyle):
 
 class Caption(StaticParagraph):
     style_class = CaptionStyle
+    has_title = True
 
     @property
     def referenceable(self):
