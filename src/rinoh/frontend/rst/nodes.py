@@ -622,6 +622,14 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
 class Figure(DocutilsGroupingNode):
     grouped_flowables_class = rt.Figure
 
+    def flowables(self):
+        figure, = super().flowables()
+        if figure.id is None:   # docutils
+            image = figure.children[0]
+            figure.id = image.id
+            figure.secondary_ids = image.secondary_ids
+        yield figure
+
 
 class Caption(DocutilsBodyNode):
     def build_flowable(self):
