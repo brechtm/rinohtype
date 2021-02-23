@@ -6,6 +6,9 @@ Release 0.5.2 (in development)
 
 New Features:
 
+* If the *RINOH_SINGLE_PASS* environment variable is set, rendering will be
+  stopped after a single pass. This speeds up iteration when tweaking style
+  sheets or templates.
 * Sphinx builder: the ``rinoh_targets`` configuration variable allows limiting
   the documents to a subset of those listed in ``rinoh_documents``.
 * The 'number_format' style property can now also accept styled text strings

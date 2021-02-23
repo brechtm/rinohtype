@@ -32,6 +32,7 @@ from collections import OrderedDict
 from contextlib import suppress
 from copy import copy
 from itertools import count
+from os import getenv
 
 from . import __version__, __release_date__
 from .attribute import OptionSet, Source
@@ -377,6 +378,9 @@ to the terms of the GNU Affero General Public License version 3.''')
                 self.part_page_counts = self._render_pages()
                 if (self.part_page_counts == prev_page_counts
                         and self.page_references == prev_page_refs):
+                    break
+                if getenv('RINOH_SINGLE_PASS', '0') != '0':
+                    print('Stopping after first rendering pass.')
                     break
                 print('Not yet converged, rendering again...')
                 prev_page_counts = self.part_page_counts
