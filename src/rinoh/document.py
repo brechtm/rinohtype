@@ -364,6 +364,9 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
+            for out_of_line_flowables in self.supporting_matter.values():
+                for flowable in out_of_line_flowables:
+                    flowable.prepare(fake_container)
             backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
             self.part_page_counts = prev_page_counts
