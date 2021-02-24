@@ -13,12 +13,15 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+
 import time
 
 try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:
     import importlib_metadata
+
+from subprocess import check_output, CalledProcessError, DEVNULL
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -204,6 +207,26 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'rinohtype'
 
+git_describe = ['git', 'describe', '--tags', '--exact-match']
+git_symref = ['git', 'symbolic-ref', '--short', 'HEAD']
+
+try:
+    git_version = check_output(git_describe, stderr=DEVNULL, encoding='utf-8')
+except CalledProcessError:
+    git_version = check_output(git_symref, stderr=DEVNULL, encoding='utf-8')
+
+html_context = {
+    'VERSIONS': True,
+    'current_version': git_version.strip(),
+    'downloads': [
+        ('User Manual', 'manual.pdf'),
+        ('Reference Guide', 'reference.pdf'),
+    ],
+    'display_github': True,
+    'github_user': 'brechtm',
+    'github_repo': 'rinohtype',
+    'github_version': 'master/doc/'
+}
 
 # -- Options for LaTeX output ---------------------------------------------
 

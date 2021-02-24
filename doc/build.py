@@ -47,8 +47,8 @@ def check_sphinx_build():
 @target
 def all():
     """the default target"""
-    rinoh()
-    return html()
+    html()
+    return rinoh()
 
 
 @target

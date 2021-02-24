@@ -42,7 +42,7 @@ following things can help move rinohtype forward:
 * development of new features, e.g. widow/orphan handling, Knuth-Plass line
   breaking, mathematics typesetting, performance improvements, ...
 * companies might be interested in funding the development of particular
-  features that would benefit them
+  features
 
 So if you are interested in helping with any of these items, please don't
 hesitate to get in touch via brecht@opqode.com, `GitHub issues`_ or Gitter_!
@@ -80,13 +80,13 @@ overview of the main features:
 rinohtype's primary input format is reStructuredText_. The ``rinoh`` command
 line tool renders reStructuredText documents and the included Sphinx_ builder
 makes it possible to output large documents with your own style applied. Have
-a look at the `rinohtype documentation`_ for an example of the output.
+a look at the `rinohtype manual`_ for an example of the output.
 
 .. _documentation: http://www.mos6581.org/rinohtype/master/
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
-.. _rinohtype documentation: http://www.mos6581.org/rinohtype/master/_downloads/cc8bb3ec0357396958ad856a90d03812/rinohtype.pdf
+.. _rinohtype manual: http://www.mos6581.org/rinohtype/master/manual.pdf
 
 
 Requirements
