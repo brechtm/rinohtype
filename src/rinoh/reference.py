@@ -200,6 +200,18 @@ class ReferencingParagraph(ParagraphBase):
         """Filter selection on a set of classes of the target flowable"""
         return HasClasses(self._target_flowable(document))
 
+    def target_is_of_type(self, document):
+        """Filter selection on the type of the target flowable"""
+        return IsOfType(self._target_flowable(document))
+
+
+class IsOfType:
+    def __init__(self, styled):
+        self.styled = styled
+
+    def __eq__(self, type_name):
+        return type_name == type(self.styled).__name__
+
 
 class Note(LabeledFlowable):
     category = 'Note'

@@ -49,6 +49,10 @@ space_above=14pt
 text = '\t{PAGE}' (bold) '\tChapter {NUMBER}: {TITLE}'
 tab_stops = 1cm right, 1.5cm
 
+[toc level 1 index : TableOfContentsEntry(depth=1, target_is_of_type='IndexSection')]
+base=toc level 1
+text = '\t{PAGE}' (bold) '\t{TITLE}'
+
 [toc level 2]
 base=table of contents
 ;margin_left=18pt
