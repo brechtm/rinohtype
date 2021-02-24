@@ -78,12 +78,12 @@ Sphinx Builder
 
 .. only:: not rinoh
 
-    |common| This documentation was rendered by rinohtype to
-    :download:`rinohtype.pdf <_build/rinoh/rinohtype.pdf>`.
+    |common| The version of this documentation as rendered by rinohtype can be
+    downloaded in the *Versions* pane at the bottom left of this page.
 
 .. only:: rinoh
 
-    |common| This very document you are reading was rendered using
+    |common| The very document you are reading was rendered using
     rinohtype's Sphinx builder.
 
 

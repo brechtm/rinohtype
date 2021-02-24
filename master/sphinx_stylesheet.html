@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sphinx style sheet &mdash; rinohtype 0.5.1 documentation</title>
+  <title>Sphinx style sheet &mdash; rinohtype 0.5.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.5.1
+                0.5.2
               </div>
             
           
@@ -81,28 +81,42 @@
         
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
+    
             
             
               
             
             
-              <ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basicstyling.html">Basic Document Styling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elementstyling.html">Element Styling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Document Templates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequenty Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Reference Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Style Sheets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stdtemplates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+</ul>
 
             
           
+    <p class="caption">
+        <span class="caption-text">Indices and tables</span>
+    </p>
+    <a href="genindex.html">Index</a>
+    <a href="py-modindex.html">Module Index</a>
+  
         </div>
         
       </div>
@@ -153,7 +167,9 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/sphinx_stylesheet.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/brechtm/rinohtype/blob/master/doc/sphinx_stylesheet.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -301,10 +317,6 @@
 
 <span class="k">[linked reference]</span>
 <span class="na">font_color</span><span class="o">=</span><span class="s">#355f7c</span>
-
-<span class="k">[internal hyperlink]</span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#355f7b</span>
 
 <span class="k">[external hyperlink]</span>
 <span class="na">font_color</span><span class="o">=</span><span class="s">#376f62</span>
@@ -580,7 +592,7 @@
 <span class="na">base</span><span class="o">=</span><span class="s">definition list item</span>
 <span class="na">space_above</span><span class="o">=</span><span class="s">3pt</span>
 <span class="na">space_below</span><span class="o">=</span><span class="s">3pt</span>
-<span class="na">label_max_width</span><span class="o">=</span><span class="s">none</span>
+<span class="na">label_max_width</span><span class="o">=</span><span class="s">0</span>
 
 <span class="k">[object signatures]</span>
 <span class="na">base</span><span class="o">=</span><span class="s">definition term</span>
@@ -772,6 +784,7 @@
 <span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
 
 <span class="k">[footnote marker]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">linked reference</span>
 <span class="na">position</span><span class="o">=</span><span class="s">SUPERSCRIPT</span>
 <span class="na">number_format</span><span class="o">=</span><span class="s">number</span>
 
@@ -852,6 +865,10 @@
 <span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
 <span class="na">margin_left</span><span class="o">=</span><span class="s">0</span>
 <span class="na">tab_stops</span><span class="o">=</span><span class="s">0.6cm, 100% RIGHT &#39;. &#39;</span>
+
+<span class="k">[toc entry number reference field]</span>
+<span class="na">base</span> <span class="o">=</span> <span class="s">linked reference</span>
+<span class="na">quiet</span> <span class="o">=</span> <span class="s">True</span>
 
 <span class="k">[list of figures section]</span>
 <span class="na">base</span><span class="o">=</span><span class="s">table of contents section</span>
@@ -1059,7 +1076,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Brecht Machiels.
+        &#169; Copyright 2021, Brecht Machiels and contributors.
 
     </p>
   </div>
@@ -1080,6 +1097,29 @@
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Versions</span>
+      v: master
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <!--dl>
+        <dt>Versions</dt>
+        
+      </dl-->
+      <dl>
+        <dt>PDF</dt>
+        
+          <dd><a href="manual.pdf">User Manual</a></dd>
+        
+          <dd><a href="reference.pdf">Reference Guide</a></dd>
+        
+      </dl>
+    </div>
+  </div>
+
 
   <script type="text/javascript">
       jQuery(function () {
