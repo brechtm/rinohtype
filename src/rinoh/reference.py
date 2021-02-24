@@ -33,7 +33,7 @@ __all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
 
 
 class ReferenceType(OptionSet):
-    values = 'reference', 'number', 'title', 'page'
+    values = 'reference', 'number', 'title', 'page', 'custom'
 
 
 # examples for section "3.2 Some Title"
@@ -50,9 +50,6 @@ class ReferenceStyle(TextStyle, NumberStyle):
     quiet = Attribute(Bool, False, 'If the given reference type does not exist'
                                    'for the target, resolve to an empty string'
                                    'instead of making a fuss about it')
-    custom_title = Attribute(Bool, False, 'Override the reference text '
-                                          'with a custom string supplied by'
-                                          'the frontend')
 
 
 class ReferenceBase(MixedStyledTextBase):
@@ -63,6 +60,8 @@ class ReferenceBase(MixedStyledTextBase):
         super().__init__(style=style, parent=parent, source=source)
         self.type = type
         self.custom_title = custom_title
+        if custom_title:
+            custom_title.parent = self
 
     def __str__(self):
         result = "'{{{}}}'".format((self.type or 'none').upper())
@@ -87,6 +86,9 @@ class ReferenceBase(MixedStyledTextBase):
         if container is None:
             return '$REF({})'.format(type)
         target_id = self.target_id(document)
+        if type == ReferenceType.CUSTOM:
+            yield self.custom_title
+            return
         try:
             text = document.get_reference(target_id, type)
         except KeyError:
