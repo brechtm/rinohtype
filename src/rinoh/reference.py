@@ -65,7 +65,7 @@ class ReferenceBase(MixedStyledTextBase):
         self.custom_title = custom_title
 
     def __str__(self):
-        result = "'{{{}}}'".format(self.type.upper())
+        result = "'{{{}}}'".format((self.type or 'none').upper())
         if self.style is not None:
             result += ' ({})'.format(self.style)
         return result
