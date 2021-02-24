@@ -447,9 +447,9 @@ to the terms of the GNU Affero General Public License version 3.''')
                     parent = stack.pop()
             current = []
             with suppress(AttributeError):
-                section_title = section_title.to_string(None)
+                section_title = section_title.to_string(fake_container)
             with suppress(AttributeError):
-                section_number = section_number.to_string(None)
+                section_number = section_number.to_string(fake_container)
             item = (str(section_id), section_number, section_title, current)
             parent.append(item)
             current_level = section.level

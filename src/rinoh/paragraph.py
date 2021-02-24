@@ -818,9 +818,8 @@ class StaticParagraph(ParagraphBase):
         super().prepare(container)
         self.content.prepare(container)
         if self.has_title:
-            title = self.content.to_string(container)
             for id in self.referenceable.get_ids(container.document):
-                container.document.set_reference(id, 'title', title)
+                container.document.set_reference(id, 'title', self.content)
 
     def _text(self, container):
         return self.content

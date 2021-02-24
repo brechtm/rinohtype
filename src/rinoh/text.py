@@ -86,11 +86,9 @@ class InlineStyled(Styled):
         link = ann if isinstance(ann, LinkAnnotation) else None
         for span in spans:
             if isinstance(span, AnnotatedSpan):
-                if anchor:
-                    assert span.anchor_annotation is None
+                if anchor and not span.anchor_annotation:
                     span.anchor_annotation = anchor
-                elif link:
-                    assert span.link_annotation is None
+                elif link and not span.link_annotation:
                     span.link_annotation = link
                 yield span
             else:

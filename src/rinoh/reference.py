@@ -19,8 +19,8 @@ from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
 from .style import HasClass, HasClasses
-from .text import (SingleStyledTextBase, MixedStyledTextBase, TextStyle,
-                   StyledText, SingleStyledText, MixedStyledText, ErrorText)
+from .text import (InlineStyled, StyledText, TextStyle, SingleStyledText,
+                   MixedStyledTextBase, MixedStyledText, ErrorText)
 from .util import NotImplementedAttribute
 
 
@@ -82,10 +82,6 @@ class ReferenceBase(MixedStyledTextBase):
         if container is None:
             return '$REF({})'.format(type)
         target_id = self.target_id(container.document)
-        if target_id not in container.document.elements:
-            self.warn("Unknown target '{}'".format(target_id), container)
-            yield ErrorText('??', parent=self)
-            return
         try:
             text = container.document.get_reference(target_id, type)
         except KeyError:
@@ -97,16 +93,8 @@ class ReferenceBase(MixedStyledTextBase):
                 self.warn(f"Target '{target_id}' has no '{type}' reference",
                           container)
                 text = ErrorText('??', parent=self)
-        # TODO: clean up
-        if isinstance(text, MixedStyledTextBase):
-            for child in text.children(container):
-                child_copy = copy(child)
-                child_copy.parent = self
-                yield child_copy
-        elif isinstance(text, SingleStyledTextBase):
-            yield text.copy(parent=self)
-        else:
-            yield SingleStyledText(text, parent=self)
+        yield (text.copy(parent=self) if isinstance(text, InlineStyled)
+               else SingleStyledText(text, parent=self))
 
     def get_annotation(self, container):
         assert self.annotation is None
@@ -119,6 +107,10 @@ class Reference(ReferenceBase):
     def __init__(self, target_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._target_id = target_id
+
+    def copy(self, parent=None):
+        return type(self)(self._target_id, self.type, self.custom_title,
+                          style=self.style, parent=parent, source=self.source)
 
     def target_id(self, document):
         return self._target_id

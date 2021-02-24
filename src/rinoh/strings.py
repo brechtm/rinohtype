@@ -156,7 +156,7 @@ class StringField(MixedStyledTextBase):
 
     def copy(self, parent=None):
         return type(self)(self.strings_class, self.key, style=self.style,
-                          parent=self.parent, source=self.source)
+                          parent=parent, source=self.source)
 
     def children(self, container):
         text = container.document.get_string(self.strings_class, self.key)
