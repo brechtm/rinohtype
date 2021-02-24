@@ -1,0 +1,160 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Section(id='one-two')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:5 <section>
+           > (0,0,0,1,2) chapter
+        Heading('1 One (< Two (> Chapter 1))')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:5 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('One (< Two (> Chapter 1))')
+              MixedStyledText('One (< Two (> Chapter 1))')
+                SingleStyledText('One (< ')
+                Reference('Two (> Chapter 1)')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('Two (> Chapter 1)')
+                    MixedStyledText('Two (> Chapter 1)')
+                      SingleStyledText('Two (> ')
+                      Reference('Chapter 1')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        MixedStyledText('Chapter 1')
+                          SingleStyledText('Chapter')
+                          SingleStyledText(' ')
+                          SingleStyledText('1')
+                      SingleStyledText(')')
+                SingleStyledText(')')
+        Paragraph('Referencing One (< Two (> Chapte...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:7 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('Referencing One (< Two (> Chapte...')
+              MixedStyledText('Referencing One (< Two (> Chapte...')
+                SingleStyledText('Referencing ')
+                Reference('One (< Two (> Chapter 1))')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('One (< Two (> One (< Chapter 2))...')
+                    MixedStyledText('One (< Two (> One (< Chapter 2))...')
+                      SingleStyledText('One (< ')
+                      Reference('Two (> One (< Chapter 2))')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        MixedStyledText('Two (> One (< Two (> Chapter 1))...')
+                          MixedStyledText('Two (> One (< Two (> Chapter 1))...')
+                            SingleStyledText('Two (> ')
+                            Reference('One (< Two (> Chapter 1))')   None:None <reference>
+                                 > (0,0,0,0,1) linked reference
+                              MixedStyledText('Chapter 1')
+                                SingleStyledText('Chapter')
+                                SingleStyledText(' ')
+                                SingleStyledText('1')
+                            SingleStyledText(')')
+                      SingleStyledText(')')
+                SingleStyledText('.')
+      Section(id='two-one')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:13 <section>
+           > (0,0,0,1,2) chapter
+        Heading('2 Two (> One (< Chapter 2))')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:13 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('2 ')
+              SingleStyledText('2')
+              SingleStyledText(' ')
+            MixedStyledText('Two (> One (< Chapter 2))')
+              MixedStyledText('Two (> One (< Chapter 2))')
+                SingleStyledText('Two (> ')
+                Reference('One (< Chapter 2)')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('One (< Chapter 2)')
+                    MixedStyledText('One (< Chapter 2)')
+                      SingleStyledText('One (< ')
+                      Reference('Chapter 2')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        MixedStyledText('Chapter 2')
+                          SingleStyledText('Chapter')
+                          SingleStyledText(' ')
+                          SingleStyledText('2')
+                      SingleStyledText(')')
+                SingleStyledText(')')
+        Paragraph('Referencing Two (> One (< Chapte...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:15 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('Referencing Two (> One (< Chapte...')
+              MixedStyledText('Referencing Two (> One (< Chapte...')
+                SingleStyledText('Referencing ')
+                Reference('Two (> One (< Chapter 2))')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('Two (> One (< Two (> Chapter 1))...')
+                    MixedStyledText('Two (> One (< Two (> Chapter 1))...')
+                      SingleStyledText('Two (> ')
+                      Reference('One (< Two (> Chapter 1))')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        MixedStyledText('One (< Two (> One (< Chapter 2))...')
+                          MixedStyledText('One (< Two (> One (< Chapter 2))...')
+                            SingleStyledText('One (< ')
+                            Reference('Two (> One (< Chapter 2))')   None:None <reference>
+                                 > (0,0,0,0,1) linked reference
+                              MixedStyledText('Chapter 2')
+                                SingleStyledText('Chapter')
+                                SingleStyledText(' ')
+                                SingleStyledText('2')
+                            SingleStyledText(')')
+                      SingleStyledText(')')
+                SingleStyledText('.')
+      Section(id='three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:19 <section>
+           > (0,0,0,1,2) chapter
+        Heading('3 Three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:19 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('3 ')
+              SingleStyledText('3')
+              SingleStyledText(' ')
+            MixedStyledText('Three')
+              MixedStyledText('Three')
+                SingleStyledText('Three')
+        Paragraph('Referencing Three.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:21 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('Referencing Three.')
+              MixedStyledText('Referencing Three.')
+                SingleStyledText('Referencing ')
+                Reference('Three')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('Three')
+                    MixedStyledText('Three')
+                      SingleStyledText('Three')
+                SingleStyledText('.')
+      Section(id='four-three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:27 <section>
+           > (0,0,0,1,2) chapter
+        Heading('4 Four (< Three)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:27 <title>
+             > (0,0,0,1,2) heading level 1
+               (0,0,0,0,2) other heading levels
+            MixedStyledText('4 ')
+              SingleStyledText('4')
+              SingleStyledText(' ')
+            MixedStyledText('Four (< Three)')
+              MixedStyledText('Four (< Three)')
+                SingleStyledText('Four (< ')
+                Reference('Three')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('Three')
+                    MixedStyledText('Three')
+                      SingleStyledText('Three')
+                SingleStyledText(')')
+        Paragraph('Referencing Four (< Three).')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/reference_in_reference.rst:29 <paragraph>
+             > (0,0,0,0,2) body
+            MixedStyledText('Referencing Four (< Three).')
+              MixedStyledText('Referencing Four (< Three).')
+                SingleStyledText('Referencing ')
+                Reference('Four (< Three)')   None:None <reference>
+                     > (0,0,0,0,1) linked reference
+                  MixedStyledText('Four (< Three)')
+                    MixedStyledText('Four (< Three)')
+                      SingleStyledText('Four (< ')
+                      Reference('Three')   None:None <reference>
+                           > (0,0,0,0,1) linked reference
+                        MixedStyledText('Three')
+                          MixedStyledText('Three')
+                            SingleStyledText('Three')
+                      SingleStyledText(')')
+                SingleStyledText('.')

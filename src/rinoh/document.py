@@ -248,6 +248,7 @@ class Document(object):
         self._glossary = {}
         self._glossary_first = {}
         self._unique_id = 0
+        self.title_targets = set()
         self.error = False
 
     def _print_version_and_license(self):

@@ -1,0 +1,9 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[linked reference]
+type = title

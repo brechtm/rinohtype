@@ -77,13 +77,18 @@ class ReferenceBase(MixedStyledTextBase):
     def target_id(self, document):
         raise NotImplementedError
 
-    def children(self, container):
-        type = self.type or self.get_style('type', container)
+    def is_title_reference(self, container):
+        reference_type = self.type or self.get_style('type', container)
+        return reference_type == ReferenceType.TITLE
+
+    def children(self, container, type=None):
+        document = container.document
+        type = type or self.type or self.get_style('type', container)
         if container is None:
             return '$REF({})'.format(type)
-        target_id = self.target_id(container.document)
+        target_id = self.target_id(document)
         try:
-            text = container.document.get_reference(target_id, type)
+            text = document.get_reference(target_id, type)
         except KeyError:
             if self.custom_title:
                 text = self.custom_title
@@ -93,8 +98,17 @@ class ReferenceBase(MixedStyledTextBase):
                 self.warn(f"Target '{target_id}' has no '{type}' reference",
                           container)
                 text = ErrorText('??', parent=self)
+        if type == ReferenceType.TITLE:     # prevent infinite recursion
+            document.title_targets.update(self.referenceable_ids)
+            if target_id in document.title_targets:
+                self.warn("Circular 'title' reference replaced with "
+                          "'reference' reference", container)
+                yield from self.children(container, type='reference')
+                return
+            document.title_targets.add(target_id)
         yield (text.copy(parent=self) if isinstance(text, InlineStyled)
                else SingleStyledText(text, parent=self))
+        document.title_targets.clear()
 
     def get_annotation(self, container):
         assert self.annotation is None

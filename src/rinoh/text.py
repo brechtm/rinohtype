@@ -76,6 +76,14 @@ class Locale(AttributeType):
 class InlineStyled(Styled):
     """"""
 
+    @property
+    def referenceable_ids(self):
+        try:
+            return self.parent.referenceable_ids
+        except AttributeError:
+            return [self.parent.referenceable.id,
+                    *self.parent.referenceable.secondary_ids]
+
     def _annotated_spans(self, container):
         spans = self.spans(container)
         ann = self.get_annotation(container)
@@ -100,11 +108,13 @@ class InlineStyled(Styled):
         if before is not None:
             yield from before.copy(self.parent).wrapped_spans(container)
         if not self.get_style('hide', container):
-            # yield from self.spans(container)
             yield from self._annotated_spans(container)
         after = self.get_style('after', container)
         if after is not None:
             yield from after.copy(self.parent).wrapped_spans(container)
+
+    def is_title_reference(self, container):
+        return False
 
     def copy(self, parent=None):
         raise NotImplementedError
