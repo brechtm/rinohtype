@@ -40,6 +40,8 @@ base=default
 indent_first=0
 depth=2
 
+[reference in toc : 'table of contents' / ... / ReferenceField]
+
 [toc level 1]
 base=table of contents
 font_color=$(theme_color)
@@ -117,10 +119,11 @@ base=heading level 3
 font_size=9pt
 space_above=8pt
 space_below=4pt
+margin_left=0
 number_format=None
 
 [heading level 5]
-base=heading level 2
+base=heading level 4
 font_size=9pt
 font_slant=ITALIC
 font_weight=REGULAR
@@ -140,8 +143,8 @@ space_below=2pt
 number_format=None
 
 
-[internal hyperlink]
-font_color=#3131eb
+[linked reference]
+font_color=#4d4d4d
 
 [external hyperlink]
 base=internal hyperlink
@@ -213,6 +216,63 @@ font_slant=italic
 [definition paragraph]
 base=body
 space_above=1pt
+
+# (Sphinx) object descriptions
+
+[object description]
+base=definition list item
+space_above=3pt
+space_below=3pt
+label_max_width=0
+
+[object signatures]
+base=definition term
+
+[object signature]
+base=definition term paragraph
+font_weight=regular
+
+[object name]
+typeface=$(mono_typeface)
+font_weight=BOLD
+ligatures=False
+hyphenate=False
+
+[additional name part]
+base=monospaced
+
+[object type]
+
+[object returns]
+
+[object parentheses]
+font_size=11pt
+
+[object parameter list]
+
+[object parameter (no emphasis)]
+
+[object parameter]
+base=object parameter (no emphasis)
+font_slant=ITALIC
+
+[object brackets]
+font_size=11pt
+font_weight=BOLD
+
+[object optional parameter]
+
+[object annotation]
+font_weight=BOLD
+
+[object description content]
+base=definition
+
+[object description content paragraph]
+base=body
+space_above=1pt
+
+#
 
 [code block]
 base = default

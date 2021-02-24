@@ -66,7 +66,7 @@ header_footer_distance = 34pt
 base=front_matter_right_page
 footer_text = '{PAGE_NUMBER}'
               '\t'
-              'Chapter {SECTION_NUMBER(1)}' (chapter and number)
+              '{SECTION_NUMBER(1)}' (chapter and number)
               '{nbsp}{nbsp}{nbsp}'
               '{SECTION_TITLE(1)}' (chapter title)
 
@@ -75,6 +75,11 @@ base=front_matter_right_page
 
 [contents_left_page]
 base=front_matter_left_page
+footer_text = '{PAGE_NUMBER}'
+              '\t'
+              'Chapter {SECTION_NUMBER(1)}' (chapter and number)
+              '{nbsp}{nbsp}{nbsp}'
+              '{SECTION_TITLE(1)}' (chapter title)
 
 [back_matter_right_page]
 base=front_matter_right_page
