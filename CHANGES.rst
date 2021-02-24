@@ -1,8 +1,8 @@
 Release History
 ---------------
 
-Release 0.5.2 (in development)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.2 (2021-02-24)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
@@ -28,6 +28,9 @@ Fixed:
 * Sphinx style sheet: the object description is always rendered to the right
   of the signature, no matter how wide the signature is.
 * Incorrect/useless warnings that popped up with release 0.5.1.
+
+Part of the work included in this release was kindly sponsored by `Joby
+Aviation <https://www.jobyaviation.com>`_.
 
 
 Release 0.5.1 (2021-02-19)
