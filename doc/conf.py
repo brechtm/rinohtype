@@ -215,6 +215,21 @@ try:
 except CalledProcessError:
     git_version = check_output(git_symref, stderr=DEVNULL, encoding='utf-8')
 
+
+TOC_CAPTION = '<span class="caption-text">{}</span>'
+NEW_CAPTION = TOC_CAPTION.format('{} [<a class="pdf-link" href="{}">PDF</a>]')
+
+
+def add_pdf_links(toc, path):
+    for caption, target in [('User Manual', 'manual'),
+                            ('Reference Guide', 'reference')]:
+        pdf_path = f'{path}{target}.pdf'
+        toc = toc.replace(TOC_CAPTION.format(caption),
+                          NEW_CAPTION.format(caption, pdf_path))
+    return toc
+
+
+html_css_files = ['pdflinks.css']
 html_context = {
     'VERSIONS': True,
     'current_version': git_version.strip(),
@@ -225,7 +240,8 @@ html_context = {
     'display_github': True,
     'github_user': 'brechtm',
     'github_repo': 'rinohtype',
-    'github_version': 'master/doc/'
+    'github_version': 'master/doc/',
+    'add_pdf_links': add_pdf_links,
 }
 
 # -- Options for LaTeX output ---------------------------------------------
