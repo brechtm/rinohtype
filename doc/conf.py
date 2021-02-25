@@ -230,13 +230,11 @@ def add_pdf_links(toc, path):
 
 
 html_css_files = ['pdflinks.css']
+html_js_files = ['versions.js']
+
 html_context = {
     'VERSIONS': True,
     'current_version': git_version.strip(),
-    'downloads': [
-        ('User Manual', 'manual.pdf'),
-        ('Reference Guide', 'reference.pdf'),
-    ],
     'display_github': True,
     'github_user': 'brechtm',
     'github_repo': 'rinohtype',

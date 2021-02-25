@@ -7,17 +7,7 @@
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
-      <!--dl>
-        <dt>{{ _('Versions') }}</dt>
-        {% for slug, url in versions %}
-          <dd><a href="{{ url }}">{{ slug }}</a></dd>
-        {% endfor %}
-      </dl-->
-      <dl>
-        <dt>{{ _('PDF') }}</dt>
-        {% for name, filename in downloads %}
-          <dd><a href="{{ pathto(filename, 1) }}">{{ name }}</a></dd>
-        {% endfor %}
+      <dl id="docs-versions">
       </dl>
     </div>
   </div>
