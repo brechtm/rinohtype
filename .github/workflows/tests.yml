@@ -74,6 +74,38 @@ jobs:
         destination_dir: ${{ steps.docs-publish-dir.outputs.target }}
         keep_files: false
 
+  docs-versions:
+    name: Update docs versions JSON
+    needs: check
+    runs-on: Ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+    - name: Write versions to JSON file
+      uses: jannekem/run-python-script-action@v1
+      with:
+        script: |
+          import json
+          from pathlib import Path
+
+          cwd = Path.cwd()
+          versions = sorted((item.name for item in cwd.iterdir()
+                             if item.is_dir() and not item.name.startswith('.')),
+                            reverse=True)
+          target_dir = Path('gh-pages')
+          target_dir.mkdir(parents=True)
+          target_file = target_dir / 'versions.json'
+          with target_file.open('w') as f:
+              json.dump(versions, f)
+
+    - name: Publish versions JSON to GitHub pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: gh-pages
+        keep_files: true
+
   unit:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests
     strategy:
