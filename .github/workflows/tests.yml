@@ -40,8 +40,8 @@ jobs:
       if: env.TOXENV == 'build-docs'
       uses: actions/cache@v2
       with:
-        path: doc/_build/rinoh/rinohtype.rtc
-        key: ${{ env.TOXENV }}-references-${{ hashFiles('doc/_build/rinoh/rinohtype.rtc') }}
+        path: doc/_build/rinoh/*.rtc
+        key: ${{ env.TOXENV }}-references-${{ hashFiles('doc/_build/rinoh/*.rtc') }}
         restore-keys: |
           ${{ env.TOXENV }}-references-
 
