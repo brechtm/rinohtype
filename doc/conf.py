@@ -21,7 +21,7 @@ try:
 except ModuleNotFoundError:
     import importlib_metadata
 
-from subprocess import check_output, CalledProcessError, DEVNULL
+from subprocess import run, PIPE, DEVNULL
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -207,14 +207,15 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'rinohtype'
 
-git_describe = ['git', 'describe', '--tags', '--exact-match']
-git_symref = ['git', 'symbolic-ref', '--short', 'HEAD']
 
-try:
-    git_version = check_output(git_describe, stderr=DEVNULL, encoding='utf-8')
-except CalledProcessError:
-    git_version = check_output(git_symref, stderr=DEVNULL, encoding='utf-8')
+def git(*args):
+    proc = run(['git', *args], stdout=PIPE, stderr=DEVNULL, encoding='utf-8')
+    return proc.stdout
 
+
+git_version = (git('describe', '--tags', '--exact-match')
+               or git('symbolic-ref', '--short', 'HEAD')
+               or git('describe', '--all'))
 
 TOC_CAPTION = '<span class="caption-text">{}</span>'
 NEW_CAPTION = TOC_CAPTION.format('{} [<a class="pdf-link" href="{}">PDF</a>]')
