@@ -1,5 +1,5 @@
 # main packages
-tox==3.21.3
+tox==3.22.0
 tox-poetry-installer==0.6.2
 poetry==1.1.4
 
