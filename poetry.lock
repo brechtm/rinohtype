@@ -900,7 +900,7 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-autoprogram"
-version = "0.1.5"
+version = "0.1.7"
 description = "Documenting CLI programs"
 category = "dev"
 optional = false
@@ -1092,7 +1092,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "e7278d7f8b45881e3509f4591f8b0eeb6cf2c001835efc89e7cdc3f1563d03ab"
+content-hash = "181e245afd9e5a4b9f3a7978a4b231f56e16b879c41377ef98b2eb81353f9b64"
 
 [metadata.files]
 alabaster = [
@@ -1572,8 +1572,8 @@ sphinxcontrib-applehelp = [
     {file = "sphinxcontrib_applehelp-1.0.2-py2.py3-none-any.whl", hash = "sha256:806111e5e962be97c29ec4c1e7fe277bfd19e9652fb1a4392105b43e01af885a"},
 ]
 sphinxcontrib-autoprogram = [
-    {file = "sphinxcontrib-autoprogram-0.1.5.tar.gz", hash = "sha256:7ec6bdf235b491dc693d1a72fb7f9f734db69e29b81333435efb41f09f9bbeef"},
-    {file = "sphinxcontrib_autoprogram-0.1.5-py2.py3-none-any.whl", hash = "sha256:5c1af55d44c0a4301807eb42174a0f474d97decc137169c7c9305e56ed4d3000"},
+    {file = "sphinxcontrib-autoprogram-0.1.7.tar.gz", hash = "sha256:bc642e3f2817a7539f306e021697f72b225bea5ad23b30dc14a7b9d1408d1f1a"},
+    {file = "sphinxcontrib_autoprogram-0.1.7-py2.py3-none-any.whl", hash = "sha256:746adb4214c3d2917af948499b3ed4b7b88b208a48c96368c0cff356474dba42"},
 ]
 sphinxcontrib-devhelp = [
     {file = "sphinxcontrib-devhelp-1.0.2.tar.gz", hash = "sha256:ff7f1afa7b9642e7060379360a67e9c41e8f3121f2ce9164266f61b9f4b338e4"},
