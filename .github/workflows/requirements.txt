@@ -1,6 +1,6 @@
 # main packages
 tox==3.22.0
-tox-poetry-installer==0.6.2
+tox-poetry-installer==0.6.4
 poetry==1.1.4
 
 # dependencies
