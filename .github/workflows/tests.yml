@@ -37,8 +37,7 @@ jobs:
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt \
-          tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
 
     - name: Cache docs references cache
       if: env.TOXENV == 'build-docs'
@@ -128,8 +127,7 @@ jobs:
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt \
-          tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
@@ -196,8 +194,7 @@ jobs:
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt \
-          tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
