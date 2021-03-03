@@ -11,6 +11,7 @@ on:
 
 env:
   current_python: '3.9'
+  poetry_version: '1.1.4'
 jobs:
   check:
     name: ${{ matrix.env.TOXENV }}
@@ -34,7 +35,10 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install tox & co
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        poetry export --dev --without-hashes --output requirements.txt
+        pip${{ env.current_python }} install --constraint requirements.txt \
+          tox tox-poetry-installer[poetry]
 
     - name: Cache docs references cache
       if: env.TOXENV == 'build-docs'
@@ -122,7 +126,10 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install tox & co
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        poetry export --dev --without-hashes --output requirements.txt
+        pip${{ env.current_python }} install --constraint requirements.txt \
+          tox tox-poetry-installer[poetry]
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
@@ -187,7 +194,10 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install tox & co
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        poetry export --dev --without-hashes --output requirements.txt
+        pip${{ env.current_python }} install --constraint requirements.txt \
+          tox tox-poetry-installer[poetry]
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
@@ -285,9 +295,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
@@ -336,9 +346,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
 
     - name: Build the wheel
       run: poetry build --format wheel
@@ -361,9 +371,9 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install --requirement .github/workflows/requirements.txt
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
 
     - name: Publish to PyPI
       env:
