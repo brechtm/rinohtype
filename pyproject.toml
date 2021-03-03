@@ -101,7 +101,7 @@ Sphinx = "^3.4.3"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.7"
 tox = "^3.22.0"
-tox-poetry-installer = {extras = ["poetry"], version = "^0.6.4"}
+tox-poetry-installer = {extras = ["poetry"], version = "^0.6.3"}
 pytest-github-actions-annotate-failures = { version = "^0.1.1", optional = true }
 
 [build-system]
