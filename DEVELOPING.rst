@@ -44,7 +44,8 @@ The following environments execute unit tests and regression tests:
     Runs integration/regression tests. Each of these tests render a tiny
     document (often a single page) focusing on a specific feature, which means
     they also execute quickly. Their PDF output is compared to a reference PDF
-    that is known to be good.
+    that is known to be good. This requires ImageMagick and either MuPDF's
+    *mutool* or poppler's *pdftoppm* to be available from the search path.
 
 ``longrunning`` (not maintained, broken)
     Runs regressions tests that render larger documents. These tests take
