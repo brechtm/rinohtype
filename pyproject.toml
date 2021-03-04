@@ -52,6 +52,9 @@ include = [
     { path = "wininst.cfg", format = "sdist" },
 ]
 
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/brechtm/rinohtype/issues"
+
 [tool.poetry.scripts]
 rinoh = "rinoh.__main__:main"
 
