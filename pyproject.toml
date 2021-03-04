@@ -5,8 +5,9 @@ description = "The Python document processor"
 authors = ["Brecht Machiels <brecht@mos6581.org>"]
 license = "AGPL-3.0-only"
 readme = "README.rst"
-repository = "https://github.com/brechtm/rinohtype"
 homepage = "https://github.com/brechtm/rinohtype"
+repository = "https://github.com/brechtm/rinohtype"
+documentation = "http://www.mos6581.org/rinohtype/master"
 keywords = ["typesetting", "rst", "pdf", "opentype"]
 classifiers = [
     "Environment :: Console",
