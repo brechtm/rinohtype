@@ -13,7 +13,7 @@ Please send your contributions by creating a pull request on GitHub. You will
 be asked to agree to the `contributor license agreement`_. Why, you might ask?
 In the past, I had plans to sell a commercial version of rinohtype. This
 version would basically be the same as the open source version, but with the
-addition of a closed-source backend for the DITA format. While I'm no longer
+addition of a closed-source frontend for the DITA format. While I'm no longer
 actively pursuing these plans at this point, I would like to keep this option
 open. In combination with the Affero GPL, the CLA allows me to include
 contributions by others in this commercial version while preventing others from
