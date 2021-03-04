@@ -228,7 +228,8 @@ activated when you enter the rinohtype repository checkout (see the
 <dt><code class="docutils literal notranslate"><span class="pre">regression</span></code></dt><dd><p>Runs integration/regression tests. Each of these tests render a tiny
 document (often a single page) focusing on a specific feature, which means
 they also execute quickly. Their PDF output is compared to a reference PDF
-that is known to be good.</p>
+that is known to be good. This requires ImageMagick and either MuPDF’s
+<em>mutool</em> or poppler’s <em>pdftoppm</em> to be available from the search path.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">longrunning</span></code> (not maintained, broken)</dt><dd><p>Runs regressions tests that render larger documents. These tests take
 several minutes to complete.</p>
