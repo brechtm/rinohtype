@@ -82,11 +82,16 @@ line tool renders reStructuredText documents and the included Sphinx_ builder
 makes it possible to output large documents with your own style applied. Have
 a look at the `rinohtype manual`_ for an example of the output.
 
+There is also a commercial DITA_ frontend, but it's development is currently
+on hold. Please `contact me`_ if you are interested in testing it.
+
 .. _documentation: http://www.mos6581.org/rinohtype/master/
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
 .. _rinohtype manual: http://www.mos6581.org/rinohtype/master/manual.pdf
+.. _DITA: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
+.. _contact me: brecht@opqode.com
 
 
 Requirements
@@ -163,4 +168,4 @@ applications, you can obtain a `commercial license`_. The author of rinohtype
 is also available for consultancy projects involving rinohtype.
 
 .. _Affero GPL 3.0: https://www.gnu.org/licenses/agpl-3.0.html
-.. _commercial license: brecht.machiels@opqode.com
+.. _commercial license: `contact me`_

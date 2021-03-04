@@ -16,14 +16,15 @@ can be used to create any kind of document, but its focus is on complex
 documents such as technical manuals.
 
 Included with rinohtype is the :program:`rinoh` command line tool that renders
-reStructuredText and Markdown (CommonMark) documents. Support for DITA_ is
-available in the commercially supported Pro version.
+reStructuredText and Markdown (CommonMark) documents. There is also a
+commercial DITA_ frontend, but its development is currently on hold. Please
+`contact me`_ if you are interested in testing it.
 
 rinohtype also includes support for Sphinx_, which helps writing large
 structured documents and supports a multitude of different output formats
 including searchable HTML. rinohtype adds support to produce PDF output.
 
-.. _DITA: http://dita.xml.org/standard
+.. _DITA: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 .. _Sphinx: http://sphinx-doc.org
 
 
@@ -52,11 +53,11 @@ release.
 rinohtype is open source software licensed under the `GNU AGPL 3.0`_.
 Practically, this means you are free to use it in open-source software, but not
 in (commercial) closed-source software. For the latter, you need to obtain a
-commercial license. We are also available for consultancy projects involving
-rinohtype, so don't hesitate to `contact us`_.
+commercial license. I am also available for consultancy projects involving
+rinohtype, so don't hesitate to `contact me`_.
 
 .. _GNU AGPL 3.0: http://www.gnu.org/licenses/agpl-3.0.en.html
-.. _contact us: info@opqode.com
+.. _contact me: brecht@opqode.com
 
 
 .. include:: manual.rst
