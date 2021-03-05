@@ -10,7 +10,8 @@ New Features:
 
 Changed:
 
-*
+* Smarter automatic sizing of table columns; don't needlessly pad columns whose
+  contents don't require wrapping.
 
 Fixed:
 

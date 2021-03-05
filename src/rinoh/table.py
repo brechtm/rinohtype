@@ -259,8 +259,10 @@ class Table(Flowable):
             for i in rel_cols:
                 final[i] = column_widths[i] * rel_factor
 
-        return self._optimize_auto_columns(auto_cols, final, min_widths,
+        if not all(fin >= maxw for fin, maxw in zip(final, max_widths)):
+            final = self._optimize_auto_columns(auto_cols, final, min_widths,
                                                 max_widths, container)
+        return final
 
     def _optimize_auto_columns(self, auto_cols, final, min_widths,
                                max_widths, container):
@@ -268,8 +270,6 @@ class Table(Flowable):
         extra = [final[i] - min_widths[i] for i in auto_cols]
         excess = [final[i] - max_widths[i] for i in auto_cols]
         neg_extra = sum(x for x in extra if x < 0)  # width to be compensated
-        if neg_extra == 0:  # everything fits within in the given column widths
-            return final
         # increase width of overfilled columns to the minimum width
         for i in (i for i in auto_cols if extra[i] < 0):
             final[i] = min_widths[i]
@@ -281,13 +281,17 @@ class Table(Flowable):
             surplus = neg_extra + sum(x for x in extra if x > 0)
             for i in (i for i in auto_cols if extra[i] > 0):
                 final[i] = min_widths[i]
+        pad_columns = auto_cols
         if surplus < 0:
             self.warn('Table contents are too wide to fit within the available'
                       ' width', container)
-        # divide surplus space among all auto-sized columns
-        per_column_surplus = surplus / len(auto_cols)
-        for i in auto_cols:
-            final[i] += per_column_surplus
+        elif any(fin < mw for fin, mw in zip(final, max_widths)):
+            pad_columns = [i for i in auto_cols if final[i] < max_widths[i]]
+        # divide surplus space among all auto-sized columns < max_width
+        if pad_columns:
+            per_column_surplus = surplus / len(pad_columns)
+            for i in pad_columns:
+                final[i] += per_column_surplus
         return final
 
     def _widths_from_content(self, fixed, max_cell_width, container):

@@ -1,0 +1,62 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Table()   None:None <table>
+           > (0,0,0,0,2) table
+        TableBody()
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:4 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('short')
+                    MixedStyledText('short')
+                      SingleStyledText('short')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:5 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+      Table()   None:None <table>
+           > (0,0,0,0,2) table
+        TableBody()
+          TableRow()
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:11 <paragraph>
+                   > (0,0,0,1,8) table first column paragraph
+                     (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('short')
+                    MixedStyledText('short')
+                      SingleStyledText('short')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
+            TableCell()   None:None <entry>
+                 > (0,0,0,0,7) table cell
+              Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:12 <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph
+                     (0,0,0,0,2) body
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+                   > fallback to default style
