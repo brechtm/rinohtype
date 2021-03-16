@@ -54,6 +54,7 @@ include = [
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/brechtm/rinohtype/issues"
+"Changelog" = "http://www.mos6581.org/rinohtype/master/changelog.html"
 
 [tool.poetry.scripts]
 rinoh = "rinoh.__main__:main"
