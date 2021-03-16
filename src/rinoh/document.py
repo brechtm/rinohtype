@@ -226,6 +226,8 @@ class Document(object):
         """`backend` specifies the backend to use for rendering the document."""
         super().__init__()
         self._print_version_and_license()
+        self._no_cache = getenv('RINOH_NO_CACHE', '0') != '0'
+        self._single_pass = getenv('RINOH_SINGLE_PASS', '0') != '0'
         self.front_matter = []
         self.supporting_matter = {}
         self.document_tree = document_tree
@@ -314,6 +316,9 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
+        if self._no_cache:
+            print('Loading/saving of the references cache is disabled')
+            return {}, {}
         cache_path = filename.with_suffix(self.CACHE_EXTENSION)
         try:
             with cache_path.open('rb') as file:
@@ -325,6 +330,8 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def _save_cache(self, filename):
         """Save the current state of the page references to `<filename>.rtc`"""
+        if self._no_cache:
+            return
         cache_path = Path(filename).with_suffix(self.CACHE_EXTENSION)
         with cache_path.open('wb') as file:
             cache = (self.part_page_counts, self.page_references)
@@ -380,7 +387,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                 if (self.part_page_counts == prev_page_counts
                         and self.page_references == prev_page_refs):
                     break
-                if getenv('RINOH_SINGLE_PASS', '0') != '0':
+                if self._single_pass:
                     print('Stopping after first rendering pass.')
                     break
                 print('Not yet converged, rendering again...')

@@ -1,4 +1,6 @@
 
+import os
+
 import pytest
 
 from sphinx.testing.path import path
@@ -22,3 +24,11 @@ def verify(app, rootdir):
         testroot = app.srcdir.basename()
         verify_output(testroot, app.outdir, rootdir)
     return _verify
+
+
+@pytest.fixture(scope="session", autouse=True)
+def disable_cache():
+    old_environ = dict(os.environ)
+    os.environ['RINOH_NO_CACHE'] = '1'
+    yield
+    os.environ.update(old_environ)

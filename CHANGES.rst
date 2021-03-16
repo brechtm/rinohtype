@@ -6,7 +6,8 @@ Release 0.5.3 (in development)
 
 New Features:
 
-*
+* If the *RINOH_NO_CACHE* environment variable is set, the references cache
+  (.rtc file) won't be loaded nor saved. This is mostly useful for testing.
 
 Changed:
 
