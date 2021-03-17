@@ -1,0 +1,92 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Same Page Number Format', style='title page title')
+         > (0,0,1,0,2) title page title
+           (0,0,0,0,2) body
+        SingleStyledText('Same Page Number Format')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle
+           (0,0,0,0,2) body
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author
+           (0,0,0,0,2) body
+        SingleStyledText('Author')
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section
+           (0,0,0,1,1) chapter
+      Heading('Table of Contents', style='unnumbered')
+           x (0,0,1,1,3) table of contents title
+           > (0,0,1,1,2) unnumbered heading level 1
+             (0,0,0,1,2) heading level 1
+             (0,0,0,0,2) other heading levels
+          StringField('Table of Contents')
+            SingleStyledText('Table of Contents')
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('​ Table of Contents')
+         > (0,0,0,0,2) header
+        MixedStyledText('​ Table of Contents')
+          MixedStyledText('​ Table of Contents')
+            Field('​')
+              SingleStyledText('​')
+            SingleStyledText(' ')
+            Field('Table of Contents')
+              StringField('Table of Contents')
+                SingleStyledText('Table of Contents')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	1/1')
+         > (0,0,0,0,2) footer
+        MixedStyledText('	1/1')
+          MixedStyledText('	1/1')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('/')
+            Field('1')
+              SingleStyledText('1')
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()
+      Paragraph('Hello!')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-87/popen-gw5/samepagenumberformat/index.rst:4 <paragraph>
+           > (0,0,0,0,2) body
+          MixedStyledText('Hello!')
+            MixedStyledText('Hello!')
+              SingleStyledText('Hello!')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('​ ​')
+         > (0,0,0,0,2) header
+        MixedStyledText('​ ​')
+          MixedStyledText('​ ​')
+            Field('​')
+              SingleStyledText('​')
+            SingleStyledText(' ')
+            Field('​')
+              SingleStyledText('​')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	1/1')
+         > (0,0,0,0,2) footer
+        MixedStyledText('	1/1')
+          MixedStyledText('	1/1')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('/')
+            Field('1')
+              SingleStyledText('1')

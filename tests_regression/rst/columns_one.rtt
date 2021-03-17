@@ -8,6 +8,9 @@ parts=contents
 [VARIABLES]
 paper_size=A5
 
+[contents]
+page_number_format = number
+
 [contents_page]
 left_margin = 2cm
 right_margin = 2cm

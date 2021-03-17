@@ -42,8 +42,8 @@ class Article(DocumentTemplate):
 
     # default document part templates
     title = TitlePartTemplate()
-    front_matter = ArticleFrontMatter()
-    contents = ContentsPartTemplate()
+    front_matter = ArticleFrontMatter(page_number_format='continue')
+    contents = ContentsPartTemplate(page_number_format='continue')
 
     # default page templates
     page = PageTemplate(page_size=Var('paper_size'))

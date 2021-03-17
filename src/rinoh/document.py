@@ -41,7 +41,7 @@ from .flowable import StaticGroupedFlowables
 from .language import EN
 from .layout import (Container, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
-from .number import format_number
+from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
 from .strings import Strings
 from .style import StyleLog
@@ -77,6 +77,12 @@ class PageType(OptionSet):
     values = 'left', 'right', 'any'
 
 
+class PageNumberFormat(NumberFormatBase):
+    """How (or if) page numbers are displayed"""
+
+    values = NumberFormatBase.values + ('continue', )
+
+
 class Page(Container):
     """A single page in a document.
 
@@ -105,8 +111,7 @@ class Page(Container):
         document = self.document_part.document
         backend_document = document.backend_document
         self.backend_page = document.backend.Page(backend_document,
-                                                  width, height, self.number,
-                                                  self.number_format)
+                                                  width, height, self)
         self._empty = True
         super().__init__('PAGE', None, 0, 0, width, height)
 
@@ -417,14 +422,14 @@ to the terms of the GNU Affero General Public License version 3.''')
         part_page_count = PartPageCount()
         last_number_format = None
         for part_template in self.part_templates:
-            part = part_template.document_part(self)
+            part = part_template.document_part(self, last_number_format)
             if part is None:
                 continue
-            if part_template.page_number_format != last_number_format:
+            if part.get_config_value('page_number_format', self) != 'continue':
                 part_page_count = PartPageCount()
             part_page_count += part.render(part_page_count.count + 1)
             part_page_counts[part_template.name] = part_page_count
-            last_number_format = part_template.page_number_format
+            last_number_format = part.page_number_format
         sys.stdout.write('\n')     # for the progress indicator
         return part_page_counts
 

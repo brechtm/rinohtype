@@ -54,7 +54,7 @@ def test_template_configuration():
     assert doc.get_option('b') is True
     assert doc.get_option('c') is True
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'
@@ -71,7 +71,7 @@ def test_template_configuration_base():
     assert doc.get_option('b') is False
     assert doc.get_option('c') is True
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'
@@ -127,7 +127,7 @@ def test_template_configuration_file():
     assert doc.get_option('b') is False
     assert doc.get_option('c') is True
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'
@@ -159,7 +159,7 @@ def test_template_configuration_file_base():
     assert doc.get_option('b') is False
     assert doc.get_option('c') is False
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'
@@ -186,7 +186,7 @@ def test_template_configuration_var():
     assert doc.get_option('b') is True
     assert doc.get_option('c') is True
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'
@@ -202,7 +202,7 @@ def test_template_configuration_var2():
     assert doc.get_option('b') is True
     assert doc.get_option('c') is True
     part_template, = doc.part_templates
-    part = part_template.document_part(doc)
+    part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
     page = part.new_page(1, new_chapter=False)
     assert page.template_name == 'contents_page'

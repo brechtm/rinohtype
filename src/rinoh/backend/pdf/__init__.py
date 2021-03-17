@@ -110,17 +110,19 @@ class Document(object):
 
     def write(self, file):
         page_labels = self.cos_document.catalog['PageLabels']['Nums']
-        last_number_format = None
         for index, page in enumerate(self.pages):
             contents = cos.Stream(filter=FlateDecode())
             contents.write(page.canvas.getvalue())
             page.cos_page['Contents'] = contents
-            if page.number_format != last_number_format:
+            rinoh_page = page.rinoh_page
+            number_format = (rinoh_page.document_part
+                             .get_config_value('page_number_format',
+                                               rinoh_page.document))
+            if number_format != 'continue':
                 pdf_number_format = PAGE_NUMBER_FORMATS[page.number_format]
                 page_labels.append(cos.Integer(index))
                 page_labels.append(cos.PageLabel(pdf_number_format,
                                                  start=page.number))
-                last_number_format = page.number_format
         self.cos_document.write(file)
 
 
@@ -132,14 +134,15 @@ PAGE_NUMBER_FORMATS = {'number': cos.DECIMAL_ARABIC,
 
 
 class Page(object):
-    def __init__(self, backend_document, width, height, number, number_format):
+    def __init__(self, backend_document, width, height, rinoh_page):
         self.backend_document = backend_document
         cos_pages = backend_document.cos_document.catalog['Pages']
         self.cos_page = cos_pages.new_page(float(width), float(height))
         self.width = width
         self.height = height
-        self.number = number
-        self.number_format = number_format
+        self.rinoh_page = rinoh_page
+        self.number = rinoh_page.number
+        self.number_format = rinoh_page.number_format
         self.canvas = PageCanvas(self)
         self.backend_document.pages.append(self)
 

@@ -1,0 +1,15 @@
+[TEMPLATE_CONFIGURATION]
+name=samepagenumberformat
+template=article
+stylesheet=stylesheet.rts
+
+parts = title front_matter contents
+
+[VARIABLES]
+paper_size = A5
+
+[front_matter]
+page_number_format = number
+
+[contents]
+page_number_format = number

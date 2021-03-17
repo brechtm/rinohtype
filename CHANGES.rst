@@ -6,6 +6,8 @@ Release 0.5.3 (in development)
 
 New Features:
 
+* The new *continue* page number format makes it more explicit when to not
+  restart page numbering.
 * If the *RINOH_NO_CACHE* environment variable is set, the references cache
   (.rtc file) won't be loaded nor saved. This is mostly useful for testing.
 

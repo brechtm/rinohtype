@@ -62,7 +62,7 @@ class Book(DocumentTemplate):
                        end_at_page='left')
     contents = ContentsPartTemplate(page_number_format='number',
                                     end_at_page='left')
-    back_matter = BackMatterTemplate(page_number_format='number',
+    back_matter = BackMatterTemplate(page_number_format='continue',
                                      end_at_page='left')
 
     # default page templates

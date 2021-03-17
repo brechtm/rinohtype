@@ -1,5 +1,5 @@
 [TEMPLATE_CONFIGURATION]
-name=minimal
+name=relativepaths
 template=my_document_template
 stylesheet=../stylesheet/stylesheet.rts
 

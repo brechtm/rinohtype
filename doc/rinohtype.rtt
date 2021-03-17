@@ -24,15 +24,15 @@ page_number_format=number
 end_at_page=left
 
 [front_matter]
-page_number_format=number
+page_number_format=continue
 end_at_page=any
 
 [contents]
-page_number_format=number
+page_number_format=continue
 end_at_page=any
 
 [back_matter]
-page_number_format=number
+page_number_format=continue
 end_at_page=any
 
 

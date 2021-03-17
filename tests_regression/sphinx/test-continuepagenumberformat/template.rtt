@@ -1,0 +1,18 @@
+[TEMPLATE_CONFIGURATION]
+name=continuepagenumberformat
+template=article
+stylesheet=stylesheet.rts
+
+parts = title front_matter contents
+
+[VARIABLES]
+paper_size = A5
+
+[title]
+page_number_format = number
+
+[front_matter]
+page_number_format = continue
+
+[contents]
+page_number_format = continue

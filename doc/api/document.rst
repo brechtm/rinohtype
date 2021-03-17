@@ -26,3 +26,7 @@ Pages
 
 .. autoclass:: PageType
     :members:
+
+
+.. autoclass:: PageNumberFormat
+    :members:

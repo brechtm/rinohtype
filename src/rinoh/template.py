@@ -19,7 +19,8 @@ from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         Configurable, DefaultValueException,
                         VariableNotDefined)
 from .dimension import Dimension, CM, PT, PERCENT
-from .document import Document, Page, PageOrientation, PageType
+from .document import (Document, Page, PageOrientation, PageType,
+                       PageNumberFormat)
 from .element import create_destination
 from .image import BackgroundImage, Image
 from .flowable import Flowable, StaticGroupedFlowables
@@ -28,7 +29,6 @@ from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
                      BACKGROUND, CONTENT, HEADER_FOOTER, CHAPTER_TITLE,
                      PageBreakException, Chain)
-from .number import NumberFormat
 from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
@@ -42,10 +42,11 @@ from .stylesheets import sphinx
 from .util import NamedDescriptor
 
 
-__all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'TitlePageTemplate',
-           'ContentsPartTemplate', 'FixedDocumentPartTemplate',
-           'Option', 'AbstractLocation', 'DocumentTemplate',
-           'TemplateConfiguration', 'TemplateConfigurationFile']
+__all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'PageNumberFormat',
+           'TitlePageTemplate', 'ContentsPartTemplate',
+           'FixedDocumentPartTemplate', 'Option', 'AbstractLocation',
+           'DocumentTemplate', 'TemplateConfiguration',
+           'TemplateConfigurationFile']
 
 
 class Option(Attribute):
@@ -308,10 +309,8 @@ class DocumentPartTemplate(Template):
 
     """
 
-    page_number_format = Option(NumberFormat, 'number', "The format for page "
-                                "numbers in this document part. If it is "
-                                "different from the preceding part's number "
-                                "format, numbering restarts at 1")
+    page_number_format = Option(PageNumberFormat, 'number', "The format for "
+                                "page numbers in this document part.")
     end_at_page = Option(PageType, 'any', 'The type of page to end this '
                                           'document part on')
     drop_if_empty = Option(Bool, True, 'Exclude this part from the document '
@@ -341,10 +340,10 @@ class DocumentPartTemplate(Template):
             flowables.insert(position, flowable)
         return flowables
 
-    def document_part(self, document):
+    def document_part(self, document, last_number_format):
         flowables = self.all_flowables(document)
         if flowables or not self.drop_if_empty:
-            return DocumentPart(self, document, flowables)
+            return DocumentPart(self, document, flowables, last_number_format)
 
 
 class DocumentPart(Templated, metaclass=DocumentLocationType):
@@ -361,18 +360,19 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
 
     configuration_class = DocumentPartTemplate
 
-    def __init__(self, template, document, flowables):
+    def __init__(self, template, document, flowables, last_number_format):
         self.template = template
         self.template_name = template.name
         self.document = document
+        page_number_format = self.get_config_value('page_number_format',
+                                                   self.document)
+        self.page_number_format = (last_number_format
+                                   if page_number_format == 'continue'
+                                   else page_number_format)
         self.pages = []
         self.chain = Chain(self)
         for flowable in flowables or []:
-                self.chain << flowable
-
-    @property
-    def page_number_format(self):
-        return self.template.page_number_format
+            self.chain << flowable
 
     @property
     def number_of_pages(self):

@@ -28,8 +28,8 @@ class MyDocumentTemplate(DocumentTemplate):
 
     # default document part templates
     title = MyTitlePartTemplate()
-    front_matter = FixedDocumentPartTemplate()
-    contents = ContentsPartTemplate()
+    front_matter = FixedDocumentPartTemplate(page_number_format='continue')
+    contents = ContentsPartTemplate(page_number_format='continue')
 
     # default page templates
     page = PageTemplate(page_size=Var('paper_size'))
