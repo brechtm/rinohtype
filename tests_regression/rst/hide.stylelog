@@ -6,77 +6,99 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()
-      Section(id='section-one')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:4 <section>
-           > (0,0,0,1,2) chapter
-        Heading('1 Section One')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:4 <title>
+      Section(id='section-one')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:7 <section>
+           > (0,0,0,1,4) content chapter
+             (0,0,0,1,2) chapter
+        Heading('1 Section One')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:7 <title>
              > (0,0,0,1,2) heading level 1
                (0,0,0,0,2) other heading levels
-            MixedStyledText('1 Section One')
+            MixedStyledText('1 ')
               SingleStyledText('1')
               SingleStyledText(' ')
-              SingleStyledText('Section One')
-        Paragraph('Paragraph in section 1.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:6 <paragraph>
+            MixedStyledText('Section One')
+              MixedStyledText('Section One')
+                SingleStyledText('Section One')
+        Paragraph('Paragraph in section 1. HIDDEN')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:9 <paragraph>
              > (0,0,0,0,2) body
-          MixedStyledText('Paragraph in section 1.')
-            SingleStyledText('Paragraph in section 1.')
-        Section(id='subsection-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:10 <section>
-          Heading('1.1 Subsection A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:10 <title>
+            MixedStyledText('Paragraph in section 1. HIDDEN')
+              MixedStyledText('Paragraph in section 1. HIDDEN')
+                SingleStyledText('Paragraph in section 1. ')
+                MixedStyledText('HIDDEN')   None:None <inline>
+                     > (0,0,0,1,1) hidden text
+        Section(id='subsection-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:13 <section>
+          Heading('1.1 Subsection A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:13 <title>
                > (0,0,0,1,2) heading level 2
                  (0,0,0,0,2) other heading levels
-              MixedStyledText('1.1 Subsection A')
+              MixedStyledText('1.1 ')
                 SingleStyledText('1.1')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection A')
-          Paragraph('Paragraph in subsection 1A.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:12 <paragraph>
+              MixedStyledText('Subsection A')
+                MixedStyledText('Subsection A')
+                  SingleStyledText('Subsection A')
+          Paragraph('Paragraph in subsection 1A.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:15 <paragraph>
                > (0,0,0,0,2) body
-            MixedStyledText('Paragraph in subsection 1A.')
-              SingleStyledText('Paragraph in subsection 1A.')
-        Section(id='subsection-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:16 <section>
-          Heading('1.2 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:16 <title>
+              MixedStyledText('Paragraph in subsection 1A.')
+                MixedStyledText('Paragraph in subsection 1A.')
+                  SingleStyledText('Paragraph in subsection 1A.')
+        Section(id='subsection-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:19 <section>
+          Heading('1.2 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:19 <title>
                > (0,0,0,1,2) heading level 2
                  (0,0,0,0,2) other heading levels
-              MixedStyledText('1.2 Subsection B')
+              MixedStyledText('1.2 ')
                 SingleStyledText('1.2')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection B')
-          Paragraph('Paragraph in subsection 1B.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:18 <paragraph>
+              MixedStyledText('Subsection B')
+                MixedStyledText('Subsection B')
+                  SingleStyledText('Subsection B')
+          Paragraph('Paragraph in subsection 1B.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:21 <paragraph>
                > (0,0,0,0,2) body
-            MixedStyledText('Paragraph in subsection 1B.')
-              SingleStyledText('Paragraph in subsection 1B.')
-      Section(id='section-three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:56 <section>
-           > (0,0,0,1,2) chapter
-        Heading('3 Section Three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:56 <title>
+              MixedStyledText('Paragraph in subsection 1B.')
+                MixedStyledText('Paragraph in subsection 1B.')
+                  SingleStyledText('Paragraph in subsection 1B.')
+      Section(id='section-three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:62 <section>
+           > (0,0,0,1,4) content chapter
+             (0,0,0,1,2) chapter
+        Heading('3 Section Three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:62 <title>
              > (0,0,0,1,2) heading level 1
                (0,0,0,0,2) other heading levels
-            MixedStyledText('3 Section Three')
+            MixedStyledText('3 ')
               SingleStyledText('3')
               SingleStyledText(' ')
-              SingleStyledText('Section Three')
-        Paragraph('Paragraph in section 3.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:58 <paragraph>
+            MixedStyledText('Section Three')
+              MixedStyledText('Section Three')
+                SingleStyledText('Section Three')
+        Paragraph('Paragraph in section 3.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:64 <paragraph>
              > (0,0,0,0,2) body
-          MixedStyledText('Paragraph in section 3.')
-            SingleStyledText('Paragraph in section 3.')
-        Section(id='id2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:69 <section>
-          Heading('3.2 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:69 <title>
+            MixedStyledText('Paragraph in section 3.')
+              MixedStyledText('Paragraph in section 3.')
+                SingleStyledText('Paragraph in section 3.')
+        Section(id='id2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:76 <section>
+          Heading('3.2 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:76 <title>
                > (0,0,0,1,2) heading level 2
                  (0,0,0,0,2) other heading levels
-              MixedStyledText('3.2 Subsection B')
+              MixedStyledText('3.2 ')
                 SingleStyledText('3.2')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection B')
-          Paragraph('Paragraph in subsection 3B.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:71 <paragraph>
+              MixedStyledText('Subsection B')
+                MixedStyledText('Subsection B')
+                  SingleStyledText('Subsection B')
+          Paragraph('Paragraph in subsection 3B.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:78 <paragraph>
                > (0,0,0,0,2) body
-            MixedStyledText('Paragraph in subsection 3B.')
-              SingleStyledText('Paragraph in subsection 3B.')
-        Section(id='id3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:75 <section>
-          Heading('3.3 Subsection C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:75 <title>
+              MixedStyledText('Paragraph in subsection 3B.')
+                MixedStyledText('Paragraph in subsection 3B.')
+                  SingleStyledText('Paragraph in subsection 3B.')
+        Section(id='id3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:82 <section>
+          Heading('3.3 Subsection C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:82 <title>
                > (0,0,0,1,2) heading level 2
                  (0,0,0,0,2) other heading levels
-              MixedStyledText('3.3 Subsection C')
+              MixedStyledText('3.3 ')
                 SingleStyledText('3.3')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection C')
-          Paragraph('Paragraph in subsection 3C.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:77 <paragraph>
+              MixedStyledText('Subsection C')
+                MixedStyledText('Subsection C')
+                  SingleStyledText('Subsection C')
+          Paragraph('Paragraph in subsection 3C.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/hide.rst:84 <paragraph>
                > (0,0,0,0,2) body
-            MixedStyledText('Paragraph in subsection 3C.')
-              SingleStyledText('Paragraph in subsection 3C.')
+              MixedStyledText('Paragraph in subsection 3C.')
+                MixedStyledText('Paragraph in subsection 3C.')
+                  SingleStyledText('Paragraph in subsection 3C.')

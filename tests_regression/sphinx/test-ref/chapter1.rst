@@ -1,7 +1,7 @@
 .. _chapter-1:
 
-Chapter 1
-=========
+One
+===
 
 .. _section-a:
 
@@ -12,7 +12,8 @@ Section A
 
 Paragraph A with some references:
 
-- :ref:`chapter-1`, :ref:`that chapter <chapter-1>`, :numref:`chapter-1`
+- :ref:`chapter-1`, :ref:`this chapter <chapter-1>`, :numref:`chapter-1`
+- :ref:`chapter-2`, :ref:`that chapter <chapter-2>`, :numref:`chapter-2`
 - :ref:`section-a`, :ref:`this section <section-a>`, :numref:`section-a`
 - :ref:`section-c`, :ref:`that section <section-c>`, :numref:`section-c`
 - :ref:`par-a`, :ref:`this paragraph <par-a>`, :numref:`par-a`

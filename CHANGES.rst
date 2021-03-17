@@ -6,6 +6,12 @@ Release 0.5.3 (in development)
 
 New Features:
 
+* Document part templates now accept a *page_number_prefix* (StyledText). For
+  example, set ``page_number_prefix = '{SECTION_NUMBER(1)}-'`` to prefix the
+  page number with the chapter number. You'll want to use this to with the new
+  page break options (see next item).
+* The ``page_break`` style attribute now also accepts *left restart*, *right
+  restart* and *any restart* values to restart page numbering
 * The new *continue* page number format makes it more explicit when to not
   restart page numbering.
 * If the *RINOH_NO_CACHE* environment variable is set, the references cache

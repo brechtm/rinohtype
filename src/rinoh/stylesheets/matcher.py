@@ -1,3 +1,4 @@
+from rinoh.document import DocumentTree
 from rinoh.style import StyledMatcher, SelectorByName
 from rinoh.styleds import *
 
@@ -83,6 +84,7 @@ matcher('block quote', GroupedFlowables.like('block quote'))
 #
 
 matcher('chapter', Section.like(level=1))
+matcher('content chapter', DocumentTree / ... / Section.like(level=1))
 
 for i in range(1, 6):
     matcher('heading level {}'.format(i), Heading.like(level=i))

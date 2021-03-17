@@ -9,6 +9,7 @@
 import re
 
 from collections import OrderedDict
+from contextlib import suppress
 from functools import partial
 from itertools import chain
 
@@ -309,8 +310,10 @@ class DocumentPartTemplate(Template):
 
     """
 
-    page_number_format = Option(PageNumberFormat, 'number', "The format for "
-                                "page numbers in this document part.")
+    page_number_prefix = Option(StyledText, None, 'Text to place in front of'
+                                                  'the page number.')
+    page_number_format = Option(PageNumberFormat, 'number', 'The format for '
+                                'page numbers in this document part.')
     end_at_page = Option(PageType, 'any', 'The type of page to end this '
                                           'document part on')
     drop_if_empty = Option(Bool, True, 'Exclude this part from the document '
@@ -387,18 +390,26 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
 
     def render(self, first_page_number):
         self.add_page(self.first_page(first_page_number))
-        for page_number, page in enumerate(self.pages, first_page_number + 1):
+        page_number = first_page_number
+        for page in self.pages:
+            restart = None
+            page_number += 1
             try:
                 page.render()
                 break_type = None
             except NewChapterException as nce:
                 break_type = nce.break_type
+                with suppress(ValueError):
+                    break_type, restart = break_type.split()
             except PageBreakException as pbe:
                 break_type = None
             page.place()
             if self.chain and not self.chain.done:
                 next_page_type = 'left' if page.number % 2 else 'right'
-                page = self.new_page(page_number, next_page_type == break_type)
+                next_page_breaks = next_page_type == break_type
+                if restart and next_page_breaks:
+                    page_number = 1
+                page = self.new_page(page_number, next_page_breaks)
                 self.add_page(page)     # this grows self.pages!
         next_page_type = 'right' if page_number % 2 else 'left'
         end_at_page = self.get_config_value('end_at_page', self.document)

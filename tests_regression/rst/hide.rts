@@ -12,5 +12,5 @@ page_break = none
 [hidden text : StyledText(has_class='hide')]
 hide = true
 
-[hidden section : Section(has_class='hide')]
+[hidden section : +Section(has_class='hide')]
 hide = true

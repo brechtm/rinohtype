@@ -120,8 +120,10 @@ class Document(object):
                                                rinoh_page.document))
             if number_format != 'continue':
                 pdf_number_format = PAGE_NUMBER_FORMATS[page.number_format]
+                prefix = rinoh_page.page_number_prefix
                 page_labels.append(cos.Integer(index))
                 page_labels.append(cos.PageLabel(pdf_number_format,
+                                                 label_prefix=prefix,
                                                  start=page.number))
         self.cos_document.write(file)
 

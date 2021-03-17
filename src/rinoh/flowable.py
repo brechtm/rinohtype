@@ -17,6 +17,7 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
+from contextlib import suppress
 from copy import copy
 from itertools import chain
 from token import NAME
@@ -72,7 +73,8 @@ class HorizontalAlignment(OptionSet):
 
 
 class Break(OptionSet):
-    values = None, 'any', 'left', 'right'
+    values = (None, 'any', 'left', 'right',
+              'any restart', 'left restart', 'right restart')
 
 
 class FlowableStyle(Style):
@@ -194,15 +196,17 @@ class Flowable(Styled):
         by the `space_below` style attribute."""
         top_to_baseline = 0
         page_break = self.get_style('page_break', container)
+        break_type = page_break.split()[0] if page_break else None
         state = state or self.initial_state(container)
         if state.initial:
             if page_break:
                 page_number = container.page.number
                 this_page_type = 'left' if page_number % 2 == 0 else 'right'
                 if not (container.page._empty
-                        and page_break in (Break.ANY, this_page_type)):
-                    if page_break == Break.ANY:
-                        page_break = 'left' if page_number % 2 else 'right'
+                        and break_type in (Break.ANY, this_page_type)):
+                    if break_type == Break.ANY:
+                        break_type = 'left' if page_number % 2 else 'right'
+                        page_break = page_break.replace('any', break_type)
                     chain = container.top_level_container.chain
                     raise self.break_exception(page_break, chain, state)
             space_above = self.get_style('space_above', container)

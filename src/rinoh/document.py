@@ -140,7 +140,7 @@ class Page(Container):
                 break
             if first_page.document_part is not self.document_part:
                 continue
-            elif first_page.number == self.number:
+            elif first_page is self:
                 return section
             elif first_page.number > self.number:
                 break
@@ -153,8 +153,16 @@ class Page(Container):
         return self.document_part.page_number_format
 
     @property
+    def page_number_prefix(self):
+        prefix = self.document_part.get_config_value('page_number_prefix',
+                                                     self.document)
+        return prefix.to_string(self) if prefix else None
+
+    @property
     def formatted_number(self):
-        return format_number(self.number, self.number_format)
+        page_number = format_number(self.number, self.number_format)
+        prefix = self.page_number_prefix
+        return prefix + page_number if prefix else page_number
 
     def render(self):
         super().render(BACKGROUND)

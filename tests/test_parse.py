@@ -177,6 +177,9 @@ def test_break_from_string():
     assert Break.from_string('Left') == Break.LEFT
     assert Break.from_string('RIGHT') == Break.RIGHT
     assert Break.from_string('aNY') == Break.ANY
+    assert Break.from_string('LEFT restart') == Break.LEFT_RESTART
+    assert Break.from_string('riGHt REstarT') == Break.RIGHT_RESTART
+    assert Break.from_string('any RESTART') == Break.ANY_RESTART
     with pytest.raises(ValueError):
         assert Break.from_string('center')
 

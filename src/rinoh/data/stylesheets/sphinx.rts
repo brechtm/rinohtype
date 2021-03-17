@@ -184,6 +184,9 @@ text_align=left
 [chapter]
 page_break=RIGHT
 
+[content chapter]
+base=chapter
+
 [heading level 1]
 typeface=$(sans_typeface)
 font_weight=BOLD

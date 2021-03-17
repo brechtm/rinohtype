@@ -2,8 +2,8 @@
 
 .. _chapter-2:
 
-Chapter 2
-=========
+Two
+===
 
 .. figure:: biohazard.png
    :name: fig-2
