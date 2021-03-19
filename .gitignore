@@ -5,6 +5,7 @@
 /.pytest_cache
 /.idea
 /.eggs
+/.nox
 /.tox
 /.coverage
 /.venv

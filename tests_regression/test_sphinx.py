@@ -28,6 +28,7 @@ def collect_tests():
                                                     testroot=test_name))
 
 
+@pytest.mark.with_sphinx
 @pytest.mark.parametrize('test_name', collect_tests())
 def test_sphinx(test_name, app, verify):
     app.build()

@@ -8,23 +8,13 @@
 
 import pytest
 
-try:
-    import pygments
-    from pygments.style import Style
-    from pygments.token import (Comment, Keyword, Number, Text, Name,
-                                Punctuation,
-                                Operator, Literal, is_token_subtype)
+import sphinx
+import pygments
 
-    HAS_PYGMENTS = True
-except ImportError:
-    HAS_PYGMENTS = False
-
-
-try:
-    import sphinx
-    HAS_SPHINX = True
-except ImportError:
-    HAS_SPHINX = False
+from pygments.style import Style
+from pygments.token import (Comment, Keyword, Number, Text, Name,
+                            Punctuation,
+                            Operator, Literal, is_token_subtype)
 
 
 from rinoh.color import HexColor
@@ -33,13 +23,6 @@ from rinoh.highlight import (highlight_block, get_pygments_style, Token,
                              pygments_style_to_stylesheet)
 
 
-requires_pygments = pytest.mark.skipif(not HAS_PYGMENTS,
-                                       reason='Pygments is not available')
-requires_sphinx = pytest.mark.skipif(not HAS_SPHINX,
-                                     reason='Sphinx is not available')
-
-
-@requires_pygments
 def test_highlight_block():
     code = ("""def sandwich(bread, cheese=True):
                    result = []
@@ -74,7 +57,6 @@ def test_highlight_block():
         assert is_token_subtype(res.type, ref.type)
 
 
-@requires_pygments
 def test_get_pygments_style():
     assert get_pygments_style('default') == pygments.styles.default.DefaultStyle
     assert get_pygments_style('monokai') == pygments.styles.monokai.MonokaiStyle
@@ -88,7 +70,7 @@ def test_get_pygments_style():
             == pygments.styles.vs.VisualStudioStyle)
 
 
-@requires_sphinx
+@pytest.mark.with_sphinx
 def test_get_pygments_style_sphinx():
     assert get_pygments_style('none') == sphinx.pygments_styles.NoneStyle
     assert get_pygments_style('sphinx') == sphinx.pygments_styles.SphinxStyle
@@ -99,7 +81,6 @@ def test_get_pygments_style_sphinx():
                 == sphinx.pygments_styles.SphinxStyle)
 
 
-@requires_pygments
 def test_pygments_style_to_stylesheet():
     def matching_style(style_sheet, token_type):
         token = Token('text', token_type)

@@ -27,6 +27,9 @@ from rinoh.templates import Book, Article
 LOGGER = logging.getLogger(__name__)
 
 
+pytestmark = pytest.mark.with_sphinx
+
+
 def create_sphinx_app(tmp_path, all_docs=('index', 'a', 'b'), **confoverrides):
     with docutils_namespace():
         confdir = tmp_path / 'confdir'
