@@ -207,11 +207,13 @@
 <h2>Release 0.5.3 (in development)<a class="headerlink" href="#release-0-5-3-in-development" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
-<li></li>
+<li><p>If the <em>RINOH_NO_CACHE</em> environment variable is set, the references cache
+(.rtc file) won’t be loaded nor saved. This is mostly useful for testing.</p></li>
 </ul>
 <p>Changed:</p>
 <ul class="simple">
-<li></li>
+<li><p>Smarter automatic sizing of table columns; don’t needlessly pad columns whose
+contents don’t require wrapping.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
@@ -236,8 +238,8 @@ ID (or ‘name’ in docutils terms) by means of the <em>has_id</em> selector pr
 <ul class="simple">
 <li><p>docutils/Sphinx frontend: will default to referencing targets by number if
 possible, even if a custom label is explicitly set. This behaviour can be
-overridden in the style sheet by setting the <em>type</em> style property to
-‘custom’.</p></li>
+overridden in the style sheet by setting the <em>type</em> property of the
+<em>linked reference</em> style to ‘custom’ (see also issue #244).</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
