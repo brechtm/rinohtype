@@ -38,8 +38,8 @@ Changed:
 
 * docutils/Sphinx frontend: will default to referencing targets by number if
   possible, even if a custom label is explicitly set. This behaviour can be
-  overridden in the style sheet by setting the *type* style property to
-  'custom'.
+  overridden in the style sheet by setting the *type* property of the
+  *linked reference* style to 'custom' (see also issue #244).
 
 Fixed:
 
