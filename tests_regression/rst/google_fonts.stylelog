@@ -44,7 +44,10 @@
                 SingleStyledText('), internal cross-references (')
                 Reference('Chapter 2')   None:None <reference>
                      > (0,0,0,0,1) linked reference
-                  SingleStyledText('Chapter 2')
+                  MixedStyledText('Chapter 2')
+                    SingleStyledText('Chapter')
+                    SingleStyledText(' ')
+                    SingleStyledText('2')
                 SingleStyledText('), external hyperlinks with embe...')
                 MixedStyledText('Python web site', style='external link')   None:None <reference>
                      > (0,0,1,0,1) external hyperlink
