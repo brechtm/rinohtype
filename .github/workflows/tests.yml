@@ -14,16 +14,16 @@ env:
   poetry_version: '1.1.6'
 jobs:
   check:
-    name: ${{ matrix.env.TOXENV }}
+    name: ${{ matrix.env.NOXENV }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
         os: [Ubuntu]
         env:
-          - TOXENV: check
-          - TOXENV: check-docs
-          - TOXENV: build-docs
+          - NOXENV: check
+          - NOXENV: check_docs
+          - NOXENV: build_docs
     env: ${{ matrix.env}}
     steps:
     - uses: actions/checkout@v2
@@ -33,27 +33,27 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
 
     - name: Cache docs references cache
-      if: env.TOXENV == 'build-docs'
+      if: env.NOXENV == 'build_docs'
       uses: actions/cache@v2
       with:
         path: doc/_build/rinoh/*.rtc
-        key: ${{ env.TOXENV }}-references-${{ hashFiles('doc/_build/rinoh/*.rtc') }}
+        key: ${{ env.NOXENV }}-references-${{ hashFiles('doc/_build/rinoh/*.rtc') }}
         restore-keys: |
-          ${{ env.TOXENV }}-references-
+          ${{ env.NOXENV }}-references-
 
-    - name: Run tox
-      run: tox -v -e ${{ env.TOXENV }}
+    - name: Run Nox
+      run: nox -v -e ${{ env.NOXENV }}
 
     - name: Determine directory to publish docs to
       id: docs-publish-dir
-      if: env.TOXENV == 'build-docs'
+      if: env.NOXENV == 'build_docs'
       uses: jannekem/run-python-script-action@v1
       with:
         script: |
@@ -69,7 +69,7 @@ jobs:
               target = ''
           set_output('target', target)
     - name: Publish docs to GitHub pages
-      if: env.TOXENV == 'build-docs' && steps.docs-publish-dir.outputs.target != ''
+      if: env.NOXENV == 'build_docs' && steps.docs-publish-dir.outputs.target != ''
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -119,47 +119,37 @@ jobs:
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.6, 3.7, 3.8, 3.9, 3.10.0-alpha - 3.10, pypy-3.6, pypy-3.7]
+        noxenv: [unit]
+        include:
+          - { os: Ubuntu, python-version: 3.9, noxenv: unit_sphinx }
     runs-on: ${{ matrix.os }}-latest
+    env:
+      NOXENV: ${{ matrix.noxenv }}
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Set TOXPY for Python ${{ matrix.python-version }}
-      run: python .github/workflows/toxpy.py "${{ matrix.python-version }}"
+    - name: Set NOXPY for Python ${{ matrix.python-version }}
+      run: python .github/workflows/noxpy.py "${{ matrix.python-version }}"
 
-    - name: Create wheel
-      run: poetry build --format wheel
-    - name: Find path to wheel
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import os, pathlib
-          wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
-          set_env('INSTALLPKG', f'--installpkg {wheel_path}')
-    - name: Run tox (sdist)
+    - name: Run Nox
       continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
                         # https://github.com/pytest-dev/pytest-xdist/issues/622
       env:
         WITH_COVERAGE: 1
-      run: tox -v -re unit-${{ env.TOXPY }}-gh -- -s
-    - name: Run tox (wheel)
-      if: ${{ success() || failure() }}   # also run when sdist run fails
-      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
-      env:
-        WITH_COVERAGE: 0
-      run: tox -v -re unit-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
+      run: nox -v -e ${{ env.NOXENV }}-${{ env.NOXPY }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       shell: bash
@@ -173,17 +163,18 @@ jobs:
       matrix:
         os: [Ubuntu, MacOS, Windows]
         python-version: [3.9]
-        dist: [wheel]
+        noxenv: [regression]
         include:
-          - { os: Ubuntu, dist: wheel, python-version: 3.6 }
-          - { os: Ubuntu, dist: wheel, python-version: 3.7 }
-          - { os: Ubuntu, dist: wheel, python-version: 3.8 }
-          - { os: Ubuntu, dist: wheel, python-version: pypy-3.6 }
-          - { os: Ubuntu, dist: wheel, python-version: pypy-3.7 }
-          - { os: Ubuntu, dist: sdist, python-version: 3.9 }
+          - { os: Ubuntu, python-version: 3.6 }
+          - { os: Ubuntu, python-version: 3.7 }
+          - { os: Ubuntu, python-version: 3.8 }
+          - { os: Ubuntu, python-version: pypy-3.6 }
+          - { os: Ubuntu, python-version: pypy-3.7 }
+          - { os: Ubuntu, python-version: 3.9, noxenv: regression_docutils }
+          - { os: Ubuntu, python-version: 3.9, noxenv: regression_sphinx }
     runs-on: ${{ matrix.os }}-latest
     env:
-      DIST: ${{ matrix.dist }}
+      NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: 1
       MUPDF_VERSION: 1.18.0
     steps:
@@ -192,18 +183,18 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ env.current_python }}
-    - name: Install tox & co
+    - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
         poetry export --dev --without-hashes --output requirements.txt
-        pip${{ env.current_python }} install --constraint requirements.txt tox tox-poetry-installer[poetry]
+        pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Set TOXPY for Python ${{ matrix.python-version }}
-      run: python .github/workflows/toxpy.py "${{ matrix.python-version }}"
+    - name: Set NOXPY for Python ${{ matrix.python-version }}
+      run: python .github/workflows/noxpy.py "${{ matrix.python-version }}"
 
     - name: Get Homebrew cache dir (macOS)
       id: cache-dirs-macos
@@ -257,22 +248,11 @@ jobs:
         choco install mupdf --version=${{ env.MUPDF_VERSION}}
         choco install imagemagick.tool
 
-    - name: Create wheel
-      if: env.DIST == 'wheel'
-      run: poetry build --format wheel
-    - name: Find path to wheel
-      if: env.DIST == 'wheel'
-      uses: jannekem/run-python-script-action@v1
-      with:
-        script: |
-          import os, pathlib
-          wheel_path = str(next(pathlib.Path('dist').glob('*.whl')))
-          set_env('INSTALLPKG', f'--installpkg {wheel_path}')
-    - name: Run tox
+    - name: Run Nox
       # https://github.com/pytest-dev/pytest-xdist/issues/622
       continue-on-error: ${{ runner.os == 'Linux'
                              && startsWith(matrix.python-version, 'pypy') }}
-      run: tox -v -e regression-${{ env.TOXPY }}-gh ${{ env.INSTALLPKG }} -- -s
+      run: nox -v -e regression-${{ env.NOXPY }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1

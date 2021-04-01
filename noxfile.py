@@ -1,4 +1,5 @@
 
+import os
 import sys
 
 import nox
@@ -18,6 +19,8 @@ nox.options.sessions = ['check', 'check_docs',
 PYTHONS = ['3.6', '3.7', '3.8', '3.9', '3.10', 'pypy3.6', 'pypy3.7']
 
 DEPENDENCIES = ['pytest', 'pytest-xdist', 'pytest-cov', 'coverage', 'Sphinx']
+if os.getenv('GITHUB_SHA'):
+    DEPENDENCIES.append('pytest-github-actions-annotate-failures')
 
 
 def parametrize_dist():
