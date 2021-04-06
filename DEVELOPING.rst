@@ -1,14 +1,14 @@
 Developing
 ==========
 
-This project makes use of tox_ to manage running tests and other tasks. The
+This project makes use of Nox_ to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
-(integration) tests. ``tox.ini`` defines "environments" that configure these
+(integration) tests. ``noxfile.py`` defines "sessions" that configure these
 tasks. Each of these are described in the next section. The unit and regression
 tests make use of pytest_.
 
 The repository includes a Poetry_ ``pyproject.toml`` file to help you set up a
-virtual environment with tox and other development dependencies. From the
+virtual environment with Nox and other development dependencies. From the
 repository checkout root directory execute::
 
     poetry install
@@ -18,20 +18,20 @@ like this::
 
     source .venv/bin/activate
 
-Now tox is available for running the tests. Starting ``tox`` without any
-arguments will run the *check*, *unit* and *regression* environments. Refer to
-the next section for an overview of all environments.
+Now Nox is available for running the tests. Starting ``nox`` without any
+arguments will run the *check*, *check_docs*, *unit* and *regression*
+sessions. Refer to the next section for an overview of all sessions.
 
-.. _tox: https://tox.readthedocs.io
+.. _Nox: https://nox.thea.codes
 .. _pytest: https://www.pytest.org
 .. _Poetry: https://python-poetry.org/
 .. _direnv: https://direnv.net/
 
 
-Tox Environments
-----------------
+Nox Sessions
+------------
 
-The following environments execute unit tests and regression tests:
+The following sessions execute unit tests and regression tests:
 
 ``unit``
     Runs the unit tests.
@@ -43,9 +43,7 @@ The following environments execute unit tests and regression tests:
     that is known to be good. This requires ImageMagick and either MuPDF's
     *mutool* or poppler's *pdftoppm* to be available from the search path.
 
-``longrunning`` (not maintained, broken)
-    Runs regressions tests that render larger documents. These tests take
-    several minutes to complete.
+Variants: dist, docutils, sphinx.
 
 The other environments run checks, build documentation and build "binary"
 distributions for Mac and Windows:
@@ -53,12 +51,12 @@ distributions for Mac and Windows:
 ``check``
     Performs basic checks; just ``poetry check`` at this point.
 
-``check-docs``
+``check_docs``
     Perform checks on the documentation source files using doc8_ and
     sphinx-doctest_. restview_ can be useful when fixing syntax errors in
     ``README.rst``, ``CHANGES.rst``, ...
 
-``build-docs``
+``build_docs``
     Build the rinohtype documentation using Sphinx, both in HTML and PDF
     formats.
 
@@ -85,11 +83,12 @@ Customization settings for doc8_ and pytest_ are stored in ``setup.cfg``.
 Testing against multiple Python interpreter versions
 ----------------------------------------------------
 
-Tox facilitates running tests on multiple Python interpreter versions. You can
-combine the test environment names with a factor_ to execute them on a specific
-Python interpreter version. For example, to run the unit tests on CPython 3.8::
+Nox facilitates running tests on multiple Python interpreter versions. You can
+combine the test environment name with a Python `version number`_ to execute it
+on a specific Python interpreter version. For example, to run the unit tests
+on CPython 3.8::
 
-    tox -e unit-py38
+    nox -e unit-3.8
 
 While it is typically sufficient to test on a single Python version during
 development, it can be useful to run tests on a set of Python versions before
@@ -111,7 +110,7 @@ rinohtype aims to support plus recent PyPy3 versions (ideally, we should
 closely track the latest releases). The ``pyenv_install.py`` script can install
 these for you (skipping any that are already installed).
 
-.. _factor: https://tox.readthedocs.io/en/latest/config.html#tox-environments
+.. _version number: https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _pyenv-win: https://github.com/pyenv-win/pyenv-win
 
@@ -119,10 +118,12 @@ these for you (skipping any that are already installed).
 Continuous integration
 ----------------------
 
-`GitHub Actions`_ automatically executes the tox environments when new commits
-are pushed to the repository. The tox environments are run on Linux, macOS and
+`GitHub Actions`_ automatically executes the Nox sessions when new commits
+are pushed to the repository. The Nox sessions are run on Linux, macOS and
 Windows, and run the tests on an array of Python versions to make sure that we
 don't break any corner cases. See ``.github/workflows`` for details.
+
+TODO: docutils, Spinx
 
 .. _GitHub Actions: https://github.com/brechtm/rinohtype/actions
 
@@ -136,9 +137,9 @@ Pages is handled by the GitHub Actions workflow.
 
 1. Make sure your checkout is clean.
 
-2. Run run tests and checks locally::
+2. Run basic tests and checks locally::
 
-    tox -e check,check-docs,build-docs,unit,regression
+    nox
 
 3. Push your commits to master on GitHub. Don't create a tag yet!
 
@@ -154,7 +155,7 @@ Pages is handled by the GitHub Actions workflow.
 
 7. Push the new tag: ``git push origin v$(poetry version --short)``
 
-8. The GitHub workflow will run all tox environments and upload the new version
+8. The GitHub workflow will run all Nox sessions and upload the new version
    to PyPI if all checks were successful.
 
 9. Create a `new release on GitHub`_. Include the relevant section of the
