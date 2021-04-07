@@ -183,7 +183,7 @@ jobs:
       DIST: ${{ matrix.dist }}
       WITH_COVERAGE: 1
       MUPDF_VERSION: 1.18.0
-      IMAGEMAGICK_VERSION: 7.0.10.29
+      IMAGEMAGICK_VERSION: 7.0.11.6
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
