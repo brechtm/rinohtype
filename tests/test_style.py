@@ -12,11 +12,12 @@ from rinoh.attribute import Var
 from rinoh.color import HexColor
 from rinoh.dimension import PT, CM
 from rinoh.document import DocumentTree, Document, FakeContainer
+from rinoh.flowable import GroupedFlowables, StaticGroupedFlowables
 from rinoh.font import FontWeight, FontSlant, FontWidth
 from rinoh.language import EN
 from rinoh.paragraph import Paragraph, ParagraphStyle
 from rinoh.text import StyledText, SingleStyledText
-from rinoh.style import StyleSheet, StyledMatcher
+from rinoh.style import StyleSheet, StyledMatcher, PARENT_STYLE
 
 
 emphasis_selector = StyledText.like('emphasis')
@@ -27,6 +28,8 @@ paragraph_selector = Paragraph
 paragraph2_selector = Paragraph.like('paragraph2')
 paragraph3_selector = Paragraph.like('paragraph3')
 paragraph4_selector = Paragraph.like('paragraph4')
+grouped1_selector = GroupedFlowables.like('grouped1')
+paragraph7_selector = grouped1_selector / Paragraph.like('paragraph7')
 missing_selector = Paragraph.like('missing')
 
 matcher = StyledMatcher({
@@ -37,6 +40,7 @@ matcher = StyledMatcher({
     'paragraph': paragraph_selector,
     'paragraph 2': paragraph2_selector,
     'paragraph 4': paragraph4_selector,
+    'grouped 1': grouped1_selector,
     'missing style': missing_selector,
 })
 
@@ -70,11 +74,14 @@ ssheet1('paragraph 4',
         base='paragraph',
         padding_top=5*PT,
         before=SingleStyledText('before p4'))
+ssheet1('grouped 1',
+        padding_top=3*PT)
 
 
 
 matcher2 = StyledMatcher({
     'paragraph 3': paragraph3_selector,
+    'paragraph 7': paragraph7_selector,
 })
 
 ssheet2 = StyleSheet('ssheet2', base=ssheet1, matcher=matcher2)
@@ -94,6 +101,9 @@ ssheet2('paragraph 3',
         margin_left=1*PT)
 ssheet2['paragraph 4'] = ParagraphStyle(padding_right=2*PT,
                                         after=SingleStyledText('after p4'))
+ssheet2('paragraph 7',
+        base=PARENT_STYLE,
+        margin_left=7*PT)
 
 
 highlighted = SingleStyledText('highlighed', style='highlight')
@@ -110,10 +120,12 @@ paragraph4 = Paragraph('A fourth paragraph.', style='paragraph4')
 paragraph5 = Paragraph('A paragraph for which no style is present in the '
                        'style sheet', style='missing')
 paragraph6 = Paragraph('A sixth paragraph with ' + highlighted + ' text.')
-paragraph7 = Paragraph('A seventh paragraph with ' + highlighted2 + ' text.')
+paragraph7 = Paragraph('A seventh paragraph with ' + highlighted2 + ' text.',
+                       style='paragraph7')
+grouped1 = StaticGroupedFlowables([paragraph6, paragraph7], style='grouped1')
 
 doctree = DocumentTree([paragraph, paragraph2, paragraph3, paragraph4,
-                        paragraph5, paragraph6, paragraph7])
+                        paragraph5, grouped1])
 
 document = Document(doctree, ssheet2, EN)
 container = FakeContainer(document)
@@ -156,6 +168,8 @@ def test_get_selector():
     assert ssheet2.get_selector('paragraph 2') == paragraph2_selector
     assert ssheet2.get_selector('paragraph 3') == paragraph3_selector
     assert ssheet2.get_selector('paragraph 4') == paragraph4_selector
+    assert ssheet2.get_selector('grouped 1') == grouped1_selector
+    assert ssheet2.get_selector('paragraph 7') == paragraph7_selector
     assert ssheet2.get_selector('missing style') == missing_selector
 
 
@@ -244,9 +258,14 @@ def test_get_style():
     after_p4 = paragraph4.get_style('after', container)
     assert after_p4 == SingleStyledText('after p4', source=ssheet2)
 
+    assert grouped1.get_style('padding_top', container) == 3*PT
+    assert paragraph7.get_style('margin_left', container) == 7*PT
+    assert paragraph7.get_style('padding_top', container) == 3*PT
+
 
 def test_variable():
     assert emphasized.get_style('font_size', container) == 20*PT
+    assert emphasized.get_style('font_color', container) == HexColor('f00')
     assert emphasized2.get_style('font_size', container) == 20*PT
     assert emphasized3.get_style('font_size', container) == 20*PT
 

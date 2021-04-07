@@ -103,6 +103,14 @@ class ParentStyle(Style):
     """Style that forwards attribute lookups to the parent of the
     :class:`Styled` from which the lookup originates."""
 
+    def __getitem__(self, item):
+        raise ParentStyleException
+
+
+class ParentStyleException(Exception):
+    pass
+
+
 
 PARENT_STYLE = ParentStyle()
 
@@ -668,9 +676,11 @@ class StyleSheet(RuleSet, Resource):
         try:
             return super()._get_value_lookup(styled, attribute, document)
         except DefaultValueException:
-            if styled.fallback_to_parent(attribute):
-                return self._get_value_lookup(styled.parent, attribute, document)
-            raise
+            if not styled.fallback_to_parent(attribute):
+                raise
+        except ParentStyleException:
+            pass
+        return self._get_value_lookup(styled.parent, attribute, document)
 
     def get_styled(self, name):
         return self.get_selector(name).get_styled_class(self)

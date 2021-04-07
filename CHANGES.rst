@@ -24,7 +24,7 @@ Changed:
 
 Fixed:
 
-*
+* Setting the *base* for a style to ``PARENT_STYLE`` results in a crash.
 
 
 Release 0.5.2 (2021-02-24)
