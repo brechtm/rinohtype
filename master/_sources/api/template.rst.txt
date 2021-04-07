@@ -5,6 +5,9 @@
 Templates (:mod:`rinoh.template`)
 =================================
 
+Documents
+~~~~~~~~~
+
 Document templates are created by subclassing :class:`DocumentTemplate`, just
 like the :ref:`standard templates <standard_templates>` shipped with rinohtype.
 

@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#documents">Documents</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#document-parts">Document Parts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#page-templates">Page Templates</a></li>
 </ul>
@@ -213,6 +214,8 @@
             
   <span class="target" id="module-rinoh.template"></span><div class="section" id="templates-rinoh-template">
 <span id="template"></span><h1>Templates (<a class="reference internal" href="#module-rinoh.template" title="rinoh.template"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code></a>)<a class="headerlink" href="#templates-rinoh-template" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="documents">
+<h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
 <p>Document templates are created by subclassing <a class="reference internal" href="#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>, just
 like the <a class="reference internal" href="../stdtemplates.html#standard-templates"><span class="std std-ref">standard templates</span></a> shipped with rinohtype.</p>
 <dl class="py class">
@@ -330,11 +333,12 @@ document tree and this template configuration</p>
 </dl>
 </dd></dl>
 
+</div>
 <div class="section" id="document-parts">
 <h2>Document Parts<a class="headerlink" href="#document-parts" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="rinoh.template.DocumentPart">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.template.</code><code class="sig-name descname">DocumentPart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span></em>, <em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">flowables</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.template.DocumentPart" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">rinoh.template.</code><code class="sig-name descname">DocumentPart</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">template</span></em>, <em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">flowables</span></em>, <em class="sig-param"><span class="n">last_number_format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.template.DocumentPart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Part of a document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -381,10 +385,18 @@ contains a container associated with <cite>chain</cite>.</p>
 The latter are looked up in the <a class="reference internal" href="#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfiguration</span></code></a> where this
 part template was.</p>
 <dl class="py attribute">
+<dt id="rinoh.template.DocumentPartTemplate.page_number_prefix">
+<code class="sig-name descname">page_number_prefix</code><a class="headerlink" href="#rinoh.template.DocumentPartTemplate.page_number_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to place in front ofthe page number.</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="rinoh.template.DocumentPartTemplate.page_number_format">
 <code class="sig-name descname">page_number_format</code><a class="headerlink" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>The format for page numbers in this document part. If it is different from the preceding part’s number format, numbering restarts at 1</p>
-<p><em>Accepts</em> <a class="reference internal" href="number.html#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<dd><p>The format for page numbers in this document part.</p>
+<p><em>Accepts</em> <a class="reference internal" href="document.html#rinoh.document.PageNumberFormat" title="rinoh.document.PageNumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
@@ -421,10 +433,18 @@ templates:</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="rinoh.template.TitlePartTemplate.page_number_prefix">
+<code class="sig-name descname">page_number_prefix</code><a class="headerlink" href="#rinoh.template.TitlePartTemplate.page_number_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to place in front ofthe page number. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_prefix" title="rinoh.template.DocumentPartTemplate.page_number_prefix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="rinoh.template.TitlePartTemplate.page_number_format">
 <code class="sig-name descname">page_number_format</code><a class="headerlink" href="#rinoh.template.TitlePartTemplate.page_number_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>The format for page numbers in this document part. If it is different from the preceding part’s number format, numbering restarts at 1 (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
-<p><em>Accepts</em> <a class="reference internal" href="number.html#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<dd><p>The format for page numbers in this document part. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="document.html#rinoh.document.PageNumberFormat" title="rinoh.document.PageNumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
@@ -445,10 +465,18 @@ templates:</p>
 <p>Renders all of the content present in the
 <a class="reference internal" href="document.html#rinoh.document.DocumentTree" title="rinoh.document.DocumentTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTree</span></code></a> passed to the <a class="reference internal" href="#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>.</p>
 <dl class="py attribute">
+<dt id="rinoh.template.ContentsPartTemplate.page_number_prefix">
+<code class="sig-name descname">page_number_prefix</code><a class="headerlink" href="#rinoh.template.ContentsPartTemplate.page_number_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to place in front ofthe page number. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_prefix" title="rinoh.template.DocumentPartTemplate.page_number_prefix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="rinoh.template.ContentsPartTemplate.page_number_format">
 <code class="sig-name descname">page_number_format</code><a class="headerlink" href="#rinoh.template.ContentsPartTemplate.page_number_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>The format for page numbers in this document part. If it is different from the preceding part’s number format, numbering restarts at 1 (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
-<p><em>Accepts</em> <a class="reference internal" href="number.html#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<dd><p>The format for page numbers in this document part. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="document.html#rinoh.document.PageNumberFormat" title="rinoh.document.PageNumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
@@ -483,10 +511,18 @@ templates:</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="rinoh.template.FixedDocumentPartTemplate.page_number_prefix">
+<code class="sig-name descname">page_number_prefix</code><a class="headerlink" href="#rinoh.template.FixedDocumentPartTemplate.page_number_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to place in front ofthe page number. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_prefix" title="rinoh.template.DocumentPartTemplate.page_number_prefix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
+<p><em>Default</em>: (no value)</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="rinoh.template.FixedDocumentPartTemplate.page_number_format">
 <code class="sig-name descname">page_number_format</code><a class="headerlink" href="#rinoh.template.FixedDocumentPartTemplate.page_number_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>The format for page numbers in this document part. If it is different from the preceding part’s number format, numbering restarts at 1 (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
-<p><em>Accepts</em> <a class="reference internal" href="number.html#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
+<dd><p>The format for page numbers in this document part. (inherited from <a class="reference internal" href="#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="document.html#rinoh.document.PageNumberFormat" title="rinoh.document.PageNumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 

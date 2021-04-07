@@ -207,6 +207,14 @@
 <h2>Release 0.5.3 (in development)<a class="headerlink" href="#release-0-5-3-in-development" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
+<li><p>Document part templates now accept a <em>page_number_prefix</em> (StyledText). For
+example, set <code class="docutils literal notranslate"><span class="pre">page_number_prefix</span> <span class="pre">=</span> <span class="pre">'{SECTION_NUMBER(1)}-'</span></code> to prefix the
+page number with the chapter number. You’ll want to use this to with the new
+page break options (see next item).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">page_break</span></code> style attribute now also accepts <em>left restart</em>, <em>right
+restart</em> and <em>any restart</em> values to restart page numbering</p></li>
+<li><p>The new <em>continue</em> page number format makes it more explicit when to not
+restart page numbering.</p></li>
 <li><p>If the <em>RINOH_NO_CACHE</em> environment variable is set, the references cache
 (.rtc file) won’t be loaded nor saved. This is mostly useful for testing.</p></li>
 </ul>
@@ -217,7 +225,7 @@ contents don’t require wrapping.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
-<li></li>
+<li><p>Setting the <em>base</em> for a style to <code class="docutils literal notranslate"><span class="pre">PARENT_STYLE</span></code> results in a crash.</p></li>
 </ul>
 </div>
 <div class="section" id="release-0-5-2-2021-02-24">
