@@ -363,6 +363,13 @@ class RuleSet(OrderedDict, Source):
     def contains(self, name):
         return name in self or (self.base and self.base.contains(name))
 
+    def find_source(self, name):
+        """Find top-most ruleset where configuration `name` is defined"""
+        if name in self:
+            return self.name
+        if self.base:
+            return self.base.find_source(name)
+
     def get_configuration(self, name):
         try:
             return self[name]

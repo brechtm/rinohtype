@@ -408,7 +408,8 @@ to the terms of the GNU Affero General Public License version 3.''')
             self._create_outlines(self.backend_document)
             if filename:
                 self._save_cache(filename_root)
-                self.style_log.write_log(filename_root)
+                self.style_log.write_log(self.document_tree.source_root,
+                                         filename_root)
                 print('Writing output: {}'.format(filename))
             self.backend_document.write(file)
         finally:

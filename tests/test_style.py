@@ -17,8 +17,7 @@ from rinoh.font import FontWeight, FontSlant, FontWidth
 from rinoh.language import EN
 from rinoh.paragraph import Paragraph, ParagraphStyle
 from rinoh.text import StyledText, SingleStyledText
-from rinoh.style import StyleSheet, StyledMatcher, PARENT_STYLE
-
+from rinoh.style import StyleSheet, StyledMatcher, PARENT_STYLE, NEXT_STYLE
 
 emphasis_selector = StyledText.like('emphasis')
 emphasis2_selector = StyledText.like('emphasis2')
@@ -29,6 +28,7 @@ paragraph2_selector = Paragraph.like('paragraph2')
 paragraph3_selector = Paragraph.like('paragraph3')
 paragraph4_selector = Paragraph.like('paragraph4')
 grouped1_selector = GroupedFlowables.like('grouped1')
+paragraph6_selector = grouped1_selector / Paragraph
 paragraph7_selector = grouped1_selector / Paragraph.like('paragraph7')
 missing_selector = Paragraph.like('missing')
 
@@ -41,6 +41,7 @@ matcher = StyledMatcher({
     'paragraph 2': paragraph2_selector,
     'paragraph 4': paragraph4_selector,
     'grouped 1': grouped1_selector,
+    'paragraph 6': paragraph6_selector,
     'missing style': missing_selector,
 })
 
@@ -76,6 +77,9 @@ ssheet1('paragraph 4',
         before=SingleStyledText('before p4'))
 ssheet1('grouped 1',
         padding_top=3*PT)
+ssheet1('paragraph 6',
+        base=NEXT_STYLE,
+        space_above=6*PT)
 
 
 
@@ -173,21 +177,25 @@ def test_get_selector():
     assert ssheet2.get_selector('missing style') == missing_selector
 
 
-def test_find_style():
+def test_get_matches():
     assert ssheet2.get_value_for(emphasized, 'font_slant', document) == FontSlant.ITALIC
     assert ssheet2.get_value_for(paragraph5, 'font_slant', document) == FontSlant.UPRIGHT
 
-    assert ssheet1.find_style(emphasized, document) == 'emphasized text'
-    assert ssheet1.find_style(emphasized2, document) == 'emphasized text 2'
-    assert ssheet1.find_style(paragraph, document) == 'paragraph'
-    assert ssheet2.find_style(paragraph, document) == 'paragraph'
-    assert ssheet1.find_style(paragraph2, document) == 'paragraph 2'
-    assert ssheet2.find_style(paragraph2, document) == 'paragraph 2'
-    assert ssheet1.find_style(paragraph3, document) == 'paragraph'
-    assert ssheet2.find_style(paragraph3, document) == 'paragraph 3'
-    assert ssheet1.find_style(paragraph4, document) == 'paragraph 4'
-    assert ssheet2.find_style(paragraph4, document) == 'paragraph 4'
-    assert ssheet2.find_style(paragraph5, document) == 'paragraph'
+    def helper(element):
+        return [(match.style_name, match.stylesheet)
+                for match in element.get_matches(document)]
+
+    assert helper(emphasized) == [('emphasized text', 'ssheet1')]
+    assert helper(emphasized2) == [('emphasized text 2', 'ssheet1')]
+    assert helper(paragraph) == [('paragraph', 'ssheet2')]
+    assert helper(paragraph2) == [('paragraph 2', 'ssheet1'),
+                                  ('paragraph', 'ssheet2')]
+    assert helper(paragraph3) == [('paragraph 3', 'ssheet2'),
+                                  ('paragraph', 'ssheet2')]
+    assert helper(paragraph4) == [('paragraph 4', 'ssheet2'),
+                                  ('paragraph', 'ssheet2')]
+    assert helper(paragraph5) == [('missing style', None),
+                                  ('paragraph', 'ssheet2')]
 
 
 def test_get_style():
@@ -259,6 +267,8 @@ def test_get_style():
     assert after_p4 == SingleStyledText('after p4', source=ssheet2)
 
     assert grouped1.get_style('padding_top', container) == 3*PT
+    assert paragraph6.get_style('space_above', container) == 6*PT
+    assert paragraph6.get_style('font_size', container) == 8*PT
     assert paragraph7.get_style('margin_left', container) == 7*PT
     assert paragraph7.get_style('padding_top', container) == 3*PT
 

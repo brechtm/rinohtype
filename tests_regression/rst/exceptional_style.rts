@@ -1,0 +1,30 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[heading level 1]
+number_format = none
+
+
+[container : GroupedFlowables(has_class='container')]
+border = 1pt, #000
+
+[base-parent paragraph : Paragraph(has_class='base-parent')]
+base = PARENT_STYLE
+space_above = 2pt
+space_below = 2pt
+margin_left = 2pt
+margin_right = 2pt
+font_color = #F0F
+
+
+[custom paragraph : Paragraph(has_class='custom')]
+base = body
+font_slant = italic
+
+[base-next paragraph : +Paragraph(has_class='base-next')]
+base = NEXT_STYLE
+font_color = #0FF
