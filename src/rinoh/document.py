@@ -58,14 +58,12 @@ class DocumentTree(StaticGroupedFlowables):
 
     Args:
         flowables (list[Flowable]): the list of top-level flowables
-        source_root (Path): path used to locate images and include in logging
-            and error and warnings.
         options (Reader): frontend-specific options
 
     """
 
-    def __init__(self, flowables, options=None):
-        super().__init__(flowables)
+    def __init__(self, flowables, options=None, style=None, source=None):
+        super().__init__(flowables, style=style, source=source)
         self.options = options
 
 

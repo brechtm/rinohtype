@@ -48,8 +48,8 @@ class Inline(DocutilsInlineNode):
         return self.process_content(style=self.style_from_class)
 
 
-class Document(DocutilsBodyNode):
-    pass
+class Document(DocutilsGroupingNode):
+    grouped_flowables_class = rt.DocumentTree
 
 
 class DocInfo(DocutilsBodyNode):

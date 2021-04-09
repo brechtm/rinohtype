@@ -32,8 +32,9 @@ class DocumentElement(object):
         self.source = source
 
     @property
-    def source_root(element):
-        while element.parent:
+    def source_root(self):
+        element = self
+        while element:
             if element.source:
                 return element.source.root
             element = element.parent

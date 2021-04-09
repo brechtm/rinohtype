@@ -135,6 +135,5 @@ class ReStructuredTextReader(DocutilsReader):
 
 
 def from_doctree(doctree, **context):
-    mapped_tree = DocutilsNode.map_node(doctree.document, **context)
-    flowables = mapped_tree.children_flowables()
-    return DocumentTree(flowables)
+    mapped_tree = DocutilsNode.map_node(doctree, **context)
+    return mapped_tree.flowable()
