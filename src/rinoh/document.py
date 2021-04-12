@@ -32,6 +32,7 @@ from collections import OrderedDict
 from contextlib import suppress
 from copy import copy
 from itertools import count
+from operator import attrgetter
 from os import getenv
 
 from . import __version__, __release_date__
@@ -44,9 +45,9 @@ from .layout import (Container, ReflowRequired,
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
 from .strings import Strings
-from .style import StyleLog
+from .style import Match, StyleLog, ZERO_SPECIFICITY
 from .text import StyledText
-from .util import DEFAULT, RefKeyDictionary
+from .util import DEFAULT, WeakMutableKeyDictionary
 from .warnings import warn
 
 
@@ -252,10 +253,11 @@ class Document(object):
         self.metadata = Metadata(self, date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
         self.elements = OrderedDict()  # mapping id's to flowables
-        self.ids_by_element = RefKeyDictionary()    # mapping elements to id's
+        self.ids_by_element = WeakMutableKeyDictionary()    # mapping elements to id's
         self.references = {}           # mapping id's to reference data
         self.page_elements = {}        # mapping id's to pages
         self.page_references = {}      # mapping id's to page numbers
+        self._styled_matches = WeakMutableKeyDictionary()   # cache matching styles
         self._sections = []
         self.index_entries = {}
         self._glossary = {}
@@ -308,6 +310,25 @@ to the terms of the GNU Affero General Public License version 3.''')
             if default is DEFAULT:
                 raise
             return default
+
+    def get_matches(self, styled):
+        styled_matches = self._styled_matches
+        try:
+            return styled_matches[styled]
+        except KeyError:
+            stylesheet = self.stylesheet
+            matches = sorted(stylesheet.find_matches(styled, self),
+                             key=attrgetter('specificity'), reverse=True)
+            last_match = Match(None, ZERO_SPECIFICITY)
+            for match in matches:
+                if (match.specificity == last_match.specificity
+                        and match.style_name != last_match.style_name):
+                    styled.warn('Multiple selectors match with the same '
+                              'specificity. See the style log for details.')
+                match.stylesheet = stylesheet.find_source(match.style_name)
+                last_match = match
+            styled_matches[styled] = matches
+            return matches
 
     def set_glossary(self, term, definition):
         try:

@@ -24,7 +24,6 @@ from ast import literal_eval
 from collections import OrderedDict, namedtuple
 from contextlib import suppress
 from itertools import chain
-from operator import attrgetter
 from pathlib import Path
 
 from .attribute import (WithAttributes, AttributesDictionary,
@@ -497,24 +496,6 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         except AttributeError:
             return 0
 
-    def get_matches(self, document):    # TODO: move to Document?
-        try:    # TODO: make document hashable so @cached can be used?
-            return self._matches    # or store in document by Styled ID?
-        except AttributeError:
-            stylesheet = document.stylesheet
-            matches = sorted(stylesheet.find_matches(self, document),
-                             key=attrgetter('specificity'), reverse=True)
-            last_match = Match(None, ZERO_SPECIFICITY)
-            for match in matches:
-                if (match.specificity == last_match.specificity
-                        and match.style_name != last_match.style_name):
-                    self.warn('Multiple selectors match with the same '
-                                'specificity. See the style log for details.')
-                match.stylesheet = stylesheet.find_source(match.style_name)
-                last_match = match
-            self._matches = matches
-            return matches
-
     def fallback_to_parent(self, attribute):
         return isinstance(self.style, ParentStyle)
 
@@ -713,7 +694,7 @@ class StyleSheet(RuleSet, Resource):
 
     def _get_value_lookup(self, styled, attribute, document):
         try:
-            for match in styled.get_matches(document):
+            for match in document.get_matches(styled):
                 if match.stylesheet:      # style is defined
                     with suppress(NextMatchException):
                         return self.get_value(match.style_name, attribute)
@@ -1058,7 +1039,7 @@ class StyleLog(object):
         self.entries = []
 
     def log_styled(self, styled, container, continued, custom_message=None):
-        matches = styled.get_matches(container.document)
+        matches = container.document.get_matches(styled)
         log_entry = StyleLogEntry(styled, container, matches, continued,
                                   custom_message)
         self.entries.append(log_entry)
@@ -1108,10 +1089,8 @@ class StyleLog(object):
                                             for key, value in style.items())
                     log.write('\n      {} > {}({})'
                               .format(indent, attrs['style'], style_attrs))
-                matches = sorted(entry.matches, reverse=True,
-                                 key=attrgetter('specificity'))
-                if matches:
-                    for match in matches:
+                if entry:
+                    for match in entry.matches:
                         base = ''
                         stylesheet = match.stylesheet
                         if stylesheet:

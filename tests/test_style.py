@@ -183,7 +183,7 @@ def test_get_matches():
 
     def helper(element):
         return [(match.style_name, match.stylesheet)
-                for match in element.get_matches(document)]
+                for match in document.get_matches(element)]
 
     assert helper(emphasized) == [('emphasized text', 'ssheet1')]
     assert helper(emphasized2) == [('emphasized text 2', 'ssheet1')]

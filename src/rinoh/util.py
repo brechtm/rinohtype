@@ -27,7 +27,7 @@ import time
 
 from collections import OrderedDict
 from collections.abc import MutableMapping
-from functools import wraps
+from functools import wraps, partial
 from itertools import tee
 from weakref import ref
 
@@ -37,7 +37,8 @@ __all__ = ['INF', 'all_subclasses', 'clamp', 'intersperse', 'itemcount',
            'consumer', 'cached', 'cached_property', 'cached_generator',
            'class_property', 'timed', 'Decorator', 'ReadAliasAttribute',
            'NotImplementedAttribute', 'NamedDescriptor',
-           'WithNamedDescriptors', 'ContextManager', 'RefKeyDictionary',
+           'WithNamedDescriptors', 'ContextManager',
+           'WeakMutableKeyDictionary',
            'VersionError']
 
 
@@ -302,20 +303,30 @@ class ContextManager(object):
 
 
 # http://stackoverflow.com/a/3387975/438249
-class RefKeyDictionary(MutableMapping):
-    """A dictionary that compares keys based on their id (address). Hence, the
-    keys can be mutable."""
+class WeakMutableKeyDictionary(MutableMapping):
+    """A dictionary that accepts mutable keys and references them weakly
+
+    Entries in the dictionary will be discarded when there is no longer a
+    strong reference to the key. This is similar to ``WeakKeyDictionary``
+    from the Python standard library, with the addition of support for mutable
+    keys."""
 
     def __init__(self):
         self.store = dict()
 
     def __getitem__(self, obj):
-        obj_weakref, value = self.store[id(obj)]
-        assert obj_weakref() is obj
+        try:
+            obj_weakref, value = self.store[id(obj)]
+        except KeyError:
+            raise KeyError(obj)
         return value
 
     def __setitem__(self, obj, value):
-        self.store[id(obj)] = ref(obj), value
+        obj_id = id(obj)
+        self.store[obj_id] = ref(obj, partial(self._remove, obj_id)), value
+
+    def _remove(self, obj_id, _):
+        del self.store[obj_id]
 
     def __delitem__(self, obj):
         self[obj]   # check the weakref
