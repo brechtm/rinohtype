@@ -8,6 +8,7 @@
 /.tox
 /.coverage
 /.venv
+/.envrc
 /coverage.xml
 /build
 /dist

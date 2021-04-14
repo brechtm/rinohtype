@@ -14,17 +14,13 @@ repository checkout root directory execute::
     poetry install
 
 Poetry will create a virtual environment in *.venv*, which you can activate
-like this\ [#]_::
+like this::
 
     source .venv/bin/activate
 
 Now tox is available for running the tests. Starting ``tox`` without any
 arguments will run the *check*, *unit* and *regression* environments. Refer to
 the next section for an overview of all environments.
-
-.. [#] If you install direnv_, the virtual environment can be automatically
-       activated when you enter the rinohtype repository checkout (see the
-       ``.envrc`` file).
 
 .. _tox: https://tox.readthedocs.io
 .. _pytest: https://www.pytest.org
