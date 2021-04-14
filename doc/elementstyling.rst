@@ -397,11 +397,13 @@ Another stylesheet can inherit (see below) from this one and easily replace
 fonts in the document by overriding the variables.
 
 
+.. _attribute-resolution:
+
 Style Attribute Resolution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The style system makes a distinction between text (inline) elements and
-flowables with respect to how attribute values are resolved.
+The element styling system makes a distinction between text (inline) elements
+and flowables with respect to how attribute values are resolved.
 
 **Text elements** by default inherit the properties from their parent. Take for
 example the *emphasis* style definition from the example above. The value for
@@ -412,13 +414,16 @@ parent element, which can be either another :class:`.StyledText` instance, or a
 neither defines the style attribute, lookup proceeds recursively, moving up in
 the document tree.
 
-For **flowables**, there is no fall-back to the parent's style by default.
-A base style can be specified explicitly however. If a style attribute is not
-present in a particular style definition, it is looked up in the base style.
-This can help avoid duplication of style information and the resulting
-maintenance difficulties. In the following example, the *unnumbered heading
-level 1* style inherits all properties from *heading level 1*, overriding
-only the *number_format* attribute:
+For **flowables**, there is no fall-back to the parent element's style by
+default.
+
+Style definitions for both types of elements accept a *base* attribute. When
+set, attribute lookup is first attempted in the referenced style before
+fallback to the parent element's style or default style (described above). This
+can help avoid duplication of style information and the resulting maintenance
+difficulties. In the following example, the *unnumbered heading level 1* style
+inherits all properties from *heading level 1*, overriding only the
+*number_format* attribute:
 
 .. code-block:: ini
 
@@ -437,19 +442,26 @@ only the *number_format* attribute:
     base=heading level 1
     number_format=None
 
+In addition to the names of other styles, the *base* attribute accepts two
+special values:
+
+``NEXT_STYLE``
+    If a style attribute is not set for the style, lookup will continue in the
+    next style matching the element (with a lower specificity). This is similar
+    to how CSS works. You can use this together with the ``+`` priority
+    modifier to override some attributes for a set of elements that match
+    different styles.
+
+``PARENT_STYLE``
+    This enables fallback to the parent element's style for flowables. Note
+    that this requires that the current element type is the same or a subclass
+    of the parent type, so it cannot be used for all styles.
+
+
 When a value for a particular style attribute is set nowhere in the style
 definition lookup hierarchy, its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
 :class:`.Style` subclasses.
-
-For text elements, it is possible to override the default behavior of
-falling back to the parent's style. Setting *base* to the label of a
-:class:`.TextStyle` or :class:`.ParagraphStyle` prevents fallback to the parent
-element's style.
-
-For flowables, *base* can be set to ``PARENT_STYLE`` to enable fallback, but
-this requires that the current element type is the same or a subclass of the
-parent type, so it cannot be used for all styles.
 
 
 Style Logs
@@ -458,16 +470,25 @@ Style Logs
 When rendering a document, rinohtype will create a :index:`style log`. It is
 written to disk using the same base name as the output file, but with a
 `.stylelog` extension. The information logged in the style log is invaluable
-when debugging your style sheet. It tells you which style maps to each element
+when developing a style sheet. It tells you which style maps to each element
 in the document.
 
-The style log lists the document elements (as a tree) that have been rendered
-to each page, and for each element all matching styles are listed together with
-their specificity. No styles are listed when there aren't any selectors
-matching an element and the default values are used. The winning style is
-indicated with a ``>`` symbol. Styles that are not defined in the style sheet
-or its base(s) are marked with an ``x``. If none of the styles are defined,
-rinohtype falls back to using the default style.
+The style log lists the document elements that have been rendered to each page
+as a tree. The corresponding location of each document element in the source
+document is displayed on the same line, if the frontend provides this
+information. This typically includes the filename, line number and possibly
+other information such as a node name.
+
+For each document element, all matching styles are listed together with their
+specificity, ordered from high to low specificity. No styles are listed when
+there aren't any selectors matching the element; the default attribute value is
+used (for flowables) or looked up in the parent element(s) (for text/inline
+elements). See attribute-resolution_ for specifics.
+
+The winning style is indicated with a ``>`` symbol in front of it. Styles that
+are not defined in the style sheet or its base(s) are marked with an ``x``.
+Each style name is followed by the (file)name of the top-most stylesheet where
+it is defined (within brackets) and the name of its base style (after ``>``).
 
 Here is an example excerpt from a style log:
 
@@ -475,39 +496,57 @@ Here is an example excerpt from a style log:
 
     ...
       Paragraph('January 03, 2012', style='title page date')
-           > (0,0,1,0,2) title page date
-             (0,0,0,0,2) body
+           > (0,0,1,0,2) title page date [Sphinx] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('January 03, 2012')
     ---------------------------------- page 3 ----------------------------------
+    #### FootnoteContainer('footnotes')
+      StaticGroupedFlowables()
+    #### DownExpandingContainer('floats')
+      StaticGroupedFlowables()
     #### ChainedContainer('column1')
-      DocumentTree()
-        Section(id='structural-elements')             demo.txt:62 <section>
-             > (0,0,0,1,2) chapter
-          Heading('1 Structural Elements')            demo.txt:62 <title>
-               > (0,0,0,1,2) heading level 1
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('1 Structural Elements')
-                SingleStyledText('1')
-                MixedStyledText(' ')
-                  SingleStyledText(' ')
-                SingleStyledText('Structural Elements')
-          Paragraph('A paragraph.')                   demo.txt:64 <paragraph>
+      DocumentTree(id='restructuredtext-demonstration')
+        Section(id='structural-elements')           demo.txt:62 <section>
+             > (0,0,0,1,4) content chapter [Sphinx] > chapter
+               (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+          Heading('1 Structural Elements')          demo.txt:62 <title>
+               > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            SingleStyledText('Structural Elements')
+          Paragraph('A paragraph.')                 demo.txt:64 <paragraph>
                > (0,0,0,0,2) body
             MixedStyledText('A paragraph.')
               SingleStyledText('A paragraph.')
-          List(style='bulleted')                      demo.txt:66 <bullet_list>
-               > (0,0,1,0,2) bulleted list
-            ListItem()
+          List(style='bulleted')                    demo.txt:124 <bullet_list>
+               > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+            ListItem()                              None:None <list_item>
                  x (0,0,1,0,4) bulleted list item
-                 > fallback to default style
               ListItemLabel('•')
-                   > (0,0,1,0,6) bulleted list item label
-                     (0,0,0,0,2) list item label
-                  MixedStyledText('•')
-                    SingleStyledText('')
-                    SingleStyledText('•')
-              StaticGroupedFlowables()                demo.txt:66 <list_item>
-                   > (0,0,0,0,3) list item body
+                   > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                     (0,0,0,0,2) list item label [Sphinx] > default
+                SingleStyledText('•')
+              StaticGroupedFlowables()
+                   > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                Paragraph('A bullet list')          demo.txt:124 <paragraph>
+                     > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('A bullet list')
+                    MixedStyledText('A bullet list')
+                      SingleStyledText('A bullet list')
+                List(style='bulleted')              demo.txt:126 <bullet_list>
+                     > (0,0,1,0,5) nested bulleted list [Sphinx] > bulleted list
+                       (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                  ListItem()                        None:None <list_item>
+                       x (0,0,1,0,4) bulleted list item
+                    ListItemLabel('•')
+                         > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                           (0,0,0,0,2) list item label [Sphinx] > default
+                      SingleStyledText('•')
+                    StaticGroupedFlowables()
+                         > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
     ...
 
 
