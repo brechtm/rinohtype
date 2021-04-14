@@ -50,7 +50,8 @@ class DocutilsNode(TreeNode, metaclass=TreeNodeMeta):
         try:                    # Sphinx
             sphinx_env = settings.env
         except AttributeError:  # plain docutils
-            return Path(settings._source).parent
+            source_path = settings._source
+            return Path(source_path).parent if source_path else None
         return Path(sphinx_env.srcdir)
 
     @property
