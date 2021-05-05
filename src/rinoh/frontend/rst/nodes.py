@@ -605,10 +605,16 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
         return self.get('uri')
 
     def build_flowable(self):
-        width_string = self.get('width')
+        width = convert_quantity(self.get('width'))
+        height = convert_quantity(self.get('height'))
         align = self.get('align')
-        return rt.Image(self.image_path, scale=self.get('scale', 100) / 100,
-                        width=convert_quantity(width_string), align=align)
+        scale = self.get('scale', 100) / 100
+        if scale != 1 and (width or height):
+            width = width * scale if width else None
+            height = height * scale if height else None
+            scale = 1
+        return rt.Image(self.image_path, width=width, height=height,
+                        scale=scale, align=align)
 
     ALIGN_TO_BASELINE = {'bottom': 0,
                          'middle': 50*PERCENT,
@@ -645,7 +651,7 @@ class Transition(DocutilsBodyNode):
         return rt.HorizontalRule()
 
 
-RE_LENGTH_PERCENT_UNITLESS = re.compile(r'^(?P<value>\d+)(?P<unit>[a-z%]*)$')
+RE_LENGTH_PERCENT_UNITLESS = re.compile(r'^(?P<value>\d+\.?\d*)(?P<unit>[a-z%]*)$')
 
 # TODO: warn on px or when no unit is supplied
 DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
@@ -654,7 +660,7 @@ DOCUTILS_UNIT_TO_DIMENSION = {'': PT,    # assume points for unitless quantities
                               'mm': MM,
                               'pt': PT,
                               'pc': PICA,
-                              'px': DimensionUnit(1 / 100 * INCH, 'px'),
+                              'px': DimensionUnit(1 / 96 * INCH, 'px'),
                               '%': PERCENT,
                               'em': None,
                               'ex': None}

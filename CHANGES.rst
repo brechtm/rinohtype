@@ -27,6 +27,8 @@ Changed:
 Fixed:
 
 * Setting the *base* for a style to ``PARENT_STYLE`` results in a crash.
+* docutils image directive: crash when encountering a width/height containing a
+  decimal point (#251 by Karel Frajtak)
 
 
 Release 0.5.2 (2021-02-24)
