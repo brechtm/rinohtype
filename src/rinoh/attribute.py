@@ -510,7 +510,7 @@ class RuleSetFile(RuleSet):
 
     @property
     def location(self):
-        return str(self.filename.resolve())
+        return str(self.filename.resolve()), None, None
 
     @property
     def root(self):

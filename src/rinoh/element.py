@@ -74,7 +74,7 @@ class DocumentElement(object):
         """Present the warning `message` to the user, adding information on the
         location of the related element in the input file."""
         if self.source is not None:
-            message = '[{}] '.format(self.source.location) + message
+            message = '[{}:{} <{}>] '.format(*self.source.location) + message
         if container is not None:
             try:
                 message += ' (page {})'.format(container.page.formatted_number)

@@ -1068,12 +1068,32 @@ class StyleLog(object):
                 attrs = OrderedDict()
                 style = None
                 indent = '  ' * level
-                location = styled.source.location if styled.source else ''
-                if location:
-                    location_path = Path(location)
-                    if location_path.is_absolute():
-                        location = location_path.relative_to(document_source_root)
-                loc = f'   {location}' if location else ''
+                loc = ''
+                if styled.source:
+                    try:
+                        filename, line, tag_name = styled.source.location
+                    except ValueError:
+                        loc = f'   {styled.source.location}'
+                    else:
+                        if filename:
+                            try:
+                                filename, extra = filename.split(':')
+                            except ValueError:
+                                extra = None
+                            file_path = Path(filename)
+                            if file_path.is_absolute():
+                                try:
+                                    file_path = file_path.relative_to(
+                                        document_source_root)
+                                except ValueError:
+                                    pass
+                            loc = f'   {file_path}'
+                            if line:
+                                loc += f':{line}'
+                            if extra:
+                                loc += f' ({extra})'
+                        if tag_name:
+                            loc += f'   <{tag_name}>'
                 continued_text = '(continued) ' if entry.continued else ''
                 log.write('  {}{}{}{}'
                           .format(indent, continued_text,

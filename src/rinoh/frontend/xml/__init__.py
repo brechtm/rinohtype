@@ -103,10 +103,9 @@ class ElementTreeNode(TreeNode):
     def node_children(node):
         return node.getchildren()
 
-    @staticmethod
-    def node_location(node):
-        return (node._root._filename, node.sourceline,
-                __class__.node_tag_name(node))
+    @property
+    def location(self):
+        return self.node._root._filename, self.node.sourceline, self.tag_name
 
     @property
     def _id(self):
