@@ -8,7 +8,7 @@ New Features:
 
 * Document part templates now accept a *page_number_prefix* (StyledText). For
   example, set ``page_number_prefix = '{SECTION_NUMBER(1)}-'`` to prefix the
-  page number with the chapter number. You'll want to use this to with the new
+  page number with the chapter number. You'll want to use this with the new
   page break options (see next item).
 * The ``page_break`` style attribute now also accepts *left restart*, *right
   restart* and *any restart* values to restart page numbering
@@ -29,6 +29,7 @@ Fixed:
 * Setting the *base* for a style to ``PARENT_STYLE`` results in a crash.
 * docutils image directive: crash when encountering a width/height containing a
   decimal point (#251 by Karel Frajtak)
+* docutils inline images don't support width, height and scale options
 
 
 Release 0.5.2 (2021-02-24)
