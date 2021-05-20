@@ -12,6 +12,7 @@ on:
 env:
   current_python: '3.9'
   poetry_version: '1.1.6'
+  nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
   check:
     name: ${{ matrix.env.NOXENV }}
@@ -49,7 +50,7 @@ jobs:
           ${{ env.NOXENV }}-references-
 
     - name: Run Nox
-      run: nox -v -s ${{ env.NOXENV }}
+      run: ${{ env.nox_cmd }} ${{ env.NOXENV }}
 
     - name: Determine directory to publish docs to
       id: docs-publish-dir
@@ -150,7 +151,7 @@ jobs:
     - name: Run Nox
       continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
                         # https://github.com/pytest-dev/pytest-xdist/issues/622
-      run: nox -v -s ${{ env.NOXENV }} -- -s
+      run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
@@ -256,7 +257,7 @@ jobs:
       # https://github.com/pytest-dev/pytest-xdist/issues/622
       continue-on-error: ${{ runner.os == 'Linux'
                              && startsWith(matrix.python-version, 'pypy') }}
-      run: nox -v -s ${{ env.NOXENV }} -- -s
+      run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
 
     - name: Upload coverage statistics to codecov.io
       if: env.WITH_COVERAGE == 1
