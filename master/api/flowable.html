@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Flowable (rinoh.flowable) &mdash; rinohtype 0.5.3 documentation</title>
@@ -90,7 +91,7 @@
       
     
     
-      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -103,7 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -215,7 +216,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-rinoh.flowable"></span><div class="section" id="flowable-rinoh-flowable">
+  <span class="target" id="module-rinoh.flowable"></span><section id="flowable-rinoh-flowable">
 <span id="flowables"></span><h1>Flowable (<a class="reference internal" href="#module-rinoh.flowable" title="rinoh.flowable"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code></a>)<a class="headerlink" href="#flowable-rinoh-flowable" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="rinoh.flowable.Flowable">
@@ -241,7 +242,7 @@ align itself in the container.</p>
 process, so rendering can later be resumed at those points, if needed.</p>
 </dd></dl>
 
-<div class="section" id="no-output-flowables">
+<section id="no-output-flowables">
 <h2>No-Output Flowables<a class="headerlink" href="#no-output-flowables" title="Permalink to this headline">¶</a></h2>
 <p>These flowables do not directly place anything on the page. All except
 <a class="reference internal" href="#rinoh.flowable.DummyFlowable" title="rinoh.flowable.DummyFlowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DummyFlowable</span></code></a> do have side-effects however. Some of these side-effects
@@ -284,8 +285,8 @@ flowables during the rendering stage.</p>
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">PageBreak</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">page_break</span><span class="o">=</span><span class="default_value">'any'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.PageBreak" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-<div class="section" id="labeled-flowables">
+</section>
+<section id="labeled-flowables">
 <h2>Labeled Flowables<a class="headerlink" href="#labeled-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="rinoh.flowable.LabeledFlowable">
@@ -329,8 +330,8 @@ descender height of the preceding line or <cite>None</cite>.</p>
 <em class="property">class </em><code class="sig-prename descclassname">rinoh.flowable.</code><code class="sig-name descname">LabeledFlowableState</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable</span></em>, <em class="sig-param"><span class="n">content_flowable_state</span></em>, <em class="sig-param"><span class="n">_initial</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableState" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</div>
-<div class="section" id="grouping-flowables">
+</section>
+<section id="grouping-flowables">
 <h2>Grouping Flowables<a class="headerlink" href="#grouping-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="rinoh.flowable.GroupedFlowables">
@@ -409,8 +410,8 @@ descender height of the preceding line or <cite>None</cite>.</p>
 
 </dd></dl>
 
-</div>
-<div class="section" id="floating-flowables">
+</section>
+<section id="floating-flowables">
 <h2>Floating Flowables<a class="headerlink" href="#floating-flowables" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="rinoh.flowable.Float">
@@ -435,8 +436,8 @@ by the <cite>space_below</cite> style attribute.</p>
 
 </dd></dl>
 
-</div>
-<div class="section" id="styling-properties">
+</section>
+<section id="styling-properties">
 <h2>Styling Properties<a class="headerlink" href="#styling-properties" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="rinoh.flowable.HorizontalAlignment">
@@ -452,8 +453,8 @@ by the <cite>space_below</cite> style attribute.</p>
 <p>Accepts: <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">fill</span></code> or a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

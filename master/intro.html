@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Introduction &mdash; rinohtype 0.5.3 documentation</title>
@@ -90,7 +91,7 @@
       
     
     
-      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
@@ -111,7 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -193,7 +194,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="introduction">
+  <section id="introduction">
 <span id="id1"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>rinohtype was initially conceived as a modern replacement for <a class="reference external" href="http://en.wikipedia.org/wiki/LaTeX">LaTeX</a>. An
 important goal in the design of rinohtype is for documents to be much easier to
@@ -226,7 +227,7 @@ library. Its modular design makes it easy to to customize and extend for
 specific applications. Moreover, because rinotype’s source code is open, all of
 its internals can be inspected and even modified, making it customizable at all
 levels.</p>
-<div class="section" id="usage-examples">
+<section id="usage-examples">
 <h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
 <p>rinohtype supports three modes of operation, which are discussed in more detail
 in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> guide. For each of these modes, you can choose to use
@@ -234,7 +235,7 @@ one of the document templates included with rinohtype or a third-party template
 available from PyPI and optionally customize it to your needs. Or you can
 create a custom template from scratch. The same is true for the style sheet
 used to style the document elements.</p>
-<div class="section" id="command-line-renderer">
+<section id="command-line-renderer">
 <h3>Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h3>
 <p>rinohtype includes the <strong class="program">rinoh</strong> command-line tool which renders
 structured text documents. Currently, <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> and <a class="reference external" href="http://commonmark.org">CommonMark</a>
@@ -242,15 +243,15 @@ documents are supported in the open-source version. Support for <a class="refere
 available in the commercially supported Pro version.</p>
 <p>Rendering the reStructuredText demonstration article <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a> (using the
 standard article template and style sheet) generates <a class="reference download internal" download="" href="_downloads/431110f8b314032458f7ce6be14d92b7/demo.pdf"><code class="xref download docutils literal notranslate"><span class="pre">demo.pdf</span></code></a>.</p>
-</div>
-<div class="section" id="sphinx-builder">
+</section>
+<section id="sphinx-builder">
 <h3>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h3>
 <p>Configuring rinohtype as a builder for Sphinx allows
 rendering a Sphinx project to PDF without the need for a
 LaTeX installation. The version of this documentation as rendered by rinohtype can be
 downloaded from the sidebar (‘PDF’ links).</p>
-</div>
-<div class="section" id="high-level-pdf-library">
+</section>
+<section id="high-level-pdf-library">
 <h3>High-level PDF library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h3>
 <p>rinohtype can also be used as a Python library to generate PDF documents. Just
 like with <strong class="program">rinoh</strong> and the Sphinx builder, you can select which
@@ -263,9 +264,9 @@ dialect.</p>
 <p>All of these approaches allow for parts of the content to be fetched from a
 database or other data sources. When parsing the document tree from a
 structured document format, a templating engine like <a class="reference external" href="http://jinja.pocoo.org">Jinja2</a> can be used.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

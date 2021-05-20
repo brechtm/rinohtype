@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Document Templates &mdash; rinohtype 0.5.3 documentation</title>
@@ -90,7 +91,7 @@
       
     
     
-      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -107,7 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -189,14 +190,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="document-templates">
+  <section id="document-templates">
 <span id="templates"></span><h1>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this headline">¶</a></h1>
 <p>When it is not possible to achieve a particular document style using one of the
 existing templates and a custom template configuration, you can create a new
 template. A new template is programmed in Python and therefor it is required
 that you are familiar with Python, or at least with general object-oriented
 programming.</p>
-<div class="section" id="subclassing-a-template">
+<section id="subclassing-a-template">
 <h2>Subclassing a Template<a class="headerlink" href="#subclassing-a-template" title="Permalink to this headline">¶</a></h2>
 <p>If you need to customize a template beyond what is possible by configuration,
 you can subclass a template class and override document part and page templates
@@ -231,8 +232,8 @@ with custom templates. The following example subclasses <a class="reference inte
 <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a>, while also leaving out
 <a class="reference internal" href="article.html#rinoh.templates.article.Article.front_matter" title="rinoh.templates.article.Article.front_matter"><code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code></a> by default. Finally, the template also replaces
 the title page template with a custom one.</p>
-</div>
-<div class="section" id="creating-a-custom-template">
+</section>
+<section id="creating-a-custom-template">
 <span id="custom-template"></span><h2>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this headline">¶</a></h2>
 <p>A new template can be created from scratch by subclassing
 <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>, defining all document parts, their templates and
@@ -285,8 +286,8 @@ flowables are included in the front matter:</p>
 </div>
 <p>Have a look at the <a class="reference internal" href="src/book.html"><span class="doc">Book template source code</span></a> for an example of a slightly more complex
 template that defines separate templates for left and right pages.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

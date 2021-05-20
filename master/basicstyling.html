@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Basic Document Styling &mdash; rinohtype 0.5.3 documentation</title>
@@ -90,7 +91,7 @@
       
     
     
-      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -115,7 +116,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -197,13 +198,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="basic-document-styling">
+  <section id="basic-document-styling">
 <span id="basic-styling"></span><h1>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Permalink to this headline">¶</a></h1>
 <p>rinohtype allows for fine-grained control over the style of its output. Most
 aspects of a document’s style can be controlled by style sheet files and
 template configuration files which are being introduced in this chapter. These
 files are plain text files that are easy to create, read and modify.</p>
-<div class="section" id="style-sheets">
+<section id="style-sheets">
 <span id="basics-stylesheets"></span><h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
 <p>A style sheet defines the look of each element in a document. For each type of
 document element, the style sheet assign values to the style properties
@@ -285,7 +286,7 @@ your needs.</p>
 <p>The following two subsections illustrate how to extend an existing style sheet
 and how to create a new, independent style sheet. For more in-depth information
 on style sheets, please refer to <a class="reference internal" href="elementstyling.html#styling"><span class="std std-ref">Element Styling</span></a>.</p>
-<div class="section" id="extending-an-existing-style-sheet">
+<section id="extending-an-existing-style-sheet">
 <h3>Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Permalink to this headline">¶</a></h3>
 <p>Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following style sheet file is based
@@ -322,8 +323,8 @@ to the style class’s documentation).</p>
 used in the <a class="reference internal" href="#base-style-sheet">base style sheet</a> in all style definitions where a monospaced
 font is desired. Redefining the variable in the derived style sheet affects
 all of these style definitions.</p>
-</div>
-<div class="section" id="starting-from-scratch">
+</section>
+<section id="starting-from-scratch">
 <h3>Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Permalink to this headline">¶</a></h3>
 <p>If you don’t specify a base style sheet in the <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> section, you
 create an independent style sheet. You should do this if you want to create
@@ -338,15 +339,15 @@ attributes along with the default values as comments. This generated style
 sheet can serve as a good starting point for developing a custom style
 sheet from scratch.</p>
 </div>
-</div>
-</div>
-<div class="section" id="document-templates">
+</section>
+</section>
+<section id="document-templates">
 <span id="basics-templates"></span><h2>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this headline">¶</a></h2>
 <p>As with style sheets, you can choose to make use of a template provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch. This section discusses how you can configure an existing template. See
 <a class="reference internal" href="templates.html#templates"><span class="std std-ref">Document Templates</span></a> on how to create a custom template.</p>
-<div class="section" id="configuring-a-template">
+<section id="configuring-a-template">
 <span id="configure-templates"></span><h3>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Permalink to this headline">¶</a></h3>
 <p>rinohtype provides a number of <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
 customized by means of a template configuration file; a plain text file in the
@@ -440,8 +441,8 @@ general page template defined in the configuration.</p>
 <p>The example configuration only adjusts the top margin for the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">TitlePageTemplate</span></code>, but many more aspects of the page templates are
 configurable. Refer to <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> for details.</p>
-</div>
-<div class="section" id="using-a-template-configuration-file">
+</section>
+<section id="using-a-template-configuration-file">
 <h3>Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this headline">¶</a></h3>
 <p>A template configuration file can be specified when rendering using the
 command-line <strong class="program">rinoh</strong> tool by passing it to the
@@ -481,9 +482,9 @@ accepted by it and the document part and page templates.</p>
 <dd><p>see <em>Supported INI File Structure</em> in <a class="reference external" href="https://docs.python.org/3/library/configparser.html#module-configparser" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a></p>
 </dd>
 </dl>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
