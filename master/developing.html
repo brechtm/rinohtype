@@ -205,20 +205,13 @@ repository checkout root directory execute:</p>
 </pre></div>
 </div>
 <p>Poetry will create a virtual environment in <em>.venv</em>, which you can activate
-like this<a class="footnote-reference brackets" href="#id3" id="id2">1</a>:</p>
+like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </pre></div>
 </div>
 <p>Now tox is available for running the tests. Starting <code class="docutils literal notranslate"><span class="pre">tox</span></code> without any
 arguments will run the <em>check</em>, <em>unit</em> and <em>regression</em> environments. Refer to
 the next section for an overview of all environments.</p>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
-<dd><p>If you install <a class="reference external" href="https://direnv.net/">direnv</a>, the virtual environment can be automatically
-activated when you enter the rinohtype repository checkout (see the
-<code class="docutils literal notranslate"><span class="pre">.envrc</span></code> file).</p>
-</dd>
-</dl>
 <div class="section" id="tox-environments">
 <h2>Tox Environments<a class="headerlink" href="#tox-environments" title="Permalink to this headline">¶</a></h2>
 <p>The following environments execute unit tests and regression tests:</p>

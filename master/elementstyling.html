@@ -544,9 +544,9 @@ in style definitions as follows:</p>
 fonts in the document by overriding the variables.</p>
 </div>
 <div class="section" id="style-attribute-resolution">
-<h3>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Permalink to this headline">¶</a></h3>
-<p>The style system makes a distinction between text (inline) elements and
-flowables with respect to how attribute values are resolved.</p>
+<span id="attribute-resolution"></span><h3>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Permalink to this headline">¶</a></h3>
+<p>The element styling system makes a distinction between text (inline) elements
+and flowables with respect to how attribute values are resolved.</p>
 <p><strong>Text elements</strong> by default inherit the properties from their parent. Take for
 example the <em>emphasis</em> style definition from the example above. The value for
 style properties other than <em>font_slant</em> (which is defined in the <em>emphasis</em>
@@ -555,13 +555,15 @@ parent element, which can be either another <a class="reference internal" href="
 <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paragraph</span></code></a>. If the parent element is a <a class="reference internal" href="api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a> that
 neither defines the style attribute, lookup proceeds recursively, moving up in
 the document tree.</p>
-<p>For <strong>flowables</strong>, there is no fall-back to the parent’s style by default.
-A base style can be specified explicitly however. If a style attribute is not
-present in a particular style definition, it is looked up in the base style.
-This can help avoid duplication of style information and the resulting
-maintenance difficulties. In the following example, the <em>unnumbered heading
-level 1</em> style inherits all properties from <em>heading level 1</em>, overriding
-only the <em>number_format</em> attribute:</p>
+<p>For <strong>flowables</strong>, there is no fall-back to the parent element’s style by
+default.</p>
+<p>Style definitions for both types of elements accept a <em>base</em> attribute. When
+set, attribute lookup is first attempted in the referenced style before
+fallback to the parent element’s style or default style (described above). This
+can help avoid duplication of style information and the resulting maintenance
+difficulties. In the following example, the <em>unnumbered heading level 1</em> style
+inherits all properties from <em>heading level 1</em>, overriding only the
+<em>number_format</em> attribute:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[heading level 1]</span>
 <span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
 <span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
@@ -578,17 +580,24 @@ only the <em>number_format</em> attribute:</p>
 <span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
 </pre></div>
 </div>
+<p>In addition to the names of other styles, the <em>base</em> attribute accepts two
+special values:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">NEXT_STYLE</span></code></dt><dd><p>If a style attribute is not set for the style, lookup will continue in the
+next style matching the element (with a lower specificity). This is similar
+to how CSS works. You can use this together with the <code class="docutils literal notranslate"><span class="pre">+</span></code> priority
+modifier to override some attributes for a set of elements that match
+different styles.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">PARENT_STYLE</span></code></dt><dd><p>This enables fallback to the parent element’s style for flowables. Note
+that this requires that the current element type is the same or a subclass
+of the parent type, so it cannot be used for all styles.</p>
+</dd>
+</dl>
 <p>When a value for a particular style attribute is set nowhere in the style
 definition lookup hierarchy, its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
 <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> subclasses.</p>
-<p>For text elements, it is possible to override the default behavior of
-falling back to the parent’s style. Setting <em>base</em> to the label of a
-<a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a> or <a class="reference internal" href="style/rinoh.paragraph.ParagraphStyle.html#rinoh.paragraph.ParagraphStyle" title="rinoh.paragraph.ParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParagraphStyle</span></code></a> prevents fallback to the parent
-element’s style.</p>
-<p>For flowables, <em>base</em> can be set to <code class="docutils literal notranslate"><span class="pre">PARENT_STYLE</span></code> to enable fallback, but
-this requires that the current element type is the same or a subclass of the
-parent type, so it cannot be used for all styles.</p>
 </div>
 </div>
 <div class="section" id="style-logs">
@@ -596,51 +605,76 @@ parent type, so it cannot be used for all styles.</p>
 <p>When rendering a document, rinohtype will create a <span class="target" id="index-0"></span>style log. It is
 written to disk using the same base name as the output file, but with a
 <cite>.stylelog</cite> extension. The information logged in the style log is invaluable
-when debugging your style sheet. It tells you which style maps to each element
+when developing a style sheet. It tells you which style maps to each element
 in the document.</p>
-<p>The style log lists the document elements (as a tree) that have been rendered
-to each page, and for each element all matching styles are listed together with
-their specificity. No styles are listed when there aren’t any selectors
-matching an element and the default values are used. The winning style is
-indicated with a <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> symbol. Styles that are not defined in the style sheet
-or its base(s) are marked with an <code class="docutils literal notranslate"><span class="pre">x</span></code>. If none of the styles are defined,
-rinohtype falls back to using the default style.</p>
+<p>The style log lists the document elements that have been rendered to each page
+as a tree. The corresponding location of each document element in the source
+document is displayed on the same line, if the frontend provides this
+information. This typically includes the filename, line number and possibly
+other information such as a node name.</p>
+<p>For each document element, all matching styles are listed together with their
+specificity, ordered from high to low specificity. No styles are listed when
+there aren’t any selectors matching the element; the default attribute value is
+used (for flowables) or looked up in the parent element(s) (for text/inline
+elements). See <a class="reference internal" href="#attribute-resolution">attribute-resolution</a> for specifics.</p>
+<p>The winning style is indicated with a <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> symbol in front of it. Styles that
+are not defined in the style sheet or its base(s) are marked with an <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+Each style name is followed by the (file)name of the top-most stylesheet where
+it is defined (within brackets) and the name of its base style (after <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>).</p>
 <p>Here is an example excerpt from a style log:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>...
   Paragraph(&#39;January 03, 2012&#39;, style=&#39;title page date&#39;)
-       &gt; (0,0,1,0,2) title page date
-         (0,0,0,0,2) body
+       &gt; (0,0,1,0,2) title page date [Sphinx] &gt; DEFAULT
+         (0,0,0,0,2) body [Sphinx] &gt; default
     SingleStyledText(&#39;January 03, 2012&#39;)
 ---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer(&#39;footnotes&#39;)
+  StaticGroupedFlowables()
+#### DownExpandingContainer(&#39;floats&#39;)
+  StaticGroupedFlowables()
 #### ChainedContainer(&#39;column1&#39;)
-  DocumentTree()
-    Section(id=&#39;structural-elements&#39;)             demo.txt:62 &lt;section&gt;
-         &gt; (0,0,0,1,2) chapter
-      Heading(&#39;1 Structural Elements&#39;)            demo.txt:62 &lt;title&gt;
-           &gt; (0,0,0,1,2) heading level 1
-             (0,0,0,0,2) other heading levels
-          MixedStyledText(&#39;1 Structural Elements&#39;)
-            SingleStyledText(&#39;1&#39;)
-            MixedStyledText(&#39; &#39;)
-              SingleStyledText(&#39; &#39;)
-            SingleStyledText(&#39;Structural Elements&#39;)
-      Paragraph(&#39;A paragraph.&#39;)                   demo.txt:64 &lt;paragraph&gt;
+  DocumentTree(id=&#39;restructuredtext-demonstration&#39;)
+    Section(id=&#39;structural-elements&#39;)           demo.txt:62 &lt;section&gt;
+         &gt; (0,0,0,1,4) content chapter [Sphinx] &gt; chapter
+           (0,0,0,1,2) chapter [Sphinx] &gt; DEFAULT
+      Heading(&#39;1 Structural Elements&#39;)          demo.txt:62 &lt;title&gt;
+           &gt; (0,0,0,1,2) heading level 1 [Sphinx] &gt; DEFAULT
+             (0,0,0,0,2) other heading levels [Sphinx] &gt; heading level 5
+        MixedStyledText(&#39;1 &#39;)
+          SingleStyledText(&#39;1&#39;)
+          SingleStyledText(&#39; &#39;)
+        SingleStyledText(&#39;Structural Elements&#39;)
+      Paragraph(&#39;A paragraph.&#39;)                 demo.txt:64 &lt;paragraph&gt;
            &gt; (0,0,0,0,2) body
         MixedStyledText(&#39;A paragraph.&#39;)
           SingleStyledText(&#39;A paragraph.&#39;)
-      List(style=&#39;bulleted&#39;)                      demo.txt:66 &lt;bullet_list&gt;
-           &gt; (0,0,1,0,2) bulleted list
-        ListItem()
+      List(style=&#39;bulleted&#39;)                    demo.txt:124 &lt;bullet_list&gt;
+           &gt; (0,0,1,0,2) bulleted list [Sphinx] &gt; enumerated list
+        ListItem()                              None:None &lt;list_item&gt;
              x (0,0,1,0,4) bulleted list item
-             &gt; fallback to default style
           ListItemLabel(&#39;•&#39;)
-               &gt; (0,0,1,0,6) bulleted list item label
-                 (0,0,0,0,2) list item label
-              MixedStyledText(&#39;•&#39;)
-                SingleStyledText(&#39;&#39;)
-                SingleStyledText(&#39;•&#39;)
-          StaticGroupedFlowables()                demo.txt:66 &lt;list_item&gt;
-               &gt; (0,0,0,0,3) list item body
+               &gt; (0,0,1,0,6) bulleted list item label [Sphinx] &gt; list item label
+                 (0,0,0,0,2) list item label [Sphinx] &gt; default
+            SingleStyledText(&#39;•&#39;)
+          StaticGroupedFlowables()
+               &gt; (0,0,0,0,3) list item body [Sphinx] &gt; DEFAULT
+            Paragraph(&#39;A bullet list&#39;)          demo.txt:124 &lt;paragraph&gt;
+                 &gt; (0,0,0,0,5) list item paragraph [Sphinx] &gt; default
+                   (0,0,0,0,2) body [Sphinx] &gt; default
+              MixedStyledText(&#39;A bullet list&#39;)
+                MixedStyledText(&#39;A bullet list&#39;)
+                  SingleStyledText(&#39;A bullet list&#39;)
+            List(style=&#39;bulleted&#39;)              demo.txt:126 &lt;bullet_list&gt;
+                 &gt; (0,0,1,0,5) nested bulleted list [Sphinx] &gt; bulleted list
+                   (0,0,1,0,2) bulleted list [Sphinx] &gt; enumerated list
+              ListItem()                        None:None &lt;list_item&gt;
+                   x (0,0,1,0,4) bulleted list item
+                ListItemLabel(&#39;•&#39;)
+                     &gt; (0,0,1,0,6) bulleted list item label [Sphinx] &gt; list item label
+                       (0,0,0,0,2) list item label [Sphinx] &gt; default
+                  SingleStyledText(&#39;•&#39;)
+                StaticGroupedFlowables()
+                     &gt; (0,0,0,0,3) list item body [Sphinx] &gt; DEFAULT
 ...
 </pre></div>
 </div>
