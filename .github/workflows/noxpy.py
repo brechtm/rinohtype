@@ -13,7 +13,9 @@ mapping = {'3.6':                 '3.6',
            'pypy-3.6':            'pypy3.6',
            'pypy-3.7':            'pypy3.7'}
 
+noxenv = os.getenv('NOXENV')
 pyfactor = mapping[github_python_version]
 
-with open(os.getenv('GITHUB_ENV'), 'a') as env:
-    print(f'NOXPY={pyfactor}', file=env)
+if noxenv in ('unit', 'regression'):
+    with open(os.getenv('GITHUB_ENV'), 'a') as env:
+        print(f'NOXENV={noxenv}-{pyfactor}', file=env)
