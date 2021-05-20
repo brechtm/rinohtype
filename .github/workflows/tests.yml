@@ -183,7 +183,6 @@ jobs:
       DIST: ${{ matrix.dist }}
       WITH_COVERAGE: 1
       MUPDF_VERSION: 1.18.0
-      IMAGEMAGICK_VERSION: 7.0.11.10
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
@@ -239,7 +238,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-chocolatey-mupdf${{ env.MUPDF_VERSION}}-im${{ env.IMAGEMAGICK_VERSION }}
+        key: ${{ runner.os }}-chocolatey-mupdf${{ env.MUPDF_VERSION}}
 
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
@@ -253,7 +252,7 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         choco install mupdf --version=${{ env.MUPDF_VERSION}}
-        choco install imagemagick.tool --version=${{ env.IMAGEMAGICK_VERSION }}
+        choco install imagemagick.tool
 
     - name: Create wheel
       if: env.DIST == 'wheel'
