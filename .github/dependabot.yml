@@ -9,7 +9,3 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "monthly"
-  - package-ecosystem: "pip"
-    directory: "/.github/workflows"
-    schedule:
-      interval: "monthly"
