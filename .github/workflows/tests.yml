@@ -76,10 +76,13 @@ jobs:
         publish_dir: doc/_build/html
         destination_dir: ${{ steps.docs-publish-dir.outputs.target }}
         keep_files: false
+    outputs:
+      docs-target: ${{ steps.docs-publish-dir.outputs.target }}
 
   docs-versions:
     name: Update docs versions JSON
     needs: check
+    if: needs.check.outputs.docs-target != ''
     runs-on: Ubuntu-latest
     steps:
     - uses: actions/checkout@v2
