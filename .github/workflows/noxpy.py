@@ -10,8 +10,8 @@ mapping = {'3.6':                 '3.6',
            '3.8':                 '3.8',
            '3.9':                 '3.9',
            '3.10.0-alpha - 3.10': '3.10',
-           'pypy-3.6':            'pypy3.6',
-           'pypy-3.7':            'pypy3.7'}
+           'pypy-3.6':            'pypy3',
+           'pypy-3.7':            'pypy3'}
 
 noxenv = os.getenv('NOXENV')
 pyfactor = mapping[github_python_version]
