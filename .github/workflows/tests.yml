@@ -11,7 +11,7 @@ on:
 
 env:
   current_python: '3.9'
-  poetry_version: '1.1.4'
+  poetry_version: '1.1.6'
 jobs:
   check:
     name: ${{ matrix.env.TOXENV }}
