@@ -102,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#tox-environments">Tox Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nox-sessions">Nox Sessions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#testing-against-multiple-python-interpreter-versions">Testing against multiple Python interpreter versions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#making-a-release">Making a release</a></li>
@@ -194,28 +194,33 @@
             
   <section id="developing">
 <span id="id1"></span><h1>Developing<a class="headerlink" href="#developing" title="Permalink to this headline">¶</a></h1>
-<p>This project makes use of <a class="reference external" href="https://tox.readthedocs.io">tox</a> to manage running tests and other tasks. The
+<p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
-(integration) tests. <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> defines “environments” that configure these
+(integration) tests. <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> defines “sessions” that configure these
 tasks. Each of these are described in the next section. The unit and regression
 tests make use of <a class="reference external" href="https://www.pytest.org">pytest</a>.</p>
 <p>The repository includes a <a class="reference external" href="https://python-poetry.org/">Poetry</a> <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file to help you set up a
-virtual environment with tox and other development dependencies. From the
+virtual environment with Nox and other development dependencies. From the
 repository checkout root directory execute:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
 </pre></div>
 </div>
 <p>Poetry will create a virtual environment in <em>.venv</em>, which you can activate
-like this:</p>
+like this (on Linux/macOS):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </pre></div>
 </div>
-<p>Now tox is available for running the tests. Starting <code class="docutils literal notranslate"><span class="pre">tox</span></code> without any
-arguments will run the <em>check</em>, <em>unit</em> and <em>regression</em> environments. Refer to
-the next section for an overview of all environments.</p>
-<section id="tox-environments">
-<h2>Tox Environments<a class="headerlink" href="#tox-environments" title="Permalink to this headline">¶</a></h2>
-<p>The following environments execute unit tests and regression tests:</p>
+<p>Now Nox is available for running the tests. Alternatively, you can run Nox
+through Poetry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">run</span> <span class="n">nox</span>
+</pre></div>
+</div>
+<p>Starting <code class="docutils literal notranslate"><span class="pre">nox</span></code> without any arguments will run the <em>check</em>, <em>check_docs</em>,
+<em>unit</em> and <em>regression</em> sessions. Refer to the next section for an overview of
+all sessions.</p>
+<section id="nox-sessions">
+<h2>Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this headline">¶</a></h2>
+<p>The following sessions execute unit tests and regression tests:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unit</span></code></dt><dd><p>Runs the unit tests.</p>
 </dd>
@@ -225,20 +230,32 @@ they also execute quickly. Their PDF output is compared to a reference PDF
 that is known to be good. This requires ImageMagick and either MuPDF’s
 <em>mutool</em> or poppler’s <em>pdftoppm</em> to be available from the search path.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">longrunning</span></code> (not maintained, broken)</dt><dd><p>Runs regressions tests that render larger documents. These tests take
-several minutes to complete.</p>
+</dl>
+<p>These sessions are <a class="reference external" href="https://nox.thea.codes/en/stable/config.html?highlight=run#parametrizing-sessions">parametrized</a> in order to run the tests against both the
+source and wheel distributions, and against all supported Python versions.
+Executing e.g. <code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--session</span> <span class="pre">unit</span></code> will run all of these combinations. Run
+<code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--list</span></code> to display these. You can run a single session like this:
+<code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--session</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">unit_sphinx</span></code>, <code class="docutils literal notranslate"><span class="pre">regression_docutils</span></code>, <code class="docutils literal notranslate"><span class="pre">regression_sphinx</span></code></dt><dd><p>These are variations on the <em>unit</em> and <em>regression</em> sessions that run the
+(relevant) tests against several versions of the principal rinohtype
+dependencies, docutils and Sphinx (respecting version constraints specified
+in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>).</p>
 </dd>
 </dl>
+<p>Note that for development purposes, it generally suffices to run the default
+set of sessions. <a class="reference internal" href="#continuous-integration">Continuous integration</a> will run all session to catch
+regressions.</p>
 <p>The other environments run checks, build documentation and build “binary”
 distributions for Mac and Windows:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">check</span></code></dt><dd><p>Performs basic checks; just <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">check</span></code> at this point.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">check-docs</span></code></dt><dd><p>Perform checks on the documentation source files using <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and
+<dt><code class="docutils literal notranslate"><span class="pre">check_docs</span></code></dt><dd><p>Perform checks on the documentation source files using <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html">sphinx-doctest</a>. <a class="reference external" href="https://mg.pov.lt/restview/">restview</a> can be useful when fixing syntax errors in
 <code class="docutils literal notranslate"><span class="pre">README.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">CHANGES.rst</span></code>, …</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">build-docs</span></code></dt><dd><p>Build the rinohtype documentation using Sphinx, both in HTML and PDF
+<dt><code class="docutils literal notranslate"><span class="pre">build_docs</span></code></dt><dd><p>Build the rinohtype documentation using Sphinx, both in HTML and PDF
 formats.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">macapp</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone macOS application bundle using <a class="reference external" href="https://beeware.org/briefcase/">briefcase</a>. This task
@@ -253,10 +270,11 @@ Windows.</p>
 </section>
 <section id="testing-against-multiple-python-interpreter-versions">
 <h2>Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this headline">¶</a></h2>
-<p>Tox facilitates running tests on multiple Python interpreter versions. You can
-combine the test environment names with a <a class="reference external" href="https://tox.readthedocs.io/en/latest/config.html#tox-environments">factor</a> to execute them on a specific
-Python interpreter version. For example, to run the unit tests on CPython 3.8:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="n">py38</span>
+<p>Nox facilitates running tests on multiple Python interpreter versions. You can
+combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
+number</a> to execute it on a specific Python interpreter version. For example,
+to run the unit tests with CPython 3.8:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="mf">3.8</span>
 </pre></div>
 </div>
 <p>While it is typically sufficient to test on a single Python version during
@@ -280,10 +298,11 @@ these for you (skipping any that are already installed).</p>
 </section>
 <section id="continuous-integration">
 <h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the tox environments when new commits
-are pushed to the repository. The tox environments are run on Linux, macOS and
-Windows, and run the tests on an array of Python versions to make sure that we
-don’t break any corner cases. See <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
+<p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
+are pushed to the repository. The Nox sessions are run on Linux, macOS and
+Windows, and run the tests against an array of Python, docutils and Sphinx
+versions to make sure that we don’t break any corner cases. See
+<code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
 </section>
 <section id="making-a-release">
 <h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
@@ -292,8 +311,8 @@ Publishing the new release to <a class="reference external" href="https://pypi.o
 Pages is handled by the GitHub Actions workflow.</p>
 <ol class="arabic">
 <li><p>Make sure your checkout is clean.</p></li>
-<li><p>Run run tests and checks locally:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">check</span><span class="p">,</span><span class="n">check</span><span class="o">-</span><span class="n">docs</span><span class="p">,</span><span class="n">build</span><span class="o">-</span><span class="n">docs</span><span class="p">,</span><span class="n">unit</span><span class="p">,</span><span class="n">regression</span>
+<li><p>Run basic tests and checks locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nox</span>
 </pre></div>
 </div>
 </li>
@@ -308,7 +327,7 @@ examples)</p></li>
 </li>
 <li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
 <li><p>Push the new tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
-<li><p>The GitHub workflow will run all tox environments and upload the new version
+<li><p>The GitHub workflow will run all Nox sessions and upload the new version
 to PyPI if all checks were successful.</p></li>
 <li><p>Create a <a class="reference external" href="https://github.com/brechtm/rinohtype/releases/new">new release on GitHub</a>. Include the relevant section of the
 changelog. Use previous releases as a template.</p>
